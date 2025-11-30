@@ -1,0 +1,135 @@
+import { useState, useEffect } from 'react';
+import { getSymptomLogs, deleteSymptomLog } from '../utils/storage';
+
+const SymptomHistory = () => {
+  const [logs, setLogs] = useState([]);
+  const [filter, setFilter] = useState('all'); // all, today, week
+
+  // Load logs on mount and when filter changes
+  useEffect(() => {
+    loadLogs();
+  }, [filter]);
+
+  const loadLogs = () => {
+    let allLogs = getSymptomLogs();
+
+    // Sort by most recent first
+    allLogs.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+    // Apply date filter
+    const now = new Date();
+    if (filter === 'today') {
+      const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      allLogs = allLogs.filter(log => new Date(log.timestamp) >= today);
+    } else if (filter === 'week') {
+      const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+      allLogs = allLogs.filter(log => new Date(log.timestamp) >= weekAgo);
+    }
+
+    setLogs(allLogs);
+  };
+
+  const handleDelete = (id) => {
+    if (window.confirm('Delete this entry?')) {
+      deleteSymptomLog(id);
+      loadLogs();
+    }
+  };
+
+  const formatDate = (timestamp) => {
+    const date = new Date(timestamp);
+    return date.toLocaleDateString('en-US', {
+      weekday: 'short',
+      month: 'short',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: '2-digit',
+    });
+  };
+
+  const getSeverityColor = (severity) => {
+    if (severity <= 2) return 'bg-green-100 text-green-800';
+    if (severity <= 4) return 'bg-yellow-100 text-yellow-800';
+    if (severity <= 6) return 'bg-orange-100 text-orange-800';
+    if (severity <= 8) return 'bg-red-100 text-red-800';
+    return 'bg-red-200 text-red-900';
+  };
+
+  return (
+      <div className="pb-20">
+        {/* Filter Tabs */}
+        <div className="flex gap-2 mb-4">
+          {['all', 'today', 'week'].map((f) => (
+              <button
+                  key={f}
+                  onClick={() => setFilter(f)}
+                  className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                      filter === f
+                          ? 'bg-blue-900 text-white'
+                          : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                  }`}
+              >
+                {f === 'all' ? 'All' : f === 'today' ? 'Today' : 'This Week'}
+              </button>
+          ))}
+        </div>
+
+        {/* Log Count */}
+        <p className="text-sm text-gray-500 mb-4">
+          {logs.length} {logs.length === 1 ? 'entry' : 'entries'}
+        </p>
+
+        {/* Log List */}
+        {logs.length === 0 ? (
+            <div className="text-center py-12 text-gray-500">
+              <p className="text-4xl mb-2">📝</p>
+              <p>No symptoms logged yet</p>
+              <p className="text-sm">Start tracking to build your history</p>
+            </div>
+        ) : (
+            <div className="space-y-3">
+              {logs.map((log) => (
+                  <div
+                      key={log.id}
+                      className="bg-white rounded-lg border border-gray-200 p-4 shadow-sm"
+                  >
+                    <div className="flex justify-between items-start">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-1">
+                    <span className="font-semibold text-gray-900">
+                      {log.symptomName}
+                    </span>
+                          <span
+                              className={`px-2 py-0.5 rounded-full text-xs font-medium ${getSeverityColor(
+                                  log.severity
+                              )}`}
+                          >
+                      {log.severity}/10
+                    </span>
+                        </div>
+                        <p className="text-xs text-gray-500 mb-2">
+                          {log.category} • {formatDate(log.timestamp)}
+                        </p>
+                        {log.notes && (
+                            <p className="text-sm text-gray-700 bg-gray-50 p-2 rounded">
+                              {log.notes}
+                            </p>
+                        )}
+                      </div>
+                      <button
+                          onClick={() => handleDelete(log.id)}
+                          className="text-gray-400 hover:text-red-500 ml-2"
+                          aria-label="Delete entry"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  </div>
+              ))}
+            </div>
+        )}
+      </div>
+  );
+};
+
+export default SymptomHistory;
