@@ -84,12 +84,44 @@ export const exportToPDF = (logs, dateRange = 'All Time') => {
     doc.setTextColor(30, 58, 138);
     doc.text('Detailed Log Entries', 14, detailStartY);
 
-    const detailData = logs.map(log => [
-      formatDate(log.timestamp),
-      log.symptomName,
-      log.severity.toString(),
-      log.notes || '-',
-    ]);
+    const detailData = logs.map(log => {
+      let details = log.notes || '-';
+
+      // Add migraine details if present
+      if (log.migraineData) {
+        const migraineDetails = [];
+        if (log.migraineData.prostrating !== null) {
+          migraineDetails.push(log.migraineData.prostrating ? 'PROSTRATING' : 'Non-prostrating');
+        }
+        if (log.migraineData.duration) {
+          const durationLabels = {
+            'less-than-1h': '<1hr',
+            '1-4h': '1-4hrs',
+            '4-24h': '4-24hrs',
+            '1-2d': '1-2 days',
+            'more-than-2d': '>2 days',
+            'ongoing': 'Ongoing',
+          };
+          migraineDetails.push(durationLabels[log.migraineData.duration] || log.migraineData.duration);
+        }
+        if (log.migraineData.aura) migraineDetails.push('Aura');
+        if (log.migraineData.nausea) migraineDetails.push('Nausea');
+        if (log.migraineData.lightSensitivity) migraineDetails.push('Light sensitivity');
+        if (log.migraineData.soundSensitivity) migraineDetails.push('Sound sensitivity');
+        if (log.migraineData.triggers) migraineDetails.push(`Triggers: ${log.migraineData.triggers}`);
+
+        if (migraineDetails.length > 0) {
+          details = migraineDetails.join(', ') + (log.notes ? ` | ${log.notes}` : '');
+        }
+      }
+
+      return [
+        formatDate(log.timestamp),
+        log.symptomName,
+        log.severity.toString(),
+        details,
+      ];
+    });
 
     doc.autoTable({
       startY: detailStartY + 4,

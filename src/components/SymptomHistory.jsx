@@ -3,9 +3,8 @@ import { getSymptomLogs, deleteSymptomLog } from '../utils/storage';
 
 const SymptomHistory = () => {
   const [logs, setLogs] = useState([]);
-  const [filter, setFilter] = useState('all'); // all, today, week
+  const [filter, setFilter] = useState('all');
 
-  // Load logs on mount and when filter changes
   useEffect(() => {
     loadLogs();
   }, [filter]);
@@ -13,10 +12,8 @@ const SymptomHistory = () => {
   const loadLogs = () => {
     let allLogs = getSymptomLogs();
 
-    // Sort by most recent first
     allLogs.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
 
-    // Apply date filter
     const now = new Date();
     if (filter === 'today') {
       const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
@@ -53,6 +50,18 @@ const SymptomHistory = () => {
     if (severity <= 6) return 'bg-orange-100 text-orange-800';
     if (severity <= 8) return 'bg-red-100 text-red-800';
     return 'bg-red-200 text-red-900';
+  };
+
+  const formatDuration = (duration) => {
+    const labels = {
+      'less-than-1h': '< 1 hour',
+      '1-4h': '1-4 hours',
+      '4-24h': '4-24 hours',
+      '1-2d': '1-2 days',
+      'more-than-2d': '> 2 days',
+      'ongoing': 'Ongoing',
+    };
+    return labels[duration] || duration;
   };
 
   return (
@@ -110,6 +119,47 @@ const SymptomHistory = () => {
                         <p className="text-xs text-gray-500 mb-2">
                           {log.category} • {formatDate(log.timestamp)}
                         </p>
+
+                        {/* Migraine Details */}
+                        {log.migraineData && (
+                            <div className="bg-purple-50 rounded-lg p-3 mb-2 text-sm">
+                              <div className="flex flex-wrap gap-2 mb-2">
+                                {/* Prostrating Badge - Most Important */}
+                                <span
+                                    className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                                        log.migraineData.prostrating
+                                            ? 'bg-red-200 text-red-800'
+                                            : 'bg-green-200 text-green-800'
+                                    }`}
+                                >
+                          {log.migraineData.prostrating ? '⚠️ Prostrating' : 'Non-prostrating'}
+                        </span>
+
+                                {/* Duration */}
+                                {log.migraineData.duration && (
+                                    <span className="px-2 py-1 bg-purple-200 text-purple-800 rounded-full text-xs">
+                            {formatDuration(log.migraineData.duration)}
+                          </span>
+                                )}
+                              </div>
+
+                              {/* Associated Symptoms */}
+                              <div className="flex flex-wrap gap-1 text-xs text-purple-700">
+                                {log.migraineData.aura && <span>• Aura</span>}
+                                {log.migraineData.nausea && <span>• Nausea</span>}
+                                {log.migraineData.lightSensitivity && <span>• Light sensitive</span>}
+                                {log.migraineData.soundSensitivity && <span>• Sound sensitive</span>}
+                              </div>
+
+                              {/* Triggers */}
+                              {log.migraineData.triggers && (
+                                  <p className="text-xs text-purple-600 mt-1">
+                                    Triggers: {log.migraineData.triggers}
+                                  </p>
+                              )}
+                            </div>
+                        )}
+
                         {log.notes && (
                             <p className="text-sm text-gray-700 bg-gray-50 p-2 rounded">
                               {log.notes}

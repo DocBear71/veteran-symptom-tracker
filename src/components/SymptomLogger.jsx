@@ -15,10 +15,39 @@ const SymptomLogger = ({ onLogSaved }) => {
   const [newSymptomCategory, setNewSymptomCategory] = useState('Custom');
   const [customError, setCustomError] = useState('');
 
+  // Migraine-specific fields
+  const [migraineData, setMigraineData] = useState({
+    duration: '',
+    prostrating: null,
+    aura: false,
+    nausea: false,
+    lightSensitivity: false,
+    soundSensitivity: false,
+    triggers: '',
+  });
+
   // Load custom symptoms on mount
   useEffect(() => {
     setCustomSymptoms(getCustomSymptoms());
   }, []);
+
+  // Check if migraine is selected
+  const isMigraineSelected = selectedSymptom === 'migraine';
+
+  // Reset migraine data when symptom changes
+  useEffect(() => {
+    if (!isMigraineSelected) {
+      setMigraineData({
+        duration: '',
+        prostrating: null,
+        aura: false,
+        nausea: false,
+        lightSensitivity: false,
+        soundSensitivity: false,
+        triggers: '',
+      });
+    }
+  }, [selectedSymptom, isMigraineSelected]);
 
   // Build combined symptom list with custom symptoms
   const getAllCategories = () => {
@@ -41,13 +70,11 @@ const SymptomLogger = ({ onLogSaved }) => {
     Object.entries(customByCategory).forEach(([categoryName, symptoms]) => {
       const existingCategory = categories.find(c => c.name === categoryName);
       if (existingCategory) {
-        // Add to existing category
         existingCategory.symptoms = [
           ...existingCategory.symptoms,
           ...symptoms
         ];
       } else {
-        // Create new category for custom symptoms
         categories.push({
           id: `custom-${categoryName.toLowerCase()}`,
           name: categoryName,
@@ -64,6 +91,12 @@ const SymptomLogger = ({ onLogSaved }) => {
 
     if (!selectedSymptom) return;
 
+    // Validate migraine prostrating field
+    if (isMigraineSelected && migraineData.prostrating === null) {
+      alert('Please indicate if this migraine was prostrating (incapacitating)');
+      return;
+    }
+
     // Find the symptom details from combined list
     const allCategories = getAllCategories();
     const symptomData = allCategories
@@ -79,12 +112,34 @@ const SymptomLogger = ({ onLogSaved }) => {
       isCustomSymptom: symptomData?.isCustom || false,
     };
 
+    // Add migraine-specific data if applicable
+    if (isMigraineSelected) {
+      entry.migraineData = {
+        duration: migraineData.duration,
+        prostrating: migraineData.prostrating,
+        aura: migraineData.aura,
+        nausea: migraineData.nausea,
+        lightSensitivity: migraineData.lightSensitivity,
+        soundSensitivity: migraineData.soundSensitivity,
+        triggers: migraineData.triggers.trim(),
+      };
+    }
+
     saveSymptomLog(entry);
 
     // Reset form
     setSelectedSymptom('');
     setSeverity(5);
     setNotes('');
+    setMigraineData({
+      duration: '',
+      prostrating: null,
+      aura: false,
+      nausea: false,
+      lightSensitivity: false,
+      soundSensitivity: false,
+      triggers: '',
+    });
 
     // Show success message
     setShowSuccess(true);
@@ -106,11 +161,8 @@ const SymptomLogger = ({ onLogSaved }) => {
     const result = addCustomSymptom(newSymptomName, newSymptomCategory);
 
     if (result.success) {
-      // Refresh custom symptoms list
       setCustomSymptoms(getCustomSymptoms());
-      // Select the new symptom
       setSelectedSymptom(result.symptom.id);
-      // Reset and close form
       setNewSymptomName('');
       setNewSymptomCategory('Custom');
       setShowCustomForm(false);
@@ -237,6 +289,116 @@ const SymptomLogger = ({ onLogSaved }) => {
                       Cancel
                     </button>
                   </div>
+                </div>
+              </div>
+          )}
+
+          {/* Migraine-Specific Fields */}
+          {isMigraineSelected && (
+              <div className="bg-purple-50 p-4 rounded-lg border border-purple-200 space-y-4">
+                <h3 className="font-medium text-purple-900">Migraine Details</h3>
+                <p className="text-xs text-purple-700">
+                  These details align with VA rating criteria for migraines
+                </p>
+
+                {/* Duration */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Duration
+                  </label>
+                  <select
+                      value={migraineData.duration}
+                      onChange={(e) => setMigraineData(prev => ({ ...prev, duration: e.target.value }))}
+                      className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"
+                  >
+                    <option value="">Select duration...</option>
+                    <option value="less-than-1h">Less than 1 hour</option>
+                    <option value="1-4h">1-4 hours</option>
+                    <option value="4-24h">4-24 hours</option>
+                    <option value="1-2d">1-2 days</option>
+                    <option value="more-than-2d">More than 2 days</option>
+                    <option value="ongoing">Still ongoing</option>
+                  </select>
+                </div>
+
+                {/* Prostrating - Critical for VA ratings */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Was this migraine prostrating? <span className="text-red-500">*</span>
+                  </label>
+                  <p className="text-xs text-gray-500 mb-2">
+                    Prostrating = unable to perform normal activities, had to lie down
+                  </p>
+                  <div className="flex gap-3">
+                    <button
+                        type="button"
+                        onClick={() => setMigraineData(prev => ({ ...prev, prostrating: true }))}
+                        className={`flex-1 py-2 px-4 rounded-lg border-2 font-medium transition-colors ${
+                            migraineData.prostrating === true
+                                ? 'bg-red-100 border-red-500 text-red-700'
+                                : 'bg-white border-gray-300 text-gray-700 hover:border-gray-400'
+                        }`}
+                    >
+                      Yes, prostrating
+                    </button>
+                    <button
+                        type="button"
+                        onClick={() => setMigraineData(prev => ({ ...prev, prostrating: false }))}
+                        className={`flex-1 py-2 px-4 rounded-lg border-2 font-medium transition-colors ${
+                            migraineData.prostrating === false
+                                ? 'bg-green-100 border-green-500 text-green-700'
+                                : 'bg-white border-gray-300 text-gray-700 hover:border-gray-400'
+                        }`}
+                    >
+                      No
+                    </button>
+                  </div>
+                </div>
+
+                {/* Associated Symptoms */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Associated Symptoms
+                  </label>
+                  <div className="grid grid-cols-2 gap-2">
+                    {[
+                      { key: 'aura', label: 'Aura (visual disturbances)' },
+                      { key: 'nausea', label: 'Nausea/Vomiting' },
+                      { key: 'lightSensitivity', label: 'Light sensitivity' },
+                      { key: 'soundSensitivity', label: 'Sound sensitivity' },
+                    ].map(({ key, label }) => (
+                        <label
+                            key={key}
+                            className={`flex items-center gap-2 p-2 rounded-lg border cursor-pointer transition-colors ${
+                                migraineData[key]
+                                    ? 'bg-purple-100 border-purple-300'
+                                    : 'bg-white border-gray-200 hover:border-gray-300'
+                            }`}
+                        >
+                          <input
+                              type="checkbox"
+                              checked={migraineData[key]}
+                              onChange={(e) => setMigraineData(prev => ({ ...prev, [key]: e.target.checked }))}
+                              className="w-4 h-4 text-purple-600 rounded"
+                          />
+                          <span className="text-sm text-gray-700">{label}</span>
+                        </label>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Triggers */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Known Triggers (optional)
+                  </label>
+                  <input
+                      type="text"
+                      value={migraineData.triggers}
+                      onChange={(e) => setMigraineData(prev => ({ ...prev, triggers: e.target.value }))}
+                      placeholder="e.g., stress, bright lights, lack of sleep"
+                      className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"
+                  />
                 </div>
               </div>
           )}
