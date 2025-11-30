@@ -52,3 +52,45 @@ export const deleteSymptomLog = (id) => {
 export const clearAllData = () => {
   localStorage.removeItem(STORAGE_KEYS.SYMPTOM_LOGS);
 };
+
+// --- Custom Symptoms ---
+
+const CUSTOM_SYMPTOMS_KEY = 'symptomTracker_customSymptoms';
+
+// Get all custom symptoms
+export const getCustomSymptoms = () => {
+  const symptoms = localStorage.getItem(CUSTOM_SYMPTOMS_KEY);
+  return symptoms ? JSON.parse(symptoms) : [];
+};
+
+// Add a new custom symptom
+export const addCustomSymptom = (name, category = 'Custom') => {
+  const symptoms = getCustomSymptoms();
+
+  // Check for duplicates (case-insensitive)
+  const exists = symptoms.some(
+      s => s.name.toLowerCase() === name.toLowerCase()
+  );
+  if (exists) {
+    return { success: false, message: 'Symptom already exists' };
+  }
+
+  const newSymptom = {
+    id: `custom-${Date.now()}`,
+    name: name.trim(),
+    category,
+    isCustom: true,
+    createdAt: new Date().toISOString(),
+  };
+
+  symptoms.push(newSymptom);
+  localStorage.setItem(CUSTOM_SYMPTOMS_KEY, JSON.stringify(symptoms));
+  return { success: true, symptom: newSymptom };
+};
+
+// Delete a custom symptom
+export const deleteCustomSymptom = (id) => {
+  const symptoms = getCustomSymptoms();
+  const filtered = symptoms.filter(s => s.id !== id);
+  localStorage.setItem(CUSTOM_SYMPTOMS_KEY, JSON.stringify(filtered));
+};
