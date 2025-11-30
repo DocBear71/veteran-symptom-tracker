@@ -22,7 +22,11 @@ const SymptomLogger = ({ onLogSaved }) => {
 
   // Build combined symptom list with custom symptoms
   const getAllCategories = () => {
-    const categories = [...symptomCategories];
+    // Deep copy to avoid mutating the original symptomCategories
+    const categories = symptomCategories.map(cat => ({
+      ...cat,
+      symptoms: [...cat.symptoms]
+    }));
 
     // Group custom symptoms by category
     const customByCategory = {};
