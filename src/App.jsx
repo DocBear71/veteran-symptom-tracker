@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Layout from './components/Layout';
 import SymptomLogger from './components/SymptomLogger';
 import SymptomHistory from './components/SymptomHistory';
+import ExportData from './components/ExportData';
 
 function App() {
   const [currentView, setCurrentView] = useState('log');
@@ -19,6 +20,9 @@ function App() {
         )}
         {currentView === 'history' && (
             <SymptomHistory key={refreshKey} />
+        )}
+        {currentView === 'export' && (
+            <ExportData key={refreshKey} />
         )}
       </Layout>
   );
