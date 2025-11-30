@@ -10,7 +10,8 @@ export const symptomCategories = [
       { id: 'knee-pain', name: 'Knee Pain' },
       { id: 'shoulder-pain', name: 'Shoulder Pain' },
       { id: 'hip-pain', name: 'Hip Pain' },
-      { id: 'headache', name: 'Headache/Migraine' },
+      { id: 'headache', name: 'Headache (Tension/Other)' },
+      { id: 'migraine', name: 'Migraine' },
       { id: 'joint-pain', name: 'Joint Pain (General)' },
     ]
   },
