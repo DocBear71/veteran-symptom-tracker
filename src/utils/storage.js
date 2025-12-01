@@ -413,6 +413,12 @@ export const getMedicationLogs = () => {
   return logs ? JSON.parse(logs) : [];
 };
 
+// Get medication logs linked to a symptom log
+export const getMedicationLogsForSymptom = (symptomLogId) => {
+  const logs = getMedicationLogs();
+  return logs.filter(log => log.symptomLogId === symptomLogId);
+};
+
 // Get medication logs for a date range
 export const getMedicationLogsByDateRange = (startDate, endDate) => {
   const logs = getMedicationLogs();

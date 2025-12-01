@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { getSymptomLogs, deleteSymptomLog } from '../utils/storage';
+import { getSymptomLogs, deleteSymptomLog, getMedicationLogsForSymptom } from '../utils/storage';
 import EditLogModal from './EditLogModal';
 
 const SymptomHistory = () => {
@@ -14,6 +14,12 @@ const SymptomHistory = () => {
   const loadLogs = () => {
     let allLogs = getSymptomLogs();
     allLogs.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+    // Attach linked medications to each log
+    allLogs = allLogs.map(log => ({
+      ...log,
+      linkedMedications: getMedicationLogsForSymptom(log.id),
+    }));
 
     const now = new Date();
     if (filter === 'today') {
@@ -92,6 +98,20 @@ const SymptomHistory = () => {
                           {log.updatedAt && <span className="text-xs text-gray-400">(edited)</span>}
                         </div>
                         <p className="text-xs text-gray-500 mb-2">{log.category} • {formatDate(log.timestamp)}</p>
+
+                        {/* Linked Medications */}
+                        {log.linkedMedications && log.linkedMedications.length > 0 && (
+                            <div className="bg-teal-50 rounded-lg p-2 mb-2">
+                              <p className="text-xs font-medium text-teal-800 mb-1">💊 Medications taken:</p>
+                              <div className="flex flex-wrap gap-1">
+                                {log.linkedMedications.map((med, idx) => (
+                                    <span key={idx} className="px-2 py-0.5 bg-teal-200 text-teal-800 rounded-full text-xs">
+                            {med.medicationName} {med.dosage}
+                          </span>
+                                ))}
+                              </div>
+                            </div>
+                        )}
 
                         {/* Migraine Details */}
                         {log.migraineData && (

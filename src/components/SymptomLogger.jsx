@@ -24,7 +24,7 @@ const SymptomLogger = ({ onLogSaved }) => {
   // Medication for symptom
   const [medications, setMedications] = useState([]);
   const [tookMedication, setTookMedication] = useState(false);
-  const [selectedMedication, setSelectedMedication] = useState('');
+  const [selectedMedications, setSelectedMedications] = useState([]);
 
   // Migraine-specific fields
   const [migraineData, setMigraineData] = useState({
@@ -181,18 +181,20 @@ const SymptomLogger = ({ onLogSaved }) => {
 
     saveSymptomLog(entry);
 
-    // Log medication if taken
-    if (tookMedication && selectedMedication) {
-      const med = medications.find(m => m.id === selectedMedication);
-      if (med) {
-        logMedicationTaken({
-          medicationId: med.id,
-          medicationName: med.name,
-          dosage: med.dosage,
-          takenFor: entry.symptomName,
-          symptomLogId: entry.id,
-        });
-      }
+    // Log medications if taken
+    if (tookMedication && selectedMedications.length > 0) {
+      selectedMedications.forEach(medId => {
+        const med = medications.find(m => m.id === medId);
+        if (med) {
+          logMedicationTaken({
+            medicationId: med.id,
+            medicationName: med.name,
+            dosage: med.dosage,
+            takenFor: entry.symptomName,
+            symptomLogId: entry.id,
+          });
+        }
+      });
     }
 
     // Reset form
@@ -200,7 +202,7 @@ const SymptomLogger = ({ onLogSaved }) => {
     setSeverity(5);
     setNotes('');
     setTookMedication(false);
-    setSelectedMedication('');
+    setSelectedMedications([]);
 
     setShowSuccess(true);
     setTimeout(() => setShowSuccess(false), 2000);
@@ -660,26 +662,44 @@ const SymptomLogger = ({ onLogSaved }) => {
                   <input
                       type="checkbox"
                       checked={tookMedication}
-                      onChange={(e) => setTookMedication(e.target.checked)}
+                      onChange={(e) => {
+                        setTookMedication(e.target.checked);
+                        if (!e.target.checked) setSelectedMedications([]);
+                      }}
                       className="w-4 h-4 text-teal-600 rounded"
                   />
                   <span className="font-medium text-teal-900">I took medication for this</span>
                 </label>
 
                 {tookMedication && (
-                    <div className="mt-3">
-                      <select
-                          value={selectedMedication}
-                          onChange={(e) => setSelectedMedication(e.target.value)}
-                          className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500"
-                      >
-                        <option value="">Select medication...</option>
-                        {medications.map(med => (
-                            <option key={med.id} value={med.id}>
-                              {med.name} ({med.dosage})
-                            </option>
-                        ))}
-                      </select>
+                    <div className="mt-3 space-y-2">
+                      <p className="text-sm text-teal-700">Select all that apply:</p>
+                      {medications.filter(m => m.isActive).map(med => (
+                          <label
+                              key={med.id}
+                              className={`flex items-center gap-2 p-2 rounded-lg border cursor-pointer transition-colors ${
+                                  selectedMedications.includes(med.id)
+                                      ? 'bg-teal-100 border-teal-400'
+                                      : 'bg-white border-gray-200 hover:border-teal-300'
+                              }`}
+                          >
+                            <input
+                                type="checkbox"
+                                checked={selectedMedications.includes(med.id)}
+                                onChange={(e) => {
+                                  if (e.target.checked) {
+                                    setSelectedMedications(prev => [...prev, med.id]);
+                                  } else {
+                                    setSelectedMedications(prev => prev.filter(id => id !== med.id));
+                                  }
+                                }}
+                                className="w-4 h-4 text-teal-600 rounded"
+                            />
+                            <span className="text-sm text-gray-700">
+              {med.name} ({med.dosage})
+            </span>
+                          </label>
+                      ))}
                     </div>
                 )}
               </div>
