@@ -26,7 +26,7 @@ const Layout = ({ children, currentView, onNavigate }) => {
                         : 'text-gray-500'
                 }`}
             >
-              <span className="block text-xl">➕</span>
+              <span className="block text-lg">➕</span>
               <span className="text-xs">Log</span>
             </button>
             <button
@@ -37,8 +37,19 @@ const Layout = ({ children, currentView, onNavigate }) => {
                         : 'text-gray-500'
                 }`}
             >
-              <span className="block text-xl">📋</span>
+              <span className="block text-lg">📋</span>
               <span className="text-xs">History</span>
+            </button>
+            <button
+                onClick={() => onNavigate('meds')}
+                className={`flex-1 py-3 text-center ${
+                    currentView === 'meds'
+                        ? 'text-blue-900 border-t-2 border-blue-900 font-semibold'
+                        : 'text-gray-500'
+                }`}
+            >
+              <span className="block text-lg">💊</span>
+              <span className="text-xs">Meds</span>
             </button>
             <button
                 onClick={() => onNavigate('trends')}
@@ -48,7 +59,7 @@ const Layout = ({ children, currentView, onNavigate }) => {
                         : 'text-gray-500'
                 }`}
             >
-              <span className="block text-xl">📈</span>
+              <span className="block text-lg">📈</span>
               <span className="text-xs">Trends</span>
             </button>
             <button
@@ -59,7 +70,7 @@ const Layout = ({ children, currentView, onNavigate }) => {
                         : 'text-gray-500'
                 }`}
             >
-              <span className="block text-xl">📤</span>
+              <span className="block text-lg">📤</span>
               <span className="text-xs">Export</span>
             </button>
             <button
@@ -70,7 +81,7 @@ const Layout = ({ children, currentView, onNavigate }) => {
                         : 'text-gray-500'
                 }`}
             >
-              <span className="block text-xl">⚙️</span>
+              <span className="block text-lg">⚙️</span>
               <span className="text-xs">Settings</span>
             </button>
           </div>

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import Layout from './components/Layout';
 import SymptomLogger from './components/SymptomLogger';
 import SymptomHistory from './components/SymptomHistory';
+import Medications from './components/Medications';
 import Trends from './components/Trends';
 import ExportData from './components/ExportData';
 import Settings from './components/Settings';
@@ -18,7 +19,6 @@ function App() {
   const [currentView, setCurrentView] = useState('log');
   const [refreshKey, setRefreshKey] = useState(0);
 
-  // Initialize service worker and reminder checker
   useEffect(() => {
     registerServiceWorker();
 
@@ -52,6 +52,9 @@ function App() {
         )}
         {currentView === 'history' && (
             <SymptomHistory key={refreshKey} />
+        )}
+        {currentView === 'meds' && (
+            <Medications key={refreshKey} />
         )}
         {currentView === 'trends' && (
             <Trends key={refreshKey} />

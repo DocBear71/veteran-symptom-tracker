@@ -189,11 +189,13 @@ export const isFavorite = (symptomId) => {
 // Export all data as JSON
 export const exportAllData = () => {
   const data = {
-    version: '1.0',
+    version: '1.1', // Updated version
     exportedAt: new Date().toISOString(),
     symptomLogs: getSymptomLogs(),
     customSymptoms: getCustomSymptoms(),
     favorites: getFavorites(),
+    medications: getMedications(),
+    medicationLogs: getMedicationLogs(),
     reminderSettings: JSON.parse(localStorage.getItem('symptomTracker_reminderSettings') || 'null'),
   };
 
@@ -289,6 +291,14 @@ export const importAllData = (jsonData, options = { merge: false }) => {
         localStorage.setItem('symptomTracker_reminderSettings', JSON.stringify(data.reminderSettings));
       }
 
+      if (data.medications) {
+        localStorage.setItem(MEDICATIONS_KEY, JSON.stringify(data.medications));
+      }
+
+      if (data.medicationLogs) {
+        localStorage.setItem(MEDICATION_LOGS_KEY, JSON.stringify(data.medicationLogs));
+      }
+
       return {
         success: true,
         message: `Restored ${data.symptomLogs.length} log entries`,
@@ -310,5 +320,120 @@ export const getDataStats = () => {
     logs: getSymptomLogs().length,
     customSymptoms: getCustomSymptoms().length,
     favorites: getFavorites().length,
+    medications: getMedications().length,
+    medicationLogs: getMedicationLogs().length,
   };
+};
+
+// --- Medications ---
+
+const MEDICATIONS_KEY = 'symptomTracker_medications';
+const MEDICATION_LOGS_KEY = 'symptomTracker_medicationLogs';
+
+// Get all medications (the user's medication list)
+export const getMedications = () => {
+  const meds = localStorage.getItem(MEDICATIONS_KEY);
+  return meds ? JSON.parse(meds) : [];
+};
+
+// Add a new medication to the list
+export const addMedication = (medication) => {
+  const meds = getMedications();
+
+  // Check for duplicates
+  const exists = meds.some(m =>
+      m.name.toLowerCase() === medication.name.toLowerCase() &&
+      m.dosage.toLowerCase() === medication.dosage.toLowerCase()
+  );
+  if (exists) {
+    return { success: false, message: 'Medication already exists' };
+  }
+
+  const newMed = {
+    id: crypto.randomUUID(),
+    name: medication.name.trim(),
+    dosage: medication.dosage.trim(),
+    frequency: medication.frequency || 'as-needed', // daily, twice-daily, as-needed, etc.
+    forConditions: medication.forConditions || [], // what it's prescribed for
+    notes: medication.notes || '',
+    isActive: true,
+    createdAt: new Date().toISOString(),
+  };
+
+  meds.push(newMed);
+  localStorage.setItem(MEDICATIONS_KEY, JSON.stringify(meds));
+  return { success: true, medication: newMed };
+};
+
+// Update a medication
+export const updateMedication = (id, updates) => {
+  const meds = getMedications();
+  const index = meds.findIndex(m => m.id === id);
+  if (index === -1) {
+    return { success: false, message: 'Medication not found' };
+  }
+
+  meds[index] = { ...meds[index], ...updates };
+  localStorage.setItem(MEDICATIONS_KEY, JSON.stringify(meds));
+  return { success: true, medication: meds[index] };
+};
+
+// Delete a medication
+export const deleteMedication = (id) => {
+  const meds = getMedications();
+  const filtered = meds.filter(m => m.id !== id);
+  localStorage.setItem(MEDICATIONS_KEY, JSON.stringify(filtered));
+};
+
+// Log a medication dose taken
+export const logMedicationTaken = (entry) => {
+  const logs = getMedicationLogs();
+
+  const newLog = {
+    id: crypto.randomUUID(),
+    medicationId: entry.medicationId,
+    medicationName: entry.medicationName,
+    dosage: entry.dosage,
+    timestamp: new Date().toISOString(),
+    takenFor: entry.takenFor || '', // symptom it was taken for
+    symptomLogId: entry.symptomLogId || null, // link to symptom entry
+    effectiveness: entry.effectiveness || null, // 1-5 rating after the fact
+    sideEffects: entry.sideEffects || '',
+    notes: entry.notes || '',
+  };
+
+  logs.push(newLog);
+  localStorage.setItem(MEDICATION_LOGS_KEY, JSON.stringify(logs));
+  return { success: true, log: newLog };
+};
+
+// Get all medication logs
+export const getMedicationLogs = () => {
+  const logs = localStorage.getItem(MEDICATION_LOGS_KEY);
+  return logs ? JSON.parse(logs) : [];
+};
+
+// Get medication logs for a date range
+export const getMedicationLogsByDateRange = (startDate, endDate) => {
+  const logs = getMedicationLogs();
+  return logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    return logDate >= startDate && logDate <= endDate;
+  });
+};
+
+// Delete a medication log
+export const deleteMedicationLog = (id) => {
+  const logs = getMedicationLogs();
+  const filtered = logs.filter(log => log.id !== id);
+  localStorage.setItem(MEDICATION_LOGS_KEY, JSON.stringify(filtered));
+};
+
+// Get today's medication logs
+export const getTodaysMedicationLogs = () => {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const tomorrow = new Date(today);
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  return getMedicationLogsByDateRange(today, tomorrow);
 };

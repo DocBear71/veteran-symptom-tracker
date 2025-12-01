@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { symptomCategories } from '../data/symptoms';
-import { saveSymptomLog, getCustomSymptoms, addCustomSymptom } from '../utils/storage';
+import { saveSymptomLog, getCustomSymptoms, addCustomSymptom, getMedications, logMedicationTaken } from '../utils/storage';
 import QuickLog from './QuickLog';
 import AddFavoriteModal from './AddFavoriteModal';
 
@@ -20,6 +20,11 @@ const SymptomLogger = ({ onLogSaved }) => {
 
   // Favorite modal state
   const [showFavoriteModal, setShowFavoriteModal] = useState(false);
+
+  // Medication for symptom
+  const [medications, setMedications] = useState([]);
+  const [tookMedication, setTookMedication] = useState(false);
+  const [selectedMedication, setSelectedMedication] = useState('');
 
   // Migraine-specific fields
   const [migraineData, setMigraineData] = useState({
@@ -67,6 +72,7 @@ const SymptomLogger = ({ onLogSaved }) => {
 
   useEffect(() => {
     setCustomSymptoms(getCustomSymptoms());
+    setMedications(getMedications());
   }, []);
 
   // Determine which special form to show
@@ -175,10 +181,26 @@ const SymptomLogger = ({ onLogSaved }) => {
 
     saveSymptomLog(entry);
 
+    // Log medication if taken
+    if (tookMedication && selectedMedication) {
+      const med = medications.find(m => m.id === selectedMedication);
+      if (med) {
+        logMedicationTaken({
+          medicationId: med.id,
+          medicationName: med.name,
+          dosage: med.dosage,
+          takenFor: entry.symptomName,
+          symptomLogId: entry.id,
+        });
+      }
+    }
+
     // Reset form
     setSelectedSymptom('');
     setSeverity(5);
     setNotes('');
+    setTookMedication(false);
+    setSelectedMedication('');
 
     setShowSuccess(true);
     setTimeout(() => setShowSuccess(false), 2000);
@@ -630,6 +652,38 @@ const SymptomLogger = ({ onLogSaved }) => {
               </div>
             </div>
           </div>
+
+          {/* Medication Taken */}
+          {medications.length > 0 && selectedSymptom && (
+              <div className="bg-teal-50 p-4 rounded-lg border border-teal-200">
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                      type="checkbox"
+                      checked={tookMedication}
+                      onChange={(e) => setTookMedication(e.target.checked)}
+                      className="w-4 h-4 text-teal-600 rounded"
+                  />
+                  <span className="font-medium text-teal-900">I took medication for this</span>
+                </label>
+
+                {tookMedication && (
+                    <div className="mt-3">
+                      <select
+                          value={selectedMedication}
+                          onChange={(e) => setSelectedMedication(e.target.value)}
+                          className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500"
+                      >
+                        <option value="">Select medication...</option>
+                        {medications.map(med => (
+                            <option key={med.id} value={med.id}>
+                              {med.name} ({med.dosage})
+                            </option>
+                        ))}
+                      </select>
+                    </div>
+                )}
+              </div>
+          )}
 
           {/* Notes */}
           <div>
