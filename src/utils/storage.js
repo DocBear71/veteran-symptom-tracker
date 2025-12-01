@@ -183,3 +183,132 @@ export const isFavorite = (symptomId) => {
   const favorites = getFavorites();
   return favorites.some(f => f.symptomId === symptomId);
 };
+
+// --- Data Backup & Restore ---
+
+// Export all data as JSON
+export const exportAllData = () => {
+  const data = {
+    version: '1.0',
+    exportedAt: new Date().toISOString(),
+    symptomLogs: getSymptomLogs(),
+    customSymptoms: getCustomSymptoms(),
+    favorites: getFavorites(),
+    reminderSettings: JSON.parse(localStorage.getItem('symptomTracker_reminderSettings') || 'null'),
+  };
+
+  const jsonString = JSON.stringify(data, null, 2);
+  const blob = new Blob([jsonString], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+
+  const date = new Date().toISOString().split('T')[0];
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = `symptom-tracker-backup-${date}.json`;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+
+  return { success: true };
+};
+
+// Validate backup data structure
+const validateBackupData = (data) => {
+  if (!data || typeof data !== 'object') {
+    return { valid: false, message: 'Invalid file format' };
+  }
+
+  if (!data.version) {
+    return { valid: false, message: 'Missing version info - not a valid backup file' };
+  }
+
+  if (!Array.isArray(data.symptomLogs)) {
+    return { valid: false, message: 'Missing or invalid symptom logs' };
+  }
+
+  return { valid: true };
+};
+
+// Import data from JSON backup
+export const importAllData = (jsonData, options = { merge: false }) => {
+  try {
+    const data = typeof jsonData === 'string' ? JSON.parse(jsonData) : jsonData;
+
+    const validation = validateBackupData(data);
+    if (!validation.valid) {
+      return { success: false, message: validation.message };
+    }
+
+    if (options.merge) {
+      // Merge with existing data
+      const existingLogs = getSymptomLogs();
+      const existingCustomSymptoms = getCustomSymptoms();
+      const existingFavorites = getFavorites();
+
+      // Merge logs (avoid duplicates by ID)
+      const existingLogIds = new Set(existingLogs.map(log => log.id));
+      const newLogs = data.symptomLogs.filter(log => !existingLogIds.has(log.id));
+      const mergedLogs = [...existingLogs, ...newLogs];
+      localStorage.setItem('symptomTracker_logs', JSON.stringify(mergedLogs));
+
+      // Merge custom symptoms
+      const existingSymptomIds = new Set(existingCustomSymptoms.map(s => s.id));
+      const newSymptoms = (data.customSymptoms || []).filter(s => !existingSymptomIds.has(s.id));
+      const mergedSymptoms = [...existingCustomSymptoms, ...newSymptoms];
+      localStorage.setItem('symptomTracker_customSymptoms', JSON.stringify(mergedSymptoms));
+
+      // Merge favorites
+      const existingFavIds = new Set(existingFavorites.map(f => f.symptomId));
+      const newFavorites = (data.favorites || []).filter(f => !existingFavIds.has(f.symptomId));
+      const mergedFavorites = [...existingFavorites, ...newFavorites];
+      localStorage.setItem('symptomTracker_favorites', JSON.stringify(mergedFavorites));
+
+      return {
+        success: true,
+        message: `Merged ${newLogs.length} new log entries`,
+        stats: {
+          logsAdded: newLogs.length,
+          symptomsAdded: newSymptoms.length,
+          favoritesAdded: newFavorites.length,
+        },
+      };
+    } else {
+      // Replace all data
+      localStorage.setItem('symptomTracker_logs', JSON.stringify(data.symptomLogs));
+
+      if (data.customSymptoms) {
+        localStorage.setItem('symptomTracker_customSymptoms', JSON.stringify(data.customSymptoms));
+      }
+
+      if (data.favorites) {
+        localStorage.setItem('symptomTracker_favorites', JSON.stringify(data.favorites));
+      }
+
+      if (data.reminderSettings) {
+        localStorage.setItem('symptomTracker_reminderSettings', JSON.stringify(data.reminderSettings));
+      }
+
+      return {
+        success: true,
+        message: `Restored ${data.symptomLogs.length} log entries`,
+        stats: {
+          logsRestored: data.symptomLogs.length,
+          symptomsRestored: (data.customSymptoms || []).length,
+          favoritesRestored: (data.favorites || []).length,
+        },
+      };
+    }
+  } catch (error) {
+    return { success: false, message: `Error processing file: ${error.message}` };
+  }
+};
+
+// Get data statistics
+export const getDataStats = () => {
+  return {
+    logs: getSymptomLogs().length,
+    customSymptoms: getCustomSymptoms().length,
+    favorites: getFavorites().length,
+  };
+};
