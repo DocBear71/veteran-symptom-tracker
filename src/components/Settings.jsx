@@ -23,6 +23,8 @@ const Settings = () => {
   const [messageType, setMessageType] = useState('info'); // info, success, error
   const [dataStats, setDataStats] = useState({ logs: 0, customSymptoms: 0, favorites: 0 });
   const [showRestoreConfirm, setShowRestoreConfirm] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [deleteConfirmText, setDeleteConfirmText] = useState('');
   const [pendingRestore, setPendingRestore] = useState(null);
   const fileInputRef = useRef(null);
 
@@ -143,6 +145,24 @@ const Settings = () => {
   const handleCancelRestore = () => {
     setShowRestoreConfirm(false);
     setPendingRestore(null);
+  };
+
+  const handleDeleteAllData = () => {
+    if (deleteConfirmText !== 'DELETE') {
+      showMessage('Please type DELETE to confirm', 'error');
+      return;
+    }
+
+    // Clear all localStorage keys for this app
+    localStorage.removeItem('symptomTracker_logs');
+    localStorage.removeItem('symptomTracker_customSymptoms');
+    localStorage.removeItem('symptomTracker_favorites');
+    localStorage.removeItem('symptomTracker_reminderSettings');
+
+    setDataStats({ logs: 0, customSymptoms: 0, favorites: 0 });
+    setShowDeleteConfirm(false);
+    setDeleteConfirmText('');
+    showMessage('All data deleted', 'success');
   };
 
   return (
@@ -335,6 +355,19 @@ const Settings = () => {
           <p className="text-sm text-gray-500">
             Use the Export features to back up your data or share with your VSO.
           </p>
+          {/* Danger Zone */}
+          <div className="bg-white rounded-lg border border-red-200 p-4">
+            <h3 className="font-medium text-red-600 mb-3">Danger Zone</h3>
+            <p className="text-sm text-gray-600 mb-3">
+              Permanently delete all your data. This cannot be undone.
+            </p>
+            <button
+                onClick={() => setShowDeleteConfirm(true)}
+                className="w-full py-2 px-4 border-2 border-red-500 text-red-600 font-medium rounded-lg hover:bg-red-50"
+            >
+              Delete All Data
+            </button>
+          </div>
         </div>
 
         {/* Restore Confirmation Modal */}
@@ -377,6 +410,58 @@ const Settings = () => {
                         className="w-full py-2 px-4 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50"
                     >
                       Cancel
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+        )}
+
+        {/* Delete Confirmation Modal */}
+        {showDeleteConfirm && (
+            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+              <div className="bg-white rounded-lg w-full max-w-md">
+                <div className="p-4 border-b border-gray-200">
+                  <h2 className="text-lg font-semibold text-red-600">Delete All Data</h2>
+                </div>
+
+                <div className="p-4">
+                  <div className="bg-red-50 border border-red-200 rounded-lg p-3 mb-4">
+                    <p className="text-red-800 font-medium">⚠️ Warning</p>
+                    <p className="text-red-700 text-sm mt-1">
+                      This will permanently delete all {dataStats.logs} log entries,
+                      {dataStats.customSymptoms} custom symptoms, and {dataStats.favorites} favorites.
+                      This action cannot be undone.
+                    </p>
+                  </div>
+
+                  <p className="text-sm text-gray-600 mb-2">
+                    Type <strong>DELETE</strong> to confirm:
+                  </p>
+                  <input
+                      type="text"
+                      value={deleteConfirmText}
+                      onChange={(e) => setDeleteConfirmText(e.target.value)}
+                      placeholder="Type DELETE"
+                      className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 mb-4"
+                  />
+
+                  <div className="flex gap-2">
+                    <button
+                        onClick={() => {
+                          setShowDeleteConfirm(false);
+                          setDeleteConfirmText('');
+                        }}
+                        className="flex-1 py-2 px-4 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                        onClick={handleDeleteAllData}
+                        disabled={deleteConfirmText !== 'DELETE'}
+                        className="flex-1 py-2 px-4 bg-red-600 text-white font-medium rounded-lg hover:bg-red-700 disabled:bg-gray-300 disabled:cursor-not-allowed"
+                    >
+                      Delete Everything
                     </button>
                   </div>
                 </div>
