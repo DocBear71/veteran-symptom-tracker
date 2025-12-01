@@ -1,15 +1,23 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { generatePDF, generateCSV } from '../utils/export';
+import { getAppointments } from '../utils/storage';
 
 const ExportData = () => {
   const [dateRange, setDateRange] = useState('all');
+  const [includeAppointments, setIncludeAppointments] = useState(true);
+  const [appointmentCount, setAppointmentCount] = useState(0);
+
+  useEffect(() => {
+    // Get appointment count to show in UI
+    setAppointmentCount(getAppointments().length);
+  }, []);
 
   const handleExportPDF = () => {
-    generatePDF(dateRange);
+    generatePDF(dateRange, { includeAppointments });
   };
 
   const handleExportCSV = () => {
-    generateCSV(dateRange);
+    generateCSV(dateRange, { includeAppointments });
   };
 
   return (
@@ -29,6 +37,26 @@ const ExportData = () => {
             <option value="year">Last Year</option>
             <option value="all">All Time</option>
           </select>
+        </div>
+
+        {/* Include Appointments Option */}
+        <div className="bg-white rounded-lg border border-gray-200 p-4 mb-4">
+          <h3 className="font-medium text-gray-900 mb-3">Include in Export</h3>
+          <label className="flex items-center gap-3 cursor-pointer">
+            <input
+                type="checkbox"
+                checked={includeAppointments}
+                onChange={(e) => setIncludeAppointments(e.target.checked)}
+                className="w-5 h-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+            />
+            <div>
+              <span className="font-medium text-gray-700">Appointments</span>
+              <span className="text-sm text-gray-500 ml-2">({appointmentCount} logged)</span>
+            </div>
+          </label>
+          <p className="text-xs text-gray-500 mt-2 ml-8">
+            Include C&P exams, doctor visits, and other appointments in the export
+          </p>
         </div>
 
         <div className="space-y-3">
@@ -55,6 +83,9 @@ const ExportData = () => {
             <li>• <strong>PDF</strong> — Best for sharing with your VSO or doctor</li>
             <li>• <strong>CSV</strong> — Best for spreadsheets and detailed analysis</li>
             <li>• Both formats include all symptom details, medications, and condition-specific data</li>
+            {includeAppointments && (
+                <li>• <strong>Appointments</strong> — C&P exams and doctor visits will be included</li>
+            )}
           </ul>
         </div>
 
@@ -68,6 +99,14 @@ const ExportData = () => {
             <li>✓ PTSD symptoms (flashbacks, avoidance, etc.)</li>
             <li>✓ Pain details (type, ROM, affected activities)</li>
             <li>✓ Summary statistics by symptom</li>
+            {includeAppointments && (
+                <>
+                  <li>✓ Appointment dates and types</li>
+                  <li>✓ Provider and facility information</li>
+                  <li>✓ What was discussed at each appointment</li>
+                  <li>✓ Follow-up information</li>
+                </>
+            )}
           </ul>
         </div>
       </div>

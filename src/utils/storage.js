@@ -189,13 +189,14 @@ export const isFavorite = (symptomId) => {
 // Export all data as JSON
 export const exportAllData = () => {
   const data = {
-    version: '1.1', // Updated version
+    version: '1.2', // Updated version for appointments
     exportedAt: new Date().toISOString(),
     symptomLogs: getSymptomLogs(),
     customSymptoms: getCustomSymptoms(),
     favorites: getFavorites(),
     medications: getMedications(),
     medicationLogs: getMedicationLogs(),
+    appointments: getAppointments(), // NEW: Include appointments
     reminderSettings: JSON.parse(localStorage.getItem('symptomTracker_reminderSettings') || 'null'),
   };
 
@@ -247,6 +248,7 @@ export const importAllData = (jsonData, options = { merge: false }) => {
       const existingLogs = getSymptomLogs();
       const existingCustomSymptoms = getCustomSymptoms();
       const existingFavorites = getFavorites();
+      const existingAppointments = getAppointments();
 
       // Merge logs (avoid duplicates by ID)
       const existingLogIds = new Set(existingLogs.map(log => log.id));
@@ -266,13 +268,20 @@ export const importAllData = (jsonData, options = { merge: false }) => {
       const mergedFavorites = [...existingFavorites, ...newFavorites];
       localStorage.setItem('symptomTracker_favorites', JSON.stringify(mergedFavorites));
 
+      // Merge appointments (NEW)
+      const existingAptIds = new Set(existingAppointments.map(a => a.id));
+      const newAppointments = (data.appointments || []).filter(a => !existingAptIds.has(a.id));
+      const mergedAppointments = [...existingAppointments, ...newAppointments];
+      localStorage.setItem(APPOINTMENTS_KEY, JSON.stringify(mergedAppointments));
+
       return {
         success: true,
-        message: `Merged ${newLogs.length} new log entries`,
+        message: `Merged ${newLogs.length} new log entries, ${newAppointments.length} appointments`,
         stats: {
           logsAdded: newLogs.length,
           symptomsAdded: newSymptoms.length,
           favoritesAdded: newFavorites.length,
+          appointmentsAdded: newAppointments.length,
         },
       };
     } else {
@@ -299,13 +308,19 @@ export const importAllData = (jsonData, options = { merge: false }) => {
         localStorage.setItem(MEDICATION_LOGS_KEY, JSON.stringify(data.medicationLogs));
       }
 
+      // Restore appointments (NEW)
+      if (data.appointments) {
+        localStorage.setItem(APPOINTMENTS_KEY, JSON.stringify(data.appointments));
+      }
+
       return {
         success: true,
-        message: `Restored ${data.symptomLogs.length} log entries`,
+        message: `Restored ${data.symptomLogs.length} log entries, ${(data.appointments || []).length} appointments`,
         stats: {
           logsRestored: data.symptomLogs.length,
           symptomsRestored: (data.customSymptoms || []).length,
           favoritesRestored: (data.favorites || []).length,
+          appointmentsRestored: (data.appointments || []).length,
         },
       };
     }
@@ -322,6 +337,7 @@ export const getDataStats = () => {
     favorites: getFavorites().length,
     medications: getMedications().length,
     medicationLogs: getMedicationLogs().length,
+    appointments: getAppointments().length, // NEW
   };
 };
 

@@ -158,8 +158,11 @@ const Settings = () => {
     localStorage.removeItem('symptomTracker_customSymptoms');
     localStorage.removeItem('symptomTracker_favorites');
     localStorage.removeItem('symptomTracker_reminderSettings');
+    localStorage.removeItem('symptomTracker_medications');
+    localStorage.removeItem('symptomTracker_medicationLogs');
+    localStorage.removeItem('symptomTracker_appointments'); // NEW
 
-    setDataStats({ logs: 0, customSymptoms: 0, favorites: 0 });
+    setDataStats({ logs: 0, customSymptoms: 0, favorites: 0, medications: 0, medicationLogs: 0, appointments: 0 });
     setShowDeleteConfirm(false);
     setDeleteConfirmText('');
     showMessage('All data deleted', 'success');
@@ -288,10 +291,14 @@ const Settings = () => {
           {/* Data Stats */}
           <div className="bg-gray-50 rounded-lg p-3 mb-4">
             <p className="text-sm text-gray-600 mb-2">Your data:</p>
-            <div className="grid grid-cols-3 gap-2 text-center">
+            <div className="grid grid-cols-2 gap-2 text-center">
               <div>
                 <p className="text-xl font-bold text-blue-900">{dataStats.logs}</p>
-                <p className="text-xs text-gray-500">Log Entries</p>
+                <p className="text-xs text-gray-500">Symptom Entries</p>
+              </div>
+              <div>
+                <p className="text-xl font-bold text-blue-900">{dataStats.appointments || 0}</p>
+                <p className="text-xs text-gray-500">Appointments</p>
               </div>
               <div>
                 <p className="text-xl font-bold text-blue-900">{dataStats.customSymptoms}</p>
