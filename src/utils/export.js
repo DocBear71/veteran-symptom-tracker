@@ -173,18 +173,58 @@ export const exportToCSV = (logs) => {
   }
 
   // CSV headers
-  const headers = ['Date', 'Time', 'Symptom', 'Category', 'Severity', 'Notes'];
+  const headers = ['Date', 'Time', 'Symptom', 'Category', 'Severity', 'Prostrating', 'Duration', 'Associated Symptoms', 'Triggers', 'Notes'];
 
   // Format data rows
   const rows = logs.map(log => {
     const date = new Date(log.timestamp);
+
+    // Build migraine-specific fields
+    let prostrating = '';
+    let duration = '';
+    let associatedSymptoms = '';
+    let triggers = '';
+
+    if (log.migraineData) {
+      // Prostrating
+      if (log.migraineData.prostrating !== null) {
+        prostrating = log.migraineData.prostrating ? 'Yes' : 'No';
+      }
+
+      // Duration
+      const durationLabels = {
+        'less-than-1h': 'Less than 1 hour',
+        '1-4h': '1-4 hours',
+        '4-24h': '4-24 hours',
+        '1-2d': '1-2 days',
+        'more-than-2d': 'More than 2 days',
+        'ongoing': 'Ongoing',
+      };
+      duration = durationLabels[log.migraineData.duration] || '';
+
+      // Associated symptoms
+      const symptoms = [];
+      if (log.migraineData.aura) symptoms.push('Aura');
+      if (log.migraineData.nausea) symptoms.push('Nausea');
+      if (log.migraineData.lightSensitivity) symptoms.push('Light sensitivity');
+      if (log.migraineData.soundSensitivity) symptoms.push('Sound sensitivity');
+      associatedSymptoms = symptoms.join('; ');
+
+      // Triggers
+      triggers = log.migraineData.triggers || '';
+    }
+
     return [
       date.toLocaleDateString('en-US'),
       date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }),
       `"${log.symptomName}"`,
       `"${log.category}"`,
       log.severity,
-      `"${(log.notes || '').replace(/"/g, '""')}"`, // Escape quotes in notes
+      `"${prostrating}"`,
+      `"${duration}"`,
+      `"${associatedSymptoms}"`,
+      `"${triggers.replace(/"/g, '""')}"`,
+      `"${(log.notes || '').replace(/"/g, '""')}"`,
     ];
   });
 
