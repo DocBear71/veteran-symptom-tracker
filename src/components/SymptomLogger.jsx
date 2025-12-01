@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { symptomCategories } from '../data/symptoms';
 import { saveSymptomLog, getCustomSymptoms, addCustomSymptom } from '../utils/storage';
+import QuickLog from './QuickLog';
+import AddFavoriteModal from './AddFavoriteModal';
 
 const SymptomLogger = ({ onLogSaved }) => {
   const [selectedSymptom, setSelectedSymptom] = useState('');
@@ -8,12 +10,16 @@ const SymptomLogger = ({ onLogSaved }) => {
   const [notes, setNotes] = useState('');
   const [showSuccess, setShowSuccess] = useState(false);
   const [customSymptoms, setCustomSymptoms] = useState([]);
+  const [refreshQuickLog, setRefreshQuickLog] = useState(0);
 
   // Custom symptom form state
   const [showCustomForm, setShowCustomForm] = useState(false);
   const [newSymptomName, setNewSymptomName] = useState('');
   const [newSymptomCategory, setNewSymptomCategory] = useState('Custom');
   const [customError, setCustomError] = useState('');
+
+  // Favorite modal state
+  const [showFavoriteModal, setShowFavoriteModal] = useState(false);
 
   // Migraine-specific fields
   const [migraineData, setMigraineData] = useState({
@@ -26,15 +32,12 @@ const SymptomLogger = ({ onLogSaved }) => {
     triggers: '',
   });
 
-  // Load custom symptoms on mount
   useEffect(() => {
     setCustomSymptoms(getCustomSymptoms());
   }, []);
 
-  // Check if migraine is selected
   const isMigraineSelected = selectedSymptom === 'migraine';
 
-  // Reset migraine data when symptom changes
   useEffect(() => {
     if (!isMigraineSelected) {
       setMigraineData({
@@ -49,15 +52,12 @@ const SymptomLogger = ({ onLogSaved }) => {
     }
   }, [selectedSymptom, isMigraineSelected]);
 
-  // Build combined symptom list with custom symptoms
   const getAllCategories = () => {
-    // Deep copy to avoid mutating the original symptomCategories
     const categories = symptomCategories.map(cat => ({
       ...cat,
       symptoms: [...cat.symptoms]
     }));
 
-    // Group custom symptoms by category
     const customByCategory = {};
     customSymptoms.forEach(symptom => {
       if (!customByCategory[symptom.category]) {
@@ -66,14 +66,10 @@ const SymptomLogger = ({ onLogSaved }) => {
       customByCategory[symptom.category].push(symptom);
     });
 
-    // Add custom symptoms to existing categories or create new ones
     Object.entries(customByCategory).forEach(([categoryName, symptoms]) => {
       const existingCategory = categories.find(c => c.name === categoryName);
       if (existingCategory) {
-        existingCategory.symptoms = [
-          ...existingCategory.symptoms,
-          ...symptoms
-        ];
+        existingCategory.symptoms = [...existingCategory.symptoms, ...symptoms];
       } else {
         categories.push({
           id: `custom-${categoryName.toLowerCase()}`,
@@ -91,13 +87,11 @@ const SymptomLogger = ({ onLogSaved }) => {
 
     if (!selectedSymptom) return;
 
-    // Validate migraine prostrating field
     if (isMigraineSelected && migraineData.prostrating === null) {
       alert('Please indicate if this migraine was prostrating (incapacitating)');
       return;
     }
 
-    // Find the symptom details from combined list
     const allCategories = getAllCategories();
     const symptomData = allCategories
     .flatMap(cat => cat.symptoms.map(s => ({ ...s, category: cat.name })))
@@ -112,7 +106,6 @@ const SymptomLogger = ({ onLogSaved }) => {
       isCustomSymptom: symptomData?.isCustom || false,
     };
 
-    // Add migraine-specific data if applicable
     if (isMigraineSelected) {
       entry.migraineData = {
         duration: migraineData.duration,
@@ -127,7 +120,6 @@ const SymptomLogger = ({ onLogSaved }) => {
 
     saveSymptomLog(entry);
 
-    // Reset form
     setSelectedSymptom('');
     setSeverity(5);
     setNotes('');
@@ -141,11 +133,9 @@ const SymptomLogger = ({ onLogSaved }) => {
       triggers: '',
     });
 
-    // Show success message
     setShowSuccess(true);
     setTimeout(() => setShowSuccess(false), 2000);
 
-    // Notify parent
     if (onLogSaved) onLogSaved();
   };
 
@@ -171,7 +161,6 @@ const SymptomLogger = ({ onLogSaved }) => {
     }
   };
 
-  // Get severity label and color
   const getSeverityInfo = (value) => {
     if (value <= 2) return { label: 'Minimal', color: 'text-green-600' };
     if (value <= 4) return { label: 'Mild', color: 'text-yellow-600' };
@@ -185,6 +174,30 @@ const SymptomLogger = ({ onLogSaved }) => {
 
   return (
       <div className="pb-20">
+        {/* Quick Log Section */}
+        <QuickLog
+            key={refreshQuickLog}
+            onLogSaved={onLogSaved}
+            onAddFavorite={() => setShowFavoriteModal(true)}
+        />
+
+        {/* Add Favorite Modal */}
+        <AddFavoriteModal
+            isOpen={showFavoriteModal}
+            onClose={() => setShowFavoriteModal(false)}
+            onAdded={() => setRefreshQuickLog(prev => prev + 1)}
+        />
+
+        {/* Divider */}
+        <div className="relative mb-6">
+          <div className="absolute inset-0 flex items-center">
+            <div className="w-full border-t border-gray-300"></div>
+          </div>
+          <div className="relative flex justify-center">
+            <span className="bg-gray-50 px-3 text-sm text-gray-500">or log with details</span>
+          </div>
+        </div>
+
         {/* Success Message */}
         {showSuccess && (
             <div className="mb-4 p-3 bg-green-100 text-green-800 rounded-lg text-center">
@@ -301,7 +314,6 @@ const SymptomLogger = ({ onLogSaved }) => {
                   These details align with VA rating criteria for migraines
                 </p>
 
-                {/* Duration */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Duration
@@ -321,7 +333,6 @@ const SymptomLogger = ({ onLogSaved }) => {
                   </select>
                 </div>
 
-                {/* Prostrating - Critical for VA ratings */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Was this migraine prostrating? <span className="text-red-500">*</span>
@@ -355,7 +366,6 @@ const SymptomLogger = ({ onLogSaved }) => {
                   </div>
                 </div>
 
-                {/* Associated Symptoms */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Associated Symptoms
@@ -387,7 +397,6 @@ const SymptomLogger = ({ onLogSaved }) => {
                   </div>
                 </div>
 
-                {/* Triggers */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Known Triggers (optional)
@@ -453,13 +462,6 @@ const SymptomLogger = ({ onLogSaved }) => {
             Log Symptom
           </button>
         </form>
-
-        {/* Custom Symptoms Count */}
-        {customSymptoms.length > 0 && (
-            <p className="text-xs text-gray-500 text-center mt-4">
-              {customSymptoms.length} custom symptom{customSymptoms.length !== 1 ? 's' : ''} saved
-            </p>
-        )}
       </div>
   );
 };

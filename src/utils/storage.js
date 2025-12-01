@@ -94,3 +94,64 @@ export const deleteCustomSymptom = (id) => {
   const filtered = symptoms.filter(s => s.id !== id);
   localStorage.setItem(CUSTOM_SYMPTOMS_KEY, JSON.stringify(filtered));
 };
+
+// --- Favorite Symptoms ---
+
+const FAVORITES_KEY = 'symptomTracker_favorites';
+
+// Get favorite symptoms
+export const getFavorites = () => {
+  const favorites = localStorage.getItem(FAVORITES_KEY);
+  return favorites ? JSON.parse(favorites) : [];
+};
+
+// Add a favorite symptom
+export const addFavorite = (symptom) => {
+  const favorites = getFavorites();
+
+  // Check if already exists
+  const exists = favorites.some(f => f.symptomId === symptom.symptomId);
+  if (exists) {
+    return { success: false, message: 'Already in favorites' };
+  }
+
+  // Limit to 8 favorites
+  if (favorites.length >= 8) {
+    return { success: false, message: 'Maximum 8 favorites allowed' };
+  }
+
+  const newFavorite = {
+    symptomId: symptom.symptomId,
+    symptomName: symptom.symptomName,
+    category: symptom.category,
+    defaultSeverity: symptom.defaultSeverity || 5,
+    addedAt: new Date().toISOString(),
+  };
+
+  favorites.push(newFavorite);
+  localStorage.setItem(FAVORITES_KEY, JSON.stringify(favorites));
+  return { success: true, favorite: newFavorite };
+};
+
+// Remove a favorite
+export const removeFavorite = (symptomId) => {
+  const favorites = getFavorites();
+  const filtered = favorites.filter(f => f.symptomId !== symptomId);
+  localStorage.setItem(FAVORITES_KEY, JSON.stringify(filtered));
+};
+
+// Update favorite's default severity
+export const updateFavoriteDefaults = (symptomId, defaultSeverity) => {
+  const favorites = getFavorites();
+  const index = favorites.findIndex(f => f.symptomId === symptomId);
+  if (index !== -1) {
+    favorites[index].defaultSeverity = defaultSeverity;
+    localStorage.setItem(FAVORITES_KEY, JSON.stringify(favorites));
+  }
+};
+
+// Check if a symptom is favorited
+export const isFavorite = (symptomId) => {
+  const favorites = getFavorites();
+  return favorites.some(f => f.symptomId === symptomId);
+};
