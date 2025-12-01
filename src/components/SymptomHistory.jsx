@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import { getSymptomLogs, deleteSymptomLog } from '../utils/storage';
+import EditLogModal from './EditLogModal';
 
 const SymptomHistory = () => {
   const [logs, setLogs] = useState([]);
   const [filter, setFilter] = useState('all');
+  const [editingLog, setEditingLog] = useState(null);
 
   useEffect(() => {
     loadLogs();
@@ -31,6 +33,14 @@ const SymptomHistory = () => {
       deleteSymptomLog(id);
       loadLogs();
     }
+  };
+
+  const handleEdit = (log) => {
+    setEditingLog(log);
+  };
+
+  const handleEditSaved = () => {
+    loadLogs();
   };
 
   const formatDate = (timestamp) => {
@@ -115,6 +125,9 @@ const SymptomHistory = () => {
                           >
                       {log.severity}/10
                     </span>
+                          {log.updatedAt && (
+                              <span className="text-xs text-gray-400">(edited)</span>
+                          )}
                         </div>
                         <p className="text-xs text-gray-500 mb-2">
                           {log.category} • {formatDate(log.timestamp)}
@@ -124,18 +137,16 @@ const SymptomHistory = () => {
                         {log.migraineData && (
                             <div className="bg-purple-50 rounded-lg p-3 mb-2 text-sm">
                               <div className="flex flex-wrap gap-2 mb-2">
-                                {/* Prostrating Badge - Most Important */}
-                                <span
-                                    className={`px-2 py-1 rounded-full text-xs font-semibold ${
-                                        log.migraineData.prostrating
-                                            ? 'bg-red-200 text-red-800'
-                                            : 'bg-green-200 text-green-800'
-                                    }`}
-                                >
+                        <span
+                            className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                                log.migraineData.prostrating
+                                    ? 'bg-red-200 text-red-800'
+                                    : 'bg-green-200 text-green-800'
+                            }`}
+                        >
                           {log.migraineData.prostrating ? '⚠️ Prostrating' : 'Non-prostrating'}
                         </span>
 
-                                {/* Duration */}
                                 {log.migraineData.duration && (
                                     <span className="px-2 py-1 bg-purple-200 text-purple-800 rounded-full text-xs">
                             {formatDuration(log.migraineData.duration)}
@@ -143,7 +154,6 @@ const SymptomHistory = () => {
                                 )}
                               </div>
 
-                              {/* Associated Symptoms */}
                               <div className="flex flex-wrap gap-1 text-xs text-purple-700">
                                 {log.migraineData.aura && <span>• Aura</span>}
                                 {log.migraineData.nausea && <span>• Nausea</span>}
@@ -151,7 +161,6 @@ const SymptomHistory = () => {
                                 {log.migraineData.soundSensitivity && <span>• Sound sensitive</span>}
                               </div>
 
-                              {/* Triggers */}
                               {log.migraineData.triggers && (
                                   <p className="text-xs text-purple-600 mt-1">
                                     Triggers: {log.migraineData.triggers}
@@ -166,18 +175,39 @@ const SymptomHistory = () => {
                             </p>
                         )}
                       </div>
-                      <button
-                          onClick={() => handleDelete(log.id)}
-                          className="text-gray-400 hover:text-red-500 ml-2"
-                          aria-label="Delete entry"
-                      >
-                        ✕
-                      </button>
+
+                      {/* Action Buttons */}
+                      <div className="flex flex-col gap-1 ml-2">
+                        <button
+                            onClick={() => handleEdit(log)}
+                            className="text-gray-400 hover:text-blue-500 p-1"
+                            aria-label="Edit entry"
+                            title="Edit"
+                        >
+                          ✏️
+                        </button>
+                        <button
+                            onClick={() => handleDelete(log.id)}
+                            className="text-gray-400 hover:text-red-500 p-1"
+                            aria-label="Delete entry"
+                            title="Delete"
+                        >
+                          🗑️
+                        </button>
+                      </div>
                     </div>
                   </div>
               ))}
             </div>
         )}
+
+        {/* Edit Modal */}
+        <EditLogModal
+            log={editingLog}
+            isOpen={editingLog !== null}
+            onClose={() => setEditingLog(null)}
+            onSaved={handleEditSaved}
+        />
       </div>
   );
 };

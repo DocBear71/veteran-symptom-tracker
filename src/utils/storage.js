@@ -48,6 +48,34 @@ export const deleteSymptomLog = (id) => {
   localStorage.setItem(STORAGE_KEYS.SYMPTOM_LOGS, JSON.stringify(filtered));
 };
 
+// Update an existing log entry
+export const updateSymptomLog = (id, updates) => {
+  const logs = getSymptomLogs();
+  const index = logs.findIndex(log => log.id === id);
+
+  if (index === -1) {
+    return { success: false, message: 'Log entry not found' };
+  }
+
+  // Preserve original id and timestamp, update everything else
+  logs[index] = {
+    ...logs[index],
+    ...updates,
+    id: logs[index].id, // Keep original ID
+    timestamp: logs[index].timestamp, // Keep original timestamp
+    updatedAt: new Date().toISOString(), // Track when edited
+  };
+
+  localStorage.setItem(STORAGE_KEYS.SYMPTOM_LOGS, JSON.stringify(logs));
+  return { success: true, log: logs[index] };
+};
+
+// Get a single log by ID
+export const getSymptomLogById = (id) => {
+  const logs = getSymptomLogs();
+  return logs.find(log => log.id === id) || null;
+};
+
 // Clear all data (use with caution)
 export const clearAllData = () => {
   localStorage.removeItem(STORAGE_KEYS.SYMPTOM_LOGS);
