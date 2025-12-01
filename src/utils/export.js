@@ -115,7 +115,7 @@ export const generatePDF = (dateRange = 'all') => {
     // Add medications
     if (linkedMeds.length > 0) {
       const medInfo = linkedMeds.map(m => `${m.medicationName} ${m.dosage}`).join(', ');
-      notes = `💊 ${medInfo}` + (notes !== '-' ? ` | ${notes}` : '');
+      notes = `Meds: ${medInfo}` + (notes !== '-' ? ` | ${notes}` : '');
     }
 
     return [
