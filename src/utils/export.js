@@ -1,5 +1,5 @@
 import jsPDF from 'jspdf';
-import 'jspdf-autotable';
+import autoTable from 'jspdf-autotable';
 
 // Format date for display
 const formatDate = (timestamp) => {
@@ -69,7 +69,7 @@ export const exportToPDF = (logs, dateRange = 'All Time') => {
       stat.maxSeverity.toString(),
     ]);
 
-    doc.autoTable({
+    autoTable(doc, {
       startY: 58,
       head: [['Symptom', 'Category', 'Occurrences', 'Avg Severity', 'Max Severity']],
       body: summaryData,
@@ -79,7 +79,7 @@ export const exportToPDF = (logs, dateRange = 'All Time') => {
     });
 
     // Detailed log table
-    const detailStartY = doc.lastAutoTable.finalY + 15;
+    const detailStartY = doc.lastAutoTable?.finalY + 15 || 80;
     doc.setFontSize(14);
     doc.setTextColor(30, 58, 138);
     doc.text('Detailed Log Entries', 14, detailStartY);
@@ -123,7 +123,7 @@ export const exportToPDF = (logs, dateRange = 'All Time') => {
       ];
     });
 
-    doc.autoTable({
+    autoTable(doc, {
       startY: detailStartY + 4,
       head: [['Date/Time', 'Symptom', 'Severity', 'Notes']],
       body: detailData,
