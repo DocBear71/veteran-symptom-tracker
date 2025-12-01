@@ -1,15 +1,24 @@
 import { useState, useEffect } from 'react';
 import { getSymptomLogs, deleteSymptomLog, getMedicationLogsForSymptom } from '../utils/storage';
 import EditLogModal from './EditLogModal';
+import AppointmentForm from './AppointmentForm';
+import AppointmentHistory from './AppointmentHistory';
 
 const SymptomHistory = () => {
+  // Main tab: 'symptoms' or 'appointments'
+  const [activeTab, setActiveTab] = useState('symptoms');
+  // Sub-tab for appointments: 'history' or 'log'
+  const [appointmentView, setAppointmentView] = useState('history');
+
   const [logs, setLogs] = useState([]);
   const [filter, setFilter] = useState('all');
   const [editingLog, setEditingLog] = useState(null);
 
   useEffect(() => {
-    loadLogs();
-  }, [filter]);
+    if (activeTab === 'symptoms') {
+      loadLogs();
+    }
+  }, [filter, activeTab]);
 
   const loadLogs = () => {
     let allLogs = getSymptomLogs();
@@ -62,180 +71,261 @@ const SymptomHistory = () => {
     return labels[duration] || duration;
   };
 
-  return (
-      <div className="pb-20">
-        {/* Filter Tabs */}
-        <div className="flex gap-2 mb-4">
-          {['all', 'today', 'week'].map((f) => (
-              <button key={f} onClick={() => setFilter(f)}
-                      className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                          filter === f ? 'bg-blue-900 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                      }`}>
-                {f === 'all' ? 'All' : f === 'today' ? 'Today' : 'This Week'}
-              </button>
-          ))}
-        </div>
-
-        <p className="text-sm text-gray-500 mb-4">{logs.length} {logs.length === 1 ? 'entry' : 'entries'}</p>
-
-        {logs.length === 0 ? (
-            <div className="text-center py-12 text-gray-500">
-              <p className="text-4xl mb-2">📝</p>
-              <p>No symptoms logged yet</p>
-              <p className="text-sm">Start tracking to build your history</p>
-            </div>
-        ) : (
-            <div className="space-y-3">
-              {logs.map((log) => (
-                  <div key={log.id} className="bg-white rounded-lg border border-gray-200 p-4 shadow-sm">
-                    <div className="flex justify-between items-start">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-1">
-                          <span className="font-semibold text-gray-900">{log.symptomName}</span>
-                          <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${getSeverityColor(log.severity)}`}>
-                      {log.severity}/10
-                    </span>
-                          {log.updatedAt && <span className="text-xs text-gray-400">(edited)</span>}
-                        </div>
-                        <p className="text-xs text-gray-500 mb-2">{log.category} • {formatDate(log.timestamp)}</p>
-
-                        {/* Linked Medications */}
-                        {log.linkedMedications && log.linkedMedications.length > 0 && (
-                            <div className="bg-teal-50 rounded-lg p-2 mb-2">
-                              <p className="text-xs font-medium text-teal-800 mb-1">💊 Medications taken:</p>
-                              <div className="flex flex-wrap gap-1">
-                                {log.linkedMedications.map((med, idx) => (
-                                    <span key={idx} className="px-2 py-0.5 bg-teal-200 text-teal-800 rounded-full text-xs">
-                            {med.medicationName} {med.dosage}
-                          </span>
-                                ))}
-                              </div>
-                            </div>
-                        )}
-
-                        {/* Migraine Details */}
-                        {log.migraineData && (
-                            <div className="bg-purple-50 rounded-lg p-3 mb-2 text-sm">
-                              <div className="flex flex-wrap gap-2 mb-2">
-                        <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
-                            log.migraineData.prostrating ? 'bg-red-200 text-red-800' : 'bg-green-200 text-green-800'
+  // Render the symptoms list (existing functionality preserved)
+  const renderSymptomsList = () => {
+    return (
+        <>
+          {/* Filter Tabs */}
+          <div className="flex gap-2 mb-4 px-4 pt-4">
+            {['all', 'today', 'week'].map((f) => (
+                <button key={f} onClick={() => setFilter(f)}
+                        className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                            filter === f ? 'bg-blue-900 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                         }`}>
-                          {log.migraineData.prostrating ? '⚠️ Prostrating' : 'Non-prostrating'}
-                        </span>
-                                {log.migraineData.duration && (
-                                    <span className="px-2 py-1 bg-purple-200 text-purple-800 rounded-full text-xs">
-                            {formatDuration(log.migraineData.duration)}
-                          </span>
-                                )}
-                              </div>
-                              <div className="flex flex-wrap gap-1 text-xs text-purple-700">
-                                {log.migraineData.aura && <span>• Aura</span>}
-                                {log.migraineData.nausea && <span>• Nausea</span>}
-                                {log.migraineData.lightSensitivity && <span>• Light sensitive</span>}
-                                {log.migraineData.soundSensitivity && <span>• Sound sensitive</span>}
-                              </div>
-                              {log.migraineData.triggers && (
-                                  <p className="text-xs text-purple-600 mt-1">Triggers: {log.migraineData.triggers}</p>
-                              )}
-                            </div>
-                        )}
+                  {f === 'all' ? 'All' : f === 'today' ? 'Today' : 'This Week'}
+                </button>
+            ))}
+          </div>
 
-                        {/* Sleep Details */}
-                        {log.sleepData && (
-                            <div className="bg-indigo-50 rounded-lg p-3 mb-2 text-sm">
-                              <div className="flex flex-wrap gap-2 mb-2">
-                                {log.sleepData.hoursSlept && (
-                                    <span className="px-2 py-1 bg-indigo-200 text-indigo-800 rounded-full text-xs">
-                            {log.sleepData.hoursSlept} hrs sleep
-                          </span>
-                                )}
-                                <span className="px-2 py-1 bg-indigo-200 text-indigo-800 rounded-full text-xs">
-                          Quality: {log.sleepData.quality}/10
-                        </span>
-                                {log.sleepData.wakeUps && (
-                                    <span className="px-2 py-1 bg-indigo-200 text-indigo-800 rounded-full text-xs">
-                            Woke {log.sleepData.wakeUps}x
-                          </span>
-                                )}
-                              </div>
-                              <div className="flex flex-wrap gap-1 text-xs text-indigo-700">
-                                {log.sleepData.troubleFallingAsleep && <span>• Trouble falling asleep</span>}
-                                {log.sleepData.troubleStayingAsleep && <span>• Trouble staying asleep</span>}
-                                {log.sleepData.nightmares && <span>• Nightmares</span>}
-                                {log.sleepData.feelRested === false && <span>• Not rested</span>}
-                              </div>
-                            </div>
-                        )}
+          <p className="text-sm text-gray-500 mb-4 px-4">{logs.length} {logs.length === 1 ? 'entry' : 'entries'}</p>
 
-                        {/* PTSD Details */}
-                        {log.ptsdData && (
-                            <div className="bg-amber-50 rounded-lg p-3 mb-2 text-sm">
-                              <div className="flex flex-wrap gap-1 text-xs text-amber-700">
-                                {log.ptsdData.flashbacks && <span>• Flashbacks</span>}
-                                {log.ptsdData.intrusiveThoughts && <span>• Intrusive thoughts</span>}
-                                {log.ptsdData.avoidance && <span>• Avoidance</span>}
-                                {log.ptsdData.emotionalNumbering && <span>• Emotional numbness</span>}
-                                {log.ptsdData.hypervigilance && <span>• Hypervigilance</span>}
-                                {log.ptsdData.exaggeratedStartle && <span>• Startle response</span>}
-                              </div>
-                              {log.ptsdData.triggerDescription && (
-                                  <p className="text-xs text-amber-600 mt-1">Trigger: {log.ptsdData.triggerDescription}</p>
-                              )}
-                            </div>
-                        )}
+          {logs.length === 0 ? (
+              <div className="text-center py-12 text-gray-500">
+                <p className="text-4xl mb-2">📝</p>
+                <p>No symptoms logged yet</p>
+                <p className="text-sm">Start tracking to build your history</p>
+              </div>
+          ) : (
+              <div className="space-y-3 px-4">
+                {logs.map((log) => (
+                    <div key={log.id} className="bg-white rounded-lg border border-gray-200 p-4 shadow-sm">
+                      <div className="flex justify-between items-start">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 mb-1">
+                            <span className="font-semibold text-gray-900">{log.symptomName}</span>
+                            <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${getSeverityColor(log.severity)}`}>
+                        {log.severity}/10
+                      </span>
+                            {log.updatedAt && <span className="text-xs text-gray-400">(edited)</span>}
+                          </div>
+                          <p className="text-xs text-gray-500 mb-2">{log.category} • {formatDate(log.timestamp)}</p>
 
-                        {/* Pain Details */}
-                        {log.painData && (
-                            <div className="bg-rose-50 rounded-lg p-3 mb-2 text-sm">
-                              <div className="flex flex-wrap gap-2 mb-2">
-                                {log.painData.painType && (
-                                    <span className="px-2 py-1 bg-rose-200 text-rose-800 rounded-full text-xs capitalize">
-                            {log.painData.painType}
+                          {/* Linked Medications */}
+                          {log.linkedMedications && log.linkedMedications.length > 0 && (
+                              <div className="bg-teal-50 rounded-lg p-2 mb-2">
+                                <p className="text-xs font-medium text-teal-800 mb-1">💊 Medications taken:</p>
+                                <div className="flex flex-wrap gap-1">
+                                  {log.linkedMedications.map((med, idx) => (
+                                      <span key={idx} className="px-2 py-0.5 bg-teal-200 text-teal-800 rounded-full text-xs">
+                              {med.medicationName} {med.dosage}
+                            </span>
+                                  ))}
+                                </div>
+                              </div>
+                          )}
+
+                          {/* Migraine Details */}
+                          {log.migraineData && (
+                              <div className="bg-purple-50 rounded-lg p-3 mb-2 text-sm">
+                                <div className="flex flex-wrap gap-2 mb-2">
+                          <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                              log.migraineData.prostrating ? 'bg-red-200 text-red-800' : 'bg-green-200 text-green-800'
+                          }`}>
+                            {log.migraineData.prostrating ? '⚠️ Prostrating' : 'Non-prostrating'}
                           </span>
-                                )}
-                                {log.painData.flareUp && (
-                                    <span className="px-2 py-1 bg-red-200 text-red-800 rounded-full text-xs font-semibold">
-                            ⚠️ Flare-up
-                          </span>
-                                )}
-                                {log.painData.limitedRangeOfMotion && (
-                                    <span className="px-2 py-1 bg-rose-200 text-rose-800 rounded-full text-xs">
-                            Limited ROM
-                          </span>
+                                  {log.migraineData.duration && (
+                                      <span className="px-2 py-1 bg-purple-200 text-purple-800 rounded-full text-xs">
+                              {formatDuration(log.migraineData.duration)}
+                            </span>
+                                  )}
+                                </div>
+                                <div className="flex flex-wrap gap-1 text-xs text-purple-700">
+                                  {log.migraineData.aura && <span>• Aura</span>}
+                                  {log.migraineData.nausea && <span>• Nausea</span>}
+                                  {log.migraineData.lightSensitivity && <span>• Light sensitive</span>}
+                                  {log.migraineData.soundSensitivity && <span>• Sound sensitive</span>}
+                                </div>
+                                {log.migraineData.triggers && (
+                                    <p className="text-xs text-purple-600 mt-1">Triggers: {log.migraineData.triggers}</p>
                                 )}
                               </div>
-                              <div className="flex flex-wrap gap-1 text-xs text-rose-700">
-                                {log.painData.radiating && (
-                                    <span>• Radiating{log.painData.radiatingTo ? ` to ${log.painData.radiatingTo}` : ''}</span>
+                          )}
+
+                          {/* Sleep Details */}
+                          {log.sleepData && (
+                              <div className="bg-indigo-50 rounded-lg p-3 mb-2 text-sm">
+                                <div className="flex flex-wrap gap-2 mb-2">
+                                  {log.sleepData.hoursSlept && (
+                                      <span className="px-2 py-1 bg-indigo-200 text-indigo-800 rounded-full text-xs">
+                              {log.sleepData.hoursSlept} hrs sleep
+                            </span>
+                                  )}
+                                  <span className="px-2 py-1 bg-indigo-200 text-indigo-800 rounded-full text-xs">
+                            Quality: {log.sleepData.quality}/10
+                          </span>
+                                  {log.sleepData.wakeUps && (
+                                      <span className="px-2 py-1 bg-indigo-200 text-indigo-800 rounded-full text-xs">
+                              Woke {log.sleepData.wakeUps}x
+                            </span>
+                                  )}
+                                </div>
+                                <div className="flex flex-wrap gap-1 text-xs text-indigo-700">
+                                  {log.sleepData.troubleFallingAsleep && <span>• Trouble falling asleep</span>}
+                                  {log.sleepData.troubleStayingAsleep && <span>• Trouble staying asleep</span>}
+                                  {log.sleepData.nightmares && <span>• Nightmares</span>}
+                                  {log.sleepData.feelRested === false && <span>• Not rested</span>}
+                                </div>
+                              </div>
+                          )}
+
+                          {/* PTSD Details */}
+                          {log.ptsdData && (
+                              <div className="bg-amber-50 rounded-lg p-3 mb-2 text-sm">
+                                <div className="flex flex-wrap gap-1 text-xs text-amber-700">
+                                  {log.ptsdData.flashbacks && <span>• Flashbacks</span>}
+                                  {log.ptsdData.intrusiveThoughts && <span>• Intrusive thoughts</span>}
+                                  {log.ptsdData.avoidance && <span>• Avoidance</span>}
+                                  {log.ptsdData.emotionalNumbering && <span>• Emotional numbness</span>}
+                                  {log.ptsdData.hypervigilance && <span>• Hypervigilance</span>}
+                                  {log.ptsdData.exaggeratedStartle && <span>• Startle response</span>}
+                                </div>
+                                {log.ptsdData.triggerDescription && (
+                                    <p className="text-xs text-amber-600 mt-1">Trigger: {log.ptsdData.triggerDescription}</p>
                                 )}
                               </div>
-                              {log.painData.affectedActivities?.length > 0 && (
-                                  <p className="text-xs text-rose-600 mt-1">
-                                    Affects: {log.painData.affectedActivities.join(', ')}
-                                  </p>
-                              )}
-                            </div>
-                        )}
+                          )}
 
-                        {log.notes && (
-                            <p className="text-sm text-gray-700 bg-gray-50 p-2 rounded">{log.notes}</p>
-                        )}
-                      </div>
+                          {/* Pain Details */}
+                          {log.painData && (
+                              <div className="bg-rose-50 rounded-lg p-3 mb-2 text-sm">
+                                <div className="flex flex-wrap gap-2 mb-2">
+                                  {log.painData.painType && (
+                                      <span className="px-2 py-1 bg-rose-200 text-rose-800 rounded-full text-xs capitalize">
+                              {log.painData.painType}
+                            </span>
+                                  )}
+                                  {log.painData.flareUp && (
+                                      <span className="px-2 py-1 bg-red-200 text-red-800 rounded-full text-xs font-semibold">
+                              ⚠️ Flare-up
+                            </span>
+                                  )}
+                                  {log.painData.limitedRangeOfMotion && (
+                                      <span className="px-2 py-1 bg-rose-200 text-rose-800 rounded-full text-xs">
+                              Limited ROM
+                            </span>
+                                  )}
+                                </div>
+                                <div className="flex flex-wrap gap-1 text-xs text-rose-700">
+                                  {log.painData.radiating && (
+                                      <span>• Radiating{log.painData.radiatingTo ? ` to ${log.painData.radiatingTo}` : ''}</span>
+                                  )}
+                                </div>
+                                {log.painData.affectedActivities?.length > 0 && (
+                                    <p className="text-xs text-rose-600 mt-1">
+                                      Affects: {log.painData.affectedActivities.join(', ')}
+                                    </p>
+                                )}
+                              </div>
+                          )}
 
-                      <div className="flex flex-col gap-1 ml-2">
-                        <button onClick={() => setEditingLog(log)}
-                                className="text-gray-400 hover:text-blue-500 p-1" title="Edit">✏️</button>
-                        <button onClick={() => handleDelete(log.id)}
-                                className="text-gray-400 hover:text-red-500 p-1" title="Delete">🗑️</button>
+                          {log.notes && (
+                              <p className="text-sm text-gray-700 bg-gray-50 p-2 rounded">{log.notes}</p>
+                          )}
+                        </div>
+
+                        <div className="flex flex-col gap-1 ml-2">
+                          <button onClick={() => setEditingLog(log)}
+                                  className="text-gray-400 hover:text-blue-500 p-1" title="Edit">✏️</button>
+                          <button onClick={() => handleDelete(log.id)}
+                                  className="text-gray-400 hover:text-red-500 p-1" title="Delete">🗑️</button>
+                        </div>
                       </div>
                     </div>
-                  </div>
-              ))}
-            </div>
-        )}
+                ))}
+              </div>
+          )}
+        </>
+    );
+  };
 
-        <EditLogModal log={editingLog} isOpen={editingLog !== null}
-                      onClose={() => setEditingLog(null)} onSaved={() => { loadLogs(); }} />
+  // Render appointments section (with sub-tabs)
+  const renderAppointments = () => {
+    return (
+        <div>
+          {/* Sub-tabs for appointments */}
+          <div className="flex border-b bg-gray-50">
+            <button
+                onClick={() => setAppointmentView('history')}
+                className={`flex-1 py-3 text-sm font-medium ${
+                    appointmentView === 'history'
+                        ? 'text-blue-600 border-b-2 border-blue-600 bg-white'
+                        : 'text-gray-500'
+                }`}
+            >
+              History
+            </button>
+            <button
+                onClick={() => setAppointmentView('log')}
+                className={`flex-1 py-3 text-sm font-medium ${
+                    appointmentView === 'log'
+                        ? 'text-blue-600 border-b-2 border-blue-600 bg-white'
+                        : 'text-gray-500'
+                }`}
+            >
+              Log New
+            </button>
+          </div>
+
+          {/* Appointment content */}
+          {appointmentView === 'history' ? (
+              <AppointmentHistory />
+          ) : (
+              <AppointmentForm
+                  onSave={() => {
+                    setAppointmentView('history'); // Switch to history after saving
+                  }}
+              />
+          )}
+        </div>
+    );
+  };
+
+  return (
+      <div className="pb-20">
+        {/* Main tabs: Symptoms vs Appointments */}
+        <div className="flex border-b sticky top-0 bg-gray-50 z-10">
+          <button
+              onClick={() => setActiveTab('symptoms')}
+              className={`flex-1 py-3 text-sm font-medium ${
+                  activeTab === 'symptoms'
+                      ? 'text-blue-900 border-b-2 border-blue-900 bg-white'
+                      : 'text-gray-500'
+              }`}
+          >
+            Symptoms
+          </button>
+          <button
+              onClick={() => setActiveTab('appointments')}
+              className={`flex-1 py-3 text-sm font-medium ${
+                  activeTab === 'appointments'
+                      ? 'text-blue-900 border-b-2 border-blue-900 bg-white'
+                      : 'text-gray-500'
+              }`}
+          >
+            Appointments
+          </button>
+        </div>
+
+        {/* Content based on active tab */}
+        {activeTab === 'symptoms' ? renderSymptomsList() : renderAppointments()}
+
+        {/* Edit Log Modal */}
+        <EditLogModal
+            log={editingLog}
+            isOpen={editingLog !== null}
+            onClose={() => setEditingLog(null)}
+            onSaved={() => { loadLogs(); }}
+        />
       </div>
   );
 };

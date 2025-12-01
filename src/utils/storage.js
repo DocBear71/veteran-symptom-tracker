@@ -443,3 +443,81 @@ export const getTodaysMedicationLogs = () => {
   tomorrow.setDate(tomorrow.getDate() + 1);
   return getMedicationLogsByDateRange(today, tomorrow);
 };
+
+// ============================================
+// APPOINTMENT STORAGE FUNCTIONS
+// ============================================
+
+const APPOINTMENTS_KEY = 'symptomTracker_appointments';
+
+// Get all appointments
+export const getAppointments = () => {
+  try {
+    const data = localStorage.getItem(APPOINTMENTS_KEY);
+    return data ? JSON.parse(data) : [];
+  } catch (error) {
+    console.error('Error reading appointments:', error);
+    return [];
+  }
+};
+
+// Save a new appointment
+export const saveAppointment = (appointment) => {
+  try {
+    const appointments = getAppointments();
+    const newAppointment = {
+      ...appointment,
+      id: Date.now().toString(),
+      createdAt: new Date().toISOString(),
+    };
+    appointments.unshift(newAppointment); // Add to beginning (newest first)
+    localStorage.setItem(APPOINTMENTS_KEY, JSON.stringify(appointments));
+    return newAppointment;
+  } catch (error) {
+    console.error('Error saving appointment:', error);
+    return null;
+  }
+};
+
+// Update an existing appointment
+export const updateAppointment = (id, updatedData) => {
+  try {
+    const appointments = getAppointments();
+    const index = appointments.findIndex(apt => apt.id === id);
+    if (index !== -1) {
+      appointments[index] = {
+        ...appointments[index],
+        ...updatedData,
+        updatedAt: new Date().toISOString(),
+      };
+      localStorage.setItem(APPOINTMENTS_KEY, JSON.stringify(appointments));
+      return appointments[index];
+    }
+    return null;
+  } catch (error) {
+    console.error('Error updating appointment:', error);
+    return null;
+  }
+};
+
+// Delete an appointment
+export const deleteAppointment = (id) => {
+  try {
+    const appointments = getAppointments();
+    const filtered = appointments.filter(apt => apt.id !== id);
+    localStorage.setItem(APPOINTMENTS_KEY, JSON.stringify(filtered));
+    return true;
+  } catch (error) {
+    console.error('Error deleting appointment:', error);
+    return false;
+  }
+};
+
+// Get appointments within a date range (for export)
+export const getAppointmentsByDateRange = (startDate, endDate) => {
+  const appointments = getAppointments();
+  return appointments.filter(apt => {
+    const aptDate = new Date(apt.appointmentDate);
+    return aptDate >= startDate && aptDate <= endDate;
+  });
+};
