@@ -41,6 +41,17 @@ const Layout = ({ children, currentView, onNavigate }) => {
               <span className="text-xs">History</span>
             </button>
             <button
+                onClick={() => onNavigate('trends')}
+                className={`flex-1 py-3 text-center ${
+                    currentView === 'trends'
+                        ? 'text-blue-900 border-t-2 border-blue-900 font-semibold'
+                        : 'text-gray-500'
+                }`}
+            >
+              <span className="block text-xl">📈</span>
+              <span className="text-xs">Trends</span>
+            </button>
+            <button
                 onClick={() => onNavigate('export')}
                 className={`flex-1 py-3 text-center ${
                     currentView === 'export'

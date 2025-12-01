@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import Layout from './components/Layout';
 import SymptomLogger from './components/SymptomLogger';
 import SymptomHistory from './components/SymptomHistory';
+import Trends from './components/Trends';
 import ExportData from './components/ExportData';
 import Settings from './components/Settings';
 import {
@@ -19,10 +20,8 @@ function App() {
 
   // Initialize service worker and reminder checker
   useEffect(() => {
-    // Register service worker
     registerServiceWorker();
 
-    // Check for reminders every minute
     const checkReminders = () => {
       const settings = getReminderSettings();
       if (settings.enabled && getNotificationPermission() === 'granted') {
@@ -36,14 +35,12 @@ function App() {
       }
     };
 
-    // Check immediately and then every minute
     checkReminders();
     const interval = setInterval(checkReminders, 60000);
 
     return () => clearInterval(interval);
   }, []);
 
-  // Force history to refresh when new log is added
   const handleLogSaved = () => {
     setRefreshKey(prev => prev + 1);
   };
@@ -55,6 +52,9 @@ function App() {
         )}
         {currentView === 'history' && (
             <SymptomHistory key={refreshKey} />
+        )}
+        {currentView === 'trends' && (
+            <Trends key={refreshKey} />
         )}
         {currentView === 'export' && (
             <ExportData key={refreshKey} />
