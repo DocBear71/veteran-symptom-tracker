@@ -554,3 +554,22 @@ export const getAppointmentsByDateRange = (startDate, endDate) => {
         return aptDate >= startDate && aptDate <= endDate;
     });
 };
+
+// --- Onboarding ---
+
+const ONBOARDING_KEY = 'symptomTracker_onboardingComplete';
+
+// Check if onboarding has been completed
+export const isOnboardingComplete = () => {
+  return localStorage.getItem(ONBOARDING_KEY) === 'true';
+};
+
+// Mark onboarding as complete
+export const setOnboardingComplete = () => {
+  localStorage.setItem(ONBOARDING_KEY, 'true');
+};
+
+// Reset onboarding (for testing or Settings)
+export const resetOnboarding = () => {
+  localStorage.removeItem(ONBOARDING_KEY);
+};
