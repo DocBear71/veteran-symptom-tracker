@@ -1,3 +1,5 @@
+import { getProfile } from './profile';
+
 // Local storage keys
 const STORAGE_KEYS = {
     SYMPTOM_LOGS: 'symptomTracker_logs',
@@ -74,12 +76,6 @@ export const getSymptomLogById = (id) => {
     const logs = getSymptomLogs();
     return logs.find(log => log.id === id) || null;
 };
-
-// Clear all data (use with caution)
-export const clearAllData = () => {
-    localStorage.removeItem(STORAGE_KEYS.SYMPTOM_LOGS);
-};
-
 // --- Custom Symptoms ---
 
 const CUSTOM_SYMPTOMS_KEY = 'symptomTracker_customSymptoms';
@@ -205,35 +201,6 @@ export const isFavorite = isChronicSymptom;
 
 // --- Data Backup & Restore ---
 
-export const exportAllData = () => {
-    const data = {
-        version: '1.3', // Updated version for chronic terminology
-        exportedAt: new Date().toISOString(),
-        symptomLogs: getSymptomLogs(),
-        customSymptoms: getCustomSymptoms(),
-        chronicSymptoms: getChronicSymptoms(),
-        medications: getMedications(),
-        medicationLogs: getMedicationLogs(),
-        appointments: getAppointments(),
-        reminderSettings: JSON.parse(localStorage.getItem('symptomTracker_reminderSettings') || 'null'),
-    };
-
-    const jsonString = JSON.stringify(data, null, 2);
-    const blob = new Blob([jsonString], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-
-    const date = new Date().toISOString().split('T')[0];
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `symptom-tracker-backup-${date}.json`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-
-    return { success: true };
-};
-
 const validateBackupData = (data) => {
     if (!data || typeof data !== 'object') {
         return { valid: false, message: 'Invalid file format' };
@@ -248,132 +215,6 @@ const validateBackupData = (data) => {
     }
 
     return { valid: true };
-};
-
-export const importAllData = (jsonData, options = { merge: false }) => {
-    try {
-        const data = typeof jsonData === 'string' ? JSON.parse(jsonData) : jsonData;
-
-        const validation = validateBackupData(data);
-        if (!validation.valid) {
-            return { success: false, message: validation.message };
-        }
-
-        // Handle both old 'favorites' and new 'chronicSymptoms' keys
-        const importedChronicSymptoms = data.chronicSymptoms || data.favorites || [];
-
-        if (options.merge) {
-            // Merge with existing data
-            const existingLogs = getSymptomLogs();
-            const existingCustomSymptoms = getCustomSymptoms();
-            const existingChronicSymptoms = getChronicSymptoms();
-            const existingMedications = getMedications();
-            const existingMedicationLogs = getMedicationLogs();
-            const existingAppointments = getAppointments();
-
-            // Merge logs
-            const existingLogIds = new Set(existingLogs.map(log => log.id));
-            const newLogs = data.symptomLogs.filter(log => !existingLogIds.has(log.id));
-            const mergedLogs = [...existingLogs, ...newLogs];
-            localStorage.setItem('symptomTracker_logs', JSON.stringify(mergedLogs));
-
-            // Merge custom symptoms
-            const existingSymptomIds = new Set(existingCustomSymptoms.map(s => s.id));
-            const newSymptoms = (data.customSymptoms || []).filter(s => !existingSymptomIds.has(s.id));
-            const mergedSymptoms = [...existingCustomSymptoms, ...newSymptoms];
-            localStorage.setItem('symptomTracker_customSymptoms', JSON.stringify(mergedSymptoms));
-
-            // Merge chronic symptoms
-            const existingChronicIds = new Set(existingChronicSymptoms.map(c => c.symptomId));
-            const newChronic = importedChronicSymptoms.filter(c => !existingChronicIds.has(c.symptomId));
-            const mergedChronic = [...existingChronicSymptoms, ...newChronic];
-            localStorage.setItem(CHRONIC_SYMPTOMS_KEY, JSON.stringify(mergedChronic));
-
-            // Merge medications
-            const existingMedIds = new Set(existingMedications.map(m => m.id));
-            const newMeds = (data.medications || []).filter(m => !existingMedIds.has(m.id));
-            const mergedMeds = [...existingMedications, ...newMeds];
-            localStorage.setItem(MEDICATIONS_KEY, JSON.stringify(mergedMeds));
-
-            // Merge medication logs
-            const existingMedLogIds = new Set(existingMedicationLogs.map(l => l.id));
-            const newMedLogs = (data.medicationLogs || []).filter(l => !existingMedLogIds.has(l.id));
-            const mergedMedLogs = [...existingMedicationLogs, ...newMedLogs];
-            localStorage.setItem(MEDICATION_LOGS_KEY, JSON.stringify(mergedMedLogs));
-
-            // Merge appointments
-            const existingAptIds = new Set(existingAppointments.map(a => a.id));
-            const newApts = (data.appointments || []).filter(a => !existingAptIds.has(a.id));
-            const mergedApts = [...existingAppointments, ...newApts];
-            localStorage.setItem(APPOINTMENTS_KEY, JSON.stringify(mergedApts));
-
-            return {
-                success: true,
-                message: `Merged ${newLogs.length} new log entries`,
-                stats: {
-                    logsAdded: newLogs.length,
-                    symptomsAdded: newSymptoms.length,
-                    chronicAdded: newChronic.length,
-                    medicationsAdded: newMeds.length,
-                    appointmentsAdded: newApts.length,
-                },
-            };
-        } else {
-            // Replace all data
-            localStorage.setItem('symptomTracker_logs', JSON.stringify(data.symptomLogs));
-
-            if (data.customSymptoms) {
-                localStorage.setItem('symptomTracker_customSymptoms', JSON.stringify(data.customSymptoms));
-            }
-
-            // Store chronic symptoms (handle both old and new format)
-            localStorage.setItem(CHRONIC_SYMPTOMS_KEY, JSON.stringify(importedChronicSymptoms));
-            // Clean up legacy key if it exists
-            localStorage.removeItem(LEGACY_FAVORITES_KEY);
-
-            if (data.reminderSettings) {
-                localStorage.setItem('symptomTracker_reminderSettings', JSON.stringify(data.reminderSettings));
-            }
-
-            if (data.medications) {
-                localStorage.setItem(MEDICATIONS_KEY, JSON.stringify(data.medications));
-            }
-
-            if (data.medicationLogs) {
-                localStorage.setItem(MEDICATION_LOGS_KEY, JSON.stringify(data.medicationLogs));
-            }
-
-            if (data.appointments) {
-                localStorage.setItem(APPOINTMENTS_KEY, JSON.stringify(data.appointments));
-            }
-
-            return {
-                success: true,
-                message: `Restored ${data.symptomLogs.length} log entries`,
-                stats: {
-                    logsRestored: data.symptomLogs.length,
-                    symptomsRestored: (data.customSymptoms || []).length,
-                    chronicRestored: importedChronicSymptoms.length,
-                    medicationsRestored: (data.medications || []).length,
-                    appointmentsRestored: (data.appointments || []).length,
-                },
-            };
-        }
-    } catch (error) {
-        return { success: false, message: `Error processing file: ${error.message}` };
-    }
-};
-
-// Get data statistics
-export const getDataStats = () => {
-    return {
-        logs: getSymptomLogs().length,
-        customSymptoms: getCustomSymptoms().length,
-        chronicSymptoms: getChronicSymptoms().length,
-        medications: getMedications().length,
-        medicationLogs: getMedicationLogs().length,
-        appointments: getAppointments().length,
-    };
 };
 
 // --- Medications ---
@@ -572,4 +413,207 @@ export const setOnboardingComplete = () => {
 // Reset onboarding (for testing or Settings)
 export const resetOnboarding = () => {
   localStorage.removeItem(ONBOARDING_KEY);
+};
+
+// ============================================
+// UPDATED exportAllData FUNCTION
+// ============================================
+// Replace your existing exportAllData with this version
+
+export const exportAllData = () => {
+  // Get profile data
+  const profileData = localStorage.getItem('symptomTracker_profile');
+  const onboardingComplete = localStorage.getItem('symptomTracker_onboardingComplete');
+  const sleepApneaProfile = localStorage.getItem('symptomTracker_sleepApneaProfile');
+
+  const data = {
+    version: '1.3', // Updated version for sleep apnea profile support
+    exportedAt: new Date().toISOString(),
+
+    // Existing data
+    symptomLogs: getSymptomLogs(),
+    customSymptoms: getCustomSymptoms(),
+    favorites: getFavorites(),
+    medications: getMedications(),
+    medicationLogs: getMedicationLogs(),
+    appointments: getAppointments(),
+    reminderSettings: JSON.parse(localStorage.getItem('symptomTracker_reminderSettings') || 'null'),
+
+    // Profile data
+    profile: profileData ? JSON.parse(profileData) : null,
+    onboardingComplete: onboardingComplete === 'true',
+
+    // Condition-specific profiles (for rating analysis)
+    sleepApneaProfile: sleepApneaProfile ? JSON.parse(sleepApneaProfile) : null,
+  };
+
+  const jsonString = JSON.stringify(data, null, 2);
+  const blob = new Blob([jsonString], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+
+  const date = new Date().toISOString().split('T')[0];
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = `symptom-tracker-backup-${date}.json`;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+
+  return { success: true };
+};
+
+// ============================================
+// UPDATED importAllData FUNCTION
+// ============================================
+// Replace your existing importAllData with this version
+// This handles both old backups (without profile) and new ones (with profile)
+
+export const importAllData = (jsonData, options = { merge: false }) => {
+  try {
+    const data = typeof jsonData === 'string' ? JSON.parse(jsonData) : jsonData;
+
+    const validation = validateBackupData(data);
+    if (!validation.valid) {
+      return { success: false, message: validation.message };
+    }
+
+    if (options.merge) {
+      // Merge logic - existing code unchanged
+      const existingLogs = getSymptomLogs();
+      const existingCustomSymptoms = getCustomSymptoms();
+      const existingFavorites = getFavorites();
+
+      const existingLogIds = new Set(existingLogs.map(log => log.id));
+      const newLogs = data.symptomLogs.filter(log => !existingLogIds.has(log.id));
+      const mergedLogs = [...existingLogs, ...newLogs];
+
+      const existingSymptomNames = new Set(existingCustomSymptoms.map(s => s.name.toLowerCase()));
+      const newSymptoms = (data.customSymptoms || []).filter(
+          s => !existingSymptomNames.has(s.name.toLowerCase())
+      );
+      const mergedSymptoms = [...existingCustomSymptoms, ...newSymptoms];
+
+      const existingFavoriteIds = new Set(existingFavorites.map(f => f.symptomId));
+      const newFavorites = (data.favorites || []).filter(
+          f => !existingFavoriteIds.has(f.symptomId)
+      );
+      const mergedFavorites = [...existingFavorites, ...newFavorites];
+
+      localStorage.setItem('symptomTracker_logs', JSON.stringify(mergedLogs));
+      localStorage.setItem('symptomTracker_customSymptoms', JSON.stringify(mergedSymptoms));
+      localStorage.setItem('symptomTracker_favorites', JSON.stringify(mergedFavorites));
+
+      // Note: Don't merge profile - keep current profile on merge
+
+      return {
+        success: true,
+        message: `Merged ${newLogs.length} new log entries`,
+        stats: {
+          logsAdded: newLogs.length,
+          symptomsAdded: newSymptoms.length,
+          favoritesAdded: newFavorites.length,
+        },
+      };
+    } else {
+      // Replace all data
+      localStorage.setItem('symptomTracker_logs', JSON.stringify(data.symptomLogs));
+
+      if (data.customSymptoms) {
+        localStorage.setItem('symptomTracker_customSymptoms', JSON.stringify(data.customSymptoms));
+      }
+
+      if (data.favorites) {
+        localStorage.setItem('symptomTracker_favorites', JSON.stringify(data.favorites));
+      }
+
+      if (data.reminderSettings) {
+        localStorage.setItem('symptomTracker_reminderSettings', JSON.stringify(data.reminderSettings));
+      }
+
+      if (data.medications) {
+        localStorage.setItem('symptomTracker_medications', JSON.stringify(data.medications));
+      }
+
+      if (data.medicationLogs) {
+        localStorage.setItem('symptomTracker_medicationLogs', JSON.stringify(data.medicationLogs));
+      }
+
+      if (data.appointments) {
+        localStorage.setItem('symptomTracker_appointments', JSON.stringify(data.appointments));
+      }
+
+      // NEW: Restore profile data if present
+      if (data.profile) {
+        localStorage.setItem('symptomTracker_profile', JSON.stringify(data.profile));
+      }
+      if (data.onboardingComplete !== undefined) {
+        localStorage.setItem('symptomTracker_onboardingComplete', data.onboardingComplete.toString());
+      }
+
+      // Restore condition-specific profiles
+      if (data.sleepApneaProfile) {
+        localStorage.setItem('symptomTracker_sleepApneaProfile', JSON.stringify(data.sleepApneaProfile));
+      }
+
+      return {
+        success: true,
+        message: `Restored ${data.symptomLogs.length} log entries`,
+        stats: {
+          logsRestored: data.symptomLogs.length,
+          symptomsRestored: (data.customSymptoms || []).length,
+          favoritesRestored: (data.favorites || []).length,
+          profileRestored: !!data.profile,
+        },
+      };
+    }
+  } catch (error) {
+    return { success: false, message: `Error processing file: ${error.message}` };
+  }
+};
+
+// ============================================
+// UPDATED clearAllData FUNCTION
+// ============================================
+// Include profile data in complete reset
+
+export const clearAllData = () => {
+  // Existing data
+  localStorage.removeItem('symptomTracker_logs');
+  localStorage.removeItem('symptomTracker_customSymptoms');
+  localStorage.removeItem('symptomTracker_favorites');
+  localStorage.removeItem('symptomTracker_medications');
+  localStorage.removeItem('symptomTracker_medicationLogs');
+  localStorage.removeItem('symptomTracker_appointments');
+  localStorage.removeItem('symptomTracker_reminderSettings');
+
+  // Profile data
+  localStorage.removeItem('symptomTracker_profile');
+  localStorage.removeItem('symptomTracker_onboardingComplete');
+
+  // Condition-specific profiles
+  localStorage.removeItem('symptomTracker_sleepApneaProfile');
+};
+
+// ============================================
+// UPDATED getDataStats FUNCTION
+// ============================================
+
+export const getDataStats = () => {
+  const profileData = localStorage.getItem('symptomTracker_profile');
+  const profile = profileData ? JSON.parse(profileData) : null;
+
+  const sleepApneaProfileData = localStorage.getItem('symptomTracker_sleepApneaProfile');
+  const sleepApneaProfile = sleepApneaProfileData ? JSON.parse(sleepApneaProfileData) : null;
+
+  return {
+    logs: getSymptomLogs().length,
+    customSymptoms: getCustomSymptoms().length,
+    favorites: getFavorites().length,
+    medications: getMedications().length,
+    medicationLogs: getMedicationLogs().length,
+    appointments: getAppointments().length,
+    profileType: profile?.type || 'not set',
+    sleepApneaProfileSet: sleepApneaProfile?.hasDiagnosis !== undefined,
+  };
 };
