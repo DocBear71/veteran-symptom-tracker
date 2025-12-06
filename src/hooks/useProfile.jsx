@@ -7,7 +7,7 @@ import {
   isOnboardingComplete,
   hasProfile,
   PROFILE_TYPES,
-} from '../utils/profile';
+} from '../utils/Profile';
 
 // ============================================
 // PROFILE CONTEXT
