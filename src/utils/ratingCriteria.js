@@ -27,8 +27,41 @@ export const CONDITIONS = {
     cfrReference: '38 CFR 4.97',
     symptomIds: ['sleep-issues', 'sleep-apnea'],
   },
-  // Future conditions:
-  // PTSD: { id: 'ptsd', diagnosticCode: '9411', ... },
+  PTSD: {
+    id: 'ptsd',
+    name: 'PTSD',
+    diagnosticCode: '9411',
+    cfrReference: '38 CFR 4.130',
+    symptomIds: ['ptsd-nightmare', 'ptsd-flashback', 'ptsd-hypervigilance', 'ptsd-avoidance', 'ptsd-panic', 'nightmares'], // Include old 'nightmares' for backward compatibility
+  },
+  MAJOR_DEPRESSION: {
+    id: 'major-depression',
+    name: 'Major Depressive Disorder',
+    diagnosticCode: '9434',
+    cfrReference: '38 CFR 4.130',
+    symptomIds: ['depression', 'mdd-episode', 'mdd-anhedonia', 'mdd-hopelessness'],
+  },
+  GENERALIZED_ANXIETY: {
+    id: 'generalized-anxiety',
+    name: 'Generalized Anxiety Disorder',
+    diagnosticCode: '9400',
+    cfrReference: '38 CFR 4.130',
+    symptomIds: ['anxiety', 'gad-worry', 'gad-restlessness', 'gad-muscle-tension'], // 'anxiety' for backward compatibility
+  },
+  PANIC_DISORDER: {
+    id: 'panic-disorder',
+    name: 'Panic Disorder',
+    diagnosticCode: '9412',
+    cfrReference: '38 CFR 4.130',
+    symptomIds: ['panic-attack', 'panic-agoraphobia', 'panic-anticipatory-anxiety'],
+  },
+  BIPOLAR: {
+    id: 'bipolar',
+    name: 'Bipolar Disorder',
+    diagnosticCode: '9432',
+    cfrReference: '38 CFR 4.130',
+    symptomIds: ['bipolar-manic', 'bipolar-depressive', 'bipolar-mixed'],
+  },
 };
 
 // ============================================
@@ -276,6 +309,349 @@ export const SLEEP_APNEA_CRITERIA = {
   },
 };
 
+
+// ============================================
+// SHARED MENTAL HEALTH RATING CRITERIA
+// ============================================
+// All mental health conditions (DC 9201-9440) use the same General Rating Formula
+// This shared criteria is referenced by PTSD, Depression, Anxiety, Bipolar, etc.
+
+export const MENTAL_HEALTH_SHARED_CRITERIA = {
+  ratingFormula: 'General Rating Formula for Mental Disorders',
+  cfrReference: '38 CFR 4.130',
+  ratingNote: 'All mental health conditions are rated under the General Rating Formula for Mental Disorders. Ratings consider the frequency, severity, and duration of symptoms, along with capacity for adjustment during remissions.',
+
+  ratings: [
+    {
+      percent: 100,
+      summary: 'Total occupational and social impairment',
+      criteria: {
+        level: 'total',
+        functionalImpairment: 'severe',
+      },
+      criteriaDescription: [
+        'Total occupational and social impairment due to symptoms such as:',
+        '• Gross impairment in thought processes or communication',
+        '• Persistent delusions or hallucinations',
+        '• Grossly inappropriate behavior',
+        '• Persistent danger of hurting self or others',
+        '• Intermittent inability to perform activities of daily living',
+        '• Disorientation to time or place',
+        '• Memory loss for names of close relatives, own occupation, or own name',
+      ],
+    },
+    {
+      percent: 70,
+      summary: 'Occupational and social impairment, with deficiencies in most areas',
+      criteria: {
+        level: 'severe',
+        functionalImpairment: 'significant',
+      },
+      criteriaDescription: [
+        'Occupational and social impairment with deficiencies in most areas such as:',
+        '• Work, school, family relations, judgment, thinking, or mood',
+        'Due to symptoms such as:',
+        '• Suicidal ideation',
+        '• Obsessional rituals which interfere with routine activities',
+        '• Speech intermittently illogical, obscure, or irrelevant',
+        '• Near-continuous panic or depression affecting ability to function',
+        '• Impaired impulse control (unprovoked irritability with periods of violence)',
+        '• Spatial disorientation',
+        '• Neglect of personal appearance and hygiene',
+        '• Difficulty adapting to stressful circumstances (including work)',
+        '• Inability to establish and maintain effective relationships',
+      ],
+    },
+    {
+      percent: 50,
+      summary: 'Occupational and social impairment with reduced reliability and productivity',
+      criteria: {
+        level: 'moderate',
+        functionalImpairment: 'moderate',
+      },
+      criteriaDescription: [
+        'Occupational and social impairment with reduced reliability and productivity due to symptoms such as:',
+        '• Flattened affect',
+        '• Circumstantial, circumlocutory, or stereotyped speech',
+        '• Panic attacks more than once a week',
+        '• Difficulty in understanding complex commands',
+        '• Impairment of short- and long-term memory',
+        '• Impaired judgment',
+        '• Impaired abstract thinking',
+        '• Disturbances of motivation and mood',
+        '• Difficulty in establishing and maintaining effective work and social relationships',
+      ],
+    },
+    {
+      percent: 30,
+      summary: 'Occupational and social impairment with occasional decrease in work efficiency',
+      criteria: {
+        level: 'mild-to-moderate',
+        functionalImpairment: 'intermittent',
+      },
+      criteriaDescription: [
+        'Occupational and social impairment with occasional decrease in work efficiency',
+        'Intermittent periods of inability to perform occupational tasks',
+        '(Generally functioning satisfactorily with routine behavior, self-care, and conversation normal)',
+        'Due to symptoms such as:',
+        '• Depressed mood, anxiety, suspiciousness',
+        '• Panic attacks (weekly or less often)',
+        '• Chronic sleep impairment',
+        '• Mild memory loss (forgetting names, directions, recent events)',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Occupational and social impairment due to mild or transient symptoms',
+      criteria: {
+        level: 'mild',
+        functionalImpairment: 'minimal',
+      },
+      criteriaDescription: [
+        'Occupational and social impairment due to mild or transient symptoms which:',
+        '• Decrease work efficiency and ability to perform tasks only during significant stress',
+        'OR',
+        '• Symptoms controlled by continuous medication',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'Mental condition formally diagnosed, but symptoms not severe enough to interfere',
+      criteria: {
+        level: 'minimal-none',
+        functionalImpairment: 'none',
+      },
+      criteriaDescription: [
+        'A mental condition has been formally diagnosed, but symptoms are not severe enough either to:',
+        '• Interfere with occupational and social functioning',
+        'OR',
+        '• Require continuous medication',
+      ],
+    },
+  ],
+
+  definitions: {
+    generalRatingFormula: {
+      term: 'General Rating Formula for Mental Disorders',
+      definition: 'All mental health conditions are rated based on level of functional impairment in occupational and social settings, not just by counting symptoms. The VA considers frequency, severity, duration of symptoms, and capacity for adjustment.',
+    },
+    occupationalImpairment: {
+      term: 'Occupational Impairment',
+      definition: 'Difficulty maintaining employment, reduced productivity, problems with attendance, inability to complete tasks, or difficulty working with others.',
+    },
+    socialImpairment: {
+      term: 'Social Impairment',
+      definition: 'Difficulty maintaining relationships, social isolation, problems with family interactions, inability to participate in social activities, or inappropriate social behavior.',
+    },
+    suicidalIdeation: {
+      term: 'Suicidal Ideation',
+      definition: 'Thoughts about suicide or self-harm. This is a serious symptom requiring immediate professional attention. If experiencing suicidal thoughts, call the Veterans Crisis Line: 988 then Press 1.',
+    },
+  },
+
+  importantNotes: [
+    'Mental health ratings are based on overall functional impairment, not symptom count',
+    'The VA considers how symptoms affect work and social functioning',
+    'Higher ratings require persistent symptoms, not just occasional episodes',
+    'Medical documentation from mental health providers is critical',
+    'Treatment records should demonstrate consistency of symptoms over time',
+    'A formal diagnosis from a qualified provider is required',
+  ],
+};
+
+// ============================================
+// PTSD RATING CRITERIA (DC 9411)
+// ============================================
+// PTSD is rated using the General Rating Formula for Mental Disorders
+// Focus is on occupational and social impairment, not just symptom frequency
+
+export const PTSD_CRITERIA = {
+  diagnosticCode: '9411',
+  condition: 'Posttraumatic Stress Disorder',
+  cfrReference: '38 CFR 4.130, Diagnostic Code 9411',
+  usesSharedCriteria: true,
+  sharedCriteria: MENTAL_HEALTH_SHARED_CRITERIA,
+
+  // PTSD-specific ratings reference shared criteria
+  ratings: MENTAL_HEALTH_SHARED_CRITERIA.ratings.map(rating => ({
+    ...rating,
+    evidenceNeeded: getPTSDEvidenceNeeded(rating.percent),
+    gaps: getPTSDGaps(rating.percent),
+  })),
+
+  // PTSD-specific definitions (in addition to shared ones)
+  definitions: {
+    ...MENTAL_HEALTH_SHARED_CRITERIA.definitions,
+    panicAttack: {
+      term: 'Panic Attack',
+      definition: 'A discrete period of intense fear or discomfort with physical symptoms such as rapid heartbeat, sweating, trembling, shortness of breath, chest pain, nausea, dizziness, or fear of losing control.',
+    },
+  },
+
+  importantNotes: MENTAL_HEALTH_SHARED_CRITERIA.importantNotes,
+};
+
+// Helper function for PTSD evidence needed
+function getPTSDEvidenceNeeded(percent) {
+  const evidenceMap = {
+    100: [
+      'Medical documentation of severe functional impairment',
+      'Treatment records showing persistence of severe symptoms',
+      'Evidence of inability to maintain employment',
+      'Documentation of impact on self-care and daily activities',
+      'Mental health provider statements on level of impairment',
+      'Hospitalization records if applicable',
+    ],
+    70: [
+      'Medical records documenting specific symptoms from criteria list',
+      'Treatment records showing frequency and severity of symptoms',
+      'Documentation of work difficulties or inability to maintain employment',
+      'Evidence of relationship problems or social isolation',
+      'Mental health provider statements on functional limitations',
+      'Logged symptoms showing pattern of severe impairment',
+    ],
+    50: [
+      'Documentation of panic attacks (weekly or more frequent)',
+      'Medical records noting memory, judgment, or cognitive issues',
+      'Evidence of reduced work productivity',
+      'Treatment records showing consistent symptom pattern',
+      'Statements from providers about functional limitations',
+      'Logged symptoms demonstrating frequency and impact',
+    ],
+    30: [
+      'Medical documentation of PTSD diagnosis',
+      'Treatment records showing ongoing symptoms',
+      'Documentation of occasional work difficulties',
+      'Evidence of panic attacks (up to weekly)',
+      'Sleep logs showing chronic impairment',
+      'Provider statements on functional impact',
+    ],
+    10: [
+      'Medical documentation of PTSD diagnosis',
+      'Treatment records',
+      'Medication management records',
+      'Documentation that symptoms are mild or medication-controlled',
+    ],
+    0: ['Formal diagnosis documentation'],
+  };
+  return evidenceMap[percent] || [];
+}
+
+// Helper function for PTSD documentation gaps
+function getPTSDGaps(percent) {
+  const gapsMap = {
+    100: {
+      treatmentRecords: 'Regular mental health treatment records documenting severity',
+      functionalAssessment: 'Detailed assessment of work and social functioning limitations',
+      persistentSymptoms: 'Documentation showing symptoms are persistent, not episodic',
+    },
+    70: {
+      specificSymptoms: 'Document which specific symptoms from the criteria are present',
+      workImpact: 'Evidence of how symptoms affect work performance',
+      socialImpact: 'Documentation of relationship and social functioning difficulties',
+      continuity: 'Continuous treatment records showing persistent symptoms',
+    },
+    50: {
+      panicFrequency: 'Log panic attacks to show they occur more than once weekly',
+      cognitiveIssues: 'Document memory, concentration, or judgment difficulties',
+      workReliability: 'Evidence of reduced productivity or attendance issues',
+      relationshipImpact: 'Documentation of difficulty maintaining relationships',
+    },
+    30: {
+      diagnosis: 'Formal PTSD diagnosis from qualified mental health provider',
+      treatment: 'Regular mental health treatment records',
+      sleepImpact: 'Consistent logging of sleep disturbances',
+      workImpact: 'Documentation of occasional work performance issues',
+    },
+    10: {
+      diagnosis: 'Formal PTSD diagnosis documentation',
+      treatment: 'Ongoing treatment or medication management records',
+    },
+    0: {},
+  };
+  return gapsMap[percent] || {};
+}
+
+// ============================================
+// MAJOR DEPRESSIVE DISORDER CRITERIA (DC 9434)
+// ============================================
+
+export const MAJOR_DEPRESSION_CRITERIA = {
+  diagnosticCode: '9434',
+  condition: 'Major Depressive Disorder',
+  cfrReference: '38 CFR 4.130, Diagnostic Code 9434',
+  usesSharedCriteria: true,
+  sharedCriteria: MENTAL_HEALTH_SHARED_CRITERIA,
+  ratings: MENTAL_HEALTH_SHARED_CRITERIA.ratings,
+  definitions: MENTAL_HEALTH_SHARED_CRITERIA.definitions,
+  importantNotes: MENTAL_HEALTH_SHARED_CRITERIA.importantNotes,
+};
+
+// ============================================
+// GENERALIZED ANXIETY DISORDER CRITERIA (DC 9400)
+// ============================================
+
+export const GENERALIZED_ANXIETY_CRITERIA = {
+  diagnosticCode: '9400',
+  condition: 'Generalized Anxiety Disorder',
+  cfrReference: '38 CFR 4.130, Diagnostic Code 9400',
+  usesSharedCriteria: true,
+  sharedCriteria: MENTAL_HEALTH_SHARED_CRITERIA,
+  ratings: MENTAL_HEALTH_SHARED_CRITERIA.ratings,
+  definitions: MENTAL_HEALTH_SHARED_CRITERIA.definitions,
+  importantNotes: MENTAL_HEALTH_SHARED_CRITERIA.importantNotes,
+};
+
+// ============================================
+// PANIC DISORDER CRITERIA (DC 9412)
+// ============================================
+
+export const PANIC_DISORDER_CRITERIA = {
+  diagnosticCode: '9412',
+  condition: 'Panic Disorder and/or Agoraphobia',
+  cfrReference: '38 CFR 4.130, Diagnostic Code 9412',
+  usesSharedCriteria: true,
+  sharedCriteria: MENTAL_HEALTH_SHARED_CRITERIA,
+  ratings: MENTAL_HEALTH_SHARED_CRITERIA.ratings,
+  definitions: {
+    ...MENTAL_HEALTH_SHARED_CRITERIA.definitions,
+    panicAttack: {
+      term: 'Panic Attack',
+      definition: 'A discrete period of intense fear or discomfort with physical symptoms such as rapid heartbeat, sweating, trembling, shortness of breath, chest pain, nausea, dizziness, or fear of losing control.',
+    },
+    agoraphobia: {
+      term: 'Agoraphobia',
+      definition: 'Fear or anxiety about situations where escape might be difficult or help unavailable if panic symptoms occur. Often leads to avoidance of places like crowds, public transportation, or open spaces.',
+    },
+  },
+  importantNotes: MENTAL_HEALTH_SHARED_CRITERIA.importantNotes,
+};
+
+// ============================================
+// BIPOLAR DISORDER CRITERIA (DC 9432)
+// ============================================
+
+export const BIPOLAR_CRITERIA = {
+  diagnosticCode: '9432',
+  condition: 'Bipolar Disorder',
+  cfrReference: '38 CFR 4.130, Diagnostic Code 9432',
+  usesSharedCriteria: true,
+  sharedCriteria: MENTAL_HEALTH_SHARED_CRITERIA,
+  ratings: MENTAL_HEALTH_SHARED_CRITERIA.ratings,
+  definitions: {
+    ...MENTAL_HEALTH_SHARED_CRITERIA.definitions,
+    manicEpisode: {
+      term: 'Manic Episode',
+      definition: 'A distinct period of abnormally and persistently elevated, expansive, or irritable mood and increased energy, lasting at least one week, causing significant impairment in functioning.',
+    },
+    depressiveEpisode: {
+      term: 'Depressive Episode',
+      definition: 'A period of depressed mood or loss of interest/pleasure in activities, along with other symptoms like sleep changes, energy loss, or concentration difficulties, lasting at least two weeks.',
+    },
+  },
+  importantNotes: MENTAL_HEALTH_SHARED_CRITERIA.importantNotes,
+};
+
 // ============================================
 // ANALYSIS FUNCTIONS - MIGRAINE
 // ============================================
@@ -294,7 +670,7 @@ export const analyzeMigraineLogs = (logs, options = {}) => {
 
   const relevantLogs = logs.filter(log => {
     const logDate = new Date(log.timestamp);
-    return logDate >= cutoffDate && log.symptom === 'migraine';
+    return logDate >= cutoffDate && log.symptomId === 'migraine';
   });
 
   if (relevantLogs.length === 0) {
@@ -358,7 +734,7 @@ export const analyzeMigraineLogs = (logs, options = {}) => {
   if (prostratingPerMonth >= 4 && prolongedCount > 0) {
     supportedRating = 50;
     ratingRationale = [
-      `${prostratingPerMonth.toFixed(1)} prostrating attacks per month (≥4 required)`,
+      `${prostratingPerMonth.toFixed(1)} prostrating attacks per month (â‰¥4 required)`,
       `${prolongedCount} prolonged attacks documented`,
       'Pattern suggests very frequent, prostrating, prolonged attacks',
     ];
@@ -370,7 +746,7 @@ export const analyzeMigraineLogs = (logs, options = {}) => {
   else if (prostratingPerMonth >= 1) {
     supportedRating = 30;
     ratingRationale = [
-      `${prostratingPerMonth.toFixed(1)} prostrating attacks per month (≥1 required)`,
+      `${prostratingPerMonth.toFixed(1)} prostrating attacks per month (â‰¥1 required)`,
       'Pattern supports characteristic prostrating attacks averaging monthly',
     ];
     gaps = [];
@@ -406,7 +782,7 @@ export const analyzeMigraineLogs = (logs, options = {}) => {
     } else if (prostratingCount > 0) {
       ratingRationale = [
         `${prostratingPerMonth.toFixed(2)} prostrating attacks per month`,
-        'Frequency below threshold for 10% (need ≥0.5/month)',
+        'Frequency below threshold for 10% (need â‰¥0.5/month)',
       ];
       gaps = [
         'Continue logging all prostrating episodes',
@@ -461,8 +837,8 @@ export const analyzeSleepApneaLogs = (logs, sleepApneaProfile = {}, options = {}
   // Find sleep-related logs
   const relevantLogs = logs.filter(log => {
     const logDate = new Date(log.timestamp);
-    const isSleepRelated = log.symptom === 'sleep-issues' ||
-        log.symptom === 'sleep-apnea' ||
+    const isSleepRelated = log.symptomId === 'sleep-issues' ||
+        log.symptomId === 'sleep-apnea' ||
         log.sleepData;
     return logDate >= cutoffDate && isSleepRelated;
   });
@@ -632,6 +1008,312 @@ export const analyzeSleepApneaLogs = (logs, sleepApneaProfile = {}, options = {}
 };
 
 // ============================================
+// ANALYSIS FUNCTIONS - PTSD
+// ============================================
+
+// ============================================
+// ANALYSIS FUNCTIONS - SHARED MENTAL HEALTH
+// ============================================
+
+/**
+ * Shared analysis function for all mental health conditions
+ * All mental health DCs (9201-9440) use the General Rating Formula
+ *
+ * @param {Array} logs - All symptom logs
+ * @param {string} conditionId - Condition ID from CONDITIONS
+ * @param {Array} symptomIds - Array of symptom IDs to filter for
+ * @param {Object} conditionCriteria - The criteria object for this condition
+ * @param {Object} options - Analysis options
+ */
+const analyzeMentalHealthCondition = (logs, conditionId, symptomIds, conditionCriteria, options = {}) => {
+  const {
+    evaluationPeriodDays = 90,
+  } = options;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  // Filter for condition-specific symptoms
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    return logDate >= cutoffDate && symptomIds.includes(log.symptomId);
+  });
+
+  if (relevantLogs.length === 0) {
+    return {
+      hasData: false,
+      condition: conditionCriteria.condition,
+      diagnosticCode: conditionCriteria.diagnosticCode,
+      message: `No ${conditionCriteria.condition} symptom logs found in the evaluation period`,
+      supportedRating: null,
+      evidence: [],
+      gaps: [
+        `Start logging ${conditionCriteria.condition} symptoms`,
+        'Include notes about how symptoms affect work and relationships',
+        'Document treatment and medication if applicable',
+      ],
+    };
+  }
+
+  // Count by symptom type
+  const symptomCounts = {};
+  symptomIds.forEach(id => {
+    symptomCounts[id] = relevantLogs.filter(l => l.symptomId === id).length;
+  });
+
+  const totalSymptoms = relevantLogs.length;
+  const monthsInPeriod = evaluationPeriodDays / 30;
+  const symptomsPerMonth = totalSymptoms / monthsInPeriod;
+
+  // Calculate weekly panic attack frequency (key criterion for 50%)
+  const weeksInPeriod = evaluationPeriodDays / 7;
+  const panicSymptomIds = symptomIds.filter(id =>
+      id.includes('panic') || id === 'ptsd-panic' || id === 'panic-attack'
+  );
+  const panicCount = relevantLogs.filter(l => panicSymptomIds.includes(l.symptomId)).length;
+  const panicPerWeek = panicCount / weeksInPeriod;
+
+  // Count unique symptom types present
+  const symptomTypesPresent = Object.entries(symptomCounts)
+  .filter(([_, count]) => count > 0)
+  .map(([type, _]) => type);
+
+  // Find oldest and newest logs
+  const oldestLog = relevantLogs.reduce((oldest, log) =>
+      new Date(log.timestamp) < new Date(oldest.timestamp) ? log : oldest
+  );
+  const newestLog = relevantLogs.reduce((newest, log) =>
+      new Date(log.timestamp) > new Date(newest.timestamp) ? log : newest
+  );
+
+  // Analyze notes for functional impact keywords
+  const impactKeywords = {
+    work: ['work', 'job', 'employment', 'productivity', 'performance', 'absent', 'late', 'called off'],
+    social: ['relationship', 'family', 'friends', 'isolated', 'alone', 'avoiding', 'social'],
+    daily: ['shower', 'hygiene', 'eat', 'sleep', 'basic', 'daily', 'routine'],
+    severe: ['suicidal', 'hospital', 'emergency', 'crisis', 'violent', 'dangerous'],
+  };
+
+  const notesAnalysis = {
+    workImpact: 0,
+    socialImpact: 0,
+    dailyImpact: 0,
+    severeSymptoms: 0,
+  };
+
+  relevantLogs.forEach(log => {
+    const notes = (log.notes || '').toLowerCase();
+    if (impactKeywords.work.some(kw => notes.includes(kw))) notesAnalysis.workImpact++;
+    if (impactKeywords.social.some(kw => notes.includes(kw))) notesAnalysis.socialImpact++;
+    if (impactKeywords.daily.some(kw => notes.includes(kw))) notesAnalysis.dailyImpact++;
+    if (impactKeywords.severe.some(kw => notes.includes(kw))) notesAnalysis.severeSymptoms++;
+  });
+
+  const evidence = {
+    evaluationPeriod: {
+      startDate: oldestLog.timestamp,
+      endDate: newestLog.timestamp,
+      days: evaluationPeriodDays,
+      months: monthsInPeriod.toFixed(1),
+    },
+    totalSymptoms,
+    symptomsPerMonth: symptomsPerMonth.toFixed(1),
+    symptomBreakdown: symptomCounts,
+    symptomTypesPresent,
+    panicAttacks: {
+      total: panicCount,
+      perWeek: panicPerWeek.toFixed(1),
+    },
+    functionalImpact: notesAnalysis,
+  };
+
+  let supportedRating = null;
+  let ratingRationale = [];
+  let gaps = [];
+  let assessmentLevel = 'preliminary';
+
+  // IMPORTANT: Mental health ratings require professional evaluation
+  // Symptom logs alone cannot determine ratings. This is guidance only.
+
+  // Check for indicators of severe functional impairment
+  if (notesAnalysis.severeSymptoms > 0) {
+    supportedRating = '70-100';
+    assessmentLevel = 'requires-professional-evaluation';
+    ratingRationale = [
+      'Logged symptoms indicate severe impairment requiring immediate professional evaluation',
+      'Notes reference crisis-level symptoms',
+      'CRITICAL: If experiencing suicidal thoughts, call Veterans Crisis Line: 988 then Press 1',
+    ];
+    gaps = [
+      'Seek immediate mental health treatment',
+      'Document all treatment and hospitalizations',
+      'Request comprehensive functional assessment from mental health provider',
+    ];
+  }
+  // Check for indicators suggesting 50-70% range
+  else if (
+      panicPerWeek > 1 ||
+      (symptomsPerMonth > 12 && symptomTypesPresent.length >= 3) ||
+      (notesAnalysis.workImpact > 5 && notesAnalysis.socialImpact > 5)
+  ) {
+    supportedRating = '50-70';
+    assessmentLevel = 'requires-professional-evaluation';
+    ratingRationale = [
+      `${totalSymptoms} symptoms logged over ${monthsInPeriod.toFixed(1)} months`,
+      panicPerWeek > 1 ? `Panic attacks: ${panicPerWeek.toFixed(1)} per week (>1/week supports 50%+)` : '',
+      symptomTypesPresent.length >= 3 ? `Multiple symptom types present` : '',
+      notesAnalysis.workImpact > 5 ? `${notesAnalysis.workImpact} logs mention work impact` : '',
+      notesAnalysis.socialImpact > 5 ? `${notesAnalysis.socialImpact} logs mention social/relationship impact` : '',
+      'Pattern suggests significant functional impairment',
+    ].filter(Boolean);
+    gaps = [
+      'Professional evaluation required to assess functional impairment level',
+      'Document specific work difficulties (attendance, productivity, relationships)',
+      'Document social/relationship difficulties',
+      'Maintain continuous mental health treatment records',
+      'Request detailed statement from mental health provider about functional limitations',
+    ];
+  }
+  // Check for indicators suggesting 30% range
+  else if (
+      (panicPerWeek >= 0.25 && panicPerWeek <= 1) ||
+      (symptomsPerMonth >= 4 && symptomTypesPresent.length >= 2) ||
+      (notesAnalysis.workImpact >= 2 || notesAnalysis.socialImpact >= 2)
+  ) {
+    supportedRating = '30';
+    ratingRationale = [
+      `${totalSymptoms} symptoms logged over ${monthsInPeriod.toFixed(1)} months`,
+      panicPerWeek >= 0.25 ? `Panic-related symptoms: ${panicPerWeek.toFixed(1)} per week (weekly or less)` : '',
+      `${symptomTypesPresent.length} symptom types documented`,
+      'Pattern suggests occasional decrease in work efficiency',
+    ].filter(Boolean);
+    gaps = [
+      'Continue documenting all symptoms consistently',
+      'Include specific details about functional impact in notes',
+      'Document any work accommodations or difficulties',
+      'Maintain regular mental health treatment',
+      'Request provider statement on functional limitations',
+    ];
+  }
+  // Check for indicators suggesting 10% range
+  else if (totalSymptoms >= 3 || symptomTypesPresent.length >= 1) {
+    supportedRating = '10';
+    ratingRationale = [
+      `${totalSymptoms} symptoms logged over ${monthsInPeriod.toFixed(1)} months`,
+      `Symptom types present: ${symptomTypesPresent.length}`,
+      'Current evidence suggests mild or controlled symptoms',
+    ];
+    gaps = [
+      `Ensure you have formal ${conditionCriteria.condition} diagnosis documentation`,
+      'Document all treatment and medication',
+      'If symptoms worsen, log them immediately with functional impact details',
+      'Include notes about work or social impact when relevant',
+    ];
+  }
+  else {
+    supportedRating = '0-10';
+    ratingRationale = [
+      `${totalSymptoms} symptoms logged - limited evidence of ongoing symptoms`,
+      'Formal diagnosis documentation required',
+    ];
+    gaps = [
+      `Obtain formal ${conditionCriteria.condition} diagnosis from qualified mental health provider`,
+      'Document all symptoms, even if mild',
+      'Include treatment/medication records',
+      'Log symptoms consistently to establish pattern',
+    ];
+  }
+
+  return {
+    hasData: true,
+    condition: conditionCriteria.condition,
+    diagnosticCode: conditionCriteria.diagnosticCode,
+    evaluationPeriodDays,
+    supportedRating,
+    ratingRationale,
+    assessmentLevel,
+    evidence,
+    gaps,
+    criteria: conditionCriteria,
+    disclaimer: 'CRITICAL DISCLAIMER: Mental health ratings are based on professional evaluation of functional impairment in work and social settings, not symptom frequency alone. This analysis helps you understand what your documentation might support, but a comprehensive mental health evaluation is required for any rating determination. All mental health concerns should be discussed with a qualified provider.',
+    crisisResources: {
+      veteransCrisisLine: '988 then Press 1',
+      text: '838255',
+      chat: 'https://www.veteranscrisisline.net/get-help-now/chat/',
+    },
+  };
+};
+
+// ============================================
+// ANALYSIS FUNCTIONS - SPECIFIC MENTAL HEALTH CONDITIONS
+// ============================================
+
+/**
+ * Analyzes PTSD symptom logs
+ */
+export const analyzePTSDLogs = (logs, options = {}) => {
+  return analyzeMentalHealthCondition(
+      logs,
+      'ptsd',
+      CONDITIONS.PTSD.symptomIds,
+      PTSD_CRITERIA,
+      options
+  );
+};
+
+/**
+ * Analyzes Major Depression symptom logs
+ */
+export const analyzeMajorDepressionLogs = (logs, options = {}) => {
+  return analyzeMentalHealthCondition(
+      logs,
+      'major-depression',
+      CONDITIONS.MAJOR_DEPRESSION.symptomIds,
+      MAJOR_DEPRESSION_CRITERIA,
+      options
+  );
+};
+
+/**
+ * Analyzes Generalized Anxiety Disorder symptom logs
+ */
+export const analyzeGeneralizedAnxietyLogs = (logs, options = {}) => {
+  return analyzeMentalHealthCondition(
+      logs,
+      'generalized-anxiety',
+      CONDITIONS.GENERALIZED_ANXIETY.symptomIds,
+      GENERALIZED_ANXIETY_CRITERIA,
+      options
+  );
+};
+
+/**
+ * Analyzes Panic Disorder symptom logs
+ */
+export const analyzePanicDisorderLogs = (logs, options = {}) => {
+  return analyzeMentalHealthCondition(
+      logs,
+      'panic-disorder',
+      CONDITIONS.PANIC_DISORDER.symptomIds,
+      PANIC_DISORDER_CRITERIA,
+      options
+  );
+};
+
+/**
+ * Analyzes Bipolar Disorder symptom logs
+ */
+export const analyzeBipolarLogs = (logs, options = {}) => {
+  return analyzeMentalHealthCondition(
+      logs,
+      'bipolar',
+      CONDITIONS.BIPOLAR.symptomIds,
+      BIPOLAR_CRITERIA,
+      options
+  );
+};
+
+// ============================================
 // HELPER FUNCTIONS
 // ============================================
 
@@ -657,6 +1339,66 @@ export const getMigraineDefinition = (term) => {
 
 export const getSleepApneaDefinition = (term) => {
   return SLEEP_APNEA_CRITERIA.definitions[term] || null;
+};
+
+export const getPTSDRatingCriteria = (percent) => {
+  return PTSD_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+
+export const getAllPTSDRatings = () => {
+  return PTSD_CRITERIA.ratings;
+};
+
+export const getPTSDDefinition = (term) => {
+  return PTSD_CRITERIA.definitions[term] || null;
+};
+
+export const getMajorDepressionRatingCriteria = (percent) => {
+  return MAJOR_DEPRESSION_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+
+export const getAllMajorDepressionRatings = () => {
+  return MAJOR_DEPRESSION_CRITERIA.ratings;
+};
+
+export const getMajorDepressionDefinition = (term) => {
+  return MAJOR_DEPRESSION_CRITERIA.definitions[term] || null;
+};
+
+export const getGeneralizedAnxietyRatingCriteria = (percent) => {
+  return GENERALIZED_ANXIETY_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+
+export const getAllGeneralizedAnxietyRatings = () => {
+  return GENERALIZED_ANXIETY_CRITERIA.ratings;
+};
+
+export const getGeneralizedAnxietyDefinition = (term) => {
+  return GENERALIZED_ANXIETY_CRITERIA.definitions[term] || null;
+};
+
+export const getPanicDisorderRatingCriteria = (percent) => {
+  return PANIC_DISORDER_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+
+export const getAllPanicDisorderRatings = () => {
+  return PANIC_DISORDER_CRITERIA.ratings;
+};
+
+export const getPanicDisorderDefinition = (term) => {
+  return PANIC_DISORDER_CRITERIA.definitions[term] || null;
+};
+
+export const getBipolarRatingCriteria = (percent) => {
+  return BIPOLAR_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+
+export const getAllBipolarRatings = () => {
+  return BIPOLAR_CRITERIA.ratings;
+};
+
+export const getBipolarDefinition = (term) => {
+  return BIPOLAR_CRITERIA.definitions[term] || null;
 };
 
 export const formatRating = (percent) => {

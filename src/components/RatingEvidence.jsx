@@ -3,10 +3,25 @@ import { getSymptomLogs } from '../utils/storage';
 import {
   analyzeMigraineLogs,
   analyzeSleepApneaLogs,
+  analyzePTSDLogs,
+  analyzeMajorDepressionLogs,
+  analyzeGeneralizedAnxietyLogs,
+  analyzePanicDisorderLogs,
+  analyzeBipolarLogs,
   getAllMigraineRatings,
   getAllSleepApneaRatings,
+  getAllPTSDRatings,
+  getAllMajorDepressionRatings,
+  getAllGeneralizedAnxietyRatings,
+  getAllPanicDisorderRatings,
+  getAllBipolarRatings,
   getMigraineDefinition,
   getSleepApneaDefinition,
+  getPTSDDefinition,
+  getMajorDepressionDefinition,
+  getGeneralizedAnxietyDefinition,
+  getPanicDisorderDefinition,
+  getBipolarDefinition,
   formatRating,
   getRatingColorClass,
 } from '../utils/ratingCriteria';
@@ -31,7 +46,15 @@ const saveSleepApneaProfile = (profile) => {
 /**
  * Rating Evidence Summary Component
  * Displays analysis of logged symptoms against VA rating criteria
- * Currently supports: Migraines (DC 8100), Sleep Apnea (DC 6847)
+ *
+ * Supported Conditions:
+ * - Migraine (DC 8100)
+ * - Sleep Apnea (DC 6847)
+ * - PTSD (DC 9411)
+ * - Major Depressive Disorder (DC 9434)
+ * - Generalized Anxiety Disorder (DC 9400)
+ * - Panic Disorder (DC 9412)
+ * - Bipolar Disorder (DC 9432)
  */
 const RatingEvidence = () => {
   const [logs, setLogs] = useState([]);
@@ -55,6 +78,31 @@ const RatingEvidence = () => {
     return analyzeSleepApneaLogs(logs, sleepApneaProfile, { evaluationPeriodDays: evaluationDays });
   }, [logs, sleepApneaProfile, evaluationDays]);
 
+  // Analyze PTSD logs
+  const ptsdAnalysis = useMemo(() => {
+    return analyzePTSDLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+
+  // Analyze Major Depression logs
+  const majorDepressionAnalysis = useMemo(() => {
+    return analyzeMajorDepressionLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+
+  // Analyze Generalized Anxiety logs
+  const generalizedAnxietyAnalysis = useMemo(() => {
+    return analyzeGeneralizedAnxietyLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+
+  // Analyze Panic Disorder logs
+  const panicDisorderAnalysis = useMemo(() => {
+    return analyzePanicDisorderLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+
+  // Analyze Bipolar logs
+  const bipolarAnalysis = useMemo(() => {
+    return analyzeBipolarLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+
   // Toggle section expansion
   const toggleSection = (section) => {
     setExpandedSection(expandedSection === section ? null : section);
@@ -67,7 +115,13 @@ const RatingEvidence = () => {
     setShowSleepApneaSetup(false);
   };
 
-  const hasAnyData = migraineAnalysis.hasData || sleepApneaAnalysis.hasData;
+  const hasAnyData = migraineAnalysis.hasData ||
+      sleepApneaAnalysis.hasData ||
+      ptsdAnalysis.hasData ||
+      majorDepressionAnalysis.hasData ||
+      generalizedAnxietyAnalysis.hasData ||
+      panicDisorderAnalysis.hasData ||
+      bipolarAnalysis.hasData;
 
   return (
       <div className="space-y-4">
@@ -130,6 +184,53 @@ const RatingEvidence = () => {
             onSetupClick={() => setShowSleepApneaSetup(true)}
         />
 
+        {/* PTSD Analysis Card */}
+        <PTSDRatingCard
+            analysis={ptsdAnalysis}
+            expanded={expandedSection === 'ptsd'}
+            onToggle={() => toggleSection('ptsd')}
+        />
+
+        {/* Major Depression Analysis Card */}
+        <MentalHealthRatingCard
+            analysis={majorDepressionAnalysis}
+            expanded={expandedSection === 'major-depression'}
+            onToggle={() => toggleSection('major-depression')}
+            icon="😔"
+            getAllRatings={getAllMajorDepressionRatings}
+            getDefinition={getMajorDepressionDefinition}
+        />
+
+        {/* Generalized Anxiety Analysis Card */}
+        <MentalHealthRatingCard
+            analysis={generalizedAnxietyAnalysis}
+            expanded={expandedSection === 'generalized-anxiety'}
+            onToggle={() => toggleSection('generalized-anxiety')}
+            icon="😰"
+            getAllRatings={getAllGeneralizedAnxietyRatings}
+            getDefinition={getGeneralizedAnxietyDefinition}
+        />
+
+        {/* Panic Disorder Analysis Card */}
+        <MentalHealthRatingCard
+            analysis={panicDisorderAnalysis}
+            expanded={expandedSection === 'panic-disorder'}
+            onToggle={() => toggleSection('panic-disorder')}
+            icon="😱"
+            getAllRatings={getAllPanicDisorderRatings}
+            getDefinition={getPanicDisorderDefinition}
+        />
+
+        {/* Bipolar Analysis Card */}
+        <MentalHealthRatingCard
+            analysis={bipolarAnalysis}
+            expanded={expandedSection === 'bipolar'}
+            onToggle={() => toggleSection('bipolar')}
+            icon="🎭"
+            getAllRatings={getAllBipolarRatings}
+            getDefinition={getBipolarDefinition}
+        />
+
         {/* Sleep Apnea Setup Modal */}
         {showSleepApneaSetup && (
             <SleepApneaSetupModal
@@ -164,7 +265,7 @@ const MigraineRatingCard = ({ analysis, expanded, onToggle }) => {
     return (
         <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
           <div className="flex items-center gap-3 mb-2">
-            <span className="text-2xl">🤕</span>
+            <span className="text-2xl">ðŸ¤•</span>
             <div>
               <h3 className="font-semibold text-gray-900 dark:text-white">Migraine (DC 8100)</h3>
               <p className="text-sm text-gray-500 dark:text-gray-400">No data in evaluation period</p>
@@ -188,7 +289,7 @@ const MigraineRatingCard = ({ analysis, expanded, onToggle }) => {
             className="w-full p-4 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
         >
           <div className="flex items-center gap-3">
-            <span className="text-2xl">🤕</span>
+            <span className="text-2xl">ðŸ¤•</span>
             <div className="text-left">
               <h3 className="font-semibold text-gray-900 dark:text-white">
                 Migraine (DC 8100)
@@ -203,7 +304,7 @@ const MigraineRatingCard = ({ analysis, expanded, onToggle }) => {
             <div className={`px-3 py-1 rounded-full border font-bold ${ratingColorClass}`}>
               {formatRating(supportedRating)}
             </div>
-            <span className="text-gray-400 text-xl">{expanded ? '−' : '+'}</span>
+            <span className="text-gray-400 text-xl">{expanded ? 'âˆ’' : '+'}</span>
           </div>
         </button>
 
@@ -218,7 +319,7 @@ const MigraineRatingCard = ({ analysis, expanded, onToggle }) => {
                 <ul className="space-y-1">
                   {ratingRationale.map((reason, index) => (
                       <li key={index} className="text-sm text-gray-600 dark:text-gray-400 flex items-start gap-2">
-                        <span className="text-green-500 mt-0.5">✓</span>
+                        <span className="text-green-500 mt-0.5">âœ“</span>
                         {reason}
                       </li>
                   ))}
@@ -265,7 +366,7 @@ const MigraineRatingCard = ({ analysis, expanded, onToggle }) => {
                     <ul className="space-y-2">
                       {gaps.map((gap, index) => (
                           <li key={index} className="text-sm text-amber-700 dark:text-amber-400 flex items-start gap-2">
-                            <span className="text-amber-500 mt-0.5">💡</span>
+                            <span className="text-amber-500 mt-0.5">ðŸ’¡</span>
                             {gap}
                           </li>
                       ))}
@@ -295,7 +396,7 @@ const MigraineRatingCard = ({ analysis, expanded, onToggle }) => {
                     onClick={() => setShowDefinitions(!showDefinitions)}
                     className="text-sm text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1"
                 >
-                  {showDefinitions ? '▼' : '▶'} Key Term Definitions
+                  {showDefinitions ? 'â–¼' : 'â–¶'} Key Term Definitions
                 </button>
 
                 {showDefinitions && (
@@ -338,7 +439,7 @@ const SleepApneaRatingCard = ({ analysis, profile, expanded, onToggle, onSetupCl
             className="w-full p-4 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
         >
           <div className="flex items-center gap-3">
-            <span className="text-2xl">😴</span>
+            <span className="text-2xl">ðŸ˜´</span>
             <div className="text-left">
               <h3 className="font-semibold text-gray-900 dark:text-white">
                 Sleep Apnea (DC 6847)
@@ -358,7 +459,7 @@ const SleepApneaRatingCard = ({ analysis, profile, expanded, onToggle, onSetupCl
             <div className={`px-3 py-1 rounded-full border font-bold ${ratingColorClass}`}>
               {formatRating(supportedRating)}
             </div>
-            <span className="text-gray-400 text-xl">{expanded ? '−' : '+'}</span>
+            <span className="text-gray-400 text-xl">{expanded ? 'âˆ’' : '+'}</span>
           </div>
         </button>
 
@@ -389,7 +490,7 @@ const SleepApneaRatingCard = ({ analysis, profile, expanded, onToggle, onSetupCl
                     <ul className="space-y-1">
                       {ratingRationale.map((reason, index) => (
                           <li key={index} className="text-sm text-gray-600 dark:text-gray-400 flex items-start gap-2">
-                            <span className="text-green-500 mt-0.5">✓</span>
+                            <span className="text-green-500 mt-0.5">âœ“</span>
                             {reason}
                           </li>
                       ))}
@@ -471,7 +572,7 @@ const SleepApneaRatingCard = ({ analysis, profile, expanded, onToggle, onSetupCl
                     <ul className="space-y-2">
                       {gaps.map((gap, index) => (
                           <li key={index} className="text-sm text-amber-700 dark:text-amber-400 flex items-start gap-2">
-                            <span className="text-amber-500 mt-0.5">💡</span>
+                            <span className="text-amber-500 mt-0.5">ðŸ’¡</span>
                             {gap}
                           </li>
                       ))}
@@ -501,7 +602,7 @@ const SleepApneaRatingCard = ({ analysis, profile, expanded, onToggle, onSetupCl
                     onClick={() => setShowDefinitions(!showDefinitions)}
                     className="text-sm text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1"
                 >
-                  {showDefinitions ? '▼' : '▶'} Key Term Definitions
+                  {showDefinitions ? 'â–¼' : 'â–¶'} Key Term Definitions
                 </button>
 
                 {showDefinitions && (
@@ -685,6 +786,250 @@ const SleepApneaSetupModal = ({ currentProfile, onSave, onClose }) => {
   );
 };
 
+
+/**
+ * Generic Mental Health Rating Card Component
+ * Used for all mental health conditions (PTSD, Depression, Anxiety, Bipolar, etc.)
+ * All share the same General Rating Formula for Mental Disorders
+ */
+const MentalHealthRatingCard = ({ analysis, expanded, onToggle, icon = '🧠', getAllRatings, getDefinition }) => {
+  const [showDefinitions, setShowDefinitions] = useState(false);
+
+  if (!analysis.hasData) {
+    return (
+        <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
+          <div className="flex items-center gap-3 mb-2">
+            <span className="text-2xl">{icon}</span>
+            <div>
+              <h3 className="font-semibold text-gray-900 dark:text-white">
+                {analysis.condition} (DC {analysis.diagnosticCode})
+              </h3>
+              <p className="text-sm text-gray-500 dark:text-gray-400">No data in evaluation period</p>
+            </div>
+          </div>
+          <p className="text-sm text-gray-600 dark:text-gray-400">
+            Log {analysis.condition} symptoms to see rating evidence analysis
+          </p>
+        </div>
+    );
+  }
+
+  const { supportedRating, evidence, ratingRationale, gaps, assessmentLevel } = analysis;
+
+  return (
+      <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
+        {/* Card Header */}
+        <button
+            onClick={onToggle}
+            className="w-full p-4 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
+        >
+          <div className="flex items-center gap-3">
+            <span className="text-2xl">{icon}</span>
+            <div className="text-left">
+              <h3 className="font-semibold text-gray-900 dark:text-white">
+                {analysis.condition} (DC {analysis.diagnosticCode})
+              </h3>
+              <p className="text-sm text-gray-500 dark:text-gray-400">
+                General Rating Formula for Mental Disorders
+              </p>
+            </div>
+          </div>
+          <div className="flex items-center gap-3">
+            {/* Supported Rating Badge */}
+            <div className={`px-3 py-1 rounded-full text-sm font-medium border ${
+                assessmentLevel === 'requires-professional-evaluation'
+                    ? 'bg-red-100 text-red-800 border-red-300 dark:bg-red-900/30 dark:text-red-300 dark:border-red-700'
+                    : 'bg-blue-100 text-blue-800 border-blue-300 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-700'
+            }`}>
+              {supportedRating}%
+            </div>
+            {/* Expand Icon */}
+            <svg
+                className={`w-5 h-5 text-gray-400 transition-transform ${expanded ? 'rotate-180' : ''}`}
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7"/>
+            </svg>
+          </div>
+        </button>
+
+        {/* Expanded Content */}
+        {expanded && (
+            <div className="border-t border-gray-200 dark:border-gray-700">
+              {/* Crisis Warning if severe symptoms detected */}
+              {assessmentLevel === 'requires-professional-evaluation' && evidence.functionalImpact.severeSymptoms > 0 && (
+                  <div className="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 p-4 m-4">
+                    <div className="flex items-start gap-3">
+                      <span className="text-2xl">⚠️</span>
+                      <div className="flex-1">
+                        <h4 className="font-bold text-red-900 dark:text-red-300 mb-2">
+                          Crisis Support Available 24/7
+                        </h4>
+                        <p className="text-sm text-red-800 dark:text-red-400 mb-3">
+                          If you're experiencing a crisis or having thoughts of suicide:
+                        </p>
+                        <div className="space-y-2 text-sm text-red-800 dark:text-red-400">
+                          <div>
+                            <strong>Call:</strong> Veterans Crisis Line - Dial 988, then Press 1
+                          </div>
+                          <div>
+                            <strong>Text:</strong> 838255
+                          </div>
+                          <div>
+                            <strong>Chat:</strong> VeteransCrisisLine.net/chat
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+              )}
+
+              {/* Analysis Summary */}
+              <div className="p-4 space-y-3">
+                <div>
+                  <h4 className="font-medium text-gray-900 dark:text-white mb-2">
+                    Evidence Summary
+                  </h4>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+                    <StatBox
+                        label="Total Symptoms"
+                        value={evidence.totalSymptoms}
+                        subtext={`${evidence.symptomsPerMonth}/month`}
+                    />
+                    <StatBox
+                        label="Symptom Types"
+                        value={evidence.symptomTypesPresent.length}
+                        subtext="categories"
+                    />
+                    <StatBox
+                        label="Panic-Related"
+                        value={evidence.panicAttacks.total}
+                        subtext={`${evidence.panicAttacks.perWeek}/week`}
+                        highlight={parseFloat(evidence.panicAttacks.perWeek) > 1}
+                    />
+                    <StatBox
+                        label="Functional Impact"
+                        value={evidence.functionalImpact.workImpact + evidence.functionalImpact.socialImpact}
+                        subtext="logged impacts"
+                    />
+                  </div>
+                </div>
+
+                {/* Rationale */}
+                <div>
+                  <h4 className="font-medium text-gray-900 dark:text-white mb-2">
+                    Analysis Rationale
+                  </h4>
+                  <div className="bg-gray-50 dark:bg-gray-700/30 rounded-lg p-3 space-y-2">
+                    {ratingRationale.map((reason, i) => (
+                        <div key={i} className="flex items-start gap-2">
+                          <span className="text-blue-600 dark:text-blue-400 mt-0.5">•</span>
+                          <span className="text-sm text-gray-700 dark:text-gray-300">{reason}</span>
+                        </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Rating Schedule */}
+                <div>
+                  <h4 className="font-medium text-gray-900 dark:text-white mb-2">
+                    VA Rating Schedule
+                  </h4>
+                  <div className="space-y-2">
+                    {getAllRatings().map(rating => (
+                        <RatingRow
+                            key={rating.percent}
+                            rating={rating}
+                            isSupported={
+                              typeof supportedRating === 'number'
+                                  ? rating.percent === supportedRating
+                                  : supportedRating.includes(rating.percent.toString())
+                            }
+                        />
+                    ))}
+                  </div>
+                </div>
+
+                {/* Gaps */}
+                {gaps.length > 0 && (
+                    <div>
+                      <h4 className="font-medium text-gray-900 dark:text-white mb-2">
+                        Documentation Gaps
+                      </h4>
+                      <div className="bg-yellow-50 dark:bg-yellow-900/20 rounded-lg p-3 space-y-2">
+                        {gaps.map((gap, i) => (
+                            <div key={i} className="flex items-start gap-2">
+                              <span className="text-yellow-600 dark:text-yellow-400 mt-0.5">⚠</span>
+                              <span className="text-sm text-gray-700 dark:text-gray-300">{gap}</span>
+                            </div>
+                        ))}
+                      </div>
+                    </div>
+                )}
+
+                {/* Key Definitions */}
+                <div>
+                  <button
+                      onClick={() => setShowDefinitions(!showDefinitions)}
+                      className="flex items-center gap-2 text-sm text-blue-600 dark:text-blue-400 hover:underline"
+                  >
+                    <span>📖</span>
+                    <span>{showDefinitions ? 'Hide' : 'Show'} VA Rating Definitions</span>
+                  </button>
+
+                  {showDefinitions && (
+                      <div className="mt-3 space-y-2">
+                        <DefinitionBox definition={getDefinition('generalRatingFormula')}/>
+                        <DefinitionBox definition={getDefinition('occupationalImpairment')}/>
+                        <DefinitionBox definition={getDefinition('socialImpairment')}/>
+                      </div>
+                  )}
+                </div>
+
+                {/* Important Notes */}
+                <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4 border-l-4 border-blue-500">
+                  <h4 className="font-medium text-blue-900 dark:text-blue-300 mb-2">
+                    Important: Mental Health Rating Considerations
+                  </h4>
+                  <ul className="space-y-2 text-sm text-blue-800 dark:text-blue-400">
+                    {analysis.criteria.importantNotes.map((note, i) => (
+                        <li key={i} className="flex items-start gap-2">
+                          <span className="mt-0.5">•</span>
+                          <span>{note}</span>
+                        </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Disclaimer */}
+                <div className="bg-gray-100 dark:bg-gray-700/50 rounded-lg p-3 text-xs text-gray-600 dark:text-gray-400">
+                  <strong>CRITICAL DISCLAIMER:</strong> {analysis.disclaimer}
+                </div>
+              </div>
+            </div>
+        )}
+      </div>
+  );
+};
+
+/**
+ * PTSD Rating Card Component (uses the generic MentalHealthRatingCard)
+ */
+const PTSDRatingCard = ({ analysis, expanded, onToggle }) => {
+  return (
+      <MentalHealthRatingCard
+          analysis={analysis}
+          expanded={expanded}
+          onToggle={onToggle}
+          icon="🧠"
+          getAllRatings={getAllPTSDRatings}
+          getDefinition={getPTSDDefinition}
+      />
+  );
+};
+
 /**
  * Stat Box Component
  */
@@ -739,7 +1084,7 @@ const RatingRow = ({ rating, isSupported }) => {
           {rating.summary}
         </div>
         {isSupported && (
-            <span className="text-green-600 dark:text-green-400">✓</span>
+            <span className="text-green-600 dark:text-green-400">âœ“</span>
         )}
       </div>
   );
@@ -762,7 +1107,7 @@ const DefinitionBox = ({ definition }) => {
         {definition.examples && (
             <ul className="mt-2 text-xs text-blue-700 dark:text-blue-400 space-y-1">
               {definition.examples.map((example, i) => (
-                  <li key={i}>• {example}</li>
+                  <li key={i}>â€¢ {example}</li>
               ))}
             </ul>
         )}

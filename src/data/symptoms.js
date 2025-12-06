@@ -29,6 +29,55 @@ export const symptomCategories = [
     ]
   },
   {
+    id: 'ptsd',
+    name: 'PTSD Symptoms',
+    symptoms: [
+      { id: 'ptsd-nightmare', name: 'PTSD Nightmare' },
+      { id: 'ptsd-flashback', name: 'PTSD Flashback' },
+      { id: 'ptsd-panic', name: 'PTSD Panic Attack' },
+      { id: 'ptsd-hypervigilance', name: 'PTSD Hypervigilance' },
+      { id: 'ptsd-avoidance', name: 'PTSD Avoidance Behavior' },
+    ]
+  },
+  {
+    id: 'depression',
+    name: 'Depression Symptoms',
+    symptoms: [
+      { id: 'depression', name: 'Depressed Mood' },
+      { id: 'mdd-episode', name: 'Depressive Episode' },
+      { id: 'mdd-anhedonia', name: 'Loss of Interest/Pleasure' },
+      { id: 'mdd-hopelessness', name: 'Hopelessness' },
+    ]
+  },
+  {
+    id: 'anxiety',
+    name: 'Anxiety Symptoms',
+    symptoms: [
+      { id: 'anxiety', name: 'General Anxiety' },
+      { id: 'gad-worry', name: 'Excessive Worry' },
+      { id: 'gad-restlessness', name: 'Restlessness' },
+      { id: 'gad-muscle-tension', name: 'Muscle Tension' },
+    ]
+  },
+  {
+    id: 'panic',
+    name: 'Panic Disorder Symptoms',
+    symptoms: [
+      { id: 'panic-attack', name: 'Panic Attack' },
+      { id: 'panic-agoraphobia', name: 'Agoraphobia' },
+      { id: 'panic-anticipatory-anxiety', name: 'Anticipatory Anxiety' },
+    ]
+  },
+  {
+    id: 'bipolar',
+    name: 'Bipolar Symptoms',
+    symptoms: [
+      { id: 'bipolar-manic', name: 'Manic Episode' },
+      { id: 'bipolar-depressive', name: 'Depressive Episode' },
+      { id: 'bipolar-mixed', name: 'Mixed Episode' },
+    ]
+  },
+  {
     id: 'neurological',
     name: 'Neurological',
     symptoms: [
