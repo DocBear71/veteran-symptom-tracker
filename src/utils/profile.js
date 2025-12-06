@@ -212,16 +212,16 @@ export const PROFILE_OPTIONS = [
     title: 'General Health',
     subtitle: 'Tracking symptoms for medical care',
     description: 'Track patterns for doctor visits, treatment efficacy, and health management.',
-    available: false, // Coming soon
-    comingSoonMessage: 'Coming soon! For now, you can use the Veteran profile for general tracking.',
+    available: true,
+
   },
   {
     type: PROFILE_TYPES.CAREGIVER,
-    icon: '💙',
+    icon: '❤️',
     title: 'Caregiver',
     subtitle: 'Tracking for someone in your care',
     description: 'Document symptoms for a family member or patient with simplified logging and care team exports.',
-    available: false, // Coming soon
-    comingSoonMessage: 'Coming soon! For now, you can use the Veteran profile and adjust notes as needed.',
+    available: true,
+
   },
 ];

@@ -265,7 +265,7 @@ const MigraineRatingCard = ({ analysis, expanded, onToggle }) => {
     return (
         <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
           <div className="flex items-center gap-3 mb-2">
-            <span className="text-2xl">ðŸ¤•</span>
+            <span className="text-2xl">🤕</span>
             <div>
               <h3 className="font-semibold text-gray-900 dark:text-white">Migraine (DC 8100)</h3>
               <p className="text-sm text-gray-500 dark:text-gray-400">No data in evaluation period</p>
@@ -289,7 +289,7 @@ const MigraineRatingCard = ({ analysis, expanded, onToggle }) => {
             className="w-full p-4 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
         >
           <div className="flex items-center gap-3">
-            <span className="text-2xl">ðŸ¤•</span>
+            <span className="text-2xl">🤕</span>
             <div className="text-left">
               <h3 className="font-semibold text-gray-900 dark:text-white">
                 Migraine (DC 8100)
@@ -1084,7 +1084,7 @@ const RatingRow = ({ rating, isSupported }) => {
           {rating.summary}
         </div>
         {isSupported && (
-            <span className="text-green-600 dark:text-green-400">âœ“</span>
+            <span className="text-green-600 dark:text-green-400">✓</span>
         )}
       </div>
   );
@@ -1107,7 +1107,7 @@ const DefinitionBox = ({ definition }) => {
         {definition.examples && (
             <ul className="mt-2 text-xs text-blue-700 dark:text-blue-400 space-y-1">
               {definition.examples.map((example, i) => (
-                  <li key={i}>â€¢ {example}</li>
+                  <li key={i}>• {example}</li>
               ))}
             </ul>
         )}

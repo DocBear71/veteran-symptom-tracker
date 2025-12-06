@@ -13,6 +13,7 @@ import {
 } from 'recharts';
 import { getSymptomLogs } from '../utils/storage';
 import RatingEvidence from './RatingEvidence';
+import { useProfile } from '../hooks/useProfile';
 
 // Custom tooltip component for dark mode support
 const CustomTooltip = ({ active, payload, label }) => {
@@ -69,6 +70,7 @@ const ChartContainer = ({ children, height = 256 }) => {
 };
 
 const Trends = () => {
+  const { features } = useProfile();
   const [logs, setLogs] = useState([]);
   const [dateRange, setDateRange] = useState('month');
   const [selectedSymptom, setSelectedSymptom] = useState('all');
@@ -208,16 +210,18 @@ const Trends = () => {
           >
             Charts
           </button>
-          <button
-              onClick={() => setActiveTab('ratings')}
-              className={`flex-1 py-3 text-center font-medium ${
-                  activeTab === 'ratings'
-                      ? 'text-blue-600 border-b-2 border-blue-600'
-                      : 'text-gray-500 dark:text-gray-400'
-              }`}
-          >
-            Rating Evidence
-          </button>
+          {features.showRatingCorrelation && (
+              <button
+                  onClick={() => setActiveTab('ratings')}
+                  className={`flex-1 py-3 text-center font-medium ${
+                      activeTab === 'ratings'
+                          ? 'text-blue-600 border-b-2 border-blue-600'
+                          : 'text-gray-500 dark:text-gray-400'
+                  }`}
+              >
+                Rating Evidence
+              </button>
+          )}
         </div>
 
         {/* Tab Content */}
