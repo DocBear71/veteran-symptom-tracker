@@ -1,5 +1,3 @@
-import { getProfile } from 'src/utils/profile.js';
-
 // Local storage keys
 const STORAGE_KEYS = {
     SYMPTOM_LOGS: 'symptomTracker_logs',
