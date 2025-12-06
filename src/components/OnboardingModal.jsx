@@ -5,7 +5,7 @@ import {
   setProfileType,
   setOnboardingComplete,
   getProfileType,
-} from '../utils/Profile';
+} from '../utils/profile.js';
 
 const OnboardingModal = ({ onComplete }) => {
   const [currentStep, setCurrentStep] = useState(0);

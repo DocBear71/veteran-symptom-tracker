@@ -1,4 +1,4 @@
-import { getProfile } from './profile';
+import { getProfile } from 'src/utils/profile.js';
 
 // Local storage keys
 const STORAGE_KEYS = {
