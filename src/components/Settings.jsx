@@ -17,7 +17,7 @@ import {
 import ProfileManagement from './ProfileManagement';
 
 
-const Settings = () => {
+const Settings = ({ onNavigate }) => {  // ← ADD onNavigate prop
   // Theme state (no context needed)
   const [theme, setTheme] = useState(() => {
     return localStorage.getItem('symptomTracker_theme') || 'system';
@@ -196,178 +196,180 @@ const Settings = () => {
     localStorage.removeItem('symptomTracker_medicationLogs');
     localStorage.removeItem('symptomTracker_appointments');
 
-    setDataStats({ logs: 0, customSymptoms: 0, chronicSymptoms: 0, appointments: 0 });
-    setShowDeleteConfirm(false);
-    setDeleteConfirmText('');
-    showMessage('All data deleted', 'success');
+    // Reload page to reset app state
+    window.location.reload();
   };
 
   return (
-      <div className="pb-20">
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Settings</h2>
+      <div className="space-y-4">
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Settings</h2>
 
-        {/* Status Message */}
+        {/* Message Banner */}
         {message && (
-            <div className={`mb-4 p-3 rounded-lg text-center ${
-                messageType === 'success' ? 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200' :
-                    messageType === 'error' ? 'bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200' :
-                        'bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200'
+            <div className={`p-3 rounded-lg ${
+                messageType === 'success' ? 'bg-green-50 dark:bg-green-900/30 text-green-800 dark:text-green-200 border border-green-200 dark:border-green-800' :
+                    messageType === 'error' ? 'bg-red-50 dark:bg-red-900/30 text-red-800 dark:text-red-200 border border-red-200 dark:border-red-800' :
+                        'bg-blue-50 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200 border border-blue-200 dark:border-blue-800'
             }`}>
               {message}
             </div>
         )}
 
-        {/* Appearance Section */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 mb-4">
+        {/* Profile Management */}
+        <ProfileManagement />
+
+        {/* Theme Settings */}
+        <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
           <h3 className="font-medium text-gray-900 dark:text-white mb-3">Appearance</h3>
 
-          <div className="space-y-3">
-            <p className="text-sm text-gray-600 dark:text-gray-400">Theme</p>
-            <div className="flex gap-2">
-              <button
-                  onClick={() => setThemeMode('light')}
-                  className={`flex-1 py-3 px-4 rounded-lg border-2 font-medium transition-colors ${
-                      theme === 'light'
-                          ? 'bg-blue-100 dark:bg-blue-900 border-blue-500 text-blue-700 dark:text-blue-300'
-                          : 'bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300'
-                  }`}
-              >
-                ☀️ Light
-              </button>
-              <button
-                  onClick={() => setThemeMode('dark')}
-                  className={`flex-1 py-3 px-4 rounded-lg border-2 font-medium transition-colors ${
-                      theme === 'dark'
-                          ? 'bg-blue-100 dark:bg-blue-900 border-blue-500 text-blue-700 dark:text-blue-300'
-                          : 'bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300'
-                  }`}
-              >
-                🌙 Dark
-              </button>
-              <button
-                  onClick={() => setThemeMode('system')}
-                  className={`flex-1 py-3 px-4 rounded-lg border-2 font-medium transition-colors ${
-                      theme === 'system'
-                          ? 'bg-blue-100 dark:bg-blue-900 border-blue-500 text-blue-700 dark:text-blue-300'
-                          : 'bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300'
-                  }`}
-              >
-                💻 Auto
-              </button>
-            </div>
-            <p className="text-xs text-gray-500 dark:text-gray-400">
-              Dark mode can help reduce eye strain, especially with light sensitivity
-            </p>
+          <label className="block text-sm text-gray-700 dark:text-gray-300 mb-2">Theme</label>
+          <div className="grid grid-cols-3 gap-2">
+            <button
+                onClick={() => setThemeMode('light')}
+                className={`py-2 px-3 rounded-lg border-2 transition-colors ${
+                    theme === 'light'
+                        ? 'border-blue-900 dark:border-blue-500 bg-blue-50 dark:bg-blue-900/30 text-blue-900 dark:text-blue-300'
+                        : 'border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
+                }`}
+            >
+              ☀️ Light
+            </button>
+            <button
+                onClick={() => setThemeMode('dark')}
+                className={`py-2 px-3 rounded-lg border-2 transition-colors ${
+                    theme === 'dark'
+                        ? 'border-blue-900 dark:border-blue-500 bg-blue-50 dark:bg-blue-900/30 text-blue-900 dark:text-blue-300'
+                        : 'border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
+                }`}
+            >
+              🌙 Dark
+            </button>
+            <button
+                onClick={() => setThemeMode('system')}
+                className={`py-2 px-3 rounded-lg border-2 transition-colors ${
+                    theme === 'system'
+                        ? 'border-blue-900 dark:border-blue-500 bg-blue-50 dark:bg-blue-900/30 text-blue-900 dark:text-blue-300'
+                        : 'border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
+                }`}
+            >
+              💻 System
+            </button>
           </div>
         </div>
 
-        {/* Profile Management Section */}
-        <ProfileManagement />
-
-
-        {/* Notification Support Warning */}
-        {!supported && (
-            <div className="mb-4 p-4 bg-yellow-50 dark:bg-yellow-900/30 border border-yellow-200 dark:border-yellow-700 rounded-lg">
-              <p className="text-yellow-800 dark:text-yellow-200 font-medium">Notifications not supported</p>
-              <p className="text-yellow-700 dark:text-yellow-300 text-sm mt-1">
-                Your browser or device doesn't support push notifications.
-              </p>
-            </div>
-        )}
-
-        {/* Daily Reminders Section */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 mb-4">
+        {/* Notifications */}
+        <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
           <h3 className="font-medium text-gray-900 dark:text-white mb-3">Daily Reminders</h3>
 
-          {supported && permissionStatus !== 'granted' && (
-              <div className="mb-4 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                <p className="text-sm text-gray-600 dark:text-gray-300 mb-2">
-                  Enable notifications to receive daily reminders to log your symptoms.
+          {!supported && (
+              <div className="bg-yellow-50 dark:bg-yellow-900/30 border border-yellow-200 dark:border-yellow-800 rounded-lg p-3 mb-3">
+                <p className="text-sm text-yellow-800 dark:text-yellow-200">
+                  Notifications are not supported in your browser. Try using Chrome, Firefox, or Safari on mobile.
+                </p>
+              </div>
+          )}
+
+          {supported && permissionStatus === 'default' && (
+              <div className="mb-4">
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+                  Get daily reminders to log your symptoms. Helps build consistent documentation for your VA claim.
                 </p>
                 <button
                     onClick={handleEnableNotifications}
-                    className="w-full py-2 px-4 bg-blue-900 dark:bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-800 dark:hover:bg-blue-700"
+                    className="w-full py-3 px-4 bg-blue-900 dark:bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-800 dark:hover:bg-blue-700"
                 >
                   Enable Notifications
                 </button>
               </div>
           )}
 
-          {permissionStatus === 'granted' && (
-              <>
-                <div className="flex items-center justify-between mb-4">
-                  <div>
-                    <p className="font-medium text-gray-900 dark:text-white">Reminder Alerts</p>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">Get reminded to log symptoms</p>
-                  </div>
+          {supported && permissionStatus === 'denied' && (
+              <div className="bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-lg p-3 mb-3">
+                <p className="text-sm text-red-800 dark:text-red-200">
+                  Notifications blocked. Enable them in your browser settings to receive reminders.
+                </p>
+              </div>
+          )}
+
+          {supported && permissionStatus === 'granted' && (
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-gray-700 dark:text-gray-300">Enable reminders</span>
                   <button
                       onClick={() => handleToggleReminders(!reminderSettings.enabled)}
-                      className={`relative w-14 h-8 rounded-full transition-colors ${
+                      className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
                           reminderSettings.enabled ? 'bg-blue-900 dark:bg-blue-600' : 'bg-gray-300 dark:bg-gray-600'
                       }`}
                   >
-                <span
-                    className={`absolute top-1 w-6 h-6 bg-white rounded-full shadow transition-transform ${
-                        reminderSettings.enabled ? 'left-7' : 'left-1'
-                    }`}
-                />
+                    <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                        reminderSettings.enabled ? 'translate-x-6' : 'translate-x-1'
+                    }`} />
                   </button>
                 </div>
 
                 {reminderSettings.enabled && (
-                    <div className="space-y-3">
-                      <p className="text-sm font-medium text-gray-700 dark:text-gray-300">Reminder Times</p>
-
-                      {reminderSettings.times.map((time, index) => (
-                          <div key={index} className="flex items-center gap-2">
-                            <input
-                                type="time"
-                                value={time}
-                                onChange={(e) => handleTimeChange(index, e.target.value)}
-                                className="flex-1 p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
-                            />
-                            {reminderSettings.times.length > 1 && (
+                    <>
+                      <div>
+                        <label className="block text-sm text-gray-700 dark:text-gray-300 mb-2">Reminder times</label>
+                        <div className="space-y-2">
+                          {reminderSettings.times.map((time, index) => (
+                              <div key={index} className="flex gap-2">
+                                <input
+                                    type="time"
+                                    value={time}
+                                    onChange={(e) => handleTimeChange(index, e.target.value)}
+                                    className="flex-1 p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                                />
                                 <button
                                     onClick={() => handleRemoveTime(index)}
-                                    className="p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg"
-                                    aria-label="Remove time"
+                                    className="p-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg"
                                 >
                                   ✕
                                 </button>
-                            )}
-                          </div>
-                      ))}
-
-                      <button
-                          onClick={handleAddTime}
-                          className="w-full py-2 px-4 border-2 border-dashed border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-400 rounded-lg hover:border-gray-400 dark:hover:border-gray-500"
-                      >
-                        + Add Another Time
-                      </button>
+                              </div>
+                          ))}
+                        </div>
+                        {reminderSettings.times.length < 5 && (
+                            <button
+                                onClick={handleAddTime}
+                                className="mt-2 w-full py-2 px-4 border-2 border-dashed border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-400 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700"
+                            >
+                              + Add time
+                            </button>
+                        )}
+                      </div>
 
                       <button
                           onClick={handleTestNotification}
-                          className="w-full py-2 px-4 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 font-medium rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600"
+                          className="w-full py-2 px-4 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700"
                       >
-                        Test Notification
+                        Send Test Notification
                       </button>
-                    </div>
+                    </>
                 )}
-              </>
-          )}
-
-          {permissionStatus === 'denied' && (
-              <div className="p-3 bg-red-50 dark:bg-red-900/30 rounded-lg">
-                <p className="text-red-800 dark:text-red-200 font-medium">Notifications Blocked</p>
-                <p className="text-red-700 dark:text-red-300 text-sm mt-1">
-                  To enable, click the lock icon in your browser's address bar.
-                </p>
               </div>
           )}
         </div>
 
+        {/* Export Data Section - NEW */}
+        <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
+          <h3 className="font-medium text-gray-900 dark:text-white mb-3">Export Data</h3>
+          <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+            Export your symptom logs and measurements for VA claims or backup
+          </p>
+          <button
+              onClick={() => onNavigate && onNavigate('export')}
+              className="w-full py-3 px-4 bg-blue-900 dark:bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-800 dark:hover:bg-blue-700 flex items-center justify-center gap-2"
+          >
+            <span>📤</span> Go to Export & Reports
+          </button>
+          <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
+            Download PDF reports or export data in CSV/JSON format
+          </p>
+        </div>
+
         {/* Backup & Restore Section */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 mb-4">
+        <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
           <h3 className="font-medium text-gray-900 dark:text-white mb-3">Backup & Restore</h3>
 
           {/* Data Stats */}
@@ -398,7 +400,7 @@ const Settings = () => {
                 onClick={handleExportData}
                 className="w-full py-3 px-4 bg-blue-900 dark:bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-800 dark:hover:bg-blue-700 flex items-center justify-center gap-2"
             >
-              <span>📥</span> Download Backup
+              <span>💾</span> Download Backup
             </button>
 
             <button
@@ -423,7 +425,7 @@ const Settings = () => {
         </div>
 
         {/* Help & Tutorial Section */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 mb-4">
+        <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
           <h3 className="font-medium text-gray-900 dark:text-white mb-3">Help</h3>
 
           <button
@@ -442,7 +444,7 @@ const Settings = () => {
         </div>
 
         {/* Install App */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 mb-4">
+        <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
           <h3 className="font-medium text-gray-900 dark:text-white mb-3">Install App</h3>
           <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
             Add to your home screen for quick access and offline use.

@@ -111,9 +111,9 @@ const Layout = ({ children, currentView, onNavigate }) => {
                 onNavigate={onNavigate}
             />
             <NavButton
-                icon="📤"
-                label="Export"
-                view="export"
+                icon="📊"
+                label="Measure"
+                view="measurements"
                 currentView={currentView}
                 onNavigate={onNavigate}
             />

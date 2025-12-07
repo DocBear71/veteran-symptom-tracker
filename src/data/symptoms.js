@@ -114,6 +114,63 @@ export const symptomCategories = [
       { id: 'weakness', name: 'Weakness' },
       { id: 'low-energy', name: 'Low Energy' },
     ]
+  },
+  {
+    id: 'tbi',
+    name: 'TBI/Cognitive Symptoms',
+    symptoms: [
+      { id: 'tbi-memory', name: 'Memory Problems' },
+      { id: 'tbi-concentration', name: 'Difficulty Concentrating' },
+      { id: 'tbi-confusion', name: 'Confusion/Disorientation' },
+      { id: 'tbi-headache', name: 'Post-TBI Headache' },
+      { id: 'tbi-mood', name: 'Mood Changes' },
+      { id: 'tbi-sleep', name: 'Sleep Disturbance (TBI)' },
+    ]
+  },
+  {
+    id: 'cardiovascular',
+    name: 'Cardiovascular',
+    symptoms: [
+      { id: 'high-blood-pressure', name: 'High Blood Pressure' },
+      { id: 'hypertension-headache', name: 'Hypertension Headache' },
+      { id: 'chest-pressure', name: 'Chest Pressure/Tightness' },
+      { id: 'palpitations', name: 'Heart Palpitations' },
+    ]
+  },
+  {
+    id: 'fibromyalgia',
+    name: 'Fibromyalgia Symptoms',
+    symptoms: [
+      { id: 'fibro-widespread-pain', name: 'Widespread Pain' },
+      { id: 'fibro-tender-points', name: 'Tender Point Pain' },
+      { id: 'fibro-fatigue', name: 'Fibromyalgia Fatigue' },
+      { id: 'fibro-sleep', name: 'Sleep Disturbance' },
+      { id: 'fibro-stiffness', name: 'Morning Stiffness' },
+      { id: 'fibro-cognitive', name: 'Fibro Fog (Cognitive Issues)' },
+    ]
+  },
+  {
+    id: 'back-spine',
+    name: 'Back & Spine',
+    symptoms: [
+      { id: 'lower-back-pain', name: 'Lower Back Pain' },
+      { id: 'back-stiffness', name: 'Back Stiffness' },
+      { id: 'back-spasm', name: 'Back Muscle Spasm' },
+      { id: 'back-radicular', name: 'Radiating Pain (Sciatica)' },
+      { id: 'back-numbness', name: 'Back-Related Numbness' },
+      { id: 'disc-pain', name: 'Disc-Related Pain' },
+    ]
+  },
+  {
+    id: 'knee',
+    name: 'Knee Symptoms',
+    symptoms: [
+      { id: 'knee-instability', name: 'Knee Instability/Giving Way' },
+      { id: 'knee-swelling', name: 'Knee Swelling' },
+      { id: 'knee-stiffness', name: 'Knee Stiffness' },
+      { id: 'knee-locking', name: 'Knee Locking/Catching' },
+      { id: 'knee-pain', name: 'Knee Pain' },
+    ]
   }
 ];
 

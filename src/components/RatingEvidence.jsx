@@ -8,6 +8,14 @@ import {
   analyzeGeneralizedAnxietyLogs,
   analyzePanicDisorderLogs,
   analyzeBipolarLogs,
+  analyzeLumbosacralStrainLogs,
+  analyzeIntervertebralDiscLogs,
+  analyzeKneeInstabilityLogs,
+  analyzeTBILogs,
+  analyzeHypertensionLogs,
+  analyzeTinnitusLogs,
+  analyzeFibromyalgiaLogs,
+  analyzeDiabetesLogs,
   getAllMigraineRatings,
   getAllSleepApneaRatings,
   getAllPTSDRatings,
@@ -25,6 +33,10 @@ import {
   formatRating,
   getRatingColorClass,
 } from '../utils/ratingCriteria';
+import HypertensionRatingCard from './HypertensionRatingCard';
+import BloodPressureTrendChart from './BloodPressureTrendChart';
+import { formatLocalDateTime } from '../utils/datetime';
+import DiabetesRatingCard from './DiabetesRatingCard';
 
 // Storage key for sleep apnea profile
 const SLEEP_APNEA_PROFILE_KEY = 'symptomTracker_sleepApneaProfile';
@@ -103,6 +115,46 @@ const RatingEvidence = () => {
     return analyzeBipolarLogs(logs, { evaluationPeriodDays: evaluationDays });
   }, [logs, evaluationDays]);
 
+  // Analyze Lumbosacral Strain logs
+  const lumbosacralStrainAnalysis = useMemo(() => {
+    return analyzeLumbosacralStrainLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+
+  // Analyze Intervertebral Disc logs
+  const intervertebralDiscAnalysis = useMemo(() => {
+    return analyzeIntervertebralDiscLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+
+  // Analyze Knee Instability logs
+  const kneeInstabilityAnalysis = useMemo(() => {
+    return analyzeKneeInstabilityLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+
+  // Analyze TBI logs
+  const tbiAnalysis = useMemo(() => {
+    return analyzeTBILogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+
+  // Analyze Hypertension logs (uses BP measurements)
+  const hypertensionAnalysis = useMemo(() => {
+    return analyzeHypertensionLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+
+  // Analyze Diabetes logs (uses glucose/HbA1c measurements)
+  const diabetesAnalysis = useMemo(() => {
+    return analyzeDiabetesLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+
+  // Analyze Tinnitus logs
+  const tinnitusAnalysis = useMemo(() => {
+    return analyzeTinnitusLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+
+  // Analyze Fibromyalgia logs
+  const fibromyalgiaAnalysis = useMemo(() => {
+    return analyzeFibromyalgiaLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+
   // Toggle section expansion
   const toggleSection = (section) => {
     setExpandedSection(expandedSection === section ? null : section);
@@ -121,7 +173,15 @@ const RatingEvidence = () => {
       majorDepressionAnalysis.hasData ||
       generalizedAnxietyAnalysis.hasData ||
       panicDisorderAnalysis.hasData ||
-      bipolarAnalysis.hasData;
+      bipolarAnalysis.hasData ||
+      lumbosacralStrainAnalysis.hasData ||
+      intervertebralDiscAnalysis.hasData ||
+      kneeInstabilityAnalysis.hasData ||
+      tbiAnalysis.hasData ||
+      hypertensionAnalysis.hasData ||
+      diabetesAnalysis.hasData ||
+      tinnitusAnalysis.hasData ||
+      fibromyalgiaAnalysis.hasData;
 
   return (
       <div className="space-y-4">
@@ -229,6 +289,68 @@ const RatingEvidence = () => {
             icon="🎭"
             getAllRatings={getAllBipolarRatings}
             getDefinition={getBipolarDefinition}
+        />
+
+        {/* Lumbosacral Strain Analysis Card */}
+        <GenericRatingCard
+            analysis={lumbosacralStrainAnalysis}
+            expanded={expandedSection === 'lumbosacral-strain'}
+            onToggle={() => toggleSection('lumbosacral-strain')}
+            icon="🦴"
+        />
+
+        {/* Intervertebral Disc Analysis Card */}
+        <GenericRatingCard
+            analysis={intervertebralDiscAnalysis}
+            expanded={expandedSection === 'intervertebral-disc'}
+            onToggle={() => toggleSection('intervertebral-disc')}
+            icon="💿"
+        />
+
+        {/* Knee Instability Analysis Card */}
+        <GenericRatingCard
+            analysis={kneeInstabilityAnalysis}
+            expanded={expandedSection === 'knee-instability'}
+            onToggle={() => toggleSection('knee-instability')}
+            icon="🦵"
+        />
+
+        {/* TBI Analysis Card */}
+        <GenericRatingCard
+            analysis={tbiAnalysis}
+            expanded={expandedSection === 'tbi'}
+            onToggle={() => toggleSection('tbi')}
+            icon="🧠"
+        />
+
+        {/* Hypertension Analysis Card */}
+        <HypertensionRatingCard
+            analysis={hypertensionAnalysis}
+            expanded={expandedSection === 'hypertension'}
+            onToggle={() => toggleSection('hypertension')}
+        />
+
+        {/* Diabetes Analysis Card */}
+        <DiabetesRatingCard
+            analysis={diabetesAnalysis}
+            expanded={expandedSection === 'diabetes'}
+            onToggle={() => toggleSection('diabetes')}
+        />
+
+        {/* Tinnitus Analysis Card */}
+        <GenericRatingCard
+            analysis={tinnitusAnalysis}
+            expanded={expandedSection === 'tinnitus'}
+            onToggle={() => toggleSection('tinnitus')}
+            icon="👂"
+        />
+
+        {/* Fibromyalgia Analysis Card */}
+        <GenericRatingCard
+            analysis={fibromyalgiaAnalysis}
+            expanded={expandedSection === 'fibromyalgia'}
+            onToggle={() => toggleSection('fibromyalgia')}
+            icon="💪"
         />
 
         {/* Sleep Apnea Setup Modal */}
@@ -1027,6 +1149,173 @@ const PTSDRatingCard = ({ analysis, expanded, onToggle }) => {
           getAllRatings={getAllPTSDRatings}
           getDefinition={getPTSDDefinition}
       />
+  );
+};
+
+/**
+ * Generic Rating Card Component for simpler conditions
+ */
+const GenericRatingCard = ({ analysis, expanded, onToggle, icon }) => {
+  const [showDefinitions, setShowDefinitions] = useState(false);
+
+  if (!analysis.hasData) return null;
+
+  const {
+    condition,
+    diagnosticCode,
+    supportedRating,
+    ratingRationale,
+    evidence,
+    gaps,
+    criteria,
+    disclaimer,
+  } = analysis;
+
+  return (
+      <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+        {/* Header */}
+        <button
+            onClick={onToggle}
+            className="w-full p-4 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
+        >
+          <div className="flex items-center gap-3">
+            <span className="text-2xl">{icon}</span>
+            <div className="text-left">
+              <h3 className="font-semibold text-gray-900 dark:text-white">
+                {condition}
+              </h3>
+              <p className="text-xs text-gray-500 dark:text-gray-400">
+                DC {diagnosticCode} • {criteria.cfrReference}
+              </p>
+            </div>
+          </div>
+          <div className="flex items-center gap-3">
+            {supportedRating && (
+                <span className={`px-3 py-1 rounded-full text-sm font-medium border ${
+                    supportedRating.includes('Requires') || supportedRating.includes('Clinical')
+                        ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 border-blue-300 dark:border-blue-700'
+                        : 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 border-green-300 dark:border-green-700'
+                }`}>
+                  {supportedRating}
+                </span>
+            )}
+            <svg
+                className={`w-5 h-5 text-gray-400 transition-transform ${expanded ? 'rotate-180' : ''}`}
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7"/>
+            </svg>
+          </div>
+        </button>
+
+        {/* Expanded Content */}
+        {expanded && (
+            <div className="p-4 border-t border-gray-200 dark:border-gray-700">
+              <div className="space-y-4">
+                {/* Evidence Summary */}
+                <div>
+                  <h4 className="font-medium text-gray-900 dark:text-white mb-2">
+                    Evidence Summary
+                  </h4>
+                  <div className="bg-gray-50 dark:bg-gray-700/30 rounded-lg p-3 space-y-2">
+                    {evidence.map((item, i) => (
+                        <div key={i} className="flex items-start gap-2">
+                          <span className="text-green-600 dark:text-green-400 mt-0.5">✓</span>
+                          <span className="text-sm text-gray-700 dark:text-gray-300">{item}</span>
+                        </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Rationale */}
+                {ratingRationale && ratingRationale.length > 0 && (
+                    <div>
+                      <h4 className="font-medium text-gray-900 dark:text-white mb-2">
+                        Analysis Rationale
+                      </h4>
+                      <div className="bg-gray-50 dark:bg-gray-700/30 rounded-lg p-3 space-y-2">
+                        {ratingRationale.map((reason, i) => (
+                            <div key={i} className="flex items-start gap-2">
+                              <span className="text-blue-600 dark:text-blue-400 mt-0.5">•</span>
+                              <span className="text-sm text-gray-700 dark:text-gray-300">{reason}</span>
+                            </div>
+                        ))}
+                      </div>
+                    </div>
+                )}
+
+                {/* VA Rating Schedule */}
+                {criteria.ratings && criteria.ratings.length > 0 && (
+                    <div>
+                      <h4 className="font-medium text-gray-900 dark:text-white mb-2">
+                        VA Rating Schedule
+                      </h4>
+                      <div className="space-y-2">
+                        {criteria.ratings.map(rating => (
+                            <RatingRow
+                                key={rating.percent}
+                                rating={rating}
+                                isSupported={
+                                  typeof supportedRating === 'number'
+                                      ? rating.percent === supportedRating
+                                      : supportedRating && supportedRating.includes(rating.percent.toString())
+                                }
+                            />
+                        ))}
+                      </div>
+                    </div>
+                )}
+
+                {/* Documentation Gaps */}
+                {gaps && gaps.length > 0 && (
+                    <div>
+                      <h4 className="font-medium text-gray-900 dark:text-white mb-2">
+                        Documentation Gaps
+                      </h4>
+                      <div className="bg-yellow-50 dark:bg-yellow-900/20 rounded-lg p-3 space-y-2">
+                        {gaps.map((gap, i) => (
+                            <div key={i} className="flex items-start gap-2">
+                              <span className="text-yellow-600 dark:text-yellow-400 mt-0.5">⚠</span>
+                              <span className="text-sm text-gray-700 dark:text-gray-300">{gap}</span>
+                            </div>
+                        ))}
+                      </div>
+                    </div>
+                )}
+
+                {/* Key Definitions */}
+                {criteria.definitions && Object.keys(criteria.definitions).length > 0 && (
+                    <div>
+                      <button
+                          onClick={() => setShowDefinitions(!showDefinitions)}
+                          className="flex items-center gap-2 text-sm text-blue-600 dark:text-blue-400 hover:underline"
+                      >
+                        <span>📖</span>
+                        <span>{showDefinitions ? 'Hide' : 'Show'} VA Rating Definitions</span>
+                      </button>
+
+                      {showDefinitions && (
+                          <div className="mt-3 space-y-2">
+                            {Object.values(criteria.definitions).map((def, i) => (
+                                <DefinitionBox key={i} definition={def}/>
+                            ))}
+                          </div>
+                      )}
+                    </div>
+                )}
+
+                {/* Disclaimer */}
+                {disclaimer && (
+                    <div className="bg-gray-100 dark:bg-gray-700/50 rounded-lg p-3 text-xs text-gray-600 dark:text-gray-400">
+                      <strong>Important:</strong> {disclaimer}
+                    </div>
+                )}
+              </div>
+            </div>
+        )}
+      </div>
   );
 };
 

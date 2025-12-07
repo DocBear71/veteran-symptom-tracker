@@ -6,6 +6,7 @@ import Layout from './components/Layout';
 import SymptomLogger from './components/SymptomLogger';
 import SymptomHistory from './components/SymptomHistory';
 import Medications from './components/Medications';
+import Measurements from './components/Measurements';
 import Trends from './components/Trends';
 import ExportData from './components/ExportData';
 import Settings from './components/Settings';
@@ -52,6 +53,8 @@ const AppContent = () => {
         return <SymptomLogger />;
       case 'history':
         return <SymptomHistory />;
+      case 'measurements':
+        return <Measurements />;
       case 'meds':
         return <Medications />;
       case 'trends':
@@ -59,7 +62,7 @@ const AppContent = () => {
       case 'export':
         return <ExportData />;
       case 'settings':
-        return <Settings />;
+        return <Settings onNavigate={setCurrentView} />;
       default:
         return <SymptomLogger />;
     }
