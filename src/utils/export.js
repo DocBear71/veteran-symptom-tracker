@@ -1,6 +1,6 @@
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
-import { getSymptomLogs, getMedicationLogsForSymptom, getAppointments } from './storage';
+import { getSymptomLogs, saveSymptomLog, getMedicationLogsForSymptom, getAppointments } from './storage';
 
 // Appointment type labels for export
 const APPOINTMENT_TYPE_LABELS = {
@@ -227,7 +227,7 @@ export const generatePDF = (dateRange = 'all', options = { includeAppointments: 
     doc.setFontSize(8);
     doc.setTextColor(150);
     doc.text(`Page ${i} of ${pageCount}`, pageWidth - 25, doc.internal.pageSize.height - 10);
-    doc.text('Veteran Symptom Tracker', 14, doc.internal.pageSize.height - 10);
+    doc.text('Universal Symptom Tracker', 14, doc.internal.pageSize.height - 10);
   }
 
   // Save

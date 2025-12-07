@@ -14,6 +14,8 @@ import {
   getDataStats,
   resetOnboarding,
 } from '../utils/storage';
+import ProfileManagement from './ProfileManagement';
+
 
 const Settings = () => {
   // Theme state (no context needed)
@@ -33,6 +35,7 @@ const Settings = () => {
   const [pendingRestore, setPendingRestore] = useState(null);
   const fileInputRef = useRef(null);
 
+
   useEffect(() => {
     const checkStatus = async () => {
       setSupported(notificationsSupported());
@@ -44,6 +47,14 @@ const Settings = () => {
       }
     };
     checkStatus();
+
+    // Listen for profile changes and reload data stats
+    const handleProfileChange = () => {
+      setDataStats(getDataStats());
+    };
+
+    window.addEventListener('profileChanged', handleProfileChange);
+    return () => window.removeEventListener('profileChanged', handleProfileChange);
   }, []);
 
   // Theme handler
@@ -249,6 +260,10 @@ const Settings = () => {
             </p>
           </div>
         </div>
+
+        {/* Profile Management Section */}
+        <ProfileManagement />
+
 
         {/* Notification Support Warning */}
         {!supported && (

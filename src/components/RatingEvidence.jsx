@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import { getSymptomLogs } from '../utils/storage';
+import { getSymptomLogs, saveSymptomLog } from '../utils/storage';
 import {
   analyzeMigraineLogs,
   analyzeSleepApneaLogs,
@@ -439,7 +439,7 @@ const SleepApneaRatingCard = ({ analysis, profile, expanded, onToggle, onSetupCl
             className="w-full p-4 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
         >
           <div className="flex items-center gap-3">
-            <span className="text-2xl">ðŸ˜´</span>
+            <span className="text-2xl">😴</span>
             <div className="text-left">
               <h3 className="font-semibold text-gray-900 dark:text-white">
                 Sleep Apnea (DC 6847)

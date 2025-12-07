@@ -11,7 +11,7 @@ import {
   ResponsiveContainer,
   Legend,
 } from 'recharts';
-import { getSymptomLogs } from '../utils/storage';
+import { getSymptomLogs, saveSymptomLog } from '../utils/storage';
 import RatingEvidence from './RatingEvidence';
 import { useProfile } from '../hooks/useProfile';
 

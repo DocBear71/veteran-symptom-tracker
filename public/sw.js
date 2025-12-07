@@ -1,4 +1,4 @@
-// Service Worker for Veteran Symptom Tracker
+// Service Worker for Universal Symptom Tracker
 // Version updated on each deploy to bust cache
 const CACHE_VERSION = 'v2';
 const CACHE_NAME = `symptom-tracker-${CACHE_VERSION}`;
@@ -81,7 +81,7 @@ self.addEventListener('push', (event) => {
   };
 
   event.waitUntil(
-      self.registration.showNotification('Veteran Symptom Tracker', options)
+      self.registration.showNotification('Universal Symptom Tracker', options)
   );
 });
 

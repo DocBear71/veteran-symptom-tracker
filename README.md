@@ -1,4 +1,4 @@
-# Veteran Symptom Tracker
+# Universal Symptom Tracker
 
 A Progressive Web App designed to help Veterans document symptoms for VA disability claims. Track symptoms, correlate with VA rating criteria, and build comprehensive evidence for disability evaluations.
 
@@ -93,7 +93,7 @@ npm run build
 
 ### Desktop (Chrome/Edge)
 1. Click the install icon in the address bar
-2. Or: Menu → Install Veteran Symptom Tracker
+2. Or: Menu → Install Universal Symptom Tracker
 3. App opens in its own window
 
 ## 🔒 Privacy & Data

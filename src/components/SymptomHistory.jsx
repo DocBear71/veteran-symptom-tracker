@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { getSymptomLogs, deleteSymptomLog, getMedicationLogsForSymptom } from '../utils/storage';
+import { getSymptomLogs, saveSymptomLog, deleteSymptomLog, getMedicationLogsForSymptom } from '../utils/storage';
 import EditLogModal from './EditLogModal';
 import AppointmentForm from './AppointmentForm';
 import AppointmentHistory from './AppointmentHistory';
