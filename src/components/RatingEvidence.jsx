@@ -16,6 +16,19 @@ import {
   analyzeTinnitusLogs,
   analyzeFibromyalgiaLogs,
   analyzeDiabetesLogs,
+  analyzeIBSLogs,
+  analyzeGERDLogs,
+  analyzeRadiculopathyLogs,
+  analyzeChronicFatigueLogs,
+  analyzePeripheralNeuropathyLogs,
+  analyzeMenieresLogs,
+  analyzeRhinitisLogs,
+  analyzeTMJLogs,
+  analyzePlantarFasciitisLogs,
+  analyzeInsomniaLogs,
+  analyzeSinusitisLogs,
+  analyzeShoulderLogs,
+  analyzeHipLogs,
   getAllMigraineRatings,
   getAllSleepApneaRatings,
   getAllPTSDRatings,
@@ -37,6 +50,19 @@ import HypertensionRatingCard from './HypertensionRatingCard';
 import BloodPressureTrendChart from './BloodPressureTrendChart';
 import { formatLocalDateTime } from '../utils/datetime';
 import DiabetesRatingCard from './DiabetesRatingCard';
+import IBSRatingCard from './IBSRatingCard';
+import GERDRatingCard from './GERDRatingCard';
+import RadiculopathyRatingCard from './RadiculopathyRatingCard';
+import ChronicFatigueRatingCard from './ChronicFatigueRatingCard';
+import PeripheralNeuropathyRatingCard from './PeripheralNeuropathyRatingCard';
+import MenieresRatingCard from './MenieresRatingCard';
+import RhinitisRatingCard from './RhinitisRatingCard';
+import TMJRatingCard from './TMJRatingCard';
+import PlantarFasciitisRatingCard from './PlantarFasciitisRatingCard';
+import InsomniaRatingCard from './InsomniaRatingCard';
+import SinusitisRatingCard from './SinusitisRatingCard';
+import ShoulderRatingCard from './ShoulderRatingCard';
+import HipRatingCard from './HipRatingCard';
 
 // Storage key for sleep apnea profile
 const SLEEP_APNEA_PROFILE_KEY = 'symptomTracker_sleepApneaProfile';
@@ -145,6 +171,61 @@ const RatingEvidence = () => {
     return analyzeDiabetesLogs(logs, { evaluationPeriodDays: evaluationDays });
   }, [logs, evaluationDays]);
 
+  // Analyze IBS logs
+  const ibsAnalysis = useMemo(() => {
+    return analyzeIBSLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+
+// Analyze GERD logs
+  const gerdAnalysis = useMemo(() => {
+    return analyzeGERDLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+
+// Analyze Radiculopathy logs
+  const radiculopathyAnalysis = useMemo(() => {
+    return analyzeRadiculopathyLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+
+  const chronicFatigueAnalysis = useMemo(() => {
+    return analyzeChronicFatigueLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+
+  const peripheralNeuropathyAnalysis = useMemo(() => {
+    return analyzePeripheralNeuropathyLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+
+  const menieresAnalysis = useMemo(() => {
+    return analyzeMenieresLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+
+  const rhinitisAnalysis = useMemo(() => {
+    return analyzeRhinitisLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+
+  const tmjAnalysis = useMemo(() => {
+    return analyzeTMJLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+
+  const plantarFasciitisAnalysis = useMemo(() => {
+    return analyzePlantarFasciitisLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+
+  const insomniaAnalysis = useMemo(() => {
+    return analyzeInsomniaLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+
+  const sinusitisAnalysis = useMemo(() => {
+    return analyzeSinusitisLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+
+  const shoulderAnalysis = useMemo(() => {
+    return analyzeShoulderLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+
+  const hipAnalysis = useMemo(() => {
+    return analyzeHipLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+
   // Analyze Tinnitus logs
   const tinnitusAnalysis = useMemo(() => {
     return analyzeTinnitusLogs(logs, { evaluationPeriodDays: evaluationDays });
@@ -180,6 +261,19 @@ const RatingEvidence = () => {
       tbiAnalysis.hasData ||
       hypertensionAnalysis.hasData ||
       diabetesAnalysis.hasData ||
+      ibsAnalysis.hasData ||
+      gerdAnalysis.hasData ||
+      radiculopathyAnalysis.hasData ||
+      chronicFatigueAnalysis.hasData ||
+      peripheralNeuropathyAnalysis.hasData ||
+      menieresAnalysis.hasData ||
+      rhinitisAnalysis.hasData ||
+      tmjAnalysis.hasData ||
+      plantarFasciitisAnalysis.hasData ||
+      insomniaAnalysis.hasData ||
+      sinusitisAnalysis.hasData ||
+      shoulderAnalysis.hasData ||
+      hipAnalysis.hasData ||
       tinnitusAnalysis.hasData ||
       fibromyalgiaAnalysis.hasData;
 
@@ -335,6 +429,87 @@ const RatingEvidence = () => {
             analysis={diabetesAnalysis}
             expanded={expandedSection === 'diabetes'}
             onToggle={() => toggleSection('diabetes')}
+        />
+
+        {/* IBS Analysis Card */}
+        <IBSRatingCard
+            analysis={ibsAnalysis}
+            expanded={expandedSection === 'ibs'}
+            onToggle={() => toggleSection('ibs')}
+        />
+
+        {/* GERD Analysis Card */}
+        <GERDRatingCard
+            analysis={gerdAnalysis}
+            expanded={expandedSection === 'gerd'}
+            onToggle={() => toggleSection('gerd')}
+        />
+
+        {/* Radiculopathy Analysis Card */}
+        <RadiculopathyRatingCard
+            analysis={radiculopathyAnalysis}
+            expanded={expandedSection === 'radiculopathy'}
+            onToggle={() => toggleSection('radiculopathy')}
+        />
+
+        <ChronicFatigueRatingCard
+            analysis={chronicFatigueAnalysis}
+            expanded={expandedSection === 'chronic-fatigue'}
+            onToggle={() => toggleSection('chronic-fatigue')}
+        />
+
+        <PeripheralNeuropathyRatingCard
+            analysis={peripheralNeuropathyAnalysis}
+            expanded={expandedSection === 'peripheral-neuropathy'}
+            onToggle={() => toggleSection('peripheral-neuropathy')}
+        />
+
+        <MenieresRatingCard
+            analysis={menieresAnalysis}
+            expanded={expandedSection === 'menieres'}
+            onToggle={() => toggleSection('menieres')}
+        />
+
+        <RhinitisRatingCard
+            analysis={rhinitisAnalysis}
+            expanded={expandedSection === 'rhinitis'}
+            onToggle={() => toggleSection('rhinitis')}
+        />
+
+        <TMJRatingCard
+            analysis={tmjAnalysis}
+            expanded={expandedSection === 'tmj'}
+            onToggle={() => toggleSection('tmj')}
+        />
+
+        <PlantarFasciitisRatingCard
+            analysis={plantarFasciitisAnalysis}
+            expanded={expandedSection === 'plantar-fasciitis'}
+            onToggle={() => toggleSection('plantar-fasciitis')}
+        />
+
+        <InsomniaRatingCard
+            analysis={insomniaAnalysis}
+            expanded={expandedSection === 'insomnia'}
+            onToggle={() => toggleSection('insomnia')}
+        />
+
+        <SinusitisRatingCard
+            analysis={sinusitisAnalysis}
+            expanded={expandedSection === 'sinusitis'}
+            onToggle={() => toggleSection('sinusitis')}
+        />
+
+        <ShoulderRatingCard
+            analysis={shoulderAnalysis}
+            expanded={expandedSection === 'shoulder'}
+            onToggle={() => toggleSection('shoulder')}
+        />
+
+        <HipRatingCard
+            analysis={hipAnalysis}
+            expanded={expandedSection === 'hip'}
+            onToggle={() => toggleSection('hip')}
         />
 
         {/* Tinnitus Analysis Card */}
