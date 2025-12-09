@@ -2,7 +2,8 @@ import React from 'react';
 import { Activity } from 'lucide-react';
 
 
-const EczemaRatingCard = () => {
+const EczemaRatingCard = ({ analysis, expanded, onToggle }) => {
+    if (!analysis || !analysis.hasData) return null;
   return (
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
         <div className="flex items-center gap-3 mb-4">
