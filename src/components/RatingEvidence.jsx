@@ -29,6 +29,7 @@ import {
   analyzeSinusitisLogs,
   analyzeShoulderLogs,
   analyzeHipLogs,
+  analyzeAsthmaLogs,
   getAllMigraineRatings,
   getAllSleepApneaRatings,
   getAllPTSDRatings,
@@ -63,6 +64,7 @@ import InsomniaRatingCard from './InsomniaRatingCard';
 import SinusitisRatingCard from './SinusitisRatingCard';
 import ShoulderRatingCard from './ShoulderRatingCard';
 import HipRatingCard from './HipRatingCard';
+import AsthmaRatingCard from './AsthmaRatingCard';
 
 // Storage key for sleep apnea profile
 const SLEEP_APNEA_PROFILE_KEY = 'symptomTracker_sleepApneaProfile';
@@ -226,6 +228,10 @@ const RatingEvidence = () => {
     return analyzeHipLogs(logs, { evaluationPeriodDays: evaluationDays });
   }, [logs, evaluationDays]);
 
+  const asthmaAnalysis = useMemo(() => {
+    return analyzeAsthmaLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+
   // Analyze Tinnitus logs
   const tinnitusAnalysis = useMemo(() => {
     return analyzeTinnitusLogs(logs, { evaluationPeriodDays: evaluationDays });
@@ -274,6 +280,7 @@ const RatingEvidence = () => {
       sinusitisAnalysis.hasData ||
       shoulderAnalysis.hasData ||
       hipAnalysis.hasData ||
+      asthmaAnalysis.hasData ||
       tinnitusAnalysis.hasData ||
       fibromyalgiaAnalysis.hasData;
 
@@ -510,6 +517,12 @@ const RatingEvidence = () => {
             analysis={hipAnalysis}
             expanded={expandedSection === 'hip'}
             onToggle={() => toggleSection('hip')}
+        />
+
+        <AsthmaRatingCard
+            analysis={asthmaAnalysis}
+            expanded={expandedSection === 'asthma'}
+            onToggle={() => toggleSection('asthma')}
         />
 
         {/* Tinnitus Analysis Card */}

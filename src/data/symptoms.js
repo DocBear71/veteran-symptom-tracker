@@ -120,6 +120,20 @@ export const symptomCategories = [
     ]
   },
   {
+    id: 'asthma',
+    name: 'Asthma Symptoms',
+    symptoms: [
+      { id: 'asthma-attack', name: 'Asthma - Attack/Exacerbation' },
+      { id: 'asthma-wheezing', name: 'Asthma - Wheezing' },
+      { id: 'asthma-shortness-breath', name: 'Asthma - Shortness of Breath' },
+      { id: 'asthma-cough', name: 'Asthma - Cough' },
+      { id: 'asthma-chest-tightness', name: 'Asthma - Chest Tightness' },
+      { id: 'asthma-rescue-inhaler', name: 'Asthma - Rescue Inhaler Use' },
+      { id: 'asthma-er-visit', name: 'Asthma - ER Visit' },
+      { id: 'asthma-md-visit', name: 'Asthma - Physician Visit for Exacerbation' },
+    ]
+  },
+  {
     id: 'rhinitis',
     name: 'Rhinitis Symptoms',
     symptoms: [

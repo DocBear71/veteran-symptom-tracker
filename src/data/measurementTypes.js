@@ -412,6 +412,116 @@ export const MEASUREMENT_TYPES = {
       green: { percent: [80, 100], label: 'Green Zone - Good Control', color: 'green' },
     },
   },
+
+  FEV1: {
+    id: 'fev1',
+    name: 'FEV-1 (Forced Expiratory Volume)',
+    shortName: 'FEV-1',
+    icon: '🫁',
+    description: 'Forced expiratory volume in 1 second - key measurement for VA asthma ratings',
+
+    fields: [
+      {
+        key: 'fev1',
+        label: 'FEV-1 Value',
+        unit: 'L',
+        type: 'number',
+        min: 0.5,
+        max: 8.0,
+        step: 0.01,
+        required: true,
+        placeholder: '3.50',
+        help: 'Actual FEV-1 measurement from spirometry',
+      },
+      {
+        key: 'fev1Predicted',
+        label: 'FEV-1 Predicted',
+        unit: 'L',
+        type: 'number',
+        min: 0.5,
+        max: 8.0,
+        step: 0.01,
+        required: true,
+        placeholder: '4.20',
+        help: 'Predicted FEV-1 based on age, height, gender',
+      },
+    ],
+
+    metadata: [
+      {
+        key: 'testType',
+        label: 'Test type',
+        type: 'select',
+        options: [
+          { value: 'clinical', label: 'Clinical spirometry (doctor\'s office)' },
+          { value: 'home', label: 'Home spirometer' },
+        ],
+        default: 'clinical',
+      },
+      {
+        key: 'medicationTiming',
+        label: 'Bronchodilator status',
+        type: 'select',
+        options: [
+          { value: 'pre', label: 'Pre-bronchodilator' },
+          { value: 'post', label: 'Post-bronchodilator' },
+          { value: 'none', label: 'No bronchodilator' },
+        ],
+        default: 'post',
+      },
+    ],
+
+    relatedConditions: ['asthma', 'copd'],
+
+    // VA Rating thresholds (based on % predicted)
+    interpretation: {
+      severe: { percent: [0, 40], label: '100% Rating Range (<40% predicted)', color: 'red' },
+      moderate: { percent: [40, 55], label: '60% Rating Range (40-55% predicted)', color: 'orange' },
+      mild: { percent: [56, 70], label: '30% Rating Range (56-70% predicted)', color: 'yellow' },
+      low: { percent: [71, 80], label: '10% Rating Range (71-80% predicted)', color: 'yellow' },
+      normal: { percent: [81, 200], label: 'Normal (>80% predicted)', color: 'green' },
+    },
+  },
+
+  FVC: {
+    id: 'fvc',
+    name: 'FVC (Forced Vital Capacity)',
+    shortName: 'FVC',
+    icon: '🫁',
+    description: 'Forced vital capacity - used with FEV-1 for FEV-1/FVC ratio',
+
+    fields: [
+      {
+        key: 'fvc',
+        label: 'FVC Value',
+        unit: 'L',
+        type: 'number',
+        min: 0.5,
+        max: 10.0,
+        step: 0.01,
+        required: true,
+        placeholder: '4.50',
+        help: 'Actual FVC measurement from spirometry',
+      },
+    ],
+
+    metadata: [
+      {
+        key: 'testType',
+        label: 'Test type',
+        type: 'select',
+        options: [
+          { value: 'clinical', label: 'Clinical spirometry (doctor\'s office)' },
+          { value: 'home', label: 'Home spirometer' },
+        ],
+        default: 'clinical',
+      },
+    ],
+
+    relatedConditions: ['asthma', 'copd'],
+
+    interpretation: null, // FVC is typically evaluated as ratio with FEV-1
+  },
 };
 
 // Helper to get measurement type by ID
@@ -480,7 +590,7 @@ export const interpretMeasurement = (measurementTypeId, values, metadata = {}) =
       const { weight, height } = values;
       if (!height) return null; // Need height to calculate BMI
 
-      // Calculate BMI: (weight in lbs / (height in inches)²) × 703
+      // Calculate BMI: (weight in lbs / (height in inches)Â²) Ã— 703
       const bmi = (weight / (height * height)) * 703;
 
       if (bmi >= 40) return { ...interpretations.obese3, bmi: bmi.toFixed(1) };
@@ -511,7 +621,7 @@ export const formatMeasurementValue = (measurementTypeId, values) => {
 
   switch (measurementTypeId) {
     case 'blood-pressure':
-      return `${values.systolic}/${values.diastolic} mmHg${values.heartRate ? ` • HR: ${values.heartRate} bpm` : ''}`;
+      return `${values.systolic}/${values.diastolic} mmHg${values.heartRate ? ` â€¢ HR: ${values.heartRate} bpm` : ''}`;
 
     case 'blood-glucose':
       return `${values.glucose} mg/dL`;
@@ -522,15 +632,25 @@ export const formatMeasurementValue = (measurementTypeId, values) => {
     case 'weight':
       if (values.height) {
         const bmi = ((values.weight / (values.height * values.height)) * 703).toFixed(1);
-        return `${values.weight} lbs • BMI: ${bmi}`;
+        return `${values.weight} lbs â€¢ BMI: ${bmi}`;
       }
       return `${values.weight} lbs`;
 
     case 'oxygen-saturation':
-      return `${values.spo2}%${values.heartRate ? ` • HR: ${values.heartRate} bpm` : ''}`;
+      return `${values.spo2}%${values.heartRate ? ` â€¢ HR: ${values.heartRate} bpm` : ''}`;
 
     case 'peak-flow':
       return `${values.peakFlow} L/min`;
+
+    case 'fev1':
+      if (values.fev1Predicted) {
+        const percentPredicted = ((values.fev1 / values.fev1Predicted) * 100).toFixed(0);
+        return `${values.fev1} L (${percentPredicted}% predicted)`;
+      }
+      return `${values.fev1} L`;
+
+    case 'fvc':
+      return `${values.fvc} L`;
 
     default:
       return Object.entries(values)

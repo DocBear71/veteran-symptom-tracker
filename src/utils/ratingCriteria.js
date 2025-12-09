@@ -242,6 +242,22 @@ export const CONDITIONS = {
     cfrReference: '38 CFR 4.71a',
     symptomIds: ['hip-pain', 'hip-limited-rom', 'hip-stiffness', 'hip-weakness', 'hip-limping'],
   },
+  ASTHMA: {
+    id: 'asthma',
+    name: 'Bronchial Asthma',
+    diagnosticCode: '6602',
+    cfrReference: '38 CFR 4.97',
+    symptomIds: [
+      'asthma-attack',
+      'asthma-wheezing',
+      'asthma-shortness-breath',
+      'asthma-cough',
+      'asthma-chest-tightness',
+      'asthma-rescue-inhaler',
+      'asthma-er-visit',
+      'asthma-md-visit',
+    ],
+  },
   TINNITUS: {
     id: 'tinnitus',
     name: 'Tinnitus',
@@ -3232,6 +3248,162 @@ export const HIP_CRITERIA = {
   },
 
   disclaimer: 'This analysis is based on logged hip symptoms. VA rating requires orthopedic examination with ROM measurements and functional assessment. X-rays showing degenerative changes strengthen claims.',
+};
+
+// ============================================
+// ASTHMA RATING CRITERIA (DC 6602)
+// ============================================
+
+export const ASTHMA_CRITERIA = {
+  diagnosticCode: '6602',
+  condition: 'Bronchial Asthma',
+  cfrReference: '38 CFR 4.97, Diagnostic Code 6602',
+
+  ratings: [
+    {
+      percent: 100,
+      summary: 'FEV-1 <40% predicted, OR FEV-1/FVC <40%, OR >1 attack/week with respiratory failure, OR daily systemic corticosteroids',
+      criteria: {
+        fev1Percent: [0, 39],
+        fev1FvcRatio: [0, 39],
+        attacksPerWeek: 1.1,
+        respiratoryFailure: true,
+        dailySystemicSteroids: true,
+      },
+      criteriaDescription: [
+        'FEV-1 less than 40% of predicted value, OR',
+        'FEV-1/FVC ratio less than 40%, OR',
+        'More than one attack per week with episodes of respiratory failure, OR',
+        'Requires daily use of systemic (oral or parenteral) high dose corticosteroids or immuno-suppressive medications',
+      ],
+      evidenceNeeded: [
+        'Spirometry results showing FEV-1 <40% predicted',
+        'FEV-1/FVC ratio calculation',
+        'Documentation of frequent attacks with respiratory failure',
+        'Medical records of daily systemic steroid use',
+      ],
+    },
+    {
+      percent: 60,
+      summary: 'FEV-1 40-55% predicted, OR FEV-1/FVC 40-55%, OR monthly MD visits for exacerbations, OR ≥3 systemic steroid courses/year',
+      criteria: {
+        fev1Percent: [40, 55],
+        fev1FvcRatio: [40, 55],
+        mdVisitsPerMonth: 1,
+        systemicSteroidCourses: 3,
+      },
+      criteriaDescription: [
+        'FEV-1 of 40-55% of predicted value, OR',
+        'FEV-1/FVC ratio of 40-55%, OR',
+        'At least monthly visits to physician for required care of exacerbations, OR',
+        'Intermittent (at least 3 per year) courses of systemic corticosteroids',
+      ],
+      evidenceNeeded: [
+        'Spirometry results showing FEV-1 40-55% predicted',
+        'FEV-1/FVC ratio in 40-55% range',
+        'Medical records showing monthly physician visits for asthma',
+        'Documentation of ≥3 oral steroid courses per year',
+      ],
+    },
+    {
+      percent: 30,
+      summary: 'FEV-1 56-70% predicted, OR FEV-1/FVC 56-70%, OR daily inhaled bronchodilator, OR inhaled anti-inflammatory medication',
+      criteria: {
+        fev1Percent: [56, 70],
+        fev1FvcRatio: [56, 70],
+        dailyInhaledBronchodilator: true,
+        inhaledAntiInflammatory: true,
+      },
+      criteriaDescription: [
+        'FEV-1 of 56-70% of predicted value, OR',
+        'FEV-1/FVC ratio of 56-70%, OR',
+        'Daily inhalational or oral bronchodilator therapy, OR',
+        'Inhalational anti-inflammatory medication',
+      ],
+      evidenceNeeded: [
+        'Spirometry results showing FEV-1 56-70% predicted',
+        'FEV-1/FVC ratio in 56-70% range',
+        'Prescription records for daily inhaled bronchodilators',
+        'Prescription records for inhaled corticosteroids or anti-inflammatory meds',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'FEV-1 71-80% predicted, OR FEV-1/FVC 71-80%, OR intermittent inhaled bronchodilator therapy',
+      criteria: {
+        fev1Percent: [71, 80],
+        fev1FvcRatio: [71, 80],
+        intermittentInhaledBronchodilator: true,
+      },
+      criteriaDescription: [
+        'FEV-1 of 71-80% of predicted value, OR',
+        'FEV-1/FVC ratio of 71-80%, OR',
+        'Intermittent inhalational or oral bronchodilator therapy',
+      ],
+      evidenceNeeded: [
+        'Spirometry results showing FEV-1 71-80% predicted',
+        'FEV-1/FVC ratio in 71-80% range',
+        'Prescription records for rescue inhalers',
+        'Documentation of intermittent bronchodilator use',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'FEV-1 >80% predicted without symptoms or only minimal medication use',
+      criteria: {
+        fev1Percent: [81, 200],
+      },
+      criteriaDescription: [
+        'FEV-1 greater than 80% of predicted value',
+        'Minimal or no symptoms',
+        'Minimal or no medication requirements',
+      ],
+      evidenceNeeded: [],
+    },
+  ],
+
+  definitions: {
+    fev1: {
+      term: 'FEV-1 (Forced Expiratory Volume in 1 second)',
+      definition: 'Amount of air you can forcefully exhale in 1 second. Measured by spirometry. The VA uses this as the primary measure for asthma severity.',
+      examples: [
+        'Example: If your predicted FEV-1 is 4.0 L and your actual FEV-1 is 2.8 L, your FEV-1 is 70% predicted',
+      ],
+    },
+    fev1FvcRatio: {
+      term: 'FEV-1/FVC Ratio',
+      definition: 'The ratio of FEV-1 to FVC (Forced Vital Capacity). Normal is typically >70-75%. Lower ratios indicate airway obstruction.',
+      examples: [
+        'Example: FEV-1 of 2.8 L ÷ FVC of 4.0 L = 70% ratio',
+      ],
+    },
+    systemicCorticosteroids: {
+      term: 'Systemic Corticosteroids',
+      definition: 'Oral or injectable steroids like prednisone or methylprednisolone. These are different from inhaled steroids - systemic steroids affect the whole body.',
+      examples: [
+        'Prednisone pills or "steroid packs" for severe exacerbations',
+        'Not the same as inhaled corticosteroids like Flovent or Advair',
+      ],
+    },
+    exacerbation: {
+      term: 'Exacerbation',
+      definition: 'A worsening of asthma symptoms requiring increased treatment. May require physician visit, oral steroids, or ER visit.',
+    },
+    bronchodilator: {
+      term: 'Bronchodilator',
+      definition: 'Medication that opens airways. Can be rescue inhalers (albuterol) or long-acting (salmeterol). VA distinguishes between intermittent and daily use.',
+      examples: [
+        'Rescue inhalers: Albuterol (ProAir, Ventolin) - used as needed',
+        'Daily bronchodilators: Salmeterol (Serevent), formoterol (Foradil)',
+      ],
+    },
+    postBronchodilator: {
+      term: 'Post-Bronchodilator Testing',
+      definition: 'Spirometry performed after using a bronchodilator. VA generally uses post-bronchodilator results unless pre-bronchodilator values are worse.',
+    },
+  },
+
+  note: 'In the absence of clinical findings of asthma at time of examination, a verified history of asthmatic attacks must be of record.',
 };
 
 
@@ -6670,6 +6842,262 @@ export const analyzeHipLogs = (logs, options = {}) => {
   };
 };
 
+
+// ============================================
+// ANALYSIS FUNCTIONS - ASTHMA
+// ============================================
+
+/**
+ * Analyzes asthma logs and measurements to determine supported rating level
+ */
+export const analyzeAsthmaLogs = (logs, options = {}) => {
+  const {
+    evaluationPeriodDays = 90,
+    profileId = null,
+  } = options;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  // Filter asthma symptom logs
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    return logDate >= cutoffDate && CONDITIONS.ASTHMA.symptomIds.includes(log.symptomId);
+  });
+
+  // Get FEV-1 measurements from the past year for spirometry analysis
+  const yearAgo = new Date();
+  yearAgo.setDate(yearAgo.getDate() - 365);
+
+  let fev1Measurements = [];
+  let fvcMeasurements = [];
+
+  try {
+    fev1Measurements = getMeasurements('fev1', profileId).filter(m =>
+        new Date(m.timestamp) >= yearAgo
+    );
+    fvcMeasurements = getMeasurements('fvc', profileId).filter(m =>
+        new Date(m.timestamp) >= yearAgo
+    );
+  } catch (error) {
+    // Measurements may not be available
+  }
+
+  if (relevantLogs.length === 0 && fev1Measurements.length === 0) {
+    return {
+      hasData: false,
+      message: 'No asthma logs or FEV-1 measurements found',
+      supportedRating: null,
+      evidence: [],
+      gaps: ['Start logging asthma symptoms and attacks', 'Get spirometry testing (FEV-1) to establish rating'],
+    };
+  }
+
+  // Calculate FEV-1 metrics
+  let latestFev1Percent = null;
+  let latestFev1FvcRatio = null;
+
+  if (fev1Measurements.length > 0) {
+    // Use most recent FEV-1 measurement
+    const latestFev1 = fev1Measurements.reduce((latest, current) =>
+        new Date(current.timestamp) > new Date(latest.timestamp) ? current : latest
+    );
+
+    if (latestFev1.values.fev1 && latestFev1.values.fev1Predicted) {
+      latestFev1Percent = (latestFev1.values.fev1 / latestFev1.values.fev1Predicted) * 100;
+    }
+
+    // Calculate FEV-1/FVC ratio if we have matching FVC
+    if (fvcMeasurements.length > 0) {
+      // Find FVC measurement closest to FEV-1 measurement (within 24 hours)
+      const matchingFvc = fvcMeasurements.find(fvc => {
+        const timeDiff = Math.abs(new Date(fvc.timestamp) - new Date(latestFev1.timestamp));
+        return timeDiff < 24 * 60 * 60 * 1000; // Within 24 hours
+      });
+
+      if (matchingFvc && latestFev1.values.fev1) {
+        latestFev1FvcRatio = (latestFev1.values.fev1 / matchingFvc.values.fvc) * 100;
+      }
+    }
+  }
+
+  // Analyze symptom patterns
+  const monthsInPeriod = evaluationPeriodDays / 30;
+
+  const attackLogs = relevantLogs.filter(log => log.symptomId === 'asthma-attack');
+  const erVisits = relevantLogs.filter(log => log.symptomId === 'asthma-er-visit');
+  const mdVisits = relevantLogs.filter(log => log.symptomId === 'asthma-md-visit');
+  const rescueInhalerUse = relevantLogs.filter(log => log.symptomId === 'asthma-rescue-inhaler');
+
+  const attacksPerMonth = attackLogs.length / monthsInPeriod;
+  const attacksPerWeek = attackLogs.length / (evaluationPeriodDays / 7);
+  const mdVisitsPerMonth = mdVisits.length / monthsInPeriod;
+
+  // Build evidence array
+  const evidence = [];
+
+  if (fev1Measurements.length > 0 && latestFev1Percent !== null) {
+    evidence.push(`Most recent FEV-1: ${latestFev1Percent.toFixed(0)}% of predicted`);
+  }
+
+  if (latestFev1FvcRatio !== null) {
+    evidence.push(`FEV-1/FVC ratio: ${latestFev1FvcRatio.toFixed(0)}%`);
+  }
+
+  if (attackLogs.length > 0) {
+    evidence.push(`${attackLogs.length} asthma attacks logged (${attacksPerMonth.toFixed(1)}/month)`);
+  }
+
+  if (erVisits.length > 0) {
+    evidence.push(`${erVisits.length} ER visits for asthma`);
+  }
+
+  if (mdVisits.length > 0) {
+    evidence.push(`${mdVisits.length} physician visits for exacerbations (${mdVisitsPerMonth.toFixed(1)}/month)`);
+  }
+
+  if (rescueInhalerUse.length > 0) {
+    evidence.push(`${rescueInhalerUse.length} rescue inhaler uses documented`);
+  }
+
+  // Determine supported rating
+  let supportedRating = 0;
+  let ratingRationale = [];
+  let gaps = [];
+
+  // 100% Rating
+  if (latestFev1Percent !== null && latestFev1Percent < 40) {
+    supportedRating = 100;
+    ratingRationale = [
+      `FEV-1 at ${latestFev1Percent.toFixed(0)}% of predicted (<40% required for 100%)`,
+      'Spirometry evidence supports 100% rating',
+    ];
+  } else if (latestFev1FvcRatio !== null && latestFev1FvcRatio < 40) {
+    supportedRating = 100;
+    ratingRationale = [
+      `FEV-1/FVC ratio at ${latestFev1FvcRatio.toFixed(0)}% (<40% required for 100%)`,
+      'Spirometry evidence supports 100% rating',
+    ];
+  } else if (attacksPerWeek > 1) {
+    supportedRating = 100;
+    ratingRationale = [
+      `${attacksPerWeek.toFixed(1)} attacks per week (>1/week required for 100%)`,
+      'Attack frequency supports 100% rating if episodes include respiratory failure',
+    ];
+    gaps.push('Document respiratory failure episodes during attacks (requires medical records)');
+  }
+
+  // 60% Rating
+  else if (latestFev1Percent !== null && latestFev1Percent >= 40 && latestFev1Percent <= 55) {
+    supportedRating = 60;
+    ratingRationale = [
+      `FEV-1 at ${latestFev1Percent.toFixed(0)}% of predicted (40-55% range)`,
+      'Spirometry evidence supports 60% rating',
+    ];
+  } else if (latestFev1FvcRatio !== null && latestFev1FvcRatio >= 40 && latestFev1FvcRatio <= 55) {
+    supportedRating = 60;
+    ratingRationale = [
+      `FEV-1/FVC ratio at ${latestFev1FvcRatio.toFixed(0)}% (40-55% range)`,
+      'Spirometry evidence supports 60% rating',
+    ];
+  } else if (mdVisitsPerMonth >= 1) {
+    supportedRating = 60;
+    ratingRationale = [
+      `${mdVisitsPerMonth.toFixed(1)} physician visits per month for exacerbations (≥1/month required)`,
+      'Pattern of monthly medical visits supports 60% rating',
+    ];
+  }
+
+  // 30% Rating
+  else if (latestFev1Percent !== null && latestFev1Percent >= 56 && latestFev1Percent <= 70) {
+    supportedRating = 30;
+    ratingRationale = [
+      `FEV-1 at ${latestFev1Percent.toFixed(0)}% of predicted (56-70% range)`,
+      'Spirometry evidence supports 30% rating',
+    ];
+  } else if (latestFev1FvcRatio !== null && latestFev1FvcRatio >= 56 && latestFev1FvcRatio <= 70) {
+    supportedRating = 30;
+    ratingRationale = [
+      `FEV-1/FVC ratio at ${latestFev1FvcRatio.toFixed(0)}% (56-70% range)`,
+      'Spirometry evidence supports 30% rating',
+    ];
+  } else if (rescueInhalerUse.length > 0 && relevantLogs.length > 0) {
+    supportedRating = 30;
+    ratingRationale = [
+      'Evidence of regular bronchodilator use',
+      'Daily or frequent inhaled medication supports 30% rating',
+    ];
+    gaps.push('Get spirometry (FEV-1) testing to confirm rating level');
+  }
+
+  // 10% Rating
+  else if (latestFev1Percent !== null && latestFev1Percent >= 71 && latestFev1Percent <= 80) {
+    supportedRating = 10;
+    ratingRationale = [
+      `FEV-1 at ${latestFev1Percent.toFixed(0)}% of predicted (71-80% range)`,
+      'Spirometry evidence supports 10% rating',
+    ];
+  } else if (latestFev1FvcRatio !== null && latestFev1FvcRatio >= 71 && latestFev1FvcRatio <= 80) {
+    supportedRating = 10;
+    ratingRationale = [
+      `FEV-1/FVC ratio at ${latestFev1FvcRatio.toFixed(0)}% (71-80% range)`,
+      'Spirometry evidence supports 10% rating',
+    ];
+  } else if (attackLogs.length > 0 || rescueInhalerUse.length > 0) {
+    supportedRating = 10;
+    ratingRationale = [
+      'Evidence of intermittent asthma symptoms and inhaler use',
+      'Pattern suggests 10% rating',
+    ];
+    gaps.push('Get spirometry (FEV-1) testing to confirm or increase rating');
+  }
+
+  // 0% or Insufficient Data
+  else {
+    if (latestFev1Percent !== null && latestFev1Percent > 80) {
+      supportedRating = 0;
+      ratingRationale = [
+        `FEV-1 at ${latestFev1Percent.toFixed(0)}% of predicted (>80% is normal)`,
+        'Spirometry shows minimal impairment',
+      ];
+    } else {
+      supportedRating = 0;
+      ratingRationale = [
+        'Insufficient evidence for compensable rating',
+      ];
+      gaps.push('Get spirometry (FEV-1) testing - this is the primary evidence for asthma ratings');
+      gaps.push('Document all asthma attacks and exacerbations');
+      gaps.push('Track medication use (rescue inhalers, daily controllers, oral steroids)');
+    }
+  }
+
+  // Add general gaps if rating could be higher
+  if (supportedRating < 100) {
+    if (fev1Measurements.length === 0) {
+      gaps.push('Get spirometry testing (FEV-1/FVC) - this is the gold standard for VA asthma ratings');
+    } else if (fev1Measurements.length < 2) {
+      gaps.push('Consider repeat spirometry testing to establish consistent pattern');
+    }
+
+    if (mdVisits.length === 0) {
+      gaps.push('Document physician visits for asthma exacerbations');
+    }
+  }
+
+  return {
+    hasData: true,
+    condition: 'Bronchial Asthma',
+    diagnosticCode: '6602',
+    evaluationPeriodDays,
+    supportedRating: supportedRating.toString(),
+    ratingRationale,
+    evidence,
+    gaps,
+    criteria: ASTHMA_CRITERIA,
+    disclaimer: 'This analysis is for documentation guidance only. The VA makes all final rating determinations based on the complete evidence of record, including spirometry testing.',
+  };
+};
+
 // Helper function to check if timestamp is within evaluation period
 const isWithinEvaluationPeriod = (timestamp, days) => {
   const logDate = new Date(timestamp);
@@ -7041,3 +7469,5 @@ export const getTBIDefinition = (term) => TBI_CRITERIA.definitions[term] || null
 export const getHypertensionDefinition = (term) => HYPERTENSION_CRITERIA.definitions[term] || null;
 export const getTinnitusDefinition = (term) => TINNITUS_CRITERIA.definitions[term] || null;
 export const getFibromyalgiaDefinition = (term) => FIBROMYALGIA_CRITERIA.definitions[term] || null;
+export const getAsthmaDefinition = (term) => ASTHMA_CRITERIA.definitions[term] || null;
+export const getAllAsthmaRatings = () => ASTHMA_CRITERIA.ratings;
