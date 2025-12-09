@@ -89,6 +89,13 @@ export const symptomCategories = [
     ]
   },
   {
+    id: 'hearing',
+    name: 'Hearing Symptoms',
+    symptoms: [
+      { id: 'hearing-loss-noticed', name: 'Hearing Loss - Difficulty Hearing' },
+    ]
+  },
+  {
     id: 'radiculopathy',
     name: 'Radiculopathy Symptoms',
     symptoms: [
@@ -186,6 +193,13 @@ export const symptomCategories = [
     ]
   },
   {
+    id: 'gerd-complications',
+    name: 'GERD Complications',
+    symptoms: [
+      { id: 'gerd-complication', name: 'GERD - Complications' },
+    ]
+  },
+  {
     id: 'fatigue',
     name: 'Fatigue & Energy',
     symptoms: [
@@ -236,6 +250,14 @@ export const symptomCategories = [
       { id: 'tbi-headache', name: 'Post-TBI Headache' },
       { id: 'tbi-mood', name: 'Mood Changes' },
       { id: 'tbi-sleep', name: 'Sleep Disturbance (TBI)' },
+    ]
+  },
+  {
+    id: 'tbi-residuals',
+    name: 'TBI Residual Symptoms',
+    symptoms: [
+      { id: 'tbi-cognitive', name: 'TBI - Cognitive Difficulties' },
+      { id: 'tbi-emotional', name: 'TBI - Emotional/Behavioral Changes' },
     ]
   },
   {
@@ -326,8 +348,69 @@ export const symptomCategories = [
       { id: 'knee-locking', name: 'Knee Locking/Catching' },
       { id: 'knee-pain', name: 'Knee Pain' },
     ]
-  }
+  },
+  {
+    id: 'skin',
+    name: 'Skin Conditions',
+    symptoms: [
+      { id: 'scar-pain', name: 'Scar - Pain or Tenderness' },
+      { id: 'scar-limitation', name: 'Scar - Movement Limitation' },
+      { id: 'scar-disfigurement', name: 'Scar - Disfigurement' },
+      { id: 'psoriasis-flare', name: 'Psoriasis Flare-Up' },
+      { id: 'eczema-flare', name: 'Eczema/Dermatitis Flare-Up' },
+    ]
+  },
 ];
+
+// Helper function to determine if a category is a "child" of another
+const getParentCategory = (categoryName) => {
+  const name = categoryName.toLowerCase();
+
+  // Map child categories to their parent keywords
+  if (name.includes('gerd') && name.includes('complication')) return 'gerd';
+  if (name.includes('tbi') && name.includes('residual')) return 'tbi';
+  if (name.includes('ptsd')) return 'ptsd';
+  if (name.includes('depression')) return 'depression';
+  if (name.includes('anxiety') && name.includes('symptoms')) return 'anxiety';
+  if (name.includes('panic')) return 'panic';
+  if (name.includes('bipolar')) return 'bipolar';
+  if (name.includes('ibs')) return 'ibs';
+  if (name.includes('chronic fatigue')) return 'fatigue';
+  if (name.includes('radiculopathy')) return 'radiculopathy';
+  if (name.includes('peripheral neuropathy')) return 'neuropathy';
+  if (name.includes('asthma')) return 'asthma';
+  if (name.includes('rhinitis')) return 'rhinitis';
+  if (name.includes('sinusitis')) return 'sinusitis';
+
+  return null; // No parent, this is a standalone category
+};
+
+// Sort categories alphabetically but keep related items together
+const sortedCategories = [...symptomCategories].sort((a, b) => {
+  const aParent = getParentCategory(a.name);
+  const bParent = getParentCategory(b.name);
+
+  // If both have same parent, maintain original order
+  if (aParent === bParent && aParent !== null) {
+    return 0;
+  }
+
+  // If 'a' is parent of 'b', a comes first
+  if (a.name.toLowerCase().includes(bParent)) {
+    return -1;
+  }
+
+  // If 'b' is parent of 'a', b comes first
+  if (b.name.toLowerCase().includes(aParent)) {
+    return 1;
+  }
+
+  // Otherwise, sort alphabetically
+  return a.name.localeCompare(b.name);
+});
+
+// Export sorted categories for use in dropdowns
+export const sortedSymptomCategories = sortedCategories;
 
 // Flatten all symptoms for easy lookup
 export const allSymptoms = symptomCategories.flatMap(cat =>

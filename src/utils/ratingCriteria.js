@@ -258,6 +258,48 @@ export const CONDITIONS = {
       'asthma-md-visit',
     ],
   },
+  HEARING_LOSS: {
+    id: 'hearing-loss',
+    name: 'Hearing Loss',
+    diagnosticCode: '6100',
+    cfrReference: '38 CFR 4.85',
+    symptomIds: ['hearing-loss-noticed'],
+  },
+  SCARS: {
+    id: 'scars',
+    name: 'Scars (Disfiguring)',
+    diagnosticCode: '7800-7805',
+    cfrReference: '38 CFR 4.118',
+    symptomIds: ['scar-pain', 'scar-limitation', 'scar-disfigurement'],
+  },
+  PSORIASIS: {
+    id: 'psoriasis',
+    name: 'Psoriasis',
+    diagnosticCode: '7816',
+    cfrReference: '38 CFR 4.118',
+    symptomIds: ['psoriasis-flare'],
+  },
+  ECZEMA: {
+    id: 'eczema',
+    name: 'Eczema/Dermatitis',
+    diagnosticCode: '7806',
+    cfrReference: '38 CFR 4.118',
+    symptomIds: ['eczema-flare'],
+  },
+  TBI_RESIDUALS: {
+    id: 'tbi-residuals',
+    name: 'Residuals of TBI',
+    diagnosticCode: '8045-1',
+    cfrReference: '38 CFR 4.124a',
+    symptomIds: ['tbi-cognitive', 'tbi-emotional'],
+  },
+  GERD_COMPLICATIONS: {
+    id: 'gerd-complications',
+    name: 'GERD with Complications',
+    diagnosticCode: '7346',
+    cfrReference: '38 CFR 4.114',
+    symptomIds: ['gerd-complication'],
+  },
   TINNITUS: {
     id: 'tinnitus',
     name: 'Tinnitus',
@@ -265,6 +307,7 @@ export const CONDITIONS = {
     cfrReference: '38 CFR 4.87',
     symptomIds: ['tinnitus'],
   },
+
   FIBROMYALGIA: {
     id: 'fibromyalgia',
     name: 'Fibromyalgia',
@@ -3404,6 +3447,276 @@ export const ASTHMA_CRITERIA = {
   },
 
   note: 'In the absence of clinical findings of asthma at time of examination, a verified history of asthmatic attacks must be of record.',
+};
+
+// ============================================
+// RATING CRITERIA - HEARING LOSS
+// ============================================
+
+export const HEARING_LOSS_CRITERIA = {
+  description: 'Hearing loss rated based on pure-tone audiometry',
+  levels: [
+    {
+      rating: '100%',
+      criteria: [
+        'Bilateral hearing loss with average of 55 dB or worse at 500, 1000, 2000 Hz',
+        'With additional loss at 3000, 4000 Hz'
+      ]
+    },
+    {
+      rating: '60%',
+      criteria: [
+        'Bilateral hearing loss with average of 45-54 dB at 500, 1000, 2000 Hz'
+      ]
+    },
+    {
+      rating: '30%',
+      criteria: [
+        'Bilateral hearing loss with average of 35-44 dB at 500, 1000, 2000 Hz'
+      ]
+    },
+    {
+      rating: '10%',
+      criteria: [
+        'Bilateral hearing loss with average of 26-34 dB at 500, 1000, 2000 Hz'
+      ]
+    },
+    {
+      rating: '0%',
+      criteria: ['Hearing loss present but below compensable level']
+    }
+  ],
+  notes: [
+    'Requires audiometry testing (pure-tone threshold test)',
+    'Rating based on Maryland CNC word test or similar',
+    'Unilateral hearing loss may be compensable if severe'
+  ]
+};
+
+// ============================================
+// RATING CRITERIA - SCARS
+// ============================================
+
+export const SCARS_CRITERIA = {
+  description: 'Scars rated based on location, size, and characteristics',
+  levels: [
+    {
+      rating: '80%',
+      criteria: [
+        'Head, face, or neck: deep scar(s) that cause gross distortion',
+        'Extremely unsightly or disfiguring'
+      ]
+    },
+    {
+      rating: '50%',
+      criteria: [
+        'Head, face, or neck: 144+ square cm of scarring',
+        'Unstable or painful scars over large areas'
+      ]
+    },
+    {
+      rating: '30%',
+      criteria: [
+        'Head, face, or neck: 72-143 square cm',
+        'Or one major characteristic causing moderate disfigurement'
+      ]
+    },
+    {
+      rating: '10%',
+      criteria: [
+        'Head, face, or neck: 6-71 square cm',
+        'Other body areas: 144+ square cm'
+      ]
+    },
+    {
+      rating: '0%',
+      criteria: ['Scarring present but below compensable levels']
+    }
+  ],
+  notes: [
+    'Measure scars in square centimeters',
+    'Head/face/neck scars rated higher due to visibility',
+    'Unstable or painful scars may warrant higher rating',
+    'Keloid scars rated based on size and characteristics'
+  ]
+};
+
+// ============================================
+// RATING CRITERIA - PSORIASIS
+// ============================================
+
+export const PSORIASIS_CRITERIA = {
+  description: 'Psoriasis rated based on extent of body coverage and characteristics',
+  levels: [
+    {
+      rating: '60%',
+      criteria: [
+        'Characteristic lesions of 40% or more of entire body',
+        'Or 40% or more of exposed areas affected'
+      ]
+    },
+    {
+      rating: '30%',
+      criteria: [
+        'Characteristic lesions of 20-39% of entire body',
+        'Or 20-39% of exposed areas affected'
+      ]
+    },
+    {
+      rating: '10%',
+      criteria: [
+        'Characteristic lesions of 5-19% of entire body',
+        'Or 5-19% of exposed areas affected'
+      ]
+    },
+    {
+      rating: '0%',
+      criteria: ['Psoriasis present but affects less than 5% of body']
+    }
+  ],
+  notes: [
+    'Exposed areas: head, face, neck, hands',
+    'Use "rule of nines" or palm method (palm = ~1% body surface)',
+    'Active lesions only (not clear/remission areas)',
+    'Systemic therapy may indicate severity'
+  ]
+};
+
+// ============================================
+// RATING CRITERIA - ECZEMA/DERMATITIS
+// ============================================
+
+export const ECZEMA_CRITERIA = {
+  description: 'Eczema/dermatitis rated based on extent and characteristics',
+  levels: [
+    {
+      rating: '60%',
+      criteria: [
+        'More than 40% of entire body or exposed areas affected',
+        'Characteristic lesions with intense itching'
+      ]
+    },
+    {
+      rating: '30%',
+      criteria: [
+        '20-40% of entire body or exposed areas affected'
+      ]
+    },
+    {
+      rating: '10%',
+      criteria: [
+        '5-20% of entire body or exposed areas affected',
+        'With frequent flare-ups'
+      ]
+    },
+    {
+      rating: '0%',
+      criteria: ['Eczema present but affects less than 5% of body']
+    }
+  ],
+  notes: [
+    'Exposed areas: head, face, neck, hands (rated same as body)',
+    'Consider frequency and duration of flare-ups',
+    'Lichenification (thickened skin) indicates chronic condition'
+  ]
+};
+
+// ============================================
+// RATING CRITERIA - TBI RESIDUALS
+// ============================================
+
+export const TBI_RESIDUALS_CRITERIA = {
+  description: 'Residual effects of TBI rated based on cognitive, emotional, and physical symptoms',
+  levels: [
+    {
+      rating: '100%',
+      criteria: [
+        'Total occupational and social impairment',
+        'Unable to perform activities of daily living'
+      ]
+    },
+    {
+      rating: '70%',
+      criteria: [
+        'Occupational and social impairment with deficiencies in most areas',
+        'Memory loss, impaired judgment, severe mood disturbance'
+      ]
+    },
+    {
+      rating: '50%',
+      criteria: [
+        'Occupational and social impairment with reduced reliability',
+        'Memory problems, difficulty concentrating, mood issues'
+      ]
+    },
+    {
+      rating: '30%',
+      criteria: [
+        'Occupational and social impairment with occasional decrease in efficiency',
+        'Mild memory loss, attention difficulties'
+      ]
+    },
+    {
+      rating: '10%',
+      criteria: [
+        'Mild residual symptoms',
+        'Occasional cognitive or emotional difficulties'
+      ]
+    },
+    {
+      rating: '0%',
+      criteria: ['TBI history but no current symptoms']
+    }
+  ],
+  notes: [
+    'Often rated same as main TBI rating',
+    'Consider cognitive, emotional, and physical residuals',
+    'Neuropsychological testing may support higher ratings',
+    'Pyramidal on top of TBI rating for paralysis/motor issues'
+  ]
+};
+
+// ============================================
+// RATING CRITERIA - GERD COMPLICATIONS
+// ============================================
+
+export const GERD_COMPLICATIONS_CRITERIA = {
+  description: 'GERD with complications rated based on severity and treatment required',
+  levels: [
+    {
+      rating: '60%',
+      criteria: [
+        'Severe symptoms with Barrett\'s esophagus',
+        'Or stricture requiring dilation every 2-3 months',
+        'Significant weight loss, malnutrition'
+      ]
+    },
+    {
+      rating: '30%',
+      criteria: [
+        'Persistently recurrent symptoms with documented pathology',
+        'Hiatal hernia or stricture with occasional dilation',
+        'Daily medication required despite treatment'
+      ]
+    },
+    {
+      rating: '10%',
+      criteria: [
+        'Symptoms controlled with continuous medication',
+        'Mild to moderate pathology (esophagitis, small hiatal hernia)'
+      ]
+    },
+    {
+      rating: '0%',
+      criteria: ['GERD complications documented but symptoms controlled']
+    }
+  ],
+  notes: [
+    'Requires documentation of complications via endoscopy',
+    'Barrett\'s esophagus is pre-cancerous condition',
+    'Frequency of dilation procedures indicates severity',
+    'Weight loss/malnutrition elevates rating'
+  ]
 };
 
 
@@ -7095,6 +7408,470 @@ export const analyzeAsthmaLogs = (logs, options = {}) => {
     gaps,
     criteria: ASTHMA_CRITERIA,
     disclaimer: 'This analysis is for documentation guidance only. The VA makes all final rating determinations based on the complete evidence of record, including spirometry testing.',
+  };
+};
+
+// ============================================
+// ANALYSIS FUNCTIONS - HEARING LOSS
+// ============================================
+
+/**
+ * Analyzes hearing loss logs
+ * Note: Hearing loss requires audiometry data for accurate rating
+ */
+export const analyzeHearingLossLogs = (logs, options = {}) => {
+  const {
+    evaluationPeriodDays = 90,
+  } = options;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    return logDate >= cutoffDate && log.symptomId === 'hearing-loss-noticed';
+  });
+
+  if (relevantLogs.length === 0) {
+    return {
+      hasData: false,
+      message: 'No hearing loss logs found',
+      supportedRating: null,
+      evidence: [],
+      gaps: ['Start logging hearing difficulties', 'Get audiometry testing'],
+    };
+  }
+
+  // Count bilateral vs unilateral
+  const bilateralCount = relevantLogs.filter(log =>
+      log.hearingData?.affectedEars === 'both'
+  ).length;
+
+  const unilateralCount = relevantLogs.length - bilateralCount;
+
+  const supportedRating = 'Requires Clinical Testing';
+  const ratingRationale = [
+    'Hearing loss requires pure-tone audiometry for accurate rating',
+    `${bilateralCount} logs indicate bilateral hearing difficulties`,
+    unilateralCount > 0 ? `${unilateralCount} logs indicate unilateral hearing loss` : null,
+  ].filter(Boolean);
+
+  const gaps = [
+    'CRITICAL: Get pure-tone audiometry test from audiologist',
+    'Test must measure thresholds at 500, 1000, 2000, 3000, 4000 Hz',
+    'Request Maryland CNC word recognition test if available',
+    'Document situations where hearing loss impacts daily function',
+  ];
+
+  return {
+    hasData: true,
+    condition: 'Hearing Loss',
+    diagnosticCode: '6100',
+    evaluationPeriodDays,
+    supportedRating,
+    ratingRationale,
+    evidence: {
+      totalLogs: relevantLogs.length,
+      bilateralIncidents: bilateralCount,
+      unilateralIncidents: unilateralCount,
+    },
+    gaps,
+    criteria: HEARING_LOSS_CRITERIA,
+    disclaimer: 'Hearing loss ratings require audiometry testing. This analysis is based on symptom logs only.',
+  };
+};
+
+// ============================================
+// ANALYSIS FUNCTIONS - SCARS
+// ============================================
+
+export const analyzeScarsLogs = (logs, options = {}) => {
+  const {
+    evaluationPeriodDays = 90,
+  } = options;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    return logDate >= cutoffDate &&
+        ['scar-pain', 'scar-limitation', 'scar-disfigurement'].includes(log.symptomId);
+  });
+
+  if (relevantLogs.length === 0) {
+    return {
+      hasData: false,
+      message: 'No scar logs found',
+      supportedRating: null,
+      evidence: [],
+      gaps: ['Log scar symptoms with location and size'],
+    };
+  }
+
+  // Extract scar locations
+  const scarLocations = [...new Set(
+      relevantLogs
+      .map(log => log.scarData?.scarLocation)
+      .filter(Boolean)
+  )];
+
+  const supportedRating = 'Requires Clinical Measurement';
+  const ratingRationale = [
+    'Scar ratings require measured area in square centimeters',
+    `Documented scars at: ${scarLocations.join(', ')}`,
+    'Facial/neck scars may warrant higher ratings',
+  ];
+
+  const gaps = [
+    'CRITICAL: Have provider measure scar area in square centimeters',
+    'Document if scars are on exposed areas (head, face, neck, hands)',
+    'Note characteristics: raised, keloid, unstable, painful',
+    'Photograph scars for documentation',
+  ];
+
+  return {
+    hasData: true,
+    condition: 'Scars (Disfiguring)',
+    diagnosticCode: '7800-7805',
+    evaluationPeriodDays,
+    supportedRating,
+    ratingRationale,
+    evidence: {
+      scarLocations,
+      totalLogs: relevantLogs.length,
+    },
+    gaps,
+    criteria: SCARS_CRITERIA,
+    disclaimer: 'Scar ratings require clinical measurement of area and assessment of characteristics.',
+  };
+};
+
+// ============================================
+// ANALYSIS FUNCTIONS - PSORIASIS
+// ============================================
+
+export const analyzePsoriasisLogs = (logs, options = {}) => {
+  const {
+    evaluationPeriodDays = 90,
+  } = options;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    return logDate >= cutoffDate && log.symptomId === 'psoriasis-flare';
+  });
+
+  if (relevantLogs.length === 0) {
+    return {
+      hasData: false,
+      message: 'No psoriasis logs found',
+      supportedRating: null,
+      evidence: [],
+      gaps: ['Log psoriasis flare-ups with body coverage percentage'],
+    };
+  }
+
+  // Get most recent body coverage estimate
+  const recentLog = relevantLogs[relevantLogs.length - 1];
+  const bodyCoverage = recentLog.psoriasisData?.bodyPercentage;
+
+  let supportedRating = '0%';
+  let ratingRationale = [];
+
+  if (bodyCoverage) {
+    if (bodyCoverage === '40+') {
+      supportedRating = '60%';
+      ratingRationale = ['40% or more of body covered (60% criteria)'];
+    } else if (bodyCoverage === '20-40') {
+      supportedRating = '30%';
+      ratingRationale = ['20-40% of body covered (30% criteria)'];
+    } else if (['10-20', '5-10'].includes(bodyCoverage)) {
+      supportedRating = '10%';
+      ratingRationale = ['5-20% of body covered (10% criteria)'];
+    } else {
+      ratingRationale = ['Less than 5% body coverage'];
+    }
+  } else {
+    supportedRating = 'Insufficient Data';
+    ratingRationale = ['Body coverage percentage not documented'];
+  }
+
+  const gaps = [
+    'Document percentage of body covered during flares',
+    'Use "rule of nines" or palm method (palm = 1% body surface)',
+    'Note if exposed areas (head, face, neck, hands) are affected',
+    'Track frequency and duration of flare-ups',
+    'Document treatments used (topical, systemic, phototherapy)',
+  ];
+
+  return {
+    hasData: true,
+    condition: 'Psoriasis',
+    diagnosticCode: '7816',
+    evaluationPeriodDays,
+    supportedRating,
+    ratingRationale,
+    evidence: {
+      totalFlares: relevantLogs.length,
+      recentCoverage: bodyCoverage || 'Not documented',
+    },
+    gaps,
+    criteria: PSORIASIS_CRITERIA,
+    disclaimer: 'This analysis is for documentation guidance only.',
+  };
+};
+
+// ============================================
+// ANALYSIS FUNCTIONS - ECZEMA
+// ============================================
+
+export const analyzeEczemaLogs = (logs, options = {}) => {
+  const {
+    evaluationPeriodDays = 90,
+  } = options;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    return logDate >= cutoffDate && log.symptomId === 'eczema-flare';
+  });
+
+  if (relevantLogs.length === 0) {
+    return {
+      hasData: false,
+      message: 'No eczema logs found',
+      supportedRating: null,
+      evidence: [],
+      gaps: ['Log eczema flare-ups with affected body percentage'],
+    };
+  }
+
+  // Get most recent body coverage
+  const recentLog = relevantLogs[relevantLogs.length - 1];
+  const bodyCoverage = recentLog.eczemaData?.bodyPercentage;
+
+  let supportedRating = '0%';
+  let ratingRationale = [];
+
+  if (bodyCoverage) {
+    if (bodyCoverage === '40+') {
+      supportedRating = '60%';
+      ratingRationale = ['40% or more of body affected (60% criteria)'];
+    } else if (bodyCoverage === '20-40') {
+      supportedRating = '30%';
+      ratingRationale = ['20-40% of body affected (30% criteria)'];
+    } else if (['10-20', '5-10'].includes(bodyCoverage)) {
+      supportedRating = '10%';
+      ratingRationale = ['5-20% of body affected (10% criteria)'];
+    } else {
+      ratingRationale = ['Less than 5% body coverage'];
+    }
+  } else {
+    supportedRating = 'Insufficient Data';
+    ratingRationale = ['Body coverage percentage not documented'];
+  }
+
+  const gaps = [
+    'Document percentage of body affected during flares',
+    'Track frequency and duration of flare-ups',
+    'Note if exposed areas are affected',
+    'Document intense itching and impact on sleep/function',
+    'Record treatments used and their effectiveness',
+  ];
+
+  return {
+    hasData: true,
+    condition: 'Eczema/Dermatitis',
+    diagnosticCode: '7806',
+    evaluationPeriodDays,
+    supportedRating,
+    ratingRationale,
+    evidence: {
+      totalFlares: relevantLogs.length,
+      recentCoverage: bodyCoverage || 'Not documented',
+    },
+    gaps,
+    criteria: ECZEMA_CRITERIA,
+    disclaimer: 'This analysis is for documentation guidance only.',
+  };
+};
+
+// ============================================
+// ANALYSIS FUNCTIONS - TBI RESIDUALS
+// ============================================
+
+export const analyzeTBIResidualsLogs = (logs, options = {}) => {
+  const {
+    evaluationPeriodDays = 90,
+  } = options;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    return logDate >= cutoffDate &&
+        ['tbi-cognitive', 'tbi-emotional'].includes(log.symptomId);
+  });
+
+  if (relevantLogs.length === 0) {
+    return {
+      hasData: false,
+      message: 'No TBI residual symptoms logged',
+      supportedRating: null,
+      evidence: [],
+      gaps: ['Log cognitive and emotional symptoms from TBI'],
+    };
+  }
+
+  const cognitiveCount = relevantLogs.filter(log =>
+      log.symptomId === 'tbi-cognitive'
+  ).length;
+
+  const emotionalCount = relevantLogs.filter(log =>
+      log.symptomId === 'tbi-emotional'
+  ).length;
+
+  // Frequency analysis
+  const monthsInPeriod = evaluationPeriodDays / 30;
+  const symptomsPerMonth = relevantLogs.length / monthsInPeriod;
+
+  let supportedRating = '10%';
+  let ratingRationale = [];
+
+  if (symptomsPerMonth >= 10) {
+    supportedRating = '50%';
+    ratingRationale = [
+      `${symptomsPerMonth.toFixed(1)} residual symptoms per month`,
+      'Frequent cognitive and/or emotional difficulties',
+      'Pattern suggests occupational and social impairment',
+    ];
+  } else if (symptomsPerMonth >= 5) {
+    supportedRating = '30%';
+    ratingRationale = [
+      `${symptomsPerMonth.toFixed(1)} residual symptoms per month`,
+      'Regular cognitive and/or emotional difficulties',
+    ];
+  } else {
+    ratingRationale = [
+      `${symptomsPerMonth.toFixed(1)} residual symptoms per month`,
+      'Mild but documented TBI residuals',
+    ];
+  }
+
+  const gaps = [
+    'Consider neuropsychological testing for objective cognitive assessment',
+    'Document specific functional impacts (work, relationships, daily tasks)',
+    'Track medication use for residual symptoms',
+    'Note if symptoms are separate from diagnosed mental health conditions',
+  ];
+
+  return {
+    hasData: true,
+    condition: 'Residuals of TBI',
+    diagnosticCode: '8045-1',
+    evaluationPeriodDays,
+    supportedRating,
+    ratingRationale,
+    evidence: {
+      cognitiveSymptoms: cognitiveCount,
+      emotionalSymptoms: emotionalCount,
+      totalLogs: relevantLogs.length,
+      monthlyRate: symptomsPerMonth.toFixed(1),
+    },
+    gaps,
+    criteria: TBI_RESIDUALS_CRITERIA,
+    disclaimer: 'TBI residuals often rated same as main TBI rating. Neuropsych testing may support higher ratings.',
+  };
+};
+
+// ============================================
+// ANALYSIS FUNCTIONS - GERD COMPLICATIONS
+// ============================================
+
+export const analyzeGERDComplicationsLogs = (logs, options = {}) => {
+  const {
+    evaluationPeriodDays = 90,
+  } = options;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    return logDate >= cutoffDate && log.symptomId === 'gerd-complication';
+  });
+
+  if (relevantLogs.length === 0) {
+    return {
+      hasData: false,
+      message: 'No GERD complication logs found',
+      supportedRating: null,
+      evidence: [],
+      gaps: ['Log GERD complications if diagnosed'],
+    };
+  }
+
+  // Check for serious complications
+  const hasBarretts = relevantLogs.some(log =>
+      log.gerdComplicationData?.complicationType === 'barretts'
+  );
+
+  const hasStricture = relevantLogs.some(log =>
+      log.gerdComplicationData?.complicationType === 'stricture'
+  );
+
+  let supportedRating = '10%';
+  let ratingRationale = ['Documented GERD complications requiring ongoing treatment'];
+
+  if (hasBarretts) {
+    supportedRating = '60%';
+    ratingRationale = [
+      'Barrett\'s esophagus is serious pre-cancerous complication',
+      'Requires regular monitoring and treatment',
+    ];
+  } else if (hasStricture) {
+    supportedRating = '30%';
+    ratingRationale = [
+      'Esophageal stricture documented',
+      'May require periodic dilation procedures',
+    ];
+  } else {
+    supportedRating = '30%';
+    ratingRationale = [
+      'Documented GERD complications (hiatal hernia, esophagitis)',
+      'Persistently recurrent symptoms despite treatment',
+    ];
+  }
+
+  const gaps = [
+    'CRITICAL: Obtain endoscopy reports documenting complications',
+    'Document frequency of dilation procedures if applicable',
+    'Track daily medication requirements',
+    'Note any weight loss or nutritional issues',
+    'Request biopsy results if Barrett\'s esophagus suspected',
+  ];
+
+  return {
+    hasData: true,
+    condition: 'GERD with Complications',
+    diagnosticCode: '7346',
+    evaluationPeriodDays,
+    supportedRating,
+    ratingRationale,
+    evidence: {
+      totalLogs: relevantLogs.length,
+      hasBarretts,
+      hasStricture,
+    },
+    gaps,
+    criteria: GERD_COMPLICATIONS_CRITERIA,
+    disclaimer: 'GERD complication ratings require endoscopy documentation and medical records.',
   };
 };
 

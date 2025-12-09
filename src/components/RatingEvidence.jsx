@@ -12,12 +12,14 @@ import {
   analyzeIntervertebralDiscLogs,
   analyzeKneeInstabilityLogs,
   analyzeTBILogs,
+  analyzeTBIResidualsLogs,
   analyzeHypertensionLogs,
   analyzeTinnitusLogs,
   analyzeFibromyalgiaLogs,
   analyzeDiabetesLogs,
   analyzeIBSLogs,
   analyzeGERDLogs,
+  analyzeGERDComplicationsLogs,
   analyzeRadiculopathyLogs,
   analyzeChronicFatigueLogs,
   analyzePeripheralNeuropathyLogs,
@@ -30,6 +32,10 @@ import {
   analyzeShoulderLogs,
   analyzeHipLogs,
   analyzeAsthmaLogs,
+  analyzeHearingLossLogs,
+  analyzeScarsLogs,
+  analyzePsoriasisLogs,
+  analyzeEczemaLogs,
   getAllMigraineRatings,
   getAllSleepApneaRatings,
   getAllPTSDRatings,
@@ -65,6 +71,12 @@ import SinusitisRatingCard from './SinusitisRatingCard';
 import ShoulderRatingCard from './ShoulderRatingCard';
 import HipRatingCard from './HipRatingCard';
 import AsthmaRatingCard from './AsthmaRatingCard';
+import EczemaRatingCard from './EczemaRatingCard';
+import GERDComplicationsRatingCard from './GERDComplicationsRatingCard';
+import HearingLossRatingCard from './HearingLossRatingCard.jsx';
+import PsoriasisRatingCard from './PsoriasisRatingCard.jsx';
+import ScarsRatingCard from './ScarsRatingCard.jsx';
+import TBIResidualsRatingCard from './TBIResidualsRatingCard.jsx';
 
 // Storage key for sleep apnea profile
 const SLEEP_APNEA_PROFILE_KEY = 'symptomTracker_sleepApneaProfile';
@@ -232,6 +244,30 @@ const RatingEvidence = () => {
     return analyzeAsthmaLogs(logs, { evaluationPeriodDays: evaluationDays });
   }, [logs, evaluationDays]);
 
+  const eczemaAnalysis = useMemo(() => {
+    return analyzeEczemaLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+
+  const GERDComplicationsAnalysis = useMemo(() => {
+    return analyzeGERDComplicationsLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+
+  const psoriasisAnalysis = useMemo(() => {
+    return analyzePsoriasisLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+
+  const scarsAnalysis = useMemo(() => {
+    return analyzeScarsLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+
+  const tbiResidualsAnalysis = useMemo(() => {
+    return analyzeTBIResidualsLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+
+  const hearingLossAnalysis = useMemo(() => {
+    return analyzeHearingLossLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+
   // Analyze Tinnitus logs
   const tinnitusAnalysis = useMemo(() => {
     return analyzeTinnitusLogs(logs, { evaluationPeriodDays: evaluationDays });
@@ -281,6 +317,12 @@ const RatingEvidence = () => {
       shoulderAnalysis.hasData ||
       hipAnalysis.hasData ||
       asthmaAnalysis.hasData ||
+      eczemaAnalysis.hasData ||
+      GERDComplicationsAnalysis.hasData ||
+      hearingLossAnalysis.hasData ||
+      psoriasisAnalysis.hasData ||
+      scarsAnalysis.hasData ||
+      tbiResidualsAnalysis.hasData ||
       tinnitusAnalysis.hasData ||
       fibromyalgiaAnalysis.hasData;
 
@@ -424,6 +466,12 @@ const RatingEvidence = () => {
             icon="🧠"
         />
 
+        <TBIResidualsRatingCard
+            analysis={tbiResidualsAnalysis}
+            expanded={expandedSection === 'tbiResiduals'}
+            onToggle={() => toggleSection('tbiResiduals')}
+        />
+
         {/* Hypertension Analysis Card */}
         <HypertensionRatingCard
             analysis={hypertensionAnalysis}
@@ -451,6 +499,13 @@ const RatingEvidence = () => {
             expanded={expandedSection === 'gerd'}
             onToggle={() => toggleSection('gerd')}
         />
+
+        <GERDComplicationsRatingCard
+            analysis={gerdAnalysis}
+            expanded={expandedSection === 'gerdComplications'}
+            onToggle={() => toggleSection('gerdComplications')}
+        />
+
 
         {/* Radiculopathy Analysis Card */}
         <RadiculopathyRatingCard
@@ -523,6 +578,30 @@ const RatingEvidence = () => {
             analysis={asthmaAnalysis}
             expanded={expandedSection === 'asthma'}
             onToggle={() => toggleSection('asthma')}
+        />
+
+        <EczemaRatingCard
+            analysis={eczemaAnalysis}
+            expanded={expandedSection === 'eczema'}
+            onToggle={() => toggleSection('eczema')}
+        />
+
+        <HearingLossRatingCard
+            analysis={hearingLossAnalysis}
+            expanded={expandedSection === 'hearingLoss'}
+            onToggle={() => toggleSection('hearingLoss')}
+        />
+
+        <PsoriasisRatingCard
+            analysis={psoriasisAnalysis}
+            expanded={expandedSection === 'psoriasis'}
+            onToggle={() => toggleSection('psoriasis')}
+        />
+
+        <ScarsRatingCard
+            analysis={scarsAnalysis}
+            expanded={expandedSection === 'scarsAnalysis'}
+            onToggle={() => toggleSection('scarsAnalysis')}
         />
 
         {/* Tinnitus Analysis Card */}

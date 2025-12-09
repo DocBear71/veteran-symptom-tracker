@@ -39,6 +39,12 @@ import {
   analyzeTinnitusLogs,
   analyzeFibromyalgiaLogs,
   analyzeAsthmaLogs,
+  analyzeHearingLossLogs,
+  analyzeScarsLogs,
+  analyzePsoriasisLogs,
+  analyzeEczemaLogs,
+  analyzeTBIResidualsLogs,
+  analyzeGERDComplicationsLogs,
 } from './ratingCriteria';
 
 // Appointment type labels for export
@@ -656,6 +662,12 @@ const analyzeAllConditions = (logs, options = {}) => {
     'tinnitus': analyzeTinnitusLogs,
     'fibromyalgia': analyzeFibromyalgiaLogs,
     'asthma': analyzeAsthmaLogs,
+    'hearing-loss': analyzeHearingLossLogs,
+    'scars': analyzeScarsLogs,
+    'psoriasis': analyzePsoriasisLogs,
+    'eczema': analyzeEczemaLogs,
+    'tbi-residuals': analyzeTBIResidualsLogs,
+    'gerd-complications': analyzeGERDComplicationsLogs,
   };
 
   const analyses = [];

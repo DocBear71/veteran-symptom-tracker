@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { symptomCategories } from '../data/symptoms';
+import { sortedSymptomCategories } from '../data/symptoms';
 import { getCustomSymptoms, addChronicSymptom, getChronicSymptoms } from '../utils/storage';
 
 const AddChronicModal = ({ isOpen, onClose, onAdded }) => {
@@ -21,7 +21,7 @@ const AddChronicModal = ({ isOpen, onClose, onAdded }) => {
 
     // Build combined symptom list
     const getAllCategories = () => {
-        const categories = symptomCategories.map(cat => ({
+        const categories = sortedSymptomCategories.map(cat => ({
             ...cat,
             symptoms: [...cat.symptoms]
         }));
