@@ -88,7 +88,7 @@ const BloodPressureTrendChart = ({ measurements, evaluationDays = 90 }) => {
   const avgDiastolic = Math.round(allDiastolic.reduce((a, b) => a + b, 0) / allDiastolic.length);
 
   return (
-      <div className="space-y-4">
+      <div className="space-y-4 text-left">
         {/* Stats Summary */}
         <div className="grid grid-cols-3 gap-3">
           <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-3 text-center">

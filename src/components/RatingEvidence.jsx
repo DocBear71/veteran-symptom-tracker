@@ -1,57 +1,79 @@
 import { useState, useEffect, useMemo } from 'react';
 import { getSymptomLogs, saveSymptomLog } from '../utils/storage';
 import {
-  analyzeMigraineLogs,
-  analyzeSleepApneaLogs,
-  analyzePTSDLogs,
-  analyzeMajorDepressionLogs,
-  analyzeGeneralizedAnxietyLogs,
-  analyzePanicDisorderLogs,
-  analyzeBipolarLogs,
-  analyzeLumbosacralStrainLogs,
-  analyzeIntervertebralDiscLogs,
-  analyzeKneeInstabilityLogs,
-  analyzeTBILogs,
-  analyzeTBIResidualsLogs,
-  analyzeHypertensionLogs,
-  analyzeTinnitusLogs,
-  analyzeFibromyalgiaLogs,
-  analyzeDiabetesLogs,
-  analyzeIBSLogs,
-  analyzeGERDLogs,
-  analyzeGERDComplicationsLogs,
-  analyzeRadiculopathyLogs,
-  analyzeChronicFatigueLogs,
-  analyzePeripheralNeuropathyLogs,
-  analyzeMenieresLogs,
-  analyzeRhinitisLogs,
-  analyzeTMJLogs,
-  analyzePlantarFasciitisLogs,
-  analyzeInsomniaLogs,
-  analyzeSinusitisLogs,
-  analyzeShoulderLogs,
-  analyzeHipLogs,
-  analyzeAsthmaLogs,
-  analyzeHearingLossLogs,
-  analyzeScarsLogs,
-  analyzePsoriasisLogs,
-  analyzeEczemaLogs,
-  getAllMigraineRatings,
-  getAllSleepApneaRatings,
-  getAllPTSDRatings,
-  getAllMajorDepressionRatings,
-  getAllGeneralizedAnxietyRatings,
-  getAllPanicDisorderRatings,
-  getAllBipolarRatings,
-  getMigraineDefinition,
-  getSleepApneaDefinition,
-  getPTSDDefinition,
-  getMajorDepressionDefinition,
-  getGeneralizedAnxietyDefinition,
-  getPanicDisorderDefinition,
-  getBipolarDefinition,
-  formatRating,
-  getRatingColorClass,
+    analyzeMigraineLogs,
+    analyzeSleepApneaLogs,
+    analyzePTSDLogs,
+    analyzeMajorDepressionLogs,
+    analyzeGeneralizedAnxietyLogs,
+    analyzePanicDisorderLogs,
+    analyzeBipolarLogs,
+    analyzeLumbosacralStrainLogs,
+    analyzeIntervertebralDiscLogs,
+    analyzeKneeInstabilityLogs,
+    analyzeTBILogs,
+    analyzeTBIResidualsLogs,
+    analyzeHypertensionLogs,
+    analyzeTinnitusLogs,
+    analyzeFibromyalgiaLogs,
+    analyzeDiabetesLogs,
+    analyzeIBSLogs,
+    analyzeGERDLogs,
+    analyzeGERDComplicationsLogs,
+    analyzeRadiculopathyLogs,
+    analyzeChronicFatigueLogs,
+    analyzePeripheralNeuropathyLogs,
+    analyzeMenieresLogs,
+    analyzeRhinitisLogs,
+    analyzeTMJLogs,
+    analyzePlantarFasciitisLogs,
+    analyzeInsomniaLogs,
+    analyzeSinusitisLogs,
+    analyzeShoulderLogs,
+    analyzeHipLogs,
+    analyzeAnkleLogs,
+    analyzeWristLogs,
+    analyzeElbowLogs,
+    analyzeDegenerativeArthritisLogs,
+    analyzeAsthmaLogs,
+    analyzeHearingLossLogs,
+    analyzeScarsLogs,
+    analyzePsoriasisLogs,
+    analyzeEczemaLogs,
+    analyzeSocialAnxietyLogs,
+    analyzeOCDLogs,
+    analyzePersistentDepressiveLogs,
+    analyzeAdjustmentDisorderLogs,
+    analyzeUnspecifiedAnxietyLogs,
+    analyzeUnspecifiedDepressiveLogs,
+    getAllMigraineRatings,
+    getAllSleepApneaRatings,
+    getAllPTSDRatings,
+    getAllMajorDepressionRatings,
+    getAllGeneralizedAnxietyRatings,
+    getAllPanicDisorderRatings,
+    getAllBipolarRatings,
+    getAllSocialAnxietyRatings,
+    getAllOCDRatings,
+    getAllPersistentDepressiveRatings,
+    getAllAdjustmentDisorderRatings,
+    getAllUnspecifiedAnxietyRatings,
+    getAllUnspecifiedDepressiveRatings,
+    getMigraineDefinition,
+    getSleepApneaDefinition,
+    getPTSDDefinition,
+    getMajorDepressionDefinition,
+    getGeneralizedAnxietyDefinition,
+    getPanicDisorderDefinition,
+    getBipolarDefinition,
+    getSocialAnxietyDefinition,
+    getOCDDefinition,
+    getPersistentDepressiveDefinition,
+    getAdjustmentDisorderDefinition,
+    getUnspecifiedAnxietyDefinition,
+    getUnspecifiedDepressiveDefinition,
+    formatRating,
+    getRatingColorClass,
 } from '../utils/ratingCriteria';
 import HypertensionRatingCard from './HypertensionRatingCard';
 import BloodPressureTrendChart from './BloodPressureTrendChart';
@@ -77,22 +99,23 @@ import HearingLossRatingCard from './HearingLossRatingCard.jsx';
 import PsoriasisRatingCard from './PsoriasisRatingCard.jsx';
 import ScarsRatingCard from './ScarsRatingCard.jsx';
 import TBIResidualsRatingCard from './TBIResidualsRatingCard.jsx';
+import GenericJointRatingCard from './GenericJointRatingCard';
 
 // Storage key for sleep apnea profile
 const SLEEP_APNEA_PROFILE_KEY = 'symptomTracker_sleepApneaProfile';
 
 // Get/save sleep apnea profile
 const getSleepApneaProfile = () => {
-  try {
-    const data = localStorage.getItem(SLEEP_APNEA_PROFILE_KEY);
-    return data ? JSON.parse(data) : {};
-  } catch {
-    return {};
-  }
+    try {
+        const data = localStorage.getItem(SLEEP_APNEA_PROFILE_KEY);
+        return data ? JSON.parse(data) : {};
+    } catch {
+        return {};
+    }
 };
 
 const saveSleepApneaProfile = (profile) => {
-  localStorage.setItem(SLEEP_APNEA_PROFILE_KEY, JSON.stringify(profile));
+    localStorage.setItem(SLEEP_APNEA_PROFILE_KEY, JSON.stringify(profile));
 };
 
 /**
@@ -109,290 +132,337 @@ const saveSleepApneaProfile = (profile) => {
  * - Bipolar Disorder (DC 9432)
  */
 const RatingEvidence = () => {
-  const [logs, setLogs] = useState([]);
-  const [evaluationDays, setEvaluationDays] = useState(90);
-  const [expandedSection, setExpandedSection] = useState(null);
-  const [sleepApneaProfile, setSleepApneaProfile] = useState(getSleepApneaProfile());
-  const [showSleepApneaSetup, setShowSleepApneaSetup] = useState(false);
+    const [logs, setLogs] = useState([]);
+    const [evaluationDays, setEvaluationDays] = useState(90);
+    const [expandedSection, setExpandedSection] = useState(null);
+    const [sleepApneaProfile, setSleepApneaProfile] = useState(getSleepApneaProfile());
+    const [showSleepApneaSetup, setShowSleepApneaSetup] = useState(false);
 
-  useEffect(() => {
-    setLogs(getSymptomLogs());
-  }, []);
+    useEffect(() => {
+        setLogs(getSymptomLogs());
+    }, []);
 
-  // Analyze migraine logs
-  const migraineAnalysis = useMemo(() => {
-    const migraineLogs = logs.filter(log => log.symptom === 'migraine');
-    return analyzeMigraineLogs(migraineLogs, { evaluationPeriodDays: evaluationDays });
-  }, [logs, evaluationDays]);
+    // Analyze migraine logs
+    const migraineAnalysis = useMemo(() => {
+        const migraineLogs = logs.filter(log => log.symptom === 'migraine');
+        return analyzeMigraineLogs(migraineLogs, { evaluationPeriodDays: evaluationDays });
+    }, [logs, evaluationDays]);
 
-  // Analyze sleep apnea logs
-  const sleepApneaAnalysis = useMemo(() => {
-    return analyzeSleepApneaLogs(logs, sleepApneaProfile, { evaluationPeriodDays: evaluationDays });
-  }, [logs, sleepApneaProfile, evaluationDays]);
+    // Analyze sleep apnea logs
+    const sleepApneaAnalysis = useMemo(() => {
+        return analyzeSleepApneaLogs(logs, sleepApneaProfile, { evaluationPeriodDays: evaluationDays });
+    }, [logs, sleepApneaProfile, evaluationDays]);
 
-  // Analyze PTSD logs
-  const ptsdAnalysis = useMemo(() => {
-    return analyzePTSDLogs(logs, { evaluationPeriodDays: evaluationDays });
-  }, [logs, evaluationDays]);
+    // Analyze PTSD logs
+    const ptsdAnalysis = useMemo(() => {
+        return analyzePTSDLogs(logs, { evaluationPeriodDays: evaluationDays });
+    }, [logs, evaluationDays]);
 
-  // Analyze Major Depression logs
-  const majorDepressionAnalysis = useMemo(() => {
-    return analyzeMajorDepressionLogs(logs, { evaluationPeriodDays: evaluationDays });
-  }, [logs, evaluationDays]);
+    // Analyze Major Depression logs
+    const majorDepressionAnalysis = useMemo(() => {
+        return analyzeMajorDepressionLogs(logs, { evaluationPeriodDays: evaluationDays });
+    }, [logs, evaluationDays]);
 
-  // Analyze Generalized Anxiety logs
-  const generalizedAnxietyAnalysis = useMemo(() => {
-    return analyzeGeneralizedAnxietyLogs(logs, { evaluationPeriodDays: evaluationDays });
-  }, [logs, evaluationDays]);
+    // Analyze Generalized Anxiety logs
+    const generalizedAnxietyAnalysis = useMemo(() => {
+        return analyzeGeneralizedAnxietyLogs(logs, { evaluationPeriodDays: evaluationDays });
+    }, [logs, evaluationDays]);
 
-  // Analyze Panic Disorder logs
-  const panicDisorderAnalysis = useMemo(() => {
-    return analyzePanicDisorderLogs(logs, { evaluationPeriodDays: evaluationDays });
-  }, [logs, evaluationDays]);
+    // Analyze Panic Disorder logs
+    const panicDisorderAnalysis = useMemo(() => {
+        return analyzePanicDisorderLogs(logs, { evaluationPeriodDays: evaluationDays });
+    }, [logs, evaluationDays]);
 
-  // Analyze Bipolar logs
-  const bipolarAnalysis = useMemo(() => {
-    return analyzeBipolarLogs(logs, { evaluationPeriodDays: evaluationDays });
-  }, [logs, evaluationDays]);
+    // Analyze Bipolar logs
+    const bipolarAnalysis = useMemo(() => {
+        return analyzeBipolarLogs(logs, { evaluationPeriodDays: evaluationDays });
+    }, [logs, evaluationDays]);
 
-  // Analyze Lumbosacral Strain logs
-  const lumbosacralStrainAnalysis = useMemo(() => {
-    return analyzeLumbosacralStrainLogs(logs, { evaluationPeriodDays: evaluationDays });
-  }, [logs, evaluationDays]);
+    // Analyze Social Anxiety logs
+    const socialAnxietyAnalysis = useMemo(() => {
+        return analyzeSocialAnxietyLogs(logs, { evaluationPeriodDays: evaluationDays });
+    }, [logs, evaluationDays]);
 
-  // Analyze Intervertebral Disc logs
-  const intervertebralDiscAnalysis = useMemo(() => {
-    return analyzeIntervertebralDiscLogs(logs, { evaluationPeriodDays: evaluationDays });
-  }, [logs, evaluationDays]);
+    // Analyze OCD logs
+    const ocdAnalysis = useMemo(() => {
+        return analyzeOCDLogs(logs, { evaluationPeriodDays: evaluationDays });
+    }, [logs, evaluationDays]);
 
-  // Analyze Knee Instability logs
-  const kneeInstabilityAnalysis = useMemo(() => {
-    return analyzeKneeInstabilityLogs(logs, { evaluationPeriodDays: evaluationDays });
-  }, [logs, evaluationDays]);
+    // Analyze Persistent Depressive Disorder (Dysthymia) logs
+    const persistentDepressiveAnalysis = useMemo(() => {
+        return analyzePersistentDepressiveLogs(logs, { evaluationPeriodDays: evaluationDays });
+    }, [logs, evaluationDays]);
 
-  // Analyze TBI logs
-  const tbiAnalysis = useMemo(() => {
-    return analyzeTBILogs(logs, { evaluationPeriodDays: evaluationDays });
-  }, [logs, evaluationDays]);
+    // Analyze Adjustment Disorder logs
+    const adjustmentDisorderAnalysis = useMemo(() => {
+        return analyzeAdjustmentDisorderLogs(logs, { evaluationPeriodDays: evaluationDays });
+    }, [logs, evaluationDays]);
 
-  // Analyze Hypertension logs (uses BP measurements)
-  const hypertensionAnalysis = useMemo(() => {
-    return analyzeHypertensionLogs(logs, { evaluationPeriodDays: evaluationDays });
-  }, [logs, evaluationDays]);
+    // Analyze Unspecified Anxiety logs
+    const unspecifiedAnxietyAnalysis = useMemo(() => {
+        return analyzeUnspecifiedAnxietyLogs(logs, { evaluationPeriodDays: evaluationDays });
+    }, [logs, evaluationDays]);
 
-  // Analyze Diabetes logs (uses glucose/HbA1c measurements)
-  const diabetesAnalysis = useMemo(() => {
-    return analyzeDiabetesLogs(logs, { evaluationPeriodDays: evaluationDays });
-  }, [logs, evaluationDays]);
+    // Analyze Unspecified Depressive logs
+    const unspecifiedDepressiveAnalysis = useMemo(() => {
+        return analyzeUnspecifiedDepressiveLogs(logs, { evaluationPeriodDays: evaluationDays });
+    }, [logs, evaluationDays]);
 
-  // Analyze IBS logs
-  const ibsAnalysis = useMemo(() => {
-    return analyzeIBSLogs(logs, { evaluationPeriodDays: evaluationDays });
-  }, [logs, evaluationDays]);
+    // Analyze Lumbosacral Strain logs
+    const lumbosacralStrainAnalysis = useMemo(() => {
+        return analyzeLumbosacralStrainLogs(logs, { evaluationPeriodDays: evaluationDays });
+    }, [logs, evaluationDays]);
+
+    // Analyze Intervertebral Disc logs
+    const intervertebralDiscAnalysis = useMemo(() => {
+        return analyzeIntervertebralDiscLogs(logs, { evaluationPeriodDays: evaluationDays });
+    }, [logs, evaluationDays]);
+
+    // Analyze Knee Instability logs
+    const kneeInstabilityAnalysis = useMemo(() => {
+        return analyzeKneeInstabilityLogs(logs, { evaluationPeriodDays: evaluationDays });
+    }, [logs, evaluationDays]);
+
+    // Analyze TBI logs
+    const tbiAnalysis = useMemo(() => {
+        return analyzeTBILogs(logs, { evaluationPeriodDays: evaluationDays });
+    }, [logs, evaluationDays]);
+
+    // Analyze Hypertension logs (uses BP measurements)
+    const hypertensionAnalysis = useMemo(() => {
+        return analyzeHypertensionLogs(logs, { evaluationPeriodDays: evaluationDays });
+    }, [logs, evaluationDays]);
+
+    // Analyze Diabetes logs (uses glucose/HbA1c measurements)
+    const diabetesAnalysis = useMemo(() => {
+        return analyzeDiabetesLogs(logs, { evaluationPeriodDays: evaluationDays });
+    }, [logs, evaluationDays]);
+
+    // Analyze IBS logs
+    const ibsAnalysis = useMemo(() => {
+        return analyzeIBSLogs(logs, { evaluationPeriodDays: evaluationDays });
+    }, [logs, evaluationDays]);
 
 // Analyze GERD logs
-  const gerdAnalysis = useMemo(() => {
-    return analyzeGERDLogs(logs, { evaluationPeriodDays: evaluationDays });
-  }, [logs, evaluationDays]);
+    const gerdAnalysis = useMemo(() => {
+        return analyzeGERDLogs(logs, { evaluationPeriodDays: evaluationDays });
+    }, [logs, evaluationDays]);
 
 // Analyze Radiculopathy logs
-  const radiculopathyAnalysis = useMemo(() => {
-    return analyzeRadiculopathyLogs(logs, { evaluationPeriodDays: evaluationDays });
-  }, [logs, evaluationDays]);
+    const radiculopathyAnalysis = useMemo(() => {
+        return analyzeRadiculopathyLogs(logs, { evaluationPeriodDays: evaluationDays });
+    }, [logs, evaluationDays]);
 
-  const chronicFatigueAnalysis = useMemo(() => {
-    return analyzeChronicFatigueLogs(logs, { evaluationPeriodDays: evaluationDays });
-  }, [logs, evaluationDays]);
+    const chronicFatigueAnalysis = useMemo(() => {
+        return analyzeChronicFatigueLogs(logs, { evaluationPeriodDays: evaluationDays });
+    }, [logs, evaluationDays]);
 
-  const peripheralNeuropathyAnalysis = useMemo(() => {
-    return analyzePeripheralNeuropathyLogs(logs, { evaluationPeriodDays: evaluationDays });
-  }, [logs, evaluationDays]);
+    const peripheralNeuropathyAnalysis = useMemo(() => {
+        return analyzePeripheralNeuropathyLogs(logs, { evaluationPeriodDays: evaluationDays });
+    }, [logs, evaluationDays]);
 
-  const menieresAnalysis = useMemo(() => {
-    return analyzeMenieresLogs(logs, { evaluationPeriodDays: evaluationDays });
-  }, [logs, evaluationDays]);
+    const menieresAnalysis = useMemo(() => {
+        return analyzeMenieresLogs(logs, { evaluationPeriodDays: evaluationDays });
+    }, [logs, evaluationDays]);
 
-  const rhinitisAnalysis = useMemo(() => {
-    return analyzeRhinitisLogs(logs, { evaluationPeriodDays: evaluationDays });
-  }, [logs, evaluationDays]);
+    const rhinitisAnalysis = useMemo(() => {
+        return analyzeRhinitisLogs(logs, { evaluationPeriodDays: evaluationDays });
+    }, [logs, evaluationDays]);
 
-  const tmjAnalysis = useMemo(() => {
-    return analyzeTMJLogs(logs, { evaluationPeriodDays: evaluationDays });
-  }, [logs, evaluationDays]);
+    const tmjAnalysis = useMemo(() => {
+        return analyzeTMJLogs(logs, { evaluationPeriodDays: evaluationDays });
+    }, [logs, evaluationDays]);
 
-  const plantarFasciitisAnalysis = useMemo(() => {
-    return analyzePlantarFasciitisLogs(logs, { evaluationPeriodDays: evaluationDays });
-  }, [logs, evaluationDays]);
+    const plantarFasciitisAnalysis = useMemo(() => {
+        return analyzePlantarFasciitisLogs(logs, { evaluationPeriodDays: evaluationDays });
+    }, [logs, evaluationDays]);
 
-  const insomniaAnalysis = useMemo(() => {
-    return analyzeInsomniaLogs(logs, { evaluationPeriodDays: evaluationDays });
-  }, [logs, evaluationDays]);
+    const insomniaAnalysis = useMemo(() => {
+        return analyzeInsomniaLogs(logs, { evaluationPeriodDays: evaluationDays });
+    }, [logs, evaluationDays]);
 
-  const sinusitisAnalysis = useMemo(() => {
-    return analyzeSinusitisLogs(logs, { evaluationPeriodDays: evaluationDays });
-  }, [logs, evaluationDays]);
+    const sinusitisAnalysis = useMemo(() => {
+        return analyzeSinusitisLogs(logs, { evaluationPeriodDays: evaluationDays });
+    }, [logs, evaluationDays]);
 
-  const shoulderAnalysis = useMemo(() => {
-    return analyzeShoulderLogs(logs, { evaluationPeriodDays: evaluationDays });
-  }, [logs, evaluationDays]);
+    const shoulderAnalysis = useMemo(() => {
+        return analyzeShoulderLogs(logs, { evaluationPeriodDays: evaluationDays });
+    }, [logs, evaluationDays]);
 
-  const hipAnalysis = useMemo(() => {
-    return analyzeHipLogs(logs, { evaluationPeriodDays: evaluationDays });
-  }, [logs, evaluationDays]);
+    const hipAnalysis = useMemo(() => {
+        return analyzeHipLogs(logs, { evaluationPeriodDays: evaluationDays });
+    }, [logs, evaluationDays]);
 
-  const asthmaAnalysis = useMemo(() => {
-    return analyzeAsthmaLogs(logs, { evaluationPeriodDays: evaluationDays });
-  }, [logs, evaluationDays]);
+  const ankleAnalysis = useMemo(() => {
+        return analyzeAnkleLogs(logs, { evaluationPeriodDays: evaluationDays });
+        }, [logs, evaluationDays]);
+  const wristAnalysis = useMemo(() => {
+        return analyzeWristLogs(logs, { evaluationPeriodDays: evaluationDays });
+        }, [logs, evaluationDays]);
+  const elbowAnalysis = useMemo(() => {
+        return analyzeElbowLogs(logs, { evaluationPeriodDays: evaluationDays });
+        }, [logs, evaluationDays]);
+  const degenerativeArthritisAnalysis = useMemo(() => {
+        return analyzeDegenerativeArthritisLogs(logs, { evaluationPeriodDays: evaluationDays });
+        }, [logs, evaluationDays]);
 
-  const eczemaAnalysis = useMemo(() => {
-    return analyzeEczemaLogs(logs, { evaluationPeriodDays: evaluationDays });
-  }, [logs, evaluationDays]);
+    const asthmaAnalysis = useMemo(() => {
+        return analyzeAsthmaLogs(logs, { evaluationPeriodDays: evaluationDays });
+    }, [logs, evaluationDays]);
 
-  const GERDComplicationsAnalysis = useMemo(() => {
-    return analyzeGERDComplicationsLogs(logs, { evaluationPeriodDays: evaluationDays });
-  }, [logs, evaluationDays]);
+    const eczemaAnalysis = useMemo(() => {
+        return analyzeEczemaLogs(logs, { evaluationPeriodDays: evaluationDays });
+    }, [logs, evaluationDays]);
 
-  const psoriasisAnalysis = useMemo(() => {
-    return analyzePsoriasisLogs(logs, { evaluationPeriodDays: evaluationDays });
-  }, [logs, evaluationDays]);
+    const GERDComplicationsAnalysis = useMemo(() => {
+        return analyzeGERDComplicationsLogs(logs, { evaluationPeriodDays: evaluationDays });
+    }, [logs, evaluationDays]);
 
-  const scarsAnalysis = useMemo(() => {
-    return analyzeScarsLogs(logs, { evaluationPeriodDays: evaluationDays });
-  }, [logs, evaluationDays]);
+    const psoriasisAnalysis = useMemo(() => {
+        return analyzePsoriasisLogs(logs, { evaluationPeriodDays: evaluationDays });
+    }, [logs, evaluationDays]);
 
-  const tbiResidualsAnalysis = useMemo(() => {
-    return analyzeTBIResidualsLogs(logs, { evaluationPeriodDays: evaluationDays });
-  }, [logs, evaluationDays]);
+    const scarsAnalysis = useMemo(() => {
+        return analyzeScarsLogs(logs, { evaluationPeriodDays: evaluationDays });
+    }, [logs, evaluationDays]);
 
-  const hearingLossAnalysis = useMemo(() => {
-    return analyzeHearingLossLogs(logs, { evaluationPeriodDays: evaluationDays });
-  }, [logs, evaluationDays]);
+    const tbiResidualsAnalysis = useMemo(() => {
+        return analyzeTBIResidualsLogs(logs, { evaluationPeriodDays: evaluationDays });
+    }, [logs, evaluationDays]);
 
-  // Analyze Tinnitus logs
-  const tinnitusAnalysis = useMemo(() => {
-    return analyzeTinnitusLogs(logs, { evaluationPeriodDays: evaluationDays });
-  }, [logs, evaluationDays]);
+    const hearingLossAnalysis = useMemo(() => {
+        return analyzeHearingLossLogs(logs, { evaluationPeriodDays: evaluationDays });
+    }, [logs, evaluationDays]);
 
-  // Analyze Fibromyalgia logs
-  const fibromyalgiaAnalysis = useMemo(() => {
-    return analyzeFibromyalgiaLogs(logs, { evaluationPeriodDays: evaluationDays });
-  }, [logs, evaluationDays]);
+    // Analyze Tinnitus logs
+    const tinnitusAnalysis = useMemo(() => {
+        return analyzeTinnitusLogs(logs, { evaluationPeriodDays: evaluationDays });
+    }, [logs, evaluationDays]);
 
-  // Toggle section expansion
-  const toggleSection = (section) => {
-    setExpandedSection(expandedSection === section ? null : section);
-  };
+    // Analyze Fibromyalgia logs
+    const fibromyalgiaAnalysis = useMemo(() => {
+        return analyzeFibromyalgiaLogs(logs, { evaluationPeriodDays: evaluationDays });
+    }, [logs, evaluationDays]);
 
-  // Handle sleep apnea profile save
-  const handleSleepApneaProfileSave = (profile) => {
-    saveSleepApneaProfile(profile);
-    setSleepApneaProfile(profile);
-    setShowSleepApneaSetup(false);
-  };
+    // Toggle section expansion
+    const toggleSection = (section) => {
+        setExpandedSection(expandedSection === section ? null : section);
+    };
 
-  const hasAnyData = migraineAnalysis.hasData ||
-      sleepApneaAnalysis.hasData ||
-      ptsdAnalysis.hasData ||
-      majorDepressionAnalysis.hasData ||
-      generalizedAnxietyAnalysis.hasData ||
-      panicDisorderAnalysis.hasData ||
-      bipolarAnalysis.hasData ||
-      lumbosacralStrainAnalysis.hasData ||
-      intervertebralDiscAnalysis.hasData ||
-      kneeInstabilityAnalysis.hasData ||
-      tbiAnalysis.hasData ||
-      hypertensionAnalysis.hasData ||
-      diabetesAnalysis.hasData ||
-      ibsAnalysis.hasData ||
-      gerdAnalysis.hasData ||
-      radiculopathyAnalysis.hasData ||
-      chronicFatigueAnalysis.hasData ||
-      peripheralNeuropathyAnalysis.hasData ||
-      menieresAnalysis.hasData ||
-      rhinitisAnalysis.hasData ||
-      tmjAnalysis.hasData ||
-      plantarFasciitisAnalysis.hasData ||
-      insomniaAnalysis.hasData ||
-      sinusitisAnalysis.hasData ||
-      shoulderAnalysis.hasData ||
-      hipAnalysis.hasData ||
-      asthmaAnalysis.hasData ||
-      eczemaAnalysis.hasData ||
-      GERDComplicationsAnalysis.hasData ||
-      hearingLossAnalysis.hasData ||
-      psoriasisAnalysis.hasData ||
-      scarsAnalysis.hasData ||
-      tbiResidualsAnalysis.hasData ||
-      tinnitusAnalysis.hasData ||
-      fibromyalgiaAnalysis.hasData;
+    // Handle sleep apnea profile save
+    const handleSleepApneaProfileSave = (profile) => {
+        saveSleepApneaProfile(profile);
+        setSleepApneaProfile(profile);
+        setShowSleepApneaSetup(false);
+    };
 
-  return (
-      <div className="space-y-4">
-        {/* Header */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
-          <div className="flex items-center justify-between mb-2">
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
-              Rating Evidence Summary
-            </h2>
-            <span className="text-xs px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 rounded-full">
+    const hasAnyData = migraineAnalysis.hasData ||
+        sleepApneaAnalysis.hasData ||
+        ptsdAnalysis.hasData ||
+        majorDepressionAnalysis.hasData ||
+        generalizedAnxietyAnalysis.hasData ||
+        panicDisorderAnalysis.hasData ||
+        bipolarAnalysis.hasData ||
+        lumbosacralStrainAnalysis.hasData ||
+        intervertebralDiscAnalysis.hasData ||
+        kneeInstabilityAnalysis.hasData ||
+        tbiAnalysis.hasData ||
+        hypertensionAnalysis.hasData ||
+        diabetesAnalysis.hasData ||
+        ibsAnalysis.hasData ||
+        gerdAnalysis.hasData ||
+        radiculopathyAnalysis.hasData ||
+        chronicFatigueAnalysis.hasData ||
+        peripheralNeuropathyAnalysis.hasData ||
+        menieresAnalysis.hasData ||
+        rhinitisAnalysis.hasData ||
+        tmjAnalysis.hasData ||
+        plantarFasciitisAnalysis.hasData ||
+        insomniaAnalysis.hasData ||
+        sinusitisAnalysis.hasData ||
+        shoulderAnalysis.hasData ||
+        hipAnalysis.hasData ||
+        ankleAnalysis.hasData ||
+        wristAnalysis.hasData ||
+        elbowAnalysis.hasData ||
+        degenerativeArthritisAnalysis.hasData ||
+        asthmaAnalysis.hasData ||
+        eczemaAnalysis.hasData ||
+        GERDComplicationsAnalysis.hasData ||
+        hearingLossAnalysis.hasData ||
+        psoriasisAnalysis.hasData ||
+        scarsAnalysis.hasData ||
+        tbiResidualsAnalysis.hasData ||
+        tinnitusAnalysis.hasData ||
+        fibromyalgiaAnalysis.hasData;
+
+    return (
+        <div className="space-y-4 text-left">
+            {/* Header */}
+            <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
+                <div className="flex items-center justify-between mb-2">
+                    <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+                        Rating Evidence Summary
+                    </h2>
+                    <span className="text-xs px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 rounded-full">
             Beta
           </span>
-          </div>
-          <p className="text-sm text-gray-600 dark:text-gray-400">
-            See how your documented symptoms align with VA rating criteria
-          </p>
+                </div>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                    See how your documented symptoms align with VA rating criteria
+                </p>
 
-          {/* Evaluation Period Selector */}
-          <div className="mt-3 flex items-center gap-2">
-            <label className="text-sm text-gray-600 dark:text-gray-400">
-              Evaluation period:
-            </label>
-            <select
-                value={evaluationDays}
-                onChange={(e) => setEvaluationDays(Number(e.target.value))}
-                className="text-sm border border-gray-300 dark:border-gray-600 rounded px-2 py-1
+                {/* Evaluation Period Selector */}
+                <div className="mt-3 flex items-center gap-2">
+                    <label className="text-sm text-gray-600 dark:text-gray-400">
+                        Evaluation period:
+                    </label>
+                    <select
+                        value={evaluationDays}
+                        onChange={(e) => setEvaluationDays(Number(e.target.value))}
+                        className="text-sm border border-gray-300 dark:border-gray-600 rounded px-2 py-1
                        bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-            >
-              <option value={30}>Last 30 days</option>
-              <option value={60}>Last 60 days</option>
-              <option value={90}>Last 90 days</option>
-              <option value={180}>Last 6 months</option>
-              <option value={365}>Last year</option>
-            </select>
-          </div>
-        </div>
+                    >
+                        <option value={30}>Last 30 days</option>
+                        <option value={60}>Last 60 days</option>
+                        <option value={90}>Last 90 days</option>
+                        <option value={180}>Last 6 months</option>
+                        <option value={365}>Last year</option>
+                    </select>
+                </div>
+            </div>
 
-        {/* Disclaimer */}
-        <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-3">
-          <p className="text-xs text-amber-800 dark:text-amber-300">
-            <strong>Important:</strong> This analysis is for documentation guidance only.
-            The VA makes all final rating determinations based on the complete evidence of record,
-            including medical examinations and service records.
-          </p>
-        </div>
+            {/* Disclaimer */}
+            <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-3">
+                <p className="text-xs text-amber-800 dark:text-amber-300">
+                    <strong>Important:</strong> This analysis is for documentation guidance only.
+                    The VA makes all final rating determinations based on the complete evidence of record,
+                    including medical examinations and service records.
+                </p>
+            </div>
 
-        {/* Migraine Analysis Card */}
-        <MigraineRatingCard
-            analysis={migraineAnalysis}
-            expanded={expandedSection === 'migraine'}
-            onToggle={() => toggleSection('migraine')}
-        />
+            {/* Migraine Analysis Card */}
+            <MigraineRatingCard
+                analysis={migraineAnalysis}
+                expanded={expandedSection === 'migraine'}
+                onToggle={() => toggleSection('migraine')}
+            />
 
-        {/* Sleep Apnea Analysis Card */}
-        <SleepApneaRatingCard
-            analysis={sleepApneaAnalysis}
-            profile={sleepApneaProfile}
-            expanded={expandedSection === 'sleep-apnea'}
-            onToggle={() => toggleSection('sleep-apnea')}
-            onSetupClick={() => setShowSleepApneaSetup(true)}
-        />
+            {/* Sleep Apnea Analysis Card */}
+            <SleepApneaRatingCard
+                analysis={sleepApneaAnalysis}
+                profile={sleepApneaProfile}
+                expanded={expandedSection === 'sleep-apnea'}
+                onToggle={() => toggleSection('sleep-apnea')}
+                onSetupClick={() => setShowSleepApneaSetup(true)}
+            />
 
-        {/* PTSD Analysis Card */}
-        <PTSDRatingCard
-            analysis={ptsdAnalysis}
-            expanded={expandedSection === 'ptsd'}
-            onToggle={() => toggleSection('ptsd')}
-        />
+            {/* PTSD Analysis Card */}
+            <PTSDRatingCard
+                analysis={ptsdAnalysis}
+                expanded={expandedSection === 'ptsd'}
+                onToggle={() => toggleSection('ptsd')}
+            />
 
         {/* Major Depression Analysis Card */}
         <MentalHealthRatingCard
@@ -424,23 +494,84 @@ const RatingEvidence = () => {
             getDefinition={getPanicDisorderDefinition}
         />
 
-        {/* Bipolar Analysis Card */}
-        <MentalHealthRatingCard
-            analysis={bipolarAnalysis}
-            expanded={expandedSection === 'bipolar'}
-            onToggle={() => toggleSection('bipolar')}
-            icon="🎭"
-            getAllRatings={getAllBipolarRatings}
-            getDefinition={getBipolarDefinition}
-        />
+            {/* Bipolar Analysis Card */}
+            <MentalHealthRatingCard
+                analysis={bipolarAnalysis}
+                expanded={expandedSection === 'bipolar'}
+                onToggle={() => toggleSection('bipolar')}
+                icon="🎭"
+                getAllRatings={getAllBipolarRatings}
+                getDefinition={getBipolarDefinition}
+            />
 
-        {/* Lumbosacral Strain Analysis Card */}
-        <GenericRatingCard
-            analysis={lumbosacralStrainAnalysis}
-            expanded={expandedSection === 'lumbosacral-strain'}
-            onToggle={() => toggleSection('lumbosacral-strain')}
-            icon="🦴"
-        />
+            {/* Phase 3: Additional Mental Health Conditions */}
+            {/* Social Anxiety Analysis Card */}
+            <MentalHealthRatingCard
+                analysis={socialAnxietyAnalysis}
+                expanded={expandedSection === 'social-anxiety'}
+                onToggle={() => toggleSection('social-anxiety')}
+                icon="👥"
+                getAllRatings={getAllSocialAnxietyRatings}
+                getDefinition={getSocialAnxietyDefinition}
+            />
+
+            {/* OCD Analysis Card */}
+            <MentalHealthRatingCard
+                analysis={ocdAnalysis}
+                expanded={expandedSection === 'ocd'}
+                onToggle={() => toggleSection('ocd')}
+                icon="🔄"
+                getAllRatings={getAllOCDRatings}
+                getDefinition={getOCDDefinition}
+            />
+
+            {/* Persistent Depressive Disorder (Dysthymia) Analysis Card */}
+            <MentalHealthRatingCard
+                analysis={persistentDepressiveAnalysis}
+                expanded={expandedSection === 'persistent-depressive'}
+                onToggle={() => toggleSection('persistent-depressive')}
+                icon="😶"
+                getAllRatings={getAllPersistentDepressiveRatings}
+                getDefinition={getPersistentDepressiveDefinition}
+            />
+
+            {/* Adjustment Disorder Analysis Card */}
+            <MentalHealthRatingCard
+                analysis={adjustmentDisorderAnalysis}
+                expanded={expandedSection === 'adjustment-disorder'}
+                onToggle={() => toggleSection('adjustment-disorder')}
+                icon="⚖️"
+                getAllRatings={getAllAdjustmentDisorderRatings}
+                getDefinition={getAdjustmentDisorderDefinition}
+            />
+
+            {/* Unspecified Anxiety Analysis Card */}
+            <MentalHealthRatingCard
+                analysis={unspecifiedAnxietyAnalysis}
+                expanded={expandedSection === 'unspecified-anxiety'}
+                onToggle={() => toggleSection('unspecified-anxiety')}
+                icon="😟"
+                getAllRatings={getAllUnspecifiedAnxietyRatings}
+                getDefinition={getUnspecifiedAnxietyDefinition}
+            />
+
+            {/* Unspecified Depressive Analysis Card */}
+            <MentalHealthRatingCard
+                analysis={unspecifiedDepressiveAnalysis}
+                expanded={expandedSection === 'unspecified-depressive'}
+                onToggle={() => toggleSection('unspecified-depressive')}
+                icon="😞"
+                getAllRatings={getAllUnspecifiedDepressiveRatings}
+                getDefinition={getUnspecifiedDepressiveDefinition}
+            />
+
+            {/* Lumbosacral Strain Analysis Card */}
+            <GenericRatingCard
+                analysis={lumbosacralStrainAnalysis}
+                expanded={expandedSection === 'lumbosacral-strain'}
+                onToggle={() => toggleSection('lumbosacral-strain')}
+                icon="🦴"
+            />
 
         {/* Intervertebral Disc Analysis Card */}
         <GenericRatingCard
@@ -466,143 +597,171 @@ const RatingEvidence = () => {
             icon="🧠"
         />
 
-        <TBIResidualsRatingCard
-            analysis={tbiResidualsAnalysis}
-            expanded={expandedSection === 'tbiResiduals'}
-            onToggle={() => toggleSection('tbiResiduals')}
-        />
+            <TBIResidualsRatingCard
+                analysis={tbiResidualsAnalysis}
+                expanded={expandedSection === 'tbiResiduals'}
+                onToggle={() => toggleSection('tbiResiduals')}
+            />
 
-        {/* Hypertension Analysis Card */}
-        <HypertensionRatingCard
-            analysis={hypertensionAnalysis}
-            expanded={expandedSection === 'hypertension'}
-            onToggle={() => toggleSection('hypertension')}
-        />
+            {/* Hypertension Analysis Card */}
+            <HypertensionRatingCard
+                analysis={hypertensionAnalysis}
+                expanded={expandedSection === 'hypertension'}
+                onToggle={() => toggleSection('hypertension')}
+            />
 
-        {/* Diabetes Analysis Card */}
-        <DiabetesRatingCard
-            analysis={diabetesAnalysis}
-            expanded={expandedSection === 'diabetes'}
-            onToggle={() => toggleSection('diabetes')}
-        />
+            {/* Diabetes Analysis Card */}
+            <DiabetesRatingCard
+                analysis={diabetesAnalysis}
+                expanded={expandedSection === 'diabetes'}
+                onToggle={() => toggleSection('diabetes')}
+            />
 
-        {/* IBS Analysis Card */}
-        <IBSRatingCard
-            analysis={ibsAnalysis}
-            expanded={expandedSection === 'ibs'}
-            onToggle={() => toggleSection('ibs')}
-        />
+            {/* IBS Analysis Card */}
+            <IBSRatingCard
+                analysis={ibsAnalysis}
+                expanded={expandedSection === 'ibs'}
+                onToggle={() => toggleSection('ibs')}
+            />
 
-        {/* GERD Analysis Card */}
-        <GERDRatingCard
-            analysis={gerdAnalysis}
-            expanded={expandedSection === 'gerd'}
-            onToggle={() => toggleSection('gerd')}
-        />
+            {/* GERD Analysis Card */}
+            <GERDRatingCard
+                analysis={gerdAnalysis}
+                expanded={expandedSection === 'gerd'}
+                onToggle={() => toggleSection('gerd')}
+            />
 
-        <GERDComplicationsRatingCard
-            analysis={gerdAnalysis}
-            expanded={expandedSection === 'gerdComplications'}
-            onToggle={() => toggleSection('gerdComplications')}
-        />
+            <GERDComplicationsRatingCard
+                analysis={gerdAnalysis}
+                expanded={expandedSection === 'gerdComplications'}
+                onToggle={() => toggleSection('gerdComplications')}
+            />
 
 
-        {/* Radiculopathy Analysis Card */}
-        <RadiculopathyRatingCard
-            analysis={radiculopathyAnalysis}
-            expanded={expandedSection === 'radiculopathy'}
-            onToggle={() => toggleSection('radiculopathy')}
-        />
+            {/* Radiculopathy Analysis Card */}
+            <RadiculopathyRatingCard
+                analysis={radiculopathyAnalysis}
+                expanded={expandedSection === 'radiculopathy'}
+                onToggle={() => toggleSection('radiculopathy')}
+            />
 
-        <ChronicFatigueRatingCard
-            analysis={chronicFatigueAnalysis}
-            expanded={expandedSection === 'chronic-fatigue'}
-            onToggle={() => toggleSection('chronic-fatigue')}
-        />
+            <ChronicFatigueRatingCard
+                analysis={chronicFatigueAnalysis}
+                expanded={expandedSection === 'chronic-fatigue'}
+                onToggle={() => toggleSection('chronic-fatigue')}
+            />
 
-        <PeripheralNeuropathyRatingCard
-            analysis={peripheralNeuropathyAnalysis}
-            expanded={expandedSection === 'peripheral-neuropathy'}
-            onToggle={() => toggleSection('peripheral-neuropathy')}
-        />
+            <PeripheralNeuropathyRatingCard
+                analysis={peripheralNeuropathyAnalysis}
+                expanded={expandedSection === 'peripheral-neuropathy'}
+                onToggle={() => toggleSection('peripheral-neuropathy')}
+            />
 
-        <MenieresRatingCard
-            analysis={menieresAnalysis}
-            expanded={expandedSection === 'menieres'}
-            onToggle={() => toggleSection('menieres')}
-        />
+            <MenieresRatingCard
+                analysis={menieresAnalysis}
+                expanded={expandedSection === 'menieres'}
+                onToggle={() => toggleSection('menieres')}
+            />
 
-        <RhinitisRatingCard
-            analysis={rhinitisAnalysis}
-            expanded={expandedSection === 'rhinitis'}
-            onToggle={() => toggleSection('rhinitis')}
-        />
+            <RhinitisRatingCard
+                analysis={rhinitisAnalysis}
+                expanded={expandedSection === 'rhinitis'}
+                onToggle={() => toggleSection('rhinitis')}
+            />
 
-        <TMJRatingCard
-            analysis={tmjAnalysis}
-            expanded={expandedSection === 'tmj'}
-            onToggle={() => toggleSection('tmj')}
-        />
+            <TMJRatingCard
+                analysis={tmjAnalysis}
+                expanded={expandedSection === 'tmj'}
+                onToggle={() => toggleSection('tmj')}
+            />
 
-        <PlantarFasciitisRatingCard
-            analysis={plantarFasciitisAnalysis}
-            expanded={expandedSection === 'plantar-fasciitis'}
-            onToggle={() => toggleSection('plantar-fasciitis')}
-        />
+            <PlantarFasciitisRatingCard
+                analysis={plantarFasciitisAnalysis}
+                expanded={expandedSection === 'plantar-fasciitis'}
+                onToggle={() => toggleSection('plantar-fasciitis')}
+            />
 
-        <InsomniaRatingCard
-            analysis={insomniaAnalysis}
-            expanded={expandedSection === 'insomnia'}
-            onToggle={() => toggleSection('insomnia')}
-        />
+            <InsomniaRatingCard
+                analysis={insomniaAnalysis}
+                expanded={expandedSection === 'insomnia'}
+                onToggle={() => toggleSection('insomnia')}
+            />
 
-        <SinusitisRatingCard
-            analysis={sinusitisAnalysis}
-            expanded={expandedSection === 'sinusitis'}
-            onToggle={() => toggleSection('sinusitis')}
-        />
+            <SinusitisRatingCard
+                analysis={sinusitisAnalysis}
+                expanded={expandedSection === 'sinusitis'}
+                onToggle={() => toggleSection('sinusitis')}
+            />
 
-        <ShoulderRatingCard
-            analysis={shoulderAnalysis}
-            expanded={expandedSection === 'shoulder'}
-            onToggle={() => toggleSection('shoulder')}
-        />
+            <ShoulderRatingCard
+                analysis={shoulderAnalysis}
+                expanded={expandedSection === 'shoulder'}
+                onToggle={() => toggleSection('shoulder')}
+            />
 
-        <HipRatingCard
-            analysis={hipAnalysis}
-            expanded={expandedSection === 'hip'}
-            onToggle={() => toggleSection('hip')}
-        />
+            <HipRatingCard
+                analysis={hipAnalysis}
+                expanded={expandedSection === 'hip'}
+                onToggle={() => toggleSection('hip')}
+            />
 
-        <AsthmaRatingCard
-            analysis={asthmaAnalysis}
-            expanded={expandedSection === 'asthma'}
-            onToggle={() => toggleSection('asthma')}
-        />
+          <GenericJointRatingCard
+              analysis={ankleAnalysis}
+              expanded={expandedSection === 'ankle'}
+              onToggle={() => toggleSection('ankle')}
+              icon="🦶"
+          />
 
-        <EczemaRatingCard
-            analysis={eczemaAnalysis}
-            expanded={expandedSection === 'eczema'}
-            onToggle={() => toggleSection('eczema')}
-        />
+          <GenericJointRatingCard
+              analysis={wristAnalysis}
+              expanded={expandedSection === 'wrist'}
+              onToggle={() => toggleSection('wrist')}
+              icon="✋"
+          />
 
-        <HearingLossRatingCard
-            analysis={hearingLossAnalysis}
-            expanded={expandedSection === 'hearingLoss'}
-            onToggle={() => toggleSection('hearingLoss')}
-        />
+          <GenericJointRatingCard
+              analysis={elbowAnalysis}
+              expanded={expandedSection === 'elbow'}
+              onToggle={() => toggleSection('elbow')}
+              icon="💪"
+          />
 
-        <PsoriasisRatingCard
-            analysis={psoriasisAnalysis}
-            expanded={expandedSection === 'psoriasis'}
-            onToggle={() => toggleSection('psoriasis')}
-        />
+          <GenericJointRatingCard
+              analysis={degenerativeArthritisAnalysis}
+              expanded={expandedSection === 'degenerativeArthritis'}
+              onToggle={() => toggleSection('degenerativeArthritis')}
+              icon="🦴"
+          />
 
-        <ScarsRatingCard
-            analysis={scarsAnalysis}
-            expanded={expandedSection === 'scarsAnalysis'}
-            onToggle={() => toggleSection('scarsAnalysis')}
-        />
+          <AsthmaRatingCard
+                analysis={asthmaAnalysis}
+                expanded={expandedSection === 'asthma'}
+                onToggle={() => toggleSection('asthma')}
+            />
+
+            <EczemaRatingCard
+                analysis={eczemaAnalysis}
+                expanded={expandedSection === 'eczema'}
+                onToggle={() => toggleSection('eczema')}
+            />
+
+            <HearingLossRatingCard
+                analysis={hearingLossAnalysis}
+                expanded={expandedSection === 'hearingLoss'}
+                onToggle={() => toggleSection('hearingLoss')}
+            />
+
+            <PsoriasisRatingCard
+                analysis={psoriasisAnalysis}
+                expanded={expandedSection === 'psoriasis'}
+                onToggle={() => toggleSection('psoriasis')}
+            />
+
+            <ScarsRatingCard
+                analysis={scarsAnalysis}
+                expanded={expandedSection === 'scarsAnalysis'}
+                onToggle={() => toggleSection('scarsAnalysis')}
+            />
 
         {/* Tinnitus Analysis Card */}
         <GenericRatingCard
@@ -620,164 +779,164 @@ const RatingEvidence = () => {
             icon="💪"
         />
 
-        {/* Sleep Apnea Setup Modal */}
-        {showSleepApneaSetup && (
-            <SleepApneaSetupModal
-                currentProfile={sleepApneaProfile}
-                onSave={handleSleepApneaProfileSave}
-                onClose={() => setShowSleepApneaSetup(false)}
-            />
-        )}
+            {/* Sleep Apnea Setup Modal */}
+            {showSleepApneaSetup && (
+                <SleepApneaSetupModal
+                    currentProfile={sleepApneaProfile}
+                    onSave={handleSleepApneaProfileSave}
+                    onClose={() => setShowSleepApneaSetup(false)}
+                />
+            )}
 
-        {/* No Data State */}
-        {!hasAnyData && (
-            <div className="bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6 text-center">
-              <p className="text-gray-500 dark:text-gray-400 mb-2">
-                No condition data found in the selected period
-              </p>
-              <p className="text-sm text-gray-400 dark:text-gray-500">
-                Start logging symptoms to see how they align with VA rating criteria
-              </p>
-            </div>
-        )}
-      </div>
-  );
+            {/* No Data State */}
+            {!hasAnyData && (
+                <div className="bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6 text-center">
+                    <p className="text-gray-500 dark:text-gray-400 mb-2">
+                        No condition data found in the selected period
+                    </p>
+                    <p className="text-sm text-gray-400 dark:text-gray-500">
+                        Start logging symptoms to see how they align with VA rating criteria
+                    </p>
+                </div>
+            )}
+        </div>
+    );
 };
 
 /**
  * Migraine Rating Card Component
  */
 const MigraineRatingCard = ({ analysis, expanded, onToggle }) => {
-  const [showDefinitions, setShowDefinitions] = useState(false);
+    const [showDefinitions, setShowDefinitions] = useState(false);
 
-  if (!analysis.hasData) {
+    if (!analysis.hasData) {
+        return (
+            <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
+                <div className="flex items-center gap-3 mb-2">
+                    <span className="text-2xl">🤕</span>
+                    <div>
+                        <h3 className="font-semibold text-gray-900 dark:text-white">Migraine (DC 8100)</h3>
+                        <p className="text-sm text-gray-500 dark:text-gray-400">No data in evaluation period</p>
+                    </div>
+                </div>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                    Log migraine episodes to see rating evidence analysis
+                </p>
+            </div>
+        );
+    }
+
+    const { supportedRating, evidence, ratingRationale, gaps } = analysis;
+    const ratingColorClass = getRatingColorClass(supportedRating);
+
     return (
-        <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
-          <div className="flex items-center gap-3 mb-2">
-            <span className="text-2xl">🤕</span>
-            <div>
-              <h3 className="font-semibold text-gray-900 dark:text-white">Migraine (DC 8100)</h3>
-              <p className="text-sm text-gray-500 dark:text-gray-400">No data in evaluation period</p>
-            </div>
-          </div>
-          <p className="text-sm text-gray-600 dark:text-gray-400">
-            Log migraine episodes to see rating evidence analysis
-          </p>
-        </div>
-    );
-  }
-
-  const { supportedRating, evidence, ratingRationale, gaps } = analysis;
-  const ratingColorClass = getRatingColorClass(supportedRating);
-
-  return (
-      <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
-        {/* Card Header */}
-        <button
-            onClick={onToggle}
-            className="w-full p-4 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
-        >
-          <div className="flex items-center gap-3">
-            <span className="text-2xl">🤕</span>
-            <div className="text-left">
-              <h3 className="font-semibold text-gray-900 dark:text-white">
-                Migraine (DC 8100)
-              </h3>
-              <p className="text-sm text-gray-500 dark:text-gray-400">
-                {evidence.totalMigraines} episodes logged in {evidence.evaluationPeriod.months} months
-              </p>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-3">
-            <div className={`px-3 py-1 rounded-full border font-bold ${ratingColorClass}`}>
-              {formatRating(supportedRating)}
-            </div>
-            <span className="text-gray-400 text-xl">{expanded ? 'âˆ’' : '+'}</span>
-          </div>
-        </button>
-
-        {/* Expanded Content */}
-        {expanded && (
-            <div className="border-t border-gray-200 dark:border-gray-700">
-              {/* Rating Rationale */}
-              <div className="p-4 bg-gray-50 dark:bg-gray-700/30">
-                <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                  Why {formatRating(supportedRating)}?
-                </h4>
-                <ul className="space-y-1">
-                  {ratingRationale.map((reason, index) => (
-                      <li key={index} className="text-sm text-gray-600 dark:text-gray-400 flex items-start gap-2">
-                        <span className="text-green-500 mt-0.5">âœ“</span>
-                        {reason}
-                      </li>
-                  ))}
-                </ul>
-              </div>
-
-              {/* Evidence Summary */}
-              <div className="p-4">
-                <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
-                  Your Evidence
-                </h4>
-                <div className="grid grid-cols-2 gap-3">
-                  <StatBox
-                      label="Total Migraines"
-                      value={evidence.totalMigraines}
-                      subtext={`${evidence.monthlyRates.total}/month`}
-                  />
-                  <StatBox
-                      label="Prostrating"
-                      value={evidence.prostratingCount}
-                      subtext={`${evidence.monthlyRates.prostrating}/month`}
-                      highlight={evidence.prostratingCount > 0}
-                  />
-                  <StatBox
-                      label="Prolonged (4+ hrs)"
-                      value={evidence.prolongedCount}
-                      subtext="of prostrating"
-                  />
-                  <StatBox
-                      label="Non-Prostrating"
-                      value={evidence.severityBreakdown.nonProstrating}
-                      subtext="not counted for rating"
-                      muted
-                  />
+        <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
+            {/* Card Header */}
+            <button
+                onClick={onToggle}
+                className="w-full p-4 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
+            >
+                <div className="flex items-center gap-3">
+                    <span className="text-2xl">🤕</span>
+                    <div className="text-left">
+                        <h3 className="font-semibold text-gray-900 dark:text-white">
+                            Migraine (DC 8100)
+                        </h3>
+                        <p className="text-sm text-gray-500 dark:text-gray-400">
+                            {evidence.totalMigraines} episodes logged in {evidence.evaluationPeriod.months} months
+                        </p>
+                    </div>
                 </div>
-              </div>
 
-              {/* Gaps */}
-              {gaps.length > 0 && (
-                  <div className="p-4 border-t border-gray-200 dark:border-gray-700">
-                    <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                      Documentation Opportunities
-                    </h4>
-                    <ul className="space-y-2">
-                      {gaps.map((gap, index) => (
-                          <li key={index} className="text-sm text-amber-700 dark:text-amber-400 flex items-start gap-2">
-                            <span className="text-amber-500 mt-0.5">ðŸ’¡</span>
-                            {gap}
-                          </li>
-                      ))}
-                    </ul>
-                  </div>
-              )}
-
-              {/* Rating Scale */}
-              <div className="p-4 border-t border-gray-200 dark:border-gray-700">
-                <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
-                  Rating Scale (DC 8100)
-                </h4>
-                <div className="space-y-2">
-                  {getAllMigraineRatings().map((rating) => (
-                      <RatingRow
-                          key={rating.percent}
-                          rating={rating}
-                          isSupported={supportedRating === rating.percent}
-                      />
-                  ))}
+                <div className="flex items-center gap-3">
+                    <div className={`px-3 py-1 rounded-full border font-bold ${ratingColorClass}`}>
+                        {formatRating(supportedRating)}
+                    </div>
+                    <span className="text-gray-400 text-xl">{expanded ? 'Ã¢Ë†â€™' : '+'}</span>
                 </div>
-              </div>
+            </button>
+
+            {/* Expanded Content */}
+            {expanded && (
+                <div className="border-t border-gray-200 dark:border-gray-700">
+                    {/* Rating Rationale */}
+                    <div className="p-4 bg-gray-50 dark:bg-gray-700/30">
+                        <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                            Why {formatRating(supportedRating)}?
+                        </h4>
+                        <ul className="space-y-1">
+                            {ratingRationale.map((reason, index) => (
+                                <li key={index} className="text-sm text-gray-600 dark:text-gray-400 flex items-start gap-2">
+                                    <span className="text-green-500 mt-0.5">✓</span>
+                                    {reason}
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+
+                    {/* Evidence Summary */}
+                    <div className="p-4">
+                        <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
+                            Your Evidence
+                        </h4>
+                        <div className="grid grid-cols-2 gap-3">
+                            <StatBox
+                                label="Total Migraines"
+                                value={evidence.totalMigraines}
+                                subtext={`${evidence.monthlyRates.total}/month`}
+                            />
+                            <StatBox
+                                label="Prostrating"
+                                value={evidence.prostratingCount}
+                                subtext={`${evidence.monthlyRates.prostrating}/month`}
+                                highlight={evidence.prostratingCount > 0}
+                            />
+                            <StatBox
+                                label="Prolonged (4+ hrs)"
+                                value={evidence.prolongedCount}
+                                subtext="of prostrating"
+                            />
+                            <StatBox
+                                label="Non-Prostrating"
+                                value={evidence.severityBreakdown.nonProstrating}
+                                subtext="not counted for rating"
+                                muted
+                            />
+                        </div>
+                    </div>
+
+                    {/* Gaps */}
+                    {gaps.length > 0 && (
+                        <div className="p-4 border-t border-gray-200 dark:border-gray-700">
+                            <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                                Documentation Opportunities
+                            </h4>
+                            <ul className="space-y-2">
+                                {gaps.map((gap, index) => (
+                                    <li key={index} className="text-sm text-amber-700 dark:text-amber-400 flex items-start gap-2">
+                                        <span className="text-amber-500 mt-0.5">💪</span>
+                                        {gap}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
+
+                    {/* Rating Scale */}
+                    <div className="p-4 border-t border-gray-200 dark:border-gray-700">
+                        <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
+                            Rating Scale (DC 8100)
+                        </h4>
+                        <div className="space-y-2">
+                            {getAllMigraineRatings().map((rating) => (
+                                <RatingRow
+                                    key={rating.percent}
+                                    rating={rating}
+                                    isSupported={supportedRating === rating.percent}
+                                />
+                            ))}
+                        </div>
+                    </div>
 
               {/* Definitions */}
               <div className="p-4 border-t border-gray-200 dark:border-gray-700">
@@ -785,205 +944,205 @@ const MigraineRatingCard = ({ analysis, expanded, onToggle }) => {
                     onClick={() => setShowDefinitions(!showDefinitions)}
                     className="text-sm text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1"
                 >
-                  {showDefinitions ? 'â–¼' : 'â–¶'} Key Term Definitions
+                  {showDefinitions ? 'Hide' : 'Show'} Key Term Definitions
                 </button>
 
-                {showDefinitions && (
-                    <div className="mt-3 space-y-3">
-                      <DefinitionBox definition={getMigraineDefinition('prostrating')} />
-                      <DefinitionBox definition={getMigraineDefinition('prolonged')} />
-                      <DefinitionBox definition={getMigraineDefinition('economicInadaptability')} />
+                        {showDefinitions && (
+                            <div className="mt-3 space-y-3">
+                                <DefinitionBox definition={getMigraineDefinition('prostrating')} />
+                                <DefinitionBox definition={getMigraineDefinition('prolonged')} />
+                                <DefinitionBox definition={getMigraineDefinition('economicInadaptability')} />
+                            </div>
+                        )}
                     </div>
-                )}
-              </div>
-            </div>
-        )}
-      </div>
-  );
+                </div>
+            )}
+        </div>
+    );
 };
 
 /**
  * Sleep Apnea Rating Card Component
  */
 const SleepApneaRatingCard = ({ analysis, profile, expanded, onToggle, onSetupClick }) => {
-  const [showDefinitions, setShowDefinitions] = useState(false);
+    const [showDefinitions, setShowDefinitions] = useState(false);
 
-  const { supportedRating, evidence, ratingRationale, gaps, requiresProfileSetup } = analysis;
-  const ratingColorClass = supportedRating !== null ? getRatingColorClass(supportedRating) : 'bg-gray-100 text-gray-600 border-gray-300 dark:bg-gray-700 dark:text-gray-400 dark:border-gray-600';
+    const { supportedRating, evidence, ratingRationale, gaps, requiresProfileSetup } = analysis;
+    const ratingColorClass = supportedRating !== null ? getRatingColorClass(supportedRating) : 'bg-gray-100 text-gray-600 border-gray-300 dark:bg-gray-700 dark:text-gray-400 dark:border-gray-600';
 
-  // Device type display
-  const deviceTypeLabels = {
-    cpap: 'CPAP',
-    bipap: 'BiPAP',
-    apap: 'APAP',
-    inspire: 'Inspire Implant',
-    other: 'Other Device',
-  };
+    // Device type display
+    const deviceTypeLabels = {
+        cpap: 'CPAP',
+        bipap: 'BiPAP',
+        apap: 'APAP',
+        inspire: 'Inspire Implant',
+        other: 'Other Device',
+    };
 
-  return (
-      <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
-        {/* Card Header */}
-        <button
-            onClick={onToggle}
-            className="w-full p-4 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
-        >
-          <div className="flex items-center gap-3">
-            <span className="text-2xl">😴</span>
-            <div className="text-left">
-              <h3 className="font-semibold text-gray-900 dark:text-white">
-                Sleep Apnea (DC 6847)
-              </h3>
-              <p className="text-sm text-gray-500 dark:text-gray-400">
-                {requiresProfileSetup
-                    ? 'Profile setup required'
-                    : profile.usesBreathingDevice
-                        ? `Using ${deviceTypeLabels[profile.deviceType] || 'breathing device'}`
-                        : 'Diagnosed, no device'
-                }
-              </p>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-3">
-            <div className={`px-3 py-1 rounded-full border font-bold ${ratingColorClass}`}>
-              {formatRating(supportedRating)}
-            </div>
-            <span className="text-gray-400 text-xl">{expanded ? 'âˆ’' : '+'}</span>
-          </div>
-        </button>
-
-        {/* Expanded Content */}
-        {expanded && (
-            <div className="border-t border-gray-200 dark:border-gray-700">
-              {/* Setup Required Banner */}
-              {requiresProfileSetup && (
-                  <div className="p-4 bg-blue-50 dark:bg-blue-900/20 border-b border-blue-200 dark:border-blue-800">
-                    <p className="text-sm text-blue-800 dark:text-blue-300 mb-3">
-                      To analyze your Sleep Apnea rating, we need to know about your diagnosis and treatment.
-                    </p>
-                    <button
-                        onClick={onSetupClick}
-                        className="w-full py-2 px-4 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors"
-                    >
-                      Set Up Sleep Apnea Profile
-                    </button>
-                  </div>
-              )}
-
-              {/* Rating Rationale */}
-              {!requiresProfileSetup && (
-                  <div className="p-4 bg-gray-50 dark:bg-gray-700/30">
-                    <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                      Why {formatRating(supportedRating)}?
-                    </h4>
-                    <ul className="space-y-1">
-                      {ratingRationale.map((reason, index) => (
-                          <li key={index} className="text-sm text-gray-600 dark:text-gray-400 flex items-start gap-2">
-                            <span className="text-green-500 mt-0.5">âœ“</span>
-                            {reason}
-                          </li>
-                      ))}
-                    </ul>
-                  </div>
-              )}
-
-              {/* Evidence Summary */}
-              {!requiresProfileSetup && evidence.sleepLogs.total > 0 && (
-                  <div className="p-4">
-                    <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
-                      Sleep Log Summary
-                    </h4>
-                    <div className="grid grid-cols-2 gap-3">
-                      <StatBox
-                          label="Sleep Logs"
-                          value={evidence.sleepLogs.total}
-                          subtext={`in ${evidence.evaluationPeriod.months} months`}
-                      />
-                      <StatBox
-                          label="Unrested Nights"
-                          value={evidence.sleepLogs.unrestedNights}
-                          highlight={evidence.sleepLogs.unrestedNights > 5}
-                      />
-                      {evidence.sleepLogs.avgSleepQuality && (
-                          <StatBox
-                              label="Avg Sleep Quality"
-                              value={evidence.sleepLogs.avgSleepQuality}
-                              subtext="out of 10"
-                          />
-                      )}
-                      {evidence.sleepLogs.avgHoursSlept && (
-                          <StatBox
-                              label="Avg Hours Slept"
-                              value={evidence.sleepLogs.avgHoursSlept}
-                              subtext="per night"
-                          />
-                      )}
+    return (
+        <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
+            {/* Card Header */}
+            <button
+                onClick={onToggle}
+                className="w-full p-4 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
+            >
+                <div className="flex items-center gap-3">
+                    <span className="text-2xl">😴</span>
+                    <div className="text-left">
+                        <h3 className="font-semibold text-gray-900 dark:text-white">
+                            Sleep Apnea (DC 6847)
+                        </h3>
+                        <p className="text-sm text-gray-500 dark:text-gray-400">
+                            {requiresProfileSetup
+                                ? 'Profile setup required'
+                                : profile.usesBreathingDevice
+                                    ? `Using ${deviceTypeLabels[profile.deviceType] || 'breathing device'}`
+                                    : 'Diagnosed, no device'
+                            }
+                        </p>
                     </div>
-                  </div>
-              )}
-
-              {/* Profile Summary */}
-              {!requiresProfileSetup && (
-                  <div className="p-4 border-t border-gray-200 dark:border-gray-700">
-                    <div className="flex items-center justify-between mb-2">
-                      <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300">
-                        Your Profile
-                      </h4>
-                      <button
-                          onClick={onSetupClick}
-                          className="text-xs text-blue-600 dark:text-blue-400 hover:underline"
-                      >
-                        Edit
-                      </button>
-                    </div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
-                      <p>
-                        <span className="font-medium">Diagnosis:</span>{' '}
-                        {profile.hasDiagnosis ? 'Yes' : 'No'}
-                      </p>
-                      <p>
-                        <span className="font-medium">Breathing Device:</span>{' '}
-                        {profile.usesBreathingDevice
-                            ? deviceTypeLabels[profile.deviceType] || 'Yes'
-                            : 'No'
-                        }
-                      </p>
-                    </div>
-                  </div>
-              )}
-
-              {/* Gaps */}
-              {gaps.length > 0 && (
-                  <div className="p-4 border-t border-gray-200 dark:border-gray-700">
-                    <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                      Documentation Opportunities
-                    </h4>
-                    <ul className="space-y-2">
-                      {gaps.map((gap, index) => (
-                          <li key={index} className="text-sm text-amber-700 dark:text-amber-400 flex items-start gap-2">
-                            <span className="text-amber-500 mt-0.5">ðŸ’¡</span>
-                            {gap}
-                          </li>
-                      ))}
-                    </ul>
-                  </div>
-              )}
-
-              {/* Rating Scale */}
-              <div className="p-4 border-t border-gray-200 dark:border-gray-700">
-                <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
-                  Rating Scale (DC 6847)
-                </h4>
-                <div className="space-y-2">
-                  {getAllSleepApneaRatings().map((rating) => (
-                      <RatingRow
-                          key={rating.percent}
-                          rating={rating}
-                          isSupported={supportedRating === rating.percent}
-                      />
-                  ))}
                 </div>
-              </div>
+
+                <div className="flex items-center gap-3">
+                    <div className={`px-3 py-1 rounded-full border font-bold ${ratingColorClass}`}>
+                        {formatRating(supportedRating)}
+                    </div>
+                    <span className="text-gray-400 text-xl">{expanded ? 'Ã¢Ë†â€™' : '+'}</span>
+                </div>
+            </button>
+
+            {/* Expanded Content */}
+            {expanded && (
+                <div className="border-t border-gray-200 dark:border-gray-700">
+                    {/* Setup Required Banner */}
+                    {requiresProfileSetup && (
+                        <div className="p-4 bg-blue-50 dark:bg-blue-900/20 border-b border-blue-200 dark:border-blue-800">
+                            <p className="text-sm text-blue-800 dark:text-blue-300 mb-3">
+                                To analyze your Sleep Apnea rating, we need to know about your diagnosis and treatment.
+                            </p>
+                            <button
+                                onClick={onSetupClick}
+                                className="w-full py-2 px-4 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors"
+                            >
+                                Set Up Sleep Apnea Profile
+                            </button>
+                        </div>
+                    )}
+
+                    {/* Rating Rationale */}
+                    {!requiresProfileSetup && (
+                        <div className="p-4 bg-gray-50 dark:bg-gray-700/30">
+                            <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                                Why {formatRating(supportedRating)}?
+                            </h4>
+                            <ul className="space-y-1">
+                                {ratingRationale.map((reason, index) => (
+                                    <li key={index} className="text-sm text-gray-600 dark:text-gray-400 flex items-start gap-2">
+                                        <span className="text-green-500 mt-0.5">✓</span>
+                                        {reason}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
+
+                    {/* Evidence Summary */}
+                    {!requiresProfileSetup && evidence.sleepLogs.total > 0 && (
+                        <div className="p-4">
+                            <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
+                                Sleep Log Summary
+                            </h4>
+                            <div className="grid grid-cols-2 gap-3">
+                                <StatBox
+                                    label="Sleep Logs"
+                                    value={evidence.sleepLogs.total}
+                                    subtext={`in ${evidence.evaluationPeriod.months} months`}
+                                />
+                                <StatBox
+                                    label="Unrested Nights"
+                                    value={evidence.sleepLogs.unrestedNights}
+                                    highlight={evidence.sleepLogs.unrestedNights > 5}
+                                />
+                                {evidence.sleepLogs.avgSleepQuality && (
+                                    <StatBox
+                                        label="Avg Sleep Quality"
+                                        value={evidence.sleepLogs.avgSleepQuality}
+                                        subtext="out of 10"
+                                    />
+                                )}
+                                {evidence.sleepLogs.avgHoursSlept && (
+                                    <StatBox
+                                        label="Avg Hours Slept"
+                                        value={evidence.sleepLogs.avgHoursSlept}
+                                        subtext="per night"
+                                    />
+                                )}
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Profile Summary */}
+                    {!requiresProfileSetup && (
+                        <div className="p-4 border-t border-gray-200 dark:border-gray-700">
+                            <div className="flex items-center justify-between mb-2">
+                                <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+                                    Your Profile
+                                </h4>
+                                <button
+                                    onClick={onSetupClick}
+                                    className="text-xs text-blue-600 dark:text-blue-400 hover:underline"
+                                >
+                                    Edit
+                                </button>
+                            </div>
+                            <div className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+                                <p>
+                                    <span className="font-medium">Diagnosis:</span>{' '}
+                                    {profile.hasDiagnosis ? 'Yes' : 'No'}
+                                </p>
+                                <p>
+                                    <span className="font-medium">Breathing Device:</span>{' '}
+                                    {profile.usesBreathingDevice
+                                        ? deviceTypeLabels[profile.deviceType] || 'Yes'
+                                        : 'No'
+                                    }
+                                </p>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Gaps */}
+                    {gaps.length > 0 && (
+                        <div className="p-4 border-t border-gray-200 dark:border-gray-700">
+                            <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                                Documentation Opportunities
+                            </h4>
+                            <ul className="space-y-2">
+                                {gaps.map((gap, index) => (
+                                    <li key={index} className="text-sm text-amber-700 dark:text-amber-400 flex items-start gap-2">
+                                        <span className="text-amber-500 mt-0.5">💪</span>
+                                        {gap}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
+
+                    {/* Rating Scale */}
+                    <div className="p-4 border-t border-gray-200 dark:border-gray-700">
+                        <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
+                            Rating Scale (DC 6847)
+                        </h4>
+                        <div className="space-y-2">
+                            {getAllSleepApneaRatings().map((rating) => (
+                                <RatingRow
+                                    key={rating.percent}
+                                    rating={rating}
+                                    isSupported={supportedRating === rating.percent}
+                                />
+                            ))}
+                        </div>
+                    </div>
 
               {/* Definitions */}
               <div className="p-4 border-t border-gray-200 dark:border-gray-700">
@@ -991,188 +1150,188 @@ const SleepApneaRatingCard = ({ analysis, profile, expanded, onToggle, onSetupCl
                     onClick={() => setShowDefinitions(!showDefinitions)}
                     className="text-sm text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1"
                 >
-                  {showDefinitions ? 'â–¼' : 'â–¶'} Key Term Definitions
+                  {showDefinitions ? 'Hide' : 'Show'} Key Term Definitions
                 </button>
 
-                {showDefinitions && (
-                    <div className="mt-3 space-y-3">
-                      <DefinitionBox definition={getSleepApneaDefinition('breathingDevice')} />
-                      <DefinitionBox definition={getSleepApneaDefinition('hypersomnolence')} />
-                      <DefinitionBox definition={getSleepApneaDefinition('sleepStudy')} />
+                        {showDefinitions && (
+                            <div className="mt-3 space-y-3">
+                                <DefinitionBox definition={getSleepApneaDefinition('breathingDevice')} />
+                                <DefinitionBox definition={getSleepApneaDefinition('hypersomnolence')} />
+                                <DefinitionBox definition={getSleepApneaDefinition('sleepStudy')} />
+                            </div>
+                        )}
                     </div>
-                )}
-              </div>
-            </div>
-        )}
-      </div>
-  );
+                </div>
+            )}
+        </div>
+    );
 };
 
 /**
  * Sleep Apnea Setup Modal
  */
 const SleepApneaSetupModal = ({ currentProfile, onSave, onClose }) => {
-  const [hasDiagnosis, setHasDiagnosis] = useState(currentProfile.hasDiagnosis ?? null);
-  const [usesBreathingDevice, setUsesBreathingDevice] = useState(currentProfile.usesBreathingDevice ?? null);
-  const [deviceType, setDeviceType] = useState(currentProfile.deviceType ?? '');
+    const [hasDiagnosis, setHasDiagnosis] = useState(currentProfile.hasDiagnosis ?? null);
+    const [usesBreathingDevice, setUsesBreathingDevice] = useState(currentProfile.usesBreathingDevice ?? null);
+    const [deviceType, setDeviceType] = useState(currentProfile.deviceType ?? '');
 
-  const handleSave = () => {
-    onSave({
-      hasDiagnosis,
-      usesBreathingDevice,
-      deviceType: usesBreathingDevice ? deviceType : null,
-    });
-  };
+    const handleSave = () => {
+        onSave({
+            hasDiagnosis,
+            usesBreathingDevice,
+            deviceType: usesBreathingDevice ? deviceType : null,
+        });
+    };
 
-  const canSave = hasDiagnosis !== null && (hasDiagnosis === false || usesBreathingDevice !== null);
+    const canSave = hasDiagnosis !== null && (hasDiagnosis === false || usesBreathingDevice !== null);
 
-  return (
-      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-        <div className="bg-white dark:bg-gray-800 rounded-lg w-full max-w-md overflow-hidden shadow-xl">
-          <div className="p-4 border-b border-gray-200 dark:border-gray-700">
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
-              Sleep Apnea Profile
-            </h2>
-            <p className="text-sm text-gray-500 dark:text-gray-400">
-              Help us analyze your rating evidence
-            </p>
-          </div>
-
-          <div className="p-4 space-y-6">
-            {/* Diagnosis Question */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Do you have a sleep apnea diagnosis?
-              </label>
-              <div className="flex gap-3">
-                <button
-                    type="button"
-                    onClick={() => setHasDiagnosis(true)}
-                    className={`flex-1 py-2 px-4 rounded-lg border-2 font-medium transition-colors ${
-                        hasDiagnosis === true
-                            ? 'bg-blue-100 border-blue-500 text-blue-700 dark:bg-blue-900/30 dark:border-blue-500 dark:text-blue-300'
-                            : 'bg-white border-gray-300 text-gray-700 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300'
-                    }`}
-                >
-                  Yes
-                </button>
-                <button
-                    type="button"
-                    onClick={() => {
-                      setHasDiagnosis(false);
-                      setUsesBreathingDevice(false);
-                    }}
-                    className={`flex-1 py-2 px-4 rounded-lg border-2 font-medium transition-colors ${
-                        hasDiagnosis === false
-                            ? 'bg-blue-100 border-blue-500 text-blue-700 dark:bg-blue-900/30 dark:border-blue-500 dark:text-blue-300'
-                            : 'bg-white border-gray-300 text-gray-700 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300'
-                    }`}
-                >
-                  No
-                </button>
-              </div>
-            </div>
-
-            {/* Breathing Device Question */}
-            {hasDiagnosis && (
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Do you use a CPAP or other breathing device?
-                  </label>
-                  <div className="flex gap-3">
-                    <button
-                        type="button"
-                        onClick={() => setUsesBreathingDevice(true)}
-                        className={`flex-1 py-2 px-4 rounded-lg border-2 font-medium transition-colors ${
-                            usesBreathingDevice === true
-                                ? 'bg-blue-100 border-blue-500 text-blue-700 dark:bg-blue-900/30 dark:border-blue-500 dark:text-blue-300'
-                                : 'bg-white border-gray-300 text-gray-700 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300'
-                        }`}
-                    >
-                      Yes
-                    </button>
-                    <button
-                        type="button"
-                        onClick={() => {
-                          setUsesBreathingDevice(false);
-                          setDeviceType('');
-                        }}
-                        className={`flex-1 py-2 px-4 rounded-lg border-2 font-medium transition-colors ${
-                            usesBreathingDevice === false
-                                ? 'bg-blue-100 border-blue-500 text-blue-700 dark:bg-blue-900/30 dark:border-blue-500 dark:text-blue-300'
-                                : 'bg-white border-gray-300 text-gray-700 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300'
-                        }`}
-                    >
-                      No
-                    </button>
-                  </div>
+    return (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white dark:bg-gray-800 rounded-lg w-full max-w-md overflow-hidden shadow-xl">
+                <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+                    <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+                        Sleep Apnea Profile
+                    </h2>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                        Help us analyze your rating evidence
+                    </p>
                 </div>
-            )}
 
-            {/* Device Type */}
-            {usesBreathingDevice && (
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    What type of device?
-                  </label>
-                  <select
-                      value={deviceType}
-                      onChange={(e) => setDeviceType(e.target.value)}
-                      className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg
+                <div className="p-4 space-y-6">
+                    {/* Diagnosis Question */}
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Do you have a sleep apnea diagnosis?
+                        </label>
+                        <div className="flex gap-3">
+                            <button
+                                type="button"
+                                onClick={() => setHasDiagnosis(true)}
+                                className={`flex-1 py-2 px-4 rounded-lg border-2 font-medium transition-colors ${
+                                    hasDiagnosis === true
+                                        ? 'bg-blue-100 border-blue-500 text-blue-700 dark:bg-blue-900/30 dark:border-blue-500 dark:text-blue-300'
+                                        : 'bg-white border-gray-300 text-gray-700 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300'
+                                }`}
+                            >
+                                Yes
+                            </button>
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    setHasDiagnosis(false);
+                                    setUsesBreathingDevice(false);
+                                }}
+                                className={`flex-1 py-2 px-4 rounded-lg border-2 font-medium transition-colors ${
+                                    hasDiagnosis === false
+                                        ? 'bg-blue-100 border-blue-500 text-blue-700 dark:bg-blue-900/30 dark:border-blue-500 dark:text-blue-300'
+                                        : 'bg-white border-gray-300 text-gray-700 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300'
+                                }`}
+                            >
+                                No
+                            </button>
+                        </div>
+                    </div>
+
+                    {/* Breathing Device Question */}
+                    {hasDiagnosis && (
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                Do you use a CPAP or other breathing device?
+                            </label>
+                            <div className="flex gap-3">
+                                <button
+                                    type="button"
+                                    onClick={() => setUsesBreathingDevice(true)}
+                                    className={`flex-1 py-2 px-4 rounded-lg border-2 font-medium transition-colors ${
+                                        usesBreathingDevice === true
+                                            ? 'bg-blue-100 border-blue-500 text-blue-700 dark:bg-blue-900/30 dark:border-blue-500 dark:text-blue-300'
+                                            : 'bg-white border-gray-300 text-gray-700 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300'
+                                    }`}
+                                >
+                                    Yes
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        setUsesBreathingDevice(false);
+                                        setDeviceType('');
+                                    }}
+                                    className={`flex-1 py-2 px-4 rounded-lg border-2 font-medium transition-colors ${
+                                        usesBreathingDevice === false
+                                            ? 'bg-blue-100 border-blue-500 text-blue-700 dark:bg-blue-900/30 dark:border-blue-500 dark:text-blue-300'
+                                            : 'bg-white border-gray-300 text-gray-700 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300'
+                                    }`}
+                                >
+                                    No
+                                </button>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Device Type */}
+                    {usesBreathingDevice && (
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                What type of device?
+                            </label>
+                            <select
+                                value={deviceType}
+                                onChange={(e) => setDeviceType(e.target.value)}
+                                className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg
                            bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                  >
-                    <option value="">Select device type...</option>
-                    <option value="cpap">CPAP (Continuous Positive Airway Pressure)</option>
-                    <option value="bipap">BiPAP (Bilevel Positive Airway Pressure)</option>
-                    <option value="apap">APAP (Automatic/Auto-adjusting)</option>
-                    <option value="inspire">Inspire Implant (Hypoglossal Nerve Stimulator)</option>
-                    <option value="other">Other</option>
-                  </select>
-                </div>
-            )}
+                            >
+                                <option value="">Select device type...</option>
+                                <option value="cpap">CPAP (Continuous Positive Airway Pressure)</option>
+                                <option value="bipap">BiPAP (Bilevel Positive Airway Pressure)</option>
+                                <option value="apap">APAP (Automatic/Auto-adjusting)</option>
+                                <option value="inspire">Inspire Implant (Hypoglossal Nerve Stimulator)</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                    )}
 
-            {/* Rating Preview */}
-            {canSave && (
-                <div className="bg-gray-50 dark:bg-gray-700/30 rounded-lg p-3">
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
-                    <strong>Based on your answers:</strong>
-                  </p>
-                  <p className="text-lg font-bold text-gray-900 dark:text-white mt-1">
-                    {usesBreathingDevice
-                        ? '50% - Requires breathing assistance device'
-                        : hasDiagnosis
-                            ? '0-30% - Depends on daytime sleepiness documentation'
-                            : 'No rating - Diagnosis required'
-                    }
-                  </p>
+                    {/* Rating Preview */}
+                    {canSave && (
+                        <div className="bg-gray-50 dark:bg-gray-700/30 rounded-lg p-3">
+                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                                <strong>Based on your answers:</strong>
+                            </p>
+                            <p className="text-lg font-bold text-gray-900 dark:text-white mt-1">
+                                {usesBreathingDevice
+                                    ? '50% - Requires breathing assistance device'
+                                    : hasDiagnosis
+                                        ? '0-30% - Depends on daytime sleepiness documentation'
+                                        : 'No rating - Diagnosis required'
+                                }
+                            </p>
+                        </div>
+                    )}
                 </div>
-            )}
-          </div>
 
-          {/* Actions */}
-          <div className="p-4 border-t border-gray-200 dark:border-gray-700 flex gap-3">
-            <button
-                onClick={onClose}
-                className="flex-1 py-2 px-4 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300
+                {/* Actions */}
+                <div className="p-4 border-t border-gray-200 dark:border-gray-700 flex gap-3">
+                    <button
+                        onClick={onClose}
+                        className="flex-1 py-2 px-4 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300
                        font-medium rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
-            >
-              Cancel
-            </button>
-            <button
-                onClick={handleSave}
-                disabled={!canSave}
-                className={`flex-1 py-2 px-4 font-medium rounded-lg transition-colors ${
-                    canSave
-                        ? 'bg-blue-600 text-white hover:bg-blue-700'
-                        : 'bg-gray-300 text-gray-500 cursor-not-allowed dark:bg-gray-600 dark:text-gray-400'
-                }`}
-            >
-              Save
-            </button>
-          </div>
+                    >
+                        Cancel
+                    </button>
+                    <button
+                        onClick={handleSave}
+                        disabled={!canSave}
+                        className={`flex-1 py-2 px-4 font-medium rounded-lg transition-colors ${
+                            canSave
+                                ? 'bg-blue-600 text-white hover:bg-blue-700'
+                                : 'bg-gray-300 text-gray-500 cursor-not-allowed dark:bg-gray-600 dark:text-gray-400'
+                        }`}
+                    >
+                        Save
+                    </button>
+                </div>
+            </div>
         </div>
-      </div>
-  );
+    );
 };
 
 
@@ -1182,181 +1341,181 @@ const SleepApneaSetupModal = ({ currentProfile, onSave, onClose }) => {
  * All share the same General Rating Formula for Mental Disorders
  */
 const MentalHealthRatingCard = ({ analysis, expanded, onToggle, icon = '🧠', getAllRatings, getDefinition }) => {
-  const [showDefinitions, setShowDefinitions] = useState(false);
+    const [showDefinitions, setShowDefinitions] = useState(false);
 
-  if (!analysis.hasData) {
-    return (
-        <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
-          <div className="flex items-center gap-3 mb-2">
-            <span className="text-2xl">{icon}</span>
-            <div>
-              <h3 className="font-semibold text-gray-900 dark:text-white">
-                {analysis.condition} (DC {analysis.diagnosticCode})
-              </h3>
-              <p className="text-sm text-gray-500 dark:text-gray-400">No data in evaluation period</p>
-            </div>
-          </div>
-          <p className="text-sm text-gray-600 dark:text-gray-400">
-            Log {analysis.condition} symptoms to see rating evidence analysis
-          </p>
-        </div>
-    );
-  }
-
-  const { supportedRating, evidence, ratingRationale, gaps, assessmentLevel } = analysis;
-
-  return (
-      <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
-        {/* Card Header */}
-        <button
-            onClick={onToggle}
-            className="w-full p-4 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
-        >
-          <div className="flex items-center gap-3">
-            <span className="text-2xl">{icon}</span>
-            <div className="text-left">
-              <h3 className="font-semibold text-gray-900 dark:text-white">
-                {analysis.condition} (DC {analysis.diagnosticCode})
-              </h3>
-              <p className="text-sm text-gray-500 dark:text-gray-400">
-                General Rating Formula for Mental Disorders
-              </p>
-            </div>
-          </div>
-          <div className="flex items-center gap-3">
-            {/* Supported Rating Badge */}
-            <div className={`px-3 py-1 rounded-full text-sm font-medium border ${
-                assessmentLevel === 'requires-professional-evaluation'
-                    ? 'bg-red-100 text-red-800 border-red-300 dark:bg-red-900/30 dark:text-red-300 dark:border-red-700'
-                    : 'bg-blue-100 text-blue-800 border-blue-300 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-700'
-            }`}>
-              {supportedRating}%
-            </div>
-            {/* Expand Icon */}
-            <svg
-                className={`w-5 h-5 text-gray-400 transition-transform ${expanded ? 'rotate-180' : ''}`}
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7"/>
-            </svg>
-          </div>
-        </button>
-
-        {/* Expanded Content */}
-        {expanded && (
-            <div className="border-t border-gray-200 dark:border-gray-700">
-              {/* Crisis Warning if severe symptoms detected */}
-              {assessmentLevel === 'requires-professional-evaluation' && evidence.functionalImpact.severeSymptoms > 0 && (
-                  <div className="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 p-4 m-4">
-                    <div className="flex items-start gap-3">
-                      <span className="text-2xl">⚠️</span>
-                      <div className="flex-1">
-                        <h4 className="font-bold text-red-900 dark:text-red-300 mb-2">
-                          Crisis Support Available 24/7
-                        </h4>
-                        <p className="text-sm text-red-800 dark:text-red-400 mb-3">
-                          If you're experiencing a crisis or having thoughts of suicide:
-                        </p>
-                        <div className="space-y-2 text-sm text-red-800 dark:text-red-400">
-                          <div>
-                            <strong>Call:</strong> Veterans Crisis Line - Dial 988, then Press 1
-                          </div>
-                          <div>
-                            <strong>Text:</strong> 838255
-                          </div>
-                          <div>
-                            <strong>Chat:</strong> VeteransCrisisLine.net/chat
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-              )}
-
-              {/* Analysis Summary */}
-              <div className="p-4 space-y-3">
-                <div>
-                  <h4 className="font-medium text-gray-900 dark:text-white mb-2">
-                    Evidence Summary
-                  </h4>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
-                    <StatBox
-                        label="Total Symptoms"
-                        value={evidence.totalSymptoms}
-                        subtext={`${evidence.symptomsPerMonth}/month`}
-                    />
-                    <StatBox
-                        label="Symptom Types"
-                        value={evidence.symptomTypesPresent.length}
-                        subtext="categories"
-                    />
-                    <StatBox
-                        label="Panic-Related"
-                        value={evidence.panicAttacks.total}
-                        subtext={`${evidence.panicAttacks.perWeek}/week`}
-                        highlight={parseFloat(evidence.panicAttacks.perWeek) > 1}
-                    />
-                    <StatBox
-                        label="Functional Impact"
-                        value={evidence.functionalImpact.workImpact + evidence.functionalImpact.socialImpact}
-                        subtext="logged impacts"
-                    />
-                  </div>
-                </div>
-
-                {/* Rationale */}
-                <div>
-                  <h4 className="font-medium text-gray-900 dark:text-white mb-2">
-                    Analysis Rationale
-                  </h4>
-                  <div className="bg-gray-50 dark:bg-gray-700/30 rounded-lg p-3 space-y-2">
-                    {ratingRationale.map((reason, i) => (
-                        <div key={i} className="flex items-start gap-2">
-                          <span className="text-blue-600 dark:text-blue-400 mt-0.5">•</span>
-                          <span className="text-sm text-gray-700 dark:text-gray-300">{reason}</span>
-                        </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Rating Schedule */}
-                <div>
-                  <h4 className="font-medium text-gray-900 dark:text-white mb-2">
-                    VA Rating Schedule
-                  </h4>
-                  <div className="space-y-2">
-                    {getAllRatings().map(rating => (
-                        <RatingRow
-                            key={rating.percent}
-                            rating={rating}
-                            isSupported={
-                              typeof supportedRating === 'number'
-                                  ? rating.percent === supportedRating
-                                  : supportedRating.includes(rating.percent.toString())
-                            }
-                        />
-                    ))}
-                  </div>
-                </div>
-
-                {/* Gaps */}
-                {gaps.length > 0 && (
+    if (!analysis.hasData) {
+        return (
+            <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
+                <div className="flex items-center gap-3 mb-2">
+                    <span className="text-2xl">{icon}</span>
                     <div>
-                      <h4 className="font-medium text-gray-900 dark:text-white mb-2">
-                        Documentation Gaps
-                      </h4>
-                      <div className="bg-yellow-50 dark:bg-yellow-900/20 rounded-lg p-3 space-y-2">
-                        {gaps.map((gap, i) => (
-                            <div key={i} className="flex items-start gap-2">
-                              <span className="text-yellow-600 dark:text-yellow-400 mt-0.5">⚠</span>
-                              <span className="text-sm text-gray-700 dark:text-gray-300">{gap}</span>
-                            </div>
-                        ))}
-                      </div>
+                        <h3 className="font-semibold text-gray-900 dark:text-white">
+                            {analysis.condition} (DC {analysis.diagnosticCode})
+                        </h3>
+                        <p className="text-sm text-gray-500 dark:text-gray-400">No data in evaluation period</p>
                     </div>
-                )}
+                </div>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                    Log {analysis.condition} symptoms to see rating evidence analysis
+                </p>
+            </div>
+        );
+    }
+
+    const { supportedRating, evidence, ratingRationale, gaps, assessmentLevel } = analysis;
+
+    return (
+        <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
+            {/* Card Header */}
+            <button
+                onClick={onToggle}
+                className="w-full p-4 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
+            >
+                <div className="flex items-center gap-3">
+                    <span className="text-2xl">{icon}</span>
+                    <div className="text-left">
+                        <h3 className="font-semibold text-gray-900 dark:text-white">
+                            {analysis.condition} (DC {analysis.diagnosticCode})
+                        </h3>
+                        <p className="text-sm text-gray-500 dark:text-gray-400">
+                            General Rating Formula for Mental Disorders
+                        </p>
+                    </div>
+                </div>
+                <div className="flex items-center gap-3">
+                    {/* Supported Rating Badge */}
+                    <div className={`px-3 py-1 rounded-full text-sm font-medium border ${
+                        assessmentLevel === 'requires-professional-evaluation'
+                            ? 'bg-red-100 text-red-800 border-red-300 dark:bg-red-900/30 dark:text-red-300 dark:border-red-700'
+                            : 'bg-blue-100 text-blue-800 border-blue-300 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-700'
+                    }`}>
+                        {supportedRating}%
+                    </div>
+                    {/* Expand Icon */}
+                    <svg
+                        className={`w-5 h-5 text-gray-400 transition-transform ${expanded ? 'rotate-180' : ''}`}
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7"/>
+                    </svg>
+                </div>
+            </button>
+
+            {/* Expanded Content */}
+            {expanded && (
+                <div className="border-t border-gray-200 dark:border-gray-700">
+                    {/* Crisis Warning if severe symptoms detected */}
+                    {assessmentLevel === 'requires-professional-evaluation' && evidence.functionalImpact.severeSymptoms > 0 && (
+                        <div className="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 p-4 m-4">
+                            <div className="flex items-start gap-3">
+                                <span className="text-2xl">⚠️</span>
+                                <div className="flex-1">
+                                    <h4 className="font-bold text-red-900 dark:text-red-300 mb-2">
+                                        Crisis Support Available 24/7
+                                    </h4>
+                                    <p className="text-sm text-red-800 dark:text-red-400 mb-3">
+                                        If you're experiencing a crisis or having thoughts of suicide:
+                                    </p>
+                                    <div className="space-y-2 text-sm text-red-800 dark:text-red-400">
+                                        <div>
+                                            <strong>Call:</strong> Veterans Crisis Line - Dial 988, then Press 1
+                                        </div>
+                                        <div>
+                                            <strong>Text:</strong> 838255
+                                        </div>
+                                        <div>
+                                            <strong>Chat:</strong> VeteransCrisisLine.net/chat
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Analysis Summary */}
+                    <div className="p-4 space-y-3">
+                        <div>
+                            <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-center">
+                                Evidence Summary
+                            </h4>
+                            <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+                                <StatBox
+                                    label="Total Symptoms"
+                                    value={evidence.totalSymptoms}
+                                    subtext={`${evidence.symptomsPerMonth}/month`}
+                                />
+                                <StatBox
+                                    label="Symptom Types"
+                                    value={evidence.symptomTypesPresent.length}
+                                    subtext="categories"
+                                />
+                                <StatBox
+                                    label="Panic-Related"
+                                    value={evidence.panicAttacks.total}
+                                    subtext={`${evidence.panicAttacks.perWeek}/week`}
+                                    highlight={parseFloat(evidence.panicAttacks.perWeek) > 1}
+                                />
+                                <StatBox
+                                    label="Functional Impact"
+                                    value={evidence.functionalImpact.workImpact + evidence.functionalImpact.socialImpact}
+                                    subtext="logged impacts"
+                                />
+                            </div>
+                        </div>
+
+                        {/* Rationale */}
+                        <div>
+                            <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-center">
+                                Analysis Rationale
+                            </h4>
+                            <div className="bg-gray-50 dark:bg-gray-700/30 rounded-lg p-3 space-y-2">
+                                {ratingRationale.map((reason, i) => (
+                                    <div key={i} className="flex items-start gap-2">
+                                        <span className="text-blue-600 dark:text-blue-400 mt-0.5">•</span>
+                                        <span className="text-sm text-gray-700 dark:text-gray-300">{reason}</span>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Rating Schedule */}
+                        <div>
+                            <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-center">
+                                VA Rating Schedule
+                            </h4>
+                            <div className="space-y-2">
+                                {getAllRatings().map(rating => (
+                                    <RatingRow
+                                        key={rating.percent}
+                                        rating={rating}
+                                        isSupported={
+                                            typeof supportedRating === 'number'
+                                                ? rating.percent === supportedRating
+                                                : supportedRating.includes(rating.percent.toString())
+                                        }
+                                    />
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Gaps */}
+                        {gaps.length > 0 && (
+                            <div>
+                                <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-center">
+                                    Documentation Gaps
+                                </h4>
+                                <div className="bg-yellow-50 dark:bg-yellow-900/20 rounded-lg p-3 space-y-2">
+                                    {gaps.map((gap, i) => (
+                                        <div key={i} className="flex items-start gap-2">
+                                            <span className="text-yellow-600 dark:text-yellow-400 mt-0.5">⚠ </span>
+                                            <span className="text-sm text-gray-700 dark:text-gray-300">{gap}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
 
                 {/* Key Definitions */}
                 <div>
@@ -1368,189 +1527,189 @@ const MentalHealthRatingCard = ({ analysis, expanded, onToggle, icon = '🧠', g
                     <span>{showDefinitions ? 'Hide' : 'Show'} VA Rating Definitions</span>
                   </button>
 
-                  {showDefinitions && (
-                      <div className="mt-3 space-y-2">
-                        <DefinitionBox definition={getDefinition('generalRatingFormula')}/>
-                        <DefinitionBox definition={getDefinition('occupationalImpairment')}/>
-                        <DefinitionBox definition={getDefinition('socialImpairment')}/>
-                      </div>
-                  )}
-                </div>
+                            {showDefinitions && (
+                                <div className="mt-3 space-y-2">
+                                    <DefinitionBox definition={getDefinition('generalRatingFormula')}/>
+                                    <DefinitionBox definition={getDefinition('occupationalImpairment')}/>
+                                    <DefinitionBox definition={getDefinition('socialImpairment')}/>
+                                </div>
+                            )}
+                        </div>
 
-                {/* Important Notes */}
-                <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4 border-l-4 border-blue-500">
-                  <h4 className="font-medium text-blue-900 dark:text-blue-300 mb-2">
-                    Important: Mental Health Rating Considerations
-                  </h4>
-                  <ul className="space-y-2 text-sm text-blue-800 dark:text-blue-400">
-                    {analysis.criteria.importantNotes.map((note, i) => (
-                        <li key={i} className="flex items-start gap-2">
-                          <span className="mt-0.5">•</span>
-                          <span>{note}</span>
-                        </li>
-                    ))}
-                  </ul>
-                </div>
+                        {/* Important Notes */}
+                        <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4 border-l-4 border-blue-500">
+                            <h4 className="font-medium text-blue-900 dark:text-blue-300 mb-2">
+                                Important: Mental Health Rating Considerations
+                            </h4>
+                            <ul className="space-y-2 text-sm text-blue-800 dark:text-blue-400">
+                                {analysis.criteria.importantNotes.map((note, i) => (
+                                    <li key={i} className="flex items-start gap-2">
+                                        <span className="mt-0.5">•</span>
+                                        <span>{note}</span>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
 
-                {/* Disclaimer */}
-                <div className="bg-gray-100 dark:bg-gray-700/50 rounded-lg p-3 text-xs text-gray-600 dark:text-gray-400">
-                  <strong>CRITICAL DISCLAIMER:</strong> {analysis.disclaimer}
+                        {/* Disclaimer */}
+                        <div className="bg-gray-100 dark:bg-gray-700/50 rounded-lg p-3 text-xs text-gray-600 dark:text-gray-400">
+                            <strong>CRITICAL DISCLAIMER:</strong> {analysis.disclaimer}
+                        </div>
+                    </div>
                 </div>
-              </div>
-            </div>
-        )}
-      </div>
-  );
+            )}
+        </div>
+    );
 };
 
 /**
  * PTSD Rating Card Component (uses the generic MentalHealthRatingCard)
  */
 const PTSDRatingCard = ({ analysis, expanded, onToggle }) => {
-  return (
-      <MentalHealthRatingCard
-          analysis={analysis}
-          expanded={expanded}
-          onToggle={onToggle}
-          icon="🧠"
-          getAllRatings={getAllPTSDRatings}
-          getDefinition={getPTSDDefinition}
-      />
-  );
+    return (
+        <MentalHealthRatingCard
+            analysis={analysis}
+            expanded={expanded}
+            onToggle={onToggle}
+            icon="🧠"
+            getAllRatings={getAllPTSDRatings}
+            getDefinition={getPTSDDefinition}
+        />
+    );
 };
 
 /**
  * Generic Rating Card Component for simpler conditions
  */
 const GenericRatingCard = ({ analysis, expanded, onToggle, icon }) => {
-  const [showDefinitions, setShowDefinitions] = useState(false);
+    const [showDefinitions, setShowDefinitions] = useState(false);
 
-  if (!analysis.hasData) return null;
+    if (!analysis.hasData) return null;
 
-  const {
-    condition,
-    diagnosticCode,
-    supportedRating,
-    ratingRationale,
-    evidence,
-    gaps,
-    criteria,
-    disclaimer,
-  } = analysis;
+    const {
+        condition,
+        diagnosticCode,
+        supportedRating,
+        ratingRationale,
+        evidence,
+        gaps,
+        criteria,
+        disclaimer,
+    } = analysis;
 
-  return (
-      <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
-        {/* Header */}
-        <button
-            onClick={onToggle}
-            className="w-full p-4 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
-        >
-          <div className="flex items-center gap-3">
-            <span className="text-2xl">{icon}</span>
-            <div className="text-left">
-              <h3 className="font-semibold text-gray-900 dark:text-white">
-                {condition}
-              </h3>
-              <p className="text-xs text-gray-500 dark:text-gray-400">
-                DC {diagnosticCode} • {criteria.cfrReference}
-              </p>
-            </div>
-          </div>
-          <div className="flex items-center gap-3">
-            {supportedRating && (
-                <span className={`px-3 py-1 rounded-full text-sm font-medium border ${
-                    supportedRating.includes('Requires') || supportedRating.includes('Clinical')
-                        ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 border-blue-300 dark:border-blue-700'
-                        : 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 border-green-300 dark:border-green-700'
-                }`}>
+    return (
+        <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+            {/* Header */}
+            <button
+                onClick={onToggle}
+                className="w-full p-4 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
+            >
+                <div className="flex items-center gap-3">
+                    <span className="text-2xl">{icon}</span>
+                    <div className="text-left">
+                        <h3 className="font-semibold text-gray-900 dark:text-white">
+                            {condition}
+                        </h3>
+                        <p className="text-xs text-gray-500 dark:text-gray-400">
+                            DC {diagnosticCode} • {criteria.cfrReference}
+                        </p>
+                    </div>
+                </div>
+                <div className="flex items-center gap-3">
+                    {supportedRating && (
+                        <span className={`px-3 py-1 rounded-full text-sm font-medium border ${
+                            supportedRating.includes('Requires') || supportedRating.includes('Clinical')
+                                ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 border-blue-300 dark:border-blue-700'
+                                : 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 border-green-300 dark:border-green-700'
+                        }`}>
                   {supportedRating}
                 </span>
-            )}
-            <svg
-                className={`w-5 h-5 text-gray-400 transition-transform ${expanded ? 'rotate-180' : ''}`}
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7"/>
-            </svg>
-          </div>
-        </button>
-
-        {/* Expanded Content */}
-        {expanded && (
-            <div className="p-4 border-t border-gray-200 dark:border-gray-700">
-              <div className="space-y-4">
-                {/* Evidence Summary */}
-                <div>
-                  <h4 className="font-medium text-gray-900 dark:text-white mb-2">
-                    Evidence Summary
-                  </h4>
-                  <div className="bg-gray-50 dark:bg-gray-700/30 rounded-lg p-3 space-y-2">
-                    {evidence.map((item, i) => (
-                        <div key={i} className="flex items-start gap-2">
-                          <span className="text-green-600 dark:text-green-400 mt-0.5">✓</span>
-                          <span className="text-sm text-gray-700 dark:text-gray-300">{item}</span>
-                        </div>
-                    ))}
-                  </div>
+                    )}
+                    <svg
+                        className={`w-5 h-5 text-gray-400 transition-transform ${expanded ? 'rotate-180' : ''}`}
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                    >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7"/>
+                    </svg>
                 </div>
+            </button>
 
-                {/* Rationale */}
-                {ratingRationale && ratingRationale.length > 0 && (
-                    <div>
-                      <h4 className="font-medium text-gray-900 dark:text-white mb-2">
-                        Analysis Rationale
-                      </h4>
-                      <div className="bg-gray-50 dark:bg-gray-700/30 rounded-lg p-3 space-y-2">
-                        {ratingRationale.map((reason, i) => (
-                            <div key={i} className="flex items-start gap-2">
-                              <span className="text-blue-600 dark:text-blue-400 mt-0.5">•</span>
-                              <span className="text-sm text-gray-700 dark:text-gray-300">{reason}</span>
+            {/* Expanded Content */}
+            {expanded && (
+                <div className="p-4 border-t border-gray-200 dark:border-gray-700">
+                    <div className="space-y-4 text-left">
+                        {/* Evidence Summary */}
+                        <div>
+                            <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-center">
+                                Evidence Summary
+                            </h4>
+                            <div className="bg-gray-50 dark:bg-gray-700/30 rounded-lg p-3 space-y-2">
+                                {evidence.map((item, i) => (
+                                    <div key={i} className="flex items-start gap-2">
+                                        <span className="text-green-600 dark:text-green-400 mt-0.5">✓</span>
+                                        <span className="text-sm text-gray-700 dark:text-gray-300">{item}</span>
+                                    </div>
+                                ))}
                             </div>
-                        ))}
-                      </div>
-                    </div>
-                )}
+                        </div>
 
-                {/* VA Rating Schedule */}
-                {criteria.ratings && criteria.ratings.length > 0 && (
-                    <div>
-                      <h4 className="font-medium text-gray-900 dark:text-white mb-2">
-                        VA Rating Schedule
-                      </h4>
-                      <div className="space-y-2">
-                        {criteria.ratings.map(rating => (
-                            <RatingRow
-                                key={rating.percent}
-                                rating={rating}
-                                isSupported={
-                                  typeof supportedRating === 'number'
-                                      ? rating.percent === supportedRating
-                                      : supportedRating && supportedRating.includes(rating.percent.toString())
-                                }
-                            />
-                        ))}
-                      </div>
-                    </div>
-                )}
-
-                {/* Documentation Gaps */}
-                {gaps && gaps.length > 0 && (
-                    <div>
-                      <h4 className="font-medium text-gray-900 dark:text-white mb-2">
-                        Documentation Gaps
-                      </h4>
-                      <div className="bg-yellow-50 dark:bg-yellow-900/20 rounded-lg p-3 space-y-2">
-                        {gaps.map((gap, i) => (
-                            <div key={i} className="flex items-start gap-2">
-                              <span className="text-yellow-600 dark:text-yellow-400 mt-0.5">⚠</span>
-                              <span className="text-sm text-gray-700 dark:text-gray-300">{gap}</span>
+                        {/* Rationale */}
+                        {ratingRationale && ratingRationale.length > 0 && (
+                            <div>
+                                <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-center">
+                                    Analysis Rationale
+                                </h4>
+                                <div className="bg-gray-50 dark:bg-gray-700/30 rounded-lg p-3 space-y-2">
+                                    {ratingRationale.map((reason, i) => (
+                                        <div key={i} className="flex items-start gap-2">
+                                            <span className="text-blue-600 dark:text-blue-400 mt-0.5">•</span>
+                                            <span className="text-sm text-gray-700 dark:text-gray-300">{reason}</span>
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
-                        ))}
-                      </div>
-                    </div>
-                )}
+                        )}
+
+                        {/* VA Rating Schedule */}
+                        {criteria.ratings && criteria.ratings.length > 0 && (
+                            <div>
+                                <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-center">
+                                    VA Rating Schedule
+                                </h4>
+                                <div className="space-y-2">
+                                    {criteria.ratings.map(rating => (
+                                        <RatingRow
+                                            key={rating.percent}
+                                            rating={rating}
+                                            isSupported={
+                                                typeof supportedRating === 'number'
+                                                    ? rating.percent === supportedRating
+                                                    : supportedRating && supportedRating.includes(rating.percent.toString())
+                                            }
+                                        />
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Documentation Gaps */}
+                        {gaps && gaps.length > 0 && (
+                            <div>
+                                <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-center">
+                                    Documentation Gaps
+                                </h4>
+                                <div className="bg-yellow-50 dark:bg-yellow-900/20 rounded-lg p-3 space-y-2">
+                                    {gaps.map((gap, i) => (
+                                        <div key={i} className="flex items-start gap-2">
+                                            <span className="text-yellow-600 dark:text-yellow-400 mt-0.5">⚠ </span>
+                                            <span className="text-sm text-gray-700 dark:text-gray-300">{gap}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
 
                 {/* Key Definitions */}
                 {criteria.definitions && Object.keys(criteria.definitions).length > 0 && (
@@ -1563,27 +1722,27 @@ const GenericRatingCard = ({ analysis, expanded, onToggle, icon }) => {
                         <span>{showDefinitions ? 'Hide' : 'Show'} VA Rating Definitions</span>
                       </button>
 
-                      {showDefinitions && (
-                          <div className="mt-3 space-y-2">
-                            {Object.values(criteria.definitions).map((def, i) => (
-                                <DefinitionBox key={i} definition={def}/>
-                            ))}
-                          </div>
-                      )}
-                    </div>
-                )}
+                                {showDefinitions && (
+                                    <div className="mt-3 space-y-2">
+                                        {Object.values(criteria.definitions).map((def, i) => (
+                                            <DefinitionBox key={i} definition={def}/>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                        )}
 
-                {/* Disclaimer */}
-                {disclaimer && (
-                    <div className="bg-gray-100 dark:bg-gray-700/50 rounded-lg p-3 text-xs text-gray-600 dark:text-gray-400">
-                      <strong>Important:</strong> {disclaimer}
+                        {/* Disclaimer */}
+                        {disclaimer && (
+                            <div className="bg-gray-100 dark:bg-gray-700/50 rounded-lg p-3 text-xs text-gray-600 dark:text-gray-400">
+                                <strong>Important:</strong> {disclaimer}
+                            </div>
+                        )}
                     </div>
-                )}
-              </div>
-            </div>
-        )}
-      </div>
-  );
+                </div>
+            )}
+        </div>
+    );
 };
 
 /**
@@ -1597,23 +1756,23 @@ const StatBox = ({ label, value, subtext, highlight = false, muted = false }) =>
                 ? 'bg-gray-50 dark:bg-gray-700/30 border-gray-200 dark:border-gray-600'
                 : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700'
     }`}>
-      <div className={`text-2xl font-bold ${
-          muted ? 'text-gray-400 dark:text-gray-500' : 'text-gray-900 dark:text-white'
-      }`}>
-        {value}
-      </div>
-      <div className={`text-xs ${
-          muted ? 'text-gray-400 dark:text-gray-500' : 'text-gray-600 dark:text-gray-400'
-      }`}>
-        {label}
-      </div>
-      {subtext && (
-          <div className={`text-xs mt-1 ${
-              muted ? 'text-gray-400 dark:text-gray-500' : 'text-gray-500 dark:text-gray-500'
-          }`}>
-            {subtext}
-          </div>
-      )}
+        <div className={`text-2xl font-bold ${
+            muted ? 'text-gray-400 dark:text-gray-500' : 'text-gray-900 dark:text-white'
+        }`}>
+            {value}
+        </div>
+        <div className={`text-xs ${
+            muted ? 'text-gray-400 dark:text-gray-500' : 'text-gray-600 dark:text-gray-400'
+        }`}>
+            {label}
+        </div>
+        {subtext && (
+            <div className={`text-xs mt-1 ${
+                muted ? 'text-gray-400 dark:text-gray-500' : 'text-gray-500 dark:text-gray-500'
+            }`}>
+                {subtext}
+            </div>
+        )}
     </div>
 );
 
@@ -1621,7 +1780,7 @@ const StatBox = ({ label, value, subtext, highlight = false, muted = false }) =>
  * Rating Row Component
  */
 const RatingRow = ({ rating, isSupported }) => {
-  const colorClass = getRatingColorClass(rating.percent);
+    const colorClass = getRatingColorClass(rating.percent);
 
   return (
       <div className={`p-2 rounded-lg border flex items-center gap-3 ${
@@ -1650,7 +1809,7 @@ const RatingRow = ({ rating, isSupported }) => {
  * Definition Box Component
  */
 const DefinitionBox = ({ definition }) => {
-  if (!definition) return null;
+    if (!definition) return null;
 
   return (
       <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-3">

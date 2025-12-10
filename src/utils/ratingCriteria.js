@@ -242,6 +242,34 @@ export const CONDITIONS = {
     cfrReference: '38 CFR 4.71a',
     symptomIds: ['hip-pain', 'hip-limited-rom', 'hip-stiffness', 'hip-weakness', 'hip-limping'],
   },
+  ANKLE: {
+    id: 'ankle',
+    name: 'Ankle Conditions',
+    diagnosticCode: '5270-5271',
+    cfrReference: '38 CFR 4.71a',
+    symptomIds: ['ankle-pain', 'ankle-limited-rom', 'ankle-stiffness', 'ankle-instability', 'ankle-swelling', 'ankle-weakness'],
+  },
+  WRIST: {
+    id: 'wrist',
+    name: 'Wrist Conditions',
+    diagnosticCode: '5214-5215',
+    cfrReference: '38 CFR 4.71a',
+    symptomIds: ['wrist-pain', 'wrist-limited-rom', 'wrist-stiffness', 'wrist-weakness', 'wrist-numbness', 'wrist-swelling'],
+  },
+  ELBOW: {
+    id: 'elbow',
+    name: 'Elbow Conditions',
+    diagnosticCode: '5205-5207',
+    cfrReference: '38 CFR 4.71a',
+    symptomIds: ['elbow-pain', 'elbow-limited-flexion', 'elbow-limited-extension', 'elbow-stiffness', 'elbow-weakness', 'elbow-instability'],
+  },
+  DEGENERATIVE_ARTHRITIS: {
+    id: 'degenerative-arthritis',
+    name: 'Degenerative Arthritis (Osteoarthritis)',
+    diagnosticCode: '5003',
+    cfrReference: '38 CFR 4.71a',
+    symptomIds: ['arthritis-joint-pain', 'arthritis-morning-stiffness', 'arthritis-flare', 'arthritis-reduced-function', 'arthritis-swelling', 'arthritis-crepitus'],
+  },
   ASTHMA: {
     id: 'asthma',
     name: 'Bronchial Asthma',
@@ -256,6 +284,50 @@ export const CONDITIONS = {
       'asthma-rescue-inhaler',
       'asthma-er-visit',
       'asthma-md-visit',
+    ],
+  },
+  COPD: {
+    id: 'copd',
+    name: 'Chronic Obstructive Pulmonary Disease',
+    diagnosticCode: '6604',
+    cfrReference: '38 CFR 4.97',
+    symptomIds: [
+      'copd-shortness-breath',
+      'copd-chronic-cough',
+      'copd-sputum',
+      'copd-wheezing',
+      'copd-exacerbation',
+      'copd-oxygen-use',
+      'copd-er-visit',
+      'copd-hospitalization',
+    ],
+  },
+  CHRONIC_BRONCHITIS: {
+    id: 'chronic-bronchitis',
+    name: 'Chronic Bronchitis',
+    diagnosticCode: '6600',
+    cfrReference: '38 CFR 4.97',
+    symptomIds: [
+      'bronchitis-productive-cough',
+      'bronchitis-sputum',
+      'bronchitis-shortness-breath',
+      'bronchitis-chest-discomfort',
+      'bronchitis-exacerbation',
+      'bronchitis-oxygen-use',
+    ],
+  },
+  EMPHYSEMA: {
+    id: 'emphysema',
+    name: 'Pulmonary Emphysema',
+    diagnosticCode: '6603',
+    cfrReference: '38 CFR 4.97',
+    symptomIds: [
+      'emphysema-shortness-breath',
+      'emphysema-barrel-chest',
+      'emphysema-wheezing',
+      'emphysema-fatigue',
+      'emphysema-oxygen-use',
+      'emphysema-exacerbation',
     ],
   },
   HEARING_LOSS: {
@@ -307,20 +379,99 @@ export const CONDITIONS = {
     cfrReference: '38 CFR 4.87',
     symptomIds: ['tinnitus'],
   },
+    FIBROMYALGIA: {
+        id: 'fibromyalgia',
+        name: 'Fibromyalgia',
+        diagnosticCode: '5025',
+        cfrReference: '38 CFR 4.71a',
+        symptomIds: [
+            'fibro-widespread-pain',
+            'fibro-tender-points',
+            'fibro-fatigue',
+            'fibro-sleep',
+            'fibro-stiffness',
+            'fibro-cognitive'],
+    },
 
-  FIBROMYALGIA: {
-    id: 'fibromyalgia',
-    name: 'Fibromyalgia',
-    diagnosticCode: '5025',
-    cfrReference: '38 CFR 4.71a',
-    symptomIds: [
-      'fibro-widespread-pain',
-      'fibro-tender-points',
-      'fibro-fatigue',
-      'fibro-sleep',
-      'fibro-stiffness',
-      'fibro-cognitive'],
-  },
+    // Phase 3: Additional Mental Health Conditions
+    SOCIAL_ANXIETY: {
+        id: 'social-anxiety',
+        name: 'Social Anxiety Disorder',
+        diagnosticCode: '9403',
+        cfrReference: '38 CFR 4.130',
+        symptomIds: [
+            'social-anxiety-fear',
+            'social-anxiety-avoidance',
+            'social-anxiety-performance',
+            'social-anxiety-physical',
+            'social-anxiety-anticipatory',
+            'anxiety', // Include general anxiety for backward compatibility
+        ],
+    },
+    OCD: {
+        id: 'ocd',
+        name: 'Obsessive-Compulsive Disorder',
+        diagnosticCode: '9404',
+        cfrReference: '38 CFR 4.130',
+        symptomIds: [
+            'ocd-obsessions',
+            'ocd-compulsions',
+            'ocd-checking',
+            'ocd-contamination',
+            'ocd-time-spent',
+        ],
+    },
+    PERSISTENT_DEPRESSIVE: {
+        id: 'persistent-depressive',
+        name: 'Persistent Depressive Disorder (Dysthymia)',
+        diagnosticCode: '9433',
+        cfrReference: '38 CFR 4.130',
+        symptomIds: [
+            'depression',
+            'mdd-episode',
+            'mdd-anhedonia',
+            'mdd-hopelessness',
+        ],
+    },
+    ADJUSTMENT_DISORDER: {
+        id: 'adjustment-disorder',
+        name: 'Chronic Adjustment Disorder',
+        diagnosticCode: '9440',
+        cfrReference: '38 CFR 4.130',
+        symptomIds: [
+            'adjustment-depressed-mood',
+            'adjustment-anxiety',
+            'adjustment-disturbance-conduct',
+            'adjustment-work-difficulty',
+            'adjustment-relationship-problems',
+            'anxiety',
+            'depression',
+        ],
+    },
+    UNSPECIFIED_ANXIETY: {
+        id: 'unspecified-anxiety',
+        name: 'Unspecified Anxiety Disorder',
+        diagnosticCode: '9413',
+        cfrReference: '38 CFR 4.130',
+        symptomIds: [
+            'anxiety',
+            'gad-worry',
+            'gad-restlessness',
+            'gad-muscle-tension',
+        ],
+    },
+    UNSPECIFIED_DEPRESSIVE: {
+        id: 'unspecified-depressive',
+        name: 'Unspecified Depressive Disorder',
+        diagnosticCode: '9435',
+        cfrReference: '38 CFR 4.130',
+        symptomIds: [
+            'depression',
+            'mdd-episode',
+            'mdd-anhedonia',
+            'mdd-hopelessness',
+        ],
+    },
 };
 
 // ============================================
@@ -910,6 +1061,155 @@ export const BIPOLAR_CRITERIA = {
   importantNotes: MENTAL_HEALTH_SHARED_CRITERIA.importantNotes,
 };
 
+// ============================================
+// SOCIAL ANXIETY DISORDER CRITERIA (DC 9403)
+// ============================================
+
+export const SOCIAL_ANXIETY_CRITERIA = {
+    diagnosticCode: '9403',
+    condition: 'Social Anxiety Disorder',
+    cfrReference: '38 CFR 4.130, Diagnostic Code 9403',
+    usesSharedCriteria: true,
+    sharedCriteria: MENTAL_HEALTH_SHARED_CRITERIA,
+    ratings: MENTAL_HEALTH_SHARED_CRITERIA.ratings,
+    definitions: {
+        ...MENTAL_HEALTH_SHARED_CRITERIA.definitions,
+        socialAnxiety: {
+            term: 'Social Anxiety',
+            definition: 'Marked fear or anxiety about social situations where the individual may be scrutinized by others, leading to avoidance or endured with intense distress.',
+        },
+        performanceAnxiety: {
+            term: 'Performance Anxiety',
+            definition: 'Fear specifically related to performing or being observed during activities like public speaking, eating, or writing in front of others.',
+        },
+    },
+    importantNotes: MENTAL_HEALTH_SHARED_CRITERIA.importantNotes,
+};
+
+// ============================================
+// OBSESSIVE-COMPULSIVE DISORDER CRITERIA (DC 9404)
+// ============================================
+
+export const OCD_CRITERIA = {
+    diagnosticCode: '9404',
+    condition: 'Obsessive-Compulsive Disorder',
+    cfrReference: '38 CFR 4.130, Diagnostic Code 9404',
+    usesSharedCriteria: true,
+    sharedCriteria: MENTAL_HEALTH_SHARED_CRITERIA,
+    ratings: MENTAL_HEALTH_SHARED_CRITERIA.ratings,
+    definitions: {
+        ...MENTAL_HEALTH_SHARED_CRITERIA.definitions,
+        obsessions: {
+            term: 'Obsessions',
+            definition: 'Recurrent, persistent, intrusive thoughts, urges, or images that cause marked anxiety or distress. The individual attempts to ignore, suppress, or neutralize them.',
+        },
+        compulsions: {
+            term: 'Compulsions',
+            definition: 'Repetitive behaviors or mental acts performed in response to obsessions or according to rigid rules, aimed at reducing anxiety or preventing a dreaded event.',
+        },
+        rituals: {
+            term: 'Rituals',
+            definition: 'Repetitive, stereotyped behaviors that interfere with routine activities. VA criteria specifically note "obsessional rituals which interfere with routine activities" as a 70% criterion.',
+        },
+    },
+    importantNotes: [
+        ...MENTAL_HEALTH_SHARED_CRITERIA.importantNotes,
+        'OCD rituals that interfere with routine activities are specifically mentioned in the 70% criteria',
+        'Time spent on obsessions/compulsions is important documentation',
+    ],
+};
+
+// ============================================
+// PERSISTENT DEPRESSIVE DISORDER (DYSTHYMIA) CRITERIA (DC 9433)
+// ============================================
+
+export const PERSISTENT_DEPRESSIVE_CRITERIA = {
+    diagnosticCode: '9433',
+    condition: 'Persistent Depressive Disorder (Dysthymia)',
+    cfrReference: '38 CFR 4.130, Diagnostic Code 9433',
+    usesSharedCriteria: true,
+    sharedCriteria: MENTAL_HEALTH_SHARED_CRITERIA,
+    ratings: MENTAL_HEALTH_SHARED_CRITERIA.ratings,
+    definitions: {
+        ...MENTAL_HEALTH_SHARED_CRITERIA.definitions,
+        dysthymia: {
+            term: 'Dysthymia/Persistent Depressive Disorder',
+            definition: 'Chronic depressed mood occurring more days than not for at least 2 years. Less severe than major depression but more chronic and persistent.',
+        },
+    },
+    importantNotes: [
+        ...MENTAL_HEALTH_SHARED_CRITERIA.importantNotes,
+        'Dysthymia is characterized by chronic, persistent symptoms rather than discrete episodes',
+        'Documentation showing consistent symptoms over 2+ years strengthens claims',
+    ],
+};
+
+// ============================================
+// CHRONIC ADJUSTMENT DISORDER CRITERIA (DC 9440)
+// ============================================
+
+export const ADJUSTMENT_DISORDER_CRITERIA = {
+    diagnosticCode: '9440',
+    condition: 'Chronic Adjustment Disorder',
+    cfrReference: '38 CFR 4.130, Diagnostic Code 9440',
+    usesSharedCriteria: true,
+    sharedCriteria: MENTAL_HEALTH_SHARED_CRITERIA,
+    ratings: MENTAL_HEALTH_SHARED_CRITERIA.ratings,
+    definitions: {
+        ...MENTAL_HEALTH_SHARED_CRITERIA.definitions,
+        adjustmentDisorder: {
+            term: 'Adjustment Disorder',
+            definition: 'Emotional or behavioral symptoms in response to an identifiable stressor, occurring within 3 months of the stressor. Symptoms are clinically significant and out of proportion to the stressor.',
+        },
+        chronicAdjustment: {
+            term: 'Chronic Adjustment Disorder',
+            definition: 'Adjustment disorder lasting 6 months or longer after the stressor or its consequences have ended. Often service-connected due to ongoing adjustment to post-military life.',
+        },
+    },
+    importantNotes: [
+        ...MENTAL_HEALTH_SHARED_CRITERIA.importantNotes,
+        'Chronic adjustment disorder persists 6+ months after stressor',
+        'Common in Veterans adjusting to civilian life or dealing with service-related changes',
+    ],
+};
+
+// ============================================
+// UNSPECIFIED ANXIETY DISORDER CRITERIA (DC 9413)
+// ============================================
+
+export const UNSPECIFIED_ANXIETY_CRITERIA = {
+    diagnosticCode: '9413',
+    condition: 'Unspecified Anxiety Disorder',
+    cfrReference: '38 CFR 4.130, Diagnostic Code 9413',
+    usesSharedCriteria: true,
+    sharedCriteria: MENTAL_HEALTH_SHARED_CRITERIA,
+    ratings: MENTAL_HEALTH_SHARED_CRITERIA.ratings,
+    definitions: MENTAL_HEALTH_SHARED_CRITERIA.definitions,
+    importantNotes: [
+        ...MENTAL_HEALTH_SHARED_CRITERIA.importantNotes,
+        'Used when anxiety symptoms are present but do not meet full criteria for a specific anxiety disorder',
+        'Rated using the same General Rating Formula as other anxiety disorders',
+    ],
+};
+
+// ============================================
+// UNSPECIFIED DEPRESSIVE DISORDER CRITERIA (DC 9435)
+// ============================================
+
+export const UNSPECIFIED_DEPRESSIVE_CRITERIA = {
+    diagnosticCode: '9435',
+    condition: 'Unspecified Depressive Disorder',
+    cfrReference: '38 CFR 4.130, Diagnostic Code 9435',
+    usesSharedCriteria: true,
+    sharedCriteria: MENTAL_HEALTH_SHARED_CRITERIA,
+    ratings: MENTAL_HEALTH_SHARED_CRITERIA.ratings,
+    definitions: MENTAL_HEALTH_SHARED_CRITERIA.definitions,
+    importantNotes: [
+        ...MENTAL_HEALTH_SHARED_CRITERIA.importantNotes,
+        'Used when depressive symptoms are present but do not meet full criteria for a specific depressive disorder',
+        'Rated using the same General Rating Formula as other depressive disorders',
+    ],
+};
 
 // ============================================
 // LUMBOSACRAL STRAIN / LOW BACK PAIN (DC 5237)
@@ -3294,6 +3594,576 @@ export const HIP_CRITERIA = {
 };
 
 // ============================================
+// ANKLE CONDITIONS RATING CRITERIA (DC 5270-5271)
+// ============================================
+
+export const ANKLE_CRITERIA = {
+  diagnosticCode: '5270-5271',
+  condition: 'Ankle Conditions',
+  cfrReference: '38 CFR 4.71a, Diagnostic Codes 5270-5271',
+
+  ratings: [
+    {
+      percent: 40,
+      summary: 'Ankle ankylosis in plantar flexion >40° or dorsiflexion >10° with deformity',
+      criteria: {
+        ankylosis: true,
+        severePosition: true,
+      },
+      criteriaDescription: [
+        'Complete ankylosis (fusion) of ankle',
+        'Plantar flexion at more than 40°, OR',
+        'Dorsiflexion at more than 10°, OR',
+        'With abduction, adduction, inversion or eversion deformity',
+      ],
+      evidenceNeeded: [
+        'Surgical fusion records',
+        'X-ray showing complete fusion',
+        'Orthopedic exam documenting position',
+      ],
+    },
+    {
+      percent: 30,
+      summary: 'Ankle ankylosis in plantar flexion 30-40° or dorsiflexion 0-10°',
+      criteria: {
+        ankylosis: true,
+        moderatePosition: true,
+      },
+      criteriaDescription: [
+        'Complete ankle ankylosis',
+        'Plantar flexion between 30° and 40°, OR',
+        'Dorsiflexion between 0° and 10°',
+      ],
+      evidenceNeeded: [
+        'Documentation of complete fusion',
+        'Position measurement by orthopedist',
+      ],
+    },
+    {
+      percent: 20,
+      summary: 'Ankle ankylosis in plantar flexion <30° OR marked limited motion',
+      criteria: {
+        ankylosisOrMarked: true,
+      },
+      criteriaDescription: [
+        'Ankle ankylosis in plantar flexion less than 30°, OR',
+        'Marked limitation of motion: less than 5° dorsiflexion or less than 10° plantar flexion',
+      ],
+      evidenceNeeded: [
+        'ROM measurements showing marked limitation',
+        'Frequent severe pain episodes',
+        'Significant functional limitations',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Moderate limitation of ankle motion',
+      criteria: {
+        moderateLimitation: true,
+      },
+      criteriaDescription: [
+        'Moderate limitation of motion',
+        'Less than 15° dorsiflexion, OR',
+        'Less than 30° plantar flexion',
+      ],
+      evidenceNeeded: [
+        'Document ankle pain episodes',
+        'Track ROM limitations',
+        'Note functional impact (walking, stairs)',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'Minimal symptoms or normal motion',
+      criteria: {
+        minimal: true,
+      },
+      criteriaDescription: [
+        'Normal or near-normal ROM',
+        'Minimal pain or symptoms',
+      ],
+      evidenceNeeded: [],
+    },
+  ],
+
+  definitions: {
+    ankylosis: {
+      term: 'Ankle Ankylosis',
+      definition: 'Complete fusion or immobility of the ankle joint, from disease, injury, or surgical fusion.',
+      examples: [
+        'Ankle joint does not move at all',
+        'Surgical ankle fusion (arthrodesis)',
+        'Complete stiffness from severe arthritis',
+      ],
+    },
+    ankleROM: {
+      term: 'Ankle Range of Motion',
+      definition: 'Normal ankle ROM is 0-20° dorsiflexion (foot up) and 0-45° plantar flexion (foot down).',
+      examples: [
+        'Difficulty pulling foot upward (dorsiflexion)',
+        'Cannot point toes down fully (plantar flexion)',
+        'Pain with ankle movement in any direction',
+      ],
+    },
+    markedLimitation: {
+      term: 'Marked Limitation',
+      definition: 'Less than 5° dorsiflexion OR less than 10° plantar flexion - severe restriction of motion.',
+    },
+    moderateLimitation: {
+      term: 'Moderate Limitation',
+      definition: 'Less than 15° dorsiflexion OR less than 30° plantar flexion.',
+    },
+  },
+
+  disclaimer: 'This analysis is based on logged ankle symptoms. VA rating requires orthopedic examination with goniometer ROM measurements. X-rays showing degenerative changes or fusion strengthen claims.',
+};
+
+// ============================================
+// WRIST CONDITIONS RATING CRITERIA (DC 5214-5215)
+// ============================================
+
+export const WRIST_CRITERIA = {
+  diagnosticCode: '5214-5215',
+  condition: 'Wrist Conditions',
+  cfrReference: '38 CFR 4.71a, Diagnostic Codes 5214-5215',
+
+  // Note: Wrist ratings differ for dominant (major) vs non-dominant (minor) hand
+  majorMinorNote: 'Ratings shown are for dominant hand. Non-dominant hand ratings are 10% lower for ankylosis ratings (50→40, 40→30, 30→20). Limitation of motion is 10% regardless of hand dominance.',
+
+  ratings: [
+    {
+      percent: 50,
+      summary: 'Unfavorable wrist ankylosis (dominant hand)',
+      criteria: {
+        ankylosis: true,
+        unfavorable: true,
+        dominantHand: true,
+      },
+      criteriaDescription: [
+        'Complete ankylosis of wrist',
+        'In any degree of palmar flexion, OR',
+        'With ulnar or radial deviation',
+        '(40% for non-dominant hand)',
+      ],
+      evidenceNeeded: [
+        'Surgical fusion records',
+        'X-ray confirming fusion',
+        'Orthopedic documentation of position',
+        'Document which hand is dominant',
+      ],
+    },
+    {
+      percent: 40,
+      summary: 'Wrist ankylosis in other unfavorable position (dominant)',
+      criteria: {
+        ankylosis: true,
+        otherPosition: true,
+      },
+      criteriaDescription: [
+        'Complete ankylosis',
+        'Any position except favorable',
+        '(30% for non-dominant hand)',
+      ],
+      evidenceNeeded: [
+        'Documentation of fusion',
+        'Position measurement',
+      ],
+    },
+    {
+      percent: 30,
+      summary: 'Favorable wrist ankylosis in 20-30° dorsiflexion (dominant)',
+      criteria: {
+        ankylosis: true,
+        favorable: true,
+      },
+      criteriaDescription: [
+        'Complete ankylosis in favorable position',
+        '20° to 30° dorsiflexion',
+        '(20% for non-dominant hand)',
+      ],
+      evidenceNeeded: [
+        'Documentation of fusion',
+        'Position in functional range',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Limited wrist motion: dorsiflexion <15° OR palmar flexion in line with forearm',
+      criteria: {
+        limitedMotion: true,
+      },
+      criteriaDescription: [
+        'Dorsiflexion less than 15°, OR',
+        'Palmar flexion limited in line with forearm',
+        '(Same rating for either hand)',
+      ],
+      evidenceNeeded: [
+        'ROM measurements by healthcare provider',
+        'Document pain and functional limitations',
+        'Track activities affected',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'Minimal symptoms or normal motion',
+      criteria: {
+        minimal: true,
+      },
+      criteriaDescription: [
+        'Normal or near-normal ROM',
+        'Minimal symptoms',
+      ],
+      evidenceNeeded: [],
+    },
+  ],
+
+  definitions: {
+    ankylosis: {
+      term: 'Wrist Ankylosis',
+      definition: 'Complete fusion or immobility of the wrist joint.',
+      examples: [
+        'Wrist does not bend at all',
+        'Surgical wrist fusion',
+        'Complete fusion from severe arthritis',
+      ],
+    },
+    wristROM: {
+      term: 'Wrist Range of Motion',
+      definition: 'Normal wrist ROM is about 70° palmar flexion, 70° dorsiflexion (extension), 20° radial deviation, and 45° ulnar deviation.',
+      examples: [
+        'Cannot bend wrist up (extension)',
+        'Cannot bend wrist down (flexion)',
+        'Pain with wrist movement',
+      ],
+    },
+    favorablePosition: {
+      term: 'Favorable Position',
+      definition: 'Wrist fused in 20° to 30° dorsiflexion - the functional position allowing grip.',
+    },
+    dominance: {
+      term: 'Hand Dominance',
+      definition: 'The hand you write with. Dominant hand injuries receive higher ratings for ankylosis.',
+    },
+  },
+
+  disclaimer: 'This analysis is based on logged wrist symptoms. VA rating requires orthopedic examination with ROM measurements. Note whether condition affects dominant or non-dominant hand.',
+};
+
+// ============================================
+// ELBOW CONDITIONS RATING CRITERIA (DC 5205-5207)
+// ============================================
+
+export const ELBOW_CRITERIA = {
+  diagnosticCode: '5205-5207',
+  condition: 'Elbow Conditions',
+  cfrReference: '38 CFR 4.71a, Diagnostic Codes 5205-5207',
+
+  majorMinorNote: 'Ratings shown are for dominant arm (major). Non-dominant (minor) arm ratings are typically 10% lower.',
+
+  ratings: [
+    {
+      percent: 60,
+      summary: 'Unfavorable elbow ankylosis <50° or complete supination/pronation loss (dominant)',
+      criteria: {
+        ankylosis: true,
+        unfavorable: true,
+      },
+      criteriaDescription: [
+        'Complete ankylosis at angle less than 50°, OR',
+        'Complete loss of supination or pronation',
+        '(50% for non-dominant arm)',
+      ],
+      evidenceNeeded: [
+        'Surgical fusion records',
+        'X-ray confirming fusion',
+        'Documentation of fixed angle',
+      ],
+    },
+    {
+      percent: 50,
+      summary: 'Intermediate elbow ankylosis at 50-90° (dominant)',
+      criteria: {
+        ankylosis: true,
+        intermediate: true,
+      },
+      criteriaDescription: [
+        'Complete ankylosis',
+        'At angle more than 90°, or between 70° and 50°',
+        '(40% for non-dominant arm)',
+      ],
+      evidenceNeeded: [
+        'Documentation of fusion',
+        'Position measurement',
+      ],
+    },
+    {
+      percent: 50,
+      summary: 'Flexion limited to 45° (dominant)',
+      criteria: {
+        flexionLimited: true,
+        to45: true,
+      },
+      criteriaDescription: [
+        'Cannot bend elbow past 45°',
+        'Severe limitation of flexion',
+        '(40% for non-dominant arm)',
+      ],
+      evidenceNeeded: [
+        'ROM measurements',
+        'Functional impact documentation',
+      ],
+    },
+    {
+      percent: 50,
+      summary: 'Extension limited to 110° (dominant)',
+      criteria: {
+        extensionLimited: true,
+        to110: true,
+      },
+      criteriaDescription: [
+        'Cannot extend elbow past 110° (20° from straight)',
+        'Severe extension limitation',
+        '(40% for non-dominant arm)',
+      ],
+      evidenceNeeded: [
+        'ROM measurements',
+        'Functional impact documentation',
+      ],
+    },
+    {
+      percent: 40,
+      summary: 'Favorable elbow ankylosis at 70-90° (dominant) OR flexion to 55°',
+      criteria: {
+        ankylosis: true,
+        favorable: true,
+      },
+      criteriaDescription: [
+        'Complete ankylosis at favorable angle (70-90°), OR',
+        'Flexion limited to 55°',
+        '(30% for non-dominant arm)',
+      ],
+      evidenceNeeded: [
+        'Documentation of fusion or limitation',
+        'Functional assessment',
+      ],
+    },
+    {
+      percent: 30,
+      summary: 'Flexion limited to 70° OR extension limited to 90° (dominant)',
+      criteria: {
+        moderateLimitation: true,
+      },
+      criteriaDescription: [
+        'Flexion limited to 70°, OR',
+        'Extension limited to 90°',
+        '(20% for non-dominant arm)',
+      ],
+      evidenceNeeded: [
+        'ROM measurements',
+        'Pain documentation',
+        'Functional impact',
+      ],
+    },
+    {
+      percent: 20,
+      summary: 'Flexion limited to 90° OR extension limited to 75°',
+      criteria: {
+        mildModerateLimitation: true,
+      },
+      criteriaDescription: [
+        'Flexion limited to 90°, OR',
+        'Extension limited to 75°',
+        '(Same for either arm)',
+      ],
+      evidenceNeeded: [
+        'ROM measurements',
+        'Document pain and limitations',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Flexion limited to 100° OR extension limited to 45-60°',
+      criteria: {
+        mildLimitation: true,
+      },
+      criteriaDescription: [
+        'Flexion limited to 100°, OR',
+        'Extension limited to 45° or 60°',
+        '(Same for either arm)',
+      ],
+      evidenceNeeded: [
+        'Log elbow pain episodes',
+        'Document ROM limitations',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'Minimal symptoms or normal motion',
+      criteria: {
+        minimal: true,
+      },
+      criteriaDescription: [
+        'Flexion greater than 110°',
+        'Extension limited to less than 45°',
+        'Normal or near-normal function',
+      ],
+      evidenceNeeded: [],
+    },
+  ],
+
+  definitions: {
+    ankylosis: {
+      term: 'Elbow Ankylosis',
+      definition: 'Complete fusion or immobility of the elbow joint.',
+      examples: [
+        'Elbow does not bend or straighten at all',
+        'Surgical elbow fusion',
+        'Complete stiffness from severe trauma',
+      ],
+    },
+    elbowROM: {
+      term: 'Elbow Range of Motion',
+      definition: 'Normal elbow ROM is 0° extension (fully straight) to 145° flexion (fully bent). Normal pronation and supination each 80°.',
+      examples: [
+        'Cannot bend elbow fully (limited flexion)',
+        'Cannot straighten elbow (limited extension)',
+        'Cannot rotate forearm palm up (supination)',
+        'Cannot rotate forearm palm down (pronation)',
+      ],
+    },
+    favorableAngle: {
+      term: 'Favorable Angle',
+      definition: 'Elbow fused between 70° and 90° - the functional range for daily activities.',
+    },
+  },
+
+  disclaimer: 'This analysis is based on logged elbow symptoms. VA rating requires orthopedic examination with ROM measurements. Note whether condition affects dominant or non-dominant arm.',
+};
+
+// ============================================
+// DEGENERATIVE ARTHRITIS RATING CRITERIA (DC 5003)
+// ============================================
+
+export const DEGENERATIVE_ARTHRITIS_CRITERIA = {
+  diagnosticCode: '5003',
+  condition: 'Degenerative Arthritis (Osteoarthritis)',
+  cfrReference: '38 CFR 4.71a, Diagnostic Code 5003',
+
+  ratingNote: 'Degenerative arthritis (DJD/OA) is typically rated based on limitation of motion of the affected joint(s). When limitation is noncompensable, X-ray evidence can support ratings.',
+
+  ratings: [
+    {
+      percent: 20,
+      summary: 'X-ray evidence in 2+ major joints with occasional incapacitating exacerbations',
+      criteria: {
+        xrayEvidence: true,
+        multipleJoints: true,
+        incapacitatingExacerbations: true,
+      },
+      criteriaDescription: [
+        'X-ray evidence of arthritis involvement',
+        '2 or more major joints OR 2+ minor joint groups',
+        'With occasional incapacitating exacerbations',
+        'When limitation of motion is noncompensable',
+      ],
+      evidenceNeeded: [
+        'X-rays showing degenerative changes in multiple joints',
+        'Document flare-ups requiring rest or unable to work',
+        'Track frequency and severity of exacerbations',
+        'Medical records of flare-up treatment',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'X-ray evidence in 2+ major joints without incapacitating exacerbations',
+      criteria: {
+        xrayEvidence: true,
+        multipleJoints: true,
+      },
+      criteriaDescription: [
+        'X-ray evidence of arthritis involvement',
+        '2 or more major joints OR 2+ minor joint groups',
+        'Without incapacitating exacerbations',
+        'When limitation of motion is noncompensable',
+      ],
+      evidenceNeeded: [
+        'X-rays showing degenerative changes',
+        'Document joint pain and stiffness',
+        'Track morning stiffness duration',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Single major joint with noncompensable limitation and X-ray evidence',
+      criteria: {
+        singleJoint: true,
+        limitationPresent: true,
+      },
+      criteriaDescription: [
+        'Limitation of motion present but noncompensable',
+        'Objectively confirmed (swelling, muscle spasm, or painful motion)',
+        'For each major joint or group of minor joints affected',
+      ],
+      evidenceNeeded: [
+        'Document painful motion',
+        'X-ray showing degenerative changes',
+        'Clinical exam findings',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'Rate based on limitation of motion of specific joint',
+      criteria: {
+        rateUnderJoint: true,
+      },
+      criteriaDescription: [
+        'When limitation of motion is compensable',
+        'Rate under the specific joint diagnostic code',
+        'E.g., knee (5260-5261), shoulder (5201), etc.',
+      ],
+      evidenceNeeded: [
+        'Track symptoms under specific joint condition',
+      ],
+    },
+  ],
+
+  definitions: {
+    majorJoints: {
+      term: 'Major Joints',
+      definition: 'For rating purposes: shoulder, elbow, wrist, hip, knee, and ankle.',
+      examples: [
+        'Shoulder joint',
+        'Elbow joint',
+        'Wrist joint',
+        'Hip joint',
+        'Knee joint',
+        'Ankle joint',
+      ],
+    },
+    minorJointGroups: {
+      term: 'Minor Joint Groups',
+      definition: 'Multiple small joints rated as groups: interphalangeal, metacarpal, carpal joints of hands; interphalangeal, metatarsal, tarsal joints of feet; cervical, thoracic, lumbar vertebrae.',
+    },
+    incapacitatingExacerbation: {
+      term: 'Incapacitating Exacerbation',
+      definition: 'A flare-up of arthritis symptoms severe enough to require rest, limit activities significantly, or seek medical treatment.',
+      examples: [
+        'Flare-up preventing work for a day or more',
+        'Severe pain requiring bed rest',
+        'Emergency or urgent care visit for joint pain',
+        'Steroid injection or course of steroids for flare',
+      ],
+    },
+    xrayEvidence: {
+      term: 'X-Ray Evidence',
+      definition: 'Radiographic findings showing degenerative changes: joint space narrowing, osteophytes (bone spurs), subchondral sclerosis, or cyst formation.',
+    },
+  },
+
+  disclaimer: 'This analysis is based on logged arthritis symptoms. Degenerative arthritis is primarily rated on limitation of motion of specific joints. When ROM limitation is noncompensable, X-ray evidence can support 10-20% ratings. Always document which joints are affected.',
+};
+
+// ============================================
 // ASTHMA RATING CRITERIA (DC 6602)
 // ============================================
 
@@ -3448,6 +4318,463 @@ export const ASTHMA_CRITERIA = {
 
   note: 'In the absence of clinical findings of asthma at time of examination, a verified history of asthmatic attacks must be of record.',
 };
+
+export const COPD_CRITERIA = {
+  diagnosticCode: '6604',
+  condition: 'Chronic Obstructive Pulmonary Disease',
+  cfrReference: '38 CFR 4.97, Diagnostic Code 6604',
+
+  ratings: [
+    {
+      percent: 100,
+      summary: 'FEV-1 <40%, OR FEV-1/FVC <40%, OR DLCO <40%, OR oxygen therapy, OR respiratory failure, OR cor pulmonale',
+      criteria: {
+        fev1Percent: [0, 39],
+        fev1FvcRatio: [0, 39],
+        dlcoPercent: [0, 39],
+        oxygenTherapy: true,
+        respiratoryFailure: true,
+        corPulmonale: true,
+      },
+      criteriaDescription: [
+        'FEV-1 less than 40% of predicted value, OR',
+        'FEV-1/FVC ratio less than 40%, OR',
+        'DLCO (SB) less than 40% predicted, OR',
+        'Maximum exercise capacity less than 15 ml/kg/min oxygen consumption, OR',
+        'Cor pulmonale (right heart failure), OR',
+        'Right ventricular hypertrophy, OR',
+        'Pulmonary hypertension (shown by Echo or cardiac catheterization), OR',
+        'Episode(s) of acute respiratory failure, OR',
+        'Requires outpatient oxygen therapy',
+      ],
+      evidenceNeeded: [
+        'Spirometry showing FEV-1 <40% predicted',
+        'DLCO testing showing <40% predicted',
+        'Documentation of oxygen therapy prescription',
+        'Echocardiogram or cardiac catheterization showing pulmonary hypertension',
+        'Medical records of respiratory failure episodes',
+      ],
+    },
+    {
+      percent: 60,
+      summary: 'FEV-1 40-55%, OR FEV-1/FVC 40-55%, OR DLCO 40-55%, OR max O2 consumption 15-20 ml/kg/min',
+      criteria: {
+        fev1Percent: [40, 55],
+        fev1FvcRatio: [40, 55],
+        dlcoPercent: [40, 55],
+      },
+      criteriaDescription: [
+        'FEV-1 of 40- to 55-percent predicted, OR',
+        'FEV-1/FVC of 40 to 55 percent, OR',
+        'DLCO (SB) of 40- to 55-percent predicted, OR',
+        'Maximum oxygen consumption of 15 to 20 ml/kg/min (with cardiorespiratory limit)',
+      ],
+      evidenceNeeded: [
+        'Spirometry showing FEV-1 40-55% predicted',
+        'FEV-1/FVC ratio calculation',
+        'DLCO testing if available',
+        'Exercise capacity testing if available',
+      ],
+    },
+    {
+      percent: 30,
+      summary: 'FEV-1 56-70%, OR FEV-1/FVC 56-70%, OR DLCO 56-65%',
+      criteria: {
+        fev1Percent: [56, 70],
+        fev1FvcRatio: [56, 70],
+        dlcoPercent: [56, 65],
+      },
+      criteriaDescription: [
+        'FEV-1 of 56- to 70-percent predicted, OR',
+        'FEV-1/FVC of 56 to 70 percent, OR',
+        'DLCO (SB) 56- to 65-percent predicted',
+      ],
+      evidenceNeeded: [
+        'Spirometry showing FEV-1 56-70% predicted',
+        'FEV-1/FVC ratio calculation',
+        'DLCO testing if available',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'FEV-1 71-80%, OR FEV-1/FVC 71-80%, OR DLCO 66-80%',
+      criteria: {
+        fev1Percent: [71, 80],
+        fev1FvcRatio: [71, 80],
+        dlcoPercent: [66, 80],
+      },
+      criteriaDescription: [
+        'FEV-1 of 71- to 80-percent predicted, OR',
+        'FEV-1/FVC of 71 to 80 percent, OR',
+        'DLCO (SB) 66- to 80-percent predicted',
+      ],
+      evidenceNeeded: [
+        'Spirometry showing FEV-1 71-80% predicted',
+        'FEV-1/FVC ratio calculation',
+        'DLCO testing if available',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'FEV-1 >80% predicted without symptoms or only minimal symptoms',
+      criteria: {
+        fev1Percent: [81, 100],
+      },
+      criteriaDescription: [
+        'FEV-1 greater than 80% of predicted value',
+        'No significant pulmonary impairment demonstrated',
+      ],
+      evidenceNeeded: [
+        'Spirometry results',
+      ],
+    },
+  ],
+
+  definitions: {
+    fev1: {
+      term: 'FEV-1 (Forced Expiratory Volume in 1 Second)',
+      definition: 'The amount of air you can forcibly exhale in one second. Measured by spirometry and compared to predicted values based on age, height, and gender.',
+      examples: [
+        'Your FEV-1 is 2.0L, predicted is 4.0L = 50% predicted',
+        'Lower percentages indicate more severe obstruction',
+      ],
+    },
+    fev1fvc: {
+      term: 'FEV-1/FVC Ratio',
+      definition: 'The ratio of FEV-1 to Forced Vital Capacity. A ratio below 70% typically indicates obstructive lung disease.',
+      examples: [
+        'Normal ratio is typically >70%',
+        'COPD typically shows ratio <70%',
+      ],
+    },
+    dlco: {
+      term: 'DLCO (Diffusion Capacity)',
+      definition: 'Measures how well oxygen passes from the air sacs of the lungs into the blood. Reduced DLCO indicates impaired gas exchange.',
+      examples: [
+        'DLCO of 15, predicted 30 = 50% predicted',
+        'Emphysema particularly affects DLCO',
+      ],
+    },
+    corPulmonale: {
+      term: 'Cor Pulmonale',
+      definition: 'Right-sided heart failure caused by lung disease. The right ventricle enlarges due to increased pulmonary pressure.',
+      examples: [
+        'Swelling in legs and ankles',
+        'Shortness of breath at rest',
+        'Diagnosed by echocardiogram',
+      ],
+    },
+    oxygenTherapy: {
+      term: 'Supplemental Oxygen Therapy',
+      definition: 'Medical oxygen prescribed for use at home, during activity, or continuously due to low blood oxygen levels.',
+      examples: [
+        'Oxygen concentrator at home',
+        'Portable oxygen tanks',
+        'Continuous vs. as-needed oxygen',
+      ],
+    },
+  },
+
+  pftNote: 'Pulmonary function tests (PFTs) are required to evaluate COPD. Use post-bronchodilator results unless pre-bronchodilator results are worse. When PFT results differ, use the test that most accurately reflects disability.',
+
+  disclaimer: 'This analysis is based on logged symptoms and available measurements. VA rating requires pulmonary function testing (spirometry and DLCO). Ratings cannot be combined with other respiratory conditions under DC 6600-6847.',
+};
+
+export const CHRONIC_BRONCHITIS_CRITERIA = {
+  diagnosticCode: '6600',
+  condition: 'Chronic Bronchitis',
+  cfrReference: '38 CFR 4.97, Diagnostic Code 6600',
+
+  ratings: [
+    {
+      percent: 100,
+      summary: 'FEV-1 <40%, OR FEV-1/FVC <40%, OR DLCO <40%, OR oxygen therapy, OR respiratory failure, OR cor pulmonale',
+      criteria: {
+        fev1Percent: [0, 39],
+        fev1FvcRatio: [0, 39],
+        dlcoPercent: [0, 39],
+        oxygenTherapy: true,
+        respiratoryFailure: true,
+        corPulmonale: true,
+      },
+      criteriaDescription: [
+        'FEV-1 less than 40% of predicted value, OR',
+        'FEV-1/FVC ratio less than 40%, OR',
+        'DLCO (SB) less than 40% predicted, OR',
+        'Maximum exercise capacity less than 15 ml/kg/min oxygen consumption, OR',
+        'Cor pulmonale (right heart failure), OR',
+        'Right ventricular hypertrophy, OR',
+        'Pulmonary hypertension (shown by Echo or cardiac catheterization), OR',
+        'Episode(s) of acute respiratory failure, OR',
+        'Requires outpatient oxygen therapy',
+      ],
+      evidenceNeeded: [
+        'Spirometry showing FEV-1 <40% predicted',
+        'DLCO testing showing <40% predicted',
+        'Documentation of oxygen therapy prescription',
+        'Medical records of respiratory failure episodes',
+      ],
+    },
+    {
+      percent: 60,
+      summary: 'FEV-1 40-55%, OR FEV-1/FVC 40-55%, OR DLCO 40-55%',
+      criteria: {
+        fev1Percent: [40, 55],
+        fev1FvcRatio: [40, 55],
+        dlcoPercent: [40, 55],
+      },
+      criteriaDescription: [
+        'FEV-1 of 40- to 55-percent predicted, OR',
+        'FEV-1/FVC of 40 to 55 percent, OR',
+        'DLCO (SB) of 40- to 55-percent predicted, OR',
+        'Maximum oxygen consumption of 15 to 20 ml/kg/min (with cardiorespiratory limit)',
+      ],
+      evidenceNeeded: [
+        'Spirometry showing FEV-1 40-55% predicted',
+        'DLCO testing if available',
+      ],
+    },
+    {
+      percent: 30,
+      summary: 'FEV-1 56-70%, OR FEV-1/FVC 56-70%, OR DLCO 56-65%',
+      criteria: {
+        fev1Percent: [56, 70],
+        fev1FvcRatio: [56, 70],
+        dlcoPercent: [56, 65],
+      },
+      criteriaDescription: [
+        'FEV-1 of 56- to 70-percent predicted, OR',
+        'FEV-1/FVC of 56 to 70 percent, OR',
+        'DLCO (SB) 56- to 65-percent predicted',
+      ],
+      evidenceNeeded: [
+        'Spirometry showing FEV-1 56-70% predicted',
+        'DLCO testing if available',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'FEV-1 71-80%, OR FEV-1/FVC 71-80%, OR DLCO 66-80%',
+      criteria: {
+        fev1Percent: [71, 80],
+        fev1FvcRatio: [71, 80],
+        dlcoPercent: [66, 80],
+      },
+      criteriaDescription: [
+        'FEV-1 of 71- to 80-percent predicted, OR',
+        'FEV-1/FVC of 71 to 80 percent, OR',
+        'DLCO (SB) 66- to 80-percent predicted',
+      ],
+      evidenceNeeded: [
+        'Spirometry showing FEV-1 71-80% predicted',
+        'DLCO testing if available',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'FEV-1 >80% predicted without significant impairment',
+      criteria: {
+        fev1Percent: [81, 100],
+      },
+      criteriaDescription: [
+        'FEV-1 greater than 80% of predicted value',
+        'No significant pulmonary impairment demonstrated',
+      ],
+      evidenceNeeded: [
+        'Spirometry results',
+      ],
+    },
+  ],
+
+  definitions: {
+    chronicBronchitis: {
+      term: 'Chronic Bronchitis',
+      definition: 'Inflammation of the bronchial tubes with chronic productive cough for at least 3 months per year for 2 consecutive years.',
+      examples: [
+        'Daily productive cough',
+        'Sputum production most days',
+        'Recurrent respiratory infections',
+      ],
+    },
+    productiveCough: {
+      term: 'Productive Cough',
+      definition: 'Cough that produces mucus (sputum). A hallmark of chronic bronchitis.',
+      examples: [
+        'Morning cough with phlegm',
+        'Cough producing clear, white, yellow, or green mucus',
+      ],
+    },
+    fev1: {
+      term: 'FEV-1 (Forced Expiratory Volume in 1 Second)',
+      definition: 'The amount of air you can forcibly exhale in one second. Key measurement for rating.',
+      examples: [
+        'Measured by spirometry',
+        'Compared to predicted values for your age/height/gender',
+      ],
+    },
+    dlco: {
+      term: 'DLCO (Diffusion Capacity)',
+      definition: 'Measures how well oxygen passes from lungs into blood.',
+      examples: [
+        'May be less affected in pure bronchitis vs emphysema',
+        'Still important for comprehensive evaluation',
+      ],
+    },
+  },
+
+  pftNote: 'Pulmonary function tests (PFTs) are required. Chronic bronchitis is defined clinically by chronic productive cough but rated based on objective pulmonary function impairment.',
+
+  disclaimer: 'This analysis is based on logged symptoms and available measurements. VA rating requires pulmonary function testing. Ratings cannot be combined with other respiratory conditions under DC 6600-6847.',
+};
+
+export const EMPHYSEMA_CRITERIA = {
+  diagnosticCode: '6603',
+  condition: 'Pulmonary Emphysema',
+  cfrReference: '38 CFR 4.97, Diagnostic Code 6603',
+
+  ratings: [
+    {
+      percent: 100,
+      summary: 'FEV-1 <40%, OR FEV-1/FVC <40%, OR DLCO <40%, OR oxygen therapy, OR respiratory failure, OR cor pulmonale',
+      criteria: {
+        fev1Percent: [0, 39],
+        fev1FvcRatio: [0, 39],
+        dlcoPercent: [0, 39],
+        oxygenTherapy: true,
+        respiratoryFailure: true,
+        corPulmonale: true,
+      },
+      criteriaDescription: [
+        'FEV-1 less than 40% of predicted value, OR',
+        'FEV-1/FVC ratio less than 40%, OR',
+        'DLCO (SB) less than 40% predicted, OR',
+        'Maximum exercise capacity less than 15 ml/kg/min oxygen consumption, OR',
+        'Cor pulmonale (right heart failure), OR',
+        'Right ventricular hypertrophy, OR',
+        'Pulmonary hypertension (shown by Echo or cardiac catheterization), OR',
+        'Episode(s) of acute respiratory failure, OR',
+        'Requires outpatient oxygen therapy',
+      ],
+      evidenceNeeded: [
+        'Spirometry showing FEV-1 <40% predicted',
+        'DLCO testing showing <40% predicted (particularly important for emphysema)',
+        'Documentation of oxygen therapy prescription',
+        'CT scan showing emphysematous changes',
+      ],
+    },
+    {
+      percent: 60,
+      summary: 'FEV-1 40-55%, OR FEV-1/FVC 40-55%, OR DLCO 40-55%',
+      criteria: {
+        fev1Percent: [40, 55],
+        fev1FvcRatio: [40, 55],
+        dlcoPercent: [40, 55],
+      },
+      criteriaDescription: [
+        'FEV-1 of 40- to 55-percent predicted, OR',
+        'FEV-1/FVC of 40 to 55 percent, OR',
+        'DLCO (SB) of 40- to 55-percent predicted, OR',
+        'Maximum oxygen consumption of 15 to 20 ml/kg/min (with cardiorespiratory limit)',
+      ],
+      evidenceNeeded: [
+        'Spirometry showing FEV-1 40-55% predicted',
+        'DLCO testing (emphysema often significantly reduces DLCO)',
+      ],
+    },
+    {
+      percent: 30,
+      summary: 'FEV-1 56-70%, OR FEV-1/FVC 56-70%, OR DLCO 56-65%',
+      criteria: {
+        fev1Percent: [56, 70],
+        fev1FvcRatio: [56, 70],
+        dlcoPercent: [56, 65],
+      },
+      criteriaDescription: [
+        'FEV-1 of 56- to 70-percent predicted, OR',
+        'FEV-1/FVC of 56 to 70 percent, OR',
+        'DLCO (SB) 56- to 65-percent predicted',
+      ],
+      evidenceNeeded: [
+        'Spirometry showing FEV-1 56-70% predicted',
+        'DLCO testing',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'FEV-1 71-80%, OR FEV-1/FVC 71-80%, OR DLCO 66-80%',
+      criteria: {
+        fev1Percent: [71, 80],
+        fev1FvcRatio: [71, 80],
+        dlcoPercent: [66, 80],
+      },
+      criteriaDescription: [
+        'FEV-1 of 71- to 80-percent predicted, OR',
+        'FEV-1/FVC of 71 to 80 percent, OR',
+        'DLCO (SB) 66- to 80-percent predicted',
+      ],
+      evidenceNeeded: [
+        'Spirometry showing FEV-1 71-80% predicted',
+        'DLCO testing',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'FEV-1 >80% predicted without significant impairment',
+      criteria: {
+        fev1Percent: [81, 100],
+      },
+      criteriaDescription: [
+        'FEV-1 greater than 80% of predicted value',
+        'No significant pulmonary impairment demonstrated',
+      ],
+      evidenceNeeded: [
+        'Spirometry results',
+      ],
+    },
+  ],
+
+  definitions: {
+    emphysema: {
+      term: 'Pulmonary Emphysema',
+      definition: 'Destruction of the air sacs (alveoli) in the lungs, reducing surface area for gas exchange. Part of the COPD spectrum.',
+      examples: [
+        'Progressive shortness of breath',
+        'Barrel-shaped chest',
+        'Reduced exercise tolerance',
+      ],
+    },
+    dlco: {
+      term: 'DLCO (Diffusion Capacity)',
+      definition: 'Particularly important for emphysema as destroyed alveoli significantly impair gas exchange even when airflow obstruction is mild.',
+      examples: [
+        'DLCO often reduced more than FEV-1 in emphysema',
+        'Better indicator of emphysema severity than spirometry alone',
+      ],
+    },
+    hyperinflation: {
+      term: 'Hyperinflation / Barrel Chest',
+      definition: 'Air trapping causes the lungs to remain over-inflated, leading to characteristic barrel-shaped chest appearance.',
+      examples: [
+        'Increased anterior-posterior chest diameter',
+        'Flattened diaphragm on imaging',
+        'Difficulty fully exhaling',
+      ],
+    },
+    fev1: {
+      term: 'FEV-1 (Forced Expiratory Volume in 1 Second)',
+      definition: 'Volume of air exhaled in the first second of forced exhalation. May underestimate emphysema severity.',
+      examples: [
+        'Used in combination with DLCO for emphysema',
+        'Air trapping can affect reliability',
+      ],
+    },
+  },
+
+  pftNote: 'Both spirometry and DLCO testing are important for emphysema evaluation. DLCO may be significantly reduced even when FEV-1 is only mildly impaired due to alveolar destruction.',
+
+  disclaimer: 'This analysis is based on logged symptoms and available measurements. VA rating requires pulmonary function testing. DLCO is particularly important for emphysema evaluation. Ratings cannot be combined with other respiratory conditions under DC 6600-6847.',
+};
+
 
 // ============================================
 // RATING CRITERIA - HEARING LOSS
@@ -4577,6 +5904,84 @@ export const analyzeBipolarLogs = (logs, options = {}) => {
       BIPOLAR_CRITERIA,
       options,
   );
+};
+
+/**
+ * Analyzes Social Anxiety Disorder symptom logs
+ */
+export const analyzeSocialAnxietyLogs = (logs, options = {}) => {
+    return analyzeMentalHealthCondition(
+        logs,
+        'social-anxiety',
+        CONDITIONS.SOCIAL_ANXIETY.symptomIds,
+        SOCIAL_ANXIETY_CRITERIA,
+        options,
+    );
+};
+
+/**
+ * Analyzes OCD symptom logs
+ */
+export const analyzeOCDLogs = (logs, options = {}) => {
+    return analyzeMentalHealthCondition(
+        logs,
+        'ocd',
+        CONDITIONS.OCD.symptomIds,
+        OCD_CRITERIA,
+        options,
+    );
+};
+
+/**
+ * Analyzes Persistent Depressive Disorder (Dysthymia) symptom logs
+ */
+export const analyzePersistentDepressiveLogs = (logs, options = {}) => {
+    return analyzeMentalHealthCondition(
+        logs,
+        'persistent-depressive',
+        CONDITIONS.PERSISTENT_DEPRESSIVE.symptomIds,
+        PERSISTENT_DEPRESSIVE_CRITERIA,
+        options,
+    );
+};
+
+/**
+ * Analyzes Chronic Adjustment Disorder symptom logs
+ */
+export const analyzeAdjustmentDisorderLogs = (logs, options = {}) => {
+    return analyzeMentalHealthCondition(
+        logs,
+        'adjustment-disorder',
+        CONDITIONS.ADJUSTMENT_DISORDER.symptomIds,
+        ADJUSTMENT_DISORDER_CRITERIA,
+        options,
+    );
+};
+
+/**
+ * Analyzes Unspecified Anxiety Disorder symptom logs
+ */
+export const analyzeUnspecifiedAnxietyLogs = (logs, options = {}) => {
+    return analyzeMentalHealthCondition(
+        logs,
+        'unspecified-anxiety',
+        CONDITIONS.UNSPECIFIED_ANXIETY.symptomIds,
+        UNSPECIFIED_ANXIETY_CRITERIA,
+        options,
+    );
+};
+
+/**
+ * Analyzes Unspecified Depressive Disorder symptom logs
+ */
+export const analyzeUnspecifiedDepressiveLogs = (logs, options = {}) => {
+    return analyzeMentalHealthCondition(
+        logs,
+        'unspecified-depressive',
+        CONDITIONS.UNSPECIFIED_DEPRESSIVE.symptomIds,
+        UNSPECIFIED_DEPRESSIVE_CRITERIA,
+        options,
+    );
 };
 
 
@@ -7155,6 +8560,504 @@ export const analyzeHipLogs = (logs, options = {}) => {
   };
 };
 
+// ============================================
+// ANALYSIS FUNCTIONS - ANKLE
+// ============================================
+
+/**
+ * Analyzes ankle symptom logs to determine supported VA rating level
+ */
+export const analyzeAnkleLogs = (logs, options = {}) => {
+  const {
+    evaluationPeriodDays = 90,
+  } = options;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  // Filter ankle symptom logs
+  const ankleSymptoms = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    return logDate >= cutoffDate && CONDITIONS.ANKLE.symptomIds.includes(log.symptomId);
+  });
+
+  if (ankleSymptoms.length === 0) {
+    return {
+      condition: 'Ankle Conditions',
+      diagnosticCode: '5270-5271',
+      hasData: false,
+      message: 'No ankle symptoms logged in the evaluation period',
+    };
+  }
+
+  // Count symptom types
+  const painCount = ankleSymptoms.filter(s => s.symptomId === 'ankle-pain').length;
+  const limitedROMCount = ankleSymptoms.filter(s => s.symptomId === 'ankle-limited-rom').length;
+  const stiffnessCount = ankleSymptoms.filter(s => s.symptomId === 'ankle-stiffness').length;
+  const instabilityCount = ankleSymptoms.filter(s => s.symptomId === 'ankle-instability').length;
+  const swellingCount = ankleSymptoms.filter(s => s.symptomId === 'ankle-swelling').length;
+  const weaknessCount = ankleSymptoms.filter(s => s.symptomId === 'ankle-weakness').length;
+
+  const evidence = [];
+  const gaps = [];
+  const ratingRationale = [];
+  let supportedRating = '10';
+
+  // Build evidence
+  if (painCount > 0) evidence.push(`${painCount} ankle pain episodes documented`);
+  if (limitedROMCount > 0) evidence.push(`${limitedROMCount} limited ROM episodes`);
+  if (stiffnessCount > 0) evidence.push(`${stiffnessCount} stiffness episodes`);
+  if (instabilityCount > 0) evidence.push(`${instabilityCount} instability episodes`);
+  if (swellingCount > 0) evidence.push(`${swellingCount} swelling episodes`);
+  if (weaknessCount > 0) evidence.push(`${weaknessCount} weakness episodes`);
+
+  const totalEpisodes = ankleSymptoms.length;
+  const episodesPerWeek = totalEpisodes / (evaluationPeriodDays / 7);
+
+  evidence.push(`${totalEpisodes} total ankle episodes in ${evaluationPeriodDays} days (~${episodesPerWeek.toFixed(1)}/week)`);
+
+  // Determine rating based on symptom patterns
+  // 40%: Ankylosis with severe deformity (rare, requires surgical documentation)
+  // 30%: Ankylosis in moderate position
+  // 20%: Ankylosis <30° plantar flexion OR marked limitation (<5° dorsiflexion, <10° plantar)
+  // 10%: Moderate limitation (<15° dorsiflexion, <30° plantar)
+
+  if (limitedROMCount >= 12 && painCount >= 15 && (instabilityCount >= 5 || swellingCount >= 5)) {
+    supportedRating = '20';
+    ratingRationale.push(
+        `${limitedROMCount} limited ROM episodes (frequent)`,
+        `${painCount} pain episodes`,
+        instabilityCount > 0 ? `${instabilityCount} instability episodes` : `${swellingCount} swelling episodes`,
+        'Pattern suggests marked limitation - supports 20%'
+    );
+    gaps.push('Goniometer ROM measurements needed to confirm marked limitation');
+    gaps.push('Marked limitation = <5° dorsiflexion OR <10° plantar flexion');
+  }
+  else if (limitedROMCount >= 6 || (painCount >= 10 && episodesPerWeek >= 2)) {
+    supportedRating = '10-20';
+    ratingRationale.push(
+        `${totalEpisodes} ankle episodes in ${evaluationPeriodDays} days`,
+        painCount > 0 ? `${painCount} pain episodes` : 'Symptoms documented',
+        'Supports 10-20% rating range'
+    );
+    gaps.push('ROM measurements will determine if 10% (moderate) or 20% (marked) limitation');
+  }
+  else if (totalEpisodes >= 4) {
+    supportedRating = '10';
+    ratingRationale.push(
+        `${totalEpisodes} ankle episodes documented`,
+        'Supports 10% rating for moderate limitation'
+    );
+  }
+  else {
+    supportedRating = '0-10';
+    ratingRationale.push(
+        'Limited ankle symptoms documented',
+        'May support 10% if ROM limitation confirmed'
+    );
+  }
+
+  // Documentation gaps
+  if (totalEpisodes < 8) {
+    gaps.push(`Only ${totalEpisodes} episodes logged - aim for 8+ over 90 days`);
+  }
+  if (painCount === 0) {
+    gaps.push('Pain is primary symptom - document ankle pain episodes');
+  }
+  if (limitedROMCount === 0) {
+    gaps.push('Document limited ROM episodes for stronger claim');
+  }
+  gaps.push('Orthopedic exam with goniometer ROM measurements required');
+  gaps.push('Document which ankle (left/right) or bilateral');
+  gaps.push('Track functional impact: walking, stairs, standing, running');
+  gaps.push('X-rays showing arthritis or pathology strengthen claim');
+
+  return {
+    condition: 'Ankle Conditions',
+    diagnosticCode: '5270-5271',
+    hasData: true,
+    supportedRating,
+    ratingRationale,
+    evidence,
+    gaps,
+    criteria: ANKLE_CRITERIA,
+    disclaimer: ANKLE_CRITERIA.disclaimer,
+  };
+};
+
+
+// ============================================
+// ANALYSIS FUNCTIONS - WRIST
+// ============================================
+
+/**
+ * Analyzes wrist symptom logs to determine supported VA rating level
+ */
+export const analyzeWristLogs = (logs, options = {}) => {
+  const {
+    evaluationPeriodDays = 90,
+  } = options;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  // Filter wrist symptom logs
+  const wristSymptoms = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    return logDate >= cutoffDate && CONDITIONS.WRIST.symptomIds.includes(log.symptomId);
+  });
+
+  if (wristSymptoms.length === 0) {
+    return {
+      condition: 'Wrist Conditions',
+      diagnosticCode: '5214-5215',
+      hasData: false,
+      message: 'No wrist symptoms logged in the evaluation period',
+    };
+  }
+
+  // Count symptom types
+  const painCount = wristSymptoms.filter(s => s.symptomId === 'wrist-pain').length;
+  const limitedROMCount = wristSymptoms.filter(s => s.symptomId === 'wrist-limited-rom').length;
+  const stiffnessCount = wristSymptoms.filter(s => s.symptomId === 'wrist-stiffness').length;
+  const weaknessCount = wristSymptoms.filter(s => s.symptomId === 'wrist-weakness').length;
+  const numbnessCount = wristSymptoms.filter(s => s.symptomId === 'wrist-numbness').length;
+  const swellingCount = wristSymptoms.filter(s => s.symptomId === 'wrist-swelling').length;
+
+  const evidence = [];
+  const gaps = [];
+  const ratingRationale = [];
+  let supportedRating = '10';
+
+  // Build evidence
+  if (painCount > 0) evidence.push(`${painCount} wrist pain episodes documented`);
+  if (limitedROMCount > 0) evidence.push(`${limitedROMCount} limited ROM episodes`);
+  if (stiffnessCount > 0) evidence.push(`${stiffnessCount} stiffness episodes`);
+  if (weaknessCount > 0) evidence.push(`${weaknessCount} weakness episodes`);
+  if (numbnessCount > 0) evidence.push(`${numbnessCount} numbness/tingling episodes`);
+  if (swellingCount > 0) evidence.push(`${swellingCount} swelling episodes`);
+
+  const totalEpisodes = wristSymptoms.length;
+  const episodesPerWeek = totalEpisodes / (evaluationPeriodDays / 7);
+
+  evidence.push(`${totalEpisodes} total wrist episodes in ${evaluationPeriodDays} days (~${episodesPerWeek.toFixed(1)}/week)`);
+
+  // Determine rating based on symptom patterns
+  // Wrist limitation of motion: maximum 10% for limitation
+  // Higher ratings (30-50%) require ankylosis (fusion)
+  // 10%: Dorsiflexion <15° OR palmar flexion in line with forearm
+
+  if (limitedROMCount >= 10 || (painCount >= 12 && episodesPerWeek >= 3)) {
+    supportedRating = '10';
+    ratingRationale.push(
+        `${totalEpisodes} wrist episodes documented`,
+        `${painCount} pain episodes`,
+        'Supports 10% rating for limited motion'
+    );
+    ratingRationale.push('Higher ratings (30-50%) require documented ankylosis (fusion)');
+  }
+  else if (totalEpisodes >= 6) {
+    supportedRating = '10';
+    ratingRationale.push(
+        `${totalEpisodes} wrist episodes in ${evaluationPeriodDays} days`,
+        'Supports 10% for limitation of motion'
+    );
+  }
+  else {
+    supportedRating = '0-10';
+    ratingRationale.push(
+        'Limited wrist symptoms documented',
+        'May support 10% if ROM limitation confirmed'
+    );
+  }
+
+  // Documentation gaps
+  if (totalEpisodes < 8) {
+    gaps.push(`Only ${totalEpisodes} episodes logged - aim for 8+ over 90 days`);
+  }
+  if (painCount === 0) {
+    gaps.push('Document wrist pain episodes');
+  }
+  if (limitedROMCount === 0) {
+    gaps.push('Document limited ROM episodes');
+  }
+  gaps.push('Orthopedic exam with ROM measurements required');
+  gaps.push('Document which wrist (dominant/non-dominant) - affects rating');
+  gaps.push('Note: Wrist limitation max is 10%. Higher ratings require ankylosis.');
+  gaps.push('If numbness present, consider separate peripheral nerve evaluation');
+  gaps.push('X-rays showing arthritis or carpal abnormalities strengthen claim');
+
+  return {
+    condition: 'Wrist Conditions',
+    diagnosticCode: '5214-5215',
+    hasData: true,
+    supportedRating,
+    ratingRationale,
+    evidence,
+    gaps,
+    criteria: WRIST_CRITERIA,
+    disclaimer: WRIST_CRITERIA.disclaimer,
+  };
+};
+
+
+// ============================================
+// ANALYSIS FUNCTIONS - ELBOW
+// ============================================
+
+/**
+ * Analyzes elbow symptom logs to determine supported VA rating level
+ */
+export const analyzeElbowLogs = (logs, options = {}) => {
+  const {
+    evaluationPeriodDays = 90,
+  } = options;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  // Filter elbow symptom logs
+  const elbowSymptoms = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    return logDate >= cutoffDate && CONDITIONS.ELBOW.symptomIds.includes(log.symptomId);
+  });
+
+  if (elbowSymptoms.length === 0) {
+    return {
+      condition: 'Elbow Conditions',
+      diagnosticCode: '5205-5207',
+      hasData: false,
+      message: 'No elbow symptoms logged in the evaluation period',
+    };
+  }
+
+  // Count symptom types
+  const painCount = elbowSymptoms.filter(s => s.symptomId === 'elbow-pain').length;
+  const limitedFlexionCount = elbowSymptoms.filter(s => s.symptomId === 'elbow-limited-flexion').length;
+  const limitedExtensionCount = elbowSymptoms.filter(s => s.symptomId === 'elbow-limited-extension').length;
+  const stiffnessCount = elbowSymptoms.filter(s => s.symptomId === 'elbow-stiffness').length;
+  const weaknessCount = elbowSymptoms.filter(s => s.symptomId === 'elbow-weakness').length;
+  const instabilityCount = elbowSymptoms.filter(s => s.symptomId === 'elbow-instability').length;
+
+  const totalLimitedROM = limitedFlexionCount + limitedExtensionCount;
+
+  const evidence = [];
+  const gaps = [];
+  const ratingRationale = [];
+  let supportedRating = '10';
+
+  // Build evidence
+  if (painCount > 0) evidence.push(`${painCount} elbow pain episodes documented`);
+  if (limitedFlexionCount > 0) evidence.push(`${limitedFlexionCount} limited flexion episodes`);
+  if (limitedExtensionCount > 0) evidence.push(`${limitedExtensionCount} limited extension episodes`);
+  if (stiffnessCount > 0) evidence.push(`${stiffnessCount} stiffness episodes`);
+  if (weaknessCount > 0) evidence.push(`${weaknessCount} weakness episodes`);
+  if (instabilityCount > 0) evidence.push(`${instabilityCount} instability episodes`);
+
+  const totalEpisodes = elbowSymptoms.length;
+  const episodesPerWeek = totalEpisodes / (evaluationPeriodDays / 7);
+
+  evidence.push(`${totalEpisodes} total elbow episodes in ${evaluationPeriodDays} days (~${episodesPerWeek.toFixed(1)}/week)`);
+
+  // Determine rating based on symptom patterns
+  // Elbow ratings range from 10% (slight limitation) to 60% (ankylosis)
+  // Flexion limited to 100° = 10%
+  // Flexion limited to 90° = 20%
+  // Flexion limited to 70° = 30%
+  // Extension limited to 45-60° = 10%
+  // Extension limited to 75° = 20%
+
+  if (totalLimitedROM >= 15 && painCount >= 15) {
+    supportedRating = '20-30';
+    ratingRationale.push(
+        `${totalLimitedROM} limited ROM episodes`,
+        `${painCount} pain episodes`,
+        'Pattern suggests significant limitation'
+    );
+    gaps.push('ROM measurements will determine actual rating (20-30%)');
+    gaps.push('Flexion to 70° = 30%, to 90° = 20%');
+    gaps.push('Extension to 75° = 20%, to 90° = 30%');
+  }
+  else if (totalLimitedROM >= 8 || (painCount >= 10 && episodesPerWeek >= 2)) {
+    supportedRating = '10-20';
+    ratingRationale.push(
+        `${totalEpisodes} elbow episodes`,
+        'Supports 10-20% rating range'
+    );
+    gaps.push('ROM measurements determine rating level');
+  }
+  else if (totalEpisodes >= 6) {
+    supportedRating = '10';
+    ratingRationale.push(
+        `${totalEpisodes} elbow episodes documented`,
+        'Supports 10% for limitation'
+    );
+  }
+  else {
+    supportedRating = '0-10';
+    ratingRationale.push(
+        'Limited elbow symptoms documented',
+        'May support 10% if limitation confirmed'
+    );
+  }
+
+  // Documentation gaps
+  if (totalEpisodes < 8) {
+    gaps.push(`Only ${totalEpisodes} episodes logged - aim for 8+ over 90 days`);
+  }
+  if (painCount === 0) {
+    gaps.push('Document elbow pain episodes');
+  }
+  if (totalLimitedROM === 0) {
+    gaps.push('Document limited flexion and/or extension episodes');
+  }
+  gaps.push('Orthopedic exam with ROM measurements required');
+  gaps.push('Document which arm (dominant/non-dominant) - affects rating');
+  gaps.push('Track functional impact: lifting, carrying, reaching');
+  gaps.push('X-rays showing arthritis or abnormalities strengthen claim');
+
+  return {
+    condition: 'Elbow Conditions',
+    diagnosticCode: '5205-5207',
+    hasData: true,
+    supportedRating,
+    ratingRationale,
+    evidence,
+    gaps,
+    criteria: ELBOW_CRITERIA,
+    disclaimer: ELBOW_CRITERIA.disclaimer,
+  };
+};
+
+
+// ============================================
+// ANALYSIS FUNCTIONS - DEGENERATIVE ARTHRITIS
+// ============================================
+
+/**
+ * Analyzes degenerative arthritis symptom logs to determine supported VA rating level
+ */
+export const analyzeDegenerativeArthritisLogs = (logs, options = {}) => {
+  const {
+    evaluationPeriodDays = 90,
+  } = options;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  // Filter arthritis symptom logs
+  const arthritisSymptoms = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    return logDate >= cutoffDate && CONDITIONS.DEGENERATIVE_ARTHRITIS.symptomIds.includes(log.symptomId);
+  });
+
+  if (arthritisSymptoms.length === 0) {
+    return {
+      condition: 'Degenerative Arthritis (Osteoarthritis)',
+      diagnosticCode: '5003',
+      hasData: false,
+      message: 'No arthritis symptoms logged in the evaluation period',
+    };
+  }
+
+  // Count symptom types
+  const jointPainCount = arthritisSymptoms.filter(s => s.symptomId === 'arthritis-joint-pain').length;
+  const morningStiffnessCount = arthritisSymptoms.filter(s => s.symptomId === 'arthritis-morning-stiffness').length;
+  const flareCount = arthritisSymptoms.filter(s => s.symptomId === 'arthritis-flare').length;
+  const reducedFunctionCount = arthritisSymptoms.filter(s => s.symptomId === 'arthritis-reduced-function').length;
+  const swellingCount = arthritisSymptoms.filter(s => s.symptomId === 'arthritis-swelling').length;
+  const crepitusCount = arthritisSymptoms.filter(s => s.symptomId === 'arthritis-crepitus').length;
+
+  const evidence = [];
+  const gaps = [];
+  const ratingRationale = [];
+  let supportedRating = '10';
+
+  // Build evidence
+  if (jointPainCount > 0) evidence.push(`${jointPainCount} joint pain episodes documented`);
+  if (morningStiffnessCount > 0) evidence.push(`${morningStiffnessCount} morning stiffness episodes`);
+  if (flareCount > 0) evidence.push(`${flareCount} flare-ups/exacerbations`);
+  if (reducedFunctionCount > 0) evidence.push(`${reducedFunctionCount} reduced function episodes`);
+  if (swellingCount > 0) evidence.push(`${swellingCount} swelling episodes`);
+  if (crepitusCount > 0) evidence.push(`${crepitusCount} grinding/crepitus episodes`);
+
+  const totalEpisodes = arthritisSymptoms.length;
+  const episodesPerWeek = totalEpisodes / (evaluationPeriodDays / 7);
+
+  evidence.push(`${totalEpisodes} total arthritis episodes in ${evaluationPeriodDays} days (~${episodesPerWeek.toFixed(1)}/week)`);
+
+  // Determine rating based on symptom patterns
+  // DC 5003 ratings when ROM limitation is noncompensable:
+  // 20%: X-ray evidence in 2+ major joints WITH incapacitating exacerbations
+  // 10%: X-ray evidence in 2+ major joints WITHOUT incapacitating exacerbations
+  // When ROM limitation IS compensable, rate under specific joint code
+
+  if (flareCount >= 3 && (jointPainCount >= 15 || episodesPerWeek >= 3)) {
+    supportedRating = '20';
+    ratingRationale.push(
+        `${flareCount} flare-ups/exacerbations documented`,
+        `${totalEpisodes} total episodes`,
+        'Pattern suggests incapacitating exacerbations'
+    );
+    gaps.push('X-rays of affected joints required for 20% rating');
+    gaps.push('Document 2 or more major joints affected');
+    gaps.push('Document flare-ups that limit work or daily activities');
+  }
+  else if (totalEpisodes >= 10 || episodesPerWeek >= 2) {
+    supportedRating = '10-20';
+    ratingRationale.push(
+        `${totalEpisodes} arthritis episodes documented`,
+        'Supports 10-20% rating depending on X-ray findings'
+    );
+    gaps.push('X-rays of affected joints needed');
+    gaps.push('20% requires incapacitating exacerbations');
+  }
+  else if (totalEpisodes >= 5) {
+    supportedRating = '10';
+    ratingRationale.push(
+        `${totalEpisodes} arthritis episodes`,
+        'Supports 10% with X-ray evidence of 2+ joints'
+    );
+  }
+  else {
+    supportedRating = '0-10';
+    ratingRationale.push(
+        'Limited arthritis symptoms documented',
+        'Continue logging for stronger documentation'
+    );
+  }
+
+  // Documentation gaps
+  if (totalEpisodes < 8) {
+    gaps.push(`Only ${totalEpisodes} episodes logged - aim for 8+ over 90 days`);
+  }
+  if (jointPainCount === 0) {
+    gaps.push('Joint pain is primary symptom - document pain episodes');
+  }
+  if (morningStiffnessCount === 0) {
+    gaps.push('Morning stiffness is key indicator - document duration');
+  }
+  if (flareCount === 0) {
+    gaps.push('Document flare-ups that limit activities');
+  }
+
+  gaps.push('X-ray evidence is REQUIRED for DC 5003 rating');
+  gaps.push('Document which joints are affected (name specific joints)');
+  gaps.push('Major joints: shoulder, elbow, wrist, hip, knee, ankle');
+  gaps.push('If a specific joint has compensable ROM limitation, rate under that joint code instead');
+
+  return {
+    condition: 'Degenerative Arthritis (Osteoarthritis)',
+    diagnosticCode: '5003',
+    hasData: true,
+    supportedRating,
+    ratingRationale,
+    evidence,
+    gaps,
+    criteria: DEGENERATIVE_ARTHRITIS_CRITERIA,
+    disclaimer: DEGENERATIVE_ARTHRITIS_CRITERIA.disclaimer,
+  };
+};
 
 // ============================================
 // ANALYSIS FUNCTIONS - ASTHMA
@@ -7409,6 +9312,361 @@ export const analyzeAsthmaLogs = (logs, options = {}) => {
     criteria: ASTHMA_CRITERIA,
     disclaimer: 'This analysis is for documentation guidance only. The VA makes all final rating determinations based on the complete evidence of record, including spirometry testing.',
   };
+};
+
+/**
+ * Shared helper function for PFT-based respiratory analysis
+ * Used by COPD, Chronic Bronchitis, and Emphysema
+ */
+const analyzeRespiratoryPFT = (logs, options, conditionConfig) => {
+  const {
+    evaluationPeriodDays = 90,
+    profileId = null,
+  } = options;
+
+  const { conditionId, conditionName, diagnosticCode, symptomIds, criteria } = conditionConfig;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  // Filter symptom logs for this condition
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    return logDate >= cutoffDate && symptomIds.includes(log.symptomId);
+  });
+
+  // Get PFT measurements from the past year
+  const yearAgo = new Date();
+  yearAgo.setDate(yearAgo.getDate() - 365);
+
+  let fev1Measurements = [];
+  let fvcMeasurements = [];
+  let dlcoMeasurements = [];
+
+  try {
+    fev1Measurements = getMeasurements('fev1', profileId).filter(m =>
+        new Date(m.timestamp) >= yearAgo
+    );
+    fvcMeasurements = getMeasurements('fvc', profileId).filter(m =>
+        new Date(m.timestamp) >= yearAgo
+    );
+    dlcoMeasurements = getMeasurements('dlco', profileId).filter(m =>
+        new Date(m.timestamp) >= yearAgo
+    );
+  } catch (error) {
+    // Measurements may not be available
+  }
+
+  if (relevantLogs.length === 0 && fev1Measurements.length === 0 && dlcoMeasurements.length === 0) {
+    return {
+      hasData: false,
+      message: `No ${conditionName} logs or PFT measurements found`,
+      supportedRating: null,
+      evidence: [],
+      gaps: [
+        `Start logging ${conditionName} symptoms`,
+        'Get pulmonary function testing (spirometry + DLCO) to establish rating',
+      ],
+    };
+  }
+
+  // Calculate PFT metrics
+  let latestFev1Percent = null;
+  let latestFev1FvcRatio = null;
+  let latestDlcoPercent = null;
+
+  // FEV-1 analysis
+  if (fev1Measurements.length > 0) {
+    const latestFev1 = fev1Measurements.reduce((latest, current) =>
+        new Date(current.timestamp) > new Date(latest.timestamp) ? current : latest
+    );
+
+    if (latestFev1.values.fev1 && latestFev1.values.fev1Predicted) {
+      latestFev1Percent = (latestFev1.values.fev1 / latestFev1.values.fev1Predicted) * 100;
+    }
+
+    // Calculate FEV-1/FVC ratio
+    if (fvcMeasurements.length > 0) {
+      const matchingFvc = fvcMeasurements.find(fvc => {
+        const timeDiff = Math.abs(new Date(fvc.timestamp) - new Date(latestFev1.timestamp));
+        return timeDiff < 24 * 60 * 60 * 1000; // Within 24 hours
+      });
+
+      if (matchingFvc && latestFev1.values.fev1) {
+        latestFev1FvcRatio = (latestFev1.values.fev1 / matchingFvc.values.fvc) * 100;
+      }
+    }
+  }
+
+  // DLCO analysis
+  if (dlcoMeasurements.length > 0) {
+    const latestDlco = dlcoMeasurements.reduce((latest, current) =>
+        new Date(current.timestamp) > new Date(latest.timestamp) ? current : latest
+    );
+
+    if (latestDlco.values.dlco && latestDlco.values.dlcoPredicted) {
+      latestDlcoPercent = (latestDlco.values.dlco / latestDlco.values.dlcoPredicted) * 100;
+    }
+  }
+
+  // Analyze symptom patterns
+  const oxygenUseLogs = relevantLogs.filter(log => log.symptomId.includes('oxygen-use'));
+  const exacerbationLogs = relevantLogs.filter(log => log.symptomId.includes('exacerbation'));
+  const erVisitLogs = relevantLogs.filter(log => log.symptomId.includes('er-visit'));
+  const hospitalizationLogs = relevantLogs.filter(log => log.symptomId.includes('hospitalization'));
+
+  const hasOxygenUse = oxygenUseLogs.length > 0;
+
+  // Build evidence array
+  const evidence = [];
+
+  if (fev1Measurements.length > 0 && latestFev1Percent !== null) {
+    evidence.push(`Most recent FEV-1: ${latestFev1Percent.toFixed(0)}% of predicted`);
+  }
+
+  if (latestFev1FvcRatio !== null) {
+    evidence.push(`FEV-1/FVC ratio: ${latestFev1FvcRatio.toFixed(0)}%`);
+  }
+
+  if (dlcoMeasurements.length > 0 && latestDlcoPercent !== null) {
+    evidence.push(`Most recent DLCO: ${latestDlcoPercent.toFixed(0)}% of predicted`);
+  }
+
+  if (hasOxygenUse) {
+    evidence.push(`${oxygenUseLogs.length} supplemental oxygen use entries logged`);
+  }
+
+  if (exacerbationLogs.length > 0) {
+    evidence.push(`${exacerbationLogs.length} exacerbations logged`);
+  }
+
+  if (erVisitLogs.length > 0) {
+    evidence.push(`${erVisitLogs.length} ER visits documented`);
+  }
+
+  if (hospitalizationLogs.length > 0) {
+    evidence.push(`${hospitalizationLogs.length} hospitalizations documented`);
+  }
+
+  if (relevantLogs.length > 0) {
+    const shortnessLogs = relevantLogs.filter(log => log.symptomId.includes('shortness'));
+    const coughLogs = relevantLogs.filter(log => log.symptomId.includes('cough'));
+    if (shortnessLogs.length > 0) {
+      evidence.push(`${shortnessLogs.length} shortness of breath episodes logged`);
+    }
+    if (coughLogs.length > 0) {
+      evidence.push(`${coughLogs.length} cough episodes logged`);
+    }
+  }
+
+  // Determine supported rating
+  let supportedRating = 0;
+  let ratingRationale = [];
+  let gaps = [];
+
+  // Check for 100% rating indicators
+  if (hasOxygenUse) {
+    supportedRating = 100;
+    ratingRationale = [
+      'Supplemental oxygen therapy documented',
+      'Oxygen therapy requirement supports 100% rating',
+    ];
+  } else if (latestFev1Percent !== null && latestFev1Percent < 40) {
+    supportedRating = 100;
+    ratingRationale = [
+      `FEV-1 at ${latestFev1Percent.toFixed(0)}% of predicted (<40% required for 100%)`,
+      'Spirometry evidence supports 100% rating',
+    ];
+  } else if (latestFev1FvcRatio !== null && latestFev1FvcRatio < 40) {
+    supportedRating = 100;
+    ratingRationale = [
+      `FEV-1/FVC ratio at ${latestFev1FvcRatio.toFixed(0)}% (<40% required for 100%)`,
+      'Spirometry evidence supports 100% rating',
+    ];
+  } else if (latestDlcoPercent !== null && latestDlcoPercent < 40) {
+    supportedRating = 100;
+    ratingRationale = [
+      `DLCO at ${latestDlcoPercent.toFixed(0)}% of predicted (<40% required for 100%)`,
+      'Diffusion capacity evidence supports 100% rating',
+    ];
+  }
+
+  // 60% Rating
+  else if (latestFev1Percent !== null && latestFev1Percent >= 40 && latestFev1Percent <= 55) {
+    supportedRating = 60;
+    ratingRationale = [
+      `FEV-1 at ${latestFev1Percent.toFixed(0)}% of predicted (40-55% range)`,
+      'Spirometry evidence supports 60% rating',
+    ];
+  } else if (latestFev1FvcRatio !== null && latestFev1FvcRatio >= 40 && latestFev1FvcRatio <= 55) {
+    supportedRating = 60;
+    ratingRationale = [
+      `FEV-1/FVC ratio at ${latestFev1FvcRatio.toFixed(0)}% (40-55% range)`,
+      'Spirometry evidence supports 60% rating',
+    ];
+  } else if (latestDlcoPercent !== null && latestDlcoPercent >= 40 && latestDlcoPercent <= 55) {
+    supportedRating = 60;
+    ratingRationale = [
+      `DLCO at ${latestDlcoPercent.toFixed(0)}% of predicted (40-55% range)`,
+      'Diffusion capacity evidence supports 60% rating',
+    ];
+  }
+
+  // 30% Rating
+  else if (latestFev1Percent !== null && latestFev1Percent >= 56 && latestFev1Percent <= 70) {
+    supportedRating = 30;
+    ratingRationale = [
+      `FEV-1 at ${latestFev1Percent.toFixed(0)}% of predicted (56-70% range)`,
+      'Spirometry evidence supports 30% rating',
+    ];
+  } else if (latestFev1FvcRatio !== null && latestFev1FvcRatio >= 56 && latestFev1FvcRatio <= 70) {
+    supportedRating = 30;
+    ratingRationale = [
+      `FEV-1/FVC ratio at ${latestFev1FvcRatio.toFixed(0)}% (56-70% range)`,
+      'Spirometry evidence supports 30% rating',
+    ];
+  } else if (latestDlcoPercent !== null && latestDlcoPercent >= 56 && latestDlcoPercent <= 65) {
+    supportedRating = 30;
+    ratingRationale = [
+      `DLCO at ${latestDlcoPercent.toFixed(0)}% of predicted (56-65% range)`,
+      'Diffusion capacity evidence supports 30% rating',
+    ];
+  }
+
+  // 10% Rating
+  else if (latestFev1Percent !== null && latestFev1Percent >= 71 && latestFev1Percent <= 80) {
+    supportedRating = 10;
+    ratingRationale = [
+      `FEV-1 at ${latestFev1Percent.toFixed(0)}% of predicted (71-80% range)`,
+      'Spirometry evidence supports 10% rating',
+    ];
+  } else if (latestFev1FvcRatio !== null && latestFev1FvcRatio >= 71 && latestFev1FvcRatio <= 80) {
+    supportedRating = 10;
+    ratingRationale = [
+      `FEV-1/FVC ratio at ${latestFev1FvcRatio.toFixed(0)}% (71-80% range)`,
+      'Spirometry evidence supports 10% rating',
+    ];
+  } else if (latestDlcoPercent !== null && latestDlcoPercent >= 66 && latestDlcoPercent <= 80) {
+    supportedRating = 10;
+    ratingRationale = [
+      `DLCO at ${latestDlcoPercent.toFixed(0)}% of predicted (66-80% range)`,
+      'Diffusion capacity evidence supports 10% rating',
+    ];
+  } else if (relevantLogs.length > 0) {
+    // Has symptoms but no PFT data
+    supportedRating = '10-30';
+    ratingRationale = [
+      `${relevantLogs.length} symptom entries logged`,
+      'Symptoms documented but PFT testing needed to confirm rating level',
+    ];
+    gaps.push('Get pulmonary function testing (FEV-1/FVC + DLCO) - required for VA rating');
+  }
+
+  // 0% or Insufficient Data
+  else {
+    if (latestFev1Percent !== null && latestFev1Percent > 80) {
+      supportedRating = 0;
+      ratingRationale = [
+        `FEV-1 at ${latestFev1Percent.toFixed(0)}% of predicted (>80% is normal)`,
+        'Spirometry shows minimal impairment',
+      ];
+    } else {
+      supportedRating = 0;
+      ratingRationale = [
+        'Insufficient evidence for compensable rating',
+      ];
+      gaps.push('Get pulmonary function testing (FEV-1/FVC + DLCO) - required for VA rating');
+      gaps.push(`Document all ${conditionName} symptoms and exacerbations`);
+    }
+  }
+
+  // Add general gaps if rating could be higher
+  if (supportedRating !== 100 && typeof supportedRating === 'number') {
+    if (fev1Measurements.length === 0) {
+      gaps.push('Get spirometry testing (FEV-1/FVC) - this is required for VA rating');
+    }
+    if (dlcoMeasurements.length === 0) {
+      gaps.push('Get DLCO testing - important for comprehensive pulmonary evaluation');
+    }
+    if (!hasOxygenUse && exacerbationLogs.length > 0) {
+      gaps.push('Document if supplemental oxygen is prescribed');
+    }
+  }
+
+  return {
+    hasData: true,
+    condition: conditionName,
+    diagnosticCode,
+    evaluationPeriodDays,
+    supportedRating: supportedRating.toString(),
+    ratingRationale,
+    evidence,
+    gaps,
+    criteria,
+    disclaimer: criteria.disclaimer,
+  };
+};
+
+/**
+ * Analyze COPD symptom logs against VA rating criteria
+ */
+export const analyzeCOPDLogs = (logs, options = {}) => {
+  return analyzeRespiratoryPFT(logs, options, {
+    conditionId: 'copd',
+    conditionName: 'Chronic Obstructive Pulmonary Disease',
+    diagnosticCode: '6604',
+    symptomIds: [
+      'copd-shortness-breath',
+      'copd-chronic-cough',
+      'copd-sputum',
+      'copd-wheezing',
+      'copd-exacerbation',
+      'copd-oxygen-use',
+      'copd-er-visit',
+      'copd-hospitalization',
+    ],
+    criteria: COPD_CRITERIA,
+  });
+};
+
+/**
+ * Analyze Chronic Bronchitis symptom logs against VA rating criteria
+ */
+export const analyzeChronicBronchitisLogs = (logs, options = {}) => {
+  return analyzeRespiratoryPFT(logs, options, {
+    conditionId: 'chronic-bronchitis',
+    conditionName: 'Chronic Bronchitis',
+    diagnosticCode: '6600',
+    symptomIds: [
+      'bronchitis-productive-cough',
+      'bronchitis-sputum',
+      'bronchitis-shortness-breath',
+      'bronchitis-chest-discomfort',
+      'bronchitis-exacerbation',
+      'bronchitis-oxygen-use',
+    ],
+    criteria: CHRONIC_BRONCHITIS_CRITERIA,
+  });
+};
+
+/**
+ * Analyze Emphysema symptom logs against VA rating criteria
+ */
+export const analyzeEmphysemaLogs = (logs, options = {}) => {
+  return analyzeRespiratoryPFT(logs, options, {
+    conditionId: 'emphysema',
+    conditionName: 'Pulmonary Emphysema',
+    diagnosticCode: '6603',
+    symptomIds: [
+      'emphysema-shortness-breath',
+      'emphysema-barrel-chest',
+      'emphysema-wheezing',
+      'emphysema-fatigue',
+      'emphysema-oxygen-use',
+      'emphysema-exacerbation',
+    ],
+    criteria: EMPHYSEMA_CRITERIA,
+  });
 };
 
 // ============================================
@@ -8231,6 +10489,30 @@ export const getFibromyalgiaRatingCriteria = (percent) => {
   return FIBROMYALGIA_CRITERIA.ratings.find(r => r.percent === percent) || null;
 };
 
+export const getSocialAnxietyRatingCriteria = (percent) => {
+    return SOCIAL_ANXIETY_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+
+export const getOCDRatingCriteria = (percent) => {
+    return OCD_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+
+export const getPersistentDepressiveRatingCriteria = (percent) => {
+    return PERSISTENT_DEPRESSIVE_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+
+export const getAdjustmentDisorderRatingCriteria = (percent) => {
+    return ADJUSTMENT_DISORDER_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+
+export const getUnspecifiedAnxietyRatingCriteria = (percent) => {
+    return UNSPECIFIED_ANXIETY_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+
+export const getUnspecifiedDepressiveRatingCriteria = (percent) => {
+    return UNSPECIFIED_DEPRESSIVE_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+
 export const getAllLumbosacralStrainRatings = () => LUMBOSACRAL_STRAIN_CRITERIA.ratings;
 export const getAllIntervertebralDiscRatings = () => INTERVERTEBRAL_DISC_CRITERIA.ratingsIncapacitatingEpisodes;
 export const getAllKneeInstabilityRatings = () => KNEE_INSTABILITY_CRITERIA.ratings;
@@ -8238,7 +10520,6 @@ export const getAllTBIRatings = () => TBI_CRITERIA.ratings;
 export const getAllHypertensionRatings = () => HYPERTENSION_CRITERIA.ratings;
 export const getAllTinnitusRatings = () => TINNITUS_CRITERIA.ratings;
 export const getAllFibromyalgiaRatings = () => FIBROMYALGIA_CRITERIA.ratings;
-
 export const getLumbosacralStrainDefinition = (term) => LUMBOSACRAL_STRAIN_CRITERIA.definitions[term] || null;
 export const getIntervertebralDiscDefinition = (term) => INTERVERTEBRAL_DISC_CRITERIA.definitions[term] || null;
 export const getKneeInstabilityDefinition = (term) => KNEE_INSTABILITY_CRITERIA.definitions[term] || null;
@@ -8248,3 +10529,24 @@ export const getTinnitusDefinition = (term) => TINNITUS_CRITERIA.definitions[ter
 export const getFibromyalgiaDefinition = (term) => FIBROMYALGIA_CRITERIA.definitions[term] || null;
 export const getAsthmaDefinition = (term) => ASTHMA_CRITERIA.definitions[term] || null;
 export const getAllAsthmaRatings = () => ASTHMA_CRITERIA.ratings;
+export const getAllSocialAnxietyRatings = () => SOCIAL_ANXIETY_CRITERIA.ratings;
+export const getAllOCDRatings = () => OCD_CRITERIA.ratings;
+export const getAllPersistentDepressiveRatings = () => PERSISTENT_DEPRESSIVE_CRITERIA.ratings;
+export const getAllAdjustmentDisorderRatings = () => ADJUSTMENT_DISORDER_CRITERIA.ratings;
+export const getAllUnspecifiedAnxietyRatings = () => UNSPECIFIED_ANXIETY_CRITERIA.ratings;
+export const getAllUnspecifiedDepressiveRatings = () => UNSPECIFIED_DEPRESSIVE_CRITERIA.ratings;
+export const getSocialAnxietyDefinition = (term) => SOCIAL_ANXIETY_CRITERIA.definitions[term] || null;
+export const getOCDDefinition = (term) => OCD_CRITERIA.definitions[term] || null;
+export const getPersistentDepressiveDefinition = (term) => PERSISTENT_DEPRESSIVE_CRITERIA.definitions[term] || null;
+export const getAdjustmentDisorderDefinition = (term) => ADJUSTMENT_DISORDER_CRITERIA.definitions[term] || null;
+export const getUnspecifiedAnxietyDefinition = (term) => UNSPECIFIED_ANXIETY_CRITERIA.definitions[term] || null;
+export const getUnspecifiedDepressiveDefinition = (term) => UNSPECIFIED_DEPRESSIVE_CRITERIA.definitions[term] || null;
+
+
+
+
+
+
+
+
+

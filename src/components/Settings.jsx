@@ -201,7 +201,7 @@ const Settings = ({ onNavigate }) => {  // ← ADD onNavigate prop
   };
 
   return (
-      <div className="space-y-4">
+      <div className="space-y-4 text-left">
         <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Settings</h2>
 
         {/* Message Banner */}
@@ -292,7 +292,7 @@ const Settings = ({ onNavigate }) => {  // ← ADD onNavigate prop
           )}
 
           {supported && permissionStatus === 'granted' && (
-              <div className="space-y-4">
+              <div className="space-y-4 text-left">
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-gray-700 dark:text-gray-300">Enable reminders</span>
                   <button

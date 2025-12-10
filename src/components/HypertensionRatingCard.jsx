@@ -73,7 +73,7 @@ const HypertensionRatingCard = ({ analysis, expanded, onToggle }) => {
         {/* Expanded Content */}
         {expanded && (
             <div className="p-4 border-t border-gray-200 dark:border-gray-700">
-              <div className="space-y-4">
+              <div className="space-y-4 text-left">
 
                 {/* Blood Pressure Trend Chart */}
                 {hasMeasurements && (
@@ -87,7 +87,7 @@ const HypertensionRatingCard = ({ analysis, expanded, onToggle }) => {
 
                 {/* Evidence Summary */}
                 <div>
-                  <h4 className="font-medium text-gray-900 dark:text-white mb-2">
+                  <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-center">
                     Evidence Summary
                   </h4>
                   <div className="bg-gray-50 dark:bg-gray-700/30 rounded-lg p-3 space-y-2">
@@ -103,7 +103,7 @@ const HypertensionRatingCard = ({ analysis, expanded, onToggle }) => {
                 {/* Rating Rationale */}
                 {ratingRationale && ratingRationale.length > 0 && (
                     <div>
-                      <h4 className="font-medium text-gray-900 dark:text-white mb-2">
+                      <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-center">
                         Analysis Rationale
                       </h4>
                       <div className="bg-gray-50 dark:bg-gray-700/30 rounded-lg p-3 space-y-2">
@@ -119,7 +119,7 @@ const HypertensionRatingCard = ({ analysis, expanded, onToggle }) => {
 
                 {/* VA Rating Schedule */}
                 <div>
-                  <h4 className="font-medium text-gray-900 dark:text-white mb-2">
+                  <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-center">
                     VA Rating Schedule
                   </h4>
                   <div className="space-y-2">
@@ -157,7 +157,7 @@ const HypertensionRatingCard = ({ analysis, expanded, onToggle }) => {
                 {/* Documentation Gaps */}
                 {gaps && gaps.length > 0 && (
                     <div>
-                      <h4 className="font-medium text-gray-900 dark:text-white mb-2">
+                      <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-center">
                         Documentation Gaps
                       </h4>
                       <div className="bg-yellow-50 dark:bg-yellow-900/20 rounded-lg p-3 space-y-2">

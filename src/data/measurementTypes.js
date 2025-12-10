@@ -471,7 +471,7 @@ export const MEASUREMENT_TYPES = {
       },
     ],
 
-    relatedConditions: ['asthma', 'copd'],
+    relatedConditions: ['asthma', 'copd', 'chronic-bronchitis', 'emphysema'],
 
     // VA Rating thresholds (based on % predicted)
     interpretation: {
@@ -518,9 +518,73 @@ export const MEASUREMENT_TYPES = {
       },
     ],
 
-    relatedConditions: ['asthma', 'copd'],
+    relatedConditions: ['asthma', 'copd', 'chronic-bronchitis', 'emphysema'],
 
     interpretation: null, // FVC is typically evaluated as ratio with FEV-1
+  },
+  DLCO: {
+    id: 'dlco',
+    name: 'DLCO (Diffusion Capacity)',
+    shortName: 'DLCO',
+    icon: '🫁',
+    description: 'Diffusion Capacity of the Lung for Carbon Monoxide - measures gas exchange efficiency',
+
+    fields: [
+      {
+        key: 'dlco',
+        label: 'DLCO Value',
+        unit: 'mL/min/mmHg',
+        type: 'number',
+        min: 5,
+        max: 50,
+        step: 0.1,
+        required: true,
+        placeholder: '25.0',
+        help: 'Actual DLCO measurement from pulmonary function test',
+      },
+      {
+        key: 'dlcoPredicted',
+        label: 'DLCO Predicted',
+        unit: 'mL/min/mmHg',
+        type: 'number',
+        min: 10,
+        max: 50,
+        step: 0.1,
+        required: true,
+        placeholder: '30.0',
+        help: 'Predicted DLCO based on age, height, gender',
+      },
+    ],
+
+    metadata: [
+      {
+        key: 'testType',
+        label: 'Test type',
+        type: 'select',
+        options: [
+          { value: 'clinical', label: 'Clinical PFT (pulmonary lab)' },
+        ],
+        default: 'clinical',
+      },
+      {
+        key: 'hemoglobinCorrected',
+        label: 'Hemoglobin corrected?',
+        type: 'boolean',
+        default: true,
+        help: 'DLCO values are typically corrected for hemoglobin levels',
+      },
+    ],
+
+    relatedConditions: ['copd', 'chronic-bronchitis', 'emphysema'],
+
+    // VA Rating thresholds (based on % predicted)
+    interpretation: {
+      severe: { percent: [0, 40], label: '100% Rating Range (<40% predicted)', color: 'red' },
+      moderate: { percent: [40, 55], label: '60% Rating Range (40-55% predicted)', color: 'orange' },
+      mild: { percent: [56, 65], label: '30% Rating Range (56-65% predicted)', color: 'yellow' },
+      low: { percent: [66, 80], label: '10% Rating Range (66-80% predicted)', color: 'yellow' },
+      normal: { percent: [81, 200], label: 'Normal (>80% predicted)', color: 'green' },
+    },
   },
 };
 
@@ -559,7 +623,6 @@ export const interpretMeasurement = (measurementTypeId, values, metadata = {}) =
       if (systolic >= 120 && diastolic < 80) return interpretations.elevated;
       return interpretations.normal;
     }
-
     case 'blood-glucose': {
       const { glucose } = values;
       const timing = metadata.mealTiming || 'random';
@@ -577,7 +640,6 @@ export const interpretMeasurement = (measurementTypeId, values, metadata = {}) =
         return interpretations.normal_random;
       }
     }
-
     case 'hba1c': {
       const { hba1c } = values;
       if (hba1c >= 8.0) return interpretations.uncontrolled;
@@ -585,7 +647,6 @@ export const interpretMeasurement = (measurementTypeId, values, metadata = {}) =
       if (hba1c >= 5.7) return interpretations.prediabetes;
       return interpretations.normal;
     }
-
     case 'weight': {
       const { weight, height } = values;
       if (!height) return null; // Need height to calculate BMI
@@ -600,13 +661,25 @@ export const interpretMeasurement = (measurementTypeId, values, metadata = {}) =
       if (bmi >= 18.5) return { ...interpretations.normal, bmi: bmi.toFixed(1) };
       return { ...interpretations.underweight, bmi: bmi.toFixed(1) };
     }
-
     case 'oxygen-saturation': {
       const { spo2 } = values;
       if (spo2 >= 95) return interpretations.normal;
       if (spo2 >= 92) return interpretations.mild;
       if (spo2 >= 88) return interpretations.moderate;
       return interpretations.severe;
+    }
+    case 'dlco': {
+      const { dlco, dlcoPredicted } = values;
+      if (!dlcoPredicted) return null;
+
+      const percent = (dlco / dlcoPredicted) * 100;
+      const interpretations = type.interpretation;
+
+      if (percent < 40) return { ...interpretations.severe, percent: percent.toFixed(0) };
+      if (percent < 55) return { ...interpretations.moderate, percent: percent.toFixed(0) };
+      if (percent < 65) return { ...interpretations.mild, percent: percent.toFixed(0) };
+      if (percent < 80) return { ...interpretations.low, percent: percent.toFixed(0) };
+      return { ...interpretations.normal, percent: percent.toFixed(0) };
     }
 
     default:
@@ -621,37 +694,36 @@ export const formatMeasurementValue = (measurementTypeId, values) => {
 
   switch (measurementTypeId) {
     case 'blood-pressure':
-      return `${values.systolic}/${values.diastolic} mmHg${values.heartRate ? ` â€¢ HR: ${values.heartRate} bpm` : ''}`;
-
+      return `${values.systolic}/${values.diastolic} mmHg${values.heartRate ? ` • HR: ${values.heartRate} bpm` : ''}`;
     case 'blood-glucose':
       return `${values.glucose} mg/dL`;
-
     case 'hba1c':
       return `${values.hba1c}%`;
-
     case 'weight':
       if (values.height) {
         const bmi = ((values.weight / (values.height * values.height)) * 703).toFixed(1);
-        return `${values.weight} lbs â€¢ BMI: ${bmi}`;
+        return `${values.weight} lbs • BMI: ${bmi}`;
       }
       return `${values.weight} lbs`;
-
     case 'oxygen-saturation':
-      return `${values.spo2}%${values.heartRate ? ` â€¢ HR: ${values.heartRate} bpm` : ''}`;
+      return `${values.spo2}%${values.heartRate ? ` • HR: ${values.heartRate} bpm` : ''}`;
 
     case 'peak-flow':
       return `${values.peakFlow} L/min`;
-
     case 'fev1':
       if (values.fev1Predicted) {
         const percentPredicted = ((values.fev1 / values.fev1Predicted) * 100).toFixed(0);
         return `${values.fev1} L (${percentPredicted}% predicted)`;
       }
       return `${values.fev1} L`;
-
     case 'fvc':
       return `${values.fvc} L`;
-
+    case 'dlco':
+      if (values.dlcoPredicted) {
+        const percentPredicted = ((values.dlco / values.dlcoPredicted) * 100).toFixed(0);
+        return `${values.dlco} mL/min/mmHg (${percentPredicted}% predicted)`;
+      }
+      return `${values.dlco} mL/min/mmHg`;
     default:
       return Object.entries(values)
       .map(([key, value]) => {

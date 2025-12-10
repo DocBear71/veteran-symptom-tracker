@@ -114,7 +114,7 @@ const GlucoseTrendChart = ({ glucoseMeasurements, hba1cMeasurements, evaluationD
   const hyperglycemicCount = sortedGlucose.filter(m => m.values.glucose > 180).length;
 
   return (
-      <div className="space-y-4">
+      <div className="space-y-4 text-left">
         {/* Stats Summary */}
         <div className="grid grid-cols-4 gap-2">
           <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-2 text-center">

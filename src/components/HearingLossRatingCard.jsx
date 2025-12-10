@@ -13,7 +13,7 @@ const HearingLossRatingCard = ({ analysis, expanded, onToggle }) => {
           </h2>
         </div>
 
-        <div className="space-y-4">
+        <div className="space-y-4 text-left">
           <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
             <p className="text-sm text-gray-700 dark:text-gray-300">
               <strong>Diagnostic Code:</strong> 6100 (38 CFR 4.85)

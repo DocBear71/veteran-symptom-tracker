@@ -25,7 +25,7 @@ const getProfileKey = (baseKey, profileId = null) => {
       return `${baseKey}_INVALID_NO_PROFILE`;
     } else {
       // Migration in progress - allow fallback temporarily
-      console.warn(`âš ï¸  Migration in progress, temporary fallback for: ${baseKey}`);
+      console.warn(`⚠ ï¸  Migration in progress, temporary fallback for: ${baseKey}`);
       return baseKey;
     }
   }
