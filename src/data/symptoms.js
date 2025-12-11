@@ -274,6 +274,52 @@ export const symptomCategories = [
         ]
     },
     {
+      id: 'ulcerative-colitis',
+      name: 'Ulcerative Colitis / IBD Symptoms',
+      symptoms: [
+        { id: 'uc-diarrhea', name: 'UC/IBD - Diarrhea Episode' },
+        { id: 'uc-rectal-bleeding', name: 'UC/IBD - Rectal Bleeding' },
+        { id: 'uc-abdominal-pain', name: 'UC/IBD - Abdominal Pain' },
+        { id: 'uc-urgency', name: 'UC/IBD - Bowel Urgency' },
+        { id: 'uc-incontinence', name: 'UC/IBD - Fecal Incontinence' },
+        { id: 'uc-fever', name: 'UC/IBD - Fever/Systemic Symptoms' },
+        { id: 'uc-hospitalization', name: 'UC/IBD - Hospitalization' },
+      ]
+    },
+    {
+      id: 'peptic-ulcer',
+      name: 'Peptic Ulcer Symptoms',
+      symptoms: [
+        { id: 'ulcer-abdominal-pain', name: 'Peptic Ulcer - Abdominal Pain' },
+        { id: 'ulcer-nausea', name: 'Peptic Ulcer - Nausea' },
+        { id: 'ulcer-vomiting', name: 'Peptic Ulcer - Vomiting' },
+        { id: 'ulcer-hematemesis', name: 'Peptic Ulcer - Vomiting Blood' },
+        { id: 'ulcer-melena', name: 'Peptic Ulcer - Tarry Stools (Melena)' },
+        { id: 'ulcer-hospitalization', name: 'Peptic Ulcer - Hospitalization' },
+      ]
+    },
+    {
+      id: 'hemorrhoids',
+      name: 'Hemorrhoid Symptoms',
+      symptoms: [
+        { id: 'hemorrhoid-bleeding', name: 'Hemorrhoids - Bleeding' },
+        { id: 'hemorrhoid-prolapse', name: 'Hemorrhoids - Prolapse' },
+        { id: 'hemorrhoid-thrombosis', name: 'Hemorrhoids - Thrombosis Episode' },
+        { id: 'hemorrhoid-pain', name: 'Hemorrhoids - Pain' },
+      ]
+    },
+    {
+      id: 'diverticulitis',
+      name: 'Diverticulitis Symptoms',
+      symptoms: [
+        { id: 'divert-abdominal-pain', name: 'Diverticulitis - Abdominal Pain' },
+        { id: 'divert-fever', name: 'Diverticulitis - Fever' },
+        { id: 'divert-flare', name: 'Diverticulitis - Acute Flare/Attack' },
+        { id: 'divert-hospitalization', name: 'Diverticulitis - Hospitalization' },
+        { id: 'divert-complication', name: 'Diverticulitis - Complication (bleeding/abscess/obstruction)' },
+      ]
+    },
+    {
         id: 'fatigue',
         name: 'Fatigue & Energy',
         symptoms: [
@@ -482,6 +528,51 @@ export const symptomCategories = [
             { id: 'eczema-flare', name: 'Eczema/Dermatitis Flare-Up' },
         ]
     },
+    {
+      id: 'hypothyroidism',
+      name: 'Hypothyroidism Symptoms',
+      symptoms: [
+        { id: 'hypo-fatigue', name: 'Hypothyroidism - Fatigue' },
+        { id: 'hypo-cold-intolerance', name: 'Hypothyroidism - Cold Intolerance' },
+        { id: 'hypo-weight-gain', name: 'Hypothyroidism - Weight Gain' },
+        { id: 'hypo-depression', name: 'Hypothyroidism - Depression/Mental Fog' },
+        { id: 'hypo-muscle-weakness', name: 'Hypothyroidism - Muscle Weakness' },
+        { id: 'hypo-constipation', name: 'Hypothyroidism - Constipation' },
+        { id: 'hypo-dry-skin', name: 'Hypothyroidism - Dry Skin/Hair' },
+      ]
+    },
+    {
+      id: 'raynauds',
+      name: "Raynaud's Symptoms",
+      symptoms: [
+        { id: 'raynauds-attack', name: "Raynaud's - Color Change Attack" },
+        { id: 'raynauds-numbness', name: "Raynaud's - Numbness/Tingling" },
+        { id: 'raynauds-pain', name: "Raynaud's - Pain During Attack" },
+        { id: 'raynauds-ulcer', name: "Raynaud's - Digital Ulcer" },
+        { id: 'raynauds-cold-trigger', name: "Raynaud's - Cold-Triggered Episode" },
+      ]
+    },
+    {
+      id: 'varicose-veins',
+      name: 'Varicose Vein Symptoms',
+      symptoms: [
+        { id: 'varicose-aching', name: 'Varicose Veins - Aching/Fatigue' },
+        { id: 'varicose-edema', name: 'Varicose Veins - Leg Swelling/Edema' },
+        { id: 'varicose-pigmentation', name: 'Varicose Veins - Skin Discoloration' },
+        { id: 'varicose-ulcer', name: 'Varicose Veins - Skin Ulcer' },
+        { id: 'varicose-pain', name: 'Varicose Veins - Pain at Rest' },
+      ]
+    },
+    {
+      id: 'urticaria',
+      name: 'Chronic Urticaria Symptoms',
+      symptoms: [
+        { id: 'urticaria-outbreak', name: 'Urticaria - Hives Outbreak' },
+        { id: 'urticaria-itching', name: 'Urticaria - Severe Itching' },
+        { id: 'urticaria-swelling', name: 'Urticaria - Angioedema/Swelling' },
+        { id: 'urticaria-medication', name: 'Urticaria - Required Medication Use' },
+      ]
+    },
 ];
 
 // Helper function to determine if a category is a "child" of another
@@ -509,7 +600,6 @@ const getParentCategory = (categoryName) => {
     if (name.includes('emphysema')) return 'emphysema';
     if (name.includes('rhinitis')) return 'rhinitis';
     if (name.includes('sinusitis')) return 'sinusitis';
-
     return null; // No parent, this is a standalone category
 };
 

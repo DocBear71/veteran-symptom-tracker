@@ -20,6 +20,14 @@ import {
     analyzeIBSLogs,
     analyzeGERDLogs,
     analyzeGERDComplicationsLogs,
+    analyzeUlcerativeColitisLogs,
+    analyzePepticUlcerLogs,
+    analyzeHemorrhoidLogs,
+    analyzeDiverticulitisLogs,
+    analyzeHypothyroidismLogs,
+    analyzeRaynaudsLogs,
+    analyzeVaricoseVeinsLogs,
+    analyzeChronicUrticariaLogs,
     analyzeRadiculopathyLogs,
     analyzeChronicFatigueLogs,
     analyzePeripheralNeuropathyLogs,
@@ -318,6 +326,38 @@ const RatingEvidence = () => {
         return analyzeGERDComplicationsLogs(logs, { evaluationPeriodDays: evaluationDays });
     }, [logs, evaluationDays]);
 
+    const ulcerativeColitisAnalysis = useMemo(() => {
+      return analyzeUlcerativeColitisLogs(logs, { evaluationPeriodDays: evaluationDays });
+    }, [logs, evaluationDays]);
+
+    const pepticUlcerAnalysis = useMemo(() => {
+      return analyzePepticUlcerLogs(logs, { evaluationPeriodDays: evaluationDays });
+    }, [logs, evaluationDays]);
+
+    const hemorrhoidAnalysis = useMemo(() => {
+      return analyzeHemorrhoidLogs(logs, { evaluationPeriodDays: evaluationDays });
+    }, [logs, evaluationDays]);
+
+    const diverticulitisAnalysis = useMemo(() => {
+      return analyzeDiverticulitisLogs(logs, { evaluationPeriodDays: evaluationDays });
+    }, [logs, evaluationDays]);
+
+    const hypothyroidismAnalysis = useMemo(() => {
+      return analyzeHypothyroidismLogs(logs, { evaluationPeriodDays: evaluationDays });
+    }, [logs, evaluationDays]);
+
+    const raynaudsAnalysis = useMemo(() => {
+      return analyzeRaynaudsLogs(logs, { evaluationPeriodDays: evaluationDays });
+    }, [logs, evaluationDays]);
+
+    const varicoseVeinsAnalysis = useMemo(() => {
+      return analyzeVaricoseVeinsLogs(logs, { evaluationPeriodDays: evaluationDays });
+    }, [logs, evaluationDays]);
+
+    const chronicUrticariaAnalysis = useMemo(() => {
+      return analyzeChronicUrticariaLogs(logs, { evaluationPeriodDays: evaluationDays });
+    }, [logs, evaluationDays]);
+
     const psoriasisAnalysis = useMemo(() => {
         return analyzePsoriasisLogs(logs, { evaluationPeriodDays: evaluationDays });
     }, [logs, evaluationDays]);
@@ -389,6 +429,14 @@ const RatingEvidence = () => {
         asthmaAnalysis.hasData ||
         eczemaAnalysis.hasData ||
         GERDComplicationsAnalysis.hasData ||
+        ulcerativeColitisAnalysis.hasData ||
+        pepticUlcerAnalysis.hasData ||
+        hemorrhoidAnalysis.hasData ||
+        diverticulitisAnalysis.hasData ||
+        hypothyroidismAnalysis.hasData ||
+        raynaudsAnalysis.hasData ||
+        varicoseVeinsAnalysis.hasData ||
+        chronicUrticariaAnalysis.hasData ||
         hearingLossAnalysis.hasData ||
         psoriasisAnalysis.hasData ||
         scarsAnalysis.hasData ||
@@ -464,35 +512,35 @@ const RatingEvidence = () => {
                 onToggle={() => toggleSection('ptsd')}
             />
 
-        {/* Major Depression Analysis Card */}
-        <MentalHealthRatingCard
-            analysis={majorDepressionAnalysis}
-            expanded={expandedSection === 'major-depression'}
-            onToggle={() => toggleSection('major-depression')}
-            icon="😔"
-            getAllRatings={getAllMajorDepressionRatings}
-            getDefinition={getMajorDepressionDefinition}
-        />
+            {/* Major Depression Analysis Card */}
+            <MentalHealthRatingCard
+                analysis={majorDepressionAnalysis}
+                expanded={expandedSection === 'major-depression'}
+                onToggle={() => toggleSection('major-depression')}
+                icon="😔"
+                getAllRatings={getAllMajorDepressionRatings}
+                getDefinition={getMajorDepressionDefinition}
+            />
 
-        {/* Generalized Anxiety Analysis Card */}
-        <MentalHealthRatingCard
-            analysis={generalizedAnxietyAnalysis}
-            expanded={expandedSection === 'generalized-anxiety'}
-            onToggle={() => toggleSection('generalized-anxiety')}
-            icon="😰"
-            getAllRatings={getAllGeneralizedAnxietyRatings}
-            getDefinition={getGeneralizedAnxietyDefinition}
-        />
+            {/* Generalized Anxiety Analysis Card */}
+            <MentalHealthRatingCard
+                analysis={generalizedAnxietyAnalysis}
+                expanded={expandedSection === 'generalized-anxiety'}
+                onToggle={() => toggleSection('generalized-anxiety')}
+                icon="😰"
+                getAllRatings={getAllGeneralizedAnxietyRatings}
+                getDefinition={getGeneralizedAnxietyDefinition}
+            />
 
-        {/* Panic Disorder Analysis Card */}
-        <MentalHealthRatingCard
-            analysis={panicDisorderAnalysis}
-            expanded={expandedSection === 'panic-disorder'}
-            onToggle={() => toggleSection('panic-disorder')}
-            icon="😱"
-            getAllRatings={getAllPanicDisorderRatings}
-            getDefinition={getPanicDisorderDefinition}
-        />
+            {/* Panic Disorder Analysis Card */}
+            <MentalHealthRatingCard
+                analysis={panicDisorderAnalysis}
+                expanded={expandedSection === 'panic-disorder'}
+                onToggle={() => toggleSection('panic-disorder')}
+                icon="😱"
+                getAllRatings={getAllPanicDisorderRatings}
+                getDefinition={getPanicDisorderDefinition}
+            />
 
             {/* Bipolar Analysis Card */}
             <MentalHealthRatingCard
@@ -573,29 +621,29 @@ const RatingEvidence = () => {
                 icon="🦴"
             />
 
-        {/* Intervertebral Disc Analysis Card */}
-        <GenericRatingCard
-            analysis={intervertebralDiscAnalysis}
-            expanded={expandedSection === 'intervertebral-disc'}
-            onToggle={() => toggleSection('intervertebral-disc')}
-            icon="💿"
-        />
+            {/* Intervertebral Disc Analysis Card */}
+            <GenericRatingCard
+                analysis={intervertebralDiscAnalysis}
+                expanded={expandedSection === 'intervertebral-disc'}
+                onToggle={() => toggleSection('intervertebral-disc')}
+                icon="💿"
+            />
 
-        {/* Knee Instability Analysis Card */}
-        <GenericRatingCard
-            analysis={kneeInstabilityAnalysis}
-            expanded={expandedSection === 'knee-instability'}
-            onToggle={() => toggleSection('knee-instability')}
-            icon="🦵"
-        />
+            {/* Knee Instability Analysis Card */}
+            <GenericRatingCard
+                analysis={kneeInstabilityAnalysis}
+                expanded={expandedSection === 'knee-instability'}
+                onToggle={() => toggleSection('knee-instability')}
+                icon="🦵"
+            />
 
-        {/* TBI Analysis Card */}
-        <GenericRatingCard
-            analysis={tbiAnalysis}
-            expanded={expandedSection === 'tbi'}
-            onToggle={() => toggleSection('tbi')}
-            icon="🧠"
-        />
+            {/* TBI Analysis Card */}
+            <GenericRatingCard
+                analysis={tbiAnalysis}
+                expanded={expandedSection === 'tbi'}
+                onToggle={() => toggleSection('tbi')}
+                icon="🧠"
+            />
 
             <TBIResidualsRatingCard
                 analysis={tbiResidualsAnalysis}
@@ -637,6 +685,61 @@ const RatingEvidence = () => {
                 onToggle={() => toggleSection('gerdComplications')}
             />
 
+            <GenericRatingCard
+                analysis={ulcerativeColitisAnalysis}
+                expanded={expandedSection === 'ulcerativeColitis'}
+                onToggle={() => toggleSection('ulcerativeColitis')}
+                icon="🩸"
+            />
+
+            <GenericRatingCard
+                analysis={pepticUlcerAnalysis}
+                expanded={expandedSection === 'pepticUlcer'}
+                onToggle={() => toggleSection('pepticUlcer')}
+                icon="🔥"
+            />
+
+            <GenericRatingCard
+                analysis={hemorrhoidAnalysis}
+                expanded={expandedSection === 'hemorrhoids'}
+                onToggle={() => toggleSection('hemorrhoids')}
+                icon="🩹"
+            />
+
+            <GenericRatingCard
+                analysis={diverticulitisAnalysis}
+                expanded={expandedSection === 'diverticulitis'}
+                onToggle={() => toggleSection('diverticulitis')}
+                icon="🫃"
+            />
+
+            <GenericRatingCard
+                analysis={hypothyroidismAnalysis}
+                expanded={expandedSection === 'hypothyroidism'}
+                onToggle={() => toggleSection('hypothyroidism')}
+                icon="🦋"
+            />
+
+            <GenericRatingCard
+                analysis={raynaudsAnalysis}
+                expanded={expandedSection === 'raynauds'}
+                onToggle={() => toggleSection('raynauds')}
+                icon="🥶"
+            />
+
+            <GenericRatingCard
+                analysis={varicoseVeinsAnalysis}
+                expanded={expandedSection === 'varicoseVeins'}
+                onToggle={() => toggleSection('varicoseVeins')}
+                icon="🦵"
+            />
+
+            <GenericRatingCard
+                analysis={chronicUrticariaAnalysis}
+                expanded={expandedSection === 'chronicUrticaria'}
+                onToggle={() => toggleSection('chronicUrticaria')}
+                icon="🔴"
+            />
 
             {/* Radiculopathy Analysis Card */}
             <RadiculopathyRatingCard
@@ -705,39 +808,39 @@ const RatingEvidence = () => {
                 onToggle={() => toggleSection('hip')}
             />
 
-          <GenericJointRatingCard
-              analysis={ankleAnalysis}
-              expanded={expandedSection === 'ankle'}
-              onToggle={() => toggleSection('ankle')}
-              icon="🦶"
-          />
-
-          <GenericJointRatingCard
-              analysis={wristAnalysis}
-              expanded={expandedSection === 'wrist'}
-              onToggle={() => toggleSection('wrist')}
-              icon="✋"
-          />
-
-          <GenericJointRatingCard
-              analysis={elbowAnalysis}
-              expanded={expandedSection === 'elbow'}
-              onToggle={() => toggleSection('elbow')}
-              icon="💪"
-          />
-
-          <GenericJointRatingCard
-              analysis={degenerativeArthritisAnalysis}
-              expanded={expandedSection === 'degenerativeArthritis'}
-              onToggle={() => toggleSection('degenerativeArthritis')}
-              icon="🦴"
-          />
-
-          <AsthmaRatingCard
-                analysis={asthmaAnalysis}
-                expanded={expandedSection === 'asthma'}
-                onToggle={() => toggleSection('asthma')}
+            <GenericJointRatingCard
+                analysis={ankleAnalysis}
+                expanded={expandedSection === 'ankle'}
+                onToggle={() => toggleSection('ankle')}
+                icon="🦶"
             />
+
+            <GenericJointRatingCard
+                analysis={wristAnalysis}
+                expanded={expandedSection === 'wrist'}
+                onToggle={() => toggleSection('wrist')}
+                icon="✋"
+            />
+
+            <GenericJointRatingCard
+                analysis={elbowAnalysis}
+                expanded={expandedSection === 'elbow'}
+                onToggle={() => toggleSection('elbow')}
+                icon="💪"
+            />
+
+            <GenericJointRatingCard
+                analysis={degenerativeArthritisAnalysis}
+                expanded={expandedSection === 'degenerativeArthritis'}
+                onToggle={() => toggleSection('degenerativeArthritis')}
+                icon="🦴"
+            />
+
+            <AsthmaRatingCard
+                  analysis={asthmaAnalysis}
+                  expanded={expandedSection === 'asthma'}
+                  onToggle={() => toggleSection('asthma')}
+              />
 
             <EczemaRatingCard
                 analysis={eczemaAnalysis}
@@ -763,21 +866,21 @@ const RatingEvidence = () => {
                 onToggle={() => toggleSection('scarsAnalysis')}
             />
 
-        {/* Tinnitus Analysis Card */}
-        <GenericRatingCard
-            analysis={tinnitusAnalysis}
-            expanded={expandedSection === 'tinnitus'}
-            onToggle={() => toggleSection('tinnitus')}
-            icon="👂"
-        />
+            {/* Tinnitus Analysis Card */}
+            <GenericRatingCard
+                analysis={tinnitusAnalysis}
+                expanded={expandedSection === 'tinnitus'}
+                onToggle={() => toggleSection('tinnitus')}
+                icon="👂"
+            />
 
-        {/* Fibromyalgia Analysis Card */}
-        <GenericRatingCard
-            analysis={fibromyalgiaAnalysis}
-            expanded={expandedSection === 'fibromyalgia'}
-            onToggle={() => toggleSection('fibromyalgia')}
-            icon="💪"
-        />
+            {/* Fibromyalgia Analysis Card */}
+            <GenericRatingCard
+                analysis={fibromyalgiaAnalysis}
+                expanded={expandedSection === 'fibromyalgia'}
+                onToggle={() => toggleSection('fibromyalgia')}
+                icon="💪"
+            />
 
             {/* Sleep Apnea Setup Modal */}
             {showSleepApneaSetup && (

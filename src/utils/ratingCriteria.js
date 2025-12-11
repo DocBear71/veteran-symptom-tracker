@@ -372,6 +372,113 @@ export const CONDITIONS = {
     cfrReference: '38 CFR 4.114',
     symptomIds: ['gerd-complication'],
   },
+  ULCERATIVE_COLITIS: {
+    id: 'ulcerative-colitis',
+    name: 'Ulcerative Colitis / IBD',
+    diagnosticCode: '7323/7326',
+    cfrReference: '38 CFR 4.114',
+    symptomIds: [
+      'uc-diarrhea',
+      'uc-rectal-bleeding',
+      'uc-abdominal-pain',
+      'uc-urgency',
+      'uc-incontinence',
+      'uc-fever',
+      'uc-hospitalization',
+    ],
+  },
+  PEPTIC_ULCER: {
+    id: 'peptic-ulcer',
+    name: 'Peptic Ulcer Disease',
+    diagnosticCode: '7304',
+    cfrReference: '38 CFR 4.114',
+    symptomIds: [
+      'ulcer-abdominal-pain',
+      'ulcer-nausea',
+      'ulcer-vomiting',
+      'ulcer-hematemesis',
+      'ulcer-melena',
+      'ulcer-hospitalization',
+    ],
+  },
+  HEMORRHOIDS: {
+    id: 'hemorrhoids',
+    name: 'Hemorrhoids',
+    diagnosticCode: '7336',
+    cfrReference: '38 CFR 4.114',
+    symptomIds: [
+      'hemorrhoid-bleeding',
+      'hemorrhoid-prolapse',
+      'hemorrhoid-thrombosis',
+      'hemorrhoid-pain',
+    ],
+  },
+  DIVERTICULITIS: {
+    id: 'diverticulitis',
+    name: 'Diverticulitis',
+    diagnosticCode: '7327',
+    cfrReference: '38 CFR 4.114',
+    symptomIds: [
+      'divert-abdominal-pain',
+      'divert-fever',
+      'divert-flare',
+      'divert-hospitalization',
+      'divert-complication',
+    ],
+  },
+  HYPOTHYROIDISM: {
+    id: 'hypothyroidism',
+    name: 'Hypothyroidism',
+    diagnosticCode: '7903',
+    cfrReference: '38 CFR 4.119',
+    symptomIds: [
+      'hypo-fatigue',
+      'hypo-cold-intolerance',
+      'hypo-weight-gain',
+      'hypo-depression',
+      'hypo-muscle-weakness',
+      'hypo-constipation',
+      'hypo-dry-skin',
+    ],
+  },
+  RAYNAUDS: {
+    id: 'raynauds',
+    name: "Raynaud's Syndrome",
+    diagnosticCode: '7117',
+    cfrReference: '38 CFR 4.104',
+    symptomIds: [
+      'raynauds-attack',
+      'raynauds-numbness',
+      'raynauds-pain',
+      'raynauds-ulcer',
+      'raynauds-cold-trigger',
+    ],
+  },
+  VARICOSE_VEINS: {
+    id: 'varicose-veins',
+    name: 'Varicose Veins',
+    diagnosticCode: '7120/7121',
+    cfrReference: '38 CFR 4.104',
+    symptomIds: [
+      'varicose-aching',
+      'varicose-edema',
+      'varicose-pigmentation',
+      'varicose-ulcer',
+      'varicose-pain',
+    ],
+  },
+  CHRONIC_URTICARIA: {
+    id: 'chronic-urticaria',
+    name: 'Chronic Urticaria',
+    diagnosticCode: '7825',
+    cfrReference: '38 CFR 4.118',
+    symptomIds: [
+      'urticaria-outbreak',
+      'urticaria-itching',
+      'urticaria-swelling',
+      'urticaria-medication',
+    ],
+  },
   TINNITUS: {
     id: 'tinnitus',
     name: 'Tinnitus',
@@ -5046,6 +5153,811 @@ export const GERD_COMPLICATIONS_CRITERIA = {
   ]
 };
 
+// ============================================
+// PHASE 6 CRITERIA OBJECTS - GI CONDITIONS
+// ============================================
+
+export const ULCERATIVE_COLITIS_CRITERIA = {
+  diagnosticCode: '7323/7326',
+  condition: 'Ulcerative Colitis / Inflammatory Bowel Disease',
+  cfrReference: '38 CFR 4.114, Diagnostic Codes 7323/7326',
+
+  ratings: [
+    {
+      percent: 100,
+      summary: 'Severe IBD unresponsive to treatment, hospitalization 1+/year, inability to work OR 6+ diarrhea/day, 6+ rectal bleeding/day, rectal incontinence',
+      criteria: {
+        hospitalizationsPerYear: 1,
+        unresponsiveToTreatment: true,
+        diarrheaPerDay: 6,
+        rectalBleedingPerDay: 6,
+        rectalIncontinence: true,
+      },
+      criteriaDescription: [
+        'Severe inflammatory bowel disease unresponsive to treatment, AND',
+        'Requires hospitalization at least once per year, AND',
+        'Results in inability to work OR characterized by recurrent abdominal pain with at least two of:',
+        '- Six or more episodes per day of diarrhea',
+        '- Six or more episodes per day of rectal bleeding',
+        '- Recurrent episodes of rectal incontinence',
+        '- Recurrent abdominal distension',
+      ],
+      evidenceNeeded: [
+        'Documentation of treatment failure with multiple medications',
+        'Hospital admission records',
+        'Daily symptom frequency logs',
+        'Work impact documentation',
+      ],
+    },
+    {
+      percent: 60,
+      summary: 'Moderate IBD managed with immunosuppressants/biologics, 4-5 diarrhea episodes/day, intermittent fever/tachycardia/anemia',
+      criteria: {
+        immunosuppressantUse: true,
+        diarrheaPerDay: [4, 5],
+        intermittentToxicity: true,
+      },
+      criteriaDescription: [
+        'Moderate inflammatory bowel disease managed on outpatient basis with immunosuppressants or other biologic agents, AND',
+        'Characterized by recurrent abdominal pain, four to five daily episodes of diarrhea, AND',
+        'Intermittent signs of toxicity such as fever, tachycardia, or anemia',
+      ],
+      evidenceNeeded: [
+        'Prescription records for immunosuppressants or biologics',
+        'Daily diarrhea frequency logs',
+        'Documentation of fever, heart rate, or anemia episodes',
+      ],
+    },
+    {
+      percent: 30,
+      summary: 'Mild-moderate IBD managed with oral/topical agents (not immunosuppressants), 3 or less diarrhea/day, minimal toxicity',
+      criteria: {
+        oralTopicalAgents: true,
+        diarrheaPerDay: [0, 3],
+        minimalToxicity: true,
+      },
+      criteriaDescription: [
+        'Mild to moderate inflammatory bowel disease managed with oral and topical agents (other than immunosuppressants or biologics), AND',
+        'Characterized by recurrent abdominal pain with three or less daily episodes of diarrhea, AND',
+        'Minimal signs of toxicity such as fever, tachycardia, or anemia',
+      ],
+      evidenceNeeded: [
+        'Prescription records for oral/topical medications',
+        'Symptom frequency logs',
+        'Medical records showing treatment approach',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Minimal-mild IBD managed with oral/topical agents, 3 or less diarrhea/day, no systemic toxicity',
+      criteria: {
+        oralTopicalAgents: true,
+        diarrheaPerDay: [0, 3],
+        noToxicity: true,
+      },
+      criteriaDescription: [
+        'Minimal to mild symptomatic inflammatory bowel disease managed with oral or topical agents, AND',
+        'Characterized by recurrent abdominal pain with three or less daily episodes of diarrhea, AND',
+        'No signs of systemic toxicity',
+      ],
+      evidenceNeeded: [
+        'Symptom frequency logs',
+        'Medication records',
+      ],
+    },
+  ],
+
+  definitions: {
+    ibd: {
+      term: 'Inflammatory Bowel Disease (IBD)',
+      definition: 'Chronic inflammation of the digestive tract, including ulcerative colitis (affects colon) and Crohn\'s disease (can affect any part of GI tract).',
+      examples: [
+        'Ulcerative colitis - inflammation limited to colon',
+        'Crohn\'s disease - can affect entire GI tract',
+        'Diagnosis confirmed by endoscopy or radiologic studies',
+      ],
+    },
+    systemicToxicity: {
+      term: 'Signs of Systemic Toxicity',
+      definition: 'Fever, tachycardia (rapid heart rate), or anemia indicating the disease is affecting the whole body, not just the GI tract.',
+      examples: [
+        'Fever above 100.4°F during flares',
+        'Heart rate above 100 bpm',
+        'Low hemoglobin/anemia',
+      ],
+    },
+  },
+
+  disclaimer: 'This analysis is based on logged IBD symptoms. VA rating requires diagnosis confirmed by endoscopy or radiologic studies. Continue gastroenterology care and maintain detailed symptom diary.',
+};
+
+export const PEPTIC_ULCER_CRITERIA = {
+  diagnosticCode: '7304',
+  condition: 'Peptic Ulcer Disease',
+  cfrReference: '38 CFR 4.114, Diagnostic Code 7304',
+
+  ratings: [
+    {
+      percent: 100,
+      summary: 'Post-operative for perforation or hemorrhage (for 3 months)',
+      criteria: {
+        postOperative: true,
+        perforationOrHemorrhage: true,
+      },
+      criteriaDescription: [
+        'Post-operative status for perforation or hemorrhage',
+        'This 100% rating continues for 3 months after surgery',
+        'After 3 months, rate on residuals by VA examination',
+      ],
+      evidenceNeeded: [
+        'Surgical records showing perforation or hemorrhage repair',
+        'Hospital admission records',
+      ],
+    },
+    {
+      percent: 60,
+      summary: 'Continuous pain, intermittent vomiting, hematemesis/melena with anemia, hospitalization 1+/year',
+      criteria: {
+        continuousPain: true,
+        intermittentVomiting: true,
+        bleeding: true,
+        anemia: true,
+        hospitalizationsPerYear: 1,
+      },
+      criteriaDescription: [
+        'Continuous abdominal pain with intermittent vomiting',
+        'Recurrent hematemesis (vomiting blood) or melena (tarry stools)',
+        'Manifestations of anemia',
+        'Requires hospitalization at least once in the past 12 months',
+      ],
+      evidenceNeeded: [
+        'Daily pain logs',
+        'Documentation of vomiting episodes',
+        'Lab work showing anemia',
+        'Hospital admission records',
+      ],
+    },
+    {
+      percent: 40,
+      summary: 'Episodes (pain/nausea/vomiting) lasting 3+ consecutive days, 4+ times/year, daily medication',
+      criteria: {
+        episodeDuration: 3,
+        episodesPerYear: 4,
+        dailyMedication: true,
+      },
+      criteriaDescription: [
+        'Episodes of abdominal pain, nausea, or vomiting that:',
+        '- Last for at least three consecutive days in duration',
+        '- Occur four or more times in the past 12 months',
+        '- Are managed by daily prescribed medication',
+      ],
+      evidenceNeeded: [
+        'Symptom logs showing episode duration and frequency',
+        'Prescription records for daily medication',
+      ],
+    },
+    {
+      percent: 20,
+      summary: 'Episodes lasting 3+ consecutive days, 3 times or less/year, daily medication',
+      criteria: {
+        episodeDuration: 3,
+        episodesPerYear: [1, 3],
+        dailyMedication: true,
+      },
+      criteriaDescription: [
+        'Episodes of abdominal pain, nausea, or vomiting that:',
+        '- Last for at least three consecutive days in duration',
+        '- Occur three times or less in the past 12 months',
+        '- Are managed by daily prescribed medication',
+      ],
+      evidenceNeeded: [
+        'Symptom logs showing episode duration and frequency',
+        'Prescription records for daily medication',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'History documented by endoscopy or imaging only',
+      criteria: {
+        historyOnly: true,
+      },
+      criteriaDescription: [
+        'History of peptic ulcer disease documented by endoscopy or diagnostic imaging studies',
+        'Currently asymptomatic or well-controlled',
+      ],
+      evidenceNeeded: [
+        'Endoscopy or imaging records',
+      ],
+    },
+  ],
+
+  definitions: {
+    hematemesis: {
+      term: 'Hematemesis',
+      definition: 'Vomiting blood. Can be bright red or look like coffee grounds. Indicates upper GI bleeding.',
+      examples: [
+        'Vomiting bright red blood',
+        'Vomiting material that looks like coffee grounds',
+      ],
+    },
+    melena: {
+      term: 'Melena',
+      definition: 'Black, tarry stools caused by digested blood from upper GI bleeding.',
+      examples: [
+        'Black, sticky, tar-like stools',
+        'Strong, foul odor',
+        'Indicates bleeding in stomach or upper intestine',
+      ],
+    },
+  },
+
+  disclaimer: 'This analysis is based on logged peptic ulcer symptoms. VA rating requires documentation by endoscopy or diagnostic imaging. Continue GI care and maintain detailed symptom diary.',
+};
+
+export const HEMORRHOID_CRITERIA = {
+  diagnosticCode: '7336',
+  condition: 'Hemorrhoids',
+  cfrReference: '38 CFR 4.114, Diagnostic Code 7336',
+
+  ratings: [
+    {
+      percent: 20,
+      summary: 'Persistent bleeding with anemia, OR continuously prolapsed with 3+ thrombosis episodes/year',
+      criteria: {
+        persistentBleeding: true,
+        anemia: true,
+        continuouslyProlapsed: true,
+        thrombosisPerYear: 3,
+      },
+      criteriaDescription: [
+        'Internal or external hemorrhoids with persistent bleeding and anemia, OR',
+        'Continuously prolapsed internal hemorrhoids with three or more episodes per year of thrombosis',
+      ],
+      evidenceNeeded: [
+        'Bleeding frequency logs',
+        'Lab work showing anemia',
+        'Documentation of prolapse',
+        'Thrombosis episode documentation',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Prolapsed with 2 or less thrombosis/year, OR external with 3+ thrombosis/year',
+      criteria: {
+        prolapsedWithThrombosis: [1, 2],
+        externalWithThrombosis: 3,
+      },
+      criteriaDescription: [
+        'Prolapsed internal hemorrhoids with two or less episodes per year of thrombosis, OR',
+        'External hemorrhoids with three or more episodes per year of thrombosis',
+      ],
+      evidenceNeeded: [
+        'Thrombosis episode logs',
+        'Documentation of hemorrhoid type (internal/external)',
+      ],
+    },
+  ],
+
+  definitions: {
+    thrombosis: {
+      term: 'Hemorrhoid Thrombosis',
+      definition: 'Blood clot forming in a hemorrhoid, causing severe pain, swelling, and a hard lump near the anus.',
+      examples: [
+        'Sudden severe pain',
+        'Hard, painful lump',
+        'May require medical intervention',
+      ],
+    },
+    prolapse: {
+      term: 'Prolapsed Hemorrhoids',
+      definition: 'Internal hemorrhoids that have stretched and protrude outside the anus.',
+      examples: [
+        'Tissue protruding during bowel movements',
+        'May retract on own or require manual reduction',
+        'Continuously prolapsed = always protruding',
+      ],
+    },
+  },
+
+  disclaimer: 'This analysis is based on logged hemorrhoid symptoms. Document bleeding frequency, thrombosis episodes, and prolapse status for VA claims.',
+};
+
+export const DIVERTICULITIS_CRITERIA = {
+  diagnosticCode: '7327',
+  condition: 'Diverticulitis',
+  cfrReference: '38 CFR 4.114, Diagnostic Code 7327',
+
+  ratings: [
+    {
+      percent: 30,
+      summary: 'Hospitalization 1+/year for abdominal distress, fever, leukocytosis WITH complications',
+      criteria: {
+        hospitalizationsPerYear: 1,
+        withComplications: true,
+      },
+      criteriaDescription: [
+        'Diverticular disease requiring hospitalization for abdominal distress, fever, and leukocytosis (elevated white blood cells) one or more times in the past 12 months, AND',
+        'With at least one of the following complications:',
+        '- Hemorrhage',
+        '- Obstruction',
+        '- Abscess',
+        '- Peritonitis',
+        '- Perforation',
+      ],
+      evidenceNeeded: [
+        'Hospital admission records',
+        'Lab work showing leukocytosis',
+        'Imaging or surgical records documenting complications',
+      ],
+    },
+    {
+      percent: 20,
+      summary: 'Hospitalization 1+/year for abdominal distress, fever, leukocytosis WITHOUT complications',
+      criteria: {
+        hospitalizationsPerYear: 1,
+        withoutComplications: true,
+      },
+      criteriaDescription: [
+        'Diverticular disease requiring hospitalization for abdominal distress, fever, and leukocytosis one or more times in the past 12 months',
+        'Without associated hemorrhage, obstruction, abscess, peritonitis, or perforation',
+      ],
+      evidenceNeeded: [
+        'Hospital admission records',
+        'Lab work showing leukocytosis',
+        'Medical records confirming no complications',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'Asymptomatic or managed by diet/medication',
+      criteria: {
+        asymptomatic: true,
+        managedConservatively: true,
+      },
+      criteriaDescription: [
+        'Asymptomatic diverticulosis, OR',
+        'Symptomatic diverticulitis that is managed by diet and medication',
+      ],
+      evidenceNeeded: [],
+    },
+  ],
+
+  definitions: {
+    diverticulitis: {
+      term: 'Diverticulitis',
+      definition: 'Inflammation or infection of small pouches (diverticula) that form in the walls of the intestine, usually the colon.',
+      examples: [
+        'Abdominal pain, usually left lower quadrant',
+        'Fever and chills',
+        'Nausea and vomiting',
+        'Changes in bowel habits',
+      ],
+    },
+    complications: {
+      term: 'Diverticulitis Complications',
+      definition: 'Serious conditions resulting from diverticulitis that typically require hospitalization.',
+      examples: [
+        'Abscess - pocket of pus',
+        'Perforation - hole in intestinal wall',
+        'Peritonitis - infection of abdominal lining',
+        'Obstruction - blocked intestine',
+        'Fistula - abnormal connection between organs',
+      ],
+    },
+  },
+
+  disclaimer: 'This analysis is based on logged diverticulitis symptoms. The key rating distinction is hospitalization with or without complications. Maintain records of all flare-ups and hospital visits.',
+};
+
+// ============================================
+// PHASE 7 CRITERIA OBJECTS - COMMON CONDITIONS
+// ============================================
+
+export const HYPOTHYROIDISM_CRITERIA = {
+  diagnosticCode: '7903',
+  condition: 'Hypothyroidism',
+  cfrReference: '38 CFR 4.119, Diagnostic Code 7903',
+
+  ratings: [
+    {
+      percent: 100,
+      summary: 'Myxedema: cold intolerance, muscular weakness, cardiovascular involvement, mental disturbance',
+      criteria: {
+        myxedema: true,
+        coldIntolerance: true,
+        muscularWeakness: true,
+        cardiovascularInvolvement: true,
+        mentalDisturbance: true,
+      },
+      criteriaDescription: [
+        'Hypothyroidism manifesting as myxedema with:',
+        '- Cold intolerance',
+        '- Muscular weakness',
+        '- Cardiovascular involvement (hypotension, bradycardia, pericardial effusion)',
+        '- Mental disturbance (dementia, slowing of thought, depression)',
+      ],
+      evidenceNeeded: [
+        'Diagnosis of myxedema',
+        'Documentation of all four symptom categories',
+        'Lab work showing severe hypothyroidism',
+        'Cardiology records if cardiovascular involvement',
+      ],
+    },
+    {
+      percent: 30,
+      summary: 'Hypothyroidism without myxedema',
+      criteria: {
+        hypothyroidism: true,
+        withoutMyxedema: true,
+      },
+      criteriaDescription: [
+        'Hypothyroidism without myxedema',
+        'This 30% evaluation continues for six months after initial diagnosis',
+        'Thereafter, rate residuals under appropriate diagnostic codes',
+      ],
+      evidenceNeeded: [
+        'Diagnosis of hypothyroidism',
+        'Lab work (TSH, T4)',
+        'Medication records',
+      ],
+    },
+  ],
+
+  definitions: {
+    myxedema: {
+      term: 'Myxedema',
+      definition: 'Severe, advanced hypothyroidism with skin changes, mental slowing, and life-threatening complications. A medical emergency.',
+      examples: [
+        'Puffy face and extremities',
+        'Severe cold intolerance',
+        'Extreme fatigue and mental slowness',
+        'Low body temperature, blood pressure, heart rate',
+      ],
+    },
+    hypothyroidism: {
+      term: 'Hypothyroidism',
+      definition: 'Underactive thyroid gland that doesn\'t produce enough thyroid hormone, causing metabolism to slow.',
+      examples: [
+        'Fatigue and sluggishness',
+        'Weight gain',
+        'Cold intolerance',
+        'Dry skin and hair',
+        'Constipation',
+        'Depression',
+      ],
+    },
+  },
+
+  ratingNote: 'The 30% rating continues for 6 months after initial diagnosis. After that period, the VA rates residuals of the disease or medical treatment under the most appropriate diagnostic codes.',
+
+  disclaimer: 'This analysis is based on logged hypothyroidism symptoms. Most Veterans will receive the 30% initial rating, then be rated on residual symptoms. Track all symptoms and medication side effects.',
+};
+
+export const RAYNAUDS_CRITERIA = {
+  diagnosticCode: '7117',
+  condition: "Raynaud's Syndrome",
+  cfrReference: '38 CFR 4.104, Diagnostic Code 7117',
+
+  ratings: [
+    {
+      percent: 100,
+      summary: '2+ digital ulcers plus auto-amputation + history of characteristic attacks',
+      criteria: {
+        digitalUlcers: 2,
+        autoAmputation: true,
+        characteristicAttacks: true,
+      },
+      criteriaDescription: [
+        'Two or more digital ulcers',
+        'PLUS auto-amputation of one or more digits',
+        'AND history of characteristic attacks',
+      ],
+      evidenceNeeded: [
+        'Medical documentation of digital ulcers',
+        'Surgical/medical records of auto-amputation',
+        'Attack frequency logs',
+      ],
+    },
+    {
+      percent: 60,
+      summary: '2+ digital ulcers + history of characteristic attacks',
+      criteria: {
+        digitalUlcers: 2,
+        characteristicAttacks: true,
+      },
+      criteriaDescription: [
+        'Two or more digital ulcers',
+        'AND history of characteristic attacks',
+      ],
+      evidenceNeeded: [
+        'Medical documentation of digital ulcers',
+        'Attack frequency logs',
+        'Photos of ulcers if available',
+      ],
+    },
+    {
+      percent: 40,
+      summary: 'Characteristic attacks occurring at least daily',
+      criteria: {
+        attackFrequency: 'daily',
+      },
+      criteriaDescription: [
+        'Characteristic attacks occurring at least daily',
+      ],
+      evidenceNeeded: [
+        'Daily attack logs',
+        'Description of color changes and symptoms',
+      ],
+    },
+    {
+      percent: 20,
+      summary: 'Characteristic attacks occurring 4-6 times/week',
+      criteria: {
+        attacksPerWeek: [4, 6],
+      },
+      criteriaDescription: [
+        'Characteristic attacks occurring four to six times a week',
+      ],
+      evidenceNeeded: [
+        'Attack frequency logs',
+        'Description of triggers and symptoms',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Characteristic attacks occurring 1-3 times/week',
+      criteria: {
+        attacksPerWeek: [1, 3],
+      },
+      criteriaDescription: [
+        'Characteristic attacks occurring one to three times a week',
+      ],
+      evidenceNeeded: [
+        'Attack frequency logs',
+        'Description of triggers and symptoms',
+      ],
+    },
+  ],
+
+  definitions: {
+    characteristicAttack: {
+      term: 'Characteristic Attack',
+      definition: 'Sequential color changes of the digits (typically white → blue → red) lasting minutes to hours, sometimes with pain and paresthesias, precipitated by cold exposure or emotional stress.',
+      examples: [
+        'Fingers turn white, then blue, then red',
+        'Numbness or tingling during attack',
+        'Pain as blood flow returns',
+        'Triggered by cold or stress',
+      ],
+    },
+    digitalUlcer: {
+      term: 'Digital Ulcer',
+      definition: 'Open sore on the fingers or toes caused by severe, repeated attacks reducing blood flow.',
+      examples: [
+        'Painful sores on fingertips',
+        'Slow-healing wounds',
+        'May become infected',
+      ],
+    },
+  },
+
+  primaryVsSecondary: "DC 7117 is for Raynaud's Syndrome (secondary Raynaud's) - caused by underlying condition. DC 7124 is for Raynaud's Disease (primary Raynaud's) - no underlying cause. Secondary is rated higher because it's typically more severe.",
+
+  disclaimer: 'This analysis is based on logged Raynaud\'s symptoms. Attack frequency is the key rating factor. Document each attack with date, duration, triggers, and affected digits.',
+};
+
+export const VARICOSE_VEINS_CRITERIA = {
+  diagnosticCode: '7120/7121',
+  condition: 'Varicose Veins',
+  cfrReference: '38 CFR 4.104, Diagnostic Codes 7120/7121',
+
+  ratings: [
+    {
+      percent: 100,
+      summary: 'Massive board-like edema with constant pain at rest',
+      criteria: {
+        massiveEdema: true,
+        constantPainAtRest: true,
+      },
+      criteriaDescription: [
+        'Massive board-like edema',
+        'WITH constant pain at rest',
+      ],
+      evidenceNeeded: [
+        'Medical documentation of severe edema',
+        'Pain logs showing constant rest pain',
+        'Photos of affected extremity',
+      ],
+    },
+    {
+      percent: 60,
+      summary: 'Persistent edema, stasis pigmentation/eczema, persistent ulceration',
+      criteria: {
+        persistentEdema: true,
+        stasisPigmentation: true,
+        persistentUlceration: true,
+      },
+      criteriaDescription: [
+        'Persistent edema or subcutaneous induration',
+        'Stasis pigmentation or eczema',
+        'AND persistent ulceration',
+      ],
+      evidenceNeeded: [
+        'Medical documentation of all three findings',
+        'Photos of pigmentation changes and ulcers',
+        'Wound care records',
+      ],
+    },
+    {
+      percent: 40,
+      summary: 'Persistent edema, stasis pigmentation/eczema, with/without intermittent ulceration',
+      criteria: {
+        persistentEdema: true,
+        stasisPigmentation: true,
+        intermittentUlceration: true,
+      },
+      criteriaDescription: [
+        'Persistent edema',
+        'AND stasis pigmentation or eczema',
+        'With or without intermittent ulceration',
+      ],
+      evidenceNeeded: [
+        'Medical documentation of edema and skin changes',
+        'Photos showing pigmentation',
+        'Ulcer history if applicable',
+      ],
+    },
+    {
+      percent: 20,
+      summary: 'Persistent edema incompletely relieved by elevation, with/without beginning stasis pigmentation',
+      criteria: {
+        persistentEdema: true,
+        incompleteReliefByElevation: true,
+      },
+      criteriaDescription: [
+        'Persistent edema incompletely relieved by elevation of extremity',
+        'With or without beginning stasis pigmentation or eczema',
+      ],
+      evidenceNeeded: [
+        'Documentation of persistent swelling',
+        'Notes on response to elevation',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Intermittent edema OR aching/fatigue after standing/walking, relieved by elevation/compression',
+      criteria: {
+        intermittentEdema: true,
+        achingAfterActivity: true,
+        relievedByElevation: true,
+      },
+      criteriaDescription: [
+        'Intermittent edema of extremity, OR',
+        'Aching and fatigue in leg after prolonged standing or walking',
+        'Symptoms relieved by elevation of extremity or compression hosiery',
+      ],
+      evidenceNeeded: [
+        'Symptom logs',
+        'Notes on what provides relief',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'Asymptomatic palpable or visible varicose veins',
+      criteria: {
+        asymptomatic: true,
+      },
+      criteriaDescription: [
+        'Asymptomatic palpable or visible varicose veins',
+      ],
+      evidenceNeeded: [],
+    },
+  ],
+
+  definitions: {
+    stasisPigmentation: {
+      term: 'Stasis Pigmentation',
+      definition: 'Brownish discoloration of the skin, usually around ankles, caused by chronic poor circulation and blood pooling.',
+      examples: [
+        'Brown or rust-colored skin',
+        'Usually around ankles and lower legs',
+        'Sign of chronic venous insufficiency',
+      ],
+    },
+    stasisEczema: {
+      term: 'Stasis Eczema (Dermatitis)',
+      definition: 'Itchy, inflamed skin caused by poor circulation. Also called venous eczema.',
+      examples: [
+        'Red, scaly, itchy skin',
+        'Usually on lower legs',
+        'May weep or crust',
+      ],
+    },
+  },
+
+  bilateralNote: 'Rate each extremity separately and combine using the bilateral factor if applicable. Track symptoms for each leg individually.',
+
+  disclaimer: 'This analysis is based on logged varicose vein symptoms. Document symptoms for each affected leg separately. Key factors are edema persistence, skin changes, and ulceration.',
+};
+
+export const CHRONIC_URTICARIA_CRITERIA = {
+  diagnosticCode: '7825',
+  condition: 'Chronic Urticaria',
+  cfrReference: '38 CFR 4.118, Diagnostic Code 7825',
+
+  ratings: [
+    {
+      percent: 60,
+      summary: 'Chronic refractory urticaria requiring third-line treatment',
+      criteria: {
+        thirdLineTreatment: true,
+        refractoryToFirstSecondLine: true,
+      },
+      criteriaDescription: [
+        'Chronic refractory urticaria that requires third line treatment for control due to ineffectiveness with first and second line treatments',
+        'Third line treatments include: plasmapheresis, immunotherapy, immunosuppressives',
+      ],
+      evidenceNeeded: [
+        'Documentation of failed first-line treatment (antihistamines)',
+        'Documentation of failed second-line treatment (steroids, etc.)',
+        'Prescription records for third-line treatment',
+      ],
+    },
+    {
+      percent: 30,
+      summary: 'Chronic urticaria requiring second-line treatment',
+      criteria: {
+        secondLineTreatment: true,
+      },
+      criteriaDescription: [
+        'Chronic urticaria that requires second line treatment for control',
+        'Second line treatments include: corticosteroids, sympathomimetics, leukotriene inhibitors, neutrophil inhibitors, thyroid hormone',
+      ],
+      evidenceNeeded: [
+        'Documentation that antihistamines alone are insufficient',
+        'Prescription records for second-line treatment',
+        'Outbreak frequency logs',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Chronic urticaria requiring first-line treatment (antihistamines)',
+      criteria: {
+        firstLineTreatment: true,
+      },
+      criteriaDescription: [
+        'Chronic urticaria that requires first line treatment (antihistamines) for control',
+      ],
+      evidenceNeeded: [
+        'Prescription records for antihistamines',
+        'Outbreak frequency logs showing chronic pattern',
+      ],
+    },
+  ],
+
+  definitions: {
+    chronicUrticaria: {
+      term: 'Chronic Urticaria',
+      definition: 'Continuous urticaria (hives) occurring at least twice per week, off treatment, for a period of six weeks or more.',
+      examples: [
+        'Raised, itchy welts (hives)',
+        'Welts may change shape or disappear and reappear',
+        'Occurring regularly for 6+ weeks',
+      ],
+    },
+    treatmentLines: {
+      term: 'Treatment Lines',
+      definition: 'The progression of treatments tried for urticaria, from least to most aggressive.',
+      examples: [
+        'First line: Antihistamines (Zyrtec, Allegra, Benadryl)',
+        'Second line: Steroids, leukotriene inhibitors (Singulair)',
+        'Third line: Immunosuppressives, biologics (Xolair)',
+      ],
+    },
+  },
+
+  disclaimer: 'This analysis is based on logged urticaria symptoms. The rating is based on treatment level required for control. Document all outbreaks and medications used.',
+};
 
 // ============================================
 // TINNITUS (DC 6260)
@@ -10130,6 +11042,707 @@ export const analyzeGERDComplicationsLogs = (logs, options = {}) => {
     gaps,
     criteria: GERD_COMPLICATIONS_CRITERIA,
     disclaimer: 'GERD complication ratings require endoscopy documentation and medical records.',
+  };
+};
+
+/**
+ * Analyze Ulcerative Colitis / IBD symptom logs
+ */
+export const analyzeUlcerativeColitisLogs = (logs, options = {}) => {
+  const { evaluationPeriodDays = 365 } = options; // Use 1 year for hospitalization tracking
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const symptomIds = [
+    'uc-diarrhea', 'uc-rectal-bleeding', 'uc-abdominal-pain',
+    'uc-urgency', 'uc-incontinence', 'uc-fever', 'uc-hospitalization'
+  ];
+
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    return logDate >= cutoffDate && symptomIds.includes(log.symptomId);
+  });
+
+  if (relevantLogs.length === 0) {
+    return {
+      hasData: false,
+      message: 'No ulcerative colitis/IBD logs found',
+      supportedRating: null,
+      evidence: [],
+      gaps: ['Start logging IBD symptoms including diarrhea frequency, bleeding, and flares'],
+    };
+  }
+
+  // Count symptom types
+  const diarrheaLogs = relevantLogs.filter(log => log.symptomId === 'uc-diarrhea');
+  const bleedingLogs = relevantLogs.filter(log => log.symptomId === 'uc-rectal-bleeding');
+  const hospitalizationLogs = relevantLogs.filter(log => log.symptomId === 'uc-hospitalization');
+  const incontinenceLogs = relevantLogs.filter(log => log.symptomId === 'uc-incontinence');
+  const feverLogs = relevantLogs.filter(log => log.symptomId === 'uc-fever');
+
+  const evidence = [];
+  if (diarrheaLogs.length > 0) evidence.push(`${diarrheaLogs.length} diarrhea episodes logged`);
+  if (bleedingLogs.length > 0) evidence.push(`${bleedingLogs.length} rectal bleeding episodes logged`);
+  if (hospitalizationLogs.length > 0) evidence.push(`${hospitalizationLogs.length} hospitalizations in evaluation period`);
+  if (incontinenceLogs.length > 0) evidence.push(`${incontinenceLogs.length} incontinence episodes logged`);
+  if (feverLogs.length > 0) evidence.push(`${feverLogs.length} fever/systemic symptom episodes logged`);
+
+  // Determine rating
+  let supportedRating = 10;
+  let ratingRationale = [];
+  let gaps = [];
+
+  // Calculate daily averages
+  const daysInPeriod = evaluationPeriodDays;
+  const diarrheaPerDay = diarrheaLogs.length / daysInPeriod;
+
+  if (hospitalizationLogs.length >= 1 && (diarrheaPerDay >= 6 || bleedingLogs.length >= 180 || incontinenceLogs.length > 0)) {
+    supportedRating = 100;
+    ratingRationale = [
+      'Hospitalization required in past year',
+      'Severe symptoms: frequent diarrhea, bleeding, or incontinence',
+      'Pattern consistent with 100% rating criteria',
+    ];
+  } else if (hospitalizationLogs.length >= 1 || (diarrheaPerDay >= 4 && feverLogs.length > 0)) {
+    supportedRating = 60;
+    ratingRationale = [
+      'Moderate IBD with significant symptom burden',
+      'May require immunosuppressant therapy',
+    ];
+    gaps.push('Document if immunosuppressants or biologics are prescribed');
+  } else if (diarrheaLogs.length >= 30 || (relevantLogs.length >= 50 && feverLogs.length > 0)) {
+    supportedRating = 30;
+    ratingRationale = [
+      'Mild-moderate IBD with regular symptoms',
+      'Managed with oral/topical agents',
+    ];
+  } else {
+    supportedRating = 10;
+    ratingRationale = [
+      'Minimal-mild IBD symptoms documented',
+    ];
+  }
+
+  gaps.push('Document treatment regimen (oral agents, immunosuppressants, or biologics)');
+  if (hospitalizationLogs.length === 0) {
+    gaps.push('Log any hospitalizations for IBD flares');
+  }
+
+  return {
+    hasData: true,
+    condition: 'Ulcerative Colitis / IBD',
+    diagnosticCode: '7323/7326',
+    evaluationPeriodDays,
+    supportedRating: supportedRating.toString(),
+    ratingRationale,
+    evidence,
+    gaps,
+    criteria: ULCERATIVE_COLITIS_CRITERIA,
+    disclaimer: ULCERATIVE_COLITIS_CRITERIA.disclaimer,
+  };
+};
+
+/**
+ * Analyze Peptic Ulcer symptom logs
+ */
+export const analyzePepticUlcerLogs = (logs, options = {}) => {
+  const { evaluationPeriodDays = 365 } = options;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const symptomIds = [
+    'ulcer-abdominal-pain', 'ulcer-nausea', 'ulcer-vomiting',
+    'ulcer-hematemesis', 'ulcer-melena', 'ulcer-hospitalization'
+  ];
+
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    return logDate >= cutoffDate && symptomIds.includes(log.symptomId);
+  });
+
+  if (relevantLogs.length === 0) {
+    return {
+      hasData: false,
+      message: 'No peptic ulcer logs found',
+      supportedRating: null,
+      evidence: [],
+      gaps: ['Start logging peptic ulcer symptoms including pain episodes, nausea, and any bleeding'],
+    };
+  }
+
+  const painLogs = relevantLogs.filter(log => log.symptomId === 'ulcer-abdominal-pain');
+  const nauseaLogs = relevantLogs.filter(log => log.symptomId === 'ulcer-nausea');
+  const vomitingLogs = relevantLogs.filter(log => log.symptomId === 'ulcer-vomiting');
+  const bleedingLogs = relevantLogs.filter(log =>
+      log.symptomId === 'ulcer-hematemesis' || log.symptomId === 'ulcer-melena'
+  );
+  const hospitalizationLogs = relevantLogs.filter(log => log.symptomId === 'ulcer-hospitalization');
+
+  const evidence = [];
+  if (painLogs.length > 0) evidence.push(`${painLogs.length} abdominal pain episodes logged`);
+  if (nauseaLogs.length > 0) evidence.push(`${nauseaLogs.length} nausea episodes logged`);
+  if (vomitingLogs.length > 0) evidence.push(`${vomitingLogs.length} vomiting episodes logged`);
+  if (bleedingLogs.length > 0) evidence.push(`${bleedingLogs.length} GI bleeding episodes (hematemesis/melena) logged`);
+  if (hospitalizationLogs.length > 0) evidence.push(`${hospitalizationLogs.length} hospitalizations in evaluation period`);
+
+  let supportedRating = 0;
+  let ratingRationale = [];
+  let gaps = [];
+
+  // Estimate episodes (clusters of 3+ consecutive days)
+  const totalSymptomDays = new Set(relevantLogs.map(log =>
+      new Date(log.timestamp).toDateString()
+  )).size;
+
+  if (hospitalizationLogs.length >= 1 && bleedingLogs.length > 0) {
+    supportedRating = 60;
+    ratingRationale = [
+      'Hospitalization with GI bleeding documented',
+      'Consistent with severe peptic ulcer disease',
+    ];
+  } else if (painLogs.length >= 12 || totalSymptomDays >= 12) {
+    supportedRating = 40;
+    ratingRationale = [
+      'Multiple symptom episodes documented',
+      'Pattern suggests 4+ episodes per year lasting 3+ days',
+    ];
+    gaps.push('Confirm daily medication use for peptic ulcer');
+  } else if (painLogs.length >= 3 || totalSymptomDays >= 9) {
+    supportedRating = 20;
+    ratingRationale = [
+      'Symptom episodes documented',
+      'Pattern suggests 1-3 episodes per year',
+    ];
+    gaps.push('Confirm daily medication use for peptic ulcer');
+  } else {
+    supportedRating = 0;
+    ratingRationale = [
+      'Symptoms logged but may not meet compensable criteria',
+      'Document episode duration (must be 3+ consecutive days)',
+    ];
+  }
+
+  if (bleedingLogs.length === 0) {
+    gaps.push('Document any GI bleeding (vomiting blood or tarry stools)');
+  }
+
+  return {
+    hasData: true,
+    condition: 'Peptic Ulcer Disease',
+    diagnosticCode: '7304',
+    evaluationPeriodDays,
+    supportedRating: supportedRating.toString(),
+    ratingRationale,
+    evidence,
+    gaps,
+    criteria: PEPTIC_ULCER_CRITERIA,
+    disclaimer: PEPTIC_ULCER_CRITERIA.disclaimer,
+  };
+};
+
+/**
+ * Analyze Hemorrhoid symptom logs
+ */
+export const analyzeHemorrhoidLogs = (logs, options = {}) => {
+  const { evaluationPeriodDays = 365 } = options;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const symptomIds = ['hemorrhoid-bleeding', 'hemorrhoid-prolapse', 'hemorrhoid-thrombosis', 'hemorrhoid-pain'];
+
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    return logDate >= cutoffDate && symptomIds.includes(log.symptomId);
+  });
+
+  if (relevantLogs.length === 0) {
+    return {
+      hasData: false,
+      message: 'No hemorrhoid logs found',
+      supportedRating: null,
+      evidence: [],
+      gaps: ['Start logging hemorrhoid symptoms including bleeding, prolapse, and thrombosis episodes'],
+    };
+  }
+
+  const bleedingLogs = relevantLogs.filter(log => log.symptomId === 'hemorrhoid-bleeding');
+  const prolapseLogs = relevantLogs.filter(log => log.symptomId === 'hemorrhoid-prolapse');
+  const thrombosisLogs = relevantLogs.filter(log => log.symptomId === 'hemorrhoid-thrombosis');
+
+  const evidence = [];
+  if (bleedingLogs.length > 0) evidence.push(`${bleedingLogs.length} bleeding episodes logged`);
+  if (prolapseLogs.length > 0) evidence.push(`${prolapseLogs.length} prolapse episodes logged`);
+  if (thrombosisLogs.length > 0) evidence.push(`${thrombosisLogs.length} thrombosis episodes logged`);
+
+  let supportedRating = 0;
+  let ratingRationale = [];
+  let gaps = [];
+
+  // Check for 20% criteria: persistent bleeding with anemia OR 3+ thrombosis/year
+  if (bleedingLogs.length >= 30 || thrombosisLogs.length >= 3) {
+    supportedRating = 20;
+    ratingRationale = [];
+    if (bleedingLogs.length >= 30) {
+      ratingRationale.push('Frequent/persistent bleeding documented');
+      gaps.push('Get lab work to document anemia if present');
+    }
+    if (thrombosisLogs.length >= 3) {
+      ratingRationale.push(`${thrombosisLogs.length} thrombosis episodes (3+ required for 20%)`);
+    }
+  } else if (thrombosisLogs.length >= 1 || prolapseLogs.length >= 1) {
+    supportedRating = 10;
+    ratingRationale = [
+      'Thrombosis or prolapse episodes documented',
+      'Pattern supports 10% rating',
+    ];
+  }
+
+  if (thrombosisLogs.length === 0) {
+    gaps.push('Document any thrombosis (blood clot) episodes - these significantly affect rating');
+  }
+
+  return {
+    hasData: true,
+    condition: 'Hemorrhoids',
+    diagnosticCode: '7336',
+    evaluationPeriodDays,
+    supportedRating: supportedRating.toString(),
+    ratingRationale,
+    evidence,
+    gaps,
+    criteria: HEMORRHOID_CRITERIA,
+    disclaimer: HEMORRHOID_CRITERIA.disclaimer,
+  };
+};
+
+/**
+ * Analyze Diverticulitis symptom logs
+ */
+export const analyzeDiverticulitisLogs = (logs, options = {}) => {
+  const { evaluationPeriodDays = 365 } = options;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const symptomIds = [
+    'divert-abdominal-pain', 'divert-fever', 'divert-flare',
+    'divert-hospitalization', 'divert-complication'
+  ];
+
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    return logDate >= cutoffDate && symptomIds.includes(log.symptomId);
+  });
+
+  if (relevantLogs.length === 0) {
+    return {
+      hasData: false,
+      message: 'No diverticulitis logs found',
+      supportedRating: null,
+      evidence: [],
+      gaps: ['Start logging diverticulitis symptoms including flares, hospitalizations, and any complications'],
+    };
+  }
+
+  const flareLogs = relevantLogs.filter(log => log.symptomId === 'divert-flare');
+  const hospitalizationLogs = relevantLogs.filter(log => log.symptomId === 'divert-hospitalization');
+  const complicationLogs = relevantLogs.filter(log => log.symptomId === 'divert-complication');
+  const feverLogs = relevantLogs.filter(log => log.symptomId === 'divert-fever');
+
+  const evidence = [];
+  if (flareLogs.length > 0) evidence.push(`${flareLogs.length} acute flares logged`);
+  if (hospitalizationLogs.length > 0) evidence.push(`${hospitalizationLogs.length} hospitalizations logged`);
+  if (complicationLogs.length > 0) evidence.push(`${complicationLogs.length} complications (bleeding/abscess/obstruction) logged`);
+  if (feverLogs.length > 0) evidence.push(`${feverLogs.length} fever episodes logged`);
+
+  let supportedRating = 0;
+  let ratingRationale = [];
+  let gaps = [];
+
+  if (hospitalizationLogs.length >= 1 && complicationLogs.length >= 1) {
+    supportedRating = 30;
+    ratingRationale = [
+      'Hospitalization with complications documented',
+      'Meets criteria for 30% rating',
+    ];
+  } else if (hospitalizationLogs.length >= 1) {
+    supportedRating = 20;
+    ratingRationale = [
+      'Hospitalization for diverticulitis documented',
+      'Without documented complications (30% requires complications)',
+    ];
+    gaps.push('Document any complications: hemorrhage, obstruction, abscess, peritonitis, or perforation');
+  } else if (flareLogs.length >= 1 || feverLogs.length >= 1) {
+    supportedRating = 0;
+    ratingRationale = [
+      'Symptomatic diverticulitis managed conservatively',
+      'Compensable rating requires hospitalization',
+    ];
+    gaps.push('Document any hospitalizations for acute flares');
+  }
+
+  return {
+    hasData: true,
+    condition: 'Diverticulitis',
+    diagnosticCode: '7327',
+    evaluationPeriodDays,
+    supportedRating: supportedRating.toString(),
+    ratingRationale,
+    evidence,
+    gaps,
+    criteria: DIVERTICULITIS_CRITERIA,
+    disclaimer: DIVERTICULITIS_CRITERIA.disclaimer,
+  };
+};
+
+/**
+ * Analyze Hypothyroidism symptom logs
+ */
+export const analyzeHypothyroidismLogs = (logs, options = {}) => {
+  const { evaluationPeriodDays = 90 } = options;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const symptomIds = [
+    'hypo-fatigue', 'hypo-cold-intolerance', 'hypo-weight-gain',
+    'hypo-depression', 'hypo-muscle-weakness', 'hypo-constipation', 'hypo-dry-skin'
+  ];
+
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    return logDate >= cutoffDate && symptomIds.includes(log.symptomId);
+  });
+
+  if (relevantLogs.length === 0) {
+    return {
+      hasData: false,
+      message: 'No hypothyroidism logs found',
+      supportedRating: null,
+      evidence: [],
+      gaps: ['Start logging hypothyroidism symptoms including fatigue, cold intolerance, and other symptoms'],
+    };
+  }
+
+  const fatigueLogs = relevantLogs.filter(log => log.symptomId === 'hypo-fatigue');
+  const coldLogs = relevantLogs.filter(log => log.symptomId === 'hypo-cold-intolerance');
+  const depressionLogs = relevantLogs.filter(log => log.symptomId === 'hypo-depression');
+  const weaknessLogs = relevantLogs.filter(log => log.symptomId === 'hypo-muscle-weakness');
+
+  const evidence = [];
+  if (fatigueLogs.length > 0) evidence.push(`${fatigueLogs.length} fatigue episodes logged`);
+  if (coldLogs.length > 0) evidence.push(`${coldLogs.length} cold intolerance episodes logged`);
+  if (depressionLogs.length > 0) evidence.push(`${depressionLogs.length} depression/mental fog episodes logged`);
+  if (weaknessLogs.length > 0) evidence.push(`${weaknessLogs.length} muscle weakness episodes logged`);
+
+  // Check for myxedema criteria (all 4 symptom categories)
+  const hasAllMyxedemaSymptoms = coldLogs.length > 0 && weaknessLogs.length > 0 && depressionLogs.length > 0;
+
+  let supportedRating = 30;
+  let ratingRationale = [];
+  let gaps = [];
+
+  if (hasAllMyxedemaSymptoms && relevantLogs.length >= 50) {
+    supportedRating = '30-100';
+    ratingRationale = [
+      'Multiple myxedema symptom categories documented',
+      'Severe symptoms may support 100% rating if myxedema diagnosed',
+      '30% is standard rating for hypothyroidism without myxedema',
+    ];
+    gaps.push('Obtain medical documentation if myxedema is present');
+  } else {
+    supportedRating = 30;
+    ratingRationale = [
+      'Hypothyroidism symptoms documented',
+      '30% is standard rating for hypothyroidism without myxedema',
+      'This rating continues for 6 months after diagnosis, then rate residuals',
+    ];
+  }
+
+  gaps.push('Document cardiovascular effects (low BP, slow heart rate) if present');
+  gaps.push('Track lab values (TSH, T4) when available');
+
+  return {
+    hasData: true,
+    condition: 'Hypothyroidism',
+    diagnosticCode: '7903',
+    evaluationPeriodDays,
+    supportedRating: supportedRating.toString(),
+    ratingRationale,
+    evidence,
+    gaps,
+    criteria: HYPOTHYROIDISM_CRITERIA,
+    disclaimer: HYPOTHYROIDISM_CRITERIA.disclaimer,
+  };
+};
+
+/**
+ * Analyze Raynaud's symptom logs
+ */
+export const analyzeRaynaudsLogs = (logs, options = {}) => {
+  const { evaluationPeriodDays = 90 } = options;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const symptomIds = [
+    'raynauds-attack', 'raynauds-numbness', 'raynauds-pain',
+    'raynauds-ulcer', 'raynauds-cold-trigger'
+  ];
+
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    return logDate >= cutoffDate && symptomIds.includes(log.symptomId);
+  });
+
+  if (relevantLogs.length === 0) {
+    return {
+      hasData: false,
+      message: "No Raynaud's logs found",
+      supportedRating: null,
+      evidence: [],
+      gaps: ["Start logging Raynaud's attacks including color changes, triggers, and any ulcers"],
+    };
+  }
+
+  const attackLogs = relevantLogs.filter(log =>
+      log.symptomId === 'raynauds-attack' || log.symptomId === 'raynauds-cold-trigger'
+  );
+  const ulcerLogs = relevantLogs.filter(log => log.symptomId === 'raynauds-ulcer');
+
+  const weeksInPeriod = evaluationPeriodDays / 7;
+  const attacksPerWeek = attackLogs.length / weeksInPeriod;
+
+  const evidence = [];
+  evidence.push(`${attackLogs.length} characteristic attacks logged (${attacksPerWeek.toFixed(1)}/week)`);
+  if (ulcerLogs.length > 0) evidence.push(`${ulcerLogs.length} digital ulcer episodes logged`);
+
+  let supportedRating = 0;
+  let ratingRationale = [];
+  let gaps = [];
+
+  if (ulcerLogs.length >= 2) {
+    supportedRating = 60;
+    ratingRationale = [
+      '2+ digital ulcers documented',
+      'With history of characteristic attacks',
+      'Supports 60% rating (100% requires auto-amputation)',
+    ];
+  } else if (attacksPerWeek >= 7) {
+    supportedRating = 40;
+    ratingRationale = [
+      `Attacks occurring ${attacksPerWeek.toFixed(1)} times per week (daily or more)`,
+      'Daily attacks support 40% rating',
+    ];
+  } else if (attacksPerWeek >= 4) {
+    supportedRating = 20;
+    ratingRationale = [
+      `Attacks occurring ${attacksPerWeek.toFixed(1)} times per week`,
+      '4-6 attacks per week supports 20% rating',
+    ];
+  } else if (attacksPerWeek >= 1) {
+    supportedRating = 10;
+    ratingRationale = [
+      `Attacks occurring ${attacksPerWeek.toFixed(1)} times per week`,
+      '1-3 attacks per week supports 10% rating',
+    ];
+  }
+
+  if (ulcerLogs.length === 0) {
+    gaps.push('Document any digital ulcers - these significantly increase rating');
+  }
+  gaps.push('Log each attack with date, duration, and affected digits');
+  gaps.push('Note triggers (cold exposure, stress) for each attack');
+
+  return {
+    hasData: true,
+    condition: "Raynaud's Syndrome",
+    diagnosticCode: '7117',
+    evaluationPeriodDays,
+    supportedRating: supportedRating.toString(),
+    ratingRationale,
+    evidence,
+    gaps,
+    criteria: RAYNAUDS_CRITERIA,
+    disclaimer: RAYNAUDS_CRITERIA.disclaimer,
+  };
+};
+
+/**
+ * Analyze Varicose Veins symptom logs
+ */
+export const analyzeVaricoseVeinsLogs = (logs, options = {}) => {
+  const { evaluationPeriodDays = 90 } = options;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const symptomIds = [
+    'varicose-aching', 'varicose-edema', 'varicose-pigmentation',
+    'varicose-ulcer', 'varicose-pain'
+  ];
+
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    return logDate >= cutoffDate && symptomIds.includes(log.symptomId);
+  });
+
+  if (relevantLogs.length === 0) {
+    return {
+      hasData: false,
+      message: 'No varicose vein logs found',
+      supportedRating: null,
+      evidence: [],
+      gaps: ['Start logging varicose vein symptoms including swelling, pain, and any skin changes'],
+    };
+  }
+
+  const edemaLogs = relevantLogs.filter(log => log.symptomId === 'varicose-edema');
+  const pigmentationLogs = relevantLogs.filter(log => log.symptomId === 'varicose-pigmentation');
+  const ulcerLogs = relevantLogs.filter(log => log.symptomId === 'varicose-ulcer');
+  const painLogs = relevantLogs.filter(log => log.symptomId === 'varicose-pain');
+  const achingLogs = relevantLogs.filter(log => log.symptomId === 'varicose-aching');
+
+  const evidence = [];
+  if (edemaLogs.length > 0) evidence.push(`${edemaLogs.length} swelling/edema episodes logged`);
+  if (pigmentationLogs.length > 0) evidence.push(`${pigmentationLogs.length} skin discoloration entries logged`);
+  if (ulcerLogs.length > 0) evidence.push(`${ulcerLogs.length} skin ulcer entries logged`);
+  if (painLogs.length > 0) evidence.push(`${painLogs.length} pain at rest episodes logged`);
+  if (achingLogs.length > 0) evidence.push(`${achingLogs.length} aching/fatigue episodes logged`);
+
+  let supportedRating = 0;
+  let ratingRationale = [];
+  let gaps = [];
+
+  // Check for severe symptoms
+  if (painLogs.length >= 30 && edemaLogs.length >= 30) {
+    supportedRating = 100;
+    ratingRationale = [
+      'Constant pain at rest with persistent edema documented',
+      'Pattern consistent with 100% rating',
+    ];
+  } else if (ulcerLogs.length >= 5 && edemaLogs.length >= 10 && pigmentationLogs.length > 0) {
+    supportedRating = 60;
+    ratingRationale = [
+      'Persistent edema, skin changes, and ulceration documented',
+      'Pattern supports 60% rating',
+    ];
+  } else if (edemaLogs.length >= 10 && pigmentationLogs.length > 0) {
+    supportedRating = 40;
+    ratingRationale = [
+      'Persistent edema with skin pigmentation changes',
+      'Pattern supports 40% rating',
+    ];
+  } else if (edemaLogs.length >= 5) {
+    supportedRating = 20;
+    ratingRationale = [
+      'Persistent edema documented',
+      'Pattern supports 20% rating',
+    ];
+  } else if (achingLogs.length > 0 || edemaLogs.length > 0) {
+    supportedRating = 10;
+    ratingRationale = [
+      'Intermittent symptoms documented',
+      'Relieved by elevation or compression hosiery supports 10% rating',
+    ];
+  }
+
+  gaps.push('Track symptoms separately for each leg if bilateral');
+  gaps.push('Document response to elevation and compression hosiery');
+  if (ulcerLogs.length === 0) {
+    gaps.push('Document any skin ulcers - these significantly affect rating');
+  }
+
+  return {
+    hasData: true,
+    condition: 'Varicose Veins',
+    diagnosticCode: '7120/7121',
+    evaluationPeriodDays,
+    supportedRating: supportedRating.toString(),
+    ratingRationale,
+    evidence,
+    gaps,
+    criteria: VARICOSE_VEINS_CRITERIA,
+    disclaimer: VARICOSE_VEINS_CRITERIA.disclaimer,
+  };
+};
+
+/**
+ * Analyze Chronic Urticaria symptom logs
+ */
+export const analyzeChronicUrticariaLogs = (logs, options = {}) => {
+  const { evaluationPeriodDays = 90 } = options;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const symptomIds = [
+    'urticaria-outbreak', 'urticaria-itching', 'urticaria-swelling', 'urticaria-medication'
+  ];
+
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    return logDate >= cutoffDate && symptomIds.includes(log.symptomId);
+  });
+
+  if (relevantLogs.length === 0) {
+    return {
+      hasData: false,
+      message: 'No chronic urticaria logs found',
+      supportedRating: null,
+      evidence: [],
+      gaps: ['Start logging urticaria outbreaks and medication use'],
+    };
+  }
+
+  const outbreakLogs = relevantLogs.filter(log => log.symptomId === 'urticaria-outbreak');
+  const medicationLogs = relevantLogs.filter(log => log.symptomId === 'urticaria-medication');
+
+  const weeksInPeriod = evaluationPeriodDays / 7;
+  const outbreaksPerWeek = outbreakLogs.length / weeksInPeriod;
+
+  const evidence = [];
+  evidence.push(`${outbreakLogs.length} hives outbreaks logged (${outbreaksPerWeek.toFixed(1)}/week)`);
+  if (medicationLogs.length > 0) evidence.push(`${medicationLogs.length} medication use entries logged`);
+
+  // Chronic urticaria = 2+ outbreaks per week for 6+ weeks
+  const isChronicPattern = outbreaksPerWeek >= 2 && evaluationPeriodDays >= 42;
+
+  let supportedRating = 10;
+  let ratingRationale = [];
+  let gaps = [];
+
+  if (isChronicPattern) {
+    supportedRating = 10;
+    ratingRationale = [
+      'Chronic urticaria pattern documented (2+/week for 6+ weeks)',
+      'Rating based on treatment level required',
+    ];
+    gaps.push('Document treatment level: first-line (antihistamines), second-line (steroids), or third-line (immunosuppressives)');
+    gaps.push('If antihistamines alone are insufficient, document escalation to higher treatment');
+  } else {
+    supportedRating = '0-10';
+    ratingRationale = [
+      'Urticaria documented but chronic pattern not yet established',
+      'Chronic = 2+ outbreaks per week for 6+ weeks',
+    ];
+    gaps.push('Continue logging to establish chronic pattern');
+  }
+
+  return {
+    hasData: true,
+    condition: 'Chronic Urticaria',
+    diagnosticCode: '7825',
+    evaluationPeriodDays,
+    supportedRating: supportedRating.toString(),
+    ratingRationale,
+    evidence,
+    gaps,
+    criteria: CHRONIC_URTICARIA_CRITERIA,
+    disclaimer: CHRONIC_URTICARIA_CRITERIA.disclaimer,
   };
 };
 
