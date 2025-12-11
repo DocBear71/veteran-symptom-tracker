@@ -64,12 +64,37 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
     setMedications(getMedications());
   };
 
-  // Determine symptom type
+  // Determine symptom type - EXPANDED DETECTION
   const isMigraine = selectedChronic?.symptomId === 'migraine';
-  const isSleepRelated = ['sleep-issues', 'nightmares'].includes(selectedChronic?.symptomId);
-  const isPTSDRelated = ['anxiety', 'hypervigilance', 'nightmares', 'irritability'].includes(selectedChronic?.symptomId);
-  const isPainRelated = ['back-pain', 'neck-pain', 'knee-pain', 'shoulder-pain', 'hip-pain', 'joint-pain'].includes(selectedChronic?.symptomId);
 
+  // Sleep: match sleep-related symptoms
+  const isSleepRelated = selectedChronic?.symptomId?.includes('sleep') ||
+      selectedChronic?.symptomId?.includes('insomnia') ||
+      ['sleep-issues', 'nightmares'].includes(selectedChronic?.symptomId) ||
+      selectedChronic?.category === 'Sleep Disorders';
+
+  // PTSD/Mental Health: broader matching
+  const isPTSDRelated = selectedChronic?.symptomId?.includes('anxiety') ||
+      selectedChronic?.symptomId?.includes('ptsd') ||
+      selectedChronic?.symptomId?.includes('panic') ||
+      selectedChronic?.symptomId?.includes('depression') ||
+      selectedChronic?.symptomId?.includes('mood') ||
+      ['hypervigilance', 'nightmares', 'irritability', 'flashbacks', 'intrusive-thoughts',
+        'avoidance', 'emotional-numbness', 'startle-response', 'concentration-problems',
+        'social-withdrawal', 'hopelessness', 'guilt', 'anger-outbursts'].includes(selectedChronic?.symptomId) ||
+      selectedChronic?.category === 'Mental Health' ||
+      selectedChronic?.category === 'PTSD Symptoms';
+
+  // Pain: match ANY pain-related symptom or musculoskeletal category
+  const isPainRelated = selectedChronic?.symptomId?.includes('pain') ||
+      selectedChronic?.symptomId?.includes('-ache') ||
+      selectedChronic?.symptomId?.includes('stiff') ||
+      ['sciatica', 'radiculopathy', 'stenosis', 'arthritis', 'bursitis', 'tendinitis',
+        'strain', 'sprain', 'rom-limited', 'swelling', 'instability', 'weakness',
+        'numbness', 'tingling', 'cramping', 'spasms', 'plantar-fasciitis', 'ddd',
+        'spondylosis', 'spondylolisthesis', 'herniated', 'bulging'].some(term => selectedChronic?.symptomId?.includes(term)) ||
+      ['Pain', 'Back & Spine', 'Shoulder', 'Knee', 'Hip', 'Ankle & Foot', 'Wrist & Hand',
+        'Elbow', 'Neck', 'Joints'].includes(selectedChronic?.category);
   const handleOpenLogModal = (chronic) => {
     if (editMode) return;
     setSelectedChronic(chronic);

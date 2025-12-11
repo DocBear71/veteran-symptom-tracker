@@ -138,11 +138,36 @@ export const generatePDF = (dateRange = 'all', options = { includeAppointments: 
         doc.setTextColor(30, 58, 138);
         doc.text('Detailed Symptom Entries', 14, currentY);
 
-        const detailData = logs.map(log => {
-            const linkedMeds = getMedicationLogsForSymptom(log.id);
-            let notes = log.notes || '-';
+      const detailData = logs.map(log => {
+        const linkedMeds = getMedicationLogsForSymptom(log.id);
+        let notes = log.notes || '-';
 
-            // Add migraine details
+        // Phase 1A: Add universal fields first
+        const universalInfo = [];
+        if (log.isFlareUp) universalInfo.push('🔥 FLARE-UP');
+        if (log.duration) universalInfo.push(formatDuration(log.duration));
+        if (log.timeOfDay) universalInfo.push(formatTimeOfDay(log.timeOfDay));
+        if (universalInfo.length > 0) {
+          notes = universalInfo.join(' | ') + (log.notes ? ` | ${log.notes}` : '');
+        }
+
+        // Phase 1B: Add GI details
+        if (log.giData) {
+          const giInfo = [];
+          if (log.giData.bristolScale) giInfo.push(`Bristol ${log.giData.bristolScale}`);
+          if (log.giData.frequencyPerDay) giInfo.push(`${log.giData.frequencyPerDay}x/day`);
+          if (log.giData.urgencyLevel && log.giData.urgencyLevel !== 'none') giInfo.push(formatUrgency(log.giData.urgencyLevel));
+          if (log.giData.bloodPresent) giInfo.push('BLOOD PRESENT');
+          if (log.giData.bloatingSeverity && log.giData.bloatingSeverity !== 'none') giInfo.push(`Bloating: ${log.giData.bloatingSeverity}`);
+          if (log.giData.abdominalPainLocation) giInfo.push(`Pain: ${formatPainLocation(log.giData.abdominalPainLocation)}`);
+          if (log.giData.mealRelated) giInfo.push('Meal-related');
+          if (log.giData.nighttimeSymptoms) giInfo.push('Nighttime');
+          if (giInfo.length > 0) {
+            notes = giInfo.join(', ') + (notes !== '-' ? ` | ${notes}` : '');
+          }
+        }
+
+        // Add migraine details
             if (log.migraineData) {
                 const migraineInfo = [];
                 if (log.migraineData.prostrating) migraineInfo.push('PROSTRATING');
@@ -316,15 +341,23 @@ export const generateCSV = (dateRange = 'all', options = { includeAppointments: 
     if (logs.length > 0) {
         csvContent += '=== SYMPTOM LOG ===\n\n';
 
-        const symptomHeaders = [
-            'Date', 'Time', 'Symptom', 'Category', 'Severity',
-            'Medications Taken',
-            'Prostrating', 'Duration', 'Associated Symptoms', 'Triggers',
-            'Hours Slept', 'Sleep Quality', 'Wake Ups', 'Sleep Issues',
-            'PTSD Symptoms', 'PTSD Trigger',
-            'Pain Type', 'Flare Up', 'Radiating', 'Limited ROM', 'Activities Affected',
-            'Notes'
-        ];
+      const symptomHeaders = [
+        'Date', 'Time', 'Symptom', 'Category', 'Severity',
+        // Universal fields
+        'Flare-Up', 'Duration', 'Time of Day',
+        'Medications Taken',
+        // GI fields
+        'Bristol Scale', 'GI Frequency', 'Urgency', 'Blood Present', 'Bloating', 'GI Pain Location', 'Meal Related', 'Nighttime GI',
+        // Migraine fields
+        'Prostrating', 'Migraine Duration', 'Associated Symptoms', 'Triggers',
+        // Sleep fields
+        'Hours Slept', 'Sleep Quality', 'Wake Ups', 'Sleep Issues',
+        // PTSD fields
+        'PTSD Symptoms', 'PTSD Trigger',
+        // Pain fields
+        'Pain Type', 'Pain Flare Up', 'Radiating', 'Limited ROM', 'Activities Affected',
+        'Notes'
+      ];
 
         const symptomRows = logs.map(log => {
             const date = new Date(log.timestamp);
@@ -353,30 +386,47 @@ export const generateCSV = (dateRange = 'all', options = { includeAppointments: 
             if (log.ptsdData?.hypervigilance) ptsdSymptoms.push('Hypervigilance');
             if (log.ptsdData?.exaggeratedStartle) ptsdSymptoms.push('Startle response');
 
-            return [
-                date.toLocaleDateString(),
-                date.toLocaleTimeString(),
-                log.symptomName,
-                log.category,
-                log.severity,
-                linkedMeds.map(m => `${m.medicationName} ${m.dosage}`).join('; '),
-                log.migraineData?.prostrating ? 'Yes' : (log.migraineData?.prostrating === false ? 'No' : ''),
-                log.migraineData?.duration ? formatDuration(log.migraineData.duration) : '',
-                migraineSymptoms.join('; '),
-                log.migraineData?.triggers || '',
-                log.sleepData?.hoursSlept || '',
-                log.sleepData?.quality || '',
-                log.sleepData?.wakeUps || '',
-                sleepIssues.join('; '),
-                ptsdSymptoms.join('; '),
-                log.ptsdData?.triggerDescription || '',
-                log.painData?.painType || '',
-                log.painData?.flareUp ? 'Yes' : '',
-                log.painData?.radiating ? (log.painData.radiatingTo || 'Yes') : '',
-                log.painData?.limitedRangeOfMotion ? 'Yes' : '',
-                log.painData?.affectedActivities?.join('; ') || '',
-                log.notes || ''
-            ];
+          return [
+            date.toLocaleDateString(),
+            date.toLocaleTimeString(),
+            log.symptomName,
+            log.category,
+            log.severity,
+            // Universal fields
+            log.isFlareUp ? 'Yes' : '',
+            log.duration ? formatDuration(log.duration) : '',
+            log.timeOfDay ? formatTimeOfDay(log.timeOfDay) : '',
+            linkedMeds.map(m => `${m.medicationName} ${m.dosage}`).join('; '),
+            // GI fields
+            log.giData?.bristolScale || '',
+            log.giData?.frequencyPerDay || '',
+            log.giData?.urgencyLevel || '',
+            log.giData?.bloodPresent === true ? 'Yes' : (log.giData?.bloodPresent === false ? 'No' : ''),
+            log.giData?.bloatingSeverity || '',
+            log.giData?.abdominalPainLocation ? formatPainLocation(log.giData.abdominalPainLocation) : '',
+            log.giData?.mealRelated ? 'Yes' : '',
+            log.giData?.nighttimeSymptoms ? 'Yes' : '',
+            // Migraine fields
+            log.migraineData?.prostrating ? 'Yes' : (log.migraineData?.prostrating === false ? 'No' : ''),
+            log.migraineData?.duration ? formatDuration(log.migraineData.duration) : '',
+            migraineSymptoms.join('; '),
+            log.migraineData?.triggers || '',
+            // Sleep fields
+            log.sleepData?.hoursSlept || '',
+            log.sleepData?.quality || '',
+            log.sleepData?.wakeUps || '',
+            sleepIssues.join('; '),
+            // PTSD fields
+            ptsdSymptoms.join('; '),
+            log.ptsdData?.triggerDescription || '',
+            // Pain fields
+            log.painData?.painType || '',
+            log.painData?.flareUp ? 'Yes' : '',
+            log.painData?.radiating ? (log.painData.radiatingTo || 'Yes') : '',
+            log.painData?.limitedRangeOfMotion ? 'Yes' : '',
+            log.painData?.affectedActivities?.join('; ') || '',
+            log.notes || ''
+          ];
         });
 
         csvContent += symptomHeaders.join(',') + '\n';
@@ -584,11 +634,47 @@ const generateSummary = (logs) => {
 };
 
 const formatDuration = (duration) => {
-    const labels = {
-        'less-than-1h': '< 1 hour', '1-4h': '1-4 hours', '4-24h': '4-24 hours',
-        '1-2d': '1-2 days', 'more-than-2d': '> 2 days', 'ongoing': 'Ongoing',
-    };
-    return labels[duration] || duration;
+  const labels = {
+    // Migraine-specific durations
+    'less-than-1h': '< 1 hour', '1-4h': '1-4 hours', '4-24h': '4-24 hours',
+    '1-2d': '1-2 days', 'more-than-2d': '> 2 days', 'ongoing': 'Ongoing',
+    // Universal durations (Phase 1A)
+    'just-started': 'Just started', 'minutes': 'Minutes', 'hours': 'Hours',
+    'days': 'Days', 'weeks': 'Weeks', 'months': 'Months+',
+  };
+  return labels[duration] || duration;
+};
+
+// Phase 1A: Format time of day
+const formatTimeOfDay = (timeOfDay) => {
+  const labels = {
+    'morning': 'Morning', 'afternoon': 'Afternoon', 'evening': 'Evening',
+    'night': 'Night', 'all-day': 'All Day', 'varies': 'Varies',
+  };
+  return labels[timeOfDay] || timeOfDay;
+};
+
+// Phase 1B: Format Bristol Scale
+const formatBristolScale = (scale) => {
+  return scale ? `Bristol ${scale}` : '';
+};
+
+// Phase 1B: Format urgency level
+const formatUrgency = (urgency) => {
+  const labels = {
+    'none': 'No urgency', 'mild': 'Mild urgency', 'moderate': 'Moderate urgency',
+    'severe': 'Severe urgency', 'incontinence': 'INCONTINENCE',
+  };
+  return labels[urgency] || urgency;
+};
+
+// Phase 1B: Format pain location
+const formatPainLocation = (location) => {
+  const labels = {
+    'upper-left': 'UL', 'upper-center': 'UC', 'upper-right': 'UR',
+    'lower-left': 'LL', 'lower-center': 'LC', 'lower-right': 'LR', 'diffuse': 'Diffuse',
+  };
+  return labels[location] || location;
 };
 
 // ============================================

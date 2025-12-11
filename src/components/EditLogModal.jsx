@@ -2,502 +2,871 @@ import { useState, useEffect } from 'react';
 import { updateSymptomLog, getMedications, logMedicationTaken, getMedicationLogsForSymptom, deleteMedicationLog } from '../utils/storage';
 
 const EditLogModal = ({ log, isOpen, onClose, onSaved }) => {
-    const [severity, setSeverity] = useState(5);
-    const [notes, setNotes] = useState('');
-    const [medications, setMedications] = useState([]);
-    const [selectedMedications, setSelectedMedications] = useState([]);
-    const [existingMedLogs, setExistingMedLogs] = useState([]);
+  const [severity, setSeverity] = useState(5);
+  const [notes, setNotes] = useState('');
+  const [medications, setMedications] = useState([]);
+  const [selectedMedications, setSelectedMedications] = useState([]);
+  const [existingMedLogs, setExistingMedLogs] = useState([]);
 
-    // Migraine-specific fields
-    const [migraineData, setMigraineData] = useState({
-        duration: '', prostrating: null, aura: false, nausea: false,
-        lightSensitivity: false, soundSensitivity: false, triggers: '',
-    });
+  const [isFlareUp, setIsFlareUp] = useState(false);
+  const [duration, setDuration] = useState('');
+  const [timeOfDay, setTimeOfDay] = useState('');
 
-    // Sleep-specific fields
-    const [sleepData, setSleepData] = useState({
-        hoursSlept: '', quality: 5, wakeUps: '', troubleFallingAsleep: false,
-        troubleStayingAsleep: false, nightmares: false, feelRested: null,
-    });
+  // Migraine-specific fields
+  const [migraineData, setMigraineData] = useState({
+    duration: '', prostrating: null, aura: false, nausea: false,
+    lightSensitivity: false, soundSensitivity: false, triggers: '',
+  });
 
-    // PTSD-specific fields
-    const [ptsdData, setPtsdData] = useState({
-        flashbacks: false, avoidance: false, emotionalNumbering: false,
-        hypervigilance: false, exaggeratedStartle: false, intrusiveThoughts: false,
-        triggerDescription: '',
-    });
+  // Sleep-specific fields
+  const [sleepData, setSleepData] = useState({
+    hoursSlept: '', quality: 5, wakeUps: '', troubleFallingAsleep: false,
+    troubleStayingAsleep: false, nightmares: false, feelRested: null,
+  });
 
-    // Pain-specific fields
-    const [painData, setPainData] = useState({
-        painLocation: '', radiating: false, radiatingTo: '',
-        limitedRangeOfMotion: false, affectedActivities: [], painType: '', flareUp: false,
-    });
+  // PTSD-specific fields
+  const [ptsdData, setPtsdData] = useState({
+    flashbacks: false, avoidance: false, emotionalNumbering: false,
+    hypervigilance: false, exaggeratedStartle: false, intrusiveThoughts: false,
+    triggerDescription: '',
+  });
 
-    useEffect(() => {
-        if (isOpen && log) {
-            setSeverity(log.severity || 5);
-            setNotes(log.notes || '');
-            setMedications(getMedications());
+  // Pain-specific fields
+  const [painData, setPainData] = useState({
+    painLocation: '', radiating: false, radiatingTo: '',
+    limitedRangeOfMotion: false, affectedActivities: [], painType: '', flareUp: false,
+  });
 
-            // Get existing medication logs for this symptom
-            const existingMeds = getMedicationLogsForSymptom(log.id);
-            setExistingMedLogs(existingMeds);
-            setSelectedMedications(existingMeds.map(m => m.medicationId));
+  // ============================================
+  // PHASE 1B: GI CONDITION-SPECIFIC FIELDS
+  // ============================================
+  const [giData, setGIData] = useState({
+    bristolScale: null,
+    frequencyPerDay: '',
+    urgencyLevel: '',
+    bloodPresent: null,
+    bloatingSeverity: '',
+    abdominalPainLocation: '',
+    mealRelated: null,
+    nighttimeSymptoms: false,
+  });
 
-            // Load condition-specific data
-            if (log.migraineData) {
-                setMigraineData(log.migraineData);
-            } else {
-                setMigraineData({
-                    duration: '', prostrating: null, aura: false, nausea: false,
-                    lightSensitivity: false, soundSensitivity: false, triggers: '',
-                });
-            }
+  useEffect(() => {
+    if (isOpen && log) {
+      setSeverity(log.severity || 5);
+      setNotes(log.notes || '');
+      setMedications(getMedications());
 
-            if (log.sleepData) {
-                setSleepData(log.sleepData);
-            } else {
-                setSleepData({
-                    hoursSlept: '', quality: 5, wakeUps: '', troubleFallingAsleep: false,
-                    troubleStayingAsleep: false, nightmares: false, feelRested: null,
-                });
-            }
+      // PHASE 1A: Load universal fields
+      setIsFlareUp(log.isFlareUp || false);
+      setDuration(log.duration || '');
+      setTimeOfDay(log.timeOfDay || '');
 
-            if (log.ptsdData) {
-                setPtsdData(log.ptsdData);
-            } else {
-                setPtsdData({
-                    flashbacks: false, avoidance: false, emotionalNumbering: false,
-                    hypervigilance: false, exaggeratedStartle: false, intrusiveThoughts: false,
-                    triggerDescription: '',
-                });
-            }
+      // Get existing medication logs for this symptom
+      const existingMeds = getMedicationLogsForSymptom(log.id);
+      setExistingMedLogs(existingMeds);
+      setSelectedMedications(existingMeds.map(m => m.medicationId));
 
-            if (log.painData) {
-                setPainData(log.painData);
-            } else {
-                setPainData({
-                    painLocation: '', radiating: false, radiatingTo: '',
-                    limitedRangeOfMotion: false, affectedActivities: [], painType: '', flareUp: false,
-                });
-            }
+      // Load condition-specific data
+      if (log.migraineData) {
+        setMigraineData(log.migraineData);
+      } else {
+        setMigraineData({
+          duration: '', prostrating: null, aura: false, nausea: false,
+          lightSensitivity: false, soundSensitivity: false, triggers: '',
+        });
+      }
+
+      if (log.sleepData) {
+        setSleepData(log.sleepData);
+      } else {
+        setSleepData({
+          hoursSlept: '', quality: 5, wakeUps: '', troubleFallingAsleep: false,
+          troubleStayingAsleep: false, nightmares: false, feelRested: null,
+        });
+      }
+
+      if (log.ptsdData) {
+        setPtsdData(log.ptsdData);
+      } else {
+        setPtsdData({
+          flashbacks: false, avoidance: false, emotionalNumbering: false,
+          hypervigilance: false, exaggeratedStartle: false, intrusiveThoughts: false,
+          triggerDescription: '',
+        });
+      }
+
+      if (log.painData) {
+        setPainData(log.painData);
+      } else {
+        setPainData({
+          painLocation: '', radiating: false, radiatingTo: '',
+          limitedRangeOfMotion: false, affectedActivities: [], painType: '', flareUp: false,
+        });
+      }
+
+      // PHASE 1B: Load GI data
+      if (log.giData) {
+        setGIData(log.giData);
+      } else {
+        setGIData({
+          bristolScale: null, frequencyPerDay: '', urgencyLevel: '',
+          bloodPresent: null, bloatingSeverity: '', abdominalPainLocation: '',
+          mealRelated: null, nighttimeSymptoms: false,
+        });
+      }
+    }
+  }, [isOpen, log]);
+
+  const isMigraine = log?.symptomId === 'migraine';
+
+  // Sleep: match sleep-related symptoms
+  const isSleepRelated = log?.symptomId?.includes('sleep') ||
+      log?.symptomId?.includes('insomnia') ||
+      ['sleep-issues', 'nightmares'].includes(log?.symptomId) ||
+      log?.category === 'Sleep Disorders' ||
+      log?.sleepData; // Also show if log already has sleep data
+
+  // PTSD/Mental Health: broader matching
+  const isPTSDRelated = log?.symptomId?.includes('anxiety') ||
+      log?.symptomId?.includes('ptsd') ||
+      log?.symptomId?.includes('panic') ||
+      log?.symptomId?.includes('depression') ||
+      log?.symptomId?.includes('mood') ||
+      ['hypervigilance', 'nightmares', 'irritability', 'flashbacks', 'intrusive-thoughts',
+        'avoidance', 'emotional-numbness', 'startle-response', 'concentration-problems',
+        'social-withdrawal', 'hopelessness', 'guilt', 'anger-outbursts'].includes(log?.symptomId) ||
+      log?.category === 'Mental Health' ||
+      log?.category === 'PTSD Symptoms' ||
+      log?.ptsdData; // Also show if log already has PTSD data
+
+  // Pain: match ANY pain-related symptom or musculoskeletal category
+  const isPainRelated = log?.symptomId?.includes('pain') ||
+      log?.symptomId?.includes('-ache') ||
+      log?.symptomId?.includes('stiff') ||
+      ['sciatica', 'radiculopathy', 'stenosis', 'arthritis', 'bursitis', 'tendinitis',
+        'strain', 'sprain', 'rom-limited', 'swelling', 'instability', 'weakness',
+        'numbness', 'tingling', 'cramping', 'spasms', 'plantar-fasciitis', 'ddd',
+        'spondylosis', 'spondylolisthesis', 'herniated', 'bulging'].some(term => log?.symptomId?.includes(term)) ||
+      ['Pain', 'Back & Spine', 'Shoulder', 'Knee', 'Hip', 'Ankle & Foot', 'Wrist & Hand',
+        'Elbow', 'Neck', 'Joints'].includes(log?.category) ||
+      log?.painData; // Also show if log already has pain data
+
+  // PHASE 1B: GI condition detection
+  const isGIRelated = log?.symptomId?.startsWith('ibs') ||
+      log?.symptomId?.startsWith('gerd') ||
+      log?.symptomId?.startsWith('uc-') ||
+      log?.symptomId?.startsWith('ulcer-') ||
+      log?.symptomId?.startsWith('hemorrhoid') ||
+      log?.symptomId?.startsWith('divertic') ||
+      ['diarrhea', 'constipation', 'bloating', 'abdominal-pain', 'nausea', 'rectal-bleeding'].includes(log?.symptomId) ||
+      log?.giData; // Also show if log already has GI data
+
+  const handleSave = () => {
+    if (isMigraine && migraineData.prostrating === null) {
+      alert('Please indicate if this migraine was prostrating');
+      return;
+    }
+
+    const updates = {
+      severity,
+      notes: notes.trim(),
+      // PHASE 1A: Universal fields
+      isFlareUp,
+      duration: duration || null,
+      timeOfDay: timeOfDay || null,
+    };
+
+    if (isMigraine) updates.migraineData = migraineData;
+    if (isSleepRelated) updates.sleepData = sleepData;
+    if (isPTSDRelated) updates.ptsdData = ptsdData;
+    if (isPainRelated) updates.painData = painData;
+    // PHASE 1B: Save GI data
+    if (isGIRelated) updates.giData = giData;
+
+    const result = updateSymptomLog(log.id, updates);
+
+    if (result.success) {
+      // Handle medication changes
+      const existingMedIds = existingMedLogs.map(m => m.medicationId);
+
+      // Delete removed medications
+      existingMedLogs.forEach(medLog => {
+        if (!selectedMedications.includes(medLog.medicationId)) {
+          deleteMedicationLog(medLog.id);
         }
-    }, [isOpen, log]);
+      });
 
-    const isMigraine = log?.symptomId === 'migraine';
-    const isSleepRelated = ['sleep-issues', 'nightmares'].includes(log?.symptomId);
-    const isPTSDRelated = ['anxiety', 'hypervigilance', 'nightmares', 'irritability'].includes(log?.symptomId);
-    const isPainRelated = ['back-pain', 'neck-pain', 'knee-pain', 'shoulder-pain', 'hip-pain', 'joint-pain'].includes(log?.symptomId);
-
-    const handleSave = () => {
-        if (isMigraine && migraineData.prostrating === null) {
-            alert('Please indicate if this migraine was prostrating');
-            return;
-        }
-
-        const updates = {
-            severity,
-            notes: notes.trim(),
-        };
-
-        if (isMigraine) updates.migraineData = migraineData;
-        if (isSleepRelated) updates.sleepData = sleepData;
-        if (isPTSDRelated) updates.ptsdData = ptsdData;
-        if (isPainRelated) updates.painData = painData;
-
-        const result = updateSymptomLog(log.id, updates);
-
-        if (result.success) {
-            // Handle medication changes
-            const existingMedIds = existingMedLogs.map(m => m.medicationId);
-
-            // Delete removed medications
-            existingMedLogs.forEach(medLog => {
-                if (!selectedMedications.includes(medLog.medicationId)) {
-                    deleteMedicationLog(medLog.id);
-                }
+      // Add new medications
+      selectedMedications.forEach(medId => {
+        if (!existingMedIds.includes(medId)) {
+          const med = medications.find(m => m.id === medId);
+          if (med) {
+            logMedicationTaken({
+              medicationId: med.id,
+              medicationName: med.name,
+              dosage: med.dosage,
+              takenFor: log.symptomName,
+              symptomLogId: log.id,
             });
-
-            // Add new medications
-            selectedMedications.forEach(medId => {
-                if (!existingMedIds.includes(medId)) {
-                    const med = medications.find(m => m.id === medId);
-                    if (med) {
-                        logMedicationTaken({
-                            medicationId: med.id,
-                            medicationName: med.name,
-                            dosage: med.dosage,
-                            takenFor: log.symptomName,
-                            symptomLogId: log.id,
-                        });
-                    }
-                }
-            });
-
-            onSaved();
-            onClose();
-        } else {
-            alert(result.message);
+          }
         }
-    };
+      });
 
-    const toggleActivity = (activity) => {
-        setPainData(prev => ({
-            ...prev,
-            affectedActivities: prev.affectedActivities.includes(activity)
-                ? prev.affectedActivities.filter(a => a !== activity)
-                : [...prev.affectedActivities, activity]
-        }));
-    };
+      onSaved();
+      onClose();
+    } else {
+      alert(result.message);
+    }
+  };
 
-    const getSeverityInfo = (value) => {
-        if (value <= 2) return { label: 'Minimal', color: 'text-green-600 dark:text-green-400' };
-        if (value <= 4) return { label: 'Mild', color: 'text-yellow-600 dark:text-yellow-400' };
-        if (value <= 6) return { label: 'Moderate', color: 'text-orange-500 dark:text-orange-400' };
-        if (value <= 8) return { label: 'Severe', color: 'text-red-500 dark:text-red-400' };
-        return { label: 'Extreme', color: 'text-red-700 dark:text-red-300' };
-    };
+  const toggleActivity = (activity) => {
+    setPainData(prev => ({
+      ...prev,
+      affectedActivities: prev.affectedActivities.includes(activity)
+          ? prev.affectedActivities.filter(a => a !== activity)
+          : [...prev.affectedActivities, activity]
+    }));
+  };
 
-    if (!isOpen || !log) return null;
+  const getSeverityInfo = (value) => {
+    if (value <= 2) return { label: 'Minimal', color: 'text-green-600 dark:text-green-400' };
+    if (value <= 4) return { label: 'Mild', color: 'text-yellow-600 dark:text-yellow-400' };
+    if (value <= 6) return { label: 'Moderate', color: 'text-orange-500 dark:text-orange-400' };
+    if (value <= 8) return { label: 'Severe', color: 'text-red-500 dark:text-red-400' };
+    return { label: 'Extreme', color: 'text-red-700 dark:text-red-300' };
+  };
 
-    const severityInfo = getSeverityInfo(severity);
-    const logDate = new Date(log.timestamp).toLocaleDateString('en-US', {
-        weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit',
-    });
+  // Bristol Scale descriptions
+  const bristolDescriptions = {
+    1: 'Separate hard lumps (severe constipation)',
+    2: 'Lumpy, sausage-shaped (mild constipation)',
+    3: 'Sausage with cracks (normal)',
+    4: 'Smooth, soft sausage (ideal)',
+    5: 'Soft blobs with clear edges (lacking fiber)',
+    6: 'Mushy with ragged edges (mild diarrhea)',
+    7: 'Watery, no solid pieces (severe diarrhea)',
+  };
 
-    return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-            <div className="bg-white dark:bg-gray-800 rounded-lg w-full max-w-md max-h-[90vh] overflow-y-auto">
-                <div className="p-4 border-b border-gray-200 dark:border-gray-700 sticky top-0 bg-white dark:bg-gray-800">
-                    <div className="flex justify-between items-start">
-                        <div>
-                            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Edit Entry</h2>
-                            <p className="text-sm text-gray-500 dark:text-gray-400">{log.symptomName}</p>
-                            <p className="text-xs text-gray-400 dark:text-gray-500">{logDate}</p>
-                        </div>
-                        <button onClick={onClose} className="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 text-xl">✕</button>
-                    </div>
-                </div>
+  if (!isOpen || !log) return null;
 
-                <div className="p-4 space-y-4">
-                    {/* Severity Slider */}
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Severity Level</label>
-                        <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
-                            <input type="range" min="0" max="10" value={severity}
-                                   onChange={(e) => setSeverity(Number(e.target.value))} className="w-full" />
-                            <div className="flex justify-between mt-2">
-                                <span className="text-xs text-gray-500 dark:text-gray-400">0</span>
-                                <span className={`text-lg font-bold ${severityInfo.color}`}>
-                  {severity} - {severityInfo.label}
-                </span>
-                                <span className="text-xs text-gray-500 dark:text-gray-400">10</span>
-                            </div>
-                        </div>
-                    </div>
+  const severityInfo = getSeverityInfo(severity);
+  const logDate = new Date(log.timestamp).toLocaleDateString('en-US', {
+    weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit',
+  });
 
-                    {/* Migraine Fields */}
-                    {isMigraine && (
-                        <div className="bg-purple-50 dark:bg-purple-900/30 p-4 rounded-lg border border-purple-200 dark:border-purple-800 space-y-4">
-                            <h3 className="font-medium text-purple-900 dark:text-purple-200">Migraine Details</h3>
-
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Duration</label>
-                                <select value={migraineData.duration}
-                                        onChange={(e) => setMigraineData(prev => ({ ...prev, duration: e.target.value }))}
-                                        className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
-                                    <option value="">Select duration...</option>
-                                    <option value="less-than-1h">Less than 1 hour</option>
-                                    <option value="1-4h">1-4 hours</option>
-                                    <option value="4-24h">4-24 hours</option>
-                                    <option value="1-2d">1-2 days</option>
-                                    <option value="more-than-2d">More than 2 days</option>
-                                    <option value="ongoing">Still ongoing</option>
-                                </select>
-                            </div>
-
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                    Was this migraine prostrating? <span className="text-red-500">*</span>
-                                </label>
-                                <div className="flex gap-3">
-                                    <button type="button"
-                                            onClick={() => setMigraineData(prev => ({ ...prev, prostrating: true }))}
-                                            className={`flex-1 py-2 px-4 rounded-lg border-2 font-medium ${
-                                                migraineData.prostrating === true
-                                                    ? 'bg-red-100 dark:bg-red-900/50 border-red-500 text-red-700 dark:text-red-300'
-                                                    : 'bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300'
-                                            }`}>Yes</button>
-                                    <button type="button"
-                                            onClick={() => setMigraineData(prev => ({ ...prev, prostrating: false }))}
-                                            className={`flex-1 py-2 px-4 rounded-lg border-2 font-medium ${
-                                                migraineData.prostrating === false
-                                                    ? 'bg-green-100 dark:bg-green-900/50 border-green-500 text-green-700 dark:text-green-300'
-                                                    : 'bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300'
-                                            }`}>No</button>
-                                </div>
-                            </div>
-
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Associated Symptoms</label>
-                                <div className="grid grid-cols-2 gap-2">
-                                    {[
-                                        { key: 'aura', label: 'Aura' },
-                                        { key: 'nausea', label: 'Nausea' },
-                                        { key: 'lightSensitivity', label: 'Light sensitivity' },
-                                        { key: 'soundSensitivity', label: 'Sound sensitivity' },
-                                    ].map(({ key, label }) => (
-                                        <label key={key} className={`flex items-center gap-2 p-2 rounded-lg border cursor-pointer ${
-                                            migraineData[key] ? 'bg-purple-100 dark:bg-purple-900/50 border-purple-300 dark:border-purple-700' : 'bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600'
-                                        }`}>
-                                            <input type="checkbox" checked={migraineData[key]}
-                                                   onChange={(e) => setMigraineData(prev => ({ ...prev, [key]: e.target.checked }))}
-                                                   className="w-4 h-4 text-purple-600 rounded" />
-                                            <span className="text-sm text-gray-700 dark:text-gray-300">{label}</span>
-                                        </label>
-                                    ))}
-                                </div>
-                            </div>
-
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Known Triggers</label>
-                                <input type="text" value={migraineData.triggers}
-                                       onChange={(e) => setMigraineData(prev => ({ ...prev, triggers: e.target.value }))}
-                                       placeholder="e.g., stress, bright lights"
-                                       className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white" />
-                            </div>
-                        </div>
-                    )}
-
-                    {/* Sleep Fields */}
-                    {isSleepRelated && (
-                        <div className="bg-indigo-50 dark:bg-indigo-900/30 p-4 rounded-lg border border-indigo-200 dark:border-indigo-800 space-y-4">
-                            <h3 className="font-medium text-indigo-900 dark:text-indigo-200">Sleep Details</h3>
-
-                            <div className="grid grid-cols-2 gap-3">
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Hours Slept</label>
-                                    <input type="number" min="0" max="24" step="0.5"
-                                           value={sleepData.hoursSlept}
-                                           onChange={(e) => setSleepData(prev => ({ ...prev, hoursSlept: e.target.value }))}
-                                           className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white" />
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Times Woken Up</label>
-                                    <input type="number" min="0" max="20"
-                                           value={sleepData.wakeUps}
-                                           onChange={(e) => setSleepData(prev => ({ ...prev, wakeUps: e.target.value }))}
-                                           className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white" />
-                                </div>
-                            </div>
-
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Sleep Quality: {sleepData.quality}/10</label>
-                                <input type="range" min="0" max="10" value={sleepData.quality}
-                                       onChange={(e) => setSleepData(prev => ({ ...prev, quality: Number(e.target.value) }))}
-                                       className="w-full" />
-                            </div>
-
-                            <div className="grid grid-cols-1 gap-2">
-                                {[
-                                    { key: 'troubleFallingAsleep', label: 'Trouble falling asleep' },
-                                    { key: 'troubleStayingAsleep', label: 'Trouble staying asleep' },
-                                    { key: 'nightmares', label: 'Nightmares/night terrors' },
-                                ].map(({ key, label }) => (
-                                    <label key={key} className={`flex items-center gap-2 p-2 rounded-lg border cursor-pointer ${
-                                        sleepData[key] ? 'bg-indigo-100 dark:bg-indigo-900/50 border-indigo-300 dark:border-indigo-700' : 'bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600'
-                                    }`}>
-                                        <input type="checkbox" checked={sleepData[key]}
-                                               onChange={(e) => setSleepData(prev => ({ ...prev, [key]: e.target.checked }))}
-                                               className="w-4 h-4 text-indigo-600 rounded" />
-                                        <span className="text-sm text-gray-700 dark:text-gray-300">{label}</span>
-                                    </label>
-                                ))}
-                            </div>
-
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Feel rested?</label>
-                                <div className="flex gap-3">
-                                    <button type="button"
-                                            onClick={() => setSleepData(prev => ({ ...prev, feelRested: true }))}
-                                            className={`flex-1 py-2 px-4 rounded-lg border-2 font-medium ${
-                                                sleepData.feelRested === true
-                                                    ? 'bg-green-100 dark:bg-green-900/50 border-green-500 text-green-700 dark:text-green-300'
-                                                    : 'bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300'
-                                            }`}>Yes</button>
-                                    <button type="button"
-                                            onClick={() => setSleepData(prev => ({ ...prev, feelRested: false }))}
-                                            className={`flex-1 py-2 px-4 rounded-lg border-2 font-medium ${
-                                                sleepData.feelRested === false
-                                                    ? 'bg-red-100 dark:bg-red-900/50 border-red-500 text-red-700 dark:text-red-300'
-                                                    : 'bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300'
-                                            }`}>No</button>
-                                </div>
-                            </div>
-                        </div>
-                    )}
-
-                    {/* PTSD Fields */}
-                    {isPTSDRelated && (
-                        <div className="bg-amber-50 dark:bg-amber-900/30 p-4 rounded-lg border border-amber-200 dark:border-amber-800 space-y-4">
-                            <h3 className="font-medium text-amber-900 dark:text-amber-200">Mental Health Details</h3>
-
-                            <div className="grid grid-cols-1 gap-2">
-                                {[
-                                    { key: 'flashbacks', label: 'Flashbacks' },
-                                    { key: 'intrusiveThoughts', label: 'Intrusive thoughts' },
-                                    { key: 'avoidance', label: 'Avoidance' },
-                                    { key: 'emotionalNumbering', label: 'Emotional numbness' },
-                                    { key: 'hypervigilance', label: 'Hypervigilance' },
-                                    { key: 'exaggeratedStartle', label: 'Startle response' },
-                                ].map(({ key, label }) => (
-                                    <label key={key} className={`flex items-center gap-2 p-2 rounded-lg border cursor-pointer ${
-                                        ptsdData[key] ? 'bg-amber-100 dark:bg-amber-900/50 border-amber-300 dark:border-amber-700' : 'bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600'
-                                    }`}>
-                                        <input type="checkbox" checked={ptsdData[key]}
-                                               onChange={(e) => setPtsdData(prev => ({ ...prev, [key]: e.target.checked }))}
-                                               className="w-4 h-4 text-amber-600 rounded" />
-                                        <span className="text-sm text-gray-700 dark:text-gray-300">{label}</span>
-                                    </label>
-                                ))}
-                            </div>
-
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Trigger</label>
-                                <input type="text" value={ptsdData.triggerDescription}
-                                       onChange={(e) => setPtsdData(prev => ({ ...prev, triggerDescription: e.target.value }))}
-                                       placeholder="What triggered this?"
-                                       className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white" />
-                            </div>
-                        </div>
-                    )}
-
-                    {/* Pain Fields */}
-                    {isPainRelated && (
-                        <div className="bg-rose-50 dark:bg-rose-900/30 p-4 rounded-lg border border-rose-200 dark:border-rose-800 space-y-4">
-                            <h3 className="font-medium text-rose-900 dark:text-rose-200">Pain Details</h3>
-
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Pain Type</label>
-                                <select value={painData.painType}
-                                        onChange={(e) => setPainData(prev => ({ ...prev, painType: e.target.value }))}
-                                        className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
-                                    <option value="">Select type...</option>
-                                    <option value="sharp">Sharp/Stabbing</option>
-                                    <option value="dull">Dull/Aching</option>
-                                    <option value="burning">Burning</option>
-                                    <option value="throbbing">Throbbing</option>
-                                    <option value="shooting">Shooting</option>
-                                    <option value="stiff">Stiffness</option>
-                                </select>
-                            </div>
-
-                            <div className="grid grid-cols-2 gap-2">
-                                <label className={`flex items-center gap-2 p-2 rounded-lg border cursor-pointer ${
-                                    painData.radiating ? 'bg-rose-100 dark:bg-rose-900/50 border-rose-300 dark:border-rose-700' : 'bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600'
-                                }`}>
-                                    <input type="checkbox" checked={painData.radiating}
-                                           onChange={(e) => setPainData(prev => ({ ...prev, radiating: e.target.checked }))}
-                                           className="w-4 h-4 text-rose-600 rounded" />
-                                    <span className="text-sm text-gray-700 dark:text-gray-300">Radiating</span>
-                                </label>
-                                <label className={`flex items-center gap-2 p-2 rounded-lg border cursor-pointer ${
-                                    painData.flareUp ? 'bg-rose-100 dark:bg-rose-900/50 border-rose-300 dark:border-rose-700' : 'bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600'
-                                }`}>
-                                    <input type="checkbox" checked={painData.flareUp}
-                                           onChange={(e) => setPainData(prev => ({ ...prev, flareUp: e.target.checked }))}
-                                           className="w-4 h-4 text-rose-600 rounded" />
-                                    <span className="text-sm text-gray-700 dark:text-gray-300">Flare-up</span>
-                                </label>
-                            </div>
-
-                            {painData.radiating && (
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Radiates to</label>
-                                    <input type="text" value={painData.radiatingTo}
-                                           onChange={(e) => setPainData(prev => ({ ...prev, radiatingTo: e.target.value }))}
-                                           placeholder="e.g., down left leg"
-                                           className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white" />
-                                </div>
-                            )}
-
-                            <label className={`flex items-center gap-2 p-3 rounded-lg border cursor-pointer ${
-                                painData.limitedRangeOfMotion ? 'bg-rose-100 dark:bg-rose-900/50 border-rose-300 dark:border-rose-700' : 'bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600'
-                            }`}>
-                                <input type="checkbox" checked={painData.limitedRangeOfMotion}
-                                       onChange={(e) => setPainData(prev => ({ ...prev, limitedRangeOfMotion: e.target.checked }))}
-                                       className="w-4 h-4 text-rose-600 rounded" />
-                                <span className="text-sm text-gray-700 dark:text-gray-300">Limited range of motion</span>
-                            </label>
-
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Activities Affected</label>
-                                <div className="grid grid-cols-2 gap-2">
-                                    {['Walking', 'Standing', 'Sitting', 'Sleeping', 'Lifting', 'Bending', 'Driving', 'Working'].map(activity => (
-                                        <label key={activity} className={`flex items-center gap-2 p-2 rounded-lg border cursor-pointer ${
-                                            painData.affectedActivities.includes(activity) ? 'bg-rose-100 dark:bg-rose-900/50 border-rose-300 dark:border-rose-700' : 'bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600'
-                                        }`}>
-                                            <input type="checkbox" checked={painData.affectedActivities.includes(activity)}
-                                                   onChange={() => toggleActivity(activity)}
-                                                   className="w-4 h-4 text-rose-600 rounded" />
-                                            <span className="text-sm text-gray-700 dark:text-gray-300">{activity}</span>
-                                        </label>
-                                    ))}
-                                </div>
-                            </div>
-                        </div>
-                    )}
-
-                    {/* Medications */}
-                    {medications.length > 0 && (
-                        <div className="bg-teal-50 dark:bg-teal-900/30 p-4 rounded-lg border border-teal-200 dark:border-teal-800">
-                            <h3 className="font-medium text-teal-900 dark:text-teal-200 mb-3">Medications Taken</h3>
-                            <div className="space-y-2">
-                                {medications.filter(m => m.isActive).map(med => (
-                                    <label key={med.id} className={`flex items-center gap-2 p-2 rounded-lg border cursor-pointer ${
-                                        selectedMedications.includes(med.id)
-                                            ? 'bg-teal-100 dark:bg-teal-900/50 border-teal-400 dark:border-teal-600'
-                                            : 'bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600'
-                                    }`}>
-                                        <input type="checkbox" checked={selectedMedications.includes(med.id)}
-                                               onChange={(e) => {
-                                                   if (e.target.checked) {
-                                                       setSelectedMedications(prev => [...prev, med.id]);
-                                                   } else {
-                                                       setSelectedMedications(prev => prev.filter(id => id !== med.id));
-                                                   }
-                                               }}
-                                               className="w-4 h-4 text-teal-600 rounded" />
-                                        <span className="text-sm text-gray-700 dark:text-gray-300">{med.name} ({med.dosage})</span>
-                                    </label>
-                                ))}
-                            </div>
-                        </div>
-                    )}
-
-                    {/* Notes */}
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Notes</label>
-                        <textarea value={notes} onChange={(e) => setNotes(e.target.value)}
-                                  placeholder="Additional notes..."
-                                  rows={3}
-                                  className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500" />
-                    </div>
-                </div>
-
-                <div className="p-4 border-t border-gray-200 dark:border-gray-700 flex gap-2 sticky bottom-0 bg-white dark:bg-gray-800">
-                    <button onClick={onClose}
-                            className="flex-1 py-2 px-4 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700">
-                        Cancel
-                    </button>
-                    <button onClick={handleSave}
-                            className="flex-1 py-3 px-4 bg-blue-900 dark:bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-800 dark:hover:bg-blue-700">
-                        Save Changes
-                    </button>
-                </div>
+  return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div className="bg-white dark:bg-gray-800 rounded-lg w-full max-w-md max-h-[90vh] overflow-y-auto">
+          <div className="p-4 border-b border-gray-200 dark:border-gray-700 sticky top-0 bg-white dark:bg-gray-800">
+            <div className="flex justify-between items-start">
+              <div>
+                <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Edit Entry</h2>
+                <p className="text-sm text-gray-500 dark:text-gray-400">{log.symptomName}</p>
+                <p className="text-xs text-gray-400 dark:text-gray-500">{logDate}</p>
+              </div>
+              <button onClick={onClose} className="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 text-xl">✕</button>
             </div>
+          </div>
+
+          <div className="p-4 space-y-4">
+            {/* ============================================ */}
+            {/* PHASE 1A: UNIVERSAL ENHANCEMENT FIELDS */}
+            {/* ============================================ */}
+            <div className="bg-gray-50 dark:bg-gray-700/50 p-4 rounded-lg border border-gray-200 dark:border-gray-600 space-y-4">
+              <h3 className="font-medium text-gray-900 dark:text-gray-100 flex items-center gap-2">
+                <span>📋</span> Symptom Details
+              </h3>
+
+              {/* Flare-Up Toggle */}
+              <div>
+                <label className={`flex items-center gap-3 p-3 rounded-lg border-2 cursor-pointer transition-all ${
+                    isFlareUp
+                        ? 'bg-orange-100 dark:bg-orange-900/30 border-orange-400 dark:border-orange-600'
+                        : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-600 hover:border-orange-300 dark:hover:border-orange-700'
+                }`}>
+                  <input
+                      type="checkbox"
+                      checked={isFlareUp}
+                      onChange={(e) => setIsFlareUp(e.target.checked)}
+                      className="w-5 h-5 text-orange-600 rounded"
+                  />
+                  <div>
+                                    <span className="font-medium text-gray-900 dark:text-gray-100">
+                                        🔥 This is a flare-up
+                                    </span>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                      Symptom is worse than usual baseline
+                    </p>
+                  </div>
+                </label>
+              </div>
+
+              {/* Duration and Time of Day */}
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    Duration
+                  </label>
+                  <select
+                      value={duration}
+                      onChange={(e) => setDuration(e.target.value)}
+                      className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm"
+                  >
+                    <option value="">How long?</option>
+                    <option value="just-started">Just started</option>
+                    <option value="minutes">Minutes</option>
+                    <option value="hours">Hours</option>
+                    <option value="days">Days</option>
+                    <option value="weeks">Weeks</option>
+                    <option value="months">Months+</option>
+                    <option value="ongoing">Ongoing/Chronic</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    Time of Day
+                  </label>
+                  <select
+                      value={timeOfDay}
+                      onChange={(e) => setTimeOfDay(e.target.value)}
+                      className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm"
+                  >
+                    <option value="">When?</option>
+                    <option value="morning">Morning</option>
+                    <option value="afternoon">Afternoon</option>
+                    <option value="evening">Evening</option>
+                    <option value="night">Night</option>
+                    <option value="all-day">All Day</option>
+                    <option value="varies">Varies</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            {/* Severity Slider */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Severity Level</label>
+              <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                <input type="range" min="0" max="10" value={severity}
+                       onChange={(e) => setSeverity(Number(e.target.value))} className="w-full" />
+                <div className="flex justify-between mt-2">
+                  <span className="text-xs text-gray-500 dark:text-gray-400">0</span>
+                  <span className={`text-lg font-bold ${severityInfo.color}`}>
+                                    {severity} - {severityInfo.label}
+                                </span>
+                  <span className="text-xs text-gray-500 dark:text-gray-400">10</span>
+                </div>
+              </div>
+            </div>
+
+            {/* ============================================ */}
+            {/* PHASE 1B: GI CONDITION FIELDS */}
+            {/* ============================================ */}
+            {isGIRelated && (
+                <div className="bg-amber-50 dark:bg-amber-900/20 p-4 rounded-lg border border-amber-200 dark:border-amber-800 space-y-4">
+                  <h3 className="font-medium text-amber-900 dark:text-amber-200 flex items-center gap-2">
+                    <span>🩺</span> GI Symptom Details
+                  </h3>
+
+                  {/* Bristol Stool Scale */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      Bristol Stool Scale
+                    </label>
+                    <div className="grid grid-cols-7 gap-1 mb-2">
+                      {[1, 2, 3, 4, 5, 6, 7].map(num => (
+                          <button
+                              key={num}
+                              type="button"
+                              onClick={() => setGIData(prev => ({ ...prev, bristolScale: num }))}
+                              className={`py-2 px-1 rounded-lg border-2 font-bold text-sm transition-all ${
+                                  giData.bristolScale === num
+                                      ? num <= 2 ? 'bg-orange-200 dark:bg-orange-900 border-orange-500 text-orange-800 dark:text-orange-200'
+                                          : num <= 4 ? 'bg-green-200 dark:bg-green-900 border-green-500 text-green-800 dark:text-green-200'
+                                              : 'bg-yellow-200 dark:bg-yellow-900 border-yellow-500 text-yellow-800 dark:text-yellow-200'
+                                      : 'bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300'
+                              }`}
+                          >
+                            {num}
+                          </button>
+                      ))}
+                    </div>
+                    {giData.bristolScale && (
+                        <p className="text-xs text-gray-600 dark:text-gray-400 bg-white dark:bg-gray-800 p-2 rounded">
+                          Type {giData.bristolScale}: {bristolDescriptions[giData.bristolScale]}
+                        </p>
+                    )}
+                    <button
+                        type="button"
+                        onClick={() => setGIData(prev => ({ ...prev, bristolScale: null }))}
+                        className="text-xs text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 mt-1"
+                    >
+                      Clear selection
+                    </button>
+                  </div>
+
+                  {/* Frequency and Urgency */}
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        Episodes Today
+                      </label>
+                      <input
+                          type="number"
+                          min="0"
+                          max="50"
+                          value={giData.frequencyPerDay}
+                          onChange={(e) => setGIData(prev => ({ ...prev, frequencyPerDay: e.target.value }))}
+                          placeholder="# times"
+                          className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        Urgency Level
+                      </label>
+                      <select
+                          value={giData.urgencyLevel}
+                          onChange={(e) => setGIData(prev => ({ ...prev, urgencyLevel: e.target.value }))}
+                          className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm"
+                      >
+                        <option value="">Select...</option>
+                        <option value="none">None</option>
+                        <option value="mild">Mild</option>
+                        <option value="moderate">Moderate</option>
+                        <option value="severe">Severe</option>
+                        <option value="incontinence">Incontinence</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  {/* Blood Present */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      Blood Present?
+                    </label>
+                    <div className="flex gap-3">
+                      <button
+                          type="button"
+                          onClick={() => setGIData(prev => ({ ...prev, bloodPresent: true }))}
+                          className={`flex-1 py-2 px-4 rounded-lg border-2 font-medium ${
+                              giData.bloodPresent === true
+                                  ? 'bg-red-100 dark:bg-red-900/50 border-red-500 text-red-700 dark:text-red-300'
+                                  : 'bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300'
+                          }`}
+                      >Yes</button>
+                      <button
+                          type="button"
+                          onClick={() => setGIData(prev => ({ ...prev, bloodPresent: false }))}
+                          className={`flex-1 py-2 px-4 rounded-lg border-2 font-medium ${
+                              giData.bloodPresent === false
+                                  ? 'bg-green-100 dark:bg-green-900/50 border-green-500 text-green-700 dark:text-green-300'
+                                  : 'bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300'
+                          }`}
+                      >No</button>
+                    </div>
+                  </div>
+
+                  {/* Bloating */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      Bloating Severity
+                    </label>
+                    <select
+                        value={giData.bloatingSeverity}
+                        onChange={(e) => setGIData(prev => ({ ...prev, bloatingSeverity: e.target.value }))}
+                        className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                    >
+                      <option value="">Select...</option>
+                      <option value="none">None</option>
+                      <option value="mild">Mild</option>
+                      <option value="moderate">Moderate</option>
+                      <option value="severe">Severe</option>
+                    </select>
+                  </div>
+
+                  {/* Pain Location */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      Pain Location
+                    </label>
+                    <div className="grid grid-cols-3 gap-2">
+                      {[
+                        { id: 'upper-left', label: 'UL' },
+                        { id: 'upper-center', label: 'UC' },
+                        { id: 'upper-right', label: 'UR' },
+                        { id: 'lower-left', label: 'LL' },
+                        { id: 'lower-center', label: 'LC' },
+                        { id: 'lower-right', label: 'LR' },
+                      ].map(({ id, label }) => (
+                          <button
+                              key={id}
+                              type="button"
+                              onClick={() => setGIData(prev => ({
+                                ...prev,
+                                abdominalPainLocation: prev.abdominalPainLocation === id ? '' : id
+                              }))}
+                              className={`py-2 px-2 rounded-lg border text-xs font-medium ${
+                                  giData.abdominalPainLocation === id
+                                      ? 'bg-amber-200 dark:bg-amber-900 border-amber-500 text-amber-800 dark:text-amber-200'
+                                      : 'bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300'
+                              }`}
+                          >
+                            {label}
+                          </button>
+                      ))}
+                    </div>
+                    <button
+                        type="button"
+                        onClick={() => setGIData(prev => ({ ...prev, abdominalPainLocation: 'diffuse' }))}
+                        className={`w-full mt-2 py-2 px-4 rounded-lg border text-sm font-medium ${
+                            giData.abdominalPainLocation === 'diffuse'
+                                ? 'bg-amber-200 dark:bg-amber-900 border-amber-500 text-amber-800 dark:text-amber-200'
+                                : 'bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300'
+                        }`}
+                    >
+                      Diffuse
+                    </button>
+                  </div>
+
+                  {/* Additional Toggles */}
+                  <div className="space-y-2">
+                    <label className={`flex items-center gap-2 p-2 rounded-lg border cursor-pointer ${
+                        giData.mealRelated === true
+                            ? 'bg-amber-100 dark:bg-amber-900/50 border-amber-300 dark:border-amber-700'
+                            : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700'
+                    }`}>
+                      <input
+                          type="checkbox"
+                          checked={giData.mealRelated === true}
+                          onChange={(e) => setGIData(prev => ({ ...prev, mealRelated: e.target.checked ? true : null }))}
+                          className="w-4 h-4 text-amber-600 rounded"
+                      />
+                      <span className="text-sm text-gray-700 dark:text-gray-300">Worse after eating</span>
+                    </label>
+
+                    <label className={`flex items-center gap-2 p-2 rounded-lg border cursor-pointer ${
+                        giData.nighttimeSymptoms
+                            ? 'bg-amber-100 dark:bg-amber-900/50 border-amber-300 dark:border-amber-700'
+                            : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700'
+                    }`}>
+                      <input
+                          type="checkbox"
+                          checked={giData.nighttimeSymptoms}
+                          onChange={(e) => setGIData(prev => ({ ...prev, nighttimeSymptoms: e.target.checked }))}
+                          className="w-4 h-4 text-amber-600 rounded"
+                      />
+                      <span className="text-sm text-gray-700 dark:text-gray-300">Nighttime symptoms</span>
+                    </label>
+                  </div>
+                </div>
+            )}
+
+            {/* Migraine Fields */}
+            {isMigraine && (
+                <div className="bg-purple-50 dark:bg-purple-900/30 p-4 rounded-lg border border-purple-200 dark:border-purple-800 space-y-4">
+                  <h3 className="font-medium text-purple-900 dark:text-purple-200">Migraine Details</h3>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Duration</label>
+                    <select value={migraineData.duration}
+                            onChange={(e) => setMigraineData(prev => ({ ...prev, duration: e.target.value }))}
+                            className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
+                      <option value="">Select duration...</option>
+                      <option value="less-than-1h">Less than 1 hour</option>
+                      <option value="1-4h">1-4 hours</option>
+                      <option value="4-24h">4-24 hours</option>
+                      <option value="1-2d">1-2 days</option>
+                      <option value="more-than-2d">More than 2 days</option>
+                      <option value="ongoing">Still ongoing</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      Was this migraine prostrating? <span className="text-red-500">*</span>
+                    </label>
+                    <div className="flex gap-3">
+                      <button type="button"
+                              onClick={() => setMigraineData(prev => ({ ...prev, prostrating: true }))}
+                              className={`flex-1 py-2 px-4 rounded-lg border-2 font-medium ${
+                                  migraineData.prostrating === true
+                                      ? 'bg-red-100 dark:bg-red-900/50 border-red-500 text-red-700 dark:text-red-300'
+                                      : 'bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300'
+                              }`}>Yes</button>
+                      <button type="button"
+                              onClick={() => setMigraineData(prev => ({ ...prev, prostrating: false }))}
+                              className={`flex-1 py-2 px-4 rounded-lg border-2 font-medium ${
+                                  migraineData.prostrating === false
+                                      ? 'bg-green-100 dark:bg-green-900/50 border-green-500 text-green-700 dark:text-green-300'
+                                      : 'bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300'
+                              }`}>No</button>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Associated Symptoms</label>
+                    <div className="grid grid-cols-2 gap-2">
+                      {[
+                        { key: 'aura', label: 'Aura' },
+                        { key: 'nausea', label: 'Nausea' },
+                        { key: 'lightSensitivity', label: 'Light sensitivity' },
+                        { key: 'soundSensitivity', label: 'Sound sensitivity' },
+                      ].map(({ key, label }) => (
+                          <label key={key} className={`flex items-center gap-2 p-2 rounded-lg border cursor-pointer ${
+                              migraineData[key] ? 'bg-purple-100 dark:bg-purple-900/50 border-purple-300 dark:border-purple-700' : 'bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600'
+                          }`}>
+                            <input type="checkbox" checked={migraineData[key]}
+                                   onChange={(e) => setMigraineData(prev => ({ ...prev, [key]: e.target.checked }))}
+                                   className="w-4 h-4 text-purple-600 rounded" />
+                            <span className="text-sm text-gray-700 dark:text-gray-300">{label}</span>
+                          </label>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Known Triggers</label>
+                    <input type="text" value={migraineData.triggers}
+                           onChange={(e) => setMigraineData(prev => ({ ...prev, triggers: e.target.value }))}
+                           placeholder="e.g., stress, bright lights"
+                           className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white" />
+                  </div>
+                </div>
+            )}
+
+            {/* Sleep Fields */}
+            {isSleepRelated && (
+                <div className="bg-indigo-50 dark:bg-indigo-900/30 p-4 rounded-lg border border-indigo-200 dark:border-indigo-800 space-y-4">
+                  <h3 className="font-medium text-indigo-900 dark:text-indigo-200">Sleep Details</h3>
+
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Hours Slept</label>
+                      <input type="number" min="0" max="24" step="0.5"
+                             value={sleepData.hoursSlept}
+                             onChange={(e) => setSleepData(prev => ({ ...prev, hoursSlept: e.target.value }))}
+                             placeholder="Hours"
+                             className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white" />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Times Woken Up</label>
+                      <input type="number" min="0" max="20"
+                             value={sleepData.wakeUps}
+                             onChange={(e) => setSleepData(prev => ({ ...prev, wakeUps: e.target.value }))}
+                             placeholder="Times"
+                             className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white" />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      Sleep Quality: {sleepData.quality}/10
+                    </label>
+                    <input type="range" min="0" max="10" value={sleepData.quality}
+                           onChange={(e) => setSleepData(prev => ({ ...prev, quality: Number(e.target.value) }))}
+                           className="w-full" />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Sleep Issues</label>
+                    <div className="grid grid-cols-1 gap-2">
+                      {[
+                        { key: 'troubleFallingAsleep', label: 'Trouble falling asleep' },
+                        { key: 'troubleStayingAsleep', label: 'Trouble staying asleep' },
+                        { key: 'nightmares', label: 'Nightmares/night terrors' },
+                      ].map(({ key, label }) => (
+                          <label key={key} className={`flex items-center gap-2 p-2 rounded-lg border cursor-pointer ${
+                              sleepData[key] ? 'bg-indigo-100 dark:bg-indigo-900/50 border-indigo-300 dark:border-indigo-700' : 'bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600'
+                          }`}>
+                            <input type="checkbox" checked={sleepData[key]}
+                                   onChange={(e) => setSleepData(prev => ({ ...prev, [key]: e.target.checked }))}
+                                   className="w-4 h-4 text-indigo-600 rounded" />
+                            <span className="text-sm text-gray-700 dark:text-gray-300">{label}</span>
+                          </label>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Feel rested upon waking?</label>
+                    <div className="flex gap-3">
+                      <button type="button"
+                              onClick={() => setSleepData(prev => ({ ...prev, feelRested: true }))}
+                              className={`flex-1 py-2 px-4 rounded-lg border-2 font-medium ${
+                                  sleepData.feelRested === true
+                                      ? 'bg-green-100 dark:bg-green-900/50 border-green-500 text-green-700 dark:text-green-300'
+                                      : 'bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300'
+                              }`}>Yes</button>
+                      <button type="button"
+                              onClick={() => setSleepData(prev => ({ ...prev, feelRested: false }))}
+                              className={`flex-1 py-2 px-4 rounded-lg border-2 font-medium ${
+                                  sleepData.feelRested === false
+                                      ? 'bg-red-100 dark:bg-red-900/50 border-red-500 text-red-700 dark:text-red-300'
+                                      : 'bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300'
+                              }`}>No</button>
+                    </div>
+                  </div>
+                </div>
+            )}
+
+            {/* PTSD Fields */}
+            {isPTSDRelated && (
+                <div className="bg-amber-50 dark:bg-amber-900/30 p-4 rounded-lg border border-amber-200 dark:border-amber-800 space-y-4">
+                  <h3 className="font-medium text-amber-900 dark:text-amber-200">Mental Health Details</h3>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Associated Experiences</label>
+                    <div className="grid grid-cols-1 gap-2">
+                      {[
+                        { key: 'flashbacks', label: 'Flashbacks' },
+                        { key: 'intrusiveThoughts', label: 'Intrusive thoughts' },
+                        { key: 'avoidance', label: 'Avoidance of triggers/situations' },
+                        { key: 'emotionalNumbering', label: 'Emotional numbness' },
+                        { key: 'hypervigilance', label: 'Hypervigilance' },
+                        { key: 'exaggeratedStartle', label: 'Exaggerated startle response' },
+                      ].map(({ key, label }) => (
+                          <label key={key} className={`flex items-center gap-2 p-2 rounded-lg border cursor-pointer ${
+                              ptsdData[key] ? 'bg-amber-100 dark:bg-amber-900/50 border-amber-300 dark:border-amber-700' : 'bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600'
+                          }`}>
+                            <input type="checkbox" checked={ptsdData[key]}
+                                   onChange={(e) => setPtsdData(prev => ({ ...prev, [key]: e.target.checked }))}
+                                   className="w-4 h-4 text-amber-600 rounded" />
+                            <span className="text-sm text-gray-700 dark:text-gray-300">{label}</span>
+                          </label>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Trigger (if known)</label>
+                    <input type="text" value={ptsdData.triggerDescription}
+                           onChange={(e) => setPtsdData(prev => ({ ...prev, triggerDescription: e.target.value }))}
+                           placeholder="What triggered this episode?"
+                           className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white" />
+                  </div>
+                </div>
+            )}
+
+            {/* Pain Fields */}
+            {isPainRelated && (
+                <div className="bg-rose-50 dark:bg-rose-900/30 p-4 rounded-lg border border-rose-200 dark:border-rose-800 space-y-4">
+                  <h3 className="font-medium text-rose-900 dark:text-rose-200">Pain Details</h3>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Pain Type</label>
+                    <select value={painData.painType}
+                            onChange={(e) => setPainData(prev => ({ ...prev, painType: e.target.value }))}
+                            className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
+                      <option value="">Select type...</option>
+                      <option value="sharp">Sharp/Stabbing</option>
+                      <option value="dull">Dull/Aching</option>
+                      <option value="burning">Burning</option>
+                      <option value="throbbing">Throbbing</option>
+                      <option value="shooting">Shooting</option>
+                      <option value="stiff">Stiffness</option>
+                    </select>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-2">
+                    <label className={`flex items-center gap-2 p-2 rounded-lg border cursor-pointer ${
+                        painData.radiating ? 'bg-rose-100 dark:bg-rose-900/50 border-rose-300 dark:border-rose-700' : 'bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600'
+                    }`}>
+                      <input type="checkbox" checked={painData.radiating}
+                             onChange={(e) => setPainData(prev => ({ ...prev, radiating: e.target.checked }))}
+                             className="w-4 h-4 text-rose-600 rounded" />
+                      <span className="text-sm text-gray-700 dark:text-gray-300">Radiating pain</span>
+                    </label>
+                    <label className={`flex items-center gap-2 p-2 rounded-lg border cursor-pointer ${
+                        painData.limitedRangeOfMotion ? 'bg-rose-100 dark:bg-rose-900/50 border-rose-300 dark:border-rose-700' : 'bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600'
+                    }`}>
+                      <input type="checkbox" checked={painData.limitedRangeOfMotion}
+                             onChange={(e) => setPainData(prev => ({ ...prev, limitedRangeOfMotion: e.target.checked }))}
+                             className="w-4 h-4 text-rose-600 rounded" />
+                      <span className="text-sm text-gray-700 dark:text-gray-300">Limited ROM</span>
+                    </label>
+                  </div>
+
+                  {painData.radiating && (
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Radiates to</label>
+                        <input type="text" value={painData.radiatingTo}
+                               onChange={(e) => setPainData(prev => ({ ...prev, radiatingTo: e.target.value }))}
+                               placeholder="e.g., down left leg, into shoulder"
+                               className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white" />
+                      </div>
+                  )}
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Activities Affected</label>
+                    <div className="grid grid-cols-2 gap-2">
+                      {['Walking', 'Standing', 'Sitting', 'Sleeping', 'Lifting', 'Bending', 'Driving', 'Working'].map(activity => (
+                          <label key={activity} className={`flex items-center gap-2 p-2 rounded-lg border cursor-pointer ${
+                              painData.affectedActivities.includes(activity) ? 'bg-rose-100 dark:bg-rose-900/50 border-rose-300 dark:border-rose-700' : 'bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600'
+                          }`}>
+                            <input type="checkbox" checked={painData.affectedActivities.includes(activity)}
+                                   onChange={() => toggleActivity(activity)}
+                                   className="w-4 h-4 text-rose-600 rounded" />
+                            <span className="text-sm text-gray-700 dark:text-gray-300">{activity}</span>
+                          </label>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+            )}
+
+            {/* Medications */}
+            {medications.length > 0 && (
+                <div className="bg-teal-50 dark:bg-teal-900/30 p-4 rounded-lg border border-teal-200 dark:border-teal-800">
+                  <h3 className="font-medium text-teal-900 dark:text-teal-200 mb-3">Medications Taken</h3>
+                  <div className="space-y-2">
+                    {medications.filter(m => m.isActive).map(med => (
+                        <label key={med.id} className={`flex items-center gap-2 p-2 rounded-lg border cursor-pointer ${
+                            selectedMedications.includes(med.id)
+                                ? 'bg-teal-100 dark:bg-teal-900/50 border-teal-400 dark:border-teal-600'
+                                : 'bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600'
+                        }`}>
+                          <input type="checkbox" checked={selectedMedications.includes(med.id)}
+                                 onChange={(e) => {
+                                   if (e.target.checked) {
+                                     setSelectedMedications(prev => [...prev, med.id]);
+                                   } else {
+                                     setSelectedMedications(prev => prev.filter(id => id !== med.id));
+                                   }
+                                 }}
+                                 className="w-4 h-4 text-teal-600 rounded" />
+                          <span className="text-sm text-gray-700 dark:text-gray-300">{med.name} ({med.dosage})</span>
+                        </label>
+                    ))}
+                  </div>
+                </div>
+            )}
+
+            {/* Notes */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Notes</label>
+              <textarea value={notes} onChange={(e) => setNotes(e.target.value)}
+                        placeholder="Additional notes..."
+                        rows={3}
+                        className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500" />
+            </div>
+          </div>
+
+          <div className="p-4 border-t border-gray-200 dark:border-gray-700 flex gap-2 sticky bottom-0 bg-white dark:bg-gray-800">
+            <button onClick={onClose}
+                    className="flex-1 py-2 px-4 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700">
+              Cancel
+            </button>
+            <button onClick={handleSave}
+                    className="flex-1 py-3 px-4 bg-blue-900 dark:bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-800 dark:hover:bg-blue-700">
+              Save Changes
+            </button>
+          </div>
         </div>
-    );
+      </div>
+  );
 };
 
 export default EditLogModal;

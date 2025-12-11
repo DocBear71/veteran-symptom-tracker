@@ -5,7 +5,6 @@ import QuickLog from './QuickLog';
 import AddChronicModal from './AddChronicModal';
 
 const SymptomLogger = ({ onLogSaved }) => {
-  // Two-step symptom selection
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedSymptom, setSelectedSymptom] = useState('');
 
@@ -14,6 +13,10 @@ const SymptomLogger = ({ onLogSaved }) => {
   const [showSuccess, setShowSuccess] = useState(false);
   const [customSymptoms, setCustomSymptoms] = useState([]);
   const [refreshQuickLog, setRefreshQuickLog] = useState(0);
+
+  const [isFlareUp, setIsFlareUp] = useState(false);
+  const [duration, setDuration] = useState('');
+  const [timeOfDay, setTimeOfDay] = useState('');
 
   // Custom symptom form state
   const [showCustomForm, setShowCustomForm] = useState(false);
@@ -73,17 +76,64 @@ const SymptomLogger = ({ onLogSaved }) => {
     flareUp: false,
   });
 
+  const [giData, setGIData] = useState({
+    bristolScale: null,          // 1-7 Bristol Stool Scale
+    frequencyPerDay: '',         // Number of episodes/bowel movements
+    urgencyLevel: '',            // none/mild/moderate/severe/incontinence
+    bloodPresent: null,          // true/false/null
+    bloatingSeverity: '',        // none/mild/moderate/severe
+    abdominalPainLocation: '',   // upper-right/upper-left/lower-right/lower-left/central/diffuse
+    mealRelated: null,           // true/false - symptoms worse after eating
+    nighttimeSymptoms: false,    // woken up by symptoms
+  });
+
   useEffect(() => {
     setCustomSymptoms(getCustomSymptoms());
     setMedications(getMedications());
   }, []);
 
-  // Determine which special form to show
+  // Determine which special form to show - EXPANDED DETECTION
   const isMigraineSelected = selectedSymptom === 'migraine';
-  const isSleepSelected = selectedSymptom === 'sleep-issues';
+
+  // Sleep: match sleep-related symptoms and categories
+  const isSleepSelected = selectedSymptom === 'sleep-issues' ||
+      selectedSymptom?.includes('insomnia') ||
+      selectedSymptom?.includes('sleep') ||
+      selectedCategory === 'sleep-disorders';
+
   const isNightmareSelected = selectedSymptom === 'nightmares';
-  const isPTSDRelated = ['anxiety', 'hypervigilance', 'nightmares', 'irritability'].includes(selectedSymptom);
-  const isPainSelected = ['back-pain', 'neck-pain', 'knee-pain', 'shoulder-pain', 'hip-pain', 'joint-pain'].includes(selectedSymptom);
+
+  // PTSD/Mental Health: broader matching for mental health symptoms
+  const isPTSDRelated = selectedSymptom?.includes('anxiety') ||
+      selectedSymptom?.includes('ptsd') ||
+      selectedSymptom?.includes('panic') ||
+      selectedSymptom?.includes('depression') ||
+      selectedSymptom?.includes('mood') ||
+      ['hypervigilance', 'nightmares', 'irritability', 'flashbacks', 'intrusive-thoughts',
+        'avoidance', 'emotional-numbness', 'startle-response', 'concentration-problems',
+        'social-withdrawal', 'hopelessness', 'guilt', 'anger-outbursts'].includes(selectedSymptom) ||
+      selectedCategory === 'mental-health' ||
+      selectedCategory === 'ptsd-symptoms';
+
+  // Pain: match ANY pain-related symptom or musculoskeletal category
+  const isPainSelected = selectedSymptom?.includes('pain') ||
+      selectedSymptom?.includes('-ache') ||
+      selectedSymptom?.includes('stiff') ||
+      ['sciatica', 'radiculopathy', 'stenosis', 'arthritis', 'bursitis', 'tendinitis',
+        'strain', 'sprain', 'rom-limited', 'swelling', 'instability', 'weakness',
+        'numbness', 'tingling', 'cramping', 'spasms', 'plantar-fasciitis', 'ddd',
+        'spondylosis', 'spondylolisthesis', 'herniated', 'bulging'].some(term => selectedSymptom?.includes(term)) ||
+      ['pain', 'back-spine', 'shoulder', 'knee', 'hip', 'ankle-foot', 'wrist-hand',
+        'elbow', 'neck', 'joints'].includes(selectedCategory);
+
+  // Phase 1B: GI condition detection - match IBS, GERD, and future GI conditions
+  const isGISelected = selectedSymptom?.startsWith('ibs') ||
+      selectedSymptom?.startsWith('gerd') ||
+      selectedSymptom?.startsWith('uc-') ||
+      selectedSymptom?.startsWith('ulcer-') ||
+      selectedSymptom?.startsWith('hemorrhoid') ||
+      selectedSymptom?.startsWith('divertic') ||
+      ['diarrhea', 'constipation', 'bloating', 'abdominal-pain', 'nausea', 'rectal-bleeding'].includes(selectedSymptom);
 
   // Reset condition-specific data when symptom changes
   useEffect(() => {
@@ -112,7 +162,15 @@ const SymptomLogger = ({ onLogSaved }) => {
         limitedRangeOfMotion: false, affectedActivities: [], painType: '', flareUp: false,
       });
     }
-  }, [selectedSymptom, isMigraineSelected, isSleepSelected, isNightmareSelected, isPTSDRelated, isPainSelected]);
+    // Phase 1B: Reset GI data
+    if (!isGISelected) {
+      setGIData({
+        bristolScale: null, frequencyPerDay: '', urgencyLevel: '',
+        bloodPresent: null, bloatingSeverity: '', abdominalPainLocation: '',
+        mealRelated: null, nighttimeSymptoms: false,
+      });
+    }
+  }, [selectedSymptom, isMigraineSelected, isSleepSelected, isNightmareSelected, isPTSDRelated, isPainSelected, isGISelected]);
 
   // Build categories list including custom symptoms
   const getAllCategories = () => {
@@ -159,7 +217,7 @@ const SymptomLogger = ({ onLogSaved }) => {
   // Handle category change - reset symptom selection
   const handleCategoryChange = (categoryId) => {
     setSelectedCategory(categoryId);
-    setSelectedSymptom(''); // Reset symptom when category changes
+    setSelectedSymptom('');
   };
 
   const handleSubmit = (e) => {
@@ -183,6 +241,10 @@ const SymptomLogger = ({ onLogSaved }) => {
       severity,
       notes: notes.trim(),
       isCustomSymptom: symptomData?.isCustom || false,
+      // PHASE 1A: Universal fields
+      isFlareUp,
+      duration: duration || null,
+      timeOfDay: timeOfDay || null,
     };
 
     // Add condition-specific data
@@ -197,6 +259,10 @@ const SymptomLogger = ({ onLogSaved }) => {
     }
     if (isPainSelected) {
       entry.painData = { ...painData };
+    }
+    // Phase 1B: Add GI data
+    if (isGISelected) {
+      entry.giData = { ...giData };
     }
 
     saveSymptomLog(entry);
@@ -224,6 +290,10 @@ const SymptomLogger = ({ onLogSaved }) => {
     setNotes('');
     setTookMedication(false);
     setSelectedMedications([]);
+    // Reset universal fields
+    setIsFlareUp(false);
+    setDuration('');
+    setTimeOfDay('');
 
     setShowSuccess(true);
     setTimeout(() => setShowSuccess(false), 2000);
@@ -244,7 +314,6 @@ const SymptomLogger = ({ onLogSaved }) => {
 
     if (result.success) {
       setCustomSymptoms(getCustomSymptoms());
-      // Find the category ID for the new symptom
       const categoryId = sortedSymptomCategories.find(c => c.name === newSymptomCategory)?.id
           || `custom-${newSymptomCategory.toLowerCase()}`;
       setSelectedCategory(categoryId);
@@ -272,6 +341,17 @@ const SymptomLogger = ({ onLogSaved }) => {
           ? prev.affectedActivities.filter(a => a !== activity)
           : [...prev.affectedActivities, activity]
     }));
+  };
+
+  // Bristol Scale descriptions for user reference
+  const bristolDescriptions = {
+    1: 'Separate hard lumps (severe constipation)',
+    2: 'Lumpy, sausage-shaped (mild constipation)',
+    3: 'Sausage with cracks (normal)',
+    4: 'Smooth, soft sausage (ideal)',
+    5: 'Soft blobs with clear edges (lacking fiber)',
+    6: 'Mushy with ragged edges (mild diarrhea)',
+    7: 'Watery, no solid pieces (severe diarrhea)',
   };
 
   const severityInfo = getSeverityInfo(severity);
@@ -339,7 +419,7 @@ const SymptomLogger = ({ onLogSaved }) => {
               </select>
             </div>
 
-            {/* Step 2: Symptom Selection (only shown after category is selected) */}
+            {/* Step 2: Symptom Selection */}
             {selectedCategory && (
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -358,11 +438,6 @@ const SymptomLogger = ({ onLogSaved }) => {
                         </option>
                     ))}
                   </select>
-                  {availableSymptoms.length === 0 && (
-                      <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                        No symptoms in this category
-                      </p>
-                  )}
                 </div>
             )}
           </div>
@@ -408,6 +483,294 @@ const SymptomLogger = ({ onLogSaved }) => {
                       Cancel
                     </button>
                   </div>
+                </div>
+              </div>
+          )}
+
+          {/* ============================================ */}
+          {/* PHASE 1A: UNIVERSAL ENHANCEMENT FIELDS */}
+          {/* ============================================ */}
+          {selectedSymptom && (
+              <div className="bg-gray-50 dark:bg-gray-800/50 p-4 rounded-lg border border-gray-200 dark:border-gray-700 space-y-4">
+                <h3 className="font-medium text-gray-900 dark:text-gray-100 flex items-center gap-2">
+                  <span>📋</span> Symptom Details
+                </h3>
+
+                {/* Flare-Up Toggle */}
+                <div>
+                  <label className={`flex items-center gap-3 p-3 rounded-lg border-2 cursor-pointer transition-all ${
+                      isFlareUp
+                          ? 'bg-orange-100 dark:bg-orange-900/30 border-orange-400 dark:border-orange-600'
+                          : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-600 hover:border-orange-300 dark:hover:border-orange-700'
+                  }`}>
+                    <input
+                        type="checkbox"
+                        checked={isFlareUp}
+                        onChange={(e) => setIsFlareUp(e.target.checked)}
+                        className="w-5 h-5 text-orange-600 rounded"
+                    />
+                    <div>
+                                    <span className="font-medium text-gray-900 dark:text-gray-100">
+                                        🔥 This is a flare-up
+                                    </span>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">
+                        Symptom is worse than usual baseline
+                      </p>
+                    </div>
+                  </label>
+                </div>
+
+                {/* Duration and Time of Day */}
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      Duration
+                    </label>
+                    <select
+                        value={duration}
+                        onChange={(e) => setDuration(e.target.value)}
+                        className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm"
+                    >
+                      <option value="">How long?</option>
+                      <option value="just-started">Just started</option>
+                      <option value="minutes">Minutes</option>
+                      <option value="hours">Hours</option>
+                      <option value="days">Days</option>
+                      <option value="weeks">Weeks</option>
+                      <option value="months">Months+</option>
+                      <option value="ongoing">Ongoing/Chronic</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      Time of Day
+                    </label>
+                    <select
+                        value={timeOfDay}
+                        onChange={(e) => setTimeOfDay(e.target.value)}
+                        className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm"
+                    >
+                      <option value="">When?</option>
+                      <option value="morning">Morning</option>
+                      <option value="afternoon">Afternoon</option>
+                      <option value="evening">Evening</option>
+                      <option value="night">Night</option>
+                      <option value="all-day">All Day</option>
+                      <option value="varies">Varies</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+          )}
+
+          {/* ============================================ */}
+          {/* PHASE 1B: GI CONDITION-SPECIFIC FORM */}
+          {/* For IBS, GERD, UC, peptic ulcer, hemorrhoids, diverticulitis */}
+          {/* ============================================ */}
+          {isGISelected && (
+              <div className="bg-amber-50 dark:bg-amber-900/20 p-4 rounded-lg border border-amber-200 dark:border-amber-800 space-y-4">
+                <h3 className="font-medium text-amber-900 dark:text-amber-200 flex items-center gap-2">
+                  <span>🩺</span> GI Symptom Details
+                </h3>
+                <p className="text-xs text-amber-700 dark:text-amber-300">
+                  Track details for VA rating documentation
+                </p>
+
+                {/* Bristol Stool Scale */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Bristol Stool Scale (if applicable)
+                  </label>
+                  <div className="grid grid-cols-7 gap-1 mb-2">
+                    {[1, 2, 3, 4, 5, 6, 7].map(num => (
+                        <button
+                            key={num}
+                            type="button"
+                            onClick={() => setGIData(prev => ({ ...prev, bristolScale: num }))}
+                            className={`py-2 px-1 rounded-lg border-2 font-bold text-sm transition-all ${
+                                giData.bristolScale === num
+                                    ? num <= 2 ? 'bg-orange-200 dark:bg-orange-900 border-orange-500 text-orange-800 dark:text-orange-200'
+                                        : num <= 4 ? 'bg-green-200 dark:bg-green-900 border-green-500 text-green-800 dark:text-green-200'
+                                            : 'bg-yellow-200 dark:bg-yellow-900 border-yellow-500 text-yellow-800 dark:text-yellow-200'
+                                    : 'bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300'
+                            }`}
+                        >
+                          {num}
+                        </button>
+                    ))}
+                  </div>
+                  {giData.bristolScale && (
+                      <p className="text-xs text-gray-600 dark:text-gray-400 bg-white dark:bg-gray-800 p-2 rounded">
+                        Type {giData.bristolScale}: {bristolDescriptions[giData.bristolScale]}
+                      </p>
+                  )}
+                  <button
+                      type="button"
+                      onClick={() => setGIData(prev => ({ ...prev, bristolScale: null }))}
+                      className="text-xs text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 mt-1"
+                  >
+                    Clear selection
+                  </button>
+                </div>
+
+                {/* Frequency and Urgency Row */}
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      Episodes Today
+                    </label>
+                    <input
+                        type="number"
+                        min="0"
+                        max="50"
+                        value={giData.frequencyPerDay}
+                        onChange={(e) => setGIData(prev => ({ ...prev, frequencyPerDay: e.target.value }))}
+                        placeholder="# times"
+                        className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      Urgency Level
+                    </label>
+                    <select
+                        value={giData.urgencyLevel}
+                        onChange={(e) => setGIData(prev => ({ ...prev, urgencyLevel: e.target.value }))}
+                        className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm"
+                    >
+                      <option value="">Select...</option>
+                      <option value="none">None</option>
+                      <option value="mild">Mild - Can wait</option>
+                      <option value="moderate">Moderate - Need to go soon</option>
+                      <option value="severe">Severe - Must go immediately</option>
+                      <option value="incontinence">Incontinence</option>
+                    </select>
+                  </div>
+                </div>
+
+                {/* Blood Present */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Blood Present?
+                  </label>
+                  <div className="flex gap-3">
+                    <button
+                        type="button"
+                        onClick={() => setGIData(prev => ({ ...prev, bloodPresent: true }))}
+                        className={`flex-1 py-2 px-4 rounded-lg border-2 font-medium ${
+                            giData.bloodPresent === true
+                                ? 'bg-red-100 dark:bg-red-900/50 border-red-500 text-red-700 dark:text-red-300'
+                                : 'bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300'
+                        }`}
+                    >
+                      Yes
+                    </button>
+                    <button
+                        type="button"
+                        onClick={() => setGIData(prev => ({ ...prev, bloodPresent: false }))}
+                        className={`flex-1 py-2 px-4 rounded-lg border-2 font-medium ${
+                            giData.bloodPresent === false
+                                ? 'bg-green-100 dark:bg-green-900/50 border-green-500 text-green-700 dark:text-green-300'
+                                : 'bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300'
+                        }`}
+                    >
+                      No
+                    </button>
+                  </div>
+                </div>
+
+                {/* Bloating Severity */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    Bloating Severity
+                  </label>
+                  <select
+                      value={giData.bloatingSeverity}
+                      onChange={(e) => setGIData(prev => ({ ...prev, bloatingSeverity: e.target.value }))}
+                      className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                  >
+                    <option value="">Select...</option>
+                    <option value="none">None</option>
+                    <option value="mild">Mild - Noticeable but not bothersome</option>
+                    <option value="moderate">Moderate - Uncomfortable</option>
+                    <option value="severe">Severe - Pants don't fit / visible distension</option>
+                  </select>
+                </div>
+
+                {/* Abdominal Pain Location */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Pain Location (if applicable)
+                  </label>
+                  <div className="grid grid-cols-3 gap-2">
+                    {[
+                      { id: 'upper-left', label: 'Upper Left' },
+                      { id: 'upper-center', label: 'Upper Center' },
+                      { id: 'upper-right', label: 'Upper Right' },
+                      { id: 'lower-left', label: 'Lower Left' },
+                      { id: 'lower-center', label: 'Lower Center' },
+                      { id: 'lower-right', label: 'Lower Right' },
+                    ].map(({ id, label }) => (
+                        <button
+                            key={id}
+                            type="button"
+                            onClick={() => setGIData(prev => ({
+                              ...prev,
+                              abdominalPainLocation: prev.abdominalPainLocation === id ? '' : id
+                            }))}
+                            className={`py-2 px-2 rounded-lg border text-xs font-medium transition-all ${
+                                giData.abdominalPainLocation === id
+                                    ? 'bg-amber-200 dark:bg-amber-900 border-amber-500 text-amber-800 dark:text-amber-200'
+                                    : 'bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300'
+                            }`}
+                        >
+                          {label}
+                        </button>
+                    ))}
+                  </div>
+                  <button
+                      type="button"
+                      onClick={() => setGIData(prev => ({ ...prev, abdominalPainLocation: 'diffuse' }))}
+                      className={`w-full mt-2 py-2 px-4 rounded-lg border text-sm font-medium ${
+                          giData.abdominalPainLocation === 'diffuse'
+                              ? 'bg-amber-200 dark:bg-amber-900 border-amber-500 text-amber-800 dark:text-amber-200'
+                              : 'bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300'
+                      }`}
+                  >
+                    Diffuse / All Over
+                  </button>
+                </div>
+
+                {/* Additional Toggles */}
+                <div className="space-y-2">
+                  <label className={`flex items-center gap-2 p-2 rounded-lg border cursor-pointer ${
+                      giData.mealRelated === true
+                          ? 'bg-amber-100 dark:bg-amber-900/50 border-amber-300 dark:border-amber-700'
+                          : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700'
+                  }`}>
+                    <input
+                        type="checkbox"
+                        checked={giData.mealRelated === true}
+                        onChange={(e) => setGIData(prev => ({ ...prev, mealRelated: e.target.checked ? true : null }))}
+                        className="w-4 h-4 text-amber-600 rounded"
+                    />
+                    <span className="text-sm text-gray-700 dark:text-gray-300">Worse after eating</span>
+                  </label>
+
+                  <label className={`flex items-center gap-2 p-2 rounded-lg border cursor-pointer ${
+                      giData.nighttimeSymptoms
+                          ? 'bg-amber-100 dark:bg-amber-900/50 border-amber-300 dark:border-amber-700'
+                          : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700'
+                  }`}>
+                    <input
+                        type="checkbox"
+                        checked={giData.nighttimeSymptoms}
+                        onChange={(e) => setGIData(prev => ({ ...prev, nighttimeSymptoms: e.target.checked }))}
+                        className="w-4 h-4 text-amber-600 rounded"
+                    />
+                    <span className="text-sm text-gray-700 dark:text-gray-300">Woken up by symptoms (nighttime)</span>
+                  </label>
                 </div>
               </div>
           )}
@@ -639,12 +1002,12 @@ const SymptomLogger = ({ onLogSaved }) => {
                     <span className="text-sm text-gray-700 dark:text-gray-300">Radiating pain</span>
                   </label>
                   <label className={`flex items-center gap-2 p-2 rounded-lg border cursor-pointer ${
-                      painData.flareUp ? 'bg-rose-100 dark:bg-rose-900/50 border-rose-300 dark:border-rose-700' : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700'
+                      painData.limitedRangeOfMotion ? 'bg-rose-100 dark:bg-rose-900/50 border-rose-300 dark:border-rose-700' : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700'
                   }`}>
-                    <input type="checkbox" checked={painData.flareUp}
-                           onChange={(e) => setPainData(prev => ({ ...prev, flareUp: e.target.checked }))}
+                    <input type="checkbox" checked={painData.limitedRangeOfMotion}
+                           onChange={(e) => setPainData(prev => ({ ...prev, limitedRangeOfMotion: e.target.checked }))}
                            className="w-4 h-4 text-rose-600 rounded" />
-                    <span className="text-sm text-gray-700 dark:text-gray-300">Flare-up</span>
+                    <span className="text-sm text-gray-700 dark:text-gray-300">Limited ROM</span>
                   </label>
                 </div>
 
@@ -657,15 +1020,6 @@ const SymptomLogger = ({ onLogSaved }) => {
                              className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white" />
                     </div>
                 )}
-
-                <label className={`flex items-center gap-2 p-3 rounded-lg border cursor-pointer ${
-                    painData.limitedRangeOfMotion ? 'bg-rose-100 dark:bg-rose-900/50 border-rose-300 dark:border-rose-700' : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700'
-                }`}>
-                  <input type="checkbox" checked={painData.limitedRangeOfMotion}
-                         onChange={(e) => setPainData(prev => ({ ...prev, limitedRangeOfMotion: e.target.checked }))}
-                         className="w-4 h-4 text-rose-600 rounded" />
-                  <span className="text-sm text-gray-700 dark:text-gray-300">Limited range of motion</span>
-                </label>
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Activities Affected</label>
