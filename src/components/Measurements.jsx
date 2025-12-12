@@ -80,20 +80,20 @@ const Measurements = () => {
           <h3 className="text-sm font-medium text-gray-900 dark:text-white mb-3">
             Quick Log Measurement
           </h3>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
             {measurementTypes.map(type => (
                 <button
                     key={type.id}
                     onClick={() => handleAddClick(type)}
-                    className="flex items-center gap-2 p-3 rounded-lg border border-gray-200 dark:border-gray-600
+                    className="flex items-center gap-3 p-3 rounded-lg border border-gray-200 dark:border-gray-600
                        hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors text-left"
                 >
-                  <span className="text-2xl">{type.icon}</span>
+                  <span className="text-2xl flex-shrink-0">{type.icon}</span>
                   <div className="flex-1 min-w-0">
-                    <div className="text-sm font-medium text-gray-900 dark:text-white truncate">
+                    <div className="text-sm font-medium text-gray-900 dark:text-white">
                       {type.shortName}
                     </div>
-                    <div className="text-xs text-gray-500 dark:text-gray-400 truncate">
+                    <div className="text-xs text-gray-500 dark:text-gray-400">
                       {type.name}
                     </div>
                   </div>
@@ -258,7 +258,9 @@ const MeasurementCard = ({ measurement, onDelete }) => {
                     {key.replace(/([A-Z])/g, ' $1').trim()}:
                   </span>
                         <span className="text-gray-900 dark:text-white">
-                    {typeof value === 'boolean' ? (value ? 'Yes' : 'No') : value}
+                    {typeof value === 'boolean'
+                        ? (value ? 'Yes' : 'No')
+                        : (value !== undefined && value !== null && value !== '' ? value : '-')}
                   </span>
                       </div>
                   ))}
@@ -376,25 +378,43 @@ const AddMeasurementModal = ({ measurementType, onSave, onCancel }) => {
                         {field.help}
                       </p>
                   )}
-                  <div className="flex items-center gap-2">
-                    <input
-                        type={field.type}
-                        min={field.min}
-                        max={field.max}
-                        step={field.step || 1}
-                        placeholder={field.placeholder}
-                        value={values[field.key] || ''}
-                        onChange={(e) => handleValueChange(field.key, e.target.value)}
-                        required={field.required}
-                        className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg
-                           bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                    />
-                    {field.unit && (
-                        <span className="text-sm text-gray-500 dark:text-gray-400">
-                    {field.unit}
-                  </span>
-                    )}
-                  </div>
+
+                  {/* Handle select-type fields (like Bristol Scale) */}
+                  {field.type === 'select' ? (
+                      <select
+                          value={values[field.key] || ''}
+                          onChange={(e) => handleValueChange(field.key, e.target.value)}
+                          required={field.required}
+                          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg
+                             bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                      >
+                        {field.options.map(option => (
+                            <option key={option.value} value={option.value}>
+                              {option.label}
+                            </option>
+                        ))}
+                      </select>
+                  ) : (
+                      <div className="flex items-center gap-2">
+                        <input
+                            type={field.type}
+                            min={field.min}
+                            max={field.max}
+                            step={field.step || 1}
+                            placeholder={field.placeholder}
+                            value={values[field.key] || ''}
+                            onChange={(e) => handleValueChange(field.key, e.target.value)}
+                            required={field.required}
+                            className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg
+                               bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                        />
+                        {field.unit && (
+                            <span className="text-sm text-gray-500 dark:text-gray-400">
+                              {field.unit}
+                            </span>
+                        )}
+                      </div>
+                  )}
                 </div>
             ))}
 
@@ -446,8 +466,11 @@ const AddMeasurementModal = ({ measurementType, onSave, onCancel }) => {
                             min={field.min}
                             max={field.max}
                             placeholder={field.placeholder}
-                            value={metadata[field.key] || ''}
-                            onChange={(e) => handleMetadataChange(field.key, parseFloat(e.target.value) || '')}
+                            value={metadata[field.key] !== undefined ? metadata[field.key] : ''}
+                            onChange={(e) => {
+                              const val = e.target.value;
+                              handleMetadataChange(field.key, val === '' ? '' : parseFloat(val));
+                            }}
                             className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg
                              bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                         />

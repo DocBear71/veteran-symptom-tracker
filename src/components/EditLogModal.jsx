@@ -51,6 +51,46 @@ const EditLogModal = ({ log, isOpen, onClose, onSaved }) => {
     nighttimeSymptoms: false,
   });
 
+  // ============================================
+  // PHASE 1C: RESPIRATORY CONDITION-SPECIFIC FIELDS
+  // ============================================
+  const [respiratoryData, setRespiratoryData] = useState({
+    rescueInhalerUsed: null,
+    inhalerPuffs: '',
+    peakFlow: '',
+    spo2: '',
+    activityTrigger: '',
+    wheezing: false,
+    chestTightness: false,
+    coughing: false,
+  });
+
+  // ============================================
+  // PHASE 1D: JOINT/ROM CONDITION-SPECIFIC FIELDS
+  // ============================================
+  const [jointData, setJointData] = useState({
+    joint: '',
+    side: '',
+    romEstimate: '',
+    morningStiffness: '',
+    swelling: false,
+    instability: false,
+    locking: false,
+    grinding: false,
+  });
+
+  // ============================================
+  // PHASE 1E: SEIZURE/EPISODE CONDITION-SPECIFIC FIELDS
+  // ============================================
+  const [seizureData, setSeizureData] = useState({
+    episodeType: '',
+    duration: '',
+    lossOfConsciousness: null,
+    auraPresent: null,
+    recoveryTime: '',
+    witnessPresent: null,
+  });
+
   useEffect(() => {
     if (isOpen && log) {
       setSeverity(log.severity || 5);
@@ -115,19 +155,45 @@ const EditLogModal = ({ log, isOpen, onClose, onSaved }) => {
           mealRelated: null, nighttimeSymptoms: false,
         });
       }
+      // PHASE 1C: Load Respiratory data
+      if (log.respiratoryData) {
+        setRespiratoryData(log.respiratoryData);
+      } else {
+        setRespiratoryData({
+          rescueInhalerUsed: null, inhalerPuffs: '', peakFlow: '', spo2: '',
+          activityTrigger: '', wheezing: false, chestTightness: false, coughing: false,
+        });
+      }
+      // PHASE 1D: Load Joint data
+      if (log.jointData) {
+        setJointData(log.jointData);
+      } else {
+        setJointData({
+          joint: '', side: '', romEstimate: '', morningStiffness: '',
+          swelling: false, instability: false, locking: false, grinding: false,
+        });
+      }
+      // PHASE 1E: Load Seizure data
+      if (log.seizureData) {
+        setSeizureData(log.seizureData);
+      } else {
+        setSeizureData({
+          episodeType: '', duration: '', lossOfConsciousness: null,
+          auraPresent: null, recoveryTime: '', witnessPresent: null,
+        });
+      }
     }
   }, [isOpen, log]);
 
   const isMigraine = log?.symptomId === 'migraine';
 
-  // Sleep: match sleep-related symptoms
+  // Sleep: match sleep-related symptoms only
   const isSleepRelated = log?.symptomId?.includes('sleep') ||
       log?.symptomId?.includes('insomnia') ||
       ['sleep-issues', 'nightmares'].includes(log?.symptomId) ||
-      log?.category === 'Sleep Disorders' ||
       log?.sleepData; // Also show if log already has sleep data
 
-  // PTSD/Mental Health: broader matching
+  // PTSD/Mental Health: broader matching (symptom only)
   const isPTSDRelated = log?.symptomId?.includes('anxiety') ||
       log?.symptomId?.includes('ptsd') ||
       log?.symptomId?.includes('panic') ||
@@ -136,11 +202,9 @@ const EditLogModal = ({ log, isOpen, onClose, onSaved }) => {
       ['hypervigilance', 'nightmares', 'irritability', 'flashbacks', 'intrusive-thoughts',
         'avoidance', 'emotional-numbness', 'startle-response', 'concentration-problems',
         'social-withdrawal', 'hopelessness', 'guilt', 'anger-outbursts'].includes(log?.symptomId) ||
-      log?.category === 'Mental Health' ||
-      log?.category === 'PTSD Symptoms' ||
       log?.ptsdData; // Also show if log already has PTSD data
 
-  // Pain: match ANY pain-related symptom or musculoskeletal category
+  // Pain: match ANY pain-related symptom only
   const isPainRelated = log?.symptomId?.includes('pain') ||
       log?.symptomId?.includes('-ache') ||
       log?.symptomId?.includes('stiff') ||
@@ -148,8 +212,6 @@ const EditLogModal = ({ log, isOpen, onClose, onSaved }) => {
         'strain', 'sprain', 'rom-limited', 'swelling', 'instability', 'weakness',
         'numbness', 'tingling', 'cramping', 'spasms', 'plantar-fasciitis', 'ddd',
         'spondylosis', 'spondylolisthesis', 'herniated', 'bulging'].some(term => log?.symptomId?.includes(term)) ||
-      ['Pain', 'Back & Spine', 'Shoulder', 'Knee', 'Hip', 'Ankle & Foot', 'Wrist & Hand',
-        'Elbow', 'Neck', 'Joints'].includes(log?.category) ||
       log?.painData; // Also show if log already has pain data
 
   // PHASE 1B: GI condition detection
@@ -161,6 +223,44 @@ const EditLogModal = ({ log, isOpen, onClose, onSaved }) => {
       log?.symptomId?.startsWith('divertic') ||
       ['diarrhea', 'constipation', 'bloating', 'abdominal-pain', 'nausea', 'rectal-bleeding'].includes(log?.symptomId) ||
       log?.giData; // Also show if log already has GI data
+
+  // PHASE 1C: Respiratory condition detection
+  const isRespiratoryRelated = log?.symptomId?.startsWith('asthma-') ||
+      log?.symptomId?.startsWith('copd-') ||
+      log?.symptomId?.startsWith('apnea-') ||
+      log?.symptomId?.startsWith('emphysema-') ||
+      log?.symptomId?.startsWith('bronchitis-') ||
+      log?.symptomId?.includes('breathing') ||
+      log?.symptomId?.includes('wheez') ||
+      log?.symptomId?.includes('cough') ||
+      ['shortness-breath', 'dyspnea', 'chest-tightness', 'respiratory-distress'].includes(log?.symptomId) ||
+      log?.respiratoryData; // Also show if log already has respiratory data
+
+  // PHASE 1D: Joint/ROM condition detection
+  const isJointRelated = log?.symptomId?.startsWith('shoulder-') ||
+      log?.symptomId?.startsWith('knee-') ||
+      log?.symptomId?.startsWith('hip-') ||
+      log?.symptomId?.startsWith('ankle-') ||
+      log?.symptomId?.startsWith('elbow-') ||
+      log?.symptomId?.startsWith('wrist-') ||
+      log?.symptomId?.startsWith('hand-') ||
+      log?.symptomId?.startsWith('finger-') ||
+      log?.symptomId?.startsWith('foot-') ||
+      log?.symptomId?.startsWith('toe-') ||
+      log?.symptomId?.includes('joint') ||
+      log?.symptomId?.includes('arthritis') ||
+      log?.symptomId?.includes('bursitis') ||
+      log?.symptomId?.includes('tendinitis') ||
+      ['rom-limited', 'swelling', 'instability', 'grinding', 'locking'].includes(log?.symptomId) ||
+      log?.jointData; // Also show if log already has joint data
+
+  // PHASE 1E: Seizure/Episode condition detection
+  const isSeizureRelated = log?.symptomId?.includes('seizure') ||
+      log?.symptomId?.includes('epilep') ||
+      log?.symptomId?.includes('convuls') ||
+      log?.symptomId?.startsWith('seizure-') ||
+      ['absence-seizure', 'tonic-clonic', 'focal-seizure', 'grand-mal', 'petit-mal'].includes(log?.symptomId) ||
+      log?.seizureData; // Also show if log already has seizure data
 
   const handleSave = () => {
     if (isMigraine && migraineData.prostrating === null) {
@@ -183,6 +283,15 @@ const EditLogModal = ({ log, isOpen, onClose, onSaved }) => {
     if (isPainRelated) updates.painData = painData;
     // PHASE 1B: Save GI data
     if (isGIRelated) updates.giData = giData;
+
+    // PHASE 1C: Save Respiratory data
+    if (isRespiratoryRelated) updates.respiratoryData = respiratoryData;
+
+    // PHASE 1D: Save Joint data
+    if (isJointRelated) updates.jointData = jointData;
+
+    // PHASE 1E: Save Seizure data
+    if (isSeizureRelated) updates.seizureData = seizureData;
 
     const result = updateSymptomLog(log.id, updates);
 
@@ -746,6 +855,464 @@ const EditLogModal = ({ log, isOpen, onClose, onSaved }) => {
                            onChange={(e) => setPtsdData(prev => ({ ...prev, triggerDescription: e.target.value }))}
                            placeholder="What triggered this episode?"
                            className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white" />
+                  </div>
+                </div>
+            )}
+
+            {/* ============================================ */}
+            {/* PHASE 1C: RESPIRATORY CONDITION FIELDS */}
+            {/* ============================================ */}
+            {isRespiratoryRelated && (
+                <div className="bg-sky-50 dark:bg-sky-900/30 p-4 rounded-lg border border-sky-200 dark:border-sky-800 space-y-4">
+                  <h3 className="font-medium text-sky-900 dark:text-sky-200 flex items-center gap-2">
+                    <span>🫁</span> Respiratory Details
+                  </h3>
+
+                  {/* Rescue Inhaler */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      Did you use a rescue inhaler?
+                    </label>
+                    <div className="grid grid-cols-2 gap-2">
+                      <button
+                          type="button"
+                          onClick={() => setRespiratoryData(prev => ({ ...prev, rescueInhalerUsed: true }))}
+                          className={`p-2 rounded-lg border transition-colors ${
+                              respiratoryData.rescueInhalerUsed === true
+                                  ? 'bg-sky-100 dark:bg-sky-900/50 border-sky-400 dark:border-sky-600 text-sky-900 dark:text-sky-200'
+                                  : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300'
+                          }`}
+                      >
+                        Yes
+                      </button>
+                      <button
+                          type="button"
+                          onClick={() => setRespiratoryData(prev => ({ ...prev, rescueInhalerUsed: false, inhalerPuffs: '' }))}
+                          className={`p-2 rounded-lg border transition-colors ${
+                              respiratoryData.rescueInhalerUsed === false
+                                  ? 'bg-sky-100 dark:bg-sky-900/50 border-sky-400 dark:border-sky-600 text-sky-900 dark:text-sky-200'
+                                  : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300'
+                          }`}
+                      >
+                        No
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Inhaler Puffs (if yes) */}
+                  {respiratoryData.rescueInhalerUsed === true && (
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                          How many puffs?
+                        </label>
+                        <input
+                            type="number"
+                            min="1"
+                            max="20"
+                            value={respiratoryData.inhalerPuffs}
+                            onChange={(e) => setRespiratoryData(prev => ({ ...prev, inhalerPuffs: e.target.value }))}
+                            placeholder="e.g., 2"
+                            className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                        />
+                      </div>
+                  )}
+
+                  {/* Peak Flow & SpO2 */}
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        Peak Flow (L/min)
+                      </label>
+                      <input
+                          type="number"
+                          min="0"
+                          max="800"
+                          value={respiratoryData.peakFlow}
+                          onChange={(e) => setRespiratoryData(prev => ({ ...prev, peakFlow: e.target.value }))}
+                          placeholder="Optional"
+                          className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        SpO2 (%)
+                      </label>
+                      <input
+                          type="number"
+                          min="70"
+                          max="100"
+                          value={respiratoryData.spo2}
+                          onChange={(e) => setRespiratoryData(prev => ({ ...prev, spo2: e.target.value }))}
+                          placeholder="Optional"
+                          className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Activity Trigger */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      What triggered symptoms?
+                    </label>
+                    <select
+                        value={respiratoryData.activityTrigger}
+                        onChange={(e) => setRespiratoryData(prev => ({ ...prev, activityTrigger: e.target.value }))}
+                        className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                    >
+                      <option value="">Select trigger...</option>
+                      <option value="rest">At rest</option>
+                      <option value="mild">Mild exertion (walking)</option>
+                      <option value="moderate">Moderate exertion (stairs, housework)</option>
+                      <option value="severe">Severe exertion (running, heavy lifting)</option>
+                    </select>
+                  </div>
+
+                  {/* Symptom Toggles */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      Associated Symptoms
+                    </label>
+                    <div className="grid grid-cols-3 gap-2">
+                      <label className={`flex items-center gap-2 p-2 rounded-lg border cursor-pointer ${
+                          respiratoryData.wheezing
+                              ? 'bg-sky-100 dark:bg-sky-900/50 border-sky-300 dark:border-sky-700'
+                              : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700'
+                      }`}>
+                        <input
+                            type="checkbox"
+                            checked={respiratoryData.wheezing}
+                            onChange={(e) => setRespiratoryData(prev => ({ ...prev, wheezing: e.target.checked }))}
+                            className="w-4 h-4 text-sky-600 rounded"
+                        />
+                        <span className="text-sm text-gray-700 dark:text-gray-300">Wheezing</span>
+                      </label>
+                      <label className={`flex items-center gap-2 p-2 rounded-lg border cursor-pointer ${
+                          respiratoryData.chestTightness
+                              ? 'bg-sky-100 dark:bg-sky-900/50 border-sky-300 dark:border-sky-700'
+                              : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700'
+                      }`}>
+                        <input
+                            type="checkbox"
+                            checked={respiratoryData.chestTightness}
+                            onChange={(e) => setRespiratoryData(prev => ({ ...prev, chestTightness: e.target.checked }))}
+                            className="w-4 h-4 text-sky-600 rounded"
+                        />
+                        <span className="text-sm text-gray-700 dark:text-gray-300">Chest Tightness</span>
+                      </label>
+                      <label className={`flex items-center gap-2 p-2 rounded-lg border cursor-pointer ${
+                          respiratoryData.coughing
+                              ? 'bg-sky-100 dark:bg-sky-900/50 border-sky-300 dark:border-sky-700'
+                              : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700'
+                      }`}>
+                        <input
+                            type="checkbox"
+                            checked={respiratoryData.coughing}
+                            onChange={(e) => setRespiratoryData(prev => ({ ...prev, coughing: e.target.checked }))}
+                            className="w-4 h-4 text-sky-600 rounded"
+                        />
+                        <span className="text-sm text-gray-700 dark:text-gray-300">Coughing</span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+            )}
+
+            {/* ============================================ */}
+            {/* PHASE 1D: JOINT/ROM CONDITION FIELDS */}
+            {/* ============================================ */}
+            {isJointRelated && (
+                <div className="bg-indigo-50 dark:bg-indigo-900/30 p-4 rounded-lg border border-indigo-200 dark:border-indigo-800 space-y-4">
+                  <h3 className="font-medium text-indigo-900 dark:text-indigo-200 flex items-center gap-2">
+                    <span>🦴</span> Joint & ROM Details
+                  </h3>
+
+                  {/* Joint and Side */}
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        Joint
+                      </label>
+                      <select
+                          value={jointData.joint}
+                          onChange={(e) => setJointData(prev => ({ ...prev, joint: e.target.value }))}
+                          className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                      >
+                        <option value="">Select...</option>
+                        <option value="shoulder">Shoulder</option>
+                        <option value="elbow">Elbow</option>
+                        <option value="wrist">Wrist</option>
+                        <option value="hand">Hand</option>
+                        <option value="finger">Finger</option>
+                        <option value="hip">Hip</option>
+                        <option value="knee">Knee</option>
+                        <option value="ankle">Ankle</option>
+                        <option value="foot">Foot</option>
+                        <option value="toe">Toe</option>
+                        <option value="other">Other</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        Side
+                      </label>
+                      <select
+                          value={jointData.side}
+                          onChange={(e) => setJointData(prev => ({ ...prev, side: e.target.value }))}
+                          className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                      >
+                        <option value="">Select...</option>
+                        <option value="left">Left</option>
+                        <option value="right">Right</option>
+                        <option value="bilateral">Both</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  {/* ROM */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      Range of Motion
+                    </label>
+                    <select
+                        value={jointData.romEstimate}
+                        onChange={(e) => setJointData(prev => ({ ...prev, romEstimate: e.target.value }))}
+                        className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                    >
+                      <option value="">Select...</option>
+                      <option value="full">Full</option>
+                      <option value="slightly">Slightly limited</option>
+                      <option value="moderately">Moderately limited</option>
+                      <option value="severely">Severely limited</option>
+                    </select>
+                  </div>
+
+                  {/* Morning Stiffness */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      Morning Stiffness
+                    </label>
+                    <select
+                        value={jointData.morningStiffness}
+                        onChange={(e) => setJointData(prev => ({ ...prev, morningStiffness: e.target.value }))}
+                        className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                    >
+                      <option value="">Select...</option>
+                      <option value="none">None</option>
+                      <option value="minutes">&lt; 30 min</option>
+                      <option value="30-60min">30-60 min</option>
+                      <option value="hours">&gt; 1 hour</option>
+                    </select>
+                  </div>
+
+                  {/* Toggles */}
+                  <div className="grid grid-cols-2 gap-2">
+                    <label className={`flex items-center gap-2 p-2 rounded-lg border cursor-pointer ${
+                        jointData.swelling
+                            ? 'bg-indigo-100 dark:bg-indigo-900/50 border-indigo-300 dark:border-indigo-700'
+                            : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700'
+                    }`}>
+                      <input
+                          type="checkbox"
+                          checked={jointData.swelling}
+                          onChange={(e) => setJointData(prev => ({ ...prev, swelling: e.target.checked }))}
+                          className="w-4 h-4 text-indigo-600 rounded"
+                      />
+                      <span className="text-sm text-gray-700 dark:text-gray-300">Swelling</span>
+                    </label>
+                    <label className={`flex items-center gap-2 p-2 rounded-lg border cursor-pointer ${
+                        jointData.instability
+                            ? 'bg-indigo-100 dark:bg-indigo-900/50 border-indigo-300 dark:border-indigo-700'
+                            : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700'
+                    }`}>
+                      <input
+                          type="checkbox"
+                          checked={jointData.instability}
+                          onChange={(e) => setJointData(prev => ({ ...prev, instability: e.target.checked }))}
+                          className="w-4 h-4 text-indigo-600 rounded"
+                      />
+                      <span className="text-sm text-gray-700 dark:text-gray-300">Instability</span>
+                    </label>
+                    <label className={`flex items-center gap-2 p-2 rounded-lg border cursor-pointer ${
+                        jointData.locking
+                            ? 'bg-indigo-100 dark:bg-indigo-900/50 border-indigo-300 dark:border-indigo-700'
+                            : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700'
+                    }`}>
+                      <input
+                          type="checkbox"
+                          checked={jointData.locking}
+                          onChange={(e) => setJointData(prev => ({ ...prev, locking: e.target.checked }))}
+                          className="w-4 h-4 text-indigo-600 rounded"
+                      />
+                      <span className="text-sm text-gray-700 dark:text-gray-300">Locking</span>
+                    </label>
+                    <label className={`flex items-center gap-2 p-2 rounded-lg border cursor-pointer ${
+                        jointData.grinding
+                            ? 'bg-indigo-100 dark:bg-indigo-900/50 border-indigo-300 dark:border-indigo-700'
+                            : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700'
+                    }`}>
+                      <input
+                          type="checkbox"
+                          checked={jointData.grinding}
+                          onChange={(e) => setJointData(prev => ({ ...prev, grinding: e.target.checked }))}
+                          className="w-4 h-4 text-indigo-600 rounded"
+                      />
+                      <span className="text-sm text-gray-700 dark:text-gray-300">Grinding</span>
+                    </label>
+                  </div>
+                </div>
+            )}
+
+            {/* ============================================ */}
+            {/* PHASE 1E: SEIZURE/EPISODE CONDITION FIELDS */}
+            {/* ============================================ */}
+            {isSeizureRelated && (
+                <div className="bg-purple-50 dark:bg-purple-900/30 p-4 rounded-lg border border-purple-200 dark:border-purple-800 space-y-4">
+                  <h3 className="font-medium text-purple-900 dark:text-purple-200 flex items-center gap-2">
+                    <span>⚡</span> Seizure/Episode Details
+                  </h3>
+
+                  {/* Episode Type */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      Episode Type
+                    </label>
+                    <select
+                        value={seizureData.episodeType}
+                        onChange={(e) => setSeizureData(prev => ({ ...prev, episodeType: e.target.value }))}
+                        className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                    >
+                      <option value="">Select type...</option>
+                      <option value="generalized">Generalized (Tonic-Clonic)</option>
+                      <option value="partial">Partial/Focal</option>
+                      <option value="absence">Absence (Petit Mal)</option>
+                      <option value="psychogenic">Psychogenic</option>
+                      <option value="other">Other</option>
+                    </select>
+                  </div>
+
+                  {/* Duration */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      Duration (seconds)
+                    </label>
+                    <input
+                        type="number"
+                        min="0"
+                        value={seizureData.duration}
+                        onChange={(e) => setSeizureData(prev => ({ ...prev, duration: e.target.value }))}
+                        placeholder="e.g., 30"
+                        className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                    />
+                  </div>
+
+                  {/* Loss of Consciousness */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      Loss of Consciousness
+                    </label>
+                    <div className="grid grid-cols-3 gap-2">
+                      <button
+                          type="button"
+                          onClick={() => setSeizureData(prev => ({ ...prev, lossOfConsciousness: 'yes' }))}
+                          className={`p-2 rounded-lg border text-sm ${
+                              seizureData.lossOfConsciousness === 'yes'
+                                  ? 'bg-purple-100 dark:bg-purple-900/50 border-purple-400 text-purple-900 dark:text-purple-200'
+                                  : 'bg-white dark:bg-gray-800 border-gray-200 text-gray-700 dark:text-gray-300'
+                          }`}
+                      >Yes</button>
+                      <button
+                          type="button"
+                          onClick={() => setSeizureData(prev => ({ ...prev, lossOfConsciousness: 'partial' }))}
+                          className={`p-2 rounded-lg border text-sm ${
+                              seizureData.lossOfConsciousness === 'partial'
+                                  ? 'bg-purple-100 dark:bg-purple-900/50 border-purple-400 text-purple-900 dark:text-purple-200'
+                                  : 'bg-white dark:bg-gray-800 border-gray-200 text-gray-700 dark:text-gray-300'
+                          }`}
+                      >Partial</button>
+                      <button
+                          type="button"
+                          onClick={() => setSeizureData(prev => ({ ...prev, lossOfConsciousness: 'no' }))}
+                          className={`p-2 rounded-lg border text-sm ${
+                              seizureData.lossOfConsciousness === 'no'
+                                  ? 'bg-purple-100 dark:bg-purple-900/50 border-purple-400 text-purple-900 dark:text-purple-200'
+                                  : 'bg-white dark:bg-gray-800 border-gray-200 text-gray-700 dark:text-gray-300'
+                          }`}
+                      >No</button>
+                    </div>
+                  </div>
+
+                  {/* Aura */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      Warning Signs (Aura)?
+                    </label>
+                    <div className="grid grid-cols-2 gap-2">
+                      <button
+                          type="button"
+                          onClick={() => setSeizureData(prev => ({ ...prev, auraPresent: true }))}
+                          className={`p-2 rounded-lg border ${
+                              seizureData.auraPresent === true
+                                  ? 'bg-purple-100 dark:bg-purple-900/50 border-purple-400 text-purple-900 dark:text-purple-200'
+                                  : 'bg-white dark:bg-gray-800 border-gray-200 text-gray-700 dark:text-gray-300'
+                          }`}
+                      >Yes</button>
+                      <button
+                          type="button"
+                          onClick={() => setSeizureData(prev => ({ ...prev, auraPresent: false }))}
+                          className={`p-2 rounded-lg border ${
+                              seizureData.auraPresent === false
+                                  ? 'bg-purple-100 dark:bg-purple-900/50 border-purple-400 text-purple-900 dark:text-purple-200'
+                                  : 'bg-white dark:bg-gray-800 border-gray-200 text-gray-700 dark:text-gray-300'
+                          }`}
+                      >No</button>
+                    </div>
+                  </div>
+
+                  {/* Recovery Time */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      Recovery Time
+                    </label>
+                    <select
+                        value={seizureData.recoveryTime}
+                        onChange={(e) => setSeizureData(prev => ({ ...prev, recoveryTime: e.target.value }))}
+                        className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                    >
+                      <option value="">Select...</option>
+                      <option value="immediate">Immediate (&lt; 5 min)</option>
+                      <option value="minutes">5-30 minutes</option>
+                      <option value="30-60min">30-60 minutes</option>
+                      <option value="hours">1-4 hours</option>
+                      <option value="prolonged">&gt; 4 hours</option>
+                    </select>
+                  </div>
+
+                  {/* Witness */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      Witness Present?
+                    </label>
+                    <div className="grid grid-cols-2 gap-2">
+                      <button
+                          type="button"
+                          onClick={() => setSeizureData(prev => ({ ...prev, witnessPresent: true }))}
+                          className={`p-2 rounded-lg border ${
+                              seizureData.witnessPresent === true
+                                  ? 'bg-purple-100 dark:bg-purple-900/50 border-purple-400 text-purple-900 dark:text-purple-200'
+                                  : 'bg-white dark:bg-gray-800 border-gray-200 text-gray-700 dark:text-gray-300'
+                          }`}
+                      >Yes</button>
+                      <button
+                          type="button"
+                          onClick={() => setSeizureData(prev => ({ ...prev, witnessPresent: false }))}
+                          className={`p-2 rounded-lg border ${
+                              seizureData.witnessPresent === false
+                                  ? 'bg-purple-100 dark:bg-purple-900/50 border-purple-400 text-purple-900 dark:text-purple-200'
+                                  : 'bg-white dark:bg-gray-800 border-gray-200 text-gray-700 dark:text-gray-300'
+                          }`}
+                      >No</button>
+                    </div>
                   </div>
                 </div>
             )}

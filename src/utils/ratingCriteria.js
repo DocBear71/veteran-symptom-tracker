@@ -365,6 +365,26 @@ export const CONDITIONS = {
     cfrReference: '38 CFR 4.124a',
     symptomIds: ['tbi-cognitive', 'tbi-emotional'],
   },
+  EPILEPSY_MAJOR: {
+    id: 'epilepsy-major',
+    name: 'Epilepsy, Grand Mal',
+    diagnosticCode: '8910',
+    cfrReference: '38 CFR 4.124a',
+    symptomIds: [
+      'seizure-major',
+      'seizure-partial',
+      'seizure-psychomotor',
+      'aura-pre-seizure']
+    ,
+  },
+  EPILEPSY_MINOR: {
+    id: 'epilepsy-minor',
+    name: 'Epilepsy, Petit Mal',
+    diagnosticCode: '8911',
+    cfrReference: '38 CFR 4.124a',
+    symptomIds: ['seizure-minor', 'aura-pre-seizure']
+    ,
+  },
   GERD_COMPLICATIONS: {
     id: 'gerd-complications',
     name: 'GERD with Complications',
@@ -5957,6 +5977,252 @@ export const CHRONIC_URTICARIA_CRITERIA = {
   },
 
   disclaimer: 'This analysis is based on logged urticaria symptoms. The rating is based on treatment level required for control. Document all outbreaks and medications used.',
+};
+
+// ============================================
+// EPILEPSY - MAJOR SEIZURES (DC 8910)
+// ============================================
+// Grand Mal (Generalized Tonic-Clonic) Seizures
+// Rated based on frequency of major seizures over time
+
+export const EPILEPSY_MAJOR_CRITERIA = {
+  diagnosticCode: '8910',
+  condition: 'Epilepsy, Grand Mal (Major Seizures)',
+  cfrReference: '38 CFR 4.124a, Diagnostic Code 8910',
+
+  note: 'A major seizure is characterized by generalized tonic-clonic convulsion with unconsciousness. Seizures must be witnessed or verified by a physician at some time. Frequency can be established by competent lay testimony. On continuous medication, minimum rating is 10%.',
+
+  ratings: [
+    {
+      percent: 100,
+      summary: 'Averaging at least 1 major seizure per month over the last year',
+      criteriaDescription: [
+        'At least 12 major seizures in the past year (average ≥1/month)',
+        'Major seizure = generalized tonic-clonic convulsion with unconsciousness',
+        'Frequency documented over ordinary conditions of life (not hospitalized)'
+      ],
+      evidenceNeeded: [
+        'Physician diagnosis of epilepsy',
+        'Seizure logs showing dates and witnesses',
+        'Medical records documenting seizure frequency',
+        'Witness statements for observed seizures',
+        'Documentation of tonic-clonic characteristics and loss of consciousness'
+      ],
+    },
+    {
+      percent: 80,
+      summary: 'Averaging at least 1 major seizure in 3 months over the last year',
+      criteriaDescription: [
+        'At least 4 major seizures in the past year (average ≥1 per 3 months)',
+        'OR more than 10 minor seizures weekly (see DC 8911)',
+        'Pattern of seizures every 3 months or less'
+      ],
+      evidenceNeeded: [
+        'Physician diagnosis',
+        'Seizure logs with dates',
+        'Witness statements',
+        'Medical records confirming frequency pattern'
+      ],
+    },
+    {
+      percent: 60,
+      summary: 'Averaging at least 1 major seizure in 4 months over the last year',
+      criteriaDescription: [
+        'At least 3 major seizures in the past year (average ≥1 per 4 months)',
+        'OR 9-10 minor seizures per week',
+        'Regular pattern of seizures'
+      ],
+      evidenceNeeded: [
+        'Physician diagnosis',
+        'Documented seizure frequency',
+        'Witness accounts',
+        'Medical treatment records'
+      ],
+    },
+    {
+      percent: 40,
+      summary: 'At least 1 major seizure in the last 6 months or 2 in the last year',
+      criteriaDescription: [
+        'At least 1 major seizure in the last 6 months',
+        'OR at least 2 major seizures in the last year',
+        'OR averaging 5-8 minor seizures weekly'
+      ],
+      evidenceNeeded: [
+        'Recent seizure documentation',
+        'Medical records',
+        'Witness statements',
+        'Treatment history'
+      ],
+    },
+    {
+      percent: 20,
+      summary: 'At least 1 major seizure in the last 2 years',
+      criteriaDescription: [
+        'At least 1 major seizure in the last 2 years',
+        'OR at least 2 minor seizures in the last 6 months',
+        'Less frequent but documented seizure activity'
+      ],
+      evidenceNeeded: [
+        'Medical records of seizure(s)',
+        'Physician documentation',
+        'Witness accounts if available'
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Confirmed diagnosis of epilepsy with history of seizures',
+      criteriaDescription: [
+        'Confirmed epilepsy diagnosis by physician',
+        'History of seizures documented',
+        'Currently on continuous medication for seizure control',
+        'Minimum rating when on medication'
+      ],
+      evidenceNeeded: [
+        'Epilepsy diagnosis from physician',
+        'EEG or other diagnostic tests',
+        'Medication list showing anti-epileptic drugs',
+        'Medical history documenting past seizures'
+      ],
+    },
+  ],
+
+  definitions: {
+    majorSeizure: {
+      term: 'Major Seizure',
+      definition: 'Generalized tonic-clonic convulsion (grand mal) with unconsciousness. Characterized by violent muscle contractions, loss of consciousness, and post-ictal confusion. Must be witnessed or verified by a physician.'
+    },
+    continuousMedication: {
+      term: 'Continuous Medication',
+      definition: 'Ongoing prescription anti-epileptic drugs required for seizure control. When medication is necessary, the minimum rating is 10% even without recent seizures.'
+    },
+    witnessedSeizure: {
+      term: 'Witnessed/Verified Seizure',
+      definition: 'Seizure observed by another person (witness statement) or verified by a physician through examination, EEG, or medical records. Required for VA rating.'
+    },
+  },
+};
+
+// ============================================
+// EPILEPSY - MINOR SEIZURES (DC 8911)
+// ============================================
+// Petit Mal (Absence) and Other Minor Seizures
+// Rated based on frequency of minor seizures
+
+export const EPILEPSY_MINOR_CRITERIA = {
+  diagnosticCode: '8911',
+  condition: 'Epilepsy, Petit Mal (Minor Seizures)',
+  cfrReference: '38 CFR 4.124a, Diagnostic Code 8911',
+
+  note: 'A minor seizure consists of brief interruption in consciousness or conscious control: "pure" petit mal (staring, rhythmic blinking, nodding), myoclonic type (sudden jerking movements), or akinetic type (sudden loss of postural control). Use same rating formula as major seizures.',
+
+  ratings: [
+    {
+      percent: 100,
+      summary: 'Averaging at least 1 major seizure per month (or minor seizure equivalent)',
+      criteriaDescription: [
+        'More than 10 minor seizures weekly over the last year',
+        'Severe frequency of absence or myoclonic seizures',
+        'Significantly impairs daily functioning'
+      ],
+      evidenceNeeded: [
+        'Physician diagnosis of petit mal epilepsy',
+        'Detailed seizure logs showing frequency',
+        'EEG findings consistent with absence seizures',
+        'Witness accounts of episodes',
+        'Impact on work/social functioning'
+      ],
+    },
+    {
+      percent: 80,
+      summary: 'More than 10 minor seizures weekly',
+      criteriaDescription: [
+        'Greater than 10 minor seizures per week',
+        'Frequent brief lapses in consciousness',
+        'Regular pattern documented'
+      ],
+      evidenceNeeded: [
+        'Physician diagnosis',
+        'Seizure frequency logs',
+        'EEG documentation',
+        'Treatment records'
+      ],
+    },
+    {
+      percent: 60,
+      summary: '9-10 minor seizures per week',
+      criteriaDescription: [
+        '9-10 minor seizures weekly on average',
+        'Frequent absence or myoclonic episodes',
+        'Documented pattern over time'
+      ],
+      evidenceNeeded: [
+        'Detailed seizure logs',
+        'Medical documentation',
+        'EEG findings',
+        'Witness statements'
+      ],
+    },
+    {
+      percent: 40,
+      summary: 'Averaging 5-8 minor seizures weekly',
+      criteriaDescription: [
+        '5-8 minor seizures per week on average',
+        'Regular episodes of brief consciousness disruption',
+        'Documented over extended period'
+      ],
+      evidenceNeeded: [
+        'Seizure frequency documentation',
+        'Medical records',
+        'EEG results',
+        'Treatment history'
+      ],
+    },
+    {
+      percent: 20,
+      summary: 'At least 2 minor seizures in the last 6 months',
+      criteriaDescription: [
+        'At least 2 minor seizures in the last 6 months',
+        'Less frequent but documented episodes',
+        'May be controlled with medication'
+      ],
+      evidenceNeeded: [
+        'Medical documentation of episodes',
+        'Physician notes',
+        'Medication records'
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Confirmed diagnosis with history of minor seizures',
+      criteriaDescription: [
+        'Confirmed diagnosis of petit mal epilepsy',
+        'History of minor seizures',
+        'Currently on continuous medication',
+        'Minimum rating when on medication'
+      ],
+      evidenceNeeded: [
+        'Epilepsy diagnosis',
+        'EEG showing absence seizure pattern',
+        'Medication list',
+        'Medical history'
+      ],
+    },
+  ],
+
+  definitions: {
+    minorSeizure: {
+      term: 'Minor Seizure',
+      definition: 'Brief interruption in consciousness or conscious control. Includes: (1) Pure petit mal - staring, rhythmic blinking, nodding; (2) Myoclonic - sudden jerking movements of arms, trunk, or head; (3) Akinetic - sudden loss of postural control.'
+    },
+    absenceSeizure: {
+      term: 'Absence (Petit Mal) Seizure',
+      definition: 'Brief lapse in awareness, typically 5-30 seconds. Person may stare blankly, have subtle eye movements, or slight nodding. No memory of the episode. Common in childhood but can persist into adulthood.'
+    },
+    myoclonicSeizure: {
+      term: 'Myoclonic Seizure',
+      definition: 'Sudden, brief jerking movements of muscles. Can affect arms, legs, or entire body. Person remains conscious. May occur in clusters.'
+    },
+  },
 };
 
 // ============================================
@@ -11746,6 +12012,281 @@ export const analyzeChronicUrticariaLogs = (logs, options = {}) => {
   };
 };
 
+// ============================================
+// EPILEPSY ANALYSIS FUNCTIONS
+// ============================================
+
+/**
+ * Analyze epilepsy - major seizures (DC 8910)
+ * Counts major seizure frequency over various time periods
+ */
+export function analyzeEpilepsyMajorLogs(logs, evaluationDays = 90) {
+  // Filter for major seizure symptoms
+  const seizureSymptomIds = [
+    'seizure-major',
+    'seizure-partial',  // Can be rated as major if with LOC
+    'seizure-psychomotor', // Can be rated as major if with convulsion/LOC
+  ];
+
+  const seizureLogs = logs.filter(log =>
+      seizureSymptomIds.includes(log.symptomId)
+  );
+
+  if (seizureLogs.length === 0) {
+    return {
+      hasData: false,
+      condition: 'Epilepsy, Grand Mal (Major Seizures)',
+      diagnosticCode: '8910',
+    };
+  }
+
+  const now = new Date();
+  const msPerDay = 24 * 60 * 60 * 1000;
+
+  // Count seizures in different time periods
+  const last30Days = seizureLogs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    const daysDiff = (now - logDate) / msPerDay;
+    return daysDiff <= 30;
+  }).length;
+
+  const last3Months = seizureLogs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    const daysDiff = (now - logDate) / msPerDay;
+    return daysDiff <= 90;
+  }).length;
+
+  const last6Months = seizureLogs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    const daysDiff = (now - logDate) / msPerDay;
+    return daysDiff <= 180;
+  }).length;
+
+  const lastYear = seizureLogs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    const daysDiff = (now - logDate) / msPerDay;
+    return daysDiff <= 365;
+  }).length;
+
+  const last2Years = seizureLogs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    const daysDiff = (now - logDate) / msPerDay;
+    return daysDiff <= 730;
+  }).length;
+
+  // Calculate average per month over last year
+  const averagePerMonth = lastYear > 0 ? lastYear / 12 : 0;
+
+  // Determine rating based on VA criteria
+  let supportedRating = null;
+  let ratingRationale = [];
+
+  if (averagePerMonth >= 1) {
+    supportedRating = '100%';
+    ratingRationale.push(`Averaging ${lastYear} major seizures over last year (${averagePerMonth.toFixed(1)} per month)`);
+    ratingRationale.push('Meets 100% criteria: ≥1 major seizure per month average');
+  } else if (lastYear >= 4) {
+    supportedRating = '80%';
+    ratingRationale.push(`${lastYear} major seizures in last year (average 1 per 3 months)`);
+    ratingRationale.push('Meets 80% criteria: ≥1 major seizure per 3 months');
+  } else if (lastYear >= 3) {
+    supportedRating = '60%';
+    ratingRationale.push(`${lastYear} major seizures in last year (average 1 per 4 months)`);
+    ratingRationale.push('Meets 60% criteria: ≥1 major seizure per 4 months');
+  } else if (last6Months >= 1 || lastYear >= 2) {
+    supportedRating = '40%';
+    if (last6Months >= 1) {
+      ratingRationale.push(`${last6Months} major seizure(s) in last 6 months`);
+    }
+    if (lastYear >= 2) {
+      ratingRationale.push(`${lastYear} major seizures in last year`);
+    }
+    ratingRationale.push('Meets 40% criteria: ≥1 seizure in last 6 months OR ≥2 in last year');
+  } else if (last2Years >= 1) {
+    supportedRating = '20%';
+    ratingRationale.push(`${last2Years} major seizure(s) in last 2 years`);
+    ratingRationale.push('Meets 20% criteria: ≥1 major seizure in last 2 years');
+  } else {
+    supportedRating = '10%';
+    ratingRationale.push('Documented seizure history with symptom logs');
+    ratingRationale.push('If on continuous medication, qualifies for minimum 10% rating');
+  }
+
+  // Build evidence list
+  const evidence = [];
+  evidence.push(`${seizureLogs.length} major seizure episodes logged`);
+  if (lastYear > 0) {
+    evidence.push(`${lastYear} seizures in last 12 months`);
+  }
+  if (last6Months > 0) {
+    evidence.push(`${last6Months} seizures in last 6 months`);
+  }
+
+  // Count witnessed seizures
+  const witnessedCount = seizureLogs.filter(log =>
+      log.seizureData?.witnessPresent === true
+  ).length;
+  if (witnessedCount > 0) {
+    evidence.push(`${witnessedCount} seizure(s) with witness present`);
+  }
+
+  // Count seizures with LOC
+  const locCount = seizureLogs.filter(log =>
+      log.seizureData?.lossOfConsciousness === 'yes'
+  ).length;
+  if (locCount > 0) {
+    evidence.push(`${locCount} seizure(s) with loss of consciousness`);
+  }
+
+  // Build gaps list
+  const gaps = [];
+  if (witnessedCount === 0) {
+    gaps.push('Log witness statements for documented seizures');
+  }
+  if (seizureLogs.length < 3) {
+    gaps.push('Continue logging seizures to establish frequency pattern');
+  }
+  gaps.push('Obtain physician verification of epilepsy diagnosis');
+  gaps.push('Document current anti-epileptic medications if prescribed');
+  gaps.push('Request EEG results if available');
+
+  return {
+    hasData: true,
+    condition: 'Epilepsy, Grand Mal (Major Seizures)',
+    diagnosticCode: '8910',
+    supportedRating,
+    ratingRationale,
+    evidence,
+    gaps,
+    criteria: EPILEPSY_MAJOR_CRITERIA,
+    disclaimer: 'This analysis is for documentation purposes only. The VA makes all final rating determinations based on medical evidence and C&P examinations.',
+    seizureType: 'major',
+    frequencyAnalysis: {
+      last30Days,
+      last6Months,
+      lastYear,
+      last2Years,
+      averagePerMonth,
+    },
+  };
+}
+
+/**
+ * Analyze epilepsy - minor seizures (DC 8911)
+ * Counts minor seizure frequency
+ */
+export function analyzeEpilepsyMinorLogs(logs, evaluationDays = 90) {
+  const seizureSymptomIds = ['seizure-minor'];
+
+  const seizureLogs = logs.filter(log =>
+      seizureSymptomIds.includes(log.symptomId)
+  );
+
+  if (seizureLogs.length === 0) {
+    return {
+      hasData: false,
+      condition: 'Epilepsy, Petit Mal (Minor Seizures)',
+      diagnosticCode: '8911',
+    };
+  }
+
+  const now = new Date();
+  const msPerDay = 24 * 60 * 60 * 1000;
+
+  // Count seizures in different time periods
+  const last7Days = seizureLogs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    const daysDiff = (now - logDate) / msPerDay;
+    return daysDiff <= 7;
+  }).length;
+
+  const last30Days = seizureLogs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    const daysDiff = (now - logDate) / msPerDay;
+    return daysDiff <= 30;
+  }).length;
+
+  const last6Months = seizureLogs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    const daysDiff = (now - logDate) / msPerDay;
+    return daysDiff <= 180;
+  }).length;
+
+  const lastYear = seizureLogs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    const daysDiff = (now - logDate) / msPerDay;
+    return daysDiff <= 365;
+  }).length;
+
+  // Calculate weekly average
+  const weeksTracked = 4; // Last 30 days
+  const averagePerWeek = last7Days > 0 ? last7Days : (last30Days / weeksTracked);
+
+  // Determine rating based on weekly frequency
+  let supportedRating = null;
+  let ratingRationale = [];
+
+  if (averagePerWeek > 10) {
+    supportedRating = '80%';
+    ratingRationale.push(`Averaging ${averagePerWeek.toFixed(1)} minor seizures per week`);
+    ratingRationale.push('Meets 80% criteria: >10 minor seizures weekly');
+  } else if (averagePerWeek >= 9) {
+    supportedRating = '60%';
+    ratingRationale.push(`Averaging ${averagePerWeek.toFixed(1)} minor seizures per week`);
+    ratingRationale.push('Meets 60% criteria: 9-10 minor seizures per week');
+  } else if (averagePerWeek >= 5) {
+    supportedRating = '40%';
+    ratingRationale.push(`Averaging ${averagePerWeek.toFixed(1)} minor seizures per week`);
+    ratingRationale.push('Meets 40% criteria: 5-8 minor seizures weekly');
+  } else if (last6Months >= 2) {
+    supportedRating = '20%';
+    ratingRationale.push(`${last6Months} minor seizures in last 6 months`);
+    ratingRationale.push('Meets 20% criteria: ≥2 minor seizures in last 6 months');
+  } else {
+    supportedRating = '10%';
+    ratingRationale.push('Documented minor seizure history');
+    ratingRationale.push('If on continuous medication, qualifies for minimum 10% rating');
+  }
+
+  // Build evidence list
+  const evidence = [];
+  evidence.push(`${seizureLogs.length} minor seizure episodes logged`);
+  if (last7Days > 0) {
+    evidence.push(`${last7Days} seizures in last 7 days (${averagePerWeek.toFixed(1)} per week)`);
+  }
+  if (last30Days > 0) {
+    evidence.push(`${last30Days} seizures in last 30 days`);
+  }
+
+  const gaps = [];
+  if (seizureLogs.length < 5) {
+    gaps.push('Continue logging to establish weekly frequency pattern');
+  }
+  gaps.push('Obtain physician diagnosis of petit mal epilepsy');
+  gaps.push('Request EEG showing absence seizure pattern');
+  gaps.push('Document anti-epileptic medications');
+
+  return {
+    hasData: true,
+    condition: 'Epilepsy, Petit Mal (Minor Seizures)',
+    diagnosticCode: '8911',
+    supportedRating,
+    ratingRationale,
+    evidence,
+    gaps,
+    criteria: EPILEPSY_MINOR_CRITERIA,
+    disclaimer: 'This analysis is for documentation purposes only. The VA makes all final rating determinations based on medical evidence and C&P examinations.',
+    seizureType: 'minor',
+    frequencyAnalysis: {
+      last7Days,
+      last30Days,
+      last6Months,
+      lastYear,
+      averagePerWeek,
+    },
+  };
+}
+
 // Helper function to check if timestamp is within evaluation period
 const isWithinEvaluationPeriod = (timestamp, days) => {
   const logDate = new Date(timestamp);
@@ -12154,7 +12695,10 @@ export const getPersistentDepressiveDefinition = (term) => PERSISTENT_DEPRESSIVE
 export const getAdjustmentDisorderDefinition = (term) => ADJUSTMENT_DISORDER_CRITERIA.definitions[term] || null;
 export const getUnspecifiedAnxietyDefinition = (term) => UNSPECIFIED_ANXIETY_CRITERIA.definitions[term] || null;
 export const getUnspecifiedDepressiveDefinition = (term) => UNSPECIFIED_DEPRESSIVE_CRITERIA.definitions[term] || null;
-
+export const getAllEpilepsyMajorRatings = () => EPILEPSY_MAJOR_CRITERIA.ratings;
+export const getAllEpilepsyMinorRatings = () => EPILEPSY_MINOR_CRITERIA.ratings;
+export const getEpilepsyMajorDefinition = (term) => EPILEPSY_MAJOR_CRITERIA.definitions[term] || null;
+export const getEpilepsyMinorDefinition = (term) => EPILEPSY_MINOR_CRITERIA.definitions[term] || null;
 
 
 

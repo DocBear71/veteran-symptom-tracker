@@ -54,6 +54,8 @@ import {
     analyzeAdjustmentDisorderLogs,
     analyzeUnspecifiedAnxietyLogs,
     analyzeUnspecifiedDepressiveLogs,
+    analyzeEpilepsyMajorLogs,
+    analyzeEpilepsyMinorLogs,
     getAllMigraineRatings,
     getAllSleepApneaRatings,
     getAllPTSDRatings,
@@ -67,6 +69,10 @@ import {
     getAllAdjustmentDisorderRatings,
     getAllUnspecifiedAnxietyRatings,
     getAllUnspecifiedDepressiveRatings,
+    getAllEpilepsyMajorRatings,
+    getAllEpilepsyMinorRatings,
+    getEpilepsyMajorDefinition,
+    getEpilepsyMinorDefinition,
     getMigraineDefinition,
     getSleepApneaDefinition,
     getPTSDDefinition,
@@ -105,6 +111,7 @@ import EczemaRatingCard from './EczemaRatingCard';
 import GERDComplicationsRatingCard from './GERDComplicationsRatingCard';
 import HearingLossRatingCard from './HearingLossRatingCard.jsx';
 import PsoriasisRatingCard from './PsoriasisRatingCard.jsx';
+import SeizureRatingCard from './SeizureRatingCard';
 import ScarsRatingCard from './ScarsRatingCard.jsx';
 import TBIResidualsRatingCard from './TBIResidualsRatingCard.jsx';
 import GenericJointRatingCard from './GenericJointRatingCard';
@@ -301,18 +308,18 @@ const RatingEvidence = () => {
         return analyzeHipLogs(logs, { evaluationPeriodDays: evaluationDays });
     }, [logs, evaluationDays]);
 
-  const ankleAnalysis = useMemo(() => {
-        return analyzeAnkleLogs(logs, { evaluationPeriodDays: evaluationDays });
-        }, [logs, evaluationDays]);
-  const wristAnalysis = useMemo(() => {
-        return analyzeWristLogs(logs, { evaluationPeriodDays: evaluationDays });
-        }, [logs, evaluationDays]);
-  const elbowAnalysis = useMemo(() => {
-        return analyzeElbowLogs(logs, { evaluationPeriodDays: evaluationDays });
-        }, [logs, evaluationDays]);
-  const degenerativeArthritisAnalysis = useMemo(() => {
-        return analyzeDegenerativeArthritisLogs(logs, { evaluationPeriodDays: evaluationDays });
-        }, [logs, evaluationDays]);
+    const ankleAnalysis = useMemo(() => {
+          return analyzeAnkleLogs(logs, { evaluationPeriodDays: evaluationDays });
+          }, [logs, evaluationDays]);
+    const wristAnalysis = useMemo(() => {
+          return analyzeWristLogs(logs, { evaluationPeriodDays: evaluationDays });
+          }, [logs, evaluationDays]);
+    const elbowAnalysis = useMemo(() => {
+          return analyzeElbowLogs(logs, { evaluationPeriodDays: evaluationDays });
+          }, [logs, evaluationDays]);
+    const degenerativeArthritisAnalysis = useMemo(() => {
+          return analyzeDegenerativeArthritisLogs(logs, { evaluationPeriodDays: evaluationDays });
+          }, [logs, evaluationDays]);
 
     const asthmaAnalysis = useMemo(() => {
         return analyzeAsthmaLogs(logs, { evaluationPeriodDays: evaluationDays });
@@ -384,6 +391,16 @@ const RatingEvidence = () => {
         return analyzeFibromyalgiaLogs(logs, { evaluationPeriodDays: evaluationDays });
     }, [logs, evaluationDays]);
 
+    // Phase 1E: Analyze Epilepsy - Major Seizures
+    const epilepsyMajorAnalysis = useMemo(() => {
+        return analyzeEpilepsyMajorLogs(logs, evaluationDays);
+    }, [logs, evaluationDays]);
+
+    // Phase 1E: Analyze Epilepsy - Minor Seizures
+    const epilepsyMinorAnalysis = useMemo(() => {
+        return analyzeEpilepsyMinorLogs(logs, evaluationDays);
+    }, [logs, evaluationDays]);
+
     // Toggle section expansion
     const toggleSection = (section) => {
         setExpandedSection(expandedSection === section ? null : section);
@@ -442,7 +459,9 @@ const RatingEvidence = () => {
         scarsAnalysis.hasData ||
         tbiResidualsAnalysis.hasData ||
         tinnitusAnalysis.hasData ||
-        fibromyalgiaAnalysis.hasData;
+        fibromyalgiaAnalysis.hasData ||
+        epilepsyMajorAnalysis.hasData ||
+        epilepsyMinorAnalysis.hasData;
 
     return (
         <div className="space-y-4 text-left">
@@ -880,6 +899,20 @@ const RatingEvidence = () => {
                 expanded={expandedSection === 'fibromyalgia'}
                 onToggle={() => toggleSection('fibromyalgia')}
                 icon="💪"
+            />
+
+            {/* Phase 1E: Epilepsy - Major Seizures */}
+            <SeizureRatingCard
+                analysis={epilepsyMajorAnalysis}
+                expanded={expandedSection === 'epilepsyMajor'}
+                onToggle={() => toggleSection('epilepsyMajor')}
+            />
+
+            {/* Phase 1E: Epilepsy - Minor Seizures */}
+            <SeizureRatingCard
+                analysis={epilepsyMinorAnalysis}
+                expanded={expandedSection === 'epilepsyMinor'}
+                onToggle={() => toggleSection('epilepsyMinor')}
             />
 
             {/* Sleep Apnea Setup Modal */}

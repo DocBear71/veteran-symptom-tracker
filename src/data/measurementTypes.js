@@ -355,64 +355,6 @@ export const MEASUREMENT_TYPES = {
     },
   },
 
-  PEAK_FLOW: {
-    id: 'peak-flow',
-    name: 'Peak Flow',
-    shortName: 'Peak Flow',
-    icon: '🌬️',
-    description: 'Track peak expiratory flow for asthma monitoring',
-
-    fields: [
-      {
-        key: 'peakFlow',
-        label: 'Peak Flow',
-        unit: 'L/min',
-        type: 'number',
-        min: 50,
-        max: 800,
-        step: 5,
-        required: true,
-        placeholder: '400',
-        help: 'Peak expiratory flow rate',
-      },
-    ],
-
-    metadata: [
-      {
-        key: 'timeOfDay',
-        label: 'Time of day',
-        type: 'select',
-        options: [
-          { value: 'morning', label: 'Morning' },
-          { value: 'afternoon', label: 'Afternoon' },
-          { value: 'evening', label: 'Evening' },
-        ],
-        default: 'morning',
-      },
-      {
-        key: 'beforeMedication',
-        label: 'Before or after medication?',
-        type: 'select',
-        options: [
-          { value: 'before', label: 'Before medication' },
-          { value: 'after', label: 'After medication' },
-          { value: 'none', label: 'Not applicable' },
-        ],
-        default: 'before',
-      },
-    ],
-
-    relatedConditions: ['asthma', 'copd'],
-
-    // Note: Peak flow zones are personalized based on personal best
-    // These are general guidelines
-    interpretation: {
-      red: { percent: [0, 50], label: 'Red Zone - Danger', color: 'red' },
-      yellow: { percent: [50, 80], label: 'Yellow Zone - Caution', color: 'yellow' },
-      green: { percent: [80, 100], label: 'Green Zone - Good Control', color: 'green' },
-    },
-  },
-
   FEV1: {
     id: 'fev1',
     name: 'FEV-1 (Forced Expiratory Volume)',
@@ -521,6 +463,263 @@ export const MEASUREMENT_TYPES = {
     relatedConditions: ['asthma', 'copd', 'chronic-bronchitis', 'emphysema'],
 
     interpretation: null, // FVC is typically evaluated as ratio with FEV-1
+  },
+  // ============================================
+  // PHASE 1F: RANGE OF MOTION (ROM)
+  // ============================================
+  ROM: {
+    id: 'rom',
+    name: 'Range of Motion (ROM)',
+    shortName: 'ROM',
+    icon: '🦴',
+    description: 'Track joint range of motion in degrees for musculoskeletal claims',
+
+    fields: [
+      {
+        key: 'measurement',
+        label: 'ROM Measurement',
+        unit: 'degrees',
+        type: 'number',
+        min: 0,
+        max: 360,
+        step: 1,
+        required: true,
+        placeholder: '90',
+        help: 'Measured range of motion in degrees',
+      },
+    ],
+
+    metadata: [
+      {
+        key: 'joint',
+        label: 'Joint',
+        type: 'select',
+        options: [
+          { value: 'shoulder', label: 'Shoulder' },
+          { value: 'elbow', label: 'Elbow' },
+          { value: 'wrist', label: 'Wrist' },
+          { value: 'hip', label: 'Hip' },
+          { value: 'knee', label: 'Knee' },
+          { value: 'ankle', label: 'Ankle' },
+          { value: 'cervical-spine', label: 'Cervical Spine (Neck)' },
+          { value: 'thoracolumbar-spine', label: 'Thoracolumbar Spine (Back)' },
+          { value: 'finger', label: 'Finger' },
+          { value: 'toe', label: 'Toe' },
+        ],
+        required: true,
+      },
+      {
+        key: 'movement',
+        label: 'Movement type',
+        type: 'select',
+        options: [
+          { value: 'flexion', label: 'Flexion' },
+          { value: 'extension', label: 'Extension' },
+          { value: 'abduction', label: 'Abduction' },
+          { value: 'adduction', label: 'Adduction' },
+          { value: 'rotation-internal', label: 'Internal Rotation' },
+          { value: 'rotation-external', label: 'External Rotation' },
+          { value: 'lateral-flexion', label: 'Lateral Flexion' },
+          { value: 'combined', label: 'Combined Movement' },
+        ],
+        required: true,
+      },
+      {
+        key: 'side',
+        label: 'Side',
+        type: 'select',
+        options: [
+          { value: 'left', label: 'Left' },
+          { value: 'right', label: 'Right' },
+          { value: 'bilateral', label: 'Bilateral' },
+        ],
+        default: 'left',
+      },
+      {
+        key: 'pain',
+        label: 'Pain during movement?',
+        type: 'boolean',
+        default: false,
+      },
+      {
+        key: 'measuredBy',
+        label: 'Measured by',
+        type: 'select',
+        options: [
+          { value: 'provider', label: 'Healthcare provider (goniometer)' },
+          { value: 'self', label: 'Self-measurement' },
+        ],
+        default: 'self',
+      },
+    ],
+
+    relatedConditions: ['shoulder-limited-motion', 'knee-limited-motion', 'hip-limited-motion',
+      'ankle-limited-motion', 'elbow-limited-motion', 'wrist-limited-motion',
+      'degenerative-arthritis', 'lumbosacral-strain'],
+
+    interpretation: null, // ROM limitations are condition-specific in VA rating schedule
+  },
+
+  // ============================================
+  // PHASE 1F: PEAK FLOW
+  // ============================================
+  PEAK_FLOW: {
+    id: 'peak-flow',
+    name: 'Peak Flow',
+    shortName: 'Peak Flow',
+    icon: '🫁',
+    description: 'Track peak expiratory flow rate for asthma and respiratory conditions',
+
+    fields: [
+      {
+        key: 'peakFlow',
+        label: 'Peak Flow Reading',
+        unit: 'L/min',
+        type: 'number',
+        min: 50,
+        max: 900,
+        step: 10,
+        required: true,
+        placeholder: '400',
+        help: 'Peak expiratory flow rate',
+      },
+    ],
+
+    metadata: [
+      {
+        key: 'personalBest',
+        label: 'Your personal best',
+        type: 'number',
+        unit: 'L/min',
+        min: 50,
+        max: 900,
+        step: 10,
+        required: false,
+        placeholder: '500',
+        help: 'Your highest peak flow when feeling well',
+      },
+      {
+        key: 'beforeAfterMedication',
+        label: 'Timing',
+        type: 'select',
+        options: [
+          { value: 'before', label: 'Before rescue inhaler' },
+          { value: 'after', label: 'After rescue inhaler' },
+          { value: 'no-medication', label: 'No medication used' },
+        ],
+        default: 'no-medication',
+      },
+      {
+        key: 'symptoms',
+        label: 'Current symptoms',
+        type: 'select',
+        options: [
+          { value: 'none', label: 'No symptoms' },
+          { value: 'mild', label: 'Mild symptoms' },
+          { value: 'moderate', label: 'Moderate symptoms' },
+          { value: 'severe', label: 'Severe symptoms' },
+        ],
+        default: 'none',
+      },
+    ],
+
+    relatedConditions: ['asthma', 'copd', 'chronic-bronchitis'],
+
+    // Peak flow zones (as percentage of personal best)
+    interpretation: {
+      green: { percent: [80, 100], label: 'Green Zone (Good)', color: 'green' },
+      yellow: { percent: [50, 80], label: 'Yellow Zone (Caution)', color: 'yellow' },
+      red: { percent: [0, 50], label: 'Red Zone (Danger)', color: 'red' },
+    },
+  },
+
+  // ============================================
+  // PHASE 1F: BRISTOL STOOL SCALE
+  // ============================================
+  BRISTOL_SCALE: {
+    id: 'bristol-scale',
+    name: 'Bristol Stool Scale',
+    shortName: 'Bristol',
+    icon: '💩',
+    description: 'Track stool consistency for GI conditions (IBS, IBD, etc.)',
+
+    fields: [
+      {
+        key: 'bristolType',
+        label: 'Stool Type',
+        type: 'select',
+        required: true,
+        help: 'Bristol Stool Scale type (1-7)',
+        options: [
+          { value: '', label: 'Select stool type...' },
+          { value: 1, label: 'Type 1 - Separate hard lumps (severe constipation)' },
+          { value: 2, label: 'Type 2 - Lumpy and sausage-like (mild constipation)' },
+          { value: 3, label: 'Type 3 - Sausage with cracks (normal)' },
+          { value: 4, label: 'Type 4 - Smooth, soft sausage (ideal)' },
+          { value: 5, label: 'Type 5 - Soft blobs with clear edges (lacking fiber)' },
+          { value: 6, label: 'Type 6 - Mushy with ragged edges (mild diarrhea)' },
+          { value: 7, label: 'Type 7 - Liquid, no solid pieces (severe diarrhea)' },
+        ],
+      },
+    ],
+
+    metadata: [
+      {
+        key: 'frequency',
+        label: 'Bowel movements today',
+        type: 'number',
+        min: 0,
+        max: 20,
+        step: 1,
+        required: false,
+        placeholder: '0',
+        help: 'Enter 0 if no bowel movement today',
+      },
+      {
+        key: 'urgency',
+        label: 'Urgency level',
+        type: 'select',
+        options: [
+          { value: 'none', label: 'No urgency' },
+          { value: 'mild', label: 'Mild urgency' },
+          { value: 'moderate', label: 'Moderate urgency' },
+          { value: 'severe', label: 'Severe urgency' },
+          { value: 'incontinence', label: 'Incontinence' },
+        ],
+        default: 'none',
+      },
+      {
+        key: 'bloodPresent',
+        label: 'Blood present?',
+        type: 'boolean',
+        default: false,
+      },
+      {
+        key: 'mucusPresent',
+        label: 'Mucus present?',
+        type: 'boolean',
+        default: false,
+      },
+      {
+        key: 'abdominalPain',
+        label: 'Abdominal pain with BM?',
+        type: 'boolean',
+        default: false,
+      },
+    ],
+
+    relatedConditions: ['ibs', 'ulcerative-colitis', 'crohns-disease', 'diverticulitis'],
+
+    // Bristol scale interpretation
+    interpretation: {
+      type1: { bristolType: [1, 1], label: 'Type 1: Severe Constipation (hard lumps)', color: 'red' },
+      type2: { bristolType: [2, 2], label: 'Type 2: Constipation (lumpy)', color: 'orange' },
+      type3: { bristolType: [3, 3], label: 'Type 3: Normal (cracked)', color: 'green' },
+      type4: { bristolType: [4, 4], label: 'Type 4: Ideal (smooth snake)', color: 'green' },
+      type5: { bristolType: [5, 5], label: 'Type 5: Lacking fiber (soft blobs)', color: 'yellow' },
+      type6: { bristolType: [6, 6], label: 'Type 6: Mild diarrhea (mushy)', color: 'orange' },
+      type7: { bristolType: [7, 7], label: 'Type 7: Severe diarrhea (liquid)', color: 'red' },
+    },
   },
   DLCO: {
     id: 'dlco',
@@ -682,6 +881,38 @@ export const interpretMeasurement = (measurementTypeId, values, metadata = {}) =
       return { ...interpretations.normal, percent: percent.toFixed(0) };
     }
 
+    case 'peak-flow': {
+      const { peakFlow } = values;
+      const personalBest = metadata.personalBest;
+
+      if (!personalBest || personalBest === 0) return null;
+
+      const percent = (peakFlow / personalBest) * 100;
+
+      if (percent >= 80) return { ...interpretations.green, percent: percent.toFixed(0) };
+      if (percent >= 50) return { ...interpretations.yellow, percent: percent.toFixed(0) };
+      return { ...interpretations.red, percent: percent.toFixed(0) };
+    }
+    case 'bristol-scale': {
+      const { bristolType } = values;
+
+      switch (bristolType) {
+        case 1: return interpretations.type1;
+        case 2: return interpretations.type2;
+        case 3: return interpretations.type3;
+        case 4: return interpretations.type4;
+        case 5: return interpretations.type5;
+        case 6: return interpretations.type6;
+        case 7: return interpretations.type7;
+        default: return null;
+      }
+    }
+    case 'rom': {
+      // ROM interpretation is condition-specific and handled elsewhere
+      // No general interpretation thresholds
+      return null;
+    }
+
     default:
       return null;
   }
@@ -709,7 +940,33 @@ export const formatMeasurementValue = (measurementTypeId, values) => {
       return `${values.spo2}%${values.heartRate ? ` • HR: ${values.heartRate} bpm` : ''}`;
 
     case 'peak-flow':
-      return `${values.peakFlow} L/min`;
+      if (values.peakFlow) {
+        let display = `${values.peakFlow} L/min`;
+        // Show percentage of personal best if provided
+        const metadata = arguments[2]; // Get metadata if passed
+        if (metadata?.personalBest && metadata.personalBest > 0) {
+          const percent = ((values.peakFlow / metadata.personalBest) * 100).toFixed(0);
+          display += ` (${percent}% of best)`;
+        }
+        return display;
+      }
+      return '';
+    case 'rom':
+      const joint = arguments[2]?.joint || '';
+      const movement = arguments[2]?.movement || '';
+      const side = arguments[2]?.side || '';
+      return `${values.measurement}° ${movement ? `(${movement})` : ''} ${joint ? `- ${joint}` : ''} ${side ? `[${side}]` : ''}`.trim();
+    case 'bristol-scale':
+      const bristolLabels = {
+        1: 'Type 1 (Hard lumps)',
+        2: 'Type 2 (Lumpy)',
+        3: 'Type 3 (Cracked)',
+        4: 'Type 4 (Smooth)',
+        5: 'Type 5 (Soft blobs)',
+        6: 'Type 6 (Mushy)',
+        7: 'Type 7 (Liquid)',
+      };
+      return bristolLabels[values.bristolType] || `Type ${values.bristolType}`;
     case 'fev1':
       if (values.fev1Predicted) {
         const percentPredicted = ((values.fev1 / values.fev1Predicted) * 100).toFixed(0);

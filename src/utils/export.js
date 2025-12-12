@@ -222,6 +222,30 @@ export const generatePDF = (dateRange = 'all', options = { includeAppointments: 
                 }
             }
 
+        // Phase 1E: Add seizure details
+        if (log.seizureData) {
+          const seizureInfo = [];
+          if (log.seizureData.episodeType) {
+            const typeMap = {
+              generalized: 'Grand Mal',
+              partial: 'Partial/Focal',
+              absence: 'Petit Mal',
+              psychogenic: 'Psychogenic',
+              other: 'Other'
+            };
+            seizureInfo.push(typeMap[log.seizureData.episodeType] || log.seizureData.episodeType);
+          }
+          if (log.seizureData.duration) seizureInfo.push(`${log.seizureData.duration}sec`);
+          if (log.seizureData.lossOfConsciousness === 'yes') seizureInfo.push('LOC');
+          else if (log.seizureData.lossOfConsciousness === 'partial') seizureInfo.push('Partial LOC');
+          if (log.seizureData.auraPresent) seizureInfo.push('Aura');
+          if (log.seizureData.witnessPresent) seizureInfo.push('WITNESSED');
+          if (log.seizureData.recoveryTime) seizureInfo.push(`Recovery: ${log.seizureData.recoveryTime}`);
+          if (seizureInfo.length > 0) {
+            notes = seizureInfo.join(', ') + (log.notes ? ` | ${log.notes}` : '');
+          }
+        }
+
             // Add medications
             if (linkedMeds.length > 0) {
                 const medInfo = linkedMeds.map(m => `${m.medicationName} ${m.dosage}`).join(', ');
@@ -356,6 +380,8 @@ export const generateCSV = (dateRange = 'all', options = { includeAppointments: 
         'PTSD Symptoms', 'PTSD Trigger',
         // Pain fields
         'Pain Type', 'Pain Flare Up', 'Radiating', 'Limited ROM', 'Activities Affected',
+        // Phase 1E: Seizure fields
+        'Seizure Type', 'Seizure Duration (sec)', 'Loss of Consciousness', 'Aura Present', 'Witness Present', 'Recovery Time',
         'Notes'
       ];
 
@@ -425,6 +451,13 @@ export const generateCSV = (dateRange = 'all', options = { includeAppointments: 
             log.painData?.radiating ? (log.painData.radiatingTo || 'Yes') : '',
             log.painData?.limitedRangeOfMotion ? 'Yes' : '',
             log.painData?.affectedActivities?.join('; ') || '',
+            // Phase 1E: Seizure fields
+            log.seizureData?.episodeType ? (log.seizureData.episodeType === 'generalized' ? 'Grand Mal' : log.seizureData.episodeType === 'absence' ? 'Petit Mal' : log.seizureData.episodeType) : '',
+            log.seizureData?.duration || '',
+            log.seizureData?.lossOfConsciousness === 'yes' ? 'Yes' : (log.seizureData?.lossOfConsciousness === 'partial' ? 'Partial' : (log.seizureData?.lossOfConsciousness === 'no' ? 'No' : '')),
+            log.seizureData?.auraPresent === true ? 'Yes' : (log.seizureData?.auraPresent === false ? 'No' : ''),
+            log.seizureData?.witnessPresent === true ? 'Yes' : (log.seizureData?.witnessPresent === false ? 'No' : ''),
+            log.seizureData?.recoveryTime || '',
             log.notes || ''
           ];
         });
@@ -1170,7 +1203,7 @@ export const generateVAClaimPackagePDF = async (dateRange = 'all', options = {})
                     currentY += 5;
 
                     evidenceLines.slice(0, 5).forEach((evidence) => {
-                        const lines = doc.splitTextToSize(`âœ“ ${evidence}`, 180);
+                        const lines = doc.splitTextToSize(`✓ ${evidence}`, 180);
                         doc.setFontSize(9);
                         doc.setTextColor(22, 163, 74);
                         doc.text(lines, 18, currentY);
