@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { formatRating, getRatingColorClass } from './ratingCriteria';
+import { formatRating, getRatingColorClass } from '../utils/ratingCriteria';
 
 /**
  * Seizure/Epilepsy Rating Card Component
