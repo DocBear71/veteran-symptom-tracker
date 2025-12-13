@@ -63,6 +63,7 @@ import {
     analyzeAdjustmentDisorderLogs,
     analyzeUnspecifiedAnxietyLogs,
     analyzeUnspecifiedDepressiveLogs,
+    analyzeVisionLogs,
 } from './ratingCriteria';
 
 // Appointment type labels for export
@@ -246,7 +247,55 @@ export const generatePDF = (dateRange = 'all', options = { includeAppointments: 
           }
         }
 
-            // Add medications
+        // Phase 2: Add eye/vision details
+        if (log.eyeData) {
+          const eyeInfo = [];
+
+          // Affected eye
+          if (log.eyeData.affectedEye) {
+            const eyeMap = { left: 'Left eye', right: 'Right eye', both: 'Both eyes' };
+            eyeInfo.push(eyeMap[log.eyeData.affectedEye] || log.eyeData.affectedEye);
+          }
+
+          // Visual acuity
+          if (log.eyeData.leftEyeAcuity || log.eyeData.rightEyeAcuity) {
+            const acuityInfo = [];
+            if (log.eyeData.leftEyeAcuity) acuityInfo.push(`L: ${log.eyeData.leftEyeAcuity}`);
+            if (log.eyeData.rightEyeAcuity) acuityInfo.push(`R: ${log.eyeData.rightEyeAcuity}`);
+            eyeInfo.push(acuityInfo.join(', '));
+          }
+
+          // Symptoms
+          if (log.eyeData.symptoms && log.eyeData.symptoms.length > 0) {
+            eyeInfo.push(`Symptoms: ${log.eyeData.symptoms.join(', ')}`);
+          }
+
+          // Field of vision
+          if (log.eyeData.fieldOfVision && log.eyeData.fieldOfVision.length > 0) {
+            eyeInfo.push(`Field: ${log.eyeData.fieldOfVision.join(', ')}`);
+          }
+
+          // Activities affected
+          if (log.eyeData.affectedActivities && log.eyeData.affectedActivities.length > 0) {
+            eyeInfo.push(`Affects: ${log.eyeData.affectedActivities.join(', ')}`);
+          }
+
+          // Triggers
+          if (log.eyeData.triggeringFactors) {
+            eyeInfo.push(`Triggers: ${log.eyeData.triggeringFactors}`);
+          }
+
+          // Associated conditions
+          if (log.eyeData.associatedConditions && log.eyeData.associatedConditions.length > 0) {
+            eyeInfo.push(`Related: ${log.eyeData.associatedConditions.join(', ')}`);
+          }
+
+          if (eyeInfo.length > 0) {
+            notes = eyeInfo.join(' | ') + (log.notes ? ` | ${log.notes}` : '');
+          }
+        }
+
+        // Add medications
             if (linkedMeds.length > 0) {
                 const medInfo = linkedMeds.map(m => `${m.medicationName} ${m.dosage}`).join(', ');
                 notes = `Meds: ${medInfo}` + (notes !== '-' ? ` | ${notes}` : '');
@@ -382,6 +431,8 @@ export const generateCSV = (dateRange = 'all', options = { includeAppointments: 
         'Pain Type', 'Pain Flare Up', 'Radiating', 'Limited ROM', 'Activities Affected',
         // Phase 1E: Seizure fields
         'Seizure Type', 'Seizure Duration (sec)', 'Loss of Consciousness', 'Aura Present', 'Witness Present', 'Recovery Time',
+        // Phase 2: Eye/Vision fields
+        'Affected Eye', 'Left Eye Acuity', 'Right Eye Acuity', 'Eye Symptoms', 'Field of Vision', 'Affected Activities', 'Triggering Factors', 'Associated Conditions',
         'Notes'
       ];
 
@@ -458,6 +509,15 @@ export const generateCSV = (dateRange = 'all', options = { includeAppointments: 
             log.seizureData?.auraPresent === true ? 'Yes' : (log.seizureData?.auraPresent === false ? 'No' : ''),
             log.seizureData?.witnessPresent === true ? 'Yes' : (log.seizureData?.witnessPresent === false ? 'No' : ''),
             log.seizureData?.recoveryTime || '',
+            // Phase 2: Eye/Vision fields
+            log.eyeData?.affectedEye ? (log.eyeData.affectedEye === 'left' ? 'Left' : log.eyeData.affectedEye === 'right' ? 'Right' : 'Both') : '',
+            log.eyeData?.leftEyeAcuity || '',
+            log.eyeData?.rightEyeAcuity || '',
+            log.eyeData?.symptoms?.join('; ') || '',
+            log.eyeData?.fieldOfVision?.join('; ') || '',
+            log.eyeData?.affectedActivities?.join('; ') || '',
+            log.eyeData?.triggeringFactors || '',
+            log.eyeData?.associatedConditions?.join('; ') || '',
             log.notes || ''
           ];
         });
@@ -823,7 +883,8 @@ const analyzeAllConditions = (logs, options = {}) => {
         'adjustment-disorder': analyzeAdjustmentDisorderLogs,
         'unspecified-anxiety': analyzeUnspecifiedAnxietyLogs,
         'unspecified-depressive': analyzeUnspecifiedDepressiveLogs,
-    };
+        'vision-loss': analyzeVisionLogs,
+      };
 
     const analyses = [];
 

@@ -118,6 +118,18 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
     witnessPresent: null,        // true/false
   });
 
+  // Phase 2: Eye & Vision data
+  const [eyeData, setEyeData] = useState({
+    affectedEye: '',             // left/right/both
+    leftEyeAcuity: '',          // 20/20, 20/40, CF, HM, LP, NLP, etc.
+    rightEyeAcuity: '',         // 20/20, 20/40, CF, HM, LP, NLP, etc.
+    symptoms: [],               // blurriness, halos, pain, etc.
+    fieldOfVision: [],          // central, peripheral, blind-spots, complete-loss
+    affectedActivities: [],     // reading, driving-day, driving-night, faces, computer, depth, balance
+    triggeringFactors: '',      // optional text
+    associatedConditions: [],   // diabetes, hypertension, tbi, migraine
+  });
+
   // Phase 1H - Track processed prefillData to avoid re-processing
   const processedPrefillId = useRef(null);
   const isPrefilling = useRef(false);
@@ -213,6 +225,11 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
         setSeizureData({ ...prefillData.seizureData });
       }
 
+      if (prefillData.eyeData) {
+        console.log('👁️ Setting eye data:', prefillData.eyeData);
+        setEyeData({ ...prefillData.eyeData });
+      }
+
       console.log('✅ All prefill data set');
 
       // Clear prefillData AFTER state updates have been queued
@@ -302,6 +319,16 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
       selectedSymptom?.startsWith('seizure-') ||
       ['absence-seizure', 'tonic-clonic', 'focal-seizure', 'grand-mal', 'petit-mal'].includes(selectedSymptom);
 
+  // Phase 2: Eye & Vision detection
+  const isEyeRelated = selectedSymptom?.includes('vision') ||
+      selectedSymptom?.includes('eye') ||
+      selectedSymptom?.includes('glaucoma') ||
+      selectedSymptom?.includes('retinopathy') ||
+      selectedSymptom?.includes('macular') ||
+      ['floaters', 'diplopia', 'photophobia', 'night-blindness', 'light-sensitivity',
+       'double-vision', 'color-vision-changes', 'dry-eyes', 'eye-strain', 'eye-pain',
+       'peripheral-vision-loss', 'diabetic-retinopathy', 'glaucoma-symptoms'].includes(selectedSymptom);
+
   // Reset condition-specific data when symptom changes
   useEffect(() => {
     // Phase 1H: Skip reset during prefill operation
@@ -361,10 +388,18 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
         auraPresent: null, recoveryTime: '', witnessPresent: null,
       });
     }
+    // Phase 2: Reset eye data
+    if (!isEyeRelated) {
+      setEyeData({
+        affectedEye: '', leftEyeAcuity: '', rightEyeAcuity: '',
+        symptoms: [], fieldOfVision: [], affectedActivities: [],
+        triggeringFactors: '', associatedConditions: [],
+      });
+    }
   }, [selectedSymptom, isMigraineSelected, isSleepSelected,
             isNightmareSelected, isPTSDRelated, isPainSelected,
             isGISelected, isRespiratorySelected, isJointSelected,
-            isSeizureSelected]);
+            isSeizureSelected, isEyeRelated]);
 
   // Build categories list including custom symptoms
   const getAllCategories = () => {
@@ -469,6 +504,11 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
 
     if (isSeizureSelected) {
       entry.seizureData = { ...seizureData };
+    }
+
+    // Phase 2: Add eye data
+    if (isEyeRelated) {
+      entry.eyeData = { ...eyeData };
     }
 
     const savedEntry = saveSymptomLog(entry);

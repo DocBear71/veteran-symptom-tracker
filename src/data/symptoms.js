@@ -584,6 +584,26 @@ export const symptomCategories = [
       { id: 'urticaria-medication', name: 'Urticaria - Required Medication Use' },
     ]
   },
+  // Phase 2: Eye & Vision Conditions (DC 6061-6079)
+  {
+    id: 'eye-vision',
+    name: 'Eye & Vision',
+    symptoms: [
+      { id: 'vision-loss', name: 'Vision Loss/Blurriness' },
+      { id: 'glaucoma-symptoms', name: 'Glaucoma Symptoms' },
+      { id: 'diabetic-retinopathy', name: 'Diabetic Retinopathy Symptoms' },
+      { id: 'macular-degeneration', name: 'Macular Degeneration' },
+      { id: 'eye-pain', name: 'Eye Pain' },
+      { id: 'light-sensitivity', name: 'Light Sensitivity (Photophobia)' },
+      { id: 'double-vision', name: 'Double Vision (Diplopia)' },
+      { id: 'floaters', name: 'Floaters/Spots in Vision' },
+      { id: 'peripheral-vision-loss', name: 'Peripheral Vision Loss' },
+      { id: 'color-vision-changes', name: 'Color Vision Changes' },
+      { id: 'night-blindness', name: 'Night Blindness' },
+      { id: 'dry-eyes', name: 'Dry Eyes' },
+      { id: 'eye-strain', name: 'Eye Strain/Fatigue' },
+    ]
+  },
 ];
 
 // Helper function to determine if a category is a "child" of another

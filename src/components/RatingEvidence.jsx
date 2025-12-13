@@ -56,6 +56,7 @@ import {
     analyzeUnspecifiedDepressiveLogs,
     analyzeEpilepsyMajorLogs,
     analyzeEpilepsyMinorLogs,
+    analyzeVisionLogs,
     getAllMigraineRatings,
     getAllSleepApneaRatings,
     getAllPTSDRatings,
@@ -115,6 +116,9 @@ import SeizureRatingCard from './SeizureRatingCard';
 import ScarsRatingCard from './ScarsRatingCard.jsx';
 import TBIResidualsRatingCard from './TBIResidualsRatingCard.jsx';
 import GenericJointRatingCard from './GenericJointRatingCard';
+import EyeVisionRatingCard from './EyeVisionRatingCard';
+
+// Storage key for sleep apnea profile
 
 // Storage key for sleep apnea profile
 const SLEEP_APNEA_PROFILE_KEY = 'symptomTracker_sleepApneaProfile';
@@ -401,6 +405,11 @@ const RatingEvidence = () => {
         return analyzeEpilepsyMinorLogs(logs, evaluationDays);
     }, [logs, evaluationDays]);
 
+    // Phase 2: Analyze Vision/Eye Conditions
+    const visionAnalysis = useMemo(() => {
+      return analyzeVisionLogs(logs);
+    }, [logs]);
+
     // Toggle section expansion
     const toggleSection = (section) => {
         setExpandedSection(expandedSection === section ? null : section);
@@ -461,7 +470,8 @@ const RatingEvidence = () => {
         tinnitusAnalysis.hasData ||
         fibromyalgiaAnalysis.hasData ||
         epilepsyMajorAnalysis.hasData ||
-        epilepsyMinorAnalysis.hasData;
+        epilepsyMinorAnalysis.hasData ||
+        visionAnalysis.hasData;
 
     return (
         <div className="space-y-4 text-left">
@@ -914,6 +924,13 @@ const RatingEvidence = () => {
                 expanded={expandedSection === 'epilepsyMinor'}
                 onToggle={() => toggleSection('epilepsyMinor')}
             />
+
+          {/* Phase 2: Eye & Vision Conditions */}
+          <EyeVisionRatingCard
+              logs={logs}
+              expanded={expandedSection === 'vision'}
+              onToggle={() => toggleSection('vision')}
+          />
 
             {/* Sleep Apnea Setup Modal */}
             {showSleepApneaSetup && (

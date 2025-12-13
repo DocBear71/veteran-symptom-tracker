@@ -519,7 +519,6 @@ export const CONDITIONS = {
             'fibro-stiffness',
             'fibro-cognitive'],
     },
-
     // Phase 3: Additional Mental Health Conditions
     SOCIAL_ANXIETY: {
         id: 'social-anxiety',
@@ -588,17 +587,76 @@ export const CONDITIONS = {
         ],
     },
     UNSPECIFIED_DEPRESSIVE: {
-        id: 'unspecified-depressive',
-        name: 'Unspecified Depressive Disorder',
-        diagnosticCode: '9435',
-        cfrReference: '38 CFR 4.130',
-        symptomIds: [
-            'depression',
-            'mdd-episode',
-            'mdd-anhedonia',
-            'mdd-hopelessness',
-        ],
+      id: 'unspecified-depressive',
+      name: 'Unspecified Depressive Disorder',
+      diagnosticCode: '9435',
+      cfrReference: '38 CFR 4.130',
+      symptomIds: [
+        'depression',
+        'mdd-episode',
+        'mdd-anhedonia',
+        'mdd-hopelessness',
+      ],
     },
+    // PHASE 2: Eye & Vision Conditions
+    VISION_LOSS: {
+      id: 'vision-loss',
+      name: 'Vision Loss',
+      diagnosticCode: '6061-6079',
+      cfrReference: '38 CFR 4.75-4.79',
+      symptomIds: [
+        'vision-loss',
+        'peripheral-vision-loss',
+        'night-blindness',
+        'color-vision-changes',
+      ],
+    },
+    GLAUCOMA: {
+      id: 'glaucoma',
+      name: 'Glaucoma',
+      diagnosticCode: '6067',
+      cfrReference: '38 CFR 4.76',
+      symptomIds: [
+        'glaucoma-symptoms',
+        'eye-pain',
+        'vision-loss',
+      ],
+    },
+    DIABETIC_RETINOPATHY: {
+      id: 'diabetic-retinopathy',
+      name: 'Diabetic Retinopathy',
+      diagnosticCode: '6066',
+      cfrReference: '38 CFR 4.79',
+      symptomIds: [
+        'diabetic-retinopathy',
+        'vision-loss',
+        'floaters',
+      ],
+    },
+    MACULAR_DEGENERATION: {
+      id: 'macular-degeneration',
+      name: 'Macular Degeneration',
+      diagnosticCode: '6062',
+      cfrReference: '38 CFR 4.79',
+      symptomIds: [
+        'macular-degeneration',
+        'vision-loss',
+      ],
+    },
+    EYE_CONDITIONS: {
+      id: 'eye-conditions',
+      name: 'Eye Conditions (General)',
+      diagnosticCode: 'Various',
+      cfrReference: '38 CFR 4.75-4.84',
+      symptomIds: [
+        'eye-pain',
+        'light-sensitivity',
+        'double-vision',
+        'floaters',
+        'dry-eyes',
+        'eye-strain',
+      ],
+  },
 };
 
 // ============================================
@@ -12287,6 +12345,188 @@ export function analyzeEpilepsyMinorLogs(logs, evaluationDays = 90) {
   };
 }
 
+// ============================================
+// PHASE 2: VISION LOSS ANALYSIS FUNCTION
+// ============================================
+
+export const analyzeVisionLogs = (logs) => {
+  const visionLogs = logs.filter(log =>
+      log.eyeData ||
+      log.symptomId?.includes('vision') ||
+      log.symptomId?.includes('eye') ||
+      log.symptomId?.includes('glaucoma') ||
+      log.symptomId?.includes('retinopathy') ||
+      log.symptomId?.includes('macular')
+  );
+
+  if (visionLogs.length === 0) {
+    return {
+      hasData: false,
+      message: 'No vision-related symptoms logged'
+    };
+  }
+
+  // Analyze visual acuity trends
+  const acuityTrends = {
+    left: [],
+    right: [],
+    worstLeft: null,
+    worstRight: null,
+    betterEye: null
+  };
+
+  visionLogs.forEach(log => {
+    if (log.eyeData?.leftEyeAcuity) {
+      acuityTrends.left.push({
+        date: log.timestamp,
+        acuity: log.eyeData.leftEyeAcuity
+      });
+    }
+    if (log.eyeData?.rightEyeAcuity) {
+      acuityTrends.right.push({
+        date: log.timestamp,
+        acuity: log.eyeData.rightEyeAcuity
+      });
+    }
+  });
+
+  // Determine worst visual acuity (for rating purposes)
+  const acuityRanking = {
+    '20/20': 1, '20/25': 2, '20/30': 3, '20/40': 4, '20/50': 5,
+    '20/70': 6, '20/100': 7, '20/200': 8, 'CF': 9, 'HM': 10, 'LP': 11, 'NLP': 12
+  };
+
+  if (acuityTrends.left.length > 0) {
+    acuityTrends.worstLeft = acuityTrends.left.reduce((worst, current) => {
+      const currentRank = acuityRanking[current.acuity] || 0;
+      const worstRank = acuityRanking[worst.acuity] || 0;
+      return currentRank > worstRank ? current : worst;
+    });
+  }
+
+  if (acuityTrends.right.length > 0) {
+    acuityTrends.worstRight = acuityTrends.right.reduce((worst, current) => {
+      const currentRank = acuityRanking[current.acuity] || 0;
+      const worstRank = acuityRanking[worst.acuity] || 0;
+      return currentRank > worstRank ? current : worst;
+    });
+  }
+
+  // Determine "better eye" for VA rating
+  if (acuityTrends.worstLeft && acuityTrends.worstRight) {
+    const leftRank = acuityRanking[acuityTrends.worstLeft.acuity] || 0;
+    const rightRank = acuityRanking[acuityTrends.worstRight.acuity] || 0;
+    acuityTrends.betterEye = leftRank < rightRank ? 'left' : 'right';
+  } else if (acuityTrends.worstLeft) {
+    acuityTrends.betterEye = 'left';
+  } else if (acuityTrends.worstRight) {
+    acuityTrends.betterEye = 'right';
+  }
+
+  // Frequency analysis
+  const last30Days = visionLogs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+    return logDate >= thirtyDaysAgo;
+  });
+
+  // Impact on activities
+  const activityImpacts = {};
+  visionLogs.forEach(log => {
+    if (log.eyeData?.affectedActivities) {
+      log.eyeData.affectedActivities.forEach(activity => {
+        activityImpacts[activity] = (activityImpacts[activity] || 0) + 1;
+      });
+    }
+  });
+
+  // Field of vision defects
+  const fieldDefects = {};
+  visionLogs.forEach(log => {
+    if (log.eyeData?.fieldOfVision) {
+      log.eyeData.fieldOfVision.forEach(field => {
+        fieldDefects[field] = (fieldDefects[field] || 0) + 1;
+      });
+    }
+  });
+
+  // Evidence gaps
+  const gaps = [];
+  const hasAcuityMeasurements = acuityTrends.left.length > 0 || acuityTrends.right.length > 0;
+  const hasFieldDefectDocs = Object.keys(fieldDefects).length > 0;
+
+  if (!hasAcuityMeasurements) {
+    gaps.push('Need formal visual acuity measurements from eye exam');
+  }
+  if (fieldDefects['peripheral'] || fieldDefects['blind-spots']) {
+    gaps.push('Field defects noted - need formal visual field testing (perimetry)');
+  }
+  gaps.push('Need ophthalmology examination records');
+  gaps.push('Need diagnosis documentation');
+
+  // Rating guidance
+  let ratingGuidance = 'Vision loss is rated based on visual acuity in the better eye. ';
+  if (acuityTrends.betterEye && (acuityTrends.worstLeft || acuityTrends.worstRight)) {
+    const betterEyeAcuity = acuityTrends.betterEye === 'left'
+        ? acuityTrends.worstLeft.acuity
+        : acuityTrends.worstRight.acuity;
+
+    ratingGuidance += `Your logged better eye acuity is ${betterEyeAcuity}. `;
+
+    // Provide rating estimate
+    if (betterEyeAcuity === '20/40') {
+      ratingGuidance += 'This may support a 10% rating.';
+    } else if (betterEyeAcuity === '20/70') {
+      ratingGuidance += 'This may support a 30% rating.';
+    } else if (betterEyeAcuity === '20/100') {
+      ratingGuidance += 'This may support a 40% rating.';
+    } else if (betterEyeAcuity === '20/200') {
+      ratingGuidance += 'This may support a 50% rating.';
+    } else if (['CF', 'HM', 'LP', 'NLP'].includes(betterEyeAcuity)) {
+      ratingGuidance += 'This indicates severe vision loss - may support 60-100% rating depending on exact measurements.';
+    }
+  } else {
+    ratingGuidance += 'Log visual acuity measurements from eye exams to determine potential rating.';
+  }
+
+  // Determine supported rating based on better eye acuity
+  let supportedRating = 0;
+  if (acuityTrends.betterEye && (acuityTrends.worstLeft || acuityTrends.worstRight)) {
+    const betterEyeAcuity = acuityTrends.betterEye === 'left'
+        ? acuityTrends.worstLeft.acuity
+        : acuityTrends.worstRight.acuity;
+
+    if (betterEyeAcuity === '20/40') supportedRating = 10;
+    else if (betterEyeAcuity === '20/70') supportedRating = 30;
+    else if (betterEyeAcuity === '20/100') supportedRating = 40;
+    else if (betterEyeAcuity === '20/200') supportedRating = 50;
+    else if (betterEyeAcuity === '15/200') supportedRating = 60;
+    else if (betterEyeAcuity === '10/200') supportedRating = 70;
+    else if (betterEyeAcuity === '5/200') supportedRating = 90;
+    else if (betterEyeAcuity === 'CF' || betterEyeAcuity === 'HM' || betterEyeAcuity === 'LP' || betterEyeAcuity === 'NLP') supportedRating = 100;
+  }
+
+  return {
+    hasData: true,
+    condition: 'Eye & Vision Conditions',
+    diagnosticCode: 'DC 6061-6079',
+    supportedRating: supportedRating.toString(),
+    totalLogs: visionLogs.length,
+    last30Days: last30Days.length,
+    acuityTrends,
+    mostAffectedActivities: Object.entries(activityImpacts)
+    .sort(([,a], [,b]) => b - a)
+    .slice(0, 5)
+    .map(([activity, count]) => ({ activity, count })),
+    fieldDefects: Object.entries(fieldDefects)
+    .map(([field, count]) => ({ field, count })),
+    evidenceGaps: gaps,
+    ratingGuidance,
+    criteria: VISION_LOSS_CRITERIA
+  };
+};
+
 // Helper function to check if timestamp is within evaluation period
 const isWithinEvaluationPeriod = (timestamp, days) => {
   const logDate = new Date(timestamp);
@@ -12484,6 +12724,275 @@ export const analyzeFibromyalgiaLogs = (logs, options = {}) => {
     criteria: conditionCriteria,
     disclaimer: 'Fibromyalgia ratings are based on symptom pattern (constant vs episodic vs medication-controlled) and response to treatment. Your documentation establishes symptom frequency and types. Formal diagnosis and documentation of widespread pain pattern are essential.',
   };
+};
+
+// ============================================
+// PHASE 2: VISION LOSS CRITERIA (DC 6061-6079)
+// ============================================
+
+export const VISION_LOSS_CRITERIA = {
+  condition: 'Vision Loss',
+  diagnosticCode: '6061-6079',
+  ratings: [
+    {
+      percent: 100,
+      summary: 'Blindness in both eyes or near-total vision loss',
+      criteriaDescription: [
+        'No light perception in both eyes (NLP bilateral), OR',
+        'Visual acuity 5/200 or less in better eye with concentric contraction of visual field to 5 degrees or less'
+      ],
+      evidenceNeeded: [
+        'Ophthalmology examination results',
+        'Visual acuity measurements',
+        'Visual field testing results',
+        'Documentation of cause (if service-connected)'
+      ]
+    },
+    {
+      percent: 90,
+      summary: 'Severe vision impairment',
+      criteriaDescription: [
+        'Visual acuity 5/200 in better eye, with 5/200 or less in poorer eye'
+      ],
+      evidenceNeeded: [
+        'Bilateral visual acuity measurements',
+        'Ophthalmology examination'
+      ]
+    },
+    {
+      percent: 70,
+      summary: 'Marked vision impairment',
+      criteriaDescription: [
+        'Visual acuity 10/200 in better eye, OR',
+        'Concentric contraction of visual field to 5 degrees in better eye'
+      ],
+      evidenceNeeded: [
+        'Visual acuity testing',
+        'Visual field examination (perimetry)',
+        'Documentation of better eye measurement'
+      ]
+    },
+    {
+      percent: 60,
+      summary: 'Moderate to severe vision impairment',
+      criteriaDescription: [
+        'Visual acuity 15/200 in better eye, OR',
+        'Concentric contraction of visual field to 10 degrees in better eye'
+      ],
+      evidenceNeeded: [
+        'Visual acuity measurements',
+        'Visual field testing',
+        'Ophthalmology reports'
+      ]
+    },
+    {
+      percent: 50,
+      summary: 'Moderate vision impairment',
+      criteriaDescription: [
+        'Visual acuity 20/200 in better eye, OR',
+        'Concentric contraction of visual field to 15 degrees in better eye'
+      ],
+      evidenceNeeded: [
+        'Corrected visual acuity measurements',
+        'Visual field examination results'
+      ]
+    },
+    {
+      percent: 40,
+      summary: 'Mild to moderate vision impairment',
+      criteriaDescription: [
+        'Visual acuity 20/100 in better eye'
+      ],
+      evidenceNeeded: [
+        'Visual acuity testing with best correction',
+        'Ophthalmology examination'
+      ]
+    },
+    {
+      percent: 30,
+      summary: 'Mild vision impairment',
+      criteriaDescription: [
+        'Visual acuity 20/70 in better eye, OR',
+        'Marked constriction of visual fields'
+      ],
+      evidenceNeeded: [
+        'Visual acuity measurements',
+        'Visual field testing if field loss present'
+      ]
+    },
+    {
+      percent: 10,
+      summary: 'Minimal vision impairment',
+      criteriaDescription: [
+        'Visual acuity 20/40 in better eye, OR',
+        'Moderate constriction of visual fields'
+      ],
+      evidenceNeeded: [
+        'Visual acuity testing',
+        'Documentation of field defects if applicable'
+      ]
+    }
+  ],
+  definitions: {
+    'visual acuity': 'Clarity or sharpness of vision, measured using Snellen chart (e.g., 20/20, 20/40)',
+    'better eye': 'The eye with better visual acuity; VA ratings are based on the better eye',
+    'concentric contraction': 'Progressive narrowing of the visual field from the periphery',
+    'visual field': 'The entire area that can be seen when the eye is directed forward',
+    'CF': 'Count Fingers - ability to count fingers at a specified distance',
+    'HM': 'Hand Motion - ability to detect hand movement',
+    'LP': 'Light Perception - ability to perceive light only',
+    'NLP': 'No Light Perception - complete blindness'
+  }
+};
+
+// ============================================
+// PHASE 2: GLAUCOMA CRITERIA (DC 6067)
+// ============================================
+
+export const GLAUCOMA_CRITERIA = {
+  condition: 'Glaucoma',
+  diagnosticCode: '6067',
+  ratings: [
+    {
+      percent: 100,
+      summary: 'Rate based on resulting visual impairment',
+      criteriaDescription: [
+        'Bilateral glaucoma rated under vision loss criteria (DC 6061-6079)',
+        'Use visual acuity and visual field measurements'
+      ],
+      evidenceNeeded: [
+        'Glaucoma diagnosis from ophthalmologist',
+        'Visual acuity measurements',
+        'Visual field testing results',
+        'Intraocular pressure readings',
+        'Optic nerve examination findings'
+      ]
+    },
+    {
+      percent: 30,
+      summary: 'Unilateral glaucoma with field defect and requiring medication',
+      criteriaDescription: [
+        'Unilateral (one eye) glaucoma with:',
+        'Characteristic visual field defect, AND',
+        'Either persistent increased intraocular pressure with optic nerve damage, OR',
+        'Requires sustained medication to control intraocular pressure'
+      ],
+      evidenceNeeded: [
+        'Diagnosis of glaucoma in one eye',
+        'Visual field test showing defect',
+        'IOP measurements',
+        'Current medication regimen',
+        'Optic nerve assessment'
+      ]
+    },
+    {
+      percent: 10,
+      summary: 'Unilateral glaucoma controlled by medication',
+      criteriaDescription: [
+        'Unilateral glaucoma controlled by medication',
+        'Without visual field defect',
+        'Without optic nerve damage'
+      ],
+      evidenceNeeded: [
+        'Glaucoma diagnosis',
+        'Current medications',
+        'IOP readings showing control',
+        'Visual field testing (normal)',
+        'Optic nerve examination (stable)'
+      ]
+    }
+  ],
+  definitions: {
+    'glaucoma': 'Group of eye conditions that damage the optic nerve, often due to increased intraocular pressure',
+    'IOP': 'Intraocular Pressure - fluid pressure inside the eye',
+    'visual field defect': 'Areas of vision loss or blind spots characteristic of glaucoma',
+    'optic nerve damage': 'Damage to the nerve that transmits visual information from the eye to the brain',
+    'unilateral': 'Affecting one eye only',
+    'bilateral': 'Affecting both eyes'
+  }
+};
+
+// ============================================
+// PHASE 2: DIABETIC RETINOPATHY CRITERIA (DC 6066)
+// ============================================
+
+export const DIABETIC_RETINOPATHY_CRITERIA = {
+  condition: 'Diabetic Retinopathy',
+  diagnosticCode: '6066',
+  note: 'Rated based on resulting visual acuity under DC 6061-6079',
+  ratings: [
+    {
+      percent: 'variable',
+      summary: 'Rate based on visual acuity',
+      criteriaDescription: [
+        'Diabetic retinopathy is rated under vision loss criteria',
+        'Use visual acuity measurements in better eye',
+        'Consider macular edema impact on central vision',
+        'Proliferative changes may cause more rapid progression'
+      ],
+      evidenceNeeded: [
+        'Diagnosis of diabetic retinopathy',
+        'Type (non-proliferative vs proliferative)',
+        'Visual acuity measurements',
+        'Dilated fundus examination results',
+        'OCT (Optical Coherence Tomography) if available',
+        'Fluorescein angiography results if performed',
+        'Treatment history (laser photocoagulation, anti-VEGF injections)',
+        'Relationship to diabetes control (HbA1c levels)'
+      ]
+    }
+  ],
+  definitions: {
+    'diabetic retinopathy': 'Diabetes complication affecting blood vessels in the retina',
+    'proliferative': 'Advanced stage with abnormal blood vessel growth',
+    'non-proliferative': 'Earlier stage with damaged blood vessels but no new growth',
+    'macular edema': 'Swelling in the central part of the retina affecting central vision',
+    'OCT': 'Optical Coherence Tomography - imaging test showing retinal layers',
+    'anti-VEGF': 'Anti-Vascular Endothelial Growth Factor injections to reduce abnormal vessel growth',
+    'photocoagulation': 'Laser treatment to seal leaking blood vessels'
+  }
+};
+
+// ============================================
+// PHASE 2: MACULAR DEGENERATION CRITERIA (DC 6062)
+// ============================================
+
+export const MACULAR_DEGENERATION_CRITERIA = {
+  condition: 'Macular Degeneration',
+  diagnosticCode: '6062',
+  note: 'Rated based on resulting visual acuity under DC 6061-6079',
+  ratings: [
+    {
+      percent: 'variable',
+      summary: 'Rate based on visual acuity',
+      criteriaDescription: [
+        'Macular degeneration is rated under vision loss criteria',
+        'Use visual acuity measurements in better eye',
+        'Central scotoma (blind spot) affects reading and detail vision',
+        'Peripheral vision typically preserved'
+      ],
+      evidenceNeeded: [
+        'Diagnosis of macular degeneration',
+        'Type (dry AMD vs wet AMD)',
+        'Visual acuity measurements',
+        'Amsler grid test results',
+        'OCT imaging',
+        'Fluorescein angiography if performed',
+        'Central scotoma documentation',
+        'Treatment records (anti-VEGF injections for wet AMD)',
+        'Progression documentation'
+      ]
+    }
+  ],
+  definitions: {
+    'macular degeneration': 'Age-related disease affecting the macula (central retina)',
+    'AMD': 'Age-Related Macular Degeneration',
+    'dry AMD': 'More common form with gradual breakdown of macular tissue',
+    'wet AMD': 'Less common but more severe form with abnormal blood vessel growth',
+    'macula': 'Central part of retina responsible for sharp, detailed central vision',
+    'central scotoma': 'Blind spot or area of vision loss in the center of visual field',
+    'Amsler grid': 'Grid pattern test to detect central vision distortions'
+  }
 };
 
 // ============================================
@@ -12699,7 +13208,12 @@ export const getAllEpilepsyMajorRatings = () => EPILEPSY_MAJOR_CRITERIA.ratings;
 export const getAllEpilepsyMinorRatings = () => EPILEPSY_MINOR_CRITERIA.ratings;
 export const getEpilepsyMajorDefinition = (term) => EPILEPSY_MAJOR_CRITERIA.definitions[term] || null;
 export const getEpilepsyMinorDefinition = (term) => EPILEPSY_MINOR_CRITERIA.definitions[term] || null;
-
+export const getAllVisionLossRatings = () => VISION_LOSS_CRITERIA.ratings;
+export const getAllGlaucomaRatings = () => GLAUCOMA_CRITERIA.ratings;
+export const getVisionLossDefinition = (term) => VISION_LOSS_CRITERIA.definitions[term] || null;
+export const getGlaucomaDefinition = (term) => GLAUCOMA_CRITERIA.definitions[term] || null;
+export const getDiabeticRetinopathyDefinition = (term) => DIABETIC_RETINOPATHY_CRITERIA.definitions[term] || null;
+export const getMacularDegenerationDefinition = (term) => MACULAR_DEGENERATION_CRITERIA.definitions[term] || null;
 
 
 

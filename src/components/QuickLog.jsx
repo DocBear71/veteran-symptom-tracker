@@ -103,6 +103,18 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
     witnessPresent: null,
   });
 
+  // PHASE 2: Eye & Vision data
+  const [eyeData, setEyeData] = useState({
+    affectedEye: '',
+    leftEyeAcuity: '',
+    rightEyeAcuity: '',
+    symptoms: [],
+    fieldOfVision: [],
+    affectedActivities: [],
+    triggeringFactors: '',
+    associatedConditions: [],
+  });
+
   useEffect(() => {
     loadData();
   }, []);
@@ -215,6 +227,16 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
       selectedChronic?.symptomId?.startsWith('seizure-') ||
       ['absence-seizure', 'tonic-clonic', 'focal-seizure', 'grand-mal', 'petit-mal'].includes(selectedChronic?.symptomId);
 
+  // PHASE 2: Eye/Vision detection
+  const isEyeRelated = selectedChronic?.includes('vision') ||
+      selectedChronic?.includes('eye') ||
+      selectedChronic?.includes('glaucoma') ||
+      selectedChronic?.includes('retinopathy') ||
+      selectedChronic?.includes('macular') ||
+      ['floaters', 'diplopia', 'photophobia', 'night-blindness', 'light-sensitivity',
+        'double-vision', 'color-vision-changes', 'dry-eyes', 'eye-strain', 'eye-pain',
+        'peripheral-vision-loss', 'diabetic-retinopathy', 'glaucoma-symptoms'].includes(selectedChronic);
+
   const handleOpenLogModal = (chronic) => {
     if (editMode) return;
     setSelectedChronic(chronic);
@@ -255,6 +277,11 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
     setSeizureData({
       episodeType: '', duration: '', lossOfConsciousness: null,
       auraPresent: null, recoveryTime: '', witnessPresent: null,
+    });
+    setEyeData({
+      affectedEye: '', leftEyeAcuity: '', rightEyeAcuity: '',
+      symptoms: [], fieldOfVision: [], affectedActivities: [],
+      triggeringFactors: '', associatedConditions: [],
     });
   };
 
@@ -306,6 +333,9 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
     }
     if (isSeizureRelated) {
       entry.seizureData = { ...seizureData };
+    }
+    if (isEyeRelated) {
+      entry.eyeData = { ...eyeData };
     }
 
     const savedEntry = saveSymptomLog(entry);
@@ -1267,6 +1297,147 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
                         </span>
                               </label>
                           ))}
+                        </div>
+                      </div>
+                  )}
+
+                  {/* Phase 2: Eye & Vision Form */}
+                  {isEyeRelated && (
+                      <div className="bg-cyan-50 dark:bg-cyan-900/30 p-4 rounded-lg border border-cyan-200 dark:border-cyan-800 space-y-4">
+                        <h3 className="font-medium text-cyan-900 dark:text-cyan-200">Eye & Vision Details</h3>
+
+                        {/* Affected Eye */}
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Affected Eye(s)
+                          </label>
+                          <select
+                              value={eyeData.affectedEye}
+                              onChange={(e) => setEyeData(prev => ({ ...prev, affectedEye: e.target.value }))}
+                              className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm"
+                          >
+                            <option value="">Select eye...</option>
+                            <option value="left">Left eye only</option>
+                            <option value="right">Right eye only</option>
+                            <option value="both">Both eyes</option>
+                          </select>
+                        </div>
+
+                        {/* Visual Acuity */}
+                        <div className="grid grid-cols-2 gap-2">
+                          <div>
+                            <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
+                              Left Eye
+                            </label>
+                            <select
+                                value={eyeData.leftEyeAcuity}
+                                onChange={(e) => setEyeData(prev => ({ ...prev, leftEyeAcuity: e.target.value }))}
+                                className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-xs"
+                            >
+                              <option value="">Not tested</option>
+                              <option value="20/20">20/20</option>
+                              <option value="20/40">20/40</option>
+                              <option value="20/70">20/70</option>
+                              <option value="20/100">20/100</option>
+                              <option value="20/200">20/200</option>
+                              <option value="CF">CF</option>
+                              <option value="HM">HM</option>
+                              <option value="LP">LP</option>
+                              <option value="NLP">NLP</option>
+                            </select>
+                          </div>
+                          <div>
+                            <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
+                              Right Eye
+                            </label>
+                            <select
+                                value={eyeData.rightEyeAcuity}
+                                onChange={(e) => setEyeData(prev => ({ ...prev, rightEyeAcuity: e.target.value }))}
+                                className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-xs"
+                            >
+                              <option value="">Not tested</option>
+                              <option value="20/20">20/20</option>
+                              <option value="20/40">20/40</option>
+                              <option value="20/70">20/70</option>
+                              <option value="20/100">20/100</option>
+                              <option value="20/200">20/200</option>
+                              <option value="CF">CF</option>
+                              <option value="HM">HM</option>
+                              <option value="LP">LP</option>
+                              <option value="NLP">NLP</option>
+                            </select>
+                          </div>
+                        </div>
+
+                        {/* Symptoms (compact) */}
+                        <div>
+                          <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            Symptoms
+                          </label>
+                          <div className="grid grid-cols-2 gap-1">
+                            {['blurriness', 'halos', 'pain', 'floaters'].map((symptom) => (
+                                <label
+                                    key={symptom}
+                                    className={`flex items-center gap-1 p-1.5 rounded border cursor-pointer text-xs ${
+                                        eyeData.symptoms.includes(symptom)
+                                            ? 'bg-cyan-100 dark:bg-cyan-900/50 border-cyan-400'
+                                            : 'bg-white dark:bg-gray-800 border-gray-300'
+                                    }`}
+                                >
+                                  <input
+                                      type="checkbox"
+                                      checked={eyeData.symptoms.includes(symptom)}
+                                      onChange={(e) => {
+                                        if (e.target.checked) {
+                                          setEyeData(prev => ({ ...prev, symptoms: [...prev.symptoms, symptom] }));
+                                        } else {
+                                          setEyeData(prev => ({ ...prev, symptoms: prev.symptoms.filter(s => s !== symptom) }));
+                                        }
+                                      }}
+                                      className="w-3 h-3 text-cyan-600 rounded"
+                                  />
+                                  <span className="capitalize">{symptom}</span>
+                                </label>
+                            ))}
+                          </div>
+                        </div>
+
+                        {/* Impact (compact) */}
+                        <div>
+                          <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            Impact on Activities
+                          </label>
+                          <div className="grid grid-cols-2 gap-1">
+                            {[
+                              { id: 'reading', label: 'Reading' },
+                              { id: 'driving-day', label: 'Driving' },
+                              { id: 'computer', label: 'Computer' },
+                              { id: 'work', label: 'Work' }
+                            ].map((activity) => (
+                                <label
+                                    key={activity.id}
+                                    className={`flex items-center gap-1 p-1.5 rounded border cursor-pointer text-xs ${
+                                        eyeData.affectedActivities.includes(activity.id)
+                                            ? 'bg-cyan-100 dark:bg-cyan-900/50 border-cyan-400'
+                                            : 'bg-white dark:bg-gray-800 border-gray-300'
+                                    }`}
+                                >
+                                  <input
+                                      type="checkbox"
+                                      checked={eyeData.affectedActivities.includes(activity.id)}
+                                      onChange={(e) => {
+                                        if (e.target.checked) {
+                                          setEyeData(prev => ({ ...prev, affectedActivities: [...prev.affectedActivities, activity.id] }));
+                                        } else {
+                                          setEyeData(prev => ({ ...prev, affectedActivities: prev.affectedActivities.filter(a => a !== activity.id) }));
+                                        }
+                                      }}
+                                      className="w-3 h-3 text-cyan-600 rounded"
+                                  />
+                                  <span>{activity.label}</span>
+                                </label>
+                            ))}
+                          </div>
                         </div>
                       </div>
                   )}
