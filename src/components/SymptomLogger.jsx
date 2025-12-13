@@ -1,10 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { sortedSymptomCategories } from '../data/symptoms';
 import { saveSymptomLog, getCustomSymptoms, addCustomSymptom, getMedications, logMedicationTaken } from '../utils/storage';
 import QuickLog from './QuickLog';
 import AddChronicModal from './AddChronicModal';
 
-const SymptomLogger = ({ onLogSaved }) => {
+const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedSymptom, setSelectedSymptom] = useState('');
 
@@ -118,10 +118,116 @@ const SymptomLogger = ({ onLogSaved }) => {
     witnessPresent: null,        // true/false
   });
 
+  // Phase 1H - Track processed prefillData to avoid re-processing
+  const processedPrefillId = useRef(null);
+  const isPrefilling = useRef(false);
+
   useEffect(() => {
     setCustomSymptoms(getCustomSymptoms());
     setMedications(getMedications());
   }, []);
+
+  // Phase 1H - Handle prefill data from "Log again" button
+  useEffect(() => {
+    if (prefillData && prefillData.id && processedPrefillId.current !== prefillData.id) {
+      // Mark this prefill as processed and set flag to prevent reset
+      processedPrefillId.current = prefillData.id;
+      isPrefilling.current = true;
+
+      console.log('🔄 Processing prefill data:', prefillData);
+
+      // Find the category and symptom
+      const categoryInfo = sortedSymptomCategories.find(cat =>
+          cat.symptoms.some(sym => sym.id === prefillData.symptomId)
+      );
+
+      console.log('Found category info:', categoryInfo);
+
+      if (categoryInfo) {
+        // Use the category ID (not name) for the dropdown
+        console.log('Setting category ID:', categoryInfo.id);
+        setSelectedCategory(categoryInfo.id);
+        setSelectedSymptom(prefillData.symptomId);
+      } else {
+        // Fallback: try to find category by name
+        const fallbackCategory = sortedSymptomCategories.find(cat =>
+            cat.name === prefillData.category
+        );
+        if (fallbackCategory) {
+          console.log('Using fallback - setting category ID:', fallbackCategory.id);
+          setSelectedCategory(fallbackCategory.id);
+          setSelectedSymptom(prefillData.symptomId);
+        } else {
+          console.warn('Could not find category for symptom:', prefillData.symptomId);
+        }
+      }
+
+      // Set universal fields
+      console.log('📝 Setting universal fields...');
+      setSeverity(prefillData.severity || 5);
+      setNotes(prefillData.notes || '');
+      setIsFlareUp(prefillData.isFlareUp || false);
+      setDuration(prefillData.duration || '');
+      setTimeOfDay(prefillData.timeOfDay || '');
+
+      // Set condition-specific data
+      console.log('🔍 Checking condition-specific data...');
+
+      if (prefillData.migraineData) {
+        console.log('💊 Setting migraine data:', prefillData.migraineData);
+        setMigraineData({ ...prefillData.migraineData });
+      }
+
+      if (prefillData.sleepData) {
+        console.log('😴 Setting sleep data:', prefillData.sleepData);
+        setSleepData({ ...prefillData.sleepData });
+      }
+
+      if (prefillData.ptsdData) {
+        console.log('🧠 Setting PTSD data:', prefillData.ptsdData);
+        setPtsdData({ ...prefillData.ptsdData });
+      }
+
+      if (prefillData.painData) {
+        console.log('🩹 Setting pain data:', prefillData.painData);
+        setPainData({ ...prefillData.painData });
+      }
+
+      if (prefillData.giData) {
+        console.log('🫃 Setting GI data:', prefillData.giData);
+        setGIData({ ...prefillData.giData });
+      }
+
+      if (prefillData.respiratoryData) {
+        console.log('🫁 Setting respiratory data:', prefillData.respiratoryData);
+        setRespiratoryData({ ...prefillData.respiratoryData });
+      }
+
+      if (prefillData.jointData) {
+        console.log('🦴 Setting joint data:', prefillData.jointData);
+        setJointData({ ...prefillData.jointData });
+      }
+
+      if (prefillData.seizureData) {
+        console.log('⚡ Setting seizure data:', prefillData.seizureData);
+        setSeizureData({ ...prefillData.seizureData });
+      }
+
+      console.log('✅ All prefill data set');
+
+      // Clear prefillData AFTER state updates have been queued
+      setTimeout(() => {
+        if (onPrefillUsed) {
+          onPrefillUsed();
+        }
+        // Clear the prefilling flag after a delay to allow state updates
+        setTimeout(() => {
+          isPrefilling.current = false;
+          console.log('🏁 Prefill complete, reset protection disabled');
+        }, 50);
+      }, 100);
+    }
+  }, [prefillData]);
 
   // Determine which special form to show - EXPANDED DETECTION
   const isMigraineSelected = selectedSymptom === 'migraine';
@@ -198,6 +304,12 @@ const SymptomLogger = ({ onLogSaved }) => {
 
   // Reset condition-specific data when symptom changes
   useEffect(() => {
+    // Phase 1H: Skip reset during prefill operation
+    if (isPrefilling.current) {
+      console.log('⏭️ Skipping reset - prefill in progress');
+      return;
+    }
+
     if (!isMigraineSelected) {
       setMigraineData({
         duration: '', prostrating: null, aura: false, nausea: false,

@@ -1,11 +1,17 @@
 import { useState, useEffect } from 'react';
-import { getChronicSymptoms, removeChronicSymptom, saveSymptomLog, getMedications, logMedicationTaken } from '../utils/storage';
+import { getChronicSymptoms, removeChronicSymptom, saveSymptomLog, getMedications, logMedicationTaken, getSymptomLogs } from '../utils/storage';
 
 const QuickLog = ({ onLogSaved, onAddChronic }) => {
   const [chronicSymptoms, setChronicSymptoms] = useState([]);
   const [medications, setMedications] = useState([]);
   const [showSuccess, setShowSuccess] = useState('');
   const [editMode, setEditMode] = useState(false);
+
+  // Phase 1G - Recent symptoms & search
+  const [recentSymptoms, setRecentSymptoms] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [symptomFrequency, setSymptomFrequency] = useState({});
+
 
   // Modal state
   const [selectedChronic, setSelectedChronic] = useState(null);
@@ -104,6 +110,38 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
   const loadData = () => {
     setChronicSymptoms(getChronicSymptoms());
     setMedications(getMedications());
+
+    // Phase 1G - Load recent symptoms and calculate frequency
+    const allLogs = getSymptomLogs();
+
+    // Get last 10 unique symptoms logged
+    const uniqueSymptoms = [];
+    const seenIds = new Set();
+    for (let i = allLogs.length - 1; i >= 0 && uniqueSymptoms.length < 10; i--) {
+      const log = allLogs[i];
+      if (!seenIds.has(log.symptomId)) {
+        uniqueSymptoms.push({
+          symptomId: log.symptomId,
+          symptomName: log.symptomName,
+          category: log.category,
+          lastLogged: log.timestamp
+        });
+        seenIds.add(log.symptomId);
+      }
+    }
+    setRecentSymptoms(uniqueSymptoms);
+
+    // Calculate frequency (how many times each symptom logged in last 30 days)
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+
+    const frequency = {};
+    allLogs.forEach(log => {
+      if (new Date(log.timestamp) >= thirtyDaysAgo) {
+        frequency[log.symptomId] = (frequency[log.symptomId] || 0) + 1;
+      }
+    });
+    setSymptomFrequency(frequency);
   };
 
   // Determine symptom type - EXPANDED DETECTION
@@ -346,6 +384,12 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
   const severityInfo = getSeverityInfo(logSeverity);
   const activeMedications = medications.filter(m => m.isActive);
 
+  // Phase 1G - Filter chronic symptoms by search term
+  const filteredChronicSymptoms = chronicSymptoms.filter(symptom =>
+      symptom.symptomName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      symptom.category.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
       <>
         <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 mb-6">
@@ -359,13 +403,57 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
             </button>
           </div>
 
+          {/* Phase 1G - Search box */}
+          {chronicSymptoms.length >= 2 && (
+              <div className="mb-3">
+                <input
+                    type="text"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    placeholder="Search chronic symptoms..."
+                    className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                />
+              </div>
+          )}
+
+          {/* Phase 1G - Recent Symptoms */}
+          {!editMode && recentSymptoms.length > 0 && searchTerm === '' && (
+              <div className="mb-4 pb-4 border-b border-gray-200 dark:border-gray-700">
+                <p className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-2">📋 Recently Logged</p>
+                <div className="flex flex-wrap gap-1.5">
+                  {recentSymptoms.slice(0, 5).map((symptom) => {
+                    const frequency = symptomFrequency[symptom.symptomId] || 0;
+                    return (
+                        <button
+                            key={symptom.symptomId}
+                            onClick={() => {
+                              const chronicMatch = chronicSymptoms.find(c => c.symptomId === symptom.symptomId);
+                              if (chronicMatch) {
+                                handleOpenLogModal(chronicMatch);
+                              }
+                            }}
+                            className="px-2 py-1 bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-200 rounded-full text-xs hover:bg-blue-200 dark:hover:bg-blue-900 transition-colors flex items-center gap-1"
+                        >
+                          <span>{symptom.symptomName}</span>
+                          {frequency > 1 && (
+                              <span className="bg-blue-200 dark:bg-blue-800 px-1.5 rounded-full font-semibold">
+                                {frequency}
+                              </span>
+                          )}
+                        </button>
+                    );
+                  })}
+                </div>
+              </div>
+          )}
+
           <div className="grid grid-cols-2 gap-2">
-            {chronicSymptoms.map((chronic) => (
+            {filteredChronicSymptoms.map((chronic) => (
                 <div key={chronic.symptomId} className="relative">
                   {/* Success overlay */}
                   {showSuccess === chronic.symptomId && (
                       <div className="absolute inset-0 bg-green-500 rounded-lg flex items-center justify-center z-10">
-                        <span className="text-white font-medium">âœ“ Logged!</span>
+                        <span className="text-white font-medium">✓ Logged!</span>
                       </div>
                   )}
 
@@ -384,8 +472,15 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
                             }}
                             className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full text-sm hover:bg-red-600 z-10"
                         >
-                          âœ•
+                          ✓
                         </button>
+                    )}
+
+                    {/* Phase 1G - Frequency badge */}
+                    {!editMode && symptomFrequency[chronic.symptomId] > 0 && (
+                        <div className="absolute -top-1.5 -right-1.5 bg-gradient-to-r from-blue-500 to-blue-600 text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center shadow-lg">
+                          {symptomFrequency[chronic.symptomId]}
+                        </div>
                     )}
 
                     <p className="font-medium text-gray-900 dark:text-white text-sm truncate">
@@ -435,7 +530,7 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
                         onClick={handleCloseModal}
                         className="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 text-xl"
                     >
-                      âœ•
+                      ✓
                     </button>
                   </div>
                 </div>

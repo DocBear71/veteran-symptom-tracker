@@ -4,7 +4,7 @@ import EditLogModal from './EditLogModal';
 import AppointmentForm from './AppointmentForm';
 import AppointmentHistory from './AppointmentHistory';
 
-const SymptomHistory = () => {
+const SymptomHistory = ({ onCopyLog }) => {
   const [logs, setLogs] = useState([]);
   const [filter, setFilter] = useState('all');
   const [editingLog, setEditingLog] = useState(null);
@@ -407,6 +407,8 @@ const SymptomHistory = () => {
                             </div>
 
                             <div className="flex flex-col gap-1 ml-2">
+                              <button onClick={() => onCopyLog && onCopyLog(log)}
+                                      className="text-gray-400 dark:text-gray-500 hover:text-green-500 dark:hover:text-green-400 p-1" title="Log again">🔄</button>
                               <button onClick={() => setEditingLog(log)}
                                       className="text-gray-400 dark:text-gray-500 hover:text-blue-500 dark:hover:text-blue-400 p-1" title="Edit">✏️</button>
                               <button onClick={() => handleDelete(log.id)}

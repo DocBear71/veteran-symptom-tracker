@@ -24,6 +24,9 @@ const AppContent = () => {
   const { shouldShowOnboarding, refreshProfile } = useProfile();
   const [showOnboarding, setShowOnboarding] = useState(shouldShowOnboarding);
 
+  // Phase 1H - Copy last entry prefill data
+  const [prefillData, setPrefillData] = useState(null);
+
   // Run multi-profile migration and cleanup on first load
   useEffect(() => {
     const initialize = async () => {
@@ -46,13 +49,19 @@ const AppContent = () => {
     refreshProfile(); // Refresh profile state after onboarding
   };
 
+  // Phase 1H - Handle copying a log entry to pre-fill logger
+  const handleCopyLog = (log) => {
+    setPrefillData(log);
+    setCurrentView('log'); // Switch to logger view
+  };
+
   // Render the current view
   const renderView = () => {
     switch (currentView) {
       case 'log':
-        return <SymptomLogger />;
+        return <SymptomLogger prefillData={prefillData} onPrefillUsed={() => setPrefillData(null)} />;
       case 'history':
-        return <SymptomHistory />;
+        return <SymptomHistory onCopyLog={handleCopyLog} />;
       case 'measurements':
         return <Measurements />;
       case 'meds':
