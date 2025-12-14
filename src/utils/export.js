@@ -64,6 +64,11 @@ import {
     analyzeUnspecifiedAnxietyLogs,
     analyzeUnspecifiedDepressiveLogs,
     analyzeVisionLogs,
+    analyzeKidneyStonesLogs,
+    analyzeChronicRenalDiseaseLogs,
+    analyzeVoidingDysfunctionLogs,
+    analyzeSphincterImpairmentLogs,
+    analyzeErectileDysfunctionLogs,
 } from './ratingCriteria';
 
 // Appointment type labels for export
@@ -295,6 +300,84 @@ export const generatePDF = (dateRange = 'all', options = { includeAppointments: 
           }
         }
 
+        // Phase 3: Add genitourinary details
+        if (log.genitourinaryData) {
+          const guInfo = [];
+          const gd = log.genitourinaryData;
+
+          // System affected
+          if (gd.affectedSystem) {
+            const systemMap = {
+              kidney: 'Kidney/Renal',
+              bladder: 'Bladder/Voiding',
+              prostate: 'Prostate',
+              reproductive: 'Reproductive',
+              sphincter: 'Sphincter/Bowel'
+            };
+            guInfo.push(systemMap[gd.affectedSystem] || gd.affectedSystem);
+          }
+
+          // Kidney-specific
+          if (gd.affectedSystem === 'kidney') {
+            if (gd.stoneEpisode) guInfo.push('Stone episode');
+            if (gd.stonePassedToday) guInfo.push(`Stone passed${gd.stoneSize ? ` (${gd.stoneSize}mm)` : ''}`);
+            if (gd.procedureRecent && gd.procedureRecent !== 'none') {
+              guInfo.push(`Procedure: ${gd.procedureRecent}`);
+            }
+            if (gd.dialysis) {
+              guInfo.push(`Dialysis: ${gd.dialysisType || 'yes'}${gd.dialysisFrequency ? ` (${gd.dialysisFrequency})` : ''}`);
+            }
+            if (gd.kidneyPainLocation) guInfo.push(`Pain: ${gd.kidneyPainLocation}`);
+          }
+
+          // Bladder/Voiding-specific
+          if (gd.affectedSystem === 'bladder') {
+            if (gd.urinaryFrequency24h) guInfo.push(`Freq: ${gd.urinaryFrequency24h}/day`);
+            if (gd.nocturiaCount) guInfo.push(`Nocturia: ${gd.nocturiaCount}x/night`);
+            if (gd.incontinenceEpisode) {
+              guInfo.push(`Incontinence: ${gd.incontinenceType || 'yes'}${gd.padChangesRequired ? ` (${gd.padChangesRequired} pads)` : ''}`);
+            }
+            if (gd.catheterUse) guInfo.push(`Catheter: ${gd.catheterType || 'yes'}`);
+            if (gd.uti) guInfo.push('UTI symptoms');
+          }
+
+          // Prostate-specific
+          if (gd.affectedSystem === 'prostate') {
+            if (gd.prostateScore) guInfo.push(`IPSS: ${gd.prostateScore}`);
+            if (gd.nocturiaCount) guInfo.push(`Nocturia: ${gd.nocturiaCount}x/night`);
+            if (gd.prostateMedications && gd.prostateMedications.length > 0) {
+              guInfo.push(`Meds: ${gd.prostateMedications.join(', ')}`);
+            }
+          }
+
+          // Sphincter-specific
+          if (gd.affectedSystem === 'sphincter') {
+            if (gd.fecalIncontinenceEpisode) {
+              guInfo.push(`Incontinence: ${gd.fecalIncontinenceType || 'yes'}${gd.fecalIncontinenceFrequency ? ` (${gd.fecalIncontinenceFrequency})` : ''}`);
+            }
+            if (gd.fecalUrgency) guInfo.push('Urgency');
+          }
+
+          // Reproductive-specific
+          if (gd.affectedSystem === 'reproductive') {
+            if (gd.erectileDysfunction) guInfo.push(`ED: ${gd.edSeverity || 'yes'}`);
+            if (gd.testicular && gd.testicularSymptoms && gd.testicularSymptoms.length > 0) {
+              guInfo.push(`Testicular: ${gd.testicularSymptoms.join(', ')}`);
+            }
+          }
+
+          // Common fields
+          if (gd.activitiesAffected && gd.activitiesAffected.length > 0) {
+            guInfo.push(`Affects: ${gd.activitiesAffected.join(', ')}`);
+          }
+          if (gd.fluidRestriction) guInfo.push('Limiting fluids');
+          if (gd.workMissed) guInfo.push('Work missed');
+
+          if (guInfo.length > 0) {
+            notes = guInfo.join(' | ') + (log.notes ? ` | ${log.notes}` : '');
+          }
+        }
+
         // Add medications
             if (linkedMeds.length > 0) {
                 const medInfo = linkedMeds.map(m => `${m.medicationName} ${m.dosage}`).join(', ');
@@ -433,6 +516,12 @@ export const generateCSV = (dateRange = 'all', options = { includeAppointments: 
         'Seizure Type', 'Seizure Duration (sec)', 'Loss of Consciousness', 'Aura Present', 'Witness Present', 'Recovery Time',
         // Phase 2: Eye/Vision fields
         'Affected Eye', 'Left Eye Acuity', 'Right Eye Acuity', 'Eye Symptoms', 'Field of Vision', 'Affected Activities', 'Triggering Factors', 'Associated Conditions',
+        // Phase 3: Genitourinary fields
+        'GU System', 'Stone Episode', 'Stone Passed', 'Stone Size', 'Procedure', 'Dialysis', 'Dialysis Type',
+        'Urinary Frequency/Day', 'Nocturia Count', 'Incontinence Episode', 'Incontinence Type', 'Pad Changes',
+        'Catheter Use', 'Catheter Type', 'UTI Symptoms', 'Prostate IPSS', 'Prostate Meds',
+        'Fecal Incontinence', 'Fecal Incontinence Frequency', 'Bowel Control Methods',
+        'Erectile Dysfunction', 'ED Severity', 'Testicular Symptoms', 'GU Activities Affected',
         'Notes'
       ];
 
@@ -518,6 +607,31 @@ export const generateCSV = (dateRange = 'all', options = { includeAppointments: 
             log.eyeData?.affectedActivities?.join('; ') || '',
             log.eyeData?.triggeringFactors || '',
             log.eyeData?.associatedConditions?.join('; ') || '',
+            // Phase 3: Genitourinary fields
+            log.genitourinaryData?.affectedSystem || '',
+            log.genitourinaryData?.stoneEpisode ? 'Yes' : '',
+            log.genitourinaryData?.stonePassedToday ? 'Yes' : '',
+            log.genitourinaryData?.stoneSize || '',
+            log.genitourinaryData?.procedureRecent || '',
+            log.genitourinaryData?.dialysis ? 'Yes' : '',
+            log.genitourinaryData?.dialysisType || '',
+            log.genitourinaryData?.urinaryFrequency24h || '',
+            log.genitourinaryData?.nocturiaCount || '',
+            log.genitourinaryData?.incontinenceEpisode ? 'Yes' : '',
+            log.genitourinaryData?.incontinenceType || '',
+            log.genitourinaryData?.padChangesRequired || '',
+            log.genitourinaryData?.catheterUse ? 'Yes' : '',
+            log.genitourinaryData?.catheterType || '',
+            log.genitourinaryData?.utiSymptoms?.join('; ') || '',
+            log.genitourinaryData?.prostateScore || '',
+            log.genitourinaryData?.prostateMedications?.join('; ') || '',
+            log.genitourinaryData?.fecalIncontinenceEpisode ? 'Yes' : '',
+            log.genitourinaryData?.fecalIncontinenceFrequency || '',
+            log.genitourinaryData?.bowelControlMethods?.join('; ') || '',
+            log.genitourinaryData?.erectileDysfunction ? 'Yes' : '',
+            log.genitourinaryData?.edSeverity || '',
+            log.genitourinaryData?.testicularSymptoms?.join('; ') || '',
+            log.genitourinaryData?.activitiesAffected?.join('; ') || '',
             log.notes || ''
           ];
         });
@@ -884,6 +998,15 @@ const analyzeAllConditions = (logs, options = {}) => {
         'unspecified-anxiety': analyzeUnspecifiedAnxietyLogs,
         'unspecified-depressive': analyzeUnspecifiedDepressiveLogs,
         'vision-loss': analyzeVisionLogs,
+        // Phase 3: Genitourinary
+        'kidney-stones': analyzeKidneyStonesLogs,
+        'chronic-renal-disease': analyzeChronicRenalDiseaseLogs,
+        'chronic-cystitis': analyzeVoidingDysfunctionLogs,
+        'neurogenic-bladder': analyzeVoidingDysfunctionLogs,
+        'prostate-conditions': analyzeVoidingDysfunctionLogs,
+        'urethral-stricture': analyzeVoidingDysfunctionLogs,
+        'sphincter-impairment': analyzeSphincterImpairmentLogs,
+        'erectile-dysfunction': analyzeErectileDysfunctionLogs,
       };
 
     const analyses = [];
@@ -897,7 +1020,7 @@ const analyzeAllConditions = (logs, options = {}) => {
             if (conditionId === 'sleep-apnea') {
                 // Sleep apnea needs profile data - pass empty object for now
                 result = analyzeFunc(logs, {}, { evaluationPeriodDays });
-            } else if (conditionId === 'hypertension' || conditionId === 'diabetes' || conditionId === 'asthma') {
+            } else if (conditionId === 'hypertension' || conditionId === 'diabetes' || conditionId === 'asthma' || conditionId === 'chronic-renal-disease') {
                 // These need measurements - will be handled by the function itself
                 result = analyzeFunc(logs, { evaluationPeriodDays });
             } else {
@@ -1285,7 +1408,7 @@ export const generateVAClaimPackagePDF = async (dateRange = 'all', options = {})
                 currentY += 5;
 
                 analysis.gaps.slice(0, 3).forEach((gap) => {
-                    const lines = doc.splitTextToSize(`⚠  ${gap}`, 180);
+                    const lines = doc.splitTextToSize(`⚠ ${gap}`, 180);
                     doc.setFontSize(9);
                     doc.setTextColor(245, 158, 11);
                     doc.text(lines, 18, currentY);

@@ -36,45 +36,28 @@ export const CONDITIONS = {
     name: 'PTSD',
     diagnosticCode: '9411',
     cfrReference: '38 CFR 4.130',
-    symptomIds: [
-      'ptsd-nightmare',
-      'ptsd-flashback',
-      'ptsd-hypervigilance',
-      'ptsd-avoidance',
-      'ptsd-panic',
-      'nightmares'], // Include old 'nightmares' for backward compatibility
+    symptomIds: ['ptsd-nightmare', 'ptsd-flashback', 'ptsd-hypervigilance', 'ptsd-avoidance', 'ptsd-panic', 'nightmares'], // Include old 'nightmares' for backward compatibility
   },
   MAJOR_DEPRESSION: {
     id: 'major-depression',
     name: 'Major Depressive Disorder',
     diagnosticCode: '9434',
     cfrReference: '38 CFR 4.130',
-    symptomIds: [
-      'depression',
-      'mdd-episode',
-      'mdd-anhedonia',
-      'mdd-hopelessness'],
+    symptomIds: ['depression', 'mdd-episode', 'mdd-anhedonia', 'mdd-hopelessness'],
   },
   GENERALIZED_ANXIETY: {
     id: 'generalized-anxiety',
     name: 'Generalized Anxiety Disorder',
     diagnosticCode: '9400',
     cfrReference: '38 CFR 4.130',
-    symptomIds: [
-      'anxiety',
-      'gad-worry',
-      'gad-restlessness',
-      'gad-muscle-tension'], // 'anxiety' for backward compatibility
+    symptomIds: ['anxiety', 'gad-worry', 'gad-restlessness', 'gad-muscle-tension'], // 'anxiety' for backward compatibility
   },
   PANIC_DISORDER: {
     id: 'panic-disorder',
     name: 'Panic Disorder',
     diagnosticCode: '9412',
     cfrReference: '38 CFR 4.130',
-    symptomIds: [
-      'panic-attack',
-      'panic-agoraphobia',
-      'panic-anticipatory-anxiety'],
+    symptomIds: ['panic-attack', 'panic-agoraphobia', 'panic-anticipatory-anxiety'],
   },
   BIPOLAR: {
     id: 'bipolar',
@@ -88,61 +71,35 @@ export const CONDITIONS = {
     name: 'Lumbosacral Strain (Low Back Pain)',
     diagnosticCode: '5237',
     cfrReference: '38 CFR 4.71a',
-    symptomIds: [
-      'lower-back-pain',
-      'back-pain',
-      'back-stiffness',
-      'back-spasm',
-      'back-radicular',
-      'back-numbness'],
+    symptomIds: [ 'lower-back-pain', 'back-pain', 'back-stiffness', 'back-spasm', 'back-radicular', 'back-numbness'],
   },
   INTERVERTEBRAL_DISC: {
     id: 'intervertebral-disc',
     name: 'Intervertebral Disc Syndrome',
     diagnosticCode: '5243',
     cfrReference: '38 CFR 4.71a',
-    symptomIds: [
-      'disc-pain',
-      'back-pain',
-      'back-radicular',
-      'lower-back-pain',
-      'back-numbness'],
+    symptomIds: [ 'disc-pain', 'back-pain', 'back-radicular', 'lower-back-pain', 'back-numbness'],
   },
   KNEE_INSTABILITY: {
     id: 'knee-instability',
     name: 'Knee Instability',
     diagnosticCode: '5257',
     cfrReference: '38 CFR 4.71a',
-    symptomIds: [
-      'knee-instability',
-      'knee-pain',
-      'knee-swelling',
-      'knee-stiffness',
-      'knee-locking'],
+    symptomIds: [ 'knee-instability', 'knee-pain', 'knee-swelling', 'knee-stiffness', 'knee-locking'],
   },
   TBI: {
     id: 'tbi',
     name: 'Traumatic Brain Injury (TBI)',
     diagnosticCode: '8045',
     cfrReference: '38 CFR 4.124a',
-    symptomIds: [
-      'tbi-memory',
-      'tbi-concentration',
-      'tbi-confusion',
-      'tbi-headache',
-      'tbi-mood',
-      'tbi-sleep'],
+    symptomIds: [ 'tbi-memory', 'tbi-concentration', 'tbi-confusion', 'tbi-headache', 'tbi-mood', 'tbi-sleep'],
   },
   HYPERTENSION: {
     id: 'hypertension',
     name: 'Hypertension',
     diagnosticCode: '7101',
     cfrReference: '38 CFR 4.104',
-    symptomIds: [
-      'high-blood-pressure',
-      'hypertension-headache',
-      'chest-pressure',
-      'palpitations'],
+    symptomIds: [ 'high-blood-pressure', 'hypertension-headache', 'chest-pressure', 'palpitations'],
   },
   DIABETES: {
     id: 'diabetes',
@@ -275,15 +232,7 @@ export const CONDITIONS = {
     name: 'Bronchial Asthma',
     diagnosticCode: '6602',
     cfrReference: '38 CFR 4.97',
-    symptomIds: [
-      'asthma-attack',
-      'asthma-wheezing',
-      'asthma-shortness-breath',
-      'asthma-cough',
-      'asthma-chest-tightness',
-      'asthma-rescue-inhaler',
-      'asthma-er-visit',
-      'asthma-md-visit',
+    symptomIds: [ 'asthma-attack', 'asthma-wheezing', 'asthma-shortness-breath', 'asthma-cough', 'asthma-chest-tightness', 'asthma-rescue-inhaler', 'asthma-er-visit', 'asthma-md-visit',
     ],
   },
   COPD: {
@@ -291,15 +240,7 @@ export const CONDITIONS = {
     name: 'Chronic Obstructive Pulmonary Disease',
     diagnosticCode: '6604',
     cfrReference: '38 CFR 4.97',
-    symptomIds: [
-      'copd-shortness-breath',
-      'copd-chronic-cough',
-      'copd-sputum',
-      'copd-wheezing',
-      'copd-exacerbation',
-      'copd-oxygen-use',
-      'copd-er-visit',
-      'copd-hospitalization',
+    symptomIds: [ 'copd-shortness-breath', 'copd-chronic-cough', 'copd-sputum', 'copd-wheezing', 'copd-exacerbation', 'copd-oxygen-use', 'copd-er-visit', 'copd-hospitalization',
     ],
   },
   CHRONIC_BRONCHITIS: {
@@ -307,13 +248,7 @@ export const CONDITIONS = {
     name: 'Chronic Bronchitis',
     diagnosticCode: '6600',
     cfrReference: '38 CFR 4.97',
-    symptomIds: [
-      'bronchitis-productive-cough',
-      'bronchitis-sputum',
-      'bronchitis-shortness-breath',
-      'bronchitis-chest-discomfort',
-      'bronchitis-exacerbation',
-      'bronchitis-oxygen-use',
+    symptomIds: [ 'bronchitis-productive-cough', 'bronchitis-sputum', 'bronchitis-shortness-breath', 'bronchitis-chest-discomfort', 'bronchitis-exacerbation', 'bronchitis-oxygen-use',
     ],
   },
   EMPHYSEMA: {
@@ -321,13 +256,7 @@ export const CONDITIONS = {
     name: 'Pulmonary Emphysema',
     diagnosticCode: '6603',
     cfrReference: '38 CFR 4.97',
-    symptomIds: [
-      'emphysema-shortness-breath',
-      'emphysema-barrel-chest',
-      'emphysema-wheezing',
-      'emphysema-fatigue',
-      'emphysema-oxygen-use',
-      'emphysema-exacerbation',
+    symptomIds: [ 'emphysema-shortness-breath', 'emphysema-barrel-chest', 'emphysema-wheezing', 'emphysema-fatigue', 'emphysema-oxygen-use', 'emphysema-exacerbation',
     ],
   },
   HEARING_LOSS: {
@@ -370,11 +299,7 @@ export const CONDITIONS = {
     name: 'Epilepsy, Grand Mal',
     diagnosticCode: '8910',
     cfrReference: '38 CFR 4.124a',
-    symptomIds: [
-      'seizure-major',
-      'seizure-partial',
-      'seizure-psychomotor',
-      'aura-pre-seizure']
+    symptomIds: [ 'seizure-major', 'seizure-partial', 'seizure-psychomotor', 'aura-pre-seizure']
     ,
   },
   EPILEPSY_MINOR: {
@@ -397,14 +322,7 @@ export const CONDITIONS = {
     name: 'Ulcerative Colitis / IBD',
     diagnosticCode: '7323/7326',
     cfrReference: '38 CFR 4.114',
-    symptomIds: [
-      'uc-diarrhea',
-      'uc-rectal-bleeding',
-      'uc-abdominal-pain',
-      'uc-urgency',
-      'uc-incontinence',
-      'uc-fever',
-      'uc-hospitalization',
+    symptomIds: [ 'uc-diarrhea', 'uc-rectal-bleeding', 'uc-abdominal-pain', 'uc-urgency', 'uc-incontinence', 'uc-fever', 'uc-hospitalization',
     ],
   },
   PEPTIC_ULCER: {
@@ -412,13 +330,7 @@ export const CONDITIONS = {
     name: 'Peptic Ulcer Disease',
     diagnosticCode: '7304',
     cfrReference: '38 CFR 4.114',
-    symptomIds: [
-      'ulcer-abdominal-pain',
-      'ulcer-nausea',
-      'ulcer-vomiting',
-      'ulcer-hematemesis',
-      'ulcer-melena',
-      'ulcer-hospitalization',
+    symptomIds: [ 'ulcer-abdominal-pain', 'ulcer-nausea', 'ulcer-vomiting', 'ulcer-hematemesis', 'ulcer-melena', 'ulcer-hospitalization',
     ],
   },
   HEMORRHOIDS: {
@@ -426,11 +338,7 @@ export const CONDITIONS = {
     name: 'Hemorrhoids',
     diagnosticCode: '7336',
     cfrReference: '38 CFR 4.114',
-    symptomIds: [
-      'hemorrhoid-bleeding',
-      'hemorrhoid-prolapse',
-      'hemorrhoid-thrombosis',
-      'hemorrhoid-pain',
+    symptomIds: [ 'hemorrhoid-bleeding', 'hemorrhoid-prolapse', 'hemorrhoid-thrombosis', 'hemorrhoid-pain',
     ],
   },
   DIVERTICULITIS: {
@@ -438,12 +346,7 @@ export const CONDITIONS = {
     name: 'Diverticulitis',
     diagnosticCode: '7327',
     cfrReference: '38 CFR 4.114',
-    symptomIds: [
-      'divert-abdominal-pain',
-      'divert-fever',
-      'divert-flare',
-      'divert-hospitalization',
-      'divert-complication',
+    symptomIds: [ 'divert-abdominal-pain', 'divert-fever', 'divert-flare', 'divert-hospitalization', 'divert-complication',
     ],
   },
   HYPOTHYROIDISM: {
@@ -451,14 +354,7 @@ export const CONDITIONS = {
     name: 'Hypothyroidism',
     diagnosticCode: '7903',
     cfrReference: '38 CFR 4.119',
-    symptomIds: [
-      'hypo-fatigue',
-      'hypo-cold-intolerance',
-      'hypo-weight-gain',
-      'hypo-depression',
-      'hypo-muscle-weakness',
-      'hypo-constipation',
-      'hypo-dry-skin',
+    symptomIds: [ 'hypo-fatigue', 'hypo-cold-intolerance', 'hypo-weight-gain', 'hypo-depression', 'hypo-muscle-weakness', 'hypo-constipation', 'hypo-dry-skin',
     ],
   },
   RAYNAUDS: {
@@ -466,12 +362,7 @@ export const CONDITIONS = {
     name: "Raynaud's Syndrome",
     diagnosticCode: '7117',
     cfrReference: '38 CFR 4.104',
-    symptomIds: [
-      'raynauds-attack',
-      'raynauds-numbness',
-      'raynauds-pain',
-      'raynauds-ulcer',
-      'raynauds-cold-trigger',
+    symptomIds: [ 'raynauds-attack', 'raynauds-numbness', 'raynauds-pain', 'raynauds-ulcer', 'raynauds-cold-trigger',
     ],
   },
   VARICOSE_VEINS: {
@@ -479,12 +370,7 @@ export const CONDITIONS = {
     name: 'Varicose Veins',
     diagnosticCode: '7120/7121',
     cfrReference: '38 CFR 4.104',
-    symptomIds: [
-      'varicose-aching',
-      'varicose-edema',
-      'varicose-pigmentation',
-      'varicose-ulcer',
-      'varicose-pain',
+    symptomIds: [ 'varicose-aching', 'varicose-edema', 'varicose-pigmentation', 'varicose-ulcer', 'varicose-pain',
     ],
   },
   CHRONIC_URTICARIA: {
@@ -492,11 +378,7 @@ export const CONDITIONS = {
     name: 'Chronic Urticaria',
     diagnosticCode: '7825',
     cfrReference: '38 CFR 4.118',
-    symptomIds: [
-      'urticaria-outbreak',
-      'urticaria-itching',
-      'urticaria-swelling',
-      'urticaria-medication',
+    symptomIds: [ 'urticaria-outbreak', 'urticaria-itching', 'urticaria-swelling', 'urticaria-medication',
     ],
   },
   TINNITUS: {
@@ -506,156 +388,219 @@ export const CONDITIONS = {
     cfrReference: '38 CFR 4.87',
     symptomIds: ['tinnitus'],
   },
-    FIBROMYALGIA: {
-        id: 'fibromyalgia',
-        name: 'Fibromyalgia',
-        diagnosticCode: '5025',
-        cfrReference: '38 CFR 4.71a',
-        symptomIds: [
-            'fibro-widespread-pain',
-            'fibro-tender-points',
-            'fibro-fatigue',
-            'fibro-sleep',
-            'fibro-stiffness',
-            'fibro-cognitive'],
-    },
-    // Phase 3: Additional Mental Health Conditions
-    SOCIAL_ANXIETY: {
-        id: 'social-anxiety',
-        name: 'Social Anxiety Disorder',
-        diagnosticCode: '9403',
-        cfrReference: '38 CFR 4.130',
-        symptomIds: [
-            'social-anxiety-fear',
-            'social-anxiety-avoidance',
-            'social-anxiety-performance',
-            'social-anxiety-physical',
-            'social-anxiety-anticipatory',
-            'anxiety', // Include general anxiety for backward compatibility
-        ],
-    },
-    OCD: {
-        id: 'ocd',
-        name: 'Obsessive-Compulsive Disorder',
-        diagnosticCode: '9404',
-        cfrReference: '38 CFR 4.130',
-        symptomIds: [
-            'ocd-obsessions',
-            'ocd-compulsions',
-            'ocd-checking',
-            'ocd-contamination',
-            'ocd-time-spent',
-        ],
-    },
-    PERSISTENT_DEPRESSIVE: {
-        id: 'persistent-depressive',
-        name: 'Persistent Depressive Disorder (Dysthymia)',
-        diagnosticCode: '9433',
-        cfrReference: '38 CFR 4.130',
-        symptomIds: [
-            'depression',
-            'mdd-episode',
-            'mdd-anhedonia',
-            'mdd-hopelessness',
-        ],
-    },
-    ADJUSTMENT_DISORDER: {
-        id: 'adjustment-disorder',
-        name: 'Chronic Adjustment Disorder',
-        diagnosticCode: '9440',
-        cfrReference: '38 CFR 4.130',
-        symptomIds: [
-            'adjustment-depressed-mood',
-            'adjustment-anxiety',
-            'adjustment-disturbance-conduct',
-            'adjustment-work-difficulty',
-            'adjustment-relationship-problems',
-            'anxiety',
-            'depression',
-        ],
-    },
-    UNSPECIFIED_ANXIETY: {
-        id: 'unspecified-anxiety',
-        name: 'Unspecified Anxiety Disorder',
-        diagnosticCode: '9413',
-        cfrReference: '38 CFR 4.130',
-        symptomIds: [
-            'anxiety',
-            'gad-worry',
-            'gad-restlessness',
-            'gad-muscle-tension',
-        ],
-    },
-    UNSPECIFIED_DEPRESSIVE: {
-      id: 'unspecified-depressive',
-      name: 'Unspecified Depressive Disorder',
-      diagnosticCode: '9435',
-      cfrReference: '38 CFR 4.130',
-      symptomIds: [
-        'depression',
-        'mdd-episode',
-        'mdd-anhedonia',
-        'mdd-hopelessness',
-      ],
-    },
-    // PHASE 2: Eye & Vision Conditions
-    VISION_LOSS: {
-      id: 'vision-loss',
-      name: 'Vision Loss',
-      diagnosticCode: '6061-6079',
-      cfrReference: '38 CFR 4.75-4.79',
-      symptomIds: [
-        'vision-loss',
-        'peripheral-vision-loss',
-        'night-blindness',
-        'color-vision-changes',
-      ],
-    },
-    GLAUCOMA: {
-      id: 'glaucoma',
-      name: 'Glaucoma',
-      diagnosticCode: '6067',
-      cfrReference: '38 CFR 4.76',
-      symptomIds: [
-        'glaucoma-symptoms',
-        'eye-pain',
-        'vision-loss',
-      ],
-    },
-    DIABETIC_RETINOPATHY: {
-      id: 'diabetic-retinopathy',
-      name: 'Diabetic Retinopathy',
-      diagnosticCode: '6066',
-      cfrReference: '38 CFR 4.79',
-      symptomIds: [
-        'diabetic-retinopathy',
-        'vision-loss',
-        'floaters',
-      ],
-    },
-    MACULAR_DEGENERATION: {
-      id: 'macular-degeneration',
-      name: 'Macular Degeneration',
-      diagnosticCode: '6062',
-      cfrReference: '38 CFR 4.79',
-      symptomIds: [
-        'macular-degeneration',
-        'vision-loss',
-      ],
-    },
-    EYE_CONDITIONS: {
-      id: 'eye-conditions',
-      name: 'Eye Conditions (General)',
-      diagnosticCode: 'Various',
-      cfrReference: '38 CFR 4.75-4.84',
-      symptomIds: [
-        'eye-pain',
-        'light-sensitivity',
-        'double-vision',
-        'floaters',
-        'dry-eyes',
-        'eye-strain',
-      ],
+  FIBROMYALGIA: {
+    id: 'fibromyalgia',
+    name: 'Fibromyalgia',
+    diagnosticCode: '5025',
+    cfrReference: '38 CFR 4.71a',
+    symptomIds: ['fibro-widespread-pain', 'fibro-tender-points', 'fibro-fatigue', 'fibro-sleep', 'fibro-stiffness', 'fibro-cognitive'
+    ],
+  },
+  // Phase 3: Additional Mental Health Conditions
+  SOCIAL_ANXIETY: {
+    id: 'social-anxiety',
+    name: 'Social Anxiety Disorder',
+    diagnosticCode: '9403',
+    cfrReference: '38 CFR 4.130',
+    symptomIds: [ 'social-anxiety-fear', 'social-anxiety-avoidance', 'social-anxiety-performance', 'social-anxiety-physical', 'social-anxiety-anticipatory', 'anxiety', // Include general anxiety for backward compatibility
+    ],
+  },
+  OCD: {
+    id: 'ocd',
+    name: 'Obsessive-Compulsive Disorder',
+    diagnosticCode: '9404',
+    cfrReference: '38 CFR 4.130',
+    symptomIds: [ 'ocd-obsessions', 'ocd-compulsions', 'ocd-checking', 'ocd-contamination', 'ocd-time-spent',
+    ],
+  },
+  PERSISTENT_DEPRESSIVE: {
+    id: 'persistent-depressive',
+    name: 'Persistent Depressive Disorder (Dysthymia)',
+    diagnosticCode: '9433',
+    cfrReference: '38 CFR 4.130',
+    symptomIds: [ 'depression', 'mdd-episode', 'mdd-anhedonia', 'mdd-hopelessness',
+    ],
+  },
+  ADJUSTMENT_DISORDER: {
+    id: 'adjustment-disorder',
+    name: 'Chronic Adjustment Disorder',
+    diagnosticCode: '9440',
+    cfrReference: '38 CFR 4.130',
+    symptomIds: [ 'adjustment-depressed-mood', 'adjustment-anxiety', 'adjustment-disturbance-conduct', 'adjustment-work-difficulty', 'adjustment-relationship-problems', 'anxiety', 'depression',
+    ],
+  },
+  UNSPECIFIED_ANXIETY: {
+    id: 'unspecified-anxiety',
+    name: 'Unspecified Anxiety Disorder',
+    diagnosticCode: '9413',
+    cfrReference: '38 CFR 4.130',
+    symptomIds: [ 'anxiety', 'gad-worry', 'gad-restlessness', 'gad-muscle-tension',
+    ],
+  },
+  UNSPECIFIED_DEPRESSIVE: {
+    id: 'unspecified-depressive',
+    name: 'Unspecified Depressive Disorder',
+    diagnosticCode: '9435',
+    cfrReference: '38 CFR 4.130',
+    symptomIds: [
+      'depression',
+      'mdd-episode',
+      'mdd-anhedonia',
+      'mdd-hopelessness',
+    ],
+  },
+  // PHASE 2: Eye & Vision Conditions
+  VISION_LOSS: {
+    id: 'vision-loss',
+    name: 'Vision Loss',
+    diagnosticCode: '6061-6079',
+    cfrReference: '38 CFR 4.75-4.79',
+    symptomIds: [
+      'vision-loss',
+      'peripheral-vision-loss',
+      'night-blindness',
+      'color-vision-changes',
+    ],
+  },
+  GLAUCOMA: {
+    id: 'glaucoma',
+    name: 'Glaucoma',
+    diagnosticCode: '6067',
+    cfrReference: '38 CFR 4.76',
+    symptomIds: [
+      'glaucoma-symptoms',
+      'eye-pain',
+      'vision-loss',
+    ],
+  },
+  DIABETIC_RETINOPATHY: {
+    id: 'diabetic-retinopathy',
+    name: 'Diabetic Retinopathy',
+    diagnosticCode: '6066',
+    cfrReference: '38 CFR 4.79',
+    symptomIds: [
+      'diabetic-retinopathy',
+      'vision-loss',
+      'floaters',
+    ],
+  },
+  MACULAR_DEGENERATION: {
+    id: 'macular-degeneration',
+    name: 'Macular Degeneration',
+    diagnosticCode: '6062',
+    cfrReference: '38 CFR 4.79',
+    symptomIds: [
+      'macular-degeneration',
+      'vision-loss',
+    ],
+  },
+  EYE_CONDITIONS: {
+    id: 'eye-conditions',
+    name: 'Eye Conditions (General)',
+    diagnosticCode: 'Various',
+    cfrReference: '38 CFR 4.75-4.84',
+    symptomIds: [
+      'eye-pain',
+      'light-sensitivity',
+      'double-vision',
+      'floaters',
+      'dry-eyes',
+      'eye-strain',
+    ],
+  },
+  // Phase 3: Genitourinary Conditions
+  KIDNEY_STONES: {
+    id: 'kidney-stones',
+    name: 'Kidney Stones (Nephrolithiasis)',
+    diagnosticCode: '7508',
+    cfrReference: '38 CFR 4.115b',
+    symptomIds: [
+      'kidney-stones',
+      'kidney-pain',
+      'blood-in-urine',
+    ],
+  },
+  CHRONIC_RENAL_DISEASE: {
+    id: 'chronic-renal-disease',
+    name: 'Chronic Renal Disease (Chronic Kidney Disease)',
+    diagnosticCode: '7530',
+    cfrReference: '38 CFR 4.115a',
+    symptomIds: [
+      'kidney-infection',
+      'renal-swelling',
+      'renal-fatigue',
+      'renal-nausea',
+      'decreased-urination',
+      'foamy-urine',
+    ],
+  },
+  CHRONIC_CYSTITIS: {
+    id: 'chronic-cystitis',
+    name: 'Chronic Cystitis (Bladder Infection/Inflammation)',
+    diagnosticCode: '7512',
+    cfrReference: '38 CFR 4.115a',
+    symptomIds: [
+      'bladder-pain',
+      'recurrent-uti',
+      'painful-urination',
+      'urinary-frequency',
+      'urinary-urgency',
+    ],
+  },
+  NEUROGENIC_BLADDER: {
+    id: 'neurogenic-bladder',
+    name: 'Neurogenic Bladder',
+    diagnosticCode: '7542',
+    cfrReference: '38 CFR 4.115a',
+    symptomIds: [
+      'urinary-incontinence',
+      'urine-retention',
+      'incomplete-emptying',
+    ],
+  },
+  PROSTATE_CONDITIONS: {
+    id: 'prostate-conditions',
+    name: 'Prostate Conditions (BPH, Prostatitis)',
+    diagnosticCode: '7527',
+    cfrReference: '38 CFR 4.115a',
+    symptomIds: [
+      'prostate-symptoms',
+      'prostate-pain',
+      'weak-stream',
+      'hesitancy',
+      'nocturia',
+    ],
+  },
+  URETHRAL_STRICTURE: {
+    id: 'urethral-stricture',
+    name: 'Urethral Stricture',
+    diagnosticCode: '7518',
+    cfrReference: '38 CFR 4.115a',
+    symptomIds: [
+      'weak-stream',
+      'hesitancy',
+      'incomplete-emptying',
+    ],
+  },
+  SPHINCTER_IMPAIRMENT: {
+    id: 'sphincter-impairment',
+    name: 'Sphincter Impairment (Fecal Incontinence)',
+    diagnosticCode: '7332',
+    cfrReference: '38 CFR 4.114',
+    symptomIds: [
+      'fecal-incontinence',
+      'bowel-urgency',
+      'bowel-frequency',
+    ],
+  },
+  ERECTILE_DYSFUNCTION: {
+    id: 'erectile-dysfunction',
+    name: 'Erectile Dysfunction',
+    diagnosticCode: '7522',
+    cfrReference: '38 CFR 4.115b',
+    symptomIds: [
+      'erectile-dysfunction',
+    ],
   },
 };
 
@@ -6516,7 +6461,7 @@ export const analyzeMigraineLogs = (logs, options = {}) => {
     supportedRating = 50;
     ratingRationale = [
       `${prostratingPerMonth.toFixed(
-          1)} prostrating attacks per month (â‰¥4 required)`,
+          1)} prostrating attacks per month (≥4 required)`,
       `${prolongedCount} prolonged attacks documented`,
       'Pattern suggests very frequent, prostrating, prolonged attacks',
     ];
@@ -6528,7 +6473,7 @@ export const analyzeMigraineLogs = (logs, options = {}) => {
     supportedRating = 30;
     ratingRationale = [
       `${prostratingPerMonth.toFixed(
-          1)} prostrating attacks per month (â‰¥1 required)`,
+          1)} prostrating attacks per month (≥1 required)`,
       'Pattern supports characteristic prostrating attacks averaging monthly',
     ];
     gaps = [];
@@ -6564,7 +6509,7 @@ export const analyzeMigraineLogs = (logs, options = {}) => {
     } else if (prostratingCount > 0) {
       ratingRationale = [
         `${prostratingPerMonth.toFixed(2)} prostrating attacks per month`,
-        'Frequency below threshold for 10% (need â‰¥0.5/month)',
+        'Frequency below threshold for 10% (need ≥0.5/month)',
       ];
       gaps = [
         'Continue logging all prostrating episodes',
@@ -12526,6 +12471,438 @@ export const analyzeVisionLogs = (logs) => {
     criteria: VISION_LOSS_CRITERIA
   };
 };
+// ============================================
+// ANALYSIS FUNCTIONS - GENITOURINARY
+// ============================================
+
+// Analyze Kidney Stones logs (DC 7508)
+export const analyzeKidneyStonesLogs = (logs) => {
+  const stoneLogs = logs.filter(log =>
+      log.genitourinaryData?.affectedSystem === 'kidney' ||
+      log.symptomId?.includes('kidney-stone') ||
+      log.symptomId?.includes('kidney-pain')
+  );
+
+  if (stoneLogs.length === 0) {
+    return {
+      hasData: false,
+      message: 'No kidney stone symptoms logged'
+    };
+  }
+
+  // Count procedures
+  const procedureCounts = {};
+  const stoneEpisodes = stoneLogs.filter(log => log.genitourinaryData?.stoneEpisode).length;
+  const stonesPassed = stoneLogs.filter(log => log.genitourinaryData?.stonePassedToday).length;
+
+  stoneLogs.forEach(log => {
+    const procedure = log.genitourinaryData?.procedureRecent;
+    if (procedure && procedure !== '' && procedure !== 'none') {
+      procedureCounts[procedure] = (procedureCounts[procedure] || 0) + 1;
+    }
+  });
+
+  // Calculate procedures in last year
+  const oneYearAgo = new Date();
+  oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
+
+  const proceduresLastYear = stoneLogs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    const procedure = log.genitourinaryData?.procedureRecent;
+    return logDate >= oneYearAgo && procedure && procedure !== '' && procedure !== 'none';
+  }).length;
+
+  // Determine rating
+  let supportedRating = 0;
+  let rationale = [];
+  let evidenceGaps = [];
+
+  if (proceduresLastYear > 2) {
+    supportedRating = 30;
+    rationale.push(`${proceduresLastYear} procedures documented in past year (>2 required for 30%)`);
+  } else if (proceduresLastYear >= 1) {
+    supportedRating = 10;
+    rationale.push(`${proceduresLastYear} procedure(s) in past year (1-2 required for 10%)`);
+  } else {
+    supportedRating = 0;
+    rationale.push('No procedures documented in past year');
+    evidenceGaps.push('Document any lithotripsy, ureteroscopy, or stent procedures');
+  }
+
+  if (stoneEpisodes > 0) {
+    rationale.push(`${stoneEpisodes} stone episodes logged`);
+  }
+
+  if (stonesPassed > 0) {
+    rationale.push(`${stonesPassed} stones documented as passed`);
+  }
+
+  // Evidence gaps
+  if (!Object.keys(procedureCounts).length) {
+    evidenceGaps.push('No procedure records logged - document all stone-related procedures');
+  }
+
+  evidenceGaps.push('Obtain imaging reports (CT scans, ultrasounds) showing stone formation');
+  evidenceGaps.push('Get urology treatment records documenting recurrent stones');
+
+  return {
+    hasData: true,
+    totalLogs: stoneLogs.length,
+    supportedRating,
+    rationale,
+    evidenceGaps,
+    metrics: {
+      stoneEpisodes,
+      stonesPassed,
+      proceduresLastYear,
+      procedureTypes: Object.keys(procedureCounts),
+    },
+    criteriaReference: KIDNEY_STONES_CRITERIA,
+  };
+};
+
+// Analyze Chronic Renal Disease logs (DC 7530)
+export const analyzeChronicRenalDiseaseLogs = (logs, options = {}) => {
+  const { evaluationPeriodDays = 365 } = options; // 1 year default for kidney function
+
+  const renalLogs = logs.filter(log =>
+      log.genitourinaryData?.affectedSystem === 'kidney' ||
+      log.symptomId?.includes('renal') ||
+      log.symptomId?.includes('kidney')
+  );
+
+  // Get eGFR measurements from storage
+  const egfrMeasurements = getMeasurements({
+    type: 'egfr',
+    days: evaluationPeriodDays
+  });
+
+  const creatinineMeasurements = getMeasurements({
+    type: 'creatinine',
+    days: evaluationPeriodDays
+  });
+
+  if (renalLogs.length === 0 && egfrMeasurements.length === 0) {
+    return {
+      hasData: false,
+      message: 'No chronic kidney disease symptoms or lab values logged'
+    };
+  }
+
+  // Count dialysis
+  const dialysisLogs = renalLogs.filter(log => log.genitourinaryData?.dialysis);
+  const onDialysis = dialysisLogs.length > 0;
+
+  // Analyze eGFR values
+  let lowestEGFR = null;
+  let averageEGFR = null;
+
+  if (egfrMeasurements.length > 0) {
+    const egfrValues = egfrMeasurements.map(m => m.values.egfr);
+    lowestEGFR = Math.min(...egfrValues);
+    averageEGFR = (egfrValues.reduce((a, b) => a + b, 0) / egfrValues.length).toFixed(1);
+  }
+
+  // Determine rating based on eGFR
+  let supportedRating = 0;
+  let rationale = [];
+  let evidenceGaps = [];
+
+  if (onDialysis) {
+    supportedRating = 100;
+    rationale.push(`Regular dialysis documented (${dialysisLogs.length} dialysis sessions logged)`);
+  } else if (lowestEGFR !== null) {
+    if (lowestEGFR >= 15 && lowestEGFR <= 20) {
+      supportedRating = 80;
+      rationale.push(`Lowest eGFR: ${lowestEGFR} mL/min/1.73m² (15-20 range = 80%)`);
+    } else if (lowestEGFR >= 20 && lowestEGFR < 30) {
+      supportedRating = 60;
+      rationale.push(`Lowest eGFR: ${lowestEGFR} mL/min/1.73m² (20-30 range = 60%)`);
+    } else if (lowestEGFR >= 30 && lowestEGFR < 40) {
+      supportedRating = 40;
+      rationale.push(`Lowest eGFR: ${lowestEGFR} mL/min/1.73m² (30-40 range = 40%)`);
+    } else if (lowestEGFR >= 40 && lowestEGFR < 60) {
+      supportedRating = 20;
+      rationale.push(`Lowest eGFR: ${lowestEGFR} mL/min/1.73m² (40-60 range = 20%)`);
+    } else if (lowestEGFR >= 60) {
+      supportedRating = 0;
+      rationale.push(`Lowest eGFR: ${lowestEGFR} mL/min/1.73m² (>60 = minimal impairment)`);
+    } else {
+      supportedRating = 100;
+      rationale.push(`Lowest eGFR: ${lowestEGFR} mL/min/1.73m² (<15 = kidney failure)`);
+    }
+
+    if (averageEGFR) {
+      rationale.push(`Average eGFR: ${averageEGFR} mL/min/1.73m² (${egfrMeasurements.length} measurements)`);
+    }
+  }
+
+  // Evidence gaps
+  if (egfrMeasurements.length < 3) {
+    evidenceGaps.push('Track more eGFR measurements - ratings require sustained kidney function decline');
+  }
+
+  if (creatinineMeasurements.length === 0) {
+    evidenceGaps.push('Log serum creatinine values from lab reports');
+  }
+
+  evidenceGaps.push('Obtain nephrology consultation records');
+  evidenceGaps.push('Document any complications (anemia, bone disease, metabolic issues)');
+
+  return {
+    hasData: true,
+    totalLogs: renalLogs.length,
+    supportedRating,
+    rationale,
+    evidenceGaps,
+    metrics: {
+      egfrMeasurements: egfrMeasurements.length,
+      lowestEGFR,
+      averageEGFR,
+      onDialysis,
+      dialysisSessions: dialysisLogs.length,
+    },
+    criteriaReference: CHRONIC_RENAL_DISEASE_CRITERIA,
+  };
+};
+
+// Analyze Voiding Dysfunction logs (DC 7512, 7527, 7542, 7518)
+export const analyzeVoidingDysfunctionLogs = (logs) => {
+  const voidingLogs = logs.filter(log =>
+      log.genitourinaryData?.affectedSystem === 'bladder' ||
+      log.genitourinaryData?.affectedSystem === 'prostate' ||
+      log.symptomId?.includes('urinary') ||
+      log.symptomId?.includes('bladder') ||
+      log.symptomId?.includes('prostate')
+  );
+
+  if (voidingLogs.length === 0) {
+    return {
+      hasData: false,
+      message: 'No voiding dysfunction symptoms logged'
+    };
+  }
+
+  // Analyze incontinence
+  const incontinenceLogs = voidingLogs.filter(log => log.genitourinaryData?.incontinenceEpisode);
+  const padChangeCounts = voidingLogs
+      .map(log => parseInt(log.genitourinaryData?.padChangesRequired) || 0)
+      .filter(count => count > 0);
+  const avgPadChanges = padChangeCounts.length > 0
+      ? (padChangeCounts.reduce((a, b) => a + b, 0) / padChangeCounts.length).toFixed(1)
+      : 0;
+  const maxPadChanges = padChangeCounts.length > 0 ? Math.max(...padChangeCounts) : 0;
+
+  // Analyze frequency
+  const frequencyCounts = voidingLogs
+      .map(log => parseInt(log.genitourinaryData?.urinaryFrequency24h) || 0)
+      .filter(count => count > 0);
+  const avgFrequency = frequencyCounts.length > 0
+      ? (frequencyCounts.reduce((a, b) => a + b, 0) / frequencyCounts.length).toFixed(1)
+      : 0;
+
+  const nocturnalCounts = voidingLogs
+      .map(log => parseInt(log.genitourinaryData?.nocturiaCount) || 0)
+      .filter(count => count > 0);
+  const avgNocturia = nocturnalCounts.length > 0
+      ? (nocturnalCounts.reduce((a, b) => a + b, 0) / nocturnalCounts.length).toFixed(1)
+      : 0;
+  const maxNocturia = nocturnalCounts.length > 0 ? Math.max(...nocturnalCounts) : 0;
+
+  // Analyze obstruction
+  const catheterLogs = voidingLogs.filter(log => log.genitourinaryData?.catheterUse);
+  const catheterType = catheterLogs.length > 0 ? catheterLogs[catheterLogs.length - 1].genitourinaryData?.catheterType : null;
+
+  // Determine rating (highest of incontinence, frequency, or obstruction)
+  let incontinenceRating = 0;
+  let frequencyRating = 0;
+  let obstructionRating = 0;
+  let rationale = [];
+  let evidenceGaps = [];
+
+  // Incontinence rating
+  if (maxPadChanges > 4 || avgPadChanges > 4) {
+    incontinenceRating = 60;
+    rationale.push(`Incontinence: ${avgPadChanges} avg pad changes/day (>4 = 60%)`);
+  } else if (maxPadChanges >= 2 || avgPadChanges >= 2) {
+    incontinenceRating = 40;
+    rationale.push(`Incontinence: ${avgPadChanges} avg pad changes/day (2-4 = 40%)`);
+  } else if (incontinenceLogs.length > 0) {
+    incontinenceRating = 20;
+    rationale.push(`Incontinence: ${avgPadChanges || '<2'} pad changes/day (<2 = 20%)`);
+  }
+
+  // Frequency rating
+  const hourlyInterval = avgFrequency > 0 ? (24 / avgFrequency).toFixed(1) : 'N/A';
+  if (avgFrequency >= 24 || maxNocturia >= 5) {
+    frequencyRating = 40;
+    rationale.push(`Frequency: ${avgFrequency} times/day (~every ${hourlyInterval}h), or ${maxNocturia} times/night = 40%`);
+  } else if ((avgFrequency >= 12 && avgFrequency < 24) || maxNocturia >= 3) {
+    frequencyRating = 20;
+    rationale.push(`Frequency: ${avgFrequency} times/day, ${avgNocturia} avg nocturia = 20%`);
+  } else if ((avgFrequency >= 8 && avgFrequency < 12) || maxNocturia >= 2) {
+    frequencyRating = 10;
+    rationale.push(`Frequency: ${avgFrequency} times/day, ${avgNocturia} avg nocturia = 10%`);
+  }
+
+  // Obstruction rating
+  if (catheterLogs.length > 0) {
+    obstructionRating = 30;
+    rationale.push(`Obstruction: Catheterization required (${catheterType || 'type not specified'}) = 30%`);
+  }
+
+  const supportedRating = Math.max(incontinenceRating, frequencyRating, obstructionRating);
+
+  // Evidence gaps
+  if (!avgFrequency) {
+    evidenceGaps.push('Log urinary frequency (times per day) consistently');
+  }
+  if (!avgNocturia) {
+    evidenceGaps.push('Track nocturia (nighttime awakenings to void)');
+  }
+  if (incontinenceLogs.length > 0 && !avgPadChanges) {
+    evidenceGaps.push('Document pad/diaper changes per day');
+  }
+
+  evidenceGaps.push('Obtain voiding diary from healthcare provider');
+  evidenceGaps.push('Get post-void residual measurements if available');
+  evidenceGaps.push('Document any urodynamic testing results');
+
+  return {
+    hasData: true,
+    totalLogs: voidingLogs.length,
+    supportedRating,
+    rationale,
+    evidenceGaps,
+    metrics: {
+      incontinenceEpisodes: incontinenceLogs.length,
+      avgPadChanges,
+      maxPadChanges,
+      avgFrequency,
+      avgNocturia,
+      maxNocturia,
+      catheterUse: catheterLogs.length,
+      catheterType,
+    },
+    criteriaReference: VOIDING_DYSFUNCTION_CRITERIA,
+  };
+};
+
+// Analyze Sphincter Impairment logs (DC 7332)
+export const analyzeSphincterImpairmentLogs = (logs) => {
+  const sphincterLogs = logs.filter(log =>
+      log.genitourinaryData?.affectedSystem === 'sphincter' ||
+      log.symptomId?.includes('fecal-incontinence')
+  );
+
+  if (sphincterLogs.length === 0) {
+    return {
+      hasData: false,
+      message: 'No fecal incontinence symptoms logged'
+    };
+  }
+
+  const episodes = sphincterLogs.filter(log => log.genitourinaryData?.fecalIncontinenceEpisode).length;
+  const totalDaysLogged = sphincterLogs.length;
+  const episodeRate = (episodes / totalDaysLogged * 100).toFixed(1);
+
+  // Get frequency descriptions
+  const frequencyDescriptions = {};
+  sphincterLogs.forEach(log => {
+    const freq = log.genitourinaryData?.fecalIncontinenceFrequency;
+    if (freq) {
+      frequencyDescriptions[freq] = (frequencyDescriptions[freq] || 0) + 1;
+    }
+  });
+
+  const mostCommonFrequency = Object.keys(frequencyDescriptions).reduce((a, b) =>
+      frequencyDescriptions[a] > frequencyDescriptions[b] ? a : b, null
+  );
+
+  // Determine rating
+  let supportedRating = 0;
+  let rationale = [];
+
+  if (mostCommonFrequency === 'daily' || episodeRate > 50) {
+    supportedRating = 60;
+    rationale.push(`Daily or frequent episodes documented (${episodes} episodes in ${totalDaysLogged} days = ${episodeRate}%)`);
+  } else if (mostCommonFrequency === 'weekly' || episodeRate > 10) {
+    supportedRating = 30;
+    rationale.push(`Weekly episodes documented (${episodes} episodes over ${totalDaysLogged} days)`);
+  } else if (mostCommonFrequency === 'monthly' || episodes > 0) {
+    supportedRating = 10;
+    rationale.push(`Occasional episodes documented (${episodes} episodes)`);
+  }
+
+  const evidenceGaps = [
+    'Obtain gastroenterology or colorectal surgery evaluation',
+    'Document anorectal manometry results if performed',
+    'Get treatment records (medications, biofeedback, surgery)',
+  ];
+
+  return {
+    hasData: true,
+    totalLogs: sphincterLogs.length,
+    supportedRating,
+    rationale,
+    evidenceGaps,
+    metrics: {
+      episodes,
+      totalDaysLogged,
+      episodeRate: `${episodeRate}%`,
+      mostCommonFrequency,
+    },
+    criteriaReference: SPHINCTER_IMPAIRMENT_CRITERIA,
+  };
+};
+
+// Analyze Erectile Dysfunction logs (DC 7522)
+export const analyzeErectileDysfunctionLogs = (logs) => {
+  const edLogs = logs.filter(log =>
+      log.genitourinaryData?.affectedSystem === 'reproductive' ||
+      log.symptomId?.includes('erectile-dysfunction')
+  );
+
+  if (edLogs.length === 0) {
+    return {
+      hasData: false,
+      message: 'No erectile dysfunction symptoms logged'
+    };
+  }
+
+  const severityCounts = {};
+  edLogs.forEach(log => {
+    const severity = log.genitourinaryData?.edSeverity;
+    if (severity) {
+      severityCounts[severity] = (severityCounts[severity] || 0) + 1;
+    }
+  });
+
+  const mostCommonSeverity = Object.keys(severityCounts).reduce((a, b) =>
+      severityCounts[a] > severityCounts[b] ? a : b, null
+  );
+
+  return {
+    hasData: true,
+    totalLogs: edLogs.length,
+    supportedRating: 0,
+    rationale: [
+      'DC 7522 is rated at 0% only',
+      `Severity documented: ${mostCommonSeverity || 'not specified'}`,
+      'Service connection establishes potential for SMC in specific circumstances',
+    ],
+    evidenceGaps: [
+      'Obtain urology evaluation documenting ED',
+      'Document any secondary conditions (diabetes, PTSD, medications)',
+      'Get treatment records (medications, devices, procedures attempted)',
+    ],
+    metrics: {
+      mostCommonSeverity,
+      severityCounts,
+    },
+    criteriaReference: ERECTILE_DYSFUNCTION_CRITERIA,
+  };
+};
 
 // Helper function to check if timestamp is within evaluation period
 const isWithinEvaluationPeriod = (timestamp, days) => {
@@ -12996,6 +13373,460 @@ export const MACULAR_DEGENERATION_CRITERIA = {
 };
 
 // ============================================
+// ============================================
+// PHASE 3: GENITOURINARY CONDITIONS
+// ============================================
+
+// DC 7508: Nephrolithiasis/Ureterolithiasis (Kidney Stones)
+export const KIDNEY_STONES_CRITERIA = {
+  diagnosticCode: '7508',
+  condition: 'Nephrolithiasis/Ureterolithiasis/Nephrocalcinosis (Kidney Stones)',
+  cfrReference: '38 CFR 4.115b, Diagnostic Code 7508',
+
+  note: 'Rating based on stone episodes requiring invasive or non-invasive procedures, or rate as hydronephrosis if kidney function is impaired.',
+
+  ratings: [
+    {
+      percent: 30,
+      summary: 'Recurrent stone formation requiring invasive or non-invasive procedures more than 2 times per year',
+      criteriaDescription: [
+        'Stone formation documented on imaging',
+        'Requires procedures (lithotripsy, ureteroscopy, stent placement) more than twice yearly',
+        'Recurrent episodes despite treatment',
+      ],
+      evidenceNeeded: [
+        'Imaging reports showing stones (CT, ultrasound, X-ray)',
+        'Procedure records (lithotripsy, ureteroscopy, stent placement)',
+        'Documentation of frequency (>2 procedures per year)',
+        'Emergency room visits for renal colic',
+        'Urology treatment records',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Recurrent stone formation requiring procedures 1-2 times per year',
+      criteriaDescription: [
+        'Stone formation requiring 1-2 procedures annually',
+        'May include lithotripsy, ureteroscopy, or stent placement',
+        'Documented history of kidney stones',
+      ],
+      evidenceNeeded: [
+        'Imaging showing stone formation',
+        'Procedure records',
+        'Treatment history from urology',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'History of stones but no recent procedures, or controlled with conservative management',
+      criteriaDescription: [
+        'History of kidney stones',
+        'Controlled with diet, hydration, medication',
+        'No procedures required in past year',
+      ],
+      evidenceNeeded: [
+        'Documentation of stone history',
+        'Current management plan',
+      ],
+    },
+  ],
+
+  definitions: {
+    'Invasive procedures': 'Ureteroscopy, percutaneous nephrolithotomy, open surgery',
+    'Non-invasive procedures': 'ESWL (lithotripsy), shock wave therapy',
+    'Recurrent stone formation': 'New stones forming despite preventive measures',
+    'Renal colic': 'Severe flank pain from stone passage',
+  },
+
+  disclaimer: 'If kidney function is impaired (elevated creatinine, decreased eGFR, hydronephrosis), rate under DC 7530 (Chronic Renal Disease) instead. Service connection requires evidence that stones are related to military service.',
+};
+// DC 7530: Chronic Renal Disease
+export const CHRONIC_RENAL_DISEASE_CRITERIA = {
+  diagnosticCode: '7530',
+  condition: 'Chronic Renal Disease',
+  cfrReference: '38 CFR 4.115a, Diagnostic Code 7530',
+
+  note: 'Rated based on renal dysfunction. Requires regular dialysis for 100% rating.',
+
+  ratings: [
+    {
+      percent: 100,
+      summary: 'Requiring regular dialysis',
+      criteriaDescription: [
+        'End-stage renal disease (ESRD)',
+        'Hemodialysis or peritoneal dialysis required',
+        'Typically 3+ times per week for hemodialysis',
+        'eGFR typically <15 mL/min/1.73m²',
+      ],
+      evidenceNeeded: [
+        'Dialysis center records showing regular treatment',
+        'Vascular access documentation (fistula, graft, catheter)',
+        'Lab values showing kidney failure',
+        'Nephrology treatment records',
+        'Documentation of dialysis frequency and duration',
+      ],
+    },
+    {
+      percent: 80,
+      summary: 'eGFR 15-20 mL/min/1.73m², stage 4-5 CKD',
+      criteriaDescription: [
+        'Severe kidney disease',
+        'eGFR 15-20 mL/min/1.73m² sustained over time',
+        'May be approaching dialysis',
+        'Significant metabolic complications',
+      ],
+      evidenceNeeded: [
+        'Serial lab values showing eGFR 15-20',
+        'Multiple readings over evaluation period',
+        'Nephrology records',
+        'Documentation of complications (anemia, bone disease, etc.)',
+      ],
+    },
+    {
+      percent: 60,
+      summary: 'eGFR 20-30 mL/min/1.73m², stage 4 CKD',
+      criteriaDescription: [
+        'Severe kidney disease',
+        'eGFR 20-30 mL/min/1.73m²',
+        'Significant impairment of kidney function',
+      ],
+      evidenceNeeded: [
+        'Lab values showing eGFR in range',
+        'Creatinine levels elevated (typically >3.0 mg/dL)',
+        'Treatment records',
+      ],
+    },
+    {
+      percent: 40,
+      summary: 'eGFR 30-40 mL/min/1.73m², stage 3b CKD',
+      criteriaDescription: [
+        'Moderate to severe kidney disease',
+        'eGFR 30-40 mL/min/1.73m²',
+        'Persistent kidney impairment',
+      ],
+      evidenceNeeded: [
+        'Serial eGFR measurements',
+        'Elevated creatinine',
+        'Nephrology evaluation',
+      ],
+    },
+    {
+      percent: 20,
+      summary: 'eGFR 40-60 mL/min/1.73m², stage 3a CKD',
+      criteriaDescription: [
+        'Moderate kidney disease',
+        'eGFR 40-60 mL/min/1.73m²',
+        'Mild to moderate impairment',
+      ],
+      evidenceNeeded: [
+        'Lab values showing reduced kidney function',
+        'Multiple readings confirming chronic nature',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'eGFR >60 or minimal impairment',
+      criteriaDescription: [
+        'Kidney function adequate',
+        'eGFR >60 mL/min/1.73m²',
+        'Stage 1-2 CKD or normal function',
+      ],
+      evidenceNeeded: [],
+    },
+  ],
+
+  definitions: {
+    'eGFR': 'Estimated Glomerular Filtration Rate - measures how well kidneys filter blood',
+    'ESRD': 'End-Stage Renal Disease - kidney failure requiring dialysis or transplant',
+    'Hemodialysis': 'Blood filtered through external machine, typically 3x/week, 3-4 hours per session',
+    'Peritoneal dialysis': 'Dialysis using abdominal lining, can be done at home daily',
+    'CKD stages': 'Stage 1-2: eGFR >60, Stage 3a: 45-60, Stage 3b: 30-45, Stage 4: 15-30, Stage 5: <15',
+  },
+
+  disclaimer: 'Chronic kidney disease must be documented as service-connected. Ratings based on sustained kidney function measurements over time, not single readings. Kidney transplant recipients rated separately under DC 7531.',
+};
+// VOIDING DYSFUNCTION CRITERIA (38 CFR 4.115a)
+// Used by: DC 7512 (Chronic Cystitis), DC 7527 (Prostate), DC 7542 (Neurogenic Bladder), DC 7518 (Urethral Stricture)
+export const VOIDING_DYSFUNCTION_CRITERIA = {
+  diagnosticCode: '7512/7527/7542/7518',
+  condition: 'Voiding Dysfunction (Urinary Frequency, Incontinence, or Obstruction)',
+  cfrReference: '38 CFR 4.115a, Rating Formula for Voiding Dysfunction',
+
+  note: 'Multiple conditions rated under voiding dysfunction. Choose highest rating from: Urine Leakage, Frequency, or Obstructed Voiding.',
+
+  // CONTINUAL URINE LEAKAGE / URINARY INCONTINENCE
+  ratingsIncontinence: [
+    {
+      percent: 60,
+      summary: 'Requiring appliance or absorbent materials changed more than 4 times per day',
+      criteriaDescription: [
+        'Continuous or very frequent urine leakage',
+        'Requires protective garments/pads/diapers',
+        'Changed more than 4 times daily',
+        'May require urinary appliance or catheter system',
+      ],
+      evidenceNeeded: [
+        'Log of pad/diaper changes showing >4 per day',
+        'Medical documentation of incontinence severity',
+        'Prescription records for incontinence supplies',
+        'Urodynamic studies if available',
+        'Treatment attempts (medications, procedures)',
+      ],
+    },
+    {
+      percent: 40,
+      summary: 'Requiring absorbent materials changed 2-4 times per day',
+      criteriaDescription: [
+        'Frequent urine leakage',
+        'Requires protective garments',
+        'Changed 2-4 times daily',
+      ],
+      evidenceNeeded: [
+        'Documentation of 2-4 pad changes per day',
+        'Medical records confirming incontinence',
+        'Prescription for incontinence products',
+      ],
+    },
+    {
+      percent: 20,
+      summary: 'Requiring absorbent materials changed less than 2 times per day',
+      criteriaDescription: [
+        'Moderate urine leakage',
+        'Requires protective garments',
+        'Changed 1-2 times daily',
+      ],
+      evidenceNeeded: [
+        'Documentation of incontinence',
+        'Evidence of protective garment use',
+      ],
+    },
+  ],
+
+  // URINARY FREQUENCY
+  ratingsFrequency: [
+    {
+      percent: 40,
+      summary: 'Daytime voiding interval less than 1 hour, OR awakening to void 5+ times per night',
+      criteriaDescription: [
+        'Severe urinary frequency',
+        'Voiding more than hourly during day, OR',
+        'Waking 5 or more times per night to urinate (nocturia)',
+      ],
+      evidenceNeeded: [
+        'Voiding diary showing frequency patterns',
+        'Documentation over multiple days',
+        'Medical evaluation confirming frequency',
+      ],
+    },
+    {
+      percent: 20,
+      summary: 'Daytime voiding interval 1-2 hours, OR awakening 3-4 times per night',
+      criteriaDescription: [
+        'Frequent urination',
+        'Voiding every 1-2 hours during day, OR',
+        'Waking 3-4 times nightly',
+      ],
+      evidenceNeeded: [
+        'Voiding diary',
+        'Medical documentation of frequency',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Daytime voiding interval 2-3 hours, OR awakening 2 times per night',
+      criteriaDescription: [
+        'Moderately increased frequency',
+        'Voiding every 2-3 hours during day, OR',
+        'Waking twice nightly',
+      ],
+      evidenceNeeded: [
+        'Documentation of voiding patterns',
+      ],
+    },
+  ],
+
+  // OBSTRUCTED VOIDING
+  ratingsObstruction: [
+    {
+      percent: 30,
+      summary: 'Urinary retention requiring intermittent or continuous catheterization',
+      criteriaDescription: [
+        'Unable to empty bladder naturally',
+        'Requires self-catheterization (intermittent), OR',
+        'Indwelling catheter (Foley), OR',
+        'Suprapubic catheter',
+      ],
+      evidenceNeeded: [
+        'Catheterization records',
+        'Documentation of catheterization frequency (if intermittent)',
+        'Post-void residual measurements showing retention',
+        'Urology treatment records',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Marked obstructive symptoms with complications',
+      criteriaDescription: [
+        'Hesitancy, weak stream, incomplete emptying',
+        'PLUS one or more of:',
+        '- Post-void residual >150cc',
+        '- Markedly decreased peak flow rate (<10cc/sec)',
+        '- Recurrent UTIs secondary to obstruction',
+        '- Stricture requiring dilation every 2-3 months',
+      ],
+      evidenceNeeded: [
+        'Post-void residual measurements',
+        'Uroflowmetry results',
+        'UTI treatment records',
+        'Stricture dilation procedure records',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'Obstructive symptoms requiring dilation 1-2 times per year',
+      criteriaDescription: [
+        'Mild obstruction',
+        'Occasional stricture dilation needed',
+      ],
+      evidenceNeeded: [
+        'Procedure records for dilations',
+      ],
+    },
+  ],
+
+  definitions: {
+    'Voiding dysfunction': 'Difficulty with bladder emptying or storage',
+    'Post-void residual': 'Urine remaining in bladder after urination (normal <50cc)',
+    'Intermittent catheterization': 'Self-catheterization multiple times daily',
+    'Indwelling catheter': 'Foley catheter left in place continuously',
+    'Suprapubic catheter': 'Catheter inserted through abdominal wall',
+    'Uroflowmetry': 'Test measuring urine flow rate',
+    'Nocturia': 'Waking at night to urinate',
+  },
+
+  disclaimer: 'Rate under the highest applicable category: incontinence, frequency, or obstruction. Do not pyramid ratings from multiple categories. Service connection must be established.',
+};
+// DC 7332: Rectum and Anus, Impairment of Sphincter Control (Fecal Incontinence)
+export const SPHINCTER_IMPAIRMENT_CRITERIA = {
+  diagnosticCode: '7332',
+  condition: 'Rectum and Anus, Impairment of Sphincter Control (Fecal Incontinence)',
+  cfrReference: '38 CFR 4.114, Diagnostic Code 7332',
+
+  note: 'Rating based on frequency and severity of fecal incontinence episodes.',
+
+  ratings: [
+    {
+      percent: 100,
+      summary: 'Complete loss of sphincter control',
+      criteriaDescription: [
+        'Continuous fecal incontinence',
+        'Unable to control bowel movements',
+        'Constant soiling',
+        'Requires protective garments at all times',
+      ],
+      evidenceNeeded: [
+        'Medical documentation of complete incontinence',
+        'Gastroenterology/colorectal surgery evaluation',
+        'Anorectal manometry if performed',
+        'Treatment records',
+        'Documentation of protective garment use',
+      ],
+    },
+    {
+      percent: 60,
+      summary: 'Frequent and essentially complete loss of control',
+      criteriaDescription: [
+        'Multiple daily episodes of fecal incontinence',
+        'Inability to delay defecation',
+        'Significant impairment of sphincter function',
+      ],
+      evidenceNeeded: [
+        'Incontinence diary showing daily episodes',
+        'Medical evaluation confirming severity',
+        'Treatment attempts documented',
+      ],
+    },
+    {
+      percent: 30,
+      summary: 'Occasional loss of sphincter control',
+      criteriaDescription: [
+        'Periodic fecal incontinence episodes',
+        'May occur weekly or monthly',
+        'Some sphincter control maintained',
+      ],
+      evidenceNeeded: [
+        'Documentation of incontinence frequency',
+        'Medical records',
+        'Evidence of impact on daily activities',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Mild impairment',
+      criteriaDescription: [
+        'Rare loss of bowel control',
+        'Gas incontinence or occasional soiling',
+        'Minimal functional impairment',
+      ],
+      evidenceNeeded: [
+        'Medical documentation',
+        'Description of symptoms',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'No significant impairment',
+      criteriaDescription: [
+        'Normal sphincter control',
+        'No episodes of incontinence',
+      ],
+      evidenceNeeded: [],
+    },
+  ],
+
+  definitions: {
+    'Fecal incontinence': 'Involuntary loss of bowel control',
+    'Sphincter': 'Muscle ring controlling bowel movements',
+    'Anorectal manometry': 'Test measuring sphincter muscle strength',
+    'Urgency': 'Sudden, strong urge to defecate with limited time to reach toilet',
+  },
+
+  disclaimer: 'Service connection must be established. May result from trauma, surgery, neurological conditions, or other service-connected causes. Rate as diarrhea (DC 7319) if episodes are due to IBS and not sphincter impairment.',
+};
+// DC 7522: Erectile Dysfunction
+export const ERECTILE_DYSFUNCTION_CRITERIA = {
+  diagnosticCode: '7522',
+  condition: 'Erectile Dysfunction, with or without penile deformity',
+  cfrReference: '38 CFR 4.115b, Diagnostic Code 7522',
+
+  note: 'Rated at 0% only. No compensation for impairment itself, but establishes service connection for potential special monthly compensation (SMC) eligibility under certain circumstances.',
+
+  ratings: [
+    {
+      percent: 0,
+      summary: 'Erectile dysfunction present',
+      criteriaDescription: [
+        'Documented erectile dysfunction',
+        'May be mild, moderate, or severe',
+        'With or without penile deformity',
+      ],
+      evidenceNeeded: [
+        'Medical diagnosis of erectile dysfunction',
+        'Urology evaluation',
+        'Documentation of severity and impact',
+        'Treatment attempts if any (medications, devices, etc.)',
+        'Evidence linking to service-connected condition',
+      ],
+    },
+  ],
+
+  definitions: {
+    'Erectile dysfunction': 'Inability to achieve or maintain erection sufficient for sexual intercourse',
+    'SMC': 'Special Monthly Compensation - additional compensation for certain severe disabilities',
+  },
+
+  disclaimer: 'While rated at 0%, service connection for ED is important for: (1) potential SMC eligibility in specific circumstances, (2) establishing nexus to other service-connected conditions, (3) potential for increased rating if additional conditions develop. ED may be secondary to diabetes, hypertension, PTSD, medications, or other service-connected conditions.',
+};
 // HELPER FUNCTIONS
 // ============================================
 
@@ -13125,55 +13956,64 @@ export const getEvaluationPeriod = (days = 90) => {
 export const getLumbosacralStrainRatingCriteria = (percent) => {
   return LUMBOSACRAL_STRAIN_CRITERIA.ratings.find(r => r.percent === percent) || null;
 };
-
 export const getIntervertebralDiscRatingCriteria = (percent) => {
   const incapEpisodes = INTERVERTEBRAL_DISC_CRITERIA.ratingsIncapacitatingEpisodes.find(r => r.percent === percent);
   if (incapEpisodes) return incapEpisodes;
   return INTERVERTEBRAL_DISC_CRITERIA.ratingsGeneralFormula.find(r => r.percent === percent) || null;
 };
-
 export const getKneeInstabilityRatingCriteria = (percent) => {
   return KNEE_INSTABILITY_CRITERIA.ratings.find(r => r.percent === percent) || null;
 };
-
 export const getTBIRatingCriteria = (percent) => {
   return TBI_CRITERIA.ratings.find(r => r.percent === percent) || null;
 };
-
 export const getHypertensionRatingCriteria = (percent) => {
   return HYPERTENSION_CRITERIA.ratings.find(r => r.percent === percent) || null;
 };
-
 export const getTinnitusRatingCriteria = (percent) => {
   return TINNITUS_CRITERIA.ratings.find(r => r.percent === percent) || null;
 };
-
 export const getFibromyalgiaRatingCriteria = (percent) => {
   return FIBROMYALGIA_CRITERIA.ratings.find(r => r.percent === percent) || null;
 };
-
 export const getSocialAnxietyRatingCriteria = (percent) => {
     return SOCIAL_ANXIETY_CRITERIA.ratings.find(r => r.percent === percent) || null;
 };
-
 export const getOCDRatingCriteria = (percent) => {
     return OCD_CRITERIA.ratings.find(r => r.percent === percent) || null;
 };
-
 export const getPersistentDepressiveRatingCriteria = (percent) => {
     return PERSISTENT_DEPRESSIVE_CRITERIA.ratings.find(r => r.percent === percent) || null;
 };
-
 export const getAdjustmentDisorderRatingCriteria = (percent) => {
     return ADJUSTMENT_DISORDER_CRITERIA.ratings.find(r => r.percent === percent) || null;
 };
-
 export const getUnspecifiedAnxietyRatingCriteria = (percent) => {
     return UNSPECIFIED_ANXIETY_CRITERIA.ratings.find(r => r.percent === percent) || null;
 };
-
 export const getUnspecifiedDepressiveRatingCriteria = (percent) => {
     return UNSPECIFIED_DEPRESSIVE_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getKidneyStonesRatingCriteria = (percent) => {
+  return KIDNEY_STONES_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getChronicRenalDiseaseRatingCriteria = (percent) => {
+  return CHRONIC_RENAL_DISEASE_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getVoidingDysfunctionIncontinenceRating = (percent) => {
+  return VOIDING_DYSFUNCTION_CRITERIA.ratingsIncontinence.find(r => r.percent === percent) || null;
+};
+export const getVoidingDysfunctionFrequencyRating = (percent) => {
+  return VOIDING_DYSFUNCTION_CRITERIA.ratingsFrequency.find(r => r.percent === percent) || null;
+};
+export const getVoidingDysfunctionObstructionRating = (percent) => {
+  return VOIDING_DYSFUNCTION_CRITERIA.ratingsObstruction.find(r => r.percent === percent) || null;
+};
+export const getSphincterImpairmentRatingCriteria = (percent) => {
+  return SPHINCTER_IMPAIRMENT_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getErectileDysfunctionRatingCriteria = (percent) => {
+  return ERECTILE_DYSFUNCTION_CRITERIA.ratings.find(r => r.percent === percent) || null;
 };
 
 export const getAllLumbosacralStrainRatings = () => LUMBOSACRAL_STRAIN_CRITERIA.ratings;
@@ -13214,10 +14054,7 @@ export const getVisionLossDefinition = (term) => VISION_LOSS_CRITERIA.definition
 export const getGlaucomaDefinition = (term) => GLAUCOMA_CRITERIA.definitions[term] || null;
 export const getDiabeticRetinopathyDefinition = (term) => DIABETIC_RETINOPATHY_CRITERIA.definitions[term] || null;
 export const getMacularDegenerationDefinition = (term) => MACULAR_DEGENERATION_CRITERIA.definitions[term] || null;
-
-
-
-
-
-
-
+export const getChronicCystitisRatingCriteria = getVoidingDysfunctionIncontinenceRating;
+export const getNeurogenicBladderRatingCriteria = getVoidingDysfunctionIncontinenceRating;
+export const getProstateConditionsRatingCriteria = getVoidingDysfunctionFrequencyRating;
+export const getUrethralStrictureRatingCriteria = getVoidingDysfunctionObstructionRating;

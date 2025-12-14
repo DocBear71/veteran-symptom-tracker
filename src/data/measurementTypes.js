@@ -9,7 +9,7 @@ export const MEASUREMENT_TYPES = {
     id: 'blood-pressure',
     name: 'Blood Pressure',
     shortName: 'BP',
-    icon: '❤️',
+    icon: 'â¤ï¸',
     description: 'Track blood pressure readings for hypertension documentation',
 
     fields: [
@@ -97,7 +97,7 @@ export const MEASUREMENT_TYPES = {
     id: 'blood-glucose',
     name: 'Blood Glucose',
     shortName: 'Glucose',
-    icon: '🩸',
+    icon: 'ðŸ©¸',
     description: 'Track blood glucose levels for diabetes documentation',
 
     fields: [
@@ -169,7 +169,7 @@ export const MEASUREMENT_TYPES = {
     id: 'hba1c',
     name: 'HbA1c (A1C)',
     shortName: 'A1C',
-    icon: '🩸',
+    icon: 'ðŸ©¸',
     description: 'Track HbA1c for long-term diabetes control (typically measured quarterly)',
 
     fields: [
@@ -215,7 +215,7 @@ export const MEASUREMENT_TYPES = {
     id: 'weight',
     name: 'Weight & BMI',
     shortName: 'Weight',
-    icon: '⚖️',
+    icon: 'âš–ï¸',
     description: 'Track weight and calculate BMI',
 
     fields: [
@@ -282,7 +282,7 @@ export const MEASUREMENT_TYPES = {
     id: 'oxygen-saturation',
     name: 'Oxygen Saturation',
     shortName: 'SpO2',
-    icon: '🫁',
+    icon: 'ðŸ«',
     description: 'Track oxygen levels for respiratory conditions',
 
     fields: [
@@ -359,7 +359,7 @@ export const MEASUREMENT_TYPES = {
     id: 'fev1',
     name: 'FEV-1 (Forced Expiratory Volume)',
     shortName: 'FEV-1',
-    icon: '🫁',
+    icon: 'ðŸ«',
     description: 'Forced expiratory volume in 1 second - key measurement for VA asthma ratings',
 
     fields: [
@@ -429,7 +429,7 @@ export const MEASUREMENT_TYPES = {
     id: 'fvc',
     name: 'FVC (Forced Vital Capacity)',
     shortName: 'FVC',
-    icon: '🫁',
+    icon: 'ðŸ«',
     description: 'Forced vital capacity - used with FEV-1 for FEV-1/FVC ratio',
 
     fields: [
@@ -471,7 +471,7 @@ export const MEASUREMENT_TYPES = {
     id: 'rom',
     name: 'Range of Motion (ROM)',
     shortName: 'ROM',
-    icon: '🦴',
+    icon: 'ðŸ¦´',
     description: 'Track joint range of motion in degrees for musculoskeletal claims',
 
     fields: [
@@ -567,7 +567,7 @@ export const MEASUREMENT_TYPES = {
     id: 'peak-flow',
     name: 'Peak Flow',
     shortName: 'Peak Flow',
-    icon: '🫁',
+    icon: 'ðŸ«',
     description: 'Track peak expiratory flow rate for asthma and respiratory conditions',
 
     fields: [
@@ -640,7 +640,7 @@ export const MEASUREMENT_TYPES = {
     id: 'bristol-scale',
     name: 'Bristol Stool Scale',
     shortName: 'Bristol',
-    icon: '💩',
+    icon: 'ðŸ’©',
     description: 'Track stool consistency for GI conditions (IBS, IBD, etc.)',
 
     fields: [
@@ -721,11 +721,181 @@ export const MEASUREMENT_TYPES = {
       type7: { bristolType: [7, 7], label: 'Type 7: Severe diarrhea (liquid)', color: 'red' },
     },
   },
+
+  // ============================================
+  // KIDNEY FUNCTION MEASUREMENTS (Phase 3)
+  // ============================================
+
+  EGFR: {
+    id: 'egfr',
+    name: 'eGFR (Kidney Function)',
+    shortName: 'eGFR',
+    icon: '🫘',
+    description: 'Track estimated Glomerular Filtration Rate - primary measure of kidney function',
+
+    fields: [
+      {
+        key: 'egfr',
+        label: 'eGFR',
+        unit: 'mL/min/1.73m²',
+        type: 'number',
+        min: 1,
+        max: 200,
+        step: 1,
+        required: true,
+        placeholder: '90',
+        help: 'From lab report - measures how well kidneys filter blood',
+      },
+    ],
+
+    metadata: [
+      {
+        key: 'labDate',
+        label: 'Lab draw date',
+        type: 'date',
+        help: 'Date blood was drawn (if different from log date)',
+      },
+      {
+        key: 'calculationMethod',
+        label: 'Calculation method',
+        type: 'select',
+        options: [
+          { value: 'ckd-epi', label: 'CKD-EPI (most common)' },
+          { value: 'mdrd', label: 'MDRD' },
+          { value: 'unknown', label: 'Not specified' },
+        ],
+        default: 'ckd-epi',
+      },
+    ],
+
+    relatedConditions: ['chronic-renal-disease', 'diabetic-nephropathy', 'kidney-stones', 'hypertension'],
+
+    // CKD Stage thresholds (KDIGO guidelines)
+    interpretation: {
+      normal: { egfr: [90, 999], label: 'Normal (Stage 1)', color: 'green' },
+      mild: { egfr: [60, 90], label: 'Mild CKD (Stage 2)', color: 'yellow' },
+      moderate: { egfr: [30, 60], label: 'Moderate CKD (Stage 3)', color: 'orange' },
+      severe: { egfr: [15, 30], label: 'Severe CKD (Stage 4)', color: 'red' },
+      kidney_failure: { egfr: [0, 15], label: 'Kidney Failure (Stage 5)', color: 'red' },
+    },
+  },
+
+  CREATININE: {
+    id: 'creatinine',
+    name: 'Creatinine',
+    shortName: 'Creatinine',
+    icon: '🫘',
+    description: 'Track serum creatinine levels - waste product filtered by kidneys',
+
+    fields: [
+      {
+        key: 'creatinine',
+        label: 'Serum Creatinine',
+        unit: 'mg/dL',
+        type: 'number',
+        min: 0.1,
+        max: 20.0,
+        step: 0.01,
+        required: true,
+        placeholder: '1.0',
+        help: 'From lab report - higher values indicate worse kidney function',
+      },
+    ],
+
+    metadata: [
+      {
+        key: 'labDate',
+        label: 'Lab draw date',
+        type: 'date',
+        help: 'Date blood was drawn (if different from log date)',
+      },
+      {
+        key: 'muscleCondition',
+        label: 'Muscle condition note',
+        type: 'text',
+        placeholder: 'e.g., low muscle mass, bodybuilder',
+        help: 'Muscle mass affects creatinine levels',
+      },
+    ],
+
+    relatedConditions: ['chronic-renal-disease', 'diabetic-nephropathy', 'kidney-stones'],
+
+    // Interpretation (varies by sex/age, these are general guidelines)
+    interpretation: {
+      low: { creatinine: [0, 0.6], label: 'Low (possible low muscle mass)', color: 'yellow' },
+      normal: { creatinine: [0.6, 1.2], label: 'Normal Range', color: 'green' },
+      mildly_elevated: { creatinine: [1.2, 2.0], label: 'Mildly Elevated', color: 'yellow' },
+      elevated: { creatinine: [2.0, 5.0], label: 'Elevated (Impaired Function)', color: 'orange' },
+      severely_elevated: { creatinine: [5.0, 99], label: 'Severely Elevated', color: 'red' },
+    },
+  },
+
+  BUN: {
+    id: 'bun',
+    name: 'BUN (Blood Urea Nitrogen)',
+    shortName: 'BUN',
+    icon: '🫘',
+    description: 'Track blood urea nitrogen - waste product filtered by kidneys',
+
+    fields: [
+      {
+        key: 'bun',
+        label: 'BUN',
+        unit: 'mg/dL',
+        type: 'number',
+        min: 1,
+        max: 200,
+        step: 1,
+        required: true,
+        placeholder: '15',
+        help: 'From lab report - measures urea nitrogen in blood',
+      },
+    ],
+
+    metadata: [
+      {
+        key: 'labDate',
+        label: 'Lab draw date',
+        type: 'date',
+        help: 'Date blood was drawn (if different from log date)',
+      },
+      {
+        key: 'hydrationStatus',
+        label: 'Hydration status',
+        type: 'select',
+        options: [
+          { value: 'normal', label: 'Normal' },
+          { value: 'dehydrated', label: 'Dehydrated' },
+          { value: 'overhydrated', label: 'Overhydrated' },
+        ],
+        default: 'normal',
+        help: 'Hydration affects BUN levels',
+      },
+      {
+        key: 'highProteinDiet',
+        label: 'High protein diet?',
+        type: 'boolean',
+        default: false,
+        help: 'High protein intake can elevate BUN',
+      },
+    ],
+
+    relatedConditions: ['chronic-renal-disease', 'diabetic-nephropathy', 'kidney-stones'],
+
+    // Interpretation thresholds
+    interpretation: {
+      low: { bun: [0, 7], label: 'Low (possible malnutrition)', color: 'yellow' },
+      normal: { bun: [7, 20], label: 'Normal Range', color: 'green' },
+      mildly_elevated: { bun: [20, 40], label: 'Mildly Elevated', color: 'yellow' },
+      elevated: { bun: [40, 80], label: 'Elevated (Impaired Function)', color: 'orange' },
+      severely_elevated: { bun: [80, 999], label: 'Severely Elevated', color: 'red' },
+    },
+  },
   DLCO: {
     id: 'dlco',
     name: 'DLCO (Diffusion Capacity)',
     shortName: 'DLCO',
-    icon: '🫁',
+    icon: 'ðŸ«',
     description: 'Diffusion Capacity of the Lung for Carbon Monoxide - measures gas exchange efficiency',
 
     fields: [
@@ -850,7 +1020,7 @@ export const interpretMeasurement = (measurementTypeId, values, metadata = {}) =
       const { weight, height } = values;
       if (!height) return null; // Need height to calculate BMI
 
-      // Calculate BMI: (weight in lbs / (height in inches)Â²) Ã— 703
+      // Calculate BMI: (weight in lbs / (height in inches)Ã‚Â²) Ãƒâ€” 703
       const bmi = (weight / (height * height)) * 703;
 
       if (bmi >= 40) return { ...interpretations.obese3, bmi: bmi.toFixed(1) };
@@ -907,6 +1077,30 @@ export const interpretMeasurement = (measurementTypeId, values, metadata = {}) =
         default: return null;
       }
     }
+    case 'egfr': {
+      const { egfr } = values;
+      if (egfr >= 90) return interpretations.normal;
+      if (egfr >= 60) return interpretations.mild;
+      if (egfr >= 30) return interpretations.moderate;
+      if (egfr >= 15) return interpretations.severe;
+      return interpretations.kidney_failure;
+    }
+    case 'creatinine': {
+      const { creatinine } = values;
+      if (creatinine >= 5.0) return interpretations.severely_elevated;
+      if (creatinine >= 2.0) return interpretations.elevated;
+      if (creatinine >= 1.2) return interpretations.mildly_elevated;
+      if (creatinine >= 0.6) return interpretations.normal;
+      return interpretations.low;
+    }
+    case 'bun': {
+      const { bun } = values;
+      if (bun >= 80) return interpretations.severely_elevated;
+      if (bun >= 40) return interpretations.elevated;
+      if (bun >= 20) return interpretations.mildly_elevated;
+      if (bun >= 7) return interpretations.normal;
+      return interpretations.low;
+    }
     case 'rom': {
       // ROM interpretation is condition-specific and handled elsewhere
       // No general interpretation thresholds
@@ -925,7 +1119,7 @@ export const formatMeasurementValue = (measurementTypeId, values) => {
 
   switch (measurementTypeId) {
     case 'blood-pressure':
-      return `${values.systolic}/${values.diastolic} mmHg${values.heartRate ? ` • HR: ${values.heartRate} bpm` : ''}`;
+      return `${values.systolic}/${values.diastolic} mmHg${values.heartRate ? ` â€¢ HR: ${values.heartRate} bpm` : ''}`;
     case 'blood-glucose':
       return `${values.glucose} mg/dL`;
     case 'hba1c':
@@ -933,11 +1127,11 @@ export const formatMeasurementValue = (measurementTypeId, values) => {
     case 'weight':
       if (values.height) {
         const bmi = ((values.weight / (values.height * values.height)) * 703).toFixed(1);
-        return `${values.weight} lbs • BMI: ${bmi}`;
+        return `${values.weight} lbs â€¢ BMI: ${bmi}`;
       }
       return `${values.weight} lbs`;
     case 'oxygen-saturation':
-      return `${values.spo2}%${values.heartRate ? ` • HR: ${values.heartRate} bpm` : ''}`;
+      return `${values.spo2}%${values.heartRate ? ` â€¢ HR: ${values.heartRate} bpm` : ''}`;
 
     case 'peak-flow':
       if (values.peakFlow) {
@@ -955,7 +1149,7 @@ export const formatMeasurementValue = (measurementTypeId, values) => {
       const joint = arguments[2]?.joint || '';
       const movement = arguments[2]?.movement || '';
       const side = arguments[2]?.side || '';
-      return `${values.measurement}° ${movement ? `(${movement})` : ''} ${joint ? `- ${joint}` : ''} ${side ? `[${side}]` : ''}`.trim();
+      return `${values.measurement}Â° ${movement ? `(${movement})` : ''} ${joint ? `- ${joint}` : ''} ${side ? `[${side}]` : ''}`.trim();
     case 'bristol-scale':
       const bristolLabels = {
         1: 'Type 1 (Hard lumps)',
@@ -981,6 +1175,12 @@ export const formatMeasurementValue = (measurementTypeId, values) => {
         return `${values.dlco} mL/min/mmHg (${percentPredicted}% predicted)`;
       }
       return `${values.dlco} mL/min/mmHg`;
+    case 'egfr':
+      return `${values.egfr} mL/min/1.73m²`;
+    case 'creatinine':
+      return `${values.creatinine} mg/dL`;
+    case 'bun':
+      return `${values.bun} mg/dL`;
     default:
       return Object.entries(values)
       .map(([key, value]) => {

@@ -115,6 +115,51 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
     associatedConditions: [],
   });
 
+  // Phase 3: Genitourinary data
+  const [genitourinaryData, setGenitourinaryData] = useState({
+    affectedSystem: '',
+    kidneySymptoms: [],
+    kidneyPainLocation: '',
+    kidneyPainSeverity: 5,
+    stoneEpisode: false,
+    stonePassedToday: false,
+    stoneSize: '',
+    procedureRecent: '',
+    procedureDate: '',
+    dialysis: false,
+    dialysisType: '',
+    dialysisFrequency: '',
+    voidingSymptoms: [],
+    urinaryFrequency24h: '',
+    nocturiaCount: '',
+    incontinenceEpisode: false,
+    incontinenceType: '',
+    incontinenceLeakageAmount: '',
+    padChangesRequired: '',
+    catheterUse: false,
+    catheterType: '',
+    catheterizationsPerDay: '',
+    uti: false,
+    utiSymptoms: [],
+    prostateSymptoms: [],
+    prostateScore: '',
+    prostateMedications: [],
+    fecalIncontinenceEpisode: false,
+    fecalIncontinenceFrequency: '',
+    fecalIncontinenceType: '',
+    fecalUrgency: false,
+    bowelControlMethods: [],
+    erectileDysfunction: false,
+    edSeverity: '',
+    testicular: false,
+    testicularSymptoms: [],
+    activitiesAffected: [],
+    fluidRestriction: false,
+    workMissed: false,
+    associatedConditions: [],
+    complications: [],
+  });
+
   useEffect(() => {
     loadData();
   }, []);
@@ -237,6 +282,25 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
         'double-vision', 'color-vision-changes', 'dry-eyes', 'eye-strain', 'eye-pain',
         'peripheral-vision-loss', 'diabetic-retinopathy', 'glaucoma-symptoms'].includes(selectedChronic);
 
+  // Phase 3: Genitourinary detection
+  const isGenitourinaryRelated = selectedChronic?.includes('kidney') ||
+      selectedChronic?.includes('urinary') ||
+      selectedChronic?.includes('prostate') ||
+      selectedChronic?.includes('bladder') ||
+      selectedChronic?.includes('urine') ||
+      selectedChronic?.includes('renal') ||
+      selectedChronic?.includes('fecal-incontinence') ||
+      selectedChronic?.includes('erectile') ||
+      selectedChronic?.includes('testicular') ||
+      selectedChronic?.includes('genital') ||
+      ['kidney-stones', 'kidney-pain', 'blood-in-urine', 'kidney-infection',
+       'renal-swelling', 'renal-fatigue', 'renal-nausea', 'decreased-urination',
+       'foamy-urine', 'high-blood-pressure', 'urinary-frequency', 'urinary-urgency',
+       'painful-urination', 'urinary-incontinence', 'urine-retention', 'weak-stream',
+       'hesitancy', 'nocturia', 'bladder-pain', 'recurrent-uti', 'incomplete-emptying',
+       'prostate-symptoms', 'prostate-pain', 'erectile-dysfunction', 'testicular-pain',
+       'genital-pain', 'bowel-urgency', 'bowel-frequency'].includes(selectedChronic);
+
   const handleOpenLogModal = (chronic) => {
     if (editMode) return;
     setSelectedChronic(chronic);
@@ -282,6 +346,19 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
       affectedEye: '', leftEyeAcuity: '', rightEyeAcuity: '',
       symptoms: [], fieldOfVision: [], affectedActivities: [],
       triggeringFactors: '', associatedConditions: [],
+    });
+    setGenitourinaryData({
+      affectedSystem: '', kidneySymptoms: [], kidneyPainLocation: '', kidneyPainSeverity: 5,
+      stoneEpisode: false, stonePassedToday: false, stoneSize: '', procedureRecent: '', procedureDate: '',
+      dialysis: false, dialysisType: '', dialysisFrequency: '', voidingSymptoms: [],
+      urinaryFrequency24h: '', nocturiaCount: '', incontinenceEpisode: false, incontinenceType: '',
+      incontinenceLeakageAmount: '', padChangesRequired: '', catheterUse: false, catheterType: '',
+      catheterizationsPerDay: '', uti: false, utiSymptoms: [], prostateSymptoms: [],
+      prostateScore: '', prostateMedications: [], fecalIncontinenceEpisode: false,
+      fecalIncontinenceFrequency: '', fecalIncontinenceType: '', fecalUrgency: false,
+      bowelControlMethods: [], erectileDysfunction: false, edSeverity: '', testicular: false,
+      testicularSymptoms: [], activitiesAffected: [], fluidRestriction: false, workMissed: false,
+      associatedConditions: [], complications: [],
     });
   };
 
@@ -336,6 +413,9 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
     }
     if (isEyeRelated) {
       entry.eyeData = { ...eyeData };
+    }
+    if (isGenitourinaryRelated) {
+      entry.genitourinaryData = { ...genitourinaryData };
     }
 
     const savedEntry = saveSymptomLog(entry);
@@ -1442,6 +1522,119 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
                       </div>
                   )}
 
+                    {/* Phase 3: Genitourinary Quick Log */}
+                    {isGenitourinaryRelated && (
+                        <div className="space-y-3 p-4 bg-teal-50 dark:bg-teal-900/20 rounded-lg border border-teal-200 dark:border-teal-800">
+                          <h4 className="font-medium text-teal-900 dark:text-teal-200">Genitourinary Details</h4>
+
+                          {/* Kidney Symptoms */}
+                          {(selectedChronic?.includes('kidney') || selectedChronic?.includes('renal')) && (
+                              <>
+                                <div className="grid grid-cols-2 gap-2">
+                                  <label className={`flex items-center gap-2 p-2 rounded border cursor-pointer ${
+                                      genitourinaryData.stoneEpisode ? 'bg-teal-100 dark:bg-teal-900/50 border-teal-300' : 'bg-white dark:bg-gray-800 border-gray-200'
+                                  }`}>
+                                    <input type="checkbox" checked={genitourinaryData.stoneEpisode}
+                                           onChange={(e) => setGenitourinaryData(prev => ({ ...prev, stoneEpisode: e.target.checked }))}
+                                           className="w-4 h-4 text-teal-600 rounded" />
+                                    <span className="text-sm">Stone Episode</span>
+                                  </label>
+
+                                  <label className={`flex items-center gap-2 p-2 rounded border cursor-pointer ${
+                                      genitourinaryData.dialysis ? 'bg-teal-100 dark:bg-teal-900/50 border-teal-300' : 'bg-white dark:bg-gray-800 border-gray-200'
+                                  }`}>
+                                    <input type="checkbox" checked={genitourinaryData.dialysis}
+                                           onChange={(e) => setGenitourinaryData(prev => ({ ...prev, dialysis: e.target.checked }))}
+                                           className="w-4 h-4 text-teal-600 rounded" />
+                                    <span className="text-sm">Dialysis Today</span>
+                                  </label>
+                                </div>
+                              </>
+                          )}
+
+                          {/* Bladder/Voiding Symptoms */}
+                          {(selectedChronic?.includes('bladder') || selectedChronic?.includes('urinary')) && (
+                              <>
+                                <div className="grid grid-cols-2 gap-3">
+                                  <div>
+                                    <label className="block text-sm font-medium mb-1">Frequency (24h)</label>
+                                    <input type="number" value={genitourinaryData.urinaryFrequency24h}
+                                           onChange={(e) => setGenitourinaryData(prev => ({ ...prev, urinaryFrequency24h: e.target.value }))}
+                                           placeholder="# times"
+                                           className="w-full p-2 text-sm border rounded bg-white dark:bg-gray-800" />
+                                  </div>
+
+                                  <div>
+                                    <label className="block text-sm font-medium mb-1">Nocturia</label>
+                                    <input type="number" value={genitourinaryData.nocturiaCount}
+                                           onChange={(e) => setGenitourinaryData(prev => ({ ...prev, nocturiaCount: e.target.value }))}
+                                           placeholder="# times"
+                                           className="w-full p-2 text-sm border rounded bg-white dark:bg-gray-800" />
+                                  </div>
+                                </div>
+
+                                <div className="grid grid-cols-2 gap-2">
+                                  <label className={`flex items-center gap-2 p-2 rounded border cursor-pointer ${
+                                      genitourinaryData.incontinenceEpisode ? 'bg-teal-100 dark:bg-teal-900/50 border-teal-300' : 'bg-white dark:bg-gray-800 border-gray-200'
+                                  }`}>
+                                    <input type="checkbox" checked={genitourinaryData.incontinenceEpisode}
+                                           onChange={(e) => setGenitourinaryData(prev => ({ ...prev, incontinenceEpisode: e.target.checked }))}
+                                           className="w-4 h-4 text-teal-600 rounded" />
+                                    <span className="text-sm">Incontinence</span>
+                                  </label>
+
+                                  <label className={`flex items-center gap-2 p-2 rounded border cursor-pointer ${
+                                      genitourinaryData.catheterUse ? 'bg-teal-100 dark:bg-teal-900/50 border-teal-300' : 'bg-white dark:bg-gray-800 border-gray-200'
+                                  }`}>
+                                    <input type="checkbox" checked={genitourinaryData.catheterUse}
+                                           onChange={(e) => setGenitourinaryData(prev => ({ ...prev, catheterUse: e.target.checked }))}
+                                           className="w-4 h-4 text-teal-600 rounded" />
+                                    <span className="text-sm">Catheter Use</span>
+                                  </label>
+                                </div>
+                              </>
+                          )}
+
+                          {/* Prostate Symptoms */}
+                          {selectedChronic?.includes('prostate') && (
+                              <div>
+                                <label className="block text-sm font-medium mb-1">Nocturia (times waking to void)</label>
+                                <input type="number" value={genitourinaryData.nocturiaCount}
+                                       onChange={(e) => setGenitourinaryData(prev => ({ ...prev, nocturiaCount: e.target.value }))}
+                                       placeholder="# times"
+                                       className="w-full p-2 text-sm border rounded bg-white dark:bg-gray-800" />
+                              </div>
+                          )}
+
+                          {/* Sphincter/Bowel */}
+                          {selectedChronic?.includes('fecal-incontinence') && (
+                              <label className={`flex items-center gap-2 p-3 rounded border cursor-pointer ${
+                                  genitourinaryData.fecalIncontinenceEpisode ? 'bg-teal-100 dark:bg-teal-900/50 border-teal-300' : 'bg-white dark:bg-gray-800 border-gray-200'
+                              }`}>
+                                <input type="checkbox" checked={genitourinaryData.fecalIncontinenceEpisode}
+                                       onChange={(e) => setGenitourinaryData(prev => ({ ...prev, fecalIncontinenceEpisode: e.target.checked }))}
+                                       className="w-4 h-4 text-teal-600 rounded" />
+                                <span className="text-sm font-medium">Incontinence Episode Today</span>
+                              </label>
+                          )}
+
+                          {/* Reproductive */}
+                          {selectedChronic?.includes('erectile') && (
+                              <div>
+                                <label className="block text-sm font-medium mb-2">Severity</label>
+                                <select value={genitourinaryData.edSeverity}
+                                        onChange={(e) => setGenitourinaryData(prev => ({ ...prev, edSeverity: e.target.value }))}
+                                        className="w-full p-2 text-sm border rounded bg-white dark:bg-gray-800">
+                                  <option value="">Select severity</option>
+                                  <option value="mild">Mild</option>
+                                  <option value="moderate">Moderate</option>
+                                  <option value="severe">Severe</option>
+                                  <option value="complete">Complete</option>
+                                </select>
+                              </div>
+                          )}
+                        </div>
+                    )}
                   {/* Notes */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">

@@ -584,6 +584,47 @@ export const symptomCategories = [
       { id: 'urticaria-medication', name: 'Urticaria - Required Medication Use' },
     ]
   },
+  // Phase 3: Genitourinary Conditions (DC 7500-7542, 7332)
+  {
+    id: 'genitourinary',
+    name: 'Genitourinary & Kidney',
+    symptoms: [
+      // Kidney/Renal symptoms
+      { id: 'kidney-stones', name: 'Kidney Stones/Pain Episodes' },
+      { id: 'kidney-pain', name: 'Kidney Pain (Flank Pain)' },
+      { id: 'blood-in-urine', name: 'Blood in Urine (Hematuria)' },
+      { id: 'kidney-infection', name: 'Kidney Infection Symptoms' },
+      { id: 'renal-swelling', name: 'Swelling (Edema)' },
+      { id: 'renal-fatigue', name: 'Fatigue (Kidney-Related)' },
+      { id: 'renal-nausea', name: 'Nausea/Vomiting (Kidney-Related)' },
+      { id: 'decreased-urination', name: 'Decreased Urination' },
+      { id: 'foamy-urine', name: 'Foamy/Bubbly Urine' },
+      { id: 'high-blood-pressure', name: 'High Blood Pressure (Kidney-Related)' },
+      // Bladder/Voiding symptoms
+      { id: 'urinary-frequency', name: 'Urinary Frequency' },
+      { id: 'urinary-urgency', name: 'Urinary Urgency' },
+      { id: 'painful-urination', name: 'Painful Urination (Dysuria)' },
+      { id: 'urinary-incontinence', name: 'Urinary Incontinence' },
+      { id: 'urine-retention', name: 'Urinary Retention' },
+      { id: 'weak-stream', name: 'Weak Urine Stream' },
+      { id: 'hesitancy', name: 'Urinary Hesitancy' },
+      { id: 'nocturia', name: 'Nocturia (Nighttime Urination)' },
+      { id: 'bladder-pain', name: 'Bladder Pain/Pressure' },
+      { id: 'recurrent-uti', name: 'Recurrent UTI/Bladder Infections' },
+      { id: 'incomplete-emptying', name: 'Incomplete Bladder Emptying' },
+      // Prostate symptoms
+      { id: 'prostate-symptoms', name: 'Prostate Symptoms (General)' },
+      { id: 'prostate-pain', name: 'Prostate Pain/Discomfort' },
+      // Reproductive symptoms
+      { id: 'erectile-dysfunction', name: 'Erectile Dysfunction' },
+      { id: 'testicular-pain', name: 'Testicular Pain' },
+      { id: 'genital-pain', name: 'Genital Pain (General)' },
+      // Bowel/Sphincter symptoms
+      { id: 'fecal-incontinence', name: 'Fecal Incontinence' },
+      { id: 'bowel-urgency', name: 'Bowel Urgency' },
+      { id: 'bowel-frequency', name: 'Bowel Frequency (Diarrhea)' },
+    ]
+  },
   // Phase 2: Eye & Vision Conditions (DC 6061-6079)
   {
     id: 'eye-vision',

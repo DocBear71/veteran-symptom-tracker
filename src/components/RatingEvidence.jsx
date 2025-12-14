@@ -57,6 +57,11 @@ import {
     analyzeEpilepsyMajorLogs,
     analyzeEpilepsyMinorLogs,
     analyzeVisionLogs,
+    analyzeKidneyStonesLogs,
+    analyzeChronicRenalDiseaseLogs,
+    analyzeVoidingDysfunctionLogs,
+    analyzeSphincterImpairmentLogs,
+    analyzeErectileDysfunctionLogs,
     getAllMigraineRatings,
     getAllSleepApneaRatings,
     getAllPTSDRatings,
@@ -117,6 +122,15 @@ import ScarsRatingCard from './ScarsRatingCard.jsx';
 import TBIResidualsRatingCard from './TBIResidualsRatingCard.jsx';
 import GenericJointRatingCard from './GenericJointRatingCard';
 import EyeVisionRatingCard from './EyeVisionRatingCard';
+import KidneyStonesRatingCard from './KidneyStoneRatingCard';
+import ChronicRenalDiseaseRatingCard from './ChronicRenalDiseaseRatingCard';
+import ChronicCystitisRatingCard from './ChronicCystitisRatingCard';
+import NeurogenicBladderRatingCard from './NeurogenicBladderRatingCard';
+import ProstateConditionsRatingCard from './ProstateConditionsRatingCard';
+import UrethralStrictureRatingCard from './UrethralStrictureRatingCard';
+import SphincterImpairmentRatingCard from './SphincterImpairmentRatingCard';
+import ErectileDysfunctionRatingCard from './ErectileDysfunctionRatingCard';
+import measurements from './Measurements.jsx';
 
 // Storage key for sleep apnea profile
 
@@ -410,6 +424,27 @@ const RatingEvidence = () => {
       return analyzeVisionLogs(logs);
     }, [logs]);
 
+    // Phase 3: Genitourinary Conditions Analysis
+    const kidneyStonesAnalysis = useMemo(() => {
+        return analyzeKidneyStonesLogs(logs);
+    }, [logs]);
+
+  const chronicRenalDiseaseAnalysis = useMemo(() => {
+    return analyzeChronicRenalDiseaseLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+
+    const voidingDysfunctionAnalysis = useMemo(() => {
+        return analyzeVoidingDysfunctionLogs(logs);
+    }, [logs]);
+
+    const sphincterImpairmentAnalysis = useMemo(() => {
+        return analyzeSphincterImpairmentLogs(logs);
+    }, [logs]);
+
+    const erectileDysfunctionAnalysis = useMemo(() => {
+        return analyzeErectileDysfunctionLogs(logs);
+    }, [logs]);
+
     // Toggle section expansion
     const toggleSection = (section) => {
         setExpandedSection(expandedSection === section ? null : section);
@@ -471,7 +506,12 @@ const RatingEvidence = () => {
         fibromyalgiaAnalysis.hasData ||
         epilepsyMajorAnalysis.hasData ||
         epilepsyMinorAnalysis.hasData ||
-        visionAnalysis.hasData;
+        visionAnalysis.hasData ||
+        kidneyStonesAnalysis.hasData ||
+        chronicRenalDiseaseAnalysis.hasData ||
+        voidingDysfunctionAnalysis.hasData ||
+        sphincterImpairmentAnalysis.hasData ||
+        erectileDysfunctionAnalysis.hasData;
 
     return (
         <div className="space-y-4 text-left">
@@ -930,6 +970,48 @@ const RatingEvidence = () => {
               logs={logs}
               expanded={expandedSection === 'vision'}
               onToggle={() => toggleSection('vision')}
+          />
+
+          {/* Phase 3: Genitourinary Conditions */}
+          <KidneyStonesRatingCard
+              analysis={kidneyStonesAnalysis}
+              expanded={expandedSection === 'kidney-stones'}
+              onToggle={() => toggleSection('kidney-stones')}
+          />
+          <ChronicRenalDiseaseRatingCard
+              analysis={chronicRenalDiseaseAnalysis}
+              expanded={expandedSection === 'chronic-renal-disease'}
+              onToggle={() => toggleSection('chronic-renal-disease')}
+          />
+          <ChronicCystitisRatingCard
+              analysis={voidingDysfunctionAnalysis}
+              expanded={expandedSection === 'chronic-cystitis'}
+              onToggle={() => toggleSection('chronic-cystitis')}
+          />
+          <NeurogenicBladderRatingCard
+              analysis={voidingDysfunctionAnalysis}
+              expanded={expandedSection === 'neurogenic-bladder'}
+              onToggle={() => toggleSection('neurogenic-bladder')}
+          />
+          <ProstateConditionsRatingCard
+              analysis={voidingDysfunctionAnalysis}
+              expanded={expandedSection === 'prostate-conditions'}
+              onToggle={() => toggleSection('prostate-conditions')}
+          />
+          <UrethralStrictureRatingCard
+              analysis={voidingDysfunctionAnalysis}
+              expanded={expandedSection === 'urethral-stricture'}
+              onToggle={() => toggleSection('urethral-stricture')}
+          />
+          <SphincterImpairmentRatingCard
+              analysis={sphincterImpairmentAnalysis}
+              expanded={expandedSection === 'sphincter-impairment'}
+              onToggle={() => toggleSection('sphincter-impairment')}
+          />
+          <ErectileDysfunctionRatingCard
+              analysis={erectileDysfunctionAnalysis}
+              expanded={expandedSection === 'erectile-dysfunction'}
+              onToggle={() => toggleSection('erectile-dysfunction')}
           />
 
             {/* Sleep Apnea Setup Modal */}
