@@ -645,6 +645,60 @@ export const symptomCategories = [
       { id: 'eye-strain', name: 'Eye Strain/Fatigue' },
     ]
   },
+// Phase 4: Gynecological Conditions (DC 7610-7632)
+  {
+    id: 'gynecological',
+    name: 'Gynecological',
+    symptoms: [
+      // Menstrual/Cycle symptoms
+      { id: 'heavy-menstrual-bleeding', name: 'Heavy Menstrual Bleeding (Menorrhagia)' },
+      { id: 'irregular-periods', name: 'Irregular Periods' },
+      { id: 'painful-periods', name: 'Painful Periods (Dysmenorrhea)' },
+      { id: 'absent-periods', name: 'Absent Periods (Amenorrhea)' },
+      { id: 'prolonged-bleeding', name: 'Prolonged Menstrual Bleeding' },
+      { id: 'intermenstrual-bleeding', name: 'Spotting Between Periods' },
+      { id: 'premenstrual-syndrome', name: 'Premenstrual Syndrome (PMS)' },
+      // Pelvic pain
+      { id: 'chronic-pelvic-pain', name: 'Chronic Pelvic Pain' },
+      { id: 'dyspareunia', name: 'Painful Intercourse (Dyspareunia)' },
+      { id: 'lower-abdominal-pain', name: 'Lower Abdominal Pain' },
+      { id: 'pain-bowel-movement', name: 'Pain with Bowel Movements (Gynecologic)' },
+      { id: 'pain-urination-gyn', name: 'Pain with Urination (Gynecologic)' },
+      // Endometriosis specific
+      { id: 'endometriosis-pain', name: 'Endometriosis Pain' },
+      { id: 'endometriosis-bowel', name: 'Endometriosis Bowel Symptoms' },
+      { id: 'endometriosis-bladder', name: 'Endometriosis Bladder Symptoms' },
+      // Ovarian/PCOS symptoms
+      { id: 'ovarian-cysts', name: 'Ovarian Cyst Pain' },
+      { id: 'polycystic-ovaries', name: 'Polycystic Ovary Symptoms' },
+      { id: 'ovulation-pain', name: 'Ovulation Pain (Mittelschmerz)' },
+      { id: 'anovulation', name: 'Anovulation/Irregular Ovulation' },
+      // Infection/inflammation
+      { id: 'pid-symptoms', name: 'Pelvic Inflammatory Disease Symptoms' },
+      { id: 'abnormal-discharge', name: 'Abnormal Vaginal Discharge' },
+      { id: 'cervicitis', name: 'Cervicitis Symptoms' },
+      { id: 'vulvovaginitis', name: 'Vulvovaginitis' },
+      { id: 'vaginal-irritation', name: 'Vaginal Irritation/Burning' },
+      // Prolapse symptoms
+      { id: 'pelvic-pressure', name: 'Pelvic Pressure/Heaviness' },
+      { id: 'vaginal-bulge', name: 'Vaginal Bulge/Protrusion' },
+      { id: 'incomplete-bladder-emptying', name: 'Incomplete Bladder Emptying (Prolapse)' },
+      { id: 'bowel-dysfunction-prolapse', name: 'Bowel Dysfunction (Prolapse)' },
+      // Sexual/reproductive function
+      { id: 'sexual-dysfunction', name: 'Sexual Dysfunction' },
+      { id: 'decreased-libido', name: 'Decreased Sexual Desire' },
+      { id: 'arousal-difficulty', name: 'Arousal Difficulty' },
+      { id: 'infertility', name: 'Infertility Concerns' },
+      // PCOS metabolic symptoms
+      { id: 'hirsutism', name: 'Excess Hair Growth (Hirsutism)' },
+      { id: 'hormonal-acne', name: 'Hormonal Acne' },
+      { id: 'pcos-weight-changes', name: 'PCOS-Related Weight Changes' },
+      // Other gynecological
+      { id: 'breast-pain', name: 'Breast Pain/Tenderness' },
+      { id: 'nipple-discharge', name: 'Nipple Discharge' },
+      { id: 'uterine-cramping', name: 'Uterine Cramping' },
+    ]
+  },
 ];
 
 // Helper function to determine if a category is a "child" of another
@@ -672,6 +726,10 @@ const getParentCategory = (categoryName) => {
   if (name.includes('emphysema')) return 'emphysema';
   if (name.includes('rhinitis')) return 'rhinitis';
   if (name.includes('sinusitis')) return 'sinusitis';
+  if (name.includes('gynecological')) return 'gynecological';
+  if (name.includes('endometriosis')) return 'gynecological';
+  if (name.includes('pcos')) return 'gynecological';
+  if (name.includes('menstrual')) return 'gynecological';
   return null; // No parent, this is a standalone category
 };
 

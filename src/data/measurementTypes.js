@@ -9,7 +9,7 @@ export const MEASUREMENT_TYPES = {
     id: 'blood-pressure',
     name: 'Blood Pressure',
     shortName: 'BP',
-    icon: 'â¤ï¸',
+    icon: '❤️',
     description: 'Track blood pressure readings for hypertension documentation',
 
     fields: [
@@ -97,7 +97,7 @@ export const MEASUREMENT_TYPES = {
     id: 'blood-glucose',
     name: 'Blood Glucose',
     shortName: 'Glucose',
-    icon: 'ðŸ©¸',
+    icon: '🩸',
     description: 'Track blood glucose levels for diabetes documentation',
 
     fields: [
@@ -169,7 +169,7 @@ export const MEASUREMENT_TYPES = {
     id: 'hba1c',
     name: 'HbA1c (A1C)',
     shortName: 'A1C',
-    icon: 'ðŸ©¸',
+    icon: '🩸',
     description: 'Track HbA1c for long-term diabetes control (typically measured quarterly)',
 
     fields: [
@@ -215,7 +215,7 @@ export const MEASUREMENT_TYPES = {
     id: 'weight',
     name: 'Weight & BMI',
     shortName: 'Weight',
-    icon: 'âš–ï¸',
+    icon: '⚖️',
     description: 'Track weight and calculate BMI',
 
     fields: [
@@ -282,7 +282,7 @@ export const MEASUREMENT_TYPES = {
     id: 'oxygen-saturation',
     name: 'Oxygen Saturation',
     shortName: 'SpO2',
-    icon: 'ðŸ«',
+    icon: '🫁',
     description: 'Track oxygen levels for respiratory conditions',
 
     fields: [
@@ -359,7 +359,7 @@ export const MEASUREMENT_TYPES = {
     id: 'fev1',
     name: 'FEV-1 (Forced Expiratory Volume)',
     shortName: 'FEV-1',
-    icon: 'ðŸ«',
+    icon: '🫁',
     description: 'Forced expiratory volume in 1 second - key measurement for VA asthma ratings',
 
     fields: [
@@ -429,7 +429,7 @@ export const MEASUREMENT_TYPES = {
     id: 'fvc',
     name: 'FVC (Forced Vital Capacity)',
     shortName: 'FVC',
-    icon: 'ðŸ«',
+    icon: '🫁',
     description: 'Forced vital capacity - used with FEV-1 for FEV-1/FVC ratio',
 
     fields: [
@@ -471,7 +471,7 @@ export const MEASUREMENT_TYPES = {
     id: 'rom',
     name: 'Range of Motion (ROM)',
     shortName: 'ROM',
-    icon: 'ðŸ¦´',
+    icon: '🦴',
     description: 'Track joint range of motion in degrees for musculoskeletal claims',
 
     fields: [
@@ -567,7 +567,7 @@ export const MEASUREMENT_TYPES = {
     id: 'peak-flow',
     name: 'Peak Flow',
     shortName: 'Peak Flow',
-    icon: 'ðŸ«',
+    icon: '🫁',
     description: 'Track peak expiratory flow rate for asthma and respiratory conditions',
 
     fields: [
@@ -640,7 +640,7 @@ export const MEASUREMENT_TYPES = {
     id: 'bristol-scale',
     name: 'Bristol Stool Scale',
     shortName: 'Bristol',
-    icon: 'ðŸ’©',
+    icon: '💩',
     description: 'Track stool consistency for GI conditions (IBS, IBD, etc.)',
 
     fields: [
@@ -891,11 +891,314 @@ export const MEASUREMENT_TYPES = {
       severely_elevated: { bun: [80, 999], label: 'Severely Elevated', color: 'red' },
     },
   },
+  // Phase 4: Gynecological Measurements
+  MENSTRUAL_CYCLE: {
+    id: 'menstrual-cycle',
+    name: 'Menstrual Cycle Tracking',
+    shortName: 'Cycle',
+    icon: '📅',
+    description: 'Track menstrual cycle characteristics for endometriosis, PCOS, and menstrual disorder documentation',
+
+    fields: [
+      {
+        key: 'cycleLength',
+        label: 'Cycle Length',
+        unit: 'days',
+        type: 'number',
+        min: 14,
+        max: 90,
+        step: 1,
+        required: true,
+        placeholder: '28',
+        help: 'Days from first day of one period to first day of next',
+      },
+      {
+        key: 'flowDuration',
+        label: 'Bleeding Duration',
+        unit: 'days',
+        type: 'number',
+        min: 1,
+        max: 14,
+        step: 1,
+        required: true,
+        placeholder: '5',
+        help: 'Number of days of bleeding',
+      },
+      {
+        key: 'flowHeaviness',
+        label: 'Flow Heaviness',
+        type: 'select',
+        options: [
+          { value: 'spotting', label: 'Spotting only' },
+          { value: 'light', label: 'Light' },
+          { value: 'moderate', label: 'Moderate' },
+          { value: 'heavy', label: 'Heavy' },
+          { value: 'very-heavy', label: 'Very Heavy (soaking through)' },
+        ],
+        required: true,
+        help: 'Overall flow intensity',
+      },
+      {
+        key: 'changesPerDay',
+        label: 'Pad/Tampon Changes',
+        unit: 'per day',
+        type: 'number',
+        min: 0,
+        max: 20,
+        step: 1,
+        required: false,
+        placeholder: '4',
+        help: 'Average number of pad/tampon changes per day during heaviest flow',
+      },
+    ],
+
+    metadata: [
+      {
+        key: 'painLevel',
+        label: 'Dysmenorrhea severity',
+        type: 'select',
+        options: [
+          { value: '0', label: 'None' },
+          { value: '1-3', label: 'Mild (1-3)' },
+          { value: '4-6', label: 'Moderate (4-6)' },
+          { value: '7-10', label: 'Severe (7-10)' },
+        ],
+        help: 'Pain level during menstruation',
+      },
+      {
+        key: 'clots',
+        label: 'Blood clots present?',
+        type: 'boolean',
+        default: false,
+        help: 'Presence of blood clots (common with heavy flow)',
+      },
+      {
+        key: 'flooding',
+        label: 'Flooding/soaking through?',
+        type: 'boolean',
+        default: false,
+        help: 'Soaking through pads/tampons requiring frequent changes',
+      },
+      {
+        key: 'interfereWithActivities',
+        label: 'Interferes with daily activities?',
+        type: 'boolean',
+        default: false,
+        help: 'Does bleeding interfere with work, exercise, or daily life?',
+      },
+    ],
+
+    relatedConditions: ['endometriosis', 'pcos', 'menstrual-disorders', 'ovarian-disease'],
+
+    // Interpretation based on VA rating criteria
+    interpretation: {
+      normal: {
+        cycleLength: [21, 35],
+        flowDuration: [3, 7],
+        label: 'Normal Cycle',
+        color: 'green'
+      },
+      irregular: {
+        cycleLength: [14, 21, 35, 90],
+        label: 'Irregular Cycle',
+        color: 'yellow'
+      },
+      heavy_flow: {
+        flowHeaviness: ['heavy', 'very-heavy'],
+        label: 'Heavy Bleeding',
+        color: 'orange'
+      },
+      prolonged: {
+        flowDuration: [8, 14],
+        label: 'Prolonged Bleeding',
+        color: 'orange'
+      },
+    },
+  },
+
+  PELVIC_PAIN_SCALE: {
+    id: 'pelvic-pain',
+    name: 'Pelvic Pain Assessment',
+    shortName: 'Pelvic Pain',
+    icon: '⚠️',
+    description: 'Track pelvic pain severity for gynecological conditions',
+
+    fields: [
+      {
+        key: 'painSeverity',
+        label: 'Pain Severity',
+        unit: '/10',
+        type: 'number',
+        min: 0,
+        max: 10,
+        step: 1,
+        required: true,
+        placeholder: '5',
+        help: '0 = no pain, 10 = worst pain imaginable',
+      },
+      {
+        key: 'painType',
+        label: 'Pain Type',
+        type: 'select',
+        options: [
+          { value: 'chronic-pelvic', label: 'Chronic pelvic pain' },
+          { value: 'dysmenorrhea', label: 'Menstrual pain (dysmenorrhea)' },
+          { value: 'dyspareunia', label: 'Pain with intercourse (dyspareunia)' },
+          { value: 'ovulation', label: 'Ovulation pain (mittelschmerz)' },
+          { value: 'other', label: 'Other gynecological pain' },
+        ],
+        required: true,
+      },
+    ],
+
+    metadata: [
+      {
+        key: 'painLocation',
+        label: 'Pain location',
+        type: 'select',
+        options: [
+          { value: 'lower-abdomen', label: 'Lower abdomen' },
+          { value: 'pelvic-center', label: 'Central pelvis' },
+          { value: 'left-side', label: 'Left side' },
+          { value: 'right-side', label: 'Right side' },
+          { value: 'deep-pelvis', label: 'Deep pelvic' },
+          { value: 'vaginal', label: 'Vaginal' },
+        ],
+        help: 'Primary location of pain',
+      },
+      {
+        key: 'painDuration',
+        label: 'Duration this episode',
+        type: 'select',
+        options: [
+          { value: 'minutes', label: 'Minutes' },
+          { value: 'hours', label: 'Hours' },
+          { value: 'days', label: 'Days' },
+          { value: 'constant', label: 'Constant/ongoing' },
+        ],
+      },
+      {
+        key: 'relievedBy',
+        label: 'Relieved by',
+        type: 'select',
+        options: [
+          { value: 'nothing', label: 'Nothing helps' },
+          { value: 'rest', label: 'Rest' },
+          { value: 'heat', label: 'Heat/heating pad' },
+          { value: 'medication', label: 'Pain medication' },
+          { value: 'position-change', label: 'Position change' },
+        ],
+      },
+      {
+        key: 'interfereWithFunction',
+        label: 'Interferes with daily function?',
+        type: 'boolean',
+        default: false,
+        help: 'Does pain prevent normal activities or work?',
+      },
+    ],
+
+    relatedConditions: ['endometriosis', 'pelvic-inflammatory-disease', 'ovarian-disease', 'pelvic-prolapse'],
+
+    // Interpretation
+    interpretation: {
+      mild: { painSeverity: [1, 3], label: 'Mild Pain', color: 'yellow' },
+      moderate: { painSeverity: [4, 6], label: 'Moderate Pain', color: 'orange' },
+      severe: { painSeverity: [7, 10], label: 'Severe Pain', color: 'red' },
+    },
+  },
+
+  PROLAPSE_STAGING: {
+    id: 'prolapse-staging',
+    name: 'Pelvic Organ Prolapse Staging',
+    shortName: 'POP Stage',
+    icon: '📊',
+    description: 'Track pelvic organ prolapse severity using POP-Q staging system',
+
+    fields: [
+      {
+        key: 'popStage',
+        label: 'POP-Q Stage',
+        type: 'select',
+        options: [
+          { value: '0', label: 'Stage 0 (No prolapse)' },
+          { value: '1', label: 'Stage I (Mild - above hymen)' },
+          { value: '2', label: 'Stage II (Moderate - at hymen)' },
+          { value: '3', label: 'Stage III (Severe - below hymen)' },
+          { value: '4', label: 'Stage IV (Complete - total eversion)' },
+        ],
+        required: true,
+        help: 'POP-Q staging from medical exam',
+      },
+      {
+        key: 'prolapseType',
+        label: 'Type of Prolapse',
+        type: 'select',
+        options: [
+          { value: 'cystocele', label: 'Cystocele (bladder)' },
+          { value: 'rectocele', label: 'Rectocele (rectum)' },
+          { value: 'uterine', label: 'Uterine prolapse' },
+          { value: 'vault', label: 'Vaginal vault prolapse' },
+          { value: 'enterocele', label: 'Enterocele (small bowel)' },
+          { value: 'multiple', label: 'Multiple types' },
+        ],
+        required: true,
+      },
+    ],
+
+    metadata: [
+      {
+        key: 'assessedBy',
+        label: 'Assessed by',
+        type: 'select',
+        options: [
+          { value: 'gynecologist', label: 'Gynecologist' },
+          { value: 'urogynecologist', label: 'Urogynecologist' },
+          { value: 'pcp', label: 'Primary care provider' },
+          { value: 'self', label: 'Self-assessment (symptoms)' },
+        ],
+      },
+      {
+        key: 'treatmentUsed',
+        label: 'Treatment currently used',
+        type: 'select',
+        options: [
+          { value: 'none', label: 'None' },
+          { value: 'pessary', label: 'Pessary' },
+          { value: 'pelvic-floor-pt', label: 'Pelvic floor physical therapy' },
+          { value: 'surgical', label: 'Surgical repair (post-op)' },
+        ],
+      },
+      {
+        key: 'symptoms',
+        label: 'Current symptoms',
+        type: 'multiselect',
+        options: [
+          { value: 'bulge', label: 'Vaginal bulge sensation' },
+          { value: 'pressure', label: 'Pelvic pressure/heaviness' },
+          { value: 'urinary', label: 'Urinary symptoms' },
+          { value: 'bowel', label: 'Bowel symptoms' },
+          { value: 'pain', label: 'Pain/discomfort' },
+        ],
+      },
+    ],
+
+    relatedConditions: ['pelvic-prolapse'],
+
+    // Interpretation based on staging
+    interpretation: {
+      none: { popStage: ['0'], label: 'No Prolapse', color: 'green' },
+      mild: { popStage: ['1'], label: 'Mild Prolapse', color: 'yellow' },
+      moderate: { popStage: ['2'], label: 'Moderate Prolapse', color: 'orange' },
+      severe: { popStage: ['3', '4'], label: 'Severe Prolapse', color: 'red' },
+    },
+  },
+
   DLCO: {
     id: 'dlco',
     name: 'DLCO (Diffusion Capacity)',
     shortName: 'DLCO',
-    icon: 'ðŸ«',
+    icon: '🫁',
     description: 'Diffusion Capacity of the Lung for Carbon Monoxide - measures gas exchange efficiency',
 
     fields: [
@@ -1119,7 +1422,7 @@ export const formatMeasurementValue = (measurementTypeId, values) => {
 
   switch (measurementTypeId) {
     case 'blood-pressure':
-      return `${values.systolic}/${values.diastolic} mmHg${values.heartRate ? ` â€¢ HR: ${values.heartRate} bpm` : ''}`;
+      return `${values.systolic}/${values.diastolic} mmHg${values.heartRate ? ` • HR: ${values.heartRate} bpm` : ''}`;
     case 'blood-glucose':
       return `${values.glucose} mg/dL`;
     case 'hba1c':
@@ -1127,11 +1430,11 @@ export const formatMeasurementValue = (measurementTypeId, values) => {
     case 'weight':
       if (values.height) {
         const bmi = ((values.weight / (values.height * values.height)) * 703).toFixed(1);
-        return `${values.weight} lbs â€¢ BMI: ${bmi}`;
+        return `${values.weight} lbs • BMI: ${bmi}`;
       }
       return `${values.weight} lbs`;
     case 'oxygen-saturation':
-      return `${values.spo2}%${values.heartRate ? ` â€¢ HR: ${values.heartRate} bpm` : ''}`;
+      return `${values.spo2}%${values.heartRate ? ` • HR: ${values.heartRate} bpm` : ''}`;
 
     case 'peak-flow':
       if (values.peakFlow) {
@@ -1149,7 +1452,7 @@ export const formatMeasurementValue = (measurementTypeId, values) => {
       const joint = arguments[2]?.joint || '';
       const movement = arguments[2]?.movement || '';
       const side = arguments[2]?.side || '';
-      return `${values.measurement}Â° ${movement ? `(${movement})` : ''} ${joint ? `- ${joint}` : ''} ${side ? `[${side}]` : ''}`.trim();
+      return `${values.measurement}° ${movement ? `(${movement})` : ''} ${joint ? `- ${joint}` : ''} ${side ? `[${side}]` : ''}`.trim();
     case 'bristol-scale':
       const bristolLabels = {
         1: 'Type 1 (Hard lumps)',
@@ -1181,6 +1484,37 @@ export const formatMeasurementValue = (measurementTypeId, values) => {
       return `${values.creatinine} mg/dL`;
     case 'bun':
       return `${values.bun} mg/dL`;
+    case 'menstrual-cycle': {
+      const flowLabels = {
+        'spotting': 'Spotting',
+        'light': 'Light',
+        'moderate': 'Moderate',
+        'heavy': 'Heavy',
+        'very-heavy': 'Very Heavy'
+      };
+      return `${values.cycleLength}d cycle, ${values.flowDuration}d duration, ${flowLabels[values.flowHeaviness] || values.flowHeaviness} flow`;
+    }
+    case 'pelvic-pain': {
+      const painTypes = {
+        'chronic-pelvic': 'Chronic pelvic',
+        'dysmenorrhea': 'Menstrual',
+        'dyspareunia': 'Intercourse',
+        'ovulation': 'Ovulation',
+        'other': 'Other'
+      };
+      return `${painTypes[values.painType] || values.painType} pain: ${values.painSeverity}/10`;
+    }
+    case 'prolapse-staging': {
+      const types = {
+        'cystocele': 'Cystocele',
+        'rectocele': 'Rectocele',
+        'uterine': 'Uterine',
+        'vault': 'Vault',
+        'enterocele': 'Enterocele',
+        'multiple': 'Multiple'
+      };
+      return `POP-Q Stage ${values.popStage} - ${types[values.prolapseType] || values.prolapseType}`;
+    }
     default:
       return Object.entries(values)
       .map(([key, value]) => {

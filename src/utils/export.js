@@ -69,6 +69,10 @@ import {
     analyzeVoidingDysfunctionLogs,
     analyzeSphincterImpairmentLogs,
     analyzeErectileDysfunctionLogs,
+    analyzeEndometriosisLogs,
+    analyzeFemaleReproductiveOrgansLogs,
+    analyzePelvicProlapseLogs,
+    analyzeFemaleArousalDisorderLogs,
 } from './ratingCriteria';
 
 // Appointment type labels for export
@@ -378,6 +382,91 @@ export const generatePDF = (dateRange = 'all', options = { includeAppointments: 
           }
         }
 
+        // Phase 4: Gynecological data extraction
+        if (log.gynecologicalData) {
+          const gyneInfo = [];
+          const gd = log.gynecologicalData;
+
+          // Affected organ
+          if (gd.affectedOrgan) {
+            const organMap = {
+              'vulva': 'Vulva/Clitoris (DC 7610)',
+              'vagina': 'Vagina (DC 7611)',
+              'cervix': 'Cervix (DC 7612)',
+              'uterus': 'Uterus (DC 7613)',
+              'fallopian-tube': 'Fallopian Tube (DC 7614)',
+              'ovary': 'Ovary (DC 7615)',
+              'multiple': 'Multiple Organs'
+            };
+            gyneInfo.push(organMap[gd.affectedOrgan] || gd.affectedOrgan);
+          }
+
+          // Pain details
+          if (gd.painType) {
+            const painMap = {
+              'chronic-pelvic': 'Chronic Pelvic Pain',
+              'dysmenorrhea': 'Menstrual Pain',
+              'dyspareunia': 'Pain with Intercourse',
+              'ovulation': 'Ovulation Pain'
+            };
+            gyneInfo.push(painMap[gd.painType] || gd.painType);
+          }
+          if (gd.painLocation) gyneInfo.push(`Location: ${gd.painLocation}`);
+
+          // Endometriosis
+          if (gd.endometriosisDiagnosed) {
+            gyneInfo.push('Endometriosis (DC 7629)');
+            if (gd.laparoscopyConfirmed) gyneInfo.push('Laparoscopy confirmed');
+            if (gd.lesionLocations && gd.lesionLocations.length > 0) {
+              gyneInfo.push(`Lesions: ${gd.lesionLocations.join(', ')}`);
+            }
+            if (gd.bowelSymptoms) gyneInfo.push('Bowel symptoms');
+            if (gd.bladderSymptoms) gyneInfo.push('Bladder symptoms');
+            if (gd.treatmentEffectiveness) {
+              gyneInfo.push(`Treatment: ${gd.treatmentEffectiveness.replace(/-/g, ' ')}`);
+            }
+          }
+
+          // Menstrual/PCOS
+          if (gd.cycleRegularity) gyneInfo.push(`Cycle: ${gd.cycleRegularity}`);
+          if (gd.flowHeaviness && gd.flowHeaviness !== 'moderate') {
+            gyneInfo.push(`Flow: ${gd.flowHeaviness}`);
+          }
+          if (gd.dysmenorrheaSeverity && gd.dysmenorrheaSeverity !== 'none') {
+            gyneInfo.push(`Dysmenorrhea: ${gd.dysmenorrheaSeverity}`);
+          }
+          if (gd.pcosDiagnosed) gyneInfo.push('PCOS (DC 7615)');
+
+          // PID
+          if (gd.pidDiagnosed) {
+            gyneInfo.push('PID (DC 7614)');
+            if (gd.pidType) gyneInfo.push(`Type: ${gd.pidType}`);
+            if (gd.recurrentInfections) gyneInfo.push('Recurrent infections');
+          }
+
+          // Prolapse
+          if (gd.prolapseDiagnosed) {
+            gyneInfo.push('Pelvic Prolapse (DC 7621)');
+            if (gd.prolapseType) gyneInfo.push(`Type: ${gd.prolapseType}`);
+            if (gd.popStage) gyneInfo.push(`Stage: ${gd.popStage}`);
+          }
+
+          // Sexual function
+          if (gd.sexualDysfunction || gd.arousalDifficulty || gd.libidoDecreased) {
+            gyneInfo.push('FSAD (DC 7632)');
+          }
+
+          // Treatment/Impact
+          if (gd.continuousTreatmentRequired) gyneInfo.push('Continuous treatment required');
+          if (gd.interferesDailyActivities) gyneInfo.push('Interferes with activities');
+          if (gd.workMissed) gyneInfo.push('Work missed');
+
+          if (gyneInfo.length > 0) {
+            notes = gyneInfo.join(' | ') + (log.notes ? ` | ${log.notes}` : '');
+          }
+        }
+
+
         // Add medications
             if (linkedMeds.length > 0) {
                 const medInfo = linkedMeds.map(m => `${m.medicationName} ${m.dosage}`).join(', ');
@@ -522,6 +611,11 @@ export const generateCSV = (dateRange = 'all', options = { includeAppointments: 
         'Catheter Use', 'Catheter Type', 'UTI Symptoms', 'Prostate IPSS', 'Prostate Meds',
         'Fecal Incontinence', 'Fecal Incontinence Frequency', 'Bowel Control Methods',
         'Erectile Dysfunction', 'ED Severity', 'Testicular Symptoms', 'GU Activities Affected',
+        // Phase 4: Gynecological fields
+        'Gyne Organ', 'Pain Type (Gyne)', 'Pain Location (Gyne)', 'Endometriosis', 'Laparoscopy Confirmed',
+        'Treatment Effectiveness', 'Cycle Regularity', 'Flow Heaviness', 'Dysmenorrhea Severity',
+        'PCOS Diagnosed', 'PID Diagnosed', 'Prolapse Diagnosed', 'Prolapse Type', 'POP-Q Stage',
+        'Continuous Treatment Required', 'Gyne Work Missed',
         'Notes'
       ];
 
@@ -632,6 +726,23 @@ export const generateCSV = (dateRange = 'all', options = { includeAppointments: 
             log.genitourinaryData?.edSeverity || '',
             log.genitourinaryData?.testicularSymptoms?.join('; ') || '',
             log.genitourinaryData?.activitiesAffected?.join('; ') || '',
+            // Phase 4: Gynecological fields
+            log.gynecologicalData?.affectedOrgan || '',
+            log.gynecologicalData?.painType || '',
+            log.gynecologicalData?.painLocation || '',
+            log.gynecologicalData?.endometriosisDiagnosed ? 'Yes' : '',
+            log.gynecologicalData?.laparoscopyConfirmed ? 'Yes' : '',
+            log.gynecologicalData?.treatmentEffectiveness || '',
+            log.gynecologicalData?.cycleRegularity || '',
+            log.gynecologicalData?.flowHeaviness || '',
+            log.gynecologicalData?.dysmenorrheaSeverity || '',
+            log.gynecologicalData?.pcosDiagnosed ? 'Yes' : '',
+            log.gynecologicalData?.pidDiagnosed ? 'Yes' : '',
+            log.gynecologicalData?.prolapseDiagnosed ? 'Yes' : '',
+            log.gynecologicalData?.prolapseType || '',
+            log.gynecologicalData?.popStage || '',
+            log.gynecologicalData?.continuousTreatmentRequired ? 'Yes' : '',
+            log.gynecologicalData?.workMissed ? 'Yes' : '',
             log.notes || ''
           ];
         });
@@ -1007,6 +1118,16 @@ const analyzeAllConditions = (logs, options = {}) => {
         'urethral-stricture': analyzeVoidingDysfunctionLogs,
         'sphincter-impairment': analyzeSphincterImpairmentLogs,
         'erectile-dysfunction': analyzeErectileDysfunctionLogs,
+        // Phase 4: Gynecological
+        'endometriosis': analyzeEndometriosisLogs,
+        'vulva-clitoris-disease': analyzeFemaleReproductiveOrgansLogs,
+        'vagina-disease': analyzeFemaleReproductiveOrgansLogs,
+        'cervix-disease': analyzeFemaleReproductiveOrgansLogs,
+        'uterus-disease': analyzeFemaleReproductiveOrgansLogs,
+        'fallopian-tube-pid': analyzeFemaleReproductiveOrgansLogs,
+        'ovary-disease': analyzeFemaleReproductiveOrgansLogs,
+        'pelvic-prolapse': analyzePelvicProlapseLogs,
+        'female-sexual-arousal-disorder': analyzeFemaleArousalDisorderLogs,
       };
 
     const analyses = [];

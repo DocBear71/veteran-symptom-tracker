@@ -455,11 +455,7 @@ export const CONDITIONS = {
     name: 'Vision Loss',
     diagnosticCode: '6061-6079',
     cfrReference: '38 CFR 4.75-4.79',
-    symptomIds: [
-      'vision-loss',
-      'peripheral-vision-loss',
-      'night-blindness',
-      'color-vision-changes',
+    symptomIds: [ 'vision-loss', 'peripheral-vision-loss', 'night-blindness', 'color-vision-changes',
     ],
   },
   GLAUCOMA: {
@@ -467,10 +463,7 @@ export const CONDITIONS = {
     name: 'Glaucoma',
     diagnosticCode: '6067',
     cfrReference: '38 CFR 4.76',
-    symptomIds: [
-      'glaucoma-symptoms',
-      'eye-pain',
-      'vision-loss',
+    symptomIds: [ 'glaucoma-symptoms', 'eye-pain', 'vision-loss',
     ],
   },
   DIABETIC_RETINOPATHY: {
@@ -478,10 +471,7 @@ export const CONDITIONS = {
     name: 'Diabetic Retinopathy',
     diagnosticCode: '6066',
     cfrReference: '38 CFR 4.79',
-    symptomIds: [
-      'diabetic-retinopathy',
-      'vision-loss',
-      'floaters',
+    symptomIds: [ 'diabetic-retinopathy', 'vision-loss', 'floaters',
     ],
   },
   MACULAR_DEGENERATION: {
@@ -489,9 +479,7 @@ export const CONDITIONS = {
     name: 'Macular Degeneration',
     diagnosticCode: '6062',
     cfrReference: '38 CFR 4.79',
-    symptomIds: [
-      'macular-degeneration',
-      'vision-loss',
+    symptomIds: [ 'macular-degeneration', 'vision-loss',
     ],
   },
   EYE_CONDITIONS: {
@@ -499,13 +487,7 @@ export const CONDITIONS = {
     name: 'Eye Conditions (General)',
     diagnosticCode: 'Various',
     cfrReference: '38 CFR 4.75-4.84',
-    symptomIds: [
-      'eye-pain',
-      'light-sensitivity',
-      'double-vision',
-      'floaters',
-      'dry-eyes',
-      'eye-strain',
+    symptomIds: [ 'eye-pain', 'light-sensitivity', 'double-vision', 'floaters', 'dry-eyes', 'eye-strain',
     ],
   },
   // Phase 3: Genitourinary Conditions
@@ -514,10 +496,7 @@ export const CONDITIONS = {
     name: 'Kidney Stones (Nephrolithiasis)',
     diagnosticCode: '7508',
     cfrReference: '38 CFR 4.115b',
-    symptomIds: [
-      'kidney-stones',
-      'kidney-pain',
-      'blood-in-urine',
+    symptomIds: [ 'kidney-stones', 'kidney-pain', 'blood-in-urine',
     ],
   },
   CHRONIC_RENAL_DISEASE: {
@@ -525,13 +504,7 @@ export const CONDITIONS = {
     name: 'Chronic Renal Disease (Chronic Kidney Disease)',
     diagnosticCode: '7530',
     cfrReference: '38 CFR 4.115a',
-    symptomIds: [
-      'kidney-infection',
-      'renal-swelling',
-      'renal-fatigue',
-      'renal-nausea',
-      'decreased-urination',
-      'foamy-urine',
+    symptomIds: [ 'kidney-infection', 'renal-swelling', 'renal-fatigue', 'renal-nausea', 'decreased-urination', 'foamy-urine',
     ],
   },
   CHRONIC_CYSTITIS: {
@@ -539,12 +512,7 @@ export const CONDITIONS = {
     name: 'Chronic Cystitis (Bladder Infection/Inflammation)',
     diagnosticCode: '7512',
     cfrReference: '38 CFR 4.115a',
-    symptomIds: [
-      'bladder-pain',
-      'recurrent-uti',
-      'painful-urination',
-      'urinary-frequency',
-      'urinary-urgency',
+    symptomIds: [ 'bladder-pain', 'recurrent-uti', 'painful-urination', 'urinary-frequency', 'urinary-urgency',
     ],
   },
   NEUROGENIC_BLADDER: {
@@ -552,10 +520,7 @@ export const CONDITIONS = {
     name: 'Neurogenic Bladder',
     diagnosticCode: '7542',
     cfrReference: '38 CFR 4.115a',
-    symptomIds: [
-      'urinary-incontinence',
-      'urine-retention',
-      'incomplete-emptying',
+    symptomIds: [ 'urinary-incontinence', 'urine-retention', 'incomplete-emptying',
     ],
   },
   PROSTATE_CONDITIONS: {
@@ -563,12 +528,7 @@ export const CONDITIONS = {
     name: 'Prostate Conditions (BPH, Prostatitis)',
     diagnosticCode: '7527',
     cfrReference: '38 CFR 4.115a',
-    symptomIds: [
-      'prostate-symptoms',
-      'prostate-pain',
-      'weak-stream',
-      'hesitancy',
-      'nocturia',
+    symptomIds: [ 'prostate-symptoms', 'prostate-pain', 'weak-stream', 'hesitancy', 'nocturia',
     ],
   },
   URETHRAL_STRICTURE: {
@@ -576,10 +536,7 @@ export const CONDITIONS = {
     name: 'Urethral Stricture',
     diagnosticCode: '7518',
     cfrReference: '38 CFR 4.115a',
-    symptomIds: [
-      'weak-stream',
-      'hesitancy',
-      'incomplete-emptying',
+    symptomIds: [ 'weak-stream', 'hesitancy', 'incomplete-emptying',
     ],
   },
   SPHINCTER_IMPAIRMENT: {
@@ -587,10 +544,7 @@ export const CONDITIONS = {
     name: 'Sphincter Impairment (Fecal Incontinence)',
     diagnosticCode: '7332',
     cfrReference: '38 CFR 4.114',
-    symptomIds: [
-      'fecal-incontinence',
-      'bowel-urgency',
-      'bowel-frequency',
+    symptomIds: [ 'fecal-incontinence', 'bowel-urgency', 'bowel-frequency',
     ],
   },
   ERECTILE_DYSFUNCTION: {
@@ -598,8 +552,115 @@ export const CONDITIONS = {
     name: 'Erectile Dysfunction',
     diagnosticCode: '7522',
     cfrReference: '38 CFR 4.115b',
+    symptomIds: [ 'erectile-dysfunction',
+    ],
+  },// Phase 4: Gynecological Conditions
+  ENDOMETRIOSIS: {
+    id: 'endometriosis',
+    name: 'Endometriosis',
+    diagnosticCode: '7629',
+    cfrReference: '38 CFR 4.116',
     symptomIds: [
-      'erectile-dysfunction',
+      'endometriosis-pain',
+      'endometriosis-bowel',
+      'endometriosis-bladder',
+      'chronic-pelvic-pain',
+    ],
+  },
+  VULVA_CLITORIS_DISEASE: {
+    id: 'vulva-clitoris-disease',
+    name: 'Vulva or Clitoris Disease/Injury',
+    diagnosticCode: '7610',
+    cfrReference: '38 CFR 4.116',
+    symptomIds: [
+      'vulvovaginitis',
+      'vaginal-irritation',
+    ],
+  },
+  VAGINA_DISEASE: {
+    id: 'vagina-disease',
+    name: 'Vagina Disease/Injury',
+    diagnosticCode: '7611',
+    cfrReference: '38 CFR 4.116',
+    symptomIds: [
+      'vaginal-irritation',
+      'abnormal-discharge',
+    ],
+  },
+  CERVIX_DISEASE: {
+    id: 'cervix-disease',
+    name: 'Cervix Disease/Injury',
+    diagnosticCode: '7612',
+    cfrReference: '38 CFR 4.116',
+    symptomIds: [
+      'cervicitis',
+      'abnormal-discharge',
+    ],
+  },
+  UTERUS_DISEASE: {
+    id: 'uterus-disease',
+    name: 'Uterus Disease/Injury/Adhesions',
+    diagnosticCode: '7613',
+    cfrReference: '38 CFR 4.116',
+    symptomIds: [
+      'uterine-cramping',
+      'chronic-pelvic-pain',
+      'lower-abdominal-pain',
+    ],
+  },
+  FALLOPIAN_TUBE_PID: {
+    id: 'fallopian-tube-pid',
+    name: 'Fallopian Tube Disease/PID',
+    diagnosticCode: '7614',
+    cfrReference: '38 CFR 4.116',
+    symptomIds: [
+      'pid-symptoms',
+      'abnormal-discharge',
+      'chronic-pelvic-pain',
+      'lower-abdominal-pain',
+    ],
+  },
+  OVARY_DISEASE: {
+    id: 'ovary-disease',
+    name: 'Ovary Disease (includes PCOS, Dysmenorrhea)',
+    diagnosticCode: '7615',
+    cfrReference: '38 CFR 4.116',
+    symptomIds: [
+      'ovarian-cysts',
+      'polycystic-ovaries',
+      'ovulation-pain',
+      'anovulation',
+      'painful-periods',
+      'heavy-menstrual-bleeding',
+      'irregular-periods',
+      'absent-periods',
+      'hirsutism',
+      'hormonal-acne',
+      'pcos-weight-changes',
+    ],
+  },
+  PELVIC_PROLAPSE: {
+    id: 'pelvic-prolapse',
+    name: 'Pelvic Organ Prolapse',
+    diagnosticCode: '7621',
+    cfrReference: '38 CFR 4.116',
+    symptomIds: [
+      'pelvic-pressure',
+      'vaginal-bulge',
+      'incomplete-bladder-emptying',
+      'bowel-dysfunction-prolapse',
+    ],
+  },
+  FEMALE_SEXUAL_AROUSAL_DISORDER: {
+    id: 'female-sexual-arousal-disorder',
+    name: 'Female Sexual Arousal Disorder (FSAD)',
+    diagnosticCode: '7632',
+    cfrReference: '38 CFR 4.116',
+    symptomIds: [
+      'sexual-dysfunction',
+      'decreased-libido',
+      'arousal-difficulty',
+      'dyspareunia',
     ],
   },
 };
@@ -6376,6 +6437,955 @@ export const FIBROMYALGIA_CRITERIA = {
     },
   },
 };
+
+// ============================================
+// PHASE 2: VISION LOSS CRITERIA (DC 6061-6079)
+// ============================================
+
+export const VISION_LOSS_CRITERIA = {
+  condition: 'Vision Loss',
+  diagnosticCode: '6061-6079',
+  ratings: [
+    {
+      percent: 100,
+      summary: 'Blindness in both eyes or near-total vision loss',
+      criteriaDescription: [
+        'No light perception in both eyes (NLP bilateral), OR',
+        'Visual acuity 5/200 or less in better eye with concentric contraction of visual field to 5 degrees or less'
+      ],
+      evidenceNeeded: [
+        'Ophthalmology examination results',
+        'Visual acuity measurements',
+        'Visual field testing results',
+        'Documentation of cause (if service-connected)'
+      ]
+    },
+    {
+      percent: 90,
+      summary: 'Severe vision impairment',
+      criteriaDescription: [
+        'Visual acuity 5/200 in better eye, with 5/200 or less in poorer eye'
+      ],
+      evidenceNeeded: [
+        'Bilateral visual acuity measurements',
+        'Ophthalmology examination'
+      ]
+    },
+    {
+      percent: 70,
+      summary: 'Marked vision impairment',
+      criteriaDescription: [
+        'Visual acuity 10/200 in better eye, OR',
+        'Concentric contraction of visual field to 5 degrees in better eye'
+      ],
+      evidenceNeeded: [
+        'Visual acuity testing',
+        'Visual field examination (perimetry)',
+        'Documentation of better eye measurement'
+      ]
+    },
+    {
+      percent: 60,
+      summary: 'Moderate to severe vision impairment',
+      criteriaDescription: [
+        'Visual acuity 15/200 in better eye, OR',
+        'Concentric contraction of visual field to 10 degrees in better eye'
+      ],
+      evidenceNeeded: [
+        'Visual acuity measurements',
+        'Visual field testing',
+        'Ophthalmology reports'
+      ]
+    },
+    {
+      percent: 50,
+      summary: 'Moderate vision impairment',
+      criteriaDescription: [
+        'Visual acuity 20/200 in better eye, OR',
+        'Concentric contraction of visual field to 15 degrees in better eye'
+      ],
+      evidenceNeeded: [
+        'Corrected visual acuity measurements',
+        'Visual field examination results'
+      ]
+    },
+    {
+      percent: 40,
+      summary: 'Mild to moderate vision impairment',
+      criteriaDescription: [
+        'Visual acuity 20/100 in better eye'
+      ],
+      evidenceNeeded: [
+        'Visual acuity testing with best correction',
+        'Ophthalmology examination'
+      ]
+    },
+    {
+      percent: 30,
+      summary: 'Mild vision impairment',
+      criteriaDescription: [
+        'Visual acuity 20/70 in better eye, OR',
+        'Marked constriction of visual fields'
+      ],
+      evidenceNeeded: [
+        'Visual acuity measurements',
+        'Visual field testing if field loss present'
+      ]
+    },
+    {
+      percent: 10,
+      summary: 'Minimal vision impairment',
+      criteriaDescription: [
+        'Visual acuity 20/40 in better eye, OR',
+        'Moderate constriction of visual fields'
+      ],
+      evidenceNeeded: [
+        'Visual acuity testing',
+        'Documentation of field defects if applicable'
+      ]
+    }
+  ],
+  definitions: {
+    'visual acuity': 'Clarity or sharpness of vision, measured using Snellen chart (e.g., 20/20, 20/40)',
+    'better eye': 'The eye with better visual acuity; VA ratings are based on the better eye',
+    'concentric contraction': 'Progressive narrowing of the visual field from the periphery',
+    'visual field': 'The entire area that can be seen when the eye is directed forward',
+    'CF': 'Count Fingers - ability to count fingers at a specified distance',
+    'HM': 'Hand Motion - ability to detect hand movement',
+    'LP': 'Light Perception - ability to perceive light only',
+    'NLP': 'No Light Perception - complete blindness'
+  }
+};
+
+// ============================================
+// PHASE 2: GLAUCOMA CRITERIA (DC 6067)
+// ============================================
+
+export const GLAUCOMA_CRITERIA = {
+  condition: 'Glaucoma',
+  diagnosticCode: '6067',
+  ratings: [
+    {
+      percent: 100,
+      summary: 'Rate based on resulting visual impairment',
+      criteriaDescription: [
+        'Bilateral glaucoma rated under vision loss criteria (DC 6061-6079)',
+        'Use visual acuity and visual field measurements'
+      ],
+      evidenceNeeded: [
+        'Glaucoma diagnosis from ophthalmologist',
+        'Visual acuity measurements',
+        'Visual field testing results',
+        'Intraocular pressure readings',
+        'Optic nerve examination findings'
+      ]
+    },
+    {
+      percent: 30,
+      summary: 'Unilateral glaucoma with field defect and requiring medication',
+      criteriaDescription: [
+        'Unilateral (one eye) glaucoma with:',
+        'Characteristic visual field defect, AND',
+        'Either persistent increased intraocular pressure with optic nerve damage, OR',
+        'Requires sustained medication to control intraocular pressure'
+      ],
+      evidenceNeeded: [
+        'Diagnosis of glaucoma in one eye',
+        'Visual field test showing defect',
+        'IOP measurements',
+        'Current medication regimen',
+        'Optic nerve assessment'
+      ]
+    },
+    {
+      percent: 10,
+      summary: 'Unilateral glaucoma controlled by medication',
+      criteriaDescription: [
+        'Unilateral glaucoma controlled by medication',
+        'Without visual field defect',
+        'Without optic nerve damage'
+      ],
+      evidenceNeeded: [
+        'Glaucoma diagnosis',
+        'Current medications',
+        'IOP readings showing control',
+        'Visual field testing (normal)',
+        'Optic nerve examination (stable)'
+      ]
+    }
+  ],
+  definitions: {
+    'glaucoma': 'Group of eye conditions that damage the optic nerve, often due to increased intraocular pressure',
+    'IOP': 'Intraocular Pressure - fluid pressure inside the eye',
+    'visual field defect': 'Areas of vision loss or blind spots characteristic of glaucoma',
+    'optic nerve damage': 'Damage to the nerve that transmits visual information from the eye to the brain',
+    'unilateral': 'Affecting one eye only',
+    'bilateral': 'Affecting both eyes'
+  }
+};
+
+// ============================================
+// PHASE 2: DIABETIC RETINOPATHY CRITERIA (DC 6066)
+// ============================================
+
+export const DIABETIC_RETINOPATHY_CRITERIA = {
+  condition: 'Diabetic Retinopathy',
+  diagnosticCode: '6066',
+  note: 'Rated based on resulting visual acuity under DC 6061-6079',
+  ratings: [
+    {
+      percent: 'variable',
+      summary: 'Rate based on visual acuity',
+      criteriaDescription: [
+        'Diabetic retinopathy is rated under vision loss criteria',
+        'Use visual acuity measurements in better eye',
+        'Consider macular edema impact on central vision',
+        'Proliferative changes may cause more rapid progression'
+      ],
+      evidenceNeeded: [
+        'Diagnosis of diabetic retinopathy',
+        'Type (non-proliferative vs proliferative)',
+        'Visual acuity measurements',
+        'Dilated fundus examination results',
+        'OCT (Optical Coherence Tomography) if available',
+        'Fluorescein angiography results if performed',
+        'Treatment history (laser photocoagulation, anti-VEGF injections)',
+        'Relationship to diabetes control (HbA1c levels)'
+      ]
+    }
+  ],
+  definitions: {
+    'diabetic retinopathy': 'Diabetes complication affecting blood vessels in the retina',
+    'proliferative': 'Advanced stage with abnormal blood vessel growth',
+    'non-proliferative': 'Earlier stage with damaged blood vessels but no new growth',
+    'macular edema': 'Swelling in the central part of the retina affecting central vision',
+    'OCT': 'Optical Coherence Tomography - imaging test showing retinal layers',
+    'anti-VEGF': 'Anti-Vascular Endothelial Growth Factor injections to reduce abnormal vessel growth',
+    'photocoagulation': 'Laser treatment to seal leaking blood vessels'
+  }
+};
+
+// ============================================
+// PHASE 2: MACULAR DEGENERATION CRITERIA (DC 6062)
+// ============================================
+
+export const MACULAR_DEGENERATION_CRITERIA = {
+  condition: 'Macular Degeneration',
+  diagnosticCode: '6062',
+  note: 'Rated based on resulting visual acuity under DC 6061-6079',
+  ratings: [
+    {
+      percent: 'variable',
+      summary: 'Rate based on visual acuity',
+      criteriaDescription: [
+        'Macular degeneration is rated under vision loss criteria',
+        'Use visual acuity measurements in better eye',
+        'Central scotoma (blind spot) affects reading and detail vision',
+        'Peripheral vision typically preserved'
+      ],
+      evidenceNeeded: [
+        'Diagnosis of macular degeneration',
+        'Type (dry AMD vs wet AMD)',
+        'Visual acuity measurements',
+        'Amsler grid test results',
+        'OCT imaging',
+        'Fluorescein angiography if performed',
+        'Central scotoma documentation',
+        'Treatment records (anti-VEGF injections for wet AMD)',
+        'Progression documentation'
+      ]
+    }
+  ],
+  definitions: {
+    'macular degeneration': 'Age-related disease affecting the macula (central retina)',
+    'AMD': 'Age-Related Macular Degeneration',
+    'dry AMD': 'More common form with gradual breakdown of macular tissue',
+    'wet AMD': 'Less common but more severe form with abnormal blood vessel growth',
+    'macula': 'Central part of retina responsible for sharp, detailed central vision',
+    'central scotoma': 'Blind spot or area of vision loss in the center of visual field',
+    'Amsler grid': 'Grid pattern test to detect central vision distortions'
+  }
+};
+
+// ============================================
+// ============================================
+// PHASE 3: GENITOURINARY CONDITIONS
+// ============================================
+
+// DC 7508: Nephrolithiasis/Ureterolithiasis (Kidney Stones)
+export const KIDNEY_STONES_CRITERIA = {
+  diagnosticCode: '7508',
+  condition: 'Nephrolithiasis/Ureterolithiasis/Nephrocalcinosis (Kidney Stones)',
+  cfrReference: '38 CFR 4.115b, Diagnostic Code 7508',
+
+  note: 'Rating based on stone episodes requiring invasive or non-invasive procedures, or rate as hydronephrosis if kidney function is impaired.',
+
+  ratings: [
+    {
+      percent: 30,
+      summary: 'Recurrent stone formation requiring invasive or non-invasive procedures more than 2 times per year',
+      criteriaDescription: [
+        'Stone formation documented on imaging',
+        'Requires procedures (lithotripsy, ureteroscopy, stent placement) more than twice yearly',
+        'Recurrent episodes despite treatment',
+      ],
+      evidenceNeeded: [
+        'Imaging reports showing stones (CT, ultrasound, X-ray)',
+        'Procedure records (lithotripsy, ureteroscopy, stent placement)',
+        'Documentation of frequency (>2 procedures per year)',
+        'Emergency room visits for renal colic',
+        'Urology treatment records',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Recurrent stone formation requiring procedures 1-2 times per year',
+      criteriaDescription: [
+        'Stone formation requiring 1-2 procedures annually',
+        'May include lithotripsy, ureteroscopy, or stent placement',
+        'Documented history of kidney stones',
+      ],
+      evidenceNeeded: [
+        'Imaging showing stone formation',
+        'Procedure records',
+        'Treatment history from urology',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'History of stones but no recent procedures, or controlled with conservative management',
+      criteriaDescription: [
+        'History of kidney stones',
+        'Controlled with diet, hydration, medication',
+        'No procedures required in past year',
+      ],
+      evidenceNeeded: [
+        'Documentation of stone history',
+        'Current management plan',
+      ],
+    },
+  ],
+
+  definitions: {
+    'Invasive procedures': 'Ureteroscopy, percutaneous nephrolithotomy, open surgery',
+    'Non-invasive procedures': 'ESWL (lithotripsy), shock wave therapy',
+    'Recurrent stone formation': 'New stones forming despite preventive measures',
+    'Renal colic': 'Severe flank pain from stone passage',
+  },
+
+  disclaimer: 'If kidney function is impaired (elevated creatinine, decreased eGFR, hydronephrosis), rate under DC 7530 (Chronic Renal Disease) instead. Service connection requires evidence that stones are related to military service.',
+};
+// DC 7530: Chronic Renal Disease
+export const CHRONIC_RENAL_DISEASE_CRITERIA = {
+  diagnosticCode: '7530',
+  condition: 'Chronic Renal Disease',
+  cfrReference: '38 CFR 4.115a, Diagnostic Code 7530',
+
+  note: 'Rated based on renal dysfunction. Requires regular dialysis for 100% rating.',
+
+  ratings: [
+    {
+      percent: 100,
+      summary: 'Requiring regular dialysis',
+      criteriaDescription: [
+        'End-stage renal disease (ESRD)',
+        'Hemodialysis or peritoneal dialysis required',
+        'Typically 3+ times per week for hemodialysis',
+        'eGFR typically <15 mL/min/1.73m²',
+      ],
+      evidenceNeeded: [
+        'Dialysis center records showing regular treatment',
+        'Vascular access documentation (fistula, graft, catheter)',
+        'Lab values showing kidney failure',
+        'Nephrology treatment records',
+        'Documentation of dialysis frequency and duration',
+      ],
+    },
+    {
+      percent: 80,
+      summary: 'eGFR 15-20 mL/min/1.73m², stage 4-5 CKD',
+      criteriaDescription: [
+        'Severe kidney disease',
+        'eGFR 15-20 mL/min/1.73m² sustained over time',
+        'May be approaching dialysis',
+        'Significant metabolic complications',
+      ],
+      evidenceNeeded: [
+        'Serial lab values showing eGFR 15-20',
+        'Multiple readings over evaluation period',
+        'Nephrology records',
+        'Documentation of complications (anemia, bone disease, etc.)',
+      ],
+    },
+    {
+      percent: 60,
+      summary: 'eGFR 20-30 mL/min/1.73m², stage 4 CKD',
+      criteriaDescription: [
+        'Severe kidney disease',
+        'eGFR 20-30 mL/min/1.73m²',
+        'Significant impairment of kidney function',
+      ],
+      evidenceNeeded: [
+        'Lab values showing eGFR in range',
+        'Creatinine levels elevated (typically >3.0 mg/dL)',
+        'Treatment records',
+      ],
+    },
+    {
+      percent: 40,
+      summary: 'eGFR 30-40 mL/min/1.73m², stage 3b CKD',
+      criteriaDescription: [
+        'Moderate to severe kidney disease',
+        'eGFR 30-40 mL/min/1.73m²',
+        'Persistent kidney impairment',
+      ],
+      evidenceNeeded: [
+        'Serial eGFR measurements',
+        'Elevated creatinine',
+        'Nephrology evaluation',
+      ],
+    },
+    {
+      percent: 20,
+      summary: 'eGFR 40-60 mL/min/1.73m², stage 3a CKD',
+      criteriaDescription: [
+        'Moderate kidney disease',
+        'eGFR 40-60 mL/min/1.73m²',
+        'Mild to moderate impairment',
+      ],
+      evidenceNeeded: [
+        'Lab values showing reduced kidney function',
+        'Multiple readings confirming chronic nature',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'eGFR >60 or minimal impairment',
+      criteriaDescription: [
+        'Kidney function adequate',
+        'eGFR >60 mL/min/1.73m²',
+        'Stage 1-2 CKD or normal function',
+      ],
+      evidenceNeeded: [],
+    },
+  ],
+
+  definitions: {
+    'eGFR': 'Estimated Glomerular Filtration Rate - measures how well kidneys filter blood',
+    'ESRD': 'End-Stage Renal Disease - kidney failure requiring dialysis or transplant',
+    'Hemodialysis': 'Blood filtered through external machine, typically 3x/week, 3-4 hours per session',
+    'Peritoneal dialysis': 'Dialysis using abdominal lining, can be done at home daily',
+    'CKD stages': 'Stage 1-2: eGFR >60, Stage 3a: 45-60, Stage 3b: 30-45, Stage 4: 15-30, Stage 5: <15',
+  },
+
+  disclaimer: 'Chronic kidney disease must be documented as service-connected. Ratings based on sustained kidney function measurements over time, not single readings. Kidney transplant recipients rated separately under DC 7531.',
+};
+// VOIDING DYSFUNCTION CRITERIA (38 CFR 4.115a)
+// Used by: DC 7512 (Chronic Cystitis), DC 7527 (Prostate), DC 7542 (Neurogenic Bladder), DC 7518 (Urethral Stricture)
+export const VOIDING_DYSFUNCTION_CRITERIA = {
+  diagnosticCode: '7512/7527/7542/7518',
+  condition: 'Voiding Dysfunction (Urinary Frequency, Incontinence, or Obstruction)',
+  cfrReference: '38 CFR 4.115a, Rating Formula for Voiding Dysfunction',
+
+  note: 'Multiple conditions rated under voiding dysfunction. Choose highest rating from: Urine Leakage, Frequency, or Obstructed Voiding.',
+
+  // CONTINUAL URINE LEAKAGE / URINARY INCONTINENCE
+  ratingsIncontinence: [
+    {
+      percent: 60,
+      summary: 'Requiring appliance or absorbent materials changed more than 4 times per day',
+      criteriaDescription: [
+        'Continuous or very frequent urine leakage',
+        'Requires protective garments/pads/diapers',
+        'Changed more than 4 times daily',
+        'May require urinary appliance or catheter system',
+      ],
+      evidenceNeeded: [
+        'Log of pad/diaper changes showing >4 per day',
+        'Medical documentation of incontinence severity',
+        'Prescription records for incontinence supplies',
+        'Urodynamic studies if available',
+        'Treatment attempts (medications, procedures)',
+      ],
+    },
+    {
+      percent: 40,
+      summary: 'Requiring absorbent materials changed 2-4 times per day',
+      criteriaDescription: [
+        'Frequent urine leakage',
+        'Requires protective garments',
+        'Changed 2-4 times daily',
+      ],
+      evidenceNeeded: [
+        'Documentation of 2-4 pad changes per day',
+        'Medical records confirming incontinence',
+        'Prescription for incontinence products',
+      ],
+    },
+    {
+      percent: 20,
+      summary: 'Requiring absorbent materials changed less than 2 times per day',
+      criteriaDescription: [
+        'Moderate urine leakage',
+        'Requires protective garments',
+        'Changed 1-2 times daily',
+      ],
+      evidenceNeeded: [
+        'Documentation of incontinence',
+        'Evidence of protective garment use',
+      ],
+    },
+  ],
+
+  // URINARY FREQUENCY
+  ratingsFrequency: [
+    {
+      percent: 40,
+      summary: 'Daytime voiding interval less than 1 hour, OR awakening to void 5+ times per night',
+      criteriaDescription: [
+        'Severe urinary frequency',
+        'Voiding more than hourly during day, OR',
+        'Waking 5 or more times per night to urinate (nocturia)',
+      ],
+      evidenceNeeded: [
+        'Voiding diary showing frequency patterns',
+        'Documentation over multiple days',
+        'Medical evaluation confirming frequency',
+      ],
+    },
+    {
+      percent: 20,
+      summary: 'Daytime voiding interval 1-2 hours, OR awakening 3-4 times per night',
+      criteriaDescription: [
+        'Frequent urination',
+        'Voiding every 1-2 hours during day, OR',
+        'Waking 3-4 times nightly',
+      ],
+      evidenceNeeded: [
+        'Voiding diary',
+        'Medical documentation of frequency',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Daytime voiding interval 2-3 hours, OR awakening 2 times per night',
+      criteriaDescription: [
+        'Moderately increased frequency',
+        'Voiding every 2-3 hours during day, OR',
+        'Waking twice nightly',
+      ],
+      evidenceNeeded: [
+        'Documentation of voiding patterns',
+      ],
+    },
+  ],
+
+  // OBSTRUCTED VOIDING
+  ratingsObstruction: [
+    {
+      percent: 30,
+      summary: 'Urinary retention requiring intermittent or continuous catheterization',
+      criteriaDescription: [
+        'Unable to empty bladder naturally',
+        'Requires self-catheterization (intermittent), OR',
+        'Indwelling catheter (Foley), OR',
+        'Suprapubic catheter',
+      ],
+      evidenceNeeded: [
+        'Catheterization records',
+        'Documentation of catheterization frequency (if intermittent)',
+        'Post-void residual measurements showing retention',
+        'Urology treatment records',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Marked obstructive symptoms with complications',
+      criteriaDescription: [
+        'Hesitancy, weak stream, incomplete emptying',
+        'PLUS one or more of:',
+        '- Post-void residual >150cc',
+        '- Markedly decreased peak flow rate (<10cc/sec)',
+        '- Recurrent UTIs secondary to obstruction',
+        '- Stricture requiring dilation every 2-3 months',
+      ],
+      evidenceNeeded: [
+        'Post-void residual measurements',
+        'Uroflowmetry results',
+        'UTI treatment records',
+        'Stricture dilation procedure records',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'Obstructive symptoms requiring dilation 1-2 times per year',
+      criteriaDescription: [
+        'Mild obstruction',
+        'Occasional stricture dilation needed',
+      ],
+      evidenceNeeded: [
+        'Procedure records for dilations',
+      ],
+    },
+  ],
+
+  definitions: {
+    'Voiding dysfunction': 'Difficulty with bladder emptying or storage',
+    'Post-void residual': 'Urine remaining in bladder after urination (normal <50cc)',
+    'Intermittent catheterization': 'Self-catheterization multiple times daily',
+    'Indwelling catheter': 'Foley catheter left in place continuously',
+    'Suprapubic catheter': 'Catheter inserted through abdominal wall',
+    'Uroflowmetry': 'Test measuring urine flow rate',
+    'Nocturia': 'Waking at night to urinate',
+  },
+
+  disclaimer: 'Rate under the highest applicable category: incontinence, frequency, or obstruction. Do not pyramid ratings from multiple categories. Service connection must be established.',
+};
+// DC 7332: Rectum and Anus, Impairment of Sphincter Control (Fecal Incontinence)
+export const SPHINCTER_IMPAIRMENT_CRITERIA = {
+  diagnosticCode: '7332',
+  condition: 'Rectum and Anus, Impairment of Sphincter Control (Fecal Incontinence)',
+  cfrReference: '38 CFR 4.114, Diagnostic Code 7332',
+
+  note: 'Rating based on frequency and severity of fecal incontinence episodes.',
+
+  ratings: [
+    {
+      percent: 100,
+      summary: 'Complete loss of sphincter control',
+      criteriaDescription: [
+        'Continuous fecal incontinence',
+        'Unable to control bowel movements',
+        'Constant soiling',
+        'Requires protective garments at all times',
+      ],
+      evidenceNeeded: [
+        'Medical documentation of complete incontinence',
+        'Gastroenterology/colorectal surgery evaluation',
+        'Anorectal manometry if performed',
+        'Treatment records',
+        'Documentation of protective garment use',
+      ],
+    },
+    {
+      percent: 60,
+      summary: 'Frequent and essentially complete loss of control',
+      criteriaDescription: [
+        'Multiple daily episodes of fecal incontinence',
+        'Inability to delay defecation',
+        'Significant impairment of sphincter function',
+      ],
+      evidenceNeeded: [
+        'Incontinence diary showing daily episodes',
+        'Medical evaluation confirming severity',
+        'Treatment attempts documented',
+      ],
+    },
+    {
+      percent: 30,
+      summary: 'Occasional loss of sphincter control',
+      criteriaDescription: [
+        'Periodic fecal incontinence episodes',
+        'May occur weekly or monthly',
+        'Some sphincter control maintained',
+      ],
+      evidenceNeeded: [
+        'Documentation of incontinence frequency',
+        'Medical records',
+        'Evidence of impact on daily activities',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Mild impairment',
+      criteriaDescription: [
+        'Rare loss of bowel control',
+        'Gas incontinence or occasional soiling',
+        'Minimal functional impairment',
+      ],
+      evidenceNeeded: [
+        'Medical documentation',
+        'Description of symptoms',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'No significant impairment',
+      criteriaDescription: [
+        'Normal sphincter control',
+        'No episodes of incontinence',
+      ],
+      evidenceNeeded: [],
+    },
+  ],
+
+  definitions: {
+    'Fecal incontinence': 'Involuntary loss of bowel control',
+    'Sphincter': 'Muscle ring controlling bowel movements',
+    'Anorectal manometry': 'Test measuring sphincter muscle strength',
+    'Urgency': 'Sudden, strong urge to defecate with limited time to reach toilet',
+  },
+
+  disclaimer: 'Service connection must be established. May result from trauma, surgery, neurological conditions, or other service-connected causes. Rate as diarrhea (DC 7319) if episodes are due to IBS and not sphincter impairment.',
+};
+// DC 7522: Erectile Dysfunction
+export const ERECTILE_DYSFUNCTION_CRITERIA = {
+  diagnosticCode: '7522',
+  condition: 'Erectile Dysfunction, with or without penile deformity',
+  cfrReference: '38 CFR 4.115b, Diagnostic Code 7522',
+
+  note: 'Rated at 0% only. No compensation for impairment itself, but establishes service connection for potential special monthly compensation (SMC) eligibility under certain circumstances.',
+
+  ratings: [
+    {
+      percent: 0,
+      summary: 'Erectile dysfunction present',
+      criteriaDescription: [
+        'Documented erectile dysfunction',
+        'May be mild, moderate, or severe',
+        'With or without penile deformity',
+      ],
+      evidenceNeeded: [
+        'Medical diagnosis of erectile dysfunction',
+        'Urology evaluation',
+        'Documentation of severity and impact',
+        'Treatment attempts if any (medications, devices, etc.)',
+        'Evidence linking to service-connected condition',
+      ],
+    },
+  ],
+
+  definitions: {
+    'Erectile dysfunction': 'Inability to achieve or maintain erection sufficient for sexual intercourse',
+    'SMC': 'Special Monthly Compensation - additional compensation for certain severe disabilities',
+  },
+
+  disclaimer: 'While rated at 0%, service connection for ED is important for: (1) potential SMC eligibility in specific circumstances, (2) establishing nexus to other service-connected conditions, (3) potential for increased rating if additional conditions develop. ED may be secondary to diabetes, hypertension, PTSD, medications, or other service-connected conditions.',
+};
+
+// ============================================
+// PHASE 4: GYNECOLOGICAL CONDITIONS (DC 7610-7632)
+// ============================================
+
+export const ENDOMETRIOSIS_CRITERIA = {
+  diagnosticCode: '7629',
+  condition: 'Endometriosis',
+  cfrReference: '38 CFR 4.116, Diagnostic Code 7629',
+
+  note: 'Diagnosis must be substantiated by laparoscopy. Ratings based on symptom severity and organ involvement.',
+
+  ratings: [
+    {
+      percent: 50,
+      summary: 'Lesions involving bowel or bladder with uncontrolled symptoms',
+      criteriaDescription: [
+        'Lesions involving bowel or bladder confirmed by laparoscopy',
+        'Pelvic pain or heavy or irregular bleeding not controlled by treatment',
+        'Bowel or bladder symptoms present',
+      ],
+      evidenceNeeded: [
+        'Laparoscopy report confirming endometriosis',
+        'Documentation of bowel involvement (e.g., painful bowel movements, rectal bleeding)',
+        'Documentation of bladder involvement (e.g., painful urination, hematuria)',
+        'Treatment records showing ongoing symptoms despite treatment',
+        'Gynecology records documenting symptom severity',
+        'Evidence that symptoms are not controlled by hormonal therapy, surgery, or pain management',
+      ],
+    },
+    {
+      percent: 30,
+      summary: 'Pelvic pain or heavy/irregular bleeding not controlled by treatment',
+      criteriaDescription: [
+        'Pelvic pain or heavy or irregular bleeding',
+        'Symptoms not controlled by treatment',
+        'May or may not involve bowel/bladder',
+      ],
+      evidenceNeeded: [
+        'Laparoscopy report confirming endometriosis',
+        'Documentation of chronic pelvic pain',
+        'Documentation of menorrhagia (heavy bleeding) or irregular bleeding',
+        'Treatment records showing persistent symptoms',
+        'Gynecology records documenting failed treatment attempts',
+        'Pain severity documentation (pain scales, interference with daily activities)',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Pelvic pain or heavy/irregular bleeding requiring continuous treatment',
+      criteriaDescription: [
+        'Pelvic pain or heavy or irregular bleeding',
+        'Symptoms require continuous treatment for control',
+        'Symptoms are controlled with treatment',
+      ],
+      evidenceNeeded: [
+        'Laparoscopy report confirming endometriosis',
+        'Documentation of ongoing treatment (hormonal therapy, pain medication)',
+        'Records showing symptoms are controlled with treatment',
+        'Prescription records for continuous medications',
+        'Gynecology follow-up records',
+      ],
+    },
+  ],
+
+  definitions: {
+    'Endometriosis': 'Condition where tissue similar to uterine lining grows outside the uterus, causing pain and bleeding',
+    'Laparoscopy': 'Surgical procedure using a camera to visualize inside the abdomen - required for VA diagnosis',
+    'Menorrhagia': 'Abnormally heavy or prolonged menstrual bleeding',
+    'Dysmenorrhea': 'Painful menstruation',
+    'Dyspareunia': 'Painful sexual intercourse',
+    'Pelvic adhesions': 'Scar tissue that can form from endometriosis, causing organs to stick together',
+  },
+
+  disclaimer: 'Endometriosis must be confirmed by laparoscopy for VA purposes. Ratings are based on symptom control, not extent of disease. Even extensive endometriosis may rate lower if well-controlled by treatment. Bowel/bladder involvement is key for 50% rating. Document all symptoms including pain severity, bleeding patterns, and interference with daily activities.',
+};
+
+export const FEMALE_REPRODUCTIVE_ORGANS_CRITERIA = {
+  diagnosticCode: '7610-7615',
+  condition: 'Disease, Injury, or Adhesions of Female Reproductive Organs',
+  cfrReference: '38 CFR 4.116, General Rating Formula for DC 7610-7615',
+
+  note: 'Applies to vulva/clitoris (7610), vagina (7611), cervix (7612), uterus (7613), fallopian tube/PID (7614), and ovary (7615). Ovarian dysfunction affecting menstrual cycle (dysmenorrhea, amenorrhea) rated under DC 7615.',
+
+  ratings: [
+    {
+      percent: 30,
+      summary: 'Symptoms not controlled by continuous treatment',
+      criteriaDescription: [
+        'Ongoing symptoms despite treatment',
+        'Symptoms interfere with daily activities',
+        'Treatment does not provide adequate control',
+      ],
+      evidenceNeeded: [
+        'Medical diagnosis of condition',
+        'Documentation of persistent symptoms despite treatment',
+        'Treatment records showing failed or inadequate symptom control',
+        'Gynecology records documenting severity',
+        'Evidence of functional impairment',
+        'For DC 7615: menstrual cycle documentation showing dysfunction',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Symptoms that require continuous treatment',
+      criteriaDescription: [
+        'Symptoms require ongoing treatment for control',
+        'Treatment is effective in controlling symptoms',
+        'Discontinuation of treatment results in symptom recurrence',
+      ],
+      evidenceNeeded: [
+        'Medical diagnosis of condition',
+        'Documentation of continuous treatment (medications, therapy)',
+        'Records showing symptoms are controlled with treatment',
+        'Prescription records for ongoing medications',
+        'Gynecology follow-up records',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'Symptoms that do not require continuous treatment',
+      criteriaDescription: [
+        'Symptoms are mild or intermittent',
+        'No continuous treatment needed',
+        'Symptoms resolve without ongoing intervention',
+      ],
+      evidenceNeeded: [
+        'Medical diagnosis of condition',
+        'Documentation that symptoms are mild',
+        'Records showing no continuous treatment required',
+      ],
+    },
+  ],
+
+  definitions: {
+    'Dysmenorrhea': 'Painful menstruation',
+    'Amenorrhea': 'Absence of menstruation',
+    'PID': 'Pelvic Inflammatory Disease - infection of female reproductive organs',
+    'Adhesions': 'Scar tissue causing organs to stick together',
+    'Ovarian dysfunction': 'Abnormal ovarian function affecting menstrual cycle',
+    'Continuous treatment': 'Ongoing medical treatment required to control symptoms',
+  },
+
+  disclaimer: 'This general rating formula applies to multiple diagnostic codes (7610-7615). The key distinction is whether symptoms require continuous treatment and whether that treatment effectively controls symptoms. For ovarian disease (DC 7615), includes conditions like PCOS, ovarian cysts, and dysmenorrhea affecting the menstrual cycle.',
+};
+
+export const PELVIC_PROLAPSE_CRITERIA = {
+  diagnosticCode: '7621',
+  condition: 'Complete or Incomplete Pelvic Organ Prolapse',
+  cfrReference: '38 CFR 4.116, Diagnostic Code 7621',
+
+  note: 'Includes uterine/vaginal vault prolapse, cystocele, urethrocele, rectocele, enterocele, or any combination. Rated at flat 10%.',
+
+  ratings: [
+    {
+      percent: 10,
+      summary: 'Pelvic organ prolapse due to injury, disease, or surgical complications',
+      criteriaDescription: [
+        'Complete or incomplete pelvic organ prolapse',
+        'Diagnosed by examination (POP-Q staging)',
+        'May include: uterine prolapse, vaginal vault prolapse, cystocele, urethrocele, rectocele, enterocele',
+        'Can be any combination of above',
+      ],
+      evidenceNeeded: [
+        'Gynecology or urogynecology examination',
+        'POP-Q staging documentation',
+        'Description of type of prolapse (cystocele, rectocele, etc.)',
+        'Symptom documentation (pelvic pressure, bulge, urinary/bowel symptoms)',
+        'Treatment records (pessary use, pelvic floor PT, surgical repair)',
+        'Evidence linking to service (injury during service, surgical complications, etc.)',
+      ],
+    },
+  ],
+
+  definitions: {
+    'Pelvic organ prolapse': 'Dropping of pelvic organs (bladder, uterus, rectum, etc.) from normal position',
+    'POP-Q': 'Pelvic Organ Prolapse Quantification - standardized staging system (0-IV)',
+    'Cystocele': 'Prolapse of bladder into vagina',
+    'Rectocele': 'Prolapse of rectum into vagina',
+    'Uterine prolapse': 'Dropping of uterus into or through vagina',
+    'Vaginal vault prolapse': 'Prolapse after hysterectomy where top of vagina descends',
+    'Enterocele': 'Small bowel prolapse into vagina',
+    'Urethrocele': 'Prolapse of urethra',
+    'Pessary': 'Device inserted into vagina to support prolapsed organs',
+  },
+
+  disclaimer: 'Pelvic organ prolapse is rated at a flat 10% regardless of severity or type. Multiple types of prolapse (e.g., both cystocele and rectocele) are still rated as a single 10% disability. However, secondary conditions resulting from prolapse (such as urinary incontinence or bowel dysfunction) may be separately ratable under different diagnostic codes.',
+};
+
+export const FEMALE_SEXUAL_AROUSAL_DISORDER_CRITERIA = {
+  diagnosticCode: '7632',
+  condition: 'Female Sexual Arousal Disorder (FSAD)',
+  cfrReference: '38 CFR 4.116, Diagnostic Code 7632',
+
+  note: 'Rated at 0% only. No compensation for impairment itself, but establishes service connection for potential special monthly compensation (SMC) review under § 3.350.',
+
+  ratings: [
+    {
+      percent: 0,
+      summary: 'Female sexual arousal disorder present',
+      criteriaDescription: [
+        'Documented female sexual arousal disorder',
+        'May involve difficulty with arousal, lubrication, or orgasm',
+        'Affects sexual function',
+      ],
+      evidenceNeeded: [
+        'Medical diagnosis of FSAD or sexual dysfunction',
+        'Gynecology or sexual health specialist evaluation',
+        'Documentation of symptoms and impact',
+        'Treatment attempts if any',
+        'Evidence linking to service-connected condition (PTSD, medications, injury, etc.)',
+      ],
+    },
+  ],
+
+  definitions: {
+    'FSAD': 'Female Sexual Arousal Disorder - persistent difficulty with sexual arousal or response',
+    'SMC': 'Special Monthly Compensation - additional compensation for certain severe disabilities',
+    'Sexual dysfunction': 'Impairment in sexual response or function',
+  },
+
+  disclaimer: 'While rated at 0%, service connection for FSAD is important for: (1) review for SMC entitlement under § 3.350, (2) establishing nexus to other service-connected conditions, (3) potential for increased rating if additional related conditions develop. FSAD may be secondary to PTSD, depression, medications, pelvic trauma, or other service-connected conditions.',
+};
+
 
 // ============================================
 // ANALYSIS FUNCTIONS - MIGRAINE
@@ -12904,6 +13914,362 @@ export const analyzeErectileDysfunctionLogs = (logs) => {
   };
 };
 
+// ============================================
+// PHASE 4: GYNECOLOGICAL ANALYSIS FUNCTIONS
+// ============================================
+
+/**
+ * Analyzes Endometriosis logs (DC 7629)
+ */
+export const analyzeEndometriosisLogs = (logs) => {
+  const endoLogs = logs.filter(log =>
+      log.gynecologicalData?.endometriosisDiagnosed ||
+      log.symptomId?.includes('endometriosis')
+  );
+
+  if (endoLogs.length === 0) {
+    return {
+      hasData: false,
+      message: 'No endometriosis symptoms logged'
+    };
+  }
+
+  // Check laparoscopy confirmation
+  const laparoscopyConfirmed = endoLogs.some(log => log.gynecologicalData?.laparoscopyConfirmed);
+
+  // Check bowel/bladder involvement
+  const hasBowelBladderLesions = endoLogs.some(log =>
+      log.gynecologicalData?.lesionLocations?.includes('Bowel') ||
+      log.gynecologicalData?.lesionLocations?.includes('Bladder')
+  );
+
+  const hasBowelSymptoms = endoLogs.some(log => log.gynecologicalData?.bowelSymptoms);
+  const hasBladderSymptoms = endoLogs.some(log => log.gynecologicalData?.bladderSymptoms);
+
+  // Check treatment effectiveness
+  const treatmentEffectiveness = {};
+  endoLogs.forEach(log => {
+    const effect = log.gynecologicalData?.treatmentEffectiveness;
+    if (effect) {
+      treatmentEffectiveness[effect] = (treatmentEffectiveness[effect] || 0) + 1;
+    }
+  });
+
+  const mostCommonEffectiveness = Object.keys(treatmentEffectiveness).reduce((a, b) =>
+      treatmentEffectiveness[a] > treatmentEffectiveness[b] ? a : b, null
+  );
+
+  // Determine rating
+  let supportedRating = 0;
+  let rationale = [];
+  let evidenceGaps = [];
+
+  if (!laparoscopyConfirmed) {
+    evidenceGaps.push('CRITICAL: Laparoscopy confirmation required for VA endometriosis diagnosis');
+    rationale.push('Endometriosis must be confirmed by laparoscopy for VA rating');
+  }
+
+  if (laparoscopyConfirmed && hasBowelBladderLesions &&
+      (mostCommonEffectiveness === 'not-controlled' || mostCommonEffectiveness === 'partially-controlled') &&
+      (hasBowelSymptoms || hasBladderSymptoms)) {
+    supportedRating = 50;
+    rationale.push('Lesions involving bowel or bladder confirmed by laparoscopy');
+    rationale.push('Pelvic pain or bleeding not controlled by treatment');
+    rationale.push('Bowel or bladder symptoms documented');
+  } else if (laparoscopyConfirmed &&
+      (mostCommonEffectiveness === 'not-controlled' || mostCommonEffectiveness === 'partially-controlled')) {
+    supportedRating = 30;
+    rationale.push('Pelvic pain or heavy/irregular bleeding present');
+    rationale.push('Symptoms not controlled by treatment');
+  } else if (laparoscopyConfirmed) {
+    supportedRating = 10;
+    rationale.push('Pelvic pain or heavy/irregular bleeding present');
+    rationale.push('Symptoms require continuous treatment for control');
+  }
+
+  // Evidence gaps
+  if (!hasBowelBladderLesions && supportedRating < 50) {
+    evidenceGaps.push('For 50% rating: Document bowel or bladder lesions on laparoscopy report');
+  }
+  if (!hasBowelSymptoms && !hasBladderSymptoms && hasBowelBladderLesions) {
+    evidenceGaps.push('For 50% rating: Document bowel/bladder symptoms in medical records');
+  }
+  if (mostCommonEffectiveness === 'controlled' || !mostCommonEffectiveness) {
+    evidenceGaps.push('Document treatment effectiveness - symptoms must not be controlled for higher ratings');
+  }
+
+  evidenceGaps.push('Maintain gynecology records showing treatment attempts and symptom persistence');
+  evidenceGaps.push('Document pain severity and interference with daily activities');
+
+  return {
+    hasData: true,
+    totalLogs: endoLogs.length,
+    supportedRating,
+    rationale,
+    evidenceGaps,
+    metrics: {
+      laparoscopyConfirmed,
+      hasBowelBladderLesions,
+      hasBowelSymptoms,
+      hasBladderSymptoms,
+      treatmentEffectiveness,
+      mostCommonEffectiveness,
+    },
+    criteriaReference: ENDOMETRIOSIS_CRITERIA,
+  };
+};
+
+/**
+ * Analyzes Female Reproductive Organs logs (DC 7610-7615)
+ * Covers vulva, vagina, cervix, uterus, fallopian tube/PID, ovary/PCOS
+ */
+export const analyzeFemaleReproductiveOrgansLogs = (logs) => {
+  const gyneLogs = logs.filter(log =>
+      log.gynecologicalData &&
+      (log.gynecologicalData.pcosDiagnosed ||
+          log.gynecologicalData.pidDiagnosed ||
+          log.symptomId?.includes('menstrual') ||
+          log.symptomId?.includes('pelvic-pain') ||
+          log.symptomId?.includes('dysmenorrhea') ||
+          log.symptomId?.includes('pid') ||
+          log.symptomId?.includes('ovarian') ||
+          log.symptomId?.includes('pcos'))
+  );
+
+  if (gyneLogs.length === 0) {
+    return {
+      hasData: false,
+      message: 'No female reproductive organ symptoms logged'
+    };
+  }
+
+  // Check for continuous treatment requirement
+  const requiresContinuousTreatment = gyneLogs.some(log =>
+      log.gynecologicalData?.continuousTreatmentRequired
+  );
+
+  // Check symptom control
+  const hasUncontrolledSymptoms = gyneLogs.some(log =>
+      log.severity >= 7 ||
+      log.gynecologicalData?.interferesDailyActivities ||
+      log.gynecologicalData?.workMissed
+  );
+
+  // Specific conditions
+  const hasPCOS = gyneLogs.some(log => log.gynecologicalData?.pcosDiagnosed);
+  const hasPID = gyneLogs.some(log => log.gynecologicalData?.pidDiagnosed);
+  const hasRecurrentPID = gyneLogs.some(log => log.gynecologicalData?.recurrentInfections);
+
+  // Menstrual dysfunction
+  const hasIrregularCycles = gyneLogs.some(log =>
+      log.gynecologicalData?.cycleRegularity === 'irregular' ||
+      log.gynecologicalData?.cycleRegularity === 'absent'
+  );
+  const hasHeavyBleeding = gyneLogs.some(log =>
+      log.gynecologicalData?.flowHeaviness === 'heavy' ||
+      log.gynecologicalData?.flowHeaviness === 'very-heavy'
+  );
+  const hasSevereDysmenorrhea = gyneLogs.some(log =>
+      log.gynecologicalData?.dysmenorrheaSeverity === 'severe'
+  );
+
+  // Determine rating
+  let supportedRating = 0;
+  let rationale = [];
+  let evidenceGaps = [];
+
+  if (hasUncontrolledSymptoms && requiresContinuousTreatment) {
+    supportedRating = 30;
+    rationale.push('Symptoms not controlled by continuous treatment');
+    rationale.push('Documented interference with daily activities or work');
+  } else if (requiresContinuousTreatment) {
+    supportedRating = 10;
+    rationale.push('Symptoms require continuous treatment');
+    rationale.push('Treatment provides adequate symptom control');
+  } else {
+    supportedRating = 0;
+    rationale.push('Symptoms do not require continuous treatment');
+  }
+
+  // Condition-specific notes
+  if (hasPCOS) {
+    rationale.push('PCOS diagnosed (rated under DC 7615 - Ovary Disease)');
+  }
+  if (hasPID) {
+    rationale.push('PID diagnosed (rated under DC 7614 - Fallopian Tube)');
+    if (hasRecurrentPID) {
+      rationale.push('Recurrent PID documented');
+    }
+  }
+  if (hasIrregularCycles) {
+    rationale.push('Irregular menstrual cycles documented');
+  }
+  if (hasHeavyBleeding) {
+    rationale.push('Heavy menstrual bleeding (menorrhagia) documented');
+  }
+  if (hasSevereDysmenorrhea) {
+    rationale.push('Severe dysmenorrhea (painful periods) documented');
+  }
+
+  // Evidence gaps
+  evidenceGaps.push('Obtain gynecology examination and diagnosis');
+  evidenceGaps.push('Document specific organ affected (vulva/vagina/cervix/uterus/fallopian tube/ovary)');
+  evidenceGaps.push('Document treatment regimen (hormonal therapy, pain management, etc.)');
+  evidenceGaps.push('Document symptom control with treatment');
+  evidenceGaps.push('For higher rating: Document failed treatment attempts or persistent symptoms despite treatment');
+
+  if (hasPCOS) {
+    evidenceGaps.push('PCOS: Document Rotterdam criteria (2 of 3: irregular periods, hyperandrogenism, polycystic ovaries)');
+  }
+  if (hasPID) {
+    evidenceGaps.push('PID: Document acute episodes, treatment, and any chronic sequelae');
+  }
+
+  return {
+    hasData: true,
+    totalLogs: gyneLogs.length,
+    supportedRating,
+    rationale,
+    evidenceGaps,
+    metrics: {
+      requiresContinuousTreatment,
+      hasUncontrolledSymptoms,
+      hasPCOS,
+      hasPID,
+      hasRecurrentPID,
+      hasIrregularCycles,
+      hasHeavyBleeding,
+      hasSevereDysmenorrhea,
+    },
+    criteriaReference: FEMALE_REPRODUCTIVE_ORGANS_CRITERIA,
+  };
+};
+
+/**
+ * Analyzes Pelvic Organ Prolapse logs (DC 7621)
+ */
+export const analyzePelvicProlapseLogs = (logs) => {
+  const prolapseLogs = logs.filter(log =>
+      log.gynecologicalData?.prolapseDiagnosed ||
+      log.symptomId?.includes('prolapse')
+  );
+
+  if (prolapseLogs.length === 0) {
+    return {
+      hasData: false,
+      message: 'No pelvic organ prolapse symptoms logged'
+    };
+  }
+
+  // Get prolapse types
+  const prolapseTypes = {};
+  prolapseLogs.forEach(log => {
+    const type = log.gynecologicalData?.prolapseType;
+    if (type) {
+      prolapseTypes[type] = (prolapseTypes[type] || 0) + 1;
+    }
+  });
+
+  // Get POP-Q stages
+  const popStages = {};
+  prolapseLogs.forEach(log => {
+    const stage = log.gynecologicalData?.popStage;
+    if (stage) {
+      popStages[stage] = (popStages[stage] || 0) + 1;
+    }
+  });
+
+  const mostCommonType = Object.keys(prolapseTypes).reduce((a, b) =>
+      prolapseTypes[a] > prolapseTypes[b] ? a : b, null
+  );
+
+  const mostCommonStage = Object.keys(popStages).reduce((a, b) =>
+      popStages[a] > popStages[b] ? a : b, null
+  );
+
+  // DC 7621 is flat 10%
+  const supportedRating = 10;
+  const rationale = [
+    'DC 7621 provides flat 10% rating for pelvic organ prolapse',
+    `Type of prolapse: ${mostCommonType || 'not specified'}`,
+    `POP-Q Stage: ${mostCommonStage || 'not specified'}`,
+    'Rating is same regardless of severity or stage',
+  ];
+
+  const evidenceGaps = [
+    'Obtain gynecology or urogynecology examination',
+    'Get POP-Q staging documentation',
+    'Document type of prolapse (cystocele, rectocele, uterine, etc.)',
+    'Document symptoms (pelvic pressure, bulge, urinary/bowel issues)',
+    'Document treatment (pessary, pelvic floor PT, surgery)',
+    'Note: Secondary conditions (urinary incontinence, bowel dysfunction) may be separately ratable',
+  ];
+
+  return {
+    hasData: true,
+    totalLogs: prolapseLogs.length,
+    supportedRating,
+    rationale,
+    evidenceGaps,
+    metrics: {
+      prolapseTypes,
+      popStages,
+      mostCommonType,
+      mostCommonStage,
+    },
+    criteriaReference: PELVIC_PROLAPSE_CRITERIA,
+  };
+};
+
+/**
+ * Analyzes Female Sexual Arousal Disorder logs (DC 7632)
+ */
+export const analyzeFemaleArousalDisorderLogs = (logs) => {
+  const fsadLogs = logs.filter(log =>
+      log.gynecologicalData?.sexualDysfunction ||
+      log.gynecologicalData?.arousalDifficulty ||
+      log.gynecologicalData?.libidoDecreased ||
+      log.symptomId?.includes('sexual-dysfunction') ||
+      log.symptomId?.includes('arousal') ||
+      log.symptomId?.includes('libido')
+  );
+
+  if (fsadLogs.length === 0) {
+    return {
+      hasData: false,
+      message: 'No female sexual arousal disorder symptoms logged'
+    };
+  }
+
+  const hasArousalDifficulty = fsadLogs.some(log => log.gynecologicalData?.arousalDifficulty);
+  const hasDecreasedLibido = fsadLogs.some(log => log.gynecologicalData?.libidoDecreased);
+
+  return {
+    hasData: true,
+    totalLogs: fsadLogs.length,
+    supportedRating: 0,
+    rationale: [
+      'DC 7632 is rated at 0% only',
+      'Service connection establishes potential for SMC review',
+      hasArousalDifficulty ? 'Arousal difficulty documented' : '',
+      hasDecreasedLibido ? 'Decreased libido documented' : '',
+    ].filter(Boolean),
+    evidenceGaps: [
+      'Obtain gynecology or sexual health specialist evaluation',
+      'Document FSAD diagnosis and symptoms',
+      'Document any secondary conditions (PTSD, depression, medications, endometriosis, dyspareunia)',
+      'Get treatment records if any (therapy, medications, etc.)',
+      'Service connection establishes review for SMC under § 3.350',
+    ],
+    metrics: {
+      hasArousalDifficulty,
+      hasDecreasedLibido,
+    },
+    criteriaReference: FEMALE_SEXUAL_AROUSAL_DISORDER_CRITERIA,
+  };
+};
+
+
 // Helper function to check if timestamp is within evaluation period
 const isWithinEvaluationPeriod = (timestamp, days) => {
   const logDate = new Date(timestamp);
@@ -13104,729 +14470,6 @@ export const analyzeFibromyalgiaLogs = (logs, options = {}) => {
 };
 
 // ============================================
-// PHASE 2: VISION LOSS CRITERIA (DC 6061-6079)
-// ============================================
-
-export const VISION_LOSS_CRITERIA = {
-  condition: 'Vision Loss',
-  diagnosticCode: '6061-6079',
-  ratings: [
-    {
-      percent: 100,
-      summary: 'Blindness in both eyes or near-total vision loss',
-      criteriaDescription: [
-        'No light perception in both eyes (NLP bilateral), OR',
-        'Visual acuity 5/200 or less in better eye with concentric contraction of visual field to 5 degrees or less'
-      ],
-      evidenceNeeded: [
-        'Ophthalmology examination results',
-        'Visual acuity measurements',
-        'Visual field testing results',
-        'Documentation of cause (if service-connected)'
-      ]
-    },
-    {
-      percent: 90,
-      summary: 'Severe vision impairment',
-      criteriaDescription: [
-        'Visual acuity 5/200 in better eye, with 5/200 or less in poorer eye'
-      ],
-      evidenceNeeded: [
-        'Bilateral visual acuity measurements',
-        'Ophthalmology examination'
-      ]
-    },
-    {
-      percent: 70,
-      summary: 'Marked vision impairment',
-      criteriaDescription: [
-        'Visual acuity 10/200 in better eye, OR',
-        'Concentric contraction of visual field to 5 degrees in better eye'
-      ],
-      evidenceNeeded: [
-        'Visual acuity testing',
-        'Visual field examination (perimetry)',
-        'Documentation of better eye measurement'
-      ]
-    },
-    {
-      percent: 60,
-      summary: 'Moderate to severe vision impairment',
-      criteriaDescription: [
-        'Visual acuity 15/200 in better eye, OR',
-        'Concentric contraction of visual field to 10 degrees in better eye'
-      ],
-      evidenceNeeded: [
-        'Visual acuity measurements',
-        'Visual field testing',
-        'Ophthalmology reports'
-      ]
-    },
-    {
-      percent: 50,
-      summary: 'Moderate vision impairment',
-      criteriaDescription: [
-        'Visual acuity 20/200 in better eye, OR',
-        'Concentric contraction of visual field to 15 degrees in better eye'
-      ],
-      evidenceNeeded: [
-        'Corrected visual acuity measurements',
-        'Visual field examination results'
-      ]
-    },
-    {
-      percent: 40,
-      summary: 'Mild to moderate vision impairment',
-      criteriaDescription: [
-        'Visual acuity 20/100 in better eye'
-      ],
-      evidenceNeeded: [
-        'Visual acuity testing with best correction',
-        'Ophthalmology examination'
-      ]
-    },
-    {
-      percent: 30,
-      summary: 'Mild vision impairment',
-      criteriaDescription: [
-        'Visual acuity 20/70 in better eye, OR',
-        'Marked constriction of visual fields'
-      ],
-      evidenceNeeded: [
-        'Visual acuity measurements',
-        'Visual field testing if field loss present'
-      ]
-    },
-    {
-      percent: 10,
-      summary: 'Minimal vision impairment',
-      criteriaDescription: [
-        'Visual acuity 20/40 in better eye, OR',
-        'Moderate constriction of visual fields'
-      ],
-      evidenceNeeded: [
-        'Visual acuity testing',
-        'Documentation of field defects if applicable'
-      ]
-    }
-  ],
-  definitions: {
-    'visual acuity': 'Clarity or sharpness of vision, measured using Snellen chart (e.g., 20/20, 20/40)',
-    'better eye': 'The eye with better visual acuity; VA ratings are based on the better eye',
-    'concentric contraction': 'Progressive narrowing of the visual field from the periphery',
-    'visual field': 'The entire area that can be seen when the eye is directed forward',
-    'CF': 'Count Fingers - ability to count fingers at a specified distance',
-    'HM': 'Hand Motion - ability to detect hand movement',
-    'LP': 'Light Perception - ability to perceive light only',
-    'NLP': 'No Light Perception - complete blindness'
-  }
-};
-
-// ============================================
-// PHASE 2: GLAUCOMA CRITERIA (DC 6067)
-// ============================================
-
-export const GLAUCOMA_CRITERIA = {
-  condition: 'Glaucoma',
-  diagnosticCode: '6067',
-  ratings: [
-    {
-      percent: 100,
-      summary: 'Rate based on resulting visual impairment',
-      criteriaDescription: [
-        'Bilateral glaucoma rated under vision loss criteria (DC 6061-6079)',
-        'Use visual acuity and visual field measurements'
-      ],
-      evidenceNeeded: [
-        'Glaucoma diagnosis from ophthalmologist',
-        'Visual acuity measurements',
-        'Visual field testing results',
-        'Intraocular pressure readings',
-        'Optic nerve examination findings'
-      ]
-    },
-    {
-      percent: 30,
-      summary: 'Unilateral glaucoma with field defect and requiring medication',
-      criteriaDescription: [
-        'Unilateral (one eye) glaucoma with:',
-        'Characteristic visual field defect, AND',
-        'Either persistent increased intraocular pressure with optic nerve damage, OR',
-        'Requires sustained medication to control intraocular pressure'
-      ],
-      evidenceNeeded: [
-        'Diagnosis of glaucoma in one eye',
-        'Visual field test showing defect',
-        'IOP measurements',
-        'Current medication regimen',
-        'Optic nerve assessment'
-      ]
-    },
-    {
-      percent: 10,
-      summary: 'Unilateral glaucoma controlled by medication',
-      criteriaDescription: [
-        'Unilateral glaucoma controlled by medication',
-        'Without visual field defect',
-        'Without optic nerve damage'
-      ],
-      evidenceNeeded: [
-        'Glaucoma diagnosis',
-        'Current medications',
-        'IOP readings showing control',
-        'Visual field testing (normal)',
-        'Optic nerve examination (stable)'
-      ]
-    }
-  ],
-  definitions: {
-    'glaucoma': 'Group of eye conditions that damage the optic nerve, often due to increased intraocular pressure',
-    'IOP': 'Intraocular Pressure - fluid pressure inside the eye',
-    'visual field defect': 'Areas of vision loss or blind spots characteristic of glaucoma',
-    'optic nerve damage': 'Damage to the nerve that transmits visual information from the eye to the brain',
-    'unilateral': 'Affecting one eye only',
-    'bilateral': 'Affecting both eyes'
-  }
-};
-
-// ============================================
-// PHASE 2: DIABETIC RETINOPATHY CRITERIA (DC 6066)
-// ============================================
-
-export const DIABETIC_RETINOPATHY_CRITERIA = {
-  condition: 'Diabetic Retinopathy',
-  diagnosticCode: '6066',
-  note: 'Rated based on resulting visual acuity under DC 6061-6079',
-  ratings: [
-    {
-      percent: 'variable',
-      summary: 'Rate based on visual acuity',
-      criteriaDescription: [
-        'Diabetic retinopathy is rated under vision loss criteria',
-        'Use visual acuity measurements in better eye',
-        'Consider macular edema impact on central vision',
-        'Proliferative changes may cause more rapid progression'
-      ],
-      evidenceNeeded: [
-        'Diagnosis of diabetic retinopathy',
-        'Type (non-proliferative vs proliferative)',
-        'Visual acuity measurements',
-        'Dilated fundus examination results',
-        'OCT (Optical Coherence Tomography) if available',
-        'Fluorescein angiography results if performed',
-        'Treatment history (laser photocoagulation, anti-VEGF injections)',
-        'Relationship to diabetes control (HbA1c levels)'
-      ]
-    }
-  ],
-  definitions: {
-    'diabetic retinopathy': 'Diabetes complication affecting blood vessels in the retina',
-    'proliferative': 'Advanced stage with abnormal blood vessel growth',
-    'non-proliferative': 'Earlier stage with damaged blood vessels but no new growth',
-    'macular edema': 'Swelling in the central part of the retina affecting central vision',
-    'OCT': 'Optical Coherence Tomography - imaging test showing retinal layers',
-    'anti-VEGF': 'Anti-Vascular Endothelial Growth Factor injections to reduce abnormal vessel growth',
-    'photocoagulation': 'Laser treatment to seal leaking blood vessels'
-  }
-};
-
-// ============================================
-// PHASE 2: MACULAR DEGENERATION CRITERIA (DC 6062)
-// ============================================
-
-export const MACULAR_DEGENERATION_CRITERIA = {
-  condition: 'Macular Degeneration',
-  diagnosticCode: '6062',
-  note: 'Rated based on resulting visual acuity under DC 6061-6079',
-  ratings: [
-    {
-      percent: 'variable',
-      summary: 'Rate based on visual acuity',
-      criteriaDescription: [
-        'Macular degeneration is rated under vision loss criteria',
-        'Use visual acuity measurements in better eye',
-        'Central scotoma (blind spot) affects reading and detail vision',
-        'Peripheral vision typically preserved'
-      ],
-      evidenceNeeded: [
-        'Diagnosis of macular degeneration',
-        'Type (dry AMD vs wet AMD)',
-        'Visual acuity measurements',
-        'Amsler grid test results',
-        'OCT imaging',
-        'Fluorescein angiography if performed',
-        'Central scotoma documentation',
-        'Treatment records (anti-VEGF injections for wet AMD)',
-        'Progression documentation'
-      ]
-    }
-  ],
-  definitions: {
-    'macular degeneration': 'Age-related disease affecting the macula (central retina)',
-    'AMD': 'Age-Related Macular Degeneration',
-    'dry AMD': 'More common form with gradual breakdown of macular tissue',
-    'wet AMD': 'Less common but more severe form with abnormal blood vessel growth',
-    'macula': 'Central part of retina responsible for sharp, detailed central vision',
-    'central scotoma': 'Blind spot or area of vision loss in the center of visual field',
-    'Amsler grid': 'Grid pattern test to detect central vision distortions'
-  }
-};
-
-// ============================================
-// ============================================
-// PHASE 3: GENITOURINARY CONDITIONS
-// ============================================
-
-// DC 7508: Nephrolithiasis/Ureterolithiasis (Kidney Stones)
-export const KIDNEY_STONES_CRITERIA = {
-  diagnosticCode: '7508',
-  condition: 'Nephrolithiasis/Ureterolithiasis/Nephrocalcinosis (Kidney Stones)',
-  cfrReference: '38 CFR 4.115b, Diagnostic Code 7508',
-
-  note: 'Rating based on stone episodes requiring invasive or non-invasive procedures, or rate as hydronephrosis if kidney function is impaired.',
-
-  ratings: [
-    {
-      percent: 30,
-      summary: 'Recurrent stone formation requiring invasive or non-invasive procedures more than 2 times per year',
-      criteriaDescription: [
-        'Stone formation documented on imaging',
-        'Requires procedures (lithotripsy, ureteroscopy, stent placement) more than twice yearly',
-        'Recurrent episodes despite treatment',
-      ],
-      evidenceNeeded: [
-        'Imaging reports showing stones (CT, ultrasound, X-ray)',
-        'Procedure records (lithotripsy, ureteroscopy, stent placement)',
-        'Documentation of frequency (>2 procedures per year)',
-        'Emergency room visits for renal colic',
-        'Urology treatment records',
-      ],
-    },
-    {
-      percent: 10,
-      summary: 'Recurrent stone formation requiring procedures 1-2 times per year',
-      criteriaDescription: [
-        'Stone formation requiring 1-2 procedures annually',
-        'May include lithotripsy, ureteroscopy, or stent placement',
-        'Documented history of kidney stones',
-      ],
-      evidenceNeeded: [
-        'Imaging showing stone formation',
-        'Procedure records',
-        'Treatment history from urology',
-      ],
-    },
-    {
-      percent: 0,
-      summary: 'History of stones but no recent procedures, or controlled with conservative management',
-      criteriaDescription: [
-        'History of kidney stones',
-        'Controlled with diet, hydration, medication',
-        'No procedures required in past year',
-      ],
-      evidenceNeeded: [
-        'Documentation of stone history',
-        'Current management plan',
-      ],
-    },
-  ],
-
-  definitions: {
-    'Invasive procedures': 'Ureteroscopy, percutaneous nephrolithotomy, open surgery',
-    'Non-invasive procedures': 'ESWL (lithotripsy), shock wave therapy',
-    'Recurrent stone formation': 'New stones forming despite preventive measures',
-    'Renal colic': 'Severe flank pain from stone passage',
-  },
-
-  disclaimer: 'If kidney function is impaired (elevated creatinine, decreased eGFR, hydronephrosis), rate under DC 7530 (Chronic Renal Disease) instead. Service connection requires evidence that stones are related to military service.',
-};
-// DC 7530: Chronic Renal Disease
-export const CHRONIC_RENAL_DISEASE_CRITERIA = {
-  diagnosticCode: '7530',
-  condition: 'Chronic Renal Disease',
-  cfrReference: '38 CFR 4.115a, Diagnostic Code 7530',
-
-  note: 'Rated based on renal dysfunction. Requires regular dialysis for 100% rating.',
-
-  ratings: [
-    {
-      percent: 100,
-      summary: 'Requiring regular dialysis',
-      criteriaDescription: [
-        'End-stage renal disease (ESRD)',
-        'Hemodialysis or peritoneal dialysis required',
-        'Typically 3+ times per week for hemodialysis',
-        'eGFR typically <15 mL/min/1.73m²',
-      ],
-      evidenceNeeded: [
-        'Dialysis center records showing regular treatment',
-        'Vascular access documentation (fistula, graft, catheter)',
-        'Lab values showing kidney failure',
-        'Nephrology treatment records',
-        'Documentation of dialysis frequency and duration',
-      ],
-    },
-    {
-      percent: 80,
-      summary: 'eGFR 15-20 mL/min/1.73m², stage 4-5 CKD',
-      criteriaDescription: [
-        'Severe kidney disease',
-        'eGFR 15-20 mL/min/1.73m² sustained over time',
-        'May be approaching dialysis',
-        'Significant metabolic complications',
-      ],
-      evidenceNeeded: [
-        'Serial lab values showing eGFR 15-20',
-        'Multiple readings over evaluation period',
-        'Nephrology records',
-        'Documentation of complications (anemia, bone disease, etc.)',
-      ],
-    },
-    {
-      percent: 60,
-      summary: 'eGFR 20-30 mL/min/1.73m², stage 4 CKD',
-      criteriaDescription: [
-        'Severe kidney disease',
-        'eGFR 20-30 mL/min/1.73m²',
-        'Significant impairment of kidney function',
-      ],
-      evidenceNeeded: [
-        'Lab values showing eGFR in range',
-        'Creatinine levels elevated (typically >3.0 mg/dL)',
-        'Treatment records',
-      ],
-    },
-    {
-      percent: 40,
-      summary: 'eGFR 30-40 mL/min/1.73m², stage 3b CKD',
-      criteriaDescription: [
-        'Moderate to severe kidney disease',
-        'eGFR 30-40 mL/min/1.73m²',
-        'Persistent kidney impairment',
-      ],
-      evidenceNeeded: [
-        'Serial eGFR measurements',
-        'Elevated creatinine',
-        'Nephrology evaluation',
-      ],
-    },
-    {
-      percent: 20,
-      summary: 'eGFR 40-60 mL/min/1.73m², stage 3a CKD',
-      criteriaDescription: [
-        'Moderate kidney disease',
-        'eGFR 40-60 mL/min/1.73m²',
-        'Mild to moderate impairment',
-      ],
-      evidenceNeeded: [
-        'Lab values showing reduced kidney function',
-        'Multiple readings confirming chronic nature',
-      ],
-    },
-    {
-      percent: 0,
-      summary: 'eGFR >60 or minimal impairment',
-      criteriaDescription: [
-        'Kidney function adequate',
-        'eGFR >60 mL/min/1.73m²',
-        'Stage 1-2 CKD or normal function',
-      ],
-      evidenceNeeded: [],
-    },
-  ],
-
-  definitions: {
-    'eGFR': 'Estimated Glomerular Filtration Rate - measures how well kidneys filter blood',
-    'ESRD': 'End-Stage Renal Disease - kidney failure requiring dialysis or transplant',
-    'Hemodialysis': 'Blood filtered through external machine, typically 3x/week, 3-4 hours per session',
-    'Peritoneal dialysis': 'Dialysis using abdominal lining, can be done at home daily',
-    'CKD stages': 'Stage 1-2: eGFR >60, Stage 3a: 45-60, Stage 3b: 30-45, Stage 4: 15-30, Stage 5: <15',
-  },
-
-  disclaimer: 'Chronic kidney disease must be documented as service-connected. Ratings based on sustained kidney function measurements over time, not single readings. Kidney transplant recipients rated separately under DC 7531.',
-};
-// VOIDING DYSFUNCTION CRITERIA (38 CFR 4.115a)
-// Used by: DC 7512 (Chronic Cystitis), DC 7527 (Prostate), DC 7542 (Neurogenic Bladder), DC 7518 (Urethral Stricture)
-export const VOIDING_DYSFUNCTION_CRITERIA = {
-  diagnosticCode: '7512/7527/7542/7518',
-  condition: 'Voiding Dysfunction (Urinary Frequency, Incontinence, or Obstruction)',
-  cfrReference: '38 CFR 4.115a, Rating Formula for Voiding Dysfunction',
-
-  note: 'Multiple conditions rated under voiding dysfunction. Choose highest rating from: Urine Leakage, Frequency, or Obstructed Voiding.',
-
-  // CONTINUAL URINE LEAKAGE / URINARY INCONTINENCE
-  ratingsIncontinence: [
-    {
-      percent: 60,
-      summary: 'Requiring appliance or absorbent materials changed more than 4 times per day',
-      criteriaDescription: [
-        'Continuous or very frequent urine leakage',
-        'Requires protective garments/pads/diapers',
-        'Changed more than 4 times daily',
-        'May require urinary appliance or catheter system',
-      ],
-      evidenceNeeded: [
-        'Log of pad/diaper changes showing >4 per day',
-        'Medical documentation of incontinence severity',
-        'Prescription records for incontinence supplies',
-        'Urodynamic studies if available',
-        'Treatment attempts (medications, procedures)',
-      ],
-    },
-    {
-      percent: 40,
-      summary: 'Requiring absorbent materials changed 2-4 times per day',
-      criteriaDescription: [
-        'Frequent urine leakage',
-        'Requires protective garments',
-        'Changed 2-4 times daily',
-      ],
-      evidenceNeeded: [
-        'Documentation of 2-4 pad changes per day',
-        'Medical records confirming incontinence',
-        'Prescription for incontinence products',
-      ],
-    },
-    {
-      percent: 20,
-      summary: 'Requiring absorbent materials changed less than 2 times per day',
-      criteriaDescription: [
-        'Moderate urine leakage',
-        'Requires protective garments',
-        'Changed 1-2 times daily',
-      ],
-      evidenceNeeded: [
-        'Documentation of incontinence',
-        'Evidence of protective garment use',
-      ],
-    },
-  ],
-
-  // URINARY FREQUENCY
-  ratingsFrequency: [
-    {
-      percent: 40,
-      summary: 'Daytime voiding interval less than 1 hour, OR awakening to void 5+ times per night',
-      criteriaDescription: [
-        'Severe urinary frequency',
-        'Voiding more than hourly during day, OR',
-        'Waking 5 or more times per night to urinate (nocturia)',
-      ],
-      evidenceNeeded: [
-        'Voiding diary showing frequency patterns',
-        'Documentation over multiple days',
-        'Medical evaluation confirming frequency',
-      ],
-    },
-    {
-      percent: 20,
-      summary: 'Daytime voiding interval 1-2 hours, OR awakening 3-4 times per night',
-      criteriaDescription: [
-        'Frequent urination',
-        'Voiding every 1-2 hours during day, OR',
-        'Waking 3-4 times nightly',
-      ],
-      evidenceNeeded: [
-        'Voiding diary',
-        'Medical documentation of frequency',
-      ],
-    },
-    {
-      percent: 10,
-      summary: 'Daytime voiding interval 2-3 hours, OR awakening 2 times per night',
-      criteriaDescription: [
-        'Moderately increased frequency',
-        'Voiding every 2-3 hours during day, OR',
-        'Waking twice nightly',
-      ],
-      evidenceNeeded: [
-        'Documentation of voiding patterns',
-      ],
-    },
-  ],
-
-  // OBSTRUCTED VOIDING
-  ratingsObstruction: [
-    {
-      percent: 30,
-      summary: 'Urinary retention requiring intermittent or continuous catheterization',
-      criteriaDescription: [
-        'Unable to empty bladder naturally',
-        'Requires self-catheterization (intermittent), OR',
-        'Indwelling catheter (Foley), OR',
-        'Suprapubic catheter',
-      ],
-      evidenceNeeded: [
-        'Catheterization records',
-        'Documentation of catheterization frequency (if intermittent)',
-        'Post-void residual measurements showing retention',
-        'Urology treatment records',
-      ],
-    },
-    {
-      percent: 10,
-      summary: 'Marked obstructive symptoms with complications',
-      criteriaDescription: [
-        'Hesitancy, weak stream, incomplete emptying',
-        'PLUS one or more of:',
-        '- Post-void residual >150cc',
-        '- Markedly decreased peak flow rate (<10cc/sec)',
-        '- Recurrent UTIs secondary to obstruction',
-        '- Stricture requiring dilation every 2-3 months',
-      ],
-      evidenceNeeded: [
-        'Post-void residual measurements',
-        'Uroflowmetry results',
-        'UTI treatment records',
-        'Stricture dilation procedure records',
-      ],
-    },
-    {
-      percent: 0,
-      summary: 'Obstructive symptoms requiring dilation 1-2 times per year',
-      criteriaDescription: [
-        'Mild obstruction',
-        'Occasional stricture dilation needed',
-      ],
-      evidenceNeeded: [
-        'Procedure records for dilations',
-      ],
-    },
-  ],
-
-  definitions: {
-    'Voiding dysfunction': 'Difficulty with bladder emptying or storage',
-    'Post-void residual': 'Urine remaining in bladder after urination (normal <50cc)',
-    'Intermittent catheterization': 'Self-catheterization multiple times daily',
-    'Indwelling catheter': 'Foley catheter left in place continuously',
-    'Suprapubic catheter': 'Catheter inserted through abdominal wall',
-    'Uroflowmetry': 'Test measuring urine flow rate',
-    'Nocturia': 'Waking at night to urinate',
-  },
-
-  disclaimer: 'Rate under the highest applicable category: incontinence, frequency, or obstruction. Do not pyramid ratings from multiple categories. Service connection must be established.',
-};
-// DC 7332: Rectum and Anus, Impairment of Sphincter Control (Fecal Incontinence)
-export const SPHINCTER_IMPAIRMENT_CRITERIA = {
-  diagnosticCode: '7332',
-  condition: 'Rectum and Anus, Impairment of Sphincter Control (Fecal Incontinence)',
-  cfrReference: '38 CFR 4.114, Diagnostic Code 7332',
-
-  note: 'Rating based on frequency and severity of fecal incontinence episodes.',
-
-  ratings: [
-    {
-      percent: 100,
-      summary: 'Complete loss of sphincter control',
-      criteriaDescription: [
-        'Continuous fecal incontinence',
-        'Unable to control bowel movements',
-        'Constant soiling',
-        'Requires protective garments at all times',
-      ],
-      evidenceNeeded: [
-        'Medical documentation of complete incontinence',
-        'Gastroenterology/colorectal surgery evaluation',
-        'Anorectal manometry if performed',
-        'Treatment records',
-        'Documentation of protective garment use',
-      ],
-    },
-    {
-      percent: 60,
-      summary: 'Frequent and essentially complete loss of control',
-      criteriaDescription: [
-        'Multiple daily episodes of fecal incontinence',
-        'Inability to delay defecation',
-        'Significant impairment of sphincter function',
-      ],
-      evidenceNeeded: [
-        'Incontinence diary showing daily episodes',
-        'Medical evaluation confirming severity',
-        'Treatment attempts documented',
-      ],
-    },
-    {
-      percent: 30,
-      summary: 'Occasional loss of sphincter control',
-      criteriaDescription: [
-        'Periodic fecal incontinence episodes',
-        'May occur weekly or monthly',
-        'Some sphincter control maintained',
-      ],
-      evidenceNeeded: [
-        'Documentation of incontinence frequency',
-        'Medical records',
-        'Evidence of impact on daily activities',
-      ],
-    },
-    {
-      percent: 10,
-      summary: 'Mild impairment',
-      criteriaDescription: [
-        'Rare loss of bowel control',
-        'Gas incontinence or occasional soiling',
-        'Minimal functional impairment',
-      ],
-      evidenceNeeded: [
-        'Medical documentation',
-        'Description of symptoms',
-      ],
-    },
-    {
-      percent: 0,
-      summary: 'No significant impairment',
-      criteriaDescription: [
-        'Normal sphincter control',
-        'No episodes of incontinence',
-      ],
-      evidenceNeeded: [],
-    },
-  ],
-
-  definitions: {
-    'Fecal incontinence': 'Involuntary loss of bowel control',
-    'Sphincter': 'Muscle ring controlling bowel movements',
-    'Anorectal manometry': 'Test measuring sphincter muscle strength',
-    'Urgency': 'Sudden, strong urge to defecate with limited time to reach toilet',
-  },
-
-  disclaimer: 'Service connection must be established. May result from trauma, surgery, neurological conditions, or other service-connected causes. Rate as diarrhea (DC 7319) if episodes are due to IBS and not sphincter impairment.',
-};
-// DC 7522: Erectile Dysfunction
-export const ERECTILE_DYSFUNCTION_CRITERIA = {
-  diagnosticCode: '7522',
-  condition: 'Erectile Dysfunction, with or without penile deformity',
-  cfrReference: '38 CFR 4.115b, Diagnostic Code 7522',
-
-  note: 'Rated at 0% only. No compensation for impairment itself, but establishes service connection for potential special monthly compensation (SMC) eligibility under certain circumstances.',
-
-  ratings: [
-    {
-      percent: 0,
-      summary: 'Erectile dysfunction present',
-      criteriaDescription: [
-        'Documented erectile dysfunction',
-        'May be mild, moderate, or severe',
-        'With or without penile deformity',
-      ],
-      evidenceNeeded: [
-        'Medical diagnosis of erectile dysfunction',
-        'Urology evaluation',
-        'Documentation of severity and impact',
-        'Treatment attempts if any (medications, devices, etc.)',
-        'Evidence linking to service-connected condition',
-      ],
-    },
-  ],
-
-  definitions: {
-    'Erectile dysfunction': 'Inability to achieve or maintain erection sufficient for sexual intercourse',
-    'SMC': 'Special Monthly Compensation - additional compensation for certain severe disabilities',
-  },
-
-  disclaimer: 'While rated at 0%, service connection for ED is important for: (1) potential SMC eligibility in specific circumstances, (2) establishing nexus to other service-connected conditions, (3) potential for increased rating if additional conditions develop. ED may be secondary to diabetes, hypertension, PTSD, medications, or other service-connected conditions.',
-};
 // HELPER FUNCTIONS
 // ============================================
 
@@ -14015,6 +14658,19 @@ export const getSphincterImpairmentRatingCriteria = (percent) => {
 export const getErectileDysfunctionRatingCriteria = (percent) => {
   return ERECTILE_DYSFUNCTION_CRITERIA.ratings.find(r => r.percent === percent) || null;
 };
+// Phase 4: Gynecological Helper Functions
+export const getEndometriosisRatingCriteria = (percent) => {
+  return ENDOMETRIOSIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getFemaleReproductiveOrgansRatingCriteria = (percent) => {
+  return FEMALE_REPRODUCTIVE_ORGANS_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getPelvicProlapseRatingCriteria = (percent) => {
+  return PELVIC_PROLAPSE_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getFemaleArousalDisorderRatingCriteria = (percent) => {
+  return FEMALE_SEXUAL_AROUSAL_DISORDER_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
 
 export const getAllLumbosacralStrainRatings = () => LUMBOSACRAL_STRAIN_CRITERIA.ratings;
 export const getAllIntervertebralDiscRatings = () => INTERVERTEBRAL_DISC_CRITERIA.ratingsIncapacitatingEpisodes;
@@ -14058,3 +14714,13 @@ export const getChronicCystitisRatingCriteria = getVoidingDysfunctionIncontinenc
 export const getNeurogenicBladderRatingCriteria = getVoidingDysfunctionIncontinenceRating;
 export const getProstateConditionsRatingCriteria = getVoidingDysfunctionFrequencyRating;
 export const getUrethralStrictureRatingCriteria = getVoidingDysfunctionObstructionRating;
+
+
+
+
+
+
+
+
+
+

@@ -188,6 +188,56 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
     complications: [],
   });
 
+  // Phase 4: Gynecological Conditions
+  const [gynecologicalData, setGynecologicalData] = useState({
+    // General gynecological
+    affectedOrgan: '',            // vulva/vagina/cervix/uterus/fallopian-tube/ovary/multiple
+    painType: '',                 // chronic-pelvic/dysmenorrhea/dyspareunia/ovulation/other
+    painSeverity: 5,
+    painLocation: '',
+    painDuration: '',
+    // Endometriosis
+    endometriosisDiagnosed: false,
+    laparoscopyConfirmed: false,
+    laparoscopyDate: '',
+    lesionLocations: [],          // bowel/bladder/ovaries/peritoneum/other
+    treatmentType: '',            // hormonal/surgical/pain-management/none
+    treatmentEffectiveness: '',   // controlled/partially-controlled/not-controlled
+    bowelSymptoms: false,
+    bladderSymptoms: false,
+    // Menstrual disorders
+    cycleRegularity: '',          // regular/irregular/absent
+    cycleLength: '',
+    flowHeaviness: '',            // light/moderate/heavy/very-heavy
+    flowDuration: '',
+    dysmenorrheaSeverity: '',     // none/mild/moderate/severe
+    intermenstrualBleeding: false,
+    // PCOS (rated under DC 7615)
+    pcosDiagnosed: false,
+    pcosSymptoms: [],             // irregular-periods/hirsutism/acne/weight-gain/ovarian-cysts
+    rotterdamCriteriaMet: '',     // 2-of-3/3-of-3/not-assessed
+    // PID
+    pidDiagnosed: false,
+    pidType: '',                  // acute/chronic
+    recurrentInfections: false,
+    numberOfEpisodes: '',
+    lastEpisodeDate: '',
+    // Prolapse
+    prolapseDiagnosed: false,
+    prolapseType: '',             // cystocele/rectocele/uterine/vault/enterocele/multiple
+    popStage: '',                 // 0/1/2/3/4
+    prolapseTreatment: '',        // none/pessary/pt/surgical
+    // Sexual function
+    sexualDysfunction: false,
+    arousalDifficulty: false,
+    libidoDecreased: false,
+    // General impact
+    interferesDailyActivities: false,
+    workMissed: false,
+    continuousTreatmentRequired: false,
+    treatmentMedications: [],
+  });
+
   // Phase 1H - Track processed prefillData to avoid re-processing
   const processedPrefillId = useRef(null);
   const isPrefilling = useRef(false);
@@ -205,14 +255,11 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
       isPrefilling.current = true;
 
       console.log('🔄 Processing prefill data:', prefillData);
-
       // Find the category and symptom
       const categoryInfo = sortedSymptomCategories.find(cat =>
           cat.symptoms.some(sym => sym.id === prefillData.symptomId)
       );
-
       console.log('Found category info:', categoryInfo);
-
       if (categoryInfo) {
         // Use the category ID (not name) for the dropdown
         console.log('Setting category ID:', categoryInfo.id);
@@ -231,7 +278,6 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
           console.warn('Could not find category for symptom:', prefillData.symptomId);
         }
       }
-
       // Set universal fields
       console.log('📝 Setting universal fields...');
       setSeverity(prefillData.severity || 5);
@@ -239,62 +285,53 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
       setIsFlareUp(prefillData.isFlareUp || false);
       setDuration(prefillData.duration || '');
       setTimeOfDay(prefillData.timeOfDay || '');
-
       // Set condition-specific data
       console.log('🔍 Checking condition-specific data...');
-
       if (prefillData.migraineData) {
         console.log('💊 Setting migraine data:', prefillData.migraineData);
         setMigraineData({ ...prefillData.migraineData });
       }
-
       if (prefillData.sleepData) {
         console.log('😴 Setting sleep data:', prefillData.sleepData);
         setSleepData({ ...prefillData.sleepData });
       }
-
       if (prefillData.ptsdData) {
         console.log('🧠 Setting PTSD data:', prefillData.ptsdData);
         setPtsdData({ ...prefillData.ptsdData });
       }
-
       if (prefillData.painData) {
         console.log('🩹 Setting pain data:', prefillData.painData);
         setPainData({ ...prefillData.painData });
       }
-
       if (prefillData.giData) {
         console.log('🫃 Setting GI data:', prefillData.giData);
         setGIData({ ...prefillData.giData });
       }
-
       if (prefillData.respiratoryData) {
         console.log('🫁 Setting respiratory data:', prefillData.respiratoryData);
         setRespiratoryData({ ...prefillData.respiratoryData });
       }
-
       if (prefillData.jointData) {
         console.log('🦴 Setting joint data:', prefillData.jointData);
         setJointData({ ...prefillData.jointData });
       }
-
       if (prefillData.seizureData) {
         console.log('⚡ Setting seizure data:', prefillData.seizureData);
         setSeizureData({ ...prefillData.seizureData });
       }
-
       if (prefillData.eyeData) {
         console.log('👁️ Setting eye data:', prefillData.eyeData);
         setEyeData({ ...prefillData.eyeData });
       }
-
       if (prefillData.genitourinaryData) {
         console.log('🫘 Setting genitourinary data:', prefillData.genitourinaryData);
         setGenitourinaryData({ ...prefillData.genitourinaryData });
       }
-
+      if (prefillData.gynecologicalData) {
+        console.log('🌸 Setting gynecological data:', prefillData.gynecologicalData);
+        setGynecologicalData({ ...prefillData.gynecologicalData });
+      }
       console.log('✅ All prefill data set');
-
       // Clear prefillData AFTER state updates have been queued
       setTimeout(() => {
         if (onPrefillUsed) {
@@ -411,6 +448,29 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
        'prostate-symptoms', 'prostate-pain', 'erectile-dysfunction', 'testicular-pain',
        'genital-pain', 'fecal-incontinence', 'bowel-urgency', 'bowel-frequency'].includes(selectedSymptom);
 
+  // Phase 4: Gynecological condition detection
+  const isGynecologicalRelated = selectedSymptom?.includes('menstrual') ||
+      selectedSymptom?.includes('pelvic') ||
+      selectedSymptom?.includes('endometriosis') ||
+      selectedSymptom?.includes('ovarian') ||
+      selectedSymptom?.includes('uterine') ||
+      selectedSymptom?.includes('vaginal') ||
+      selectedSymptom?.includes('cervix') ||
+      selectedSymptom?.includes('dyspareunia') ||
+      selectedSymptom?.includes('dysmenorrhea') ||
+      selectedSymptom?.includes('prolapse') ||
+      selectedSymptom?.includes('vulvo') ||
+      ['heavy-menstrual-bleeding', 'irregular-periods', 'painful-periods', 'absent-periods',
+        'prolonged-bleeding', 'intermenstrual-bleeding', 'premenstrual-syndrome',
+        'chronic-pelvic-pain', 'dyspareunia', 'lower-abdominal-pain', 'pain-bowel-movement',
+        'pain-urination-gyn', 'endometriosis-pain', 'endometriosis-bowel', 'endometriosis-bladder',
+        'ovarian-cysts', 'polycystic-ovaries', 'ovulation-pain', 'anovulation',
+        'pid-symptoms', 'abnormal-discharge', 'cervicitis', 'vulvovaginitis', 'vaginal-irritation',
+        'pelvic-pressure', 'vaginal-bulge', 'incomplete-bladder-emptying', 'bowel-dysfunction-prolapse',
+        'sexual-dysfunction', 'decreased-libido', 'arousal-difficulty', 'infertility',
+        'hirsutism', 'hormonal-acne', 'pcos-weight-changes', 'breast-pain', 'nipple-discharge',
+        'uterine-cramping'].includes(selectedSymptom);
+
   // Reset condition-specific data when symptom changes
   useEffect(() => {
     // Phase 1H: Skip reset during prefill operation
@@ -494,11 +554,25 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
         associatedConditions: [], complications: [],
       });
     }
+    if (!isGynecologicalRelated) {
+      setGynecologicalData({
+        affectedOrgan: '', painType: '', painSeverity: 5, painLocation: '', painDuration: '',
+        endometriosisDiagnosed: false, laparoscopyConfirmed: false, laparoscopyDate: '',
+        lesionLocations: [], treatmentType: '', treatmentEffectiveness: '',
+        bowelSymptoms: false, bladderSymptoms: false, cycleRegularity: '', cycleLength: '',
+        flowHeaviness: '', flowDuration: '', dysmenorrheaSeverity: '', intermenstrualBleeding: false,
+        pcosDiagnosed: false, pcosSymptoms: [], rotterdamCriteriaMet: '', pidDiagnosed: false,
+        pidType: '', recurrentInfections: false, numberOfEpisodes: '', lastEpisodeDate: '',
+        prolapseDiagnosed: false, prolapseType: '', popStage: '', prolapseTreatment: '',
+        sexualDysfunction: false, arousalDifficulty: false, libidoDecreased: false,
+        interferesDailyActivities: false, workMissed: false, continuousTreatmentRequired: false,
+        treatmentMedications: [],
+      });
+    }
 
-  }, [selectedSymptom, isMigraineSelected, isSleepSelected,
-            isNightmareSelected, isPTSDRelated, isPainSelected,
-            isGISelected, isRespiratorySelected, isJointSelected,
-            isSeizureSelected, isEyeRelated, isGenitourinaryRelated]);
+  }, [selectedSymptom, isMigraineSelected, isSleepSelected, isNightmareSelected, isPTSDRelated, isPainSelected,
+            isGISelected, isRespiratorySelected, isJointSelected, isSeizureSelected, isEyeRelated, isGenitourinaryRelated,
+            isGynecologicalRelated]);
 
   // Phase 3: Detect genitourinary system based on symptom
   useEffect(() => {
@@ -530,6 +604,38 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
       }
     }
   }, [selectedSymptom, isGenitourinaryRelated]);
+
+  // Phase 4: Detect gynecological organ/condition based on symptom
+  useEffect(() => {
+    if (isPrefilling.current) return;
+
+    if (isGynecologicalRelated) {
+      const menstrualSymptoms = ['heavy-menstrual-bleeding', 'irregular-periods', 'painful-periods', 'absent-periods', 'prolonged-bleeding', 'intermenstrual-bleeding', 'premenstrual-syndrome'];
+      const endometriosisSymptoms = ['endometriosis-pain', 'endometriosis-bowel', 'endometriosis-bladder'];
+      const ovarianSymptoms = ['ovarian-cysts', 'polycystic-ovaries', 'ovulation-pain', 'anovulation'];
+      const pidSymptoms = ['pid-symptoms', 'abnormal-discharge', 'cervicitis'];
+      const prolapseSymptoms = ['pelvic-pressure', 'vaginal-bulge', 'incomplete-bladder-emptying', 'bowel-dysfunction-prolapse'];
+      const vulvaVaginaSymptoms = ['vulvovaginitis', 'vaginal-irritation'];
+      const uterineSymptoms = ['uterine-cramping'];
+      const sexualSymptoms = ['sexual-dysfunction', 'decreased-libido', 'arousal-difficulty', 'dyspareunia'];
+      const pcosSymptoms = ['hirsutism', 'hormonal-acne', 'pcos-weight-changes'];
+
+      let organ = '';
+      if (menstrualSymptoms.includes(selectedSymptom)) organ = 'uterus';
+      else if (endometriosisSymptoms.includes(selectedSymptom)) organ = 'multiple';
+      else if (ovarianSymptoms.includes(selectedSymptom)) organ = 'ovary';
+      else if (pidSymptoms.includes(selectedSymptom)) organ = 'fallopian-tube';
+      else if (prolapseSymptoms.includes(selectedSymptom)) organ = 'multiple';
+      else if (vulvaVaginaSymptoms.includes(selectedSymptom)) organ = 'vagina';
+      else if (uterineSymptoms.includes(selectedSymptom)) organ = 'uterus';
+      else if (sexualSymptoms.includes(selectedSymptom)) organ = 'multiple';
+      else if (pcosSymptoms.includes(selectedSymptom)) organ = 'ovary';
+
+      if (organ && gynecologicalData.affectedOrgan !== organ) {
+        setGynecologicalData(prev => ({ ...prev, affectedOrgan: organ }));
+      }
+    }
+  }, [selectedSymptom, isGynecologicalRelated]);
 
   // Build categories list including custom symptoms
   const getAllCategories = () => {
@@ -639,6 +745,10 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
     // Phase 3: Add Genitourinary Data
     if (isGenitourinaryRelated) {
       entry.genitourinaryData = { ...genitourinaryData };
+    }
+    // Phase 4: Add Gynecological Data
+    if (isGynecologicalRelated) {
+      entry.gynecologicalData = { ...gynecologicalData };
     }
 
     const savedEntry = saveSymptomLog(entry);
@@ -2506,8 +2616,529 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
               </div>
           )}
 
-          {/* Severity Slider */}
-          <div>
+          {/* Phase 4: Gynecological Details */}
+          {isGynecologicalRelated && (
+              <div className="space-y-4 p-4 bg-rose-50 dark:bg-rose-900/20 rounded-lg border border-rose-200 dark:border-rose-800">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="text-2xl">🌸</span>
+                  <h3 className="font-medium text-rose-900 dark:text-rose-200">Gynecological Details</h3>
+                </div>
+
+                {/* ALWAYS SHOW: Affected Organ Selection */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Affected Organ/System</label>
+                  <select value={gynecologicalData.affectedOrgan}
+                          onChange={(e) => setGynecologicalData(prev => ({ ...prev, affectedOrgan: e.target.value }))}
+                          className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800">
+                    <option value="">Select organ/system</option>
+                    <option value="vulva">Vulva/Clitoris</option>
+                    <option value="vagina">Vagina</option>
+                    <option value="cervix">Cervix</option>
+                    <option value="uterus">Uterus</option>
+                    <option value="fallopian-tube">Fallopian Tube/PID</option>
+                    <option value="ovary">Ovary/PCOS</option>
+                    <option value="multiple">Multiple Organs (Endometriosis/Prolapse)</option>
+                  </select>
+                </div>
+
+                {/* ALWAYS SHOW: General Pain Assessment */}
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Pain Type</label>
+                    <select value={gynecologicalData.painType}
+                            onChange={(e) => setGynecologicalData(prev => ({ ...prev, painType: e.target.value }))}
+                            className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800">
+                      <option value="">Select pain type</option>
+                      <option value="chronic-pelvic">Chronic Pelvic Pain</option>
+                      <option value="dysmenorrhea">Menstrual Pain (Dysmenorrhea)</option>
+                      <option value="dyspareunia">Pain with Intercourse (Dyspareunia)</option>
+                      <option value="ovulation">Ovulation Pain (Mittelschmerz)</option>
+                      <option value="other">Other Gynecological Pain</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Pain Location</label>
+                    <select value={gynecologicalData.painLocation}
+                            onChange={(e) => setGynecologicalData(prev => ({ ...prev, painLocation: e.target.value }))}
+                            className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800">
+                      <option value="">Select location</option>
+                      <option value="lower-abdomen">Lower Abdomen</option>
+                      <option value="pelvic-center">Central Pelvis</option>
+                      <option value="left-side">Left Side</option>
+                      <option value="right-side">Right Side</option>
+                      <option value="deep-pelvis">Deep Pelvic</option>
+                      <option value="vaginal">Vaginal</option>
+                    </select>
+                  </div>
+                </div>
+
+                {/* CONDITIONAL: Endometriosis Section - Show for 'multiple' organs OR endometriosis symptoms */}
+                {(gynecologicalData.affectedOrgan === 'multiple' ||
+                    selectedSymptom?.includes('endometriosis')) && (
+                    <div className="bg-white dark:bg-gray-800 p-4 rounded-lg border-l-4 border-rose-500">
+                      <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-3">Endometriosis</h4>
+
+                      <label className={`flex items-center gap-2 p-3 rounded-lg border cursor-pointer mb-3 ${
+                          gynecologicalData.endometriosisDiagnosed ? 'bg-rose-100 dark:bg-rose-900/50 border-rose-300' : 'bg-white dark:bg-gray-800 border-gray-200'
+                      }`}>
+                        <input type="checkbox" checked={gynecologicalData.endometriosisDiagnosed}
+                               onChange={(e) => setGynecologicalData(prev => ({ ...prev, endometriosisDiagnosed: e.target.checked }))}
+                               className="w-4 h-4 text-rose-600 rounded" />
+                        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Diagnosed Endometriosis</span>
+                      </label>
+
+                      {gynecologicalData.endometriosisDiagnosed && (
+                          <>
+                            <label className={`flex items-center gap-2 p-3 rounded-lg border cursor-pointer mb-3 ${
+                                gynecologicalData.laparoscopyConfirmed ? 'bg-rose-100 dark:bg-rose-900/50 border-rose-300' : 'bg-white dark:bg-gray-800 border-gray-200'
+                            }`}>
+                              <input type="checkbox" checked={gynecologicalData.laparoscopyConfirmed}
+                                     onChange={(e) => setGynecologicalData(prev => ({ ...prev, laparoscopyConfirmed: e.target.checked }))}
+                                     className="w-4 h-4 text-rose-600 rounded" />
+                              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Confirmed by Laparoscopy (Required for VA)</span>
+                            </label>
+
+                            {gynecologicalData.laparoscopyConfirmed && (
+                                <div className="mb-3">
+                                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Laparoscopy Date</label>
+                                  <input type="date" value={gynecologicalData.laparoscopyDate}
+                                         onChange={(e) => setGynecologicalData(prev => ({ ...prev, laparoscopyDate: e.target.value }))}
+                                         className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800" />
+                                </div>
+                            )}
+
+                            <div className="mb-3">
+                              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Lesion Locations</label>
+                              <div className="grid grid-cols-2 gap-2">
+                                {['Bowel', 'Bladder', 'Ovaries', 'Peritoneum', 'Uterosacral', 'Other'].map(location => (
+                                    <label key={location} className={`flex items-center gap-2 p-2 rounded-lg border cursor-pointer ${
+                                        gynecologicalData.lesionLocations.includes(location) ? 'bg-rose-100 dark:bg-rose-900/50 border-rose-300' : 'bg-white dark:bg-gray-800 border-gray-200'
+                                    }`}>
+                                      <input type="checkbox" checked={gynecologicalData.lesionLocations.includes(location)}
+                                             onChange={() => {
+                                               setGynecologicalData(prev => ({
+                                                 ...prev,
+                                                 lesionLocations: prev.lesionLocations.includes(location)
+                                                     ? prev.lesionLocations.filter(l => l !== location)
+                                                     : [...prev.lesionLocations, location]
+                                               }));
+                                             }}
+                                             className="w-4 h-4 text-rose-600 rounded" />
+                                      <span className="text-sm text-gray-700 dark:text-gray-300">{location}</span>
+                                    </label>
+                                ))}
+                              </div>
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-4 mb-3">
+                              <label className={`flex items-center gap-2 p-3 rounded-lg border cursor-pointer ${
+                                  gynecologicalData.bowelSymptoms ? 'bg-rose-100 dark:bg-rose-900/50 border-rose-300' : 'bg-white dark:bg-gray-800 border-gray-200'
+                              }`}>
+                                <input type="checkbox" checked={gynecologicalData.bowelSymptoms}
+                                       onChange={(e) => setGynecologicalData(prev => ({ ...prev, bowelSymptoms: e.target.checked }))}
+                                       className="w-4 h-4 text-rose-600 rounded" />
+                                <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Bowel Symptoms</span>
+                              </label>
+
+                              <label className={`flex items-center gap-2 p-3 rounded-lg border cursor-pointer ${
+                                  gynecologicalData.bladderSymptoms ? 'bg-rose-100 dark:bg-rose-900/50 border-rose-300' : 'bg-white dark:bg-gray-800 border-gray-200'
+                              }`}>
+                                <input type="checkbox" checked={gynecologicalData.bladderSymptoms}
+                                       onChange={(e) => setGynecologicalData(prev => ({ ...prev, bladderSymptoms: e.target.checked }))}
+                                       className="w-4 h-4 text-rose-600 rounded" />
+                                <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Bladder Symptoms</span>
+                              </label>
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-4">
+                              <div>
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Treatment Type</label>
+                                <select value={gynecologicalData.treatmentType}
+                                        onChange={(e) => setGynecologicalData(prev => ({ ...prev, treatmentType: e.target.value }))}
+                                        className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800">
+                                  <option value="">Select treatment</option>
+                                  <option value="hormonal">Hormonal (Birth control, GnRH)</option>
+                                  <option value="surgical">Surgical (Excision/Ablation)</option>
+                                  <option value="pain-management">Pain Management Only</option>
+                                  <option value="none">None</option>
+                                </select>
+                              </div>
+
+                              <div>
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Treatment Effectiveness</label>
+                                <select value={gynecologicalData.treatmentEffectiveness}
+                                        onChange={(e) => setGynecologicalData(prev => ({ ...prev, treatmentEffectiveness: e.target.value }))}
+                                        className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800">
+                                  <option value="">Select effectiveness</option>
+                                  <option value="controlled">Controlled</option>
+                                  <option value="partially-controlled">Partially Controlled</option>
+                                  <option value="not-controlled">Not Controlled</option>
+                                </select>
+                              </div>
+                            </div>
+                          </>
+                      )}
+                    </div>
+                )}
+
+                {/* CONDITIONAL: Menstrual Disorders/PCOS - Show for 'ovary' OR menstrual/pcos symptoms */}
+                {(gynecologicalData.affectedOrgan === 'ovary' ||
+                    selectedSymptom?.includes('menstrual') ||
+                    selectedSymptom?.includes('period') ||
+                    selectedSymptom?.includes('pcos') ||
+                    selectedSymptom?.includes('ovarian')) && (
+                    <div className="bg-white dark:bg-gray-800 p-4 rounded-lg border-l-4 border-rose-500">
+                      <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-3">Menstrual Disorders</h4>
+
+                      <div className="grid grid-cols-3 gap-4 mb-3">
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Cycle Regularity</label>
+                          <select value={gynecologicalData.cycleRegularity}
+                                  onChange={(e) => setGynecologicalData(prev => ({ ...prev, cycleRegularity: e.target.value }))}
+                                  className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800">
+                            <option value="">Select regularity</option>
+                            <option value="regular">Regular (21-35 days)</option>
+                            <option value="irregular">Irregular (varies)</option>
+                            <option value="absent">Absent (Amenorrhea)</option>
+                          </select>
+                        </div>
+
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Cycle Length (days)</label>
+                          <input type="number" min="14" max="90" value={gynecologicalData.cycleLength}
+                                 onChange={(e) => setGynecologicalData(prev => ({ ...prev, cycleLength: e.target.value }))}
+                                 placeholder="28"
+                                 className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800" />
+                        </div>
+
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Flow Duration (days)</label>
+                          <input type="number" min="1" max="14" value={gynecologicalData.flowDuration}
+                                 onChange={(e) => setGynecologicalData(prev => ({ ...prev, flowDuration: e.target.value }))}
+                                 placeholder="5"
+                                 className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800" />
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-4 mb-3">
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Flow Heaviness</label>
+                          <select value={gynecologicalData.flowHeaviness}
+                                  onChange={(e) => setGynecologicalData(prev => ({ ...prev, flowHeaviness: e.target.value }))}
+                                  className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800">
+                            <option value="">Select flow heaviness</option>
+                            <option value="spotting">Spotting Only</option>
+                            <option value="light">Light</option>
+                            <option value="moderate">Moderate</option>
+                            <option value="heavy">Heavy (Menorrhagia)</option>
+                            <option value="very-heavy">Very Heavy (Soaking Through)</option>
+                          </select>
+                        </div>
+
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Dysmenorrhea Severity</label>
+                          <select value={gynecologicalData.dysmenorrheaSeverity}
+                                  onChange={(e) => setGynecologicalData(prev => ({ ...prev, dysmenorrheaSeverity: e.target.value }))}
+                                  className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800">
+                            <option value="">Select pain severity</option>
+                            <option value="none">None</option>
+                            <option value="mild">Mild (manageable)</option>
+                            <option value="moderate">Moderate (interferes with activities)</option>
+                            <option value="severe">Severe (incapacitating)</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      <label className={`flex items-center gap-2 p-3 rounded-lg border cursor-pointer mb-3 ${
+                          gynecologicalData.intermenstrualBleeding ? 'bg-rose-100 dark:bg-rose-900/50 border-rose-300' : 'bg-white dark:bg-gray-800 border-gray-200'
+                      }`}>
+                        <input type="checkbox" checked={gynecologicalData.intermenstrualBleeding}
+                               onChange={(e) => setGynecologicalData(prev => ({ ...prev, intermenstrualBleeding: e.target.checked }))}
+                               className="w-4 h-4 text-rose-600 rounded" />
+                        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Intermenstrual Bleeding (Spotting Between Periods)</span>
+                      </label>
+
+                      {/* PCOS Subsection */}
+                      <div className="bg-rose-50 dark:bg-rose-900/30 p-3 rounded-lg mt-3">
+                        <label className={`flex items-center gap-2 p-3 rounded-lg border cursor-pointer mb-3 ${
+                            gynecologicalData.pcosDiagnosed ? 'bg-rose-100 dark:bg-rose-900/50 border-rose-300' : 'bg-white dark:bg-gray-800 border-gray-200'
+                        }`}>
+                          <input type="checkbox" checked={gynecologicalData.pcosDiagnosed}
+                                 onChange={(e) => setGynecologicalData(prev => ({ ...prev, pcosDiagnosed: e.target.checked }))}
+                                 className="w-4 h-4 text-rose-600 rounded" />
+                          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">PCOS Diagnosed (rated under DC 7615)</span>
+                        </label>
+
+                        {gynecologicalData.pcosDiagnosed && (
+                            <>
+                              <div className="mb-3">
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">PCOS Symptoms Present</label>
+                                <div className="grid grid-cols-2 gap-2">
+                                  {['Irregular Periods', 'Hirsutism', 'Acne', 'Weight Gain', 'Ovarian Cysts', 'Insulin Resistance'].map(symptom => (
+                                      <label key={symptom} className={`flex items-center gap-2 p-2 rounded-lg border cursor-pointer ${
+                                          gynecologicalData.pcosSymptoms.includes(symptom) ? 'bg-rose-100 dark:bg-rose-900/50 border-rose-300' : 'bg-white dark:bg-gray-800 border-gray-200'
+                                      }`}>
+                                        <input type="checkbox" checked={gynecologicalData.pcosSymptoms.includes(symptom)}
+                                               onChange={() => {
+                                                 setGynecologicalData(prev => ({
+                                                   ...prev,
+                                                   pcosSymptoms: prev.pcosSymptoms.includes(symptom)
+                                                       ? prev.pcosSymptoms.filter(s => s !== symptom)
+                                                       : [...prev.pcosSymptoms, symptom]
+                                                 }));
+                                               }}
+                                               className="w-4 h-4 text-rose-600 rounded" />
+                                        <span className="text-sm text-gray-700 dark:text-gray-300">{symptom}</span>
+                                      </label>
+                                  ))}
+                                </div>
+                              </div>
+
+                              <div>
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Rotterdam Criteria Met</label>
+                                <select value={gynecologicalData.rotterdamCriteriaMet}
+                                        onChange={(e) => setGynecologicalData(prev => ({ ...prev, rotterdamCriteriaMet: e.target.value }))}
+                                        className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800">
+                                  <option value="">Select criteria</option>
+                                  <option value="2-of-3">2 of 3 Criteria (Diagnosis)</option>
+                                  <option value="3-of-3">All 3 Criteria</option>
+                                  <option value="not-assessed">Not Formally Assessed</option>
+                                </select>
+                              </div>
+                            </>
+                        )}
+                      </div>
+                    </div>
+                )}
+
+                {/* CONDITIONAL: PID Section - Show for 'fallopian-tube' OR pid symptoms */}
+                {(gynecologicalData.affectedOrgan === 'fallopian-tube' ||
+                    selectedSymptom?.includes('pid')) && (
+                    <div className="bg-white dark:bg-gray-800 p-4 rounded-lg border-l-4 border-rose-500">
+                      <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-3">Pelvic Inflammatory Disease</h4>
+
+                      <label className={`flex items-center gap-2 p-3 rounded-lg border cursor-pointer mb-3 ${
+                          gynecologicalData.pidDiagnosed ? 'bg-rose-100 dark:bg-rose-900/50 border-rose-300' : 'bg-white dark:bg-gray-800 border-gray-200'
+                      }`}>
+                        <input type="checkbox" checked={gynecologicalData.pidDiagnosed}
+                               onChange={(e) => setGynecologicalData(prev => ({ ...prev, pidDiagnosed: e.target.checked }))}
+                               className="w-4 h-4 text-rose-600 rounded" />
+                        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Diagnosed PID</span>
+                      </label>
+
+                      {gynecologicalData.pidDiagnosed && (
+                          <>
+                            <div className="grid grid-cols-2 gap-4 mb-3">
+                              <div>
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">PID Type</label>
+                                <select value={gynecologicalData.pidType}
+                                        onChange={(e) => setGynecologicalData(prev => ({ ...prev, pidType: e.target.value }))}
+                                        className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800">
+                                  <option value="">Select type</option>
+                                  <option value="acute">Acute Episode</option>
+                                  <option value="chronic">Chronic PID</option>
+                                </select>
+                              </div>
+
+                              <div>
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Last Episode Date</label>
+                                <input type="date" value={gynecologicalData.lastEpisodeDate}
+                                       onChange={(e) => setGynecologicalData(prev => ({ ...prev, lastEpisodeDate: e.target.value }))}
+                                       className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800" />
+                              </div>
+                            </div>
+
+                            <label className={`flex items-center gap-2 p-3 rounded-lg border cursor-pointer mb-3 ${
+                                gynecologicalData.recurrentInfections ? 'bg-rose-100 dark:bg-rose-900/50 border-rose-300' : 'bg-white dark:bg-gray-800 border-gray-200'
+                            }`}>
+                              <input type="checkbox" checked={gynecologicalData.recurrentInfections}
+                                     onChange={(e) => setGynecologicalData(prev => ({ ...prev, recurrentInfections: e.target.checked }))}
+                                     className="w-4 h-4 text-rose-600 rounded" />
+                              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Recurrent Infections</span>
+                            </label>
+
+                            {gynecologicalData.recurrentInfections && (
+                                <div>
+                                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Number of Episodes (past year)</label>
+                                  <input type="number" min="1" max="20" value={gynecologicalData.numberOfEpisodes}
+                                         onChange={(e) => setGynecologicalData(prev => ({ ...prev, numberOfEpisodes: e.target.value }))}
+                                         placeholder="2"
+                                         className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800" />
+                                </div>
+                            )}
+                          </>
+                      )}
+                    </div>
+                )}
+
+                {/* CONDITIONAL: Pelvic Prolapse - Show for 'multiple' OR prolapse symptoms */}
+                {(gynecologicalData.affectedOrgan === 'multiple' ||
+                    selectedSymptom?.includes('prolapse') ||
+                    selectedSymptom?.includes('pelvic-pressure') ||
+                    selectedSymptom?.includes('vaginal-bulge')) && (
+                    <div className="bg-white dark:bg-gray-800 p-4 rounded-lg border-l-4 border-rose-500">
+                      <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-3">Pelvic Organ Prolapse</h4>
+
+                      <label className={`flex items-center gap-2 p-3 rounded-lg border cursor-pointer mb-3 ${
+                          gynecologicalData.prolapseDiagnosed ? 'bg-rose-100 dark:bg-rose-900/50 border-rose-300' : 'bg-white dark:bg-gray-800 border-gray-200'
+                      }`}>
+                        <input type="checkbox" checked={gynecologicalData.prolapseDiagnosed}
+                               onChange={(e) => setGynecologicalData(prev => ({ ...prev, prolapseDiagnosed: e.target.checked }))}
+                               className="w-4 h-4 text-rose-600 rounded" />
+                        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Pelvic Organ Prolapse Diagnosed</span>
+                      </label>
+
+                      {gynecologicalData.prolapseDiagnosed && (
+                          <>
+                            <div className="grid grid-cols-2 gap-4 mb-3">
+                              <div>
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Prolapse Type</label>
+                                <select value={gynecologicalData.prolapseType}
+                                        onChange={(e) => setGynecologicalData(prev => ({ ...prev, prolapseType: e.target.value }))}
+                                        className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800">
+                                  <option value="">Select type</option>
+                                  <option value="cystocele">Cystocele (Bladder)</option>
+                                  <option value="rectocele">Rectocele (Rectum)</option>
+                                  <option value="uterine">Uterine Prolapse</option>
+                                  <option value="vault">Vaginal Vault Prolapse</option>
+                                  <option value="enterocele">Enterocele (Small Bowel)</option>
+                                  <option value="multiple">Multiple Types</option>
+                                </select>
+                              </div>
+
+                              <div>
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">POP-Q Stage</label>
+                                <select value={gynecologicalData.popStage}
+                                        onChange={(e) => setGynecologicalData(prev => ({ ...prev, popStage: e.target.value }))}
+                                        className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800">
+                                  <option value="">Select stage</option>
+                                  <option value="0">Stage 0 (No prolapse)</option>
+                                  <option value="1">Stage I (Mild - above hymen)</option>
+                                  <option value="2">Stage II (Moderate - at hymen)</option>
+                                  <option value="3">Stage III (Severe - below hymen)</option>
+                                  <option value="4">Stage IV (Complete eversion)</option>
+                                </select>
+                              </div>
+                            </div>
+
+                            <div>
+                              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Current Treatment</label>
+                              <select value={gynecologicalData.prolapseTreatment}
+                                      onChange={(e) => setGynecologicalData(prev => ({ ...prev, prolapseTreatment: e.target.value }))}
+                                      className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800">
+                                <option value="">Select treatment</option>
+                                <option value="none">None</option>
+                                <option value="pessary">Pessary</option>
+                                <option value="pt">Pelvic Floor Physical Therapy</option>
+                                <option value="surgical">Surgical Repair (Post-op)</option>
+                              </select>
+                            </div>
+                          </>
+                      )}
+                    </div>
+                )}
+
+                {/* CONDITIONAL: Sexual Function - Show for sexual dysfunction symptoms */}
+                {(selectedSymptom?.includes('sexual') ||
+                    selectedSymptom?.includes('arousal') ||
+                    selectedSymptom?.includes('libido') ||
+                    selectedSymptom?.includes('dyspareunia')) && (
+                    <div className="bg-white dark:bg-gray-800 p-4 rounded-lg border-l-4 border-rose-500">
+                      <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-3">Sexual Function</h4>
+
+                      <div className="grid grid-cols-3 gap-3">
+                        <label className={`flex items-center gap-2 p-3 rounded-lg border cursor-pointer ${
+                            gynecologicalData.sexualDysfunction ? 'bg-rose-100 dark:bg-rose-900/50 border-rose-300' : 'bg-white dark:bg-gray-800 border-gray-200'
+                        }`}>
+                          <input type="checkbox" checked={gynecologicalData.sexualDysfunction}
+                                 onChange={(e) => setGynecologicalData(prev => ({ ...prev, sexualDysfunction: e.target.checked }))}
+                                 className="w-4 h-4 text-rose-600 rounded" />
+                          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Sexual Dysfunction</span>
+                        </label>
+
+                        <label className={`flex items-center gap-2 p-3 rounded-lg border cursor-pointer ${
+                            gynecologicalData.arousalDifficulty ? 'bg-rose-100 dark:bg-rose-900/50 border-rose-300' : 'bg-white dark:bg-gray-800 border-gray-200'
+                        }`}>
+                          <input type="checkbox" checked={gynecologicalData.arousalDifficulty}
+                                 onChange={(e) => setGynecologicalData(prev => ({ ...prev, arousalDifficulty: e.target.checked }))}
+                                 className="w-4 h-4 text-rose-600 rounded" />
+                          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Arousal Difficulty</span>
+                        </label>
+
+                        <label className={`flex items-center gap-2 p-3 rounded-lg border cursor-pointer ${
+                            gynecologicalData.libidoDecreased ? 'bg-rose-100 dark:bg-rose-900/50 border-rose-300' : 'bg-white dark:bg-gray-800 border-gray-200'
+                        }`}>
+                          <input type="checkbox" checked={gynecologicalData.libidoDecreased}
+                                 onChange={(e) => setGynecologicalData(prev => ({ ...prev, libidoDecreased: e.target.checked }))}
+                                 className="w-4 h-4 text-rose-600 rounded" />
+                          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Decreased Libido</span>
+                        </label>
+                      </div>
+                    </div>
+                )}
+
+                {/* ALWAYS SHOW: Impact & Treatment */}
+                <div className="bg-white dark:bg-gray-800 p-4 rounded-lg border-l-4 border-rose-500">
+                  <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-3">Impact & Treatment</h4>
+
+                  <div className="grid grid-cols-3 gap-3 mb-3">
+                    <label className={`flex items-center gap-2 p-3 rounded-lg border cursor-pointer ${
+                        gynecologicalData.interferesDailyActivities ? 'bg-rose-100 dark:bg-rose-900/50 border-rose-300' : 'bg-white dark:bg-gray-800 border-gray-200'
+                    }`}>
+                      <input type="checkbox" checked={gynecologicalData.interferesDailyActivities}
+                             onChange={(e) => setGynecologicalData(prev => ({ ...prev, interferesDailyActivities: e.target.checked }))}
+                             className="w-4 h-4 text-rose-600 rounded" />
+                      <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Interferes with Daily Activities</span>
+                    </label>
+
+                    <label className={`flex items-center gap-2 p-3 rounded-lg border cursor-pointer ${
+                        gynecologicalData.workMissed ? 'bg-rose-100 dark:bg-rose-900/50 border-rose-300' : 'bg-white dark:bg-gray-800 border-gray-200'
+                    }`}>
+                      <input type="checkbox" checked={gynecologicalData.workMissed}
+                             onChange={(e) => setGynecologicalData(prev => ({ ...prev, workMissed: e.target.checked }))}
+                             className="w-4 h-4 text-rose-600 rounded" />
+                      <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Missed Work</span>
+                    </label>
+
+                    <label className={`flex items-center gap-2 p-3 rounded-lg border cursor-pointer ${
+                        gynecologicalData.continuousTreatmentRequired ? 'bg-rose-100 dark:bg-rose-900/50 border-rose-300' : 'bg-white dark:bg-gray-800 border-gray-200'
+                    }`}>
+                      <input type="checkbox" checked={gynecologicalData.continuousTreatmentRequired}
+                             onChange={(e) => setGynecologicalData(prev => ({ ...prev, continuousTreatmentRequired: e.target.checked }))}
+                             className="w-4 h-4 text-rose-600 rounded" />
+                      <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Continuous Treatment Required</span>
+                    </label>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Treatment Medications (Optional)</label>
+                    <div className="grid grid-cols-2 gap-2">
+                      {['Birth Control Pills', 'GnRH Agonist', 'NSAIDs', 'Hormonal IUD', 'Aromatase Inhibitors', 'Pain Medication'].map(med => (
+                          <label key={med} className={`flex items-center gap-2 p-2 rounded-lg border cursor-pointer ${
+                              gynecologicalData.treatmentMedications.includes(med) ? 'bg-rose-100 dark:bg-rose-900/50 border-rose-300' : 'bg-white dark:bg-gray-800 border-gray-200'
+                          }`}>
+                            <input type="checkbox" checked={gynecologicalData.treatmentMedications.includes(med)}
+                                   onChange={() => {
+                                     setGynecologicalData(prev => ({
+                                       ...prev,
+                                       treatmentMedications: prev.treatmentMedications.includes(med)
+                                           ? prev.treatmentMedications.filter(m => m !== med)
+                                           : [...prev.treatmentMedications, med]
+                                     }));
+                                   }}
+                                   className="w-4 h-4 text-rose-600 rounded" />
+                            <span className="text-sm text-gray-700 dark:text-gray-300">{med}</span>
+                          </label>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+          )}
+
+                {/* Severity Slider */}
+                <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Severity Level</label>
             <div className="bg-white dark:bg-gray-800 p-4 rounded-lg border border-gray-200 dark:border-gray-700">
               <input type="range" min="0" max="10" value={severity}

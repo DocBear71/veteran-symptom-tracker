@@ -1,99 +1,101 @@
 import { useState, useEffect, useMemo } from 'react';
 import { getSymptomLogs, saveSymptomLog } from '../utils/storage';
 import {
-    analyzeMigraineLogs,
-    analyzeSleepApneaLogs,
-    analyzePTSDLogs,
-    analyzeMajorDepressionLogs,
-    analyzeGeneralizedAnxietyLogs,
-    analyzePanicDisorderLogs,
-    analyzeBipolarLogs,
-    analyzeLumbosacralStrainLogs,
-    analyzeIntervertebralDiscLogs,
-    analyzeKneeInstabilityLogs,
-    analyzeTBILogs,
-    analyzeTBIResidualsLogs,
-    analyzeHypertensionLogs,
-    analyzeTinnitusLogs,
-    analyzeFibromyalgiaLogs,
-    analyzeDiabetesLogs,
-    analyzeIBSLogs,
-    analyzeGERDLogs,
-    analyzeGERDComplicationsLogs,
-    analyzeUlcerativeColitisLogs,
-    analyzePepticUlcerLogs,
-    analyzeHemorrhoidLogs,
-    analyzeDiverticulitisLogs,
-    analyzeHypothyroidismLogs,
-    analyzeRaynaudsLogs,
-    analyzeVaricoseVeinsLogs,
-    analyzeChronicUrticariaLogs,
-    analyzeRadiculopathyLogs,
-    analyzeChronicFatigueLogs,
-    analyzePeripheralNeuropathyLogs,
-    analyzeMenieresLogs,
-    analyzeRhinitisLogs,
-    analyzeTMJLogs,
-    analyzePlantarFasciitisLogs,
-    analyzeInsomniaLogs,
-    analyzeSinusitisLogs,
-    analyzeShoulderLogs,
-    analyzeHipLogs,
-    analyzeAnkleLogs,
-    analyzeWristLogs,
-    analyzeElbowLogs,
-    analyzeDegenerativeArthritisLogs,
-    analyzeAsthmaLogs,
-    analyzeHearingLossLogs,
-    analyzeScarsLogs,
-    analyzePsoriasisLogs,
-    analyzeEczemaLogs,
-    analyzeSocialAnxietyLogs,
-    analyzeOCDLogs,
-    analyzePersistentDepressiveLogs,
-    analyzeAdjustmentDisorderLogs,
-    analyzeUnspecifiedAnxietyLogs,
-    analyzeUnspecifiedDepressiveLogs,
-    analyzeEpilepsyMajorLogs,
-    analyzeEpilepsyMinorLogs,
-    analyzeVisionLogs,
-    analyzeKidneyStonesLogs,
-    analyzeChronicRenalDiseaseLogs,
-    analyzeVoidingDysfunctionLogs,
-    analyzeSphincterImpairmentLogs,
-    analyzeErectileDysfunctionLogs,
-    getAllMigraineRatings,
-    getAllSleepApneaRatings,
-    getAllPTSDRatings,
-    getAllMajorDepressionRatings,
-    getAllGeneralizedAnxietyRatings,
-    getAllPanicDisorderRatings,
-    getAllBipolarRatings,
-    getAllSocialAnxietyRatings,
-    getAllOCDRatings,
-    getAllPersistentDepressiveRatings,
-    getAllAdjustmentDisorderRatings,
-    getAllUnspecifiedAnxietyRatings,
-    getAllUnspecifiedDepressiveRatings,
-    getAllEpilepsyMajorRatings,
-    getAllEpilepsyMinorRatings,
-    getEpilepsyMajorDefinition,
-    getEpilepsyMinorDefinition,
-    getMigraineDefinition,
-    getSleepApneaDefinition,
-    getPTSDDefinition,
-    getMajorDepressionDefinition,
-    getGeneralizedAnxietyDefinition,
-    getPanicDisorderDefinition,
-    getBipolarDefinition,
-    getSocialAnxietyDefinition,
-    getOCDDefinition,
-    getPersistentDepressiveDefinition,
-    getAdjustmentDisorderDefinition,
-    getUnspecifiedAnxietyDefinition,
-    getUnspecifiedDepressiveDefinition,
-    formatRating,
-    getRatingColorClass,
+  analyzeMigraineLogs,
+  analyzeSleepApneaLogs,
+  analyzePTSDLogs,
+  analyzeMajorDepressionLogs,
+  analyzeGeneralizedAnxietyLogs,
+  analyzePanicDisorderLogs,
+  analyzeBipolarLogs,
+  analyzeLumbosacralStrainLogs,
+  analyzeIntervertebralDiscLogs,
+  analyzeKneeInstabilityLogs,
+  analyzeTBILogs,
+  analyzeTBIResidualsLogs,
+  analyzeHypertensionLogs,
+  analyzeTinnitusLogs,
+  analyzeFibromyalgiaLogs,
+  analyzeDiabetesLogs,
+  analyzeIBSLogs,
+  analyzeGERDLogs,
+  analyzeGERDComplicationsLogs,
+  analyzeUlcerativeColitisLogs,
+  analyzePepticUlcerLogs,
+  analyzeHemorrhoidLogs,
+  analyzeDiverticulitisLogs,
+  analyzeHypothyroidismLogs,
+  analyzeRaynaudsLogs,
+  analyzeVaricoseVeinsLogs,
+  analyzeChronicUrticariaLogs,
+  analyzeRadiculopathyLogs,
+  analyzeChronicFatigueLogs,
+  analyzePeripheralNeuropathyLogs,
+  analyzeMenieresLogs,
+  analyzeRhinitisLogs,
+  analyzeTMJLogs,
+  analyzePlantarFasciitisLogs,
+  analyzeInsomniaLogs,
+  analyzeSinusitisLogs,
+  analyzeShoulderLogs,
+  analyzeHipLogs,
+  analyzeAnkleLogs,
+  analyzeWristLogs,
+  analyzeElbowLogs,
+  analyzeDegenerativeArthritisLogs,
+  analyzeAsthmaLogs,
+  analyzeHearingLossLogs,
+  analyzeScarsLogs,
+  analyzePsoriasisLogs,
+  analyzeEczemaLogs,
+  analyzeSocialAnxietyLogs,
+  analyzeOCDLogs,
+  analyzePersistentDepressiveLogs,
+  analyzeAdjustmentDisorderLogs,
+  analyzeUnspecifiedAnxietyLogs,
+  analyzeUnspecifiedDepressiveLogs,
+  analyzeEpilepsyMajorLogs,
+  analyzeEpilepsyMinorLogs,
+  analyzeVisionLogs,
+  analyzeKidneyStonesLogs,
+  analyzeChronicRenalDiseaseLogs,
+  analyzeVoidingDysfunctionLogs,
+  analyzeSphincterImpairmentLogs,
+  analyzeErectileDysfunctionLogs,
+  getAllMigraineRatings,
+  getAllSleepApneaRatings,
+  getAllPTSDRatings,
+  getAllMajorDepressionRatings,
+  getAllGeneralizedAnxietyRatings,
+  getAllPanicDisorderRatings,
+  getAllBipolarRatings,
+  getAllSocialAnxietyRatings,
+  getAllOCDRatings,
+  getAllPersistentDepressiveRatings,
+  getAllAdjustmentDisorderRatings,
+  getAllUnspecifiedAnxietyRatings,
+  getAllUnspecifiedDepressiveRatings,
+  getAllEpilepsyMajorRatings,
+  getAllEpilepsyMinorRatings,
+  getEpilepsyMajorDefinition,
+  getEpilepsyMinorDefinition,
+  getMigraineDefinition,
+  getSleepApneaDefinition,
+  getPTSDDefinition,
+  getMajorDepressionDefinition,
+  getGeneralizedAnxietyDefinition,
+  getPanicDisorderDefinition,
+  getBipolarDefinition,
+  getSocialAnxietyDefinition,
+  getOCDDefinition,
+  getPersistentDepressiveDefinition,
+  getAdjustmentDisorderDefinition,
+  getUnspecifiedAnxietyDefinition,
+  getUnspecifiedDepressiveDefinition,
+  formatRating,
+  getRatingColorClass, analyzeEndometriosisLogs,
+  analyzeFemaleReproductiveOrgansLogs, analyzePelvicProlapseLogs,
+  analyzeFemaleArousalDisorderLogs,
 } from '../utils/ratingCriteria';
 import HypertensionRatingCard from './HypertensionRatingCard';
 import BloodPressureTrendChart from './BloodPressureTrendChart';
@@ -130,7 +132,10 @@ import ProstateConditionsRatingCard from './ProstateConditionsRatingCard';
 import UrethralStrictureRatingCard from './UrethralStrictureRatingCard';
 import SphincterImpairmentRatingCard from './SphincterImpairmentRatingCard';
 import ErectileDysfunctionRatingCard from './ErectileDysfunctionRatingCard';
-import measurements from './Measurements.jsx';
+import EndometriosisRatingCard from './EndometriosisRatingCard';
+import FemaleReproductiveOrgansRatingCard from './FemaleReproductiveOrgansRatingCard';
+import PelvicProlapseRatingCard from './PelvicProlapseRatingCard';
+import FemaleArousalDisorderRatingCard from './FemaleArousalDisorderRatingCard';
 
 // Storage key for sleep apnea profile
 
@@ -180,269 +185,225 @@ const RatingEvidence = () => {
         const migraineLogs = logs.filter(log => log.symptom === 'migraine');
         return analyzeMigraineLogs(migraineLogs, { evaluationPeriodDays: evaluationDays });
     }, [logs, evaluationDays]);
-
     // Analyze sleep apnea logs
     const sleepApneaAnalysis = useMemo(() => {
         return analyzeSleepApneaLogs(logs, sleepApneaProfile, { evaluationPeriodDays: evaluationDays });
     }, [logs, sleepApneaProfile, evaluationDays]);
-
     // Analyze PTSD logs
     const ptsdAnalysis = useMemo(() => {
         return analyzePTSDLogs(logs, { evaluationPeriodDays: evaluationDays });
     }, [logs, evaluationDays]);
-
     // Analyze Major Depression logs
     const majorDepressionAnalysis = useMemo(() => {
         return analyzeMajorDepressionLogs(logs, { evaluationPeriodDays: evaluationDays });
     }, [logs, evaluationDays]);
-
     // Analyze Generalized Anxiety logs
     const generalizedAnxietyAnalysis = useMemo(() => {
         return analyzeGeneralizedAnxietyLogs(logs, { evaluationPeriodDays: evaluationDays });
     }, [logs, evaluationDays]);
-
     // Analyze Panic Disorder logs
     const panicDisorderAnalysis = useMemo(() => {
         return analyzePanicDisorderLogs(logs, { evaluationPeriodDays: evaluationDays });
     }, [logs, evaluationDays]);
-
     // Analyze Bipolar logs
     const bipolarAnalysis = useMemo(() => {
         return analyzeBipolarLogs(logs, { evaluationPeriodDays: evaluationDays });
     }, [logs, evaluationDays]);
-
     // Analyze Social Anxiety logs
     const socialAnxietyAnalysis = useMemo(() => {
         return analyzeSocialAnxietyLogs(logs, { evaluationPeriodDays: evaluationDays });
     }, [logs, evaluationDays]);
-
     // Analyze OCD logs
     const ocdAnalysis = useMemo(() => {
         return analyzeOCDLogs(logs, { evaluationPeriodDays: evaluationDays });
     }, [logs, evaluationDays]);
-
     // Analyze Persistent Depressive Disorder (Dysthymia) logs
     const persistentDepressiveAnalysis = useMemo(() => {
         return analyzePersistentDepressiveLogs(logs, { evaluationPeriodDays: evaluationDays });
     }, [logs, evaluationDays]);
-
     // Analyze Adjustment Disorder logs
     const adjustmentDisorderAnalysis = useMemo(() => {
         return analyzeAdjustmentDisorderLogs(logs, { evaluationPeriodDays: evaluationDays });
     }, [logs, evaluationDays]);
-
     // Analyze Unspecified Anxiety logs
     const unspecifiedAnxietyAnalysis = useMemo(() => {
         return analyzeUnspecifiedAnxietyLogs(logs, { evaluationPeriodDays: evaluationDays });
     }, [logs, evaluationDays]);
-
     // Analyze Unspecified Depressive logs
     const unspecifiedDepressiveAnalysis = useMemo(() => {
         return analyzeUnspecifiedDepressiveLogs(logs, { evaluationPeriodDays: evaluationDays });
     }, [logs, evaluationDays]);
-
     // Analyze Lumbosacral Strain logs
     const lumbosacralStrainAnalysis = useMemo(() => {
         return analyzeLumbosacralStrainLogs(logs, { evaluationPeriodDays: evaluationDays });
     }, [logs, evaluationDays]);
-
     // Analyze Intervertebral Disc logs
     const intervertebralDiscAnalysis = useMemo(() => {
         return analyzeIntervertebralDiscLogs(logs, { evaluationPeriodDays: evaluationDays });
     }, [logs, evaluationDays]);
-
     // Analyze Knee Instability logs
     const kneeInstabilityAnalysis = useMemo(() => {
         return analyzeKneeInstabilityLogs(logs, { evaluationPeriodDays: evaluationDays });
     }, [logs, evaluationDays]);
-
     // Analyze TBI logs
     const tbiAnalysis = useMemo(() => {
         return analyzeTBILogs(logs, { evaluationPeriodDays: evaluationDays });
     }, [logs, evaluationDays]);
-
     // Analyze Hypertension logs (uses BP measurements)
     const hypertensionAnalysis = useMemo(() => {
         return analyzeHypertensionLogs(logs, { evaluationPeriodDays: evaluationDays });
     }, [logs, evaluationDays]);
-
     // Analyze Diabetes logs (uses glucose/HbA1c measurements)
     const diabetesAnalysis = useMemo(() => {
         return analyzeDiabetesLogs(logs, { evaluationPeriodDays: evaluationDays });
     }, [logs, evaluationDays]);
-
     // Analyze IBS logs
     const ibsAnalysis = useMemo(() => {
         return analyzeIBSLogs(logs, { evaluationPeriodDays: evaluationDays });
     }, [logs, evaluationDays]);
-
-// Analyze GERD logs
+    // Analyze GERD logs
     const gerdAnalysis = useMemo(() => {
         return analyzeGERDLogs(logs, { evaluationPeriodDays: evaluationDays });
     }, [logs, evaluationDays]);
-
-// Analyze Radiculopathy logs
+    // Analyze Radiculopathy logs
     const radiculopathyAnalysis = useMemo(() => {
         return analyzeRadiculopathyLogs(logs, { evaluationPeriodDays: evaluationDays });
     }, [logs, evaluationDays]);
-
     const chronicFatigueAnalysis = useMemo(() => {
         return analyzeChronicFatigueLogs(logs, { evaluationPeriodDays: evaluationDays });
     }, [logs, evaluationDays]);
-
     const peripheralNeuropathyAnalysis = useMemo(() => {
         return analyzePeripheralNeuropathyLogs(logs, { evaluationPeriodDays: evaluationDays });
     }, [logs, evaluationDays]);
-
     const menieresAnalysis = useMemo(() => {
         return analyzeMenieresLogs(logs, { evaluationPeriodDays: evaluationDays });
     }, [logs, evaluationDays]);
-
     const rhinitisAnalysis = useMemo(() => {
         return analyzeRhinitisLogs(logs, { evaluationPeriodDays: evaluationDays });
     }, [logs, evaluationDays]);
-
     const tmjAnalysis = useMemo(() => {
         return analyzeTMJLogs(logs, { evaluationPeriodDays: evaluationDays });
     }, [logs, evaluationDays]);
-
     const plantarFasciitisAnalysis = useMemo(() => {
         return analyzePlantarFasciitisLogs(logs, { evaluationPeriodDays: evaluationDays });
     }, [logs, evaluationDays]);
-
     const insomniaAnalysis = useMemo(() => {
         return analyzeInsomniaLogs(logs, { evaluationPeriodDays: evaluationDays });
     }, [logs, evaluationDays]);
-
     const sinusitisAnalysis = useMemo(() => {
         return analyzeSinusitisLogs(logs, { evaluationPeriodDays: evaluationDays });
     }, [logs, evaluationDays]);
-
     const shoulderAnalysis = useMemo(() => {
         return analyzeShoulderLogs(logs, { evaluationPeriodDays: evaluationDays });
     }, [logs, evaluationDays]);
-
     const hipAnalysis = useMemo(() => {
         return analyzeHipLogs(logs, { evaluationPeriodDays: evaluationDays });
     }, [logs, evaluationDays]);
-
     const ankleAnalysis = useMemo(() => {
-          return analyzeAnkleLogs(logs, { evaluationPeriodDays: evaluationDays });
-          }, [logs, evaluationDays]);
+        return analyzeAnkleLogs(logs, { evaluationPeriodDays: evaluationDays });
+    }, [logs, evaluationDays]);
     const wristAnalysis = useMemo(() => {
-          return analyzeWristLogs(logs, { evaluationPeriodDays: evaluationDays });
-          }, [logs, evaluationDays]);
+        return analyzeWristLogs(logs, { evaluationPeriodDays: evaluationDays });
+    }, [logs, evaluationDays]);
     const elbowAnalysis = useMemo(() => {
-          return analyzeElbowLogs(logs, { evaluationPeriodDays: evaluationDays });
-          }, [logs, evaluationDays]);
+        return analyzeElbowLogs(logs, { evaluationPeriodDays: evaluationDays });
+    }, [logs, evaluationDays]);
     const degenerativeArthritisAnalysis = useMemo(() => {
-          return analyzeDegenerativeArthritisLogs(logs, { evaluationPeriodDays: evaluationDays });
-          }, [logs, evaluationDays]);
-
+        return analyzeDegenerativeArthritisLogs(logs, { evaluationPeriodDays: evaluationDays });
+    }, [logs, evaluationDays]);
     const asthmaAnalysis = useMemo(() => {
         return analyzeAsthmaLogs(logs, { evaluationPeriodDays: evaluationDays });
     }, [logs, evaluationDays]);
-
     const eczemaAnalysis = useMemo(() => {
         return analyzeEczemaLogs(logs, { evaluationPeriodDays: evaluationDays });
     }, [logs, evaluationDays]);
-
     const GERDComplicationsAnalysis = useMemo(() => {
         return analyzeGERDComplicationsLogs(logs, { evaluationPeriodDays: evaluationDays });
     }, [logs, evaluationDays]);
-
     const ulcerativeColitisAnalysis = useMemo(() => {
-      return analyzeUlcerativeColitisLogs(logs, { evaluationPeriodDays: evaluationDays });
+        return analyzeUlcerativeColitisLogs(logs, { evaluationPeriodDays: evaluationDays });
     }, [logs, evaluationDays]);
-
     const pepticUlcerAnalysis = useMemo(() => {
-      return analyzePepticUlcerLogs(logs, { evaluationPeriodDays: evaluationDays });
+        return analyzePepticUlcerLogs(logs, { evaluationPeriodDays: evaluationDays });
     }, [logs, evaluationDays]);
-
     const hemorrhoidAnalysis = useMemo(() => {
-      return analyzeHemorrhoidLogs(logs, { evaluationPeriodDays: evaluationDays });
+        return analyzeHemorrhoidLogs(logs, { evaluationPeriodDays: evaluationDays });
     }, [logs, evaluationDays]);
-
     const diverticulitisAnalysis = useMemo(() => {
-      return analyzeDiverticulitisLogs(logs, { evaluationPeriodDays: evaluationDays });
+        return analyzeDiverticulitisLogs(logs, { evaluationPeriodDays: evaluationDays });
     }, [logs, evaluationDays]);
-
     const hypothyroidismAnalysis = useMemo(() => {
-      return analyzeHypothyroidismLogs(logs, { evaluationPeriodDays: evaluationDays });
+        return analyzeHypothyroidismLogs(logs, { evaluationPeriodDays: evaluationDays });
     }, [logs, evaluationDays]);
-
     const raynaudsAnalysis = useMemo(() => {
-      return analyzeRaynaudsLogs(logs, { evaluationPeriodDays: evaluationDays });
+        return analyzeRaynaudsLogs(logs, { evaluationPeriodDays: evaluationDays });
     }, [logs, evaluationDays]);
-
     const varicoseVeinsAnalysis = useMemo(() => {
-      return analyzeVaricoseVeinsLogs(logs, { evaluationPeriodDays: evaluationDays });
+        return analyzeVaricoseVeinsLogs(logs, { evaluationPeriodDays: evaluationDays });
     }, [logs, evaluationDays]);
-
     const chronicUrticariaAnalysis = useMemo(() => {
-      return analyzeChronicUrticariaLogs(logs, { evaluationPeriodDays: evaluationDays });
+        return analyzeChronicUrticariaLogs(logs, { evaluationPeriodDays: evaluationDays });
     }, [logs, evaluationDays]);
-
     const psoriasisAnalysis = useMemo(() => {
         return analyzePsoriasisLogs(logs, { evaluationPeriodDays: evaluationDays });
     }, [logs, evaluationDays]);
-
     const scarsAnalysis = useMemo(() => {
         return analyzeScarsLogs(logs, { evaluationPeriodDays: evaluationDays });
     }, [logs, evaluationDays]);
-
     const tbiResidualsAnalysis = useMemo(() => {
         return analyzeTBIResidualsLogs(logs, { evaluationPeriodDays: evaluationDays });
     }, [logs, evaluationDays]);
-
     const hearingLossAnalysis = useMemo(() => {
         return analyzeHearingLossLogs(logs, { evaluationPeriodDays: evaluationDays });
     }, [logs, evaluationDays]);
-
     // Analyze Tinnitus logs
     const tinnitusAnalysis = useMemo(() => {
         return analyzeTinnitusLogs(logs, { evaluationPeriodDays: evaluationDays });
     }, [logs, evaluationDays]);
-
     // Analyze Fibromyalgia logs
     const fibromyalgiaAnalysis = useMemo(() => {
         return analyzeFibromyalgiaLogs(logs, { evaluationPeriodDays: evaluationDays });
     }, [logs, evaluationDays]);
-
     // Phase 1E: Analyze Epilepsy - Major Seizures
     const epilepsyMajorAnalysis = useMemo(() => {
         return analyzeEpilepsyMajorLogs(logs, evaluationDays);
     }, [logs, evaluationDays]);
-
     // Phase 1E: Analyze Epilepsy - Minor Seizures
     const epilepsyMinorAnalysis = useMemo(() => {
         return analyzeEpilepsyMinorLogs(logs, evaluationDays);
     }, [logs, evaluationDays]);
-
     // Phase 2: Analyze Vision/Eye Conditions
     const visionAnalysis = useMemo(() => {
       return analyzeVisionLogs(logs);
     }, [logs]);
-
     // Phase 3: Genitourinary Conditions Analysis
     const kidneyStonesAnalysis = useMemo(() => {
         return analyzeKidneyStonesLogs(logs);
     }, [logs]);
-
-  const chronicRenalDiseaseAnalysis = useMemo(() => {
-    return analyzeChronicRenalDiseaseLogs(logs, { evaluationPeriodDays: evaluationDays });
-  }, [logs, evaluationDays]);
-
+    const chronicRenalDiseaseAnalysis = useMemo(() => {
+        return analyzeChronicRenalDiseaseLogs(logs, { evaluationPeriodDays: evaluationDays });
+    }, [logs, evaluationDays]);
     const voidingDysfunctionAnalysis = useMemo(() => {
         return analyzeVoidingDysfunctionLogs(logs);
     }, [logs]);
-
     const sphincterImpairmentAnalysis = useMemo(() => {
         return analyzeSphincterImpairmentLogs(logs);
     }, [logs]);
-
     const erectileDysfunctionAnalysis = useMemo(() => {
         return analyzeErectileDysfunctionLogs(logs);
+    }, [logs]);
+    // Phase 4: Gynecological Analysis Hooks
+    const endometriosisAnalysis = useMemo(() => {
+        return analyzeEndometriosisLogs(logs);
+    }, [logs]);
+    const femaleReproductiveOrgansAnalysis = useMemo(() => {
+        return analyzeFemaleReproductiveOrgansLogs(logs);
+    }, [logs]);
+    const pelvicProlapseAnalysis = useMemo(() => {
+        return analyzePelvicProlapseLogs(logs);
+    }, [logs]);
+    const femaleArousalDisorderAnalysis = useMemo(() => {
+        return analyzeFemaleArousalDisorderLogs(logs);
     }, [logs]);
 
     // Toggle section expansion
@@ -511,7 +472,11 @@ const RatingEvidence = () => {
         chronicRenalDiseaseAnalysis.hasData ||
         voidingDysfunctionAnalysis.hasData ||
         sphincterImpairmentAnalysis.hasData ||
-        erectileDysfunctionAnalysis.hasData;
+        erectileDysfunctionAnalysis.hasData ||
+        endometriosisAnalysis.hasData ||
+        femaleReproductiveOrgansAnalysis.hasData ||
+        pelvicProlapseAnalysis.hasData ||
+        femaleArousalDisorderAnalysis.hasData;
 
     return (
         <div className="space-y-4 text-left">
@@ -1013,8 +978,29 @@ const RatingEvidence = () => {
               expanded={expandedSection === 'erectile-dysfunction'}
               onToggle={() => toggleSection('erectile-dysfunction')}
           />
+          {/* Phase 4: Gynecological Rating Cards */}
+          <EndometriosisRatingCard
+              analysis={endometriosisAnalysis}
+              expanded={expandedSection === 'endometriosis'}
+              onToggle={() => toggleSection('endometriosis')}
+          />
+          <FemaleReproductiveOrgansRatingCard
+              analysis={femaleReproductiveOrgansAnalysis}
+              expanded={expandedSection === 'female-reproductive-organs'}
+              onToggle={() => toggleSection('female-reproductive-organs')}
+          />
+          <PelvicProlapseRatingCard
+              analysis={pelvicProlapseAnalysis}
+              expanded={expandedSection === 'pelvic-prolapse'}
+              onToggle={() => toggleSection('pelvic-prolapse')}
+          />
+          <FemaleArousalDisorderRatingCard
+              analysis={femaleArousalDisorderAnalysis}
+              expanded={expandedSection === 'female-arousal-disorder'}
+              onToggle={() => toggleSection('female-arousal-disorder')}
+          />
 
-            {/* Sleep Apnea Setup Modal */}
+          {/* Sleep Apnea Setup Modal */}
             {showSleepApneaSetup && (
                 <SleepApneaSetupModal
                     currentProfile={sleepApneaProfile}
