@@ -785,6 +785,90 @@ export const symptomCategories = [
       { id: 'cough-blood', name: 'Coughing Up Blood' },
     ]
   },
+// Phase 6: Dental/Oral Conditions (DC 9900s)
+  {
+    id: 'dental-oral',
+    name: 'Dental & Oral',
+    symptoms: [
+      // Jaw/TMJ symptoms (TMJ already exists, these are additional)
+      { id: 'jaw-pain', name: 'Jaw Pain (Non-TMJ)' },
+      { id: 'jaw-swelling', name: 'Jaw Swelling' },
+      { id: 'jaw-stiffness', name: 'Jaw Stiffness' },
+      { id: 'limited-mouth-opening', name: 'Limited Mouth Opening' },
+      { id: 'jaw-deviation', name: 'Jaw Deviation/Misalignment' },
+
+      // Bone/structural issues
+      { id: 'bone-pain-jaw', name: 'Bone Pain (Jaw/Maxilla/Mandible)' },
+      { id: 'jaw-infection', name: 'Jaw Infection Symptoms' },
+      { id: 'osteomyelitis-symptoms', name: 'Osteomyelitis Symptoms' },
+      { id: 'bone-exposure', name: 'Exposed Bone (Jaw)' },
+      { id: 'jaw-drainage', name: 'Drainage from Jaw/Bone' },
+      { id: 'jaw-instability', name: 'Jaw Instability/Movement' },
+      { id: 'facial-asymmetry', name: 'Facial Asymmetry' },
+
+      // Dental/tooth issues
+      { id: 'tooth-loss-pain', name: 'Pain from Tooth Loss Site' },
+      { id: 'missing-teeth', name: 'Missing Teeth (Document Count)' },
+      { id: 'loose-teeth', name: 'Loose Teeth' },
+      { id: 'tooth-sensitivity', name: 'Tooth Sensitivity' },
+      { id: 'dental-abscess', name: 'Dental Abscess' },
+      { id: 'gum-pain', name: 'Gum Pain' },
+      { id: 'gum-bleeding', name: 'Bleeding Gums' },
+      { id: 'gum-recession', name: 'Gum Recession' },
+
+      // Palate issues
+      { id: 'palate-pain', name: 'Hard Palate Pain' },
+      { id: 'palate-ulcers', name: 'Palate Ulcers/Sores' },
+      { id: 'palate-infection', name: 'Palate Infection' },
+
+      // Mastication/eating difficulties
+      { id: 'chewing-difficulty', name: 'Difficulty Chewing' },
+      { id: 'chewing-pain', name: 'Pain with Chewing' },
+      { id: 'bite-problems', name: 'Bite Alignment Problems' },
+      { id: 'food-impaction', name: 'Food Impaction/Trapping' },
+      { id: 'mastication-fatigue', name: 'Jaw Fatigue with Eating' },
+
+      // Swallowing/tongue issues
+      { id: 'swallowing-difficulty', name: 'Difficulty Swallowing (Dysphagia)' },
+      { id: 'swallowing-pain', name: 'Painful Swallowing' },
+      { id: 'tongue-pain', name: 'Tongue Pain' },
+      { id: 'tongue-swelling', name: 'Tongue Swelling' },
+      { id: 'tongue-lesions', name: 'Tongue Lesions/Ulcers' },
+      { id: 'tongue-movement', name: 'Limited Tongue Movement' },
+
+      // Oral tissue/mucosa
+      { id: 'mouth-sores', name: 'Mouth Sores/Ulcers' },
+      { id: 'oral-bleeding', name: 'Oral Bleeding' },
+      { id: 'dry-mouth', name: 'Dry Mouth (Xerostomia)' },
+      { id: 'oral-burning', name: 'Burning Mouth Sensation' },
+      { id: 'oral-tissue-changes', name: 'Oral Tissue Changes/Lesions' },
+
+      // Lip issues
+      { id: 'lip-pain', name: 'Lip Pain' },
+      { id: 'lip-swelling', name: 'Lip Swelling' },
+      { id: 'lip-lesions', name: 'Lip Lesions/Cracks' },
+
+      // Neoplasm/tumor symptoms
+      { id: 'oral-mass', name: 'Oral Mass/Lump' },
+      { id: 'oral-growth', name: 'Oral Growth/Tumor' },
+      { id: 'tissue-thickening', name: 'Tissue Thickening (Oral)' },
+
+      // Infection/inflammation
+      { id: 'oral-infection', name: 'Oral Infection' },
+      { id: 'oral-inflammation', name: 'Oral Inflammation' },
+      { id: 'bad-taste', name: 'Persistent Bad Taste' },
+      { id: 'halitosis', name: 'Halitosis (Bad Breath)' },
+
+      // Speech/function
+      { id: 'speech-difficulty', name: 'Speech Difficulty (Dental/Oral)' },
+      { id: 'articulation-problems', name: 'Articulation Problems' },
+
+      // Prosthetic issues
+      { id: 'prosthesis-pain', name: 'Pain from Dental Prosthesis' },
+      { id: 'prosthesis-fit', name: 'Ill-Fitting Prosthesis' },
+      { id: 'prosthesis-sores', name: 'Sores from Prosthesis' },
+    ]
+  },
 ];
 
 // Helper function to determine if a category is a "child" of another
@@ -821,6 +905,12 @@ const getParentCategory = (categoryName) => {
   if (name.includes('blood')) return 'hemic-lymphatic';
   if (name.includes('leukemia')) return 'hemic-lymphatic';
   if (name.includes('lymphoma')) return 'hemic-lymphatic';
+  if (name.includes('dental')) return 'dental-oral';
+  if (name.includes('oral')) return 'dental-oral';
+  if (name.includes('jaw')) return 'dental-oral';
+  if (name.includes('tooth')) return 'dental-oral';
+  if (name.includes('teeth')) return 'dental-oral';
+  if (name.includes('palate')) return 'dental-oral';
   return null; // No parent, this is a standalone category
 };
 

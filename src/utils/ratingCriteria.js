@@ -776,6 +776,65 @@ export const CONDITIONS = {
     cfrReference: '38 CFR 4.117',
     symptomIds: ['fatigue-anemia', 'frequent-infections', 'easy-bruising'],
   },
+  // ============================================
+  // PHASE 6: DENTAL/ORAL CONDITIONS (DC 9900 series)
+  // ============================================
+  TMJ_DISORDER: {
+    id: 'tmj-disorder',
+    name: 'Temporomandibular Joint (TMJ) Disorder',
+    diagnosticCode: '9905',
+    cfrReference: '38 CFR 4.150',
+    symptomIds: ['jaw-pain', 'jaw-stiffness', 'limited-mouth-opening', 'jaw-clicking', 'jaw-locking', 'chewing-difficulty'],
+  },
+  MAXILLA_MANDIBLE_BONE_DISEASE: {
+    id: 'maxilla-mandible-bone-disease',
+    name: 'Maxilla or Mandible Osteomyelitis/Osteonecrosis',
+    diagnosticCode: '9900',
+    cfrReference: '38 CFR 4.150 (rates as DC 5000)',
+    symptomIds: ['jaw-infection', 'bone-pain-jaw', 'osteomyelitis-symptoms', 'bone-exposure', 'jaw-drainage'],
+  },
+  MANDIBLE_NONUNION: {
+    id: 'mandible-nonunion',
+    name: 'Mandible Nonunion',
+    diagnosticCode: '9903',
+    cfrReference: '38 CFR 4.150',
+    symptomIds: ['jaw-pain', 'jaw-instability', 'chewing-difficulty', 'facial-asymmetry'],
+  },
+  MANDIBLE_MALUNION: {
+    id: 'mandible-malunion',
+    name: 'Mandible Malunion',
+    diagnosticCode: '9904',
+    cfrReference: '38 CFR 4.150',
+    symptomIds: ['jaw-pain', 'bite-problems', 'chewing-difficulty', 'facial-asymmetry'],
+  },
+  MAXILLA_MALUNION: {
+    id: 'maxilla-malunion',
+    name: 'Maxilla Malunion or Nonunion',
+    diagnosticCode: '9916',
+    cfrReference: '38 CFR 4.150',
+    symptomIds: ['jaw-pain', 'bite-problems', 'chewing-difficulty', 'facial-asymmetry'],
+  },
+  BENIGN_ORAL_NEOPLASM: {
+    id: 'benign-oral-neoplasm',
+    name: 'Benign Neoplasm of Oral Cavity',
+    diagnosticCode: '9917',
+    cfrReference: '38 CFR 4.150',
+    symptomIds: ['oral-mass', 'oral-growth', 'tissue-thickening'],
+  },
+  MALIGNANT_ORAL_NEOPLASM: {
+    id: 'malignant-oral-neoplasm',
+    name: 'Malignant Neoplasm of Oral Cavity',
+    diagnosticCode: '9918',
+    cfrReference: '38 CFR 4.150',
+    symptomIds: ['oral-mass', 'oral-growth', 'tissue-thickening'],
+  },
+  TOOTH_LOSS: {
+    id: 'tooth-loss',
+    name: 'Loss of Teeth Due to Bone Loss',
+    diagnosticCode: '9913',
+    cfrReference: '38 CFR 4.150',
+    symptomIds: ['missing-teeth', 'tooth-loss-pain', 'chewing-difficulty', 'prosthesis-pain'],
+  },
 };
 
 // ============================================
@@ -7276,6 +7335,1046 @@ export const ERECTILE_DYSFUNCTION_CRITERIA = {
   disclaimer: 'While rated at 0%, service connection for ED is important for: (1) potential SMC eligibility in specific circumstances, (2) establishing nexus to other service-connected conditions, (3) potential for increased rating if additional conditions develop. ED may be secondary to diabetes, hypertension, PTSD, medications, or other service-connected conditions.',
 };
 
+// =================================================================
+// IMMUNE THROMBOCYTOPENIA (DC 7705)
+// =================================================================
+export const IMMUNE_THROMBOCYTOPENIA_CRITERIA = {
+  diagnosticCode: '7705',
+  condition: 'Immune Thrombocytopenia (ITP)',
+  cfrReference: '38 CFR § 4.117',
+  ratings: [
+    {
+      percent: 100,
+      summary: 'Bone marrow transplant OR platelet count <20,000',
+      criteriaDescription: [
+        'Requiring bone marrow or stem cell transplant, OR',
+        'With platelet count less than 20,000 AND',
+        '- Requiring continuous treatment with immunosuppressive therapy',
+        '- Spontaneous bleeding, OR',
+        '- Bleeding requiring transfusion'
+      ],
+      evidenceNeeded: [
+        'Bone marrow transplant records, OR',
+        'Multiple lab results showing platelet count <20,000',
+        'Documentation of bleeding episodes',
+        'Prescription records for immunosuppressive medications',
+        'Transfusion records if applicable'
+      ]
+    },
+    {
+      percent: 70,
+      summary: 'Platelet count 20,000-30,000 with bleeding',
+      criteriaDescription: [
+        'With platelet count of 20,000 to 30,000 AND',
+        '- Requiring continuous treatment with immunosuppressive therapy',
+        '- With either spontaneous bleeding OR bleeding with minor trauma'
+      ],
+      evidenceNeeded: [
+        'Lab results showing platelet count 20,000-30,000',
+        'Prescription records for immunosuppressive therapy',
+        'Documentation of bleeding episodes'
+      ]
+    },
+    {
+      percent: 50,
+      summary: 'Platelet count 30,000-50,000 with treatment',
+      criteriaDescription: [
+        'With platelet count of 30,000 to 50,000, AND',
+        'Requiring continuous treatment with immunosuppressive therapy'
+      ],
+      evidenceNeeded: [
+        'Lab results showing platelet count 30,000-50,000',
+        'Prescription records for continuous immunosuppressive medications'
+      ]
+    },
+    {
+      percent: 30,
+      summary: 'Platelet count 50,000-70,000 with treatment',
+      criteriaDescription: [
+        'With platelet count of 50,000 to 70,000, AND',
+        'Requiring continuous treatment with immunosuppressive therapy'
+      ],
+      evidenceNeeded: [
+        'Lab results',
+        'Prescription records'
+      ]
+    },
+    {
+      percent: 10,
+      summary: 'Platelet count 70,000-100,000',
+      criteriaDescription: [
+        'With platelet count of 70,000 to 100,000'
+      ],
+      evidenceNeeded: [
+        'Lab results showing platelet count'
+      ]
+    },
+    {
+      percent: 0,
+      summary: 'Platelet count >100,000 or asymptomatic',
+      criteriaDescription: [
+        'With platelet count greater than 100,000, OR',
+        'Asymptomatic'
+      ]
+    }
+  ],
+  definitions: {
+    'Immune Thrombocytopenia (ITP)': 'Autoimmune disorder causing low platelet count and increased bleeding risk',
+    'Platelet Count': 'Normal range is 150,000-400,000 per μL',
+    'Immunosuppressive Therapy': 'Corticosteroids, IVIG, rituximab, TPO receptor agonists, immunosuppressants',
+    'Spontaneous Bleeding': 'Bleeding without trauma (petechiae, purpura, nosebleeds, gum bleeding)'
+  },
+  disclaimer: 'Rating is based on the platelet count AND whether immunosuppressive treatment is required. Both factors matter.'
+};
+
+
+// =================================================================
+// LEUKEMIA (DC 7703)
+// =================================================================
+export const LEUKEMIA_CRITERIA = {
+  diagnosticCode: '7703',
+  condition: 'Leukemia (Acute and Chronic)',
+  cfrReference: '38 CFR § 4.117',
+  ratings: [
+    {
+      percent: 100,
+      summary: 'During active treatment OR bone marrow transplant',
+      criteriaDescription: [
+        'Requiring chemotherapy, bone marrow or stem cell transplant, or other ongoing treatment modality, OR',
+        'Status post bone marrow or stem cell transplant with chronic graft versus host disease'
+      ],
+      evidenceNeeded: [
+        'Medical records documenting active treatment (chemotherapy, targeted therapy, etc.)',
+        'Treatment schedule and protocols',
+        'Bone marrow transplant records if applicable',
+        'Documentation of graft versus host disease if post-transplant'
+      ]
+    },
+    {
+      percent: 60,
+      summary: 'Post-treatment with residual symptoms',
+      criteriaDescription: [
+        'Following treatment, with residual symptoms such as:',
+        '- Chronic fatigue',
+        '- Anemia requiring treatment',
+        '- Thrombocytopenia',
+        '- Neuropathy',
+        '- Infections',
+        '- Other treatment-related complications'
+      ],
+      evidenceNeeded: [
+        'Documentation that active treatment has ended',
+        'Medical records showing residual symptoms and ongoing management',
+        'Lab results showing persistent abnormalities'
+      ]
+    },
+    {
+      percent: 30,
+      summary: 'In remission with surveillance only',
+      criteriaDescription: [
+        'In complete remission, requiring only surveillance (regular follow-up visits and blood tests)'
+      ],
+      evidenceNeeded: [
+        'Oncology notes documenting complete remission',
+        'Follow-up schedule',
+        'Recent lab results showing remission'
+      ]
+    }
+  ],
+  definitions: {
+    'Acute Leukemia': 'Rapidly progressing cancer of blood-forming tissues (ALL, AML)',
+    'Chronic Leukemia': 'Slowly progressing blood cancer (CLL, CML)',
+    'Complete Remission': 'No evidence of leukemia cells in blood or bone marrow',
+    'Graft Versus Host Disease': 'Complication after bone marrow transplant where donor cells attack recipient tissues',
+    'Surveillance': 'Regular monitoring without active treatment'
+  },
+  disclaimer: 'Rating is 100% during all active treatment. After treatment ends, rating decreases based on residual symptoms and remission status.'
+};
+
+
+// =================================================================
+// HODGKIN'S LYMPHOMA (DC 7709)
+// =================================================================
+export const HODGKINS_LYMPHOMA_CRITERIA = {
+  diagnosticCode: '7709',
+  condition: "Hodgkin's Lymphoma (Hodgkin's Disease)",
+  cfrReference: '38 CFR § 4.117',
+  ratings: [
+    {
+      percent: 100,
+      summary: 'During active treatment',
+      criteriaDescription: [
+        'Requiring chemotherapy, radiation therapy, bone marrow or stem cell transplant, or other ongoing treatment'
+      ],
+      evidenceNeeded: [
+        'Medical records documenting active treatment',
+        'Treatment schedule and protocols',
+        'Oncology consultation reports'
+      ]
+    },
+    {
+      percent: 60,
+      summary: 'Post-treatment with residual symptoms',
+      criteriaDescription: [
+        'Following treatment, with residual symptoms such as:',
+        '- Chronic fatigue',
+        '- Residual lymphadenopathy',
+        '- Treatment-related complications (neuropathy, cardiac issues, etc.)'
+      ],
+      evidenceNeeded: [
+        'Documentation that treatment has ended',
+        'Medical records showing residual symptoms',
+        'Imaging showing residual disease or complications'
+      ]
+    },
+    {
+      percent: 30,
+      summary: 'In remission with surveillance',
+      criteriaDescription: [
+        'In complete remission, requiring only surveillance'
+      ],
+      evidenceNeeded: [
+        'Oncology notes documenting complete remission',
+        'PET/CT scans showing no active disease',
+        'Follow-up schedule'
+      ]
+    }
+  ],
+  definitions: {
+    "Hodgkin's Lymphoma": 'Cancer of the lymphatic system characterized by Reed-Sternberg cells',
+    'Lymphadenopathy': 'Enlarged lymph nodes',
+    'PET/CT Scan': 'Imaging used to assess for active lymphoma'
+  },
+  disclaimer: 'Rating is 100% during all active treatment. Reduces after treatment completion based on remission status.'
+};
+
+
+// =================================================================
+// MULTIPLE MYELOMA (DC 7712)
+// =================================================================
+export const MULTIPLE_MYELOMA_CRITERIA = {
+  diagnosticCode: '7712',
+  condition: 'Multiple Myeloma',
+  cfrReference: '38 CFR § 4.117',
+  ratings: [
+    {
+      percent: 100,
+      summary: 'During active treatment',
+      criteriaDescription: [
+        'Requiring chemotherapy, bone marrow or stem cell transplant, or other ongoing treatment modality'
+      ],
+      evidenceNeeded: [
+        'Medical records documenting active treatment',
+        'Treatment protocols',
+        'Hematology/oncology consultation reports'
+      ]
+    },
+    {
+      percent: 60,
+      summary: 'Post-treatment with residual symptoms',
+      criteriaDescription: [
+        'Following treatment, with residual symptoms such as:',
+        '- Bone pain requiring narcotic medication',
+        '- Pathological fractures',
+        '- Anemia',
+        '- Renal insufficiency',
+        '- Neuropathy',
+        '- Infections'
+      ],
+      evidenceNeeded: [
+        'Documentation of residual symptoms and complications',
+        'Imaging showing bone lesions or fractures',
+        'Lab results showing anemia or kidney dysfunction',
+        'Prescription records for pain medications'
+      ]
+    },
+    {
+      percent: 30,
+      summary: 'In remission with surveillance',
+      criteriaDescription: [
+        'In remission, requiring only surveillance'
+      ],
+      evidenceNeeded: [
+        'Oncology notes documenting remission',
+        'Lab results (serum protein electrophoresis, free light chains)',
+        'Bone marrow biopsy showing remission'
+      ]
+    }
+  ],
+  definitions: {
+    'Multiple Myeloma': 'Cancer of plasma cells in bone marrow causing bone destruction, anemia, kidney damage',
+    'Pathological Fracture': 'Bone fracture caused by disease weakening the bone',
+    'Serum Protein Electrophoresis': 'Lab test detecting abnormal proteins (M-protein) in myeloma',
+    'Free Light Chains': 'Proteins produced by myeloma cells, measured for monitoring disease'
+  }
+};
+
+
+// =================================================================
+// NON-HODGKIN'S LYMPHOMA (DC 7715)
+// =================================================================
+export const NON_HODGKINS_LYMPHOMA_CRITERIA = {
+  diagnosticCode: '7715',
+  condition: "Non-Hodgkin's Lymphoma",
+  cfrReference: '38 CFR § 4.117',
+  ratings: [
+    {
+      percent: 100,
+      summary: 'During active treatment',
+      criteriaDescription: [
+        'Requiring chemotherapy, radiation, bone marrow or stem cell transplant, immunotherapy, or other ongoing treatment'
+      ],
+      evidenceNeeded: [
+        'Medical records documenting active treatment',
+        'Treatment protocols',
+        'Oncology consultation reports'
+      ]
+    },
+    {
+      percent: 60,
+      summary: 'Post-treatment with residual symptoms',
+      criteriaDescription: [
+        'Following treatment, with residual symptoms or complications'
+      ],
+      evidenceNeeded: [
+        'Documentation of residual symptoms',
+        'Imaging or lab results showing complications'
+      ]
+    },
+    {
+      percent: 30,
+      summary: 'In remission with surveillance',
+      criteriaDescription: [
+        'In complete remission, requiring only surveillance'
+      ],
+      evidenceNeeded: [
+        'Oncology notes documenting remission',
+        'PET/CT scans showing no active disease'
+      ]
+    }
+  ],
+  definitions: {
+    "Non-Hodgkin's Lymphoma": 'Group of blood cancers arising from lymphocytes (includes many subtypes)',
+    'Subtypes': 'Includes diffuse large B-cell lymphoma, follicular lymphoma, mantle cell lymphoma, and many others'
+  }
+};
+
+
+// =================================================================
+// ESSENTIAL THROMBOCYTHEMIA / PRIMARY MYELOFIBROSIS (DC 7718)
+// =================================================================
+export const MYELOPROLIFERATIVE_7718_CRITERIA = {
+  diagnosticCode: '7718',
+  condition: 'Essential Thrombocythemia or Primary Myelofibrosis',
+  cfrReference: '38 CFR § 4.117',
+  ratings: [
+    {
+      percent: 100,
+      summary: 'Bone marrow transplant OR symptomatic splenomegaly + cytopenia',
+      criteriaDescription: [
+        'Requiring bone marrow or stem cell transplant, OR',
+        'Symptomatic splenomegaly with cytopenia (anemia, thrombocytopenia, or leukopenia)'
+      ],
+      evidenceNeeded: [
+        'Bone marrow transplant records, OR',
+        'Imaging showing splenomegaly',
+        'Documentation of symptoms (pain, early satiety)',
+        'Lab results showing low blood counts'
+      ]
+    },
+    {
+      percent: 60,
+      summary: 'Symptomatic splenomegaly OR requiring JAK inhibitor',
+      criteriaDescription: [
+        'Symptomatic splenomegaly, OR',
+        'Requiring continuous treatment with JAK inhibitors (e.g., ruxolitinib)'
+      ],
+      evidenceNeeded: [
+        'Imaging and symptom documentation, OR',
+        'Prescription records for JAK inhibitor therapy'
+      ]
+    },
+    {
+      percent: 40,
+      summary: 'Requiring continuous myelosuppressive treatment',
+      criteriaDescription: [
+        'Requiring continuous myelosuppressive treatment (hydroxyurea, interferon, anagrelide)'
+      ],
+      evidenceNeeded: [
+        'Prescription records for continuous myelosuppressive medications'
+      ]
+    },
+    {
+      percent: 10,
+      summary: 'Requiring aspirin only',
+      criteriaDescription: [
+        'Requiring continuous treatment with aspirin or antiplatelet therapy only'
+      ],
+      evidenceNeeded: [
+        'Prescription records'
+      ]
+    },
+    {
+      percent: 0,
+      summary: 'Asymptomatic',
+      criteriaDescription: [
+        'Asymptomatic'
+      ]
+    }
+  ],
+  definitions: {
+    'Essential Thrombocythemia': 'Myeloproliferative disorder causing elevated platelet count',
+    'Primary Myelofibrosis': 'Bone marrow scarring causing enlarged spleen and blood cell problems',
+    'Splenomegaly': 'Enlarged spleen',
+    'Cytopenia': 'Low blood cell counts',
+    'JAK Inhibitor': 'Ruxolitinib (Jakafi) - targeted therapy for myelofibrosis'
+  }
+};
+
+
+// =================================================================
+// CHRONIC MYELOGENOUS LEUKEMIA (DC 7719)
+// =================================================================
+export const CHRONIC_MYELOGENOUS_LEUKEMIA_CRITERIA = {
+  diagnosticCode: '7719',
+  condition: 'Chronic Myelogenous Leukemia (CML)',
+  cfrReference: '38 CFR § 4.117',
+  ratings: [
+    {
+      percent: 100,
+      summary: 'Chronic or accelerated phase OR bone marrow transplant',
+      criteriaDescription: [
+        'Chronic phase or accelerated phase, OR',
+        'Status post bone marrow or stem cell transplant'
+      ],
+      evidenceNeeded: [
+        'Bone marrow biopsy showing disease phase',
+        'Molecular testing (BCR-ABL levels)',
+        'Transplant records if applicable',
+        'Hematology/oncology consultation'
+      ]
+    },
+    {
+      percent: 60,
+      summary: 'Molecular or cytogenetic response on TKI',
+      criteriaDescription: [
+        'Molecular or cytogenetic response (less than complete response) on tyrosine kinase inhibitor (TKI) therapy'
+      ],
+      evidenceNeeded: [
+        'Molecular testing showing partial response',
+        'Prescription records for TKI (imatinib, dasatinib, nilotinib, etc.)'
+      ]
+    },
+    {
+      percent: 10,
+      summary: 'Complete molecular response on TKI',
+      criteriaDescription: [
+        'Complete molecular response on TKI therapy'
+      ],
+      evidenceNeeded: [
+        'Molecular testing showing undetectable BCR-ABL',
+        'Prescription records for TKI'
+      ]
+    }
+  ],
+  definitions: {
+    'Chronic Myelogenous Leukemia': 'Blood cancer caused by Philadelphia chromosome creating BCR-ABL fusion protein',
+    'Tyrosine Kinase Inhibitor (TKI)': 'Targeted therapy for CML (imatinib/Gleevec, dasatinib, nilotinib)',
+    'BCR-ABL': 'Abnormal protein causing CML; monitored to assess treatment response',
+    'Molecular Response': 'Reduction in BCR-ABL levels measured by PCR testing',
+    'Complete Molecular Response': 'BCR-ABL undetectable by sensitive testing'
+  },
+  disclaimer: 'CML is now often well-controlled with TKI therapy. Rating reflects disease phase and treatment response.'
+};
+
+
+// =================================================================
+// SOLITARY PLASMACYTOMA (DC 7724)
+// =================================================================
+export const SOLITARY_PLASMACYTOMA_CRITERIA = {
+  diagnosticCode: '7724',
+  condition: 'Solitary Plasmacytoma',
+  cfrReference: '38 CFR § 4.117',
+  ratings: [
+    {
+      percent: 100,
+      summary: 'During active treatment',
+      criteriaDescription: [
+        'Requiring chemotherapy, radiation therapy, or other ongoing treatment'
+      ],
+      evidenceNeeded: [
+        'Medical records documenting active treatment',
+        'Treatment protocols',
+        'Oncology consultation reports'
+      ]
+    },
+    {
+      percent: 30,
+      summary: 'Post-treatment with no recurrence',
+      criteriaDescription: [
+        'Following treatment, with no evidence of recurrence or progression to multiple myeloma'
+      ],
+      evidenceNeeded: [
+        'Follow-up imaging showing no recurrence',
+        'Lab results (SPEP, free light chains) showing no progression',
+        'Oncology surveillance notes'
+      ]
+    }
+  ],
+  definitions: {
+    'Solitary Plasmacytoma': 'Single tumor of plasma cells (related to multiple myeloma but localized)',
+    'Progression to Multiple Myeloma': 'Many solitary plasmacytomas eventually progress to multiple myeloma'
+  },
+  disclaimer: 'Requires close monitoring as many cases progress to multiple myeloma over time.'
+};
+
+
+// =================================================================
+// MYELODYSPLASTIC SYNDROMES (DC 7725)
+// =================================================================
+export const MYELODYSPLASTIC_SYNDROMES_CRITERIA = {
+  diagnosticCode: '7725',
+  condition: 'Myelodysplastic Syndromes (MDS)',
+  cfrReference: '38 CFR § 4.117',
+  ratings: [
+    {
+      percent: 100,
+      summary: 'Bone marrow transplant OR transfusions every 6 weeks',
+      criteriaDescription: [
+        'Requiring bone marrow or stem cell transplant, OR',
+        'Requiring transfusions at least once every 6 weeks with infections recurring at least once every 6 weeks despite prophylactic antibiotic therapy'
+      ],
+      evidenceNeeded: [
+        'Bone marrow transplant records, OR',
+        'Transfusion records showing frequency',
+        'Infection documentation',
+        'Prescription records for prophylactic antibiotics'
+      ]
+    },
+    {
+      percent: 70,
+      summary: 'Transfusions every 3 months + immunosuppression',
+      criteriaDescription: [
+        'Requiring transfusions at least once every 3 months, AND',
+        'Requiring continuous immunosuppressive therapy or erythropoietin'
+      ],
+      evidenceNeeded: [
+        'Transfusion records',
+        'Prescription records for immunosuppressants or ESAs (erythropoietin-stimulating agents)'
+      ]
+    },
+    {
+      percent: 50,
+      summary: 'Immunosuppression + growth factors',
+      criteriaDescription: [
+        'Requiring continuous immunosuppressive therapy, AND',
+        'Requiring continuous treatment with myeloid growth factors'
+      ],
+      evidenceNeeded: [
+        'Prescription records for immunosuppressants and growth factors'
+      ]
+    },
+    {
+      percent: 30,
+      summary: 'Immunosuppression only',
+      criteriaDescription: [
+        'Requiring continuous immunosuppressive therapy or erythropoietin'
+      ],
+      evidenceNeeded: [
+        'Prescription records'
+      ]
+    },
+    {
+      percent: 10,
+      summary: 'Growth factors only',
+      criteriaDescription: [
+        'Requiring continuous treatment with myeloid growth factors'
+      ],
+      evidenceNeeded: [
+        'Prescription or treatment records for growth factors'
+      ]
+    },
+    {
+      percent: 0,
+      summary: 'Asymptomatic',
+      criteriaDescription: [
+        'Asymptomatic'
+      ]
+    }
+  ],
+  definitions: {
+    'Myelodysplastic Syndromes': 'Group of bone marrow disorders causing ineffective blood cell production',
+    'Risk Categories': 'Lower-risk MDS vs. higher-risk MDS (affects treatment and prognosis)',
+    'Hypomethylating Agents': 'Azacitidine, decitabine - medications for higher-risk MDS',
+    'Erythropoietin-Stimulating Agents (ESAs)': 'Medications to stimulate red blood cell production'
+  },
+  disclaimer: 'MDS has variable severity. Higher-risk MDS often progresses to acute leukemia.'
+};
+
+
+// =================================================================
+// FOLATE DEFICIENCY ANEMIA (DC 7721)
+// =================================================================
+export const FOLATE_DEFICIENCY_ANEMIA_CRITERIA = {
+  diagnosticCode: '7721',
+  condition: 'Folate Deficiency Anemia',
+  cfrReference: '38 CFR § 4.117',
+  ratings: [
+    {
+      percent: 30,
+      summary: 'Requiring intravenous folate 4+ times per year',
+      criteriaDescription: [
+        'Requiring intravenous folate infusions 4 or more times per 12-month period'
+      ],
+      evidenceNeeded: [
+        'Medical records documenting IV folate treatment dates',
+        'Lab results showing folate levels and RBC indices',
+        'Documentation of oral folate failure or malabsorption'
+      ]
+    },
+    {
+      percent: 10,
+      summary: 'IV folate 1-3x/year OR continuous oral folate',
+      criteriaDescription: [
+        'Requiring intravenous folate infusions 1-3 times per 12-month period, OR',
+        'Requiring continuous treatment with oral folate supplementation'
+      ],
+      evidenceNeeded: [
+        'Medical records of IV folate treatments',
+        'Prescription records showing continuous oral folate',
+        'Lab results showing improvement with treatment'
+      ]
+    },
+    {
+      percent: 0,
+      summary: 'Asymptomatic or dietary modification only',
+      criteriaDescription: [
+        'Asymptomatic, OR',
+        'Requiring treatment only by dietary modification'
+      ]
+    }
+  ],
+  definitions: {
+    'Folate': 'Vitamin B9, essential for red blood cell production and DNA synthesis',
+    'Malabsorption': 'Inability to absorb folate from the diet (seen in celiac disease, Crohn\'s disease)'
+  }
+};
+
+
+// =================================================================
+// PERNICIOUS ANEMIA / B12 DEFICIENCY (DC 7722)
+// =================================================================
+export const PERNICIOUS_ANEMIA_CRITERIA = {
+  diagnosticCode: '7722',
+  condition: 'Pernicious Anemia or Vitamin B12 Deficiency',
+  cfrReference: '38 CFR § 4.117',
+  ratings: [
+    {
+      percent: 100,
+      summary: 'With central nervous system involvement',
+      criteriaDescription: [
+        'With central nervous system involvement',
+        'Manifested by significant neurological symptoms such as:',
+        '- Subacute combined degeneration of the spinal cord',
+        '- Peripheral neuropathy',
+        '- Cognitive impairment',
+        '- Ataxia or gait disturbances'
+      ],
+      evidenceNeeded: [
+        'Neurology evaluation documenting CNS involvement',
+        'MRI or neurological testing showing spinal cord or nerve damage',
+        'Documentation of neurological symptoms and functional limitations',
+        'Lab results showing B12 deficiency and elevated methylmalonic acid'
+      ]
+    },
+    {
+      percent: 30,
+      summary: 'B12 injections 4+ times per year',
+      criteriaDescription: [
+        'Requiring B12 injections 4 or more times per 12-month period'
+      ],
+      evidenceNeeded: [
+        'Medical records documenting B12 injection dates',
+        'Lab results showing B12 deficiency',
+        'Documentation of why oral B12 is ineffective'
+      ]
+    },
+    {
+      percent: 10,
+      summary: 'B12 injections 1-3x/year OR continuous oral B12',
+      criteriaDescription: [
+        'Requiring B12 injections 1-3 times per 12-month period, OR',
+        'Requiring continuous treatment with oral B12 or sublingual supplementation'
+      ],
+      evidenceNeeded: [
+        'Medical records or prescription records',
+        'Lab results showing B12 levels with treatment'
+      ]
+    },
+    {
+      percent: 0,
+      summary: 'Asymptomatic or dietary only',
+      criteriaDescription: [
+        'Asymptomatic, OR',
+        'Requiring treatment only by dietary modification'
+      ]
+    }
+  ],
+  definitions: {
+    'Pernicious Anemia': 'Autoimmune condition preventing B12 absorption due to lack of intrinsic factor',
+    'Intrinsic Factor': 'Protein needed to absorb B12 in the intestines',
+    'Subacute Combined Degeneration': 'Spinal cord damage from B12 deficiency causing weakness, numbness, difficulty walking',
+    'Methylmalonic Acid': 'Substance elevated in B12 deficiency, used for diagnosis'
+  },
+  disclaimer: 'CNS involvement (100% rating) requires documented neurological damage, not just symptoms of fatigue or mild memory issues.'
+};
+
+
+// =================================================================
+// ACQUIRED HEMOLYTIC ANEMIA (DC 7723)
+// =================================================================
+export const HEMOLYTIC_ANEMIA_CRITERIA = {
+  diagnosticCode: '7723',
+  condition: 'Acquired Hemolytic Anemia',
+  cfrReference: '38 CFR § 4.117',
+  ratings: [
+    {
+      percent: 100,
+      summary: 'Bone marrow transplant',
+      criteriaDescription: [
+        'Requiring bone marrow or stem cell transplant'
+      ],
+      evidenceNeeded: [
+        'Medical records documenting bone marrow/stem cell transplant',
+        'Transplant procedure reports',
+        'Post-transplant care documentation'
+      ]
+    },
+    {
+      percent: 70,
+      summary: 'Severe - transfusions every 6 weeks',
+      criteriaDescription: [
+        'Requiring blood transfusions at least once every 6 weeks'
+      ],
+      evidenceNeeded: [
+        'Transfusion records showing frequency',
+        'Lab results (hemoglobin, hematocrit, reticulocyte count)',
+        'Documentation of ongoing hemolysis'
+      ]
+    },
+    {
+      percent: 50,
+      summary: 'Moderate - transfusions every 3 months + continuous immunosuppression',
+      criteriaDescription: [
+        'Requiring blood transfusions at least once every 3 months, AND',
+        'Requiring continuous immunosuppressive therapy'
+      ],
+      evidenceNeeded: [
+        'Transfusion records',
+        'Prescription records for immunosuppressive medications',
+        'Lab monitoring results'
+      ]
+    },
+    {
+      percent: 30,
+      summary: 'Immunosuppression only OR occasional transfusions',
+      criteriaDescription: [
+        'Requiring continuous immunosuppressive therapy, OR',
+        'Requiring blood transfusions at least once per year but less than once per 3 months'
+      ],
+      evidenceNeeded: [
+        'Prescription records or transfusion records',
+        'Lab results showing disease activity'
+      ]
+    },
+    {
+      percent: 10,
+      summary: 'Managed with oral medication',
+      criteriaDescription: [
+        'Requiring continuous treatment with oral medication (e.g., corticosteroids, immunosuppressants)'
+      ]
+    },
+    {
+      percent: 0,
+      summary: 'Asymptomatic or no treatment',
+      criteriaDescription: [
+        'Asymptomatic, OR',
+        'Not requiring treatment'
+      ]
+    }
+  ],
+  definitions: {
+    'Acquired Hemolytic Anemia': 'Condition where red blood cells are destroyed prematurely by the immune system or other causes',
+    'Immunosuppressive Therapy': 'Medications that suppress the immune system (e.g., prednisone, azathioprine, rituximab)',
+    'Reticulocyte Count': 'Measure of young red blood cells; elevated in hemolytic anemia as body tries to replace destroyed cells'
+  }
+};
+
+
+// =================================================================
+// SICKLE CELL ANEMIA (DC 7714)
+// =================================================================
+export const SICKLE_CELL_ANEMIA_CRITERIA = {
+  diagnosticCode: '7714',
+  condition: 'Sickle Cell Anemia',
+  cfrReference: '38 CFR § 4.117',
+  ratings: [
+    {
+      percent: 100,
+      summary: '4+ painful crises per year requiring hospitalization OR chronic organ damage',
+      criteriaDescription: [
+        'With at least 4 or more painful crises per year requiring parenteral (intravenous or intramuscular) opioid analgesics or hospitalization for pain management, OR',
+        'With chronic organ damage such as stroke, end-stage renal disease, or severe pulmonary hypertension'
+      ],
+      evidenceNeeded: [
+        'Medical records documenting 4+ hospitalizations or ER visits per year for sickle cell crises',
+        'Inpatient or ER records showing IV pain management',
+        'If organ damage: imaging studies, organ function tests, specialty consult reports',
+        'Hematology consult reports'
+      ]
+    },
+    {
+      percent: 60,
+      summary: '3 painful crises per year requiring hospitalization',
+      criteriaDescription: [
+        'With at least 3 painful crises per year requiring parenteral opioid analgesics or hospitalization for pain management'
+      ],
+      evidenceNeeded: [
+        'Medical records documenting 3 hospitalizations or ER visits per year',
+        'Documentation of IV pain medication administration'
+      ]
+    },
+    {
+      percent: 30,
+      summary: '1-2 painful crises per year requiring medical attention',
+      criteriaDescription: [
+        'With at least 1 or 2 painful crises per year requiring parenteral opioid analgesics or hospitalization for pain management'
+      ],
+      evidenceNeeded: [
+        'Medical records of 1-2 crises per year requiring medical treatment',
+        'ER or clinic visit records showing pain crisis management'
+      ]
+    },
+    {
+      percent: 10,
+      summary: 'Asymptomatic with documented organ impairment',
+      criteriaDescription: [
+        'Asymptomatic, with at least one of the following:',
+        '- Hemoglobin S greater than 40 percent',
+        '- Asplenia (absent or non-functioning spleen)',
+        '- History of painful crises or acute chest syndrome'
+      ],
+      evidenceNeeded: [
+        'Lab results showing hemoglobin electrophoresis with HbS > 40%',
+        'Imaging showing absent/non-functioning spleen',
+        'Medical history documentation of previous crises'
+      ]
+    },
+    {
+      percent: 0,
+      summary: 'Asymptomatic sickle cell trait',
+      criteriaDescription: [
+        'Sickle cell trait (carrier) without symptoms or complications'
+      ]
+    }
+  ],
+  definitions: {
+    'Painful Crisis (Vaso-occlusive Crisis)': 'Episode where sickled cells block blood vessels causing severe pain',
+    'Parenteral Opioid': 'Pain medication given intravenously (IV) or intramuscularly (IM), not by mouth',
+    'Acute Chest Syndrome': 'Life-threatening complication with lung involvement, fever, chest pain',
+    'Asplenia': 'Absent or non-functioning spleen (common in sickle cell disease)',
+    'Hemoglobin S': 'Abnormal hemoglobin that causes red blood cells to sickle'
+  },
+  disclaimer: 'Crises must require parenteral (IV/IM) opioids or hospitalization to count toward rating. Home-managed pain episodes do not qualify.'
+};
+
+
+// =================================================================
+// APLASTIC ANEMIA (DC 7716)
+// =================================================================
+export const APLASTIC_ANEMIA_CRITERIA = {
+  diagnosticCode: '7716',
+  condition: 'Aplastic Anemia',
+  cfrReference: '38 CFR § 4.117',
+  ratings: [
+    {
+      percent: 100,
+      summary: 'Bone marrow transplant OR transfusions every 6 weeks',
+      criteriaDescription: [
+        'Requiring bone marrow or stem cell transplant, OR',
+        'Requiring transfusions at least once every 6 weeks with infections recurring at least once every 6 weeks despite prophylactic antibiotic therapy'
+      ],
+      evidenceNeeded: [
+        'Bone marrow transplant records, OR',
+        'Transfusion records showing frequency (every 6 weeks)',
+        'Infection documentation (cultures, treatment records)',
+        'Prescription records for prophylactic antibiotics'
+      ]
+    },
+    {
+      percent: 70,
+      summary: 'Transfusions every 3 months + immunosuppression',
+      criteriaDescription: [
+        'Requiring transfusions at least once every 3 months, AND',
+        'Requiring continuous immunosuppressive therapy'
+      ],
+      evidenceNeeded: [
+        'Transfusion records',
+        'Prescription records for immunosuppressive medications (cyclosporine, ATG, etc.)'
+      ]
+    },
+    {
+      percent: 50,
+      summary: 'Immunosuppression + growth factors',
+      criteriaDescription: [
+        'Requiring continuous immunosuppressive therapy, AND',
+        'Requiring continuous treatment with myeloid growth factors'
+      ],
+      evidenceNeeded: [
+        'Prescription records for immunosuppressants',
+        'Prescription or treatment records for growth factors (G-CSF, GM-CSF, EPO)'
+      ]
+    },
+    {
+      percent: 30,
+      summary: 'Immunosuppression only',
+      criteriaDescription: [
+        'Requiring continuous immunosuppressive therapy'
+      ],
+      evidenceNeeded: [
+        'Prescription records for continuous immunosuppressive medications'
+      ]
+    },
+    {
+      percent: 10,
+      summary: 'Growth factors only',
+      criteriaDescription: [
+        'Requiring continuous treatment with myeloid growth factors'
+      ],
+      evidenceNeeded: [
+        'Prescription or treatment records for growth factors'
+      ]
+    },
+    {
+      percent: 0,
+      summary: 'Asymptomatic or no treatment',
+      criteriaDescription: [
+        'Asymptomatic, OR',
+        'Not requiring treatment'
+      ]
+    }
+  ],
+  definitions: {
+    'Aplastic Anemia': 'Bone marrow failure resulting in low production of all blood cells (pancytopenia)',
+    'Myeloid Growth Factors': 'Medications that stimulate bone marrow (G-CSF, GM-CSF, erythropoietin)',
+    'Immunosuppressive Therapy': 'Treatment to suppress immune system (cyclosporine, ATG, eltrombopag)',
+    'Prophylactic Antibiotics': 'Preventive antibiotics taken continuously to prevent infections'
+  }
+};
+
+
+// =================================================================
+// POLYCYTHEMIA VERA (DC 7704)
+// =================================================================
+export const POLYCYTHEMIA_VERA_CRITERIA = {
+  diagnosticCode: '7704',
+  condition: 'Polycythemia Vera',
+  cfrReference: '38 CFR § 4.117',
+  ratings: [
+    {
+      percent: 100,
+      summary: 'Bone marrow transplant',
+      criteriaDescription: [
+        'Requiring bone marrow or stem cell transplant'
+      ],
+      evidenceNeeded: [
+        'Bone marrow/stem cell transplant records'
+      ]
+    },
+    {
+      percent: 75,
+      summary: 'Phlebotomy 6+ times/year AND medication',
+      criteriaDescription: [
+        'Requiring phlebotomy 6 or more times per year, AND',
+        'Requiring continuous myelosuppressive treatment'
+      ],
+      evidenceNeeded: [
+        'Phlebotomy records showing 6+ procedures per year',
+        'Prescription records for hydroxyurea, interferon, or JAK inhibitor'
+      ]
+    },
+    {
+      percent: 60,
+      summary: 'Phlebotomy 4-5 times/year AND medication',
+      criteriaDescription: [
+        'Requiring phlebotomy 4 or 5 times per year, AND',
+        'Requiring continuous myelosuppressive treatment'
+      ],
+      evidenceNeeded: [
+        'Phlebotomy records',
+        'Prescription records for myelosuppressive medications'
+      ]
+    },
+    {
+      percent: 50,
+      summary: 'Phlebotomy 4-5 times/year OR continuous medication',
+      criteriaDescription: [
+        'Requiring phlebotomy 4 or 5 times per year, OR',
+        'Requiring continuous myelosuppressive treatment'
+      ],
+      evidenceNeeded: [
+        'Phlebotomy records OR prescription records'
+      ]
+    },
+    {
+      percent: 40,
+      summary: 'Phlebotomy 3 times/year OR continuous medication',
+      criteriaDescription: [
+        'Requiring phlebotomy at least 3 times per year, OR',
+        'Requiring continuous myelosuppressive treatment'
+      ],
+      evidenceNeeded: [
+        'Phlebotomy records OR prescription records'
+      ]
+    },
+    {
+      percent: 20,
+      summary: 'Phlebotomy 1-2 times/year',
+      criteriaDescription: [
+        'Requiring phlebotomy at least 1 time but less than 3 times per year'
+      ],
+      evidenceNeeded: [
+        'Phlebotomy records'
+      ]
+    },
+    {
+      percent: 10,
+      summary: 'Managed with aspirin only',
+      criteriaDescription: [
+        'Requiring continuous treatment with low-dose aspirin or other antiplatelet medication only'
+      ],
+      evidenceNeeded: [
+        'Prescription records'
+      ]
+    },
+    {
+      percent: 0,
+      summary: 'Asymptomatic or no treatment',
+      criteriaDescription: [
+        'Asymptomatic, OR',
+        'Not requiring treatment'
+      ]
+    }
+  ],
+  definitions: {
+    'Polycythemia Vera': 'Myeloproliferative disorder causing overproduction of red blood cells',
+    'Phlebotomy': 'Therapeutic bloodletting to reduce red blood cell count and blood viscosity',
+    'Myelosuppressive Treatment': 'Medications to reduce blood cell production (hydroxyurea, interferon, ruxolitinib/Jakafi)',
+    'JAK Inhibitor': 'Ruxolitinib (Jakafi) - targeted therapy for polycythemia vera'
+  }
+};
+
+
 // ============================================
 // PHASE 4: GYNECOLOGICAL CONDITIONS (DC 7610-7632)
 // ============================================
@@ -7558,2107 +8657,477 @@ export const IRON_DEFICIENCY_ANEMIA_CRITERIA = {
   disclaimer: 'This rating is for iron deficiency anemia not caused by blood loss. If anemia is due to blood loss from another condition, rate under the diagnostic code for the underlying condition.'
 };
 
-export const analyzeIronDeficiencyAnemiaLogs = (logs, options = {}) => {
-  if (!logs || logs.length === 0) {
-    return {
-      hasData: false,
-      supportedRating: 0,
-      rationale: [],
-      evidenceGaps: ['No symptom logs found for iron deficiency anemia'],
-      metrics: {},
-      criteriaReference: IRON_DEFICIENCY_ANEMIA_CRITERIA
-    };
-  }
 
-  const anemiaLogs = logs.filter(log =>
-      log.anemiaData?.type === 'iron-deficiency' ||
-      ['fatigue-blood', 'weakness-blood', 'dizziness-anemia', 'pale-skin'].includes(log.symptomId)
-  );
+// ============================================
+// TMJ DISORDER CRITERIA (DC 9905)
+// ============================================
+export const TMJ_DISORDER_CRITERIA = {
+  diagnosticCode: '9905',
+  condition: 'Temporomandibular Joint (TMJ) Disorder',
+  cfrReference: '38 CFR 4.150, Diagnostic Code 9905',
 
-  if (anemiaLogs.length === 0) {
-    return {
-      hasData: false,
-      supportedRating: 0,
-      rationale: ['No iron deficiency anemia symptom logs found'],
-      evidenceGaps: ['Log symptoms related to iron deficiency anemia'],
-      metrics: {},
-      criteriaReference: IRON_DEFICIENCY_ANEMIA_CRITERIA
-    };
-  }
-
-  let supportedRating = 0;
-  const rationale = [];
-  const evidenceGaps = [];
-  const metrics = {
-    totalLogs: anemiaLogs.length,
-    dateRange: `${new Date(anemiaLogs[0].timestamp).toLocaleDateString()} to ${new Date(anemiaLogs[anemiaLogs.length - 1].timestamp).toLocaleDateString()}`,
-    treatmentTypes: new Set(),
-    ivInfusionCount: 0,
-    continuousOralSupplementation: false
-  };
-
-  anemiaLogs.forEach(log => {
-    if (log.anemiaData?.treatment) {
-      log.anemiaData.treatment.forEach(t => {
-        metrics.treatmentTypes.add(t);
-        if (t === 'iv-iron') metrics.ivInfusionCount++;
-        if (t === 'oral-iron') metrics.continuousOralSupplementation = true;
-      });
-    }
-  });
-
-  if (metrics.ivInfusionCount >= 4) {
-    supportedRating = 30;
-    rationale.push(`Documented ${metrics.ivInfusionCount} IV iron infusion episodes (qualifies for 30% when 4+ per year)`);
-    rationale.push('Treatment frequency indicates severe iron deficiency requiring aggressive intervention');
-  } else if (metrics.ivInfusionCount >= 1 || metrics.continuousOralSupplementation) {
-    supportedRating = 10;
-    if (metrics.ivInfusionCount > 0) {
-      rationale.push(`Documented ${metrics.ivInfusionCount} IV iron infusion episodes (requires 1-3 per year for 10%)`);
-    }
-    if (metrics.continuousOralSupplementation) {
-      rationale.push('Requiring continuous oral iron supplementation');
-    }
-  } else {
-    supportedRating = 0;
-    rationale.push('Symptoms managed with dietary modification only or asymptomatic');
-  }
-
-  evidenceGaps.push('Upload medical records documenting IV iron infusion dates');
-  evidenceGaps.push('Upload lab results (CBC, iron panel, ferritin levels)');
-  evidenceGaps.push('Upload prescription records for iron supplementation');
-  evidenceGaps.push('Obtain provider statement regarding treatment frequency and necessity');
-
-  return {
-    hasData: true,
-    supportedRating,
-    rationale,
-    evidenceGaps,
-    metrics,
-    criteriaReference: IRON_DEFICIENCY_ANEMIA_CRITERIA
-  };
-};
-
-// =================================================================
-// FOLATE DEFICIENCY ANEMIA (DC 7721)
-// =================================================================
-export const FOLATE_DEFICIENCY_ANEMIA_CRITERIA = {
-  diagnosticCode: '7721',
-  condition: 'Folate Deficiency Anemia',
-  cfrReference: '38 CFR § 4.117',
   ratings: [
-    {
-      percent: 30,
-      summary: 'Requiring intravenous folate 4+ times per year',
-      criteriaDescription: [
-        'Requiring intravenous folate infusions 4 or more times per 12-month period'
-      ],
-      evidenceNeeded: [
-        'Medical records documenting IV folate treatment dates',
-        'Lab results showing folate levels and RBC indices',
-        'Documentation of oral folate failure or malabsorption'
-      ]
-    },
-    {
-      percent: 10,
-      summary: 'IV folate 1-3x/year OR continuous oral folate',
-      criteriaDescription: [
-        'Requiring intravenous folate infusions 1-3 times per 12-month period, OR',
-        'Requiring continuous treatment with oral folate supplementation'
-      ],
-      evidenceNeeded: [
-        'Medical records of IV folate treatments',
-        'Prescription records showing continuous oral folate',
-        'Lab results showing improvement with treatment'
-      ]
-    },
-    {
-      percent: 0,
-      summary: 'Asymptomatic or dietary modification only',
-      criteriaDescription: [
-        'Asymptomatic, OR',
-        'Requiring treatment only by dietary modification'
-      ]
-    }
-  ],
-  definitions: {
-    'Folate': 'Vitamin B9, essential for red blood cell production and DNA synthesis',
-    'Malabsorption': 'Inability to absorb folate from the diet (seen in celiac disease, Crohn\'s disease)'
-  }
-};
-
-export const analyzeFolateDeficiencyAnemiaLogs = (logs, options = {}) => {
-  const anemiaLogs = logs.filter(log => log.anemiaData?.type === 'folate-deficiency');
-
-  if (anemiaLogs.length === 0) {
-    return {
-      hasData: false,
-      supportedRating: 0,
-      rationale: ['No folate deficiency anemia logs found'],
-      evidenceGaps: ['Log folate deficiency anemia symptoms and treatment'],
-      metrics: {},
-      criteriaReference: FOLATE_DEFICIENCY_ANEMIA_CRITERIA
-    };
-  }
-
-  let ivCount = 0;
-  let continuousOral = false;
-
-  anemiaLogs.forEach(log => {
-    if (log.anemiaData?.treatment?.includes('iv-folate')) ivCount++;
-    if (log.anemiaData?.treatment?.includes('oral-folate')) continuousOral = true;
-  });
-
-  let supportedRating = 0;
-  const rationale = [];
-
-  if (ivCount >= 4) {
-    supportedRating = 30;
-    rationale.push(`${ivCount} IV folate infusions documented (30% when 4+ per year)`);
-  } else if (ivCount >= 1 || continuousOral) {
-    supportedRating = 10;
-    if (ivCount > 0) rationale.push(`${ivCount} IV folate infusions (10% for 1-3 per year)`);
-    if (continuousOral) rationale.push('Continuous oral folate supplementation required');
-  }
-
-  return {
-    hasData: true,
-    supportedRating,
-    rationale,
-    evidenceGaps: ['Upload medical records and lab results documenting folate levels'],
-    metrics: { totalLogs: anemiaLogs.length, ivCount, continuousOral },
-    criteriaReference: FOLATE_DEFICIENCY_ANEMIA_CRITERIA
-  };
-};
-
-// =================================================================
-// PERNICIOUS ANEMIA / B12 DEFICIENCY (DC 7722)
-// =================================================================
-export const PERNICIOUS_ANEMIA_CRITERIA = {
-  diagnosticCode: '7722',
-  condition: 'Pernicious Anemia or Vitamin B12 Deficiency',
-  cfrReference: '38 CFR § 4.117',
-  ratings: [
-    {
-      percent: 100,
-      summary: 'With central nervous system involvement',
-      criteriaDescription: [
-        'With central nervous system involvement',
-        'Manifested by significant neurological symptoms such as:',
-        '- Subacute combined degeneration of the spinal cord',
-        '- Peripheral neuropathy',
-        '- Cognitive impairment',
-        '- Ataxia or gait disturbances'
-      ],
-      evidenceNeeded: [
-        'Neurology evaluation documenting CNS involvement',
-        'MRI or neurological testing showing spinal cord or nerve damage',
-        'Documentation of neurological symptoms and functional limitations',
-        'Lab results showing B12 deficiency and elevated methylmalonic acid'
-      ]
-    },
-    {
-      percent: 30,
-      summary: 'B12 injections 4+ times per year',
-      criteriaDescription: [
-        'Requiring B12 injections 4 or more times per 12-month period'
-      ],
-      evidenceNeeded: [
-        'Medical records documenting B12 injection dates',
-        'Lab results showing B12 deficiency',
-        'Documentation of why oral B12 is ineffective'
-      ]
-    },
-    {
-      percent: 10,
-      summary: 'B12 injections 1-3x/year OR continuous oral B12',
-      criteriaDescription: [
-        'Requiring B12 injections 1-3 times per 12-month period, OR',
-        'Requiring continuous treatment with oral B12 or sublingual supplementation'
-      ],
-      evidenceNeeded: [
-        'Medical records or prescription records',
-        'Lab results showing B12 levels with treatment'
-      ]
-    },
-    {
-      percent: 0,
-      summary: 'Asymptomatic or dietary only',
-      criteriaDescription: [
-        'Asymptomatic, OR',
-        'Requiring treatment only by dietary modification'
-      ]
-    }
-  ],
-  definitions: {
-    'Pernicious Anemia': 'Autoimmune condition preventing B12 absorption due to lack of intrinsic factor',
-    'Intrinsic Factor': 'Protein needed to absorb B12 in the intestines',
-    'Subacute Combined Degeneration': 'Spinal cord damage from B12 deficiency causing weakness, numbness, difficulty walking',
-    'Methylmalonic Acid': 'Substance elevated in B12 deficiency, used for diagnosis'
-  },
-  disclaimer: 'CNS involvement (100% rating) requires documented neurological damage, not just symptoms of fatigue or mild memory issues.'
-};
-
-export const analyzePerniciousAnemiaLogs = (logs, options = {}) => {
-  const b12Logs = logs.filter(log =>
-      log.anemiaData?.type === 'b12-deficiency' ||
-      log.b12DeficiencyData?.deficiency_cause === 'pernicious-anemia' ||
-      ['numbness-tingling-b12', 'difficulty-walking', 'memory-problems-b12'].includes(log.symptomId)
-  );
-
-  if (b12Logs.length === 0) {
-    return {
-      hasData: false,
-      supportedRating: 0,
-      rationale: ['No B12 deficiency/pernicious anemia logs found'],
-      evidenceGaps: ['Log B12 deficiency symptoms and treatment'],
-      metrics: {},
-      criteriaReference: PERNICIOUS_ANEMIA_CRITERIA
-    };
-  }
-
-  let supportedRating = 0;
-  const rationale = [];
-  const metrics = {
-    totalLogs: b12Logs.length,
-    injectionCount: 0,
-    continuousOral: false,
-    neurologicalSymptoms: new Set(),
-    hasCNSInvolvement: false
-  };
-
-  b12Logs.forEach(log => {
-    if (log.anemiaData?.treatment?.includes('b12-injections')) metrics.injectionCount++;
-    if (log.b12DeficiencyData?.treatment?.includes('injections-weekly') ||
-        log.b12DeficiencyData?.treatment?.includes('injections-monthly')) {
-      metrics.injectionCount++;
-    }
-    if (log.b12DeficiencyData?.treatment?.includes('high-dose-oral') ||
-        log.b12DeficiencyData?.treatment?.includes('sublingual')) {
-      metrics.continuousOral = true;
-    }
-    if (log.b12DeficiencyData?.neurological_symptoms) {
-      log.b12DeficiencyData.neurological_symptoms.forEach(s => metrics.neurologicalSymptoms.add(s));
-    }
-  });
-
-  // Check for CNS involvement
-  const severeNeuroSymptoms = ['balance-problems', 'difficulty-walking', 'weakness', 'confusion'];
-  metrics.hasCNSInvolvement = severeNeuroSymptoms.some(s => metrics.neurologicalSymptoms.has(s));
-
-  if (metrics.hasCNSInvolvement && metrics.neurologicalSymptoms.size >= 3) {
-    supportedRating = 100;
-    rationale.push('Central nervous system involvement documented with neurological symptoms:');
-    rationale.push(`- ${Array.from(metrics.neurologicalSymptoms).join(', ')}`);
-    rationale.push('CRITICAL: Requires neurology evaluation and documentation of CNS damage for 100% rating');
-  } else if (metrics.injectionCount >= 4) {
-    supportedRating = 30;
-    rationale.push(`${metrics.injectionCount} B12 injection episodes documented (30% when 4+ per year)`);
-  } else if (metrics.injectionCount >= 1 || metrics.continuousOral) {
-    supportedRating = 10;
-    if (metrics.injectionCount > 0) rationale.push(`${metrics.injectionCount} B12 injections (10% for 1-3 per year)`);
-    if (metrics.continuousOral) rationale.push('Continuous oral/sublingual B12 supplementation required');
-  }
-
-  const evidenceGaps = [
-    'Upload lab results (B12 level, methylmalonic acid, homocysteine)',
-    'Upload treatment records showing injection frequency',
-  ];
-
-  if (metrics.hasCNSInvolvement) {
-    evidenceGaps.push('CRITICAL: Obtain neurology evaluation documenting CNS involvement');
-    evidenceGaps.push('CRITICAL: Upload MRI or EMG/NCV studies showing nerve or spinal cord damage');
-  }
-
-  return {
-    hasData: true,
-    supportedRating,
-    rationale,
-    evidenceGaps,
-    metrics,
-    criteriaReference: PERNICIOUS_ANEMIA_CRITERIA
-  };
-};
-
-// =================================================================
-// ACQUIRED HEMOLYTIC ANEMIA (DC 7723)
-// =================================================================
-export const HEMOLYTIC_ANEMIA_CRITERIA = {
-  diagnosticCode: '7723',
-  condition: 'Acquired Hemolytic Anemia',
-  cfrReference: '38 CFR § 4.117',
-  ratings: [
-    {
-      percent: 100,
-      summary: 'Bone marrow transplant',
-      criteriaDescription: [
-        'Requiring bone marrow or stem cell transplant'
-      ],
-      evidenceNeeded: [
-        'Medical records documenting bone marrow/stem cell transplant',
-        'Transplant procedure reports',
-        'Post-transplant care documentation'
-      ]
-    },
-    {
-      percent: 70,
-      summary: 'Severe - transfusions every 6 weeks',
-      criteriaDescription: [
-        'Requiring blood transfusions at least once every 6 weeks'
-      ],
-      evidenceNeeded: [
-        'Transfusion records showing frequency',
-        'Lab results (hemoglobin, hematocrit, reticulocyte count)',
-        'Documentation of ongoing hemolysis'
-      ]
-    },
     {
       percent: 50,
-      summary: 'Moderate - transfusions every 3 months + continuous immunosuppression',
+      summary: 'Interincisal range of 0-10mm with liquid diet only',
+      criteria: {
+        interincisal: '0-10mm',
+        diet: 'full-liquid',
+        lateralExcursion: '0-4mm',
+      },
       criteriaDescription: [
-        'Requiring blood transfusions at least once every 3 months, AND',
-        'Requiring continuous immunosuppressive therapy'
+        'Maximum interincisal distance (jaw opening) of 0-10mm',
+        'Requires full liquid diet',
+        'May also have lateral excursion 0-4mm (additional 10%)',
       ],
       evidenceNeeded: [
-        'Transfusion records',
-        'Prescription records for immunosuppressive medications',
-        'Lab monitoring results'
-      ]
-    },
-    {
-      percent: 30,
-      summary: 'Immunosuppression only OR occasional transfusions',
-      criteriaDescription: [
-        'Requiring continuous immunosuppressive therapy, OR',
-        'Requiring blood transfusions at least once per year but less than once per 3 months'
+        'Clinical measurement of maximum jaw opening (0-10mm)',
+        'Documentation that solid foods cannot be chewed',
+        'Evidence of liquid diet requirement',
+        'Dentist or oral surgeon records',
+        'X-rays or MRI showing TMJ damage if available',
       ],
-      evidenceNeeded: [
-        'Prescription records or transfusion records',
-        'Lab results showing disease activity'
-      ]
-    },
-    {
-      percent: 10,
-      summary: 'Managed with oral medication',
-      criteriaDescription: [
-        'Requiring continuous treatment with oral medication (e.g., corticosteroids, immunosuppressants)'
-      ]
-    },
-    {
-      percent: 0,
-      summary: 'Asymptomatic or no treatment',
-      criteriaDescription: [
-        'Asymptomatic, OR',
-        'Not requiring treatment'
-      ]
-    }
-  ],
-  definitions: {
-    'Acquired Hemolytic Anemia': 'Condition where red blood cells are destroyed prematurely by the immune system or other causes',
-    'Immunosuppressive Therapy': 'Medications that suppress the immune system (e.g., prednisone, azathioprine, rituximab)',
-    'Reticulocyte Count': 'Measure of young red blood cells; elevated in hemolytic anemia as body tries to replace destroyed cells'
-  }
-};
-
-export const analyzeHemolyticAnemiaLogs = (logs, options = {}) => {
-  const hemolyticLogs = logs.filter(log => log.anemiaData?.type === 'hemolytic');
-
-  if (hemolyticLogs.length === 0) {
-    return {
-      hasData: false,
-      supportedRating: 0,
-      rationale: ['No hemolytic anemia logs found'],
-      evidenceGaps: ['Log hemolytic anemia symptoms and treatment'],
-      metrics: {},
-      criteriaReference: HEMOLYTIC_ANEMIA_CRITERIA
-    };
-  }
-
-  let supportedRating = 0;
-  const rationale = [];
-  const metrics = {
-    totalLogs: hemolyticLogs.length,
-    transfusionCount: 0,
-    hasImmunosuppression: false,
-    hasBoneMarrowTransplant: false
-  };
-
-  hemolyticLogs.forEach(log => {
-    if (log.anemiaData?.treatment?.includes('transfusions')) metrics.transfusionCount++;
-    if (log.anemiaData?.treatment?.includes('immunosuppressants')) metrics.hasImmunosuppression = true;
-    if (log.anemiaData?.treatment?.includes('bone-marrow-transplant')) metrics.hasBoneMarrowTransplant = true;
-  });
-
-  if (metrics.hasBoneMarrowTransplant) {
-    supportedRating = 100;
-    rationale.push('Bone marrow/stem cell transplant performed (100% rating)');
-  } else if (metrics.transfusionCount >= 8) {
-    supportedRating = 70;
-    rationale.push(`${metrics.transfusionCount} transfusions documented (70% when every 6 weeks = 8-9+ per year)`);
-  } else if (metrics.transfusionCount >= 4 && metrics.hasImmunosuppression) {
-    supportedRating = 50;
-    rationale.push(`${metrics.transfusionCount} transfusions + continuous immunosuppressive therapy (50%)`);
-  } else if (metrics.hasImmunosuppression || metrics.transfusionCount >= 1) {
-    supportedRating = 30;
-    if (metrics.hasImmunosuppression) rationale.push('Continuous immunosuppressive therapy required');
-    if (metrics.transfusionCount > 0) rationale.push(`${metrics.transfusionCount} transfusions per year`);
-  } else if (metrics.hasImmunosuppression) {
-    supportedRating = 10;
-    rationale.push('Continuous oral medication required');
-  }
-
-  return {
-    hasData: true,
-    supportedRating,
-    rationale,
-    evidenceGaps: [
-      'Upload transfusion records showing dates and frequency',
-      'Upload lab results (CBC, reticulocyte count, LDH, haptoglobin, direct Coombs test)',
-      'Upload prescription records for immunosuppressive medications'
-    ],
-    metrics,
-    criteriaReference: HEMOLYTIC_ANEMIA_CRITERIA
-  };
-};
-
-// =================================================================
-// SICKLE CELL ANEMIA (DC 7714)
-// =================================================================
-export const SICKLE_CELL_ANEMIA_CRITERIA = {
-  diagnosticCode: '7714',
-  condition: 'Sickle Cell Anemia',
-  cfrReference: '38 CFR § 4.117',
-  ratings: [
-    {
-      percent: 100,
-      summary: '4+ painful crises per year requiring hospitalization OR chronic organ damage',
-      criteriaDescription: [
-        'With at least 4 or more painful crises per year requiring parenteral (intravenous or intramuscular) opioid analgesics or hospitalization for pain management, OR',
-        'With chronic organ damage such as stroke, end-stage renal disease, or severe pulmonary hypertension'
-      ],
-      evidenceNeeded: [
-        'Medical records documenting 4+ hospitalizations or ER visits per year for sickle cell crises',
-        'Inpatient or ER records showing IV pain management',
-        'If organ damage: imaging studies, organ function tests, specialty consult reports',
-        'Hematology consult reports'
-      ]
-    },
-    {
-      percent: 60,
-      summary: '3 painful crises per year requiring hospitalization',
-      criteriaDescription: [
-        'With at least 3 painful crises per year requiring parenteral opioid analgesics or hospitalization for pain management'
-      ],
-      evidenceNeeded: [
-        'Medical records documenting 3 hospitalizations or ER visits per year',
-        'Documentation of IV pain medication administration'
-      ]
-    },
-    {
-      percent: 30,
-      summary: '1-2 painful crises per year requiring medical attention',
-      criteriaDescription: [
-        'With at least 1 or 2 painful crises per year requiring parenteral opioid analgesics or hospitalization for pain management'
-      ],
-      evidenceNeeded: [
-        'Medical records of 1-2 crises per year requiring medical treatment',
-        'ER or clinic visit records showing pain crisis management'
-      ]
-    },
-    {
-      percent: 10,
-      summary: 'Asymptomatic with documented organ impairment',
-      criteriaDescription: [
-        'Asymptomatic, with at least one of the following:',
-        '- Hemoglobin S greater than 40 percent',
-        '- Asplenia (absent or non-functioning spleen)',
-        '- History of painful crises or acute chest syndrome'
-      ],
-      evidenceNeeded: [
-        'Lab results showing hemoglobin electrophoresis with HbS > 40%',
-        'Imaging showing absent/non-functioning spleen',
-        'Medical history documentation of previous crises'
-      ]
-    },
-    {
-      percent: 0,
-      summary: 'Asymptomatic sickle cell trait',
-      criteriaDescription: [
-        'Sickle cell trait (carrier) without symptoms or complications'
-      ]
-    }
-  ],
-  definitions: {
-    'Painful Crisis (Vaso-occlusive Crisis)': 'Episode where sickled cells block blood vessels causing severe pain',
-    'Parenteral Opioid': 'Pain medication given intravenously (IV) or intramuscularly (IM), not by mouth',
-    'Acute Chest Syndrome': 'Life-threatening complication with lung involvement, fever, chest pain',
-    'Asplenia': 'Absent or non-functioning spleen (common in sickle cell disease)',
-    'Hemoglobin S': 'Abnormal hemoglobin that causes red blood cells to sickle'
-  },
-  disclaimer: 'Crises must require parenteral (IV/IM) opioids or hospitalization to count toward rating. Home-managed pain episodes do not qualify.'
-};
-
-export const analyzeSickleCellAnemiaLogs = (logs, options = {}) => {
-  const sickleLogs = logs.filter(log =>
-      log.anemiaData?.type === 'sickle-cell' ||
-      log.sickleCellData ||
-      log.symptomId === 'sickle-cell-crisis'
-  );
-
-  if (sickleLogs.length === 0) {
-    return {
-      hasData: false,
-      supportedRating: 0,
-      rationale: ['No sickle cell disease logs found'],
-      evidenceGaps: ['Log sickle cell crises and symptoms'],
-      metrics: {},
-      criteriaReference: SICKLE_CELL_ANEMIA_CRITERIA
-    };
-  }
-
-  let supportedRating = 0;
-  const rationale = [];
-  const metrics = {
-    totalLogs: sickleLogs.length,
-    hospitalizationCount: 0,
-    erVisitCount: 0,
-    homeManagedCount: 0,
-    organDamage: false
-  };
-
-  sickleLogs.forEach(log => {
-    if (log.sickleCellData?.treatment_received?.includes('hospitalized')) {
-      metrics.hospitalizationCount++;
-    } else if (log.sickleCellData?.treatment_received?.includes('er-visit')) {
-      metrics.erVisitCount++;
-    } else if (log.sickleCellData?.treatment_received?.includes('home-management')) {
-      metrics.homeManagedCount++;
-    }
-  });
-
-  const totalMedicalCrises = metrics.hospitalizationCount + metrics.erVisitCount;
-
-  if (totalMedicalCrises >= 4) {
-    supportedRating = 100;
-    rationale.push(`${totalMedicalCrises} painful crises requiring medical intervention (4+ per year = 100%)`);
-    rationale.push(`Breakdown: ${metrics.hospitalizationCount} hospitalizations, ${metrics.erVisitCount} ER visits`);
-  } else if (totalMedicalCrises === 3) {
-    supportedRating = 60;
-    rationale.push(`3 painful crises requiring medical intervention (60% rating)`);
-  } else if (totalMedicalCrises >= 1) {
-    supportedRating = 30;
-    rationale.push(`${totalMedicalCrises} painful crisis(es) requiring medical intervention (30% for 1-2 per year)`);
-  } else if (sickleLogs.length > 0) {
-    supportedRating = 10;
-    rationale.push('Documented sickle cell disease with history of symptoms');
-    rationale.push('NOTE: Home-managed crises do not count toward higher ratings');
-  }
-
-  const evidenceGaps = [
-    'Upload medical records of all ER visits and hospitalizations for sickle cell crises',
-    'Upload documentation showing IV pain medication administration',
-    'Upload hemoglobin electrophoresis results',
-    'Upload imaging studies if organ damage present'
-  ];
-
-  if (metrics.homeManagedCount > 0) {
-    evidenceGaps.push(`IMPORTANT: ${metrics.homeManagedCount} home-managed crises logged but these do not count for rating - only crises requiring parenteral opioids or hospitalization qualify`);
-  }
-
-  return {
-    hasData: true,
-    supportedRating,
-    rationale,
-    evidenceGaps,
-    metrics,
-    criteriaReference: SICKLE_CELL_ANEMIA_CRITERIA
-  };
-};
-
-// =================================================================
-// APLASTIC ANEMIA (DC 7716)
-// =================================================================
-export const APLASTIC_ANEMIA_CRITERIA = {
-  diagnosticCode: '7716',
-  condition: 'Aplastic Anemia',
-  cfrReference: '38 CFR § 4.117',
-  ratings: [
-    {
-      percent: 100,
-      summary: 'Bone marrow transplant OR transfusions every 6 weeks',
-      criteriaDescription: [
-        'Requiring bone marrow or stem cell transplant, OR',
-        'Requiring transfusions at least once every 6 weeks with infections recurring at least once every 6 weeks despite prophylactic antibiotic therapy'
-      ],
-      evidenceNeeded: [
-        'Bone marrow transplant records, OR',
-        'Transfusion records showing frequency (every 6 weeks)',
-        'Infection documentation (cultures, treatment records)',
-        'Prescription records for prophylactic antibiotics'
-      ]
-    },
-    {
-      percent: 70,
-      summary: 'Transfusions every 3 months + immunosuppression',
-      criteriaDescription: [
-        'Requiring transfusions at least once every 3 months, AND',
-        'Requiring continuous immunosuppressive therapy'
-      ],
-      evidenceNeeded: [
-        'Transfusion records',
-        'Prescription records for immunosuppressive medications (cyclosporine, ATG, etc.)'
-      ]
-    },
-    {
-      percent: 50,
-      summary: 'Immunosuppression + growth factors',
-      criteriaDescription: [
-        'Requiring continuous immunosuppressive therapy, AND',
-        'Requiring continuous treatment with myeloid growth factors'
-      ],
-      evidenceNeeded: [
-        'Prescription records for immunosuppressants',
-        'Prescription or treatment records for growth factors (G-CSF, GM-CSF, EPO)'
-      ]
-    },
-    {
-      percent: 30,
-      summary: 'Immunosuppression only',
-      criteriaDescription: [
-        'Requiring continuous immunosuppressive therapy'
-      ],
-      evidenceNeeded: [
-        'Prescription records for continuous immunosuppressive medications'
-      ]
-    },
-    {
-      percent: 10,
-      summary: 'Growth factors only',
-      criteriaDescription: [
-        'Requiring continuous treatment with myeloid growth factors'
-      ],
-      evidenceNeeded: [
-        'Prescription or treatment records for growth factors'
-      ]
-    },
-    {
-      percent: 0,
-      summary: 'Asymptomatic or no treatment',
-      criteriaDescription: [
-        'Asymptomatic, OR',
-        'Not requiring treatment'
-      ]
-    }
-  ],
-  definitions: {
-    'Aplastic Anemia': 'Bone marrow failure resulting in low production of all blood cells (pancytopenia)',
-    'Myeloid Growth Factors': 'Medications that stimulate bone marrow (G-CSF, GM-CSF, erythropoietin)',
-    'Immunosuppressive Therapy': 'Treatment to suppress immune system (cyclosporine, ATG, eltrombopag)',
-    'Prophylactic Antibiotics': 'Preventive antibiotics taken continuously to prevent infections'
-  }
-};
-
-export const analyzeAplasticAnemiaLogs = (logs, options = {}) => {
-  const aplasticLogs = logs.filter(log => log.anemiaData?.type === 'aplastic');
-
-  if (aplasticLogs.length === 0) {
-    return {
-      hasData: false,
-      supportedRating: 0,
-      rationale: ['No aplastic anemia logs found'],
-      evidenceGaps: ['Log aplastic anemia symptoms and treatment'],
-      metrics: {},
-      criteriaReference: APLASTIC_ANEMIA_CRITERIA
-    };
-  }
-
-  let supportedRating = 0;
-  const rationale = [];
-  const metrics = {
-    totalLogs: aplasticLogs.length,
-    transfusionCount: 0,
-    hasImmunosuppression: false,
-    hasGrowthFactors: false,
-    hasBoneMarrowTransplant: false,
-    frequentInfections: 0
-  };
-
-  aplasticLogs.forEach(log => {
-    if (log.anemiaData?.treatment?.includes('transfusions')) metrics.transfusionCount++;
-    if (log.anemiaData?.treatment?.includes('immunosuppressants')) metrics.hasImmunosuppression = true;
-    if (log.anemiaData?.treatment?.includes('growth-factors')) metrics.hasGrowthFactors = true;
-    if (log.anemiaData?.treatment?.includes('bone-marrow-transplant')) metrics.hasBoneMarrowTransplant = true;
-  });
-
-  if (metrics.hasBoneMarrowTransplant) {
-    supportedRating = 100;
-    rationale.push('Bone marrow/stem cell transplant performed (100% rating)');
-  } else if (metrics.transfusionCount >= 8 && metrics.frequentInfections >= 8) {
-    supportedRating = 100;
-    rationale.push('Transfusions every 6 weeks (8-9+ per year) AND recurring infections despite prophylactic antibiotics');
-  } else if (metrics.transfusionCount >= 4 && metrics.hasImmunosuppression) {
-    supportedRating = 70;
-    rationale.push(`Transfusions every 3 months (4+ per year) AND continuous immunosuppressive therapy`);
-  } else if (metrics.hasImmunosuppression && metrics.hasGrowthFactors) {
-    supportedRating = 50;
-    rationale.push('Continuous immunosuppressive therapy AND myeloid growth factors');
-  } else if (metrics.hasImmunosuppression) {
-    supportedRating = 30;
-    rationale.push('Continuous immunosuppressive therapy required');
-  } else if (metrics.hasGrowthFactors) {
-    supportedRating = 10;
-    rationale.push('Continuous myeloid growth factor treatment required');
-  }
-
-  return {
-    hasData: true,
-    supportedRating,
-    rationale,
-    evidenceGaps: [
-      'Upload bone marrow biopsy report confirming diagnosis',
-      'Upload transfusion records showing frequency',
-      'Upload prescription records for immunosuppressive medications',
-      'Upload prescription/treatment records for growth factors (G-CSF, EPO)',
-      'Upload infection records if frequent infections present'
-    ],
-    metrics,
-    criteriaReference: APLASTIC_ANEMIA_CRITERIA
-  };
-};
-
-// =================================================================
-// POLYCYTHEMIA VERA (DC 7704)
-// =================================================================
-export const POLYCYTHEMIA_VERA_CRITERIA = {
-  diagnosticCode: '7704',
-  condition: 'Polycythemia Vera',
-  cfrReference: '38 CFR § 4.117',
-  ratings: [
-    {
-      percent: 100,
-      summary: 'Bone marrow transplant',
-      criteriaDescription: [
-        'Requiring bone marrow or stem cell transplant'
-      ],
-      evidenceNeeded: [
-        'Bone marrow/stem cell transplant records'
-      ]
-    },
-    {
-      percent: 75,
-      summary: 'Phlebotomy 6+ times/year AND medication',
-      criteriaDescription: [
-        'Requiring phlebotomy 6 or more times per year, AND',
-        'Requiring continuous myelosuppressive treatment'
-      ],
-      evidenceNeeded: [
-        'Phlebotomy records showing 6+ procedures per year',
-        'Prescription records for hydroxyurea, interferon, or JAK inhibitor'
-      ]
-    },
-    {
-      percent: 60,
-      summary: 'Phlebotomy 4-5 times/year AND medication',
-      criteriaDescription: [
-        'Requiring phlebotomy 4 or 5 times per year, AND',
-        'Requiring continuous myelosuppressive treatment'
-      ],
-      evidenceNeeded: [
-        'Phlebotomy records',
-        'Prescription records for myelosuppressive medications'
-      ]
-    },
-    {
-      percent: 50,
-      summary: 'Phlebotomy 4-5 times/year OR continuous medication',
-      criteriaDescription: [
-        'Requiring phlebotomy 4 or 5 times per year, OR',
-        'Requiring continuous myelosuppressive treatment'
-      ],
-      evidenceNeeded: [
-        'Phlebotomy records OR prescription records'
-      ]
     },
     {
       percent: 40,
-      summary: 'Phlebotomy 3 times/year OR continuous medication',
+      summary: 'Interincisal range of 11-20mm with semi-solid/soft diet',
+      criteria: {
+        interincisal: '11-20mm',
+        diet: 'semi-solid-soft',
+        lateralExcursion: '0-4mm',
+      },
       criteriaDescription: [
-        'Requiring phlebotomy at least 3 times per year, OR',
-        'Requiring continuous myelosuppressive treatment'
+        'Maximum interincisal distance of 11-20mm',
+        'Requires semi-solid or soft food diet',
+        'May also have lateral excursion 0-4mm (additional 10%)',
       ],
       evidenceNeeded: [
-        'Phlebotomy records OR prescription records'
-      ]
+        'Clinical measurement of jaw opening (11-20mm)',
+        'Documentation of dietary restrictions to soft foods',
+        'Dentist records showing TMJ dysfunction',
+        'Evidence that normal foods cause pain or cannot be chewed',
+      ],
+    },
+    {
+      percent: 30,
+      summary: 'Interincisal range of 21-25mm with dietary restrictions',
+      criteria: {
+        interincisal: '21-25mm',
+        diet: 'some-restrictions',
+        lateralExcursion: '0-4mm',
+      },
+      criteriaDescription: [
+        'Maximum interincisal distance of 21-25mm',
+        'Some dietary restrictions required',
+        'May also have lateral excursion 0-4mm (additional 10%)',
+      ],
+      evidenceNeeded: [
+        'Clinical measurement showing 21-25mm opening',
+        'Documentation of difficulty with certain foods (hard, chewy)',
+        'TMJ treatment records',
+        'Evidence of pain with prolonged chewing',
+      ],
     },
     {
       percent: 20,
-      summary: 'Phlebotomy 1-2 times/year',
+      summary: 'Interincisal range of 26-30mm',
+      criteria: {
+        interincisal: '26-30mm',
+        lateralExcursion: '0-4mm',
+      },
       criteriaDescription: [
-        'Requiring phlebotomy at least 1 time but less than 3 times per year'
+        'Maximum interincisal distance of 26-30mm',
+        'May also have lateral excursion 0-4mm (additional 10%)',
       ],
       evidenceNeeded: [
-        'Phlebotomy records'
-      ]
+        'Clinical measurement of 26-30mm jaw opening',
+        'Documentation of TMJ symptoms and treatment',
+        'Evidence of functional limitation',
+      ],
     },
     {
       percent: 10,
-      summary: 'Managed with aspirin only',
+      summary: 'Interincisal range of 31-35mm OR lateral excursion 0-4mm',
+      criteria: {
+        options: [
+          { interincisal: '31-35mm' },
+          { lateralExcursion: '0-4mm' },
+        ],
+      },
       criteriaDescription: [
-        'Requiring continuous treatment with low-dose aspirin or other antiplatelet medication only'
+        'Maximum interincisal distance of 31-35mm, OR',
+        'Lateral excursion limited to 0-4mm',
       ],
       evidenceNeeded: [
-        'Prescription records'
-      ]
+        'Clinical measurement of jaw opening or lateral movement',
+        'TMJ diagnosis and treatment records',
+      ],
     },
-    {
-      percent: 0,
-      summary: 'Asymptomatic or no treatment',
-      criteriaDescription: [
-        'Asymptomatic, OR',
-        'Not requiring treatment'
-      ]
-    }
   ],
+
   definitions: {
-    'Polycythemia Vera': 'Myeloproliferative disorder causing overproduction of red blood cells',
-    'Phlebotomy': 'Therapeutic bloodletting to reduce red blood cell count and blood viscosity',
-    'Myelosuppressive Treatment': 'Medications to reduce blood cell production (hydroxyurea, interferon, ruxolitinib/Jakafi)',
-    'JAK Inhibitor': 'Ruxolitinib (Jakafi) - targeted therapy for polycythemia vera'
-  }
-};
-
-export const analyzePolycythemiaVeraLogs = (logs, options = {}) => {
-  const polyLogs = logs.filter(log =>
-      log.polycythemiaData?.diagnosis === 'polycythemia-vera' ||
-      ['itching-after-bathing', 'burning-hands-feet', 'redness-skin'].includes(log.symptomId)
-  );
-
-  if (polyLogs.length === 0) {
-    return {
-      hasData: false,
-      supportedRating: 0,
-      rationale: ['No polycythemia vera logs found'],
-      evidenceGaps: ['Log polycythemia vera symptoms and treatment'],
-      metrics: {},
-      criteriaReference: POLYCYTHEMIA_VERA_CRITERIA
-    };
-  }
-
-  let supportedRating = 0;
-  const rationale = [];
-  const metrics = {
-    totalLogs: polyLogs.length,
-    phlebotomyCount: 0,
-    hasMyelosuppression: false,
-    hasAspirinOnly: false,
-    hasBoneMarrowTransplant: false
-  };
-
-  polyLogs.forEach(log => {
-    if (log.polycythemiaData?.treatment?.includes('phlebotomy')) metrics.phlebotomyCount++;
-    if (log.polycythemiaData?.medications?.some(m =>
-        ['hydroxyurea-continuous', 'interferon-continuous', 'jakafi-continuous'].includes(m)
-    )) {
-      metrics.hasMyelosuppression = true;
-    }
-    if (log.polycythemiaData?.treatment?.includes('aspirin')) metrics.hasAspirinOnly = true;
-  });
-
-  if (metrics.hasBoneMarrowTransplant) {
-    supportedRating = 100;
-    rationale.push('Bone marrow/stem cell transplant performed');
-  } else if (metrics.phlebotomyCount >= 6 && metrics.hasMyelosuppression) {
-    supportedRating = 75;
-    rationale.push(`${metrics.phlebotomyCount} phlebotomies per year AND continuous myelosuppressive treatment`);
-  } else if (metrics.phlebotomyCount >= 4 && metrics.hasMyelosuppression) {
-    supportedRating = 60;
-    rationale.push(`${metrics.phlebotomyCount} phlebotomies per year AND continuous myelosuppressive treatment`);
-  } else if (metrics.phlebotomyCount >= 4 || metrics.hasMyelosuppression) {
-    supportedRating = 50;
-    if (metrics.phlebotomyCount >= 4) rationale.push(`${metrics.phlebotomyCount} phlebotomies per year`);
-    if (metrics.hasMyelosuppression) rationale.push('Continuous myelosuppressive medication');
-  } else if (metrics.phlebotomyCount === 3 || metrics.hasMyelosuppression) {
-    supportedRating = 40;
-    rationale.push(metrics.phlebotomyCount === 3 ? '3 phlebotomies per year' : 'Continuous myelosuppressive medication');
-  } else if (metrics.phlebotomyCount >= 1) {
-    supportedRating = 20;
-    rationale.push(`${metrics.phlebotomyCount} phlebotomies per year`);
-  } else if (metrics.hasAspirinOnly) {
-    supportedRating = 10;
-    rationale.push('Managed with low-dose aspirin only');
-  }
-
-  return {
-    hasData: true,
-    supportedRating,
-    rationale,
-    evidenceGaps: [
-      'Upload phlebotomy records showing dates and frequency',
-      'Upload prescription records for myelosuppressive medications',
-      'Upload lab results (CBC, JAK2 mutation testing)',
-      'Upload hematology consultation reports'
-    ],
-    metrics,
-    criteriaReference: POLYCYTHEMIA_VERA_CRITERIA
-  };
-};
-
-// CONTINUING FROM PREVIOUS MODIFICATION...
-// Add after Polycythemia Vera criteria
-
-// =================================================================
-// IMMUNE THROMBOCYTOPENIA (DC 7705)
-// =================================================================
-export const IMMUNE_THROMBOCYTOPENIA_CRITERIA = {
-  diagnosticCode: '7705',
-  condition: 'Immune Thrombocytopenia (ITP)',
-  cfrReference: '38 CFR § 4.117',
-  ratings: [
-    {
-      percent: 100,
-      summary: 'Bone marrow transplant OR platelet count <20,000',
-      criteriaDescription: [
-        'Requiring bone marrow or stem cell transplant, OR',
-        'With platelet count less than 20,000 AND',
-        '- Requiring continuous treatment with immunosuppressive therapy',
-        '- Spontaneous bleeding, OR',
-        '- Bleeding requiring transfusion'
-      ],
-      evidenceNeeded: [
-        'Bone marrow transplant records, OR',
-        'Multiple lab results showing platelet count <20,000',
-        'Documentation of bleeding episodes',
-        'Prescription records for immunosuppressive medications',
-        'Transfusion records if applicable'
-      ]
+    interincisal: {
+      term: 'Interincisal Range',
+      definition: 'The maximum distance you can open your mouth, measured between the upper and lower front teeth. Normal range is 35-50mm. This is measured clinically by a dentist or doctor.',
     },
-    {
-      percent: 70,
-      summary: 'Platelet count 20,000-30,000 with bleeding',
-      criteriaDescription: [
-        'With platelet count of 20,000 to 30,000 AND',
-        '- Requiring continuous treatment with immunosuppressive therapy',
-        '- With either spontaneous bleeding OR bleeding with minor trauma'
-      ],
-      evidenceNeeded: [
-        'Lab results showing platelet count 20,000-30,000',
-        'Prescription records for immunosuppressive therapy',
-        'Documentation of bleeding episodes'
-      ]
+    lateralExcursion: {
+      term: 'Lateral Excursion',
+      definition: 'Side-to-side movement of the jaw. Normal lateral movement is at least 6mm to each side. Limitation to 0-4mm indicates significant TMJ dysfunction and may warrant an additional 10% rating.',
     },
-    {
-      percent: 50,
-      summary: 'Platelet count 30,000-50,000 with treatment',
-      criteriaDescription: [
-        'With platelet count of 30,000 to 50,000, AND',
-        'Requiring continuous treatment with immunosuppressive therapy'
+    dietaryRestrictions: {
+      term: 'Dietary Restrictions',
+      definition: 'Inability to eat certain consistencies of food due to jaw dysfunction. More severe restrictions result in higher ratings.',
+      examples: [
+        'Full liquid diet (50%) - can only consume liquids',
+        'Semi-solid/soft foods (40%) - no solid foods',
+        'Some restrictions (30%) - difficulty with hard or chewy foods',
       ],
-      evidenceNeeded: [
-        'Lab results showing platelet count 30,000-50,000',
-        'Prescription records for continuous immunosuppressive medications'
-      ]
     },
-    {
-      percent: 30,
-      summary: 'Platelet count 50,000-70,000 with treatment',
-      criteriaDescription: [
-        'With platelet count of 50,000 to 70,000, AND',
-        'Requiring continuous treatment with immunosuppressive therapy'
-      ],
-      evidenceNeeded: [
-        'Lab results',
-        'Prescription records'
-      ]
-    },
-    {
-      percent: 10,
-      summary: 'Platelet count 70,000-100,000',
-      criteriaDescription: [
-        'With platelet count of 70,000 to 100,000'
-      ],
-      evidenceNeeded: [
-        'Lab results showing platelet count'
-      ]
-    },
-    {
-      percent: 0,
-      summary: 'Platelet count >100,000 or asymptomatic',
-      criteriaDescription: [
-        'With platelet count greater than 100,000, OR',
-        'Asymptomatic'
-      ]
-    }
-  ],
-  definitions: {
-    'Immune Thrombocytopenia (ITP)': 'Autoimmune disorder causing low platelet count and increased bleeding risk',
-    'Platelet Count': 'Normal range is 150,000-400,000 per μL',
-    'Immunosuppressive Therapy': 'Corticosteroids, IVIG, rituximab, TPO receptor agonists, immunosuppressants',
-    'Spontaneous Bleeding': 'Bleeding without trauma (petechiae, purpura, nosebleeds, gum bleeding)'
   },
-  disclaimer: 'Rating is based on the platelet count AND whether immunosuppressive treatment is required. Both factors matter.'
-};
 
-export const analyzeImmuneThrombocytopeniaLogs = (logs, options = {}) => {
-  const itpLogs = logs.filter(log =>
-      log.bleedingDisorderData?.disorder_type === 'thrombocytopenia' ||
-      ['easy-bruising', 'prolonged-bleeding', 'petechiae'].includes(log.symptomId)
-  );
-
-  if (itpLogs.length === 0) {
-    return {
-      hasData: false,
-      supportedRating: 0,
-      rationale: ['No immune thrombocytopenia logs found'],
-      evidenceGaps: ['Log ITP symptoms and treatment'],
-      metrics: {},
-      criteriaReference: IMMUNE_THROMBOCYTOPENIA_CRITERIA
-    };
-  }
-
-  let supportedRating = 0;
-  const rationale = [];
-  const metrics = {
-    totalLogs: itpLogs.length,
-    lowestPlateletCount: null,
-    hasImmunosuppression: false,
-    hasBleedingEpisodes: false,
-    hasBoneMarrowTransplant: false
-  };
-
-  itpLogs.forEach(log => {
-    if (log.bleedingDisorderData?.platelet_count) {
-      const count = parseInt(log.bleedingDisorderData.platelet_count);
-      if (!metrics.lowestPlateletCount || count < metrics.lowestPlateletCount) {
-        metrics.lowestPlateletCount = count;
-      }
-    }
-    if (log.bleedingDisorderData?.treatment?.some(t =>
-        ['steroids', 'immunoglobulins', 'immunosuppressants', 'tpo-agonists'].includes(t)
-    )) {
-      metrics.hasImmunosuppression = true;
-    }
-    if (log.bleedingDisorderData?.bleeding_site?.length > 0) {
-      metrics.hasBleedingEpisodes = true;
-    }
-  });
-
-  if (metrics.hasBoneMarrowTransplant) {
-    supportedRating = 100;
-    rationale.push('Bone marrow/stem cell transplant performed');
-  } else if (metrics.lowestPlateletCount && metrics.lowestPlateletCount < 20000 &&
-      metrics.hasImmunosuppression && metrics.hasBleedingEpisodes) {
-    supportedRating = 100;
-    rationale.push(`Platelet count <20,000 (lowest: ${metrics.lowestPlateletCount.toLocaleString()}) with continuous immunosuppressive treatment and bleeding episodes`);
-  } else if (metrics.lowestPlateletCount && metrics.lowestPlateletCount >= 20000 &&
-      metrics.lowestPlateletCount <= 30000 && metrics.hasImmunosuppression && metrics.hasBleedingEpisodes) {
-    supportedRating = 70;
-    rationale.push(`Platelet count 20,000-30,000 (${metrics.lowestPlateletCount.toLocaleString()}) with immunosuppressive treatment and bleeding`);
-  } else if (metrics.lowestPlateletCount && metrics.lowestPlateletCount >= 30000 &&
-      metrics.lowestPlateletCount <= 50000 && metrics.hasImmunosuppression) {
-    supportedRating = 50;
-    rationale.push(`Platelet count 30,000-50,000 (${metrics.lowestPlateletCount.toLocaleString()}) requiring continuous immunosuppressive treatment`);
-  } else if (metrics.lowestPlateletCount && metrics.lowestPlateletCount >= 50000 &&
-      metrics.lowestPlateletCount <= 70000 && metrics.hasImmunosuppression) {
-    supportedRating = 30;
-    rationale.push(`Platelet count 50,000-70,000 (${metrics.lowestPlateletCount.toLocaleString()}) requiring continuous immunosuppressive treatment`);
-  } else if (metrics.lowestPlateletCount && metrics.lowestPlateletCount >= 70000 &&
-      metrics.lowestPlateletCount <= 100000) {
-    supportedRating = 10;
-    rationale.push(`Platelet count 70,000-100,000 (${metrics.lowestPlateletCount.toLocaleString()})`);
-  } else {
-    supportedRating = 0;
-    rationale.push('Platelet count >100,000 or asymptomatic');
-  }
-
-  return {
-    hasData: true,
-    supportedRating,
-    rationale,
-    evidenceGaps: [
-      'Upload multiple CBC lab results showing platelet counts',
-      'Upload prescription records for immunosuppressive medications',
-      'Upload documentation of bleeding episodes',
-      'Upload hematology consultation reports'
-    ],
-    metrics,
-    criteriaReference: IMMUNE_THROMBOCYTOPENIA_CRITERIA
-  };
-};
-
-// =================================================================
-// LEUKEMIA (DC 7703)
-// =================================================================
-export const LEUKEMIA_CRITERIA = {
-  diagnosticCode: '7703',
-  condition: 'Leukemia (Acute and Chronic)',
-  cfrReference: '38 CFR § 4.117',
-  ratings: [
-    {
-      percent: 100,
-      summary: 'During active treatment OR bone marrow transplant',
-      criteriaDescription: [
-        'Requiring chemotherapy, bone marrow or stem cell transplant, or other ongoing treatment modality, OR',
-        'Status post bone marrow or stem cell transplant with chronic graft versus host disease'
-      ],
-      evidenceNeeded: [
-        'Medical records documenting active treatment (chemotherapy, targeted therapy, etc.)',
-        'Treatment schedule and protocols',
-        'Bone marrow transplant records if applicable',
-        'Documentation of graft versus host disease if post-transplant'
-      ]
-    },
-    {
-      percent: 60,
-      summary: 'Post-treatment with residual symptoms',
-      criteriaDescription: [
-        'Following treatment, with residual symptoms such as:',
-        '- Chronic fatigue',
-        '- Anemia requiring treatment',
-        '- Thrombocytopenia',
-        '- Neuropathy',
-        '- Infections',
-        '- Other treatment-related complications'
-      ],
-      evidenceNeeded: [
-        'Documentation that active treatment has ended',
-        'Medical records showing residual symptoms and ongoing management',
-        'Lab results showing persistent abnormalities'
-      ]
-    },
-    {
-      percent: 30,
-      summary: 'In remission with surveillance only',
-      criteriaDescription: [
-        'In complete remission, requiring only surveillance (regular follow-up visits and blood tests)'
-      ],
-      evidenceNeeded: [
-        'Oncology notes documenting complete remission',
-        'Follow-up schedule',
-        'Recent lab results showing remission'
-      ]
-    }
+  importantNotes: [
+    'TMJ ratings are based on maximum jaw opening (interincisal range) and dietary restrictions',
+    'Lateral excursion limitation (0-4mm) may add an additional 10% to the rating',
+    'Measurements should be taken by a dentist or oral surgeon',
+    'Normal interincisal range is 35-50mm',
+    'Document pain levels, clicking/popping, and functional limitations',
+    'Bilateral TMJ involvement results in a single rating (not combined)',
   ],
-  definitions: {
-    'Acute Leukemia': 'Rapidly progressing cancer of blood-forming tissues (ALL, AML)',
-    'Chronic Leukemia': 'Slowly progressing blood cancer (CLL, CML)',
-    'Complete Remission': 'No evidence of leukemia cells in blood or bone marrow',
-    'Graft Versus Host Disease': 'Complication after bone marrow transplant where donor cells attack recipient tissues',
-    'Surveillance': 'Regular monitoring without active treatment'
-  },
-  disclaimer: 'Rating is 100% during all active treatment. After treatment ends, rating decreases based on residual symptoms and remission status.'
 };
 
-export const analyzeLeukemiaLogs = (logs, options = {}) => {
-  const leukemiaLogs = logs.filter(log =>
-      ['cll', 'cml', 'all', 'aml'].includes(log.lymphomaLeukemiaData?.diagnosis) ||
-      ['bone-pain-leukemia', 'night-sweats-blood', 'frequent-infections'].includes(log.symptomId)
-  );
+// ============================================
+// TOOTH LOSS CRITERIA (DC 9913)
+// ============================================
+export const TOOTH_LOSS_CRITERIA = {
+  diagnosticCode: '9913',
+  condition: 'Loss of Teeth Due to Bone Loss',
+  cfrReference: '38 CFR 4.150, Diagnostic Code 9913',
 
-  if (leukemiaLogs.length === 0) {
-    return {
-      hasData: false,
-      supportedRating: 0,
-      rationale: ['No leukemia logs found'],
-      evidenceGaps: ['Log leukemia symptoms and treatment'],
-      metrics: {},
-      criteriaReference: LEUKEMIA_CRITERIA
-    };
-  }
-
-  let supportedRating = 0;
-  const rationale = [];
-  const metrics = {
-    totalLogs: leukemiaLogs.length,
-    activeTreatment: false,
-    inRemission: false,
-    hasResidualSymptoms: false,
-    treatmentTypes: new Set(),
-    sideEffects: new Set()
-  };
-
-  leukemiaLogs.forEach(log => {
-    if (log.lymphomaLeukemiaData?.treatment_status === 'active-treatment') {
-      metrics.activeTreatment = true;
-    }
-    if (log.lymphomaLeukemiaData?.treatment_status === 'remission') {
-      metrics.inRemission = true;
-    }
-    if (log.lymphomaLeukemiaData?.side_effects?.length > 0) {
-      metrics.hasResidualSymptoms = true;
-      log.lymphomaLeukemiaData.side_effects.forEach(e => metrics.sideEffects.add(e));
-    }
-    if (log.lymphomaLeukemiaData?.treatment_type) {
-      log.lymphomaLeukemiaData.treatment_type.forEach(t => metrics.treatmentTypes.add(t));
-    }
-  });
-
-  if (metrics.activeTreatment) {
-    supportedRating = 100;
-    rationale.push('Currently receiving active treatment for leukemia (100% rating during treatment)');
-    if (metrics.treatmentTypes.size > 0) {
-      rationale.push(`Treatment types: ${Array.from(metrics.treatmentTypes).join(', ')}`);
-    }
-  } else if (metrics.inRemission && metrics.hasResidualSymptoms) {
-    supportedRating = 60;
-    rationale.push('Post-treatment with residual symptoms');
-    rationale.push(`Ongoing symptoms: ${Array.from(metrics.sideEffects).join(', ')}`);
-  } else if (metrics.inRemission) {
-    supportedRating = 30;
-    rationale.push('In complete remission with surveillance only');
-  } else {
-    supportedRating = 100;
-    rationale.push('Active leukemia - assume 100% rating until remission documented');
-  }
-
-  return {
-    hasData: true,
-    supportedRating,
-    rationale,
-    evidenceGaps: [
-      'Upload oncology consultation reports',
-      'Upload bone marrow biopsy results',
-      'Upload treatment records and protocols',
-      'Upload lab results (CBC, flow cytometry, molecular studies)',
-      'Upload documentation of treatment status (active vs. remission)'
-    ],
-    metrics,
-    criteriaReference: LEUKEMIA_CRITERIA
-  };
-};
-
-// =================================================================
-// HODGKIN'S LYMPHOMA (DC 7709)
-// =================================================================
-export const HODGKINS_LYMPHOMA_CRITERIA = {
-  diagnosticCode: '7709',
-  condition: "Hodgkin's Lymphoma (Hodgkin's Disease)",
-  cfrReference: '38 CFR § 4.117',
   ratings: [
-    {
-      percent: 100,
-      summary: 'During active treatment',
-      criteriaDescription: [
-        'Requiring chemotherapy, radiation therapy, bone marrow or stem cell transplant, or other ongoing treatment'
-      ],
-      evidenceNeeded: [
-        'Medical records documenting active treatment',
-        'Treatment schedule and protocols',
-        'Oncology consultation reports'
-      ]
-    },
-    {
-      percent: 60,
-      summary: 'Post-treatment with residual symptoms',
-      criteriaDescription: [
-        'Following treatment, with residual symptoms such as:',
-        '- Chronic fatigue',
-        '- Residual lymphadenopathy',
-        '- Treatment-related complications (neuropathy, cardiac issues, etc.)'
-      ],
-      evidenceNeeded: [
-        'Documentation that treatment has ended',
-        'Medical records showing residual symptoms',
-        'Imaging showing residual disease or complications'
-      ]
-    },
-    {
-      percent: 30,
-      summary: 'In remission with surveillance',
-      criteriaDescription: [
-        'In complete remission, requiring only surveillance'
-      ],
-      evidenceNeeded: [
-        'Oncology notes documenting complete remission',
-        'PET/CT scans showing no active disease',
-        'Follow-up schedule'
-      ]
-    }
-  ],
-  definitions: {
-    "Hodgkin's Lymphoma": 'Cancer of the lymphatic system characterized by Reed-Sternberg cells',
-    'Lymphadenopathy': 'Enlarged lymph nodes',
-    'PET/CT Scan': 'Imaging used to assess for active lymphoma'
-  },
-  disclaimer: 'Rating is 100% during all active treatment. Reduces after treatment completion based on remission status.'
-};
-
-export const analyzeHodgkinsLymphomaLogs = (logs, options = {}) => {
-  const hodgkinsLogs = logs.filter(log =>
-      log.lymphomaLeukemiaData?.diagnosis === 'hodgkin' ||
-      ['swollen-lymph-nodes', 'night-sweats-blood'].includes(log.symptomId)
-  );
-
-  if (hodgkinsLogs.length === 0) {
-    return {
-      hasData: false,
-      supportedRating: 0,
-      rationale: ["No Hodgkin's lymphoma logs found"],
-      evidenceGaps: ["Log Hodgkin's lymphoma symptoms and treatment"],
-      metrics: {},
-      criteriaReference: HODGKINS_LYMPHOMA_CRITERIA
-    };
-  }
-
-  let activeTreatment = false;
-  let inRemission = false;
-  let hasResidualSymptoms = false;
-
-  hodgkinsLogs.forEach(log => {
-    if (log.lymphomaLeukemiaData?.treatment_status === 'active-treatment') activeTreatment = true;
-    if (log.lymphomaLeukemiaData?.treatment_status === 'remission') inRemission = true;
-    if (log.lymphomaLeukemiaData?.side_effects?.length > 0) hasResidualSymptoms = true;
-  });
-
-  let supportedRating = 0;
-  const rationale = [];
-
-  if (activeTreatment) {
-    supportedRating = 100;
-    rationale.push("Active treatment for Hodgkin's lymphoma (100% during treatment)");
-  } else if (inRemission && hasResidualSymptoms) {
-    supportedRating = 60;
-    rationale.push('Post-treatment with residual symptoms');
-  } else if (inRemission) {
-    supportedRating = 30;
-    rationale.push('Complete remission with surveillance');
-  } else {
-    supportedRating = 100;
-    rationale.push("Active Hodgkin's lymphoma - 100% until remission");
-  }
-
-  return {
-    hasData: true,
-    supportedRating,
-    rationale,
-    evidenceGaps: [
-      'Upload oncology consultation reports',
-      'Upload pathology report confirming diagnosis',
-      'Upload PET/CT scan results',
-      'Upload treatment records'
-    ],
-    metrics: { totalLogs: hodgkinsLogs.length },
-    criteriaReference: HODGKINS_LYMPHOMA_CRITERIA
-  };
-};
-
-// =================================================================
-// MULTIPLE MYELOMA (DC 7712)
-// =================================================================
-export const MULTIPLE_MYELOMA_CRITERIA = {
-  diagnosticCode: '7712',
-  condition: 'Multiple Myeloma',
-  cfrReference: '38 CFR § 4.117',
-  ratings: [
-    {
-      percent: 100,
-      summary: 'During active treatment',
-      criteriaDescription: [
-        'Requiring chemotherapy, bone marrow or stem cell transplant, or other ongoing treatment modality'
-      ],
-      evidenceNeeded: [
-        'Medical records documenting active treatment',
-        'Treatment protocols',
-        'Hematology/oncology consultation reports'
-      ]
-    },
-    {
-      percent: 60,
-      summary: 'Post-treatment with residual symptoms',
-      criteriaDescription: [
-        'Following treatment, with residual symptoms such as:',
-        '- Bone pain requiring narcotic medication',
-        '- Pathological fractures',
-        '- Anemia',
-        '- Renal insufficiency',
-        '- Neuropathy',
-        '- Infections'
-      ],
-      evidenceNeeded: [
-        'Documentation of residual symptoms and complications',
-        'Imaging showing bone lesions or fractures',
-        'Lab results showing anemia or kidney dysfunction',
-        'Prescription records for pain medications'
-      ]
-    },
-    {
-      percent: 30,
-      summary: 'In remission with surveillance',
-      criteriaDescription: [
-        'In remission, requiring only surveillance'
-      ],
-      evidenceNeeded: [
-        'Oncology notes documenting remission',
-        'Lab results (serum protein electrophoresis, free light chains)',
-        'Bone marrow biopsy showing remission'
-      ]
-    }
-  ],
-  definitions: {
-    'Multiple Myeloma': 'Cancer of plasma cells in bone marrow causing bone destruction, anemia, kidney damage',
-    'Pathological Fracture': 'Bone fracture caused by disease weakening the bone',
-    'Serum Protein Electrophoresis': 'Lab test detecting abnormal proteins (M-protein) in myeloma',
-    'Free Light Chains': 'Proteins produced by myeloma cells, measured for monitoring disease'
-  }
-};
-
-export const analyzeMultipleMyelomaLogs = (logs, options = {}) => {
-  const myelomaLogs = logs.filter(log =>
-      log.lymphomaLeukemiaData?.diagnosis === 'multiple-myeloma' ||
-      log.symptomId === 'bone-pain-leukemia'
-  );
-
-  if (myelomaLogs.length === 0) {
-    return {
-      hasData: false,
-      supportedRating: 0,
-      rationale: ['No multiple myeloma logs found'],
-      evidenceGaps: ['Log multiple myeloma symptoms and treatment'],
-      metrics: {},
-      criteriaReference: MULTIPLE_MYELOMA_CRITERIA
-    };
-  }
-
-  let activeTreatment = false;
-  let inRemission = false;
-  let hasResidualSymptoms = false;
-
-  myelomaLogs.forEach(log => {
-    if (log.lymphomaLeukemiaData?.treatment_status === 'active-treatment') activeTreatment = true;
-    if (log.lymphomaLeukemiaData?.treatment_status === 'remission') inRemission = true;
-    if (log.lymphomaLeukemiaData?.side_effects?.length > 0) hasResidualSymptoms = true;
-  });
-
-  let supportedRating = 0;
-  const rationale = [];
-
-  if (activeTreatment) {
-    supportedRating = 100;
-    rationale.push('Active treatment for multiple myeloma (100% during treatment)');
-  } else if (inRemission && hasResidualSymptoms) {
-    supportedRating = 60;
-    rationale.push('Post-treatment with residual symptoms');
-  } else if (inRemission) {
-    supportedRating = 30;
-    rationale.push('In remission with surveillance');
-  } else {
-    supportedRating = 100;
-    rationale.push('Active multiple myeloma - 100% until remission');
-  }
-
-  return {
-    hasData: true,
-    supportedRating,
-    rationale,
-    evidenceGaps: [
-      'Upload oncology consultation reports',
-      'Upload bone marrow biopsy results',
-      'Upload lab results (SPEP, free light chains, complete metabolic panel)',
-      'Upload skeletal survey or PET/CT showing bone lesions',
-      'Upload treatment records'
-    ],
-    metrics: { totalLogs: myelomaLogs.length },
-    criteriaReference: MULTIPLE_MYELOMA_CRITERIA
-  };
-};
-
-// =================================================================
-// NON-HODGKIN'S LYMPHOMA (DC 7715)
-// =================================================================
-export const NON_HODGKINS_LYMPHOMA_CRITERIA = {
-  diagnosticCode: '7715',
-  condition: "Non-Hodgkin's Lymphoma",
-  cfrReference: '38 CFR § 4.117',
-  ratings: [
-    {
-      percent: 100,
-      summary: 'During active treatment',
-      criteriaDescription: [
-        'Requiring chemotherapy, radiation, bone marrow or stem cell transplant, immunotherapy, or other ongoing treatment'
-      ],
-      evidenceNeeded: [
-        'Medical records documenting active treatment',
-        'Treatment protocols',
-        'Oncology consultation reports'
-      ]
-    },
-    {
-      percent: 60,
-      summary: 'Post-treatment with residual symptoms',
-      criteriaDescription: [
-        'Following treatment, with residual symptoms or complications'
-      ],
-      evidenceNeeded: [
-        'Documentation of residual symptoms',
-        'Imaging or lab results showing complications'
-      ]
-    },
-    {
-      percent: 30,
-      summary: 'In remission with surveillance',
-      criteriaDescription: [
-        'In complete remission, requiring only surveillance'
-      ],
-      evidenceNeeded: [
-        'Oncology notes documenting remission',
-        'PET/CT scans showing no active disease'
-      ]
-    }
-  ],
-  definitions: {
-    "Non-Hodgkin's Lymphoma": 'Group of blood cancers arising from lymphocytes (includes many subtypes)',
-    'Subtypes': 'Includes diffuse large B-cell lymphoma, follicular lymphoma, mantle cell lymphoma, and many others'
-  }
-};
-
-export const analyzeNonHodgkinsLymphomaLogs = (logs, options = {}) => {
-  const nhlLogs = logs.filter(log => log.lymphomaLeukemiaData?.diagnosis === 'non-hodgkin');
-
-  if (nhlLogs.length === 0) {
-    return {
-      hasData: false,
-      supportedRating: 0,
-      rationale: ["No Non-Hodgkin's lymphoma logs found"],
-      evidenceGaps: ["Log Non-Hodgkin's lymphoma symptoms and treatment"],
-      metrics: {},
-      criteriaReference: NON_HODGKINS_LYMPHOMA_CRITERIA
-    };
-  }
-
-  let activeTreatment = false;
-  let inRemission = false;
-  let hasResidualSymptoms = false;
-
-  nhlLogs.forEach(log => {
-    if (log.lymphomaLeukemiaData?.treatment_status === 'active-treatment') activeTreatment = true;
-    if (log.lymphomaLeukemiaData?.treatment_status === 'remission') inRemission = true;
-    if (log.lymphomaLeukemiaData?.side_effects?.length > 0) hasResidualSymptoms = true;
-  });
-
-  let supportedRating = 0;
-  const rationale = [];
-
-  if (activeTreatment) {
-    supportedRating = 100;
-    rationale.push("Active treatment for Non-Hodgkin's lymphoma (100% during treatment)");
-  } else if (inRemission && hasResidualSymptoms) {
-    supportedRating = 60;
-    rationale.push('Post-treatment with residual symptoms');
-  } else if (inRemission) {
-    supportedRating = 30;
-    rationale.push('Complete remission with surveillance');
-  } else {
-    supportedRating = 100;
-    rationale.push("Active Non-Hodgkin's lymphoma - 100% until remission");
-  }
-
-  return {
-    hasData: true,
-    supportedRating,
-    rationale,
-    evidenceGaps: [
-      'Upload oncology consultation reports',
-      'Upload pathology report with lymphoma subtype',
-      'Upload PET/CT scan results',
-      'Upload treatment records'
-    ],
-    metrics: { totalLogs: nhlLogs.length },
-    criteriaReference: NON_HODGKINS_LYMPHOMA_CRITERIA
-  };
-};
-
-// =================================================================
-// ESSENTIAL THROMBOCYTHEMIA / PRIMARY MYELOFIBROSIS (DC 7718)
-// =================================================================
-export const MYELOPROLIFERATIVE_7718_CRITERIA = {
-  diagnosticCode: '7718',
-  condition: 'Essential Thrombocythemia or Primary Myelofibrosis',
-  cfrReference: '38 CFR § 4.117',
-  ratings: [
-    {
-      percent: 100,
-      summary: 'Bone marrow transplant OR symptomatic splenomegaly + cytopenia',
-      criteriaDescription: [
-        'Requiring bone marrow or stem cell transplant, OR',
-        'Symptomatic splenomegaly with cytopenia (anemia, thrombocytopenia, or leukopenia)'
-      ],
-      evidenceNeeded: [
-        'Bone marrow transplant records, OR',
-        'Imaging showing splenomegaly',
-        'Documentation of symptoms (pain, early satiety)',
-        'Lab results showing low blood counts'
-      ]
-    },
-    {
-      percent: 60,
-      summary: 'Symptomatic splenomegaly OR requiring JAK inhibitor',
-      criteriaDescription: [
-        'Symptomatic splenomegaly, OR',
-        'Requiring continuous treatment with JAK inhibitors (e.g., ruxolitinib)'
-      ],
-      evidenceNeeded: [
-        'Imaging and symptom documentation, OR',
-        'Prescription records for JAK inhibitor therapy'
-      ]
-    },
     {
       percent: 40,
-      summary: 'Requiring continuous myelosuppressive treatment',
+      summary: 'Loss of all teeth (edentulous) - prosthesis does NOT restore masticatory function',
+      criteria: {
+        teethLost: 'all',
+        prosthesis: 'does-not-restore',
+      },
       criteriaDescription: [
-        'Requiring continuous myelosuppressive treatment (hydroxyurea, interferon, anagrelide)'
+        'Complete loss of all teeth',
+        'Prosthesis (dentures) does NOT satisfactorily restore masticatory function',
       ],
       evidenceNeeded: [
-        'Prescription records for continuous myelosuppressive medications'
-      ]
-    },
-    {
-      percent: 10,
-      summary: 'Requiring aspirin only',
-      criteriaDescription: [
-        'Requiring continuous treatment with aspirin or antiplatelet therapy only'
+        'Documentation that all teeth are lost',
+        'Evidence that dentures do not allow proper chewing',
+        'Dental records showing complete edentulism',
+        'Statement that prosthesis is ill-fitting or non-functional',
       ],
-      evidenceNeeded: [
-        'Prescription records'
-      ]
-    },
-    {
-      percent: 0,
-      summary: 'Asymptomatic',
-      criteriaDescription: [
-        'Asymptomatic'
-      ]
-    }
-  ],
-  definitions: {
-    'Essential Thrombocythemia': 'Myeloproliferative disorder causing elevated platelet count',
-    'Primary Myelofibrosis': 'Bone marrow scarring causing enlarged spleen and blood cell problems',
-    'Splenomegaly': 'Enlarged spleen',
-    'Cytopenia': 'Low blood cell counts',
-    'JAK Inhibitor': 'Ruxolitinib (Jakafi) - targeted therapy for myelofibrosis'
-  }
-};
-
-export const analyzeMyeloproliferative7718Logs = (logs, options = {}) => {
-  const mpnLogs = logs.filter(log =>
-      ['essential-thrombocythemia', 'primary-myelofibrosis'].includes(log.polycythemiaData?.diagnosis)
-  );
-
-  if (mpnLogs.length === 0) {
-    return {
-      hasData: false,
-      supportedRating: 0,
-      rationale: ['No essential thrombocythemia or myelofibrosis logs found'],
-      evidenceGaps: ['Log symptoms and treatment for ET or PMF'],
-      metrics: {},
-      criteriaReference: MYELOPROLIFERATIVE_7718_CRITERIA
-    };
-  }
-
-  let supportedRating = 0;
-  const rationale = [];
-  const metrics = {
-    totalLogs: mpnLogs.length,
-    hasJAKInhibitor: false,
-    hasMyelosuppression: false,
-    hasSplenomegaly: false,
-    hasBoneMarrowTransplant: false
-  };
-
-  mpnLogs.forEach(log => {
-    if (log.polycythemiaData?.medications?.includes('jakafi-continuous')) metrics.hasJAKInhibitor = true;
-    if (log.polycythemiaData?.medications?.some(m =>
-        ['hydroxyurea-continuous', 'interferon-continuous'].includes(m)
-    )) {
-      metrics.hasMyelosuppression = true;
-    }
-    if (log.polycythemiaData?.complications?.includes('enlarged-spleen')) metrics.hasSplenomegaly = true;
-  });
-
-  if (metrics.hasBoneMarrowTransplant) {
-    supportedRating = 100;
-    rationale.push('Bone marrow/stem cell transplant performed');
-  } else if (metrics.hasSplenomegaly) {
-    supportedRating = 100;
-    rationale.push('Symptomatic splenomegaly with complications');
-  } else if (metrics.hasJAKInhibitor || metrics.hasSplenomegaly) {
-    supportedRating = 60;
-    if (metrics.hasJAKInhibitor) rationale.push('Requiring continuous JAK inhibitor therapy');
-    if (metrics.hasSplenomegaly) rationale.push('Symptomatic splenomegaly documented');
-  } else if (metrics.hasMyelosuppression) {
-    supportedRating = 40;
-    rationale.push('Requiring continuous myelosuppressive treatment');
-  } else {
-    supportedRating = 10;
-    rationale.push('Managed with aspirin or antiplatelet therapy');
-  }
-
-  return {
-    hasData: true,
-    supportedRating,
-    rationale,
-    evidenceGaps: [
-      'Upload bone marrow biopsy results',
-      'Upload JAK2 mutation testing',
-      'Upload imaging showing spleen size (ultrasound or CT)',
-      'Upload prescription records for medications',
-      'Upload lab results (CBC with differential, LDH)'
-    ],
-    metrics,
-    criteriaReference: MYELOPROLIFERATIVE_7718_CRITERIA
-  };
-};
-
-// =================================================================
-// CHRONIC MYELOGENOUS LEUKEMIA (DC 7719)
-// =================================================================
-export const CHRONIC_MYELOGENOUS_LEUKEMIA_CRITERIA = {
-  diagnosticCode: '7719',
-  condition: 'Chronic Myelogenous Leukemia (CML)',
-  cfrReference: '38 CFR § 4.117',
-  ratings: [
-    {
-      percent: 100,
-      summary: 'Chronic or accelerated phase OR bone marrow transplant',
-      criteriaDescription: [
-        'Chronic phase or accelerated phase, OR',
-        'Status post bone marrow or stem cell transplant'
-      ],
-      evidenceNeeded: [
-        'Bone marrow biopsy showing disease phase',
-        'Molecular testing (BCR-ABL levels)',
-        'Transplant records if applicable',
-        'Hematology/oncology consultation'
-      ]
-    },
-    {
-      percent: 60,
-      summary: 'Molecular or cytogenetic response on TKI',
-      criteriaDescription: [
-        'Molecular or cytogenetic response (less than complete response) on tyrosine kinase inhibitor (TKI) therapy'
-      ],
-      evidenceNeeded: [
-        'Molecular testing showing partial response',
-        'Prescription records for TKI (imatinib, dasatinib, nilotinib, etc.)'
-      ]
-    },
-    {
-      percent: 10,
-      summary: 'Complete molecular response on TKI',
-      criteriaDescription: [
-        'Complete molecular response on TKI therapy'
-      ],
-      evidenceNeeded: [
-        'Molecular testing showing undetectable BCR-ABL',
-        'Prescription records for TKI'
-      ]
-    }
-  ],
-  definitions: {
-    'Chronic Myelogenous Leukemia': 'Blood cancer caused by Philadelphia chromosome creating BCR-ABL fusion protein',
-    'Tyrosine Kinase Inhibitor (TKI)': 'Targeted therapy for CML (imatinib/Gleevec, dasatinib, nilotinib)',
-    'BCR-ABL': 'Abnormal protein causing CML; monitored to assess treatment response',
-    'Molecular Response': 'Reduction in BCR-ABL levels measured by PCR testing',
-    'Complete Molecular Response': 'BCR-ABL undetectable by sensitive testing'
-  },
-  disclaimer: 'CML is now often well-controlled with TKI therapy. Rating reflects disease phase and treatment response.'
-};
-
-export const analyzeChronicMyelogenousLeukemiaLogs = (logs, options = {}) => {
-  const cmlLogs = logs.filter(log => log.lymphomaLeukemiaData?.diagnosis === 'cml');
-
-  if (cmlLogs.length === 0) {
-    return {
-      hasData: false,
-      supportedRating: 0,
-      rationale: ['No CML logs found'],
-      evidenceGaps: ['Log CML symptoms and treatment'],
-      metrics: {},
-      criteriaReference: CHRONIC_MYELOGENOUS_LEUKEMIA_CRITERIA
-    };
-  }
-
-  let supportedRating = 0;
-  const rationale = [];
-  const metrics = {
-    totalLogs: cmlLogs.length,
-    onTKI: false,
-    inRemission: false,
-    activeTreatment: false
-  };
-
-  cmlLogs.forEach(log => {
-    if (log.lymphomaLeukemiaData?.treatment_type?.includes('targeted-therapy')) metrics.onTKI = true;
-    if (log.lymphomaLeukemiaData?.treatment_status === 'remission') metrics.inRemission = true;
-    if (log.lymphomaLeukemiaData?.treatment_status === 'active-treatment') metrics.activeTreatment = true;
-  });
-
-  if (metrics.activeTreatment && !metrics.inRemission) {
-    supportedRating = 100;
-    rationale.push('Chronic or accelerated phase CML (100% rating)');
-  } else if (metrics.onTKI && !metrics.inRemission) {
-    supportedRating = 60;
-    rationale.push('Partial molecular/cytogenetic response on TKI therapy');
-  } else if (metrics.inRemission && metrics.onTKI) {
-    supportedRating = 10;
-    rationale.push('Complete molecular response on TKI therapy');
-  } else {
-    supportedRating = 100;
-    rationale.push('Active CML - 100% until molecular response documented');
-  }
-
-  return {
-    hasData: true,
-    supportedRating,
-    rationale,
-    evidenceGaps: [
-      'Upload bone marrow biopsy results',
-      'Upload BCR-ABL PCR molecular testing results',
-      'Upload prescription records for TKI medications',
-      'Upload hematology/oncology consultation reports',
-      'Upload cytogenetic testing (Philadelphia chromosome)'
-    ],
-    metrics,
-    criteriaReference: CHRONIC_MYELOGENOUS_LEUKEMIA_CRITERIA
-  };
-};
-
-// =================================================================
-// SOLITARY PLASMACYTOMA (DC 7724)
-// =================================================================
-export const SOLITARY_PLASMACYTOMA_CRITERIA = {
-  diagnosticCode: '7724',
-  condition: 'Solitary Plasmacytoma',
-  cfrReference: '38 CFR § 4.117',
-  ratings: [
-    {
-      percent: 100,
-      summary: 'During active treatment',
-      criteriaDescription: [
-        'Requiring chemotherapy, radiation therapy, or other ongoing treatment'
-      ],
-      evidenceNeeded: [
-        'Medical records documenting active treatment',
-        'Treatment protocols',
-        'Oncology consultation reports'
-      ]
     },
     {
       percent: 30,
-      summary: 'Post-treatment with no recurrence',
+      summary: 'Loss of all upper OR all lower teeth - prosthesis does NOT restore function',
+      criteria: {
+        options: [
+          { teethLost: 'all-upper', prosthesis: 'does-not-restore' },
+          { teethLost: 'all-lower', prosthesis: 'does-not-restore' },
+        ],
+      },
       criteriaDescription: [
-        'Following treatment, with no evidence of recurrence or progression to multiple myeloma'
+        'Complete loss of all upper teeth, OR',
+        'Complete loss of all lower teeth',
+        'Prosthesis does NOT satisfactorily restore masticatory function',
       ],
       evidenceNeeded: [
-        'Follow-up imaging showing no recurrence',
-        'Lab results (SPEP, free light chains) showing no progression',
-        'Oncology surveillance notes'
-      ]
-    }
-  ],
-  definitions: {
-    'Solitary Plasmacytoma': 'Single tumor of plasma cells (related to multiple myeloma but localized)',
-    'Progression to Multiple Myeloma': 'Many solitary plasmacytomas eventually progress to multiple myeloma'
-  },
-  disclaimer: 'Requires close monitoring as many cases progress to multiple myeloma over time.'
-};
-
-export const analyzeSolitaryPlasmacytomaLogs = (logs, options = {}) => {
-  const plasmacytomaLogs = logs.filter(log =>
-      log.lymphomaLeukemiaData?.diagnosis === 'plasmacytoma'
-  );
-
-  if (plasmacytomaLogs.length === 0) {
-    return {
-      hasData: false,
-      supportedRating: 0,
-      rationale: ['No solitary plasmacytoma logs found'],
-      evidenceGaps: ['Log plasmacytoma symptoms and treatment'],
-      metrics: {},
-      criteriaReference: SOLITARY_PLASMACYTOMA_CRITERIA
-    };
-  }
-
-  let activeTreatment = false;
-
-  plasmacytomaLogs.forEach(log => {
-    if (log.lymphomaLeukemiaData?.treatment_status === 'active-treatment') activeTreatment = true;
-  });
-
-  let supportedRating = 0;
-  const rationale = [];
-
-  if (activeTreatment) {
-    supportedRating = 100;
-    rationale.push('Active treatment for solitary plasmacytoma (100% during treatment)');
-  } else {
-    supportedRating = 30;
-    rationale.push('Post-treatment surveillance for plasmacytoma');
-  }
-
-  return {
-    hasData: true,
-    supportedRating,
-    rationale,
-    evidenceGaps: [
-      'Upload pathology report confirming diagnosis',
-      'Upload imaging (MRI, PET/CT) showing tumor location and size',
-      'Upload treatment records (radiation, surgery, etc.)',
-      'Upload follow-up lab results (SPEP, free light chains)',
-      'Upload bone marrow biopsy ruling out multiple myeloma'
-    ],
-    metrics: { totalLogs: plasmacytomaLogs.length },
-    criteriaReference: SOLITARY_PLASMACYTOMA_CRITERIA
-  };
-};
-
-// =================================================================
-// MYELODYSPLASTIC SYNDROMES (DC 7725)
-// =================================================================
-export const MYELODYSPLASTIC_SYNDROMES_CRITERIA = {
-  diagnosticCode: '7725',
-  condition: 'Myelodysplastic Syndromes (MDS)',
-  cfrReference: '38 CFR § 4.117',
-  ratings: [
-    {
-      percent: 100,
-      summary: 'Bone marrow transplant OR transfusions every 6 weeks',
-      criteriaDescription: [
-        'Requiring bone marrow or stem cell transplant, OR',
-        'Requiring transfusions at least once every 6 weeks with infections recurring at least once every 6 weeks despite prophylactic antibiotic therapy'
+        'Documentation of complete tooth loss in upper or lower arch',
+        'Evidence that partial denture does not restore function',
+        'Dental records',
       ],
-      evidenceNeeded: [
-        'Bone marrow transplant records, OR',
-        'Transfusion records showing frequency',
-        'Infection documentation',
-        'Prescription records for prophylactic antibiotics'
-      ]
     },
     {
-      percent: 70,
-      summary: 'Transfusions every 3 months + immunosuppression',
+      percent: 20,
+      summary: 'Loss of all posterior teeth - prosthesis does NOT restore function',
+      criteria: {
+        options: [
+          { teethLost: 'all-upper-lower-posterior', prosthesis: 'does-not-restore' },
+        ],
+      },
       criteriaDescription: [
-        'Requiring transfusions at least once every 3 months, AND',
-        'Requiring continuous immunosuppressive therapy or erythropoietin'
+        'Complete loss of all posterior teeth (molars and premolars) - upper and lower',
+        'Prosthesis does NOT satisfactorily restore masticatory function',
       ],
       evidenceNeeded: [
-        'Transfusion records',
-        'Prescription records for immunosuppressants or ESAs (erythropoietin-stimulating agents)'
-      ]
-    },
-    {
-      percent: 50,
-      summary: 'Immunosuppression + growth factors',
-      criteriaDescription: [
-        'Requiring continuous immunosuppressive therapy, AND',
-        'Requiring continuous treatment with myeloid growth factors'
+        'Documentation of posterior tooth loss (both arches)',
+        'Evidence that prosthesis does not restore chewing ability',
+        'Dental records showing extent of tooth loss',
       ],
-      evidenceNeeded: [
-        'Prescription records for immunosuppressants and growth factors'
-      ]
-    },
-    {
-      percent: 30,
-      summary: 'Immunosuppression only',
-      criteriaDescription: [
-        'Requiring continuous immunosuppressive therapy or erythropoietin'
-      ],
-      evidenceNeeded: [
-        'Prescription records'
-      ]
     },
     {
       percent: 10,
-      summary: 'Growth factors only',
+      summary: 'Loss of all anterior teeth OR all upper/lower posterior teeth - prosthesis does NOT restore',
+      criteria: {
+        options: [
+          { teethLost: 'all-upper-lower-anterior', prosthesis: 'does-not-restore' },
+          { teethLost: 'all-upper-posterior', prosthesis: 'does-not-restore' },
+          { teethLost: 'all-lower-posterior', prosthesis: 'does-not-restore' },
+        ],
+      },
       criteriaDescription: [
-        'Requiring continuous treatment with myeloid growth factors'
+        'Complete loss of all anterior teeth (front teeth) - upper and lower, OR',
+        'Complete loss of all upper posterior teeth, OR',
+        'Complete loss of all lower posterior teeth',
+        'Prosthesis does NOT satisfactorily restore masticatory function',
       ],
       evidenceNeeded: [
-        'Prescription or treatment records for growth factors'
-      ]
+        'Documentation of specific tooth loss pattern',
+        'Evidence that prosthesis does not restore function',
+        'Dental records',
+      ],
     },
     {
       percent: 0,
-      summary: 'Asymptomatic',
+      compensable: true,
+      summary: 'Tooth loss with prosthesis that DOES restore function',
+      criteria: {
+        teethLost: 'any',
+        prosthesis: 'restores',
+      },
       criteriaDescription: [
-        'Asymptomatic'
-      ]
-    }
+        'Any pattern of tooth loss',
+        'Prosthesis (dentures, bridges, implants) DOES satisfactorily restore masticatory function',
+      ],
+      evidenceNeeded: [
+        'Documentation of tooth loss',
+        'Evidence that prosthesis allows normal chewing',
+      ],
+    },
   ],
+
   definitions: {
-    'Myelodysplastic Syndromes': 'Group of bone marrow disorders causing ineffective blood cell production',
-    'Risk Categories': 'Lower-risk MDS vs. higher-risk MDS (affects treatment and prognosis)',
-    'Hypomethylating Agents': 'Azacitidine, decitabine - medications for higher-risk MDS',
-    'Erythropoietin-Stimulating Agents (ESAs)': 'Medications to stimulate red blood cell production'
+    anteriorTeeth: {
+      term: 'Anterior Teeth',
+      definition: 'The front teeth (incisors and canines). There are 12 anterior teeth total - 6 upper and 6 lower.',
+    },
+    posteriorTeeth: {
+      term: 'Posterior Teeth',
+      definition: 'The back teeth used for chewing (premolars and molars). There are 20 posterior teeth total - 10 upper and 10 lower.',
+    },
+    masticatoryFunction: {
+      term: 'Masticatory Function',
+      definition: 'The ability to chew food properly. A prosthesis "restores function" if it allows normal chewing of various food types. It "does NOT restore function" if it is ill-fitting, causes pain, or prevents adequate chewing.',
+    },
+    boneLoss: {
+      term: 'Bone Loss',
+      definition: 'Tooth loss must be due to loss of bone supporting the teeth from trauma, osteomyelitis, or disease - NOT from periodontal disease alone. The underlying bone/jaw condition must be documented.',
+      examples: [
+        'Bone loss from jaw trauma or injury',
+        'Bone loss from osteomyelitis (bone infection)',
+        'Bone loss from radiation therapy',
+        'Bone loss from jaw tumor/neoplasm',
+      ],
+    },
   },
-  disclaimer: 'MDS has variable severity. Higher-risk MDS often progresses to acute leukemia.'
+
+  importantNotes: [
+    '⚠️ CRITICAL: Tooth loss is only ratable if due to bone loss from trauma or disease',
+    'Tooth loss from periodontal disease alone is NOT compensable by the VA',
+    'Prosthesis that "does NOT restore function" means ill-fitting, painful, or inadequate for chewing',
+    'If prosthesis DOES restore function, rating is 0% (compensable but not disabling)',
+    'Document the cause of tooth loss (trauma, osteomyelitis, radiation, etc.)',
+    'Multiple tooth loss patterns combine under a single rating (choose highest applicable)',
+  ],
 };
 
-export const analyzeMyelodysplasticSyndromesLogs = (logs, options = {}) => {
-  const mdsLogs = logs.filter(log => log.lymphomaLeukemiaData?.diagnosis === 'mds');
+// ============================================
+// MANDIBLE NONUNION CRITERIA (DC 9903)
+// ============================================
+export const MANDIBLE_NONUNION_CRITERIA = {
+  diagnosticCode: '9903',
+  condition: 'Mandible (Lower Jaw) Nonunion or Malunion',
+  cfrReference: '38 CFR 4.150, Diagnostic Codes 9903-9904',
 
-  if (mdsLogs.length === 0) {
-    return {
-      hasData: false,
-      supportedRating: 0,
-      rationale: ['No myelodysplastic syndrome logs found'],
-      evidenceGaps: ['Log MDS symptoms and treatment'],
-      metrics: {},
-      criteriaReference: MYELODYSPLASTIC_SYNDROMES_CRITERIA
-    };
-  }
+  ratings: [
+    {
+      percent: 30,
+      summary: 'Nonunion or severe malunion with marked functional impairment',
+      criteria: {
+        severity: 'severe',
+        functionalImpairment: 'marked',
+      },
+      criteriaDescription: [
+        'Fracture has not healed (nonunion) or healed incorrectly (severe malunion)',
+        'Marked impairment of mastication (chewing)',
+        'Jaw instability',
+        'Facial asymmetry',
+      ],
+      evidenceNeeded: [
+        'X-rays or CT scans showing nonunion or malunion',
+        'Documentation of persistent jaw instability',
+        'Evidence of severe chewing difficulty',
+        'Surgical records if applicable',
+        'Measurements of jaw opening limitation',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Moderate malunion with some functional impairment',
+      criteria: {
+        severity: 'moderate',
+        functionalImpairment: 'moderate',
+      },
+      criteriaDescription: [
+        'Fracture healed incorrectly (malunion)',
+        'Some impairment of jaw function',
+        'May have bite problems or mild facial asymmetry',
+      ],
+      evidenceNeeded: [
+        'X-rays showing malunion',
+        'Documentation of functional limitations',
+        'Evidence of bite problems',
+      ],
+    },
+  ],
 
-  let supportedRating = 0;
-  const rationale = [];
-  const metrics = {
-    totalLogs: mdsLogs.length,
-    transfusionCount: 0,
-    hasImmunosuppression: false,
-    hasGrowthFactors: false,
-    hasBoneMarrowTransplant: false
-  };
+  definitions: {
+    nonunion: {
+      term: 'Nonunion',
+      definition: 'A fracture that has failed to heal. The bone ends remain separate, causing instability and functional impairment.',
+    },
+    malunion: {
+      term: 'Malunion',
+      definition: 'A fracture that has healed in an incorrect position, resulting in deformity, bite problems, or functional limitation.',
+    },
+  },
 
-  mdsLogs.forEach(log => {
-    // Count treatment occurrences
-    if (log.anemiaData?.treatment?.includes('transfusions')) metrics.transfusionCount++;
-    if (log.anemiaData?.treatment?.includes('immunosuppressants')) metrics.hasImmunosuppression = true;
-    if (log.anemiaData?.treatment?.includes('growth-factors')) metrics.hasGrowthFactors = true;
-  });
-
-  if (metrics.hasBoneMarrowTransplant) {
-    supportedRating = 100;
-    rationale.push('Bone marrow/stem cell transplant performed');
-  } else if (metrics.transfusionCount >= 8) {
-    supportedRating = 100;
-    rationale.push('Transfusions every 6 weeks (8-9+ per year) with frequent infections');
-  } else if (metrics.transfusionCount >= 4 && metrics.hasImmunosuppression) {
-    supportedRating = 70;
-    rationale.push('Transfusions every 3 months AND continuous immunosuppressive therapy');
-  } else if (metrics.hasImmunosuppression && metrics.hasGrowthFactors) {
-    supportedRating = 50;
-    rationale.push('Continuous immunosuppressive therapy AND growth factors');
-  } else if (metrics.hasImmunosuppression) {
-    supportedRating = 30;
-    rationale.push('Continuous immunosuppressive therapy or erythropoietin');
-  } else if (metrics.hasGrowthFactors) {
-    supportedRating = 10;
-    rationale.push('Continuous myeloid growth factor treatment');
-  }
-
-  return {
-    hasData: true,
-    supportedRating,
-    rationale,
-    evidenceGaps: [
-      'Upload bone marrow biopsy with cytogenetic analysis',
-      'Upload transfusion records showing frequency',
-      'Upload prescription records for immunosuppressants or growth factors',
-      'Upload lab results (CBC with differential)',
-      'Upload MDS risk stratification (IPSS or IPSS-R score)'
-    ],
-    metrics,
-    criteriaReference: MYELODYSPLASTIC_SYNDROMES_CRITERIA
-  };
+  importantNotes: [
+    'These ratings apply to mandible (lower jaw) fractures that did not heal properly',
+    'Document the impact on chewing, speaking, and jaw stability',
+    'Imaging studies (X-rays, CT) are critical evidence',
+    'May combine with TMJ rating if both conditions are present',
+  ],
 };
 
+// ============================================
+// MALIGNANT ORAL NEOPLASM CRITERIA (DC 9918)
+// ============================================
+export const MALIGNANT_ORAL_NEOPLASM_CRITERIA = {
+  diagnosticCode: '9918',
+  condition: 'Malignant Neoplasm of Oral Cavity',
+  cfrReference: '38 CFR 4.150, Diagnostic Code 9918',
+
+  ratings: [
+    {
+      percent: 100,
+      summary: 'During active treatment and for 6 months after completion',
+      criteria: {
+        malignant: true,
+        activeTreatment: true,
+      },
+      criteriaDescription: [
+        'Malignant (cancerous) tumor of mouth, tongue, lips, or jaw',
+        'During active treatment (surgery, chemotherapy, radiation)',
+        'For 6 months following completion of treatment',
+      ],
+      evidenceNeeded: [
+        'Biopsy confirming malignancy',
+        'Treatment records (surgery, chemo, radiation)',
+        'Oncology records',
+        'Dates of treatment start and completion',
+      ],
+    },
+    {
+      percent: 'varies',
+      summary: 'After 6-month post-treatment period - rate residuals',
+      criteria: {
+        malignant: true,
+        postTreatment: true,
+      },
+      criteriaDescription: [
+        'After the mandatory 6-month 100% period',
+        'Rate based on residual effects:',
+        '  • Tissue loss (DC 9900-9916)',
+        '  • Disfigurement/scarring (DC 7800)',
+        '  • Speech impairment (DC 6515)',
+        '  • Swallowing difficulty',
+        '  • TMJ dysfunction (DC 9905)',
+        '  • Dental disability (DC 9913)',
+      ],
+      evidenceNeeded: [
+        'Documentation of cancer-free status or recurrence',
+        'Evidence of residual effects',
+        'Functional assessments',
+        'Imaging showing tissue loss',
+      ],
+    },
+  ],
+
+  definitions: {
+    malignantNeoplasm: {
+      term: 'Malignant Neoplasm',
+      definition: 'Cancer of the oral cavity, including mouth, tongue, lips, jaw bones, or soft tissues. This is distinct from benign (non-cancerous) growths.',
+    },
+    residuals: {
+      term: 'Residuals',
+      definition: 'The lasting effects after cancer treatment, such as tissue loss, scarring, difficulty swallowing, speech problems, or jaw dysfunction. These are rated separately after the 6-month period.',
+    },
+  },
+
+  importantNotes: [
+    '⚠️ Malignant oral cancers automatically rate 100% during treatment and for 6 months after',
+    'After the 6-month period, rate based on specific residual impairments',
+    'Multiple residuals may be combined for a total disability rating',
+    'Recurrence restarts the 100% rating period',
+    'Document all treatment dates carefully',
+  ],
+};
+
+// ============================================
+// BENIGN ORAL NEOPLASM CRITERIA (DC 9917)
+// ============================================
+export const BENIGN_ORAL_NEOPLASM_CRITERIA = {
+  diagnosticCode: '9917',
+  condition: 'Benign (Non-cancerous) Neoplasm of Oral Cavity',
+  cfrReference: '38 CFR 4.150, Diagnostic Code 9917',
+
+  ratings: [
+    {
+      percent: 'varies',
+      summary: 'Rate based on loss of supporting structures or functional impairment',
+      criteria: {
+        benign: true,
+        functionalImpairment: true,
+      },
+      criteriaDescription: [
+        'Non-cancerous tumor or growth of mouth, tongue, lips, or jaw',
+        'Rate based on:',
+        '  • Loss of jaw/bone structure (DC 9900-9916)',
+        '  • TMJ dysfunction if present (DC 9905)',
+        '  • Dental/tooth loss if applicable (DC 9913)',
+        '  • Disfigurement (DC 7800)',
+        '  • Functional impairment of speech or swallowing',
+      ],
+      evidenceNeeded: [
+        'Biopsy confirming benign neoplasm',
+        'Documentation of size and location',
+        'Evidence of functional impairment',
+        'Imaging studies',
+        'Treatment records if removed surgically',
+      ],
+    },
+  ],
+
+  definitions: {
+    benignNeoplasm: {
+      term: 'Benign Neoplasm',
+      definition: 'A non-cancerous tumor or growth. While not malignant, it can still cause functional problems depending on size and location.',
+    },
+  },
+
+  importantNotes: [
+    'Benign oral neoplasms do not receive the automatic 100% rating',
+    'Rate based on functional impairment and residual effects',
+    'May require rating under multiple diagnostic codes if causing various impairments',
+    'Document impact on chewing, swallowing, speaking, and appearance',
+  ],
+};
 
 // ============================================
 // ANALYSIS FUNCTIONS - MIGRAINE
@@ -16187,6 +15656,1084 @@ export const analyzeErectileDysfunctionLogs = (logs) => {
   };
 };
 
+export const analyzeIronDeficiencyAnemiaLogs = (logs, options = {}) => {
+  if (!logs || logs.length === 0) {
+    return {
+      hasData: false,
+      supportedRating: 0,
+      rationale: [],
+      evidenceGaps: ['No symptom logs found for iron deficiency anemia'],
+      metrics: {},
+      criteriaReference: IRON_DEFICIENCY_ANEMIA_CRITERIA
+    };
+  }
+
+  const anemiaLogs = logs.filter(log =>
+      log.anemiaData?.type === 'iron-deficiency' ||
+      ['fatigue-blood', 'weakness-blood', 'dizziness-anemia', 'pale-skin'].includes(log.symptomId)
+  );
+
+  if (anemiaLogs.length === 0) {
+    return {
+      hasData: false,
+      supportedRating: 0,
+      rationale: ['No iron deficiency anemia symptom logs found'],
+      evidenceGaps: ['Log symptoms related to iron deficiency anemia'],
+      metrics: {},
+      criteriaReference: IRON_DEFICIENCY_ANEMIA_CRITERIA
+    };
+  }
+
+  let supportedRating = 0;
+  const rationale = [];
+  const evidenceGaps = [];
+  const metrics = {
+    totalLogs: anemiaLogs.length,
+    dateRange: `${new Date(anemiaLogs[0].timestamp).toLocaleDateString()} to ${new Date(anemiaLogs[anemiaLogs.length - 1].timestamp).toLocaleDateString()}`,
+    treatmentTypes: new Set(),
+    ivInfusionCount: 0,
+    continuousOralSupplementation: false
+  };
+
+  anemiaLogs.forEach(log => {
+    if (log.anemiaData?.treatment) {
+      log.anemiaData.treatment.forEach(t => {
+        metrics.treatmentTypes.add(t);
+        if (t === 'iv-iron') metrics.ivInfusionCount++;
+        if (t === 'oral-iron') metrics.continuousOralSupplementation = true;
+      });
+    }
+  });
+
+  if (metrics.ivInfusionCount >= 4) {
+    supportedRating = 30;
+    rationale.push(`Documented ${metrics.ivInfusionCount} IV iron infusion episodes (qualifies for 30% when 4+ per year)`);
+    rationale.push('Treatment frequency indicates severe iron deficiency requiring aggressive intervention');
+  } else if (metrics.ivInfusionCount >= 1 || metrics.continuousOralSupplementation) {
+    supportedRating = 10;
+    if (metrics.ivInfusionCount > 0) {
+      rationale.push(`Documented ${metrics.ivInfusionCount} IV iron infusion episodes (requires 1-3 per year for 10%)`);
+    }
+    if (metrics.continuousOralSupplementation) {
+      rationale.push('Requiring continuous oral iron supplementation');
+    }
+  } else {
+    supportedRating = 0;
+    rationale.push('Symptoms managed with dietary modification only or asymptomatic');
+  }
+
+  evidenceGaps.push('Upload medical records documenting IV iron infusion dates');
+  evidenceGaps.push('Upload lab results (CBC, iron panel, ferritin levels)');
+  evidenceGaps.push('Upload prescription records for iron supplementation');
+  evidenceGaps.push('Obtain provider statement regarding treatment frequency and necessity');
+
+  return {
+    hasData: true,
+    supportedRating,
+    rationale,
+    evidenceGaps,
+    metrics,
+    criteriaReference: IRON_DEFICIENCY_ANEMIA_CRITERIA
+  };
+};
+
+export const analyzeFolateDeficiencyAnemiaLogs = (logs, options = {}) => {
+  const anemiaLogs = logs.filter(log => log.anemiaData?.type === 'folate-deficiency');
+
+  if (anemiaLogs.length === 0) {
+    return {
+      hasData: false,
+      supportedRating: 0,
+      rationale: ['No folate deficiency anemia logs found'],
+      evidenceGaps: ['Log folate deficiency anemia symptoms and treatment'],
+      metrics: {},
+      criteriaReference: FOLATE_DEFICIENCY_ANEMIA_CRITERIA
+    };
+  }
+
+  let ivCount = 0;
+  let continuousOral = false;
+
+  anemiaLogs.forEach(log => {
+    if (log.anemiaData?.treatment?.includes('iv-folate')) ivCount++;
+    if (log.anemiaData?.treatment?.includes('oral-folate')) continuousOral = true;
+  });
+
+  let supportedRating = 0;
+  const rationale = [];
+
+  if (ivCount >= 4) {
+    supportedRating = 30;
+    rationale.push(`${ivCount} IV folate infusions documented (30% when 4+ per year)`);
+  } else if (ivCount >= 1 || continuousOral) {
+    supportedRating = 10;
+    if (ivCount > 0) rationale.push(`${ivCount} IV folate infusions (10% for 1-3 per year)`);
+    if (continuousOral) rationale.push('Continuous oral folate supplementation required');
+  }
+
+  return {
+    hasData: true,
+    supportedRating,
+    rationale,
+    evidenceGaps: ['Upload medical records and lab results documenting folate levels'],
+    metrics: { totalLogs: anemiaLogs.length, ivCount, continuousOral },
+    criteriaReference: FOLATE_DEFICIENCY_ANEMIA_CRITERIA
+  };
+};
+
+export const analyzePerniciousAnemiaLogs = (logs, options = {}) => {
+  const b12Logs = logs.filter(log =>
+      log.anemiaData?.type === 'b12-deficiency' ||
+      log.b12DeficiencyData?.deficiency_cause === 'pernicious-anemia' ||
+      ['numbness-tingling-b12', 'difficulty-walking', 'memory-problems-b12'].includes(log.symptomId)
+  );
+
+  if (b12Logs.length === 0) {
+    return {
+      hasData: false,
+      supportedRating: 0,
+      rationale: ['No B12 deficiency/pernicious anemia logs found'],
+      evidenceGaps: ['Log B12 deficiency symptoms and treatment'],
+      metrics: {},
+      criteriaReference: PERNICIOUS_ANEMIA_CRITERIA
+    };
+  }
+
+  let supportedRating = 0;
+  const rationale = [];
+  const metrics = {
+    totalLogs: b12Logs.length,
+    injectionCount: 0,
+    continuousOral: false,
+    neurologicalSymptoms: new Set(),
+    hasCNSInvolvement: false
+  };
+
+  b12Logs.forEach(log => {
+    if (log.anemiaData?.treatment?.includes('b12-injections')) metrics.injectionCount++;
+    if (log.b12DeficiencyData?.treatment?.includes('injections-weekly') ||
+        log.b12DeficiencyData?.treatment?.includes('injections-monthly')) {
+      metrics.injectionCount++;
+    }
+    if (log.b12DeficiencyData?.treatment?.includes('high-dose-oral') ||
+        log.b12DeficiencyData?.treatment?.includes('sublingual')) {
+      metrics.continuousOral = true;
+    }
+    if (log.b12DeficiencyData?.neurological_symptoms) {
+      log.b12DeficiencyData.neurological_symptoms.forEach(s => metrics.neurologicalSymptoms.add(s));
+    }
+  });
+
+  // Check for CNS involvement
+  const severeNeuroSymptoms = ['balance-problems', 'difficulty-walking', 'weakness', 'confusion'];
+  metrics.hasCNSInvolvement = severeNeuroSymptoms.some(s => metrics.neurologicalSymptoms.has(s));
+
+  if (metrics.hasCNSInvolvement && metrics.neurologicalSymptoms.size >= 3) {
+    supportedRating = 100;
+    rationale.push('Central nervous system involvement documented with neurological symptoms:');
+    rationale.push(`- ${Array.from(metrics.neurologicalSymptoms).join(', ')}`);
+    rationale.push('CRITICAL: Requires neurology evaluation and documentation of CNS damage for 100% rating');
+  } else if (metrics.injectionCount >= 4) {
+    supportedRating = 30;
+    rationale.push(`${metrics.injectionCount} B12 injection episodes documented (30% when 4+ per year)`);
+  } else if (metrics.injectionCount >= 1 || metrics.continuousOral) {
+    supportedRating = 10;
+    if (metrics.injectionCount > 0) rationale.push(`${metrics.injectionCount} B12 injections (10% for 1-3 per year)`);
+    if (metrics.continuousOral) rationale.push('Continuous oral/sublingual B12 supplementation required');
+  }
+
+  const evidenceGaps = [
+    'Upload lab results (B12 level, methylmalonic acid, homocysteine)',
+    'Upload treatment records showing injection frequency',
+  ];
+
+  if (metrics.hasCNSInvolvement) {
+    evidenceGaps.push('CRITICAL: Obtain neurology evaluation documenting CNS involvement');
+    evidenceGaps.push('CRITICAL: Upload MRI or EMG/NCV studies showing nerve or spinal cord damage');
+  }
+
+  return {
+    hasData: true,
+    supportedRating,
+    rationale,
+    evidenceGaps,
+    metrics,
+    criteriaReference: PERNICIOUS_ANEMIA_CRITERIA
+  };
+};
+
+export const analyzeHemolyticAnemiaLogs = (logs, options = {}) => {
+  const hemolyticLogs = logs.filter(log => log.anemiaData?.type === 'hemolytic');
+
+  if (hemolyticLogs.length === 0) {
+    return {
+      hasData: false,
+      supportedRating: 0,
+      rationale: ['No hemolytic anemia logs found'],
+      evidenceGaps: ['Log hemolytic anemia symptoms and treatment'],
+      metrics: {},
+      criteriaReference: HEMOLYTIC_ANEMIA_CRITERIA
+    };
+  }
+
+  let supportedRating = 0;
+  const rationale = [];
+  const metrics = {
+    totalLogs: hemolyticLogs.length,
+    transfusionCount: 0,
+    hasImmunosuppression: false,
+    hasBoneMarrowTransplant: false
+  };
+
+  hemolyticLogs.forEach(log => {
+    if (log.anemiaData?.treatment?.includes('transfusions')) metrics.transfusionCount++;
+    if (log.anemiaData?.treatment?.includes('immunosuppressants')) metrics.hasImmunosuppression = true;
+    if (log.anemiaData?.treatment?.includes('bone-marrow-transplant')) metrics.hasBoneMarrowTransplant = true;
+  });
+
+  if (metrics.hasBoneMarrowTransplant) {
+    supportedRating = 100;
+    rationale.push('Bone marrow/stem cell transplant performed (100% rating)');
+  } else if (metrics.transfusionCount >= 8) {
+    supportedRating = 70;
+    rationale.push(`${metrics.transfusionCount} transfusions documented (70% when every 6 weeks = 8-9+ per year)`);
+  } else if (metrics.transfusionCount >= 4 && metrics.hasImmunosuppression) {
+    supportedRating = 50;
+    rationale.push(`${metrics.transfusionCount} transfusions + continuous immunosuppressive therapy (50%)`);
+  } else if (metrics.hasImmunosuppression || metrics.transfusionCount >= 1) {
+    supportedRating = 30;
+    if (metrics.hasImmunosuppression) rationale.push('Continuous immunosuppressive therapy required');
+    if (metrics.transfusionCount > 0) rationale.push(`${metrics.transfusionCount} transfusions per year`);
+  } else if (metrics.hasImmunosuppression) {
+    supportedRating = 10;
+    rationale.push('Continuous oral medication required');
+  }
+
+  return {
+    hasData: true,
+    supportedRating,
+    rationale,
+    evidenceGaps: [
+      'Upload transfusion records showing dates and frequency',
+      'Upload lab results (CBC, reticulocyte count, LDH, haptoglobin, direct Coombs test)',
+      'Upload prescription records for immunosuppressive medications'
+    ],
+    metrics,
+    criteriaReference: HEMOLYTIC_ANEMIA_CRITERIA
+  };
+};
+
+export const analyzeSickleCellAnemiaLogs = (logs, options = {}) => {
+  const sickleLogs = logs.filter(log =>
+      log.anemiaData?.type === 'sickle-cell' ||
+      log.sickleCellData ||
+      log.symptomId === 'sickle-cell-crisis'
+  );
+
+  if (sickleLogs.length === 0) {
+    return {
+      hasData: false,
+      supportedRating: 0,
+      rationale: ['No sickle cell disease logs found'],
+      evidenceGaps: ['Log sickle cell crises and symptoms'],
+      metrics: {},
+      criteriaReference: SICKLE_CELL_ANEMIA_CRITERIA
+    };
+  }
+
+  let supportedRating = 0;
+  const rationale = [];
+  const metrics = {
+    totalLogs: sickleLogs.length,
+    hospitalizationCount: 0,
+    erVisitCount: 0,
+    homeManagedCount: 0,
+    organDamage: false
+  };
+
+  sickleLogs.forEach(log => {
+    if (log.sickleCellData?.treatment_received?.includes('hospitalized')) {
+      metrics.hospitalizationCount++;
+    } else if (log.sickleCellData?.treatment_received?.includes('er-visit')) {
+      metrics.erVisitCount++;
+    } else if (log.sickleCellData?.treatment_received?.includes('home-management')) {
+      metrics.homeManagedCount++;
+    }
+  });
+
+  const totalMedicalCrises = metrics.hospitalizationCount + metrics.erVisitCount;
+
+  if (totalMedicalCrises >= 4) {
+    supportedRating = 100;
+    rationale.push(`${totalMedicalCrises} painful crises requiring medical intervention (4+ per year = 100%)`);
+    rationale.push(`Breakdown: ${metrics.hospitalizationCount} hospitalizations, ${metrics.erVisitCount} ER visits`);
+  } else if (totalMedicalCrises === 3) {
+    supportedRating = 60;
+    rationale.push(`3 painful crises requiring medical intervention (60% rating)`);
+  } else if (totalMedicalCrises >= 1) {
+    supportedRating = 30;
+    rationale.push(`${totalMedicalCrises} painful crisis(es) requiring medical intervention (30% for 1-2 per year)`);
+  } else if (sickleLogs.length > 0) {
+    supportedRating = 10;
+    rationale.push('Documented sickle cell disease with history of symptoms');
+    rationale.push('NOTE: Home-managed crises do not count toward higher ratings');
+  }
+
+  const evidenceGaps = [
+    'Upload medical records of all ER visits and hospitalizations for sickle cell crises',
+    'Upload documentation showing IV pain medication administration',
+    'Upload hemoglobin electrophoresis results',
+    'Upload imaging studies if organ damage present'
+  ];
+
+  if (metrics.homeManagedCount > 0) {
+    evidenceGaps.push(`IMPORTANT: ${metrics.homeManagedCount} home-managed crises logged but these do not count for rating - only crises requiring parenteral opioids or hospitalization qualify`);
+  }
+
+  return {
+    hasData: true,
+    supportedRating,
+    rationale,
+    evidenceGaps,
+    metrics,
+    criteriaReference: SICKLE_CELL_ANEMIA_CRITERIA
+  };
+};
+
+export const analyzeAplasticAnemiaLogs = (logs, options = {}) => {
+  const aplasticLogs = logs.filter(log => log.anemiaData?.type === 'aplastic');
+
+  if (aplasticLogs.length === 0) {
+    return {
+      hasData: false,
+      supportedRating: 0,
+      rationale: ['No aplastic anemia logs found'],
+      evidenceGaps: ['Log aplastic anemia symptoms and treatment'],
+      metrics: {},
+      criteriaReference: APLASTIC_ANEMIA_CRITERIA
+    };
+  }
+
+  let supportedRating = 0;
+  const rationale = [];
+  const metrics = {
+    totalLogs: aplasticLogs.length,
+    transfusionCount: 0,
+    hasImmunosuppression: false,
+    hasGrowthFactors: false,
+    hasBoneMarrowTransplant: false,
+    frequentInfections: 0
+  };
+
+  aplasticLogs.forEach(log => {
+    if (log.anemiaData?.treatment?.includes('transfusions')) metrics.transfusionCount++;
+    if (log.anemiaData?.treatment?.includes('immunosuppressants')) metrics.hasImmunosuppression = true;
+    if (log.anemiaData?.treatment?.includes('growth-factors')) metrics.hasGrowthFactors = true;
+    if (log.anemiaData?.treatment?.includes('bone-marrow-transplant')) metrics.hasBoneMarrowTransplant = true;
+  });
+
+  if (metrics.hasBoneMarrowTransplant) {
+    supportedRating = 100;
+    rationale.push('Bone marrow/stem cell transplant performed (100% rating)');
+  } else if (metrics.transfusionCount >= 8 && metrics.frequentInfections >= 8) {
+    supportedRating = 100;
+    rationale.push('Transfusions every 6 weeks (8-9+ per year) AND recurring infections despite prophylactic antibiotics');
+  } else if (metrics.transfusionCount >= 4 && metrics.hasImmunosuppression) {
+    supportedRating = 70;
+    rationale.push(`Transfusions every 3 months (4+ per year) AND continuous immunosuppressive therapy`);
+  } else if (metrics.hasImmunosuppression && metrics.hasGrowthFactors) {
+    supportedRating = 50;
+    rationale.push('Continuous immunosuppressive therapy AND myeloid growth factors');
+  } else if (metrics.hasImmunosuppression) {
+    supportedRating = 30;
+    rationale.push('Continuous immunosuppressive therapy required');
+  } else if (metrics.hasGrowthFactors) {
+    supportedRating = 10;
+    rationale.push('Continuous myeloid growth factor treatment required');
+  }
+
+  return {
+    hasData: true,
+    supportedRating,
+    rationale,
+    evidenceGaps: [
+      'Upload bone marrow biopsy report confirming diagnosis',
+      'Upload transfusion records showing frequency',
+      'Upload prescription records for immunosuppressive medications',
+      'Upload prescription/treatment records for growth factors (G-CSF, EPO)',
+      'Upload infection records if frequent infections present'
+    ],
+    metrics,
+    criteriaReference: APLASTIC_ANEMIA_CRITERIA
+  };
+};
+
+export const analyzePolycythemiaVeraLogs = (logs, options = {}) => {
+  const polyLogs = logs.filter(log =>
+      log.polycythemiaData?.diagnosis === 'polycythemia-vera' ||
+      ['itching-after-bathing', 'burning-hands-feet', 'redness-skin'].includes(log.symptomId)
+  );
+
+  if (polyLogs.length === 0) {
+    return {
+      hasData: false,
+      supportedRating: 0,
+      rationale: ['No polycythemia vera logs found'],
+      evidenceGaps: ['Log polycythemia vera symptoms and treatment'],
+      metrics: {},
+      criteriaReference: POLYCYTHEMIA_VERA_CRITERIA
+    };
+  }
+
+  let supportedRating = 0;
+  const rationale = [];
+  const metrics = {
+    totalLogs: polyLogs.length,
+    phlebotomyCount: 0,
+    hasMyelosuppression: false,
+    hasAspirinOnly: false,
+    hasBoneMarrowTransplant: false
+  };
+
+  polyLogs.forEach(log => {
+    if (log.polycythemiaData?.treatment?.includes('phlebotomy')) metrics.phlebotomyCount++;
+    if (log.polycythemiaData?.medications?.some(m =>
+        ['hydroxyurea-continuous', 'interferon-continuous', 'jakafi-continuous'].includes(m)
+    )) {
+      metrics.hasMyelosuppression = true;
+    }
+    if (log.polycythemiaData?.treatment?.includes('aspirin')) metrics.hasAspirinOnly = true;
+  });
+
+  if (metrics.hasBoneMarrowTransplant) {
+    supportedRating = 100;
+    rationale.push('Bone marrow/stem cell transplant performed');
+  } else if (metrics.phlebotomyCount >= 6 && metrics.hasMyelosuppression) {
+    supportedRating = 75;
+    rationale.push(`${metrics.phlebotomyCount} phlebotomies per year AND continuous myelosuppressive treatment`);
+  } else if (metrics.phlebotomyCount >= 4 && metrics.hasMyelosuppression) {
+    supportedRating = 60;
+    rationale.push(`${metrics.phlebotomyCount} phlebotomies per year AND continuous myelosuppressive treatment`);
+  } else if (metrics.phlebotomyCount >= 4 || metrics.hasMyelosuppression) {
+    supportedRating = 50;
+    if (metrics.phlebotomyCount >= 4) rationale.push(`${metrics.phlebotomyCount} phlebotomies per year`);
+    if (metrics.hasMyelosuppression) rationale.push('Continuous myelosuppressive medication');
+  } else if (metrics.phlebotomyCount === 3 || metrics.hasMyelosuppression) {
+    supportedRating = 40;
+    rationale.push(metrics.phlebotomyCount === 3 ? '3 phlebotomies per year' : 'Continuous myelosuppressive medication');
+  } else if (metrics.phlebotomyCount >= 1) {
+    supportedRating = 20;
+    rationale.push(`${metrics.phlebotomyCount} phlebotomies per year`);
+  } else if (metrics.hasAspirinOnly) {
+    supportedRating = 10;
+    rationale.push('Managed with low-dose aspirin only');
+  }
+
+  return {
+    hasData: true,
+    supportedRating,
+    rationale,
+    evidenceGaps: [
+      'Upload phlebotomy records showing dates and frequency',
+      'Upload prescription records for myelosuppressive medications',
+      'Upload lab results (CBC, JAK2 mutation testing)',
+      'Upload hematology consultation reports'
+    ],
+    metrics,
+    criteriaReference: POLYCYTHEMIA_VERA_CRITERIA
+  };
+};
+
+export const analyzeImmuneThrombocytopeniaLogs = (logs, options = {}) => {
+  const itpLogs = logs.filter(log =>
+      log.bleedingDisorderData?.disorder_type === 'thrombocytopenia' ||
+      ['easy-bruising', 'prolonged-bleeding', 'petechiae'].includes(log.symptomId)
+  );
+
+  if (itpLogs.length === 0) {
+    return {
+      hasData: false,
+      supportedRating: 0,
+      rationale: ['No immune thrombocytopenia logs found'],
+      evidenceGaps: ['Log ITP symptoms and treatment'],
+      metrics: {},
+      criteriaReference: IMMUNE_THROMBOCYTOPENIA_CRITERIA
+    };
+  }
+
+  let supportedRating = 0;
+  const rationale = [];
+  const metrics = {
+    totalLogs: itpLogs.length,
+    lowestPlateletCount: null,
+    hasImmunosuppression: false,
+    hasBleedingEpisodes: false,
+    hasBoneMarrowTransplant: false
+  };
+
+  itpLogs.forEach(log => {
+    if (log.bleedingDisorderData?.platelet_count) {
+      const count = parseInt(log.bleedingDisorderData.platelet_count);
+      if (!metrics.lowestPlateletCount || count < metrics.lowestPlateletCount) {
+        metrics.lowestPlateletCount = count;
+      }
+    }
+    if (log.bleedingDisorderData?.treatment?.some(t =>
+        ['steroids', 'immunoglobulins', 'immunosuppressants', 'tpo-agonists'].includes(t)
+    )) {
+      metrics.hasImmunosuppression = true;
+    }
+    if (log.bleedingDisorderData?.bleeding_site?.length > 0) {
+      metrics.hasBleedingEpisodes = true;
+    }
+  });
+
+  if (metrics.hasBoneMarrowTransplant) {
+    supportedRating = 100;
+    rationale.push('Bone marrow/stem cell transplant performed');
+  } else if (metrics.lowestPlateletCount && metrics.lowestPlateletCount < 20000 &&
+      metrics.hasImmunosuppression && metrics.hasBleedingEpisodes) {
+    supportedRating = 100;
+    rationale.push(`Platelet count <20,000 (lowest: ${metrics.lowestPlateletCount.toLocaleString()}) with continuous immunosuppressive treatment and bleeding episodes`);
+  } else if (metrics.lowestPlateletCount && metrics.lowestPlateletCount >= 20000 &&
+      metrics.lowestPlateletCount <= 30000 && metrics.hasImmunosuppression && metrics.hasBleedingEpisodes) {
+    supportedRating = 70;
+    rationale.push(`Platelet count 20,000-30,000 (${metrics.lowestPlateletCount.toLocaleString()}) with immunosuppressive treatment and bleeding`);
+  } else if (metrics.lowestPlateletCount && metrics.lowestPlateletCount >= 30000 &&
+      metrics.lowestPlateletCount <= 50000 && metrics.hasImmunosuppression) {
+    supportedRating = 50;
+    rationale.push(`Platelet count 30,000-50,000 (${metrics.lowestPlateletCount.toLocaleString()}) requiring continuous immunosuppressive treatment`);
+  } else if (metrics.lowestPlateletCount && metrics.lowestPlateletCount >= 50000 &&
+      metrics.lowestPlateletCount <= 70000 && metrics.hasImmunosuppression) {
+    supportedRating = 30;
+    rationale.push(`Platelet count 50,000-70,000 (${metrics.lowestPlateletCount.toLocaleString()}) requiring continuous immunosuppressive treatment`);
+  } else if (metrics.lowestPlateletCount && metrics.lowestPlateletCount >= 70000 &&
+      metrics.lowestPlateletCount <= 100000) {
+    supportedRating = 10;
+    rationale.push(`Platelet count 70,000-100,000 (${metrics.lowestPlateletCount.toLocaleString()})`);
+  } else {
+    supportedRating = 0;
+    rationale.push('Platelet count >100,000 or asymptomatic');
+  }
+
+  return {
+    hasData: true,
+    supportedRating,
+    rationale,
+    evidenceGaps: [
+      'Upload multiple CBC lab results showing platelet counts',
+      'Upload prescription records for immunosuppressive medications',
+      'Upload documentation of bleeding episodes',
+      'Upload hematology consultation reports'
+    ],
+    metrics,
+    criteriaReference: IMMUNE_THROMBOCYTOPENIA_CRITERIA
+  };
+};
+
+
+export const analyzeLeukemiaLogs = (logs, options = {}) => {
+  const leukemiaLogs = logs.filter(log =>
+      ['cll', 'cml', 'all', 'aml'].includes(log.lymphomaLeukemiaData?.diagnosis) ||
+      ['bone-pain-leukemia', 'night-sweats-blood', 'frequent-infections'].includes(log.symptomId)
+  );
+
+  if (leukemiaLogs.length === 0) {
+    return {
+      hasData: false,
+      supportedRating: 0,
+      rationale: ['No leukemia logs found'],
+      evidenceGaps: ['Log leukemia symptoms and treatment'],
+      metrics: {},
+      criteriaReference: LEUKEMIA_CRITERIA
+    };
+  }
+
+  let supportedRating = 0;
+  const rationale = [];
+  const metrics = {
+    totalLogs: leukemiaLogs.length,
+    activeTreatment: false,
+    inRemission: false,
+    hasResidualSymptoms: false,
+    treatmentTypes: new Set(),
+    sideEffects: new Set()
+  };
+
+  leukemiaLogs.forEach(log => {
+    if (log.lymphomaLeukemiaData?.treatment_status === 'active-treatment') {
+      metrics.activeTreatment = true;
+    }
+    if (log.lymphomaLeukemiaData?.treatment_status === 'remission') {
+      metrics.inRemission = true;
+    }
+    if (log.lymphomaLeukemiaData?.side_effects?.length > 0) {
+      metrics.hasResidualSymptoms = true;
+      log.lymphomaLeukemiaData.side_effects.forEach(e => metrics.sideEffects.add(e));
+    }
+    if (log.lymphomaLeukemiaData?.treatment_type) {
+      log.lymphomaLeukemiaData.treatment_type.forEach(t => metrics.treatmentTypes.add(t));
+    }
+  });
+
+  if (metrics.activeTreatment) {
+    supportedRating = 100;
+    rationale.push('Currently receiving active treatment for leukemia (100% rating during treatment)');
+    if (metrics.treatmentTypes.size > 0) {
+      rationale.push(`Treatment types: ${Array.from(metrics.treatmentTypes).join(', ')}`);
+    }
+  } else if (metrics.inRemission && metrics.hasResidualSymptoms) {
+    supportedRating = 60;
+    rationale.push('Post-treatment with residual symptoms');
+    rationale.push(`Ongoing symptoms: ${Array.from(metrics.sideEffects).join(', ')}`);
+  } else if (metrics.inRemission) {
+    supportedRating = 30;
+    rationale.push('In complete remission with surveillance only');
+  } else {
+    supportedRating = 100;
+    rationale.push('Active leukemia - assume 100% rating until remission documented');
+  }
+
+  return {
+    hasData: true,
+    supportedRating,
+    rationale,
+    evidenceGaps: [
+      'Upload oncology consultation reports',
+      'Upload bone marrow biopsy results',
+      'Upload treatment records and protocols',
+      'Upload lab results (CBC, flow cytometry, molecular studies)',
+      'Upload documentation of treatment status (active vs. remission)'
+    ],
+    metrics,
+    criteriaReference: LEUKEMIA_CRITERIA
+  };
+};
+
+
+export const analyzeHodgkinsLymphomaLogs = (logs, options = {}) => {
+  const hodgkinsLogs = logs.filter(log =>
+      log.lymphomaLeukemiaData?.diagnosis === 'hodgkin' ||
+      ['swollen-lymph-nodes', 'night-sweats-blood'].includes(log.symptomId)
+  );
+
+  if (hodgkinsLogs.length === 0) {
+    return {
+      hasData: false,
+      supportedRating: 0,
+      rationale: ["No Hodgkin's lymphoma logs found"],
+      evidenceGaps: ["Log Hodgkin's lymphoma symptoms and treatment"],
+      metrics: {},
+      criteriaReference: HODGKINS_LYMPHOMA_CRITERIA
+    };
+  }
+
+  let activeTreatment = false;
+  let inRemission = false;
+  let hasResidualSymptoms = false;
+
+  hodgkinsLogs.forEach(log => {
+    if (log.lymphomaLeukemiaData?.treatment_status === 'active-treatment') activeTreatment = true;
+    if (log.lymphomaLeukemiaData?.treatment_status === 'remission') inRemission = true;
+    if (log.lymphomaLeukemiaData?.side_effects?.length > 0) hasResidualSymptoms = true;
+  });
+
+  let supportedRating = 0;
+  const rationale = [];
+
+  if (activeTreatment) {
+    supportedRating = 100;
+    rationale.push("Active treatment for Hodgkin's lymphoma (100% during treatment)");
+  } else if (inRemission && hasResidualSymptoms) {
+    supportedRating = 60;
+    rationale.push('Post-treatment with residual symptoms');
+  } else if (inRemission) {
+    supportedRating = 30;
+    rationale.push('Complete remission with surveillance');
+  } else {
+    supportedRating = 100;
+    rationale.push("Active Hodgkin's lymphoma - 100% until remission");
+  }
+
+  return {
+    hasData: true,
+    supportedRating,
+    rationale,
+    evidenceGaps: [
+      'Upload oncology consultation reports',
+      'Upload pathology report confirming diagnosis',
+      'Upload PET/CT scan results',
+      'Upload treatment records'
+    ],
+    metrics: { totalLogs: hodgkinsLogs.length },
+    criteriaReference: HODGKINS_LYMPHOMA_CRITERIA
+  };
+};
+
+
+export const analyzeMultipleMyelomaLogs = (logs, options = {}) => {
+  const myelomaLogs = logs.filter(log =>
+      log.lymphomaLeukemiaData?.diagnosis === 'multiple-myeloma' ||
+      log.symptomId === 'bone-pain-leukemia'
+  );
+
+  if (myelomaLogs.length === 0) {
+    return {
+      hasData: false,
+      supportedRating: 0,
+      rationale: ['No multiple myeloma logs found'],
+      evidenceGaps: ['Log multiple myeloma symptoms and treatment'],
+      metrics: {},
+      criteriaReference: MULTIPLE_MYELOMA_CRITERIA
+    };
+  }
+
+  let activeTreatment = false;
+  let inRemission = false;
+  let hasResidualSymptoms = false;
+
+  myelomaLogs.forEach(log => {
+    if (log.lymphomaLeukemiaData?.treatment_status === 'active-treatment') activeTreatment = true;
+    if (log.lymphomaLeukemiaData?.treatment_status === 'remission') inRemission = true;
+    if (log.lymphomaLeukemiaData?.side_effects?.length > 0) hasResidualSymptoms = true;
+  });
+
+  let supportedRating = 0;
+  const rationale = [];
+
+  if (activeTreatment) {
+    supportedRating = 100;
+    rationale.push('Active treatment for multiple myeloma (100% during treatment)');
+  } else if (inRemission && hasResidualSymptoms) {
+    supportedRating = 60;
+    rationale.push('Post-treatment with residual symptoms');
+  } else if (inRemission) {
+    supportedRating = 30;
+    rationale.push('In remission with surveillance');
+  } else {
+    supportedRating = 100;
+    rationale.push('Active multiple myeloma - 100% until remission');
+  }
+
+  return {
+    hasData: true,
+    supportedRating,
+    rationale,
+    evidenceGaps: [
+      'Upload oncology consultation reports',
+      'Upload bone marrow biopsy results',
+      'Upload lab results (SPEP, free light chains, complete metabolic panel)',
+      'Upload skeletal survey or PET/CT showing bone lesions',
+      'Upload treatment records'
+    ],
+    metrics: { totalLogs: myelomaLogs.length },
+    criteriaReference: MULTIPLE_MYELOMA_CRITERIA
+  };
+};
+
+
+export const analyzeNonHodgkinsLymphomaLogs = (logs, options = {}) => {
+  const nhlLogs = logs.filter(log => log.lymphomaLeukemiaData?.diagnosis === 'non-hodgkin');
+
+  if (nhlLogs.length === 0) {
+    return {
+      hasData: false,
+      supportedRating: 0,
+      rationale: ["No Non-Hodgkin's lymphoma logs found"],
+      evidenceGaps: ["Log Non-Hodgkin's lymphoma symptoms and treatment"],
+      metrics: {},
+      criteriaReference: NON_HODGKINS_LYMPHOMA_CRITERIA
+    };
+  }
+
+  let activeTreatment = false;
+  let inRemission = false;
+  let hasResidualSymptoms = false;
+
+  nhlLogs.forEach(log => {
+    if (log.lymphomaLeukemiaData?.treatment_status === 'active-treatment') activeTreatment = true;
+    if (log.lymphomaLeukemiaData?.treatment_status === 'remission') inRemission = true;
+    if (log.lymphomaLeukemiaData?.side_effects?.length > 0) hasResidualSymptoms = true;
+  });
+
+  let supportedRating = 0;
+  const rationale = [];
+
+  if (activeTreatment) {
+    supportedRating = 100;
+    rationale.push("Active treatment for Non-Hodgkin's lymphoma (100% during treatment)");
+  } else if (inRemission && hasResidualSymptoms) {
+    supportedRating = 60;
+    rationale.push('Post-treatment with residual symptoms');
+  } else if (inRemission) {
+    supportedRating = 30;
+    rationale.push('Complete remission with surveillance');
+  } else {
+    supportedRating = 100;
+    rationale.push("Active Non-Hodgkin's lymphoma - 100% until remission");
+  }
+
+  return {
+    hasData: true,
+    supportedRating,
+    rationale,
+    evidenceGaps: [
+      'Upload oncology consultation reports',
+      'Upload pathology report with lymphoma subtype',
+      'Upload PET/CT scan results',
+      'Upload treatment records'
+    ],
+    metrics: { totalLogs: nhlLogs.length },
+    criteriaReference: NON_HODGKINS_LYMPHOMA_CRITERIA
+  };
+};
+
+export const analyzeMyeloproliferative7718Logs = (logs, options = {}) => {
+  const mpnLogs = logs.filter(log =>
+      ['essential-thrombocythemia', 'primary-myelofibrosis'].includes(log.polycythemiaData?.diagnosis)
+  );
+
+  if (mpnLogs.length === 0) {
+    return {
+      hasData: false,
+      supportedRating: 0,
+      rationale: ['No essential thrombocythemia or myelofibrosis logs found'],
+      evidenceGaps: ['Log symptoms and treatment for ET or PMF'],
+      metrics: {},
+      criteriaReference: MYELOPROLIFERATIVE_7718_CRITERIA
+    };
+  }
+
+  let supportedRating = 0;
+  const rationale = [];
+  const metrics = {
+    totalLogs: mpnLogs.length,
+    hasJAKInhibitor: false,
+    hasMyelosuppression: false,
+    hasSplenomegaly: false,
+    hasBoneMarrowTransplant: false
+  };
+
+  mpnLogs.forEach(log => {
+    if (log.polycythemiaData?.medications?.includes('jakafi-continuous')) metrics.hasJAKInhibitor = true;
+    if (log.polycythemiaData?.medications?.some(m =>
+        ['hydroxyurea-continuous', 'interferon-continuous'].includes(m)
+    )) {
+      metrics.hasMyelosuppression = true;
+    }
+    if (log.polycythemiaData?.complications?.includes('enlarged-spleen')) metrics.hasSplenomegaly = true;
+  });
+
+  if (metrics.hasBoneMarrowTransplant) {
+    supportedRating = 100;
+    rationale.push('Bone marrow/stem cell transplant performed');
+  } else if (metrics.hasSplenomegaly) {
+    supportedRating = 100;
+    rationale.push('Symptomatic splenomegaly with complications');
+  } else if (metrics.hasJAKInhibitor || metrics.hasSplenomegaly) {
+    supportedRating = 60;
+    if (metrics.hasJAKInhibitor) rationale.push('Requiring continuous JAK inhibitor therapy');
+    if (metrics.hasSplenomegaly) rationale.push('Symptomatic splenomegaly documented');
+  } else if (metrics.hasMyelosuppression) {
+    supportedRating = 40;
+    rationale.push('Requiring continuous myelosuppressive treatment');
+  } else {
+    supportedRating = 10;
+    rationale.push('Managed with aspirin or antiplatelet therapy');
+  }
+
+  return {
+    hasData: true,
+    supportedRating,
+    rationale,
+    evidenceGaps: [
+      'Upload bone marrow biopsy results',
+      'Upload JAK2 mutation testing',
+      'Upload imaging showing spleen size (ultrasound or CT)',
+      'Upload prescription records for medications',
+      'Upload lab results (CBC with differential, LDH)'
+    ],
+    metrics,
+    criteriaReference: MYELOPROLIFERATIVE_7718_CRITERIA
+  };
+};
+
+export const analyzeChronicMyelogenousLeukemiaLogs = (logs, options = {}) => {
+  const cmlLogs = logs.filter(log => log.lymphomaLeukemiaData?.diagnosis === 'cml');
+
+  if (cmlLogs.length === 0) {
+    return {
+      hasData: false,
+      supportedRating: 0,
+      rationale: ['No CML logs found'],
+      evidenceGaps: ['Log CML symptoms and treatment'],
+      metrics: {},
+      criteriaReference: CHRONIC_MYELOGENOUS_LEUKEMIA_CRITERIA
+    };
+  }
+
+  let supportedRating = 0;
+  const rationale = [];
+  const metrics = {
+    totalLogs: cmlLogs.length,
+    onTKI: false,
+    inRemission: false,
+    activeTreatment: false
+  };
+
+  cmlLogs.forEach(log => {
+    if (log.lymphomaLeukemiaData?.treatment_type?.includes('targeted-therapy')) metrics.onTKI = true;
+    if (log.lymphomaLeukemiaData?.treatment_status === 'remission') metrics.inRemission = true;
+    if (log.lymphomaLeukemiaData?.treatment_status === 'active-treatment') metrics.activeTreatment = true;
+  });
+
+  if (metrics.activeTreatment && !metrics.inRemission) {
+    supportedRating = 100;
+    rationale.push('Chronic or accelerated phase CML (100% rating)');
+  } else if (metrics.onTKI && !metrics.inRemission) {
+    supportedRating = 60;
+    rationale.push('Partial molecular/cytogenetic response on TKI therapy');
+  } else if (metrics.inRemission && metrics.onTKI) {
+    supportedRating = 10;
+    rationale.push('Complete molecular response on TKI therapy');
+  } else {
+    supportedRating = 100;
+    rationale.push('Active CML - 100% until molecular response documented');
+  }
+
+  return {
+    hasData: true,
+    supportedRating,
+    rationale,
+    evidenceGaps: [
+      'Upload bone marrow biopsy results',
+      'Upload BCR-ABL PCR molecular testing results',
+      'Upload prescription records for TKI medications',
+      'Upload hematology/oncology consultation reports',
+      'Upload cytogenetic testing (Philadelphia chromosome)'
+    ],
+    metrics,
+    criteriaReference: CHRONIC_MYELOGENOUS_LEUKEMIA_CRITERIA
+  };
+};
+
+export const analyzeSolitaryPlasmacytomaLogs = (logs, options = {}) => {
+  const plasmacytomaLogs = logs.filter(log =>
+      log.lymphomaLeukemiaData?.diagnosis === 'plasmacytoma'
+  );
+
+  if (plasmacytomaLogs.length === 0) {
+    return {
+      hasData: false,
+      supportedRating: 0,
+      rationale: ['No solitary plasmacytoma logs found'],
+      evidenceGaps: ['Log plasmacytoma symptoms and treatment'],
+      metrics: {},
+      criteriaReference: SOLITARY_PLASMACYTOMA_CRITERIA
+    };
+  }
+
+  let activeTreatment = false;
+
+  plasmacytomaLogs.forEach(log => {
+    if (log.lymphomaLeukemiaData?.treatment_status === 'active-treatment') activeTreatment = true;
+  });
+
+  let supportedRating = 0;
+  const rationale = [];
+
+  if (activeTreatment) {
+    supportedRating = 100;
+    rationale.push('Active treatment for solitary plasmacytoma (100% during treatment)');
+  } else {
+    supportedRating = 30;
+    rationale.push('Post-treatment surveillance for plasmacytoma');
+  }
+
+  return {
+    hasData: true,
+    supportedRating,
+    rationale,
+    evidenceGaps: [
+      'Upload pathology report confirming diagnosis',
+      'Upload imaging (MRI, PET/CT) showing tumor location and size',
+      'Upload treatment records (radiation, surgery, etc.)',
+      'Upload follow-up lab results (SPEP, free light chains)',
+      'Upload bone marrow biopsy ruling out multiple myeloma'
+    ],
+    metrics: { totalLogs: plasmacytomaLogs.length },
+    criteriaReference: SOLITARY_PLASMACYTOMA_CRITERIA
+  };
+};
+
+export const analyzeMyelodysplasticSyndromesLogs = (logs, options = {}) => {
+  const mdsLogs = logs.filter(log => log.lymphomaLeukemiaData?.diagnosis === 'mds');
+
+  if (mdsLogs.length === 0) {
+    return {
+      hasData: false,
+      supportedRating: 0,
+      rationale: ['No myelodysplastic syndrome logs found'],
+      evidenceGaps: ['Log MDS symptoms and treatment'],
+      metrics: {},
+      criteriaReference: MYELODYSPLASTIC_SYNDROMES_CRITERIA
+    };
+  }
+
+  let supportedRating = 0;
+  const rationale = [];
+  const metrics = {
+    totalLogs: mdsLogs.length,
+    transfusionCount: 0,
+    hasImmunosuppression: false,
+    hasGrowthFactors: false,
+    hasBoneMarrowTransplant: false
+  };
+
+  mdsLogs.forEach(log => {
+    // Count treatment occurrences
+    if (log.anemiaData?.treatment?.includes('transfusions')) metrics.transfusionCount++;
+    if (log.anemiaData?.treatment?.includes('immunosuppressants')) metrics.hasImmunosuppression = true;
+    if (log.anemiaData?.treatment?.includes('growth-factors')) metrics.hasGrowthFactors = true;
+  });
+
+  if (metrics.hasBoneMarrowTransplant) {
+    supportedRating = 100;
+    rationale.push('Bone marrow/stem cell transplant performed');
+  } else if (metrics.transfusionCount >= 8) {
+    supportedRating = 100;
+    rationale.push('Transfusions every 6 weeks (8-9+ per year) with frequent infections');
+  } else if (metrics.transfusionCount >= 4 && metrics.hasImmunosuppression) {
+    supportedRating = 70;
+    rationale.push('Transfusions every 3 months AND continuous immunosuppressive therapy');
+  } else if (metrics.hasImmunosuppression && metrics.hasGrowthFactors) {
+    supportedRating = 50;
+    rationale.push('Continuous immunosuppressive therapy AND growth factors');
+  } else if (metrics.hasImmunosuppression) {
+    supportedRating = 30;
+    rationale.push('Continuous immunosuppressive therapy or erythropoietin');
+  } else if (metrics.hasGrowthFactors) {
+    supportedRating = 10;
+    rationale.push('Continuous myeloid growth factor treatment');
+  }
+
+  return {
+    hasData: true,
+    supportedRating,
+    rationale,
+    evidenceGaps: [
+      'Upload bone marrow biopsy with cytogenetic analysis',
+      'Upload transfusion records showing frequency',
+      'Upload prescription records for immunosuppressants or growth factors',
+      'Upload lab results (CBC with differential)',
+      'Upload MDS risk stratification (IPSS or IPSS-R score)'
+    ],
+    metrics,
+    criteriaReference: MYELODYSPLASTIC_SYNDROMES_CRITERIA
+  };
+};
+
+
 // ============================================
 // PHASE 4: GYNECOLOGICAL ANALYSIS FUNCTIONS
 // ============================================
@@ -16742,6 +17289,486 @@ export const analyzeFibromyalgiaLogs = (logs, options = {}) => {
   };
 };
 
+/**
+ * Analyze Tooth Loss logs for VA rating
+ * DC 9913 - Loss of Teeth Due to Bone Loss
+ */
+export const analyzeToothLossLogs = (logs, options = {}) => {
+  const { evaluationPeriodDays = 90 } = options;
+
+  const toothLossSymptoms = logs.filter(log =>
+      CONDITIONS.TOOTH_LOSS.symptomIds.includes(log.symptomId) &&
+      isWithinEvaluationPeriod(log.timestamp, evaluationPeriodDays)
+  );
+
+  if (toothLossSymptoms.length === 0) {
+    return {
+      condition: 'Loss of Teeth Due to Bone Loss',
+      diagnosticCode: '9913',
+      hasData: false,
+      supportedRating: null,
+      ratingRationale: [],
+      evidence: [],
+      gaps: [
+        'No tooth loss symptoms logged',
+        'Document number of missing teeth',
+        'Specify if tooth loss is from bone loss (trauma, osteomyelitis, disease)',
+        'Note: Tooth loss from periodontal disease alone is NOT ratable',
+        'Track prosthesis type and whether it restores chewing function',
+      ],
+      criteria: TOOTH_LOSS_CRITERIA,
+      disclaimer: TOOTH_LOSS_CRITERIA.disclaimer,
+    };
+  }
+
+  const evidence = [];
+  const gaps = [];
+  let supportedRating = null;
+  const ratingRationale = [];
+
+  // Check for dentalData with tooth count
+  const logsWithToothCount = toothLossSymptoms.filter(log => log.dentalData?.toothCount);
+  const logsWithProsthesis = toothLossSymptoms.filter(log => log.dentalData?.prosthesisType);
+  const logsWithCause = toothLossSymptoms.filter(log => log.dentalData?.toothLossCause);
+
+  // Get maximum tooth count from logs
+  let maxToothCount = 0;
+  let prosthesisRestores = null;
+  let causedByBoneLoss = false;
+
+  logsWithToothCount.forEach(log => {
+    const count = parseInt(log.dentalData.toothCount);
+    if (!isNaN(count) && count > maxToothCount) {
+      maxToothCount = count;
+    }
+  });
+
+  // Check prosthesis function
+  if (logsWithProsthesis.length > 0) {
+    const lastProsthesisLog = logsWithProsthesis[logsWithProsthesis.length - 1];
+    prosthesisRestores = lastProsthesisLog.dentalData.prosthesisFunction === 'restores';
+  }
+
+  // Check if caused by bone loss
+  if (logsWithCause.length > 0) {
+    const causes = logsWithCause.map(log => log.dentalData.toothLossCause);
+    causedByBoneLoss = causes.some(cause =>
+        ['bone-loss-trauma', 'bone-loss-osteomyelitis', 'bone-loss-disease'].includes(cause)
+    );
+  }
+
+  evidence.push(`${toothLossSymptoms.length} tooth loss symptoms logged over ${evaluationPeriodDays} days`);
+
+  if (maxToothCount > 0) {
+    evidence.push(`Maximum ${maxToothCount} missing teeth documented`);
+  }
+
+  if (causedByBoneLoss) {
+    evidence.push('Tooth loss attributed to bone loss (trauma/osteomyelitis/disease)');
+  }
+
+  if (prosthesisRestores !== null) {
+    evidence.push(prosthesisRestores ?
+        'Prosthesis DOES restore chewing function (0% rating)' :
+        'Prosthesis does NOT restore chewing function (higher rating)'
+    );
+  }
+
+  // Determine rating based on tooth count and prosthesis function
+  if (!causedByBoneLoss) {
+    supportedRating = 'Not Ratable';
+    ratingRationale.push(
+        'CRITICAL: Tooth loss must be due to bone loss from trauma, osteomyelitis, or disease',
+        'Tooth loss from periodontal disease alone is NOT compensable by the VA',
+        'Document the underlying bone/jaw condition causing tooth loss'
+    );
+  } else if (prosthesisRestores === true) {
+    supportedRating = '0';
+    ratingRationale.push(
+        `${maxToothCount} teeth lost due to bone loss`,
+        'Prosthesis DOES restore masticatory function',
+        'Compensable at 0% (documented but not disabling)'
+    );
+  } else if (maxToothCount === 32) {
+    supportedRating = prosthesisRestores === false ? '40' : '30-40';
+    ratingRationale.push(
+        'Complete loss of all teeth',
+        prosthesisRestores === false ?
+            'Prosthesis does NOT restore function = 40%' :
+            'Need to document if prosthesis restores function'
+    );
+  } else if (maxToothCount >= 16) {
+    supportedRating = prosthesisRestores === false ? '30' : '20-30';
+    ratingRationale.push(
+        `Loss of ${maxToothCount} teeth (all upper OR all lower)`,
+        prosthesisRestores === false ?
+            'Prosthesis does NOT restore function = 30%' :
+            'Need to document if prosthesis restores function'
+    );
+  } else if (maxToothCount >= 8) {
+    supportedRating = prosthesisRestores === false ? '20' : '10-20';
+    ratingRationale.push(
+        `Loss of ${maxToothCount} teeth`,
+        'Likely qualifies for 10-20% depending on location and prosthesis function'
+    );
+  } else if (maxToothCount > 0) {
+    supportedRating = prosthesisRestores === false ? '10' : '0-10';
+    ratingRationale.push(
+        `Loss of ${maxToothCount} teeth`,
+        'May qualify for 10% if prosthesis does not restore function'
+    );
+  }
+
+  // Documentation gaps
+  if (maxToothCount === 0) {
+    gaps.push('Document the exact number of missing teeth');
+  }
+
+  if (!causedByBoneLoss) {
+    gaps.push('⚠️ CRITICAL: Confirm tooth loss is due to bone loss (NOT periodontal disease)');
+    gaps.push('Document underlying bone/jaw condition (trauma, osteomyelitis, radiation, tumor)');
+  }
+
+  if (prosthesisRestores === null) {
+    gaps.push('Document whether prosthesis/denture restores chewing ability');
+  }
+
+  gaps.push('Specify tooth locations: anterior (front) vs. posterior (back)');
+  gaps.push('Track dietary restrictions caused by tooth loss');
+  gaps.push('Dental examination records are essential evidence');
+
+  return {
+    condition: 'Loss of Teeth Due to Bone Loss',
+    diagnosticCode: '9913',
+    hasData: true,
+    supportedRating,
+    ratingRationale,
+    evidence,
+    gaps,
+    criteria: TOOTH_LOSS_CRITERIA,
+    disclaimer: TOOTH_LOSS_CRITERIA.disclaimer,
+  };
+};
+
+/**
+ * Analyze Mandible Nonunion/Malunion logs for VA rating
+ * DC 9903-9904 - Mandible Fracture Complications
+ */
+export const analyzeMandibleNonunionLogs = (logs, options = {}) => {
+  const { evaluationPeriodDays = 90 } = options;
+
+  const mandibleSymptoms = logs.filter(log =>
+      CONDITIONS.MANDIBLE_NONUNION.symptomIds.includes(log.symptomId) &&
+      isWithinEvaluationPeriod(log.timestamp, evaluationPeriodDays)
+  );
+
+  if (mandibleSymptoms.length === 0) {
+    return {
+      condition: 'Mandible Nonunion or Malunion',
+      diagnosticCode: '9903-9904',
+      hasData: false,
+      supportedRating: null,
+      ratingRationale: [],
+      evidence: [],
+      gaps: [
+        'No mandible fracture symptoms logged',
+        'Document jaw instability or deformity',
+        'Track bite problems and chewing difficulty',
+        'X-rays or CT scans showing nonunion/malunion are critical',
+        'Surgical records from fracture repair',
+      ],
+      criteria: MANDIBLE_NONUNION_CRITERIA,
+      disclaimer: MANDIBLE_NONUNION_CRITERIA.disclaimer,
+    };
+  }
+
+  const evidence = [];
+  const gaps = [];
+  let supportedRating = null;
+  const ratingRationale = [];
+
+  // Count symptom types
+  const jawPainCount = mandibleSymptoms.filter(s => s.symptomId === 'jaw-pain').length;
+  const jawInstabilityCount = mandibleSymptoms.filter(s => s.symptomId === 'jaw-instability').length;
+  const chewingDifficultyCount = mandibleSymptoms.filter(s => s.symptomId === 'chewing-difficulty').length;
+  const facialAsymmetryCount = mandibleSymptoms.filter(s => s.symptomId === 'facial-asymmetry').length;
+
+  evidence.push(`${mandibleSymptoms.length} mandible symptoms logged over ${evaluationPeriodDays} days`);
+
+  if (jawPainCount > 0) evidence.push(`${jawPainCount} jaw pain episodes`);
+  if (jawInstabilityCount > 0) evidence.push(`${jawInstabilityCount} jaw instability episodes`);
+  if (chewingDifficultyCount > 0) evidence.push(`${chewingDifficultyCount} chewing difficulty episodes`);
+  if (facialAsymmetryCount > 0) evidence.push(`${facialAsymmetryCount} facial asymmetry episodes`);
+
+  // Determine rating
+  if (jawInstabilityCount >= 5 && chewingDifficultyCount >= 5) {
+    supportedRating = '30';
+    ratingRationale.push(
+        `${jawInstabilityCount} jaw instability episodes indicate nonunion or severe malunion`,
+        `${chewingDifficultyCount} episodes of chewing difficulty`,
+        'Symptoms suggest marked functional impairment = 30%'
+    );
+  } else if (mandibleSymptoms.length >= 8 && (jawPainCount >= 5 || chewingDifficultyCount >= 3)) {
+    supportedRating = '10';
+    ratingRationale.push(
+        `${mandibleSymptoms.length} documented symptoms`,
+        'Moderate malunion with some functional impairment = 10%'
+    );
+  } else {
+    supportedRating = '10';
+    ratingRationale.push(
+        'Mandible fracture complications documented',
+        'Supports 10% rating for moderate malunion'
+    );
+  }
+
+  // Documentation gaps
+  gaps.push('⚠️ CRITICAL: X-rays or CT scans showing nonunion/malunion are required');
+  gaps.push('Document jaw opening limitation if present');
+  gaps.push('Track facial deformity and bite problems (malocclusion)');
+  gaps.push('Surgical records from fracture treatment');
+
+  if (jawInstabilityCount === 0) {
+    gaps.push('Document jaw instability episodes if present');
+  }
+
+  if (chewingDifficultyCount < 5) {
+    gaps.push('Log more chewing difficulty episodes to support higher rating');
+  }
+
+  return {
+    condition: 'Mandible Nonunion or Malunion',
+    diagnosticCode: '9903-9904',
+    hasData: true,
+    supportedRating,
+    ratingRationale,
+    evidence,
+    gaps,
+    criteria: MANDIBLE_NONUNION_CRITERIA,
+    disclaimer: MANDIBLE_NONUNION_CRITERIA.disclaimer,
+  };
+};
+
+/**
+ * Analyze Malignant Oral Neoplasm logs for VA rating
+ * DC 9918 - Malignant Oral Cancer
+ */
+export const analyzeMalignantOralNeoplasmLogs = (logs, options = {}) => {
+  const { evaluationPeriodDays = 90 } = options;
+
+  const neoplasmSymptoms = logs.filter(log =>
+      CONDITIONS.MALIGNANT_ORAL_NEOPLASM.symptomIds.includes(log.symptomId) &&
+      isWithinEvaluationPeriod(log.timestamp, evaluationPeriodDays)
+  );
+
+  if (neoplasmSymptoms.length === 0) {
+    return {
+      condition: 'Malignant Neoplasm of Oral Cavity',
+      diagnosticCode: '9918',
+      hasData: false,
+      supportedRating: null,
+      ratingRationale: [],
+      evidence: [],
+      gaps: [
+        'No oral neoplasm symptoms logged',
+        'Document oral masses, growths, or tissue changes',
+        'Biopsy results confirming malignancy',
+        'All treatment dates (surgery, chemo, radiation)',
+        'Track side effects and residual impairments',
+      ],
+      criteria: MALIGNANT_ORAL_NEOPLASM_CRITERIA,
+      disclaimer: MALIGNANT_ORAL_NEOPLASM_CRITERIA.disclaimer,
+    };
+  }
+
+  const evidence = [];
+  const gaps = [];
+  let supportedRating = null;
+  const ratingRationale = [];
+
+  // Check for treatment status in dentalData
+  let activeTreatment = false;
+  let malignant = false;
+
+  const logsWithMassData = neoplasmSymptoms.filter(log => log.dentalData?.oralMass);
+  if (logsWithMassData.length > 0) {
+    const latestLog = logsWithMassData[logsWithMassData.length - 1];
+    malignant = latestLog.dentalData.massBiopsy === 'malignant';
+    activeTreatment = ['active-treatment', 'post-surgical'].includes(latestLog.dentalData.treatmentStatus);
+  }
+
+  evidence.push(`${neoplasmSymptoms.length} oral neoplasm symptoms logged over ${evaluationPeriodDays} days`);
+
+  if (malignant) {
+    evidence.push('Biopsy confirmed malignant (cancerous)');
+  }
+
+  if (activeTreatment) {
+    evidence.push('Currently in active treatment or recently post-surgical');
+  }
+
+  // Determine rating
+  if (malignant && activeTreatment) {
+    supportedRating = '100';
+    ratingRationale.push(
+        '⚠️ Malignant oral cancer = AUTOMATIC 100% rating',
+        '100% during active treatment AND for 6 months after completion',
+        'Document all treatment dates carefully',
+        'After 6-month period, rate based on residual effects'
+    );
+  } else if (malignant) {
+    supportedRating = 'Varies';
+    ratingRationale.push(
+        'Malignant oral cancer confirmed',
+        'If in active treatment or within 6 months post-treatment: 100%',
+        'If >6 months post-treatment: rate based on residuals',
+        'Residuals include: tissue loss, scarring, difficulty swallowing/speaking, TMJ dysfunction'
+    );
+  } else {
+    supportedRating = 'Requires Evaluation';
+    ratingRationale.push(
+        'Oral mass documented',
+        'Biopsy results needed to determine malignancy',
+        'Rating depends on whether mass is malignant or benign'
+    );
+  }
+
+  // Documentation gaps
+  if (!malignant) {
+    gaps.push('⚠️ CRITICAL: Biopsy results needed to confirm malignancy');
+  }
+
+  gaps.push('Document all treatment dates: surgery, chemotherapy, radiation');
+  gaps.push('Track side effects: pain, difficulty eating/speaking, weight loss');
+  gaps.push('After treatment, document residual effects (tissue loss, scarring, function)');
+  gaps.push('Oncology records and treatment summaries are essential');
+
+  if (malignant) {
+    gaps.push('If recurrence occurs, this restarts the 100% rating period');
+  }
+
+  return {
+    condition: 'Malignant Neoplasm of Oral Cavity',
+    diagnosticCode: '9918',
+    hasData: true,
+    supportedRating,
+    ratingRationale,
+    evidence,
+    gaps,
+    criteria: MALIGNANT_ORAL_NEOPLASM_CRITERIA,
+    disclaimer: MALIGNANT_ORAL_NEOPLASM_CRITERIA.disclaimer,
+  };
+};
+
+/**
+ * Analyze Benign Oral Neoplasm logs for VA rating
+ * DC 9917 - Benign (Non-cancerous) Oral Tumors
+ */
+export const analyzeBenignOralNeoplasmLogs = (logs, options = {}) => {
+  const { evaluationPeriodDays = 90 } = options;
+
+  const neoplasmSymptoms = logs.filter(log =>
+      CONDITIONS.BENIGN_ORAL_NEOPLASM.symptomIds.includes(log.symptomId) &&
+      isWithinEvaluationPeriod(log.timestamp, evaluationPeriodDays)
+  );
+
+  if (neoplasmSymptoms.length === 0) {
+    return {
+      condition: 'Benign Neoplasm of Oral Cavity',
+      diagnosticCode: '9917',
+      hasData: false,
+      supportedRating: null,
+      ratingRationale: [],
+      evidence: [],
+      gaps: [
+        'No oral neoplasm symptoms logged',
+        'Document oral masses, growths, or tissue changes',
+        'Biopsy results confirming benign status',
+        'Track impact on chewing, swallowing, speaking',
+        'Document size and location of mass',
+      ],
+      criteria: BENIGN_ORAL_NEOPLASM_CRITERIA,
+      disclaimer: BENIGN_ORAL_NEOPLASM_CRITERIA.disclaimer,
+    };
+  }
+
+  const evidence = [];
+  const gaps = [];
+  let supportedRating = null;
+  const ratingRationale = [];
+
+  // Check for mass data
+  let benign = false;
+  let massLocation = '';
+
+  const logsWithMassData = neoplasmSymptoms.filter(log => log.dentalData?.oralMass);
+  if (logsWithMassData.length > 0) {
+    const latestLog = logsWithMassData[logsWithMassData.length - 1];
+    benign = latestLog.dentalData.massBiopsy === 'benign';
+    massLocation = latestLog.dentalData.massLocation || '';
+  }
+
+  evidence.push(`${neoplasmSymptoms.length} oral neoplasm symptoms logged over ${evaluationPeriodDays} days`);
+
+  if (benign) {
+    evidence.push('Biopsy confirmed benign (non-cancerous)');
+  }
+
+  if (massLocation) {
+    evidence.push(`Mass location documented: ${massLocation}`);
+  }
+
+  // Determine rating
+  if (benign) {
+    supportedRating = 'Varies';
+    ratingRationale.push(
+        'Benign oral neoplasm confirmed',
+        'No automatic 100% rating (unlike malignant)',
+        'Rate based on functional impairment:',
+        '  • Tissue loss/bone damage (DC 9900-9916)',
+        '  • TMJ dysfunction if present (DC 9905)',
+        '  • Tooth loss if applicable (DC 9913)',
+        '  • Disfigurement (DC 7800)',
+        '  • Speech/swallowing difficulty'
+    );
+  } else {
+    supportedRating = 'Requires Evaluation';
+    ratingRationale.push(
+        'Oral mass documented',
+        'Biopsy results needed to confirm benign status',
+        'Rating depends on functional effects of the mass'
+    );
+  }
+
+  // Documentation gaps
+  if (!benign) {
+    gaps.push('Biopsy results needed to confirm benign (non-cancerous) status');
+  }
+
+  gaps.push('Document impact on eating, speaking, and appearance');
+  gaps.push('Imaging studies (CT, MRI) showing size and location');
+  gaps.push('Track pain or discomfort from the mass');
+  gaps.push('If surgically removed, document residual effects');
+
+  if (benign) {
+    gaps.push('Benign tumors rated based on functional impairment, not just presence');
+    gaps.push('May need multiple diagnostic codes for various impairments');
+  }
+
+  return {
+    condition: 'Benign Neoplasm of Oral Cavity',
+    diagnosticCode: '9917',
+    hasData: true,
+    supportedRating,
+    ratingRationale,
+    evidence,
+    gaps,
+    criteria: BENIGN_ORAL_NEOPLASM_CRITERIA,
+    disclaimer: BENIGN_ORAL_NEOPLASM_CRITERIA.disclaimer,
+  };
+};
+
+
 // ============================================
 // HELPER FUNCTIONS
 // ============================================
@@ -16993,6 +18020,22 @@ export const getSolitaryPlasmacytomaRatingCriteria = (percent) => {
 export const getMyelodysplasticSyndromesRatingCriteria = (percent) => {
   return MYELODYSPLASTIC_SYNDROMES_CRITERIA.ratings.find(r => r.percent === percent) || null;
 };
+// Phase 6: Dental/Oral Helper Functions
+export const getTMJDisorderRatingCriteria = (percent) => {
+  return TMJ_DISORDER_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getToothLossRatingCriteria = (percent) => {
+  return TOOTH_LOSS_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getMandibleNonunionRatingCriteria = (percent) => {
+  return MANDIBLE_NONUNION_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getMalignantOralNeoplasmRatingCriteria = (percent) => {
+  return MALIGNANT_ORAL_NEOPLASM_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getBenignOralNeoplasmRatingCriteria = (percent) => {
+  return BENIGN_ORAL_NEOPLASM_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
 
 export const getAllLumbosacralStrainRatings = () => LUMBOSACRAL_STRAIN_CRITERIA.ratings;
 export const getAllIntervertebralDiscRatings = () => INTERVERTEBRAL_DISC_CRITERIA.ratingsIncapacitatingEpisodes;
@@ -17028,6 +18071,11 @@ export const getAllMyeloproliferative7718Ratings = () => MYELOPROLIFERATIVE_7718
 export const getAllChronicMyelogenousLeukemiaRatings = () => CHRONIC_MYELOGENOUS_LEUKEMIA_CRITERIA.ratings;
 export const getAllSolitaryPlasmacytomaRatings = () => SOLITARY_PLASMACYTOMA_CRITERIA.ratings;
 export const getAllMyelodysplasticSyndromesRatings = () => MYELODYSPLASTIC_SYNDROMES_CRITERIA.ratings;
+export const getAllTMJDisorderRatings = () => TMJ_DISORDER_CRITERIA.ratings;
+export const getAllToothLossRatings = () => TOOTH_LOSS_CRITERIA.ratings;
+export const getAllMandibleNonunionRatings = () => MANDIBLE_NONUNION_CRITERIA.ratings;
+export const getAllMalignantOralNeoplasmRatings = () => MALIGNANT_ORAL_NEOPLASM_CRITERIA.ratings;
+export const getAllBenignOralNeoplasmRatings = () => BENIGN_ORAL_NEOPLASM_CRITERIA.ratings;
 
 export const getEpilepsyMajorDefinition = (term) => EPILEPSY_MAJOR_CRITERIA.definitions[term] || null;
 export const getEpilepsyMinorDefinition = (term) => EPILEPSY_MINOR_CRITERIA.definitions[term] || null;
@@ -17069,7 +18117,11 @@ export const getMyeloproliferative7718Definition = (term) => MYELOPROLIFERATIVE_
 export const getChronicMyelogenousLeukemiaDefinition = (term) => CHRONIC_MYELOGENOUS_LEUKEMIA_CRITERIA.definitions[term] || null;
 export const getSolitaryPlasmacytomaDefinition = (term) => SOLITARY_PLASMACYTOMA_CRITERIA.definitions[term] || null;
 export const getMyelodysplasticSyndromesDefinition = (term) => MYELODYSPLASTIC_SYNDROMES_CRITERIA.definitions[term] || null;
-
+export const getTMJDisorderDefinition = (term) => TMJ_DISORDER_CRITERIA.definitions[term] || null;
+export const getToothLossDefinition = (term) => TOOTH_LOSS_CRITERIA.definitions[term] || null;
+export const getMandibleNonunionDefinition = (term) => MANDIBLE_NONUNION_CRITERIA.definitions[term] || null;
+export const getMalignantOralNeoplasmDefinition = (term) => MALIGNANT_ORAL_NEOPLASM_CRITERIA.definitions[term] || null;
+export const getBenignOralNeoplasmDefinition = (term) => BENIGN_ORAL_NEOPLASM_CRITERIA.definitions[term] || null;
 
 
 

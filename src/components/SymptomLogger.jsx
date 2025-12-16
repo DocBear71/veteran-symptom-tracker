@@ -313,6 +313,56 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
     improvement_noted: ''
   });
 
+  // Phase 6: Dental/Oral Conditions
+  const [dentalData, setDentalData] = useState({
+    // General dental/oral
+    affectedArea: '',              // jaw/teeth/palate/tongue/lips/gums/multiple
+    isJawRelated: false,
+    isBoneRelated: false,
+    isToothRelated: false,
+    isProsthesisRelated: false,
+    // Jaw/structural
+    jawPainSide: '',               // left/right/bilateral
+    jawPainSeverity: 5,
+    jawOpening: '',                // mm if known
+    jawLocking: false,
+    jawClicking: false,
+    jawDeviation: false,
+    boneInfection: false,
+    boneExposed: false,
+    boneDrainage: false,
+    // Tooth/dental
+    toothCount: '',                // number of missing teeth
+    toothLocation: [],             // upper/lower/anterior/posterior
+    toothLossCause: '',            // bone-loss/periodontal/trauma/decay
+    prosthesisType: '',            // none/partial/full-upper/full-lower/implants/bridge
+    prosthesisFunction: '',        // restores/does-not-restore
+    prosthesisPain: false,
+    prosthesisFit: '',             // good/poor/ill-fitting
+    // Palate
+    palatePain: false,
+    palateUlcers: false,
+    palateInfection: false,
+    // Mastication/function
+    chewingDifficulty: '',         // none/mild/moderate/severe
+    swallowingDifficulty: '',      // none/mild/moderate/severe
+    dietaryRestrictions: '',       // none/semi-solid/soft/puree/liquid
+    speechDifficulty: false,
+    // Neoplasm/tumor
+    oralMass: false,
+    massLocation: '',
+    massBiopsy: '',                // benign/malignant/pending/unknown
+    treatmentStatus: '',           // none/active/post-op/radiation/chemo
+    // Infection/inflammation
+    activeInfection: false,
+    infectionType: '',
+    antibioticUse: false,
+    // Impact
+    workMissed: false,
+    eatingImpaired: false,
+    socialImpact: false,
+  });
+
   // Phase 1H - Track processed prefillData to avoid re-processing
   const processedPrefillId = useRef(null);
   const isPrefilling = useRef(false);
@@ -438,6 +488,10 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
       if (prefillData.b12DeficiencyData) {
         console.log('💊 Setting B12 deficiency data:', prefillData.b12DeficiencyData);
         setB12DeficiencyData({ ...prefillData.b12DeficiencyData });
+      }
+      if (prefillData.dentalData) {
+        console.log('🦷 Setting dental data:', prefillData.dentalData);
+        setDentalData({ ...prefillData.dentalData });
       }
       console.log('✅ All prefill data set');
       // Clear prefillData AFTER state updates have been queued
@@ -620,6 +674,35 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
     'confusion-b12', 'tongue-problems'
   ].includes(selectedSymptom);
 
+  // Phase 6: Dental/Oral condition detection
+  const isDentalOralRelated = selectedSymptom?.includes('jaw') ||
+      selectedSymptom?.includes('tooth') ||
+      selectedSymptom?.includes('teeth') ||
+      selectedSymptom?.includes('dental') ||
+      selectedSymptom?.includes('oral') ||
+      selectedSymptom?.includes('palate') ||
+      selectedSymptom?.includes('gum') ||
+      selectedSymptom?.includes('tongue') ||
+      selectedSymptom?.includes('lip') ||
+      selectedSymptom?.includes('mouth') ||
+      selectedSymptom?.includes('chewing') ||
+      selectedSymptom?.includes('mastication') ||
+      selectedSymptom?.includes('swallowing') ||
+      selectedSymptom?.includes('prosthesis') ||
+      selectedSymptom?.includes('denture') ||
+      ['jaw-pain', 'jaw-swelling', 'jaw-stiffness', 'limited-mouth-opening', 'jaw-deviation',
+        'bone-pain-jaw', 'jaw-infection', 'osteomyelitis-symptoms', 'bone-exposure', 'jaw-drainage',
+        'jaw-instability', 'facial-asymmetry', 'tooth-loss-pain', 'missing-teeth', 'loose-teeth',
+        'tooth-sensitivity', 'dental-abscess', 'gum-pain', 'gum-bleeding', 'gum-recession',
+        'palate-pain', 'palate-ulcers', 'palate-infection', 'chewing-difficulty', 'chewing-pain',
+        'bite-problems', 'food-impaction', 'mastication-fatigue', 'swallowing-difficulty',
+        'swallowing-pain', 'tongue-pain', 'tongue-swelling', 'tongue-lesions', 'tongue-movement',
+        'mouth-sores', 'oral-bleeding', 'dry-mouth', 'oral-burning', 'oral-tissue-changes',
+        'lip-pain', 'lip-swelling', 'lip-lesions', 'oral-mass', 'oral-growth', 'tissue-thickening',
+        'oral-infection', 'oral-inflammation', 'bad-taste', 'halitosis', 'speech-difficulty',
+        'articulation-problems', 'prosthesis-pain', 'prosthesis-fit', 'prosthesis-sores'].includes(selectedSymptom);
+
+
   // Reset condition-specific data when symptom changes
   useEffect(() => {
     // Phase 1H: Skip reset during prefill operation
@@ -751,11 +834,25 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
       setB12DeficiencyData({deficiency_cause: '',neurological_symptoms: [],treatment: [],injection_frequency: '',last_injection: '',improvement_noted: ''
       });
     }
-
+    // Phase 6: Reset dental data
+    if (!isDentalOralRelated) {
+      setDentalData({
+        affectedArea: '', isJawRelated: false, isBoneRelated: false, isToothRelated: false,
+        isProsthesisRelated: false, jawPainSide: '', jawPainSeverity: 5, jawOpening: '',
+        jawLocking: false, jawClicking: false, jawDeviation: false, boneInfection: false,
+        boneExposed: false, boneDrainage: false, toothCount: '', toothLocation: [],
+        toothLossCause: '', prosthesisType: '', prosthesisFunction: '', prosthesisPain: false,
+        prosthesisFit: '', palatePain: false, palateUlcers: false, palateInfection: false,
+        chewingDifficulty: '', swallowingDifficulty: '', dietaryRestrictions: '',
+        speechDifficulty: false, oralMass: false, massLocation: '', massBiopsy: '',
+        treatmentStatus: '', activeInfection: false, infectionType: '', antibioticUse: false,
+        workMissed: false, eatingImpaired: false, socialImpact: false,
+      });
+    }
   }, [selectedSymptom, isMigraineSelected, isSleepSelected, isNightmareSelected, isPTSDRelated, isPainSelected,
     isGISelected, isRespiratorySelected, isJointSelected, isSeizureSelected, isEyeRelated, isGenitourinaryRelated,
     isGynecologicalRelated, isAnemiaRelated, isSickleCellRelated, isBleedingDisorderRelated, isInfectionRelated,
-    isLymphomaLeukemiaRelated, isPolycythemiaRelated, isTreatmentRelated, isB12DeficiencyRelated]);
+    isLymphomaLeukemiaRelated, isPolycythemiaRelated, isTreatmentRelated, isB12DeficiencyRelated, isDentalOralRelated]);
 
 
   // Phase 3: Detect genitourinary system based on symptom
@@ -959,6 +1056,11 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
     if (isB12DeficiencyRelated) {
       entry.b12DeficiencyData = { ...b12DeficiencyData };
     }
+    // Phase 6: Add Dental/Oral Data
+    if (isDentalOralRelated) {
+      entry.dentalData = { ...dentalData };
+    }
+
 
     const savedEntry = saveSymptomLog(entry);
 
@@ -4504,6 +4606,677 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
                     <option value="minimal">Minimal Improvement</option>
                     <option value="none">No Improvement (Residual Symptoms)</option>
                   </select>
+                </div>
+              </div>
+          )}
+
+          {/* Phase 6: Dental/Oral Conditions Form */}
+          {isDentalOralRelated && (
+              <div className="bg-amber-50 dark:bg-amber-900/20 p-6 rounded-lg border border-amber-200 dark:border-amber-800 space-y-4">
+                <div className="flex items-start gap-3 mb-4">
+                  <span className="text-3xl">🦷</span>
+                  <div>
+                    <h3 className="font-semibold text-amber-900 dark:text-amber-200 text-lg">
+                      Dental & Oral Condition Details
+                    </h3>
+                    <p className="text-sm text-amber-700 dark:text-amber-300 mt-1">
+                      Document dental/oral symptoms for VA disability ratings (DC 9900 series)
+                    </p>
+                  </div>
+                </div>
+
+                {/* Affected Area */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Primary Affected Area
+                  </label>
+                  <select
+                      value={dentalData.affectedArea}
+                      onChange={(e) => setDentalData({...dentalData, affectedArea: e.target.value})}
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                  >
+                    <option value="">Select affected area...</option>
+                    <option value="jaw-mandible">Jaw (Mandible - Lower)</option>
+                    <option value="jaw-maxilla">Jaw (Maxilla - Upper)</option>
+                    <option value="jaw-bilateral">Jaw (Both Upper & Lower)</option>
+                    <option value="jaw-tmj">TMJ (Temporomandibular Joint)</option>
+                    <option value="teeth">Teeth</option>
+                    <option value="palate">Hard Palate</option>
+                    <option value="tongue">Tongue</option>
+                    <option value="lips">Lips</option>
+                    <option value="gums">Gums/Gingiva</option>
+                    <option value="oral-mucosa">Oral Mucosa (Mouth Lining)</option>
+                    <option value="multiple">Multiple Areas</option>
+                  </select>
+                </div>
+
+                {/* Condition Type Checkboxes */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Condition Type (check all that apply)
+                  </label>
+                  <div className="grid grid-cols-2 gap-2">
+                    <label className="flex items-center gap-2 p-2 rounded-lg border cursor-pointer bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+                      <input
+                          type="checkbox"
+                          checked={dentalData.isJawRelated}
+                          onChange={(e) => setDentalData({...dentalData, isJawRelated: e.target.checked})}
+                          className="rounded border-gray-300 dark:border-gray-600"
+                      />
+                      <span className="text-sm text-gray-700 dark:text-gray-300">Jaw/Bone Issue</span>
+                    </label>
+                    <label className="flex items-center gap-2 p-2 rounded-lg border cursor-pointer bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+                      <input
+                          type="checkbox"
+                          checked={dentalData.isToothRelated}
+                          onChange={(e) => setDentalData({...dentalData, isToothRelated: e.target.checked})}
+                          className="rounded border-gray-300 dark:border-gray-600"
+                      />
+                      <span className="text-sm text-gray-700 dark:text-gray-300">Tooth Loss/Damage</span>
+                    </label>
+                    <label className="flex items-center gap-2 p-2 rounded-lg border cursor-pointer bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+                      <input
+                          type="checkbox"
+                          checked={dentalData.isBoneRelated}
+                          onChange={(e) => setDentalData({...dentalData, isBoneRelated: e.target.checked})}
+                          className="rounded border-gray-300 dark:border-gray-600"
+                      />
+                      <span className="text-sm text-gray-700 dark:text-gray-300">Bone Infection/Disease</span>
+                    </label>
+                    <label className="flex items-center gap-2 p-2 rounded-lg border cursor-pointer bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+                      <input
+                          type="checkbox"
+                          checked={dentalData.isProsthesisRelated}
+                          onChange={(e) => setDentalData({...dentalData, isProsthesisRelated: e.target.checked})}
+                          className="rounded border-gray-300 dark:border-gray-600"
+                      />
+                      <span className="text-sm text-gray-700 dark:text-gray-300">Prosthesis/Denture Issue</span>
+                    </label>
+                  </div>
+                </div>
+
+                {/* Jaw-Related Symptoms */}
+                {dentalData.isJawRelated && (
+                    <div className="bg-white dark:bg-gray-800 p-4 rounded-lg border border-gray-200 dark:border-gray-700 space-y-4">
+                      <h4 className="font-medium text-gray-900 dark:text-gray-100">Jaw Symptoms</h4>
+
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Jaw Pain Side
+                          </label>
+                          <select
+                              value={dentalData.jawPainSide}
+                              onChange={(e) => setDentalData({...dentalData, jawPainSide: e.target.value})}
+                              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                          >
+                            <option value="">Select side...</option>
+                            <option value="left">Left</option>
+                            <option value="right">Right</option>
+                            <option value="bilateral">Both Sides (Bilateral)</option>
+                          </select>
+                        </div>
+
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Maximum Jaw Opening (if known)
+                          </label>
+                          <div className="flex gap-2">
+                            <input
+                                type="number"
+                                value={dentalData.jawOpening}
+                                onChange={(e) => setDentalData({...dentalData, jawOpening: e.target.value})}
+                                placeholder="35"
+                                min="0"
+                                max="60"
+                                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                            />
+                            <span className="flex items-center text-sm text-gray-500 dark:text-gray-400">mm</span>
+                          </div>
+                          <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Normal: 35-50mm</p>
+                        </div>
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                          Jaw Pain Severity (0-10)
+                        </label>
+                        <input
+                            type="range"
+                            min="0"
+                            max="10"
+                            value={dentalData.jawPainSeverity}
+                            onChange={(e) => setDentalData({...dentalData, jawPainSeverity: Number(e.target.value)})}
+                            className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                        />
+                        <div className="flex justify-between mt-1">
+                          <span className="text-xs text-gray-500 dark:text-gray-400">No pain</span>
+                          <span className="text-sm font-semibold text-amber-900 dark:text-amber-200">
+                            {dentalData.jawPainSeverity}/10
+                          </span>
+                          <span className="text-xs text-gray-500 dark:text-gray-400">Worst pain</span>
+                        </div>
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                          Jaw Movement Issues
+                        </label>
+                        <div className="space-y-2">
+                          <label className="flex items-center gap-2">
+                            <input
+                                type="checkbox"
+                                checked={dentalData.jawLocking}
+                                onChange={(e) => setDentalData({...dentalData, jawLocking: e.target.checked})}
+                                className="rounded border-gray-300 dark:border-gray-600"
+                            />
+                            <span className="text-sm text-gray-700 dark:text-gray-300">Jaw Locking/Stuck</span>
+                          </label>
+                          <label className="flex items-center gap-2">
+                            <input
+                                type="checkbox"
+                                checked={dentalData.jawClicking}
+                                onChange={(e) => setDentalData({...dentalData, jawClicking: e.target.checked})}
+                                className="rounded border-gray-300 dark:border-gray-600"
+                            />
+                            <span className="text-sm text-gray-700 dark:text-gray-300">Clicking/Popping Sounds</span>
+                          </label>
+                          <label className="flex items-center gap-2">
+                            <input
+                                type="checkbox"
+                                checked={dentalData.jawDeviation}
+                                onChange={(e) => setDentalData({...dentalData, jawDeviation: e.target.checked})}
+                                className="rounded border-gray-300 dark:border-gray-600"
+                            />
+                            <span className="text-sm text-gray-700 dark:text-gray-300">Jaw Deviation/Misalignment</span>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                )}
+
+                {/* Bone-Related Issues */}
+                {dentalData.isBoneRelated && (
+                    <div className="bg-white dark:bg-gray-800 p-4 rounded-lg border border-gray-200 dark:border-gray-700 space-y-4">
+                      <h4 className="font-medium text-gray-900 dark:text-gray-100">Bone/Structural Issues</h4>
+
+                      <div className="space-y-2">
+                        <label className="flex items-center gap-2">
+                          <input
+                              type="checkbox"
+                              checked={dentalData.boneInfection}
+                              onChange={(e) => setDentalData({...dentalData, boneInfection: e.target.checked})}
+                              className="rounded border-gray-300 dark:border-gray-600"
+                          />
+                          <span className="text-sm text-gray-700 dark:text-gray-300">Bone Infection (Osteomyelitis)</span>
+                        </label>
+                        <label className="flex items-center gap-2">
+                          <input
+                              type="checkbox"
+                              checked={dentalData.boneExposed}
+                              onChange={(e) => setDentalData({...dentalData, boneExposed: e.target.checked})}
+                              className="rounded border-gray-300 dark:border-gray-600"
+                          />
+                          <span className="text-sm text-gray-700 dark:text-gray-300">Exposed Bone (Visible/Palpable)</span>
+                        </label>
+                        <label className="flex items-center gap-2">
+                          <input
+                              type="checkbox"
+                              checked={dentalData.boneDrainage}
+                              onChange={(e) => setDentalData({...dentalData, boneDrainage: e.target.checked})}
+                              className="rounded border-gray-300 dark:border-gray-600"
+                          />
+                          <span className="text-sm text-gray-700 dark:text-gray-300">Drainage from Bone/Jaw</span>
+                        </label>
+                      </div>
+
+                      {dentalData.boneInfection && (
+                          <div className="bg-red-50 dark:bg-red-900/20 p-3 rounded-lg">
+                            <p className="text-sm text-red-800 dark:text-red-200">
+                              ⚠️ Osteomyelitis is serious - rated under DC 5000 (bone infection). Document all treatment,
+                              antibiotics, and surgical interventions.
+                            </p>
+                          </div>
+                      )}
+                    </div>
+                )}
+
+                {/* Tooth Loss/Damage */}
+                {dentalData.isToothRelated && (
+                    <div className="bg-white dark:bg-gray-800 p-4 rounded-lg border border-gray-200 dark:border-gray-700 space-y-4">
+                      <h4 className="font-medium text-gray-900 dark:text-gray-100">Tooth Loss Documentation</h4>
+
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                          Number of Missing Teeth
+                        </label>
+                        <input
+                            type="number"
+                            value={dentalData.toothCount}
+                            onChange={(e) => setDentalData({...dentalData, toothCount: e.target.value})}
+                            min="0"
+                            max="32"
+                            placeholder="0"
+                            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                        />
+                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Total count out of 32 adult teeth</p>
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                          Location of Missing Teeth (select all that apply)
+                        </label>
+                        <div className="grid grid-cols-2 gap-2">
+                          {[
+                            { value: 'upper', label: 'Upper/Maxilla' },
+                            { value: 'lower', label: 'Lower/Mandible' },
+                            { value: 'anterior', label: 'Anterior (Front)' },
+                            { value: 'posterior', label: 'Posterior (Back)' }
+                          ].map(option => (
+                              <label key={option.value} className="flex items-center gap-2">
+                                <input
+                                    type="checkbox"
+                                    checked={dentalData.toothLocation.includes(option.value)}
+                                    onChange={(e) => {
+                                      const newLocations = e.target.checked
+                                          ? [...dentalData.toothLocation, option.value]
+                                          : dentalData.toothLocation.filter(l => l !== option.value);
+                                      setDentalData({...dentalData, toothLocation: newLocations});
+                                    }}
+                                    className="rounded border-gray-300 dark:border-gray-600"
+                                />
+                                <span className="text-sm text-gray-700 dark:text-gray-300">{option.label}</span>
+                              </label>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                          Cause of Tooth Loss ⚠️ IMPORTANT
+                        </label>
+                        <select
+                            value={dentalData.toothLossCause}
+                            onChange={(e) => setDentalData({...dentalData, toothLossCause: e.target.value})}
+                            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                        >
+                          <option value="">Select cause...</option>
+                          <option value="bone-loss-trauma">Bone Loss from Trauma</option>
+                          <option value="bone-loss-osteomyelitis">Bone Loss from Osteomyelitis</option>
+                          <option value="bone-loss-disease">Bone Loss from Disease (e.g., cancer, radiation)</option>
+                          <option value="periodontal">Periodontal Disease Only</option>
+                          <option value="decay">Decay/Cavities Only</option>
+                          <option value="unknown">Unknown/Multiple Causes</option>
+                        </select>
+                        <div className="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg mt-2">
+                          <p className="text-xs text-blue-800 dark:text-blue-200">
+                            💡 VA only rates tooth loss if due to bone loss from trauma or disease (NOT periodontal disease alone).
+                            Document the underlying bone/jaw condition causing tooth loss.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                )}
+
+                {/* Prosthesis/Denture Information */}
+                {dentalData.isProsthesisRelated && (
+                    <div className="bg-white dark:bg-gray-800 p-4 rounded-lg border border-gray-200 dark:border-gray-700 space-y-4">
+                      <h4 className="font-medium text-gray-900 dark:text-gray-100">Prosthesis/Denture Details</h4>
+
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                          Type of Prosthesis
+                        </label>
+                        <select
+                            value={dentalData.prosthesisType}
+                            onChange={(e) => setDentalData({...dentalData, prosthesisType: e.target.value})}
+                            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                        >
+                          <option value="">Select type...</option>
+                          <option value="none">No Prosthesis</option>
+                          <option value="partial-removable">Partial Denture (Removable)</option>
+                          <option value="complete-upper">Complete Upper Denture</option>
+                          <option value="complete-lower">Complete Lower Denture</option>
+                          <option value="complete-both">Complete Dentures (Both)</option>
+                          <option value="implants">Dental Implants</option>
+                          <option value="bridge">Fixed Bridge</option>
+                        </select>
+                      </div>
+
+                      {dentalData.prosthesisType && dentalData.prosthesisType !== 'none' && (
+                          <>
+                            <div>
+                              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                Does Prosthesis Restore Masticatory Function?
+                              </label>
+                              <div className="grid grid-cols-2 gap-2">
+                                <button
+                                    type="button"
+                                    onClick={() => setDentalData({...dentalData, prosthesisFunction: 'restores'})}
+                                    className={`p-2 rounded-lg border transition-colors ${
+                                        dentalData.prosthesisFunction === 'restores'
+                                            ? 'bg-amber-100 dark:bg-amber-900/50 border-amber-400 dark:border-amber-600 text-amber-900 dark:text-amber-200'
+                                            : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300'
+                                    }`}
+                                >
+                                  Yes, Restores Function
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => setDentalData({...dentalData, prosthesisFunction: 'does-not-restore'})}
+                                    className={`p-2 rounded-lg border transition-colors ${
+                                        dentalData.prosthesisFunction === 'does-not-restore'
+                                            ? 'bg-amber-100 dark:bg-amber-900/50 border-amber-400 dark:border-amber-600 text-amber-900 dark:text-amber-200'
+                                            : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300'
+                                    }`}
+                                >
+                                  No, Does NOT Restore
+                                </button>
+                              </div>
+                              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                                Higher VA rating if prosthesis does NOT restore ability to chew
+                              </p>
+                            </div>
+
+                            <div>
+                              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                Prosthesis Fit
+                              </label>
+                              <select
+                                  value={dentalData.prosthesisFit}
+                                  onChange={(e) => setDentalData({...dentalData, prosthesisFit: e.target.value})}
+                                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                              >
+                                <option value="">Select fit quality...</option>
+                                <option value="good">Good Fit</option>
+                                <option value="acceptable">Acceptable Fit</option>
+                                <option value="poor">Poor Fit</option>
+                                <option value="ill-fitting">Ill-Fitting/Unusable</option>
+                              </select>
+                            </div>
+
+                            <div className="space-y-2">
+                              <label className="flex items-center gap-2">
+                                <input
+                                    type="checkbox"
+                                    checked={dentalData.prosthesisPain}
+                                    onChange={(e) => setDentalData({...dentalData, prosthesisPain: e.target.checked})}
+                                    className="rounded border-gray-300 dark:border-gray-600"
+                                />
+                                <span className="text-sm text-gray-700 dark:text-gray-300">Pain from Prosthesis</span>
+                              </label>
+                            </div>
+                          </>
+                      )}
+                    </div>
+                )}
+
+                {/* Palate Issues */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Hard Palate Symptoms
+                  </label>
+                  <div className="space-y-2">
+                    <label className="flex items-center gap-2">
+                      <input
+                          type="checkbox"
+                          checked={dentalData.palatePain}
+                          onChange={(e) => setDentalData({...dentalData, palatePain: e.target.checked})}
+                          className="rounded border-gray-300 dark:border-gray-600"
+                      />
+                      <span className="text-sm text-gray-700 dark:text-gray-300">Palate Pain</span>
+                    </label>
+                    <label className="flex items-center gap-2">
+                      <input
+                          type="checkbox"
+                          checked={dentalData.palateUlcers}
+                          onChange={(e) => setDentalData({...dentalData, palateUlcers: e.target.checked})}
+                          className="rounded border-gray-300 dark:border-gray-600"
+                      />
+                      <span className="text-sm text-gray-700 dark:text-gray-300">Palate Ulcers/Sores</span>
+                    </label>
+                    <label className="flex items-center gap-2">
+                      <input
+                          type="checkbox"
+                          checked={dentalData.palateInfection}
+                          onChange={(e) => setDentalData({...dentalData, palateInfection: e.target.checked})}
+                          className="rounded border-gray-300 dark:border-gray-600"
+                      />
+                      <span className="text-sm text-gray-700 dark:text-gray-300">Palate Infection</span>
+                    </label>
+                  </div>
+                </div>
+
+                {/* Mastication/Swallowing Function */}
+                <div className="bg-white dark:bg-gray-800 p-4 rounded-lg border border-gray-200 dark:border-gray-700 space-y-4">
+                  <h4 className="font-medium text-gray-900 dark:text-gray-100">Eating/Speaking Function</h4>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        Chewing Difficulty
+                      </label>
+                      <select
+                          value={dentalData.chewingDifficulty}
+                          onChange={(e) => setDentalData({...dentalData, chewingDifficulty: e.target.value})}
+                          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                      >
+                        <option value="">Select level...</option>
+                        <option value="none">No Difficulty</option>
+                        <option value="mild">Mild Difficulty</option>
+                        <option value="moderate">Moderate Difficulty</option>
+                        <option value="severe">Severe Difficulty</option>
+                        <option value="unable">Unable to Chew</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        Swallowing Difficulty
+                      </label>
+                      <select
+                          value={dentalData.swallowingDifficulty}
+                          onChange={(e) => setDentalData({...dentalData, swallowingDifficulty: e.target.value})}
+                          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                      >
+                        <option value="">Select level...</option>
+                        <option value="none">No Difficulty</option>
+                        <option value="mild">Mild Difficulty</option>
+                        <option value="moderate">Moderate Difficulty</option>
+                        <option value="severe">Severe Difficulty</option>
+                        <option value="unable">Unable to Swallow Solids</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      Dietary Restrictions Due to Dental/Oral Condition
+                    </label>
+                    <select
+                        value={dentalData.dietaryRestrictions}
+                        onChange={(e) => setDentalData({...dentalData, dietaryRestrictions: e.target.value})}
+                        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                    >
+                      <option value="">Select dietary restrictions...</option>
+                      <option value="none">No Restrictions</option>
+                      <option value="semi-solid">Semi-solid Foods Required</option>
+                      <option value="soft">Soft Foods Required</option>
+                      <option value="puree">Pureed Foods Required</option>
+                      <option value="full-liquid">Full Liquid Diet Required</option>
+                    </select>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                      Dietary restrictions increase VA rating for jaw/mouth conditions
+                    </p>
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="flex items-center gap-2">
+                      <input
+                          type="checkbox"
+                          checked={dentalData.speechDifficulty}
+                          onChange={(e) => setDentalData({...dentalData, speechDifficulty: e.target.checked})}
+                          className="rounded border-gray-300 dark:border-gray-600"
+                      />
+                      <span className="text-sm text-gray-700 dark:text-gray-300">Speech/Articulation Difficulty</span>
+                    </label>
+                  </div>
+                </div>
+
+                {/* Neoplasm/Tumor */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Neoplasm/Tumor/Growth
+                  </label>
+                  <label className="flex items-center gap-2">
+                    <input
+                        type="checkbox"
+                        checked={dentalData.oralMass}
+                        onChange={(e) => setDentalData({...dentalData, oralMass: e.target.checked})}
+                        className="rounded border-gray-300 dark:border-gray-600"
+                    />
+                    <span className="text-sm text-gray-700 dark:text-gray-300">Oral Mass/Lump/Growth Present</span>
+                  </label>
+
+                  {dentalData.oralMass && (
+                      <div className="mt-3 space-y-3 bg-red-50 dark:bg-red-900/20 p-4 rounded-lg">
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Mass Location
+                          </label>
+                          <input
+                              type="text"
+                              value={dentalData.massLocation}
+                              onChange={(e) => setDentalData({...dentalData, massLocation: e.target.value})}
+                              placeholder="e.g., left cheek, floor of mouth, tongue"
+                              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Biopsy Result
+                          </label>
+                          <select
+                              value={dentalData.massBiopsy}
+                              onChange={(e) => setDentalData({...dentalData, massBiopsy: e.target.value})}
+                              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                          >
+                            <option value="">Select result...</option>
+                            <option value="benign">Benign (Non-cancerous)</option>
+                            <option value="malignant">Malignant (Cancerous)</option>
+                            <option value="pending">Biopsy Pending</option>
+                            <option value="not-biopsied">Not Yet Biopsied</option>
+                          </select>
+                        </div>
+
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Treatment Status
+                          </label>
+                          <select
+                              value={dentalData.treatmentStatus}
+                              onChange={(e) => setDentalData({...dentalData, treatmentStatus: e.target.value})}
+                              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                          >
+                            <option value="">Select status...</option>
+                            <option value="none">No Treatment Yet</option>
+                            <option value="active-treatment">Active Treatment (Chemo/Radiation)</option>
+                            <option value="post-surgical">Post-Surgical</option>
+                            <option value="surveillance">Surveillance/Monitoring</option>
+                            <option value="recurrent">Recurrent After Treatment</option>
+                          </select>
+                        </div>
+
+                        {dentalData.massBiopsy === 'malignant' && (
+                            <div className="bg-red-100 dark:bg-red-900/30 p-3 rounded-lg">
+                              <p className="text-sm text-red-800 dark:text-red-200 font-semibold">
+                                ⚠️ Malignant oral neoplasms rate 100% during and for 6 months after treatment (DC 9918).
+                                Document all treatment dates and ongoing side effects.
+                              </p>
+                            </div>
+                        )}
+                      </div>
+                  )}
+                </div>
+
+                {/* Infection/Inflammation */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Infection/Inflammation
+                  </label>
+                  <label className="flex items-center gap-2">
+                    <input
+                        type="checkbox"
+                        checked={dentalData.activeInfection}
+                        onChange={(e) => setDentalData({...dentalData, activeInfection: e.target.checked})}
+                        className="rounded border-gray-300 dark:border-gray-600"
+                    />
+                    <span className="text-sm text-gray-700 dark:text-gray-300">Active Infection/Abscess</span>
+                  </label>
+
+                  {dentalData.activeInfection && (
+                      <div className="mt-3 space-y-3">
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Type of Infection
+                          </label>
+                          <input
+                              type="text"
+                              value={dentalData.infectionType}
+                              onChange={(e) => setDentalData({...dentalData, infectionType: e.target.value})}
+                              placeholder="e.g., dental abscess, gum infection, jaw osteomyelitis"
+                              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                          />
+                        </div>
+
+                        <label className="flex items-center gap-2">
+                          <input
+                              type="checkbox"
+                              checked={dentalData.antibioticUse}
+                              onChange={(e) => setDentalData({...dentalData, antibioticUse: e.target.checked})}
+                              className="rounded border-gray-300 dark:border-gray-600"
+                          />
+                          <span className="text-sm text-gray-700 dark:text-gray-300">Currently on Antibiotics</span>
+                        </label>
+                      </div>
+                  )}
+                </div>
+
+                {/* Impact on Daily Life */}
+                <div className="bg-white dark:bg-gray-800 p-4 rounded-lg border border-gray-200 dark:border-gray-700">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+                    Impact on Daily Activities
+                  </label>
+                  <div className="space-y-2">
+                    <label className="flex items-center gap-2">
+                      <input
+                          type="checkbox"
+                          checked={dentalData.eatingImpaired}
+                          onChange={(e) => setDentalData({...dentalData, eatingImpaired: e.target.checked})}
+                          className="rounded border-gray-300 dark:border-gray-600"
+                      />
+                      <span className="text-sm text-gray-700 dark:text-gray-300">Interferes with Eating/Nutrition</span>
+                    </label>
+                    <label className="flex items-center gap-2">
+                      <input
+                          type="checkbox"
+                          checked={dentalData.workMissed}
+                          onChange={(e) => setDentalData({...dentalData, workMissed: e.target.checked})}
+                          className="rounded border-gray-300 dark:border-gray-600"
+                      />
+                      <span className="text-sm text-gray-700 dark:text-gray-300">Caused Missed Work</span>
+                    </label>
+                    <label className="flex items-center gap-2">
+                      <input
+                          type="checkbox"
+                          checked={dentalData.socialImpact}
+                          onChange={(e) => setDentalData({...dentalData, socialImpact: e.target.checked})}
+                          className="rounded border-gray-300 dark:border-gray-600"
+                      />
+                      <span className="text-sm text-gray-700 dark:text-gray-300">Affects Social Activities/Appearance</span>
+                    </label>
+                  </div>
                 </div>
               </div>
           )}

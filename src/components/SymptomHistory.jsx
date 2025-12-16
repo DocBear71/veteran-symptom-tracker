@@ -782,6 +782,123 @@ const SymptomHistory = ({ onCopyLog }) => {
                                   </div>
                               )}
 
+                              {/* ============================================ */}
+                              {/* PHASE 6: DENTAL/ORAL DETAILS DISPLAY */}
+                              {/* ============================================ */}
+                              {log.dentalData && (
+                                  <div className="bg-amber-50 dark:bg-amber-900/20 rounded-lg p-3 mb-2 text-sm">
+                                    <div className="flex flex-wrap gap-2 mb-2">
+                                      {/* Jaw Pain Severity */}
+                                      {log.dentalData.jawPainSeverity !== undefined && log.dentalData.jawPainSeverity > 0 && (
+                                          <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                                              log.dentalData.jawPainSeverity >= 7 ? 'bg-red-200 dark:bg-red-900 text-red-800 dark:text-red-200' :
+                                                  log.dentalData.jawPainSeverity >= 4 ? 'bg-orange-200 dark:bg-orange-900 text-orange-800 dark:text-orange-200' :
+                                                      'bg-yellow-200 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200'
+                                          }`}>
+                                            🦷 Jaw pain: {log.dentalData.jawPainSeverity}/10
+                                          </span>
+                                      )}
+
+                                      {/* Jaw Opening */}
+                                      {log.dentalData.jawOpening && (
+                                          <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                                              log.dentalData.jawOpening < 20 ? 'bg-red-200 dark:bg-red-900 text-red-800 dark:text-red-200' :
+                                                  log.dentalData.jawOpening < 35 ? 'bg-orange-200 dark:bg-orange-900 text-orange-800 dark:text-orange-200' :
+                                                      'bg-green-200 dark:bg-green-900 text-green-800 dark:text-green-200'
+                                          }`}>
+                                            Opening: {log.dentalData.jawOpening}mm
+                                          </span>
+                                      )}
+
+                                      {/* Chewing Difficulty */}
+                                      {log.dentalData.chewingDifficulty && log.dentalData.chewingDifficulty !== 'none' && (
+                                          <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                                              log.dentalData.chewingDifficulty === 'unable' ? 'bg-red-200 dark:bg-red-900 text-red-800 dark:text-red-200' :
+                                                  log.dentalData.chewingDifficulty === 'severe' ? 'bg-orange-200 dark:bg-orange-900 text-orange-800 dark:text-orange-200' :
+                                                      'bg-amber-200 dark:bg-amber-800 text-amber-800 dark:text-amber-200'
+                                          }`}>
+                                            Chewing: {log.dentalData.chewingDifficulty}
+                                          </span>
+                                      )}
+
+                                      {/* Dietary Restrictions */}
+                                      {log.dentalData.dietaryRestrictions && log.dentalData.dietaryRestrictions !== 'none' && (
+                                          <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                                              log.dentalData.dietaryRestrictions === 'full-liquid' ? 'bg-red-200 dark:bg-red-900 text-red-800 dark:text-red-200' :
+                                                  log.dentalData.dietaryRestrictions === 'puree' ? 'bg-orange-200 dark:bg-orange-900 text-orange-800 dark:text-orange-200' :
+                                                      'bg-amber-200 dark:bg-amber-800 text-amber-800 dark:text-amber-200'
+                                          }`}>
+                                            Diet: {log.dentalData.dietaryRestrictions.replace(/-/g, ' ')}
+                                          </span>
+                                      )}
+
+                                      {/* Missing Teeth Count */}
+                                      {log.dentalData.toothCount && log.dentalData.toothCount > 0 && (
+                                          <span className="px-2 py-1 bg-amber-200 dark:bg-amber-800 text-amber-800 dark:text-amber-200 rounded-full text-xs">
+                                            {log.dentalData.toothCount} teeth lost
+                                          </span>
+                                      )}
+
+                                      {/* Prosthesis Type */}
+                                      {log.dentalData.prosthesisType && log.dentalData.prosthesisType !== 'none' && (
+                                          <span className="px-2 py-1 bg-amber-200 dark:bg-amber-800 text-amber-800 dark:text-amber-200 rounded-full text-xs">
+                                            {log.dentalData.prosthesisType.replace(/-/g, ' ')}
+                                          </span>
+                                      )}
+
+                                      {/* Bone Condition */}
+                                      {log.dentalData.boneCondition && log.dentalData.boneCondition !== 'none' && (
+                                          <span className="px-2 py-1 bg-red-200 dark:bg-red-900 text-red-800 dark:text-red-200 rounded-full text-xs font-semibold">
+                                            ⚠️ {log.dentalData.boneCondition.replace(/-/g, ' ')}
+                                          </span>
+                                      )}
+
+                                      {/* Oral Mass/Tumor */}
+                                      {log.dentalData.oralMass && (
+                                          <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                                              log.dentalData.massBiopsy === 'malignant' ? 'bg-red-200 dark:bg-red-900 text-red-800 dark:text-red-200' :
+                                                  log.dentalData.massBiopsy === 'benign' ? 'bg-yellow-200 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200' :
+                                                      'bg-orange-200 dark:bg-orange-900 text-orange-800 dark:text-orange-200'
+                                          }`}>
+                                            🔬 Oral mass {log.dentalData.massBiopsy ? `(${log.dentalData.massBiopsy})` : ''}
+                                          </span>
+                                      )}
+
+                                      {/* Infection */}
+                                      {log.dentalData.infection && (
+                                          <span className="px-2 py-1 bg-red-200 dark:bg-red-900 text-red-800 dark:text-red-200 rounded-full text-xs font-semibold">
+                                            🦠 Infection
+                                          </span>
+                                      )}
+                                    </div>
+
+                                    {/* Additional Dental Details */}
+                                    <div className="flex flex-wrap gap-1 text-xs text-amber-700 dark:text-amber-300">
+                                      {log.dentalData.palateSymptoms && log.dentalData.palateSymptoms.length > 0 && (
+                                          <span>• Palate: {log.dentalData.palateSymptoms.join(', ')}</span>
+                                      )}
+                                      {log.dentalData.swallowingDifficulty && log.dentalData.swallowingDifficulty !== 'none' && (
+                                          <span>• Swallowing: {log.dentalData.swallowingDifficulty}</span>
+                                      )}
+                                      {log.dentalData.speakingDifficulty && (
+                                          <span>• Speaking difficulty</span>
+                                      )}
+                                      {log.dentalData.painWithEating && (
+                                          <span>• Pain with eating</span>
+                                      )}
+                                      {log.dentalData.massLocation && (
+                                          <span>• Mass location: {log.dentalData.massLocation}</span>
+                                      )}
+                                      {log.dentalData.infectionType && (
+                                          <span>• Infection type: {log.dentalData.infectionType}</span>
+                                      )}
+                                      {log.dentalData.workMissed && (
+                                          <span>• Work missed</span>
+                                      )}
+                                    </div>
+                                  </div>
+                              )}
+
                               {log.notes && (
                                   <p className="text-sm text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-700 p-2 rounded">{log.notes}</p>
                               )}

@@ -82,6 +82,10 @@ import {
   analyzeChronicMyelogenousLeukemiaLogs,
   analyzeSolitaryPlasmacytomaLogs,
   analyzeMyelodysplasticSyndromesLogs,
+  analyzeToothLossLogs,
+  analyzeMandibleNonunionLogs,
+  analyzeMalignantOralNeoplasmLogs,
+  analyzeBenignOralNeoplasmLogs,
   getAllMigraineRatings,
   getAllSleepApneaRatings,
   getAllPTSDRatings,
@@ -170,6 +174,11 @@ import EssentialThrombocythemiaRatingCard from './EssentialThrombocythemiaRating
 import ChronicMyelogenousLeukemiaRatingCard from './ChronicMyelogenousLeukemiaRatingCard';
 import SolitaryPlasmacytomaRatingCard from './SolitaryPlasmacytomaRatingCard';
 import MyelodysplasticSyndromesRatingCard from './MyelodysplasticSyndromesRatingCard';
+import ToothLossRatingCard from './ToothLossRatingCard';
+import MandibleNonunionRatingCard from './MandibleNonunionRatingCard';
+import MaxillaMalunionRatingCard from './MaxillaMalunionRatingCard';
+import MalignantOralNeoplasmRatingCard from './MalignantOralNeoplasmRatingCard';
+import BenignOralNeoplasmRatingCard from './BenignOralNeoplasmRatingCard';
 
 // Storage key for sleep apnea profile
 const SLEEP_APNEA_PROFILE_KEY = 'symptomTracker_sleepApneaProfile';
@@ -486,8 +495,22 @@ const RatingEvidence = () => {
     const myelodysplasticSyndromesAnalysis = useMemo(() => {
       return analyzeMyelodysplasticSyndromesLogs(logs);
     }, [logs]);
+    // Phase 6: Dental/Oral Analysis Hooks
+    const toothLossAnalysis = useMemo(() => {
+      return analyzeToothLossLogs(logs, { evaluationPeriodDays: evaluationDays });
+    }, [logs, evaluationDays]);
+    const mandibleNonunionAnalysis = useMemo(() => {
+      return analyzeMandibleNonunionLogs(logs, { evaluationPeriodDays: evaluationDays });
+    }, [logs, evaluationDays]);
+    const malignantOralNeoplasmAnalysis = useMemo(() => {
+      return analyzeMalignantOralNeoplasmLogs(logs, { evaluationPeriodDays: evaluationDays });
+    }, [logs, evaluationDays]);
+    const benignOralNeoplasmAnalysis = useMemo(() => {
+      return analyzeBenignOralNeoplasmLogs(logs, { evaluationPeriodDays: evaluationDays });
+    }, [logs, evaluationDays]);
 
-    // Toggle section expansion
+
+  // Toggle section expansion
     const toggleSection = (section) => {
         setExpandedSection(expandedSection === section ? null : section);
     };
@@ -573,7 +596,11 @@ const RatingEvidence = () => {
         myeloproliferative7718Analysis.hasData ||
         chronicMyelogenousLeukemiaAnalysis.hasData ||
         solitaryPlasmacytomaAnalysis.hasData ||
-        myelodysplasticSyndromesAnalysis.hasData
+        myelodysplasticSyndromesAnalysis.hasData ||
+        toothLossAnalysis.hasData ||
+        mandibleNonunionAnalysis.hasData ||
+        malignantOralNeoplasmAnalysis.hasData ||
+        benignOralNeoplasmAnalysis.hasData
     ;
 
     return (
@@ -1177,6 +1204,32 @@ const RatingEvidence = () => {
               analysis={myelodysplasticSyndromesAnalysis}
               expanded={expandedSection === 'myelodysplastic-syndromes'}
               onToggle={() => toggleSection('myelodysplastic-syndromes')}
+          />
+          {/* Phase 6: Dental/Oral Rating Cards */}
+          <ToothLossRatingCard
+              analysis={toothLossAnalysis}
+              expanded={expandedSection === 'tooth-loss'}
+              onToggle={() => toggleSection('tooth-loss')}
+          />
+          <MandibleNonunionRatingCard
+              analysis={mandibleNonunionAnalysis}
+              expanded={expandedSection === 'mandible-nonunion'}
+              onToggle={() => toggleSection('mandible-nonunion')}
+          />
+          <MaxillaMalunionRatingCard
+              analysis={mandibleNonunionAnalysis}
+              expanded={expandedSection === 'maxilla-malunion'}
+              onToggle={() => toggleSection('maxilla-malunion')}
+          />
+          <MalignantOralNeoplasmRatingCard
+              analysis={malignantOralNeoplasmAnalysis}
+              expanded={expandedSection === 'malignant-oral-neoplasm'}
+              onToggle={() => toggleSection('malignant-oral-neoplasm')}
+          />
+          <BenignOralNeoplasmRatingCard
+              analysis={benignOralNeoplasmAnalysis}
+              expanded={expandedSection === 'benign-oral-neoplasm'}
+              onToggle={() => toggleSection('benign-oral-neoplasm')}
           />
 
 

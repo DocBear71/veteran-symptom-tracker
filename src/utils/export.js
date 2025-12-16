@@ -89,6 +89,10 @@ import {
     analyzeChronicMyelogenousLeukemiaLogs,
     analyzeSolitaryPlasmacytomaLogs,
     analyzeMyelodysplasticSyndromesLogs,
+    analyzeToothLossLogs,
+    analyzeMandibleNonunionLogs,
+    analyzeMalignantOralNeoplasmLogs,
+    analyzeBenignOralNeoplasmLogs,
 } from './ratingCriteria';
 
 // Appointment type labels for export
@@ -482,6 +486,93 @@ export const generatePDF = (dateRange = 'all', options = { includeAppointments: 
           }
         }
 
+        // Phase 6: Dental/Oral data extraction
+        if (log.dentalData) {
+          const dentalInfo = [];
+          const dd = log.dentalData;
+
+          // Jaw symptoms
+          if (dd.jawPainSeverity !== undefined && dd.jawPainSeverity > 0) {
+            dentalInfo.push(`Jaw pain: ${dd.jawPainSeverity}/10`);
+          }
+          if (dd.jawOpening) {
+            dentalInfo.push(`Jaw opening: ${dd.jawOpening}mm`);
+          }
+
+          // Chewing/eating
+          if (dd.chewingDifficulty && dd.chewingDifficulty !== 'none') {
+            dentalInfo.push(`Chewing: ${dd.chewingDifficulty}`);
+          }
+          if (dd.dietaryRestrictions && dd.dietaryRestrictions !== 'none') {
+            const dietMap = {
+              'semi-solid': 'Semi-solid diet',
+              'soft': 'Soft foods',
+              'puree': 'Pureed diet',
+              'full-liquid': 'Liquid diet only'
+            };
+            dentalInfo.push(dietMap[dd.dietaryRestrictions] || dd.dietaryRestrictions);
+          }
+
+          // Tooth loss
+          if (dd.toothCount && dd.toothCount > 0) {
+            dentalInfo.push(`${dd.toothCount} teeth lost`);
+          }
+          if (dd.prosthesisType && dd.prosthesisType !== 'none') {
+            const prosthesisMap = {
+              'partial': 'Partial denture',
+              'complete-upper': 'Complete upper denture',
+              'complete-lower': 'Complete lower denture',
+              'complete-both': 'Complete dentures (both)',
+              'implants': 'Dental implants',
+              'bridge': 'Dental bridge'
+            };
+            dentalInfo.push(prosthesisMap[dd.prosthesisType] || dd.prosthesisType);
+          }
+
+          // Bone/fracture issues
+          if (dd.boneCondition && dd.boneCondition !== 'none') {
+            const boneMap = {
+              'osteomyelitis': 'Osteomyelitis',
+              'osteonecrosis': 'Osteonecrosis',
+              'nonunion': 'Fracture nonunion',
+              'malunion': 'Fracture malunion'
+            };
+            dentalInfo.push(boneMap[dd.boneCondition] || dd.boneCondition);
+          }
+
+          // Palate/swallowing
+          if (dd.palateSymptoms && dd.palateSymptoms.length > 0) {
+            dentalInfo.push(`Palate: ${dd.palateSymptoms.join(', ')}`);
+          }
+          if (dd.swallowingDifficulty && dd.swallowingDifficulty !== 'none') {
+            dentalInfo.push(`Swallowing: ${dd.swallowingDifficulty}`);
+          }
+
+          // Neoplasm/tumor
+          if (dd.oralMass) {
+            dentalInfo.push('Oral mass/tumor');
+            if (dd.massLocation) dentalInfo.push(`Location: ${dd.massLocation}`);
+            if (dd.massBiopsy) {
+              dentalInfo.push(dd.massBiopsy === 'malignant' ? 'Malignant' : 'Benign');
+            }
+          }
+
+          // Infection
+          if (dd.infection) {
+            dentalInfo.push('Infection present');
+            if (dd.infectionType) dentalInfo.push(`Type: ${dd.infectionType}`);
+          }
+
+          // Daily impact
+          if (dd.speakingDifficulty) dentalInfo.push('Speaking difficulty');
+          if (dd.painWithEating) dentalInfo.push('Pain with eating');
+          if (dd.workMissed) dentalInfo.push('Work missed');
+
+          if (dentalInfo.length > 0) {
+            notes = dentalInfo.join(' | ') + (log.notes ? ` | ${log.notes}` : '');
+          }
+        }
+
 
         // Add medications
             if (linkedMeds.length > 0) {
@@ -638,6 +729,11 @@ export const generateCSV = (dateRange = 'all', options = { includeAppointments: 
         'Polycythemia Diagnosis', 'Phlebotomy', 'Myelosuppressive Meds', 'JAK Inhibitor',
         'Lymphoma/Leukemia Diagnosis', 'Cancer Treatment Status', 'Cancer Treatment Type', 'Treatment Side Effects',
         'Sickle Cell Crisis', 'Crisis Location', 'Hospitalization Required', 'Organ Damage',
+        // Phase 6: Dental/Oral fields
+        'Jaw Pain Severity', 'Jaw Opening (mm)', 'Chewing Difficulty', 'Dietary Restrictions',
+        'Missing Teeth Count', 'Prosthesis Type', 'Bone Condition', 'Palate Symptoms',
+        'Swallowing Difficulty', 'Oral Mass Present', 'Mass Location', 'Mass Biopsy Result',
+        'Infection Present', 'Infection Type', 'Speaking Difficulty', 'Pain with Eating', 'Dental Work Missed',
         'Notes'
       ];
 
@@ -787,6 +883,24 @@ export const generateCSV = (dateRange = 'all', options = { includeAppointments: 
             log.sickleCellData?.['crisis_location']?.join(', ') || '',
             log.sickleCellData?.['hospitalization_required'] === true ? 'Yes' : '',
             log.sickleCellData?.['organ_damage']?.join(', ') || '',
+            // Phase 6: Dental/Oral data
+            log.dentalData?.jawPainSeverity || '',
+            log.dentalData?.jawOpening || '',
+            log.dentalData?.chewingDifficulty || '',
+            log.dentalData?.dietaryRestrictions || '',
+            log.dentalData?.toothCount || '',
+            log.dentalData?.prosthesisType || '',
+            log.dentalData?.boneCondition || '',
+            log.dentalData?.palateSymptoms?.join('; ') || '',
+            log.dentalData?.swallowingDifficulty || '',
+            log.dentalData?.oralMass ? 'Yes' : '',
+            log.dentalData?.massLocation || '',
+            log.dentalData?.massBiopsy || '',
+            log.dentalData?.infection ? 'Yes' : '',
+            log.dentalData?.infectionType || '',
+            log.dentalData?.speakingDifficulty ? 'Yes' : '',
+            log.dentalData?.painWithEating ? 'Yes' : '',
+            log.dentalData?.workMissed ? 'Yes' : '',
             log.notes || ''
           ];
         });

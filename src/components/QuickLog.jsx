@@ -253,6 +253,15 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
     improvement_noted: ''
   });
 
+// Phase 6: Dental/Oral Conditions (simplified for QuickLog)
+  const [dentalData, setDentalData] = useState({
+    jawPainSeverity: 5,
+    jawOpening: '',
+    toothCount: '',
+    prosthesisType: '',
+    dietaryRestrictions: '',
+    chewingDifficulty: '',
+  });
 
   useEffect(() => {
     loadData();
@@ -459,6 +468,21 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
     'confusion-b12', 'tongue-problems'
   ].includes(selectedChronic);
 
+  // Phase 6: Dental/Oral detection
+  const isDentalOralRelated = selectedChronic?.includes('jaw') ||
+      selectedChronic?.includes('tooth') ||
+      selectedChronic?.includes('teeth') ||
+      selectedChronic?.includes('dental') ||
+      selectedChronic?.includes('oral') ||
+      selectedChronic?.includes('palate') ||
+      selectedChronic?.includes('gum') ||
+      selectedChronic?.includes('mouth') ||
+      selectedChronic?.includes('chewing') ||
+      selectedChronic?.includes('swallowing') ||
+      ['jaw-pain', 'jaw-swelling', 'jaw-stiffness', 'limited-mouth-opening',
+        'tooth-loss-pain', 'missing-teeth', 'chewing-difficulty', 'swallowing-difficulty',
+        'prosthesis-pain', 'prosthesis-fit'].includes(selectedChronic);
+
   const handleOpenLogModal = (chronic) => {
     if (editMode) return;
     setSelectedChronic(chronic);
@@ -558,6 +582,11 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
       deficiency_cause: '', neurological_symptoms: [], treatment: [],
       injection_frequency: '', last_injection: '', improvement_noted: ''
     });
+    // Phase 6: Reset dental data
+    setDentalData({
+      jawPainSeverity: 5, jawOpening: '', toothCount: '',
+      prosthesisType: '', dietaryRestrictions: '', chewingDifficulty: '',
+    });
   };
 
   const handleCloseModal = () => {
@@ -618,6 +647,11 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
     if (isGynecologicalRelated) {
       entry.gynecologicalData = { ...gynecologicalData };
     }
+    // Phase 6: Add Dental/Oral Data
+    if (isDentalOralRelated) {
+      entry.dentalData = { ...dentalData };
+    }
+
 
     const savedEntry = saveSymptomLog(entry);
 
@@ -3148,6 +3182,136 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
                             <option value="moderate">Moderate Improvement</option>
                             <option value="minimal">Minimal Improvement</option>
                             <option value="none">No Improvement (Residual Symptoms)</option>
+                          </select>
+                        </div>
+                      </div>
+                  )}
+
+                  {/* Phase 6: Dental/Oral Quick Log Form (Simplified) */}
+                  {isDentalOralRelated && (
+                      <div className="bg-amber-50 dark:bg-amber-900/20 rounded-lg p-4 space-y-4 border border-amber-200 dark:border-amber-800">
+                        <h3 className="font-semibold text-amber-900 dark:text-amber-100 flex items-center gap-2">
+                          🦷 Dental/Oral Details
+                        </h3>
+
+                        {/* Jaw Pain Severity */}
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Jaw Pain Level (0-10)
+                          </label>
+                          <input
+                              type="range"
+                              min="0"
+                              max="10"
+                              value={dentalData.jawPainSeverity}
+                              onChange={(e) => setDentalData({...dentalData, jawPainSeverity: Number(e.target.value)})}
+                              className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                          />
+                          <div className="flex justify-between mt-1">
+                            <span className="text-xs text-gray-500 dark:text-gray-400">No pain</span>
+                            <span className="text-sm font-semibold text-amber-900 dark:text-amber-200">
+                              {dentalData.jawPainSeverity}/10
+                            </span>
+                            <span className="text-xs text-gray-500 dark:text-gray-400">Worst</span>
+                          </div>
+                        </div>
+
+                        {/* Jaw Opening */}
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Max Jaw Opening (optional)
+                          </label>
+                          <div className="flex gap-2">
+                            <input
+                                type="number"
+                                value={dentalData.jawOpening}
+                                onChange={(e) => setDentalData({...dentalData, jawOpening: e.target.value})}
+                                placeholder="35"
+                                min="0"
+                                max="60"
+                                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                            />
+                            <span className="flex items-center text-sm text-gray-500 dark:text-gray-400">mm</span>
+                          </div>
+                          <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Normal: 35-50mm</p>
+                        </div>
+
+                        {/* Chewing Difficulty */}
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Chewing Difficulty
+                          </label>
+                          <select
+                              value={dentalData.chewingDifficulty}
+                              onChange={(e) => setDentalData({...dentalData, chewingDifficulty: e.target.value})}
+                              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                          >
+                            <option value="">Select level...</option>
+                            <option value="none">No Difficulty</option>
+                            <option value="mild">Mild Difficulty</option>
+                            <option value="moderate">Moderate Difficulty</option>
+                            <option value="severe">Severe Difficulty</option>
+                            <option value="unable">Unable to Chew</option>
+                          </select>
+                        </div>
+
+                        {/* Dietary Restrictions */}
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Dietary Restrictions
+                          </label>
+                          <select
+                              value={dentalData.dietaryRestrictions}
+                              onChange={(e) => setDentalData({...dentalData, dietaryRestrictions: e.target.value})}
+                              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                          >
+                            <option value="">Select restrictions...</option>
+                            <option value="none">No Restrictions</option>
+                            <option value="semi-solid">Semi-solid Foods Required</option>
+                            <option value="soft">Soft Foods Required</option>
+                            <option value="puree">Pureed Foods Required</option>
+                            <option value="full-liquid">Full Liquid Diet Required</option>
+                          </select>
+                          <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                            Higher VA rating with dietary restrictions
+                          </p>
+                        </div>
+
+                        {/* Missing Teeth Count */}
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Number of Missing Teeth (if applicable)
+                          </label>
+                          <input
+                              type="number"
+                              value={dentalData.toothCount}
+                              onChange={(e) => setDentalData({...dentalData, toothCount: e.target.value})}
+                              min="0"
+                              max="32"
+                              placeholder="0"
+                              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                          />
+                          <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Total out of 32 adult teeth</p>
+                        </div>
+
+                        {/* Prosthesis Type */}
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Prosthesis/Denture Type (if applicable)
+                          </label>
+                          <select
+                              value={dentalData.prosthesisType}
+                              onChange={(e) => setDentalData({...dentalData, prosthesisType: e.target.value})}
+                              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                          >
+                            <option value="">Select type...</option>
+                            <option value="none">No Prosthesis</option>
+                            <option value="partial-removable">Partial Denture</option>
+                            <option value="complete-upper">Complete Upper Denture</option>
+                            <option value="complete-lower">Complete Lower Denture</option>
+                            <option value="complete-both">Complete Dentures (Both)</option>
+                            <option value="implants">Dental Implants</option>
+                            <option value="bridge">Fixed Bridge</option>
                           </select>
                         </div>
                       </div>

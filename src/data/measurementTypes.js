@@ -1446,7 +1446,223 @@ export const MEASUREMENT_TYPES = {
       return parts.join(', ');
     }
   },
+// Phase 6: Dental/Oral Measurements
+  'jaw-opening': {
+    label: 'Jaw Opening (Interincisal Range)',
+    icon: '📏',
+    category: 'dental-oral',
+    fields: {
+      max_opening: { label: 'Maximum Unassisted Vertical Opening', type: 'number', unit: 'mm', step: '1' },
+      lateral_excursion: { label: 'Lateral Excursion Range', type: 'number', unit: 'mm', step: '1' },
+      dietary_restrictions: {
+        label: 'Dietary Restrictions',
+        type: 'select',
+        options: [
+          { value: 'none', label: 'No restrictions' },
+          { value: 'semi-solid', label: 'Semi-solid foods required' },
+          { value: 'soft', label: 'Soft foods required' },
+          { value: 'puree', label: 'Pureed foods required' },
+          { value: 'full-liquid', label: 'Full liquid diet required' },
+        ]
+      },
+      pain_level: { label: 'Pain with Opening (0-10)', type: 'number', unit: '/10', step: '1', min: 0, max: 10 },
+      clicking_popping: { label: 'Clicking/Popping Present', type: 'boolean' },
+      locking_episodes: { label: 'Locking Episodes', type: 'boolean' },
+    },
+    interpretation: (values) => {
+      const opening = values.max_opening;
+      const lateral = values.lateral_excursion;
+      const diet = values.dietary_restrictions;
+
+      let severity = '';
+      let vaRating = '';
+
+      // Determine severity based on VA criteria (DC 9905)
+      if (opening >= 35) {
+        severity = 'Normal range (35-50mm)';
+        vaRating = 'No rating for jaw opening alone';
+      } else if (opening >= 30) {
+        severity = 'Mild limitation (30-34mm)';
+        if (diet === 'full-liquid' || diet === 'puree') {
+          vaRating = 'May support 30% rating with dietary restrictions';
+        } else if (diet === 'soft' || diet === 'semi-solid') {
+          vaRating = 'May support 20% rating with dietary restrictions';
+        } else {
+          vaRating = 'May support 10% rating without dietary restrictions';
+        }
+      } else if (opening >= 21) {
+        severity = 'Moderate limitation (21-29mm)';
+        if (diet === 'full-liquid' || diet === 'puree') {
+          vaRating = 'May support 40% rating with dietary restrictions';
+        } else if (diet === 'soft' || diet === 'semi-solid') {
+          vaRating = 'May support 30% rating with dietary restrictions';
+        } else {
+          vaRating = 'May support 20% rating without dietary restrictions';
+        }
+      } else if (opening >= 11) {
+        severity = 'Severe limitation (11-20mm)';
+        if (diet === 'full-liquid' || diet === 'puree') {
+          vaRating = 'May support 40% rating with dietary restrictions';
+        } else {
+          vaRating = 'May support 30% rating without dietary restrictions';
+        }
+      } else if (opening >= 0) {
+        severity = 'Very severe limitation (0-10mm)';
+        if (diet === 'full-liquid' || diet === 'puree') {
+          vaRating = 'May support 50% rating with dietary restrictions';
+        } else {
+          vaRating = 'May support 40% rating without dietary restrictions';
+        }
+      }
+
+      // Lateral excursion consideration
+      let lateralNote = '';
+      if (lateral !== undefined && lateral >= 0 && lateral <= 4) {
+        lateralNote = ' Limited lateral excursion (0-4mm) may support additional 10% rating.';
+      }
+
+      return `${severity}. ${vaRating}.${lateralNote} Normal maximum opening is 35-50mm.`;
+    },
+    format: (values) => {
+      const parts = [`${values.max_opening}mm opening`];
+
+      if (values.lateral_excursion !== undefined && values.lateral_excursion !== null) {
+        parts.push(`${values.lateral_excursion}mm lateral`);
+      }
+
+      if (values.dietary_restrictions && values.dietary_restrictions !== 'none') {
+        const dietLabels = {
+          'semi-solid': 'Semi-solid diet',
+          'soft': 'Soft diet',
+          'puree': 'Pureed diet',
+          'full-liquid': 'Liquid diet',
+        };
+        parts.push(dietLabels[values.dietary_restrictions]);
+      }
+
+      if (values.pain_level !== undefined && values.pain_level > 0) {
+        parts.push(`Pain: ${values.pain_level}/10`);
+      }
+
+      const extras = [];
+      if (values.clicking_popping) extras.push('Clicking/popping');
+      if (values.locking_episodes) extras.push('Locking');
+      if (extras.length > 0) {
+        parts.push(extras.join(', '));
+      }
+
+      return parts.join(' | ');
+    }
+  },
+
+  'tooth-count': {
+    label: 'Tooth Loss Documentation',
+    icon: '🦷',
+    category: 'dental-oral',
+    fields: {
+      total_missing: { label: 'Total Missing Teeth', type: 'number', step: '1', min: 0, max: 32 },
+      upper_missing: { label: 'Upper Teeth Missing', type: 'number', step: '1', min: 0, max: 16 },
+      lower_missing: { label: 'Lower Teeth Missing', type: 'number', step: '1', min: 0, max: 16 },
+      anterior_missing: { label: 'Anterior (Front) Teeth Missing', type: 'number', step: '1', min: 0, max: 12 },
+      posterior_missing: { label: 'Posterior (Back) Teeth Missing', type: 'number', step: '1', min: 0, max: 20 },
+      prosthesis_type: {
+        label: 'Prosthesis Type',
+        type: 'select',
+        options: [
+          { value: 'none', label: 'No prosthesis' },
+          { value: 'partial-removable', label: 'Partial denture (removable)' },
+          { value: 'complete-upper', label: 'Complete upper denture' },
+          { value: 'complete-lower', label: 'Complete lower denture' },
+          { value: 'complete-both', label: 'Complete dentures (both)' },
+          { value: 'implants', label: 'Dental implants' },
+          { value: 'bridge', label: 'Fixed bridge' },
+        ]
+      },
+      prosthesis_restores_function: { label: 'Prosthesis Restores Masticatory Function', type: 'boolean' },
+      caused_by_bone_loss: { label: 'Tooth Loss Due to Bone Loss (Trauma/Disease)', type: 'boolean' },
+      periodontal_disease: { label: 'Tooth Loss Due to Periodontal Disease Only', type: 'boolean' },
+    },
+    interpretation: (values) => {
+      const total = values.total_missing;
+      const restorable = values.prosthesis_restores_function;
+      const boneLoss = values.caused_by_bone_loss;
+      const periodontal = values.periodontal_disease;
+
+      // VA only rates tooth loss if due to bone loss from trauma/disease, NOT periodontal disease
+      if (periodontal) {
+        return 'Tooth loss from periodontal disease alone is not considered disabling for VA rating purposes. Must be due to bone loss through trauma or disease (e.g., osteomyelitis).';
+      }
+
+      if (!boneLoss) {
+        return 'For VA rating eligibility, tooth loss must be documented as resulting from loss of substance of maxilla/mandible (bone loss through trauma or disease, not periodontal disease).';
+      }
+
+      // VA ratings per DC 9913
+      if (total === 32) {
+        return restorable ?
+            'Loss of all teeth - 0% if restorable by prosthesis, 40% if not restorable' :
+            'Loss of all teeth - May support 40% rating (not restorable by prosthesis)';
+      } else if (values.upper_missing === 16) {
+        return restorable ?
+            'Loss of all upper teeth - 0% if restorable, 30% if not restorable' :
+            'Loss of all upper teeth - May support 30% rating (not restorable)';
+      } else if (values.lower_missing === 16) {
+        return restorable ?
+            'Loss of all lower teeth - 0% if restorable, 30% if not restorable' :
+            'Loss of all lower teeth - May support 30% rating (not restorable)';
+      }
+
+      // Partial loss patterns
+      let rating = 'Document specific tooth loss pattern for VA rating. ';
+
+      if (values.upper_missing && values.anterior_missing >= 6) {
+        rating += 'All upper anterior teeth missing may support 10% rating if not restorable. ';
+      }
+      if (values.lower_missing && values.anterior_missing >= 6) {
+        rating += 'All lower anterior teeth missing may support 10% rating if not restorable. ';
+      }
+      if (values.upper_missing && values.lower_missing && values.posterior_missing >= 8) {
+        rating += 'All upper and lower posterior teeth missing may support 20% rating if not restorable. ';
+      }
+      if (values.upper_missing && values.lower_missing && values.anterior_missing >= 12) {
+        rating += 'All upper and lower anterior teeth missing may support 20% rating if not restorable.';
+      }
+
+      return rating || 'Partial tooth loss documented. VA rating depends on specific pattern and whether restorable by prosthesis.';
+    },
+    format: (values) => {
+      const parts = [`${values.total_missing} teeth missing`];
+
+      if (values.upper_missing) parts.push(`${values.upper_missing} upper`);
+      if (values.lower_missing) parts.push(`${values.lower_missing} lower`);
+      if (values.anterior_missing) parts.push(`${values.anterior_missing} anterior`);
+      if (values.posterior_missing) parts.push(`${values.posterior_missing} posterior`);
+
+      if (values.prosthesis_type && values.prosthesis_type !== 'none') {
+        const prosTypes = {
+          'partial-removable': 'Partial denture',
+          'complete-upper': 'Upper denture',
+          'complete-lower': 'Lower denture',
+          'complete-both': 'Full dentures',
+          'implants': 'Implants',
+          'bridge': 'Bridge',
+        };
+        parts.push(prosTypes[values.prosthesis_type]);
+
+        if (values.prosthesis_restores_function !== undefined) {
+          parts.push(values.prosthesis_restores_function ? 'Function restored' : 'Function NOT restored');
+        }
+      }
+
+      if (values.caused_by_bone_loss) parts.push('Bone loss cause');
+      if (values.periodontal_disease) parts.push('Periodontal disease');
+
+      return parts.join(' | ');
+    }
+  },
 };
+
+
 
 // Helper to get measurement type by ID
 export const getMeasurementType = (id) => {
@@ -1702,6 +1918,42 @@ export const formatMeasurementValue = (measurementTypeId, values) => {
         'multiple': 'Multiple'
       };
       return `POP-Q Stage ${values.popStage} - ${types[values.prolapseType] || values.prolapseType}`;
+    }
+    case 'jaw-opening': {
+      const parts = [`${values.max_opening}mm opening`];
+
+      if (values.lateral_excursion) {
+        parts.push(`${values.lateral_excursion}mm lateral`);
+      }
+
+      if (values.dietary_restrictions && values.dietary_restrictions !== 'none') {
+        const dietLabels = {
+          'semi-solid': 'Semi-solid',
+          'soft': 'Soft',
+          'puree': 'Puree',
+          'full-liquid': 'Liquid',
+        };
+        parts.push(`${dietLabels[values.dietary_restrictions]} diet`);
+      }
+
+      return parts.join(' | ');
+    }
+    case 'tooth-count': {
+      const parts = [`${values.total_missing} missing`];
+
+      if (values.prosthesis_type && values.prosthesis_type !== 'none') {
+        const prosTypes = {
+          'partial-removable': 'Partial',
+          'complete-upper': 'Upper denture',
+          'complete-lower': 'Lower denture',
+          'complete-both': 'Full dentures',
+          'implants': 'Implants',
+          'bridge': 'Bridge',
+        };
+        parts.push(prosTypes[values.prosthesis_type]);
+      }
+
+      return parts.join(' | ');
     }
     default:
       return Object.entries(values)
