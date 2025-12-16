@@ -221,11 +221,14 @@ const RatingEvidence = () => {
         setLogs(getSymptomLogs());
     }, []);
 
-    // Analyze migraine logs
-    const migraineAnalysis = useMemo(() => {
-        const migraineLogs = logs.filter(log => log.symptom === 'migraine');
-        return analyzeMigraineLogs(migraineLogs, { evaluationPeriodDays: evaluationDays });
-    }, [logs, evaluationDays]);
+  // Analyze migraine logs
+  const migraineAnalysis = useMemo(() => {
+    const migraineLogs = logs.filter(log => {
+      const symptomId = log.symptomId || log.symptom;
+      return symptomId === 'migraine';
+    });
+    return analyzeMigraineLogs(migraineLogs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
     // Analyze sleep apnea logs
     const sleepApneaAnalysis = useMemo(() => {
         return analyzeSleepApneaLogs(logs, sleepApneaProfile, { evaluationPeriodDays: evaluationDays });
@@ -1261,25 +1264,12 @@ const RatingEvidence = () => {
  * Migraine Rating Card Component
  */
 const MigraineRatingCard = ({ analysis, expanded, onToggle }) => {
-    const [showDefinitions, setShowDefinitions] = useState(false);
+  const [showDefinitions, setShowDefinitions] = useState(false);
 
-    if (!analysis.hasData) {
-        return (
-            <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
-                <div className="flex items-center gap-3 mb-2">
-                    <span className="text-2xl">🤕</span>
-                    <div>
-                        <h3 className="font-semibold text-gray-900 dark:text-white">Migraine (DC 8100)</h3>
-                        <p className="text-sm text-gray-500 dark:text-gray-400">No data in evaluation period</p>
-                    </div>
-                </div>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
-                    Log migraine episodes to see rating evidence analysis
-                </p>
-            </div>
-        );
-    }
-
+  // Hide card entirely if no data
+  if (!analysis.hasData) {
+    return null;
+  }
     const { supportedRating, evidence, ratingRationale, gaps } = analysis;
     const ratingColorClass = getRatingColorClass(supportedRating);
 
@@ -1797,24 +1787,10 @@ const SleepApneaSetupModal = ({ currentProfile, onSave, onClose }) => {
 const MentalHealthRatingCard = ({ analysis, expanded, onToggle, icon = '🧠', getAllRatings, getDefinition }) => {
     const [showDefinitions, setShowDefinitions] = useState(false);
 
-    if (!analysis.hasData) {
-        return (
-            <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
-                <div className="flex items-center gap-3 mb-2">
-                    <span className="text-2xl">{icon}</span>
-                    <div>
-                        <h3 className="font-semibold text-gray-900 dark:text-white">
-                            {analysis.condition} (DC {analysis.diagnosticCode})
-                        </h3>
-                        <p className="text-sm text-gray-500 dark:text-gray-400">No data in evaluation period</p>
-                    </div>
-                </div>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
-                    Log {analysis.condition} symptoms to see rating evidence analysis
-                </p>
-            </div>
-        );
-    }
+  // Hide card entirely if no data
+  if (!analysis.hasData) {
+    return null;
+  }
 
     const { supportedRating, evidence, ratingRationale, gaps, assessmentLevel } = analysis;
 

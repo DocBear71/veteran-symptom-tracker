@@ -1660,6 +1660,226 @@ export const MEASUREMENT_TYPES = {
       return parts.join(' | ');
     }
   },
+  // Phase 6: Infectious Disease Measurements
+  'cd4-count': {
+    label: 'CD4 T-Cell Count',
+    icon: '🔬',
+    category: 'hiv-aids',
+    description: 'Immune system cell count for HIV monitoring',
+    fields: {
+      count: {
+        label: 'CD4 Count (cells/μL)',
+        type: 'number',
+        min: 0,
+        max: 2000,
+        step: 1,
+        required: true,
+      },
+      percentage: {
+        label: 'CD4 Percentage (%)',
+        type: 'number',
+        min: 0,
+        max: 100,
+        step: 0.1,
+        required: false,
+      },
+      testDate: {
+        label: 'Test Date',
+        type: 'date',
+        required: true,
+      },
+    },
+    interpretation: (values) => {
+      const count = values.count;
+      if (count >= 500) return { level: 'normal', text: 'Normal immune function' };
+      if (count >= 200) return { level: 'moderate', text: 'Moderately compromised immunity' };
+      return { level: 'severe', text: 'Severely compromised immunity - increased infection risk' };
+    },
+    format: (values) => `${values.count} cells/μL${values.percentage ? ` (${values.percentage}%)` : ''}`,
+  },
+  'viral-load': {
+    label: 'Viral Load',
+    icon: '🦠',
+    category: 'hiv-aids',
+    description: 'HIV or Hepatitis viral load measurement',
+    fields: {
+      viralLoad: {
+        label: 'Viral Load (copies/mL)',
+        type: 'number',
+        min: 0,
+        max: 10000000,
+        step: 1,
+        required: true,
+      },
+      virusType: {
+        label: 'Virus Type',
+        type: 'select',
+        options: [
+          { value: 'hiv', label: 'HIV' },
+          { value: 'hep-c', label: 'Hepatitis C' },
+          { value: 'hep-b', label: 'Hepatitis B' },
+        ],
+        required: true,
+      },
+      undetectable: {
+        label: 'Undetectable',
+        type: 'checkbox',
+        required: false,
+      },
+      testDate: {
+        label: 'Test Date',
+        type: 'date',
+        required: true,
+      },
+    },
+    interpretation: (values) => {
+      if (values.undetectable) return { level: 'good', text: 'Undetectable - treatment effective' };
+      const load = values.viralLoad;
+      if (load < 50) return { level: 'good', text: 'Very low/undetectable' };
+      if (load < 1000) return { level: 'moderate', text: 'Low viral load' };
+      if (load < 100000) return { level: 'caution', text: 'Moderate viral load' };
+      return { level: 'severe', text: 'High viral load - discuss treatment with provider' };
+    },
+    format: (values) => {
+      if (values.undetectable) return 'Undetectable';
+      return `${values.viralLoad.toLocaleString()} copies/mL`;
+    },
+  },
+  'liver-enzymes': {
+    label: 'Liver Function Tests',
+    icon: '🧪',
+    category: 'hepatitis',
+    description: 'Liver enzyme levels (ALT, AST, Bilirubin)',
+    fields: {
+      alt: {
+        label: 'ALT (U/L)',
+        type: 'number',
+        min: 0,
+        max: 500,
+        step: 1,
+        required: false,
+        helpText: 'Normal: 7-55 U/L',
+      },
+      ast: {
+        label: 'AST (U/L)',
+        type: 'number',
+        min: 0,
+        max: 500,
+        step: 1,
+        required: false,
+        helpText: 'Normal: 8-48 U/L',
+      },
+      bilirubin: {
+        label: 'Total Bilirubin (mg/dL)',
+        type: 'number',
+        min: 0,
+        max: 20,
+        step: 0.1,
+        required: false,
+        helpText: 'Normal: 0.1-1.2 mg/dL',
+      },
+      testDate: {
+        label: 'Test Date',
+        type: 'date',
+        required: true,
+      },
+    },
+    interpretation: (values) => {
+      const altHigh = values.alt > 55;
+      const astHigh = values.ast > 48;
+      const bilirubinHigh = values.bilirubin > 1.2;
+
+      if (altHigh || astHigh || bilirubinHigh) {
+        return { level: 'caution', text: 'Elevated liver enzymes - consult provider' };
+      }
+      return { level: 'normal', text: 'Liver function within normal limits' };
+    },
+    format: (values) => {
+      const parts = [];
+      if (values.alt) parts.push(`ALT: ${values.alt}`);
+      if (values.ast) parts.push(`AST: ${values.ast}`);
+      if (values.bilirubin) parts.push(`Bili: ${values.bilirubin}`);
+      return parts.join(', ') || 'No values recorded';
+    },
+  },
+  'body-temperature': {
+    label: 'Body Temperature',
+    icon: '🌡️',
+    category: 'general-infectious',
+    description: 'Body temperature for fever tracking',
+    fields: {
+      temperature: {
+        label: 'Temperature',
+        type: 'number',
+        min: 95,
+        max: 108,
+        step: 0.1,
+        required: true,
+      },
+      unit: {
+        label: 'Unit',
+        type: 'select',
+        options: [
+          { value: 'F', label: '°F (Fahrenheit)' },
+          { value: 'C', label: '°C (Celsius)' },
+        ],
+        required: true,
+      },
+      location: {
+        label: 'Measurement Location',
+        type: 'select',
+        options: [
+          { value: 'oral', label: 'Oral' },
+          { value: 'ear', label: 'Ear (Tympanic)' },
+          { value: 'forehead', label: 'Forehead (Temporal)' },
+          { value: 'armpit', label: 'Armpit (Axillary)' },
+        ],
+        required: false,
+      },
+    },
+    interpretation: (values) => {
+      let tempF = values.temperature;
+      if (values.unit === 'C') {
+        tempF = (values.temperature * 9/5) + 32;
+      }
+
+      if (tempF >= 103) return { level: 'severe', text: 'High fever - seek medical attention' };
+      if (tempF >= 100.4) return { level: 'caution', text: 'Fever present' };
+      if (tempF >= 99) return { level: 'moderate', text: 'Low-grade fever' };
+      return { level: 'normal', text: 'Normal temperature' };
+    },
+    format: (values) => `${values.temperature}°${values.unit}`,
+  },
+  'body-weight-tracking': {
+    label: 'Body Weight',
+    icon: '⚖️',
+    category: 'general-infectious',
+    description: 'Track weight changes (for HIV wasting syndrome monitoring)',
+    fields: {
+      weight: {
+        label: 'Weight',
+        type: 'number',
+        min: 50,
+        max: 500,
+        step: 0.1,
+        required: true,
+      },
+      unit: {
+        label: 'Unit',
+        type: 'select',
+        options: [
+          { value: 'lbs', label: 'Pounds (lbs)' },
+          { value: 'kg', label: 'Kilograms (kg)' },
+        ],
+        required: true,
+      },
+    },
+    interpretation: (values) => {
+      // This will need historical comparison to detect weight loss
+      return { level: 'info', text: 'Weight recorded' };
+    },
+    format: (values) => `${values.weight} ${values.unit}`,
+  },
 };
 
 

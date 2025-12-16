@@ -1,11 +1,15 @@
-import { useState, useEffect } from 'react';
+import { useRef, useState, useEffect } from 'react';
+import { Zap, X } from 'lucide-react';
 import { getChronicSymptoms, removeChronicSymptom, saveSymptomLog, getMedications, logMedicationTaken, getSymptomLogs } from '../utils/storage';
+import { useProfile } from '../hooks/useProfile';
+import OccurrenceTimePicker from './OccurrenceTimePicker';
 
 const QuickLog = ({ onLogSaved, onAddChronic }) => {
   const [chronicSymptoms, setChronicSymptoms] = useState([]);
   const [medications, setMedications] = useState([]);
   const [showSuccess, setShowSuccess] = useState('');
   const [editMode, setEditMode] = useState(false);
+  const [occurredAt, setOccurredAt] = useState(new Date().toISOString());
 
   // Phase 1G - Recent symptoms & search
   const [recentSymptoms, setRecentSymptoms] = useState([]);
@@ -376,26 +380,26 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
       ['absence-seizure', 'tonic-clonic', 'focal-seizure', 'grand-mal', 'petit-mal'].includes(selectedChronic?.symptomId);
 
   // PHASE 2: Eye/Vision detection
-  const isEyeRelated = selectedChronic?.includes('vision') ||
-      selectedChronic?.includes('eye') ||
-      selectedChronic?.includes('glaucoma') ||
-      selectedChronic?.includes('retinopathy') ||
-      selectedChronic?.includes('macular') ||
+  const isEyeRelated = selectedChronic?.symptomId?.includes('vision') ||
+      selectedChronic?.symptomId?.includes('eye') ||
+      selectedChronic?.symptomId?.includes('glaucoma') ||
+      selectedChronic?.symptomId?.includes('retinopathy') ||
+      selectedChronic?.symptomId?.includes('macular') ||
       ['floaters', 'diplopia', 'photophobia', 'night-blindness', 'light-sensitivity',
         'double-vision', 'color-vision-changes', 'dry-eyes', 'eye-strain', 'eye-pain',
         'peripheral-vision-loss', 'diabetic-retinopathy', 'glaucoma-symptoms'].includes(selectedChronic);
 
   // Phase 3: Genitourinary detection
-  const isGenitourinaryRelated = selectedChronic?.includes('kidney') ||
-      selectedChronic?.includes('urinary') ||
-      selectedChronic?.includes('prostate') ||
-      selectedChronic?.includes('bladder') ||
-      selectedChronic?.includes('urine') ||
-      selectedChronic?.includes('renal') ||
-      selectedChronic?.includes('fecal-incontinence') ||
-      selectedChronic?.includes('erectile') ||
-      selectedChronic?.includes('testicular') ||
-      selectedChronic?.includes('genital') ||
+  const isGenitourinaryRelated = selectedChronic?.symptomId?.includes('kidney') ||
+      selectedChronic?.symptomId?.includes('urinary') ||
+      selectedChronic?.symptomId?.includes('prostate') ||
+      selectedChronic?.symptomId?.includes('bladder') ||
+      selectedChronic?.symptomId?.includes('urine') ||
+      selectedChronic?.symptomId?.includes('renal') ||
+      selectedChronic?.symptomId?.includes('fecal-incontinence') ||
+      selectedChronic?.symptomId?.includes('erectile') ||
+      selectedChronic?.symptomId?.includes('testicular') ||
+      selectedChronic?.symptomId?.includes('genital') ||
       ['kidney-stones', 'kidney-pain', 'blood-in-urine', 'kidney-infection',
        'renal-swelling', 'renal-fatigue', 'renal-nausea', 'decreased-urination',
        'foamy-urine', 'high-blood-pressure', 'urinary-frequency', 'urinary-urgency',
@@ -405,17 +409,17 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
        'genital-pain', 'bowel-urgency', 'bowel-frequency'].includes(selectedChronic);
 
   // Phase 4: Gynecological detection
-  const isGynecologicalRelated = selectedChronic?.includes('menstrual') ||
-      selectedChronic?.includes('pelvic') ||
-      selectedChronic?.includes('endometriosis') ||
-      selectedChronic?.includes('ovarian') ||
-      selectedChronic?.includes('uterine') ||
-      selectedChronic?.includes('vaginal') ||
-      selectedChronic?.includes('cervix') ||
-      selectedChronic?.includes('dyspareunia') ||
-      selectedChronic?.includes('dysmenorrhea') ||
-      selectedChronic?.includes('prolapse') ||
-      selectedChronic?.includes('vulvo') ||
+  const isGynecologicalRelated = selectedChronic?.symptomId?.includes('menstrual') ||
+      selectedChronic?.symptomId?.includes('pelvic') ||
+      selectedChronic?.symptomId?.includes('endometriosis') ||
+      selectedChronic?.symptomId?.includes('ovarian') ||
+      selectedChronic?.symptomId?.includes('uterine') ||
+      selectedChronic?.symptomId?.includes('vaginal') ||
+      selectedChronic?.symptomId?.includes('cervix') ||
+      selectedChronic?.symptomId?.includes('dyspareunia') ||
+      selectedChronic?.symptomId?.includes('dysmenorrhea') ||
+      selectedChronic?.symptomId?.includes('prolapse') ||
+      selectedChronic?.symptomId?.includes('vulvo') ||
       ['heavy-menstrual-bleeding', 'irregular-periods', 'painful-periods', 'absent-periods',
         'prolonged-bleeding', 'intermenstrual-bleeding', 'premenstrual-syndrome',
         'chronic-pelvic-pain', 'dyspareunia', 'lower-abdominal-pain', 'pain-bowel-movement',
@@ -469,16 +473,16 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
   ].includes(selectedChronic);
 
   // Phase 6: Dental/Oral detection
-  const isDentalOralRelated = selectedChronic?.includes('jaw') ||
-      selectedChronic?.includes('tooth') ||
-      selectedChronic?.includes('teeth') ||
-      selectedChronic?.includes('dental') ||
-      selectedChronic?.includes('oral') ||
-      selectedChronic?.includes('palate') ||
-      selectedChronic?.includes('gum') ||
-      selectedChronic?.includes('mouth') ||
-      selectedChronic?.includes('chewing') ||
-      selectedChronic?.includes('swallowing') ||
+  const isDentalOralRelated = selectedChronic?.symptomId?.includes('jaw') ||
+      selectedChronic?.symptomId?.includes('tooth') ||
+      selectedChronic?.symptomId?.includes('teeth') ||
+      selectedChronic?.symptomId?.includes('dental') ||
+      selectedChronic?.symptomId?.includes('oral') ||
+      selectedChronic?.symptomId?.includes('palate') ||
+      selectedChronic?.symptomId?.includes('gum') ||
+      selectedChronic?.symptomId?.includes('mouth') ||
+      selectedChronic?.symptomId?.includes('chewing') ||
+      selectedChronic?.symptomId?.includes('swallowing') ||
       ['jaw-pain', 'jaw-swelling', 'jaw-stiffness', 'limited-mouth-opening',
         'tooth-loss-pain', 'missing-teeth', 'chewing-difficulty', 'swallowing-difficulty',
         'prosthesis-pain', 'prosthesis-fit'].includes(selectedChronic);
@@ -488,6 +492,7 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
     setSelectedChronic(chronic);
     setLogSeverity(chronic.defaultSeverity || 5);
     setLogNotes('');
+    setOccurredAt(new Date().toISOString());
     setSelectedMedications([]);
 
     // Reset condition-specific data
@@ -611,6 +616,7 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
       category: selectedChronic.category,
       severity: logSeverity,
       notes: logNotes.trim(),
+      occurredAt: occurredAt,
     };
 
     // Add condition-specific data
@@ -1763,7 +1769,7 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
                           <h4 className="font-medium text-teal-900 dark:text-teal-200">Genitourinary Details</h4>
 
                           {/* Kidney Symptoms */}
-                          {(selectedChronic?.includes('kidney') || selectedChronic?.includes('renal')) && (
+                          {(selectedChronic?.symptomId?.includes('kidney') || selectedChronic?.symptomId?.includes('renal')) && (
                               <>
                                 <div className="grid grid-cols-2 gap-2">
                                   <label className={`flex items-center gap-2 p-2 rounded border cursor-pointer ${
@@ -1788,7 +1794,7 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
                           )}
 
                           {/* Bladder/Voiding Symptoms */}
-                          {(selectedChronic?.includes('bladder') || selectedChronic?.includes('urinary')) && (
+                          {(selectedChronic?.symptomId?.includes('bladder') || selectedChronic?.symptomId?.includes('urinary')) && (
                               <>
                                 <div className="grid grid-cols-2 gap-3">
                                   <div>
@@ -1831,7 +1837,7 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
                           )}
 
                           {/* Prostate Symptoms */}
-                          {selectedChronic?.includes('prostate') && (
+                          {selectedChronic?.symptomId?.includes('prostate') && (
                               <div>
                                 <label className="block text-sm font-medium mb-1">Nocturia (times waking to void)</label>
                                 <input type="number" value={genitourinaryData.nocturiaCount}
@@ -1842,7 +1848,7 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
                           )}
 
                           {/* Sphincter/Bowel */}
-                          {selectedChronic?.includes('fecal-incontinence') && (
+                          {selectedChronic?.symptomId?.includes('fecal-incontinence') && (
                               <label className={`flex items-center gap-2 p-3 rounded border cursor-pointer ${
                                   genitourinaryData.fecalIncontinenceEpisode ? 'bg-teal-100 dark:bg-teal-900/50 border-teal-300' : 'bg-white dark:bg-gray-800 border-gray-200'
                               }`}>
@@ -1854,7 +1860,7 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
                           )}
 
                           {/* Reproductive */}
-                          {selectedChronic?.includes('erectile') && (
+                          {selectedChronic?.symptomId?.includes('erectile') && (
                               <div>
                                 <label className="block text-sm font-medium mb-2">Severity</label>
                                 <select value={genitourinaryData.edSeverity}
@@ -1894,7 +1900,7 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
                         </div>
 
                         {/* Endometriosis */}
-                        {selectedChronic?.includes('endometriosis') && (
+                        {selectedChronic?.symptomId?.includes('endometriosis') && (
                             <>
                               <label className={`flex items-center gap-2 p-3 rounded border cursor-pointer ${
                                   gynecologicalData.endometriosisDiagnosed ? 'bg-rose-100 dark:bg-rose-900/50 border-rose-300' : 'bg-white dark:bg-gray-800 border-gray-200'
@@ -1933,7 +1939,7 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
                         )}
 
                         {/* Menstrual Symptoms */}
-                        {(selectedChronic?.includes('menstrual') || selectedChronic?.includes('period')) && (
+                        {(selectedChronic?.symptomId?.includes('menstrual') || selectedChronic?.symptomId?.includes('period')) && (
                             <>
                               <div className="grid grid-cols-2 gap-3">
                                 <div>
@@ -1978,7 +1984,7 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
                         )}
 
                         {/* PCOS/Ovarian */}
-                        {(selectedChronic?.includes('pcos') || selectedChronic?.includes('ovarian')) && (
+                        {(selectedChronic?.symptomId?.includes('pcos') || selectedChronic?.symptomId?.includes('ovarian')) && (
                             <label className={`flex items-center gap-2 p-3 rounded border cursor-pointer ${
                                 gynecologicalData.pcosDiagnosed ? 'bg-rose-100 dark:bg-rose-900/50 border-rose-300' : 'bg-white dark:bg-gray-800 border-gray-200'
                             }`}>
@@ -1990,7 +1996,7 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
                         )}
 
                         {/* PID */}
-                        {selectedChronic?.includes('pid') && (
+                        {selectedChronic?.symptomId?.includes('pid') && (
                             <label className={`flex items-center gap-2 p-3 rounded border cursor-pointer ${
                                 gynecologicalData.pidDiagnosed ? 'bg-rose-100 dark:bg-rose-900/50 border-rose-300' : 'bg-white dark:bg-gray-800 border-gray-200'
                             }`}>
@@ -2002,7 +2008,7 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
                         )}
 
                         {/* Prolapse */}
-                        {selectedChronic?.includes('prolapse') && (
+                        {selectedChronic?.symptomId?.includes('prolapse') && (
                             <label className={`flex items-center gap-2 p-3 rounded border cursor-pointer ${
                                 gynecologicalData.prolapseDiagnosed ? 'bg-rose-100 dark:bg-rose-900/50 border-rose-300' : 'bg-white dark:bg-gray-800 border-gray-200'
                             }`}>
@@ -3328,6 +3334,15 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
                         placeholder="What were you doing? Any triggers?"
                         rows={2}
                         className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    />
+                  </div>
+
+                  {/* Occurrence Time Picker */}
+                  <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
+                    <OccurrenceTimePicker
+                        value={occurredAt}
+                        onChange={setOccurredAt}
+                        label="When did this occur?"
                     />
                   </div>
                 </div>

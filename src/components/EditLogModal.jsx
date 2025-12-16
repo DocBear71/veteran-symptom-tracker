@@ -1,4 +1,5 @@
-import {useState, useEffect} from 'react';
+import {useRef, useState, useEffect} from 'react';
+import { X } from 'lucide-react';
 import {
   updateSymptomLog,
   getMedications,
@@ -6,10 +7,12 @@ import {
   getMedicationLogsForSymptom,
   deleteMedicationLog,
 } from '../utils/storage';
+import OccurrenceTimePicker from './OccurrenceTimePicker';
 
 const EditLogModal = ({log, isOpen, onClose, onSaved}) => {
   const [severity, setSeverity] = useState(5);
   const [notes, setNotes] = useState('');
+  const [occurredAt, setOccurredAt] = useState(log?.occurredAt || log?.timestamp || new Date().toISOString());
   const [medications, setMedications] = useState([]);
   const [selectedMedications, setSelectedMedications] = useState([]);
   const [existingMedLogs, setExistingMedLogs] = useState([]);
@@ -283,6 +286,7 @@ const EditLogModal = ({log, isOpen, onClose, onSaved}) => {
           if (isOpen && log) {
             setSeverity(log.severity || 5);
             setNotes(log.notes || '');
+            setOccurredAt(log.occurredAt || log.timestamp || new Date().toISOString());
             setMedications(getMedications());
 
             // PHASE 1A: Load universal fields
@@ -747,6 +751,7 @@ const EditLogModal = ({log, isOpen, onClose, onSaved}) => {
           const updates = {
             severity,
             notes: notes.trim(),
+            occurredAt: occurredAt,
             // PHASE 1A: Universal fields
             isFlareUp,
             duration: duration || null,
@@ -5248,6 +5253,15 @@ const EditLogModal = ({log, isOpen, onClose, onSaved}) => {
                               rows={3}
                               className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"/>
                   </div>
+                </div>
+
+                {/* Occurrence Time Picker */}
+                <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
+                  <OccurrenceTimePicker
+                      value={occurredAt}
+                      onChange={setOccurredAt}
+                      label="When did this occur?"
+                  />
                 </div>
 
                 <div

@@ -1,15 +1,18 @@
-import { useState, useEffect, useRef } from 'react';
-import { sortedSymptomCategories } from '../data/symptoms';
+import { useRef, useState, useEffect } from 'react';
+import { X, ChevronDown, ChevronUp, Plus } from 'lucide-react';
+import { symptomCategories, sortedSymptomCategories } from '../data/symptoms';
 import { saveSymptomLog, getCustomSymptoms, addCustomSymptom, getMedications, logMedicationTaken } from '../utils/storage';
+import OccurrenceTimePicker from './OccurrenceTimePicker.jsx';
 import QuickLog from './QuickLog';
 import AddChronicModal from './AddChronicModal';
 
 const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedSymptom, setSelectedSymptom] = useState('');
-
+  const [symptomName, setSymptomName] = useState('');
   const [severity, setSeverity] = useState(5);
   const [notes, setNotes] = useState('');
+  const [occurredAt, setOccurredAt] = useState(new Date().toISOString());
   const [showSuccess, setShowSuccess] = useState(false);
   const [customSymptoms, setCustomSymptoms] = useState([]);
   const [refreshQuickLog, setRefreshQuickLog] = useState(0);
@@ -986,6 +989,7 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
       category: symptomData?.category || 'Other',
       severity,
       notes: notes.trim(),
+      occurredAt: occurredAt,
       isCustomSymptom: symptomData?.isCustom || false,
       // PHASE 1A: Universal fields
       isFlareUp,
@@ -1080,11 +1084,13 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
       });
     }
 
-    // Reset form
+    // Reset form after successful save
     setSelectedCategory('');
     setSelectedSymptom('');
+    setSymptomName('');
     setSeverity(5);
     setNotes('');
+    setOccurredAt(new Date().toISOString());
     setTookMedication(false);
     setSelectedMedications([]);
     // Reset universal fields
@@ -5356,6 +5362,15 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
                       rows={3}
                       className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500" />
             <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Detailed notes help build stronger claims</p>
+          </div>
+
+          {/* Occurrence Time Picker */}
+          <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
+            <OccurrenceTimePicker
+                value={occurredAt}
+                onChange={setOccurredAt}
+                label="When did this occur?"
+            />
           </div>
 
           {/* Submit Button */}

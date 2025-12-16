@@ -1,5 +1,7 @@
-import { useState, useEffect } from 'react';
-import { getSymptomLogs, deleteSymptomLog, getMedicationLogsForSymptom } from '../utils/storage';
+import { useRef, useState, useEffect } from 'react';
+import { Calendar, Clock, Edit2, Trash2, ChevronDown, ChevronUp, Filter, History } from 'lucide-react';
+import { getSymptomLogs, deleteSymptomLog, getMedicationLogsForSymptom, getOccurrenceTime, isBackDated } from '../utils/storage';
+import { useProfile } from '../hooks/useProfile';
 import EditLogModal from './EditLogModal';
 import AppointmentForm from './AppointmentForm';
 import AppointmentHistory from './AppointmentHistory';
@@ -205,7 +207,19 @@ const SymptomHistory = ({ onCopyLog }) => {
                               <div className="flex flex-wrap items-center gap-1 text-xs text-gray-500 dark:text-gray-400 mb-2">
                                 <span>{log.category}</span>
                                 <span>•</span>
-                                <span>{formatDate(log.timestamp)}</span>
+                                <span>{formatDate(getOccurrenceTime(log))}</span>
+
+                                {/* Back-dated indicator */}
+                                {isBackDated(log) && (
+                                    <span
+                                        className="inline-flex items-center gap-1 px-2 py-0.5 bg-amber-100 dark:bg-amber-900/30 text-amber-800 dark:text-amber-300 text-xs rounded-full cursor-help ml-1"
+                                        title={`Occurred: ${formatDate(log.occurredAt)}\nLogged: ${formatDate(log.timestamp)}`}
+                                    >
+                                    <History className="w-3 h-3" />
+                                    Back-dated
+                                  </span>
+                                )}
+
                                 {/* PHASE 1A: Duration */}
                                 {log.duration && (
                                     <>
