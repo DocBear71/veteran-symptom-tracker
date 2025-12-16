@@ -367,6 +367,387 @@ const SymptomHistory = ({ onCopyLog }) => {
                                   </div>
                               )}
 
+                              {/* Phase 1E: Seizure Details */}
+                              {log.seizureData && (
+                                  <div className="bg-yellow-50 dark:bg-yellow-900/30 rounded-lg p-3 mb-2 text-sm">
+                                    <div className="flex items-center gap-2 mb-2">
+                                      <span className="text-yellow-600 dark:text-yellow-400">⚡</span>
+                                      <span className="font-semibold text-yellow-800 dark:text-yellow-200">Seizure Details</span>
+                                    </div>
+                                    {log.seizureData.seizureType && (
+                                        <p className="text-xs text-yellow-700 dark:text-yellow-300 mb-1">
+                                          Type: <span className="font-medium">{log.seizureData.seizureType}</span>
+                                        </p>
+                                    )}
+                                    <div className="flex flex-wrap gap-2 mb-1">
+                                      {log.seizureData.durationSeconds && (
+                                          <span className="px-2 py-1 bg-yellow-200 dark:bg-yellow-800 text-yellow-800 dark:text-yellow-200 rounded-full text-xs">
+                                            Duration: {log.seizureData.durationSeconds}s
+                                          </span>
+                                      )}
+                                      {log.seizureData.lossOfConsciousness && (
+                                          <span className="px-2 py-1 bg-red-200 dark:bg-red-900 text-red-800 dark:text-red-200 rounded-full text-xs font-semibold">
+                                            Loss of Consciousness
+                                          </span>
+                                      )}
+                                      {log.seizureData.auraPresent && (
+                                          <span className="px-2 py-1 bg-yellow-200 dark:bg-yellow-800 text-yellow-800 dark:text-yellow-200 rounded-full text-xs">
+                                            Aura Present
+                                          </span>
+                                      )}
+                                      {log.seizureData.witnessPresent && (
+                                          <span className="px-2 py-1 bg-green-200 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-full text-xs">
+                                            Witnessed
+                                          </span>
+                                      )}
+                                    </div>
+                                    {log.seizureData.recoveryTime && (
+                                        <p className="text-xs text-yellow-700 dark:text-yellow-300">
+                                          Recovery: {log.seizureData.recoveryTime}
+                                        </p>
+                                    )}
+                                  </div>
+                              )}
+
+                              {/* Phase 2: Eye/Vision Details */}
+                              {log.eyeData && (
+                                  <div className="bg-blue-50 dark:bg-blue-900/30 rounded-lg p-3 mb-2 text-sm">
+                                    <div className="flex items-center gap-2 mb-2">
+                                      <span className="text-blue-600 dark:text-blue-400">👁️</span>
+                                      <span className="font-semibold text-blue-800 dark:text-blue-200">Vision Details</span>
+                                    </div>
+                                    {log.eyeData.affectedEye && (
+                                        <p className="text-xs text-blue-700 dark:text-blue-300 mb-1">
+                                          Affected Eye: <span className="font-medium">{log.eyeData.affectedEye}</span>
+                                        </p>
+                                    )}
+                                    <div className="flex flex-wrap gap-2 mb-1">
+                                      {log.eyeData.leftEyeAcuity && (
+                                          <span className="px-2 py-1 bg-blue-200 dark:bg-blue-800 text-blue-800 dark:text-blue-200 rounded-full text-xs">
+                                            Left: {log.eyeData.leftEyeAcuity}
+                                          </span>
+                                      )}
+                                      {log.eyeData.rightEyeAcuity && (
+                                          <span className="px-2 py-1 bg-blue-200 dark:bg-blue-800 text-blue-800 dark:text-blue-200 rounded-full text-xs">
+                                            Right: {log.eyeData.rightEyeAcuity}
+                                          </span>
+                                      )}
+                                    </div>
+                                    {log.eyeData.symptoms?.length > 0 && (
+                                        <p className="text-xs text-blue-700 dark:text-blue-300 mb-1">
+                                          Symptoms: {log.eyeData.symptoms.join(', ')}
+                                        </p>
+                                    )}
+                                    {log.eyeData.fieldOfVision && (
+                                        <p className="text-xs text-blue-700 dark:text-blue-300 mb-1">
+                                          Field of Vision: {log.eyeData.fieldOfVision}
+                                        </p>
+                                    )}
+                                    {log.eyeData.affectedActivities?.length > 0 && (
+                                        <p className="text-xs text-blue-700 dark:text-blue-300">
+                                          Affects: {log.eyeData.affectedActivities.join(', ')}
+                                        </p>
+                                    )}
+                                  </div>
+                              )}
+
+                              {/* Phase 3: Genitourinary Details */}
+                              {log.genitourinaryData && (
+                                  <div className="bg-teal-50 dark:bg-teal-900/30 rounded-lg p-3 mb-2 text-sm">
+                                    <div className="flex items-center gap-2 mb-2">
+                                      <span className="text-teal-600 dark:text-teal-400">🫘</span>
+                                      <span className="font-semibold text-teal-800 dark:text-teal-200">Genitourinary Details</span>
+                                    </div>
+                                    {log.genitourinaryData.system && (
+                                        <p className="text-xs text-teal-700 dark:text-teal-300 mb-1">
+                                          System: <span className="font-medium">{log.genitourinaryData.system}</span>
+                                        </p>
+                                    )}
+                                    <div className="flex flex-wrap gap-2 mb-1">
+                                      {log.genitourinaryData.stoneEpisode && (
+                                          <span className="px-2 py-1 bg-red-200 dark:bg-red-900 text-red-800 dark:text-red-200 rounded-full text-xs font-semibold">
+                                            Stone Episode
+                                          </span>
+                                      )}
+                                      {log.genitourinaryData.stonePassed && (
+                                          <span className="px-2 py-1 bg-green-200 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-full text-xs">
+                                            Stone Passed
+                                          </span>
+                                      )}
+                                      {log.genitourinaryData.procedure && (
+                                          <span className="px-2 py-1 bg-orange-200 dark:bg-orange-900 text-orange-800 dark:text-orange-200 rounded-full text-xs">
+                                            Procedure: {log.genitourinaryData.procedure}
+                                          </span>
+                                      )}
+                                    </div>
+                                    {log.genitourinaryData.urinaryFrequency && (
+                                        <p className="text-xs text-teal-700 dark:text-teal-300 mb-1">
+                                          Frequency: {log.genitourinaryData.urinaryFrequency}x/day
+                                        </p>
+                                    )}
+                                    {log.genitourinaryData.nocturiaCount && (
+                                        <p className="text-xs text-teal-700 dark:text-teal-300 mb-1">
+                                          Nocturia: {log.genitourinaryData.nocturiaCount}x/night
+                                        </p>
+                                    )}
+                                    {log.genitourinaryData.incontinenceEpisode && (
+                                        <span className="px-2 py-1 bg-red-200 dark:bg-red-900 text-red-800 dark:text-red-200 rounded-full text-xs font-semibold">
+                                          Incontinence Episode
+                                        </span>
+                                    )}
+                                    {log.genitourinaryData.erectileDysfunction && (
+                                        <p className="text-xs text-teal-700 dark:text-teal-300 mt-1">
+                                          ED Severity: {log.genitourinaryData.edSeverity}
+                                        </p>
+                                    )}
+                                  </div>
+                              )}
+
+                              {/* Phase 4: Gynecological Details */}
+                              {log.gynecologicalData && (
+                                  <div className="bg-pink-50 dark:bg-pink-900/30 rounded-lg p-3 mb-2 text-sm">
+                                    <div className="flex items-center gap-2 mb-2">
+                                      <span className="text-pink-600 dark:text-pink-400">🌸</span>
+                                      <span className="font-semibold text-pink-800 dark:text-pink-200">Gynecological Details</span>
+                                    </div>
+                                    {log.gynecologicalData.affectedOrgan && (
+                                        <p className="text-xs text-pink-700 dark:text-pink-300 mb-1">
+                                          Organ: <span className="font-medium">{log.gynecologicalData.affectedOrgan}</span>
+                                        </p>
+                                    )}
+                                    {log.gynecologicalData.painType && (
+                                        <p className="text-xs text-pink-700 dark:text-pink-300 mb-1">
+                                          Pain Type: {log.gynecologicalData.painType}
+                                        </p>
+                                    )}
+                                    <div className="flex flex-wrap gap-2 mb-1">
+                                      {log.gynecologicalData.endometriosisDiagnosed && (
+                                          <span className="px-2 py-1 bg-red-200 dark:bg-red-900 text-red-800 dark:text-red-200 rounded-full text-xs font-semibold">
+                                            Endometriosis
+                                          </span>
+                                      )}
+                                      {log.gynecologicalData.pcosDiagnosed && (
+                                          <span className="px-2 py-1 bg-purple-200 dark:bg-purple-900 text-purple-800 dark:text-purple-200 rounded-full text-xs">
+                                            PCOS
+                                          </span>
+                                      )}
+                                      {log.gynecologicalData.pidDiagnosed && (
+                                          <span className="px-2 py-1 bg-orange-200 dark:bg-orange-900 text-orange-800 dark:text-orange-200 rounded-full text-xs">
+                                            PID
+                                          </span>
+                                      )}
+                                      {log.gynecologicalData.prolapseDiagnosed && (
+                                          <span className="px-2 py-1 bg-yellow-200 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 rounded-full text-xs">
+                                            Prolapse
+                                          </span>
+                                      )}
+                                    </div>
+                                    {log.gynecologicalData.cycleRegularity && (
+                                        <p className="text-xs text-pink-700 dark:text-pink-300 mb-1">
+                                          Cycle: {log.gynecologicalData.cycleRegularity}
+                                        </p>
+                                    )}
+                                    {log.gynecologicalData.flowHeaviness && (
+                                        <p className="text-xs text-pink-700 dark:text-pink-300 mb-1">
+                                          Flow: {log.gynecologicalData.flowHeaviness}
+                                        </p>
+                                    )}
+                                    {log.gynecologicalData.dysmenorrheaSeverity && (
+                                        <p className="text-xs text-pink-700 dark:text-pink-300">
+                                          Dysmenorrhea: {log.gynecologicalData.dysmenorrheaSeverity}
+                                        </p>
+                                    )}
+                                  </div>
+                              )}
+
+                              {/* Phase 5: Anemia Details */}
+                              {log.anemiaData && (
+                                  <div className="bg-red-50 dark:bg-red-900/30 rounded-lg p-3 mb-2 text-sm">
+                                    <div className="flex items-center gap-2 mb-2">
+                                      <span className="text-red-600 dark:text-red-400">🩸</span>
+                                      <span className="font-semibold text-red-800 dark:text-red-200">Anemia Details</span>
+                                    </div>
+                                    {log.anemiaData.anemia_type && (
+                                        <p className="text-xs text-red-700 dark:text-red-300 mb-1">
+                                          Type: <span className="font-medium">{log.anemiaData.anemia_type}</span>
+                                        </p>
+                                    )}
+                                    {log.anemiaData.treatment?.length > 0 && (
+                                        <p className="text-xs text-red-700 dark:text-red-300 mb-1">
+                                          Treatment: {log.anemiaData.treatment.join(', ')}
+                                        </p>
+                                    )}
+                                    {log.anemiaData.neurological_symptoms?.length > 0 && (
+                                        <p className="text-xs text-red-700 dark:text-red-300">
+                                          Neurological: {log.anemiaData.neurological_symptoms.join(', ')}
+                                        </p>
+                                    )}
+                                  </div>
+                              )}
+
+                              {/* Phase 5: Sickle Cell Details */}
+                              {log.sickleCellData && (
+                                  <div className="bg-purple-50 dark:bg-purple-900/30 rounded-lg p-3 mb-2 text-sm">
+                                    <div className="flex items-center gap-2 mb-2">
+                                      <span className="text-purple-600 dark:text-purple-400">🌙</span>
+                                      <span className="font-semibold text-purple-800 dark:text-purple-200">Sickle Cell Crisis</span>
+                                    </div>
+                                    {log.sickleCellData.crisis_type && (
+                                        <p className="text-xs text-purple-700 dark:text-purple-300 mb-1">
+                                          Type: <span className="font-medium">{log.sickleCellData.crisis_type}</span>
+                                        </p>
+                                    )}
+                                    {log.sickleCellData.crisis_location?.length > 0 && (
+                                        <p className="text-xs text-purple-700 dark:text-purple-300 mb-1">
+                                          Location: {log.sickleCellData.crisis_location.join(', ')}
+                                        </p>
+                                    )}
+                                    {log.sickleCellData.hospitalization_required && (
+                                        <span className="px-2 py-1 bg-red-200 dark:bg-red-900 text-red-800 dark:text-red-200 rounded-full text-xs font-semibold">
+                                          🏥 Hospitalization Required
+                                        </span>
+                                    )}
+                                    {log.sickleCellData.organ_damage?.length > 0 && (
+                                        <p className="text-xs text-purple-700 dark:text-purple-300 mt-1">
+                                          Organ Damage: {log.sickleCellData.organ_damage.join(', ')}
+                                        </p>
+                                    )}
+                                  </div>
+                              )}
+
+                              {/* Phase 5: Bleeding Disorder Details */}
+                              {log.bleedingDisorderData && (
+                                  <div className="bg-pink-50 dark:bg-pink-900/30 rounded-lg p-3 mb-2 text-sm">
+                                    <div className="flex items-center gap-2 mb-2">
+                                      <span className="text-pink-600 dark:text-pink-400">🩹</span>
+                                      <span className="font-semibold text-pink-800 dark:text-pink-200">Bleeding Disorder</span>
+                                    </div>
+                                    {log.bleedingDisorderData.disorder_type && (
+                                        <p className="text-xs text-pink-700 dark:text-pink-300 mb-1">
+                                          Type: <span className="font-medium">{log.bleedingDisorderData.disorder_type}</span>
+                                        </p>
+                                    )}
+                                    {log.bleedingDisorderData.platelet_count && (
+                                        <p className="text-xs text-pink-700 dark:text-pink-300 mb-1">
+                                          Platelet Count: {log.bleedingDisorderData.platelet_count}/μL
+                                        </p>
+                                    )}
+                                    {log.bleedingDisorderData.bleeding_site?.length > 0 && (
+                                        <p className="text-xs text-pink-700 dark:text-pink-300 mb-1">
+                                          Bleeding Sites: {log.bleedingDisorderData.bleeding_site.join(', ')}
+                                        </p>
+                                    )}
+                                    {log.bleedingDisorderData.treatment?.length > 0 && (
+                                        <p className="text-xs text-pink-700 dark:text-pink-300">
+                                          Treatment: {log.bleedingDisorderData.treatment.join(', ')}
+                                        </p>
+                                    )}
+                                  </div>
+                              )}
+
+                              {/* Phase 5: Polycythemia Details */}
+                              {log.polycythemiaData && (
+                                  <div className="bg-orange-50 dark:bg-orange-900/30 rounded-lg p-3 mb-2 text-sm">
+                                    <div className="flex items-center gap-2 mb-2">
+                                      <span className="text-orange-600 dark:text-orange-400">🔬</span>
+                                      <span className="font-semibold text-orange-800 dark:text-orange-200">Polycythemia Vera</span>
+                                    </div>
+                                    {log.polycythemiaData.diagnosis && (
+                                        <p className="text-xs text-orange-700 dark:text-orange-300 mb-1">
+                                          Diagnosis: <span className="font-medium">{log.polycythemiaData.diagnosis}</span>
+                                        </p>
+                                    )}
+                                    {log.polycythemiaData.medications?.length > 0 && (
+                                        <p className="text-xs text-orange-700 dark:text-orange-300">
+                                          Treatment: {log.polycythemiaData.medications.join(', ')}
+                                        </p>
+                                    )}
+                                  </div>
+                              )}
+
+                              {/* Phase 5: Lymphoma/Leukemia Details */}
+                              {log.lymphomaLeukemiaData && (
+                                  <div className="bg-indigo-50 dark:bg-indigo-900/30 rounded-lg p-3 mb-2 text-sm">
+                                    <div className="flex items-center gap-2 mb-2">
+                                      <span className="text-indigo-600 dark:text-indigo-400">🧬</span>
+                                      <span className="font-semibold text-indigo-800 dark:text-indigo-200">Lymphoma/Leukemia</span>
+                                    </div>
+                                    {log.lymphomaLeukemiaData.diagnosis && (
+                                        <p className="text-xs text-indigo-700 dark:text-indigo-300 mb-1">
+                                          Diagnosis: <span className="font-medium">{log.lymphomaLeukemiaData.diagnosis}</span>
+                                        </p>
+                                    )}
+                                    {log.lymphomaLeukemiaData.treatment_status && (
+                                        <p className="text-xs text-indigo-700 dark:text-indigo-300 mb-1">
+                                          Status: {log.lymphomaLeukemiaData.treatment_status}
+                                        </p>
+                                    )}
+                                    {log.lymphomaLeukemiaData.treatment_type?.length > 0 && (
+                                        <p className="text-xs text-indigo-700 dark:text-indigo-300 mb-1">
+                                          Treatment: {log.lymphomaLeukemiaData.treatment_type.join(', ')}
+                                        </p>
+                                    )}
+                                    {log.lymphomaLeukemiaData.side_effects?.length > 0 && (
+                                        <p className="text-xs text-indigo-700 dark:text-indigo-300">
+                                          Side Effects: {log.lymphomaLeukemiaData.side_effects.join(', ')}
+                                        </p>
+                                    )}
+                                  </div>
+                              )}
+
+                              {/* Joint & ROM Details */}
+                              {log.jointData && (
+                                  <div className="bg-indigo-50 dark:bg-indigo-900/30 rounded-lg p-3 mb-2 text-sm">
+                                    <div className="flex items-center gap-2 mb-2">
+                                      <span className="text-indigo-600 dark:text-indigo-400">🦴</span>
+                                      <span className="font-semibold text-indigo-800 dark:text-indigo-200">Joint & ROM Details</span>
+                                    </div>
+                                    <div className="flex flex-wrap gap-2 mb-2">
+                                      {log.jointData.joint && (
+                                          <span className="px-2 py-1 bg-indigo-200 dark:bg-indigo-800 text-indigo-800 dark:text-indigo-200 rounded-full text-xs font-medium">
+                                            {log.jointData.joint} {log.jointData.side && `- ${log.jointData.side}`}
+                                          </span>
+                                      )}
+                                      {log.jointData.romEstimate && (
+                                          <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                                              log.jointData.romEstimate === 'full' ? 'bg-green-200 dark:bg-green-900 text-green-800 dark:text-green-200' :
+                                                  log.jointData.romEstimate === 'moderate' ? 'bg-yellow-200 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200' :
+                                                      'bg-red-200 dark:bg-red-900 text-red-800 dark:text-red-200'
+                                          }`}>
+                                            ROM: {log.jointData.romEstimate}
+                                          </span>
+                                      )}
+                                      {log.jointData.morningStiffness && (
+                                          <span className="px-2 py-1 bg-orange-200 dark:bg-orange-900 text-orange-800 dark:text-orange-200 rounded-full text-xs">
+                                            🌅 Stiffness: {log.jointData.morningStiffness}
+                                          </span>
+                                      )}
+                                    </div>
+                                    <div className="flex flex-wrap gap-2">
+                                      {log.jointData.swelling && (
+                                          <span className="px-2 py-1 bg-blue-200 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-xs">
+                                            Swelling
+                                          </span>
+                                      )}
+                                      {log.jointData.instability && (
+                                          <span className="px-2 py-1 bg-red-200 dark:bg-red-900 text-red-800 dark:text-red-200 rounded-full text-xs">
+                                            Instability
+                                          </span>
+                                      )}
+                                      {log.jointData.locking && (
+                                          <span className="px-2 py-1 bg-purple-200 dark:bg-purple-900 text-purple-800 dark:text-purple-200 rounded-full text-xs">
+                                            Locking
+                                          </span>
+                                      )}
+                                      {log.jointData.grinding && (
+                                          <span className="px-2 py-1 bg-amber-200 dark:bg-amber-900 text-amber-800 dark:text-amber-200 rounded-full text-xs">
+                                            Grinding
+                                          </span>
+                                      )}
+                                    </div>
+                                  </div>
+                              )}
+
                               {/* Pain Details */}
                               {log.painData && (
                                   <div className="bg-rose-50 dark:bg-rose-900/30 rounded-lg p-3 mb-2 text-sm">

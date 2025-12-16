@@ -73,6 +73,22 @@ import {
     analyzeFemaleReproductiveOrgansLogs,
     analyzePelvicProlapseLogs,
     analyzeFemaleArousalDisorderLogs,
+    analyzeIronDeficiencyAnemiaLogs,
+    analyzeFolateDeficiencyAnemiaLogs,
+    analyzePerniciousAnemiaLogs,
+    analyzeHemolyticAnemiaLogs,
+    analyzeSickleCellAnemiaLogs,
+    analyzeAplasticAnemiaLogs,
+    analyzePolycythemiaVeraLogs,
+    analyzeImmuneThrombocytopeniaLogs,
+    analyzeLeukemiaLogs,
+    analyzeHodgkinsLymphomaLogs,
+    analyzeMultipleMyelomaLogs,
+    analyzeNonHodgkinsLymphomaLogs,
+    analyzeMyeloproliferative7718Logs,
+    analyzeChronicMyelogenousLeukemiaLogs,
+    analyzeSolitaryPlasmacytomaLogs,
+    analyzeMyelodysplasticSyndromesLogs,
 } from './ratingCriteria';
 
 // Appointment type labels for export
@@ -390,12 +406,12 @@ export const generatePDF = (dateRange = 'all', options = { includeAppointments: 
           // Affected organ
           if (gd.affectedOrgan) {
             const organMap = {
-              'vulva': 'Vulva/Clitoris (DC 7610)',
-              'vagina': 'Vagina (DC 7611)',
-              'cervix': 'Cervix (DC 7612)',
-              'uterus': 'Uterus (DC 7613)',
-              'fallopian-tube': 'Fallopian Tube (DC 7614)',
-              'ovary': 'Ovary (DC 7615)',
+              'vulva': 'Vulva/Clitoris',
+              'vagina': 'Vagina',
+              'cervix': 'Cervix',
+              'uterus': 'Uterus',
+              'fallopian-tube': 'Fallopian Tube',
+              'ovary': 'Ovary',
               'multiple': 'Multiple Organs'
             };
             gyneInfo.push(organMap[gd.affectedOrgan] || gd.affectedOrgan);
@@ -415,7 +431,7 @@ export const generatePDF = (dateRange = 'all', options = { includeAppointments: 
 
           // Endometriosis
           if (gd.endometriosisDiagnosed) {
-            gyneInfo.push('Endometriosis (DC 7629)');
+            gyneInfo.push('Endometriosis');
             if (gd.laparoscopyConfirmed) gyneInfo.push('Laparoscopy confirmed');
             if (gd.lesionLocations && gd.lesionLocations.length > 0) {
               gyneInfo.push(`Lesions: ${gd.lesionLocations.join(', ')}`);
@@ -435,25 +451,25 @@ export const generatePDF = (dateRange = 'all', options = { includeAppointments: 
           if (gd.dysmenorrheaSeverity && gd.dysmenorrheaSeverity !== 'none') {
             gyneInfo.push(`Dysmenorrhea: ${gd.dysmenorrheaSeverity}`);
           }
-          if (gd.pcosDiagnosed) gyneInfo.push('PCOS (DC 7615)');
+          if (gd.pcosDiagnosed) gyneInfo.push('PCOS');
 
           // PID
           if (gd.pidDiagnosed) {
-            gyneInfo.push('PID (DC 7614)');
+            gyneInfo.push('PID');
             if (gd.pidType) gyneInfo.push(`Type: ${gd.pidType}`);
             if (gd.recurrentInfections) gyneInfo.push('Recurrent infections');
           }
 
           // Prolapse
           if (gd.prolapseDiagnosed) {
-            gyneInfo.push('Pelvic Prolapse (DC 7621)');
+            gyneInfo.push('Pelvic Prolapse');
             if (gd.prolapseType) gyneInfo.push(`Type: ${gd.prolapseType}`);
             if (gd.popStage) gyneInfo.push(`Stage: ${gd.popStage}`);
           }
 
           // Sexual function
           if (gd.sexualDysfunction || gd.arousalDifficulty || gd.libidoDecreased) {
-            gyneInfo.push('FSAD (DC 7632)');
+            gyneInfo.push('FSAD');
           }
 
           // Treatment/Impact
@@ -616,6 +632,12 @@ export const generateCSV = (dateRange = 'all', options = { includeAppointments: 
         'Treatment Effectiveness', 'Cycle Regularity', 'Flow Heaviness', 'Dysmenorrhea Severity',
         'PCOS Diagnosed', 'PID Diagnosed', 'Prolapse Diagnosed', 'Prolapse Type', 'POP-Q Stage',
         'Continuous Treatment Required', 'Gyne Work Missed',
+        // Phase 5: Hemic/Lymphatic fields
+        'Anemia Type', 'IV Infusion', 'Oral Supplementation', 'B12 Injection', 'Neurological Symptoms',
+        'Bleeding Disorder Type', 'Platelet Count', 'Bleeding Site', 'Bleeding Treatment',
+        'Polycythemia Diagnosis', 'Phlebotomy', 'Myelosuppressive Meds', 'JAK Inhibitor',
+        'Lymphoma/Leukemia Diagnosis', 'Cancer Treatment Status', 'Cancer Treatment Type', 'Treatment Side Effects',
+        'Sickle Cell Crisis', 'Crisis Location', 'Hospitalization Required', 'Organ Damage',
         'Notes'
       ];
 
@@ -743,6 +765,28 @@ export const generateCSV = (dateRange = 'all', options = { includeAppointments: 
             log.gynecologicalData?.popStage || '',
             log.gynecologicalData?.continuousTreatmentRequired ? 'Yes' : '',
             log.gynecologicalData?.workMissed ? 'Yes' : '',
+            // Phase 5: Hemic/Lymphatic data
+            log.anemiaData?.['anemia_type'] || '',
+            log.anemiaData?.treatment?.includes('iv-infusion') ? 'Yes' : '',
+            log.anemiaData?.treatment?.includes('oral-supplements') ? 'Yes' : '',
+            log.anemiaData?.treatment?.includes('b12-injection') ? 'Yes' : '',
+            log.anemiaData?.['neurological_symptoms']?.join(', ') || '',
+            log.bleedingDisorderData?.['disorder_type'] || '',
+            log.bleedingDisorderData?.['platelet_count'] || '',
+            log.bleedingDisorderData?.['bleeding_site']?.join(', ') || '',
+            log.bleedingDisorderData?.treatment?.join(', ') || '',
+            log.polycythemiaData?.diagnosis || '',
+            log.polycythemiaData?.medications?.includes('phlebotomy') ? 'Yes' : '',
+            log.polycythemiaData?.medications?.filter(m => m.includes('continuous')).join(', ') || '',
+            log.polycythemiaData?.medications?.includes('jakafi-continuous') ? 'Yes' : '',
+            log.lymphomaLeukemiaData?.diagnosis || '',
+            log.lymphomaLeukemiaData?.['treatment_status'] || '',
+            log.lymphomaLeukemiaData?.['treatment_type']?.join(', ') || '',
+            log.lymphomaLeukemiaData?.['side_effects']?.join(', ') || '',
+            log.sickleCellData?.['crisis_type'] || '',
+            log.sickleCellData?.['crisis_location']?.join(', ') || '',
+            log.sickleCellData?.['hospitalization_required'] === true ? 'Yes' : '',
+            log.sickleCellData?.['organ_damage']?.join(', ') || '',
             log.notes || ''
           ];
         });
@@ -1128,6 +1172,23 @@ const analyzeAllConditions = (logs, options = {}) => {
         'ovary-disease': analyzeFemaleReproductiveOrgansLogs,
         'pelvic-prolapse': analyzePelvicProlapseLogs,
         'female-sexual-arousal-disorder': analyzeFemaleArousalDisorderLogs,
+        // Phase 5: Hemic/Lymphatic
+        'iron-deficiency-anemia': analyzeIronDeficiencyAnemiaLogs,
+        'folate-deficiency-anemia': analyzeFolateDeficiencyAnemiaLogs,
+        'pernicious-anemia': analyzePerniciousAnemiaLogs,
+        'hemolytic-anemia': analyzeHemolyticAnemiaLogs,
+        'sickle-cell-anemia': analyzeSickleCellAnemiaLogs,
+        'aplastic-anemia': analyzeAplasticAnemiaLogs,
+        'polycythemia-vera': analyzePolycythemiaVeraLogs,
+        'immune-thrombocytopenia': analyzeImmuneThrombocytopeniaLogs,
+        'leukemia': analyzeLeukemiaLogs,
+        'hodgkins-lymphoma': analyzeHodgkinsLymphomaLogs,
+        'multiple-myeloma': analyzeMultipleMyelomaLogs,
+        'non-hodgkins-lymphoma': analyzeNonHodgkinsLymphomaLogs,
+        'essential-thrombocythemia': analyzeMyeloproliferative7718Logs,
+        'chronic-myelogenous-leukemia': analyzeChronicMyelogenousLeukemiaLogs,
+        'solitary-plasmacytoma': analyzeSolitaryPlasmacytomaLogs,
+        'myelodysplastic-syndromes': analyzeMyelodysplasticSyndromesLogs,
       };
 
     const analyses = [];

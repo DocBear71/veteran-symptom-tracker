@@ -62,6 +62,26 @@ import {
   analyzeVoidingDysfunctionLogs,
   analyzeSphincterImpairmentLogs,
   analyzeErectileDysfunctionLogs,
+  analyzeEndometriosisLogs,
+  analyzeFemaleReproductiveOrgansLogs,
+  analyzePelvicProlapseLogs,
+  analyzeFemaleArousalDisorderLogs,
+  analyzeIronDeficiencyAnemiaLogs,
+  analyzeFolateDeficiencyAnemiaLogs,
+  analyzePerniciousAnemiaLogs,
+  analyzeHemolyticAnemiaLogs,
+  analyzeSickleCellAnemiaLogs,
+  analyzeAplasticAnemiaLogs,
+  analyzePolycythemiaVeraLogs,
+  analyzeImmuneThrombocytopeniaLogs,
+  analyzeLeukemiaLogs,
+  analyzeHodgkinsLymphomaLogs,
+  analyzeMultipleMyelomaLogs,
+  analyzeNonHodgkinsLymphomaLogs,
+  analyzeMyeloproliferative7718Logs,
+  analyzeChronicMyelogenousLeukemiaLogs,
+  analyzeSolitaryPlasmacytomaLogs,
+  analyzeMyelodysplasticSyndromesLogs,
   getAllMigraineRatings,
   getAllSleepApneaRatings,
   getAllPTSDRatings,
@@ -92,10 +112,8 @@ import {
   getAdjustmentDisorderDefinition,
   getUnspecifiedAnxietyDefinition,
   getUnspecifiedDepressiveDefinition,
+  getRatingColorClass,
   formatRating,
-  getRatingColorClass, analyzeEndometriosisLogs,
-  analyzeFemaleReproductiveOrgansLogs, analyzePelvicProlapseLogs,
-  analyzeFemaleArousalDisorderLogs,
 } from '../utils/ratingCriteria';
 import HypertensionRatingCard from './HypertensionRatingCard';
 import BloodPressureTrendChart from './BloodPressureTrendChart';
@@ -136,8 +154,22 @@ import EndometriosisRatingCard from './EndometriosisRatingCard';
 import FemaleReproductiveOrgansRatingCard from './FemaleReproductiveOrgansRatingCard';
 import PelvicProlapseRatingCard from './PelvicProlapseRatingCard';
 import FemaleArousalDisorderRatingCard from './FemaleArousalDisorderRatingCard';
-
-// Storage key for sleep apnea profile
+import IronDeficiencyAnemiaRatingCard from './IronDeficiencyAnemiaRatingCard';
+import FolateDeficiencyAnemiaRatingCard from './FolateDeficiencyAnemiaRatingCard';
+import PerniciousAnemiaRatingCard from './PerniciousAnemiaRatingCard';
+import HemolyticAnemiaRatingCard from './HemolyticAnemiaRatingCard';
+import SickleCellAnemiaRatingCard from './SickleCellAnemiaRatingCard';
+import AplasticAnemiaRatingCard from './AplasticAnemiaRatingCard';
+import PolycythemiaVeraRatingCard from './PolycythemiaVeraRatingCard';
+import ImmuneThrombocytopeniaRatingCard from './ImmuneThrombocytopeniaRatingCard';
+import LeukemiaRatingCard from './LeukemiaRatingCard';
+import HodgkinsLymphomaRatingCard from './HodgkinsLymphomaRatingCard';
+import MultipleMyelomaRatingCard from './MultipleMyelomaRatingCard';
+import NonHodgkinsLymphomaRatingCard from './NonHodgkinsLymphomaRatingCard';
+import EssentialThrombocythemiaRatingCard from './EssentialThrombocythemiaRatingCard';
+import ChronicMyelogenousLeukemiaRatingCard from './ChronicMyelogenousLeukemiaRatingCard';
+import SolitaryPlasmacytomaRatingCard from './SolitaryPlasmacytomaRatingCard';
+import MyelodysplasticSyndromesRatingCard from './MyelodysplasticSyndromesRatingCard';
 
 // Storage key for sleep apnea profile
 const SLEEP_APNEA_PROFILE_KEY = 'symptomTracker_sleepApneaProfile';
@@ -405,6 +437,55 @@ const RatingEvidence = () => {
     const femaleArousalDisorderAnalysis = useMemo(() => {
         return analyzeFemaleArousalDisorderLogs(logs);
     }, [logs]);
+    // Phase 5: Hemic/Lymphatic Analysis Hooks
+    const ironDeficiencyAnemiaAnalysis = useMemo(() => {
+      return analyzeIronDeficiencyAnemiaLogs(logs);
+    }, [logs]);
+    const folateDeficiencyAnemiaAnalysis = useMemo(() => {
+      return analyzeFolateDeficiencyAnemiaLogs(logs);
+    }, [logs]);
+    const perniciousAnemiaAnalysis = useMemo(() => {
+      return analyzePerniciousAnemiaLogs(logs);
+    }, [logs]);
+    const hemolyticAnemiaAnalysis = useMemo(() => {
+      return analyzeHemolyticAnemiaLogs(logs);
+    }, [logs]);
+    const sickleCellAnemiaAnalysis = useMemo(() => {
+      return analyzeSickleCellAnemiaLogs(logs);
+    }, [logs]);
+    const aplasticAnemiaAnalysis = useMemo(() => {
+      return analyzeAplasticAnemiaLogs(logs);
+    }, [logs]);
+    const polycythemiaVeraAnalysis = useMemo(() => {
+      return analyzePolycythemiaVeraLogs(logs);
+    }, [logs]);
+    const immuneThrombocytopeniaAnalysis = useMemo(() => {
+      return analyzeImmuneThrombocytopeniaLogs(logs);
+    }, [logs]);
+    const leukemiaAnalysis = useMemo(() => {
+      return analyzeLeukemiaLogs(logs);
+    }, [logs]);
+    const hodgkinsLymphomaAnalysis = useMemo(() => {
+      return analyzeHodgkinsLymphomaLogs(logs);
+    }, [logs]);
+    const multipleMyelomaAnalysis = useMemo(() => {
+      return analyzeMultipleMyelomaLogs(logs);
+    }, [logs]);
+    const nonHodgkinsLymphomaAnalysis = useMemo(() => {
+      return analyzeNonHodgkinsLymphomaLogs(logs);
+    }, [logs]);
+    const myeloproliferative7718Analysis = useMemo(() => {
+      return analyzeMyeloproliferative7718Logs(logs);
+    }, [logs]);
+    const chronicMyelogenousLeukemiaAnalysis = useMemo(() => {
+      return analyzeChronicMyelogenousLeukemiaLogs(logs);
+    }, [logs]);
+    const solitaryPlasmacytomaAnalysis = useMemo(() => {
+      return analyzeSolitaryPlasmacytomaLogs(logs);
+    }, [logs]);
+    const myelodysplasticSyndromesAnalysis = useMemo(() => {
+      return analyzeMyelodysplasticSyndromesLogs(logs);
+    }, [logs]);
 
     // Toggle section expansion
     const toggleSection = (section) => {
@@ -476,7 +557,24 @@ const RatingEvidence = () => {
         endometriosisAnalysis.hasData ||
         femaleReproductiveOrgansAnalysis.hasData ||
         pelvicProlapseAnalysis.hasData ||
-        femaleArousalDisorderAnalysis.hasData;
+        femaleArousalDisorderAnalysis.hasData ||
+        ironDeficiencyAnemiaAnalysis.hasData ||
+        folateDeficiencyAnemiaAnalysis.hasData ||
+        perniciousAnemiaAnalysis.hasData ||
+        hemolyticAnemiaAnalysis.hasData ||
+        sickleCellAnemiaAnalysis.hasData ||
+        aplasticAnemiaAnalysis.hasData ||
+        polycythemiaVeraAnalysis.hasData ||
+        immuneThrombocytopeniaAnalysis.hasData ||
+        leukemiaAnalysis.hasData ||
+        hodgkinsLymphomaAnalysis.hasData ||
+        multipleMyelomaAnalysis.hasData ||
+        nonHodgkinsLymphomaAnalysis.hasData ||
+        myeloproliferative7718Analysis.hasData ||
+        chronicMyelogenousLeukemiaAnalysis.hasData ||
+        solitaryPlasmacytomaAnalysis.hasData ||
+        myelodysplasticSyndromesAnalysis.hasData
+    ;
 
     return (
         <div className="space-y-4 text-left">
@@ -999,6 +1097,88 @@ const RatingEvidence = () => {
               expanded={expandedSection === 'female-arousal-disorder'}
               onToggle={() => toggleSection('female-arousal-disorder')}
           />
+          {/* Phase 5: Hemic/Lymphatic Rating Cards */}
+          <IronDeficiencyAnemiaRatingCard
+              analysis={ironDeficiencyAnemiaAnalysis}
+              expanded={expandedSection === 'iron-deficiency-anemia'}
+              onToggle={() => toggleSection('iron-deficiency-anemia')}
+          />
+          <FolateDeficiencyAnemiaRatingCard
+              analysis={folateDeficiencyAnemiaAnalysis}
+              expanded={expandedSection === 'folate-deficiency-anemia'}
+              onToggle={() => toggleSection('folate-deficiency-anemia')}
+          />
+          <PerniciousAnemiaRatingCard
+              analysis={perniciousAnemiaAnalysis}
+              expanded={expandedSection === 'pernicious-anemia'}
+              onToggle={() => toggleSection('pernicious-anemia')}
+          />
+          <HemolyticAnemiaRatingCard
+              analysis={hemolyticAnemiaAnalysis}
+              expanded={expandedSection === 'hemolytic-anemia'}
+              onToggle={() => toggleSection('hemolytic-anemia')}
+          />
+          <SickleCellAnemiaRatingCard
+              analysis={sickleCellAnemiaAnalysis}
+              expanded={expandedSection === 'sickle-cell-anemia'}
+              onToggle={() => toggleSection('sickle-cell-anemia')}
+          />
+          <AplasticAnemiaRatingCard
+              analysis={aplasticAnemiaAnalysis}
+              expanded={expandedSection === 'aplastic-anemia'}
+              onToggle={() => toggleSection('aplastic-anemia')}
+          />
+          <PolycythemiaVeraRatingCard
+              analysis={polycythemiaVeraAnalysis}
+              expanded={expandedSection === 'polycythemia-vera'}
+              onToggle={() => toggleSection('polycythemia-vera')}
+          />
+          <ImmuneThrombocytopeniaRatingCard
+              analysis={immuneThrombocytopeniaAnalysis}
+              expanded={expandedSection === 'immune-thrombocytopenia'}
+              onToggle={() => toggleSection('immune-thrombocytopenia')}
+          />
+          <LeukemiaRatingCard
+              analysis={leukemiaAnalysis}
+              expanded={expandedSection === 'leukemia'}
+              onToggle={() => toggleSection('leukemia')}
+          />
+          <HodgkinsLymphomaRatingCard
+              analysis={hodgkinsLymphomaAnalysis}
+              expanded={expandedSection === 'hodgkins-lymphoma'}
+              onToggle={() => toggleSection('hodgkins-lymphoma')}
+          />
+          <MultipleMyelomaRatingCard
+              analysis={multipleMyelomaAnalysis}
+              expanded={expandedSection === 'multiple-myeloma'}
+              onToggle={() => toggleSection('multiple-myeloma')}
+          />
+          <NonHodgkinsLymphomaRatingCard
+              analysis={nonHodgkinsLymphomaAnalysis}
+              expanded={expandedSection === 'non-hodgkins-lymphoma'}
+              onToggle={() => toggleSection('non-hodgkins-lymphoma')}
+          />
+          <EssentialThrombocythemiaRatingCard
+              analysis={myeloproliferative7718Analysis}
+              expanded={expandedSection === 'essential-thrombocythemia'}
+              onToggle={() => toggleSection('essential-thrombocythemia')}
+          />
+          <ChronicMyelogenousLeukemiaRatingCard
+              analysis={chronicMyelogenousLeukemiaAnalysis}
+              expanded={expandedSection === 'chronic-myelogenous-leukemia'}
+              onToggle={() => toggleSection('chronic-myelogenous-leukemia')}
+          />
+          <SolitaryPlasmacytomaRatingCard
+              analysis={solitaryPlasmacytomaAnalysis}
+              expanded={expandedSection === 'solitary-plasmacytoma'}
+              onToggle={() => toggleSection('solitary-plasmacytoma')}
+          />
+          <MyelodysplasticSyndromesRatingCard
+              analysis={myelodysplasticSyndromesAnalysis}
+              expanded={expandedSection === 'myelodysplastic-syndromes'}
+              onToggle={() => toggleSection('myelodysplastic-syndromes')}
+          />
+
 
           {/* Sleep Apnea Setup Modal */}
             {showSleepApneaSetup && (

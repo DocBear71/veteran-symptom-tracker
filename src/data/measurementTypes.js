@@ -1258,6 +1258,194 @@ export const MEASUREMENT_TYPES = {
       normal: { percent: [81, 200], label: 'Normal (>80% predicted)', color: 'green' },
     },
   },
+  // Phase 5: Hemic/Lymphatic Measurements
+  'complete-blood-count': {
+    label: 'Complete Blood Count (CBC)',
+    icon: '🩸',
+    category: 'hemic-lymphatic',
+    fields: {
+      rbc: { label: 'Red Blood Cells (RBC)', type: 'number', unit: 'million/μL', step: '0.01' },
+      hemoglobin: { label: 'Hemoglobin (Hgb)', type: 'number', unit: 'g/dL', step: '0.1' },
+      hematocrit: { label: 'Hematocrit (Hct)', type: 'number', unit: '%', step: '0.1' },
+      wbc: { label: 'White Blood Cells (WBC)', type: 'number', unit: 'thousand/μL', step: '0.1' },
+      platelets: { label: 'Platelets', type: 'number', unit: 'thousand/μL', step: '1' },
+      mcv: { label: 'MCV (Mean Corpuscular Volume)', type: 'number', unit: 'fL', step: '0.1' },
+      mch: { label: 'MCH (Mean Corpuscular Hemoglobin)', type: 'number', unit: 'pg', step: '0.1' },
+      mchc: { label: 'MCHC', type: 'number', unit: 'g/dL', step: '0.1' },
+    },
+    interpretation: (values) => {
+      const issues = [];
+
+      // RBC normal ranges: Male 4.7-6.1, Female 4.2-5.4 million/μL
+      if (values.rbc < 4.0) issues.push('Low RBC (anemia)');
+      if (values.rbc > 6.5) issues.push('High RBC (polycythemia)');
+
+      // Hemoglobin normal: Male 13.5-17.5, Female 12-16 g/dL
+      if (values.hemoglobin < 12) issues.push('Low hemoglobin (anemia)');
+      if (values.hemoglobin > 18) issues.push('High hemoglobin');
+
+      // Hematocrit normal: Male 38-50%, Female 36-44%
+      if (values.hematocrit < 35) issues.push('Low hematocrit');
+      if (values.hematocrit > 52) issues.push('High hematocrit');
+
+      // WBC normal: 4.5-11 thousand/μL
+      if (values.wbc < 4.0) issues.push('Low WBC (leukopenia)');
+      if (values.wbc > 11) issues.push('High WBC (leukocytosis)');
+
+      // Platelets normal: 150-400 thousand/μL
+      if (values.platelets < 150) issues.push('Low platelets (thrombocytopenia)');
+      if (values.platelets > 450) issues.push('High platelets (thrombocytosis)');
+
+      // MCV normal: 80-100 fL
+      if (values.mcv < 80) issues.push('Microcytic (small RBCs)');
+      if (values.mcv > 100) issues.push('Macrocytic (large RBCs)');
+
+      return issues.length > 0 ? issues.join(', ') : 'All values within normal range';
+    },
+    format: (values) => {
+      const parts = [];
+      if (values.rbc) parts.push(`RBC: ${values.rbc} M/μL`);
+      if (values.hemoglobin) parts.push(`Hgb: ${values.hemoglobin} g/dL`);
+      if (values.hematocrit) parts.push(`Hct: ${values.hematocrit}%`);
+      if (values.wbc) parts.push(`WBC: ${values.wbc} K/μL`);
+      if (values.platelets) parts.push(`Plt: ${values.platelets} K/μL`);
+      return parts.join(', ');
+    }
+  },
+
+  'absolute-neutrophil-count': {
+    label: 'Absolute Neutrophil Count (ANC)',
+    icon: '⚪',
+    category: 'hemic-lymphatic',
+    fields: {
+      anc: { label: 'ANC', type: 'number', unit: '/μL', step: '1' },
+    },
+    interpretation: (values) => {
+      if (values.anc < 500) return 'Severe neutropenia (high infection risk)';
+      if (values.anc < 1000) return 'Moderate neutropenia';
+      if (values.anc < 1500) return 'Mild neutropenia';
+      return 'Normal neutrophil count';
+    },
+    format: (values) => `ANC: ${values.anc}/μL`
+  },
+
+  'iron-panel': {
+    label: 'Iron Panel',
+    icon: '🔬',
+    category: 'hemic-lymphatic',
+    fields: {
+      serum_iron: { label: 'Serum Iron', type: 'number', unit: 'μg/dL', step: '1' },
+      tibc: { label: 'TIBC (Total Iron Binding Capacity)', type: 'number', unit: 'μg/dL', step: '1' },
+      ferritin: { label: 'Ferritin', type: 'number', unit: 'ng/mL', step: '1' },
+      transferrin_saturation: { label: 'Transferrin Saturation', type: 'number', unit: '%', step: '1' },
+    },
+    interpretation: (values) => {
+      const issues = [];
+
+      // Serum Iron normal: 60-170 μg/dL
+      if (values.serum_iron < 60) issues.push('Low serum iron');
+      if (values.serum_iron > 170) issues.push('High serum iron');
+
+      // TIBC normal: 240-450 μg/dL
+      if (values.tibc > 450) issues.push('High TIBC (suggests iron deficiency)');
+
+      // Ferritin normal: Male 24-336, Female 11-307 ng/mL
+      if (values.ferritin < 15) issues.push('Low ferritin (iron deficiency)');
+      if (values.ferritin > 400) issues.push('High ferritin');
+
+      // Transferrin Saturation normal: 20-50%
+      if (values.transferrin_saturation < 20) issues.push('Low transferrin saturation');
+      if (values.transferrin_saturation > 50) issues.push('High transferrin saturation');
+
+      return issues.length > 0 ? issues.join(', ') : 'Normal iron levels';
+    },
+    format: (values) => {
+      const parts = [];
+      if (values.serum_iron) parts.push(`Iron: ${values.serum_iron} μg/dL`);
+      if (values.ferritin) parts.push(`Ferritin: ${values.ferritin} ng/mL`);
+      if (values.transferrin_saturation) parts.push(`Sat: ${values.transferrin_saturation}%`);
+      return parts.join(', ');
+    }
+  },
+
+  'vitamin-b12-folate': {
+    label: 'Vitamin B12 & Folate',
+    icon: '💊',
+    category: 'hemic-lymphatic',
+    fields: {
+      vitamin_b12: { label: 'Vitamin B12', type: 'number', unit: 'pg/mL', step: '1' },
+      folate: { label: 'Folate (Folic Acid)', type: 'number', unit: 'ng/mL', step: '0.1' },
+      methylmalonic_acid: { label: 'Methylmalonic Acid (MMA)', type: 'number', unit: 'nmol/L', step: '1' },
+    },
+    interpretation: (values) => {
+      const issues = [];
+
+      // B12 normal: 200-900 pg/mL
+      if (values.vitamin_b12 < 200) issues.push('B12 deficiency');
+      if (values.vitamin_b12 < 300) issues.push('Low-normal B12 (consider supplementation)');
+
+      // Folate normal: >3.0 ng/mL
+      if (values.folate < 3.0) issues.push('Folate deficiency');
+
+      // MMA normal: <270 nmol/L (elevated in B12 deficiency)
+      if (values.methylmalonic_acid > 270) issues.push('Elevated MMA (suggests B12 deficiency)');
+
+      return issues.length > 0 ? issues.join(', ') : 'Normal B12 and folate levels';
+    },
+    format: (values) => {
+      const parts = [];
+      if (values.vitamin_b12) parts.push(`B12: ${values.vitamin_b12} pg/mL`);
+      if (values.folate) parts.push(`Folate: ${values.folate} ng/mL`);
+      return parts.join(', ');
+    }
+  },
+
+  'reticulocyte-count': {
+    label: 'Reticulocyte Count',
+    icon: '🔴',
+    category: 'hemic-lymphatic',
+    fields: {
+      reticulocyte_percent: { label: 'Reticulocyte %', type: 'number', unit: '%', step: '0.1' },
+      reticulocyte_absolute: { label: 'Absolute Reticulocyte Count', type: 'number', unit: 'thousand/μL', step: '1' },
+    },
+    interpretation: (values) => {
+      // Normal: 0.5-2.5%
+      if (values.reticulocyte_percent < 0.5) return 'Low reticulocytes (bone marrow not responding)';
+      if (values.reticulocyte_percent > 2.5) return 'High reticulocytes (bone marrow responding to anemia)';
+      return 'Normal reticulocyte count';
+    },
+    format: (values) => {
+      const parts = [];
+      if (values.reticulocyte_percent) parts.push(`${values.reticulocyte_percent}%`);
+      if (values.reticulocyte_absolute) parts.push(`(${values.reticulocyte_absolute} K/μL)`);
+      return parts.join(' ');
+    }
+  },
+
+  'hemoglobin-electrophoresis': {
+    label: 'Hemoglobin Electrophoresis (Sickle Cell)',
+    icon: '🧬',
+    category: 'hemic-lymphatic',
+    fields: {
+      hgb_a: { label: 'Hemoglobin A', type: 'number', unit: '%', step: '0.1' },
+      hgb_s: { label: 'Hemoglobin S (Sickle)', type: 'number', unit: '%', step: '0.1' },
+      hgb_f: { label: 'Hemoglobin F (Fetal)', type: 'number', unit: '%', step: '0.1' },
+      hgb_a2: { label: 'Hemoglobin A2', type: 'number', unit: '%', step: '0.1' },
+    },
+    interpretation: (values) => {
+      if (values.hgb_s > 50) return 'Sickle cell disease (HbSS)';
+      if (values.hgb_s > 0 && values.hgb_s < 50) return 'Sickle cell trait or HbSC';
+      if (values.hgb_f > 2) return 'Elevated fetal hemoglobin';
+      return 'Normal hemoglobin pattern';
+    },
+    format: (values) => {
+      const parts = [];
+      if (values.hgb_a) parts.push(`HbA: ${values.hgb_a}%`);
+      if (values.hgb_s) parts.push(`HbS: ${values.hgb_s}%`);
+      if (values.hgb_f) parts.push(`HbF: ${values.hgb_f}%`);
+      return parts.join(', ');
+    }
+  },
 };
 
 // Helper to get measurement type by ID

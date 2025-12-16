@@ -238,6 +238,81 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
     treatmentMedications: [],
   });
 
+  // Phase 5: Hemic/Lymphatic Conditions
+  const [anemiaData, setAnemiaData] = useState({
+    type: '',                     // iron-deficiency, b12-deficiency, folate-deficiency, hemolytic, aplastic, sickle-cell
+    severity: '',
+    treatment: [],
+    supplements: [],
+    transfusion_history: '',
+    last_transfusion: ''
+  });
+
+  const [sickleCellData, setSickleCellData] = useState({
+    crisis_type: '',
+    crisis_location: [],
+    pain_severity: '',
+    crisis_duration: '',
+    triggers: [],
+    treatment_received: [],
+    hospitalizations_year: ''
+  });
+
+  const [bleedingDisorderData, setBleedingDisorderData] = useState({
+    disorder_type: '',            // thrombocytopenia, hemophilia, von-willebrand, other
+    bleeding_site: [],
+    bleeding_frequency: '',
+    severity: '',
+    treatment: [],
+    platelet_count: ''
+  });
+
+  const [infectionData, setInfectionData] = useState({
+    infection_type: [],
+    frequency: '',
+    severity: '',
+    requires_hospitalization: '',
+    treatment: [],
+    immune_status: ''
+  });
+
+  const [lymphomaLeukemiaData, setLymphomaLeukemiaData] = useState({
+    diagnosis: '',                // hodgkin, non-hodgkin, cll, cml, all, aml, multiple-myeloma
+    stage: '',
+    treatment_status: '',         // active-treatment, remission, maintenance, surveillance
+    treatment_type: [],
+    cycles_completed: '',
+    side_effects: [],
+    last_treatment_date: ''
+  });
+
+  const [polycythemiaData, setPolycythemiaData] = useState({
+    diagnosis: '',                // polycythemia-vera, essential-thrombocythemia, primary-myelofibrosis
+    treatment: [],
+    phlebotomy_frequency: '',
+    last_phlebotomy: '',
+    medications: [],
+    complications: []
+  });
+
+  const [treatmentData, setTreatmentData] = useState({
+    treatment_type: '',           // chemotherapy, radiation, immunotherapy, targeted-therapy
+    regimen: '',
+    cycle_number: '',
+    side_effects: [],
+    severity: '',
+    management: []
+  });
+
+  const [b12DeficiencyData, setB12DeficiencyData] = useState({
+    deficiency_cause: '',         // pernicious-anemia, dietary, malabsorption, other
+    neurological_symptoms: [],
+    treatment: [],
+    injection_frequency: '',
+    last_injection: '',
+    improvement_noted: ''
+  });
+
   // Phase 1H - Track processed prefillData to avoid re-processing
   const processedPrefillId = useRef(null);
   const isPrefilling = useRef(false);
@@ -330,6 +405,39 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
       if (prefillData.gynecologicalData) {
         console.log('🌸 Setting gynecological data:', prefillData.gynecologicalData);
         setGynecologicalData({ ...prefillData.gynecologicalData });
+      }
+      // Phase 5: Hemic/Lymphatic prefills
+      if (prefillData.anemiaData) {
+        console.log('🩸 Setting anemia data:', prefillData.anemiaData);
+        setAnemiaData({ ...prefillData.anemiaData });
+      }
+      if (prefillData.sickleCellData) {
+        console.log('🩸 Setting sickle cell data:', prefillData.sickleCellData);
+        setSickleCellData({ ...prefillData.sickleCellData });
+      }
+      if (prefillData.bleedingDisorderData) {
+        console.log('🩸 Setting bleeding disorder data:', prefillData.bleedingDisorderData);
+        setBleedingDisorderData({ ...prefillData.bleedingDisorderData });
+      }
+      if (prefillData.infectionData) {
+        console.log('🦠 Setting infection data:', prefillData.infectionData);
+        setInfectionData({ ...prefillData.infectionData });
+      }
+      if (prefillData.lymphomaLeukemiaData) {
+        console.log('🎗️ Setting lymphoma/leukemia data:', prefillData.lymphomaLeukemiaData);
+        setLymphomaLeukemiaData({ ...prefillData.lymphomaLeukemiaData });
+      }
+      if (prefillData.polycythemiaData) {
+        console.log('🔴 Setting polycythemia data:', prefillData.polycythemiaData);
+        setPolycythemiaData({ ...prefillData.polycythemiaData });
+      }
+      if (prefillData.treatmentData) {
+        console.log('💊 Setting treatment data:', prefillData.treatmentData);
+        setTreatmentData({ ...prefillData.treatmentData });
+      }
+      if (prefillData.b12DeficiencyData) {
+        console.log('💊 Setting B12 deficiency data:', prefillData.b12DeficiencyData);
+        setB12DeficiencyData({ ...prefillData.b12DeficiencyData });
       }
       console.log('✅ All prefill data set');
       // Clear prefillData AFTER state updates have been queued
@@ -471,6 +579,47 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
         'hirsutism', 'hormonal-acne', 'pcos-weight-changes', 'breast-pain', 'nipple-discharge',
         'uterine-cramping'].includes(selectedSymptom);
 
+  // Phase 5: Hemic/Lymphatic condition detection
+  const isAnemiaRelated = [
+    'fatigue-blood', 'weakness-blood', 'dizziness-anemia', 'shortness-breath-anemia',
+    'pale-skin', 'cold-hands-feet', 'chest-pain-anemia', 'rapid-heartbeat', 'headache-anemia'
+  ].includes(selectedSymptom);
+
+  const isSickleCellRelated = [
+    'sickle-cell-crisis', 'bone-pain-sickle', 'joint-pain-sickle', 'chest-pain-sickle',
+    'priapism', 'vision-changes-sickle', 'leg-ulcers'
+  ].includes(selectedSymptom);
+
+  const isBleedingDisorderRelated = [
+    'easy-bruising', 'prolonged-bleeding', 'nosebleeds-frequent', 'bleeding-gums',
+    'petechiae', 'heavy-menstrual-bleeding-blood', 'blood-in-urine', 'blood-in-stool'
+  ].includes(selectedSymptom);
+
+  const isInfectionRelated = [
+    'frequent-infections', 'recurring-infections', 'slow-healing-wounds',
+    'fever-unexplained', 'night-sweats-blood', 'chills-blood'
+  ].includes(selectedSymptom);
+
+  const isLymphomaLeukemiaRelated = [
+    'swollen-lymph-nodes', 'unexplained-weight-loss', 'loss-appetite',
+    'bone-pain-leukemia', 'night-sweats-blood'
+  ].includes(selectedSymptom);
+
+  const isPolycythemiaRelated = [
+    'itching-after-bathing', 'burning-hands-feet', 'redness-skin',
+    'blurred-vision-blood', 'headache-polycythemia', 'tinnitus-blood', 'blood-clots'
+  ].includes(selectedSymptom);
+
+  const isTreatmentRelated = [
+    'nausea-chemo', 'vomiting-chemo', 'mouth-sores', 'hair-loss',
+    'neuropathy-chemo', 'fatigue-chemo'
+  ].includes(selectedSymptom);
+
+  const isB12DeficiencyRelated = [
+    'numbness-tingling-b12', 'difficulty-walking', 'memory-problems-b12',
+    'confusion-b12', 'tongue-problems'
+  ].includes(selectedSymptom);
+
   // Reset condition-specific data when symptom changes
   useEffect(() => {
     // Phase 1H: Skip reset during prefill operation
@@ -569,10 +718,45 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
         treatmentMedications: [],
       });
     }
+    // Phase 5: Hemic/Lymphatic resets
+    if (!isAnemiaRelated) {
+      setAnemiaData({type: '',severity: '',treatment: [],supplements: [],transfusion_history: '',last_transfusion: ''
+      });
+    }
+    if (!isSickleCellRelated) {
+      setSickleCellData({crisis_type: '',crisis_location: [],pain_severity: '',crisis_duration: '',triggers: [],treatment_received: [],hospitalizations_year: ''
+      });
+    }
+    if (!isBleedingDisorderRelated) {
+      setBleedingDisorderData({disorder_type: '',bleeding_site: [],bleeding_frequency: '',severity: '',treatment: [],platelet_count: ''
+      });
+    }
+    if (!isInfectionRelated) {
+      setInfectionData({infection_type: [],frequency: '',severity: '',requires_hospitalization: '',treatment: [],immune_status: ''
+      });
+    }
+    if (!isLymphomaLeukemiaRelated) {
+      setLymphomaLeukemiaData({diagnosis: '',stage: '',treatment_status: '',treatment_type: [],cycles_completed: '',side_effects: [],last_treatment_date: ''
+      });
+    }
+    if (!isPolycythemiaRelated) {
+      setPolycythemiaData({diagnosis: '',treatment: [],phlebotomy_frequency: '',last_phlebotomy: '',medications: [],complications: []
+      });
+    }
+    if (!isTreatmentRelated) {
+      setTreatmentData({treatment_type: '',regimen: '',cycle_number: '',side_effects: [],severity: '',management: []
+      });
+    }
+    if (!isB12DeficiencyRelated) {
+      setB12DeficiencyData({deficiency_cause: '',neurological_symptoms: [],treatment: [],injection_frequency: '',last_injection: '',improvement_noted: ''
+      });
+    }
 
   }, [selectedSymptom, isMigraineSelected, isSleepSelected, isNightmareSelected, isPTSDRelated, isPainSelected,
-            isGISelected, isRespiratorySelected, isJointSelected, isSeizureSelected, isEyeRelated, isGenitourinaryRelated,
-            isGynecologicalRelated]);
+    isGISelected, isRespiratorySelected, isJointSelected, isSeizureSelected, isEyeRelated, isGenitourinaryRelated,
+    isGynecologicalRelated, isAnemiaRelated, isSickleCellRelated, isBleedingDisorderRelated, isInfectionRelated,
+    isLymphomaLeukemiaRelated, isPolycythemiaRelated, isTreatmentRelated, isB12DeficiencyRelated]);
+
 
   // Phase 3: Detect genitourinary system based on symptom
   useEffect(() => {
@@ -749,6 +933,31 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
     // Phase 4: Add Gynecological Data
     if (isGynecologicalRelated) {
       entry.gynecologicalData = { ...gynecologicalData };
+    }
+    // Phase 5: Add Hemic/Lymphatic Data
+    if (isAnemiaRelated) {
+      entry.anemiaData = { ...anemiaData };
+    }
+    if (isSickleCellRelated) {
+      entry.sickleCellData = { ...sickleCellData };
+    }
+    if (isBleedingDisorderRelated) {
+      entry.bleedingDisorderData = { ...bleedingDisorderData };
+    }
+    if (isInfectionRelated) {
+      entry.infectionData = { ...infectionData };
+    }
+    if (isLymphomaLeukemiaRelated) {
+      entry.lymphomaLeukemiaData = { ...lymphomaLeukemiaData };
+    }
+    if (isPolycythemiaRelated) {
+      entry.polycythemiaData = { ...polycythemiaData };
+    }
+    if (isTreatmentRelated) {
+      entry.treatmentData = { ...treatmentData };
+    }
+    if (isB12DeficiencyRelated) {
+      entry.b12DeficiencyData = { ...b12DeficiencyData };
     }
 
     const savedEntry = saveSymptomLog(entry);
@@ -3133,6 +3342,1168 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
                       ))}
                     </div>
                   </div>
+                </div>
+              </div>
+          )}
+
+          {/* Phase 5: Anemia Form */}
+          {isAnemiaRelated && (
+              <div className="bg-red-50 dark:bg-red-900/20 rounded-lg p-4 space-y-4 border border-red-200 dark:border-red-800">
+                <h3 className="font-semibold text-red-900 dark:text-red-100 flex items-center gap-2">
+                  🩸 Anemia Details
+                </h3>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Type of Anemia
+                  </label>
+                  <select
+                      value={anemiaData.type}
+                      onChange={(e) => setAnemiaData({...anemiaData, type: e.target.value})}
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                  >
+                    <option value="">Select type...</option>
+                    <option value="iron-deficiency">Iron Deficiency Anemia</option>
+                    <option value="b12-deficiency">Pernicious Anemia/B12 Deficiency</option>
+                    <option value="folate-deficiency">Folate Deficiency</option>
+                    <option value="hemolytic">Acquired Hemolytic Anemia</option>
+                    <option value="aplastic">Aplastic Anemia</option>
+                    <option value="sickle-cell">Sickle Cell Anemia</option>
+                    <option value="other">Other/Unknown</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Symptom Severity
+                  </label>
+                  <select
+                      value={anemiaData.severity}
+                      onChange={(e) => setAnemiaData({...anemiaData, severity: e.target.value})}
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                  >
+                    <option value="">Select severity...</option>
+                    <option value="mild">Mild - Minimal functional impact</option>
+                    <option value="moderate">Moderate - Limits some activities</option>
+                    <option value="severe">Severe - Significantly limits daily activities</option>
+                    <option value="incapacitating">Incapacitating - Unable to work/function</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Current Treatment (select all that apply)
+                  </label>
+                  <div className="space-y-2">
+                    {[
+                      { value: 'oral-iron', label: 'Oral Iron Supplements' },
+                      { value: 'iv-iron', label: 'IV Iron Infusions' },
+                      { value: 'b12-injections', label: 'B12 Injections' },
+                      { value: 'b12-oral', label: 'Oral/Sublingual B12' },
+                      { value: 'folate-supplements', label: 'Folate Supplements' },
+                      { value: 'immunosuppressants', label: 'Immunosuppressive Therapy' },
+                      { value: 'growth-factors', label: 'Myeloid Growth Factors (G-CSF/GM-CSF)' },
+                      { value: 'dietary-only', label: 'Dietary Modification Only' },
+                      { value: 'transfusions', label: 'Blood Transfusions' }
+                    ].map(option => (
+                        <label key={option.value} className="flex items-center gap-2">
+                          <input
+                              type="checkbox"
+                              checked={anemiaData.treatment.includes(option.value)}
+                              onChange={(e) => {
+                                const newTreatment = e.target.checked
+                                    ? [...anemiaData.treatment, option.value]
+                                    : anemiaData.treatment.filter(t => t !== option.value);
+                                setAnemiaData({...anemiaData, treatment: newTreatment});
+                              }}
+                              className="rounded border-gray-300 dark:border-gray-600"
+                          />
+                          <span className="text-sm text-gray-700 dark:text-gray-300">{option.label}</span>
+                        </label>
+                    ))}
+                  </div>
+                </div>
+
+                {anemiaData.treatment.includes('transfusions') && (
+                    <>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                          Transfusion Frequency
+                        </label>
+                        <select
+                            value={anemiaData.transfusion_history}
+                            onChange={(e) => setAnemiaData({...anemiaData, transfusion_history: e.target.value})}
+                            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                        >
+                          <option value="">Select frequency...</option>
+                          <option value="weekly">Weekly or more</option>
+                          <option value="monthly">Monthly</option>
+                          <option value="quarterly">Every 3 months</option>
+                          <option value="biannually">Every 6 months</option>
+                          <option value="annually">Once per year</option>
+                          <option value="one-time">One-time transfusion</option>
+                        </select>
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                          Date of Last Transfusion
+                        </label>
+                        <input
+                            type="date"
+                            value={anemiaData.last_transfusion}
+                            onChange={(e) => setAnemiaData({...anemiaData, last_transfusion: e.target.value})}
+                            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                        />
+                      </div>
+                    </>
+                )}
+              </div>
+          )}
+
+          {/* Sickle Cell Crisis Form */}
+          {isSickleCellRelated && (
+              <div className="bg-red-50 dark:bg-red-900/20 rounded-lg p-4 space-y-4 border border-red-200 dark:border-red-800">
+                <h3 className="font-semibold text-red-900 dark:text-red-100 flex items-center gap-2">
+                  🩸 Sickle Cell Crisis Details
+                </h3>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Type of Crisis
+                  </label>
+                  <select
+                      value={sickleCellData.crisis_type}
+                      onChange={(e) => setSickleCellData({...sickleCellData, crisis_type: e.target.value})}
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                  >
+                    <option value="">Select crisis type...</option>
+                    <option value="vaso-occlusive">Vaso-occlusive (Pain Crisis)</option>
+                    <option value="acute-chest">Acute Chest Syndrome</option>
+                    <option value="splenic-sequestration">Splenic Sequestration</option>
+                    <option value="aplastic">Aplastic Crisis</option>
+                    <option value="hemolytic">Hemolytic Crisis</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Pain Location (select all that apply)
+                  </label>
+                  <div className="grid grid-cols-2 gap-2">
+                    {[
+                      { value: 'bones', label: 'Bones' },
+                      { value: 'joints', label: 'Joints' },
+                      { value: 'chest', label: 'Chest' },
+                      { value: 'abdomen', label: 'Abdomen' },
+                      { value: 'back', label: 'Back' },
+                      { value: 'extremities', label: 'Arms/Legs' }
+                    ].map(option => (
+                        <label key={option.value} className="flex items-center gap-2">
+                          <input
+                              type="checkbox"
+                              checked={sickleCellData.crisis_location.includes(option.value)}
+                              onChange={(e) => {
+                                const newLocation = e.target.checked
+                                    ? [...sickleCellData.crisis_location, option.value]
+                                    : sickleCellData.crisis_location.filter(l => l !== option.value);
+                                setSickleCellData({...sickleCellData, crisis_location: newLocation});
+                              }}
+                              className="rounded border-gray-300 dark:border-gray-600"
+                          />
+                          <span className="text-sm text-gray-700 dark:text-gray-300">{option.label}</span>
+                        </label>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Pain Severity (0-10)
+                  </label>
+                  <input
+                      type="range"
+                      min="0"
+                      max="10"
+                      value={sickleCellData.pain_severity}
+                      onChange={(e) => setSickleCellData({...sickleCellData, pain_severity: e.target.value})}
+                      className="w-full"
+                  />
+                  <div className="flex justify-between text-xs text-gray-600 dark:text-gray-400">
+                    <span>0 (No pain)</span>
+                    <span className="font-semibold text-lg">{sickleCellData.pain_severity || '0'}</span>
+                    <span>10 (Worst)</span>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Crisis Duration
+                  </label>
+                  <select
+                      value={sickleCellData.crisis_duration}
+                      onChange={(e) => setSickleCellData({...sickleCellData, crisis_duration: e.target.value})}
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                  >
+                    <option value="">Select duration...</option>
+                    <option value="hours">Less than 24 hours</option>
+                    <option value="1-3-days">1-3 days</option>
+                    <option value="4-7-days">4-7 days</option>
+                    <option value="over-week">Over 1 week</option>
+                    <option value="ongoing">Ongoing</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Known Triggers (select all that apply)
+                  </label>
+                  <div className="space-y-2">
+                    {[
+                      { value: 'dehydration', label: 'Dehydration' },
+                      { value: 'cold', label: 'Cold Temperature' },
+                      { value: 'stress', label: 'Physical/Emotional Stress' },
+                      { value: 'infection', label: 'Infection' },
+                      { value: 'altitude', label: 'High Altitude' },
+                      { value: 'alcohol', label: 'Alcohol' },
+                      { value: 'unknown', label: 'Unknown Trigger' }
+                    ].map(option => (
+                        <label key={option.value} className="flex items-center gap-2">
+                          <input
+                              type="checkbox"
+                              checked={sickleCellData.triggers.includes(option.value)}
+                              onChange={(e) => {
+                                const newTriggers = e.target.checked
+                                    ? [...sickleCellData.triggers, option.value]
+                                    : sickleCellData.triggers.filter(t => t !== option.value);
+                                setSickleCellData({...sickleCellData, triggers: newTriggers});
+                              }}
+                              className="rounded border-gray-300 dark:border-gray-600"
+                          />
+                          <span className="text-sm text-gray-700 dark:text-gray-300">{option.label}</span>
+                        </label>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Treatment Received (select all that apply)
+                  </label>
+                  <div className="space-y-2">
+                    {[
+                      { value: 'home-management', label: 'Home Management' },
+                      { value: 'er-visit', label: 'Emergency Room Visit' },
+                      { value: 'hospitalized', label: 'Hospitalized' },
+                      { value: 'iv-fluids', label: 'IV Fluids' },
+                      { value: 'pain-medication', label: 'Pain Medication' },
+                      { value: 'oxygen', label: 'Oxygen Therapy' },
+                      { value: 'blood-transfusion', label: 'Blood Transfusion' },
+                      { value: 'exchange-transfusion', label: 'Exchange Transfusion' }
+                    ].map(option => (
+                        <label key={option.value} className="flex items-center gap-2">
+                          <input
+                              type="checkbox"
+                              checked={sickleCellData.treatment_received.includes(option.value)}
+                              onChange={(e) => {
+                                const newTreatment = e.target.checked
+                                    ? [...sickleCellData.treatment_received, option.value]
+                                    : sickleCellData.treatment_received.filter(t => t !== option.value);
+                                setSickleCellData({...sickleCellData, treatment_received: newTreatment});
+                              }}
+                              className="rounded border-gray-300 dark:border-gray-600"
+                          />
+                          <span className="text-sm text-gray-700 dark:text-gray-300">{option.label}</span>
+                        </label>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Hospitalizations in Past 12 Months
+                  </label>
+                  <select
+                      value={sickleCellData.hospitalizations_year}
+                      onChange={(e) => setSickleCellData({...sickleCellData, hospitalizations_year: e.target.value})}
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                  >
+                    <option value="">Select frequency...</option>
+                    <option value="0">0 hospitalizations</option>
+                    <option value="1-2">1-2 hospitalizations</option>
+                    <option value="3">3 hospitalizations</option>
+                    <option value="4-plus">4 or more hospitalizations</option>
+                  </select>
+                </div>
+              </div>
+          )}
+
+          {/* Bleeding Disorder Form */}
+          {isBleedingDisorderRelated && (
+              <div className="bg-red-50 dark:bg-red-900/20 rounded-lg p-4 space-y-4 border border-red-200 dark:border-red-800">
+                <h3 className="font-semibold text-red-900 dark:text-red-100 flex items-center gap-2">
+                  🩸 Bleeding Disorder Details
+                </h3>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Type of Bleeding Disorder
+                  </label>
+                  <select
+                      value={bleedingDisorderData.disorder_type}
+                      onChange={(e) => setBleedingDisorderData({...bleedingDisorderData, disorder_type: e.target.value})}
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                  >
+                    <option value="">Select type...</option>
+                    <option value="thrombocytopenia">Immune Thrombocytopenia</option>
+                    <option value="hemophilia">Hemophilia</option>
+                    <option value="von-willebrand">Von Willebrand Disease</option>
+                    <option value="other">Other Bleeding Disorder</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Bleeding Sites (select all that apply)
+                  </label>
+                  <div className="grid grid-cols-2 gap-2">
+                    {[
+                      { value: 'nose', label: 'Nosebleeds' },
+                      { value: 'gums', label: 'Gum Bleeding' },
+                      { value: 'skin', label: 'Skin (Bruising/Petechiae)' },
+                      { value: 'gi', label: 'GI Bleeding' },
+                      { value: 'urinary', label: 'Urinary Tract' },
+                      { value: 'menstrual', label: 'Heavy Menstrual' },
+                      { value: 'joints', label: 'Joint Bleeding' },
+                      { value: 'intracranial', label: 'Intracranial' }
+                    ].map(option => (
+                        <label key={option.value} className="flex items-center gap-2">
+                          <input
+                              type="checkbox"
+                              checked={bleedingDisorderData.bleeding_site.includes(option.value)}
+                              onChange={(e) => {
+                                const newSites = e.target.checked
+                                    ? [...bleedingDisorderData.bleeding_site, option.value]
+                                    : bleedingDisorderData.bleeding_site.filter(s => s !== option.value);
+                                setBleedingDisorderData({...bleedingDisorderData, bleeding_site: newSites});
+                              }}
+                              className="rounded border-gray-300 dark:border-gray-600"
+                          />
+                          <span className="text-sm text-gray-700 dark:text-gray-300">{option.label}</span>
+                        </label>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Bleeding Episode Frequency
+                  </label>
+                  <select
+                      value={bleedingDisorderData.bleeding_frequency}
+                      onChange={(e) => setBleedingDisorderData({...bleedingDisorderData, bleeding_frequency: e.target.value})}
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                  >
+                    <option value="">Select frequency...</option>
+                    <option value="daily">Daily</option>
+                    <option value="weekly">Weekly</option>
+                    <option value="monthly">Monthly</option>
+                    <option value="quarterly">Every 3 months</option>
+                    <option value="rare">Rare/Occasional</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Current Platelet Count (if known)
+                  </label>
+                  <input
+                      type="number"
+                      value={bleedingDisorderData.platelet_count}
+                      onChange={(e) => setBleedingDisorderData({...bleedingDisorderData, platelet_count: e.target.value})}
+                      placeholder="e.g., 50,000"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                  />
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Normal: 150,000-400,000 per μL</p>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Current Treatment (select all that apply)
+                  </label>
+                  <div className="space-y-2">
+                    {[
+                      { value: 'steroids', label: 'Corticosteroids' },
+                      { value: 'immunoglobulins', label: 'IV Immunoglobulins (IVIG)' },
+                      { value: 'immunosuppressants', label: 'Immunosuppressants' },
+                      { value: 'tpo-agonists', label: 'TPO Receptor Agonists' },
+                      { value: 'platelet-transfusion', label: 'Platelet Transfusions' },
+                      { value: 'factor-replacement', label: 'Factor Replacement Therapy' },
+                      { value: 'splenectomy', label: 'Previous Splenectomy' },
+                      { value: 'monitoring-only', label: 'Monitoring Only' }
+                    ].map(option => (
+                        <label key={option.value} className="flex items-center gap-2">
+                          <input
+                              type="checkbox"
+                              checked={bleedingDisorderData.treatment.includes(option.value)}
+                              onChange={(e) => {
+                                const newTreatment = e.target.checked
+                                    ? [...bleedingDisorderData.treatment, option.value]
+                                    : bleedingDisorderData.treatment.filter(t => t !== option.value);
+                                setBleedingDisorderData({...bleedingDisorderData, treatment: newTreatment});
+                              }}
+                              className="rounded border-gray-300 dark:border-gray-600"
+                          />
+                          <span className="text-sm text-gray-700 dark:text-gray-300">{option.label}</span>
+                        </label>
+                    ))}
+                  </div>
+                </div>
+              </div>
+          )}
+
+          {/* Infection-Related Form */}
+          {isInfectionRelated && (
+              <div className="bg-red-50 dark:bg-red-900/20 rounded-lg p-4 space-y-4 border border-red-200 dark:border-red-800">
+                <h3 className="font-semibold text-red-900 dark:text-red-100 flex items-center gap-2">
+                  🦠 Infection Details
+                </h3>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Type of Infection (select all that apply)
+                  </label>
+                  <div className="space-y-2">
+                    {[
+                      { value: 'respiratory', label: 'Respiratory (pneumonia, bronchitis)' },
+                      { value: 'uti', label: 'Urinary Tract Infection' },
+                      { value: 'skin', label: 'Skin/Soft Tissue Infection' },
+                      { value: 'oral', label: 'Oral/Dental Infection' },
+                      { value: 'sinus', label: 'Sinus Infection' },
+                      { value: 'gi', label: 'GI Infection' },
+                      { value: 'blood', label: 'Bloodstream Infection (Sepsis)' },
+                      { value: 'fungal', label: 'Fungal Infection' },
+                      { value: 'viral', label: 'Viral Infection' },
+                      { value: 'other', label: 'Other Infection' }
+                    ].map(option => (
+                        <label key={option.value} className="flex items-center gap-2">
+                          <input
+                              type="checkbox"
+                              checked={infectionData.infection_type.includes(option.value)}
+                              onChange={(e) => {
+                                const newTypes = e.target.checked
+                                    ? [...infectionData.infection_type, option.value]
+                                    : infectionData.infection_type.filter(t => t !== option.value);
+                                setInfectionData({...infectionData, infection_type: newTypes});
+                              }}
+                              className="rounded border-gray-300 dark:border-gray-600"
+                          />
+                          <span className="text-sm text-gray-700 dark:text-gray-300">{option.label}</span>
+                        </label>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Infection Frequency
+                  </label>
+                  <select
+                      value={infectionData.frequency}
+                      onChange={(e) => setInfectionData({...infectionData, frequency: e.target.value})}
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                  >
+                    <option value="">Select frequency...</option>
+                    <option value="weekly">Weekly or more often</option>
+                    <option value="every-6-weeks">Every 6 weeks</option>
+                    <option value="every-3-months">Every 3 months</option>
+                    <option value="every-6-months">Every 6 months</option>
+                    <option value="yearly">Once per year</option>
+                    <option value="first-time">First time</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Severity
+                  </label>
+                  <select
+                      value={infectionData.severity}
+                      onChange={(e) => setInfectionData({...infectionData, severity: e.target.value})}
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                  >
+                    <option value="">Select severity...</option>
+                    <option value="mild">Mild - Managed at home</option>
+                    <option value="moderate">Moderate - Doctor visit/antibiotics needed</option>
+                    <option value="severe">Severe - ER visit required</option>
+                    <option value="hospitalized">Required hospitalization</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Requires Hospitalization?
+                  </label>
+                  <select
+                      value={infectionData.requires_hospitalization}
+                      onChange={(e) => setInfectionData({...infectionData, requires_hospitalization: e.target.value})}
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                  >
+                    <option value="">Select...</option>
+                    <option value="no">No hospitalization needed</option>
+                    <option value="yes-current">Currently hospitalized</option>
+                    <option value="yes-recent">Recently hospitalized</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Treatment (select all that apply)
+                  </label>
+                  <div className="space-y-2">
+                    {[
+                      { value: 'antibiotics-oral', label: 'Oral Antibiotics' },
+                      { value: 'antibiotics-iv', label: 'IV Antibiotics' },
+                      { value: 'antifungal', label: 'Antifungal Medication' },
+                      { value: 'antiviral', label: 'Antiviral Medication' },
+                      { value: 'prophylactic', label: 'Prophylactic Antibiotics' },
+                      { value: 'growth-factors', label: 'Growth Factors (G-CSF/GM-CSF)' },
+                      { value: 'ivig', label: 'IVIG (Immunoglobulin Therapy)' },
+                      { value: 'hospitalization', label: 'Hospitalization' }
+                    ].map(option => (
+                        <label key={option.value} className="flex items-center gap-2">
+                          <input
+                              type="checkbox"
+                              checked={infectionData.treatment.includes(option.value)}
+                              onChange={(e) => {
+                                const newTreatment = e.target.checked
+                                    ? [...infectionData.treatment, option.value]
+                                    : infectionData.treatment.filter(t => t !== option.value);
+                                setInfectionData({...infectionData, treatment: newTreatment});
+                              }}
+                              className="rounded border-gray-300 dark:border-gray-600"
+                          />
+                          <span className="text-sm text-gray-700 dark:text-gray-300">{option.label}</span>
+                        </label>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Immune Status
+                  </label>
+                  <select
+                      value={infectionData.immune_status}
+                      onChange={(e) => setInfectionData({...infectionData, immune_status: e.target.value})}
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                  >
+                    <option value="">Select status...</option>
+                    <option value="normal">Normal immune function</option>
+                    <option value="neutropenia">Neutropenia (low white blood cells)</option>
+                    <option value="immunosuppressed">Immunosuppressed (medications)</option>
+                    <option value="bone-marrow">Post bone marrow/stem cell transplant</option>
+                    <option value="chemotherapy">During/after chemotherapy</option>
+                  </select>
+                </div>
+              </div>
+          )}
+
+          {/* Lymphoma/Leukemia Form */}
+          {isLymphomaLeukemiaRelated && (
+              <div className="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-4 space-y-4 border border-purple-200 dark:border-purple-800">
+                <h3 className="font-semibold text-purple-900 dark:text-purple-100 flex items-center gap-2">
+                  🎗️ Cancer/Lymphoma Details
+                </h3>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Diagnosis
+                  </label>
+                  <select
+                      value={lymphomaLeukemiaData.diagnosis}
+                      onChange={(e) => setLymphomaLeukemiaData({...lymphomaLeukemiaData, diagnosis: e.target.value})}
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                  >
+                    <option value="">Select diagnosis...</option>
+                    <option value="hodgkin">Hodgkin's Lymphoma</option>
+                    <option value="non-hodgkin">Non-Hodgkin's Lymphoma</option>
+                    <option value="cll">Chronic Lymphocytic Leukemia</option>
+                    <option value="cml">Chronic Myelogenous Leukemia</option>
+                    <option value="all">Acute Lymphoblastic Leukemia</option>
+                    <option value="aml">Acute Myeloid Leukemia</option>
+                    <option value="multiple-myeloma">Multiple Myeloma</option>
+                    <option value="plasmacytoma">Solitary Plasmacytoma</option>
+                    <option value="mds">Myelodysplastic Syndrome</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Stage (if known)
+                  </label>
+                  <select
+                      value={lymphomaLeukemiaData.stage}
+                      onChange={(e) => setLymphomaLeukemiaData({...lymphomaLeukemiaData, stage: e.target.value})}
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                  >
+                    <option value="">Select stage...</option>
+                    <option value="stage-1">Stage I (Early/Localized)</option>
+                    <option value="stage-2">Stage II (Limited Spread)</option>
+                    <option value="stage-3">Stage III (Advanced)</option>
+                    <option value="stage-4">Stage IV (Widespread)</option>
+                    <option value="early">Early Stage</option>
+                    <option value="advanced">Advanced Stage</option>
+                    <option value="unknown">Stage Unknown</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Treatment Status
+                  </label>
+                  <select
+                      value={lymphomaLeukemiaData.treatment_status}
+                      onChange={(e) => setLymphomaLeukemiaData({...lymphomaLeukemiaData, treatment_status: e.target.value})}
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                  >
+                    <option value="">Select status...</option>
+                    <option value="active-treatment">Active Treatment (100% rating)</option>
+                    <option value="remission">Complete Remission</option>
+                    <option value="partial-remission">Partial Remission</option>
+                    <option value="maintenance">Maintenance Therapy</option>
+                    <option value="surveillance">Surveillance Only</option>
+                    <option value="recurrence">Recurrence/Relapse</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Treatment Type (select all that apply)
+                  </label>
+                  <div className="space-y-2">
+                    {[
+                      { value: 'chemotherapy', label: 'Chemotherapy' },
+                      { value: 'radiation', label: 'Radiation Therapy' },
+                      { value: 'immunotherapy', label: 'Immunotherapy' },
+                      { value: 'targeted-therapy', label: 'Targeted Therapy' },
+                      { value: 'stem-cell', label: 'Stem Cell/Bone Marrow Transplant' },
+                      { value: 'car-t', label: 'CAR T-Cell Therapy' },
+                      { value: 'watch-wait', label: 'Watch and Wait' }
+                    ].map(option => (
+                        <label key={option.value} className="flex items-center gap-2">
+                          <input
+                              type="checkbox"
+                              checked={lymphomaLeukemiaData.treatment_type.includes(option.value)}
+                              onChange={(e) => {
+                                const newTypes = e.target.checked
+                                    ? [...lymphomaLeukemiaData.treatment_type, option.value]
+                                    : lymphomaLeukemiaData.treatment_type.filter(t => t !== option.value);
+                                setLymphomaLeukemiaData({...lymphomaLeukemiaData, treatment_type: newTypes});
+                              }}
+                              className="rounded border-gray-300 dark:border-gray-600"
+                          />
+                          <span className="text-sm text-gray-700 dark:text-gray-300">{option.label}</span>
+                        </label>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Cycles Completed (if applicable)
+                  </label>
+                  <input
+                      type="text"
+                      value={lymphomaLeukemiaData.cycles_completed}
+                      onChange={(e) => setLymphomaLeukemiaData({...lymphomaLeukemiaData, cycles_completed: e.target.value})}
+                      placeholder="e.g., 4 of 6"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Current Side Effects (select all that apply)
+                  </label>
+                  <div className="grid grid-cols-2 gap-2">
+                    {[
+                      { value: 'fatigue', label: 'Fatigue' },
+                      { value: 'nausea', label: 'Nausea/Vomiting' },
+                      { value: 'neuropathy', label: 'Neuropathy' },
+                      { value: 'pain', label: 'Pain' },
+                      { value: 'infections', label: 'Frequent Infections' },
+                      { value: 'anemia', label: 'Anemia' },
+                      { value: 'bleeding', label: 'Bleeding Issues' },
+                      { value: 'weight-loss', label: 'Weight Loss' },
+                      { value: 'cognitive', label: 'Cognitive Changes' },
+                      { value: 'mouth-sores', label: 'Mouth Sores' }
+                    ].map(option => (
+                        <label key={option.value} className="flex items-center gap-2">
+                          <input
+                              type="checkbox"
+                              checked={lymphomaLeukemiaData.side_effects.includes(option.value)}
+                              onChange={(e) => {
+                                const newEffects = e.target.checked
+                                    ? [...lymphomaLeukemiaData.side_effects, option.value]
+                                    : lymphomaLeukemiaData.side_effects.filter(s => s !== option.value);
+                                setLymphomaLeukemiaData({...lymphomaLeukemiaData, side_effects: newEffects});
+                              }}
+                              className="rounded border-gray-300 dark:border-gray-600"
+                          />
+                          <span className="text-sm text-gray-700 dark:text-gray-300">{option.label}</span>
+                        </label>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Date of Last Treatment
+                  </label>
+                  <input
+                      type="date"
+                      value={lymphomaLeukemiaData.last_treatment_date}
+                      onChange={(e) => setLymphomaLeukemiaData({...lymphomaLeukemiaData, last_treatment_date: e.target.value})}
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                  />
+                </div>
+              </div>
+          )}
+
+          {/* Polycythemia/Myeloproliferative Disorder Form */}
+          {isPolycythemiaRelated && (
+              <div className="bg-red-50 dark:bg-red-900/20 rounded-lg p-4 space-y-4 border border-red-200 dark:border-red-800">
+                <h3 className="font-semibold text-red-900 dark:text-red-100 flex items-center gap-2">
+                  🔴 Myeloproliferative Disorder Details
+                </h3>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Diagnosis
+                  </label>
+                  <select
+                      value={polycythemiaData.diagnosis}
+                      onChange={(e) => setPolycythemiaData({...polycythemiaData, diagnosis: e.target.value})}
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                  >
+                    <option value="">Select diagnosis...</option>
+                    <option value="polycythemia-vera">Polycythemia Vera</option>
+                    <option value="essential-thrombocythemia">Essential Thrombocythemia</option>
+                    <option value="primary-myelofibrosis">Primary Myelofibrosis</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Current Treatment (select all that apply)
+                  </label>
+                  <div className="space-y-2">
+                    {[
+                      { value: 'phlebotomy', label: 'Phlebotomy/Therapeutic Bloodletting' },
+                      { value: 'hydroxyurea', label: 'Hydroxyurea (Myelosuppressive)' },
+                      { value: 'interferon', label: 'Interferon' },
+                      { value: 'jakafi', label: 'Ruxolitinib (Jakafi)' },
+                      { value: 'aspirin', label: 'Low-dose Aspirin' },
+                      { value: 'anagrelide', label: 'Anagrelide' },
+                      { value: 'other-chemo', label: 'Other Chemotherapy' }
+                    ].map(option => (
+                        <label key={option.value} className="flex items-center gap-2">
+                          <input
+                              type="checkbox"
+                              checked={polycythemiaData.treatment.includes(option.value)}
+                              onChange={(e) => {
+                                const newTreatment = e.target.checked
+                                    ? [...polycythemiaData.treatment, option.value]
+                                    : polycythemiaData.treatment.filter(t => t !== option.value);
+                                setPolycythemiaData({...polycythemiaData, treatment: newTreatment});
+                              }}
+                              className="rounded border-gray-300 dark:border-gray-600"
+                          />
+                          <span className="text-sm text-gray-700 dark:text-gray-300">{option.label}</span>
+                        </label>
+                    ))}
+                  </div>
+                </div>
+
+                {polycythemiaData.treatment.includes('phlebotomy') && (
+                    <>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                          Phlebotomy Frequency
+                        </label>
+                        <select
+                            value={polycythemiaData.phlebotomy_frequency}
+                            onChange={(e) => setPolycythemiaData({...polycythemiaData, phlebotomy_frequency: e.target.value})}
+                            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                        >
+                          <option value="">Select frequency...</option>
+                          <option value="weekly">Weekly or more</option>
+                          <option value="6-plus-year">6 or more times per year</option>
+                          <option value="4-5-year">4-5 times per year</option>
+                          <option value="3-or-less">3 or fewer times per year</option>
+                        </select>
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                          Date of Last Phlebotomy
+                        </label>
+                        <input
+                            type="date"
+                            value={polycythemiaData.last_phlebotomy}
+                            onChange={(e) => setPolycythemiaData({...polycythemiaData, last_phlebotomy: e.target.value})}
+                            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                        />
+                      </div>
+                    </>
+                )}
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Medications for Blood Count Control (select all that apply)
+                  </label>
+                  <div className="space-y-2">
+                    {[
+                      { value: 'hydroxyurea-continuous', label: 'Continuous Hydroxyurea' },
+                      { value: 'interferon-continuous', label: 'Continuous Interferon' },
+                      { value: 'jakafi-continuous', label: 'Continuous JAK Inhibitor' },
+                      { value: 'intermittent-therapy', label: 'Intermittent Therapy' }
+                    ].map(option => (
+                        <label key={option.value} className="flex items-center gap-2">
+                          <input
+                              type="checkbox"
+                              checked={polycythemiaData.medications.includes(option.value)}
+                              onChange={(e) => {
+                                const newMeds = e.target.checked
+                                    ? [...polycythemiaData.medications, option.value]
+                                    : polycythemiaData.medications.filter(m => m !== option.value);
+                                setPolycythemiaData({...polycythemiaData, medications: newMeds});
+                              }}
+                              className="rounded border-gray-300 dark:border-gray-600"
+                          />
+                          <span className="text-sm text-gray-700 dark:text-gray-300">{option.label}</span>
+                        </label>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Complications (select all that apply)
+                  </label>
+                  <div className="grid grid-cols-2 gap-2">
+                    {[
+                      { value: 'blood-clots', label: 'Blood Clots/Thrombosis' },
+                      { value: 'stroke', label: 'Stroke' },
+                      { value: 'heart-attack', label: 'Heart Attack' },
+                      { value: 'bleeding', label: 'Bleeding Episodes' },
+                      { value: 'gout', label: 'Gout' },
+                      { value: 'enlarged-spleen', label: 'Enlarged Spleen' },
+                      { value: 'itching', label: 'Severe Itching' },
+                      { value: 'headaches', label: 'Frequent Headaches' }
+                    ].map(option => (
+                        <label key={option.value} className="flex items-center gap-2">
+                          <input
+                              type="checkbox"
+                              checked={polycythemiaData.complications.includes(option.value)}
+                              onChange={(e) => {
+                                const newComplications = e.target.checked
+                                    ? [...polycythemiaData.complications, option.value]
+                                    : polycythemiaData.complications.filter(c => c !== option.value);
+                                setPolycythemiaData({...polycythemiaData, complications: newComplications});
+                              }}
+                              className="rounded border-gray-300 dark:border-gray-600"
+                          />
+                          <span className="text-sm text-gray-700 dark:text-gray-300">{option.label}</span>
+                        </label>
+                    ))}
+                  </div>
+                </div>
+              </div>
+          )}
+
+          {/* Treatment Side Effects Form */}
+          {isTreatmentRelated && (
+              <div className="bg-orange-50 dark:bg-orange-900/20 rounded-lg p-4 space-y-4 border border-orange-200 dark:border-orange-800">
+                <h3 className="font-semibold text-orange-900 dark:text-orange-100 flex items-center gap-2">
+                  💊 Treatment Side Effects
+                </h3>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Treatment Type
+                  </label>
+                  <select
+                      value={treatmentData.treatment_type}
+                      onChange={(e) => setTreatmentData({...treatmentData, treatment_type: e.target.value})}
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                  >
+                    <option value="">Select treatment type...</option>
+                    <option value="chemotherapy">Chemotherapy</option>
+                    <option value="radiation">Radiation Therapy</option>
+                    <option value="immunotherapy">Immunotherapy</option>
+                    <option value="targeted-therapy">Targeted Therapy</option>
+                    <option value="hormone-therapy">Hormone Therapy</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Regimen/Protocol (if known)
+                  </label>
+                  <input
+                      type="text"
+                      value={treatmentData.regimen}
+                      onChange={(e) => setTreatmentData({...treatmentData, regimen: e.target.value})}
+                      placeholder="e.g., R-CHOP, ABVD, etc."
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Current Cycle Number
+                  </label>
+                  <input
+                      type="text"
+                      value={treatmentData.cycle_number}
+                      onChange={(e) => setTreatmentData({...treatmentData, cycle_number: e.target.value})}
+                      placeholder="e.g., Cycle 3 of 6"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Side Effects Experiencing (select all that apply)
+                  </label>
+                  <div className="grid grid-cols-2 gap-2">
+                    {[
+                      { value: 'nausea', label: 'Nausea' },
+                      { value: 'vomiting', label: 'Vomiting' },
+                      { value: 'diarrhea', label: 'Diarrhea' },
+                      { value: 'constipation', label: 'Constipation' },
+                      { value: 'fatigue', label: 'Fatigue' },
+                      { value: 'neuropathy', label: 'Neuropathy' },
+                      { value: 'mouth-sores', label: 'Mouth Sores/Mucositis' },
+                      { value: 'hair-loss', label: 'Hair Loss' },
+                      { value: 'skin-changes', label: 'Skin Changes/Rash' },
+                      { value: 'appetite-loss', label: 'Loss of Appetite' },
+                      { value: 'cognitive', label: 'Cognitive Issues (Chemo Brain)' },
+                      { value: 'pain', label: 'Pain' }
+                    ].map(option => (
+                        <label key={option.value} className="flex items-center gap-2">
+                          <input
+                              type="checkbox"
+                              checked={treatmentData.side_effects.includes(option.value)}
+                              onChange={(e) => {
+                                const newEffects = e.target.checked
+                                    ? [...treatmentData.side_effects, option.value]
+                                    : treatmentData.side_effects.filter(s => s !== option.value);
+                                setTreatmentData({...treatmentData, side_effects: newEffects});
+                              }}
+                              className="rounded border-gray-300 dark:border-gray-600"
+                          />
+                          <span className="text-sm text-gray-700 dark:text-gray-300">{option.label}</span>
+                        </label>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Overall Side Effect Severity
+                  </label>
+                  <select
+                      value={treatmentData.severity}
+                      onChange={(e) => setTreatmentData({...treatmentData, severity: e.target.value})}
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                  >
+                    <option value="">Select severity...</option>
+                    <option value="mild">Mild - Manageable</option>
+                    <option value="moderate">Moderate - Interferes with daily activities</option>
+                    <option value="severe">Severe - Requires intervention</option>
+                    <option value="life-threatening">Life-threatening</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Side Effect Management (select all that apply)
+                  </label>
+                  <div className="space-y-2">
+                    {[
+                      { value: 'anti-nausea', label: 'Anti-nausea Medications' },
+                      { value: 'pain-meds', label: 'Pain Medications' },
+                      { value: 'growth-factors', label: 'Growth Factors' },
+                      { value: 'steroids', label: 'Steroids' },
+                      { value: 'nutrition-support', label: 'Nutritional Support' },
+                      { value: 'hospitalization', label: 'Required Hospitalization' },
+                      { value: 'dose-reduction', label: 'Dose Reduction Needed' },
+                      { value: 'treatment-delay', label: 'Treatment Delay' }
+                    ].map(option => (
+                        <label key={option.value} className="flex items-center gap-2">
+                          <input
+                              type="checkbox"
+                              checked={treatmentData.management.includes(option.value)}
+                              onChange={(e) => {
+                                const newManagement = e.target.checked
+                                    ? [...treatmentData.management, option.value]
+                                    : treatmentData.management.filter(m => m !== option.value);
+                                setTreatmentData({...treatmentData, management: newManagement});
+                              }}
+                              className="rounded border-gray-300 dark:border-gray-600"
+                          />
+                          <span className="text-sm text-gray-700 dark:text-gray-300">{option.label}</span>
+                        </label>
+                    ))}
+                  </div>
+                </div>
+              </div>
+          )}
+
+          {/* B12 Deficiency/Pernicious Anemia Form */}
+          {isB12DeficiencyRelated && (
+              <div className="bg-amber-50 dark:bg-amber-900/20 rounded-lg p-4 space-y-4 border border-amber-200 dark:border-amber-800">
+                <h3 className="font-semibold text-amber-900 dark:text-amber-100 flex items-center gap-2">
+                  💊 B12 Deficiency/Pernicious Anemia Details
+                </h3>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Cause of Deficiency
+                  </label>
+                  <select
+                      value={b12DeficiencyData.deficiency_cause}
+                      onChange={(e) => setB12DeficiencyData({...b12DeficiencyData, deficiency_cause: e.target.value})}
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                  >
+                    <option value="">Select cause...</option>
+                    <option value="pernicious-anemia">Pernicious Anemia</option>
+                    <option value="dietary">Dietary Deficiency</option>
+                    <option value="malabsorption">Malabsorption (Crohn's, celiac, etc.)</option>
+                    <option value="gastric-surgery">Post-gastric Surgery</option>
+                    <option value="medications">Medication-induced (Metformin, PPIs)</option>
+                    <option value="other">Other Cause</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Neurological Symptoms (select all that apply)
+                  </label>
+                  <div className="space-y-2">
+                    {[
+                      { value: 'numbness-tingling', label: 'Numbness/Tingling in Hands/Feet' },
+                      { value: 'balance-problems', label: 'Balance Problems' },
+                      { value: 'difficulty-walking', label: 'Difficulty Walking' },
+                      { value: 'weakness', label: 'Muscle Weakness' },
+                      { value: 'memory-problems', label: 'Memory Problems' },
+                      { value: 'confusion', label: 'Confusion/Disorientation' },
+                      { value: 'mood-changes', label: 'Mood Changes/Depression' },
+                      { value: 'vision-changes', label: 'Vision Changes' }
+                    ].map(option => (
+                        <label key={option.value} className="flex items-center gap-2">
+                          <input
+                              type="checkbox"
+                              checked={b12DeficiencyData.neurological_symptoms.includes(option.value)}
+                              onChange={(e) => {
+                                const newSymptoms = e.target.checked
+                                    ? [...b12DeficiencyData.neurological_symptoms, option.value]
+                                    : b12DeficiencyData.neurological_symptoms.filter(s => s !== option.value);
+                                setB12DeficiencyData({...b12DeficiencyData, neurological_symptoms: newSymptoms});
+                              }}
+                              className="rounded border-gray-300 dark:border-gray-600"
+                          />
+                          <span className="text-sm text-gray-700 dark:text-gray-300">{option.label}</span>
+                        </label>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Current Treatment (select all that apply)
+                  </label>
+                  <div className="space-y-2">
+                    {[
+                      { value: 'injections-weekly', label: 'B12 Injections (Weekly or more)' },
+                      { value: 'injections-monthly', label: 'B12 Injections (Monthly)' },
+                      { value: 'sublingual', label: 'Sublingual B12' },
+                      { value: 'high-dose-oral', label: 'High-dose Oral B12' },
+                      { value: 'nasal-spray', label: 'Nasal Spray/Gel' },
+                      { value: 'dietary-only', label: 'Dietary Modification Only' }
+                    ].map(option => (
+                        <label key={option.value} className="flex items-center gap-2">
+                          <input
+                              type="checkbox"
+                              checked={b12DeficiencyData.treatment.includes(option.value)}
+                              onChange={(e) => {
+                                const newTreatment = e.target.checked
+                                    ? [...b12DeficiencyData.treatment, option.value]
+                                    : b12DeficiencyData.treatment.filter(t => t !== option.value);
+                                setB12DeficiencyData({...b12DeficiencyData, treatment: newTreatment});
+                              }}
+                              className="rounded border-gray-300 dark:border-gray-600"
+                          />
+                          <span className="text-sm text-gray-700 dark:text-gray-300">{option.label}</span>
+                        </label>
+                    ))}
+                  </div>
+                </div>
+
+                {(b12DeficiencyData.treatment.includes('injections-weekly') ||
+                    b12DeficiencyData.treatment.includes('injections-monthly')) && (
+                    <>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                          Injection Frequency
+                        </label>
+                        <select
+                            value={b12DeficiencyData.injection_frequency}
+                            onChange={(e) => setB12DeficiencyData({...b12DeficiencyData, injection_frequency: e.target.value})}
+                            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                        >
+                          <option value="">Select frequency...</option>
+                          <option value="daily">Daily</option>
+                          <option value="weekly">Weekly</option>
+                          <option value="biweekly">Every 2 weeks</option>
+                          <option value="monthly">Monthly</option>
+                          <option value="as-needed">As needed for symptoms</option>
+                        </select>
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                          Date of Last Injection
+                        </label>
+                        <input
+                            type="date"
+                            value={b12DeficiencyData.last_injection}
+                            onChange={(e) => setB12DeficiencyData({...b12DeficiencyData, last_injection: e.target.value})}
+                            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                        />
+                      </div>
+                    </>
+                )}
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Symptom Improvement with Treatment
+                  </label>
+                  <select
+                      value={b12DeficiencyData.improvement_noted}
+                      onChange={(e) => setB12DeficiencyData({...b12DeficiencyData, improvement_noted: e.target.value})}
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                  >
+                    <option value="">Select improvement...</option>
+                    <option value="complete">Complete Resolution</option>
+                    <option value="significant">Significant Improvement</option>
+                    <option value="moderate">Moderate Improvement</option>
+                    <option value="minimal">Minimal Improvement</option>
+                    <option value="none">No Improvement (Residual Symptoms)</option>
+                  </select>
                 </div>
               </div>
           )}

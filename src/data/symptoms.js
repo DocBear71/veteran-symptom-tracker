@@ -65,7 +65,7 @@ export const symptomCategories = [
       { id: 'gad-muscle-tension', name: 'Muscle Tension' },
     ]
   },
-  // Phase 3: Social Anxiety Disorder (DC 9403)
+  // Phase 3: Social Anxiety Disorder
   {
     id: 'social-anxiety',
     name: 'Social Anxiety Symptoms',
@@ -77,7 +77,7 @@ export const symptomCategories = [
       { id: 'social-anxiety-anticipatory', name: 'Social Anxiety - Anticipatory Worry' },
     ]
   },
-  // Phase 3: OCD (DC 9404)
+  // Phase 3: OCD
   {
     id: 'ocd',
     name: 'OCD Symptoms',
@@ -89,7 +89,7 @@ export const symptomCategories = [
       { id: 'ocd-time-spent', name: 'OCD - Significant Time Spent on Rituals' },
     ]
   },
-  // Phase 3: Adjustment Disorder (DC 9440)
+  // Phase 3: Adjustment Disorder
   {
     id: 'adjustment-disorder',
     name: 'Adjustment Disorder Symptoms',
@@ -584,7 +584,7 @@ export const symptomCategories = [
       { id: 'urticaria-medication', name: 'Urticaria - Required Medication Use' },
     ]
   },
-  // Phase 3: Genitourinary Conditions (DC 7500-7542, 7332)
+  // Phase 3: Genitourinary Conditions
   {
     id: 'genitourinary',
     name: 'Genitourinary & Kidney',
@@ -625,7 +625,7 @@ export const symptomCategories = [
       { id: 'bowel-frequency', name: 'Bowel Frequency (Diarrhea)' },
     ]
   },
-  // Phase 2: Eye & Vision Conditions (DC 6061-6079)
+  // Phase 2: Eye & Vision Conditions
   {
     id: 'eye-vision',
     name: 'Eye & Vision',
@@ -645,7 +645,7 @@ export const symptomCategories = [
       { id: 'eye-strain', name: 'Eye Strain/Fatigue' },
     ]
   },
-// Phase 4: Gynecological Conditions (DC 7610-7632)
+  // Phase 4: Gynecological Conditions
   {
     id: 'gynecological',
     name: 'Gynecological',
@@ -699,6 +699,92 @@ export const symptomCategories = [
       { id: 'uterine-cramping', name: 'Uterine Cramping' },
     ]
   },
+  // Phase 5: Hemic/Lymphatic Conditions
+  {
+    id: 'hemic-lymphatic',
+    name: 'Hemic/Lymphatic',
+    symptoms: [
+      // General blood disorder symptoms
+      { id: 'fatigue-blood', name: 'Fatigue (Blood Disorder)' },
+      { id: 'weakness-blood', name: 'Weakness/Low Energy' },
+      { id: 'dizziness-anemia', name: 'Dizziness/Lightheadedness' },
+      { id: 'shortness-breath-anemia', name: 'Shortness of Breath (Anemia)' },
+      { id: 'pale-skin', name: 'Pale Skin/Pallor' },
+      { id: 'cold-hands-feet', name: 'Cold Hands/Feet' },
+      { id: 'chest-pain-anemia', name: 'Chest Pain (Anemia)' },
+      { id: 'rapid-heartbeat', name: 'Rapid/Irregular Heartbeat' },
+      { id: 'headache-anemia', name: 'Headaches (Anemia)' },
+
+      // Bleeding/bruising symptoms
+      { id: 'easy-bruising', name: 'Easy Bruising' },
+      { id: 'prolonged-bleeding', name: 'Prolonged Bleeding from Cuts' },
+      { id: 'nosebleeds-frequent', name: 'Frequent Nosebleeds' },
+      { id: 'bleeding-gums', name: 'Bleeding Gums' },
+      { id: 'petechiae', name: 'Petechiae (Small Red Spots)' },
+      { id: 'heavy-menstrual-bleeding-blood', name: 'Heavy Menstrual Bleeding (Blood Disorder)' },
+      { id: 'blood-in-urine', name: 'Blood in Urine' },
+      { id: 'blood-in-stool', name: 'Blood in Stool' },
+
+      // Infection/immune symptoms
+      { id: 'frequent-infections', name: 'Frequent Infections' },
+      { id: 'recurring-infections', name: 'Recurring Infections' },
+      { id: 'slow-healing-wounds', name: 'Slow Healing Wounds' },
+      { id: 'fever-unexplained', name: 'Unexplained Fever' },
+      { id: 'night-sweats-blood', name: 'Night Sweats (Blood Disorder)' },
+      { id: 'chills-blood', name: 'Chills (Blood Disorder)' },
+
+      // Lymphatic/spleen symptoms
+      { id: 'swollen-lymph-nodes', name: 'Swollen Lymph Nodes' },
+      { id: 'enlarged-spleen', name: 'Enlarged Spleen/Splenomegaly' },
+      { id: 'abdominal-fullness', name: 'Abdominal Fullness/Bloating' },
+      { id: 'left-upper-quadrant-pain', name: 'Left Upper Quadrant Pain' },
+
+      // Sickle cell specific
+      { id: 'sickle-cell-crisis', name: 'Sickle Cell Pain Crisis' },
+      { id: 'bone-pain-sickle', name: 'Bone Pain (Sickle Cell)' },
+      { id: 'joint-pain-sickle', name: 'Joint Pain (Sickle Cell)' },
+      { id: 'chest-pain-sickle', name: 'Chest Pain (Acute Chest Syndrome)' },
+      { id: 'priapism', name: 'Priapism' },
+      { id: 'vision-changes-sickle', name: 'Vision Changes (Sickle Cell)' },
+      { id: 'leg-ulcers', name: 'Leg Ulcers' },
+
+      // Polycythemia/thrombocytosis symptoms
+      { id: 'itching-after-bathing', name: 'Itching After Warm Bath' },
+      { id: 'burning-hands-feet', name: 'Burning Pain in Hands/Feet' },
+      { id: 'redness-skin', name: 'Redness of Skin' },
+      { id: 'blurred-vision-blood', name: 'Blurred Vision (Blood Disorder)' },
+      { id: 'headache-polycythemia', name: 'Headaches (Polycythemia)' },
+      { id: 'tinnitus-blood', name: 'Ringing in Ears (Blood Disorder)' },
+      { id: 'blood-clots', name: 'Blood Clots/Thrombosis' },
+
+      // Leukemia/lymphoma symptoms
+      { id: 'unexplained-weight-loss', name: 'Unexplained Weight Loss' },
+      { id: 'loss-appetite', name: 'Loss of Appetite' },
+      { id: 'bone-pain-leukemia', name: 'Bone Pain (Leukemia)' },
+      { id: 'abdominal-pain-blood', name: 'Abdominal Pain (Blood Disorder)' },
+
+      // Treatment-related symptoms
+      { id: 'nausea-chemo', name: 'Nausea (Chemotherapy)' },
+      { id: 'vomiting-chemo', name: 'Vomiting (Chemotherapy)' },
+      { id: 'mouth-sores', name: 'Mouth Sores/Mucositis' },
+      { id: 'hair-loss', name: 'Hair Loss' },
+      { id: 'neuropathy-chemo', name: 'Neuropathy (Chemotherapy)' },
+      { id: 'fatigue-chemo', name: 'Fatigue (Chemotherapy)' },
+
+      // B12/neurological symptoms
+      { id: 'numbness-tingling-b12', name: 'Numbness/Tingling (B12 Deficiency)' },
+      { id: 'difficulty-walking', name: 'Difficulty Walking/Balance Problems' },
+      { id: 'memory-problems-b12', name: 'Memory Problems (B12 Deficiency)' },
+      { id: 'confusion-b12', name: 'Confusion (B12 Deficiency)' },
+      { id: 'tongue-problems', name: 'Sore/Smooth Tongue' },
+
+      // Other blood disorder symptoms
+      { id: 'jaundice', name: 'Jaundice/Yellow Skin' },
+      { id: 'dark-urine', name: 'Dark Urine' },
+      { id: 'enlarged-liver', name: 'Enlarged Liver/Hepatomegaly' },
+      { id: 'cough-blood', name: 'Coughing Up Blood' },
+    ]
+  },
 ];
 
 // Helper function to determine if a category is a "child" of another
@@ -730,6 +816,11 @@ const getParentCategory = (categoryName) => {
   if (name.includes('endometriosis')) return 'gynecological';
   if (name.includes('pcos')) return 'gynecological';
   if (name.includes('menstrual')) return 'gynecological';
+  if (name.includes('hemic-lymphatic')) return 'hemic-lymphatic';
+  if (name.includes('anemia')) return 'hemic-lymphatic';
+  if (name.includes('blood')) return 'hemic-lymphatic';
+  if (name.includes('leukemia')) return 'hemic-lymphatic';
+  if (name.includes('lymphoma')) return 'hemic-lymphatic';
   return null; // No parent, this is a standalone category
 };
 

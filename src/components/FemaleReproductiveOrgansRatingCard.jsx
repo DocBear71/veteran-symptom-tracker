@@ -118,7 +118,7 @@ export default function FemaleReproductiveOrgansRatingCard({ analysis, expanded,
                           <div className="p-3 rounded-lg bg-purple-50 dark:bg-purple-900/20">
                             <div className="text-xs text-gray-600 dark:text-gray-400 mb-1">Condition</div>
                             <div className="font-medium text-purple-700 dark:text-purple-300">
-                              PCOS (DC 7615)
+                              PCOS
                             </div>
                           </div>
                       )}
@@ -126,7 +126,7 @@ export default function FemaleReproductiveOrgansRatingCard({ analysis, expanded,
                           <div className="p-3 rounded-lg bg-orange-50 dark:bg-orange-900/20">
                             <div className="text-xs text-gray-600 dark:text-gray-400 mb-1">Condition</div>
                             <div className="font-medium text-orange-700 dark:text-orange-300">
-                              PID (DC 7614)
+                              PID
                             </div>
                           </div>
                       )}
