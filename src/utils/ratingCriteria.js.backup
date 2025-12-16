@@ -15326,9 +15326,6 @@ export const analyzeKidneyStonesLogs = (logs) => {
   evidenceGaps.push('Get urology treatment records documenting recurrent stones');
 
   return {
-      condition: 'Kidney Stones (Nephrolithiasis)',
-      diagnosticCode: '7508',
-      
     hasData: true,
     totalLogs: stoneLogs.length,
     supportedRating,
@@ -15433,9 +15430,6 @@ export const analyzeChronicRenalDiseaseLogs = (logs, options = {}) => {
   evidenceGaps.push('Document any complications (anemia, bone disease, metabolic issues)');
 
   return {
-      condition: 'Chronic Kidney Disease',
-      diagnosticCode: '7530',
-      
     hasData: true,
     totalLogs: renalLogs.length,
     supportedRating,
@@ -15555,9 +15549,6 @@ export const analyzeVoidingDysfunctionLogs = (logs) => {
   evidenceGaps.push('Document any urodynamic testing results');
 
   return {
-      condition: 'Voiding Dysfunction',
-      diagnosticCode: '7542',
-      
     hasData: true,
     totalLogs: voidingLogs.length,
     supportedRating,
@@ -15630,9 +15621,6 @@ export const analyzeSphincterImpairmentLogs = (logs) => {
   ];
 
   return {
-      condition: 'Sphincter Control Impairment',
-      diagnosticCode: '7332',
-      
     hasData: true,
     totalLogs: sphincterLogs.length,
     supportedRating,
@@ -15680,7 +15668,7 @@ export const analyzeErectileDysfunctionLogs = (logs) => {
     hasData: true,
     totalLogs: edLogs.length,
     supportedRating: 0,
-    ratingRationale: [
+    rationale: [
       'DC 7522 is rated at 0% only',
       `Severity documented: ${mostCommonSeverity || 'not specified'}`,
       'Service connection establishes potential for SMC in specific circumstances',
@@ -15703,7 +15691,7 @@ export const analyzeIronDeficiencyAnemiaLogs = (logs, options = {}) => {
     return {
       hasData: false,
       supportedRating: 0,
-      ratingRationale: [],
+      rationale: [],
       gaps: ['No symptom logs found for iron deficiency anemia'],
       metrics: {},
       criteriaReference: IRON_DEFICIENCY_ANEMIA_CRITERIA
@@ -15719,7 +15707,7 @@ export const analyzeIronDeficiencyAnemiaLogs = (logs, options = {}) => {
     return {
       hasData: false,
       supportedRating: 0,
-      ratingRationale: ['No iron deficiency anemia symptom logs found'],
+      rationale: ['No iron deficiency anemia symptom logs found'],
       gaps: ['Log symptoms related to iron deficiency anemia'],
       metrics: {},
       criteriaReference: IRON_DEFICIENCY_ANEMIA_CRITERIA
@@ -15770,9 +15758,6 @@ export const analyzeIronDeficiencyAnemiaLogs = (logs, options = {}) => {
   evidenceGaps.push('Obtain provider statement regarding treatment frequency and necessity');
 
   return {
-      condition: 'Iron Deficiency Anemia',
-      diagnosticCode: '7720',
-      
     hasData: true,
     supportedRating,
     rationale,
@@ -15789,7 +15774,7 @@ export const analyzeFolateDeficiencyAnemiaLogs = (logs, options = {}) => {
     return {
       hasData: false,
       supportedRating: 0,
-      ratingRationale: ['No folate deficiency anemia logs found'],
+      rationale: ['No folate deficiency anemia logs found'],
       gaps: ['Log folate deficiency anemia symptoms and treatment'],
       metrics: {},
       criteriaReference: FOLATE_DEFICIENCY_ANEMIA_CRITERIA
@@ -15817,9 +15802,6 @@ export const analyzeFolateDeficiencyAnemiaLogs = (logs, options = {}) => {
   }
 
   return {
-      condition: 'Folic Acid Deficiency Anemia',
-      diagnosticCode: '7721',
-      
     hasData: true,
     supportedRating,
     rationale,
@@ -15919,7 +15901,7 @@ export const analyzeHemolyticAnemiaLogs = (logs, options = {}) => {
     return {
       hasData: false,
       supportedRating: 0,
-      ratingRationale: ['No hemolytic anemia logs found'],
+      rationale: ['No hemolytic anemia logs found'],
       gaps: ['Log hemolytic anemia symptoms and treatment'],
       metrics: {},
       criteriaReference: HEMOLYTIC_ANEMIA_CRITERIA
@@ -15960,9 +15942,6 @@ export const analyzeHemolyticAnemiaLogs = (logs, options = {}) => {
   }
 
   return {
-      condition: 'Acquired Hemolytic Anemia',
-      diagnosticCode: '7723',
-      
     hasData: true,
     supportedRating,
     rationale,
@@ -15987,7 +15966,7 @@ export const analyzeSickleCellAnemiaLogs = (logs, options = {}) => {
     return {
       hasData: false,
       supportedRating: 0,
-      ratingRationale: ['No sickle cell disease logs found'],
+      rationale: ['No sickle cell disease logs found'],
       gaps: ['Log sickle cell crises and symptoms'],
       metrics: {},
       criteriaReference: SICKLE_CELL_ANEMIA_CRITERIA
@@ -16044,9 +16023,6 @@ export const analyzeSickleCellAnemiaLogs = (logs, options = {}) => {
   }
 
   return {
-      condition: 'Sickle Cell Anemia',
-      diagnosticCode: '7714',
-      
     hasData: true,
     supportedRating,
     rationale,
@@ -16063,7 +16039,7 @@ export const analyzeAplasticAnemiaLogs = (logs, options = {}) => {
     return {
       hasData: false,
       supportedRating: 0,
-      ratingRationale: ['No aplastic anemia logs found'],
+      rationale: ['No aplastic anemia logs found'],
       gaps: ['Log aplastic anemia symptoms and treatment'],
       metrics: {},
       criteriaReference: APLASTIC_ANEMIA_CRITERIA
@@ -16109,9 +16085,6 @@ export const analyzeAplasticAnemiaLogs = (logs, options = {}) => {
   }
 
   return {
-      condition: 'Aplastic Anemia',
-      diagnosticCode: '7716',
-      
     hasData: true,
     supportedRating,
     rationale,
@@ -16137,7 +16110,7 @@ export const analyzePolycythemiaVeraLogs = (logs, options = {}) => {
     return {
       hasData: false,
       supportedRating: 0,
-      ratingRationale: ['No polycythemia vera logs found'],
+      rationale: ['No polycythemia vera logs found'],
       gaps: ['Log polycythemia vera symptoms and treatment'],
       metrics: {},
       criteriaReference: POLYCYTHEMIA_VERA_CRITERIA
@@ -16189,9 +16162,6 @@ export const analyzePolycythemiaVeraLogs = (logs, options = {}) => {
   }
 
   return {
-      condition: 'Polycythemia Vera',
-      diagnosticCode: '7704',
-      
     hasData: true,
     supportedRating,
     rationale,
@@ -16216,7 +16186,7 @@ export const analyzeImmuneThrombocytopeniaLogs = (logs, options = {}) => {
     return {
       hasData: false,
       supportedRating: 0,
-      ratingRationale: ['No immune thrombocytopenia logs found'],
+      rationale: ['No immune thrombocytopenia logs found'],
       gaps: ['Log ITP symptoms and treatment'],
       metrics: {},
       criteriaReference: IMMUNE_THROMBOCYTOPENIA_CRITERIA
@@ -16279,9 +16249,6 @@ export const analyzeImmuneThrombocytopeniaLogs = (logs, options = {}) => {
   }
 
   return {
-      condition: 'Immune Thrombocytopenia (ITP)',
-      diagnosticCode: '7705',
-      
     hasData: true,
     supportedRating,
     rationale,
@@ -16388,7 +16355,7 @@ export const analyzeHodgkinsLymphomaLogs = (logs, options = {}) => {
     return {
       hasData: false,
       supportedRating: 0,
-      ratingRationale: ["No Hodgkin's lymphoma logs found"],
+      rationale: ["No Hodgkin's lymphoma logs found"],
       gaps: ["Log Hodgkin's lymphoma symptoms and treatment"],
       metrics: {},
       criteriaReference: HODGKINS_LYMPHOMA_CRITERIA
@@ -16423,19 +16390,17 @@ export const analyzeHodgkinsLymphomaLogs = (logs, options = {}) => {
   }
 
   return {
-      condition: 'Hodgkin\'s Lymphoma',
-      diagnosticCode: '7709',
-      hasData: true,
-      supportedRating,
-      rationale,
-      gaps: [
-        'Upload oncology consultation reports',
-        'Upload pathology report confirming diagnosis',
-        'Upload PET/CT scan results',
-        'Upload treatment records'
-      ],
-      metrics: { totalLogs: hodgkinsLogs.length },
-      criteriaReference: HODGKINS_LYMPHOMA_CRITERIA
+    hasData: true,
+    supportedRating,
+    rationale,
+    gaps: [
+      'Upload oncology consultation reports',
+      'Upload pathology report confirming diagnosis',
+      'Upload PET/CT scan results',
+      'Upload treatment records'
+    ],
+    metrics: { totalLogs: hodgkinsLogs.length },
+    criteriaReference: HODGKINS_LYMPHOMA_CRITERIA
   };
 };
 
@@ -16510,7 +16475,7 @@ export const analyzeNonHodgkinsLymphomaLogs = (logs, options = {}) => {
     return {
       hasData: false,
       supportedRating: 0,
-      ratingRationale: ["No Non-Hodgkin's lymphoma logs found"],
+      rationale: ["No Non-Hodgkin's lymphoma logs found"],
       gaps: ["Log Non-Hodgkin's lymphoma symptoms and treatment"],
       metrics: {},
       criteriaReference: NON_HODGKINS_LYMPHOMA_CRITERIA
@@ -16545,9 +16510,6 @@ export const analyzeNonHodgkinsLymphomaLogs = (logs, options = {}) => {
   }
 
   return {
-      condition: 'Non-Hodgkin\'s Lymphoma',
-      diagnosticCode: '7715',
-      
     hasData: true,
     supportedRating,
     rationale,
@@ -16571,7 +16533,7 @@ export const analyzeMyeloproliferative7718Logs = (logs, options = {}) => {
     return {
       hasData: false,
       supportedRating: 0,
-      ratingRationale: ['No essential thrombocythemia or myelofibrosis logs found'],
+      rationale: ['No essential thrombocythemia or myelofibrosis logs found'],
       gaps: ['Log symptoms and treatment for ET or PMF'],
       metrics: {},
       criteriaReference: MYELOPROLIFERATIVE_7718_CRITERIA
@@ -16617,9 +16579,6 @@ export const analyzeMyeloproliferative7718Logs = (logs, options = {}) => {
   }
 
   return {
-      condition: 'Essential Thrombocythemia',
-      diagnosticCode: '7718',
-      
     hasData: true,
     supportedRating,
     rationale,
@@ -16642,7 +16601,7 @@ export const analyzeChronicMyelogenousLeukemiaLogs = (logs, options = {}) => {
     return {
       hasData: false,
       supportedRating: 0,
-      ratingRationale: ['No CML logs found'],
+      rationale: ['No CML logs found'],
       gaps: ['Log CML symptoms and treatment'],
       metrics: {},
       criteriaReference: CHRONIC_MYELOGENOUS_LEUKEMIA_CRITERIA
@@ -16679,9 +16638,6 @@ export const analyzeChronicMyelogenousLeukemiaLogs = (logs, options = {}) => {
   }
 
   return {
-      condition: 'Chronic Myelogenous Leukemia',
-      diagnosticCode: '7703',
-      
     hasData: true,
     supportedRating,
     rationale,
@@ -16706,7 +16662,7 @@ export const analyzeSolitaryPlasmacytomaLogs = (logs, options = {}) => {
     return {
       hasData: false,
       supportedRating: 0,
-      ratingRationale: ['No solitary plasmacytoma logs found'],
+      rationale: ['No solitary plasmacytoma logs found'],
       gaps: ['Log plasmacytoma symptoms and treatment'],
       metrics: {},
       criteriaReference: SOLITARY_PLASMACYTOMA_CRITERIA
@@ -16731,9 +16687,6 @@ export const analyzeSolitaryPlasmacytomaLogs = (logs, options = {}) => {
   }
 
   return {
-      condition: 'Solitary Plasmacytoma',
-      diagnosticCode: '7712',
-      
     hasData: true,
     supportedRating,
     rationale,
@@ -16756,7 +16709,7 @@ export const analyzeMyelodysplasticSyndromesLogs = (logs, options = {}) => {
     return {
       hasData: false,
       supportedRating: 0,
-      ratingRationale: ['No myelodysplastic syndrome logs found'],
+      rationale: ['No myelodysplastic syndrome logs found'],
       gaps: ['Log MDS symptoms and treatment'],
       metrics: {},
       criteriaReference: MYELODYSPLASTIC_SYNDROMES_CRITERIA
@@ -16801,9 +16754,6 @@ export const analyzeMyelodysplasticSyndromesLogs = (logs, options = {}) => {
   }
 
   return {
-      condition: 'Myelodysplastic Syndromes',
-      diagnosticCode: '7703',
-      
     hasData: true,
     supportedRating,
     rationale,
@@ -16908,9 +16858,6 @@ export const analyzeEndometriosisLogs = (logs) => {
   evidenceGaps.push('Document pain severity and interference with daily activities');
 
   return {
-      condition: 'Endometriosis',
-      diagnosticCode: '7629',
-      
     hasData: true,
     totalLogs: endoLogs.length,
     supportedRating,
@@ -17035,9 +16982,6 @@ export const analyzeFemaleReproductiveOrgansLogs = (logs) => {
   }
 
   return {
-      condition: 'Diseases of Female Reproductive Organs',
-      diagnosticCode: '7610-7629',
-      
     hasData: true,
     totalLogs: gyneLogs.length,
     supportedRating,
@@ -17118,9 +17062,6 @@ export const analyzePelvicProlapseLogs = (logs) => {
   ];
 
   return {
-      condition: 'Pelvic Organ Prolapse',
-      diagnosticCode: '7628',
-      
     hasData: true,
     totalLogs: prolapseLogs.length,
     supportedRating,
@@ -17160,13 +17101,10 @@ export const analyzeFemaleArousalDisorderLogs = (logs) => {
   const hasDecreasedLibido = fsadLogs.some(log => log.gynecologicalData?.libidoDecreased);
 
   return {
-      condition: 'Female Sexual Arousal Disorder (FSAD)',
-      diagnosticCode: '7632',
-      
     hasData: true,
     totalLogs: fsadLogs.length,
     supportedRating: 0,
-    ratingRationale: [
+    rationale: [
       'DC 7632 is rated at 0% only',
       'Service connection establishes potential for SMC review',
       hasArousalDifficulty ? 'Arousal difficulty documented' : '',

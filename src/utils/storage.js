@@ -38,10 +38,12 @@ const getProfileKey = (baseKey, profileId = null) => {
 
 export const saveSymptomLog = (entry, profileId = null) => {
   const logs = getSymptomLogs(profileId);
+  const now = new Date().toISOString();
   const newEntry = {
     ...entry,
     id: crypto.randomUUID(),
-    timestamp: new Date().toISOString(),
+    timestamp: now,  // When the log was created/saved
+    occurredAt: entry.occurredAt || now,  // When the symptom actually occurred (defaults to now)
   };
   logs.push(newEntry);
   const key = getProfileKey('symptomTracker_logs', profileId);
@@ -102,6 +104,29 @@ export const updateSymptomLog = (id, updates, profileId = null) => {
 export const getSymptomLogById = (id, profileId = null) => {
   const logs = getSymptomLogs(profileId);
   return logs.find(log => log.id === id) || null;
+};
+
+// ============================================
+// OCCURRENCE TIME HELPERS
+// ============================================
+
+/**
+ * Get the time when a symptom actually occurred
+ * Falls back to timestamp for backward compatibility
+ */
+export const getOccurrenceTime = (log) => {
+  return log.occurredAt || log.timestamp;
+};
+
+/**
+ * Check if a log was back-dated (occurred before it was logged)
+ */
+export const isBackDated = (log) => {
+  if (!log.occurredAt || !log.timestamp) return false;
+  const occurred = new Date(log.occurredAt);
+  const logged = new Date(log.timestamp);
+  // Consider back-dated if occurrence is more than 1 minute before logging
+  return (logged - occurred) > 60000; // 60 seconds
 };
 
 // ============================================

@@ -1,6 +1,6 @@
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
-import { getSymptomLogs, saveSymptomLog, getMedicationLogsForSymptom, getAppointments } from './storage';
+import { getSymptomLogs, saveSymptomLog, getMedicationLogsForSymptom, getAppointments, getOccurrenceTime, isBackDated } from './storage';
 import { getMeasurements } from './measurements';
 import {
     generateBPTrendChart,
@@ -170,6 +170,7 @@ export const generatePDF = (dateRange = 'all', options = { includeAppointments: 
 
       const detailData = logs.map(log => {
         const linkedMeds = getMedicationLogsForSymptom(log.id);
+        const backDatedTag = isBackDated(log) ? ' [BACK-DATED]' : '';
         let notes = log.notes || '-';
 
         // Phase 1A: Add universal fields first
@@ -580,13 +581,13 @@ export const generatePDF = (dateRange = 'all', options = { includeAppointments: 
                 notes = `Meds: ${medInfo}` + (notes !== '-' ? ` | ${notes}` : '');
             }
 
-            return [
-                new Date(log.timestamp).toLocaleString(),
-                log.symptomName,
-                log.severity.toString(),
-                notes
-            ];
-        });
+        return [
+            new Date(getOccurrenceTime(log)).toLocaleString() + backDatedTag,
+            log.symptomName,
+            log.severity.toString(),
+            notes
+        ];
+      });
 
         autoTable(doc, {
             startY: currentY + 4,
@@ -694,7 +695,7 @@ export const generateCSV = (dateRange = 'all', options = { includeAppointments: 
         csvContent += '=== SYMPTOM LOG ===\n\n';
 
       const symptomHeaders = [
-        'Date', 'Time', 'Symptom', 'Category', 'Severity',
+        'Occurred Date', 'Occurred Time', 'Logged Date', 'Logged Time', 'Back-Dated', 'Symptom', 'Category', 'Severity',
         // Universal fields
         'Flare-Up', 'Duration', 'Time of Day',
         'Medications Taken',
@@ -764,9 +765,15 @@ export const generateCSV = (dateRange = 'all', options = { includeAppointments: 
             if (log.ptsdData?.hypervigilance) ptsdSymptoms.push('Hypervigilance');
             if (log.ptsdData?.exaggeratedStartle) ptsdSymptoms.push('Startle response');
 
+          const occurredDate = new Date(getOccurrenceTime(log));
+          const loggedDate = new Date(log.timestamp);
+
           return [
-            date.toLocaleDateString(),
-            date.toLocaleTimeString(),
+            occurredDate.toLocaleDateString(),
+            occurredDate.toLocaleTimeString(),
+            loggedDate.toLocaleDateString(),
+            loggedDate.toLocaleTimeString(),
+            isBackDated(log) ? 'Yes' : 'No',
             log.symptomName,
             log.category,
             log.severity,
@@ -1325,29 +1332,37 @@ const analyzeAllConditions = (logs, options = {}) => {
 
             // Only include conditions with actual data
             if (result && result.hasData && result.supportedRating !== null) {
-                analyses.push({
-                    conditionId,
-                    ...result
-                });
+              // Debug: check if condition field is missing
+              if (!result.condition) {
+                console.warn(`⚠️ Analysis function for '${conditionId}' is missing 'condition' field in return value`);
+              }
+
+              analyses.push({
+                conditionId,
+                ...result
+              });
             }
         } catch (error) {
             console.error(`Error analyzing ${conditionId}:`, error);
         }
     });
 
-    // Sort by supported rating (highest first), then alphabetically
-    analyses.sort((a, b) => {
+  // Sort by supported rating (highest first), then alphabetically
+      analyses.sort((a, b) => {
         const ratingA = parseInt(a.supportedRating) || 0;
         const ratingB = parseInt(b.supportedRating) || 0;
 
         if (ratingB !== ratingA) {
-            return ratingB - ratingA; // Higher ratings first
+          return ratingB - ratingA; // Higher ratings first
         }
 
-        return a.condition.localeCompare(b.condition);
-    });
+        // Safety check: ensure both conditions exist before comparing
+        const conditionA = a.condition || 'Unknown Condition';
+        const conditionB = b.condition || 'Unknown Condition';
+        return conditionA.localeCompare(conditionB);
+      });
 
-    return analyses;
+      return analyses;
 };
 
 /**
@@ -1492,8 +1507,9 @@ export const generateVAClaimPackagePDF = async (dateRange = 'all', options = {})
         doc.text('2. DETAILED SYMPTOM ENTRIES', 14, currentY);
         doc.setFont(undefined, 'normal');
 
-        const detailData = filteredLogs.map(log => {
+          const detailData = filteredLogs.map(log => {
             const linkedMeds = options.includeMedications !== false ? getMedicationLogsForSymptom(log.id) : [];
+            const backDatedTag = isBackDated(log) ? ' [BACK-DATED]' : '';
             let notes = log.notes || '-';
 
             // Add condition-specific details (migraine, sleep, PTSD, pain)
@@ -1521,12 +1537,12 @@ export const generateVAClaimPackagePDF = async (dateRange = 'all', options = {})
             }
 
             return [
-                new Date(log.timestamp).toLocaleString(),
+                new Date(getOccurrenceTime(log)).toLocaleString() + backDatedTag,
                 log.symptomName,
                 log.severity.toString(),
                 notes
             ];
-        });
+          });
 
         autoTable(doc, {
             startY: currentY + 6,
