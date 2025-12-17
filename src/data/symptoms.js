@@ -926,6 +926,74 @@ export const symptomCategories = [
       { id: 'q-fever-joint-pain', name: 'Q Fever - Joint Pain' },
     ]
   },
+  // Phase 6: Salmonella
+  {
+    id: 'salmonella',
+    name: 'Nontyphoid Salmonella Symptoms',
+    symptoms: [
+      { id: 'salmonella-diarrhea', name: 'Salmonella - Diarrhea' },
+      { id: 'salmonella-fever', name: 'Salmonella - Fever' },
+      { id: 'salmonella-abdominal-cramps', name: 'Salmonella - Abdominal Cramps' },
+      { id: 'salmonella-nausea', name: 'Salmonella - Nausea' },
+      { id: 'salmonella-vomiting', name: 'Salmonella - Vomiting' },
+      { id: 'salmonella-bloody-stool', name: 'Salmonella - Bloody Stool' },
+      { id: 'salmonella-joint-pain', name: 'Salmonella - Joint Pain (Reactive Arthritis)' },
+      { id: 'salmonella-bacteremia', name: 'Salmonella - Bacteremia/Sepsis' },
+      { id: 'salmonella-dehydration', name: 'Salmonella - Dehydration' },
+      { id: 'salmonella-fatigue', name: 'Salmonella - Fatigue' },
+    ]
+  },
+  // Phase 6: Shigella
+  {
+    id: 'shigella',
+    name: 'Shigella Symptoms',
+    symptoms: [
+      { id: 'shigella-diarrhea', name: 'Shigella - Diarrhea' },
+      { id: 'shigella-bloody-stool', name: 'Shigella - Bloody Stool (Dysentery)' },
+      { id: 'shigella-abdominal-cramps', name: 'Shigella - Abdominal Cramps' },
+      { id: 'shigella-fever', name: 'Shigella - Fever' },
+      { id: 'shigella-tenesmus', name: 'Shigella - Tenesmus (Painful Straining)' },
+      { id: 'shigella-nausea', name: 'Shigella - Nausea' },
+      { id: 'shigella-vomiting', name: 'Shigella - Vomiting' },
+      { id: 'shigella-dehydration', name: 'Shigella - Dehydration' },
+      { id: 'shigella-reactive-arthritis', name: 'Shigella - Reactive Arthritis' },
+      { id: 'shigella-seizures', name: 'Shigella - Seizures' },
+    ]
+  },
+  // Phase 6: West Nile Virus
+  {
+    id: 'west-nile',
+    name: 'West Nile Virus Symptoms',
+    symptoms: [
+      { id: 'west-nile-fever', name: 'West Nile - Fever' },
+      { id: 'west-nile-headache', name: 'West Nile - Headache' },
+      { id: 'west-nile-body-aches', name: 'West Nile - Body Aches' },
+      { id: 'west-nile-fatigue', name: 'West Nile - Fatigue' },
+      { id: 'west-nile-weakness', name: 'West Nile - Muscle Weakness' },
+      { id: 'west-nile-cognitive', name: 'West Nile - Cognitive Problems' },
+      { id: 'west-nile-tremors', name: 'West Nile - Tremors' },
+      { id: 'west-nile-vision-problems', name: 'West Nile - Vision Problems' },
+      { id: 'west-nile-numbness', name: 'West Nile - Numbness/Tingling' },
+      { id: 'west-nile-paralysis', name: 'West Nile - Paralysis (Acute Flaccid)' },
+    ]
+  },
+  // Phase 6: Nontuberculous Mycobacterium
+  {
+    id: 'ntm',
+    name: 'NTM (Nontuberculous Mycobacterium) Symptoms',
+    symptoms: [
+      { id: 'ntm-cough', name: 'NTM - Chronic Cough' },
+      { id: 'ntm-sputum', name: 'NTM - Sputum Production' },
+      { id: 'ntm-fatigue', name: 'NTM - Fatigue' },
+      { id: 'ntm-fever', name: 'NTM - Fever' },
+      { id: 'ntm-night-sweats', name: 'NTM - Night Sweats' },
+      { id: 'ntm-weight-loss', name: 'NTM - Weight Loss' },
+      { id: 'ntm-chest-pain', name: 'NTM - Chest Pain' },
+      { id: 'ntm-shortness-breath', name: 'NTM - Shortness of Breath' },
+      { id: 'ntm-hemoptysis', name: 'NTM - Hemoptysis (Coughing Blood)' },
+      { id: 'ntm-lymph-nodes', name: 'NTM - Swollen Lymph Nodes' },
+    ]
+  },
   // Phase 7: Dental/Oral Conditions (DC 9900s)
   {
     id: 'dental-oral',

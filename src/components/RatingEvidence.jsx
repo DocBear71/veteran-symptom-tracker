@@ -94,6 +94,10 @@ import {
   analyzeBrucellosisLogs,
   analyzeCampylobacterLogs,
   analyzeQFeverLogs,
+  analyzeSalmonellaLogs,
+  analyzeShigellaLogs,
+  analyzeWestNileLogs,
+  analyzeNTMLogs,
   getAllMigraineRatings,
   getAllSleepApneaRatings,
   getAllPTSDRatings,
@@ -111,8 +115,12 @@ import {
   getAllEpilepsyMinorRatings,
   getAllMalariaRatings,
   getAllBrucellosisRatings,
-  getCampylobacterDefinition,
-  getQFeverDefinition,
+  getAllCampylobacterRatings,
+  getAllQFeverRatings,
+  getAllSalmonellaRatings,
+  getAllShigellaRatings,
+  getAllWestNileRatings,
+  getAllNTMRatings,
   getEpilepsyMajorDefinition,
   getEpilepsyMinorDefinition,
   getMigraineDefinition,
@@ -131,8 +139,12 @@ import {
   getRatingColorClass,
   getMalariaDefinition,
   getBrucellosisDefinition,
-  getAllCampylobacterRatings,
-  getAllQFeverRatings,
+  getCampylobacterDefinition,
+  getQFeverDefinition,
+  getSalmonellaRatingCriteria,
+  getShigellaRatingCriteria,
+  getWestNileRatingCriteria,
+  getNTMRatingCriteria,
   formatRating,
 } from '../utils/ratingCriteria';
 import HypertensionRatingCard from './HypertensionRatingCard';
@@ -203,6 +215,10 @@ import MalariaRatingCard from './MalariaRatingCard';
 import BrucellosisRatingCard from './BrucellosisRatingCard';
 import CampylobacterRatingCard from './CampylobacterRatingCard';
 import QFeverRatingCard from './QFeverRatingCard';
+import SalmonellaRatingCard from './SalmonellaRatingCard';
+import ShigellaRatingCard from './ShigellaRatingCard';
+import WestNileRatingCard from './WestNileRatingCard';
+import NTMRatingCard from './NTMRatingCard';
 
 // Storage key for sleep apnea profile
 const SLEEP_APNEA_PROFILE_KEY = 'symptomTracker_sleepApneaProfile';
@@ -547,6 +563,18 @@ const RatingEvidence = () => {
     const qFeverAnalysis = useMemo(() => {
       return analyzeQFeverLogs(logs, { evaluationPeriodDays: evaluationDays  });
     }, [logs, evaluationDays]);
+    const salmonellaAnalysis = useMemo(() => {
+      return analyzeSalmonellaLogs(logs, { evaluationPeriodDays: evaluationDays  });
+    }, [logs, evaluationDays]);
+    const shigellaAnalysis = useMemo(() => {
+      return analyzeShigellaLogs(logs, { evaluationPeriodDays: evaluationDays  });
+    }, [logs, evaluationDays]);
+    const westNileAnalysis = useMemo(() => {
+      return analyzeWestNileLogs(logs, { evaluationPeriodDays: evaluationDays  });
+    }, [logs, evaluationDays]);
+    const ntmAnalysis = useMemo(() => {
+      return analyzeNTMLogs(logs, { evaluationPeriodDays: evaluationDays  });
+    }, [logs, evaluationDays]);
     // Phase 7: Dental/Oral Analysis Hooks
     const toothLossAnalysis = useMemo(() => {
       return analyzeToothLossLogs(logs, { evaluationPeriodDays: evaluationDays });
@@ -660,7 +688,11 @@ const RatingEvidence = () => {
         malariaAnalysis.hasData ||
         brucellosisAnalysis.hasData ||
         campylobacterAnalysis.hasData ||
-        qFeverAnalysis.hasData
+        qFeverAnalysis.hasData ||
+        salmonellaAnalysis.hasData ||
+        shigellaAnalysis.hasData ||
+        westNileAnalysis.hasData ||
+        ntmAnalysis.hasData
     ;
 
     return (
@@ -1335,6 +1367,30 @@ const RatingEvidence = () => {
               expanded={expandedSection === 'q-fever'}
               onToggle={() => toggleSection('q-fever')}
           />
+          <SalmonellaRatingCard
+              analysis={salmonellaAnalysis}
+              expanded={expandedSection === 'salmonella'}
+              onToggle={() => toggleSection('salmonella')}
+          />
+
+          <ShigellaRatingCard
+              analysis={shigellaAnalysis}
+              expanded={expandedSection === 'shigella'}
+              onToggle={() => toggleSection('shigella')}
+          />
+
+          <WestNileRatingCard
+              analysis={westNileAnalysis}
+              expanded={expandedSection === 'westNile'}
+              onToggle={() => toggleSection('westNile')}
+          />
+
+          <NTMRatingCard
+              analysis={ntmAnalysis}
+              expanded={expandedSection === 'ntm'}
+              onToggle={() => toggleSection('ntm')}
+          />
+
 
           {/* Sleep Apnea Setup Modal */}
             {showSleepApneaSetup && (

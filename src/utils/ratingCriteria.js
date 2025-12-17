@@ -790,65 +790,6 @@ export const CONDITIONS = {
     symptomIds: ['fatigue-anemia', 'frequent-infections', 'easy-bruising'],
   },
   // ============================================
-  // Phase 7: Dental/ORAL CONDITIONS (DC 9900 series)
-  // ============================================
-  TMJ_DISORDER: {
-    id: 'tmj-disorder',
-    name: 'Temporomandibular Joint (TMJ) Disorder',
-    diagnosticCode: '9905',
-    cfrReference: '38 CFR 4.150',
-    symptomIds: ['jaw-pain', 'jaw-stiffness', 'limited-mouth-opening', 'jaw-clicking', 'jaw-locking', 'chewing-difficulty'],
-  },
-  MAXILLA_MANDIBLE_BONE_DISEASE: {
-    id: 'maxilla-mandible-bone-disease',
-    name: 'Maxilla or Mandible Osteomyelitis/Osteonecrosis',
-    diagnosticCode: '9900',
-    cfrReference: '38 CFR 4.150 (rates as DC 5000)',
-    symptomIds: ['jaw-infection', 'bone-pain-jaw', 'osteomyelitis-symptoms', 'bone-exposure', 'jaw-drainage'],
-  },
-  MANDIBLE_NONUNION: {
-    id: 'mandible-nonunion',
-    name: 'Mandible Nonunion',
-    diagnosticCode: '9903',
-    cfrReference: '38 CFR 4.150',
-    symptomIds: ['jaw-pain', 'jaw-instability', 'chewing-difficulty', 'facial-asymmetry'],
-  },
-  MANDIBLE_MALUNION: {
-    id: 'mandible-malunion',
-    name: 'Mandible Malunion',
-    diagnosticCode: '9904',
-    cfrReference: '38 CFR 4.150',
-    symptomIds: ['jaw-pain', 'bite-problems', 'chewing-difficulty', 'facial-asymmetry'],
-  },
-  MAXILLA_MALUNION: {
-    id: 'maxilla-malunion',
-    name: 'Maxilla Malunion or Nonunion',
-    diagnosticCode: '9916',
-    cfrReference: '38 CFR 4.150',
-    symptomIds: ['jaw-pain', 'bite-problems', 'chewing-difficulty', 'facial-asymmetry'],
-  },
-  BENIGN_ORAL_NEOPLASM: {
-    id: 'benign-oral-neoplasm',
-    name: 'Benign Neoplasm of Oral Cavity',
-    diagnosticCode: '9917',
-    cfrReference: '38 CFR 4.150',
-    symptomIds: ['oral-mass', 'oral-growth', 'tissue-thickening'],
-  },
-  MALIGNANT_ORAL_NEOPLASM: {
-    id: 'malignant-oral-neoplasm',
-    name: 'Malignant Neoplasm of Oral Cavity',
-    diagnosticCode: '9918',
-    cfrReference: '38 CFR 4.150',
-    symptomIds: ['oral-mass', 'oral-growth', 'tissue-thickening'],
-  },
-  TOOTH_LOSS: {
-    id: 'tooth-loss',
-    name: 'Loss of Teeth Due to Bone Loss',
-    diagnosticCode: '9913',
-    cfrReference: '38 CFR 4.150',
-    symptomIds: ['missing-teeth', 'tooth-loss-pain', 'chewing-difficulty', 'prosthesis-pain'],
-  },
-  // ============================================
   // PHASE 6: INFECTIOUS DISEASES (DC 6300 series)
   // ============================================
   HIV_AIDS: {
@@ -994,6 +935,137 @@ export const CONDITIONS = {
       'q-fever-shortness-breath',
       'q-fever-joint-pain'
     ],
+  },
+  SALMONELLA: {
+    id: 'salmonella',
+    name: 'Nontyphoid Salmonella Infection',
+    diagnosticCode: '6333',
+    cfrReference: '38 CFR 4.88b',
+    symptomIds: [
+      'salmonella-diarrhea',
+      'salmonella-fever',
+      'salmonella-abdominal-cramps',
+      'salmonella-nausea',
+      'salmonella-vomiting',
+      'salmonella-bloody-stool',
+      'salmonella-joint-pain',
+      'salmonella-bacteremia',
+      'salmonella-dehydration',
+      'salmonella-fatigue'
+    ],
+  },
+  SHIGELLA: {
+    id: 'shigella',
+    name: 'Shigella Infection',
+    diagnosticCode: '6334',
+    cfrReference: '38 CFR 4.88b',
+    symptomIds: [
+      'shigella-diarrhea',
+      'shigella-bloody-stool',
+      'shigella-abdominal-cramps',
+      'shigella-fever',
+      'shigella-tenesmus',
+      'shigella-nausea',
+      'shigella-vomiting',
+      'shigella-dehydration',
+      'shigella-reactive-arthritis',
+      'shigella-seizures'
+    ],
+  },
+  WEST_NILE: {
+    id: 'west-nile',
+    name: 'West Nile Virus',
+    diagnosticCode: '6335',
+    cfrReference: '38 CFR 4.88b',
+    symptomIds: [
+      'west-nile-fever',
+      'west-nile-headache',
+      'west-nile-body-aches',
+      'west-nile-fatigue',
+      'west-nile-weakness',
+      'west-nile-cognitive',
+      'west-nile-tremors',
+      'west-nile-vision-problems',
+      'west-nile-numbness',
+      'west-nile-paralysis'
+    ],
+  },
+  NTM: {
+    id: 'ntm',
+    name: 'Nontuberculous Mycobacterium',
+    diagnosticCode: '6312',
+    cfrReference: '38 CFR 4.88b',
+    symptomIds: [
+      'ntm-cough',
+      'ntm-sputum',
+      'ntm-fatigue',
+      'ntm-fever',
+      'ntm-night-sweats',
+      'ntm-weight-loss',
+      'ntm-chest-pain',
+      'ntm-shortness-breath',
+      'ntm-hemoptysis',
+      'ntm-lymph-nodes'
+    ],
+  },
+  // ============================================
+  // Phase 7: Dental/ORAL CONDITIONS (DC 9900 series)
+  // ============================================
+  TMJ_DISORDER: {
+    id: 'tmj-disorder',
+    name: 'Temporomandibular Joint (TMJ) Disorder',
+    diagnosticCode: '9905',
+    cfrReference: '38 CFR 4.150',
+    symptomIds: ['jaw-pain', 'jaw-stiffness', 'limited-mouth-opening', 'jaw-clicking', 'jaw-locking', 'chewing-difficulty'],
+  },
+  MAXILLA_MANDIBLE_BONE_DISEASE: {
+    id: 'maxilla-mandible-bone-disease',
+    name: 'Maxilla or Mandible Osteomyelitis/Osteonecrosis',
+    diagnosticCode: '9900',
+    cfrReference: '38 CFR 4.150 (rates as DC 5000)',
+    symptomIds: ['jaw-infection', 'bone-pain-jaw', 'osteomyelitis-symptoms', 'bone-exposure', 'jaw-drainage'],
+  },
+  MANDIBLE_NONUNION: {
+    id: 'mandible-nonunion',
+    name: 'Mandible Nonunion',
+    diagnosticCode: '9903',
+    cfrReference: '38 CFR 4.150',
+    symptomIds: ['jaw-pain', 'jaw-instability', 'chewing-difficulty', 'facial-asymmetry'],
+  },
+  MANDIBLE_MALUNION: {
+    id: 'mandible-malunion',
+    name: 'Mandible Malunion',
+    diagnosticCode: '9904',
+    cfrReference: '38 CFR 4.150',
+    symptomIds: ['jaw-pain', 'bite-problems', 'chewing-difficulty', 'facial-asymmetry'],
+  },
+  MAXILLA_MALUNION: {
+    id: 'maxilla-malunion',
+    name: 'Maxilla Malunion or Nonunion',
+    diagnosticCode: '9916',
+    cfrReference: '38 CFR 4.150',
+    symptomIds: ['jaw-pain', 'bite-problems', 'chewing-difficulty', 'facial-asymmetry'],
+  },
+  BENIGN_ORAL_NEOPLASM: {
+    id: 'benign-oral-neoplasm',
+    name: 'Benign Neoplasm of Oral Cavity',
+    diagnosticCode: '9917',
+    cfrReference: '38 CFR 4.150',
+    symptomIds: ['oral-mass', 'oral-growth', 'tissue-thickening'],
+  },
+  MALIGNANT_ORAL_NEOPLASM: {
+    id: 'malignant-oral-neoplasm',
+    name: 'Malignant Neoplasm of Oral Cavity',
+    diagnosticCode: '9918',
+    cfrReference: '38 CFR 4.150',
+    symptomIds: ['oral-mass', 'oral-growth', 'tissue-thickening'],
+  },
+  TOOTH_LOSS: {
+    id: 'tooth-loss',
+    name: 'Loss of Teeth Due to Bone Loss',
+    diagnosticCode: '9913',
+    cfrReference: '38 CFR 4.150',
+    symptomIds: ['missing-teeth', 'tooth-loss-pain', 'chewing-difficulty', 'prosthesis-pain'],
   },
 };
 
@@ -8821,477 +8893,6 @@ export const IRON_DEFICIENCY_ANEMIA_CRITERIA = {
 
 
 // ============================================
-// TMJ DISORDER CRITERIA (DC 9905)
-// ============================================
-export const TMJ_DISORDER_CRITERIA = {
-  diagnosticCode: '9905',
-  condition: 'Temporomandibular Joint (TMJ) Disorder',
-  cfrReference: '38 CFR 4.150, Diagnostic Code 9905',
-
-  ratings: [
-    {
-      percent: 50,
-      summary: 'Interincisal range of 0-10mm with liquid diet only',
-      criteria: {
-        interincisal: '0-10mm',
-        diet: 'full-liquid',
-        lateralExcursion: '0-4mm',
-      },
-      criteriaDescription: [
-        'Maximum interincisal distance (jaw opening) of 0-10mm',
-        'Requires full liquid diet',
-        'May also have lateral excursion 0-4mm (additional 10%)',
-      ],
-      evidenceNeeded: [
-        'Clinical measurement of maximum jaw opening (0-10mm)',
-        'Documentation that solid foods cannot be chewed',
-        'Evidence of liquid diet requirement',
-        'Dentist or oral surgeon records',
-        'X-rays or MRI showing TMJ damage if available',
-      ],
-    },
-    {
-      percent: 40,
-      summary: 'Interincisal range of 11-20mm with semi-solid/soft diet',
-      criteria: {
-        interincisal: '11-20mm',
-        diet: 'semi-solid-soft',
-        lateralExcursion: '0-4mm',
-      },
-      criteriaDescription: [
-        'Maximum interincisal distance of 11-20mm',
-        'Requires semi-solid or soft food diet',
-        'May also have lateral excursion 0-4mm (additional 10%)',
-      ],
-      evidenceNeeded: [
-        'Clinical measurement of jaw opening (11-20mm)',
-        'Documentation of dietary restrictions to soft foods',
-        'Dentist records showing TMJ dysfunction',
-        'Evidence that normal foods cause pain or cannot be chewed',
-      ],
-    },
-    {
-      percent: 30,
-      summary: 'Interincisal range of 21-25mm with dietary restrictions',
-      criteria: {
-        interincisal: '21-25mm',
-        diet: 'some-restrictions',
-        lateralExcursion: '0-4mm',
-      },
-      criteriaDescription: [
-        'Maximum interincisal distance of 21-25mm',
-        'Some dietary restrictions required',
-        'May also have lateral excursion 0-4mm (additional 10%)',
-      ],
-      evidenceNeeded: [
-        'Clinical measurement showing 21-25mm opening',
-        'Documentation of difficulty with certain foods (hard, chewy)',
-        'TMJ treatment records',
-        'Evidence of pain with prolonged chewing',
-      ],
-    },
-    {
-      percent: 20,
-      summary: 'Interincisal range of 26-30mm',
-      criteria: {
-        interincisal: '26-30mm',
-        lateralExcursion: '0-4mm',
-      },
-      criteriaDescription: [
-        'Maximum interincisal distance of 26-30mm',
-        'May also have lateral excursion 0-4mm (additional 10%)',
-      ],
-      evidenceNeeded: [
-        'Clinical measurement of 26-30mm jaw opening',
-        'Documentation of TMJ symptoms and treatment',
-        'Evidence of functional limitation',
-      ],
-    },
-    {
-      percent: 10,
-      summary: 'Interincisal range of 31-35mm OR lateral excursion 0-4mm',
-      criteria: {
-        options: [
-          { interincisal: '31-35mm' },
-          { lateralExcursion: '0-4mm' },
-        ],
-      },
-      criteriaDescription: [
-        'Maximum interincisal distance of 31-35mm, OR',
-        'Lateral excursion limited to 0-4mm',
-      ],
-      evidenceNeeded: [
-        'Clinical measurement of jaw opening or lateral movement',
-        'TMJ diagnosis and treatment records',
-      ],
-    },
-  ],
-
-  definitions: {
-    interincisal: {
-      term: 'Interincisal Range',
-      definition: 'The maximum distance you can open your mouth, measured between the upper and lower front teeth. Normal range is 35-50mm. This is measured clinically by a dentist or doctor.',
-    },
-    lateralExcursion: {
-      term: 'Lateral Excursion',
-      definition: 'Side-to-side movement of the jaw. Normal lateral movement is at least 6mm to each side. Limitation to 0-4mm indicates significant TMJ dysfunction and may warrant an additional 10% rating.',
-    },
-    dietaryRestrictions: {
-      term: 'Dietary Restrictions',
-      definition: 'Inability to eat certain consistencies of food due to jaw dysfunction. More severe restrictions result in higher ratings.',
-      examples: [
-        'Full liquid diet (50%) - can only consume liquids',
-        'Semi-solid/soft foods (40%) - no solid foods',
-        'Some restrictions (30%) - difficulty with hard or chewy foods',
-      ],
-    },
-  },
-
-  importantNotes: [
-    'TMJ ratings are based on maximum jaw opening (interincisal range) and dietary restrictions',
-    'Lateral excursion limitation (0-4mm) may add an additional 10% to the rating',
-    'Measurements should be taken by a dentist or oral surgeon',
-    'Normal interincisal range is 35-50mm',
-    'Document pain levels, clicking/popping, and functional limitations',
-    'Bilateral TMJ involvement results in a single rating (not combined)',
-  ],
-};
-
-// ============================================
-// TOOTH LOSS CRITERIA (DC 9913)
-// ============================================
-export const TOOTH_LOSS_CRITERIA = {
-  diagnosticCode: '9913',
-  condition: 'Loss of Teeth Due to Bone Loss',
-  cfrReference: '38 CFR 4.150, Diagnostic Code 9913',
-
-  ratings: [
-    {
-      percent: 40,
-      summary: 'Loss of all teeth (edentulous) - prosthesis does NOT restore masticatory function',
-      criteria: {
-        teethLost: 'all',
-        prosthesis: 'does-not-restore',
-      },
-      criteriaDescription: [
-        'Complete loss of all teeth',
-        'Prosthesis (dentures) does NOT satisfactorily restore masticatory function',
-      ],
-      evidenceNeeded: [
-        'Documentation that all teeth are lost',
-        'Evidence that dentures do not allow proper chewing',
-        'Dental records showing complete edentulism',
-        'Statement that prosthesis is ill-fitting or non-functional',
-      ],
-    },
-    {
-      percent: 30,
-      summary: 'Loss of all upper OR all lower teeth - prosthesis does NOT restore function',
-      criteria: {
-        options: [
-          { teethLost: 'all-upper', prosthesis: 'does-not-restore' },
-          { teethLost: 'all-lower', prosthesis: 'does-not-restore' },
-        ],
-      },
-      criteriaDescription: [
-        'Complete loss of all upper teeth, OR',
-        'Complete loss of all lower teeth',
-        'Prosthesis does NOT satisfactorily restore masticatory function',
-      ],
-      evidenceNeeded: [
-        'Documentation of complete tooth loss in upper or lower arch',
-        'Evidence that partial denture does not restore function',
-        'Dental records',
-      ],
-    },
-    {
-      percent: 20,
-      summary: 'Loss of all posterior teeth - prosthesis does NOT restore function',
-      criteria: {
-        options: [
-          { teethLost: 'all-upper-lower-posterior', prosthesis: 'does-not-restore' },
-        ],
-      },
-      criteriaDescription: [
-        'Complete loss of all posterior teeth (molars and premolars) - upper and lower',
-        'Prosthesis does NOT satisfactorily restore masticatory function',
-      ],
-      evidenceNeeded: [
-        'Documentation of posterior tooth loss (both arches)',
-        'Evidence that prosthesis does not restore chewing ability',
-        'Dental records showing extent of tooth loss',
-      ],
-    },
-    {
-      percent: 10,
-      summary: 'Loss of all anterior teeth OR all upper/lower posterior teeth - prosthesis does NOT restore',
-      criteria: {
-        options: [
-          { teethLost: 'all-upper-lower-anterior', prosthesis: 'does-not-restore' },
-          { teethLost: 'all-upper-posterior', prosthesis: 'does-not-restore' },
-          { teethLost: 'all-lower-posterior', prosthesis: 'does-not-restore' },
-        ],
-      },
-      criteriaDescription: [
-        'Complete loss of all anterior teeth (front teeth) - upper and lower, OR',
-        'Complete loss of all upper posterior teeth, OR',
-        'Complete loss of all lower posterior teeth',
-        'Prosthesis does NOT satisfactorily restore masticatory function',
-      ],
-      evidenceNeeded: [
-        'Documentation of specific tooth loss pattern',
-        'Evidence that prosthesis does not restore function',
-        'Dental records',
-      ],
-    },
-    {
-      percent: 0,
-      compensable: true,
-      summary: 'Tooth loss with prosthesis that DOES restore function',
-      criteria: {
-        teethLost: 'any',
-        prosthesis: 'restores',
-      },
-      criteriaDescription: [
-        'Any pattern of tooth loss',
-        'Prosthesis (dentures, bridges, implants) DOES satisfactorily restore masticatory function',
-      ],
-      evidenceNeeded: [
-        'Documentation of tooth loss',
-        'Evidence that prosthesis allows normal chewing',
-      ],
-    },
-  ],
-
-  definitions: {
-    anteriorTeeth: {
-      term: 'Anterior Teeth',
-      definition: 'The front teeth (incisors and canines). There are 12 anterior teeth total - 6 upper and 6 lower.',
-    },
-    posteriorTeeth: {
-      term: 'Posterior Teeth',
-      definition: 'The back teeth used for chewing (premolars and molars). There are 20 posterior teeth total - 10 upper and 10 lower.',
-    },
-    masticatoryFunction: {
-      term: 'Masticatory Function',
-      definition: 'The ability to chew food properly. A prosthesis "restores function" if it allows normal chewing of various food types. It "does NOT restore function" if it is ill-fitting, causes pain, or prevents adequate chewing.',
-    },
-    boneLoss: {
-      term: 'Bone Loss',
-      definition: 'Tooth loss must be due to loss of bone supporting the teeth from trauma, osteomyelitis, or disease - NOT from periodontal disease alone. The underlying bone/jaw condition must be documented.',
-      examples: [
-        'Bone loss from jaw trauma or injury',
-        'Bone loss from osteomyelitis (bone infection)',
-        'Bone loss from radiation therapy',
-        'Bone loss from jaw tumor/neoplasm',
-      ],
-    },
-  },
-
-  importantNotes: [
-    '⚠️ CRITICAL: Tooth loss is only ratable if due to bone loss from trauma or disease',
-    'Tooth loss from periodontal disease alone is NOT compensable by the VA',
-    'Prosthesis that "does NOT restore function" means ill-fitting, painful, or inadequate for chewing',
-    'If prosthesis DOES restore function, rating is 0% (compensable but not disabling)',
-    'Document the cause of tooth loss (trauma, osteomyelitis, radiation, etc.)',
-    'Multiple tooth loss patterns combine under a single rating (choose highest applicable)',
-  ],
-};
-
-// ============================================
-// MANDIBLE NONUNION CRITERIA (DC 9903)
-// ============================================
-export const MANDIBLE_NONUNION_CRITERIA = {
-  diagnosticCode: '9903',
-  condition: 'Mandible (Lower Jaw) Nonunion or Malunion',
-  cfrReference: '38 CFR 4.150, Diagnostic Codes 9903-9904',
-
-  ratings: [
-    {
-      percent: 30,
-      summary: 'Nonunion or severe malunion with marked functional impairment',
-      criteria: {
-        severity: 'severe',
-        functionalImpairment: 'marked',
-      },
-      criteriaDescription: [
-        'Fracture has not healed (nonunion) or healed incorrectly (severe malunion)',
-        'Marked impairment of mastication (chewing)',
-        'Jaw instability',
-        'Facial asymmetry',
-      ],
-      evidenceNeeded: [
-        'X-rays or CT scans showing nonunion or malunion',
-        'Documentation of persistent jaw instability',
-        'Evidence of severe chewing difficulty',
-        'Surgical records if applicable',
-        'Measurements of jaw opening limitation',
-      ],
-    },
-    {
-      percent: 10,
-      summary: 'Moderate malunion with some functional impairment',
-      criteria: {
-        severity: 'moderate',
-        functionalImpairment: 'moderate',
-      },
-      criteriaDescription: [
-        'Fracture healed incorrectly (malunion)',
-        'Some impairment of jaw function',
-        'May have bite problems or mild facial asymmetry',
-      ],
-      evidenceNeeded: [
-        'X-rays showing malunion',
-        'Documentation of functional limitations',
-        'Evidence of bite problems',
-      ],
-    },
-  ],
-
-  definitions: {
-    nonunion: {
-      term: 'Nonunion',
-      definition: 'A fracture that has failed to heal. The bone ends remain separate, causing instability and functional impairment.',
-    },
-    malunion: {
-      term: 'Malunion',
-      definition: 'A fracture that has healed in an incorrect position, resulting in deformity, bite problems, or functional limitation.',
-    },
-  },
-
-  importantNotes: [
-    'These ratings apply to mandible (lower jaw) fractures that did not heal properly',
-    'Document the impact on chewing, speaking, and jaw stability',
-    'Imaging studies (X-rays, CT) are critical evidence',
-    'May combine with TMJ rating if both conditions are present',
-  ],
-};
-
-// ============================================
-// MALIGNANT ORAL NEOPLASM CRITERIA (DC 9918)
-// ============================================
-export const MALIGNANT_ORAL_NEOPLASM_CRITERIA = {
-  diagnosticCode: '9918',
-  condition: 'Malignant Neoplasm of Oral Cavity',
-  cfrReference: '38 CFR 4.150, Diagnostic Code 9918',
-
-  ratings: [
-    {
-      percent: 100,
-      summary: 'During active treatment and for 6 months after completion',
-      criteria: {
-        malignant: true,
-        activeTreatment: true,
-      },
-      criteriaDescription: [
-        'Malignant (cancerous) tumor of mouth, tongue, lips, or jaw',
-        'During active treatment (surgery, chemotherapy, radiation)',
-        'For 6 months following completion of treatment',
-      ],
-      evidenceNeeded: [
-        'Biopsy confirming malignancy',
-        'Treatment records (surgery, chemo, radiation)',
-        'Oncology records',
-        'Dates of treatment start and completion',
-      ],
-    },
-    {
-      percent: 'varies',
-      summary: 'After 6-month post-treatment period - rate residuals',
-      criteria: {
-        malignant: true,
-        postTreatment: true,
-      },
-      criteriaDescription: [
-        'After the mandatory 6-month 100% period',
-        'Rate based on residual effects:',
-        '  • Tissue loss (DC 9900-9916)',
-        '  • Disfigurement/scarring (DC 7800)',
-        '  • Speech impairment (DC 6515)',
-        '  • Swallowing difficulty',
-        '  • TMJ dysfunction (DC 9905)',
-        '  • Dental disability (DC 9913)',
-      ],
-      evidenceNeeded: [
-        'Documentation of cancer-free status or recurrence',
-        'Evidence of residual effects',
-        'Functional assessments',
-        'Imaging showing tissue loss',
-      ],
-    },
-  ],
-
-  definitions: {
-    malignantNeoplasm: {
-      term: 'Malignant Neoplasm',
-      definition: 'Cancer of the oral cavity, including mouth, tongue, lips, jaw bones, or soft tissues. This is distinct from benign (non-cancerous) growths.',
-    },
-    residuals: {
-      term: 'Residuals',
-      definition: 'The lasting effects after cancer treatment, such as tissue loss, scarring, difficulty swallowing, speech problems, or jaw dysfunction. These are rated separately after the 6-month period.',
-    },
-  },
-
-  importantNotes: [
-    '⚠️ Malignant oral cancers automatically rate 100% during treatment and for 6 months after',
-    'After the 6-month period, rate based on specific residual impairments',
-    'Multiple residuals may be combined for a total disability rating',
-    'Recurrence restarts the 100% rating period',
-    'Document all treatment dates carefully',
-  ],
-};
-
-// ============================================
-// BENIGN ORAL NEOPLASM CRITERIA (DC 9917)
-// ============================================
-export const BENIGN_ORAL_NEOPLASM_CRITERIA = {
-  diagnosticCode: '9917',
-  condition: 'Benign (Non-cancerous) Neoplasm of Oral Cavity',
-  cfrReference: '38 CFR 4.150, Diagnostic Code 9917',
-
-  ratings: [
-    {
-      percent: 'varies',
-      summary: 'Rate based on loss of supporting structures or functional impairment',
-      criteria: {
-        benign: true,
-        functionalImpairment: true,
-      },
-      criteriaDescription: [
-        'Non-cancerous tumor or growth of mouth, tongue, lips, or jaw',
-        'Rate based on:',
-        '  • Loss of jaw/bone structure (DC 9900-9916)',
-        '  • TMJ dysfunction if present (DC 9905)',
-        '  • Dental/tooth loss if applicable (DC 9913)',
-        '  • Disfigurement (DC 7800)',
-        '  • Functional impairment of speech or swallowing',
-      ],
-      evidenceNeeded: [
-        'Biopsy confirming benign neoplasm',
-        'Documentation of size and location',
-        'Evidence of functional impairment',
-        'Imaging studies',
-        'Treatment records if removed surgically',
-      ],
-    },
-  ],
-
-  definitions: {
-    benignNeoplasm: {
-      term: 'Benign Neoplasm',
-      definition: 'A non-cancerous tumor or growth. While not malignant, it can still cause functional problems depending on size and location.',
-    },
-  },
-
-  importantNotes: [
-    'Benign oral neoplasms do not receive the automatic 100% rating',
-    'Rate based on functional impairment and residual effects',
-    'May require rating under multiple diagnostic codes if causing various impairments',
-    'Document impact on chewing, swallowing, speaking, and appearance',
-  ],
-};
-
-// ============================================
 // PHASE 6: INFECTIOUS DISEASES - HIV/AIDS (DC 6351)
 // ============================================
 
@@ -10361,6 +9962,979 @@ export const Q_FEVER_CRITERIA = {
     'Veterans with valve abnormalities at higher risk for chronic Q fever',
   ],
 };
+// ============================================
+// PHASE 6: INFECTIOUS DISEASES - SALMONELLA (DC 6333)
+// ============================================
+
+export const SALMONELLA_CRITERIA = {
+  diagnosticCode: '6333',
+  condition: 'Nontyphoid Salmonella Infection',
+  cfrReference: '38 CFR 4.88b, Diagnostic Code 6333',
+
+  ratings: [
+    {
+      percent: 100,
+      summary: 'Severe complications (bacteremia, sepsis, or hospitalization)',
+      criteria: {
+        severeComplications: true,
+        hospitalized: true,
+      },
+      criteriaDescription: [
+        'Severe Salmonella infection with complications:',
+        '  • Bacteremia/sepsis requiring hospitalization',
+        '  • Reactive arthritis requiring mobility aids',
+        '  • Chronic post-infectious sequelae',
+        '  • Unable to work or perform daily activities',
+      ],
+      evidenceNeeded: [
+        'Hospital admission records',
+        'Blood culture results confirming bacteremia',
+        'Treatment records (IV antibiotics)',
+        'Documentation of complications',
+        'Functional impact assessment',
+      ],
+    },
+    {
+      percent: 60,
+      summary: 'Moderate symptoms with reactive arthritis or chronic complications',
+      criteria: {
+        reactiveArthritis: true,
+        chronicSymptoms: true,
+      },
+      criteriaDescription: [
+        'Post-infectious complications:',
+        '  • Reactive arthritis affecting multiple joints',
+        '  • Chronic diarrhea persisting weeks to months',
+        '  • Recurrent infections',
+        '  • Significant functional impairment',
+      ],
+      evidenceNeeded: [
+        'Stool culture confirming Salmonella',
+        'Joint imaging for reactive arthritis',
+        'GI evaluation for chronic symptoms',
+        'Documentation of frequency and severity',
+      ],
+    },
+    {
+      percent: 30,
+      summary: 'Mild chronic symptoms or occasional relapses',
+      criteria: {
+        mildChronic: true,
+        occasionalSymptoms: true,
+      },
+      criteriaDescription: [
+        'Chronic residual symptoms:',
+        '  • Intermittent GI symptoms',
+        '  • Mild reactive arthritis (1-2 joints)',
+        '  • Chronic fatigue',
+      ],
+      evidenceNeeded: [
+        'Original infection confirmation',
+        'Symptom tracking logs',
+        'Medical evaluation records',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Minimal residual symptoms',
+      criteria: {
+        minimal: true,
+        residual: true,
+      },
+      criteriaDescription: [
+        'Mild post-infection effects',
+      ],
+      evidenceNeeded: [
+        'History of confirmed Salmonella infection',
+        'Symptom logs',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'Fully recovered',
+      criteria: {
+        recovered: true,
+        asymptomatic: true,
+      },
+      criteriaDescription: [
+        'Complete recovery from Salmonella infection',
+      ],
+      evidenceNeeded: [
+        'Treatment completion records',
+      ],
+    },
+  ],
+
+  definitions: {
+    bacteremia: {
+      term: 'Bacteremia',
+      definition: 'Bacteria in bloodstream. Salmonella bacteremia is more common in immunocompromised individuals.',
+    },
+    reactiveArthritis: {
+      term: 'Reactive Arthritis',
+      definition: 'Joint inflammation triggered by infection elsewhere in body. Can occur 1-4 weeks after Salmonella infection.',
+    },
+  },
+
+  importantNotes: [
+    'Salmonella is common cause of foodborne illness',
+    'Associated with Gulf War deployments',
+    'Reactive arthritis can develop 1-4 weeks post-infection',
+    'Bacteremia more common in immunocompromised',
+    'Chronic carrier state possible',
+    'Document acute symptoms and any long-term complications',
+  ],
+};
+
+// ============================================
+// PHASE 6: INFECTIOUS DISEASES - SHIGELLA (DC 6334)
+// ============================================
+
+export const SHIGELLA_CRITERIA = {
+  diagnosticCode: '6334',
+  condition: 'Shigella Infection',
+  cfrReference: '38 CFR 4.88b, Diagnostic Code 6334',
+
+  ratings: [
+    {
+      percent: 100,
+      summary: 'Severe complications (HUS, seizures, or hospitalization)',
+      criteria: {
+        severeComplications: true,
+        hus: true,
+      },
+      criteriaDescription: [
+        'Severe Shigella infection with complications:',
+        '  • Hemolytic uremic syndrome (HUS)',
+        '  • Seizures (especially in children)',
+        '  • Bacteremia/sepsis',
+        '  • Hospitalization required',
+        '  • Severe dehydration requiring IV fluids',
+      ],
+      evidenceNeeded: [
+        'Hospital admission records',
+        'Lab results showing HUS (low platelets, kidney dysfunction)',
+        'Stool culture confirming Shigella',
+        'Treatment records',
+        'Neurological evaluation if seizures',
+      ],
+    },
+    {
+      percent: 60,
+      summary: 'Moderate symptoms with reactive arthritis or chronic complications',
+      criteria: {
+        reactiveArthritis: true,
+        chronicSymptoms: true,
+      },
+      criteriaDescription: [
+        'Post-infectious complications:',
+        '  • Reactive arthritis (Reiter syndrome)',
+        '  • Chronic diarrhea or IBS',
+        '  • Recurrent infections',
+        '  • Significant impact on daily function',
+      ],
+      evidenceNeeded: [
+        'Stool culture confirming Shigella',
+        'Joint evaluation and imaging',
+        'GI evaluation for chronic symptoms',
+        'Documentation of functional impact',
+      ],
+    },
+    {
+      percent: 30,
+      summary: 'Mild chronic symptoms',
+      criteria: {
+        mildChronic: true,
+      },
+      criteriaDescription: [
+        'Chronic residual symptoms:',
+        '  • Intermittent GI symptoms',
+        '  • Mild joint pain',
+        '  • Chronic fatigue',
+      ],
+      evidenceNeeded: [
+        'Original infection documentation',
+        'Symptom tracking',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Minimal residual symptoms',
+      criteria: {
+        minimal: true,
+      },
+      criteriaDescription: [
+        'Mild post-infection effects',
+      ],
+      evidenceNeeded: [
+        'History of Shigella infection',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'Fully recovered',
+      criteria: {
+        recovered: true,
+      },
+      criteriaDescription: [
+        'Complete recovery',
+      ],
+      evidenceNeeded: [
+        'Treatment completion',
+      ],
+    },
+  ],
+
+  definitions: {
+    hus: {
+      term: 'Hemolytic Uremic Syndrome (HUS)',
+      definition: 'Life-threatening complication causing kidney failure, low platelets, and destruction of red blood cells. Can occur with Shigella dysenteriae.',
+    },
+    tenesmus: {
+      term: 'Tenesmus',
+      definition: 'Feeling of incomplete bowel evacuation with painful straining. Common with Shigella dysentery.',
+    },
+  },
+
+  importantNotes: [
+    'Shigella causes dysentery (bloody diarrhea)',
+    'Associated with Gulf War deployments',
+    'HUS is rare but serious complication',
+    'Reactive arthritis can develop weeks after infection',
+    'Tenesmus (straining) is characteristic symptom',
+    'Document severity and any complications',
+  ],
+};
+
+// ============================================
+// PHASE 6: INFECTIOUS DISEASES - WEST NILE VIRUS (DC 6335)
+// ============================================
+
+export const WEST_NILE_CRITERIA = {
+  diagnosticCode: '6335',
+  condition: 'West Nile Virus',
+  cfrReference: '38 CFR 4.88b, Diagnostic Code 6335',
+
+  ratings: [
+    {
+      percent: 100,
+      summary: 'Severe neuroinvasive disease with permanent impairment',
+      criteria: {
+        neuroinvasive: true,
+        permanentImpairment: true,
+      },
+      criteriaDescription: [
+        'Severe West Nile neuroinvasive disease:',
+        '  • Encephalitis (brain inflammation)',
+        '  • Meningitis',
+        '  • Acute flaccid paralysis (polio-like)',
+        '  • Permanent muscle weakness',
+        '  • Cognitive impairment',
+        '  • Unable to work or perform daily activities',
+      ],
+      evidenceNeeded: [
+        'Hospital admission records',
+        'CSF (spinal fluid) analysis',
+        'Serology confirming West Nile IgM antibodies',
+        'MRI/CT showing brain involvement',
+        'Neurological exam documenting deficits',
+        'Functional assessment',
+      ],
+    },
+    {
+      percent: 60,
+      summary: 'Moderate neurological symptoms or chronic fatigue',
+      criteria: {
+        moderateNeuro: true,
+        chronicFatigue: true,
+      },
+      criteriaDescription: [
+        'Post-West Nile syndrome:',
+        '  • Chronic muscle weakness',
+        '  • Persistent fatigue (months to years)',
+        '  • Memory/concentration problems',
+        '  • Tremors or movement disorders',
+        '  • Significant functional limitation',
+      ],
+      evidenceNeeded: [
+        'Original West Nile diagnosis confirmation',
+        'Neurological evaluation',
+        'Documentation of persistent symptoms >6 months',
+        'Functional impact assessment',
+        'Treatment records',
+      ],
+    },
+    {
+      percent: 30,
+      summary: 'Mild chronic symptoms',
+      criteria: {
+        mildChronic: true,
+      },
+      criteriaDescription: [
+        'Chronic residual symptoms:',
+        '  • Mild muscle weakness',
+        '  • Fatigue',
+        '  • Headaches',
+        '  • Mild cognitive issues',
+      ],
+      evidenceNeeded: [
+        'Diagnosis confirmation',
+        'Symptom tracking',
+        'Medical evaluation',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Minimal residual symptoms',
+      criteria: {
+        minimal: true,
+      },
+      criteriaDescription: [
+        'Mild post-infection effects',
+      ],
+      evidenceNeeded: [
+        'History of West Nile infection',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'Fully recovered',
+      criteria: {
+        recovered: true,
+      },
+      criteriaDescription: [
+        'Complete recovery from West Nile',
+      ],
+      evidenceNeeded: [
+        'Recovery documentation',
+      ],
+    },
+  ],
+
+  definitions: {
+    neuroinvasive: {
+      term: 'Neuroinvasive Disease',
+      definition: 'West Nile infection affecting the nervous system, causing encephalitis, meningitis, or acute flaccid paralysis.',
+    },
+    acuteFlaccidParalysis: {
+      term: 'Acute Flaccid Paralysis',
+      definition: 'Sudden muscle weakness similar to polio, caused by West Nile attacking spinal cord motor neurons. May be permanent.',
+    },
+  },
+
+  importantNotes: [
+    'West Nile transmitted by mosquitoes',
+    'Only ~1% develop neuroinvasive disease, but it can be severe',
+    'Post-West Nile syndrome: chronic fatigue and weakness can last years',
+    'Acute flaccid paralysis may be permanent',
+    'No specific treatment - supportive care',
+    'Veterans in endemic areas at higher risk',
+    'Document both acute illness and long-term sequelae',
+  ],
+};
+
+// ============================================
+// PHASE 6: INFECTIOUS DISEASES - NTM (DC 6312)
+// ============================================
+
+export const NTM_CRITERIA = {
+  diagnosticCode: '6312',
+  condition: 'Nontuberculous Mycobacterium Infection',
+  cfrReference: '38 CFR 4.88b, Diagnostic Code 6312',
+
+  ratings: [
+    {
+      percent: 100,
+      summary: 'Active disease requiring continuous treatment',
+      criteria: {
+        activeDisease: true,
+        continuousTreatment: true,
+      },
+      criteriaDescription: [
+        'Active NTM infection:',
+        '  • Requires long-term multi-drug antibiotic therapy (12-24 months)',
+        '  • Progressive lung disease',
+        '  • Disseminated NTM infection',
+        '  • Severe respiratory impairment',
+        '  • Unable to work or perform daily activities',
+      ],
+      evidenceNeeded: [
+        'Sputum cultures confirming NTM (multiple samples)',
+        'CT scan showing cavitary or nodular lung disease',
+        'Treatment records (macrolide + ethambutol + rifampin)',
+        'Pulmonary function tests showing impairment',
+        'Infectious disease specialist notes',
+      ],
+    },
+    {
+      percent: 60,
+      summary: 'Active disease with moderate symptoms on treatment',
+      criteria: {
+        activeDisease: true,
+        moderateSymptoms: true,
+      },
+      criteriaDescription: [
+        'NTM requiring treatment with moderate impact:',
+        '  • On long-term antibiotics',
+        '  • Chronic cough with sputum production',
+        '  • Fatigue and weight loss',
+        '  • Moderate respiratory symptoms',
+      ],
+      evidenceNeeded: [
+        'Positive NTM cultures',
+        'CT findings consistent with NTM',
+        'Treatment compliance records',
+        'Symptom documentation',
+        'Pulmonary function tests',
+      ],
+    },
+    {
+      percent: 30,
+      summary: 'Mild disease or post-treatment monitoring',
+      criteria: {
+        mildDisease: true,
+        postTreatment: true,
+      },
+      criteriaDescription: [
+        'Mild NTM or post-treatment:',
+        '  • Completed treatment, monitoring for recurrence',
+        '  • Mild chronic cough',
+        '  • Minimal respiratory impairment',
+      ],
+      evidenceNeeded: [
+        'Treatment completion records',
+        'Follow-up imaging',
+        'Negative cultures post-treatment',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Colonization without active disease',
+      criteria: {
+        colonization: true,
+      },
+      criteriaDescription: [
+        'NTM isolated from cultures but not causing active disease',
+      ],
+      evidenceNeeded: [
+        'Culture results',
+        'Documentation of monitoring',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'Successfully treated, no residuals',
+      criteria: {
+        cured: true,
+      },
+      criteriaDescription: [
+        'NTM successfully treated with no ongoing symptoms',
+      ],
+      evidenceNeeded: [
+        'Treatment completion',
+        'Negative follow-up cultures',
+      ],
+    },
+  ],
+
+  definitions: {
+    ntm: {
+      term: 'Nontuberculous Mycobacterium (NTM)',
+      definition: 'Bacteria related to TB but not M. tuberculosis. Common species: MAC (M. avium complex), M. abscessus, M. kansasii.',
+    },
+    mac: {
+      term: 'MAC (M. avium Complex)',
+      definition: 'Most common NTM causing lung disease. Requires prolonged multi-drug therapy.',
+    },
+  },
+
+  importantNotes: [
+    'NTM different from tuberculosis but related',
+    'Common species: MAC, M. abscessus, M. kansasii',
+    'Requires prolonged treatment (12-24 months)',
+    'Multi-drug regimen: typically macrolide + ethambutol + rifampin',
+    'Not contagious person-to-person',
+    'More common in immunocompromised',
+    'Diagnosis requires clinical + radiographic + microbiologic criteria',
+    'Can be difficult to treat and may recur',
+  ],
+};
+
+// ============================================
+// Phase: 7 Dental Criteria
+// ============================================
+
+// ============================================
+// TMJ DISORDER CRITERIA (DC 9905)
+// ============================================
+export const TMJ_DISORDER_CRITERIA = {
+  diagnosticCode: '9905',
+  condition: 'Temporomandibular Joint (TMJ) Disorder',
+  cfrReference: '38 CFR 4.150, Diagnostic Code 9905',
+
+  ratings: [
+    {
+      percent: 50,
+      summary: 'Interincisal range of 0-10mm with liquid diet only',
+      criteria: {
+        interincisal: '0-10mm',
+        diet: 'full-liquid',
+        lateralExcursion: '0-4mm',
+      },
+      criteriaDescription: [
+        'Maximum interincisal distance (jaw opening) of 0-10mm',
+        'Requires full liquid diet',
+        'May also have lateral excursion 0-4mm (additional 10%)',
+      ],
+      evidenceNeeded: [
+        'Clinical measurement of maximum jaw opening (0-10mm)',
+        'Documentation that solid foods cannot be chewed',
+        'Evidence of liquid diet requirement',
+        'Dentist or oral surgeon records',
+        'X-rays or MRI showing TMJ damage if available',
+      ],
+    },
+    {
+      percent: 40,
+      summary: 'Interincisal range of 11-20mm with semi-solid/soft diet',
+      criteria: {
+        interincisal: '11-20mm',
+        diet: 'semi-solid-soft',
+        lateralExcursion: '0-4mm',
+      },
+      criteriaDescription: [
+        'Maximum interincisal distance of 11-20mm',
+        'Requires semi-solid or soft food diet',
+        'May also have lateral excursion 0-4mm (additional 10%)',
+      ],
+      evidenceNeeded: [
+        'Clinical measurement of jaw opening (11-20mm)',
+        'Documentation of dietary restrictions to soft foods',
+        'Dentist records showing TMJ dysfunction',
+        'Evidence that normal foods cause pain or cannot be chewed',
+      ],
+    },
+    {
+      percent: 30,
+      summary: 'Interincisal range of 21-25mm with dietary restrictions',
+      criteria: {
+        interincisal: '21-25mm',
+        diet: 'some-restrictions',
+        lateralExcursion: '0-4mm',
+      },
+      criteriaDescription: [
+        'Maximum interincisal distance of 21-25mm',
+        'Some dietary restrictions required',
+        'May also have lateral excursion 0-4mm (additional 10%)',
+      ],
+      evidenceNeeded: [
+        'Clinical measurement showing 21-25mm opening',
+        'Documentation of difficulty with certain foods (hard, chewy)',
+        'TMJ treatment records',
+        'Evidence of pain with prolonged chewing',
+      ],
+    },
+    {
+      percent: 20,
+      summary: 'Interincisal range of 26-30mm',
+      criteria: {
+        interincisal: '26-30mm',
+        lateralExcursion: '0-4mm',
+      },
+      criteriaDescription: [
+        'Maximum interincisal distance of 26-30mm',
+        'May also have lateral excursion 0-4mm (additional 10%)',
+      ],
+      evidenceNeeded: [
+        'Clinical measurement of 26-30mm jaw opening',
+        'Documentation of TMJ symptoms and treatment',
+        'Evidence of functional limitation',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Interincisal range of 31-35mm OR lateral excursion 0-4mm',
+      criteria: {
+        options: [
+          { interincisal: '31-35mm' },
+          { lateralExcursion: '0-4mm' },
+        ],
+      },
+      criteriaDescription: [
+        'Maximum interincisal distance of 31-35mm, OR',
+        'Lateral excursion limited to 0-4mm',
+      ],
+      evidenceNeeded: [
+        'Clinical measurement of jaw opening or lateral movement',
+        'TMJ diagnosis and treatment records',
+      ],
+    },
+  ],
+
+  definitions: {
+    interincisal: {
+      term: 'Interincisal Range',
+      definition: 'The maximum distance you can open your mouth, measured between the upper and lower front teeth. Normal range is 35-50mm. This is measured clinically by a dentist or doctor.',
+    },
+    lateralExcursion: {
+      term: 'Lateral Excursion',
+      definition: 'Side-to-side movement of the jaw. Normal lateral movement is at least 6mm to each side. Limitation to 0-4mm indicates significant TMJ dysfunction and may warrant an additional 10% rating.',
+    },
+    dietaryRestrictions: {
+      term: 'Dietary Restrictions',
+      definition: 'Inability to eat certain consistencies of food due to jaw dysfunction. More severe restrictions result in higher ratings.',
+      examples: [
+        'Full liquid diet (50%) - can only consume liquids',
+        'Semi-solid/soft foods (40%) - no solid foods',
+        'Some restrictions (30%) - difficulty with hard or chewy foods',
+      ],
+    },
+  },
+
+  importantNotes: [
+    'TMJ ratings are based on maximum jaw opening (interincisal range) and dietary restrictions',
+    'Lateral excursion limitation (0-4mm) may add an additional 10% to the rating',
+    'Measurements should be taken by a dentist or oral surgeon',
+    'Normal interincisal range is 35-50mm',
+    'Document pain levels, clicking/popping, and functional limitations',
+    'Bilateral TMJ involvement results in a single rating (not combined)',
+  ],
+};
+
+// ============================================
+// TOOTH LOSS CRITERIA (DC 9913)
+// ============================================
+export const TOOTH_LOSS_CRITERIA = {
+  diagnosticCode: '9913',
+  condition: 'Loss of Teeth Due to Bone Loss',
+  cfrReference: '38 CFR 4.150, Diagnostic Code 9913',
+
+  ratings: [
+    {
+      percent: 40,
+      summary: 'Loss of all teeth (edentulous) - prosthesis does NOT restore masticatory function',
+      criteria: {
+        teethLost: 'all',
+        prosthesis: 'does-not-restore',
+      },
+      criteriaDescription: [
+        'Complete loss of all teeth',
+        'Prosthesis (dentures) does NOT satisfactorily restore masticatory function',
+      ],
+      evidenceNeeded: [
+        'Documentation that all teeth are lost',
+        'Evidence that dentures do not allow proper chewing',
+        'Dental records showing complete edentulism',
+        'Statement that prosthesis is ill-fitting or non-functional',
+      ],
+    },
+    {
+      percent: 30,
+      summary: 'Loss of all upper OR all lower teeth - prosthesis does NOT restore function',
+      criteria: {
+        options: [
+          { teethLost: 'all-upper', prosthesis: 'does-not-restore' },
+          { teethLost: 'all-lower', prosthesis: 'does-not-restore' },
+        ],
+      },
+      criteriaDescription: [
+        'Complete loss of all upper teeth, OR',
+        'Complete loss of all lower teeth',
+        'Prosthesis does NOT satisfactorily restore masticatory function',
+      ],
+      evidenceNeeded: [
+        'Documentation of complete tooth loss in upper or lower arch',
+        'Evidence that partial denture does not restore function',
+        'Dental records',
+      ],
+    },
+    {
+      percent: 20,
+      summary: 'Loss of all posterior teeth - prosthesis does NOT restore function',
+      criteria: {
+        options: [
+          { teethLost: 'all-upper-lower-posterior', prosthesis: 'does-not-restore' },
+        ],
+      },
+      criteriaDescription: [
+        'Complete loss of all posterior teeth (molars and premolars) - upper and lower',
+        'Prosthesis does NOT satisfactorily restore masticatory function',
+      ],
+      evidenceNeeded: [
+        'Documentation of posterior tooth loss (both arches)',
+        'Evidence that prosthesis does not restore chewing ability',
+        'Dental records showing extent of tooth loss',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Loss of all anterior teeth OR all upper/lower posterior teeth - prosthesis does NOT restore',
+      criteria: {
+        options: [
+          { teethLost: 'all-upper-lower-anterior', prosthesis: 'does-not-restore' },
+          { teethLost: 'all-upper-posterior', prosthesis: 'does-not-restore' },
+          { teethLost: 'all-lower-posterior', prosthesis: 'does-not-restore' },
+        ],
+      },
+      criteriaDescription: [
+        'Complete loss of all anterior teeth (front teeth) - upper and lower, OR',
+        'Complete loss of all upper posterior teeth, OR',
+        'Complete loss of all lower posterior teeth',
+        'Prosthesis does NOT satisfactorily restore masticatory function',
+      ],
+      evidenceNeeded: [
+        'Documentation of specific tooth loss pattern',
+        'Evidence that prosthesis does not restore function',
+        'Dental records',
+      ],
+    },
+    {
+      percent: 0,
+      compensable: true,
+      summary: 'Tooth loss with prosthesis that DOES restore function',
+      criteria: {
+        teethLost: 'any',
+        prosthesis: 'restores',
+      },
+      criteriaDescription: [
+        'Any pattern of tooth loss',
+        'Prosthesis (dentures, bridges, implants) DOES satisfactorily restore masticatory function',
+      ],
+      evidenceNeeded: [
+        'Documentation of tooth loss',
+        'Evidence that prosthesis allows normal chewing',
+      ],
+    },
+  ],
+
+  definitions: {
+    anteriorTeeth: {
+      term: 'Anterior Teeth',
+      definition: 'The front teeth (incisors and canines). There are 12 anterior teeth total - 6 upper and 6 lower.',
+    },
+    posteriorTeeth: {
+      term: 'Posterior Teeth',
+      definition: 'The back teeth used for chewing (premolars and molars). There are 20 posterior teeth total - 10 upper and 10 lower.',
+    },
+    masticatoryFunction: {
+      term: 'Masticatory Function',
+      definition: 'The ability to chew food properly. A prosthesis "restores function" if it allows normal chewing of various food types. It "does NOT restore function" if it is ill-fitting, causes pain, or prevents adequate chewing.',
+    },
+    boneLoss: {
+      term: 'Bone Loss',
+      definition: 'Tooth loss must be due to loss of bone supporting the teeth from trauma, osteomyelitis, or disease - NOT from periodontal disease alone. The underlying bone/jaw condition must be documented.',
+      examples: [
+        'Bone loss from jaw trauma or injury',
+        'Bone loss from osteomyelitis (bone infection)',
+        'Bone loss from radiation therapy',
+        'Bone loss from jaw tumor/neoplasm',
+      ],
+    },
+  },
+
+  importantNotes: [
+    '⚠️ CRITICAL: Tooth loss is only ratable if due to bone loss from trauma or disease',
+    'Tooth loss from periodontal disease alone is NOT compensable by the VA',
+    'Prosthesis that "does NOT restore function" means ill-fitting, painful, or inadequate for chewing',
+    'If prosthesis DOES restore function, rating is 0% (compensable but not disabling)',
+    'Document the cause of tooth loss (trauma, osteomyelitis, radiation, etc.)',
+    'Multiple tooth loss patterns combine under a single rating (choose highest applicable)',
+  ],
+};
+
+// ============================================
+// MANDIBLE NONUNION CRITERIA (DC 9903)
+// ============================================
+export const MANDIBLE_NONUNION_CRITERIA = {
+  diagnosticCode: '9903',
+  condition: 'Mandible (Lower Jaw) Nonunion or Malunion',
+  cfrReference: '38 CFR 4.150, Diagnostic Codes 9903-9904',
+
+  ratings: [
+    {
+      percent: 30,
+      summary: 'Nonunion or severe malunion with marked functional impairment',
+      criteria: {
+        severity: 'severe',
+        functionalImpairment: 'marked',
+      },
+      criteriaDescription: [
+        'Fracture has not healed (nonunion) or healed incorrectly (severe malunion)',
+        'Marked impairment of mastication (chewing)',
+        'Jaw instability',
+        'Facial asymmetry',
+      ],
+      evidenceNeeded: [
+        'X-rays or CT scans showing nonunion or malunion',
+        'Documentation of persistent jaw instability',
+        'Evidence of severe chewing difficulty',
+        'Surgical records if applicable',
+        'Measurements of jaw opening limitation',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Moderate malunion with some functional impairment',
+      criteria: {
+        severity: 'moderate',
+        functionalImpairment: 'moderate',
+      },
+      criteriaDescription: [
+        'Fracture healed incorrectly (malunion)',
+        'Some impairment of jaw function',
+        'May have bite problems or mild facial asymmetry',
+      ],
+      evidenceNeeded: [
+        'X-rays showing malunion',
+        'Documentation of functional limitations',
+        'Evidence of bite problems',
+      ],
+    },
+  ],
+
+  definitions: {
+    nonunion: {
+      term: 'Nonunion',
+      definition: 'A fracture that has failed to heal. The bone ends remain separate, causing instability and functional impairment.',
+    },
+    malunion: {
+      term: 'Malunion',
+      definition: 'A fracture that has healed in an incorrect position, resulting in deformity, bite problems, or functional limitation.',
+    },
+  },
+
+  importantNotes: [
+    'These ratings apply to mandible (lower jaw) fractures that did not heal properly',
+    'Document the impact on chewing, speaking, and jaw stability',
+    'Imaging studies (X-rays, CT) are critical evidence',
+    'May combine with TMJ rating if both conditions are present',
+  ],
+};
+
+// ============================================
+// MALIGNANT ORAL NEOPLASM CRITERIA (DC 9918)
+// ============================================
+export const MALIGNANT_ORAL_NEOPLASM_CRITERIA = {
+  diagnosticCode: '9918',
+  condition: 'Malignant Neoplasm of Oral Cavity',
+  cfrReference: '38 CFR 4.150, Diagnostic Code 9918',
+
+  ratings: [
+    {
+      percent: 100,
+      summary: 'During active treatment and for 6 months after completion',
+      criteria: {
+        malignant: true,
+        activeTreatment: true,
+      },
+      criteriaDescription: [
+        'Malignant (cancerous) tumor of mouth, tongue, lips, or jaw',
+        'During active treatment (surgery, chemotherapy, radiation)',
+        'For 6 months following completion of treatment',
+      ],
+      evidenceNeeded: [
+        'Biopsy confirming malignancy',
+        'Treatment records (surgery, chemo, radiation)',
+        'Oncology records',
+        'Dates of treatment start and completion',
+      ],
+    },
+    {
+      percent: 'varies',
+      summary: 'After 6-month post-treatment period - rate residuals',
+      criteria: {
+        malignant: true,
+        postTreatment: true,
+      },
+      criteriaDescription: [
+        'After the mandatory 6-month 100% period',
+        'Rate based on residual effects:',
+        '  • Tissue loss (DC 9900-9916)',
+        '  • Disfigurement/scarring (DC 7800)',
+        '  • Speech impairment (DC 6515)',
+        '  • Swallowing difficulty',
+        '  • TMJ dysfunction (DC 9905)',
+        '  • Dental disability (DC 9913)',
+      ],
+      evidenceNeeded: [
+        'Documentation of cancer-free status or recurrence',
+        'Evidence of residual effects',
+        'Functional assessments',
+        'Imaging showing tissue loss',
+      ],
+    },
+  ],
+
+  definitions: {
+    malignantNeoplasm: {
+      term: 'Malignant Neoplasm',
+      definition: 'Cancer of the oral cavity, including mouth, tongue, lips, jaw bones, or soft tissues. This is distinct from benign (non-cancerous) growths.',
+    },
+    residuals: {
+      term: 'Residuals',
+      definition: 'The lasting effects after cancer treatment, such as tissue loss, scarring, difficulty swallowing, speech problems, or jaw dysfunction. These are rated separately after the 6-month period.',
+    },
+  },
+
+  importantNotes: [
+    '⚠️ Malignant oral cancers automatically rate 100% during treatment and for 6 months after',
+    'After the 6-month period, rate based on specific residual impairments',
+    'Multiple residuals may be combined for a total disability rating',
+    'Recurrence restarts the 100% rating period',
+    'Document all treatment dates carefully',
+  ],
+};
+
+// ============================================
+// BENIGN ORAL NEOPLASM CRITERIA (DC 9917)
+// ============================================
+export const BENIGN_ORAL_NEOPLASM_CRITERIA = {
+  diagnosticCode: '9917',
+  condition: 'Benign (Non-cancerous) Neoplasm of Oral Cavity',
+  cfrReference: '38 CFR 4.150, Diagnostic Code 9917',
+
+  ratings: [
+    {
+      percent: 'varies',
+      summary: 'Rate based on loss of supporting structures or functional impairment',
+      criteria: {
+        benign: true,
+        functionalImpairment: true,
+      },
+      criteriaDescription: [
+        'Non-cancerous tumor or growth of mouth, tongue, lips, or jaw',
+        'Rate based on:',
+        '  • Loss of jaw/bone structure (DC 9900-9916)',
+        '  • TMJ dysfunction if present (DC 9905)',
+        '  • Dental/tooth loss if applicable (DC 9913)',
+        '  • Disfigurement (DC 7800)',
+        '  • Functional impairment of speech or swallowing',
+      ],
+      evidenceNeeded: [
+        'Biopsy confirming benign neoplasm',
+        'Documentation of size and location',
+        'Evidence of functional impairment',
+        'Imaging studies',
+        'Treatment records if removed surgically',
+      ],
+    },
+  ],
+
+  definitions: {
+    benignNeoplasm: {
+      term: 'Benign Neoplasm',
+      definition: 'A non-cancerous tumor or growth. While not malignant, it can still cause functional problems depending on size and location.',
+    },
+  },
+
+  importantNotes: [
+    'Benign oral neoplasms do not receive the automatic 100% rating',
+    'Rate based on functional impairment and residual effects',
+    'May require rating under multiple diagnostic codes if causing various impairments',
+    'Document impact on chewing, swallowing, speaking, and appearance',
+  ],
+};
+
 
 // ============================================
 // ANALYSIS FUNCTIONS - MIGRAINE
@@ -20279,7 +20853,7 @@ export const analyzeCampylobacterLogs = (logs, options = {}) => {
     nerveSymptoms: 0,
   };
 
-  let guillaباینBarre = false;
+  let guillainBarre = false;
   let reactiveArthritis = false;
   let chronicIBS = false;
   let peripheralNeuropathy = false;
@@ -20300,7 +20874,7 @@ export const analyzeCampylobacterLogs = (logs, options = {}) => {
     }
     if (symptomId === 'campylobacter-muscle-weakness') {
       symptomCounts.muscleWeakness++;
-      if (log.campylobacterData?.guillaバینBarre) guillainBarre = true;
+      if (log.campylobacterData?.guillainBarre) guillainBarre = true;
     }
     if (symptomId === 'campylobacter-nerve-symptoms') {
       symptomCounts.nerveSymptoms++;
@@ -20564,6 +21138,672 @@ export const analyzeQFeverLogs = (logs, options = {}) => {
       endocarditis,
       fatigueSyndrome,
       monthsSinceInfection,
+    },
+  };
+};
+
+/**
+ * Analyzes Salmonella logs to determine supported rating level
+ * Based on 38 CFR 4.88b, DC 6333
+ */
+export const analyzeSalmonellaLogs = (logs, options = {}) => {
+  const { evaluationPeriodDays = 90 } = options;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const salmonellaLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    return logDate >= cutoffDate && (
+        CONDITIONS.SALMONELLA.symptomIds.includes(getLogSymptomId(log)) ||
+        getLogSymptomId(log)?.includes('salmonella')
+    );
+  });
+
+  if (salmonellaLogs.length === 0) {
+    return {
+      condition: 'Nontyphoid Salmonella Infection',
+      diagnosticCode: '6333',
+      hasData: false,
+      message: 'No Salmonella symptoms logged',
+      supportedRating: null,
+      ratingRationale: [],
+      gaps: [
+        'Start logging Salmonella symptoms',
+        'Document GI symptoms (diarrhea, bloody stool, cramps)',
+        'Note any joint pain (reactive arthritis)',
+        'Stool culture confirming Salmonella',
+        'Track fever and dehydration',
+      ],
+    };
+  }
+
+  const evidence = [];
+  const gaps = [];
+  let supportedRating = 0;
+  const ratingRationale = [];
+
+  const symptomCounts = {
+    diarrhea: 0,
+    fever: 0,
+    abdominalCramps: 0,
+    nausea: 0,
+    vomiting: 0,
+    bloodyStool: 0,
+    jointPain: 0,
+    bacteremia: 0,
+    dehydration: 0,
+    fatigue: 0,
+  };
+
+  let hospitalized = false;
+  let bacteremia = false;
+  let reactiveArthritis = false;
+  let severeComplications = false;
+
+  salmonellaLogs.forEach(log => {
+    const symptomId = getLogSymptomId(log);
+
+    if (symptomId === 'salmonella-diarrhea') symptomCounts.diarrhea++;
+    if (symptomId === 'salmonella-fever') symptomCounts.fever++;
+    if (symptomId === 'salmonella-abdominal-cramps') symptomCounts.abdominalCramps++;
+    if (symptomId === 'salmonella-nausea') symptomCounts.nausea++;
+    if (symptomId === 'salmonella-vomiting') symptomCounts.vomiting++;
+    if (symptomId === 'salmonella-bloody-stool') symptomCounts.bloodyStool++;
+    if (symptomId === 'salmonella-joint-pain') {
+      symptomCounts.jointPain++;
+      reactiveArthritis = true;
+    }
+    if (symptomId === 'salmonella-bacteremia') {
+      symptomCounts.bacteremia++;
+      bacteremia = true;
+      severeComplications = true;
+    }
+    if (symptomId === 'salmonella-dehydration') symptomCounts.dehydration++;
+    if (symptomId === 'salmonella-fatigue') symptomCounts.fatigue++;
+
+    if (log.salmonellaData?.hospitalized) hospitalized = true;
+    if (log.salmonellaData?.bacteremia) {
+      bacteremia = true;
+      severeComplications = true;
+    }
+    if (log.salmonellaData?.reactiveArthritis) reactiveArthritis = true;
+    if (log.salmonellaData?.severeComplications) severeComplications = true;
+  });
+
+  const daysWithSymptoms = salmonellaLogs.length;
+
+  evidence.push(`${salmonellaLogs.length} Salmonella symptoms logged over ${evaluationPeriodDays} days`);
+
+  // Rating determination
+  if (bacteremia || hospitalized || severeComplications) {
+    supportedRating = 100;
+    ratingRationale.push(...[
+      'Severe complications requiring hospitalization',
+      bacteremia ? 'Bacteremia/sepsis documented' : '',
+      hospitalized ? 'Hospitalization required' : '',
+      'Meets criteria for 100% rating'
+    ].filter(Boolean));
+  } else if (reactiveArthritis && symptomCounts.jointPain >= 10) {
+    supportedRating = 60;
+    ratingRationale.push(...[
+      'Moderate symptoms with reactive arthritis',
+      `Joint pain episodes: ${symptomCounts.jointPain}`,
+      'Significant functional impact',
+      'Meets criteria for 60% rating'
+    ].filter(Boolean));
+  } else if (daysWithSymptoms >= 15 || (reactiveArthritis && symptomCounts.jointPain >= 5)) {
+    supportedRating = 30;
+    ratingRationale.push(
+        'Mild chronic symptoms',
+        `Symptoms on ${daysWithSymptoms} days`,
+        'Meets criteria for 30% rating'
+    );
+  } else if (daysWithSymptoms >= 5) {
+    supportedRating = 10;
+    ratingRationale.push(
+        'Minimal residual symptoms',
+        'Meets criteria for 10% rating'
+    );
+  } else {
+    supportedRating = 0;
+    ratingRationale.push(
+        'Fully recovered from Salmonella',
+        'Asymptomatic rating'
+    );
+  }
+
+  // Evidence
+  if (symptomCounts.diarrhea > 0) evidence.push(`${symptomCounts.diarrhea} diarrhea episodes`);
+  if (symptomCounts.bloodyStool > 0) evidence.push(`${symptomCounts.bloodyStool} bloody stool episodes`);
+  if (symptomCounts.jointPain > 0) evidence.push(`${symptomCounts.jointPain} joint pain episodes (reactive arthritis)`);
+  if (bacteremia) evidence.push('Bacteremia documented');
+
+  // Gaps
+  gaps.push('Stool culture confirming Salmonella species');
+  if (symptomCounts.jointPain > 5) {
+    gaps.push('Rheumatology evaluation for reactive arthritis');
+  }
+  if (bacteremia) {
+    gaps.push('Blood culture results');
+  }
+  gaps.push('Document acute symptoms and post-infectious complications');
+
+  return {
+    condition: 'Nontyphoid Salmonella Infection',
+    diagnosticCode: '6333',
+    hasData: true,
+    supportedRating,
+    ratingRationale,
+    evidence,
+    gaps,
+    metrics: {
+      totalLogs: salmonellaLogs.length,
+      evaluationPeriod: evaluationPeriodDays,
+      symptomCounts,
+      hospitalized,
+      bacteremia,
+      reactiveArthritis,
+    },
+  };
+};
+
+/**
+ * Analyzes Shigella logs to determine supported rating level
+ * Based on 38 CFR 4.88b, DC 6334
+ */
+export const analyzeShigellaLogs = (logs, options = {}) => {
+  const { evaluationPeriodDays = 90 } = options;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const shigellaLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    return logDate >= cutoffDate && (
+        CONDITIONS.SHIGELLA.symptomIds.includes(getLogSymptomId(log)) ||
+        getLogSymptomId(log)?.includes('shigella')
+    );
+  });
+
+  if (shigellaLogs.length === 0) {
+    return {
+      condition: 'Shigella Infection',
+      diagnosticCode: '6334',
+      hasData: false,
+      message: 'No Shigella symptoms logged',
+      supportedRating: null,
+      ratingRationale: [],
+      gaps: [
+        'Start logging Shigella symptoms',
+        'Document bloody diarrhea and tenesmus',
+        'Track fever and abdominal cramps',
+        'Note any joint pain or seizures',
+        'Stool culture confirming Shigella',
+      ],
+    };
+  }
+
+  const evidence = [];
+  const gaps = [];
+  let supportedRating = 0;
+  const ratingRationale = [];
+
+  const symptomCounts = {
+    diarrhea: 0,
+    bloodyStool: 0,
+    abdominalCramps: 0,
+    fever: 0,
+    tenesmus: 0,
+    nausea: 0,
+    vomiting: 0,
+    dehydration: 0,
+    reactiveArthritis: 0,
+    seizures: 0,
+  };
+
+  let hospitalized = false;
+  let hus = false;
+  let reactiveArthritis = false;
+  let severeComplications = false;
+
+  shigellaLogs.forEach(log => {
+    const symptomId = getLogSymptomId(log);
+
+    if (symptomId === 'shigella-diarrhea') symptomCounts.diarrhea++;
+    if (symptomId === 'shigella-bloody-stool') symptomCounts.bloodyStool++;
+    if (symptomId === 'shigella-abdominal-cramps') symptomCounts.abdominalCramps++;
+    if (symptomId === 'shigella-fever') symptomCounts.fever++;
+    if (symptomId === 'shigella-tenesmus') symptomCounts.tenesmus++;
+    if (symptomId === 'shigella-nausea') symptomCounts.nausea++;
+    if (symptomId === 'shigella-vomiting') symptomCounts.vomiting++;
+    if (symptomId === 'shigella-dehydration') symptomCounts.dehydration++;
+    if (symptomId === 'shigella-reactive-arthritis') {
+      symptomCounts.reactiveArthritis++;
+      reactiveArthritis = true;
+    }
+    if (symptomId === 'shigella-seizures') {
+      symptomCounts.seizures++;
+      severeComplications = true;
+    }
+
+    if (log.shigellaData?.hospitalized) hospitalized = true;
+    if (log.shigellaData?.hus) {
+      hus = true;
+      severeComplications = true;
+    }
+    if (log.shigellaData?.reactiveArthritis) reactiveArthritis = true;
+    if (log.shigellaData?.severeComplications) severeComplications = true;
+  });
+
+  const daysWithSymptoms = shigellaLogs.length;
+
+  evidence.push(`${shigellaLogs.length} Shigella symptoms logged over ${evaluationPeriodDays} days`);
+
+  // Rating determination
+  if (hus || hospitalized || severeComplications) {
+    supportedRating = 100;
+    ratingRationale.push(...[
+      'Severe complications',
+      hus ? 'Hemolytic uremic syndrome (HUS)' : '',
+      symptomCounts.seizures > 0 ? 'Seizures documented' : '',
+      hospitalized ? 'Hospitalization required' : '',
+      'Meets criteria for 100% rating'
+    ].filter(Boolean));
+  } else if (reactiveArthritis && symptomCounts.reactiveArthritis >= 10) {
+    supportedRating = 60;
+    ratingRationale.push(
+        'Moderate symptoms with reactive arthritis',
+        `Joint pain episodes: ${symptomCounts.reactiveArthritis}`,
+        'Meets criteria for 60% rating'
+    );
+  } else if (daysWithSymptoms >= 15) {
+    supportedRating = 30;
+    ratingRationale.push(
+        'Mild chronic symptoms',
+        `Symptoms on ${daysWithSymptoms} days`,
+        'Meets criteria for 30% rating'
+    );
+  } else if (daysWithSymptoms >= 5) {
+    supportedRating = 10;
+    ratingRationale.push(
+        'Minimal residual symptoms',
+        'Meets criteria for 10% rating'
+    );
+  } else {
+    supportedRating = 0;
+    ratingRationale.push(
+        'Fully recovered from Shigella',
+        'Asymptomatic rating'
+    );
+  }
+
+  // Evidence
+  if (symptomCounts.diarrhea > 0) evidence.push(`${symptomCounts.diarrhea} diarrhea episodes`);
+  if (symptomCounts.bloodyStool > 0) evidence.push(`${symptomCounts.bloodyStool} bloody stool episodes (dysentery)`);
+  if (symptomCounts.tenesmus > 0) evidence.push(`${symptomCounts.tenesmus} tenesmus episodes`);
+  if (symptomCounts.reactiveArthritis > 0) evidence.push(`${symptomCounts.reactiveArthritis} reactive arthritis episodes`);
+  if (hus) evidence.push('HUS documented');
+
+  // Gaps
+  gaps.push('Stool culture confirming Shigella species');
+  if (hus) {
+    gaps.push('Lab work: CBC, BMP showing kidney function, platelet count');
+  }
+  if (reactiveArthritis) {
+    gaps.push('Rheumatology evaluation');
+  }
+  gaps.push('Document severity of dysentery and complications');
+
+  return {
+    condition: 'Shigella Infection',
+    diagnosticCode: '6334',
+    hasData: true,
+    supportedRating,
+    ratingRationale,
+    evidence,
+    gaps,
+    metrics: {
+      totalLogs: shigellaLogs.length,
+      evaluationPeriod: evaluationPeriodDays,
+      symptomCounts,
+      hospitalized,
+      hus,
+      reactiveArthritis,
+    },
+  };
+};
+
+/**
+ * Analyzes West Nile Virus logs to determine supported rating level
+ * Based on 38 CFR 4.88b, DC 6335
+ */
+export const analyzeWestNileLogs = (logs, options = {}) => {
+  const { evaluationPeriodDays = 90 } = options;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const westNileLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    return logDate >= cutoffDate && (
+        CONDITIONS.WEST_NILE.symptomIds.includes(getLogSymptomId(log)) ||
+        getLogSymptomId(log)?.includes('west-nile')
+    );
+  });
+
+  if (westNileLogs.length === 0) {
+    return {
+      condition: 'West Nile Virus',
+      diagnosticCode: '6335',
+      hasData: false,
+      message: 'No West Nile symptoms logged',
+      supportedRating: null,
+      ratingRationale: [],
+      gaps: [
+        'Start logging West Nile symptoms',
+        'Document neurological symptoms (weakness, tremors, cognitive)',
+        'Track chronic fatigue',
+        'Serology confirming West Nile IgM antibodies',
+        'Neurological evaluation if deficits present',
+      ],
+    };
+  }
+
+  const evidence = [];
+  const gaps = [];
+  let supportedRating = 0;
+  const ratingRationale = [];
+
+  const symptomCounts = {
+    fever: 0,
+    headache: 0,
+    bodyAches: 0,
+    fatigue: 0,
+    weakness: 0,
+    cognitive: 0,
+    tremors: 0,
+    visionProblems: 0,
+    numbness: 0,
+    paralysis: 0,
+  };
+
+  let neuroinvasive = false;
+  let permanentImpairment = false;
+  let encephalitis = false;
+  let acuteFlaccidParalysis = false;
+
+  westNileLogs.forEach(log => {
+    const symptomId = getLogSymptomId(log);
+
+    if (symptomId === 'west-nile-fever') symptomCounts.fever++;
+    if (symptomId === 'west-nile-headache') symptomCounts.headache++;
+    if (symptomId === 'west-nile-body-aches') symptomCounts.bodyAches++;
+    if (symptomId === 'west-nile-fatigue') symptomCounts.fatigue++;
+    if (symptomId === 'west-nile-weakness') symptomCounts.weakness++;
+    if (symptomId === 'west-nile-cognitive') symptomCounts.cognitive++;
+    if (symptomId === 'west-nile-tremors') symptomCounts.tremors++;
+    if (symptomId === 'west-nile-vision-problems') symptomCounts.visionProblems++;
+    if (symptomId === 'west-nile-numbness') symptomCounts.numbness++;
+    if (symptomId === 'west-nile-paralysis') {
+      symptomCounts.paralysis++;
+      acuteFlaccidParalysis = true;
+      neuroinvasive = true;
+      permanentImpairment = true;
+    }
+
+    if (log.westNileData?.neuroinvasive) neuroinvasive = true;
+    if (log.westNileData?.encephalitis) {
+      encephalitis = true;
+      neuroinvasive = true;
+    }
+    if (log.westNileData?.acuteFlaccidParalysis) {
+      acuteFlaccidParalysis = true;
+      permanentImpairment = true;
+    }
+    if (log.westNileData?.permanentImpairment) permanentImpairment = true;
+  });
+
+  const daysWithSymptoms = westNileLogs.length;
+
+  evidence.push(`${westNileLogs.length} West Nile symptoms logged over ${evaluationPeriodDays} days`);
+
+  // Rating determination
+  if (acuteFlaccidParalysis || encephalitis || (neuroinvasive && permanentImpairment)) {
+    supportedRating = 100;
+    ratingRationale.push(...[
+      'Severe neuroinvasive disease with permanent impairment',
+      acuteFlaccidParalysis ? 'Acute flaccid paralysis (polio-like)' : '',
+      encephalitis ? 'Encephalitis documented' : '',
+      'Meets criteria for 100% rating'
+    ].filter(Boolean));
+  } else if (neuroinvasive || (symptomCounts.weakness >= 20 && symptomCounts.fatigue >= 20)) {
+    supportedRating = 60;
+    ratingRationale.push(
+        'Moderate neurological symptoms or chronic fatigue',
+        `Muscle weakness: ${symptomCounts.weakness} episodes`,
+        `Chronic fatigue: ${symptomCounts.fatigue} episodes`,
+        'Meets criteria for 60% rating'
+    );
+  } else if (daysWithSymptoms >= 20 || symptomCounts.weakness >= 10) {
+    supportedRating = 30;
+    ratingRationale.push(
+        'Mild chronic symptoms',
+        'Post-West Nile syndrome',
+        'Meets criteria for 30% rating'
+    );
+  } else if (daysWithSymptoms >= 5) {
+    supportedRating = 10;
+    ratingRationale.push(
+        'Minimal residual symptoms',
+        'Meets criteria for 10% rating'
+    );
+  } else {
+    supportedRating = 0;
+    ratingRationale.push(
+        'Fully recovered from West Nile',
+        'Asymptomatic rating'
+    );
+  }
+
+  // Evidence
+  if (symptomCounts.weakness > 0) evidence.push(`${symptomCounts.weakness} muscle weakness episodes`);
+  if (symptomCounts.fatigue > 0) evidence.push(`${symptomCounts.fatigue} fatigue episodes`);
+  if (symptomCounts.cognitive > 0) evidence.push(`${symptomCounts.cognitive} cognitive impairment episodes`);
+  if (symptomCounts.paralysis > 0) evidence.push(`${symptomCounts.paralysis} paralysis episodes (AFP)`);
+  if (neuroinvasive) evidence.push('Neuroinvasive disease documented');
+
+  // Gaps
+  gaps.push('Serology: West Nile IgM antibodies');
+  if (neuroinvasive) {
+    gaps.push('CSF analysis');
+    gaps.push('MRI/CT brain imaging');
+    gaps.push('Neurological examination documenting deficits');
+  }
+  if (symptomCounts.weakness > 10 || symptomCounts.paralysis > 0) {
+    gaps.push('EMG/nerve conduction studies');
+  }
+  gaps.push('Document both acute illness and chronic post-West Nile syndrome');
+
+  return {
+    condition: 'West Nile Virus',
+    diagnosticCode: '6335',
+    hasData: true,
+    supportedRating,
+    ratingRationale,
+    evidence,
+    gaps,
+    metrics: {
+      totalLogs: westNileLogs.length,
+      evaluationPeriod: evaluationPeriodDays,
+      symptomCounts,
+      neuroinvasive,
+      encephalitis,
+      acuteFlaccidParalysis,
+      permanentImpairment,
+    },
+  };
+};
+
+/**
+ * Analyzes NTM logs to determine supported rating level
+ * Based on 38 CFR 4.88b, DC 6312
+ */
+export const analyzeNTMLogs = (logs, options = {}) => {
+  const { evaluationPeriodDays = 90 } = options;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const ntmLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    return logDate >= cutoffDate && (
+        CONDITIONS.NTM.symptomIds.includes(getLogSymptomId(log)) ||
+        getLogSymptomId(log)?.includes('ntm')
+    );
+  });
+
+  if (ntmLogs.length === 0) {
+    return {
+      condition: 'Nontuberculous Mycobacterium Infection',
+      diagnosticCode: '6312',
+      hasData: false,
+      message: 'No NTM symptoms logged',
+      supportedRating: null,
+      ratingRationale: [],
+      gaps: [
+        'Start logging NTM symptoms',
+        'Document chronic cough and sputum production',
+        'Track weight loss and fatigue',
+        'Sputum cultures (multiple) confirming NTM',
+        'CT scan showing lung involvement',
+        'Pulmonary function tests',
+      ],
+    };
+  }
+
+  const evidence = [];
+  const gaps = [];
+  let supportedRating = 0;
+  const ratingRationale = [];
+
+  const symptomCounts = {
+    cough: 0,
+    sputum: 0,
+    fatigue: 0,
+    fever: 0,
+    nightSweats: 0,
+    weightLoss: 0,
+    chestPain: 0,
+    shortnessBreath: 0,
+    hemoptysis: 0,
+    lymphNodes: 0,
+  };
+
+  let activeDisease = false;
+  let onTreatment = false;
+  let disseminated = false;
+  let monthsOnTreatment = 0;
+
+  ntmLogs.forEach(log => {
+    const symptomId = getLogSymptomId(log);
+
+    if (symptomId === 'ntm-cough') symptomCounts.cough++;
+    if (symptomId === 'ntm-sputum') symptomCounts.sputum++;
+    if (symptomId === 'ntm-fatigue') symptomCounts.fatigue++;
+    if (symptomId === 'ntm-fever') symptomCounts.fever++;
+    if (symptomId === 'ntm-night-sweats') symptomCounts.nightSweats++;
+    if (symptomId === 'ntm-weight-loss') symptomCounts.weightLoss++;
+    if (symptomId === 'ntm-chest-pain') symptomCounts.chestPain++;
+    if (symptomId === 'ntm-shortness-breath') symptomCounts.shortnessBreath++;
+    if (symptomId === 'ntm-hemoptysis') symptomCounts.hemoptysis++;
+    if (symptomId === 'ntm-lymph-nodes') {
+      symptomCounts.lymphNodes++;
+      disseminated = true;
+    }
+
+    if (log.ntmData?.activeDisease) activeDisease = true;
+    if (log.ntmData?.onTreatment) onTreatment = true;
+    if (log.ntmData?.disseminated) disseminated = true;
+    if (log.ntmData?.monthsOnTreatment) {
+      monthsOnTreatment = Math.max(monthsOnTreatment, parseInt(log.ntmData.monthsOnTreatment));
+    }
+  });
+
+  const daysWithSymptoms = ntmLogs.length;
+
+  evidence.push(`${ntmLogs.length} NTM symptoms logged over ${evaluationPeriodDays} days`);
+
+  // Rating determination
+  if ((activeDisease && onTreatment && monthsOnTreatment >= 6) || disseminated) {
+    supportedRating = 100;
+    ratingRationale.push(...[
+      'Active NTM requiring continuous treatment',
+      onTreatment ? `On treatment for ${monthsOnTreatment} months` : '',
+      disseminated ? 'Disseminated disease' : '',
+      'Meets criteria for 100% rating'
+    ].filter(Boolean));
+  } else if (activeDisease && onTreatment) {
+    supportedRating = 60;
+    ratingRationale.push(
+        'Active NTM with moderate symptoms on treatment',
+        onTreatment ? 'Long-term antibiotic therapy' : '',
+        'Meets criteria for 60% rating'
+    );
+  } else if (daysWithSymptoms >= 20 || symptomCounts.cough >= 30) {
+    supportedRating = 30;
+    ratingRationale.push(
+        'Mild disease or post-treatment monitoring',
+        'Chronic respiratory symptoms',
+        'Meets criteria for 30% rating'
+    );
+  } else if (daysWithSymptoms >= 5) {
+    supportedRating = 10;
+    ratingRationale.push(
+        'Colonization without active disease',
+        'Meets criteria for 10% rating'
+    );
+  } else {
+    supportedRating = 0;
+    ratingRationale.push(
+        'Successfully treated, no residuals',
+        'Asymptomatic rating'
+    );
+  }
+
+  // Evidence
+  if (symptomCounts.cough > 0) evidence.push(`${symptomCounts.cough} chronic cough episodes`);
+  if (symptomCounts.sputum > 0) evidence.push(`${symptomCounts.sputum} sputum production episodes`);
+  if (symptomCounts.hemoptysis > 0) evidence.push(`${symptomCounts.hemoptysis} hemoptysis episodes (coughing blood)`);
+  if (symptomCounts.weightLoss > 0) evidence.push(`${symptomCounts.weightLoss} weight loss documented`);
+  if (onTreatment) evidence.push(`On NTM treatment for ${monthsOnTreatment} months`);
+
+  // Gaps
+  gaps.push('Multiple sputum cultures confirming NTM species (MAC, M. abscessus, M. kansasii)');
+  gaps.push('CT chest showing nodular/cavitary disease');
+  gaps.push('Pulmonary function tests');
+  if (onTreatment) {
+    gaps.push('Treatment compliance documentation (12-24 month regimen)');
+    gaps.push('Drug regimen: typically macrolide + ethambutol + rifampin');
+  }
+  gaps.push('Infectious disease specialist notes');
+
+  return {
+    condition: 'Nontuberculous Mycobacterium Infection',
+    diagnosticCode: '6312',
+    hasData: true,
+    supportedRating,
+    ratingRationale,
+    evidence,
+    gaps,
+    metrics: {
+      totalLogs: ntmLogs.length,
+      evaluationPeriod: evaluationPeriodDays,
+      symptomCounts,
+      activeDisease,
+      onTreatment,
+      disseminated,
+      monthsOnTreatment,
     },
   };
 };
@@ -20850,18 +22090,31 @@ export const getLymeDiseaseRatingCriteria = (percent) => {
 export const getMalariaRatingCriteria = (percent) => {
   return MALARIA_CRITERIA.ratings.find(r => r.percent === percent) || null;
 };
-
 export const getBrucellosisRatingCriteria = (percent) => {
   return BRUCELLOSIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
 };
-
 export const getCampylobacterRatingCriteria = (percent) => {
   return CAMPYLOBACTER_CRITERIA.ratings.find(r => r.percent === percent) || null;
 };
-
 export const getQFeverRatingCriteria = (percent) => {
   return Q_FEVER_CRITERIA.ratings.find(r => r.percent === percent) || null;
 };
+export const getSalmonellaRatingCriteria = (percent) => {
+  return SALMONELLA_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+
+export const getShigellaRatingCriteria = (percent) => {
+  return SHIGELLA_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+
+export const getWestNileRatingCriteria = (percent) => {
+  return WEST_NILE_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+
+export const getNTMRatingCriteria = (percent) => {
+  return NTM_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+
 
 export const getAllLumbosacralStrainRatings = () => LUMBOSACRAL_STRAIN_CRITERIA.ratings;
 export const getAllIntervertebralDiscRatings = () => INTERVERTEBRAL_DISC_CRITERIA.ratingsIncapacitatingEpisodes;
@@ -20910,6 +22163,10 @@ export const getAllMalariaRatings = () => MALARIA_CRITERIA.ratings;
 export const getAllBrucellosisRatings = () => BRUCELLOSIS_CRITERIA.ratings;
 export const getAllCampylobacterRatings = () => CAMPYLOBACTER_CRITERIA.ratings;
 export const getAllQFeverRatings = () => Q_FEVER_CRITERIA.ratings;
+export const getAllSalmonellaRatings = () => SALMONELLA_CRITERIA.ratings;
+export const getAllShigellaRatings = () => SHIGELLA_CRITERIA.ratings;
+export const getAllWestNileRatings = () => WEST_NILE_CRITERIA.ratings;
+export const getAllNTMRatings = () => NTM_CRITERIA.ratings;
 
 
 export const getEpilepsyMajorDefinition = (term) => EPILEPSY_MAJOR_CRITERIA.definitions[term] || null;
@@ -20965,6 +22222,10 @@ export const getMalariaDefinition = (term) => MALARIA_CRITERIA.definitions[term]
 export const getBrucellosisDefinition = (term) => BRUCELLOSIS_CRITERIA.definitions[term] || null;
 export const getCampylobacterDefinition = (term) => CAMPYLOBACTER_CRITERIA.definitions[term] || null;
 export const getQFeverDefinition = (term) => Q_FEVER_CRITERIA.definitions[term] || null;
+export const getSalmonellaDefinition = (term) => SALMONELLA_CRITERIA.definitions[term] || null;
+export const getShigellaDefinition = (term) => SHIGELLA_CRITERIA.definitions[term] || null;
+export const getWestNileDefinition = (term) => WEST_NILE_CRITERIA.definitions[term] || null;
+export const getNTMDefinition = (term) => NTM_CRITERIA.definitions[term] || null;
 
 
 

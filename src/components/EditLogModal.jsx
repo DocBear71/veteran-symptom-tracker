@@ -302,6 +302,38 @@ const EditLogModal = ({log, isOpen, onClose, onSaved}) => {
     phaseIAntibodies: false,
   });
 
+  const [salmonellaData, setSalmonellaData] = useState({
+    hospitalized: false,
+    bacteremia: false,
+    reactiveArthritis: false,
+    severeComplications: false,
+    stoolCultureConfirmed: false,
+  });
+
+  const [shigellaData, setShigellaData] = useState({
+    hospitalized: false,
+    hus: false,
+    reactiveArthritis: false,
+    severeComplications: false,
+    stoolCultureConfirmed: false,
+  });
+
+  const [westNileData, setWestNileData] = useState({
+    neuroinvasive: false,
+    encephalitis: false,
+    acuteFlaccidParalysis: false,
+    permanentImpairment: false,
+    serologyConfirmed: false,
+  });
+
+  const [ntmData, setNtmData] = useState({
+    activeDisease: false,
+    onTreatment: false,
+    disseminated: false,
+    monthsOnTreatment: '',
+    ntmSpecies: '',
+  });
+
   // Phase 7: Dental/Oral Conditions
   const [dentalData, setDentalData] = useState({
     affectedArea: '',
@@ -671,6 +703,58 @@ const EditLogModal = ({log, isOpen, onClose, onSaved}) => {
               });
             }
 
+            // Phase 6: Salmonella data
+            if (log.salmonellaData) {
+              setSalmonellaData(log.salmonellaData);
+            } else {
+              setSalmonellaData({
+                hospitalized: false,
+                bacteremia: false,
+                reactiveArthritis: false,
+                severeComplications: false,
+                stoolCultureConfirmed: false,
+              });
+            }
+
+            // Phase 6: Shigella data
+            if (log.shigellaData) {
+              setShigellaData(log.shigellaData);
+            } else {
+              setShigellaData({
+                hospitalized: false,
+                hus: false,
+                reactiveArthritis: false,
+                severeComplications: false,
+                stoolCultureConfirmed: false,
+              });
+            }
+
+            // Phase 6: West Nile data
+            if (log.westNileData) {
+              setWestNileData(log.westNileData);
+            } else {
+              setWestNileData({
+                neuroinvasive: false,
+                encephalitis: false,
+                acuteFlaccidParalysis: false,
+                permanentImpairment: false,
+                serologyConfirmed: false,
+              });
+            }
+
+            // Phase 6: NTM data
+            if (log.ntmData) {
+              setNtmData(log.ntmData);
+            } else {
+              setNtmData({
+                activeDisease: false,
+                onTreatment: false,
+                disseminated: false,
+                monthsOnTreatment: '',
+                ntmSpecies: '',
+              });
+            }
+
             // Phase 7: Load dental data
             if (log.dentalData) {
               setDentalData(log.dentalData);
@@ -896,35 +980,65 @@ const EditLogModal = ({log, isOpen, onClose, onSaved}) => {
         ].includes(log?.symptomId) ||
             log?.lymeData;
 
-  const isMalariaRelated = [
-    'malaria-fever', 'malaria-chills', 'malaria-sweats', 'malaria-headache',
-    'malaria-muscle-aches', 'malaria-nausea', 'malaria-fatigue', 'malaria-jaundice',
-    'malaria-anemia', 'malaria-enlarged-spleen'
-  ].includes(log?.symptomId) ||
-      log?.malariaData;
+        const isMalariaRelated = [
+          'malaria-fever', 'malaria-chills', 'malaria-sweats', 'malaria-headache',
+          'malaria-muscle-aches', 'malaria-nausea', 'malaria-fatigue', 'malaria-jaundice',
+          'malaria-anemia', 'malaria-enlarged-spleen'
+        ].includes(log?.symptomId) ||
+            log?.malariaData;
 
-  const isBrucellosisRelated = [
-    'brucellosis-fever', 'brucellosis-night-sweats', 'brucellosis-fatigue',
-    'brucellosis-joint-pain', 'brucellosis-muscle-aches', 'brucellosis-headache',
-    'brucellosis-back-pain', 'brucellosis-weight-loss', 'brucellosis-depression',
-    'brucellosis-liver-spleen'
-  ].includes(log?.symptomId) ||
-      log?.brucellosisData;
+        const isBrucellosisRelated = [
+          'brucellosis-fever', 'brucellosis-night-sweats', 'brucellosis-fatigue',
+          'brucellosis-joint-pain', 'brucellosis-muscle-aches', 'brucellosis-headache',
+          'brucellosis-back-pain', 'brucellosis-weight-loss', 'brucellosis-depression',
+          'brucellosis-liver-spleen'
+        ].includes(log?.symptomId) ||
+            log?.brucellosisData;
 
-  const isCampylobacterRelated = [
-    'campylobacter-diarrhea', 'campylobacter-abdominal-pain', 'campylobacter-fever',
-    'campylobacter-nausea', 'campylobacter-vomiting', 'campylobacter-bloody-stool',
-    'campylobacter-fatigue', 'campylobacter-joint-pain', 'campylobacter-muscle-weakness',
-    'campylobacter-nerve-symptoms'
-  ].includes(log?.symptomId) ||
-      log?.campylobacterData;
+        const isCampylobacterRelated = [
+          'campylobacter-diarrhea', 'campylobacter-abdominal-pain', 'campylobacter-fever',
+          'campylobacter-nausea', 'campylobacter-vomiting', 'campylobacter-bloody-stool',
+          'campylobacter-fatigue', 'campylobacter-joint-pain', 'campylobacter-muscle-weakness',
+          'campylobacter-nerve-symptoms'
+        ].includes(log?.symptomId) ||
+            log?.campylobacterData;
 
-  const isQFeverRelated = [
-    'q-fever-fever', 'q-fever-headache', 'q-fever-fatigue', 'q-fever-muscle-aches',
-    'q-fever-cough', 'q-fever-chest-pain', 'q-fever-night-sweats', 'q-fever-chills',
-    'q-fever-shortness-breath', 'q-fever-joint-pain'
-  ].includes(log?.symptomId) ||
-      log?.qFeverData;
+        const isQFeverRelated = [
+          'q-fever-fever', 'q-fever-headache', 'q-fever-fatigue', 'q-fever-muscle-aches',
+          'q-fever-cough', 'q-fever-chest-pain', 'q-fever-night-sweats', 'q-fever-chills',
+          'q-fever-shortness-breath', 'q-fever-joint-pain'
+        ].includes(log?.symptomId) ||
+            log?.qFeverData;
+
+        const isSalmonellaRelated = [
+          'salmonella-diarrhea', 'salmonella-fever', 'salmonella-abdominal-cramps',
+          'salmonella-nausea', 'salmonella-vomiting', 'salmonella-bloody-stool',
+          'salmonella-joint-pain', 'salmonella-bacteremia', 'salmonella-dehydration',
+          'salmonella-fatigue'
+        ].includes(log?.symptomId) ||
+            log?.salmonellaData;
+
+        const isShigellaRelated = [
+          'shigella-diarrhea', 'shigella-bloody-stool', 'shigella-abdominal-cramps',
+          'shigella-fever', 'shigella-tenesmus', 'shigella-nausea', 'shigella-vomiting',
+          'shigella-dehydration', 'shigella-reactive-arthritis', 'shigella-seizures'
+        ].includes(log?.symptomId) ||
+            log?.shigellaData;
+
+        const isWestNileRelated = [
+          'west-nile-fever', 'west-nile-headache', 'west-nile-body-aches',
+          'west-nile-fatigue', 'west-nile-weakness', 'west-nile-cognitive',
+          'west-nile-tremors', 'west-nile-vision-problems', 'west-nile-numbness',
+          'west-nile-paralysis'
+        ].includes(log?.symptomId) ||
+            log?.westNileData;
+
+        const isNTMRelated = [
+          'ntm-cough', 'ntm-sputum', 'ntm-fatigue', 'ntm-fever',
+          'ntm-night-sweats', 'ntm-weight-loss', 'ntm-chest-pain',
+          'ntm-shortness-breath', 'ntm-hemoptysis', 'ntm-lymph-nodes'
+        ].includes(log?.symptomId) ||
+            log?.ntmData;
 
         // Phase 7: Dental/Oral detection
         const isDentalOralRelated = log?.symptomId?.includes('jaw') ||
@@ -1010,6 +1124,14 @@ const EditLogModal = ({log, isOpen, onClose, onSaved}) => {
           if (isHIVRelated) updates.hivData = { ...hivData };
           if (isHepatitisRelated) updates.hepatitisData = hepatitisData;
           if (isLymeRelated) updates.lymeData = { ...lymeData };
+          if (isMalariaRelated) updates.malariaData = { ...malariaData };
+          if (isBrucellosisRelated) updates.brucellosisData = { ...brucellosisData };
+          if (isCampylobacterRelated) updates.campylobacterData = { ...campylobacterData };
+          if (isQFeverRelated) updates.qFeverData = { ...qFeverData };
+          if (isSalmonellaRelated) updates.salmonellaData = { ...salmonellaData };
+          if (isShigellaRelated) updates.shigellaData = { ...shigellaData };
+          if (isWestNileRelated) updates.westNileData = { ...westNileData };
+          if (isNTMRelated) updates.ntmData = { ...ntmData };
           // Phase 7: Add Dental/Oral Data
           if (isDentalOralRelated) updates.dentalData = { ...dentalData };
 
@@ -5476,6 +5598,334 @@ const EditLogModal = ({log, isOpen, onClose, onSaved}) => {
                                   className="mt-1 rounded bg-red-50"
                               />
                               <span className="text-sm font-semibold text-red-700">Q fever endocarditis</span>
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                  )}
+
+                  {/* Phase 6: Salmonella Form */}
+                  {isSalmonellaRelated && (
+                      <div className="space-y-4">
+                        <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-200 dark:border-blue-800">
+                          <h4 className="font-semibold text-blue-900 dark:text-blue-200 mb-2">
+                            🦠 Nontyphoid Salmonella Details
+                          </h4>
+                          <p className="text-sm text-blue-800 dark:text-blue-300 mb-3">
+                            Track Salmonella infection symptoms. Document complications like bacteremia and reactive arthritis.
+                          </p>
+
+                          <div className="space-y-3">
+                            <label className="flex items-start gap-2">
+                              <input
+                                  type="checkbox"
+                                  checked={salmonellaData.stoolCultureConfirmed}
+                                  onChange={(e) => setSalmonellaData({...salmonellaData, stoolCultureConfirmed: e.target.checked})}
+                                  className="mt-1 rounded border-gray-300 dark:border-gray-600"
+                              />
+                              <span className="text-sm text-gray-700 dark:text-gray-300">
+                      Stool culture confirmed Salmonella
+                    </span>
+                            </label>
+
+                            <label className="flex items-start gap-2">
+                              <input
+                                  type="checkbox"
+                                  checked={salmonellaData.reactiveArthritis}
+                                  onChange={(e) => setSalmonellaData({...salmonellaData, reactiveArthritis: e.target.checked})}
+                                  className="mt-1 rounded border-gray-300 dark:border-gray-600"
+                              />
+                              <span className="text-sm text-gray-700 dark:text-gray-300">
+                      Reactive arthritis (joint inflammation 1-4 weeks post-infection)
+                    </span>
+                            </label>
+
+                            <label className="flex items-start gap-2">
+                              <input
+                                  type="checkbox"
+                                  checked={salmonellaData.bacteremia}
+                                  onChange={(e) => setSalmonellaData({...salmonellaData, bacteremia: e.target.checked})}
+                                  className="mt-1 rounded border-red-300 dark:border-red-600 bg-red-50 dark:bg-red-900/20"
+                              />
+                              <span className="text-sm text-red-700 dark:text-red-300 font-semibold">
+                      Bacteremia/Sepsis (bacteria in bloodstream)
+                    </span>
+                            </label>
+
+                            <label className="flex items-start gap-2">
+                              <input
+                                  type="checkbox"
+                                  checked={salmonellaData.hospitalized}
+                                  onChange={(e) => setSalmonellaData({...salmonellaData, hospitalized: e.target.checked})}
+                                  className="mt-1 rounded border-gray-300 dark:border-gray-600"
+                              />
+                              <span className="text-sm text-gray-700 dark:text-gray-300">
+                      Hospitalized for complications
+                    </span>
+                            </label>
+
+                            <label className="flex items-start gap-2">
+                              <input
+                                  type="checkbox"
+                                  checked={salmonellaData.severeComplications}
+                                  onChange={(e) => setSalmonellaData({...salmonellaData, severeComplications: e.target.checked})}
+                                  className="mt-1 rounded border-gray-300 dark:border-gray-600"
+                              />
+                              <span className="text-sm text-gray-700 dark:text-gray-300">
+                      Other severe complications
+                    </span>
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                  )}
+
+                  {/* Phase 6: Shigella Form */}
+                  {isShigellaRelated && (
+                      <div className="space-y-4">
+                        <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-200 dark:border-blue-800">
+                          <h4 className="font-semibold text-blue-900 dark:text-blue-200 mb-2">
+                            🦠 Shigella Infection Details
+                          </h4>
+                          <p className="text-sm text-blue-800 dark:text-blue-300 mb-3">
+                            Track Shigella dysentery symptoms. Document bloody diarrhea, tenesmus, and complications.
+                          </p>
+
+                          <div className="space-y-3">
+                            <label className="flex items-start gap-2">
+                              <input
+                                  type="checkbox"
+                                  checked={shigellaData.stoolCultureConfirmed}
+                                  onChange={(e) => setShigellaData({...shigellaData, stoolCultureConfirmed: e.target.checked})}
+                                  className="mt-1 rounded border-gray-300 dark:border-gray-600"
+                              />
+                              <span className="text-sm text-gray-700 dark:text-gray-300">
+                      Stool culture confirmed Shigella
+                    </span>
+                            </label>
+
+                            <label className="flex items-start gap-2">
+                              <input
+                                  type="checkbox"
+                                  checked={shigellaData.reactiveArthritis}
+                                  onChange={(e) => setShigellaData({...shigellaData, reactiveArthritis: e.target.checked})}
+                                  className="mt-1 rounded border-gray-300 dark:border-gray-600"
+                              />
+                              <span className="text-sm text-gray-700 dark:text-gray-300">
+                      Reactive arthritis (Reiter syndrome)
+                    </span>
+                            </label>
+
+                            <label className="flex items-start gap-2">
+                              <input
+                                  type="checkbox"
+                                  checked={shigellaData.hus}
+                                  onChange={(e) => setShigellaData({...shigellaData, hus: e.target.checked})}
+                                  className="mt-1 rounded border-red-300 dark:border-red-600 bg-red-50 dark:bg-red-900/20"
+                              />
+                              <span className="text-sm text-red-700 dark:text-red-300 font-bold">
+                      Hemolytic Uremic Syndrome (HUS) - kidney failure
+                    </span>
+                            </label>
+
+                            <label className="flex items-start gap-2">
+                              <input
+                                  type="checkbox"
+                                  checked={shigellaData.hospitalized}
+                                  onChange={(e) => setShigellaData({...shigellaData, hospitalized: e.target.checked})}
+                                  className="mt-1 rounded border-gray-300 dark:border-gray-600"
+                              />
+                              <span className="text-sm text-gray-700 dark:text-gray-300">
+                      Hospitalized for complications
+                    </span>
+                            </label>
+
+                            <label className="flex items-start gap-2">
+                              <input
+                                  type="checkbox"
+                                  checked={shigellaData.severeComplications}
+                                  onChange={(e) => setShigellaData({...shigellaData, severeComplications: e.target.checked})}
+                                  className="mt-1 rounded border-gray-300 dark:border-gray-600"
+                              />
+                              <span className="text-sm text-gray-700 dark:text-gray-300">
+                      Other severe complications (seizures, severe dehydration)
+                    </span>
+                            </label>
+                          </div>
+
+                          {shigellaData.hus && (
+                              <div className="mt-3 p-3 bg-red-50 dark:bg-red-900/30 rounded border border-red-300 dark:border-red-700">
+                                <p className="text-sm text-red-900 dark:text-red-200 font-semibold">
+                                  ⚠️ HUS is a life-threatening complication. Document all lab work showing kidney dysfunction.
+                                </p>
+                              </div>
+                          )}
+                        </div>
+                      </div>
+                  )}
+
+                  {/* Phase 6: West Nile Form */}
+                  {isWestNileRelated && (
+                      <div className="space-y-4">
+                        <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-200 dark:border-blue-800">
+                          <h4 className="font-semibold text-blue-900 dark:text-blue-200 mb-2">
+                            🦟 West Nile Virus Details
+                          </h4>
+                          <p className="text-sm text-blue-800 dark:text-blue-300 mb-3">
+                            Track West Nile symptoms. Neuroinvasive disease can cause long-term impairment.
+                          </p>
+
+                          <div className="space-y-3">
+                            <label className="flex items-start gap-2">
+                              <input
+                                  type="checkbox"
+                                  checked={westNileData.serologyConfirmed}
+                                  onChange={(e) => setWestNileData({...westNileData, serologyConfirmed: e.target.checked})}
+                                  className="mt-1 rounded border-gray-300 dark:border-gray-600"
+                              />
+                              <span className="text-sm text-gray-700 dark:text-gray-300">
+                      West Nile IgM antibodies confirmed
+                    </span>
+                            </label>
+
+                            <label className="flex items-start gap-2">
+                              <input
+                                  type="checkbox"
+                                  checked={westNileData.neuroinvasive}
+                                  onChange={(e) => setWestNileData({...westNileData, neuroinvasive: e.target.checked})}
+                                  className="mt-1 rounded border-gray-300 dark:border-gray-600"
+                              />
+                              <span className="text-sm text-gray-700 dark:text-gray-300">
+                      Neuroinvasive disease (nervous system involvement)
+                    </span>
+                            </label>
+
+                            <label className="flex items-start gap-2">
+                              <input
+                                  type="checkbox"
+                                  checked={westNileData.encephalitis}
+                                  onChange={(e) => setWestNileData({...westNileData, encephalitis: e.target.checked})}
+                                  className="mt-1 rounded border-red-300 dark:border-red-600 bg-red-50 dark:bg-red-900/20"
+                              />
+                              <span className="text-sm text-red-700 dark:text-red-300 font-semibold">
+                      Encephalitis (brain inflammation)
+                    </span>
+                            </label>
+
+                            <label className="flex items-start gap-2">
+                              <input
+                                  type="checkbox"
+                                  checked={westNileData.acuteFlaccidParalysis}
+                                  onChange={(e) => setWestNileData({...westNileData, acuteFlaccidParalysis: e.target.checked})}
+                                  className="mt-1 rounded border-red-300 dark:border-red-600 bg-red-50 dark:bg-red-900/20"
+                              />
+                              <span className="text-sm text-red-700 dark:text-red-300 font-bold">
+                      Acute Flaccid Paralysis (polio-like)
+                    </span>
+                            </label>
+
+                            <label className="flex items-start gap-2">
+                              <input
+                                  type="checkbox"
+                                  checked={westNileData.permanentImpairment}
+                                  onChange={(e) => setWestNileData({...westNileData, permanentImpairment: e.target.checked})}
+                                  className="mt-1 rounded border-gray-300 dark:border-gray-600"
+                              />
+                              <span className="text-sm text-gray-700 dark:text-gray-300">
+                      Permanent neurological impairment
+                    </span>
+                            </label>
+                          </div>
+
+                          {(westNileData.acuteFlaccidParalysis || westNileData.encephalitis) && (
+                              <div className="mt-3 p-3 bg-red-50 dark:bg-red-900/30 rounded border border-red-300 dark:border-red-700">
+                                <p className="text-sm text-red-900 dark:text-red-200 font-semibold">
+                                  ⚠️ Severe neuroinvasive disease. Document CSF, MRI/CT, and neurological exam.
+                                </p>
+                              </div>
+                          )}
+                        </div>
+                      </div>
+                  )}
+
+                  {/* Phase 6: NTM Form */}
+                  {isNTMRelated && (
+                      <div className="space-y-4">
+                        <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-200 dark:border-blue-800">
+                          <h4 className="font-semibold text-blue-900 dark:text-blue-200 mb-2">
+                            🫁 Nontuberculous Mycobacterium (NTM) Details
+                          </h4>
+                          <p className="text-sm text-blue-800 dark:text-blue-300 mb-3">
+                            Track NTM lung infection. Requires 12-24 months of multi-drug therapy.
+                          </p>
+
+                          <div className="space-y-3">
+                            <div>
+                              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                NTM Species (if known)
+                              </label>
+                              <select
+                                  value={ntmData.ntmSpecies}
+                                  onChange={(e) => setNtmData({...ntmData, ntmSpecies: e.target.value})}
+                                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg
+                               bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                              >
+                                <option value="">Select species...</option>
+                                <option value="mac">MAC (M. avium complex)</option>
+                                <option value="abscessus">M. abscessus</option>
+                                <option value="kansasii">M. kansasii</option>
+                                <option value="other">Other species</option>
+                              </select>
+                            </div>
+
+                            <div>
+                              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                Months on Treatment
+                              </label>
+                              <input
+                                  type="number"
+                                  value={ntmData.monthsOnTreatment}
+                                  onChange={(e) => setNtmData({...ntmData, monthsOnTreatment: e.target.value})}
+                                  placeholder="e.g., 6"
+                                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg
+                               bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                              />
+                            </div>
+
+                            <label className="flex items-start gap-2">
+                              <input
+                                  type="checkbox"
+                                  checked={ntmData.activeDisease}
+                                  onChange={(e) => setNtmData({...ntmData, activeDisease: e.target.checked})}
+                                  className="mt-1 rounded border-gray-300 dark:border-gray-600"
+                              />
+                              <span className="text-sm text-gray-700 dark:text-gray-300">
+                      Active NTM disease (positive cultures, CT findings)
+                    </span>
+                            </label>
+
+                            <label className="flex items-start gap-2">
+                              <input
+                                  type="checkbox"
+                                  checked={ntmData.onTreatment}
+                                  onChange={(e) => setNtmData({...ntmData, onTreatment: e.target.checked})}
+                                  className="mt-1 rounded border-gray-300 dark:border-gray-600"
+                              />
+                              <span className="text-sm text-gray-700 dark:text-gray-300">
+                      On long-term antibiotic therapy (12-24 months)
+                    </span>
+                            </label>
+
+                            <label className="flex items-start gap-2">
+                              <input
+                                  type="checkbox"
+                                  checked={ntmData.disseminated}
+                                  onChange={(e) => setNtmData({...ntmData, disseminated: e.target.checked})}
+                                  className="mt-1 rounded border-red-300 dark:border-red-600 bg-red-50 dark:bg-red-900/20"
+                              />
+                              <span className="text-sm text-red-700 dark:text-red-300 font-semibold">
+                      Disseminated NTM (spread beyond lungs)
+                    </span>
                             </label>
                           </div>
                         </div>

@@ -101,6 +101,10 @@ import {
     analyzeBrucellosisLogs,
     analyzeCampylobacterLogs,
     analyzeQFeverLogs,
+    analyzeSalmonellaLogs,
+    analyzeShigellaLogs,
+    analyzeWestNileLogs,
+    analyzeNTMLogs,
 } from './ratingCriteria';
 
 // Appointment type labels for export
@@ -652,6 +656,77 @@ export const generatePDF = (dateRange = 'all', options = { includeAppointments: 
           }
         }
 
+        // Phase 6: Salmonella data extraction
+        if (log.salmonellaData) {
+          const salInfo = [];
+          const sal = log.salmonellaData;
+
+          if (sal.stoolCultureConfirmed) salInfo.push('Stool Culture Confirmed');
+          if (sal.reactiveArthritis) salInfo.push('Reactive Arthritis');
+          if (sal.bacteremia) salInfo.push('Bacteremia/Sepsis');
+          if (sal.hospitalized) salInfo.push('Hospitalized');
+          if (sal.severeComplications) salInfo.push('Severe Complications');
+
+          if (salInfo.length > 0) {
+            notes = salInfo.join(' | ') + (log.notes ? ` | ${log.notes}` : '');
+          }
+        }
+
+        // Phase 6: Shigella data extraction
+        if (log.shigellaData) {
+          const shigInfo = [];
+          const shig = log.shigellaData;
+
+          if (shig.stoolCultureConfirmed) shigInfo.push('Stool Culture Confirmed');
+          if (shig.reactiveArthritis) shigInfo.push('Reactive Arthritis');
+          if (shig.hus) shigInfo.push('HUS (Hemolytic Uremic Syndrome)');
+          if (shig.hospitalized) shigInfo.push('Hospitalized');
+          if (shig.severeComplications) shigInfo.push('Severe Complications');
+
+          if (shigInfo.length > 0) {
+            notes = shigInfo.join(' | ') + (log.notes ? ` | ${log.notes}` : '');
+          }
+        }
+
+        // Phase 6: West Nile data extraction
+        if (log.westNileData) {
+          const wnInfo = [];
+          const wn = log.westNileData;
+
+          if (wn.serologyConfirmed) wnInfo.push('Serology Confirmed');
+          if (wn.neuroinvasive) wnInfo.push('Neuroinvasive Disease');
+          if (wn.encephalitis) wnInfo.push('Encephalitis');
+          if (wn.acuteFlaccidParalysis) wnInfo.push('Acute Flaccid Paralysis');
+          if (wn.permanentImpairment) wnInfo.push('Permanent Impairment');
+
+          if (wnInfo.length > 0) {
+            notes = wnInfo.join(' | ') + (log.notes ? ` | ${log.notes}` : '');
+          }
+        }
+
+        // Phase 6: NTM data extraction
+        if (log.ntmData) {
+          const ntmInfo = [];
+          const ntm = log.ntmData;
+
+          if (ntm.ntmSpecies) {
+            const speciesMap = {
+              'mac': 'MAC',
+              'abscessus': 'M. abscessus',
+              'kansasii': 'M. kansasii',
+              'other': 'Other NTM'
+            };
+            ntmInfo.push(speciesMap[ntm.ntmSpecies] || ntm.ntmSpecies);
+          }
+          if (ntm.activeDisease) ntmInfo.push('Active Disease');
+          if (ntm.onTreatment) ntmInfo.push(`On Treatment (${ntm.monthsOnTreatment || '?'} months)`);
+          if (ntm.disseminated) ntmInfo.push('Disseminated');
+
+          if (ntmInfo.length > 0) {
+            notes = ntmInfo.join(' | ') + (log.notes ? ` | ${log.notes}` : '');
+          }
+        }
+
         // Phase 7: Dental/Oral data extraction
         if (log.dentalData) {
           const dentalInfo = [];
@@ -909,6 +984,16 @@ export const generateCSV = (dateRange = 'all', options = { includeAppointments: 
         'Campylobacter GBS', 'Campylobacter Arthritis', 'Campylobacter IBS', 'Campylobacter Culture Confirmed', 'Campylobacter Weeks Since Infection',
         // Phase 6: Infectious Diseases - Q Fever fields
         'Q Fever Chronic', 'Q Fever Endocarditis', 'Q Fever Fatigue Syndrome', 'Q Fever Phase I Antibodies', 'Q Fever Months Since Infection',
+        // Phase 6: Infectious Diseases - Q Fever fields
+        'Q Fever Chronic', 'Q Fever Endocarditis', 'Q Fever Fatigue Syndrome', 'Q Fever Phase I Antibodies', 'Q Fever Months Since Infection',
+        // Phase 6: Infectious Diseases - Salmonella fields
+        'Salmonella Hospitalized', 'Salmonella Bacteremia', 'Salmonella Reactive Arthritis', 'Salmonella Severe Complications', 'Salmonella Stool Culture',
+        // Phase 6: Infectious Diseases - Shigella fields
+        'Shigella Hospitalized', 'Shigella HUS', 'Shigella Reactive Arthritis', 'Shigella Severe Complications', 'Shigella Stool Culture',
+        // Phase 6: Infectious Diseases - West Nile fields
+        'West Nile Neuroinvasive', 'West Nile Encephalitis', 'West Nile AFP', 'West Nile Permanent Impairment', 'West Nile Serology',
+        // Phase 6: Infectious Diseases - NTM fields
+        'NTM Active Disease', 'NTM On Treatment', 'NTM Disseminated', 'NTM Months Treatment', 'NTM Species',
         // Phase 7: Dental/Oral fields
         'Jaw Pain Severity', 'Jaw Opening (mm)', 'Chewing Difficulty', 'Dietary Restrictions',
         'Missing Teeth Count', 'Prosthesis Type', 'Bone Condition', 'Palate Symptoms',
@@ -1115,6 +1200,30 @@ export const generateCSV = (dateRange = 'all', options = { includeAppointments: 
             log.qFeverData?.fatigueSyndrome ? 'Yes' : '',
             log.qFeverData?.phaseIAntibodies ? 'Yes' : '',
             log.qFeverData?.monthsSinceInfection || '',
+            // Phase 6: Salmonella data
+            log.salmonellaData?.hospitalized ? 'Yes' : '',
+            log.salmonellaData?.bacteremia ? 'Yes' : '',
+            log.salmonellaData?.reactiveArthritis ? 'Yes' : '',
+            log.salmonellaData?.severeComplications ? 'Yes' : '',
+            log.salmonellaData?.stoolCultureConfirmed ? 'Yes' : '',
+            // Phase 6: Shigella data
+            log.shigellaData?.hospitalized ? 'Yes' : '',
+            log.shigellaData?.hus ? 'Yes' : '',
+            log.shigellaData?.reactiveArthritis ? 'Yes' : '',
+            log.shigellaData?.severeComplications ? 'Yes' : '',
+            log.shigellaData?.stoolCultureConfirmed ? 'Yes' : '',
+            // Phase 6: West Nile data
+            log.westNileData?.neuroinvasive ? 'Yes' : '',
+            log.westNileData?.encephalitis ? 'Yes' : '',
+            log.westNileData?.acuteFlaccidParalysis ? 'Yes' : '',
+            log.westNileData?.permanentImpairment ? 'Yes' : '',
+            log.westNileData?.serologyConfirmed ? 'Yes' : '',
+            // Phase 6: NTM data
+            log.ntmData?.activeDisease ? 'Yes' : '',
+            log.ntmData?.onTreatment ? 'Yes' : '',
+            log.ntmData?.disseminated ? 'Yes' : '',
+            log.ntmData?.monthsOnTreatment || '',
+            log.ntmData?.ntmSpecies || '',
             // Phase 7: Dental/Oral data
             log.dentalData?.jawPainSeverity || '',
             log.dentalData?.jawOpening || '',
@@ -1543,6 +1652,10 @@ const analyzeAllConditions = (logs, options = {}) => {
         'brucellosis': analyzeBrucellosisLogs,
         'campylobacter': analyzeCampylobacterLogs,
         'q-fever': analyzeQFeverLogs,
+        'salmonella': analyzeSalmonellaLogs,
+        'shigella': analyzeShigellaLogs,
+        'west-nile': analyzeWestNileLogs,
+        'ntm': analyzeNTMLogs,
       };
 
     const analyses = [];

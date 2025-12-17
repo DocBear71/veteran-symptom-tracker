@@ -1195,6 +1195,128 @@ const SymptomHistory = ({ onCopyLog }) => {
                                   </div>
                               )}
 
+                              {/* Phase 6: Salmonella Details */}
+                              {log.salmonellaData && (
+                                  <div className="flex flex-wrap gap-2 mt-2">
+                                    {log.salmonellaData.stoolCultureConfirmed && (
+                                        <span className="inline-flex items-center gap-1 px-2 py-1 bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300 rounded-full text-xs">
+                      ✓ Stool Culture Confirmed
+                    </span>
+                                    )}
+                                    {log.salmonellaData.reactiveArthritis && (
+                                        <span className="inline-flex items-center gap-1 px-2 py-1 bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-300 rounded-full text-xs font-medium">
+                      Reactive Arthritis
+                    </span>
+                                    )}
+                                    {log.salmonellaData.bacteremia && (
+                                        <span className="inline-flex items-center gap-1 px-2 py-1 bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300 rounded-full text-xs font-semibold">
+                      Bacteremia/Sepsis
+                    </span>
+                                    )}
+                                    {log.salmonellaData.hospitalized && (
+                                        <span className="inline-flex items-center gap-1 px-2 py-1 bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300 rounded-full text-xs">
+                      Hospitalized
+                    </span>
+                                    )}
+                                    {log.salmonellaData.severeComplications && (
+                                        <span className="inline-flex items-center gap-1 px-2 py-1 bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300 rounded-full text-xs">
+                      Severe Complications
+                    </span>
+                                    )}
+                                  </div>
+                              )}
+
+                              {/* Phase 6: Shigella Details */}
+                              {log.shigellaData && (
+                                  <div className="flex flex-wrap gap-2 mt-2">
+                                    {log.shigellaData.stoolCultureConfirmed && (
+                                        <span className="inline-flex items-center gap-1 px-2 py-1 bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300 rounded-full text-xs">
+                      ✓ Stool Culture Confirmed
+                    </span>
+                                    )}
+                                    {log.shigellaData.reactiveArthritis && (
+                                        <span className="inline-flex items-center gap-1 px-2 py-1 bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300 rounded-full text-xs font-medium">
+                      Reactive Arthritis
+                    </span>
+                                    )}
+                                    {log.shigellaData.hus && (
+                                        <span className="inline-flex items-center gap-1 px-2 py-1 bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300 rounded-full text-xs font-bold border-2 border-red-500">
+                      ⚠️ HUS
+                    </span>
+                                    )}
+                                    {log.shigellaData.hospitalized && (
+                                        <span className="inline-flex items-center gap-1 px-2 py-1 bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300 rounded-full text-xs">
+                      Hospitalized
+                    </span>
+                                    )}
+                                    {log.shigellaData.severeComplications && (
+                                        <span className="inline-flex items-center gap-1 px-2 py-1 bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300 rounded-full text-xs">
+                      Severe Complications
+                    </span>
+                                    )}
+                                  </div>
+                              )}
+
+                              {/* Phase 6: West Nile Details */}
+                              {log.westNileData && (
+                                  <div className="flex flex-wrap gap-2 mt-2">
+                                    {log.westNileData.serologyConfirmed && (
+                                        <span className="inline-flex items-center gap-1 px-2 py-1 bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300 rounded-full text-xs">
+                      ✓ Serology Confirmed
+                    </span>
+                                    )}
+                                    {log.westNileData.neuroinvasive && (
+                                        <span className="inline-flex items-center gap-1 px-2 py-1 bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-300 rounded-full text-xs font-medium">
+                      Neuroinvasive Disease
+                    </span>
+                                    )}
+                                    {log.westNileData.encephalitis && (
+                                        <span className="inline-flex items-center gap-1 px-2 py-1 bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300 rounded-full text-xs font-semibold">
+                      Encephalitis
+                    </span>
+                                    )}
+                                    {log.westNileData.acuteFlaccidParalysis && (
+                                        <span className="inline-flex items-center gap-1 px-2 py-1 bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300 rounded-full text-xs font-bold border-2 border-red-500">
+                      ⚠️ Acute Flaccid Paralysis
+                    </span>
+                                    )}
+                                    {log.westNileData.permanentImpairment && (
+                                        <span className="inline-flex items-center gap-1 px-2 py-1 bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300 rounded-full text-xs">
+                      Permanent Impairment
+                    </span>
+                                    )}
+                                  </div>
+                              )}
+
+                              {/* Phase 6: NTM Details */}
+                              {log.ntmData && (
+                                  <div className="flex flex-wrap gap-2 mt-2">
+                                    {log.ntmData.ntmSpecies && (
+                                        <span className="inline-flex items-center gap-1 px-2 py-1 bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300 rounded-full text-xs font-medium">
+                      {log.ntmData.ntmSpecies === 'mac' && 'MAC'}
+                                          {log.ntmData.ntmSpecies === 'abscessus' && 'M. abscessus'}
+                                          {log.ntmData.ntmSpecies === 'kansasii' && 'M. kansasii'}
+                                          {log.ntmData.ntmSpecies === 'other' && 'Other NTM'}
+                    </span>
+                                    )}
+                                    {log.ntmData.activeDisease && (
+                                        <span className="inline-flex items-center gap-1 px-2 py-1 bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300 rounded-full text-xs font-semibold">
+                      Active Disease
+                    </span>
+                                    )}
+                                    {log.ntmData.onTreatment && (
+                                        <span className="inline-flex items-center gap-1 px-2 py-1 bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300 rounded-full text-xs">
+                      On Treatment {log.ntmData.monthsOnTreatment && `(${log.ntmData.monthsOnTreatment}mo)`}
+                    </span>
+                                    )}
+                                    {log.ntmData.disseminated && (
+                                        <span className="inline-flex items-center gap-1 px-2 py-1 bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300 rounded-full text-xs font-bold border-2 border-red-500">
+                      ⚠️ Disseminated
+                    </span>
+                                    )}
+                                  </div>
+                              )}
+
                               {log.notes && (
                                   <p className="text-sm text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-700 p-2 rounded">{log.notes}</p>
                               )}
@@ -1210,9 +1332,13 @@ const SymptomHistory = ({ onCopyLog }) => {
                             </div>
                           </div>
                         </div>
+
+
                     ))}
                   </div>
               )}
+
+
 
               <EditLogModal log={editingLog} isOpen={editingLog !== null}
                             onClose={() => setEditingLog(null)} onSaved={() => { loadLogs(); }} />
