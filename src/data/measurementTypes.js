@@ -1446,7 +1446,7 @@ export const MEASUREMENT_TYPES = {
       return parts.join(', ');
     }
   },
-// Phase 6: Dental/Oral Measurements
+// Phase 7: Dental/Oral Measurements
   'jaw-opening': {
     label: 'Jaw Opening (Interincisal Range)',
     icon: '📏',

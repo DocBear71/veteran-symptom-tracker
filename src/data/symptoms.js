@@ -785,7 +785,148 @@ export const symptomCategories = [
       { id: 'cough-blood', name: 'Coughing Up Blood' },
     ]
   },
-// Phase 6: Dental/Oral Conditions (DC 9900s)
+  // Phase 6: Infectious Diseases
+  {
+    id: 'hiv-aids',
+    name: 'HIV/AIDS Symptoms',
+    symptoms: [
+      { id: 'hiv-opportunistic-infection', name: 'Opportunistic Infection Episode' },
+      { id: 'hiv-night-sweats', name: 'Night Sweats (HIV-related)' },
+      { id: 'hiv-persistent-fever', name: 'Persistent Fever' },
+      { id: 'hiv-weight-loss', name: 'Unintentional Weight Loss' },
+      { id: 'hiv-chronic-diarrhea', name: 'Chronic Diarrhea' },
+      { id: 'hiv-oral-thrush', name: 'Oral Thrush/Candidiasis' },
+      { id: 'hiv-skin-lesions', name: 'Skin Lesions (Kaposi\'s Sarcoma)' },
+      { id: 'hiv-lymphadenopathy', name: 'Swollen Lymph Nodes' },
+      { id: 'hiv-fatigue', name: 'Severe Fatigue (HIV-related)' },
+      { id: 'hiv-cognitive-impairment', name: 'Memory/Concentration Problems' },
+    ]
+  },
+  {
+    id: 'hepatitis',
+    name: 'Hepatitis Symptoms',
+    symptoms: [
+      { id: 'hep-jaundice', name: 'Jaundice (Yellowing)' },
+      { id: 'hep-fatigue', name: 'Fatigue (Liver-related)' },
+      { id: 'hep-abdominal-pain', name: 'Abdominal Pain (Right Upper)' },
+      { id: 'hep-nausea', name: 'Nausea/Vomiting' },
+      { id: 'hep-dark-urine', name: 'Dark Urine' },
+      { id: 'hep-pale-stool', name: 'Pale/Clay-colored Stool' },
+      { id: 'hep-ascites', name: 'Abdominal Swelling (Ascites)' },
+      { id: 'hep-bruising', name: 'Easy Bruising/Bleeding' },
+      { id: 'hep-confusion', name: 'Confusion (Hepatic Encephalopathy)' },
+      { id: 'hep-spider-angiomas', name: 'Spider Angiomas (Skin)' },
+    ]
+  },
+  {
+    id: 'lyme-disease',
+    name: 'Lyme Disease Symptoms',
+    symptoms: [
+      { id: 'lyme-rash', name: 'Bull\'s-Eye Rash (Erythema Migrans)' },
+      { id: 'lyme-joint-pain', name: 'Joint Pain/Swelling' },
+      { id: 'lyme-facial-palsy', name: 'Facial Palsy (Bell\'s Palsy)' },
+      { id: 'lyme-heart-palpitations', name: 'Heart Palpitations' },
+      { id: 'lyme-dizziness', name: 'Dizziness/Lightheadedness' },
+      { id: 'lyme-memory-problems', name: 'Memory Problems' },
+      { id: 'lyme-nerve-pain', name: 'Nerve Pain/Tingling' },
+      { id: 'lyme-chronic-fatigue', name: 'Chronic Fatigue' },
+      { id: 'lyme-headaches', name: 'Severe Headaches' },
+      { id: 'lyme-muscle-aches', name: 'Muscle Aches' },
+    ]
+  },
+  {
+    id: 'malaria',
+    name: 'Malaria Symptoms',
+    symptoms: [
+      { id: 'malaria-fever-spike', name: 'Fever Spike (Cyclical)' },
+      { id: 'malaria-chills', name: 'Chills/Rigors' },
+      { id: 'malaria-sweating', name: 'Profuse Sweating' },
+      { id: 'malaria-headache', name: 'Severe Headache' },
+      { id: 'malaria-nausea', name: 'Nausea/Vomiting' },
+      { id: 'malaria-muscle-pain', name: 'Muscle Pain' },
+      { id: 'malaria-fatigue', name: 'Extreme Fatigue' },
+      { id: 'malaria-anemia', name: 'Anemia Symptoms' },
+    ]
+  },
+  {
+    id: 'gulf-war-infectious',
+    name: 'Post-Infectious Syndromes',
+    symptoms: [
+      { id: 'post-inf-arthritis', name: 'Post-Infectious Arthritis' },
+      { id: 'post-inf-gi-symptoms', name: 'Chronic GI Symptoms' },
+      { id: 'post-inf-neurological', name: 'Neurological Symptoms' },
+      { id: 'post-inf-chronic-weakness', name: 'Chronic Weakness' },
+      { id: 'post-inf-joint-swelling', name: 'Reactive Joint Swelling' },
+      { id: 'west-nile-weakness', name: 'West Nile - Muscle Weakness' },
+      { id: 'west-nile-cognitive', name: 'West Nile - Cognitive Problems' },
+    ]
+  },
+  {
+    id: 'general-infectious',
+    name: 'General Infectious Disease Symptoms',
+    symptoms: [
+      { id: 'inf-fever', name: 'Fever' },
+      { id: 'inf-chills', name: 'Chills' },
+      { id: 'inf-fatigue', name: 'Fatigue (Infection-related)' },
+      { id: 'inf-body-aches', name: 'Body Aches' },
+      { id: 'inf-night-sweats', name: 'Night Sweats' },
+      { id: 'inf-weight-loss', name: 'Weight Loss' },
+      { id: 'inf-swollen-lymph-nodes', name: 'Swollen Lymph Nodes' },
+      { id: 'inf-rash', name: 'Rash' },
+    ]
+  },
+  // Phase 6: Brucellosis
+  {
+    id: 'brucellosis',
+    name: 'Brucellosis Symptoms',
+    symptoms: [
+      { id: 'brucellosis-fever', name: 'Brucellosis - Undulant Fever' },
+      { id: 'brucellosis-night-sweats', name: 'Brucellosis - Night Sweats' },
+      { id: 'brucellosis-fatigue', name: 'Brucellosis - Fatigue' },
+      { id: 'brucellosis-joint-pain', name: 'Brucellosis - Joint Pain' },
+      { id: 'brucellosis-muscle-aches', name: 'Brucellosis - Muscle Aches' },
+      { id: 'brucellosis-headache', name: 'Brucellosis - Headache' },
+      { id: 'brucellosis-back-pain', name: 'Brucellosis - Back Pain (Spondylitis)' },
+      { id: 'brucellosis-weight-loss', name: 'Brucellosis - Weight Loss' },
+      { id: 'brucellosis-depression', name: 'Brucellosis - Depression/Mood Changes' },
+      { id: 'brucellosis-liver-spleen', name: 'Brucellosis - Liver/Spleen Enlargement' },
+    ]
+  },
+  // Phase 6: Campylobacter jejuni
+  {
+    id: 'campylobacter',
+    name: 'Campylobacter jejuni Symptoms',
+    symptoms: [
+      { id: 'campylobacter-diarrhea', name: 'Campylobacter - Diarrhea' },
+      { id: 'campylobacter-abdominal-pain', name: 'Campylobacter - Abdominal Pain' },
+      { id: 'campylobacter-fever', name: 'Campylobacter - Fever' },
+      { id: 'campylobacter-nausea', name: 'Campylobacter - Nausea' },
+      { id: 'campylobacter-vomiting', name: 'Campylobacter - Vomiting' },
+      { id: 'campylobacter-bloody-stool', name: 'Campylobacter - Bloody Stool' },
+      { id: 'campylobacter-fatigue', name: 'Campylobacter - Fatigue' },
+      { id: 'campylobacter-joint-pain', name: 'Campylobacter - Joint Pain (Reactive Arthritis)' },
+      { id: 'campylobacter-muscle-weakness', name: 'Campylobacter - Muscle Weakness' },
+      { id: 'campylobacter-nerve-symptoms', name: 'Campylobacter - Nerve Symptoms (Numbness/Tingling)' },
+    ]
+  },
+  // Phase 6: Q Fever
+  {
+    id: 'q-fever',
+    name: 'Q Fever Symptoms',
+    symptoms: [
+      { id: 'q-fever-fever', name: 'Q Fever - Fever' },
+      { id: 'q-fever-headache', name: 'Q Fever - Headache' },
+      { id: 'q-fever-fatigue', name: 'Q Fever - Fatigue' },
+      { id: 'q-fever-muscle-aches', name: 'Q Fever - Muscle Aches' },
+      { id: 'q-fever-cough', name: 'Q Fever - Cough' },
+      { id: 'q-fever-chest-pain', name: 'Q Fever - Chest Pain' },
+      { id: 'q-fever-night-sweats', name: 'Q Fever - Night Sweats' },
+      { id: 'q-fever-chills', name: 'Q Fever - Chills' },
+      { id: 'q-fever-shortness-breath', name: 'Q Fever - Shortness of Breath' },
+      { id: 'q-fever-joint-pain', name: 'Q Fever - Joint Pain' },
+    ]
+  },
+  // Phase 7: Dental/Oral Conditions (DC 9900s)
   {
     id: 'dental-oral',
     name: 'Dental & Oral',
@@ -869,98 +1010,7 @@ export const symptomCategories = [
       { id: 'prosthesis-sores', name: 'Sores from Prosthesis' },
     ]
   },
-  // Phase 6: Infectious Diseases
-  {
-    id: 'hiv-aids',
-    name: 'HIV/AIDS Symptoms',
-    symptoms: [
-      { id: 'hiv-opportunistic-infection', name: 'Opportunistic Infection Episode' },
-      { id: 'hiv-night-sweats', name: 'Night Sweats (HIV-related)' },
-      { id: 'hiv-persistent-fever', name: 'Persistent Fever' },
-      { id: 'hiv-weight-loss', name: 'Unintentional Weight Loss' },
-      { id: 'hiv-chronic-diarrhea', name: 'Chronic Diarrhea' },
-      { id: 'hiv-oral-thrush', name: 'Oral Thrush/Candidiasis' },
-      { id: 'hiv-skin-lesions', name: 'Skin Lesions (Kaposi\'s Sarcoma)' },
-      { id: 'hiv-lymphadenopathy', name: 'Swollen Lymph Nodes' },
-      { id: 'hiv-fatigue', name: 'Severe Fatigue (HIV-related)' },
-      { id: 'hiv-cognitive-impairment', name: 'Memory/Concentration Problems' },
-    ]
-  },
-  {
-    id: 'hepatitis',
-    name: 'Hepatitis Symptoms',
-    symptoms: [
-      { id: 'hep-jaundice', name: 'Jaundice (Yellowing)' },
-      { id: 'hep-fatigue', name: 'Fatigue (Liver-related)' },
-      { id: 'hep-abdominal-pain', name: 'Abdominal Pain (Right Upper)' },
-      { id: 'hep-nausea', name: 'Nausea/Vomiting' },
-      { id: 'hep-dark-urine', name: 'Dark Urine' },
-      { id: 'hep-pale-stool', name: 'Pale/Clay-colored Stool' },
-      { id: 'hep-ascites', name: 'Abdominal Swelling (Ascites)' },
-      { id: 'hep-bruising', name: 'Easy Bruising/Bleeding' },
-      { id: 'hep-confusion', name: 'Confusion (Hepatic Encephalopathy)' },
-      { id: 'hep-spider-angiomas', name: 'Spider Angiomas (Skin)' },
-    ]
-  },
-  {
-    id: 'lyme-disease',
-    name: 'Lyme Disease Symptoms',
-    symptoms: [
-      { id: 'lyme-rash', name: 'Bull\'s-Eye Rash (Erythema Migrans)' },
-      { id: 'lyme-joint-pain', name: 'Joint Pain/Swelling' },
-      { id: 'lyme-facial-palsy', name: 'Facial Palsy (Bell\'s Palsy)' },
-      { id: 'lyme-heart-palpitations', name: 'Heart Palpitations' },
-      { id: 'lyme-dizziness', name: 'Dizziness/Lightheadedness' },
-      { id: 'lyme-memory-problems', name: 'Memory Problems' },
-      { id: 'lyme-nerve-pain', name: 'Nerve Pain/Tingling' },
-      { id: 'lyme-chronic-fatigue', name: 'Chronic Fatigue' },
-      { id: 'lyme-headaches', name: 'Severe Headaches' },
-      { id: 'lyme-muscle-aches', name: 'Muscle Aches' },
-    ]
-  },
-  {
-    id: 'malaria',
-    name: 'Malaria Symptoms',
-    symptoms: [
-      { id: 'malaria-fever-spike', name: 'Fever Spike (Cyclical)' },
-      { id: 'malaria-chills', name: 'Chills/Rigors' },
-      { id: 'malaria-sweating', name: 'Profuse Sweating' },
-      { id: 'malaria-headache', name: 'Severe Headache' },
-      { id: 'malaria-nausea', name: 'Nausea/Vomiting' },
-      { id: 'malaria-muscle-pain', name: 'Muscle Pain' },
-      { id: 'malaria-fatigue', name: 'Extreme Fatigue' },
-      { id: 'malaria-anemia', name: 'Anemia Symptoms' },
-    ]
-  },
-  {
-    id: 'gulf-war-infectious',
-    name: 'Post-Infectious Syndromes',
-    symptoms: [
-      { id: 'post-inf-arthritis', name: 'Post-Infectious Arthritis' },
-      { id: 'post-inf-gi-symptoms', name: 'Chronic GI Symptoms' },
-      { id: 'post-inf-neurological', name: 'Neurological Symptoms' },
-      { id: 'post-inf-chronic-weakness', name: 'Chronic Weakness' },
-      { id: 'post-inf-joint-swelling', name: 'Reactive Joint Swelling' },
-      { id: 'q-fever-fatigue', name: 'Q Fever - Chronic Fatigue' },
-      { id: 'q-fever-chest-pain', name: 'Q Fever - Chest Pain' },
-      { id: 'west-nile-weakness', name: 'West Nile - Muscle Weakness' },
-      { id: 'west-nile-cognitive', name: 'West Nile - Cognitive Problems' },
-    ]
-  },
-  {
-    id: 'general-infectious',
-    name: 'General Infectious Disease Symptoms',
-    symptoms: [
-      { id: 'inf-fever', name: 'Fever' },
-      { id: 'inf-chills', name: 'Chills' },
-      { id: 'inf-fatigue', name: 'Fatigue (Infection-related)' },
-      { id: 'inf-body-aches', name: 'Body Aches' },
-      { id: 'inf-night-sweats', name: 'Night Sweats' },
-      { id: 'inf-weight-loss', name: 'Weight Loss' },
-      { id: 'inf-swollen-lymph-nodes', name: 'Swollen Lymph Nodes' },
-      { id: 'inf-rash', name: 'Rash' },
-    ]
-  },
+
 ];
 
 // Helper function to determine if a category is a "child" of another

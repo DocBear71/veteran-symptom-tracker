@@ -316,7 +316,70 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
     improvement_noted: ''
   });
 
-  // Phase 6: Dental/Oral Conditions
+  // Phase 6: HIV/AIDS Data
+  const [hivData, setHivData] = useState({
+    infectionType: '',             // Type of opportunistic infection
+    constitutionalSymptoms: [],    // Array of symptoms: night-sweats, fever, diarrhea, fatigue
+    weightLossPercentage: '',      // Percentage of weight lost
+    onAntiretrovirals: false,      // Currently on antiretroviral therapy
+    cd4CountKnown: false,          // Whether CD4 count is known
+    cd4Range: '',                  // <200, 200-500, >500
+    treatmentCompliance: '',       // excellent/good/fair/poor
+  });
+
+  // Phase 6: Hepatitis Data (shared for Hep B and Hep C)
+  const [hepatitisData, setHepatitisData] = useState({
+    weightLossPercentage: '',
+    debilitating: false,
+    dietaryRestrictions: false,
+    symptomFrequency: '',        // daily, intermittent, rare
+  });
+
+  // Phase 6: Lyme Disease Data
+  const [lymeData, setLymeData] = useState({
+    activeTreatment: false,
+    treatmentCompleted: false,
+    treatmentStartDate: '',
+    rashPresent: false,
+    rashType: '',                // bulls-eye, other
+    neurologicalSymptoms: [],    // Array of neuro symptoms
+    jointSymptoms: [],           // Array of joint symptoms
+  });
+
+  const [malariaData, setMalariaData] = useState({
+    relapseEpisode: false,
+    hospitalized: false,
+    continuousMedication: false,
+    severeComplications: false,
+    feverTemperature: '',
+    cyclicalPattern: false,
+  });
+
+  const [brucellosisData, setBrucellosisData] = useState({
+    relapseEpisode: false,
+    multiOrganInvolvement: false,
+    chronicArthritis: false,
+    neurobrucellosis: false,
+    undulantFever: false,
+  });
+
+  const [campylobacterData, setCampylobacterData] = useState({
+    guillainBarre: false,
+    reactiveArthritis: false,
+    chronicIBS: false,
+    weeksSinceInfection: '',
+    stoolCultureConfirmed: false,
+  });
+
+  const [qFeverData, setQFeverData] = useState({
+    chronicQFever: false,
+    endocarditis: false,
+    fatigueSyndrome: false,
+    monthsSinceInfection: '',
+    phaseIAntibodies: false,
+  });
+
+  // Phase 7: Dental/Oral Conditions
   const [dentalData, setDentalData] = useState({
     // General dental/oral
     affectedArea: '',              // jaw/teeth/palate/tongue/lips/gums/multiple
@@ -494,7 +557,31 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
       }
       if (prefillData.dentalData) {
         console.log('🦷 Setting dental data:', prefillData.dentalData);
-        setDentalData({ ...prefillData.dentalData });
+        setDentalData({...prefillData.dentalData});
+      }
+      if (prefillData.hivData) {
+        console.log('🦠 Setting HIV data:', prefillData.hivData);
+        setHivData({ ...prefillData.hivData });
+      }
+      if (prefillData.hepatitisData) {
+        console.log('🦠 Setting Hepatitis data:', prefillData.hepatitisData);
+        setHepatitisData({ ...prefillData.hepatitisData });
+      }
+      if (prefillData.lymeData) {
+        console.log('🦟 Setting Lyme data:', prefillData.lymeData);
+        setLymeData({ ...prefillData.lymeData });
+      }
+      if (prefillData.malariaData) {
+        setMalariaData(prefillData.malariaData);
+      }
+      if (prefillData.brucellosisData) {
+        setBrucellosisData(prefillData.brucellosisData);
+      }
+      if (prefillData.campylobacterData) {
+        setCampylobacterData(prefillData.campylobacterData);
+      }
+      if (prefillData.qFeverData) {
+        setQFeverData(prefillData.qFeverData);
       }
       console.log('✅ All prefill data set');
       // Clear prefillData AFTER state updates have been queued
@@ -677,7 +764,7 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
     'confusion-b12', 'tongue-problems'
   ].includes(selectedSymptom);
 
-  // Phase 6: Dental/Oral condition detection
+  // Phase 7: Dental/Oral condition detection
   const isDentalOralRelated = selectedSymptom?.includes('jaw') ||
       selectedSymptom?.includes('tooth') ||
       selectedSymptom?.includes('teeth') ||
@@ -705,6 +792,53 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
         'oral-infection', 'oral-inflammation', 'bad-taste', 'halitosis', 'speech-difficulty',
         'articulation-problems', 'prosthesis-pain', 'prosthesis-fit', 'prosthesis-sores'].includes(selectedSymptom);
 
+  // Phase 6: HIV/AIDS condition detection
+  const isHIVRelated = [
+        'hiv-opportunistic-infection', 'hiv-night-sweats', 'hiv-persistent-fever',
+        'hiv-weight-loss', 'hiv-chronic-diarrhea', 'hiv-oral-thrush',
+        'hiv-skin-lesions', 'hiv-lymphadenopathy', 'hiv-fatigue',
+        'hiv-cognitive-impairment'
+      ].includes(selectedSymptom);
+
+  // Phase 6: Hepatitis condition detection (B and C share symptoms)
+  const isHepatitisRelated = [
+        'hep-fatigue', 'hep-malaise', 'hep-nausea', 'hep-abdominal-pain',
+        'hep-jaundice', 'hep-dark-urine', 'hep-appetite-loss', 'hep-joint-pain',
+        'hep-cognitive-issues', 'hep-liver-tenderness'
+      ].includes(selectedSymptom);
+
+  // Phase 6: Lyme Disease condition detection
+  const isLymeRelated = [
+        'lyme-rash', 'lyme-fever', 'lyme-headache', 'lyme-fatigue',
+        'lyme-joint-pain', 'lyme-muscle-aches', 'lyme-nerve-pain', 'lyme-cognitive',
+        'lyme-heart-palpitations', 'lyme-facial-paralysis'
+      ].includes(selectedSymptom);
+
+  const isMalariaRelated = [
+        'malaria-fever', 'malaria-chills', 'malaria-sweats', 'malaria-headache',
+        'malaria-muscle-aches', 'malaria-nausea', 'malaria-fatigue', 'malaria-jaundice',
+        'malaria-anemia', 'malaria-enlarged-spleen'
+  ].includes(selectedSymptom);
+
+  const isBrucellosisRelated = [
+        'brucellosis-fever', 'brucellosis-night-sweats', 'brucellosis-fatigue',
+        'brucellosis-joint-pain', 'brucellosis-muscle-aches', 'brucellosis-headache',
+        'brucellosis-back-pain', 'brucellosis-weight-loss', 'brucellosis-depression',
+        'brucellosis-liver-spleen'
+  ].includes(selectedSymptom);
+
+  const isCampylobacterRelated = [
+        'campylobacter-diarrhea', 'campylobacter-abdominal-pain', 'campylobacter-fever',
+        'campylobacter-nausea', 'campylobacter-vomiting', 'campylobacter-bloody-stool',
+        'campylobacter-fatigue', 'campylobacter-joint-pain', 'campylobacter-muscle-weakness',
+        'campylobacter-nerve-symptoms'
+  ].includes(selectedSymptom);
+
+  const isQFeverRelated = [
+        'q-fever-fever', 'q-fever-headache', 'q-fever-fatigue', 'q-fever-muscle-aches',
+        'q-fever-cough', 'q-fever-chest-pain', 'q-fever-night-sweats', 'q-fever-chills',
+        'q-fever-shortness-breath', 'q-fever-joint-pain'
+  ].includes(selectedSymptom);
 
   // Reset condition-specific data when symptom changes
   useEffect(() => {
@@ -837,7 +971,69 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
       setB12DeficiencyData({deficiency_cause: '',neurological_symptoms: [],treatment: [],injection_frequency: '',last_injection: '',improvement_noted: ''
       });
     }
-    // Phase 6: Reset dental data
+    // Phase 6: Reset HIV data
+    if (!isHIVRelated) {
+      setHivData({
+        infectionType: '', constitutionalSymptoms: [], weightLossPercentage: '',
+        onAntiretrovirals: false, cd4CountKnown: false, cd4Range: '', treatmentCompliance: '',
+      });
+    }
+    // Phase 6: Reset Hepatitis data
+    if (!isHepatitisRelated) {
+      setHepatitisData({
+        weightLossPercentage: '', debilitating: false, dietaryRestrictions: false,
+        symptomFrequency: '',
+      });
+    }
+    // Phase 6: Reset Lyme data
+    if (!isLymeRelated) {
+      setLymeData({
+        activeTreatment: false, treatmentCompleted: false, treatmentStartDate: '',
+        rashPresent: false, rashType: '', neurologicalSymptoms: [], jointSymptoms: [],
+      });
+    }
+    // Phase 6: Reset Malaria data
+    if (!isMalariaRelated) {
+      setMalariaData({
+        relapseEpisode: false,
+        hospitalized: false,
+        continuousMedication: false,
+        severeComplications: false,
+        feverTemperature: '',
+        cyclicalPattern: false,
+      });
+    }
+// Phase 6: Reset Brucellosis data
+    if (!isBrucellosisRelated) {
+      setBrucellosisData({
+        relapseEpisode: false,
+        multiOrganInvolvement: false,
+        chronicArthritis: false,
+        neurobrucellosis: false,
+        undulantFever: false,
+      });
+    }
+// Phase 6: Reset Campylobacter data
+    if (!isCampylobacterRelated) {
+      setCampylobacterData({
+        guillainBarre: false,
+        reactiveArthritis: false,
+        chronicIBS: false,
+        weeksSinceInfection: '',
+        stoolCultureConfirmed: false,
+      });
+    }
+// Phase 6: Reset Q Fever data
+    if (!isQFeverRelated) {
+      setQFeverData({
+        chronicQFever: false,
+        endocarditis: false,
+        fatigueSyndrome: false,
+        monthsSinceInfection: '',
+        phaseIAntibodies: false,
+      });
+    }
+    // Phase 7: Reset dental data
     if (!isDentalOralRelated) {
       setDentalData({
         affectedArea: '', isJawRelated: false, isBoneRelated: false, isToothRelated: false,
@@ -855,7 +1051,8 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
   }, [selectedSymptom, isMigraineSelected, isSleepSelected, isNightmareSelected, isPTSDRelated, isPainSelected,
     isGISelected, isRespiratorySelected, isJointSelected, isSeizureSelected, isEyeRelated, isGenitourinaryRelated,
     isGynecologicalRelated, isAnemiaRelated, isSickleCellRelated, isBleedingDisorderRelated, isInfectionRelated,
-    isLymphomaLeukemiaRelated, isPolycythemiaRelated, isTreatmentRelated, isB12DeficiencyRelated, isDentalOralRelated]);
+    isLymphomaLeukemiaRelated, isPolycythemiaRelated, isTreatmentRelated, isB12DeficiencyRelated, isDentalOralRelated,
+    isHIVRelated, isHepatitisRelated, isLymeRelated]);
 
 
   // Phase 3: Detect genitourinary system based on symptom
@@ -1060,7 +1257,31 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
     if (isB12DeficiencyRelated) {
       entry.b12DeficiencyData = { ...b12DeficiencyData };
     }
-    // Phase 6: Add Dental/Oral Data
+    // Phase 6: Add HIV/AIDS Data
+    if (isHIVRelated) {
+      entry.hivData = { ...hivData };
+    }
+    // Phase 6: Add Hepatitis data
+    if (isHepatitisRelated) {
+      entry.hepatitisData = { ...hepatitisData };
+    }
+    // Phase 6: Add Lyme Disease data
+    if (isLymeRelated) {
+      entry.lymeData = { ...lymeData };
+    }
+    if (isMalariaRelated) {
+      entry.malariaData = { ...malariaData };
+    }
+    if (isBrucellosisRelated) {
+      entry.brucellosisData = { ...brucellosisData };
+    }
+    if (isCampylobacterRelated) {
+      entry.campylobacterData = { ...campylobacterData };
+    }
+    if (isQFeverRelated) {
+      entry.qFeverData = { ...qFeverData };
+    }
+    // Phase 7: Add Dental/Oral Data
     if (isDentalOralRelated) {
       entry.dentalData = { ...dentalData };
     }
@@ -4616,7 +4837,7 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
               </div>
           )}
 
-          {/* Phase 6: Dental/Oral Conditions Form */}
+          {/* Phase 7: Dental/Oral Conditions Form */}
           {isDentalOralRelated && (
               <div className="bg-amber-50 dark:bg-amber-900/20 p-6 rounded-lg border border-amber-200 dark:border-amber-800 space-y-4">
                 <div className="flex items-start gap-3 mb-4">
@@ -5282,6 +5503,896 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
                       />
                       <span className="text-sm text-gray-700 dark:text-gray-300">Affects Social Activities/Appearance</span>
                     </label>
+                  </div>
+                </div>
+              </div>
+          )}
+
+
+          {/* Phase 6: HIV/AIDS Form */}
+          {isHIVRelated && (
+              <div className="bg-red-50 dark:bg-red-900/20 rounded-lg p-6 border-2 border-red-200 dark:border-red-800 space-y-4">
+                <div className="flex items-center gap-3 mb-4">
+                  <span className="text-3xl">🦠</span>
+                  <div>
+                    <h3 className="font-semibold text-red-900 dark:text-red-300 text-lg">
+                      HIV/AIDS Symptom Details
+                    </h3>
+                    <p className="text-sm text-red-700 dark:text-red-400">
+                      Document symptoms to support VA rating under DC 6351
+                    </p>
+                  </div>
+                </div>
+
+                {/* Opportunistic Infection */}
+                {selectedSymptom === 'hiv-opportunistic-infection' && (
+                    <div className="bg-white dark:bg-gray-800 p-4 rounded-lg border border-red-300 dark:border-red-700 space-y-3">
+                      <h4 className="font-medium text-red-900 dark:text-red-300">Opportunistic Infection Details</h4>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                          Type of Infection *
+                        </label>
+                        <select
+                            value={hivData.infectionType}
+                            onChange={(e) => setHivData({...hivData, infectionType: e.target.value})}
+                            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                        >
+                          <option value="">Select infection type...</option>
+                          <option value="Pneumocystis jirovecii pneumonia (PCP)">Pneumocystis jirovecii pneumonia (PCP)</option>
+                          <option value="Cytomegalovirus (CMV)">Cytomegalovirus (CMV)</option>
+                          <option value="Mycobacterium avium complex (MAC)">Mycobacterium avium complex (MAC)</option>
+                          <option value="Toxoplasmosis">Toxoplasmosis</option>
+                          <option value="Cryptococcosis">Cryptococcosis</option>
+                          <option value="Histoplasmosis">Histoplasmosis</option>
+                          <option value="Tuberculosis (TB)">Tuberculosis (TB)</option>
+                          <option value="Candidiasis (esophageal)">Candidiasis (esophageal)</option>
+                          <option value="Progressive multifocal leukoencephalopathy (PML)">Progressive multifocal leukoencephalopathy (PML)</option>
+                          <option value="Other">Other (specify in notes)</option>
+                        </select>
+                      </div>
+                      <div className="bg-red-100 dark:bg-red-900/30 p-3 rounded-lg">
+                        <p className="text-sm text-red-800 dark:text-red-200">
+                          ⚠️ <strong>Recurrent opportunistic infections may qualify for 100% rating.</strong> Document each episode separately and note treatment/hospitalization.
+                        </p>
+                      </div>
+                    </div>
+                )}
+
+                {/* Constitutional Symptoms Checklist */}
+                <div className="bg-white dark:bg-gray-800 p-4 rounded-lg border border-gray-200 dark:border-gray-700 space-y-3">
+                  <h4 className="font-medium text-gray-900 dark:text-gray-100">Constitutional Symptoms</h4>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    Select all symptoms present (required for 30% minimum rating):
+                  </p>
+                  <div className="grid grid-cols-2 gap-2">
+                    <label className="flex items-center gap-2">
+                      <input
+                          type="checkbox"
+                          checked={hivData.constitutionalSymptoms?.includes('night-sweats')}
+                          onChange={(e) => {
+                            const symptoms = hivData.constitutionalSymptoms || [];
+                            if (e.target.checked) {
+                              setHivData({...hivData, constitutionalSymptoms: [...symptoms, 'night-sweats']});
+                            } else {
+                              setHivData({...hivData, constitutionalSymptoms: symptoms.filter(s => s !== 'night-sweats')});
+                            }
+                          }}
+                          className="rounded border-gray-300 dark:border-gray-600"
+                      />
+                      <span className="text-sm text-gray-700 dark:text-gray-300">Night Sweats</span>
+                    </label>
+                    <label className="flex items-center gap-2">
+                      <input
+                          type="checkbox"
+                          checked={hivData.constitutionalSymptoms?.includes('persistent-fever')}
+                          onChange={(e) => {
+                            const symptoms = hivData.constitutionalSymptoms || [];
+                            if (e.target.checked) {
+                              setHivData({...hivData, constitutionalSymptoms: [...symptoms, 'persistent-fever']});
+                            } else {
+                              setHivData({...hivData, constitutionalSymptoms: symptoms.filter(s => s !== 'persistent-fever')});
+                            }
+                          }}
+                          className="rounded border-gray-300 dark:border-gray-600"
+                      />
+                      <span className="text-sm text-gray-700 dark:text-gray-300">Persistent Fever</span>
+                    </label>
+                    <label className="flex items-center gap-2">
+                      <input
+                          type="checkbox"
+                          checked={hivData.constitutionalSymptoms?.includes('chronic-diarrhea')}
+                          onChange={(e) => {
+                            const symptoms = hivData.constitutionalSymptoms || [];
+                            if (e.target.checked) {
+                              setHivData({...hivData, constitutionalSymptoms: [...symptoms, 'chronic-diarrhea']});
+                            } else {
+                              setHivData({...hivData, constitutionalSymptoms: symptoms.filter(s => s !== 'chronic-diarrhea')});
+                            }
+                          }}
+                          className="rounded border-gray-300 dark:border-gray-600"
+                      />
+                      <span className="text-sm text-gray-700 dark:text-gray-300">Chronic Diarrhea</span>
+                    </label>
+                    <label className="flex items-center gap-2">
+                      <input
+                          type="checkbox"
+                          checked={hivData.constitutionalSymptoms?.includes('severe-fatigue')}
+                          onChange={(e) => {
+                            const symptoms = hivData.constitutionalSymptoms || [];
+                            if (e.target.checked) {
+                              setHivData({...hivData, constitutionalSymptoms: [...symptoms, 'severe-fatigue']});
+                            } else {
+                              setHivData({...hivData, constitutionalSymptoms: symptoms.filter(s => s !== 'severe-fatigue')});
+                            }
+                          }}
+                          className="rounded border-gray-300 dark:border-gray-600"
+                      />
+                      <span className="text-sm text-gray-700 dark:text-gray-300">Severe Fatigue</span>
+                    </label>
+                  </div>
+                </div>
+
+                {/* Weight Loss Tracking */}
+                {selectedSymptom === 'hiv-weight-loss' && (
+                    <div className="bg-white dark:bg-gray-800 p-4 rounded-lg border border-red-300 dark:border-red-700 space-y-3">
+                      <h4 className="font-medium text-red-900 dark:text-red-300">Weight Loss Documentation</h4>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                          Percentage of Body Weight Lost *
+                        </label>
+                        <input
+                            type="number"
+                            min="0"
+                            max="50"
+                            step="0.5"
+                            value={hivData.weightLossPercentage}
+                            onChange={(e) => setHivData({...hivData, weightLossPercentage: e.target.value})}
+                            placeholder="e.g., 12.5"
+                            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                        />
+                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                          ≥10% = Pathological weight loss (may support 100% rating with other symptoms)
+                        </p>
+                      </div>
+                      {parseFloat(hivData.weightLossPercentage) >= 10 && (
+                          <div className="bg-red-100 dark:bg-red-900/30 p-3 rounded-lg">
+                            <p className="text-sm text-red-800 dark:text-red-200">
+                              ⚠️ <strong>Pathological weight loss documented.</strong> With debilitating constitutional symptoms, may support 100% rating.
+                            </p>
+                          </div>
+                      )}
+                    </div>
+                )}
+
+                {/* Treatment Information */}
+                <div className="bg-white dark:bg-gray-800 p-4 rounded-lg border border-gray-200 dark:border-gray-700 space-y-3">
+                  <h4 className="font-medium text-gray-900 dark:text-gray-100">Treatment Information</h4>
+
+                  <label className="flex items-center gap-2">
+                    <input
+                        type="checkbox"
+                        checked={hivData.onAntiretrovirals}
+                        onChange={(e) => setHivData({...hivData, onAntiretrovirals: e.target.checked})}
+                        className="rounded border-gray-300 dark:border-gray-600"
+                    />
+                    <span className="text-sm text-gray-700 dark:text-gray-300">
+                      Currently on Antiretroviral Therapy (ART)
+                    </span>
+                  </label>
+
+                  {hivData.onAntiretrovirals && (
+                      <div className="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg">
+                        <p className="text-sm text-blue-800 dark:text-blue-200">
+                          ℹ️ Use of FDA-approved antiretroviral medications supports <strong>minimum 30% rating</strong> under DC 6351.
+                        </p>
+                      </div>
+                  )}
+
+                  {hivData.onAntiretrovirals && (
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                          Treatment Compliance
+                        </label>
+                        <select
+                            value={hivData.treatmentCompliance}
+                            onChange={(e) => setHivData({...hivData, treatmentCompliance: e.target.value})}
+                            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                        >
+                          <option value="">Select compliance level...</option>
+                          <option value="excellent">Excellent (&gt;95% adherence)</option>
+                          <option value="good">Good (85-95% adherence)</option>
+                          <option value="fair">Fair (70-85% adherence)</option>
+                          <option value="poor">Poor (&lt;70% adherence)</option>
+                        </select>
+                      </div>
+                  )}
+                </div>
+
+                {/* CD4 Count Information */}
+                <div className="bg-white dark:bg-gray-800 p-4 rounded-lg border border-gray-200 dark:border-gray-700 space-y-3">
+                  <h4 className="font-medium text-gray-900 dark:text-gray-100">Lab Values (Optional)</h4>
+
+                  <label className="flex items-center gap-2">
+                    <input
+                        type="checkbox"
+                        checked={hivData.cd4CountKnown}
+                        onChange={(e) => setHivData({...hivData, cd4CountKnown: e.target.checked, cd4Range: e.target.checked ? hivData.cd4Range : ''})}
+                        className="rounded border-gray-300 dark:border-gray-600"
+                    />
+                    <span className="text-sm text-gray-700 dark:text-gray-300">
+                      I know my CD4 count range
+                    </span>
+                  </label>
+
+                  {hivData.cd4CountKnown && (
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                          Most Recent CD4 Count Range
+                        </label>
+                        <select
+                            value={hivData.cd4Range}
+                            onChange={(e) => setHivData({...hivData, cd4Range: e.target.value})}
+                            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                        >
+                          <option value="">Select CD4 range...</option>
+                          <option value="<200">&lt;200 (AIDS diagnosis, severe immunosuppression)</option>
+                          <option value="200-500">200-500 (Moderate immunosuppression)</option>
+                          <option value=">500">&gt;500 (Normal to near-normal)</option>
+                        </select>
+                        {hivData.cd4Range === '<200' && (
+                            <div className="bg-red-100 dark:bg-red-900/30 p-3 rounded-lg mt-2">
+                              <p className="text-sm text-red-800 dark:text-red-200">
+                                ⚠️ CD4 &lt;200 indicates AIDS and supports <strong>minimum 30% rating</strong>.
+                              </p>
+                            </div>
+                        )}
+                        {hivData.cd4Range === '200-500' && (
+                            <div className="bg-yellow-100 dark:bg-yellow-900/30 p-3 rounded-lg mt-2">
+                              <p className="text-sm text-yellow-800 dark:text-yellow-200">
+                                ℹ️ CD4 200-500 with constitutional symptoms supports <strong>10% rating</strong>.
+                              </p>
+                            </div>
+                        )}
+                      </div>
+                  )}
+
+                  <div className="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg">
+                    <p className="text-sm text-blue-800 dark:text-blue-200">
+                      💡 <strong>Tip:</strong> Use the Measurements tab to track CD4 counts and viral load over time for comprehensive evidence.
+                    </p>
+                  </div>
+                </div>
+
+                {/* VA Rating Guidance */}
+                <div className="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg border border-gray-300 dark:border-gray-600">
+                  <h4 className="font-medium text-gray-900 dark:text-gray-100 mb-2">VA Rating Guidance (DC 6351)</h4>
+                  <ul className="text-sm text-gray-700 dark:text-gray-300 space-y-1">
+                    <li>• <strong>100%:</strong> Recurrent opportunistic infections OR pathological weight loss with debilitating symptoms</li>
+                    <li>• <strong>60%:</strong> Refractory constitutional symptoms, intermittent diarrhea, or post-opportunistic infection</li>
+                    <li>• <strong>30%:</strong> Constitutional symptoms, CD4 &lt;200, or on antiretroviral medications</li>
+                    <li>• <strong>10%:</strong> Mild constitutional symptoms, CD4 200-500, or depression/memory loss</li>
+                    <li>• <strong>0%:</strong> Asymptomatic with HIV diagnosis</li>
+                  </ul>
+                </div>
+              </div>
+          )}
+
+          {/* Phase 6: Hepatitis (B & C) Form */}
+          {isHepatitisRelated && (
+              <div className="bg-amber-50 dark:bg-amber-900/20 rounded-lg p-6 border-2 border-amber-200 dark:border-amber-800 space-y-4">
+                <div className="flex items-center gap-3 mb-4">
+                  <span className="text-3xl">🦠</span>
+                  <div>
+                    <h3 className="font-semibold text-amber-900 dark:text-amber-300 text-lg">
+                      Hepatitis Symptom Details
+                    </h3>
+                    <p className="text-sm text-amber-700 dark:text-amber-400">
+                      Document symptoms to support VA rating under DC 7354 (Hep C) or DC 7314 (Hep B)
+                    </p>
+                  </div>
+                </div>
+
+                {/* Weight Loss */}
+                <div className="bg-white dark:bg-gray-800 p-4 rounded-lg border border-amber-300 dark:border-amber-700 space-y-3">
+                  <h4 className="font-medium text-amber-900 dark:text-amber-300">Weight Changes</h4>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      Weight Loss Percentage (if applicable)
+                    </label>
+                    <input
+                        type="number"
+                        min="0"
+                        max="50"
+                        step="0.5"
+                        value={hepatitisData.weightLossPercentage}
+                        onChange={(e) => setHepatitisData({...hepatitisData, weightLossPercentage: e.target.value})}
+                        placeholder="e.g., 10.5"
+                        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                    />
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                      ≥10% = Substantial weight loss (may support 60% rating)
+                    </p>
+                  </div>
+                </div>
+
+                {/* Symptom Severity */}
+                <div className="bg-white dark:bg-gray-800 p-4 rounded-lg border border-gray-200 dark:border-gray-700 space-y-3">
+                  <h4 className="font-medium text-gray-900 dark:text-gray-100">Symptom Severity</h4>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      Symptom Frequency
+                    </label>
+                    <select
+                        value={hepatitisData.symptomFrequency}
+                        onChange={(e) => setHepatitisData({...hepatitisData, symptomFrequency: e.target.value})}
+                        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                    >
+                      <option value="">Select frequency...</option>
+                      <option value="daily">Daily (every day or nearly every day)</option>
+                      <option value="intermittent">Intermittent (several times per week)</option>
+                      <option value="rare">Rare (occasionally)</option>
+                    </select>
+                  </div>
+
+                  <label className="flex items-center gap-2">
+                    <input
+                        type="checkbox"
+                        checked={hepatitisData.debilitating}
+                        onChange={(e) => setHepatitisData({...hepatitisData, debilitating: e.target.checked})}
+                        className="rounded border-gray-300 dark:border-gray-600"
+                    />
+                    <span className="text-sm text-gray-700 dark:text-gray-300">
+                      Symptoms are debilitating (interfere with work/daily activities)
+                    </span>
+                  </label>
+
+                  <label className="flex items-center gap-2">
+                    <input
+                        type="checkbox"
+                        checked={hepatitisData.dietaryRestrictions}
+                        onChange={(e) => setHepatitisData({...hepatitisData, dietaryRestrictions: e.target.checked})}
+                        className="rounded border-gray-300 dark:border-gray-600"
+                    />
+                    <span className="text-sm text-gray-700 dark:text-gray-300">
+                      Dietary restrictions required
+                    </span>
+                  </label>
+                </div>
+
+                {/* VA Rating Guidance */}
+                <div className="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg border border-gray-300 dark:border-gray-600">
+                  <h4 className="font-medium text-gray-900 dark:text-gray-100 mb-2">VA Rating Guidance</h4>
+                  <ul className="text-sm text-gray-700 dark:text-gray-300 space-y-1">
+                    <li>• <strong>100%:</strong> Near-constant debilitating symptoms</li>
+                    <li>• <strong>60%:</strong> Daily fatigue/malaise with substantial weight loss</li>
+                    <li>• <strong>30%:</strong> Daily fatigue/malaise with minor weight loss</li>
+                    <li>• <strong>10%:</strong> Intermittent fatigue/malaise</li>
+                    <li>• <strong>0%:</strong> Nonsymptomatic</li>
+                  </ul>
+                </div>
+              </div>
+          )}
+
+          {/* Phase 6: Lyme Disease Form */}
+          {isLymeRelated && (
+              <div className="bg-green-50 dark:bg-green-900/20 rounded-lg p-6 border-2 border-green-200 dark:border-green-800 space-y-4">
+                <div className="flex items-center gap-3 mb-4">
+                  <span className="text-3xl">🦟</span>
+                  <div>
+                    <h3 className="font-semibold text-green-900 dark:text-green-300 text-lg">
+                      Lyme Disease Symptom Details
+                    </h3>
+                    <p className="text-sm text-green-700 dark:text-green-400">
+                      Document symptoms to support VA rating under DC 6319
+                    </p>
+                  </div>
+                </div>
+
+                {/* Treatment Status */}
+                <div className="bg-white dark:bg-gray-800 p-4 rounded-lg border border-green-300 dark:border-green-700 space-y-3">
+                  <h4 className="font-medium text-green-900 dark:text-green-300">Treatment Status</h4>
+
+                  <label className="flex items-center gap-2">
+                    <input
+                        type="checkbox"
+                        checked={lymeData.activeTreatment}
+                        onChange={(e) => setLymeData({...lymeData, activeTreatment: e.target.checked})}
+                        className="rounded border-gray-300 dark:border-gray-600"
+                    />
+                    <span className="text-sm text-gray-700 dark:text-gray-300">
+                      Currently undergoing active treatment (antibiotics)
+                    </span>
+                  </label>
+
+                  {lymeData.activeTreatment && (
+                      <div className="bg-red-50 dark:bg-red-900/20 p-3 rounded-lg">
+                        <p className="text-sm text-red-800 dark:text-red-200">
+                          ⚠️ <strong>Active treatment rates 100%</strong> for minimum 6 months under DC 6319
+                        </p>
+                      </div>
+                  )}
+
+                  <label className="flex items-center gap-2">
+                    <input
+                        type="checkbox"
+                        checked={lymeData.treatmentCompleted}
+                        onChange={(e) => setLymeData({...lymeData, treatmentCompleted: e.target.checked})}
+                        className="rounded border-gray-300 dark:border-gray-600"
+                    />
+                    <span className="text-sm text-gray-700 dark:text-gray-300">
+                      Treatment completed (tracking residual symptoms)
+                    </span>
+                  </label>
+
+                  {lymeData.treatmentCompleted && (
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                          Treatment Completion Date (approximate)
+                        </label>
+                        <input
+                            type="date"
+                            value={lymeData.treatmentStartDate}
+                            onChange={(e) => setLymeData({...lymeData, treatmentStartDate: e.target.value})}
+                            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                        />
+                      </div>
+                  )}
+                </div>
+
+                {/* Rash Details */}
+                {selectedSymptom === 'lyme-rash' && (
+                    <div className="bg-white dark:bg-gray-800 p-4 rounded-lg border border-green-300 dark:border-green-700 space-y-3">
+                      <h4 className="font-medium text-green-900 dark:text-green-300">Rash Details</h4>
+
+                      <label className="flex items-center gap-2">
+                        <input
+                            type="checkbox"
+                            checked={lymeData.rashPresent}
+                            onChange={(e) => setLymeData({...lymeData, rashPresent: e.target.checked})}
+                            className="rounded border-gray-300 dark:border-gray-600"
+                        />
+                        <span className="text-sm text-gray-700 dark:text-gray-300">
+                          Rash currently present or documented
+                        </span>
+                      </label>
+
+                      {lymeData.rashPresent && (
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                              Rash Type
+                            </label>
+                            <select
+                                value={lymeData.rashType}
+                                onChange={(e) => setLymeData({...lymeData, rashType: e.target.value})}
+                                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                            >
+                              <option value="">Select type...</option>
+                              <option value="bulls-eye">Bull's-eye (Erythema migrans)</option>
+                              <option value="expanding-red">Expanding red rash (non-bull's-eye)</option>
+                              <option value="other">Other type</option>
+                            </select>
+                          </div>
+                      )}
+                    </div>
+                )}
+
+                {/* Residual Symptoms Tracking */}
+                {lymeData.treatmentCompleted && (
+                    <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-300 dark:border-blue-700">
+                      <h4 className="font-medium text-blue-900 dark:text-blue-300 mb-3">Post-Treatment Residual Symptoms</h4>
+                      <p className="text-sm text-blue-800 dark:text-blue-200 mb-3">
+                        After treatment, residuals are rated under body system affected:
+                      </p>
+                      <ul className="text-sm text-blue-700 dark:text-blue-300 space-y-1">
+                        <li>• Nerve pain/numbness → Peripheral neuropathy rating</li>
+                        <li>• Joint pain → Arthritis rating for affected joints</li>
+                        <li>• Cognitive issues → Neurological rating</li>
+                        <li>• Chronic fatigue → Chronic Fatigue Syndrome rating</li>
+                        <li>• Cardiac issues → Heart condition rating</li>
+                      </ul>
+                    </div>
+                )}
+
+                {/* VA Rating Guidance */}
+                <div className="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg border border-gray-300 dark:border-gray-600">
+                  <h4 className="font-medium text-gray-900 dark:text-gray-100 mb-2">VA Rating Guidance (DC 6319)</h4>
+                  <ul className="text-sm text-gray-700 dark:text-gray-300 space-y-1">
+                    <li>• <strong>100%:</strong> Active disease requiring treatment (minimum 6 months)</li>
+                    <li>• <strong>After Treatment:</strong> Rate residuals by affected body system</li>
+                    <li>• Common residuals may require multiple diagnostic codes</li>
+                    <li>• Document all persistent symptoms for proper rating</li>
+                  </ul>
+                </div>
+              </div>
+          )}
+
+          {/* Phase 6: Malaria Form */}
+          {isMalariaRelated && (
+              <div className="space-y-4">
+                <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-200 dark:border-blue-800">
+                  <h4 className="font-semibold text-blue-900 dark:text-blue-200 mb-2">
+                    🦟 Malaria Details
+                  </h4>
+                  <p className="text-sm text-blue-800 dark:text-blue-300 mb-3">
+                    Track malaria symptoms and episodes. Document cyclical fever patterns and relapses.
+                  </p>
+
+                  <div className="space-y-3">
+                    {/* Fever Temperature */}
+                    {selectedSymptom === 'malaria-fever' && (
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            Fever Temperature (°F)
+                          </label>
+                          <input
+                              type="number"
+                              step="0.1"
+                              value={malariaData.feverTemperature}
+                              onChange={(e) => setMalariaData({...malariaData, feverTemperature: e.target.value})}
+                              placeholder="e.g., 103.5"
+                              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg
+                               bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                          />
+                        </div>
+                    )}
+
+                    {/* Checkboxes */}
+                    <label className="flex items-start gap-2">
+                      <input
+                          type="checkbox"
+                          checked={malariaData.cyclicalPattern}
+                          onChange={(e) => setMalariaData({...malariaData, cyclicalPattern: e.target.checked})}
+                          className="mt-1 rounded border-gray-300 dark:border-gray-600"
+                      />
+                      <span className="text-sm text-gray-700 dark:text-gray-300">
+                    Cyclical fever pattern (occurs every 48-72 hours)
+                  </span>
+                    </label>
+
+                    <label className="flex items-start gap-2">
+                      <input
+                          type="checkbox"
+                          checked={malariaData.relapseEpisode}
+                          onChange={(e) => setMalariaData({...malariaData, relapseEpisode: e.target.checked})}
+                          className="mt-1 rounded border-gray-300 dark:border-gray-600"
+                      />
+                      <span className="text-sm text-gray-700 dark:text-gray-300">
+                    This is a relapse episode (recurrence after treatment)
+                  </span>
+                    </label>
+
+                    <label className="flex items-start gap-2">
+                      <input
+                          type="checkbox"
+                          checked={malariaData.hospitalized}
+                          onChange={(e) => setMalariaData({...malariaData, hospitalized: e.target.checked})}
+                          className="mt-1 rounded border-gray-300 dark:border-gray-600"
+                      />
+                      <span className="text-sm text-gray-700 dark:text-gray-300">
+                    Hospitalized for malaria complications
+                  </span>
+                    </label>
+
+                    <label className="flex items-start gap-2">
+                      <input
+                          type="checkbox"
+                          checked={malariaData.continuousMedication}
+                          onChange={(e) => setMalariaData({...malariaData, continuousMedication: e.target.checked})}
+                          className="mt-1 rounded border-gray-300 dark:border-gray-600"
+                      />
+                      <span className="text-sm text-gray-700 dark:text-gray-300">
+                    On continuous antimalarial medication
+                  </span>
+                    </label>
+
+                    <label className="flex items-start gap-2">
+                      <input
+                          type="checkbox"
+                          checked={malariaData.severeComplications}
+                          onChange={(e) => setMalariaData({...malariaData, severeComplications: e.target.checked})}
+                          className="mt-1 rounded border-gray-300 dark:border-gray-600"
+                      />
+                      <span className="text-sm text-gray-700 dark:text-gray-300">
+                    Severe complications (cerebral malaria, organ failure, severe anemia)
+                  </span>
+                    </label>
+                  </div>
+
+                  {/* VA Guidance */}
+                  <div className="mt-4 p-3 bg-white dark:bg-gray-800 rounded border border-blue-300 dark:border-blue-700">
+                    <p className="text-xs text-gray-600 dark:text-gray-400">
+                      <strong>For VA Claims:</strong> Document fever patterns with temperature readings.
+                      Track relapse episodes (especially common with P. vivax and P. ovale). Lab confirmation
+                      of parasitemia strengthens claims. Cyclical fever every 48-72 hours is characteristic.
+                    </p>
+                  </div>
+                </div>
+              </div>
+          )}
+
+          {/* Phase 6: Brucellosis Form */}
+          {isBrucellosisRelated && (
+              <div className="space-y-4">
+                <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-200 dark:border-blue-800">
+                  <h4 className="font-semibold text-blue-900 dark:text-blue-200 mb-2">
+                    🐄 Brucellosis Details
+                  </h4>
+                  <p className="text-sm text-blue-800 dark:text-blue-300 mb-3">
+                    Track brucellosis symptoms. This infection can relapse for years and cause chronic arthritis/spondylitis.
+                  </p>
+
+                  <div className="space-y-3">
+                    <label className="flex items-start gap-2">
+                      <input
+                          type="checkbox"
+                          checked={brucellosisData.undulantFever}
+                          onChange={(e) => setBrucellosisData({...brucellosisData, undulantFever: e.target.checked})}
+                          className="mt-1 rounded border-gray-300 dark:border-gray-600"
+                      />
+                      <span className="text-sm text-gray-700 dark:text-gray-300">
+                    Undulant (wave-like) fever pattern
+                  </span>
+                    </label>
+
+                    <label className="flex items-start gap-2">
+                      <input
+                          type="checkbox"
+                          checked={brucellosisData.relapseEpisode}
+                          onChange={(e) => setBrucellosisData({...brucellosisData, relapseEpisode: e.target.checked})}
+                          className="mt-1 rounded border-gray-300 dark:border-gray-600"
+                      />
+                      <span className="text-sm text-gray-700 dark:text-gray-300">
+                    This is a relapse episode (recurrence after treatment)
+                  </span>
+                    </label>
+
+                    <label className="flex items-start gap-2">
+                      <input
+                          type="checkbox"
+                          checked={brucellosisData.chronicArthritis}
+                          onChange={(e) => setBrucellosisData({...brucellosisData, chronicArthritis: e.target.checked})}
+                          className="mt-1 rounded border-gray-300 dark:border-gray-600"
+                      />
+                      <span className="text-sm text-gray-700 dark:text-gray-300">
+                    Chronic arthritis or spondylitis (spine inflammation)
+                  </span>
+                    </label>
+
+                    <label className="flex items-start gap-2">
+                      <input
+                          type="checkbox"
+                          checked={brucellosisData.multiOrganInvolvement}
+                          onChange={(e) => setBrucellosisData({...brucellosisData, multiOrganInvolvement: e.target.checked})}
+                          className="mt-1 rounded border-gray-300 dark:border-gray-600"
+                      />
+                      <span className="text-sm text-gray-700 dark:text-gray-300">
+                    Multiple organ involvement (liver, spleen, bones, joints)
+                  </span>
+                    </label>
+
+                    <label className="flex items-start gap-2">
+                      <input
+                          type="checkbox"
+                          checked={brucellosisData.neurobrucellosis}
+                          onChange={(e) => setBrucellosisData({...brucellosisData, neurobrucellosis: e.target.checked})}
+                          className="mt-1 rounded border-gray-300 dark:border-gray-600"
+                      />
+                      <span className="text-sm text-gray-700 dark:text-gray-300">
+                    Neurobrucellosis (CNS involvement: meningitis, encephalitis)
+                  </span>
+                    </label>
+                  </div>
+
+                  {/* VA Guidance */}
+                  <div className="mt-4 p-3 bg-white dark:bg-gray-800 rounded border border-blue-300 dark:border-blue-700">
+                    <p className="text-xs text-gray-600 dark:text-gray-400">
+                      <strong>For VA Claims:</strong> Brucellosis is common in military personnel exposed to
+                      livestock in deployment areas. Document relapsing pattern and night sweats. Spine X-rays/MRI
+                      important if back pain present. Blood cultures or serology confirms diagnosis.
+                    </p>
+                  </div>
+                </div>
+              </div>
+          )}
+
+          {/* Phase 6: Campylobacter Form */}
+          {isCampylobacterRelated && (
+              <div className="space-y-4">
+                <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-200 dark:border-blue-800">
+                  <h4 className="font-semibold text-blue-900 dark:text-blue-200 mb-2">
+                    🦠 Campylobacter jejuni Details
+                  </h4>
+                  <p className="text-sm text-blue-800 dark:text-blue-300 mb-3">
+                    Track post-infection complications. Campylobacter can trigger Guillain-Barré syndrome and reactive arthritis.
+                  </p>
+
+                  <div className="space-y-3">
+                    {/* Weeks Since Infection */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        Weeks Since Initial Infection
+                      </label>
+                      <input
+                          type="number"
+                          value={campylobacterData.weeksSinceInfection}
+                          onChange={(e) => setCampylobacterData({...campylobacterData, weeksSinceInfection: e.target.value})}
+                          placeholder="e.g., 2"
+                          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg
+                             bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                      />
+                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                        Reactive arthritis typically occurs 1-4 weeks after infection
+                      </p>
+                    </div>
+
+                    <label className="flex items-start gap-2">
+                      <input
+                          type="checkbox"
+                          checked={campylobacterData.stoolCultureConfirmed}
+                          onChange={(e) => setCampylobacterData({...campylobacterData, stoolCultureConfirmed: e.target.checked})}
+                          className="mt-1 rounded border-gray-300 dark:border-gray-600"
+                      />
+                      <span className="text-sm text-gray-700 dark:text-gray-300">
+                    Stool culture confirmed Campylobacter jejuni
+                  </span>
+                    </label>
+
+                    <label className="flex items-start gap-2">
+                      <input
+                          type="checkbox"
+                          checked={campylobacterData.reactiveArthritis}
+                          onChange={(e) => setCampylobacterData({...campylobacterData, reactiveArthritis: e.target.checked})}
+                          className="mt-1 rounded border-gray-300 dark:border-gray-600"
+                      />
+                      <span className="text-sm text-gray-700 dark:text-gray-300">
+                    Reactive arthritis (joint inflammation post-infection)
+                  </span>
+                    </label>
+
+                    <label className="flex items-start gap-2">
+                      <input
+                          type="checkbox"
+                          checked={campylobacterData.chronicIBS}
+                          onChange={(e) => setCampylobacterData({...campylobacterData, chronicIBS: e.target.checked})}
+                          className="mt-1 rounded border-gray-300 dark:border-gray-600"
+                      />
+                      <span className="text-sm text-gray-700 dark:text-gray-300">
+                    Post-infectious IBS (chronic bowel symptoms)
+                  </span>
+                    </label>
+
+                    <label className="flex items-start gap-2">
+                      <input
+                          type="checkbox"
+                          checked={campylobacterData.guillainBarre}
+                          onChange={(e) => setCampylobacterData({...campylobacterData, guillainBarre: e.target.checked})}
+                          className="mt-1 rounded border-red-300 dark:border-red-600 bg-red-50 dark:bg-red-900/20"
+                      />
+                      <span className="text-sm text-red-700 dark:text-red-300 font-semibold">
+                    Guillain-Barré syndrome (GBS) - progressive muscle weakness
+                  </span>
+                    </label>
+                  </div>
+
+                  {/* GBS Warning */}
+                  {campylobacterData.guillainBarre && (
+                      <div className="mt-3 p-3 bg-red-50 dark:bg-red-900/30 rounded border border-red-300 dark:border-red-700">
+                        <p className="text-sm text-red-900 dark:text-red-200 font-semibold">
+                          ⚠️ Guillain-Barré syndrome is a serious complication requiring immediate neurological evaluation.
+                          Seek emergency care for progressive weakness or difficulty breathing.
+                        </p>
+                      </div>
+                  )}
+
+                  {/* VA Guidance */}
+                  <div className="mt-4 p-3 bg-white dark:bg-gray-800 rounded border border-blue-300 dark:border-blue-700">
+                    <p className="text-xs text-gray-600 dark:text-gray-400">
+                      <strong>For VA Claims:</strong> Associated with Gulf War illness. Campylobacter is the
+                      leading bacterial trigger for GBS. Document timeline from infection to complications.
+                      EMG/nerve conduction studies important if GBS suspected.
+                    </p>
+                  </div>
+                </div>
+              </div>
+          )}
+
+          {/* Phase 6: Q Fever Form */}
+          {isQFeverRelated && (
+              <div className="space-y-4">
+                <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-200 dark:border-blue-800">
+                  <h4 className="font-semibold text-blue-900 dark:text-blue-200 mb-2">
+                    🐐 Q Fever Details
+                  </h4>
+                  <p className="text-sm text-blue-800 dark:text-blue-300 mb-3">
+                    Track Q fever symptoms. Chronic Q fever (&gt;6 months) can cause endocarditis requiring long-term treatment.
+                  </p>
+
+                  <div className="space-y-3">
+                    {/* Months Since Infection */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        Months Since Initial Infection
+                      </label>
+                      <input
+                          type="number"
+                          value={qFeverData.monthsSinceInfection}
+                          onChange={(e) => setQFeverData({...qFeverData, monthsSinceInfection: e.target.value})}
+                          placeholder="e.g., 8"
+                          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg
+                             bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                      />
+                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                        Chronic Q fever defined as symptoms persisting &gt;6 months
+                      </p>
+                    </div>
+
+                    <label className="flex items-start gap-2">
+                      <input
+                          type="checkbox"
+                          checked={qFeverData.chronicQFever}
+                          onChange={(e) => setQFeverData({...qFeverData, chronicQFever: e.target.checked})}
+                          className="mt-1 rounded border-gray-300 dark:border-gray-600"
+                      />
+                      <span className="text-sm text-gray-700 dark:text-gray-300">
+                    Chronic Q fever (symptoms &gt;6 months)
+                  </span>
+                    </label>
+
+                    <label className="flex items-start gap-2">
+                      <input
+                          type="checkbox"
+                          checked={qFeverData.phaseIAntibodies}
+                          onChange={(e) => setQFeverData({...qFeverData, phaseIAntibodies: e.target.checked})}
+                          className="mt-1 rounded border-gray-300 dark:border-gray-600"
+                      />
+                      <span className="text-sm text-gray-700 dark:text-gray-300">
+                    Phase I antibodies elevated (&gt;1:800 indicates chronic infection)
+                  </span>
+                    </label>
+
+                    <label className="flex items-start gap-2">
+                      <input
+                          type="checkbox"
+                          checked={qFeverData.fatigueSyndrome}
+                          onChange={(e) => setQFeverData({...qFeverData, fatigueSyndrome: e.target.checked})}
+                          className="mt-1 rounded border-gray-300 dark:border-gray-600"
+                      />
+                      <span className="text-sm text-gray-700 dark:text-gray-300">
+                    Q fever fatigue syndrome (debilitating fatigue &gt;6 months)
+                  </span>
+                    </label>
+
+                    <label className="flex items-start gap-2">
+                      <input
+                          type="checkbox"
+                          checked={qFeverData.endocarditis}
+                          onChange={(e) => setQFeverData({...qFeverData, endocarditis: e.target.checked})}
+                          className="mt-1 rounded border-red-300 dark:border-red-600 bg-red-50 dark:bg-red-900/20"
+                      />
+                      <span className="text-sm text-red-700 dark:text-red-300 font-semibold">
+                    Q fever endocarditis (heart valve infection)
+                  </span>
+                    </label>
+                  </div>
+
+                  {/* Endocarditis Warning */}
+                  {qFeverData.endocarditis && (
+                      <div className="mt-3 p-3 bg-red-50 dark:bg-red-900/30 rounded border border-red-300 dark:border-red-700">
+                        <p className="text-sm text-red-900 dark:text-red-200 font-semibold">
+                          ⚠️ Q fever endocarditis requires 18+ months of antibiotic treatment (doxycycline + hydroxychloroquine).
+                          Echocardiogram needed for diagnosis.
+                        </p>
+                      </div>
+                  )}
+
+                  {/* VA Guidance */}
+                  <div className="mt-4 p-3 bg-white dark:bg-gray-800 rounded border border-blue-300 dark:border-blue-700">
+                    <p className="text-xs text-gray-600 dark:text-gray-400">
+                      <strong>For VA Claims:</strong> Common in military deployments to Iraq/Afghanistan (livestock exposure).
+                      Chronic Q fever develops in 1-5% of cases. Veterans with pre-existing valve abnormalities at higher risk.
+                      Serology showing high Phase I titers indicates chronic infection.
+                    </p>
                   </div>
                 </div>
               </div>

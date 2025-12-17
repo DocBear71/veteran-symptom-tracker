@@ -790,7 +790,7 @@ export const CONDITIONS = {
     symptomIds: ['fatigue-anemia', 'frequent-infections', 'easy-bruising'],
   },
   // ============================================
-  // PHASE 6: DENTAL/ORAL CONDITIONS (DC 9900 series)
+  // Phase 7: Dental/ORAL CONDITIONS (DC 9900 series)
   // ============================================
   TMJ_DISORDER: {
     id: 'tmj-disorder',
@@ -848,7 +848,156 @@ export const CONDITIONS = {
     cfrReference: '38 CFR 4.150',
     symptomIds: ['missing-teeth', 'tooth-loss-pain', 'chewing-difficulty', 'prosthesis-pain'],
   },
+  // ============================================
+  // PHASE 6: INFECTIOUS DISEASES (DC 6300 series)
+  // ============================================
+  HIV_AIDS: {
+    id: 'hiv-aids',
+    name: 'HIV-Related Illness',
+    diagnosticCode: '6351',
+    cfrReference: '38 CFR 4.88b',
+    symptomIds: [
+      'hiv-opportunistic-infection',
+      'hiv-night-sweats',
+      'hiv-persistent-fever',
+      'hiv-weight-loss',
+      'hiv-chronic-diarrhea',
+      'hiv-oral-thrush',
+      'hiv-skin-lesions',
+      'hiv-lymphadenopathy',
+      'hiv-fatigue',
+      'hiv-cognitive-impairment'
+    ],
+  },
+  HEPATITIS_C: {
+    id: 'hepatitis-c',
+    name: 'Hepatitis C',
+    diagnosticCode: '7354',
+    cfrReference: '38 CFR 4.114',
+    symptomIds: [
+      'hep-fatigue',
+      'hep-malaise',
+      'hep-nausea',
+      'hep-abdominal-pain',
+      'hep-jaundice',
+      'hep-dark-urine',
+      'hep-appetite-loss',
+      'hep-joint-pain',
+      'hep-cognitive-issues',
+      'hep-liver-tenderness'
+    ],
+  },
+  HEPATITIS_B: {
+    id: 'hepatitis-b',
+    name: 'Hepatitis B',
+    diagnosticCode: '7314',
+    cfrReference: '38 CFR 4.114',
+    symptomIds: [
+      'hep-fatigue',
+      'hep-malaise',
+      'hep-nausea',
+      'hep-abdominal-pain',
+      'hep-jaundice',
+      'hep-dark-urine',
+      'hep-appetite-loss',
+      'hep-joint-pain',
+      'hep-cognitive-issues',
+      'hep-liver-tenderness'
+    ],
+  },
+  LYME_DISEASE: {
+    id: 'lyme-disease',
+    name: 'Lyme Disease',
+    diagnosticCode: '6319',
+    cfrReference: '38 CFR 4.88b',
+    symptomIds: [
+      'lyme-rash',
+      'lyme-fever',
+      'lyme-headache',
+      'lyme-fatigue',
+      'lyme-joint-pain',
+      'lyme-muscle-aches',
+      'lyme-nerve-pain',
+      'lyme-cognitive',
+      'lyme-heart-palpitations',
+      'lyme-facial-paralysis'
+    ],
+  },
+  MALARIA: {
+    id: 'malaria',
+    name: 'Malaria',
+    diagnosticCode: '6304',
+    cfrReference: '38 CFR 4.88b',
+    symptomIds: [
+      'malaria-fever',
+      'malaria-chills',
+      'malaria-sweats',
+      'malaria-headache',
+      'malaria-muscle-aches',
+      'malaria-nausea',
+      'malaria-fatigue',
+      'malaria-jaundice',
+      'malaria-anemia',
+      'malaria-enlarged-spleen'
+    ],
+  },
+  BRUCELLOSIS: {
+    id: 'brucellosis',
+    name: 'Brucellosis',
+    diagnosticCode: '6316',
+    cfrReference: '38 CFR 4.88b',
+    symptomIds: [
+      'brucellosis-fever',
+      'brucellosis-night-sweats',
+      'brucellosis-fatigue',
+      'brucellosis-joint-pain',
+      'brucellosis-muscle-aches',
+      'brucellosis-headache',
+      'brucellosis-back-pain',
+      'brucellosis-weight-loss',
+      'brucellosis-depression',
+      'brucellosis-liver-spleen'
+    ],
+  },
+  CAMPYLOBACTER: {
+    id: 'campylobacter',
+    name: 'Campylobacter jejuni Infection',
+    diagnosticCode: '6330',
+    cfrReference: '38 CFR 4.88b',
+    symptomIds: [
+      'campylobacter-diarrhea',
+      'campylobacter-abdominal-pain',
+      'campylobacter-fever',
+      'campylobacter-nausea',
+      'campylobacter-vomiting',
+      'campylobacter-bloody-stool',
+      'campylobacter-fatigue',
+      'campylobacter-joint-pain',
+      'campylobacter-muscle-weakness',
+      'campylobacter-nerve-symptoms'
+    ],
+  },
+  Q_FEVER: {
+    id: 'q-fever',
+    name: 'Q Fever',
+    diagnosticCode: '6331',
+    cfrReference: '38 CFR 4.88b',
+    symptomIds: [
+      'q-fever-fever',
+      'q-fever-headache',
+      'q-fever-fatigue',
+      'q-fever-muscle-aches',
+      'q-fever-cough',
+      'q-fever-chest-pain',
+      'q-fever-night-sweats',
+      'q-fever-chills',
+      'q-fever-shortness-breath',
+      'q-fever-joint-pain'
+    ],
+  },
 };
+
+
 
 // ============================================
 // MIGRAINE RATING CRITERIA (DC 8100)
@@ -9139,6 +9288,1077 @@ export const BENIGN_ORAL_NEOPLASM_CRITERIA = {
     'Rate based on functional impairment and residual effects',
     'May require rating under multiple diagnostic codes if causing various impairments',
     'Document impact on chewing, swallowing, speaking, and appearance',
+  ],
+};
+
+// ============================================
+// PHASE 6: INFECTIOUS DISEASES - HIV/AIDS (DC 6351)
+// ============================================
+
+export const HIV_AIDS_CRITERIA = {
+  diagnosticCode: '6351',
+  condition: 'HIV-Related Illness',
+  cfrReference: '38 CFR 4.88b, Diagnostic Code 6351',
+
+  ratings: [
+    {
+      percent: 100,
+      summary: 'Chronic fatigue, diarrhea, recurrent opportunistic infections, or pathological weight loss',
+      criteria: {
+        opportunisticInfections: 'recurrent',
+        constitutionalSymptoms: 'severe',
+        weightLoss: 'pathological',
+        debilitating: true,
+      },
+      criteriaDescription: [
+        'Active AIDS diagnosis with one or more of:',
+        '  • Recurrent opportunistic infections',
+        '  • Debilitating fatigue with progressive weight loss',
+        '  • Chronic, uncontrolled diarrhea',
+        '  • Pathological weight loss (>10% body weight)',
+      ],
+      evidenceNeeded: [
+        'Medical diagnosis of AIDS',
+        'Documentation of opportunistic infections (PCP, CMV, MAC, etc.)',
+        'Weight tracking showing significant loss',
+        'Treatment records for infections',
+        'CD4 count typically <200',
+      ],
+    },
+    {
+      percent: 60,
+      summary: 'Recurrent constitutional symptoms, intermittent diarrhea, pathological weight loss; or minimum rating after opportunistic infection',
+      criteria: {
+        constitutionalSymptoms: 'recurrent',
+        diarrhea: 'intermittent',
+        weightLoss: 'significant',
+      },
+      criteriaDescription: [
+        'Refractory constitutional symptoms including:',
+        '  • Daily fatigue and malaise',
+        '  • Intermittent diarrhea',
+        '  • Pathological weight loss',
+        'OR minimum rating following documented opportunistic infection',
+      ],
+      evidenceNeeded: [
+        'Consistent documentation of constitutional symptoms',
+        'Weight tracking',
+        'Treatment records',
+        'Lab values (CD4, viral load)',
+        'History of opportunistic infection if applicable',
+      ],
+    },
+    {
+      percent: 30,
+      summary: 'Recurrent constitutional symptoms, intermittent diarrhea, CD4 <200, or use of approved medications',
+      criteria: {
+        constitutionalSymptoms: 'present',
+        medications: 'antiretroviral',
+        cd4Count: '<200',
+        diarrhea: 'intermittent',
+      },
+      criteriaDescription: [
+        'HIV with one or more of:',
+        '  • Recurrent constitutional symptoms (fever, night sweats, fatigue)',
+        '  • Intermittent diarrhea',
+        '  • CD4 count less than 200',
+        '  • Use of FDA-approved antiretroviral medications',
+      ],
+      evidenceNeeded: [
+        'Documentation of constitutional symptoms',
+        'CD4 count labs showing <200',
+        'Medication list with antiretrovirals',
+        'Treatment compliance records',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Constitutional symptoms following initial diagnosis, CD4 200-500, depression/memory loss',
+      criteria: {
+        constitutionalSymptoms: 'mild',
+        cd4Count: '200-500',
+        cognitiveImpairment: 'present',
+      },
+      criteriaDescription: [
+        'Following initial diagnosis with:',
+        '  • Constitutional symptoms (intermittent)',
+        '  • CD4 count 200-500',
+        '  • Use of antiretroviral medications',
+        '  • Depression or memory loss',
+      ],
+      evidenceNeeded: [
+        'HIV diagnosis documentation',
+        'CD4 count in 200-500 range',
+        'Documentation of constitutional symptoms',
+        'Evidence of cognitive or mood changes',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'Asymptomatic following initial diagnosis, with or without lymphadenopathy',
+      criteria: {
+        symptomatic: false,
+        diagnosed: true,
+      },
+      criteriaDescription: [
+        'HIV diagnosis confirmed but:',
+        '  • No constitutional symptoms',
+        '  • May have generalized lymphadenopathy',
+        '  • Stable on antiretroviral therapy',
+      ],
+      evidenceNeeded: [
+        'HIV diagnosis documentation',
+        'Current lab values',
+        'Treatment records',
+      ],
+    },
+  ],
+
+  definitions: {
+    opportunisticInfection: {
+      term: 'Opportunistic Infection',
+      definition: 'Infections that occur more frequently and are more severe in people with weakened immune systems. Common examples include Pneumocystis jirovecii pneumonia (PCP), Cytomegalovirus (CMV), Mycobacterium avium complex (MAC), toxoplasmosis, and cryptococcosis.',
+    },
+    constitutionalSymptoms: {
+      term: 'Constitutional Symptoms',
+      definition: 'General symptoms affecting the whole body, including persistent fever, night sweats, severe fatigue, and unintentional weight loss.',
+    },
+    cd4Count: {
+      term: 'CD4 Count',
+      definition: 'CD4 T-cell count measures the number of CD4+ T lymphocytes in a microliter of blood. Normal range is 500-1,500. Below 200 indicates AIDS and severe immunosuppression.',
+    },
+    pathologicalWeightLoss: {
+      term: 'Pathological Weight Loss',
+      definition: 'Unintentional loss of 10% or more of baseline body weight, not due to dieting. Indicates wasting syndrome.',
+    },
+  },
+
+  importantNotes: [
+    'VA rates HIV/AIDS based on manifestations and impact on daily functioning',
+    'Opportunistic infections may qualify for 100% or minimum 60% rating',
+    'CD4 count is important but not the sole determining factor',
+    'Constitutional symptoms must be documented consistently',
+    'Use of antiretroviral therapy alone supports 30% minimum rating',
+    'Depression and cognitive impairment associated with HIV are ratable',
+    'Multiple ratings may apply for opportunistic infections affecting specific body systems',
+  ],
+};
+
+// ============================================
+// PHASE 6: INFECTIOUS DISEASES - HEPATITIS C (DC 7354)
+// ============================================
+
+export const HEPATITIS_C_CRITERIA = {
+  diagnosticCode: '7354',
+  condition: 'Hepatitis C',
+  cfrReference: '38 CFR 4.114, Diagnostic Code 7354',
+
+  ratings: [
+    {
+      percent: 100,
+      summary: 'Near-constant debilitating symptoms',
+      criteria: {
+        symptomatic: 'severe',
+        debilitating: true,
+        nearConstant: true,
+      },
+      criteriaDescription: [
+        'Near-constant debilitating symptoms such as:',
+        '  • Severe fatigue and malaise',
+        '  • Anorexia with substantial weight loss',
+        '  • Nausea',
+        '  • Requires substantial lifestyle modifications',
+      ],
+      evidenceNeeded: [
+        'Daily logging of severe fatigue/malaise',
+        'Weight loss documentation',
+        'Evidence of work/life impact',
+        'Medical treatment records',
+        'Liver enzyme lab values',
+      ],
+    },
+    {
+      percent: 60,
+      summary: 'Daily fatigue, malaise, and anorexia with substantial weight loss',
+      criteria: {
+        symptomatic: 'moderate-severe',
+        dailySymptoms: true,
+        weightLoss: true,
+      },
+      criteriaDescription: [
+        'Daily symptoms including:',
+        '  • Persistent fatigue',
+        '  • General malaise',
+        '  • Loss of appetite (anorexia)',
+        '  • Substantial weight loss or gain',
+      ],
+      evidenceNeeded: [
+        'Daily symptom logs',
+        'Weight tracking over time',
+        'Dietary changes documentation',
+        'Lab values showing disease activity',
+      ],
+    },
+    {
+      percent: 30,
+      summary: 'Daily fatigue, malaise, and anorexia with minor weight loss',
+      criteria: {
+        symptomatic: 'moderate',
+        dailySymptoms: true,
+        weightLoss: 'minor',
+      },
+      criteriaDescription: [
+        'Daily symptoms with moderate impact:',
+        '  • Fatigue and malaise',
+        '  • Reduced appetite',
+        '  • Minor weight loss (or near normal weight)',
+        '  • Dietary restrictions needed',
+      ],
+      evidenceNeeded: [
+        'Regular symptom tracking',
+        'Weight monitoring',
+        'Dietary restriction documentation',
+        'Treatment compliance records',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Intermittent fatigue, malaise, and anorexia',
+      criteria: {
+        symptomatic: 'mild',
+        intermittent: true,
+      },
+      criteriaDescription: [
+        'Intermittent symptoms:',
+        '  • Occasional fatigue episodes',
+        '  • Periodic malaise',
+        '  • Mild appetite changes',
+      ],
+      evidenceNeeded: [
+        'Symptom frequency tracking',
+        'Pattern documentation',
+        'Lab monitoring',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'Nonsymptomatic',
+      criteria: {
+        symptomatic: false,
+        diagnosed: true,
+      },
+      criteriaDescription: [
+        'Hepatitis C diagnosed but:',
+        '  • No active symptoms',
+        '  • Normal daily function',
+        '  • May be on treatment',
+      ],
+      evidenceNeeded: [
+        'Diagnosis documentation',
+        'Lab values',
+        'Treatment records if applicable',
+      ],
+    },
+  ],
+
+  definitions: {
+    debilitating: {
+      term: 'Debilitating',
+      definition: 'Symptoms that substantially interfere with employment and daily activities, requiring significant lifestyle modifications.',
+    },
+    nearConstant: {
+      term: 'Near-Constant',
+      definition: 'Symptoms present most days, with minimal symptom-free periods.',
+    },
+    substantialWeightLoss: {
+      term: 'Substantial Weight Loss',
+      definition: 'Loss of 10% or more of baseline body weight, or significant weight gain affecting health.',
+    },
+  },
+
+  importantNotes: [
+    'VA rates hepatitis based on symptom severity, not viral load alone',
+    'Daily symptoms qualify for higher ratings than intermittent symptoms',
+    'Weight changes (loss or gain) are key rating factors',
+    'Treatment side effects may be separately ratable',
+    'Liver enzyme levels support but do not determine rating',
+    'Cirrhosis and other complications rated separately under appropriate codes',
+  ],
+};
+
+// ============================================
+// PHASE 6: INFECTIOUS DISEASES - HEPATITIS B (DC 7314)
+// ============================================
+
+export const HEPATITIS_B_CRITERIA = {
+  diagnosticCode: '7314',
+  condition: 'Hepatitis B',
+  cfrReference: '38 CFR 4.114, Diagnostic Code 7314',
+
+  ratings: [
+    {
+      percent: 100,
+      summary: 'Near-constant debilitating symptoms',
+      criteria: {
+        symptomatic: 'severe',
+        debilitating: true,
+        nearConstant: true,
+      },
+      criteriaDescription: [
+        'Near-constant debilitating symptoms such as:',
+        '  • Severe fatigue and malaise',
+        '  • Anorexia with substantial weight loss',
+        '  • Nausea',
+        '  • Requires substantial lifestyle modifications',
+      ],
+      evidenceNeeded: [
+        'Daily logging of severe fatigue/malaise',
+        'Weight loss documentation',
+        'Evidence of work/life impact',
+        'Medical treatment records',
+        'Liver enzyme lab values',
+      ],
+    },
+    {
+      percent: 60,
+      summary: 'Daily fatigue, malaise, and anorexia with substantial weight loss',
+      criteria: {
+        symptomatic: 'moderate-severe',
+        dailySymptoms: true,
+        weightLoss: true,
+      },
+      criteriaDescription: [
+        'Daily symptoms including:',
+        '  • Persistent fatigue',
+        '  • General malaise',
+        '  • Loss of appetite (anorexia)',
+        '  • Substantial weight loss or gain',
+      ],
+      evidenceNeeded: [
+        'Daily symptom logs',
+        'Weight tracking over time',
+        'Dietary changes documentation',
+        'Lab values showing disease activity',
+      ],
+    },
+    {
+      percent: 30,
+      summary: 'Daily fatigue, malaise, and anorexia with minor weight loss',
+      criteria: {
+        symptomatic: 'moderate',
+        dailySymptoms: true,
+        weightLoss: 'minor',
+      },
+      criteriaDescription: [
+        'Daily symptoms with moderate impact:',
+        '  • Fatigue and malaise',
+        '  • Reduced appetite',
+        '  • Minor weight loss (or near normal weight)',
+        '  • Dietary restrictions needed',
+      ],
+      evidenceNeeded: [
+        'Regular symptom tracking',
+        'Weight monitoring',
+        'Dietary restriction documentation',
+        'Treatment compliance records',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Intermittent fatigue, malaise, and anorexia',
+      criteria: {
+        symptomatic: 'mild',
+        intermittent: true,
+      },
+      criteriaDescription: [
+        'Intermittent symptoms:',
+        '  • Occasional fatigue episodes',
+        '  • Periodic malaise',
+        '  • Mild appetite changes',
+      ],
+      evidenceNeeded: [
+        'Symptom frequency tracking',
+        'Pattern documentation',
+        'Lab monitoring',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'Nonsymptomatic',
+      criteria: {
+        symptomatic: false,
+        diagnosed: true,
+      },
+      criteriaDescription: [
+        'Hepatitis B diagnosed but:',
+        '  • No active symptoms',
+        '  • Normal daily function',
+        '  • May be on treatment',
+      ],
+      evidenceNeeded: [
+        'Diagnosis documentation',
+        'Lab values',
+        'Treatment records if applicable',
+      ],
+    },
+  ],
+
+  definitions: {
+    debilitating: {
+      term: 'Debilitating',
+      definition: 'Symptoms that substantially interfere with employment and daily activities, requiring significant lifestyle modifications.',
+    },
+    nearConstant: {
+      term: 'Near-Constant',
+      definition: 'Symptoms present most days, with minimal symptom-free periods.',
+    },
+    substantialWeightLoss: {
+      term: 'Substantial Weight Loss',
+      definition: 'Loss of 10% or more of baseline body weight, or significant weight gain affecting health.',
+    },
+  },
+
+  importantNotes: [
+    'VA rates hepatitis based on symptom severity, not viral load alone',
+    'Daily symptoms qualify for higher ratings than intermittent symptoms',
+    'Weight changes (loss or gain) are key rating factors',
+    'Treatment side effects may be separately ratable',
+    'Liver enzyme levels support but do not determine rating',
+    'Cirrhosis and other complications rated separately under appropriate codes',
+  ],
+};
+
+// ============================================
+// PHASE 6: INFECTIOUS DISEASES - LYME DISEASE (DC 6319)
+// ============================================
+
+export const LYME_DISEASE_CRITERIA = {
+  diagnosticCode: '6319',
+  condition: 'Lyme Disease',
+  cfrReference: '38 CFR 4.88b, Diagnostic Code 6319',
+
+  ratings: [
+    {
+      percent: 100,
+      summary: 'Active disease requiring treatment (for 6 months minimum)',
+      criteria: {
+        activeDisease: true,
+        treatment: 'required',
+        duration: '6months',
+      },
+      criteriaDescription: [
+        'Active Lyme disease requiring treatment:',
+        '  • 100% rating during active treatment',
+        '  • Minimum 6-month rating period',
+        '  • Then rate residuals by affected body system',
+      ],
+      evidenceNeeded: [
+        'Diagnosis of active Lyme disease',
+        'Treatment records (antibiotics)',
+        'Symptom documentation during treatment',
+        'Lab results (Western blot, ELISA)',
+      ],
+    },
+    {
+      percent: 'residuals',
+      summary: 'After treatment - rate residual symptoms by affected system',
+      criteria: {
+        postTreatment: true,
+        residualSymptoms: true,
+      },
+      criteriaDescription: [
+        'Post-Lyme disease syndrome (PTLDS):',
+        '  • Neurological residuals (rate as neuropathy)',
+        '  • Arthritis/joint pain (rate as arthritis)',
+        '  • Cardiac issues (rate as heart condition)',
+        '  • Chronic fatigue (rate as CFS)',
+        '  • Cognitive impairment (rate neurologically)',
+      ],
+      evidenceNeeded: [
+        'Documentation of completed treatment',
+        'Ongoing symptom tracking',
+        'Specialist evaluations for residuals',
+        'Evidence of functional impairment',
+      ],
+    },
+  ],
+
+  definitions: {
+    activeDisease: {
+      term: 'Active Lyme Disease',
+      definition: 'Confirmed Lyme disease diagnosis requiring antibiotic treatment. Rates 100% during active treatment phase.',
+    },
+    ptlds: {
+      term: 'Post-Treatment Lyme Disease Syndrome (PTLDS)',
+      definition: 'Persistent symptoms after completing Lyme disease treatment, including fatigue, pain, cognitive difficulties.',
+    },
+    residuals: {
+      term: 'Residuals',
+      definition: 'Ongoing symptoms after treatment completion, rated under the body system affected (neurological, musculoskeletal, cardiac, etc.).',
+    },
+  },
+
+  importantNotes: [
+    'Active Lyme disease rates 100% during treatment (minimum 6 months)',
+    'After treatment, rate residual symptoms under appropriate body system codes',
+    'Common residuals: peripheral neuropathy, arthritis, chronic fatigue, cognitive issues',
+    'PTLDS may require multiple diagnostic codes for different body systems',
+    'Document all persistent symptoms after treatment completion',
+    'Neurological residuals often rated under DC 8520 (incomplete paralysis)',
+    'Joint residuals rated under appropriate arthritis codes',
+  ],
+};
+
+// ============================================
+// PHASE 6: INFECTIOUS DISEASES - MALARIA (DC 6304)
+// ============================================
+
+export const MALARIA_CRITERIA = {
+  diagnosticCode: '6304',
+  condition: 'Malaria',
+  cfrReference: '38 CFR 4.88b, Diagnostic Code 6304',
+
+  ratings: [
+    {
+      percent: 100,
+      summary: 'Active disease requiring hospital treatment or continuous medication',
+      criteria: {
+        activeDisease: true,
+        severe: true,
+        hospitalization: true,
+      },
+      criteriaDescription: [
+        'Active malaria requiring treatment:',
+        '  • Severe symptoms requiring hospitalization',
+        '  • Complications (cerebral malaria, severe anemia, organ failure)',
+        '  • Continuous antimalarial medication required',
+        '  • Near-constant debilitating symptoms',
+      ],
+      evidenceNeeded: [
+        'Hospital admission records for malaria complications',
+        'Lab results showing parasitemia',
+        'Daily symptom documentation during acute phase',
+        'Medication records (antimalarials)',
+        'Blood work showing severe anemia or organ involvement',
+      ],
+    },
+    {
+      percent: 60,
+      summary: 'Frequent relapses with debilitating symptoms',
+      criteria: {
+        frequentRelapses: true,
+        debilitating: true,
+      },
+      criteriaDescription: [
+        'Relapsing malaria with significant impact:',
+        '  • Multiple relapses per year (3+)',
+        '  • Debilitating cyclical fever episodes',
+        '  • Chronic anemia from recurring parasitemia',
+        '  • Substantial impact on daily activities',
+      ],
+      evidenceNeeded: [
+        'Documentation of multiple relapse episodes',
+        'Lab confirmation of recurring parasitemia',
+        'Symptom logs showing cyclical fever patterns',
+        'Evidence of chronic anemia',
+        'Impact on work/daily function',
+      ],
+    },
+    {
+      percent: 30,
+      summary: 'Occasional relapses or chronic residual symptoms',
+      criteria: {
+        occasionalRelapses: true,
+        residualSymptoms: true,
+      },
+      criteriaDescription: [
+        'Chronic malaria symptoms:',
+        '  • 1-2 relapses per year',
+        '  • Persistent fatigue and weakness',
+        '  • Mild chronic anemia',
+        '  • Enlarged spleen (splenomegaly)',
+      ],
+      evidenceNeeded: [
+        'Documentation of relapse episodes',
+        'Lab work showing mild anemia',
+        'Ultrasound/imaging showing splenomegaly if present',
+        'Regular symptom tracking',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Residual symptoms or single relapse',
+      criteria: {
+        residual: true,
+        minimal: true,
+      },
+      criteriaDescription: [
+        'Minimal residual effects:',
+        '  • History of malaria with occasional symptoms',
+        '  • Mild fatigue or weakness',
+        '  • Single relapse or no recent relapses',
+      ],
+      evidenceNeeded: [
+        'Medical history confirming past malaria diagnosis',
+        'Symptom tracking showing mild impact',
+        'Treatment records',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'Malaria treated, currently asymptomatic',
+      criteria: {
+        treated: true,
+        asymptomatic: true,
+      },
+      criteriaDescription: [
+        'Malaria successfully treated:',
+        '  • No active parasitemia',
+        '  • No current symptoms',
+        '  • No relapses',
+      ],
+      evidenceNeeded: [
+        'Treatment completion records',
+        'Negative lab tests for parasites',
+      ],
+    },
+  ],
+
+  definitions: {
+    relapse: {
+      term: 'Relapse',
+      definition: 'Recurrence of malaria symptoms after apparent cure, caused by activation of dormant parasites in the liver (P. vivax and P. ovale).',
+    },
+    cyclicalFever: {
+      term: 'Cyclical Fever',
+      definition: 'Periodic fever pattern characteristic of malaria, typically occurring every 48-72 hours depending on parasite species.',
+    },
+    parasitemia: {
+      term: 'Parasitemia',
+      definition: 'Presence of malaria parasites in the blood, confirmed by microscopy or rapid diagnostic test.',
+    },
+  },
+
+  importantNotes: [
+    'VA rates malaria based on severity and frequency of relapses',
+    'P. vivax and P. ovale can cause relapses years after initial infection',
+    'Cyclical fever pattern (every 48-72 hours) is characteristic',
+    'Document each fever episode with temperature readings',
+    'Chronic anemia common with recurring infections',
+    'Splenomegaly may persist after treatment',
+    'Treatment requires full course of antimalarials plus primaquine for liver stages',
+  ],
+};
+
+// ============================================
+// PHASE 6: INFECTIOUS DISEASES - BRUCELLOSIS (DC 6316)
+// ============================================
+
+export const BRUCELLOSIS_CRITERIA = {
+  diagnosticCode: '6316',
+  condition: 'Brucellosis',
+  cfrReference: '38 CFR 4.88b, Diagnostic Code 6316',
+
+  ratings: [
+    {
+      percent: 100,
+      summary: 'Severe active disease with multiple organ involvement',
+      criteria: {
+        activeDisease: true,
+        severe: true,
+        multiOrgan: true,
+      },
+      criteriaDescription: [
+        'Severe active brucellosis:',
+        '  • Constant debilitating symptoms',
+        '  • Multiple organ involvement (liver, spleen, bones, heart)',
+        '  • Neurobrucellosis or endocarditis',
+        '  • Requires continuous treatment',
+      ],
+      evidenceNeeded: [
+        'Positive blood cultures or serology',
+        'Imaging showing organ involvement',
+        'Neurological exam results if CNS involvement',
+        'Daily symptom logs showing severity',
+        'Treatment records (long-term antibiotics)',
+      ],
+    },
+    {
+      percent: 60,
+      summary: 'Active disease with relapsing pattern',
+      criteria: {
+        activeDisease: true,
+        relapsing: true,
+      },
+      criteriaDescription: [
+        'Chronic relapsing brucellosis:',
+        '  • Frequent relapses (3+ per year)',
+        '  • Chronic arthritis or spondylitis',
+        '  • Persistent fever and night sweats',
+        '  • Significant functional impairment',
+      ],
+      evidenceNeeded: [
+        'Documentation of multiple relapse episodes',
+        'Lab confirmation of active infection',
+        'Joint imaging showing arthritis',
+        'Symptom pattern documentation',
+      ],
+    },
+    {
+      percent: 30,
+      summary: 'Occasional relapses or chronic symptoms',
+      criteria: {
+        occasionalRelapses: true,
+        chronicSymptoms: true,
+      },
+      criteriaDescription: [
+        'Chronic brucellosis:',
+        '  • 1-2 relapses per year',
+        '  • Chronic fatigue and weakness',
+        '  • Recurrent joint or back pain',
+        '  • Depression or mood changes',
+      ],
+      evidenceNeeded: [
+        'Relapse documentation',
+        'Lab work during symptomatic periods',
+        'Mental health evaluation if depression present',
+        'Regular symptom tracking',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Residual symptoms, minimal impact',
+      criteria: {
+        residual: true,
+        minimal: true,
+      },
+      criteriaDescription: [
+        'Post-brucellosis residuals:',
+        '  • Chronic fatigue or malaise',
+        '  • Occasional joint pain',
+        '  • Mood changes',
+        '  • No active infection',
+      ],
+      evidenceNeeded: [
+        'History of confirmed brucellosis',
+        'Treatment completion records',
+        'Symptom logs showing mild impact',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'Treated, currently asymptomatic',
+      criteria: {
+        treated: true,
+        asymptomatic: true,
+      },
+      criteriaDescription: [
+        'Brucellosis successfully treated with no residuals',
+      ],
+      evidenceNeeded: [
+        'Treatment completion records',
+        'Negative lab tests',
+      ],
+    },
+  ],
+
+  definitions: {
+    relapse: {
+      term: 'Relapse',
+      definition: 'Recurrence of brucellosis symptoms after apparent cure. Common even after adequate treatment.',
+    },
+    neurobrucellosis: {
+      term: 'Neurobrucellosis',
+      definition: 'Central nervous system involvement causing meningitis, encephalitis, or other neurological complications.',
+    },
+    spondylitis: {
+      term: 'Spondylitis',
+      definition: 'Inflammation of vertebrae, a common complication of brucellosis causing chronic back pain.',
+    },
+  },
+
+  importantNotes: [
+    'Brucellosis is a zoonotic disease (contracted from animals)',
+    'Common in military personnel exposed to livestock in deployment areas',
+    'Relapsing pattern is characteristic - symptoms may recur for years',
+    'Night sweats and undulant (wave-like) fever are classic symptoms',
+    'Chronic depression and fatigue may persist after treatment',
+    'Joint and spine involvement can cause permanent damage',
+    'Requires prolonged antibiotic treatment (6+ weeks)',
+  ],
+};
+
+// ============================================
+// PHASE 6: INFECTIOUS DISEASES - CAMPYLOBACTER JEJUNI (DC 6330)
+// ============================================
+
+export const CAMPYLOBACTER_CRITERIA = {
+  diagnosticCode: '6330',
+  condition: 'Campylobacter jejuni Infection',
+  cfrReference: '38 CFR 4.88b, Diagnostic Code 6330',
+
+  ratings: [
+    {
+      percent: 100,
+      summary: 'Severe complications (Guillain-Barré syndrome or severe reactive arthritis)',
+      criteria: {
+        severeComplications: true,
+        guillaинBarre: true,
+      },
+      criteriaDescription: [
+        'Severe post-infectious complications:',
+        '  • Guillain-Barré syndrome (GBS)',
+        '  • Severe reactive arthritis requiring mobility aids',
+        '  • Chronic inflammatory demyelinating polyneuropathy (CIDP)',
+        '  • Total functional impairment',
+      ],
+      evidenceNeeded: [
+        'Neurological evaluation confirming GBS or CIDP',
+        'EMG/nerve conduction studies',
+        'Rheumatology evaluation for reactive arthritis',
+        'Functional assessment documentation',
+        'Link to prior Campylobacter infection',
+      ],
+    },
+    {
+      percent: 60,
+      summary: 'Moderate complications with ongoing impairment',
+      criteria: {
+        moderateComplications: true,
+        chronicSymptoms: true,
+      },
+      criteriaDescription: [
+        'Chronic post-infectious sequelae:',
+        '  • Reactive arthritis affecting multiple joints',
+        '  • Peripheral neuropathy',
+        '  • Chronic fatigue post-infection',
+        '  • Irritable bowel syndrome (IBS) post-infection',
+      ],
+      evidenceNeeded: [
+        'Joint imaging or exam findings',
+        'Neurological exam for neuropathy',
+        'GI evaluation for post-infectious IBS',
+        'Documentation of functional limitations',
+      ],
+    },
+    {
+      percent: 30,
+      summary: 'Mild chronic symptoms or occasional relapses',
+      criteria: {
+        mildChronic: true,
+        occasionalSymptoms: true,
+      },
+      criteriaDescription: [
+        'Post-infectious symptoms:',
+        '  • Mild reactive arthritis (1-2 joints)',
+        '  • Chronic diarrhea or bowel changes',
+        '  • Recurrent abdominal pain',
+        '  • Mild fatigue',
+      ],
+      evidenceNeeded: [
+        'GI symptom tracking',
+        'Stool studies if ongoing diarrhea',
+        'Joint exam documentation',
+        'Original infection confirmation',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Minimal residual symptoms',
+      criteria: {
+        minimal: true,
+        residual: true,
+      },
+      criteriaDescription: [
+        'Mild post-infectious effects:',
+        '  • Occasional GI symptoms',
+        '  • Mild fatigue',
+        '  • Rare joint pain',
+      ],
+      evidenceNeeded: [
+        'History of confirmed Campylobacter infection',
+        'Symptom logs',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'Fully recovered',
+      criteria: {
+        recovered: true,
+        asymptomatic: true,
+      },
+      criteriaDescription: [
+        'Complete recovery from Campylobacter infection',
+      ],
+      evidenceNeeded: [
+        'Treatment records',
+        'Resolution of symptoms',
+      ],
+    },
+  ],
+
+  definitions: {
+    guillainBarre: {
+      term: 'Guillain-Barré Syndrome (GBS)',
+      definition: 'Rare autoimmune complication where immune system attacks peripheral nerves, causing weakness and paralysis. Can follow Campylobacter infection.',
+    },
+    reactiveArthritis: {
+      term: 'Reactive Arthritis',
+      definition: 'Joint inflammation triggered by infection elsewhere in body. Can occur 1-4 weeks after Campylobacter infection.',
+    },
+    postInfectiousIBS: {
+      term: 'Post-Infectious IBS',
+      definition: 'Irritable bowel syndrome developing after acute gastroenteritis. Common after Campylobacter.',
+    },
+  },
+
+  importantNotes: [
+    'Campylobacter is a common cause of bacterial gastroenteritis',
+    'Associated with Gulf War illness and military deployments',
+    'Leading bacterial trigger for Guillain-Barré syndrome',
+    'Reactive arthritis can develop 1-4 weeks after infection',
+    'Post-infectious IBS may persist for months to years',
+    'Acute infection typically lasts 3-7 days',
+    'Complications are more important than acute infection for VA rating',
+  ],
+};
+
+// ============================================
+// PHASE 6: INFECTIOUS DISEASES - Q FEVER (DC 6331)
+// ============================================
+
+export const Q_FEVER_CRITERIA = {
+  diagnosticCode: '6331',
+  condition: 'Q Fever',
+  cfrReference: '38 CFR 4.88b, Diagnostic Code 6331',
+
+  ratings: [
+    {
+      percent: 100,
+      summary: 'Chronic Q fever with endocarditis or multi-organ involvement',
+      criteria: {
+        chronic: true,
+        endocarditis: true,
+        severe: true,
+      },
+      criteriaDescription: [
+        'Chronic Q fever (>6 months):',
+        '  • Q fever endocarditis (valve infection)',
+        '  • Vascular infection (infected aneurysms)',
+        '  • Chronic hepatitis with cirrhosis',
+        '  • Osteomyelitis',
+        '  • Requires long-term antibiotics (18+ months)',
+      ],
+      evidenceNeeded: [
+        'Echocardiogram showing valve vegetation',
+        'Positive serology (Phase I antibodies >1:800)',
+        'Imaging of affected organs',
+        'Treatment records (doxycycline + hydroxychloroquine)',
+        'Cardiology/infectious disease notes',
+      ],
+    },
+    {
+      percent: 60,
+      summary: 'Chronic Q fever fatigue syndrome',
+      criteria: {
+        chronic: true,
+        fatigueSyndrome: true,
+      },
+      criteriaDescription: [
+        'Post-Q fever fatigue syndrome (QFS):',
+        '  • Severe chronic fatigue >6 months post-infection',
+        '  • Myalgias and arthralgias',
+        '  • Night sweats',
+        '  • Mood disturbances',
+        '  • Substantially impacts daily function',
+      ],
+      evidenceNeeded: [
+        'Original Q fever diagnosis confirmation',
+        'Symptom logs showing >6 months of fatigue',
+        'Exclusion of other causes',
+        'Functional impact documentation',
+      ],
+    },
+    {
+      percent: 30,
+      summary: 'Mild chronic symptoms or occasional relapses',
+      criteria: {
+        chronicMild: true,
+        residualSymptoms: true,
+      },
+      criteriaDescription: [
+        'Chronic residual symptoms:',
+        '  • Persistent fatigue or weakness',
+        '  • Recurrent fever or sweats',
+        '  • Chronic headaches',
+        '  • Joint or muscle pain',
+      ],
+      evidenceNeeded: [
+        'Documentation of original infection',
+        'Symptom tracking',
+        'Lab work if available',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Minimal residual symptoms',
+      criteria: {
+        minimal: true,
+        residual: true,
+      },
+      criteriaDescription: [
+        'Mild post-Q fever effects:',
+        '  • Occasional fatigue',
+        '  • Rare headaches or muscle aches',
+        '  • Minimal functional impact',
+      ],
+      evidenceNeeded: [
+        'History of Q fever',
+        'Treatment records',
+        'Symptom logs',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'Fully recovered from acute Q fever',
+      criteria: {
+        recovered: true,
+        asymptomatic: true,
+      },
+      criteriaDescription: [
+        'Complete recovery from Q fever',
+      ],
+      evidenceNeeded: [
+        'Treatment completion',
+        'Symptom resolution',
+      ],
+    },
+  ],
+
+  definitions: {
+    chronicQFever: {
+      term: 'Chronic Q Fever',
+      definition: 'Persistent infection >6 months, most commonly manifesting as endocarditis. Occurs in ~1-5% of acute infections.',
+    },
+    qFeverFatigueSyndrome: {
+      term: 'Q Fever Fatigue Syndrome (QFS)',
+      definition: 'Debilitating fatigue lasting >6 months after acute Q fever, similar to chronic fatigue syndrome.',
+    },
+    phaseIAntibodies: {
+      term: 'Phase I Antibodies',
+      definition: 'Antibodies against chronic form of Coxiella burnetii. High titers (>1:800) indicate chronic infection.',
+    },
+  },
+
+  importantNotes: [
+    'Q fever caused by Coxiella burnetii bacteria',
+    'Common in military personnel deployed to Iraq, Afghanistan',
+    'Transmitted via inhalation of contaminated dust/aerosols from livestock',
+    'Acute Q fever: flu-like illness lasting 1-3 weeks',
+    'Chronic Q fever develops in 1-5% of cases, usually within 2 years',
+    'Q fever endocarditis has high mortality if untreated',
+    'Post-Q fever fatigue syndrome can last years',
+    'Veterans with valve abnormalities at higher risk for chronic Q fever',
   ],
 };
 
@@ -17868,6 +19088,1485 @@ export const analyzeBenignOralNeoplasmLogs = (logs, options = {}) => {
   };
 };
 
+// ============================================
+// ANALYSIS FUNCTIONS - PHASE 6: INFECTIOUS DISEASES
+// ============================================
+
+/**
+ * Analyzes HIV/AIDS logs to determine supported rating level
+ * Based on 38 CFR 4.88b, DC 6351
+ */
+export const analyzeHIVLogs = (logs, options = {}) => {
+  const { evaluationPeriodDays = 90 } = options;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const hivLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    return logDate >= cutoffDate && (
+      CONDITIONS.HIV_AIDS.symptomIds.includes(getLogSymptomId(log)) ||
+      getLogSymptomId(log)?.includes('hiv')
+    );
+  });
+
+  if (hivLogs.length === 0) {
+    return {
+      condition: 'HIV-Related Illness',
+      diagnosticCode: '6351',
+      hasData: false,
+      message: 'No HIV-related symptoms logged',
+      supportedRating: null,
+      ratingRationale: [],
+      gaps: [
+        'Start logging HIV-related symptoms',
+        'Document constitutional symptoms (fever, night sweats, fatigue)',
+        'Track opportunistic infections',
+        'Record weight changes',
+        'Note CD4 count and viral load from lab results',
+        'Document antiretroviral medications',
+      ],
+    };
+  }
+
+  const evidence = [];
+  const gaps = [];
+  let supportedRating = 0;
+  const ratingRationale = [];
+
+  // Count symptom types
+  const symptomCounts = {
+    opportunisticInfections: 0,
+    nightSweats: 0,
+    persistentFever: 0,
+    weightLoss: 0,
+    chronicDiarrhea: 0,
+    oralThrush: 0,
+    skinLesions: 0,
+    lymphadenopathy: 0,
+    fatigue: 0,
+    cognitiveImpairment: 0,
+  };
+
+  // Check for HIV-specific form data
+  let hasOpportunisticInfection = false;
+  let infectionType = null;
+  let hasConstitutionalSymptoms = false;
+  let onAntiretrovirals = false;
+  let weightLossPercentage = 0;
+
+  hivLogs.forEach(log => {
+    const symptomId = getLogSymptomId(log);
+
+    // Count symptoms
+    if (symptomId === 'hiv-opportunistic-infection') {
+      symptomCounts.opportunisticInfections++;
+      if (log.hivData?.infectionType) {
+        hasOpportunisticInfection = true;
+        infectionType = log.hivData.infectionType;
+      }
+    }
+    if (symptomId === 'hiv-night-sweats') symptomCounts.nightSweats++;
+    if (symptomId === 'hiv-persistent-fever') symptomCounts.persistentFever++;
+    if (symptomId === 'hiv-weight-loss') {
+      symptomCounts.weightLoss++;
+      if (log.hivData?.weightLossPercentage) {
+        weightLossPercentage = Math.max(weightLossPercentage, parseFloat(log.hivData.weightLossPercentage));
+      }
+    }
+    if (symptomId === 'hiv-chronic-diarrhea') symptomCounts.chronicDiarrhea++;
+    if (symptomId === 'hiv-oral-thrush') symptomCounts.oralThrush++;
+    if (symptomId === 'hiv-skin-lesions') symptomCounts.skinLesions++;
+    if (symptomId === 'hiv-lymphadenopathy') symptomCounts.lymphadenopathy++;
+    if (symptomId === 'hiv-fatigue') symptomCounts.fatigue++;
+    if (symptomId === 'hiv-cognitive-impairment') symptomCounts.cognitiveImpairment++;
+
+    // Check for constitutional symptoms
+    if (log.hivData?.constitutionalSymptoms?.length > 0) {
+      hasConstitutionalSymptoms = true;
+    }
+
+    // Check for antiretroviral treatment
+    if (log.hivData?.onAntiretrovirals) {
+      onAntiretrovirals = true;
+    }
+  });
+
+  const totalConstitutionalSymptoms =
+    symptomCounts.nightSweats +
+    symptomCounts.persistentFever +
+    symptomCounts.weightLoss +
+    symptomCounts.chronicDiarrhea +
+    symptomCounts.fatigue;
+
+  evidence.push(`${hivLogs.length} HIV-related symptoms logged over ${evaluationPeriodDays} days`);
+
+  // Determine rating based on VA criteria
+
+  // 100% Rating: Recurrent opportunistic infections OR debilitating symptoms with pathological weight loss
+  if (hasOpportunisticInfection && symptomCounts.opportunisticInfections >= 2) {
+    supportedRating = 100;
+    ratingRationale.push(
+      'Recurrent opportunistic infections documented',
+      `${symptomCounts.opportunisticInfections} opportunistic infection episodes logged`,
+      'Meets criteria for 100% rating under DC 6351'
+    );
+    evidence.push(`Opportunistic infection type: ${infectionType}`);
+    evidence.push('Recurrent infections indicate severe immunosuppression');
+  } else if (
+    weightLossPercentage >= 10 &&
+    totalConstitutionalSymptoms >= 15 &&
+    (symptomCounts.chronicDiarrhea >= 5 || symptomCounts.fatigue >= 10)
+  ) {
+    supportedRating = 100;
+    ratingRationale.push(
+      'Pathological weight loss (≥10% body weight) with debilitating constitutional symptoms',
+      `Weight loss: ${weightLossPercentage}% documented`,
+      `${totalConstitutionalSymptoms} constitutional symptoms over evaluation period`,
+      'Chronic diarrhea and/or severe fatigue documented',
+      'Meets criteria for 100% rating'
+    );
+    evidence.push(`Pathological weight loss: ${weightLossPercentage}%`);
+  }
+
+  // 60% Rating: Refractory constitutional symptoms OR post-opportunistic infection
+  else if (
+    (hasOpportunisticInfection && symptomCounts.opportunisticInfections === 1) ||
+    (totalConstitutionalSymptoms >= 10 && (symptomCounts.chronicDiarrhea >= 3 || weightLossPercentage >= 5))
+  ) {
+    supportedRating = 60;
+    ratingRationale.push(
+      hasOpportunisticInfection
+        ? 'Minimum 60% rating following documented opportunistic infection'
+        : 'Refractory constitutional symptoms with intermittent diarrhea',
+      'Frequent constitutional symptoms documented',
+      weightLossPercentage >= 5 ? `Significant weight loss: ${weightLossPercentage}%` : '',
+      'Meets criteria for 60% rating'
+    ).filter(Boolean);
+
+    if (hasOpportunisticInfection) {
+      evidence.push(`Opportunistic infection: ${infectionType}`);
+    }
+  }
+
+  // 30% Rating: Recurrent constitutional symptoms, intermittent diarrhea, on antiretrovirals
+  else if (
+    totalConstitutionalSymptoms >= 5 ||
+    onAntiretrovirals ||
+    (symptomCounts.chronicDiarrhea >= 2 && hasConstitutionalSymptoms)
+  ) {
+    supportedRating = 30;
+    ratingRationale.push(...[
+      'Recurrent constitutional symptoms documented',
+      onAntiretrovirals ? 'Use of FDA-approved antiretroviral medications' : '',
+      symptomCounts.chronicDiarrhea >= 2 ? 'Intermittent diarrhea episodes' : '',
+      'Meets criteria for 30% minimum rating'
+    ].filter(Boolean));
+
+    if (onAntiretrovirals) {
+      evidence.push('On antiretroviral therapy');
+    }
+  }
+
+  // 10% Rating: Mild constitutional symptoms following diagnosis
+  else if (totalConstitutionalSymptoms >= 2 || symptomCounts.cognitiveImpairment > 0) {
+    supportedRating = 10;
+    ratingRationale.push(
+      'Constitutional symptoms following HIV diagnosis',
+      symptomCounts.cognitiveImpairment > 0 ? 'Cognitive impairment/memory loss documented' : '',
+      'Meets criteria for 10% rating'
+    ).filter(Boolean);
+  }
+
+  // 0% Rating: Asymptomatic but diagnosed
+  else {
+    supportedRating = 0;
+    ratingRationale.push(
+      'HIV diagnosis with minimal symptoms',
+      'May have lymphadenopathy but otherwise asymptomatic',
+      '0% (asymptomatic) rating'
+    );
+  }
+
+  // Add symptom evidence
+  if (symptomCounts.opportunisticInfections > 0) {
+    evidence.push(`${symptomCounts.opportunisticInfections} opportunistic infection(s) logged`);
+  }
+  if (symptomCounts.nightSweats > 0) {
+    evidence.push(`${symptomCounts.nightSweats} night sweats episodes`);
+  }
+  if (symptomCounts.persistentFever > 0) {
+    evidence.push(`${symptomCounts.persistentFever} persistent fever episodes`);
+  }
+  if (symptomCounts.weightLoss > 0) {
+    evidence.push(`${symptomCounts.weightLoss} weight loss episodes (${weightLossPercentage}% max)`);
+  }
+  if (symptomCounts.chronicDiarrhea > 0) {
+    evidence.push(`${symptomCounts.chronicDiarrhea} chronic diarrhea episodes`);
+  }
+  if (symptomCounts.oralThrush > 0) {
+    evidence.push(`${symptomCounts.oralThrush} oral thrush occurrences`);
+  }
+  if (symptomCounts.skinLesions > 0) {
+    evidence.push(`${symptomCounts.skinLesions} skin lesions documented`);
+  }
+  if (symptomCounts.lymphadenopathy > 0) {
+    evidence.push(`${symptomCounts.lymphadenopathy} swollen lymph node episodes`);
+  }
+  if (symptomCounts.fatigue > 0) {
+    evidence.push(`${symptomCounts.fatigue} severe fatigue episodes`);
+  }
+  if (symptomCounts.cognitiveImpairment > 0) {
+    evidence.push(`${symptomCounts.cognitiveImpairment} cognitive impairment episodes`);
+  }
+
+  // Evidence gaps
+  gaps.push('Track CD4 count and viral load from lab results (use Measurements tab)');
+  gaps.push('Document all medications, especially antiretrovirals');
+
+  if (symptomCounts.opportunisticInfections === 0) {
+    gaps.push('Document any opportunistic infections (PCP, CMV, MAC, toxoplasmosis, etc.)');
+  }
+
+  if (!hasConstitutionalSymptoms && totalConstitutionalSymptoms < 5) {
+    gaps.push('Log constitutional symptoms consistently (fever, night sweats, fatigue)');
+  }
+
+  if (weightLossPercentage === 0) {
+    gaps.push('Track body weight changes over time');
+  }
+
+  if (!onAntiretrovirals && supportedRating < 30) {
+    gaps.push('Document antiretroviral medication regimen if applicable');
+  }
+
+  gaps.push('Medical records documenting HIV diagnosis and treatment history');
+  gaps.push('Regular CD4 counts and viral load measurements');
+
+  if (supportedRating >= 60) {
+    gaps.push('Document impact on daily activities and work capacity');
+    gaps.push('Note any hospitalizations for opportunistic infections');
+  }
+
+  return {
+    condition: 'HIV-Related Illness',
+    diagnosticCode: '6351',
+    hasData: true,
+    supportedRating,
+    ratingRationale,
+    evidence,
+    gaps,
+    metrics: {
+      totalLogs: hivLogs.length,
+      evaluationPeriod: evaluationPeriodDays,
+      symptomCounts,
+      hasOpportunisticInfection,
+      onAntiretrovirals,
+      weightLossPercentage,
+    },
+  };
+};
+
+/**
+ * Analyzes Hepatitis C logs to determine supported rating level
+ * Based on 38 CFR 4.114, DC 7354
+ */
+export const analyzeHepatitisCLogs = (logs, options = {}) => {
+  const { evaluationPeriodDays = 90 } = options;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const hepCLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    return logDate >= cutoffDate && (
+        CONDITIONS.HEPATITIS_C.symptomIds.includes(getLogSymptomId(log)) ||
+        getLogSymptomId(log)?.includes('hep')
+    );
+  });
+
+  if (hepCLogs.length === 0) {
+    return {
+      condition: 'Hepatitis C',
+      diagnosticCode: '7354',
+      hasData: false,
+      message: 'No Hepatitis C symptoms logged',
+      supportedRating: null,
+      ratingRationale: [],
+      gaps: [
+        'Start logging hepatitis symptoms',
+        'Document fatigue and malaise frequency',
+        'Track weight changes over time',
+        'Note dietary restrictions and appetite changes',
+        'Record liver enzyme values from lab work',
+        'Document impact on daily activities',
+      ],
+    };
+  }
+
+  const evidence = [];
+  const gaps = [];
+  let supportedRating = 0;
+  const ratingRationale = [];
+
+  // Count symptom types
+  const symptomCounts = {
+    fatigue: 0,
+    malaise: 0,
+    nausea: 0,
+    abdominalPain: 0,
+    jaundice: 0,
+    darkUrine: 0,
+    appetiteLoss: 0,
+    jointPain: 0,
+    cognitiveIssues: 0,
+    liverTenderness: 0,
+  };
+
+  let weightLossPercentage = 0;
+  let debilitating = false;
+  let dietaryRestrictions = false;
+
+  hepCLogs.forEach(log => {
+    const symptomId = getLogSymptomId(log);
+
+    if (symptomId === 'hep-fatigue') symptomCounts.fatigue++;
+    if (symptomId === 'hep-malaise') symptomCounts.malaise++;
+    if (symptomId === 'hep-nausea') symptomCounts.nausea++;
+    if (symptomId === 'hep-abdominal-pain') symptomCounts.abdominalPain++;
+    if (symptomId === 'hep-jaundice') symptomCounts.jaundice++;
+    if (symptomId === 'hep-dark-urine') symptomCounts.darkUrine++;
+    if (symptomId === 'hep-appetite-loss') symptomCounts.appetiteLoss++;
+    if (symptomId === 'hep-joint-pain') symptomCounts.jointPain++;
+    if (symptomId === 'hep-cognitive-issues') symptomCounts.cognitiveIssues++;
+    if (symptomId === 'hep-liver-tenderness') symptomCounts.liverTenderness++;
+
+    if (log.hepatitisData?.weightLossPercentage) {
+      weightLossPercentage = Math.max(weightLossPercentage, parseFloat(log.hepatitisData.weightLossPercentage));
+    }
+    if (log.hepatitisData?.debilitating) {
+      debilitating = true;
+    }
+    if (log.hepatitisData?.dietaryRestrictions) {
+      dietaryRestrictions = true;
+    }
+  });
+
+  const totalSymptomCount = Object.values(symptomCounts).reduce((a, b) => a + b, 0);
+  const daysWithSymptoms = hepCLogs.length;
+  const dailySymptoms = daysWithSymptoms >= evaluationPeriodDays * 0.7; // 70% of days
+  const intermittentSymptoms = daysWithSymptoms >= evaluationPeriodDays * 0.2; // 20% of days
+
+  evidence.push(`${hepCLogs.length} Hepatitis C symptoms logged over ${evaluationPeriodDays} days`);
+
+  // Rating determination
+  if (debilitating && dailySymptoms && (symptomCounts.fatigue >= 50 || symptomCounts.malaise >= 50)) {
+    supportedRating = 100;
+    ratingRationale.push(
+        'Near-constant debilitating symptoms documented',
+        `Severe fatigue/malaise: ${symptomCounts.fatigue + symptomCounts.malaise} episodes`,
+        'Daily symptoms with substantial lifestyle impact',
+        'Meets criteria for 100% rating'
+    );
+  } else if (dailySymptoms && weightLossPercentage >= 10) {
+    supportedRating = 60;
+    ratingRationale.push(
+        'Daily fatigue and malaise with substantial weight loss',
+        `Weight loss: ${weightLossPercentage}% documented`,
+        `Symptoms present on ${daysWithSymptoms} days`,
+        'Meets criteria for 60% rating'
+    );
+  } else if (dailySymptoms && (weightLossPercentage >= 5 || symptomCounts.appetiteLoss >= 30)) {
+    supportedRating = 30;
+    ratingRationale.push(
+        'Daily fatigue and malaise documented',
+        weightLossPercentage > 0 ? `Minor weight loss: ${weightLossPercentage}%` : 'Appetite loss with near-normal weight',
+        dietaryRestrictions ? 'Dietary restrictions required' : '',
+        'Meets criteria for 30% rating'
+    ).filter(Boolean);
+  } else if (intermittentSymptoms) {
+    supportedRating = 10;
+    ratingRationale.push(
+        'Intermittent fatigue and malaise',
+        `Symptoms on ${daysWithSymptoms} days over ${evaluationPeriodDays} days`,
+        'Meets criteria for 10% rating'
+    );
+  } else {
+    supportedRating = 0;
+    ratingRationale.push(
+        'Hepatitis C diagnosed but minimal symptoms',
+        'Nonsymptomatic rating'
+    );
+  }
+
+  // Evidence
+  if (symptomCounts.fatigue > 0) evidence.push(`${symptomCounts.fatigue} fatigue episodes`);
+  if (symptomCounts.malaise > 0) evidence.push(`${symptomCounts.malaise} malaise episodes`);
+  if (symptomCounts.nausea > 0) evidence.push(`${symptomCounts.nausea} nausea episodes`);
+  if (symptomCounts.abdominalPain > 0) evidence.push(`${symptomCounts.abdominalPain} abdominal pain episodes`);
+  if (symptomCounts.jaundice > 0) evidence.push(`${symptomCounts.jaundice} jaundice occurrences`);
+  if (weightLossPercentage > 0) evidence.push(`Weight loss: ${weightLossPercentage}%`);
+  if (debilitating) evidence.push('Debilitating symptoms documented');
+
+  // Gaps
+  if (symptomCounts.fatigue + symptomCounts.malaise < 20) {
+    gaps.push('Log fatigue and malaise more consistently');
+  }
+  if (weightLossPercentage === 0) {
+    gaps.push('Track weight changes over time for rating evidence');
+  }
+  if (!dietaryRestrictions && symptomCounts.appetiteLoss > 0) {
+    gaps.push('Document any dietary restrictions or modifications');
+  }
+  gaps.push('Track liver enzyme levels (ALT, AST, bilirubin) via Measurements tab');
+  gaps.push('Document impact on work and daily activities');
+  gaps.push('Note treatment regimen and side effects');
+
+  return {
+    condition: 'Hepatitis C',
+    diagnosticCode: '7354',
+    hasData: true,
+    supportedRating,
+    ratingRationale,
+    evidence,
+    gaps,
+    metrics: {
+      totalLogs: hepCLogs.length,
+      evaluationPeriod: evaluationPeriodDays,
+      symptomCounts,
+      weightLossPercentage,
+      debilitating,
+      dailySymptoms,
+    },
+  };
+};
+
+/**
+ * Analyzes Hepatitis B logs to determine supported rating level
+ * Based on 38 CFR 4.114, DC 7314
+ */
+export const analyzeHepatitisBLogs = (logs, options = {}) => {
+  const { evaluationPeriodDays = 90 } = options;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const hepBLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    return logDate >= cutoffDate && (
+        CONDITIONS.HEPATITIS_B.symptomIds.includes(getLogSymptomId(log)) ||
+        getLogSymptomId(log)?.includes('hep')
+    );
+  });
+
+  if (hepBLogs.length === 0) {
+    return {
+      condition: 'Hepatitis B',
+      diagnosticCode: '7314',
+      hasData: false,
+      message: 'No Hepatitis B symptoms logged',
+      supportedRating: null,
+      ratingRationale: [],
+      gaps: [
+        'Start logging hepatitis symptoms',
+        'Document fatigue and malaise frequency',
+        'Track weight changes over time',
+        'Note dietary restrictions and appetite changes',
+        'Record liver enzyme values from lab work',
+        'Document impact on daily activities',
+      ],
+    };
+  }
+
+  const evidence = [];
+  const gaps = [];
+  let supportedRating = 0;
+  const ratingRationale = [];
+
+  const symptomCounts = {
+    fatigue: 0,
+    malaise: 0,
+    nausea: 0,
+    abdominalPain: 0,
+    jaundice: 0,
+    darkUrine: 0,
+    appetiteLoss: 0,
+    jointPain: 0,
+    cognitiveIssues: 0,
+    liverTenderness: 0,
+  };
+
+  let weightLossPercentage = 0;
+  let debilitating = false;
+  let dietaryRestrictions = false;
+
+  hepBLogs.forEach(log => {
+    const symptomId = getLogSymptomId(log);
+
+    if (symptomId === 'hep-fatigue') symptomCounts.fatigue++;
+    if (symptomId === 'hep-malaise') symptomCounts.malaise++;
+    if (symptomId === 'hep-nausea') symptomCounts.nausea++;
+    if (symptomId === 'hep-abdominal-pain') symptomCounts.abdominalPain++;
+    if (symptomId === 'hep-jaundice') symptomCounts.jaundice++;
+    if (symptomId === 'hep-dark-urine') symptomCounts.darkUrine++;
+    if (symptomId === 'hep-appetite-loss') symptomCounts.appetiteLoss++;
+    if (symptomId === 'hep-joint-pain') symptomCounts.jointPain++;
+    if (symptomId === 'hep-cognitive-issues') symptomCounts.cognitiveIssues++;
+    if (symptomId === 'hep-liver-tenderness') symptomCounts.liverTenderness++;
+
+    if (log.hepatitisData?.weightLossPercentage) {
+      weightLossPercentage = Math.max(weightLossPercentage, parseFloat(log.hepatitisData.weightLossPercentage));
+    }
+    if (log.hepatitisData?.debilitating) {
+      debilitating = true;
+    }
+    if (log.hepatitisData?.dietaryRestrictions) {
+      dietaryRestrictions = true;
+    }
+  });
+
+  const totalSymptomCount = Object.values(symptomCounts).reduce((a, b) => a + b, 0);
+  const daysWithSymptoms = hepBLogs.length;
+  const dailySymptoms = daysWithSymptoms >= evaluationPeriodDays * 0.7;
+  const intermittentSymptoms = daysWithSymptoms >= evaluationPeriodDays * 0.2;
+
+  evidence.push(`${hepBLogs.length} Hepatitis B symptoms logged over ${evaluationPeriodDays} days`);
+
+  // Rating determination (same logic as Hep C)
+  if (debilitating && dailySymptoms && (symptomCounts.fatigue >= 50 || symptomCounts.malaise >= 50)) {
+    supportedRating = 100;
+    ratingRationale.push(
+        'Near-constant debilitating symptoms documented',
+        `Severe fatigue/malaise: ${symptomCounts.fatigue + symptomCounts.malaise} episodes`,
+        'Daily symptoms with substantial lifestyle impact',
+        'Meets criteria for 100% rating'
+    );
+  } else if (dailySymptoms && weightLossPercentage >= 10) {
+    supportedRating = 60;
+    ratingRationale.push(
+        'Daily fatigue and malaise with substantial weight loss',
+        `Weight loss: ${weightLossPercentage}% documented`,
+        `Symptoms present on ${daysWithSymptoms} days`,
+        'Meets criteria for 60% rating'
+    );
+  } else if (dailySymptoms && (weightLossPercentage >= 5 || symptomCounts.appetiteLoss >= 30)) {
+    supportedRating = 30;
+    ratingRationale.push(...[
+      'Daily fatigue and malaise documented',
+      weightLossPercentage > 0 ? `Minor weight loss: ${weightLossPercentage}%` : 'Appetite loss with near-normal weight',
+      dietaryRestrictions ? 'Dietary restrictions required' : '',
+      'Meets criteria for 30% rating'
+    ].filter(Boolean));
+  } else if (intermittentSymptoms) {
+    supportedRating = 10;
+    ratingRationale.push(
+        'Intermittent fatigue and malaise',
+        `Symptoms on ${daysWithSymptoms} days over ${evaluationPeriodDays} days`,
+        'Meets criteria for 10% rating'
+    );
+  } else {
+    supportedRating = 0;
+    ratingRationale.push(
+        'Hepatitis B diagnosed but minimal symptoms',
+        'Nonsymptomatic rating'
+    );
+  }
+
+  // Evidence
+  if (symptomCounts.fatigue > 0) evidence.push(`${symptomCounts.fatigue} fatigue episodes`);
+  if (symptomCounts.malaise > 0) evidence.push(`${symptomCounts.malaise} malaise episodes`);
+  if (symptomCounts.nausea > 0) evidence.push(`${symptomCounts.nausea} nausea episodes`);
+  if (symptomCounts.jaundice > 0) evidence.push(`${symptomCounts.jaundice} jaundice occurrences`);
+  if (weightLossPercentage > 0) evidence.push(`Weight loss: ${weightLossPercentage}%`);
+  if (debilitating) evidence.push('Debilitating symptoms documented');
+
+  // Gaps
+  if (symptomCounts.fatigue + symptomCounts.malaise < 20) {
+    gaps.push('Log fatigue and malaise more consistently');
+  }
+  if (weightLossPercentage === 0) {
+    gaps.push('Track weight changes over time');
+  }
+  gaps.push('Track liver enzyme levels via Measurements tab');
+  gaps.push('Document impact on work and daily activities');
+  gaps.push('Note treatment regimen and compliance');
+
+  return {
+    condition: 'Hepatitis B',
+    diagnosticCode: '7314',
+    hasData: true,
+    supportedRating,
+    ratingRationale,
+    evidence,
+    gaps,
+    metrics: {
+      totalLogs: hepBLogs.length,
+      evaluationPeriod: evaluationPeriodDays,
+      symptomCounts,
+      weightLossPercentage,
+      debilitating,
+      dailySymptoms,
+    },
+  };
+};
+
+/**
+ * Analyzes Lyme Disease logs to determine supported rating level
+ * Based on 38 CFR 4.88b, DC 6319
+ */
+export const analyzeLymeDiseaseLogs = (logs, options = {}) => {
+  const { evaluationPeriodDays = 90 } = options;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const lymeLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    return logDate >= cutoffDate && (
+        CONDITIONS.LYME_DISEASE.symptomIds.includes(getLogSymptomId(log)) ||
+        getLogSymptomId(log)?.includes('lyme')
+    );
+  });
+
+  if (lymeLogs.length === 0) {
+    return {
+      condition: 'Lyme Disease',
+      diagnosticCode: '6319',
+      hasData: false,
+      message: 'No Lyme disease symptoms logged',
+      supportedRating: null,
+      ratingRationale: [],
+      gaps: [
+        'Start logging Lyme disease symptoms',
+        'Document active treatment if currently undergoing',
+        'Track residual symptoms after treatment',
+        'Note neurological symptoms (numbness, pain, cognitive issues)',
+        'Document joint pain and arthritis symptoms',
+        'Record any cardiac symptoms',
+      ],
+    };
+  }
+
+  const evidence = [];
+  const gaps = [];
+  let supportedRating = 0;
+  const ratingRationale = [];
+
+  const symptomCounts = {
+    rash: 0,
+    fever: 0,
+    headache: 0,
+    fatigue: 0,
+    jointPain: 0,
+    muscleAches: 0,
+    nervePain: 0,
+    cognitive: 0,
+    heartPalpitations: 0,
+    facialParalysis: 0,
+  };
+
+  let activeTreatment = false;
+  let treatmentCompleted = false;
+  let hasNeurologicalSymptoms = false;
+  let hasArthritisSymptoms = false;
+
+  lymeLogs.forEach(log => {
+    const symptomId = getLogSymptomId(log);
+
+    if (symptomId === 'lyme-rash') symptomCounts.rash++;
+    if (symptomId === 'lyme-fever') symptomCounts.fever++;
+    if (symptomId === 'lyme-headache') symptomCounts.headache++;
+    if (symptomId === 'lyme-fatigue') symptomCounts.fatigue++;
+    if (symptomId === 'lyme-joint-pain') {
+      symptomCounts.jointPain++;
+      hasArthritisSymptoms = true;
+    }
+    if (symptomId === 'lyme-muscle-aches') symptomCounts.muscleAches++;
+    if (symptomId === 'lyme-nerve-pain') {
+      symptomCounts.nervePain++;
+      hasNeurologicalSymptoms = true;
+    }
+    if (symptomId === 'lyme-cognitive') {
+      symptomCounts.cognitive++;
+      hasNeurologicalSymptoms = true;
+    }
+    if (symptomId === 'lyme-heart-palpitations') symptomCounts.heartPalpitations++;
+    if (symptomId === 'lyme-facial-paralysis') {
+      symptomCounts.facialParalysis++;
+      hasNeurologicalSymptoms = true;
+    }
+
+    if (log.lymeData?.activeTreatment) {
+      activeTreatment = true;
+    }
+    if (log.lymeData?.treatmentCompleted) {
+      treatmentCompleted = true;
+    }
+  });
+
+  evidence.push(`${lymeLogs.length} Lyme disease symptoms logged over ${evaluationPeriodDays} days`);
+
+  // Rating determination
+  if (activeTreatment) {
+    supportedRating = 100;
+    ratingRationale.push(
+        'Active Lyme disease requiring treatment',
+        'Minimum 100% rating during active treatment period (6 months)',
+        'After treatment, residuals rated by affected body system',
+        'Meets criteria for 100% rating'
+    );
+    evidence.push('Currently undergoing active antibiotic treatment');
+  } else if (treatmentCompleted) {
+    supportedRating = 'Residuals';
+    ratingRationale.push(
+        'Treatment for Lyme disease completed',
+        'Rate residual symptoms under appropriate body system codes:',
+        hasNeurologicalSymptoms ? '  • Neurological symptoms (peripheral neuropathy, cognitive issues)' : '',
+        hasArthritisSymptoms ? '  • Joint symptoms (arthritis codes)' : '',
+        symptomCounts.fatigue > 30 ? '  • Chronic fatigue syndrome' : '',
+        'Consult multiple diagnostic codes for comprehensive rating'
+    ).filter(Boolean);
+    evidence.push('Post-treatment Lyme disease syndrome (PTLDS)');
+  } else {
+    supportedRating = 'Requires Evaluation';
+    ratingRationale.push(
+        'Lyme disease symptoms documented',
+        'Determine if currently in active treatment phase',
+        'If post-treatment, rate residuals by body system',
+        'Active treatment = 100% minimum for 6 months'
+    );
+  }
+
+  // Evidence
+  if (symptomCounts.rash > 0) evidence.push(`${symptomCounts.rash} rash occurrences (bull's-eye)`);
+  if (symptomCounts.nervePain > 0) evidence.push(`${symptomCounts.nervePain} nerve pain episodes`);
+  if (symptomCounts.cognitive > 0) evidence.push(`${symptomCounts.cognitive} cognitive impairment episodes`);
+  if (symptomCounts.jointPain > 0) evidence.push(`${symptomCounts.jointPain} joint pain episodes`);
+  if (symptomCounts.fatigue > 0) evidence.push(`${symptomCounts.fatigue} fatigue episodes`);
+  if (symptomCounts.facialParalysis > 0) evidence.push(`${symptomCounts.facialParalysis} facial paralysis occurrences`);
+
+  // Gaps
+  if (!activeTreatment && !treatmentCompleted) {
+    gaps.push('Clarify treatment status: active treatment or post-treatment?');
+  }
+  if (hasNeurologicalSymptoms) {
+    gaps.push('Document neurological residuals for separate rating (DC 8520 or appropriate code)');
+  }
+  if (hasArthritisSymptoms) {
+    gaps.push('Document joint symptoms for arthritis rating (appropriate joint DC)');
+  }
+  if (symptomCounts.fatigue > 30) {
+    gaps.push('Consider chronic fatigue syndrome rating if fatigue persists post-treatment');
+  }
+  gaps.push('Medical records showing Lyme diagnosis (Western blot, ELISA)');
+  gaps.push('Treatment records (antibiotics type, duration, completion date)');
+  gaps.push('Specialist evaluations for persistent symptoms');
+
+  return {
+    condition: 'Lyme Disease',
+    diagnosticCode: '6319',
+    hasData: true,
+    supportedRating,
+    ratingRationale,
+    evidence,
+    gaps,
+    metrics: {
+      totalLogs: lymeLogs.length,
+      evaluationPeriod: evaluationPeriodDays,
+      symptomCounts,
+      activeTreatment,
+      treatmentCompleted,
+      hasNeurologicalSymptoms,
+      hasArthritisSymptoms,
+    },
+  };
+};
+
+/**
+ * Analyzes Malaria logs to determine supported rating level
+ * Based on 38 CFR 4.88b, DC 6304
+ */
+export const analyzeMalariaLogs = (logs, options = {}) => {
+  const { evaluationPeriodDays = 90 } = options;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const malariaLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    return logDate >= cutoffDate && (
+        CONDITIONS.MALARIA.symptomIds.includes(getLogSymptomId(log)) ||
+        getLogSymptomId(log)?.includes('malaria')
+    );
+  });
+
+  if (malariaLogs.length === 0) {
+    return {
+      condition: 'Malaria',
+      diagnosticCode: '6304',
+      hasData: false,
+      message: 'No malaria symptoms logged',
+      supportedRating: null,
+      ratingRationale: [],
+      gaps: [
+        'Start logging malaria symptoms',
+        'Document fever episodes with temperatures',
+        'Track cyclical fever pattern (every 48-72 hours typical)',
+        'Note any relapse episodes',
+        'Record treatment medications',
+        'Lab work confirming parasitemia if available',
+      ],
+    };
+  }
+
+  const evidence = [];
+  const gaps = [];
+  let supportedRating = 0;
+  const ratingRationale = [];
+
+  const symptomCounts = {
+    fever: 0,
+    chills: 0,
+    sweats: 0,
+    headache: 0,
+    muscleAches: 0,
+    nausea: 0,
+    fatigue: 0,
+    jaundice: 0,
+    anemia: 0,
+    enlargedSpleen: 0,
+  };
+
+  let relapseCount = 0;
+  let hospitalized = false;
+  let continuousMedication = false;
+  let severeComplications = false;
+
+  malariaLogs.forEach(log => {
+    const symptomId = getLogSymptomId(log);
+
+    if (symptomId === 'malaria-fever') symptomCounts.fever++;
+    if (symptomId === 'malaria-chills') symptomCounts.chills++;
+    if (symptomId === 'malaria-sweats') symptomCounts.sweats++;
+    if (symptomId === 'malaria-headache') symptomCounts.headache++;
+    if (symptomId === 'malaria-muscle-aches') symptomCounts.muscleAches++;
+    if (symptomId === 'malaria-nausea') symptomCounts.nausea++;
+    if (symptomId === 'malaria-fatigue') symptomCounts.fatigue++;
+    if (symptomId === 'malaria-jaundice') {
+      symptomCounts.jaundice++;
+      severeComplications = true;
+    }
+    if (symptomId === 'malaria-anemia') symptomCounts.anemia++;
+    if (symptomId === 'malaria-enlarged-spleen') symptomCounts.enlargedSpleen++;
+
+    if (log.malariaData?.relapseEpisode) relapseCount++;
+    if (log.malariaData?.hospitalized) hospitalized = true;
+    if (log.malariaData?.continuousMedication) continuousMedication = true;
+    if (log.malariaData?.severeComplications) severeComplications = true;
+  });
+
+  const totalSymptoms = Object.values(symptomCounts).reduce((a, b) => a + b, 0);
+  const daysWithSymptoms = malariaLogs.length;
+
+  evidence.push(`${malariaLogs.length} malaria symptoms logged over ${evaluationPeriodDays} days`);
+
+  // Rating determination
+  if (hospitalized || severeComplications || (continuousMedication && daysWithSymptoms >= 60)) {
+    supportedRating = 100;
+    ratingRationale.push(...[
+      'Active severe malaria requiring treatment',
+      hospitalized ? 'Hospitalization documented' : '',
+      severeComplications ? 'Severe complications present (jaundice/organ involvement)' : '',
+      continuousMedication ? 'Continuous antimalarial medication required' : '',
+      'Meets criteria for 100% rating'
+    ].filter(Boolean));
+  } else if (relapseCount >= 3 || (symptomCounts.fever >= 20 && daysWithSymptoms >= 30)) {
+    supportedRating = 60;
+    ratingRationale.push(...[
+      'Frequent relapses with debilitating symptoms',
+      `${relapseCount} relapse episodes documented`,
+      `Fever episodes: ${symptomCounts.fever}`,
+      symptomCounts.anemia > 5 ? 'Chronic anemia documented' : '',
+      'Meets criteria for 60% rating'
+    ].filter(Boolean));
+  } else if (relapseCount >= 1 || daysWithSymptoms >= 15) {
+    supportedRating = 30;
+    ratingRationale.push(...[
+      'Occasional relapses or chronic residual symptoms',
+      relapseCount > 0 ? `${relapseCount} relapse episode(s) documented` : '',
+      `Symptoms present on ${daysWithSymptoms} days`,
+      symptomCounts.enlargedSpleen > 0 ? 'Splenomegaly documented' : '',
+      'Meets criteria for 30% rating'
+    ].filter(Boolean));
+  } else if (daysWithSymptoms >= 3) {
+    supportedRating = 10;
+    ratingRationale.push(
+        'Residual symptoms or minimal impact',
+        `Symptoms on ${daysWithSymptoms} days`,
+        'Meets criteria for 10% rating'
+    );
+  } else {
+    supportedRating = 0;
+    ratingRationale.push(
+        'Malaria treated, minimal current symptoms',
+        'Asymptomatic rating'
+    );
+  }
+
+  // Evidence
+  if (symptomCounts.fever > 0) evidence.push(`${symptomCounts.fever} fever episodes`);
+  if (symptomCounts.chills > 0) evidence.push(`${symptomCounts.chills} episodes of chills`);
+  if (symptomCounts.sweats > 0) evidence.push(`${symptomCounts.sweats} night sweats episodes`);
+  if (symptomCounts.jaundice > 0) evidence.push(`${symptomCounts.jaundice} jaundice occurrences (severe complication)`);
+  if (symptomCounts.anemia > 0) evidence.push(`${symptomCounts.anemia} anemia episodes`);
+  if (relapseCount > 0) evidence.push(`${relapseCount} documented relapses`);
+
+  // Gaps
+  if (symptomCounts.fever < 5) {
+    gaps.push('Log fever episodes consistently with temperature readings');
+  }
+  if (relapseCount === 0 && daysWithSymptoms > 10) {
+    gaps.push('Document if symptoms represent relapse or initial infection');
+  }
+  gaps.push('Lab work: blood smear or rapid diagnostic test confirming parasitemia');
+  gaps.push('Document antimalarial medications (chloroquine, artemisinin, primaquine)');
+  gaps.push('Note cyclical pattern if fever occurs every 48-72 hours');
+  if (symptomCounts.anemia > 0 || symptomCounts.jaundice > 0) {
+    gaps.push('CBC and liver function tests to document severity');
+  }
+
+  return {
+    condition: 'Malaria',
+    diagnosticCode: '6304',
+    hasData: true,
+    supportedRating,
+    ratingRationale,
+    evidence,
+    gaps,
+    metrics: {
+      totalLogs: malariaLogs.length,
+      evaluationPeriod: evaluationPeriodDays,
+      symptomCounts,
+      relapseCount,
+      hospitalized,
+      severeComplications,
+    },
+  };
+};
+
+/**
+ * Analyzes Brucellosis logs to determine supported rating level
+ * Based on 38 CFR 4.88b, DC 6316
+ */
+export const analyzeBrucellosisLogs = (logs, options = {}) => {
+  const { evaluationPeriodDays = 90 } = options;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const brucellosisLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    return logDate >= cutoffDate && (
+        CONDITIONS.BRUCELLOSIS.symptomIds.includes(getLogSymptomId(log)) ||
+        getLogSymptomId(log)?.includes('brucellosis')
+    );
+  });
+
+  if (brucellosisLogs.length === 0) {
+    return {
+      condition: 'Brucellosis',
+      diagnosticCode: '6316',
+      hasData: false,
+      message: 'No brucellosis symptoms logged',
+      supportedRating: null,
+      ratingRationale: [],
+      gaps: [
+        'Start logging brucellosis symptoms',
+        'Document undulant (wave-like) fever pattern',
+        'Track night sweats episodes',
+        'Note joint or back pain (spondylitis common)',
+        'Record treatment (doxycycline + rifampin typical)',
+        'Blood cultures or serology confirming diagnosis',
+      ],
+    };
+  }
+
+  const evidence = [];
+  const gaps = [];
+  let supportedRating = 0;
+  const ratingRationale = [];
+
+  const symptomCounts = {
+    fever: 0,
+    nightSweats: 0,
+    fatigue: 0,
+    jointPain: 0,
+    muscleAches: 0,
+    headache: 0,
+    backPain: 0,
+    weightLoss: 0,
+    depression: 0,
+    liverSpleen: 0,
+  };
+
+  let relapseCount = 0;
+  let multiOrganInvolvement = false;
+  let chronicArthritis = false;
+  let neurobrucellosis = false;
+
+  brucellosisLogs.forEach(log => {
+    const symptomId = getLogSymptomId(log);
+
+    if (symptomId === 'brucellosis-fever') symptomCounts.fever++;
+    if (symptomId === 'brucellosis-night-sweats') symptomCounts.nightSweats++;
+    if (symptomId === 'brucellosis-fatigue') symptomCounts.fatigue++;
+    if (symptomId === 'brucellosis-joint-pain') symptomCounts.jointPain++;
+    if (symptomId === 'brucellosis-muscle-aches') symptomCounts.muscleAches++;
+    if (symptomId === 'brucellosis-headache') symptomCounts.headache++;
+    if (symptomId === 'brucellosis-back-pain') {
+      symptomCounts.backPain++;
+      chronicArthritis = true;
+    }
+    if (symptomId === 'brucellosis-weight-loss') symptomCounts.weightLoss++;
+    if (symptomId === 'brucellosis-depression') symptomCounts.depression++;
+    if (symptomId === 'brucellosis-liver-spleen') {
+      symptomCounts.liverSpleen++;
+      multiOrganInvolvement = true;
+    }
+
+    if (log.brucellosisData?.relapseEpisode) relapseCount++;
+    if (log.brucellosisData?.multiOrganInvolvement) multiOrganInvolvement = true;
+    if (log.brucellosisData?.chronicArthritis) chronicArthritis = true;
+    if (log.brucellosisData?.neurobrucellosis) neurobrucellosis = true;
+  });
+
+  const daysWithSymptoms = brucellosisLogs.length;
+
+  evidence.push(`${brucellosisLogs.length} brucellosis symptoms logged over ${evaluationPeriodDays} days`);
+
+  // Rating determination
+  if (neurobrucellosis || (multiOrganInvolvement && daysWithSymptoms >= 60)) {
+    supportedRating = 100;
+    ratingRationale.push(...[
+      'Severe active brucellosis with organ involvement',
+      neurobrucellosis ? 'Neurobrucellosis (CNS involvement) documented' : '',
+      multiOrganInvolvement ? 'Multiple organ involvement' : '',
+      'Constant debilitating symptoms',
+      'Meets criteria for 100% rating'
+    ].filter(Boolean));
+  } else if (relapseCount >= 3 || (chronicArthritis && daysWithSymptoms >= 30)) {
+    supportedRating = 60;
+    ratingRationale.push(...[
+      'Active disease with relapsing pattern',
+      `${relapseCount} relapse episodes documented`,
+      chronicArthritis ? 'Chronic arthritis/spondylitis present' : '',
+      `Symptoms on ${daysWithSymptoms} days`,
+      'Meets criteria for 60% rating'
+    ].filter(Boolean));
+  } else if (relapseCount >= 1 || daysWithSymptoms >= 15) {
+    supportedRating = 30;
+    ratingRationale.push(...[
+      'Occasional relapses or chronic symptoms',
+      relapseCount > 0 ? `${relapseCount} relapse episode(s)` : '',
+      symptomCounts.depression > 5 ? 'Chronic depression/mood changes' : '',
+      'Meets criteria for 30% rating'
+    ].filter(Boolean));
+  } else if (daysWithSymptoms >= 3) {
+    supportedRating = 10;
+    ratingRationale.push(
+        'Residual symptoms with minimal impact',
+        'Meets criteria for 10% rating'
+    );
+  } else {
+    supportedRating = 0;
+    ratingRationale.push(
+        'Brucellosis treated, minimal symptoms',
+        'Asymptomatic rating'
+    );
+  }
+
+  // Evidence
+  if (symptomCounts.fever > 0) evidence.push(`${symptomCounts.fever} fever episodes`);
+  if (symptomCounts.nightSweats > 0) evidence.push(`${symptomCounts.nightSweats} night sweats episodes`);
+  if (symptomCounts.backPain > 0) evidence.push(`${symptomCounts.backPain} back pain episodes (spondylitis)`);
+  if (symptomCounts.jointPain > 0) evidence.push(`${symptomCounts.jointPain} joint pain episodes`);
+  if (symptomCounts.depression > 0) evidence.push(`${symptomCounts.depression} depression/mood episodes`);
+  if (relapseCount > 0) evidence.push(`${relapseCount} documented relapses`);
+
+  // Gaps
+  gaps.push('Blood cultures or serology (IgG/IgM titers) confirming diagnosis');
+  gaps.push('Document treatment (typically doxycycline + rifampin for 6+ weeks)');
+  if (symptomCounts.backPain > 5) {
+    gaps.push('Spine imaging (X-ray/MRI) to evaluate for spondylitis');
+  }
+  if (symptomCounts.jointPain > 5) {
+    gaps.push('Joint imaging to document arthritis');
+  }
+  gaps.push('Track relapse pattern - symptoms may recur for years');
+
+  return {
+    condition: 'Brucellosis',
+    diagnosticCode: '6316',
+    hasData: true,
+    supportedRating,
+    ratingRationale,
+    evidence,
+    gaps,
+    metrics: {
+      totalLogs: brucellosisLogs.length,
+      evaluationPeriod: evaluationPeriodDays,
+      symptomCounts,
+      relapseCount,
+      multiOrganInvolvement,
+      chronicArthritis,
+      neurobrucellosis,
+    },
+  };
+};
+
+/**
+ * Analyzes Campylobacter logs to determine supported rating level
+ * Based on 38 CFR 4.88b, DC 6330
+ */
+export const analyzeCampylobacterLogs = (logs, options = {}) => {
+  const { evaluationPeriodDays = 90 } = options;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const campylobacterLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    return logDate >= cutoffDate && (
+        CONDITIONS.CAMPYLOBACTER.symptomIds.includes(getLogSymptomId(log)) ||
+        getLogSymptomId(log)?.includes('campylobacter')
+    );
+  });
+
+  if (campylobacterLogs.length === 0) {
+    return {
+      condition: 'Campylobacter jejuni Infection',
+      diagnosticCode: '6330',
+      hasData: false,
+      message: 'No Campylobacter symptoms logged',
+      supportedRating: null,
+      ratingRationale: [],
+      gaps: [
+        'Start logging Campylobacter-related symptoms',
+        'Document GI symptoms (diarrhea, abdominal pain)',
+        'Track any reactive arthritis (joint pain 1-4 weeks post-infection)',
+        'Note neurological symptoms (weakness, numbness)',
+        'Original stool culture confirming Campylobacter',
+        'Monitor for Guillain-Barré syndrome symptoms',
+      ],
+    };
+  }
+
+  const evidence = [];
+  const gaps = [];
+  let supportedRating = 0;
+  const ratingRationale = [];
+
+  const symptomCounts = {
+    diarrhea: 0,
+    abdominalPain: 0,
+    fever: 0,
+    nausea: 0,
+    vomiting: 0,
+    bloodyStool: 0,
+    fatigue: 0,
+    jointPain: 0,
+    muscleWeakness: 0,
+    nerveSymptoms: 0,
+  };
+
+  let guillaباینBarre = false;
+  let reactiveArthritis = false;
+  let chronicIBS = false;
+  let peripheralNeuropathy = false;
+
+  campylobacterLogs.forEach(log => {
+    const symptomId = getLogSymptomId(log);
+
+    if (symptomId === 'campylobacter-diarrhea') symptomCounts.diarrhea++;
+    if (symptomId === 'campylobacter-abdominal-pain') symptomCounts.abdominalPain++;
+    if (symptomId === 'campylobacter-fever') symptomCounts.fever++;
+    if (symptomId === 'campylobacter-nausea') symptomCounts.nausea++;
+    if (symptomId === 'campylobacter-vomiting') symptomCounts.vomiting++;
+    if (symptomId === 'campylobacter-bloody-stool') symptomCounts.bloodyStool++;
+    if (symptomId === 'campylobacter-fatigue') symptomCounts.fatigue++;
+    if (symptomId === 'campylobacter-joint-pain') {
+      symptomCounts.jointPain++;
+      reactiveArthritis = true;
+    }
+    if (symptomId === 'campylobacter-muscle-weakness') {
+      symptomCounts.muscleWeakness++;
+      if (log.campylobacterData?.guillaバینBarre) guillainBarre = true;
+    }
+    if (symptomId === 'campylobacter-nerve-symptoms') {
+      symptomCounts.nerveSymptoms++;
+      peripheralNeuropathy = true;
+    }
+
+    if (log.campylobacterData?.guillainBarre) guillainBarre = true;
+    if (log.campylobacterData?.reactiveArthritis) reactiveArthritis = true;
+    if (log.campylobacterData?.chronicIBS) chronicIBS = true;
+  });
+
+  const daysWithSymptoms = campylobacterLogs.length;
+
+  evidence.push(`${campylobacterLogs.length} Campylobacter-related symptoms logged over ${evaluationPeriodDays} days`);
+
+  // Rating determination
+  if (guillainBarre || (symptomCounts.muscleWeakness >= 20 && symptomCounts.nerveSymptoms >= 10)) {
+    supportedRating = 100;
+    ratingRationale.push(...[
+      'Severe post-infectious complications',
+      guillainBarre ? 'Guillain-Barré syndrome (GBS) documented' : '',
+      'Severe functional impairment',
+      'Meets criteria for 100% rating'
+    ].filter(Boolean));
+  } else if (reactiveArthritis && symptomCounts.jointPain >= 15) {
+    supportedRating = 60;
+    ratingRationale.push(...[
+      'Moderate complications with ongoing impairment',
+      'Reactive arthritis affecting multiple joints',
+      `Joint pain episodes: ${symptomCounts.jointPain}`,
+      peripheralNeuropathy ? 'Peripheral neuropathy present' : '',
+      'Meets criteria for 60% rating'
+    ].filter(Boolean));
+  } else if ((reactiveArthritis && symptomCounts.jointPain >= 5) || (chronicIBS && symptomCounts.diarrhea >= 10)) {
+    supportedRating = 30;
+    ratingRationale.push(...[
+      'Mild chronic symptoms or occasional relapses',
+      reactiveArthritis ? 'Mild reactive arthritis' : '',
+      chronicIBS ? 'Post-infectious IBS' : '',
+      'Meets criteria for 30% rating'
+    ].filter(Boolean));
+  } else if (daysWithSymptoms >= 5) {
+    supportedRating = 10;
+    ratingRationale.push(
+        'Minimal residual symptoms',
+        'Meets criteria for 10% rating'
+    );
+  } else {
+    supportedRating = 0;
+    ratingRationale.push(
+        'Fully recovered from Campylobacter infection',
+        'Asymptomatic rating'
+    );
+  }
+
+  // Evidence
+  if (symptomCounts.diarrhea > 0) evidence.push(`${symptomCounts.diarrhea} diarrhea episodes`);
+  if (symptomCounts.jointPain > 0) evidence.push(`${symptomCounts.jointPain} joint pain episodes (reactive arthritis)`);
+  if (symptomCounts.muscleWeakness > 0) evidence.push(`${symptomCounts.muscleWeakness} muscle weakness episodes`);
+  if (symptomCounts.nerveSymptoms > 0) evidence.push(`${symptomCounts.nerveSymptoms} neurological symptoms`);
+  if (guillainBarre) evidence.push('Guillain-Barré syndrome diagnosed');
+
+  // Gaps
+  gaps.push('Stool culture confirming Campylobacter jejuni');
+  if (symptomCounts.jointPain > 5) {
+    gaps.push('Rheumatology evaluation for reactive arthritis');
+    gaps.push('Joint imaging if available');
+  }
+  if (symptomCounts.muscleWeakness > 5 || symptomCounts.nerveSymptoms > 5) {
+    gaps.push('Neurological evaluation');
+    gaps.push('EMG/nerve conduction studies if GBS suspected');
+  }
+  if (symptomCounts.diarrhea > 10) {
+    gaps.push('GI evaluation for post-infectious IBS');
+  }
+  gaps.push('Link symptoms to original Campylobacter infection (timeline important)');
+
+  return {
+    condition: 'Campylobacter jejuni Infection',
+    diagnosticCode: '6330',
+    hasData: true,
+    supportedRating,
+    ratingRationale,
+    evidence,
+    gaps,
+    metrics: {
+      totalLogs: campylobacterLogs.length,
+      evaluationPeriod: evaluationPeriodDays,
+      symptomCounts,
+      guillainBarre,
+      reactiveArthritis,
+      chronicIBS,
+      peripheralNeuropathy,
+    },
+  };
+};
+
+/**
+ * Analyzes Q Fever logs to determine supported rating level
+ * Based on 38 CFR 4.88b, DC 6331
+ */
+export const analyzeQFeverLogs = (logs, options = {}) => {
+  const { evaluationPeriodDays = 90 } = options;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const qFeverLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    return logDate >= cutoffDate && (
+        CONDITIONS.Q_FEVER.symptomIds.includes(getLogSymptomId(log)) ||
+        getLogSymptomId(log)?.includes('q-fever')
+    );
+  });
+
+  if (qFeverLogs.length === 0) {
+    return {
+      condition: 'Q Fever',
+      diagnosticCode: '6331',
+      hasData: false,
+      message: 'No Q fever symptoms logged',
+      supportedRating: null,
+      ratingRationale: [],
+      gaps: [
+        'Start logging Q fever symptoms',
+        'Document fever, headaches, and fatigue',
+        'Track respiratory symptoms (cough, chest pain)',
+        'Note night sweats and chills',
+        'Record treatment (doxycycline)',
+        'Serology (Phase I/II antibodies) confirming diagnosis',
+      ],
+    };
+  }
+
+  const evidence = [];
+  const gaps = [];
+  let supportedRating = 0;
+  const ratingRationale = [];
+
+  const symptomCounts = {
+    fever: 0,
+    headache: 0,
+    fatigue: 0,
+    muscleAches: 0,
+    cough: 0,
+    chestPain: 0,
+    nightSweats: 0,
+    chills: 0,
+    shortnessBreath: 0,
+    jointPain: 0,
+  };
+
+  let chronicQFever = false;
+  let endocarditis = false;
+  let fatigueSyndrome = false;
+  let monthsSinceInfection = 0;
+
+  qFeverLogs.forEach(log => {
+    const symptomId = getLogSymptomId(log);
+
+    if (symptomId === 'q-fever-fever') symptomCounts.fever++;
+    if (symptomId === 'q-fever-headache') symptomCounts.headache++;
+    if (symptomId === 'q-fever-fatigue') symptomCounts.fatigue++;
+    if (symptomId === 'q-fever-muscle-aches') symptomCounts.muscleAches++;
+    if (symptomId === 'q-fever-cough') symptomCounts.cough++;
+    if (symptomId === 'q-fever-chest-pain') symptomCounts.chestPain++;
+    if (symptomId === 'q-fever-night-sweats') symptomCounts.nightSweats++;
+    if (symptomId === 'q-fever-chills') symptomCounts.chills++;
+    if (symptomId === 'q-fever-shortness-breath') symptomCounts.shortnessBreath++;
+    if (symptomId === 'q-fever-joint-pain') symptomCounts.jointPain++;
+
+    if (log.qFeverData?.chronicQFever) chronicQFever = true;
+    if (log.qFeverData?.endocarditis) {
+      endocarditis = true;
+      chronicQFever = true;
+    }
+    if (log.qFeverData?.fatigueSyndrome) fatigueSyndrome = true;
+    if (log.qFeverData?.monthsSinceInfection) {
+      monthsSinceInfection = Math.max(monthsSinceInfection, parseInt(log.qFeverData.monthsSinceInfection));
+    }
+  });
+
+  const daysWithSymptoms = qFeverLogs.length;
+
+  evidence.push(`${qFeverLogs.length} Q fever symptoms logged over ${evaluationPeriodDays} days`);
+
+  // Rating determination
+  if (endocarditis || (chronicQFever && monthsSinceInfection >= 6)) {
+    supportedRating = 100;
+    ratingRationale.push(...[
+      'Chronic Q fever with serious complications',
+      endocarditis ? 'Q fever endocarditis (valve infection) documented' : '',
+      chronicQFever ? `Chronic infection (${monthsSinceInfection}+ months)` : '',
+      'Requires long-term antibiotics',
+      'Meets criteria for 100% rating'
+    ].filter(Boolean));
+  } else if (fatigueSyndrome && symptomCounts.fatigue >= 30 && monthsSinceInfection >= 6) {
+    supportedRating = 60;
+    ratingRationale.push(...[
+      'Post-Q fever fatigue syndrome',
+      `Severe chronic fatigue: ${symptomCounts.fatigue} episodes`,
+      `Duration: ${monthsSinceInfection} months post-infection`,
+      'Substantially impacts daily function',
+      'Meets criteria for 60% rating'
+    ].filter(Boolean));
+  } else if (daysWithSymptoms >= 20 || (monthsSinceInfection >= 3 && symptomCounts.fatigue >= 10)) {
+    supportedRating = 30;
+    ratingRationale.push(...[
+      'Mild chronic symptoms or persistent fatigue',
+      `Symptoms on ${daysWithSymptoms} days`,
+      symptomCounts.fatigue > 0 ? `Chronic fatigue: ${symptomCounts.fatigue} episodes` : '',
+      'Meets criteria for 30% rating'
+    ].filter(Boolean));
+  } else if (daysWithSymptoms >= 5) {
+    supportedRating = 10;
+    ratingRationale.push(
+        'Minimal residual symptoms',
+        'Meets criteria for 10% rating'
+    );
+  } else {
+    supportedRating = 0;
+    ratingRationale.push(
+        'Fully recovered from acute Q fever',
+        'Asymptomatic rating'
+    );
+  }
+
+  // Evidence
+  if (symptomCounts.fever > 0) evidence.push(`${symptomCounts.fever} fever episodes`);
+  if (symptomCounts.fatigue > 0) evidence.push(`${symptomCounts.fatigue} fatigue episodes`);
+  if (symptomCounts.headache > 0) evidence.push(`${symptomCounts.headache} headache episodes`);
+  if (symptomCounts.nightSweats > 0) evidence.push(`${symptomCounts.nightSweats} night sweats episodes`);
+  if (endocarditis) evidence.push('Endocarditis confirmed (echocardiogram)');
+  if (chronicQFever) evidence.push(`Chronic Q fever (${monthsSinceInfection}+ months)`);
+
+  // Gaps
+  gaps.push('Serology: Phase I and Phase II antibody titers');
+  if (chronicQFever || monthsSinceInfection >= 6) {
+    gaps.push('Echocardiogram to evaluate for endocarditis');
+    gaps.push('Phase I IgG titer >1:800 indicates chronic infection');
+  }
+  if (symptomCounts.fatigue > 20) {
+    gaps.push('Functional assessment documenting impact on daily activities');
+  }
+  gaps.push('Document treatment (doxycycline, +hydroxychloroquine if chronic)');
+  gaps.push('Timeline: track months since initial infection');
+
+  return {
+    condition: 'Q Fever',
+    diagnosticCode: '6331',
+    hasData: true,
+    supportedRating,
+    ratingRationale,
+    evidence,
+    gaps,
+    metrics: {
+      totalLogs: qFeverLogs.length,
+      evaluationPeriod: evaluationPeriodDays,
+      symptomCounts,
+      chronicQFever,
+      endocarditis,
+      fatigueSyndrome,
+      monthsSinceInfection,
+    },
+  };
+};
 
 // ============================================
 // HELPER FUNCTIONS
@@ -18120,7 +20819,7 @@ export const getSolitaryPlasmacytomaRatingCriteria = (percent) => {
 export const getMyelodysplasticSyndromesRatingCriteria = (percent) => {
   return MYELODYSPLASTIC_SYNDROMES_CRITERIA.ratings.find(r => r.percent === percent) || null;
 };
-// Phase 6: Dental/Oral Helper Functions
+// Phase 7: Dental/Oral Helper Functions
 export const getTMJDisorderRatingCriteria = (percent) => {
   return TMJ_DISORDER_CRITERIA.ratings.find(r => r.percent === percent) || null;
 };
@@ -18135,6 +20834,33 @@ export const getMalignantOralNeoplasmRatingCriteria = (percent) => {
 };
 export const getBenignOralNeoplasmRatingCriteria = (percent) => {
   return BENIGN_ORAL_NEOPLASM_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getHIVAIDSRatingCriteria = (percent) => {
+  return HIV_AIDS_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getHepatitisCRatingCriteria = (percent) => {
+  return HEPATITIS_C_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getHepatitisBRatingCriteria = (percent) => {
+  return HEPATITIS_B_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getLymeDiseaseRatingCriteria = (percent) => {
+  return LYME_DISEASE_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getMalariaRatingCriteria = (percent) => {
+  return MALARIA_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+
+export const getBrucellosisRatingCriteria = (percent) => {
+  return BRUCELLOSIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+
+export const getCampylobacterRatingCriteria = (percent) => {
+  return CAMPYLOBACTER_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+
+export const getQFeverRatingCriteria = (percent) => {
+  return Q_FEVER_CRITERIA.ratings.find(r => r.percent === percent) || null;
 };
 
 export const getAllLumbosacralStrainRatings = () => LUMBOSACRAL_STRAIN_CRITERIA.ratings;
@@ -18176,6 +20902,15 @@ export const getAllToothLossRatings = () => TOOTH_LOSS_CRITERIA.ratings;
 export const getAllMandibleNonunionRatings = () => MANDIBLE_NONUNION_CRITERIA.ratings;
 export const getAllMalignantOralNeoplasmRatings = () => MALIGNANT_ORAL_NEOPLASM_CRITERIA.ratings;
 export const getAllBenignOralNeoplasmRatings = () => BENIGN_ORAL_NEOPLASM_CRITERIA.ratings;
+export const getAllHIVAIDSRatings = () => HIV_AIDS_CRITERIA.ratings;
+export const getAllHepatitisCRatings = () => HEPATITIS_C_CRITERIA.ratings;
+export const getAllHepatitisBRatings = () => HEPATITIS_B_CRITERIA.ratings;
+export const getAllLymeDiseaseRatings = () => LYME_DISEASE_CRITERIA.ratings;
+export const getAllMalariaRatings = () => MALARIA_CRITERIA.ratings;
+export const getAllBrucellosisRatings = () => BRUCELLOSIS_CRITERIA.ratings;
+export const getAllCampylobacterRatings = () => CAMPYLOBACTER_CRITERIA.ratings;
+export const getAllQFeverRatings = () => Q_FEVER_CRITERIA.ratings;
+
 
 export const getEpilepsyMajorDefinition = (term) => EPILEPSY_MAJOR_CRITERIA.definitions[term] || null;
 export const getEpilepsyMinorDefinition = (term) => EPILEPSY_MINOR_CRITERIA.definitions[term] || null;
@@ -18222,6 +20957,14 @@ export const getToothLossDefinition = (term) => TOOTH_LOSS_CRITERIA.definitions[
 export const getMandibleNonunionDefinition = (term) => MANDIBLE_NONUNION_CRITERIA.definitions[term] || null;
 export const getMalignantOralNeoplasmDefinition = (term) => MALIGNANT_ORAL_NEOPLASM_CRITERIA.definitions[term] || null;
 export const getBenignOralNeoplasmDefinition = (term) => BENIGN_ORAL_NEOPLASM_CRITERIA.definitions[term] || null;
+export const getHIVAIDSDefinition = (term) => HIV_AIDS_CRITERIA.definitions[term] || null;
+export const getHepatitisCDefinition = (term) => HEPATITIS_C_CRITERIA.definitions[term] || null;
+export const getHepatitisBDefinition = (term) => HEPATITIS_B_CRITERIA.definitions[term] || null;
+export const getLymeDiseaseDefinition = (term) => LYME_DISEASE_CRITERIA.definitions[term] || null;
+export const getMalariaDefinition = (term) => MALARIA_CRITERIA.definitions[term] || null;
+export const getBrucellosisDefinition = (term) => BRUCELLOSIS_CRITERIA.definitions[term] || null;
+export const getCampylobacterDefinition = (term) => CAMPYLOBACTER_CRITERIA.definitions[term] || null;
+export const getQFeverDefinition = (term) => Q_FEVER_CRITERIA.definitions[term] || null;
 
 
 

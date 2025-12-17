@@ -86,6 +86,14 @@ import {
   analyzeMandibleNonunionLogs,
   analyzeMalignantOralNeoplasmLogs,
   analyzeBenignOralNeoplasmLogs,
+  analyzeHIVLogs,
+  analyzeHepatitisCLogs,
+  analyzeHepatitisBLogs,
+  analyzeLymeDiseaseLogs,
+  analyzeMalariaLogs,
+  analyzeBrucellosisLogs,
+  analyzeCampylobacterLogs,
+  analyzeQFeverLogs,
   getAllMigraineRatings,
   getAllSleepApneaRatings,
   getAllPTSDRatings,
@@ -101,6 +109,10 @@ import {
   getAllUnspecifiedDepressiveRatings,
   getAllEpilepsyMajorRatings,
   getAllEpilepsyMinorRatings,
+  getAllMalariaRatings,
+  getAllBrucellosisRatings,
+  getCampylobacterDefinition,
+  getQFeverDefinition,
   getEpilepsyMajorDefinition,
   getEpilepsyMinorDefinition,
   getMigraineDefinition,
@@ -117,6 +129,10 @@ import {
   getUnspecifiedAnxietyDefinition,
   getUnspecifiedDepressiveDefinition,
   getRatingColorClass,
+  getMalariaDefinition,
+  getBrucellosisDefinition,
+  getAllCampylobacterRatings,
+  getAllQFeverRatings,
   formatRating,
 } from '../utils/ratingCriteria';
 import HypertensionRatingCard from './HypertensionRatingCard';
@@ -179,6 +195,14 @@ import MandibleNonunionRatingCard from './MandibleNonunionRatingCard';
 import MaxillaMalunionRatingCard from './MaxillaMalunionRatingCard';
 import MalignantOralNeoplasmRatingCard from './MalignantOralNeoplasmRatingCard';
 import BenignOralNeoplasmRatingCard from './BenignOralNeoplasmRatingCard';
+import HIVRatingCard from './HIVRatingCard';
+import HepatitisCRatingCard from './HepatitisCRatingCard';
+import HepatitisBRatingCard from './HepatitisBRatingCard';
+import LymeDiseaseRatingCard from './LymeDiseaseRatingCard';
+import MalariaRatingCard from './MalariaRatingCard';
+import BrucellosisRatingCard from './BrucellosisRatingCard';
+import CampylobacterRatingCard from './CampylobacterRatingCard';
+import QFeverRatingCard from './QFeverRatingCard';
 
 // Storage key for sleep apnea profile
 const SLEEP_APNEA_PROFILE_KEY = 'symptomTracker_sleepApneaProfile';
@@ -498,7 +522,32 @@ const RatingEvidence = () => {
     const myelodysplasticSyndromesAnalysis = useMemo(() => {
       return analyzeMyelodysplasticSyndromesLogs(logs);
     }, [logs]);
-    // Phase 6: Dental/Oral Analysis Hooks
+    // Phase 6: Diseases
+    const hivAnalysis = useMemo(() => {
+      return analyzeHIVLogs(logs, { evaluationPeriodDays: evaluationDays });
+    }, [logs, evaluationDays]);
+    const hepatitisCAnalysis = useMemo(() => {
+      return analyzeHepatitisCLogs(logs, { evaluationPeriodDays: evaluationDays });
+    }, [logs, evaluationDays]);
+    const hepatitisBAnalysis = useMemo(() => {
+      return analyzeHepatitisBLogs(logs, { evaluationPeriodDays: evaluationDays });
+    }, [logs, evaluationDays]);
+    const lymeDiseaseAnalysis = useMemo(() => {
+      return analyzeLymeDiseaseLogs(logs, { evaluationPeriodDays: evaluationDays });
+    }, [logs, evaluationDays]);
+    const malariaAnalysis = useMemo(() => {
+      return analyzeMalariaLogs(logs, { evaluationPeriodDays: evaluationDays });
+    }, [logs, evaluationDays]);
+    const brucellosisAnalysis = useMemo(() => {
+      return analyzeBrucellosisLogs(logs, { evaluationPeriodDays: evaluationDays  });
+    }, [logs, evaluationDays]);
+    const campylobacterAnalysis = useMemo(() => {
+      return analyzeCampylobacterLogs(logs, { evaluationPeriodDays: evaluationDays  });
+    }, [logs, evaluationDays]);
+    const qFeverAnalysis = useMemo(() => {
+      return analyzeQFeverLogs(logs, { evaluationPeriodDays: evaluationDays  });
+    }, [logs, evaluationDays]);
+    // Phase 7: Dental/Oral Analysis Hooks
     const toothLossAnalysis = useMemo(() => {
       return analyzeToothLossLogs(logs, { evaluationPeriodDays: evaluationDays });
     }, [logs, evaluationDays]);
@@ -603,7 +652,15 @@ const RatingEvidence = () => {
         toothLossAnalysis.hasData ||
         mandibleNonunionAnalysis.hasData ||
         malignantOralNeoplasmAnalysis.hasData ||
-        benignOralNeoplasmAnalysis.hasData
+        benignOralNeoplasmAnalysis.hasData ||
+        hivAnalysis.hasData  ||
+        hepatitisBAnalysis.hasData ||
+        hepatitisCAnalysis.hasData ||
+        lymeDiseaseAnalysis.hasData ||
+        malariaAnalysis.hasData ||
+        brucellosisAnalysis.hasData ||
+        campylobacterAnalysis.hasData ||
+        qFeverAnalysis.hasData
     ;
 
     return (
@@ -1208,7 +1265,7 @@ const RatingEvidence = () => {
               expanded={expandedSection === 'myelodysplastic-syndromes'}
               onToggle={() => toggleSection('myelodysplastic-syndromes')}
           />
-          {/* Phase 6: Dental/Oral Rating Cards */}
+          {/* Phase 7: Dental/Oral Rating Cards */}
           <ToothLossRatingCard
               analysis={toothLossAnalysis}
               expanded={expandedSection === 'tooth-loss'}
@@ -1234,7 +1291,50 @@ const RatingEvidence = () => {
               expanded={expandedSection === 'benign-oral-neoplasm'}
               onToggle={() => toggleSection('benign-oral-neoplasm')}
           />
-
+          <HIVRatingCard
+              analysis={hivAnalysis}
+              explanded={expandedSection === 'hiv-aids'}
+              onToggle={() => toggleSection('hiv-aids')}
+          />
+          <HepatitisCRatingCard
+              analysis={hepatitisCAnalysis}
+              expanded={expandedSection === 'hepatitis-c'}
+              onToggle={() => toggleSection('hepatitis-c')}
+          />
+          <HepatitisBRatingCard
+              analysis={hepatitisBAnalysis}
+              expanded={expandedSection === 'hepatitis-b'}
+              onToggle={() => toggleSection('hepatitis-b')}
+          />
+          <LymeDiseaseRatingCard
+              analysis={lymeDiseaseAnalysis}
+              expanded={expandedSection === 'lyme-disease'}
+              onToggle={() => toggleSection('lyme-disease')}
+          />
+          {/* Malaria Rating Card */}
+          <MalariaRatingCard
+              analysis={malariaAnalysis}
+              expanded={expandedSection === 'malaria'}
+              onToggle={() => toggleSection('malaria')}
+          />
+          {/* Brucellosis Rating Card */}
+          <BrucellosisRatingCard
+              analysis={brucellosisAnalysis}
+              expanded={expandedSection === 'brucellosis'}
+              onToggle={() => toggleSection('brucellosis')}
+          />
+          {/* Campylobacter Rating Card */}
+          <CampylobacterRatingCard
+              analysis={campylobacterAnalysis}
+              expanded={expandedSection === 'campylobacter'}
+              onToggle={() => toggleSection('campylobacter')}
+          />
+          {/* Q Fever Rating Card */}
+          <QFeverRatingCard
+              analysis={qFeverAnalysis}
+              expanded={expandedSection === 'q-fever'}
+              onToggle={() => toggleSection('q-fever')}
+          />
 
           {/* Sleep Apnea Setup Modal */}
             {showSleepApneaSetup && (
@@ -1264,7 +1364,7 @@ const RatingEvidence = () => {
  * Migraine Rating Card Component
  */
 const MigraineRatingCard = ({ analysis, expanded, onToggle }) => {
-  const [showDefinitions, setShowDefinitions] = useState(false);
+    const [showDefinitions, setShowDefinitions] = useState(false);
 
   // Hide card entirely if no data
   if (!analysis.hasData) {
@@ -1451,7 +1551,7 @@ const SleepApneaRatingCard = ({ analysis, profile, expanded, onToggle, onSetupCl
                     <div className={`px-3 py-1 rounded-full border font-bold ${ratingColorClass}`}>
                         {formatRating(supportedRating)}
                     </div>
-                    <span className="text-gray-400 text-xl">{expanded ? 'Ã¢Ë†â€™' : '+'}</span>
+                    <span className="text-gray-400 text-xl">{expanded ? '-' : '+'}</span>
                 </div>
             </button>
 

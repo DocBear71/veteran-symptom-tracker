@@ -790,7 +790,7 @@ export const CONDITIONS = {
     symptomIds: ['fatigue-anemia', 'frequent-infections', 'easy-bruising'],
   },
   // ============================================
-  // PHASE 6: DENTAL/ORAL CONDITIONS (DC 9900 series)
+  // Phase 7: Dental/ORAL CONDITIONS (DC 9900 series)
   // ============================================
   TMJ_DISORDER: {
     id: 'tmj-disorder',
@@ -18058,7 +18058,7 @@ export const getSolitaryPlasmacytomaRatingCriteria = (percent) => {
 export const getMyelodysplasticSyndromesRatingCriteria = (percent) => {
   return MYELODYSPLASTIC_SYNDROMES_CRITERIA.ratings.find(r => r.percent === percent) || null;
 };
-// Phase 6: Dental/Oral Helper Functions
+// Phase 7: Dental/Oral Helper Functions
 export const getTMJDisorderRatingCriteria = (percent) => {
   return TMJ_DISORDER_CRITERIA.ratings.find(r => r.percent === percent) || null;
 };

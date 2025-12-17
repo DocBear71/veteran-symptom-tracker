@@ -797,7 +797,7 @@ const SymptomHistory = ({ onCopyLog }) => {
                               )}
 
                               {/* ============================================ */}
-                              {/* PHASE 6: DENTAL/ORAL DETAILS DISPLAY */}
+                              {/* Phase 7: Dental/ORAL DETAILS DISPLAY */}
                               {/* ============================================ */}
                               {log.dentalData && (
                                   <div className="bg-amber-50 dark:bg-amber-900/20 rounded-lg p-3 mb-2 text-sm">
@@ -910,6 +910,288 @@ const SymptomHistory = ({ onCopyLog }) => {
                                           <span>• Work missed</span>
                                       )}
                                     </div>
+                                  </div>
+                              )}
+
+                              {/* HIV/AIDS Details */}
+                              {log.hivData && (
+                                  <div className="bg-red-50 dark:bg-red-900/20 rounded-lg p-3 mb-2 text-sm">
+                                    <div className="flex flex-wrap gap-2 mb-2">
+                                      {/* Opportunistic Infection */}
+                                      {log.hivData.infectionType && (
+                                          <span className="px-2 py-1 bg-red-200 dark:bg-red-900 text-red-800 dark:text-red-200 rounded-full text-xs font-semibold">
+                                            ⚠️ {log.hivData.infectionType}
+                                          </span>
+                                      )}
+
+                                      {/* Weight Loss */}
+                                      {log.hivData.weightLossPercentage && parseFloat(log.hivData.weightLossPercentage) > 0 && (
+                                          <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                                              parseFloat(log.hivData.weightLossPercentage) >= 10 ? 'bg-red-200 dark:bg-red-900 text-red-800 dark:text-red-200' :
+                                                  parseFloat(log.hivData.weightLossPercentage) >= 5 ? 'bg-orange-200 dark:bg-orange-900 text-orange-800 dark:text-orange-200' :
+                                                      'bg-yellow-200 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200'
+                                          }`}>
+                                            📉 {log.hivData.weightLossPercentage}% weight loss
+                                          </span>
+                                      )}
+
+                                      {/* CD4 Count Range */}
+                                      {log.hivData.cd4Range && (
+                                          <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                                              log.hivData.cd4Range === '<200' ? 'bg-red-200 dark:bg-red-900 text-red-800 dark:text-red-200' :
+                                                  log.hivData.cd4Range === '200-500' ? 'bg-yellow-200 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200' :
+                                                      'bg-green-200 dark:bg-green-900 text-green-800 dark:text-green-200'
+                                          }`}>
+                                            🔬 CD4: {log.hivData.cd4Range}
+                                          </span>
+                                      )}
+
+                                      {/* On Antiretrovirals */}
+                                      {log.hivData.onAntiretrovirals && (
+                                          <span className="px-2 py-1 bg-blue-200 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-xs font-medium">
+                                            💊 On ART
+                                          </span>
+                                      )}
+
+                                      {/* Treatment Compliance */}
+                                      {log.hivData.treatmentCompliance && (
+                                          <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                                              log.hivData.treatmentCompliance === 'excellent' ? 'bg-green-200 dark:bg-green-900 text-green-800 dark:text-green-200' :
+                                                  log.hivData.treatmentCompliance === 'good' ? 'bg-blue-200 dark:bg-blue-900 text-blue-800 dark:text-blue-200' :
+                                                      log.hivData.treatmentCompliance === 'fair' ? 'bg-yellow-200 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200' :
+                                                          'bg-red-200 dark:bg-red-900 text-red-800 dark:text-red-200'
+                                          }`}>
+                                            Compliance: {log.hivData.treatmentCompliance}
+                                          </span>
+                                      )}
+                                    </div>
+
+                                    {/* Constitutional Symptoms */}
+                                    {log.hivData.constitutionalSymptoms && log.hivData.constitutionalSymptoms.length > 0 && (
+                                        <div className="flex flex-wrap gap-1 text-xs text-red-700 dark:text-red-300">
+                                          <span className="font-medium">Symptoms:</span>
+                                          {log.hivData.constitutionalSymptoms.map((symptom, i) => (
+                                              <span key={i}>• {symptom.replace(/-/g, ' ')}</span>
+                                          ))}
+                                        </div>
+                                    )}
+                                  </div>
+                              )}
+
+                              {/* Hepatitis Details */}
+                              {log.hepatitisData && (
+                                  <div className="bg-amber-50 dark:bg-amber-900/20 rounded-lg p-3 mb-2 text-sm">
+                                    <div className="flex flex-wrap gap-2 mb-2">
+                                      {log.hepatitisData.weightLossPercentage && parseFloat(log.hepatitisData.weightLossPercentage) > 0 && (
+                                          <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                                              parseFloat(log.hepatitisData.weightLossPercentage) >= 10 ? 'bg-red-200 dark:bg-red-900 text-red-800 dark:text-red-200' :
+                                                  parseFloat(log.hepatitisData.weightLossPercentage) >= 5 ? 'bg-orange-200 dark:bg-orange-900 text-orange-800 dark:text-orange-200' :
+                                                      'bg-yellow-200 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200'
+                                          }`}>
+                                            📉 {log.hepatitisData.weightLossPercentage}% weight loss
+                                          </span>
+                                      )}
+                                      {log.hepatitisData.symptomFrequency && (
+                                          <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                                              log.hepatitisData.symptomFrequency === 'daily' ? 'bg-red-200 dark:bg-red-900 text-red-800 dark:text-red-200' :
+                                                  log.hepatitisData.symptomFrequency === 'intermittent' ? 'bg-yellow-200 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200' :
+                                                      'bg-green-200 dark:bg-green-900 text-green-800 dark:text-green-200'
+                                          }`}>
+                                            {log.hepatitisData.symptomFrequency}
+                                          </span>
+                                      )}
+                                      {log.hepatitisData.debilitating && (
+                                          <span className="px-2 py-1 bg-red-200 dark:bg-red-900 text-red-800 dark:text-red-200 rounded-full text-xs font-semibold">
+                                            ⚠️ Debilitating
+                                          </span>
+                                      )}
+                                      {log.hepatitisData.dietaryRestrictions && (
+                                          <span className="px-2 py-1 bg-amber-200 dark:bg-amber-800 text-amber-800 dark:text-amber-200 rounded-full text-xs">
+                                            🍽️ Dietary restrictions
+                                          </span>
+                                      )}
+                                    </div>
+                                  </div>
+                              )}
+
+                              {/* Lyme Disease Details */}
+                              {log.lymeData && (
+                                  <div className="bg-green-50 dark:bg-green-900/20 rounded-lg p-3 mb-2 text-sm">
+                                    <div className="flex flex-wrap gap-2 mb-2">
+                                      {log.lymeData.activeTreatment && (
+                                          <span className="px-2 py-1 bg-red-200 dark:bg-red-900 text-red-800 dark:text-red-200 rounded-full text-xs font-semibold">
+                                            💊 Active treatment (100%)
+                                          </span>
+                                      )}
+                                      {log.lymeData.treatmentCompleted && (
+                                          <span className="px-2 py-1 bg-blue-200 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-xs font-medium">
+                                            ✓ Treatment completed
+                                          </span>
+                                      )}
+                                      {log.lymeData.rashPresent && (
+                                          <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                                              log.lymeData.rashType === 'bulls-eye' ? 'bg-red-200 dark:bg-red-900 text-red-800 dark:text-red-200' :
+                                                  'bg-orange-200 dark:bg-orange-900 text-orange-800 dark:text-orange-200'
+                                          }`}>
+                                            🎯 {log.lymeData.rashType === 'bulls-eye' ? "Bull's-eye rash" : 'Rash present'}
+                                          </span>
+                                      )}
+                                    </div>
+                                    {log.lymeData.treatmentStartDate && (
+                                        <p className="text-xs text-green-600 dark:text-green-400">
+                                          Treatment date: {new Date(log.lymeData.treatmentStartDate).toLocaleDateString()}
+                                        </p>
+                                    )}
+                                  </div>
+                              )}
+
+                              {/* Malaria Details */}
+                              {log.malariaData && (
+                                  <div className="flex flex-wrap gap-2 mt-2">
+                                    {log.malariaData.relapseEpisode && (
+                                        <span className="px-2 py-1 bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300
+                                   rounded-full text-xs font-medium border border-red-200 dark:border-red-800">
+                      🔄 Relapse Episode
+                    </span>
+                                    )}
+                                    {log.malariaData.hospitalized && (
+                                        <span className="px-2 py-1 bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300
+                                   rounded-full text-xs font-medium">
+                      🏥 Hospitalized
+                    </span>
+                                    )}
+                                    {log.malariaData.severeComplications && (
+                                        <span className="px-2 py-1 bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300
+                                   rounded-full text-xs font-medium">
+                      ⚠️ Severe Complications
+                    </span>
+                                    )}
+                                    {log.malariaData.cyclicalPattern && (
+                                        <span className="px-2 py-1 bg-orange-100 dark:bg-orange-900/30 text-orange-800 dark:text-orange-300
+                                   rounded-full text-xs">
+                      🔁 Cyclical Pattern (48-72hr)
+                    </span>
+                                    )}
+                                    {log.malariaData.continuousMedication && (
+                                        <span className="px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300
+                                   rounded-full text-xs">
+                      💊 Continuous Medication
+                    </span>
+                                    )}
+                                    {log.malariaData.feverTemperature && (
+                                        <span className="px-2 py-1 bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300
+                                   rounded-full text-xs">
+                      🌡️ {log.malariaData.feverTemperature}°F
+                    </span>
+                                    )}
+                                  </div>
+                              )}
+
+                              {/* Brucellosis Details */}
+                              {log.brucellosisData && (
+                                  <div className="flex flex-wrap gap-2 mt-2">
+                                    {log.brucellosisData.relapseEpisode && (
+                                        <span className="px-2 py-1 bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300
+                                   rounded-full text-xs font-medium border border-red-200 dark:border-red-800">
+                      🔄 Relapse Episode
+                    </span>
+                                    )}
+                                    {log.brucellosisData.neurobrucellosis && (
+                                        <span className="px-2 py-1 bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300
+                                   rounded-full text-xs font-medium">
+                      🧠 Neurobrucellosis (CNS)
+                    </span>
+                                    )}
+                                    {log.brucellosisData.multiOrganInvolvement && (
+                                        <span className="px-2 py-1 bg-orange-100 dark:bg-orange-900/30 text-orange-800 dark:text-orange-300
+                                   rounded-full text-xs">
+                      Multi-Organ Involvement
+                    </span>
+                                    )}
+                                    {log.brucellosisData.chronicArthritis && (
+                                        <span className="px-2 py-1 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300
+                                   rounded-full text-xs">
+                      Chronic Arthritis/Spondylitis
+                    </span>
+                                    )}
+                                    {log.brucellosisData.undulantFever && (
+                                        <span className="px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300
+                                   rounded-full text-xs">
+                      🌊 Undulant Fever
+                    </span>
+                                    )}
+                                  </div>
+                              )}
+
+                              {/* Campylobacter Details */}
+                              {log.campylobacterData && (
+                                  <div className="flex flex-wrap gap-2 mt-2">
+                                    {log.campylobacterData.guillainBarre && (
+                                        <span className="px-2 py-1 bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300
+                                   rounded-full text-xs font-bold border-2 border-red-300 dark:border-red-700">
+                      ⚠️ GUILLAIN-BARRÉ SYNDROME
+                    </span>
+                                    )}
+                                    {log.campylobacterData.reactiveArthritis && (
+                                        <span className="px-2 py-1 bg-orange-100 dark:bg-orange-900/30 text-orange-800 dark:text-orange-300
+                                   rounded-full text-xs font-medium">
+                      Reactive Arthritis
+                    </span>
+                                    )}
+                                    {log.campylobacterData.chronicIBS && (
+                                        <span className="px-2 py-1 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300
+                                   rounded-full text-xs">
+                      Post-Infectious IBS
+                    </span>
+                                    )}
+                                    {log.campylobacterData.stoolCultureConfirmed && (
+                                        <span className="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300
+                                   rounded-full text-xs">
+                      ✓ Stool Culture Confirmed
+                    </span>
+                                    )}
+                                    {log.campylobacterData.weeksSinceInfection && (
+                                        <span className="px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300
+                                   rounded-full text-xs">
+                      {log.campylobacterData.weeksSinceInfection} weeks post-infection
+                    </span>
+                                    )}
+                                  </div>
+                              )}
+
+                              {/* Q Fever Details */}
+                              {log.qFeverData && (
+                                  <div className="flex flex-wrap gap-2 mt-2">
+                                    {log.qFeverData.endocarditis && (
+                                        <span className="px-2 py-1 bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300
+                                   rounded-full text-xs font-bold border-2 border-red-300 dark:border-red-700">
+                      ⚠️ Q FEVER ENDOCARDITIS
+                    </span>
+                                    )}
+                                    {log.qFeverData.chronicQFever && (
+                                        <span className="px-2 py-1 bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300
+                                   rounded-full text-xs font-medium">
+                      Chronic Q Fever (&gt;6 months)
+                    </span>
+                                    )}
+                                    {log.qFeverData.fatigueSyndrome && (
+                                        <span className="px-2 py-1 bg-orange-100 dark:bg-orange-900/30 text-orange-800 dark:text-orange-300
+                                   rounded-full text-xs">
+                      Q Fever Fatigue Syndrome
+                    </span>
+                                    )}
+                                    {log.qFeverData.phaseIAntibodies && (
+                                        <span className="px-2 py-1 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300
+                                   rounded-full text-xs">
+                      Phase I Ab+ (&gt;1:800)
+                    </span>
+                                    )}
+                                    {log.qFeverData.monthsSinceInfection && (
+                                        <span className="px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300
+                                   rounded-full text-xs">
+                      {log.qFeverData.monthsSinceInfection} months post-infection
+                    </span>
+                                    )}
                                   </div>
                               )}
 

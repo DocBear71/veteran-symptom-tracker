@@ -93,6 +93,14 @@ import {
     analyzeMandibleNonunionLogs,
     analyzeMalignantOralNeoplasmLogs,
     analyzeBenignOralNeoplasmLogs,
+    analyzeHIVLogs,
+    analyzeHepatitisCLogs,
+    analyzeHepatitisBLogs,
+    analyzeLymeDiseaseLogs,
+    analyzeMalariaLogs,
+    analyzeBrucellosisLogs,
+    analyzeCampylobacterLogs,
+    analyzeQFeverLogs,
 } from './ratingCriteria';
 
 // Appointment type labels for export
@@ -487,7 +495,164 @@ export const generatePDF = (dateRange = 'all', options = { includeAppointments: 
           }
         }
 
-        // Phase 6: Dental/Oral data extraction
+        // Phase 6: HIV/AIDS data extraction
+        if (log.hivData) {
+          const hivInfo = [];
+          const hd = log.hivData;
+
+          if (hd.infectionType) {
+            const infectionMap = {
+              'pcp': 'PCP Pneumonia',
+              'cmv': 'CMV',
+              'mac': 'MAC',
+              'toxoplasmosis': 'Toxoplasmosis',
+              'cryptococcal': 'Cryptococcal Meningitis',
+              'kaposi': "Kaposi's Sarcoma",
+              'lymphoma': 'Lymphoma',
+              'wasting': 'Wasting Syndrome',
+              'other': 'Other Opportunistic Infection'
+            };
+            hivInfo.push(infectionMap[hd.infectionType] || hd.infectionType);
+          }
+          if (hd.constitutionalSymptoms && hd.constitutionalSymptoms.length > 0) {
+            hivInfo.push(`Symptoms: ${hd.constitutionalSymptoms.join(', ')}`);
+          }
+          if (hd.weightLossPercentage) hivInfo.push(`Weight Loss: ${hd.weightLossPercentage}%`);
+          if (hd.onAntiretrovirals) hivInfo.push('On ART');
+          if (hd.cd4CountKnown && hd.cd4Range) {
+            const cd4Map = {
+              'below-200': 'CD4 <200',
+              '200-500': 'CD4 200-500',
+              'above-500': 'CD4 >500'
+            };
+            hivInfo.push(cd4Map[hd.cd4Range] || hd.cd4Range);
+          }
+          if (hd.treatmentCompliance) {
+            hivInfo.push(`Compliance: ${hd.treatmentCompliance}`);
+          }
+
+          if (hivInfo.length > 0) {
+            notes = hivInfo.join(' | ') + (log.notes ? ` | ${log.notes}` : '');
+          }
+        }
+
+        // Phase 6: Hepatitis B/C data extraction
+        if (log.hepatitisData) {
+          const hepInfo = [];
+          const hep = log.hepatitisData;
+
+          if (hep.weightLossPercentage) hepInfo.push(`Weight Loss: ${hep.weightLossPercentage}%`);
+          if (hep.debilitating) hepInfo.push('Debilitating Symptoms');
+          if (hep.dietaryRestrictions) hepInfo.push('Dietary Restrictions Required');
+          if (hep.symptomFrequency) {
+            const freqMap = {
+              'daily': 'Daily Symptoms',
+              'intermittent': 'Intermittent Symptoms',
+              'rare': 'Rare Symptoms'
+            };
+            hepInfo.push(freqMap[hep.symptomFrequency] || hep.symptomFrequency);
+          }
+
+          if (hepInfo.length > 0) {
+            notes = hepInfo.join(' | ') + (log.notes ? ` | ${log.notes}` : '');
+          }
+        }
+
+        // Phase 6: Lyme Disease data extraction
+        if (log.lymeData) {
+          const lymeInfo = [];
+          const ld = log.lymeData;
+
+          if (ld.activeTreatment) lymeInfo.push('Active Treatment (100% for 1 year)');
+          if (ld.treatmentCompleted) lymeInfo.push('Treatment Completed');
+          if (ld.treatmentStartDate) lymeInfo.push(`Started: ${new Date(ld.treatmentStartDate).toLocaleDateString()}`);
+          if (ld.treatmentCompletionDate) lymeInfo.push(`Completed: ${new Date(ld.treatmentCompletionDate).toLocaleDateString()}`);
+          if (ld.rashPresent) {
+            const rashMap = {
+              'bulls-eye': "Bull's-eye Rash",
+              'expanding-red': 'Expanding Red Rash',
+              'other': 'Other Rash'
+            };
+            lymeInfo.push(rashMap[ld.rashType] || 'Rash Present');
+          }
+          if (ld.neurologicalSymptoms && ld.neurologicalSymptoms.length > 0) {
+            lymeInfo.push(`Neuro: ${ld.neurologicalSymptoms.join(', ')}`);
+          }
+          if (ld.jointSymptoms && ld.jointSymptoms.length > 0) {
+            lymeInfo.push(`Joints: ${ld.jointSymptoms.join(', ')}`);
+          }
+
+          if (lymeInfo.length > 0) {
+            notes = lymeInfo.join(' | ') + (log.notes ? ` | ${log.notes}` : '');
+          }
+        }
+
+        // Phase 6: Malaria data extraction
+        if (log.malariaData) {
+          const malariaInfo = [];
+          const md = log.malariaData;
+
+          if (md.relapseEpisode) malariaInfo.push('Relapse Episode');
+          if (md.cyclicalPattern) malariaInfo.push('Cyclical Pattern (48-72hr)');
+          if (md.feverTemperature) malariaInfo.push(`Temp: ${md.feverTemperature}°F`);
+          if (md.hospitalized) malariaInfo.push('Hospitalized');
+          if (md.severeComplications) malariaInfo.push('Severe Complications');
+          if (md.continuousMedication) malariaInfo.push('Continuous Antimalarials');
+
+          if (malariaInfo.length > 0) {
+            notes = malariaInfo.join(' | ') + (log.notes ? ` | ${log.notes}` : '');
+          }
+        }
+
+        // Phase 6: Brucellosis data extraction
+        if (log.brucellosisData) {
+          const brucellosisInfo = [];
+          const bd = log.brucellosisData;
+
+          if (bd.relapseEpisode) brucellosisInfo.push('Relapse Episode');
+          if (bd.undulantFever) brucellosisInfo.push('Undulant Fever');
+          if (bd.chronicArthritis) brucellosisInfo.push('Chronic Arthritis/Spondylitis');
+          if (bd.multiOrganInvolvement) brucellosisInfo.push('Multi-Organ Involvement');
+          if (bd.neurobrucellosis) brucellosisInfo.push('Neurobrucellosis (CNS)');
+
+          if (brucellosisInfo.length > 0) {
+            notes = brucellosisInfo.join(' | ') + (log.notes ? ` | ${log.notes}` : '');
+          }
+        }
+
+        // Phase 6: Campylobacter data extraction
+        if (log.campylobacterData) {
+          const campylobacterInfo = [];
+          const cd = log.campylobacterData;
+
+          if (cd.guillainBarre) campylobacterInfo.push('⚠️ GUILLAIN-BARRÉ SYNDROME');
+          if (cd.reactiveArthritis) campylobacterInfo.push('Reactive Arthritis');
+          if (cd.chronicIBS) campylobacterInfo.push('Post-Infectious IBS');
+          if (cd.stoolCultureConfirmed) campylobacterInfo.push('Stool Culture +');
+          if (cd.weeksSinceInfection) campylobacterInfo.push(`${cd.weeksSinceInfection} weeks post-infection`);
+
+          if (campylobacterInfo.length > 0) {
+            notes = campylobacterInfo.join(' | ') + (log.notes ? ` | ${log.notes}` : '');
+          }
+        }
+
+        // Phase 6: Q Fever data extraction
+        if (log.qFeverData) {
+          const qFeverInfo = [];
+          const qd = log.qFeverData;
+
+          if (qd.endocarditis) qFeverInfo.push('⚠️ Q FEVER ENDOCARDITIS');
+          if (qd.chronicQFever) qFeverInfo.push('Chronic Q Fever (>6mo)');
+          if (qd.fatigueSyndrome) qFeverInfo.push('Q Fever Fatigue Syndrome');
+          if (qd.phaseIAntibodies) qFeverInfo.push('Phase I Ab+ (>1:800)');
+          if (qd.monthsSinceInfection) qFeverInfo.push(`${qd.monthsSinceInfection} months post-infection`);
+
+          if (qFeverInfo.length > 0) {
+            notes = qFeverInfo.join(' | ') + (log.notes ? ` | ${log.notes}` : '');
+          }
+        }
+
+        // Phase 7: Dental/Oral data extraction
         if (log.dentalData) {
           const dentalInfo = [];
           const dd = log.dentalData;
@@ -730,7 +895,21 @@ export const generateCSV = (dateRange = 'all', options = { includeAppointments: 
         'Polycythemia Diagnosis', 'Phlebotomy', 'Myelosuppressive Meds', 'JAK Inhibitor',
         'Lymphoma/Leukemia Diagnosis', 'Cancer Treatment Status', 'Cancer Treatment Type', 'Treatment Side Effects',
         'Sickle Cell Crisis', 'Crisis Location', 'Hospitalization Required', 'Organ Damage',
-        // Phase 6: Dental/Oral fields
+        // Phase 6: Infectious Diseases - HIV/AIDS fields
+        'HIV Infection Type', 'HIV Constitutional Symptoms', 'HIV Weight Loss %', 'HIV On ART', 'HIV CD4 Count Known', 'HIV CD4 Range', 'HIV Treatment Compliance',
+        // Phase 6: Infectious Diseases - Hepatitis B/C fields
+        'Hepatitis Weight Loss %', 'Hepatitis Debilitating', 'Hepatitis Dietary Restrictions', 'Hepatitis Symptom Frequency',
+        // Phase 6: Infectious Diseases - Lyme Disease fields
+        'Lyme Active Treatment', 'Lyme Treatment Completed', 'Lyme Treatment Date', 'Lyme Rash Present', 'Lyme Rash Type', 'Lyme Neuro Symptoms', 'Lyme Joint Symptoms',
+        // Phase 6: Infectious Diseases - Malaria fields
+        'Malaria Relapse', 'Malaria Cyclical Pattern', 'Malaria Fever Temp', 'Malaria Hospitalized', 'Malaria Severe Complications', 'Malaria Continuous Meds',
+        // Phase 6: Infectious Diseases - Brucellosis fields
+        'Brucellosis Relapse', 'Brucellosis Undulant Fever', 'Brucellosis Arthritis', 'Brucellosis Multi-Organ', 'Brucellosis Neuro',
+        // Phase 6: Infectious Diseases - Campylobacter fields
+        'Campylobacter GBS', 'Campylobacter Arthritis', 'Campylobacter IBS', 'Campylobacter Culture Confirmed', 'Campylobacter Weeks Since Infection',
+        // Phase 6: Infectious Diseases - Q Fever fields
+        'Q Fever Chronic', 'Q Fever Endocarditis', 'Q Fever Fatigue Syndrome', 'Q Fever Phase I Antibodies', 'Q Fever Months Since Infection',
+        // Phase 7: Dental/Oral fields
         'Jaw Pain Severity', 'Jaw Opening (mm)', 'Chewing Difficulty', 'Dietary Restrictions',
         'Missing Teeth Count', 'Prosthesis Type', 'Bone Condition', 'Palate Symptoms',
         'Swallowing Difficulty', 'Oral Mass Present', 'Mass Location', 'Mass Biopsy Result',
@@ -890,7 +1069,53 @@ export const generateCSV = (dateRange = 'all', options = { includeAppointments: 
             log.sickleCellData?.['crisis_location']?.join(', ') || '',
             log.sickleCellData?.['hospitalization_required'] === true ? 'Yes' : '',
             log.sickleCellData?.['organ_damage']?.join(', ') || '',
-            // Phase 6: Dental/Oral data
+            // Phase 6: HIV/AIDS data
+            log.hivData?.infectionType || '',
+            log.hivData?.constitutionalSymptoms?.join('; ') || '',
+            log.hivData?.weightLossPercentage || '',
+            log.hivData?.onAntiretrovirals ? 'Yes' : '',
+            log.hivData?.cd4CountKnown ? 'Yes' : '',
+            log.hivData?.cd4Range || '',
+            log.hivData?.treatmentCompliance || '',
+            // Phase 6: Hepatitis B/C data
+            log.hepatitisData?.weightLossPercentage || '',
+            log.hepatitisData?.debilitating ? 'Yes' : '',
+            log.hepatitisData?.dietaryRestrictions ? 'Yes' : '',
+            log.hepatitisData?.symptomFrequency || '',
+            // Phase 6: Lyme Disease data
+            log.lymeData?.activeTreatment ? 'Yes' : '',
+            log.lymeData?.treatmentCompleted ? 'Yes' : '',
+            log.lymeData?.treatmentStartDate || log.lymeData?.treatmentCompletionDate || '',
+            log.lymeData?.rashPresent ? 'Yes' : '',
+            log.lymeData?.rashType || '',
+            log.lymeData?.neurologicalSymptoms?.join('; ') || '',
+            log.lymeData?.jointSymptoms?.join('; ') || '',
+            // Phase 6: Malaria data
+            log.malariaData?.relapseEpisode ? 'Yes' : '',
+            log.malariaData?.cyclicalPattern ? 'Yes' : '',
+            log.malariaData?.feverTemperature || '',
+            log.malariaData?.hospitalized ? 'Yes' : '',
+            log.malariaData?.severeComplications ? 'Yes' : '',
+            log.malariaData?.continuousMedication ? 'Yes' : '',
+            // Phase 6: Brucellosis data
+            log.brucellosisData?.relapseEpisode ? 'Yes' : '',
+            log.brucellosisData?.undulantFever ? 'Yes' : '',
+            log.brucellosisData?.chronicArthritis ? 'Yes' : '',
+            log.brucellosisData?.multiOrganInvolvement ? 'Yes' : '',
+            log.brucellosisData?.neurobrucellosis ? 'Yes' : '',
+            // Phase 6: Campylobacter data
+            log.campylobacterData?.guillainBarre ? 'Yes' : '',
+            log.campylobacterData?.reactiveArthritis ? 'Yes' : '',
+            log.campylobacterData?.chronicIBS ? 'Yes' : '',
+            log.campylobacterData?.stoolCultureConfirmed ? 'Yes' : '',
+            log.campylobacterData?.weeksSinceInfection || '',
+            // Phase 6: Q Fever data
+            log.qFeverData?.chronicQFever ? 'Yes' : '',
+            log.qFeverData?.endocarditis ? 'Yes' : '',
+            log.qFeverData?.fatigueSyndrome ? 'Yes' : '',
+            log.qFeverData?.phaseIAntibodies ? 'Yes' : '',
+            log.qFeverData?.monthsSinceInfection || '',
+            // Phase 7: Dental/Oral data
             log.dentalData?.jawPainSeverity || '',
             log.dentalData?.jawOpening || '',
             log.dentalData?.chewingDifficulty || '',
@@ -1310,6 +1535,14 @@ const analyzeAllConditions = (logs, options = {}) => {
         'chronic-myelogenous-leukemia': analyzeChronicMyelogenousLeukemiaLogs,
         'solitary-plasmacytoma': analyzeSolitaryPlasmacytomaLogs,
         'myelodysplastic-syndromes': analyzeMyelodysplasticSyndromesLogs,
+        'hiv-aids': analyzeHIVLogs,
+        'hepatitis-c': analyzeHepatitisCLogs,
+        'hepatitis-b': analyzeHepatitisBLogs,
+        'lyme-disease': analyzeLymeDiseaseLogs,
+        'malaria': analyzeMalariaLogs,
+        'brucellosis': analyzeBrucellosisLogs,
+        'campylobacter': analyzeCampylobacterLogs,
+        'q-fever': analyzeQFeverLogs,
       };
 
     const analyses = [];

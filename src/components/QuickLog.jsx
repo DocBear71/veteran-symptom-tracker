@@ -257,7 +257,70 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
     improvement_noted: ''
   });
 
-// Phase 6: Dental/Oral Conditions (simplified for QuickLog)
+  // Phase 6: HIV/AIDS Data
+  const [hivData, setHivData] = useState({
+    infectionType: '',
+    constitutionalSymptoms: [],
+    weightLossPercentage: '',
+    onAntiretrovirals: false,
+    cd4CountKnown: false,
+    cd4Range: '',
+    treatmentCompliance: '',
+  });
+
+  // Phase 6: Hepatitis Data
+  const [hepatitisData, setHepatitisData] = useState({
+    weightLossPercentage: '',
+    debilitating: false,
+    dietaryRestrictions: false,
+    symptomFrequency: '',
+  });
+
+  // Phase 6: Lyme Disease Data
+  const [lymeData, setLymeData] = useState({
+    activeTreatment: false,
+    treatmentCompleted: false,
+    treatmentStartDate: '',
+    rashPresent: false,
+    rashType: '',
+    neurologicalSymptoms: [],
+    jointSymptoms: [],
+  });
+
+  const [malariaData, setMalariaData] = useState({
+    relapseEpisode: false,
+    hospitalized: false,
+    continuousMedication: false,
+    severeComplications: false,
+    feverTemperature: '',
+    cyclicalPattern: false,
+  });
+
+  const [brucellosisData, setBrucellosisData] = useState({
+    relapseEpisode: false,
+    multiOrganInvolvement: false,
+    chronicArthritis: false,
+    neurobrucellosis: false,
+    undulantFever: false,
+  });
+
+  const [campylobacterData, setCampylobacterData] = useState({
+    guillainBarre: false,
+    reactiveArthritis: false,
+    chronicIBS: false,
+    weeksSinceInfection: '',
+    stoolCultureConfirmed: false,
+  });
+
+  const [qFeverData, setQFeverData] = useState({
+    chronicQFever: false,
+    endocarditis: false,
+    fatigueSyndrome: false,
+    monthsSinceInfection: '',
+    phaseIAntibodies: false,
+  });
+
+  // Phase 7: Dental/Oral Conditions (simplified for QuickLog)
   const [dentalData, setDentalData] = useState({
     jawPainSeverity: 5,
     jawOpening: '',
@@ -472,7 +535,54 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
     'confusion-b12', 'tongue-problems'
   ].includes(selectedChronic);
 
-  // Phase 6: Dental/Oral detection
+  // Phase 6: HIV/AIDS detection
+  const isHIVRelated = [
+      'hiv-opportunistic-infection', 'hiv-night-sweats', 'hiv-persistent-fever',
+      'hiv-weight-loss', 'hiv-chronic-diarrhea', 'hiv-oral-thrush', 'hiv-skin-lesions',
+      'hiv-lymphadenopathy', 'hiv-fatigue', 'hiv-cognitive-impairment'
+  ].includes(selectedChronic);
+
+  // Phase 6: Hepatitis detection
+  const isHepatitisRelated = [
+      'hep-fatigue', 'hep-malaise', 'hep-nausea', 'hep-abdominal-pain',
+      'hep-jaundice', 'hep-dark-urine', 'hep-appetite-loss', 'hep-joint-pain',
+      'hep-cognitive-issues', 'hep-liver-tenderness'
+  ].includes(selectedChronic);
+
+  // Phase 6: Lyme Disease detection
+  const isLymeRelated = [
+      'lyme-rash', 'lyme-fever', 'lyme-headache', 'lyme-fatigue',
+      'lyme-joint-pain', 'lyme-muscle-aches', 'lyme-nerve-pain', 'lyme-cognitive',
+      'lyme-heart-palpitations', 'lyme-facial-paralysis'
+  ].includes(selectedChronic);
+
+  const isMalariaRelated = [
+    'malaria-fever', 'malaria-chills', 'malaria-sweats', 'malaria-headache',
+    'malaria-muscle-aches', 'malaria-nausea', 'malaria-fatigue', 'malaria-jaundice',
+    'malaria-anemia', 'malaria-enlarged-spleen'
+  ].includes(selectedChronic);
+
+  const isBrucellosisRelated = [
+    'brucellosis-fever', 'brucellosis-night-sweats', 'brucellosis-fatigue',
+    'brucellosis-joint-pain', 'brucellosis-muscle-aches', 'brucellosis-headache',
+    'brucellosis-back-pain', 'brucellosis-weight-loss', 'brucellosis-depression',
+    'brucellosis-liver-spleen'
+  ].includes(selectedChronic);
+
+  const isCampylobacterRelated = [
+    'campylobacter-diarrhea', 'campylobacter-abdominal-pain', 'campylobacter-fever',
+    'campylobacter-nausea', 'campylobacter-vomiting', 'campylobacter-bloody-stool',
+    'campylobacter-fatigue', 'campylobacter-joint-pain', 'campylobacter-muscle-weakness',
+    'campylobacter-nerve-symptoms'
+  ].includes(selectedChronic);
+
+  const isQFeverRelated = [
+    'q-fever-fever', 'q-fever-headache', 'q-fever-fatigue', 'q-fever-muscle-aches',
+    'q-fever-cough', 'q-fever-chest-pain', 'q-fever-night-sweats', 'q-fever-chills',
+    'q-fever-shortness-breath', 'q-fever-joint-pain'
+  ].includes(selectedChronic);
+
+  // Phase 7: Dental/Oral detection
   const isDentalOralRelated = selectedChronic?.symptomId?.includes('jaw') ||
       selectedChronic?.symptomId?.includes('tooth') ||
       selectedChronic?.symptomId?.includes('teeth') ||
@@ -587,7 +697,64 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
       deficiency_cause: '', neurological_symptoms: [], treatment: [],
       injection_frequency: '', last_injection: '', improvement_noted: ''
     });
-    // Phase 6: Reset dental data
+    // Phase 6: Reset HIV/AIDS data
+    setHivData({
+        infectionType: '',
+        constitutionalSymptoms: [],
+        weightLossPercentage: '',
+        onAntiretrovirals: false,
+        cd4CountKnown: false,
+        cd4Range: '',
+        treatmentCompliance: '',
+    });
+    // Phase 6: Reset Hepatitis data
+    setHepatitisData({
+        weightLossPercentage: '',
+        debilitating: false,
+        dietaryRestrictions: false,
+        symptomFrequency: '',
+    });
+
+    // Phase 6: Reset Lyme data
+    setLymeData({
+        activeTreatment: false,
+        treatmentCompleted: false,
+        treatmentStartDate: '',
+        rashPresent: false,
+        rashType: '',
+        neurologicalSymptoms: [],
+        jointSymptoms: [],
+    });
+    setMalariaData({
+      relapseEpisode: false,
+      hospitalized: false,
+      continuousMedication: false,
+      severeComplications: false,
+      feverTemperature: '',
+      cyclicalPattern: false,
+    });
+    setBrucellosisData({
+      relapseEpisode: false,
+      multiOrganInvolvement: false,
+      chronicArthritis: false,
+      neurobrucellosis: false,
+      undulantFever: false,
+    });
+    setCampylobacterData({
+      guillainBarre: false,
+      reactiveArthritis: false,
+      chronicIBS: false,
+      weeksSinceInfection: '',
+      stoolCultureConfirmed: false,
+    });
+    setQFeverData({
+      chronicQFever: false,
+      endocarditis: false,
+      fatigueSyndrome: false,
+      monthsSinceInfection: '',
+      phaseIAntibodies: false,
+    });
+    // Phase 7: Reset dental data
     setDentalData({
       jawPainSeverity: 5, jawOpening: '', toothCount: '',
       prosthesisType: '', dietaryRestrictions: '', chewingDifficulty: '',
@@ -653,7 +820,31 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
     if (isGynecologicalRelated) {
       entry.gynecologicalData = { ...gynecologicalData };
     }
-    // Phase 6: Add Dental/Oral Data
+    // Phase 6: Add HIV/AIDS data
+    if (isHIVRelated) {
+      entry.hivData = { ...hivData };
+    }
+    // Phase 6: Add Hepatitis data
+    if (isHepatitisRelated) {
+      entry.hepatitisData = { ...hepatitisData };
+    }
+    // Phase 6: Add Lyme Disease data
+    if (isLymeRelated) {
+      entry.lymeData = { ...lymeData };
+    }
+    if (isMalariaRelated) {
+      entry.malariaData = { ...malariaData };
+    }
+    if (isBrucellosisRelated) {
+      entry.brucellosisData = { ...brucellosisData };
+    }
+    if (isCampylobacterRelated) {
+      entry.campylobacterData = { ...campylobacterData };
+    }
+    if (isQFeverRelated) {
+      entry.qFeverData = { ...qFeverData };
+    }
+    // Phase 7: Add Dental/Oral Data
     if (isDentalOralRelated) {
       entry.dentalData = { ...dentalData };
     }
@@ -3193,7 +3384,409 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
                       </div>
                   )}
 
-                  {/* Phase 6: Dental/Oral Quick Log Form (Simplified) */}
+                  {/* Phase 6: HIV/AIDS Form */}
+                  {isHIVRelated && (
+                      <div className="bg-red-50 dark:bg-red-900/20 rounded-lg p-4 border-2 border-red-200 dark:border-red-800 space-y-3">
+                        <div className="flex items-center gap-2 mb-3">
+                          <span className="text-2xl">🦠</span>
+                          <h4 className="font-semibold text-red-900 dark:text-red-300">HIV/AIDS Details</h4>
+                        </div>
+
+                        {/* Opportunistic Infection */}
+                        {selectedSymptom === 'hiv-opportunistic-infection' && (
+                            <div>
+                              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                Infection Type
+                              </label>
+                              <select
+                                  value={hivData.infectionType}
+                                  onChange={(e) => setHivData({...hivData, infectionType: e.target.value})}
+                                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                              >
+                                <option value="">Select...</option>
+                                <option value="PCP">PCP</option>
+                                <option value="CMV">CMV</option>
+                                <option value="MAC">MAC</option>
+                                <option value="Toxoplasmosis">Toxoplasmosis</option>
+                                <option value="TB">TB</option>
+                                <option value="Other">Other</option>
+                              </select>
+                            </div>
+                        )}
+
+                        {/* Constitutional Symptoms */}
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Constitutional Symptoms
+                          </label>
+                          <div className="space-y-1">
+                            {['Night sweats', 'Persistent fever', 'Chronic diarrhea', 'Fatigue'].map(symptom => (
+                                <label key={symptom} className="flex items-center gap-2">
+                                  <input
+                                      type="checkbox"
+                                      checked={hivData.constitutionalSymptoms.includes(symptom)}
+                                      onChange={(e) => {
+                                        if (e.target.checked) {
+                                          setHivData({...hivData, constitutionalSymptoms: [...hivData.constitutionalSymptoms, symptom]});
+                                        } else {
+                                          setHivData({...hivData, constitutionalSymptoms: hivData.constitutionalSymptoms.filter(s => s !== symptom)});
+                                        }
+                                      }}
+                                      className="rounded border-gray-300 dark:border-gray-600"
+                                  />
+                                  <span className="text-xs text-gray-700 dark:text-gray-300">{symptom}</span>
+                                </label>
+                            ))}
+                          </div>
+                        </div>
+
+                        {/* Weight Loss */}
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            Weight Loss % (if applicable)
+                          </label>
+                          <input
+                              type="number"
+                              min="0"
+                              max="50"
+                              step="0.5"
+                              value={hivData.weightLossPercentage}
+                              onChange={(e) => setHivData({...hivData, weightLossPercentage: e.target.value})}
+                              placeholder="e.g., 12.5"
+                              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                          />
+                        </div>
+
+                        {/* Treatment */}
+                        <div className="space-y-2">
+                          <label className="flex items-center gap-2">
+                            <input
+                                type="checkbox"
+                                checked={hivData.onAntiretrovirals}
+                                onChange={(e) => setHivData({...hivData, onAntiretrovirals: e.target.checked})}
+                                className="rounded border-gray-300 dark:border-gray-600"
+                            />
+                            <span className="text-sm text-gray-700 dark:text-gray-300">On antiretroviral therapy (30%)</span>
+                          </label>
+
+                          {hivData.onAntiretrovirals && (
+                              <select
+                                  value={hivData.treatmentCompliance}
+                                  onChange={(e) => setHivData({...hivData, treatmentCompliance: e.target.value})}
+                                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                              >
+                                <option value="">Compliance...</option>
+                                <option value="excellent">Excellent</option>
+                                <option value="good">Good</option>
+                                <option value="fair">Fair</option>
+                                <option value="poor">Poor</option>
+                              </select>
+                          )}
+                        </div>
+
+                        {/* CD4 Count */}
+                        <div className="space-y-2">
+                          <label className="flex items-center gap-2">
+                            <input
+                                type="checkbox"
+                                checked={hivData.cd4CountKnown}
+                                onChange={(e) => setHivData({...hivData, cd4CountKnown: e.target.checked})}
+                                className="rounded border-gray-300 dark:border-gray-600"
+                            />
+                            <span className="text-sm text-gray-700 dark:text-gray-300">I know my CD4 count</span>
+                          </label>
+
+                          {hivData.cd4CountKnown && (
+                              <select
+                                  value={hivData.cd4Range}
+                                  onChange={(e) => setHivData({...hivData, cd4Range: e.target.value})}
+                                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                              >
+                                <option value="">CD4 range...</option>
+                                <option value="<200">&lt;200 (Severe)</option>
+                                <option value="200-500">200-500 (Moderate)</option>
+                                <option value=">500">&gt;500 (Normal)</option>
+                              </select>
+                          )}
+                        </div>
+                      </div>
+                  )}
+
+                  {/* Phase 6: Hepatitis (B & C) Form */}
+                  {isHepatitisRelated && (
+                      <div className="bg-amber-50 dark:bg-amber-900/20 rounded-lg p-4 border-2 border-amber-200 dark:border-amber-800 space-y-3">
+                        <div className="flex items-center gap-2 mb-3">
+                          <span className="text-2xl">🦠</span>
+                          <h4 className="font-semibold text-amber-900 dark:text-amber-300">Hepatitis Details</h4>
+                        </div>
+
+                        {/* Weight Loss */}
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            Weight Loss % (if applicable)
+                          </label>
+                          <input
+                              type="number"
+                              min="0"
+                              max="50"
+                              step="0.5"
+                              value={hepatitisData.weightLossPercentage}
+                              onChange={(e) => setHepatitisData({...hepatitisData, weightLossPercentage: e.target.value})}
+                              placeholder="e.g., 10.5"
+                              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                          />
+                        </div>
+
+                        {/* Frequency */}
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            Symptom Frequency
+                          </label>
+                          <select
+                              value={hepatitisData.symptomFrequency}
+                              onChange={(e) => setHepatitisData({...hepatitisData, symptomFrequency: e.target.value})}
+                              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                          >
+                            <option value="">Select...</option>
+                            <option value="daily">Daily</option>
+                            <option value="intermittent">Intermittent</option>
+                            <option value="rare">Rare</option>
+                          </select>
+                        </div>
+
+                        {/* Checkboxes */}
+                        <div className="space-y-2">
+                          <label className="flex items-center gap-2">
+                            <input
+                                type="checkbox"
+                                checked={hepatitisData.debilitating}
+                                onChange={(e) => setHepatitisData({...hepatitisData, debilitating: e.target.checked})}
+                                className="rounded border-gray-300 dark:border-gray-600"
+                            />
+                            <span className="text-sm text-gray-700 dark:text-gray-300">Debilitating symptoms</span>
+                          </label>
+
+                          <label className="flex items-center gap-2">
+                            <input
+                                type="checkbox"
+                                checked={hepatitisData.dietaryRestrictions}
+                                onChange={(e) => setHepatitisData({...hepatitisData, dietaryRestrictions: e.target.checked})}
+                                className="rounded border-gray-300 dark:border-gray-600"
+                            />
+                            <span className="text-sm text-gray-700 dark:text-gray-300">Dietary restrictions</span>
+                          </label>
+                        </div>
+                      </div>
+                  )}
+
+                  {/* Phase 6: Lyme Disease Form */}
+                  {isLymeRelated && (
+                      <div className="bg-green-50 dark:bg-green-900/20 rounded-lg p-4 border-2 border-green-200 dark:border-green-800 space-y-3">
+                        <div className="flex items-center gap-2 mb-3">
+                          <span className="text-2xl">🦟</span>
+                          <h4 className="font-semibold text-green-900 dark:text-green-300">Lyme Disease Details</h4>
+                        </div>
+
+                        {/* Treatment Status */}
+                        <div className="space-y-2">
+                          <label className="flex items-center gap-2">
+                            <input
+                                type="checkbox"
+                                checked={lymeData.activeTreatment}
+                                onChange={(e) => setLymeData({...lymeData, activeTreatment: e.target.checked})}
+                                className="rounded border-gray-300 dark:border-gray-600"
+                            />
+                            <span className="text-sm text-gray-700 dark:text-gray-300">Active treatment (100%)</span>
+                          </label>
+
+                          <label className="flex items-center gap-2">
+                            <input
+                                type="checkbox"
+                                checked={lymeData.treatmentCompleted}
+                                onChange={(e) => setLymeData({...lymeData, treatmentCompleted: e.target.checked})}
+                                className="rounded border-gray-300 dark:border-gray-600"
+                            />
+                            <span className="text-sm text-gray-700 dark:text-gray-300">Treatment completed</span>
+                          </label>
+                        </div>
+
+                        {/* Treatment Date */}
+                        {lymeData.treatmentCompleted && (
+                            <div>
+                              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                Treatment Completion Date
+                              </label>
+                              <input
+                                  type="date"
+                                  value={lymeData.treatmentStartDate}
+                                  onChange={(e) => setLymeData({...lymeData, treatmentStartDate: e.target.value})}
+                                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                              />
+                            </div>
+                        )}
+
+                        {/* Rash Details (only for lyme-rash symptom) */}
+                        {selectedSymptom === 'lyme-rash' && (
+                            <div className="space-y-2">
+                              <label className="flex items-center gap-2">
+                                <input
+                                    type="checkbox"
+                                    checked={lymeData.rashPresent}
+                                    onChange={(e) => setLymeData({...lymeData, rashPresent: e.target.checked})}
+                                    className="rounded border-gray-300 dark:border-gray-600"
+                                />
+                                <span className="text-sm text-gray-700 dark:text-gray-300">Rash present</span>
+                              </label>
+
+                              {lymeData.rashPresent && (
+                                  <select
+                                      value={lymeData.rashType}
+                                      onChange={(e) => setLymeData({...lymeData, rashType: e.target.value})}
+                                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                                  >
+                                    <option value="">Rash type...</option>
+                                    <option value="bulls-eye">Bull's-eye</option>
+                                    <option value="expanding-red">Expanding red</option>
+                                    <option value="other">Other</option>
+                                  </select>
+                              )}
+                            </div>
+                        )}
+                      </div>
+                  )}
+
+                  {/* Phase 6: Malaria Quick Form */}
+                  {isMalariaRelated && (
+                      <div className="space-y-2">
+                        <div className="flex gap-2 flex-wrap">
+                          <label className="flex items-center gap-1 text-xs">
+                            <input
+                                type="checkbox"
+                                checked={malariaData.relapseEpisode}
+                                onChange={(e) => setMalariaData({...malariaData, relapseEpisode: e.target.checked})}
+                                className="rounded"
+                            />
+                            Relapse
+                          </label>
+                          <label className="flex items-center gap-1 text-xs">
+                            <input
+                                type="checkbox"
+                                checked={malariaData.cyclicalPattern}
+                                onChange={(e) => setMalariaData({...malariaData, cyclicalPattern: e.target.checked})}
+                                className="rounded"
+                            />
+                            Cyclical
+                          </label>
+                          <label className="flex items-center gap-1 text-xs">
+                            <input
+                                type="checkbox"
+                                checked={malariaData.hospitalized}
+                                onChange={(e) => setMalariaData({...malariaData, hospitalized: e.target.checked})}
+                                className="rounded"
+                            />
+                            Hospitalized
+                          </label>
+                        </div>
+                      </div>
+                  )}
+
+                  {/* Phase 6: Brucellosis Quick Form */}
+                  {isBrucellosisRelated && (
+                      <div className="space-y-2">
+                        <div className="flex gap-2 flex-wrap">
+                          <label className="flex items-center gap-1 text-xs">
+                            <input
+                                type="checkbox"
+                                checked={brucellosisData.relapseEpisode}
+                                onChange={(e) => setBrucellosisData({...brucellosisData, relapseEpisode: e.target.checked})}
+                                className="rounded"
+                            />
+                            Relapse
+                          </label>
+                          <label className="flex items-center gap-1 text-xs">
+                            <input
+                                type="checkbox"
+                                checked={brucellosisData.chronicArthritis}
+                                onChange={(e) => setBrucellosisData({...brucellosisData, chronicArthritis: e.target.checked})}
+                                className="rounded"
+                            />
+                            Arthritis
+                          </label>
+                        </div>
+                      </div>
+                  )}
+
+                  {/* Phase 6: Campylobacter Quick Form */}
+                  {isCampylobacterRelated && (
+                      <div className="space-y-2">
+                        <div className="flex gap-2 flex-wrap">
+                          <label className="flex items-center gap-1 text-xs">
+                            <input
+                                type="checkbox"
+                                checked={campylobacterData.reactiveArthritis}
+                                onChange={(e) => setCampylobacterData({...campylobacterData, reactiveArthritis: e.target.checked})}
+                                className="rounded"
+                            />
+                            Arthritis
+                          </label>
+                          <label className="flex items-center gap-1 text-xs">
+                            <input
+                                type="checkbox"
+                                checked={campylobacterData.chronicIBS}
+                                onChange={(e) => setCampylobacterData({...campylobacterData, chronicIBS: e.target.checked})}
+                                className="rounded"
+                            />
+                            IBS
+                          </label>
+                          <label className="flex items-center gap-1 text-xs bg-red-50 px-1 rounded">
+                            <input
+                                type="checkbox"
+                                checked={campylobacterData.guillainBarre}
+                                onChange={(e) => setCampylobacterData({...campylobacterData, guillainBarre: e.target.checked})}
+                                className="rounded"
+                            />
+                            GBS
+                          </label>
+                        </div>
+                      </div>
+                  )}
+
+                  {/* Phase 6: Q Fever Quick Form */}
+                  {isQFeverRelated && (
+                      <div className="space-y-2">
+                        <div className="flex gap-2 flex-wrap">
+                          <label className="flex items-center gap-1 text-xs">
+                            <input
+                                type="checkbox"
+                                checked={qFeverData.chronicQFever}
+                                onChange={(e) => setQFeverData({...qFeverData, chronicQFever: e.target.checked})}
+                                className="rounded"
+                            />
+                            Chronic
+                          </label>
+                          <label className="flex items-center gap-1 text-xs">
+                            <input
+                                type="checkbox"
+                                checked={qFeverData.fatigueSyndrome}
+                                onChange={(e) => setQFeverData({...qFeverData, fatigueSyndrome: e.target.checked})}
+                                className="rounded"
+                            />
+                            Fatigue
+                          </label>
+                          <label className="flex items-center gap-1 text-xs bg-red-50 px-1 rounded">
+                            <input
+                                type="checkbox"
+                                checked={qFeverData.endocarditis}
+                                onChange={(e) => setQFeverData({...qFeverData, endocarditis: e.target.checked})}
+                                className="rounded"
+                            />
+                            Endocarditis
+                          </label>
+                        </div>
+                      </div>
+                  )}
+
+                  {/* Phase 7: Dental/Oral Quick Log Form (Simplified) */}
                   {isDentalOralRelated && (
                       <div className="bg-amber-50 dark:bg-amber-900/20 rounded-lg p-4 space-y-4 border border-amber-200 dark:border-amber-800">
                         <h3 className="font-semibold text-amber-900 dark:text-amber-100 flex items-center gap-2">
