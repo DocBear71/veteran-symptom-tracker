@@ -98,6 +98,28 @@ import {
   analyzeShigellaLogs,
   analyzeWestNileLogs,
   analyzeNTMLogs,
+  analyzeSomaticSymptomDisorderLogs,
+  analyzeOtherSpecifiedSomaticLogs,
+  analyzeUnspecifiedSomaticLogs,
+  analyzeIllnessAnxietyLogs,
+  analyzeOtherSpecifiedAnxietyLogs,
+  analyzeDepersonalizationLogs,
+  analyzeCyclothymicLogs,
+  analyzeAnorexiaNervosaLogs,
+  analyzeBulimiaNervosaLogs,
+  analyzeSchizophreniaLogs,
+  analyzeSchizoaffectiveDisorderLogs,
+  analyzeDelusionalDisorderLogs,
+  analyzePsychoticDisorderNOSLogs,
+  analyzeBriefPsychoticDisorderLogs,
+  analyzeBingeEatingDisorderLogs,
+  analyzeDissociativeIdentityDisorderLogs,
+  analyzeDissociativeAmnesiaLogs,
+  analyzeAcuteStressDisorderLogs,
+  analyzeAntisocialPersonalityDisorderLogs,
+  analyzeBorderlinePersonalityDisorderLogs,
+  analyzeNarcissisticPersonalityDisorderLogs,
+  analyzeAvoidantPersonalityDisorderLogs,
   getAllMigraineRatings,
   getAllSleepApneaRatings,
   getAllPTSDRatings,
@@ -121,6 +143,15 @@ import {
   getAllShigellaRatings,
   getAllWestNileRatings,
   getAllNTMRatings,
+  getAllSomaticSymptomDisorderRatings,
+  getAllOtherSpecifiedSomaticRatings,
+  getAllUnspecifiedSomaticRatings,
+  getAllIllnessAnxietyRatings,
+  getAllOtherSpecifiedAnxietyRatings,
+  getAllDepersonalizationRatings,
+  getAllCyclothymicRatings,
+  getAllAnorexiaNervosaRatings,
+  getAllBulimiaNervosaRatings,
   getEpilepsyMajorDefinition,
   getEpilepsyMinorDefinition,
   getMigraineDefinition,
@@ -145,8 +176,22 @@ import {
   getShigellaRatingCriteria,
   getWestNileRatingCriteria,
   getNTMRatingCriteria,
+  getSomaticSymptomDisorderDefinition,
+  getOtherSpecifiedSomaticDefinition,
+  getIllnessAnxietyDefinition,
+  getOtherSpecifiedAnxietyDefinition,
+  getUnspecifiedSomaticDefinition,
+  getDepersonalizationDefinition,
+  getCyclothymicDefinition,
+  getAnorexiaNervosaDefinition,
+  getBulimiaNervosaDefinition,
   formatRating,
 } from '../utils/ratingCriteria';
+import MigraineRatingCard from './MigraineRatingCard';
+import SleepApneaRatingCard from './SleepApneaRatingCard';
+import MentalHealthRatingCard from './MentalHealthRatingCard';
+import PTSDRatingCard from './PTSDRatingCard';
+import GenericRatingCard from './GenericRatingCard';
 import HypertensionRatingCard from './HypertensionRatingCard';
 import BloodPressureTrendChart from './BloodPressureTrendChart';
 import { formatLocalDateTime } from '../utils/datetime';
@@ -219,6 +264,7 @@ import SalmonellaRatingCard from './SalmonellaRatingCard';
 import ShigellaRatingCard from './ShigellaRatingCard';
 import WestNileRatingCard from './WestNileRatingCard';
 import NTMRatingCard from './NTMRatingCard';
+import Phase8BMentalHealthRatingCard from './Phase8BMentalHealthRatingCard';
 
 // Storage key for sleep apnea profile
 const SLEEP_APNEA_PROFILE_KEY = 'symptomTracker_sleepApneaProfile';
@@ -588,6 +634,89 @@ const RatingEvidence = () => {
     const benignOralNeoplasmAnalysis = useMemo(() => {
       return analyzeBenignOralNeoplasmLogs(logs, { evaluationPeriodDays: evaluationDays });
     }, [logs, evaluationDays]);
+  // ============================================
+  // PHASE 8A: MENTAL HEALTH EXPANSION - ANALYSIS HOOKS
+  // ============================================
+
+  // Somatic Symptom Disorders
+  const somaticSymptomDisorderAnalysis = useMemo(() =>
+          analyzeSomaticSymptomDisorderLogs(logs, { days: evaluationDays }),
+      [logs, evaluationDays]
+  );
+  const otherSpecifiedSomaticAnalysis = useMemo(() =>
+          analyzeOtherSpecifiedSomaticLogs(logs, { days: evaluationDays }),
+      [logs, evaluationDays]
+  );
+  const unspecifiedSomaticAnalysis = useMemo(() =>
+          analyzeUnspecifiedSomaticLogs(logs, { days: evaluationDays }),
+      [logs, evaluationDays]
+  );
+  const illnessAnxietyAnalysis = useMemo(() =>
+          analyzeIllnessAnxietyLogs(logs, { days: evaluationDays }),
+      [logs, evaluationDays]
+  );
+  // Other Mental Health
+  const otherSpecifiedAnxietyAnalysis = useMemo(() =>
+          analyzeOtherSpecifiedAnxietyLogs(logs, { days: evaluationDays }),
+      [logs, evaluationDays]
+  );
+  const depersonalizationAnalysis = useMemo(() =>
+          analyzeDepersonalizationLogs(logs, { days: evaluationDays }),
+      [logs, evaluationDays]
+  );
+  const cyclothymicAnalysis = useMemo(() =>
+          analyzeCyclothymicLogs(logs, { days: evaluationDays }),
+      [logs, evaluationDays]
+  );
+  // Eating Disorders
+  const anorexiaNervosaAnalysis = useMemo(() =>
+          analyzeAnorexiaNervosaLogs(logs, { days: evaluationDays }),
+      [logs, evaluationDays]
+  );
+  const bulimiaNervosaAnalysis = useMemo(() =>
+          analyzeBulimiaNervosaLogs(logs, { days: evaluationDays }),
+      [logs, evaluationDays]
+  );
+  // Phase 8B: Additional Mental Health Analysis
+  const schizophreniaAnalysis = useMemo(() => {
+    return analyzeSchizophreniaLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  const schizoaffectiveDisorderAnalysis = useMemo(() => {
+    return analyzeSchizoaffectiveDisorderLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  const delusionalDisorderAnalysis = useMemo(() => {
+    return analyzeDelusionalDisorderLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  const psychoticDisorderNOSAnalysis = useMemo(() => {
+    return analyzePsychoticDisorderNOSLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  const briefPsychoticDisorderAnalysis = useMemo(() => {
+    return analyzeBriefPsychoticDisorderLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  const bingeEatingDisorderAnalysis = useMemo(() => {
+    return analyzeBingeEatingDisorderLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  const dissociativeIdentityDisorderAnalysis = useMemo(() => {
+    return analyzeDissociativeIdentityDisorderLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  const dissociativeAmnesiaAnalysis = useMemo(() => {
+    return analyzeDissociativeAmnesiaLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  const acuteStressDisorderAnalysis = useMemo(() => {
+    return analyzeAcuteStressDisorderLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  const antisocialPersonalityDisorderAnalysis = useMemo(() => {
+    return analyzeAntisocialPersonalityDisorderLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  const borderlinePersonalityDisorderAnalysis = useMemo(() => {
+    return analyzeBorderlinePersonalityDisorderLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  const narcissisticPersonalityDisorderAnalysis = useMemo(() => {
+    return analyzeNarcissisticPersonalityDisorderLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  const avoidantPersonalityDisorderAnalysis = useMemo(() => {
+    return analyzeAvoidantPersonalityDisorderLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
 
 
   // Toggle section expansion
@@ -692,7 +821,20 @@ const RatingEvidence = () => {
         salmonellaAnalysis.hasData ||
         shigellaAnalysis.hasData ||
         westNileAnalysis.hasData ||
-        ntmAnalysis.hasData
+        ntmAnalysis.hasData ||
+        schizophreniaAnalysis.hasData ||
+        schizoaffectiveDisorderAnalysis.hasData ||
+        delusionalDisorderAnalysis.hasData ||
+        psychoticDisorderNOSAnalysis.hasData ||
+        briefPsychoticDisorderAnalysis.hasData ||
+        bingeEatingDisorderAnalysis.hasData ||
+        dissociativeIdentityDisorderAnalysis.hasData ||
+        dissociativeAmnesiaAnalysis.hasData ||
+        acuteStressDisorderAnalysis.hasData ||
+        antisocialPersonalityDisorderAnalysis.hasData ||
+        borderlinePersonalityDisorderAnalysis.hasData ||
+        narcissisticPersonalityDisorderAnalysis.hasData ||
+        avoidantPersonalityDisorderAnalysis.hasData
     ;
 
     return (
@@ -739,14 +881,12 @@ const RatingEvidence = () => {
                     including medical examinations and service records.
                 </p>
             </div>
-
             {/* Migraine Analysis Card */}
             <MigraineRatingCard
                 analysis={migraineAnalysis}
                 expanded={expandedSection === 'migraine'}
                 onToggle={() => toggleSection('migraine')}
             />
-
             {/* Sleep Apnea Analysis Card */}
             <SleepApneaRatingCard
                 analysis={sleepApneaAnalysis}
@@ -755,14 +895,12 @@ const RatingEvidence = () => {
                 onToggle={() => toggleSection('sleep-apnea')}
                 onSetupClick={() => setShowSleepApneaSetup(true)}
             />
-
             {/* PTSD Analysis Card */}
             <PTSDRatingCard
                 analysis={ptsdAnalysis}
                 expanded={expandedSection === 'ptsd'}
                 onToggle={() => toggleSection('ptsd')}
             />
-
             {/* Major Depression Analysis Card */}
             <MentalHealthRatingCard
                 analysis={majorDepressionAnalysis}
@@ -772,7 +910,6 @@ const RatingEvidence = () => {
                 getAllRatings={getAllMajorDepressionRatings}
                 getDefinition={getMajorDepressionDefinition}
             />
-
             {/* Generalized Anxiety Analysis Card */}
             <MentalHealthRatingCard
                 analysis={generalizedAnxietyAnalysis}
@@ -782,7 +919,6 @@ const RatingEvidence = () => {
                 getAllRatings={getAllGeneralizedAnxietyRatings}
                 getDefinition={getGeneralizedAnxietyDefinition}
             />
-
             {/* Panic Disorder Analysis Card */}
             <MentalHealthRatingCard
                 analysis={panicDisorderAnalysis}
@@ -792,7 +928,6 @@ const RatingEvidence = () => {
                 getAllRatings={getAllPanicDisorderRatings}
                 getDefinition={getPanicDisorderDefinition}
             />
-
             {/* Bipolar Analysis Card */}
             <MentalHealthRatingCard
                 analysis={bipolarAnalysis}
@@ -802,7 +937,6 @@ const RatingEvidence = () => {
                 getAllRatings={getAllBipolarRatings}
                 getDefinition={getBipolarDefinition}
             />
-
             {/* Phase 3: Additional Mental Health Conditions */}
             {/* Social Anxiety Analysis Card */}
             <MentalHealthRatingCard
@@ -813,7 +947,6 @@ const RatingEvidence = () => {
                 getAllRatings={getAllSocialAnxietyRatings}
                 getDefinition={getSocialAnxietyDefinition}
             />
-
             {/* OCD Analysis Card */}
             <MentalHealthRatingCard
                 analysis={ocdAnalysis}
@@ -823,7 +956,6 @@ const RatingEvidence = () => {
                 getAllRatings={getAllOCDRatings}
                 getDefinition={getOCDDefinition}
             />
-
             {/* Persistent Depressive Disorder (Dysthymia) Analysis Card */}
             <MentalHealthRatingCard
                 analysis={persistentDepressiveAnalysis}
@@ -833,7 +965,6 @@ const RatingEvidence = () => {
                 getAllRatings={getAllPersistentDepressiveRatings}
                 getDefinition={getPersistentDepressiveDefinition}
             />
-
             {/* Adjustment Disorder Analysis Card */}
             <MentalHealthRatingCard
                 analysis={adjustmentDisorderAnalysis}
@@ -843,7 +974,6 @@ const RatingEvidence = () => {
                 getAllRatings={getAllAdjustmentDisorderRatings}
                 getDefinition={getAdjustmentDisorderDefinition}
             />
-
             {/* Unspecified Anxiety Analysis Card */}
             <MentalHealthRatingCard
                 analysis={unspecifiedAnxietyAnalysis}
@@ -853,7 +983,6 @@ const RatingEvidence = () => {
                 getAllRatings={getAllUnspecifiedAnxietyRatings}
                 getDefinition={getUnspecifiedAnxietyDefinition}
             />
-
             {/* Unspecified Depressive Analysis Card */}
             <MentalHealthRatingCard
                 analysis={unspecifiedDepressiveAnalysis}
@@ -863,7 +992,88 @@ const RatingEvidence = () => {
                 getAllRatings={getAllUnspecifiedDepressiveRatings}
                 getDefinition={getUnspecifiedDepressiveDefinition}
             />
-
+          {/* PHASE 8A: MENTAL HEALTH EXPANSION - RATING CARDS */}
+          {/* Somatic Symptom Disorder Analysis Card */}
+          <MentalHealthRatingCard
+              analysis={somaticSymptomDisorderAnalysis}
+              expanded={expandedSection === 'somatic-symptom-disorder'}
+              onToggle={() => toggleSection('somatic-symptom-disorder')}
+              icon="🏥"
+              getAllRatings={getAllSomaticSymptomDisorderRatings}
+              getDefinition={getSomaticSymptomDisorderDefinition}
+          />
+          {/* Other Specified Somatic Symptom Disorder Analysis Card */}
+          <MentalHealthRatingCard
+              analysis={otherSpecifiedSomaticAnalysis}
+              expanded={expandedSection === 'other-specified-somatic'}
+              onToggle={() => toggleSection('other-specified-somatic')}
+              icon="🏥"
+              getAllRatings={getAllOtherSpecifiedSomaticRatings}
+              getDefinition={getOtherSpecifiedSomaticDefinition}
+          />
+          {/* Unspecified Somatic Symptom Disorder Analysis Card */}
+          <MentalHealthRatingCard
+              analysis={unspecifiedSomaticAnalysis}
+              expanded={expandedSection === 'unspecified-somatic'}
+              onToggle={() => toggleSection('unspecified-somatic')}
+              icon="🏥"
+              getAllRatings={getAllUnspecifiedSomaticRatings}
+              getDefinition={getUnspecifiedSomaticDefinition}
+          />
+          {/* Illness Anxiety Disorder Analysis Card */}
+          <MentalHealthRatingCard
+              analysis={illnessAnxietyAnalysis}
+              expanded={expandedSection === 'illness-anxiety'}
+              onToggle={() => toggleSection('illness-anxiety')}
+              icon="😰"
+              getAllRatings={getAllIllnessAnxietyRatings}
+              getDefinition={getIllnessAnxietyDefinition}
+          />
+          {/* Other Specified Anxiety Disorder Analysis Card */}
+          <MentalHealthRatingCard
+              analysis={otherSpecifiedAnxietyAnalysis}
+              expanded={expandedSection === 'other-specified-anxiety'}
+              onToggle={() => toggleSection('other-specified-anxiety')}
+              icon="😟"
+              getAllRatings={getAllOtherSpecifiedAnxietyRatings}
+              getDefinition={getOtherSpecifiedAnxietyDefinition}
+          />
+          {/* Depersonalization/Derealization Disorder Analysis Card */}
+          <MentalHealthRatingCard
+              analysis={depersonalizationAnalysis}
+              expanded={expandedSection === 'depersonalization-derealization'}
+              onToggle={() => toggleSection('depersonalization-derealization')}
+              icon="👤"
+              getAllRatings={getAllDepersonalizationRatings}
+              getDefinition={getDepersonalizationDefinition}
+          />
+          {/* Cyclothymic Disorder Analysis Card */}
+          <MentalHealthRatingCard
+              analysis={cyclothymicAnalysis}
+              expanded={expandedSection === 'cyclothymic'}
+              onToggle={() => toggleSection('cyclothymic')}
+              icon="🌓"
+              getAllRatings={getAllCyclothymicRatings}
+              getDefinition={getCyclothymicDefinition}
+          />
+          {/* Anorexia Nervosa Analysis Card */}
+          <MentalHealthRatingCard
+              analysis={anorexiaNervosaAnalysis}
+              expanded={expandedSection === 'anorexia-nervosa'}
+              onToggle={() => toggleSection('anorexia-nervosa')}
+              icon="🍽️"
+              getAllRatings={getAllAnorexiaNervosaRatings}
+              getDefinition={getAnorexiaNervosaDefinition}
+          />
+          {/* Bulimia Nervosa Analysis Card */}
+          <MentalHealthRatingCard
+              analysis={bulimiaNervosaAnalysis}
+              expanded={expandedSection === 'bulimia-nervosa'}
+              onToggle={() => toggleSection('bulimia-nervosa')}
+              icon="🍽️"
+              getAllBulimiaNervosaRatings={getAllBulimiaNervosaRatings}
+              getDefinition={getBulimiaNervosaDefinition}
+          />
             {/* Lumbosacral Strain Analysis Card */}
             <GenericRatingCard
                 analysis={lumbosacralStrainAnalysis}
@@ -871,7 +1081,6 @@ const RatingEvidence = () => {
                 onToggle={() => toggleSection('lumbosacral-strain')}
                 icon="🦴"
             />
-
             {/* Intervertebral Disc Analysis Card */}
             <GenericRatingCard
                 analysis={intervertebralDiscAnalysis}
@@ -879,7 +1088,6 @@ const RatingEvidence = () => {
                 onToggle={() => toggleSection('intervertebral-disc')}
                 icon="💿"
             />
-
             {/* Knee Instability Analysis Card */}
             <GenericRatingCard
                 analysis={kneeInstabilityAnalysis}
@@ -887,7 +1095,6 @@ const RatingEvidence = () => {
                 onToggle={() => toggleSection('knee-instability')}
                 icon="🦵"
             />
-
             {/* TBI Analysis Card */}
             <GenericRatingCard
                 analysis={tbiAnalysis}
@@ -895,228 +1102,193 @@ const RatingEvidence = () => {
                 onToggle={() => toggleSection('tbi')}
                 icon="🧠"
             />
-
             <TBIResidualsRatingCard
                 analysis={tbiResidualsAnalysis}
                 expanded={expandedSection === 'tbiResiduals'}
                 onToggle={() => toggleSection('tbiResiduals')}
             />
-
             {/* Hypertension Analysis Card */}
             <HypertensionRatingCard
                 analysis={hypertensionAnalysis}
                 expanded={expandedSection === 'hypertension'}
                 onToggle={() => toggleSection('hypertension')}
             />
-
             {/* Diabetes Analysis Card */}
             <DiabetesRatingCard
                 analysis={diabetesAnalysis}
                 expanded={expandedSection === 'diabetes'}
                 onToggle={() => toggleSection('diabetes')}
             />
-
             {/* IBS Analysis Card */}
             <IBSRatingCard
                 analysis={ibsAnalysis}
                 expanded={expandedSection === 'ibs'}
                 onToggle={() => toggleSection('ibs')}
             />
-
             {/* GERD Analysis Card */}
             <GERDRatingCard
                 analysis={gerdAnalysis}
                 expanded={expandedSection === 'gerd'}
                 onToggle={() => toggleSection('gerd')}
             />
-
             <GERDComplicationsRatingCard
                 analysis={gerdAnalysis}
                 expanded={expandedSection === 'gerdComplications'}
                 onToggle={() => toggleSection('gerdComplications')}
             />
-
             <GenericRatingCard
                 analysis={ulcerativeColitisAnalysis}
                 expanded={expandedSection === 'ulcerativeColitis'}
                 onToggle={() => toggleSection('ulcerativeColitis')}
                 icon="🩸"
             />
-
             <GenericRatingCard
                 analysis={pepticUlcerAnalysis}
                 expanded={expandedSection === 'pepticUlcer'}
                 onToggle={() => toggleSection('pepticUlcer')}
                 icon="🔥"
             />
-
             <GenericRatingCard
                 analysis={hemorrhoidAnalysis}
                 expanded={expandedSection === 'hemorrhoids'}
                 onToggle={() => toggleSection('hemorrhoids')}
                 icon="🩹"
             />
-
             <GenericRatingCard
                 analysis={diverticulitisAnalysis}
                 expanded={expandedSection === 'diverticulitis'}
                 onToggle={() => toggleSection('diverticulitis')}
                 icon="🫃"
             />
-
             <GenericRatingCard
                 analysis={hypothyroidismAnalysis}
                 expanded={expandedSection === 'hypothyroidism'}
                 onToggle={() => toggleSection('hypothyroidism')}
                 icon="🦋"
             />
-
             <GenericRatingCard
                 analysis={raynaudsAnalysis}
                 expanded={expandedSection === 'raynauds'}
                 onToggle={() => toggleSection('raynauds')}
                 icon="🥶"
             />
-
             <GenericRatingCard
                 analysis={varicoseVeinsAnalysis}
                 expanded={expandedSection === 'varicoseVeins'}
                 onToggle={() => toggleSection('varicoseVeins')}
                 icon="🦵"
             />
-
             <GenericRatingCard
                 analysis={chronicUrticariaAnalysis}
                 expanded={expandedSection === 'chronicUrticaria'}
                 onToggle={() => toggleSection('chronicUrticaria')}
                 icon="🔴"
             />
-
             {/* Radiculopathy Analysis Card */}
             <RadiculopathyRatingCard
                 analysis={radiculopathyAnalysis}
                 expanded={expandedSection === 'radiculopathy'}
                 onToggle={() => toggleSection('radiculopathy')}
             />
-
             <ChronicFatigueRatingCard
                 analysis={chronicFatigueAnalysis}
                 expanded={expandedSection === 'chronic-fatigue'}
                 onToggle={() => toggleSection('chronic-fatigue')}
             />
-
             <PeripheralNeuropathyRatingCard
                 analysis={peripheralNeuropathyAnalysis}
                 expanded={expandedSection === 'peripheral-neuropathy'}
                 onToggle={() => toggleSection('peripheral-neuropathy')}
             />
-
             <MenieresRatingCard
                 analysis={menieresAnalysis}
                 expanded={expandedSection === 'menieres'}
                 onToggle={() => toggleSection('menieres')}
             />
-
             <RhinitisRatingCard
                 analysis={rhinitisAnalysis}
                 expanded={expandedSection === 'rhinitis'}
                 onToggle={() => toggleSection('rhinitis')}
             />
-
             <TMJRatingCard
                 analysis={tmjAnalysis}
                 expanded={expandedSection === 'tmj'}
                 onToggle={() => toggleSection('tmj')}
             />
-
             <PlantarFasciitisRatingCard
                 analysis={plantarFasciitisAnalysis}
                 expanded={expandedSection === 'plantar-fasciitis'}
                 onToggle={() => toggleSection('plantar-fasciitis')}
             />
-
             <InsomniaRatingCard
                 analysis={insomniaAnalysis}
                 expanded={expandedSection === 'insomnia'}
                 onToggle={() => toggleSection('insomnia')}
             />
-
             <SinusitisRatingCard
                 analysis={sinusitisAnalysis}
                 expanded={expandedSection === 'sinusitis'}
                 onToggle={() => toggleSection('sinusitis')}
             />
-
             <ShoulderRatingCard
                 analysis={shoulderAnalysis}
                 expanded={expandedSection === 'shoulder'}
                 onToggle={() => toggleSection('shoulder')}
             />
-
             <HipRatingCard
                 analysis={hipAnalysis}
                 expanded={expandedSection === 'hip'}
                 onToggle={() => toggleSection('hip')}
             />
-
             <GenericJointRatingCard
                 analysis={ankleAnalysis}
                 expanded={expandedSection === 'ankle'}
                 onToggle={() => toggleSection('ankle')}
                 icon="🦶"
             />
-
             <GenericJointRatingCard
                 analysis={wristAnalysis}
                 expanded={expandedSection === 'wrist'}
                 onToggle={() => toggleSection('wrist')}
                 icon="✋"
             />
-
             <GenericJointRatingCard
                 analysis={elbowAnalysis}
                 expanded={expandedSection === 'elbow'}
                 onToggle={() => toggleSection('elbow')}
                 icon="💪"
             />
-
             <GenericJointRatingCard
                 analysis={degenerativeArthritisAnalysis}
                 expanded={expandedSection === 'degenerativeArthritis'}
                 onToggle={() => toggleSection('degenerativeArthritis')}
                 icon="🦴"
             />
-
             <AsthmaRatingCard
                   analysis={asthmaAnalysis}
                   expanded={expandedSection === 'asthma'}
                   onToggle={() => toggleSection('asthma')}
               />
-
             <EczemaRatingCard
                 analysis={eczemaAnalysis}
                 expanded={expandedSection === 'eczema'}
                 onToggle={() => toggleSection('eczema')}
             />
-
             <HearingLossRatingCard
                 analysis={hearingLossAnalysis}
                 expanded={expandedSection === 'hearingLoss'}
                 onToggle={() => toggleSection('hearingLoss')}
             />
-
             <PsoriasisRatingCard
                 analysis={psoriasisAnalysis}
                 expanded={expandedSection === 'psoriasis'}
                 onToggle={() => toggleSection('psoriasis')}
             />
-
             <ScarsRatingCard
                 analysis={scarsAnalysis}
                 expanded={expandedSection === 'scarsAnalysis'}
                 onToggle={() => toggleSection('scarsAnalysis')}
             />
-
             {/* Tinnitus Analysis Card */}
             <GenericRatingCard
                 analysis={tinnitusAnalysis}
@@ -1124,7 +1296,6 @@ const RatingEvidence = () => {
                 onToggle={() => toggleSection('tinnitus')}
                 icon="👂"
             />
-
             {/* Fibromyalgia Analysis Card */}
             <GenericRatingCard
                 analysis={fibromyalgiaAnalysis}
@@ -1132,28 +1303,24 @@ const RatingEvidence = () => {
                 onToggle={() => toggleSection('fibromyalgia')}
                 icon="💪"
             />
-
             {/* Phase 1E: Epilepsy - Major Seizures */}
             <SeizureRatingCard
                 analysis={epilepsyMajorAnalysis}
                 expanded={expandedSection === 'epilepsyMajor'}
                 onToggle={() => toggleSection('epilepsyMajor')}
             />
-
             {/* Phase 1E: Epilepsy - Minor Seizures */}
             <SeizureRatingCard
                 analysis={epilepsyMinorAnalysis}
                 expanded={expandedSection === 'epilepsyMinor'}
                 onToggle={() => toggleSection('epilepsyMinor')}
             />
-
           {/* Phase 2: Eye & Vision Conditions */}
           <EyeVisionRatingCard
               logs={logs}
               expanded={expandedSection === 'vision'}
               onToggle={() => toggleSection('vision')}
           />
-
           {/* Phase 3: Genitourinary Conditions */}
           <KidneyStonesRatingCard
               analysis={kidneyStonesAnalysis}
@@ -1325,7 +1492,7 @@ const RatingEvidence = () => {
           />
           <HIVRatingCard
               analysis={hivAnalysis}
-              explanded={expandedSection === 'hiv-aids'}
+              expanded={expandedSection === 'hiv-aids'}
               onToggle={() => toggleSection('hiv-aids')}
           />
           <HepatitisCRatingCard
@@ -1372,23 +1539,86 @@ const RatingEvidence = () => {
               expanded={expandedSection === 'salmonella'}
               onToggle={() => toggleSection('salmonella')}
           />
-
           <ShigellaRatingCard
               analysis={shigellaAnalysis}
               expanded={expandedSection === 'shigella'}
               onToggle={() => toggleSection('shigella')}
           />
-
           <WestNileRatingCard
               analysis={westNileAnalysis}
               expanded={expandedSection === 'westNile'}
               onToggle={() => toggleSection('westNile')}
           />
-
           <NTMRatingCard
               analysis={ntmAnalysis}
               expanded={expandedSection === 'ntm'}
               onToggle={() => toggleSection('ntm')}
+          />
+          {/* Phase 8B: Additional Mental Health Conditions */}
+          <Phase8BMentalHealthRatingCard
+              analysis={schizophreniaAnalysis}
+              expanded={expandedSection === 'schizophrenia'}
+              onToggle={() => toggleSection('schizophrenia')}
+          />
+          <Phase8BMentalHealthRatingCard
+              analysis={schizoaffectiveDisorderAnalysis}
+              expanded={expandedSection === 'schizoaffective-disorder'}
+              onToggle={() => toggleSection('schizoaffective-disorder')}
+          />
+          <Phase8BMentalHealthRatingCard
+              analysis={delusionalDisorderAnalysis}
+              expanded={expandedSection === 'delusional-disorder'}
+              onToggle={() => toggleSection('delusional-disorder')}
+          />
+          <Phase8BMentalHealthRatingCard
+              analysis={psychoticDisorderNOSAnalysis}
+              expanded={expandedSection === 'psychotic-disorder-nos'}
+              onToggle={() => toggleSection('psychotic-disorder-nos')}
+          />
+          <Phase8BMentalHealthRatingCard
+              analysis={briefPsychoticDisorderAnalysis}
+              expanded={expandedSection === 'brief-psychotic-disorder'}
+              onToggle={() => toggleSection('brief-psychotic-disorder')}
+          />
+          <Phase8BMentalHealthRatingCard
+              analysis={bingeEatingDisorderAnalysis}
+              expanded={expandedSection === 'binge-eating-disorder'}
+              onToggle={() => toggleSection('binge-eating-disorder')}
+          />
+          <Phase8BMentalHealthRatingCard
+              analysis={dissociativeIdentityDisorderAnalysis}
+              expanded={expandedSection === 'dissociative-identity-disorder'}
+              onToggle={() => toggleSection('dissociative-identity-disorder')}
+          />
+          <Phase8BMentalHealthRatingCard
+              analysis={dissociativeAmnesiaAnalysis}
+              expanded={expandedSection === 'dissociative-amnesia'}
+              onToggle={() => toggleSection('dissociative-amnesia')}
+          />
+          <Phase8BMentalHealthRatingCard
+              analysis={acuteStressDisorderAnalysis}
+              expanded={expandedSection === 'acute-stress-disorder'}
+              onToggle={() => toggleSection('acute-stress-disorder')}
+          />
+          <Phase8BMentalHealthRatingCard
+              analysis={antisocialPersonalityDisorderAnalysis}
+              expanded={expandedSection === 'antisocial-personality-disorder'}
+              onToggle={() => toggleSection('antisocial-personality-disorder')}
+          />
+          <Phase8BMentalHealthRatingCard
+              analysis={borderlinePersonalityDisorderAnalysis}
+              expanded={expandedSection === 'borderline-personality-disorder'}
+              onToggle={() => toggleSection('borderline-personality-disorder')}
+          />
+          <Phase8BMentalHealthRatingCard
+              analysis={narcissisticPersonalityDisorderAnalysis}
+              expanded={expandedSection === 'narcissistic-personality-disorder'}
+              onToggle={() => toggleSection('narcissistic-personality-disorder')}
+          />
+          <Phase8BMentalHealthRatingCard
+              analysis={avoidantPersonalityDisorderAnalysis}
+              expanded={expandedSection === 'avoidant-personality-disorder'}
+              onToggle={() => toggleSection('avoidant-personality-disorder')}
           />
 
 
@@ -1416,356 +1646,7 @@ const RatingEvidence = () => {
     );
 };
 
-/**
- * Migraine Rating Card Component
- */
-const MigraineRatingCard = ({ analysis, expanded, onToggle }) => {
-    const [showDefinitions, setShowDefinitions] = useState(false);
 
-  // Hide card entirely if no data
-  if (!analysis.hasData) {
-    return null;
-  }
-    const { supportedRating, evidence, ratingRationale, gaps } = analysis;
-    const ratingColorClass = getRatingColorClass(supportedRating);
-
-    return (
-        <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
-            {/* Card Header */}
-            <button
-                onClick={onToggle}
-                className="w-full p-4 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
-            >
-                <div className="flex items-center gap-3">
-                    <span className="text-2xl">🤕</span>
-                    <div className="text-left">
-                        <h3 className="font-semibold text-gray-900 dark:text-white">
-                            Migraine (DC 8100)
-                        </h3>
-                        <p className="text-sm text-gray-500 dark:text-gray-400">
-                            {evidence.totalMigraines} episodes logged in {evidence.evaluationPeriod.months} months
-                        </p>
-                    </div>
-                </div>
-
-                <div className="flex items-center gap-3">
-                    <div className={`px-3 py-1 rounded-full border font-bold ${ratingColorClass}`}>
-                        {formatRating(supportedRating)}
-                    </div>
-                    <span className="text-gray-400 text-xl">{expanded ? 'Ã¢Ë†â€™' : '+'}</span>
-                </div>
-            </button>
-
-            {/* Expanded Content */}
-            {expanded && (
-                <div className="border-t border-gray-200 dark:border-gray-700">
-                    {/* Rating Rationale */}
-                    <div className="p-4 bg-gray-50 dark:bg-gray-700/30">
-                        <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                            Why {formatRating(supportedRating)}?
-                        </h4>
-                        <ul className="space-y-1">
-                            {ratingRationale.map((reason, index) => (
-                                <li key={index} className="text-sm text-gray-600 dark:text-gray-400 flex items-start gap-2">
-                                    <span className="text-green-500 mt-0.5">✓</span>
-                                    {reason}
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-
-                    {/* Evidence Summary */}
-                    <div className="p-4">
-                        <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
-                            Your Evidence
-                        </h4>
-                        <div className="grid grid-cols-2 gap-3">
-                            <StatBox
-                                label="Total Migraines"
-                                value={evidence.totalMigraines}
-                                subtext={`${evidence.monthlyRates.total}/month`}
-                            />
-                            <StatBox
-                                label="Prostrating"
-                                value={evidence.prostratingCount}
-                                subtext={`${evidence.monthlyRates.prostrating}/month`}
-                                highlight={evidence.prostratingCount > 0}
-                            />
-                            <StatBox
-                                label="Prolonged (4+ hrs)"
-                                value={evidence.prolongedCount}
-                                subtext="of prostrating"
-                            />
-                            <StatBox
-                                label="Non-Prostrating"
-                                value={evidence.severityBreakdown.nonProstrating}
-                                subtext="not counted for rating"
-                                muted
-                            />
-                        </div>
-                    </div>
-
-                    {/* Gaps */}
-                    {gaps.length > 0 && (
-                        <div className="p-4 border-t border-gray-200 dark:border-gray-700">
-                            <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                                Documentation Opportunities
-                            </h4>
-                            <ul className="space-y-2">
-                                {gaps.map((gap, index) => (
-                                    <li key={index} className="text-sm text-amber-700 dark:text-amber-400 flex items-start gap-2">
-                                        <span className="text-amber-500 mt-0.5">💪</span>
-                                        {gap}
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                    )}
-
-                    {/* Rating Scale */}
-                    <div className="p-4 border-t border-gray-200 dark:border-gray-700">
-                        <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
-                            Rating Scale (DC 8100)
-                        </h4>
-                        <div className="space-y-2">
-                            {getAllMigraineRatings().map((rating) => (
-                                <RatingRow
-                                    key={rating.percent}
-                                    rating={rating}
-                                    isSupported={supportedRating === rating.percent}
-                                />
-                            ))}
-                        </div>
-                    </div>
-
-              {/* Definitions */}
-              <div className="p-4 border-t border-gray-200 dark:border-gray-700">
-                <button
-                    onClick={() => setShowDefinitions(!showDefinitions)}
-                    className="text-sm text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1"
-                >
-                  {showDefinitions ? 'Hide' : 'Show'} Key Term Definitions
-                </button>
-
-                        {showDefinitions && (
-                            <div className="mt-3 space-y-3">
-                                <DefinitionBox definition={getMigraineDefinition('prostrating')} />
-                                <DefinitionBox definition={getMigraineDefinition('prolonged')} />
-                                <DefinitionBox definition={getMigraineDefinition('economicInadaptability')} />
-                            </div>
-                        )}
-                    </div>
-                </div>
-            )}
-        </div>
-    );
-};
-
-/**
- * Sleep Apnea Rating Card Component
- */
-const SleepApneaRatingCard = ({ analysis, profile, expanded, onToggle, onSetupClick }) => {
-    const [showDefinitions, setShowDefinitions] = useState(false);
-
-    const { supportedRating, evidence, ratingRationale, gaps, requiresProfileSetup } = analysis;
-    const ratingColorClass = supportedRating !== null ? getRatingColorClass(supportedRating) : 'bg-gray-100 text-gray-600 border-gray-300 dark:bg-gray-700 dark:text-gray-400 dark:border-gray-600';
-
-    // Device type display
-    const deviceTypeLabels = {
-        cpap: 'CPAP',
-        bipap: 'BiPAP',
-        apap: 'APAP',
-        inspire: 'Inspire Implant',
-        other: 'Other Device',
-    };
-
-    return (
-        <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
-            {/* Card Header */}
-            <button
-                onClick={onToggle}
-                className="w-full p-4 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
-            >
-                <div className="flex items-center gap-3">
-                    <span className="text-2xl">😴</span>
-                    <div className="text-left">
-                        <h3 className="font-semibold text-gray-900 dark:text-white">
-                            Sleep Apnea (DC 6847)
-                        </h3>
-                        <p className="text-sm text-gray-500 dark:text-gray-400">
-                            {requiresProfileSetup
-                                ? 'Profile setup required'
-                                : profile.usesBreathingDevice
-                                    ? `Using ${deviceTypeLabels[profile.deviceType] || 'breathing device'}`
-                                    : 'Diagnosed, no device'
-                            }
-                        </p>
-                    </div>
-                </div>
-
-                <div className="flex items-center gap-3">
-                    <div className={`px-3 py-1 rounded-full border font-bold ${ratingColorClass}`}>
-                        {formatRating(supportedRating)}
-                    </div>
-                    <span className="text-gray-400 text-xl">{expanded ? '-' : '+'}</span>
-                </div>
-            </button>
-
-            {/* Expanded Content */}
-            {expanded && (
-                <div className="border-t border-gray-200 dark:border-gray-700">
-                    {/* Setup Required Banner */}
-                    {requiresProfileSetup && (
-                        <div className="p-4 bg-blue-50 dark:bg-blue-900/20 border-b border-blue-200 dark:border-blue-800">
-                            <p className="text-sm text-blue-800 dark:text-blue-300 mb-3">
-                                To analyze your Sleep Apnea rating, we need to know about your diagnosis and treatment.
-                            </p>
-                            <button
-                                onClick={onSetupClick}
-                                className="w-full py-2 px-4 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors"
-                            >
-                                Set Up Sleep Apnea Profile
-                            </button>
-                        </div>
-                    )}
-
-                    {/* Rating Rationale */}
-                    {!requiresProfileSetup && (
-                        <div className="p-4 bg-gray-50 dark:bg-gray-700/30">
-                            <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                                Why {formatRating(supportedRating)}?
-                            </h4>
-                            <ul className="space-y-1">
-                                {ratingRationale.map((reason, index) => (
-                                    <li key={index} className="text-sm text-gray-600 dark:text-gray-400 flex items-start gap-2">
-                                        <span className="text-green-500 mt-0.5">✓</span>
-                                        {reason}
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                    )}
-
-                    {/* Evidence Summary */}
-                    {!requiresProfileSetup && evidence.sleepLogs.total > 0 && (
-                        <div className="p-4">
-                            <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
-                                Sleep Log Summary
-                            </h4>
-                            <div className="grid grid-cols-2 gap-3">
-                                <StatBox
-                                    label="Sleep Logs"
-                                    value={evidence.sleepLogs.total}
-                                    subtext={`in ${evidence.evaluationPeriod.months} months`}
-                                />
-                                <StatBox
-                                    label="Unrested Nights"
-                                    value={evidence.sleepLogs.unrestedNights}
-                                    highlight={evidence.sleepLogs.unrestedNights > 5}
-                                />
-                                {evidence.sleepLogs.avgSleepQuality && (
-                                    <StatBox
-                                        label="Avg Sleep Quality"
-                                        value={evidence.sleepLogs.avgSleepQuality}
-                                        subtext="out of 10"
-                                    />
-                                )}
-                                {evidence.sleepLogs.avgHoursSlept && (
-                                    <StatBox
-                                        label="Avg Hours Slept"
-                                        value={evidence.sleepLogs.avgHoursSlept}
-                                        subtext="per night"
-                                    />
-                                )}
-                            </div>
-                        </div>
-                    )}
-
-                    {/* Profile Summary */}
-                    {!requiresProfileSetup && (
-                        <div className="p-4 border-t border-gray-200 dark:border-gray-700">
-                            <div className="flex items-center justify-between mb-2">
-                                <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300">
-                                    Your Profile
-                                </h4>
-                                <button
-                                    onClick={onSetupClick}
-                                    className="text-xs text-blue-600 dark:text-blue-400 hover:underline"
-                                >
-                                    Edit
-                                </button>
-                            </div>
-                            <div className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
-                                <p>
-                                    <span className="font-medium">Diagnosis:</span>{' '}
-                                    {profile.hasDiagnosis ? 'Yes' : 'No'}
-                                </p>
-                                <p>
-                                    <span className="font-medium">Breathing Device:</span>{' '}
-                                    {profile.usesBreathingDevice
-                                        ? deviceTypeLabels[profile.deviceType] || 'Yes'
-                                        : 'No'
-                                    }
-                                </p>
-                            </div>
-                        </div>
-                    )}
-
-                    {/* Gaps */}
-                    {gaps.length > 0 && (
-                        <div className="p-4 border-t border-gray-200 dark:border-gray-700">
-                            <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                                Documentation Opportunities
-                            </h4>
-                            <ul className="space-y-2">
-                                {gaps.map((gap, index) => (
-                                    <li key={index} className="text-sm text-amber-700 dark:text-amber-400 flex items-start gap-2">
-                                        <span className="text-amber-500 mt-0.5">💪</span>
-                                        {gap}
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                    )}
-
-                    {/* Rating Scale */}
-                    <div className="p-4 border-t border-gray-200 dark:border-gray-700">
-                        <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
-                            Rating Scale (DC 6847)
-                        </h4>
-                        <div className="space-y-2">
-                            {getAllSleepApneaRatings().map((rating) => (
-                                <RatingRow
-                                    key={rating.percent}
-                                    rating={rating}
-                                    isSupported={supportedRating === rating.percent}
-                                />
-                            ))}
-                        </div>
-                    </div>
-
-              {/* Definitions */}
-              <div className="p-4 border-t border-gray-200 dark:border-gray-700">
-                <button
-                    onClick={() => setShowDefinitions(!showDefinitions)}
-                    className="text-sm text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1"
-                >
-                  {showDefinitions ? 'Hide' : 'Show'} Key Term Definitions
-                </button>
-
-                        {showDefinitions && (
-                            <div className="mt-3 space-y-3">
-                                <DefinitionBox definition={getSleepApneaDefinition('breathingDevice')} />
-                                <DefinitionBox definition={getSleepApneaDefinition('hypersomnolence')} />
-                                <DefinitionBox definition={getSleepApneaDefinition('sleepStudy')} />
-                            </div>
-                        )}
-                    </div>
-                </div>
-            )}
-        </div>
-    );
-};
 
 /**
  * Sleep Apnea Setup Modal
@@ -1935,401 +1816,7 @@ const SleepApneaSetupModal = ({ currentProfile, onSave, onClose }) => {
 };
 
 
-/**
- * Generic Mental Health Rating Card Component
- * Used for all mental health conditions (PTSD, Depression, Anxiety, Bipolar, etc.)
- * All share the same General Rating Formula for Mental Disorders
- */
-const MentalHealthRatingCard = ({ analysis, expanded, onToggle, icon = '🧠', getAllRatings, getDefinition }) => {
-    const [showDefinitions, setShowDefinitions] = useState(false);
 
-  // Hide card entirely if no data
-  if (!analysis.hasData) {
-    return null;
-  }
-
-    const { supportedRating, evidence, ratingRationale, gaps, assessmentLevel } = analysis;
-
-    return (
-        <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
-            {/* Card Header */}
-            <button
-                onClick={onToggle}
-                className="w-full p-4 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
-            >
-                <div className="flex items-center gap-3">
-                    <span className="text-2xl">{icon}</span>
-                    <div className="text-left">
-                        <h3 className="font-semibold text-gray-900 dark:text-white">
-                            {analysis.condition} (DC {analysis.diagnosticCode})
-                        </h3>
-                        <p className="text-sm text-gray-500 dark:text-gray-400">
-                            General Rating Formula for Mental Disorders
-                        </p>
-                    </div>
-                </div>
-                <div className="flex items-center gap-3">
-                    {/* Supported Rating Badge */}
-                    <div className={`px-3 py-1 rounded-full text-sm font-medium border ${
-                        assessmentLevel === 'requires-professional-evaluation'
-                            ? 'bg-red-100 text-red-800 border-red-300 dark:bg-red-900/30 dark:text-red-300 dark:border-red-700'
-                            : 'bg-blue-100 text-blue-800 border-blue-300 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-700'
-                    }`}>
-                        {supportedRating}%
-                    </div>
-                    {/* Expand Icon */}
-                    <svg
-                        className={`w-5 h-5 text-gray-400 transition-transform ${expanded ? 'rotate-180' : ''}`}
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                    >
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7"/>
-                    </svg>
-                </div>
-            </button>
-
-            {/* Expanded Content */}
-            {expanded && (
-                <div className="border-t border-gray-200 dark:border-gray-700">
-                    {/* Crisis Warning if severe symptoms detected */}
-                    {assessmentLevel === 'requires-professional-evaluation' && evidence.functionalImpact.severeSymptoms > 0 && (
-                        <div className="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 p-4 m-4">
-                            <div className="flex items-start gap-3">
-                                <span className="text-2xl">⚠️</span>
-                                <div className="flex-1">
-                                    <h4 className="font-bold text-red-900 dark:text-red-300 mb-2">
-                                        Crisis Support Available 24/7
-                                    </h4>
-                                    <p className="text-sm text-red-800 dark:text-red-400 mb-3">
-                                        If you're experiencing a crisis or having thoughts of suicide:
-                                    </p>
-                                    <div className="space-y-2 text-sm text-red-800 dark:text-red-400">
-                                        <div>
-                                            <strong>Call:</strong> Veterans Crisis Line - Dial 988, then Press 1
-                                        </div>
-                                        <div>
-                                            <strong>Text:</strong> 838255
-                                        </div>
-                                        <div>
-                                            <strong>Chat:</strong> VeteransCrisisLine.net/chat
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    )}
-
-                    {/* Analysis Summary */}
-                    <div className="p-4 space-y-3">
-                        <div>
-                            <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-center">
-                                Evidence Summary
-                            </h4>
-                            <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
-                                <StatBox
-                                    label="Total Symptoms"
-                                    value={evidence.totalSymptoms}
-                                    subtext={`${evidence.symptomsPerMonth}/month`}
-                                />
-                                <StatBox
-                                    label="Symptom Types"
-                                    value={evidence.symptomTypesPresent.length}
-                                    subtext="categories"
-                                />
-                                <StatBox
-                                    label="Panic-Related"
-                                    value={evidence.panicAttacks.total}
-                                    subtext={`${evidence.panicAttacks.perWeek}/week`}
-                                    highlight={parseFloat(evidence.panicAttacks.perWeek) > 1}
-                                />
-                                <StatBox
-                                    label="Functional Impact"
-                                    value={evidence.functionalImpact.workImpact + evidence.functionalImpact.socialImpact}
-                                    subtext="logged impacts"
-                                />
-                            </div>
-                        </div>
-
-                        {/* Rationale */}
-                        <div>
-                            <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-center">
-                                Analysis Rationale
-                            </h4>
-                            <div className="bg-gray-50 dark:bg-gray-700/30 rounded-lg p-3 space-y-2">
-                                {ratingRationale.map((reason, i) => (
-                                    <div key={i} className="flex items-start gap-2">
-                                        <span className="text-blue-600 dark:text-blue-400 mt-0.5">•</span>
-                                        <span className="text-sm text-gray-700 dark:text-gray-300">{reason}</span>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-
-                        {/* Rating Schedule */}
-                        <div>
-                            <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-center">
-                                VA Rating Schedule
-                            </h4>
-                            <div className="space-y-2">
-                                {getAllRatings().map(rating => (
-                                    <RatingRow
-                                        key={rating.percent}
-                                        rating={rating}
-                                        isSupported={
-                                            typeof supportedRating === 'number'
-                                                ? rating.percent === supportedRating
-                                                : supportedRating.includes(rating.percent.toString())
-                                        }
-                                    />
-                                ))}
-                            </div>
-                        </div>
-
-                        {/* Gaps */}
-                        {gaps.length > 0 && (
-                            <div>
-                                <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-center">
-                                    Documentation Gaps
-                                </h4>
-                                <div className="bg-yellow-50 dark:bg-yellow-900/20 rounded-lg p-3 space-y-2">
-                                    {gaps.map((gap, i) => (
-                                        <div key={i} className="flex items-start gap-2">
-                                            <span className="text-yellow-600 dark:text-yellow-400 mt-0.5">⚠ </span>
-                                            <span className="text-sm text-gray-700 dark:text-gray-300">{gap}</span>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
-
-                {/* Key Definitions */}
-                <div>
-                  <button
-                      onClick={() => setShowDefinitions(!showDefinitions)}
-                      className="flex items-center gap-2 text-sm text-blue-600 dark:text-blue-400 hover:underline"
-                  >
-                    <span>📖</span>
-                    <span>{showDefinitions ? 'Hide' : 'Show'} VA Rating Definitions</span>
-                  </button>
-
-                            {showDefinitions && (
-                                <div className="mt-3 space-y-2">
-                                    <DefinitionBox definition={getDefinition('generalRatingFormula')}/>
-                                    <DefinitionBox definition={getDefinition('occupationalImpairment')}/>
-                                    <DefinitionBox definition={getDefinition('socialImpairment')}/>
-                                </div>
-                            )}
-                        </div>
-
-                        {/* Important Notes */}
-                        <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4 border-l-4 border-blue-500">
-                            <h4 className="font-medium text-blue-900 dark:text-blue-300 mb-2">
-                                Important: Mental Health Rating Considerations
-                            </h4>
-                            <ul className="space-y-2 text-sm text-blue-800 dark:text-blue-400">
-                                {analysis.criteria.importantNotes.map((note, i) => (
-                                    <li key={i} className="flex items-start gap-2">
-                                        <span className="mt-0.5">•</span>
-                                        <span>{note}</span>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-
-                        {/* Disclaimer */}
-                        <div className="bg-gray-100 dark:bg-gray-700/50 rounded-lg p-3 text-xs text-gray-600 dark:text-gray-400">
-                            <strong>CRITICAL DISCLAIMER:</strong> {analysis.disclaimer}
-                        </div>
-                    </div>
-                </div>
-            )}
-        </div>
-    );
-};
-
-/**
- * PTSD Rating Card Component (uses the generic MentalHealthRatingCard)
- */
-const PTSDRatingCard = ({ analysis, expanded, onToggle }) => {
-    return (
-        <MentalHealthRatingCard
-            analysis={analysis}
-            expanded={expanded}
-            onToggle={onToggle}
-            icon="🧠"
-            getAllRatings={getAllPTSDRatings}
-            getDefinition={getPTSDDefinition}
-        />
-    );
-};
-
-/**
- * Generic Rating Card Component for simpler conditions
- */
-const GenericRatingCard = ({ analysis, expanded, onToggle, icon }) => {
-    const [showDefinitions, setShowDefinitions] = useState(false);
-
-    if (!analysis.hasData) return null;
-
-    const {
-        condition,
-        diagnosticCode,
-        supportedRating,
-        ratingRationale,
-        evidence,
-        gaps,
-        criteria,
-        disclaimer,
-    } = analysis;
-
-    return (
-        <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
-            {/* Header */}
-            <button
-                onClick={onToggle}
-                className="w-full p-4 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
-            >
-                <div className="flex items-center gap-3">
-                    <span className="text-2xl">{icon}</span>
-                    <div className="text-left">
-                        <h3 className="font-semibold text-gray-900 dark:text-white">
-                            {condition}
-                        </h3>
-                        <p className="text-xs text-gray-500 dark:text-gray-400">
-                            DC {diagnosticCode} • {criteria.cfrReference}
-                        </p>
-                    </div>
-                </div>
-                <div className="flex items-center gap-3">
-                    {supportedRating && (
-                        <span className={`px-3 py-1 rounded-full text-sm font-medium border ${
-                            supportedRating.includes('Requires') || supportedRating.includes('Clinical')
-                                ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 border-blue-300 dark:border-blue-700'
-                                : 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 border-green-300 dark:border-green-700'
-                        }`}>
-                  {supportedRating}
-                </span>
-                    )}
-                    <svg
-                        className={`w-5 h-5 text-gray-400 transition-transform ${expanded ? 'rotate-180' : ''}`}
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                    >
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7"/>
-                    </svg>
-                </div>
-            </button>
-
-            {/* Expanded Content */}
-            {expanded && (
-                <div className="p-4 border-t border-gray-200 dark:border-gray-700">
-                    <div className="space-y-4 text-left">
-                        {/* Evidence Summary */}
-                        <div>
-                            <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-center">
-                                Evidence Summary
-                            </h4>
-                            <div className="bg-gray-50 dark:bg-gray-700/30 rounded-lg p-3 space-y-2">
-                                {evidence.map((item, i) => (
-                                    <div key={i} className="flex items-start gap-2">
-                                        <span className="text-green-600 dark:text-green-400 mt-0.5">✓</span>
-                                        <span className="text-sm text-gray-700 dark:text-gray-300">{item}</span>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-
-                        {/* Rationale */}
-                        {ratingRationale && ratingRationale.length > 0 && (
-                            <div>
-                                <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-center">
-                                    Analysis Rationale
-                                </h4>
-                                <div className="bg-gray-50 dark:bg-gray-700/30 rounded-lg p-3 space-y-2">
-                                    {ratingRationale.map((reason, i) => (
-                                        <div key={i} className="flex items-start gap-2">
-                                            <span className="text-blue-600 dark:text-blue-400 mt-0.5">•</span>
-                                            <span className="text-sm text-gray-700 dark:text-gray-300">{reason}</span>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
-
-                        {/* VA Rating Schedule */}
-                        {criteria.ratings && criteria.ratings.length > 0 && (
-                            <div>
-                                <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-center">
-                                    VA Rating Schedule
-                                </h4>
-                                <div className="space-y-2">
-                                    {criteria.ratings.map(rating => (
-                                        <RatingRow
-                                            key={rating.percent}
-                                            rating={rating}
-                                            isSupported={
-                                                typeof supportedRating === 'number'
-                                                    ? rating.percent === supportedRating
-                                                    : supportedRating && supportedRating.includes(rating.percent.toString())
-                                            }
-                                        />
-                                    ))}
-                                </div>
-                            </div>
-                        )}
-
-                        {/* Documentation Gaps */}
-                        {gaps && gaps.length > 0 && (
-                            <div>
-                                <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-center">
-                                    Documentation Gaps
-                                </h4>
-                                <div className="bg-yellow-50 dark:bg-yellow-900/20 rounded-lg p-3 space-y-2">
-                                    {gaps.map((gap, i) => (
-                                        <div key={i} className="flex items-start gap-2">
-                                            <span className="text-yellow-600 dark:text-yellow-400 mt-0.5">⚠ </span>
-                                            <span className="text-sm text-gray-700 dark:text-gray-300">{gap}</span>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
-
-                {/* Key Definitions */}
-                {criteria.definitions && Object.keys(criteria.definitions).length > 0 && (
-                    <div>
-                      <button
-                          onClick={() => setShowDefinitions(!showDefinitions)}
-                          className="flex items-center gap-2 text-sm text-blue-600 dark:text-blue-400 hover:underline"
-                      >
-                        <span>📖</span>
-                        <span>{showDefinitions ? 'Hide' : 'Show'} VA Rating Definitions</span>
-                      </button>
-
-                                {showDefinitions && (
-                                    <div className="mt-3 space-y-2">
-                                        {Object.values(criteria.definitions).map((def, i) => (
-                                            <DefinitionBox key={i} definition={def}/>
-                                        ))}
-                                    </div>
-                                )}
-                            </div>
-                        )}
-
-                        {/* Disclaimer */}
-                        {disclaimer && (
-                            <div className="bg-gray-100 dark:bg-gray-700/50 rounded-lg p-3 text-xs text-gray-600 dark:text-gray-400">
-                                <strong>Important:</strong> {disclaimer}
-                            </div>
-                        )}
-                    </div>
-                </div>
-            )}
-        </div>
-    );
-};
 
 /**
  * Stat Box Component

@@ -1067,6 +1067,198 @@ export const CONDITIONS = {
     cfrReference: '38 CFR 4.150',
     symptomIds: ['missing-teeth', 'tooth-loss-pain', 'chewing-difficulty', 'prosthesis-pain'],
   },
+  // Phase 8A: Somatic Symptom Disorders
+  SOMATIC_SYMPTOM_DISORDER: {
+    name: 'Somatic Symptom Disorder',
+    symptomIds: [
+      'somatic-pain',
+      'somatic-excessive-worry',
+      'somatic-multiple-symptoms',
+      'somatic-doctor-visits',
+      'somatic-functional-impairment',
+    ],
+  },
+  OTHER_SPECIFIED_SOMATIC: {
+    name: 'Other Specified Somatic Symptom Disorder',
+    symptomIds: [
+      'somatic-pain',
+      'somatic-excessive-worry',
+      'somatic-multiple-symptoms',
+      'somatic-doctor-visits',
+      'somatic-functional-impairment',
+    ],
+  },
+  UNSPECIFIED_SOMATIC: {
+    name: 'Unspecified Somatic Symptom Disorder',
+    symptomIds: [
+      'somatic-pain',
+      'somatic-excessive-worry',
+      'somatic-multiple-symptoms',
+      'somatic-doctor-visits',
+      'somatic-functional-impairment',
+    ],
+  },
+  ILLNESS_ANXIETY: {
+    name: 'Illness Anxiety Disorder',
+    symptomIds: [
+      'illness-anxiety-fear',
+      'illness-anxiety-body-checking',
+      'illness-anxiety-reassurance',
+      'illness-anxiety-avoidance',
+      'illness-anxiety-distress',
+    ],
+  },
+  // Phase 8A: Other Anxiety/Mood
+  OTHER_SPECIFIED_ANXIETY: {
+    name: 'Other Specified Anxiety Disorder',
+    symptomIds: [
+      'anxiety',
+      'gad-worry',
+      'gad-restlessness',
+      'gad-muscle-tension',
+    ],
+  },
+  DEPERSONALIZATION_DEREALIZATION: {
+    name: 'Depersonalization/Derealization Disorder',
+    symptomIds: [
+      'depersonalization-detachment',
+      'derealization-unreality',
+      'depersonalization-robot',
+      'depersonalization-distress',
+    ],
+  },
+  CYCLOTHYMIC: {
+    name: 'Cyclothymic Disorder',
+    symptomIds: [
+      'cyclothymic-hypomanic',
+      'cyclothymic-depressive',
+      'cyclothymic-mood-swing',
+      'cyclothymic-irritability',
+    ],
+  },
+  // Phase 8A: Eating Disorders
+  ANOREXIA_NERVOSA: {
+    name: 'Anorexia Nervosa',
+    symptomIds: [
+      'anorexia-restricted-eating',
+      'anorexia-weight-loss',
+      'anorexia-fear-weight-gain',
+      'anorexia-body-image',
+      'anorexia-incapacitating-episode',
+      'anorexia-hospitalization',
+    ],
+  },
+  BULIMIA_NERVOSA: {
+    name: 'Bulimia Nervosa',
+    symptomIds: [
+      'bulimia-binge-eating',
+      'bulimia-purging',
+      'bulimia-compensatory',
+      'bulimia-body-image',
+      'bulimia-incapacitating-episode',
+      'bulimia-hospitalization',
+    ],
+  },
+  // Schizophrenia Spectrum (DC 9201-9205)
+  SCHIZOPHRENIA: {
+    id: 'schizophrenia',
+    name: 'Schizophrenia',
+    diagnosticCode: '9201',
+    cfrReference: '38 CFR 4.130',
+    symptomIds: ['schizophrenia-hallucinations', 'schizophrenia-delusions', 'schizophrenia-disorganized-speech', 'schizophrenia-disorganized-behavior', 'schizophrenia-negative-symptoms'],
+  },
+  SCHIZOAFFECTIVE_DISORDER: {
+    id: 'schizoaffective-disorder',
+    name: 'Schizoaffective Disorder',
+    diagnosticCode: '9202',
+    cfrReference: '38 CFR 4.130',
+    symptomIds: ['schizophrenia-hallucinations', 'schizophrenia-delusions', 'schizoaffective-mood-episodes', 'psychotic-episode'],
+  },
+  DELUSIONAL_DISORDER: {
+    id: 'delusional-disorder',
+    name: 'Delusional Disorder',
+    diagnosticCode: '9203',
+    cfrReference: '38 CFR 4.130',
+    symptomIds: ['schizophrenia-delusions', 'psychotic-episode'],
+  },
+  PSYCHOTIC_DISORDER_NOS: {
+    id: 'psychotic-disorder-nos',
+    name: 'Psychotic Disorder NOS',
+    diagnosticCode: '9204',
+    cfrReference: '38 CFR 4.130',
+    symptomIds: ['psychotic-episode', 'schizophrenia-hallucinations', 'schizophrenia-delusions'],
+  },
+  BRIEF_PSYCHOTIC_DISORDER: {
+    id: 'brief-psychotic-disorder',
+    name: 'Brief Psychotic Disorder',
+    diagnosticCode: '9205',
+    cfrReference: '38 CFR 4.130',
+    symptomIds: ['brief-psychotic-episode', 'schizophrenia-hallucinations', 'schizophrenia-delusions'],
+  },
+
+  // Binge Eating Disorder (DC 9520)
+  BINGE_EATING_DISORDER: {
+    id: 'binge-eating-disorder',
+    name: 'Binge Eating Disorder',
+    diagnosticCode: '9520',
+    cfrReference: '38 CFR 4.130',
+    symptomIds: ['binge-eating-episode', 'binge-eating-loss-of-control', 'binge-eating-distress'],
+  },
+
+  // Dissociative Disorders (DC 9416-9417)
+  DISSOCIATIVE_IDENTITY_DISORDER: {
+    id: 'dissociative-identity-disorder',
+    name: 'Dissociative Identity Disorder',
+    diagnosticCode: '9416',
+    cfrReference: '38 CFR 4.130',
+    symptomIds: ['dissociative-identity-switching', 'dissociative-amnesia-episode', 'dissociative-fugue', 'dissociative-time-loss'],
+  },
+  DISSOCIATIVE_AMNESIA: {
+    id: 'dissociative-amnesia',
+    name: 'Dissociative Amnesia',
+    diagnosticCode: '9417',
+    cfrReference: '38 CFR 4.130',
+    symptomIds: ['dissociative-amnesia-episode', 'dissociative-fugue', 'dissociative-time-loss'],
+  },
+
+  // Acute Stress Disorder (DC 9413)
+  ACUTE_STRESS_DISORDER: {
+    id: 'acute-stress-disorder',
+    name: 'Acute Stress Disorder',
+    diagnosticCode: '9413',
+    cfrReference: '38 CFR 4.130',
+    symptomIds: ['acute-stress-intrusion', 'acute-stress-avoidance', 'acute-stress-arousal', 'acute-stress-dissociation'],
+  },
+
+  // Personality Disorders (DC 9301)
+  ANTISOCIAL_PERSONALITY_DISORDER: {
+    id: 'antisocial-personality-disorder',
+    name: 'Antisocial Personality Disorder',
+    diagnosticCode: '9301',
+    cfrReference: '38 CFR 4.130',
+    symptomIds: ['personality-antisocial-behaviors', 'personality-disorder-occupational-impairment', 'personality-disorder-social-impairment'],
+  },
+  BORDERLINE_PERSONALITY_DISORDER: {
+    id: 'borderline-personality-disorder',
+    name: 'Borderline Personality Disorder',
+    diagnosticCode: '9301',
+    cfrReference: '38 CFR 4.130',
+    symptomIds: ['personality-borderline-instability', 'personality-borderline-fear-abandonment', 'personality-borderline-self-harm', 'personality-disorder-occupational-impairment', 'personality-disorder-social-impairment'],
+  },
+  NARCISSISTIC_PERSONALITY_DISORDER: {
+    id: 'narcissistic-personality-disorder',
+    name: 'Narcissistic Personality Disorder',
+    diagnosticCode: '9301',
+    cfrReference: '38 CFR 4.130',
+    symptomIds: ['personality-narcissistic-grandiosity', 'personality-narcissistic-lack-empathy', 'personality-disorder-occupational-impairment', 'personality-disorder-social-impairment'],
+  },
+  AVOIDANT_PERSONALITY_DISORDER: {
+    id: 'avoidant-personality-disorder',
+    name: 'Avoidant Personality Disorder',
+    diagnosticCode: '9301',
+    cfrReference: '38 CFR 4.130',
+    symptomIds: ['personality-avoidant-social-inhibition', 'personality-avoidant-fear-rejection', 'personality-disorder-occupational-impairment', 'personality-disorder-social-impairment'],
+  },
 };
 
 
@@ -9704,7 +9896,7 @@ export const CAMPYLOBACTER_CRITERIA = {
       summary: 'Severe complications (Guillain-Barré syndrome or severe reactive arthritis)',
       criteria: {
         severeComplications: true,
-        guillaинBarre: true,
+        guillainBarre: true,
       },
       criteriaDescription: [
         'Severe post-infectious complications:',
@@ -10935,6 +11127,333 @@ export const BENIGN_ORAL_NEOPLASM_CRITERIA = {
   ],
 };
 
+// ============================================
+// PHASE 8A: MENTAL HEALTH EXPANSION - RATING CRITERIA
+// High-Priority Trackable Conditions
+// ============================================
+
+// ============================================
+// SOMATIC SYMPTOM DISORDER CRITERIA (DC 9421)
+// ============================================
+
+export const SOMATIC_SYMPTOM_DISORDER_CRITERIA = {
+  diagnosticCode: '9421',
+  condition: 'Somatic Symptom Disorder',
+  cfrReference: '38 CFR 4.130, Diagnostic Code 9421',
+  usesSharedCriteria: true,
+  sharedCriteria: MENTAL_HEALTH_SHARED_CRITERIA,
+  ratings: MENTAL_HEALTH_SHARED_CRITERIA.ratings,
+  definitions: {
+    ...MENTAL_HEALTH_SHARED_CRITERIA.definitions,
+    somaticSymptomDisorder: {
+      term: 'Somatic Symptom Disorder',
+      definition: 'One or more somatic symptoms that are distressing or result in significant disruption of daily life, with excessive thoughts, feelings, or behaviors related to the somatic symptoms.',
+    },
+    healthAnxiety: {
+      term: 'Health Anxiety',
+      definition: 'Excessive worry and preoccupation with having or acquiring a serious illness, despite medical reassurance.',
+    },
+  },
+  importantNotes: [
+    ...MENTAL_HEALTH_SHARED_CRITERIA.importantNotes,
+    'Focus is on psychological response to physical symptoms, not the physical symptoms themselves',
+    'Document frequency of medical visits and how symptoms affect daily functioning',
+    'Time spent worrying about health is key evidence',
+  ],
+};
+
+// ============================================
+// OTHER SPECIFIED SOMATIC SYMPTOM DISORDER CRITERIA (DC 9422)
+// ============================================
+
+export const OTHER_SPECIFIED_SOMATIC_CRITERIA = {
+  diagnosticCode: '9422',
+  condition: 'Other Specified Somatic Symptom and Related Disorder',
+  cfrReference: '38 CFR 4.130, Diagnostic Code 9422',
+  usesSharedCriteria: true,
+  sharedCriteria: MENTAL_HEALTH_SHARED_CRITERIA,
+  ratings: MENTAL_HEALTH_SHARED_CRITERIA.ratings,
+  definitions: SOMATIC_SYMPTOM_DISORDER_CRITERIA.definitions,
+  importantNotes: [
+    ...MENTAL_HEALTH_SHARED_CRITERIA.importantNotes,
+    'Used when somatic symptoms cause distress but do not meet full criteria for specific somatic disorder',
+    'Rated using the same General Rating Formula as other mental disorders',
+  ],
+};
+
+// ============================================
+// UNSPECIFIED SOMATIC SYMPTOM DISORDER CRITERIA (DC 9423)
+// ============================================
+
+export const UNSPECIFIED_SOMATIC_CRITERIA = {
+  diagnosticCode: '9423',
+  condition: 'Unspecified Somatic Symptom and Related Disorder',
+  cfrReference: '38 CFR 4.130, Diagnostic Code 9423',
+  usesSharedCriteria: true,
+  sharedCriteria: MENTAL_HEALTH_SHARED_CRITERIA,
+  ratings: MENTAL_HEALTH_SHARED_CRITERIA.ratings,
+  definitions: SOMATIC_SYMPTOM_DISORDER_CRITERIA.definitions,
+  importantNotes: [
+    ...MENTAL_HEALTH_SHARED_CRITERIA.importantNotes,
+    'Used when somatic symptoms are present but do not meet full criteria for a specific disorder',
+    'Rated using the same General Rating Formula',
+  ],
+};
+
+// ============================================
+// ILLNESS ANXIETY DISORDER CRITERIA (DC 9425)
+// ============================================
+
+export const ILLNESS_ANXIETY_CRITERIA = {
+  diagnosticCode: '9425',
+  condition: 'Illness Anxiety Disorder',
+  cfrReference: '38 CFR 4.130, Diagnostic Code 9425',
+  usesSharedCriteria: true,
+  sharedCriteria: MENTAL_HEALTH_SHARED_CRITERIA,
+  ratings: MENTAL_HEALTH_SHARED_CRITERIA.ratings,
+  definitions: {
+    ...MENTAL_HEALTH_SHARED_CRITERIA.definitions,
+    illnessAnxiety: {
+      term: 'Illness Anxiety Disorder',
+      definition: 'Preoccupation with having or acquiring a serious illness. Somatic symptoms are not present or are only mild. High level of health anxiety and excessive health-related behaviors.',
+    },
+    bodySurveillance: {
+      term: 'Body Surveillance',
+      definition: 'Excessive self-examination and monitoring of the body for signs of illness, often leading to increased anxiety.',
+    },
+    reassuranceSeeking: {
+      term: 'Reassurance Seeking',
+      definition: 'Repeatedly seeking medical evaluations, diagnostic tests, or reassurance from doctors despite negative results.',
+    },
+  },
+  importantNotes: [
+    ...MENTAL_HEALTH_SHARED_CRITERIA.importantNotes,
+    'Different from Somatic Symptom Disorder - minimal physical symptoms present',
+    'Focus is on anxiety about having illness despite medical evidence to contrary',
+    'Document frequency of doctor visits, tests requested, and reassurance seeking',
+  ],
+};
+
+// ============================================
+// OTHER SPECIFIED ANXIETY DISORDER CRITERIA (DC 9410)
+// ============================================
+
+export const OTHER_SPECIFIED_ANXIETY_CRITERIA = {
+  diagnosticCode: '9410',
+  condition: 'Other Specified Anxiety Disorder',
+  cfrReference: '38 CFR 4.130, Diagnostic Code 9410',
+  usesSharedCriteria: true,
+  sharedCriteria: MENTAL_HEALTH_SHARED_CRITERIA,
+  ratings: MENTAL_HEALTH_SHARED_CRITERIA.ratings,
+  definitions: MENTAL_HEALTH_SHARED_CRITERIA.definitions,
+  importantNotes: [
+    ...MENTAL_HEALTH_SHARED_CRITERIA.importantNotes,
+    'Used when anxiety symptoms cause distress but do not meet full criteria for specific anxiety disorder',
+    'Rated using the same General Rating Formula as other anxiety disorders',
+  ],
+};
+
+// ============================================
+// DEPERSONALIZATION/DEREALIZATION DISORDER CRITERIA (DC 9417)
+// ============================================
+
+export const DEPERSONALIZATION_DEREALIZATION_CRITERIA = {
+  diagnosticCode: '9417',
+  condition: 'Depersonalization/Derealization Disorder',
+  cfrReference: '38 CFR 4.130, Diagnostic Code 9417',
+  usesSharedCriteria: true,
+  sharedCriteria: MENTAL_HEALTH_SHARED_CRITERIA,
+  ratings: MENTAL_HEALTH_SHARED_CRITERIA.ratings,
+  definitions: {
+    ...MENTAL_HEALTH_SHARED_CRITERIA.definitions,
+    depersonalization: {
+      term: 'Depersonalization',
+      definition: 'Experiences of unreality, detachment, or being an outside observer with respect to one\'s thoughts, feelings, sensations, body, or actions (e.g., feeling like a robot, in a dream, or on autopilot).',
+    },
+    derealization: {
+      term: 'Derealization',
+      definition: 'Experiences of unreality or detachment with respect to surroundings (e.g., individuals or objects are experienced as unreal, dreamlike, foggy, lifeless, or visually distorted).',
+    },
+    realityTesting: {
+      term: 'Reality Testing',
+      definition: 'The ability to distinguish reality from fantasy. In depersonalization/derealization, reality testing remains intact - the person knows the feelings are not real.',
+    },
+  },
+  importantNotes: [
+    ...MENTAL_HEALTH_SHARED_CRITERIA.importantNotes,
+    'Reality testing remains intact - person knows experiences are not real',
+    'Document frequency and duration of episodes',
+    'Track impact on daily functioning and relationships',
+    'Different from psychosis - no delusions or hallucinations',
+  ],
+};
+
+// ============================================
+// CYCLOTHYMIC DISORDER CRITERIA (DC 9431)
+// ============================================
+
+export const CYCLOTHYMIC_CRITERIA = {
+  diagnosticCode: '9431',
+  condition: 'Cyclothymic Disorder',
+  cfrReference: '38 CFR 4.130, Diagnostic Code 9431',
+  usesSharedCriteria: true,
+  sharedCriteria: MENTAL_HEALTH_SHARED_CRITERIA,
+  ratings: MENTAL_HEALTH_SHARED_CRITERIA.ratings,
+  definitions: {
+    ...MENTAL_HEALTH_SHARED_CRITERIA.definitions,
+    cyclothymia: {
+      term: 'Cyclothymic Disorder',
+      definition: 'A chronic fluctuating mood disturbance with numerous periods of hypomanic symptoms and depressive symptoms for at least 2 years. Less severe than bipolar disorder but persistent.',
+    },
+    hypomanicSymptoms: {
+      term: 'Hypomanic Symptoms',
+      definition: 'Elevated mood, increased activity or energy that is clearly different from normal but not as severe as full mania. Does not cause marked impairment.',
+    },
+  },
+  importantNotes: [
+    ...MENTAL_HEALTH_SHARED_CRITERIA.importantNotes,
+    'Chronic mood instability for at least 2 years',
+    'Less severe than Bipolar Disorder but more persistent',
+    'Document pattern of mood swings over time',
+    'Track impact on work, relationships, and daily functioning',
+  ],
+};
+
+// ============================================
+// EATING DISORDERS - SPECIAL RATING FORMULA
+// Different from General Mental Health Rating Formula
+// Based on weight loss and incapacitating episodes
+// ============================================
+
+// ============================================
+// ANOREXIA NERVOSA CRITERIA (DC 9520)
+// ============================================
+
+export const ANOREXIA_NERVOSA_CRITERIA = {
+  diagnosticCode: '9520',
+  condition: 'Anorexia Nervosa',
+  cfrReference: '38 CFR 4.130, Diagnostic Code 9520',
+  usesSharedCriteria: false, // SPECIAL RATING FORMULA
+
+  ratingFormula: 'General Rating Formula for Eating Disorders',
+
+  ratings: [
+    {
+      percent: 100,
+      criteria: [
+        'Self-induced weight loss to less than 80% of expected minimum weight',
+        'Incapacitating episodes of at least 6 weeks total duration per year',
+        'Requiring hospitalization more than twice a year for parenteral nutrition or tube feeding',
+      ],
+      description: 'Severe, life-threatening weight loss with frequent hospitalizations',
+    },
+    {
+      percent: 60,
+      criteria: [
+        'Self-induced weight loss to less than 85% of expected minimum weight',
+        'Incapacitating episodes of 6 or more weeks total duration per year',
+      ],
+      description: 'Severe weight loss with extended incapacitating episodes',
+    },
+    {
+      percent: 30,
+      criteria: [
+        'Self-induced weight loss to less than 85% of expected minimum weight',
+        'Incapacitating episodes of more than 2 but less than 6 weeks total duration per year',
+      ],
+      description: 'Significant weight loss with moderate incapacitating episodes',
+    },
+    {
+      percent: 10,
+      criteria: [
+        'Binge eating followed by self-induced vomiting or other measures to prevent weight gain',
+        'OR resistance to weight gain even when below expected minimum weight',
+        'With diagnosis of an eating disorder but without incapacitating episodes',
+      ],
+      description: 'Eating disorder behaviors present but minimal incapacitation',
+    },
+    {
+      percent: 0,
+      criteria: [
+        'Diagnosed eating disorder in remission with no current symptoms',
+      ],
+      description: 'Diagnosis established but currently asymptomatic',
+    },
+  ],
+
+  definitions: {
+    incapacitatingEpisode: {
+      term: 'Incapacitating Episode',
+      definition: 'A period during which bed rest and treatment by a physician are required. This is different from outpatient treatment or counseling.',
+    },
+    expectedMinimumWeight: {
+      term: 'Expected Minimum Weight',
+      definition: 'The minimum healthy weight for a person\'s height, age, and sex based on medical standards (typically BMI of 18.5 or above).',
+    },
+    parenteralNutrition: {
+      term: 'Parenteral Nutrition',
+      definition: 'Intravenous feeding - nutrition delivered directly into the bloodstream when oral intake is inadequate.',
+    },
+    tubeFeeding: {
+      term: 'Tube Feeding',
+      definition: 'Nasogastric or gastric tube feeding when unable or unwilling to consume adequate nutrition orally.',
+    },
+    selfInducedWeightLoss: {
+      term: 'Self-Induced Weight Loss',
+      definition: 'Weight loss through deliberate restriction of food intake, purging, excessive exercise, or other compensatory behaviors.',
+    },
+  },
+
+  importantNotes: [
+    'Eating disorders use a DIFFERENT rating formula than other mental health conditions',
+    'Focus on weight loss percentage and incapacitating episodes requiring bed rest/hospitalization',
+    'An "incapacitating episode" requires bed rest and physician treatment - not just therapy',
+    'Document actual weight vs. expected minimum weight for height/age/sex',
+    'Track hospitalizations, tube feeding, and parenteral nutrition',
+    'Medical records showing weight, treatment, and hospitalizations are critical',
+  ],
+};
+
+// ============================================
+// BULIMIA NERVOSA CRITERIA (DC 9521)
+// ============================================
+
+export const BULIMIA_NERVOSA_CRITERIA = {
+  diagnosticCode: '9521',
+  condition: 'Bulimia Nervosa',
+  cfrReference: '38 CFR 4.130, Diagnostic Code 9521',
+  usesSharedCriteria: false, // SPECIAL RATING FORMULA
+
+  ratingFormula: 'General Rating Formula for Eating Disorders',
+
+  ratings: ANOREXIA_NERVOSA_CRITERIA.ratings, // Same rating scale as anorexia
+
+  definitions: {
+    ...ANOREXIA_NERVOSA_CRITERIA.definitions,
+    bingeEating: {
+      term: 'Binge Eating',
+      definition: 'Eating an abnormally large amount of food in a discrete period of time with a sense of lack of control over eating during the episode.',
+    },
+    purging: {
+      term: 'Purging',
+      definition: 'Self-induced vomiting or misuse of laxatives, diuretics, or enemas to prevent weight gain after binge eating.',
+    },
+    compensatoryBehaviors: {
+      term: 'Compensatory Behaviors',
+      definition: 'Behaviors used to prevent weight gain from binge eating, including fasting, excessive exercise, or misuse of medications.',
+    },
+  },
+
+  importantNotes: [
+    'Bulimia uses the SAME special rating formula as Anorexia - not the general mental health formula',
+    'Focus on binge-purge cycles and weight-control behaviors',
+    'Document frequency of binge/purge episodes',
+    'Track incapacitating episodes requiring bed rest and physician treatment',
+    'Weight may be normal or above normal, unlike anorexia',
+    'Medical complications from purging should be documented separately',
+  ],
+};
+
 
 // ============================================
 // ANALYSIS FUNCTIONS - MIGRAINE
@@ -11093,6 +11612,383 @@ export const analyzeMigraineLogs = (logs, options = {}) => {
     disclaimer: 'This analysis is for documentation guidance only. The VA makes all final rating determinations based on the complete evidence of record.',
   };
 };
+
+// SCHIZOPHRENIA CRITERIA (DC 9201)
+// ============================================
+export const SCHIZOPHRENIA_CRITERIA = {
+  diagnosticCode: '9201',
+  condition: 'Schizophrenia',
+  cfrReference: '38 CFR 4.130, Diagnostic Code 9201',
+  usesSharedCriteria: true,
+  sharedCriteria: MENTAL_HEALTH_SHARED_CRITERIA,
+  ratings: MENTAL_HEALTH_SHARED_CRITERIA.ratings,
+  definitions: {
+    ...MENTAL_HEALTH_SHARED_CRITERIA.definitions,
+    positiveSymptoms: {
+      term: 'Positive Symptoms',
+      definition: 'Symptoms that represent an excess or distortion of normal functions: hallucinations, delusions, disorganized speech, disorganized/catatonic behavior.',
+    },
+    negativeSymptoms: {
+      term: 'Negative Symptoms',
+      definition: 'Symptoms that represent a diminution or loss of normal functions: flat affect, alogia (poverty of speech), avolition (lack of motivation), anhedonia (inability to feel pleasure), social withdrawal.',
+    },
+    hallucinations: {
+      term: 'Hallucinations',
+      definition: 'Perception-like experiences without external stimulus. Most common in schizophrenia are auditory (hearing voices), but can also be visual, tactile, olfactory, or gustatory.',
+    },
+    delusions: {
+      term: 'Delusions',
+      definition: 'Fixed false beliefs not shared by others in the same culture. Common types: persecutory (being harmed), grandiose (special powers), referential (messages directed at person), somatic (about body).',
+    },
+  },
+  importantNotes: [
+    ...MENTAL_HEALTH_SHARED_CRITERIA.importantNotes,
+    'Schizophrenia typically requires hospitalization during acute episodes - document all hospitalizations',
+    'Persistent hallucinations or delusions are specifically mentioned in 100% criteria',
+    'Grossly inappropriate behavior is a 100% indicator',
+    'Continuous medication is often necessary - document compliance and side effects',
+    'Track both positive symptoms (hallucinations, delusions) and negative symptoms (flat affect, withdrawal)',
+  ],
+};
+
+// ============================================
+// SCHIZOAFFECTIVE DISORDER CRITERIA (DC 9202)
+// ============================================
+export const SCHIZOAFFECTIVE_DISORDER_CRITERIA = {
+  diagnosticCode: '9202',
+  condition: 'Schizoaffective Disorder',
+  cfrReference: '38 CFR 4.130, Diagnostic Code 9202',
+  usesSharedCriteria: true,
+  sharedCriteria: MENTAL_HEALTH_SHARED_CRITERIA,
+  ratings: MENTAL_HEALTH_SHARED_CRITERIA.ratings,
+  definitions: {
+    ...MENTAL_HEALTH_SHARED_CRITERIA.definitions,
+    schizoaffective: {
+      term: 'Schizoaffective Disorder',
+      definition: 'A condition combining symptoms of schizophrenia (hallucinations, delusions) with mood disorder symptoms (depression or mania). Must have psychotic symptoms independent of mood episodes.',
+    },
+    moodEpisode: {
+      term: 'Mood Episode',
+      definition: 'Period of major depression, mania, or mixed features that occurs alongside psychotic symptoms in schizoaffective disorder.',
+    },
+  },
+  importantNotes: [
+    ...MENTAL_HEALTH_SHARED_CRITERIA.importantNotes,
+    'Schizoaffective combines features of both schizophrenia and mood disorders',
+    'Document both psychotic symptoms AND mood episodes (depression or mania)',
+    'Treatment typically requires both antipsychotics and mood stabilizers',
+  ],
+};
+
+// ============================================
+// DELUSIONAL DISORDER CRITERIA (DC 9203)
+// ============================================
+export const DELUSIONAL_DISORDER_CRITERIA = {
+  diagnosticCode: '9203',
+  condition: 'Delusional Disorder',
+  cfrReference: '38 CFR 4.130, Diagnostic Code 9203',
+  usesSharedCriteria: true,
+  sharedCriteria: MENTAL_HEALTH_SHARED_CRITERIA,
+  ratings: MENTAL_HEALTH_SHARED_CRITERIA.ratings,
+  definitions: {
+    ...MENTAL_HEALTH_SHARED_CRITERIA.definitions,
+    delusionalDisorder: {
+      term: 'Delusional Disorder',
+      definition: 'Persistent delusions without other psychotic symptoms. Person functions relatively normally except in areas affected by the delusion.',
+    },
+  },
+  importantNotes: [
+    ...MENTAL_HEALTH_SHARED_CRITERIA.importantNotes,
+    'Characterized by persistent delusions without hallucinations or other schizophrenia symptoms',
+    'Functional impairment may be limited to areas directly affected by the delusion',
+    'Document how delusions impact occupational and social functioning',
+  ],
+};
+
+// ============================================
+// PSYCHOTIC DISORDER NOS CRITERIA (DC 9204)
+// ============================================
+export const PSYCHOTIC_DISORDER_NOS_CRITERIA = {
+  diagnosticCode: '9204',
+  condition: 'Psychotic Disorder NOS',
+  cfrReference: '38 CFR 4.130, Diagnostic Code 9204',
+  usesSharedCriteria: true,
+  sharedCriteria: MENTAL_HEALTH_SHARED_CRITERIA,
+  ratings: MENTAL_HEALTH_SHARED_CRITERIA.ratings,
+  definitions: {
+    ...MENTAL_HEALTH_SHARED_CRITERIA.definitions,
+    nos: {
+      term: 'NOS (Not Otherwise Specified)',
+      definition: 'Used when psychotic symptoms are present but don\'t meet full criteria for a specific psychotic disorder.',
+    },
+  },
+  importantNotes: [
+    ...MENTAL_HEALTH_SHARED_CRITERIA.importantNotes,
+    'Catch-all diagnosis for psychotic symptoms that don\'t fit other categories',
+    'Document all psychotic symptoms and their functional impact',
+  ],
+};
+
+// ============================================
+// BRIEF PSYCHOTIC DISORDER CRITERIA (DC 9205)
+// ============================================
+export const BRIEF_PSYCHOTIC_DISORDER_CRITERIA = {
+  diagnosticCode: '9205',
+  condition: 'Brief Psychotic Disorder',
+  cfrReference: '38 CFR 4.130, Diagnostic Code 9205',
+  usesSharedCriteria: true,
+  sharedCriteria: MENTAL_HEALTH_SHARED_CRITERIA,
+  ratings: MENTAL_HEALTH_SHARED_CRITERIA.ratings,
+  definitions: {
+    ...MENTAL_HEALTH_SHARED_CRITERIA.definitions,
+    briefPsychotic: {
+      term: 'Brief Psychotic Disorder',
+      definition: 'Psychotic symptoms lasting at least 1 day but less than 1 month, with eventual full return to normal functioning.',
+    },
+  },
+  importantNotes: [
+    ...MENTAL_HEALTH_SHARED_CRITERIA.importantNotes,
+    'Duration is key: symptoms last less than 1 month',
+    'If symptoms persist beyond 1 month, diagnosis may change to schizophreniform or schizophrenia',
+    'Document episode frequency, duration, and recovery between episodes',
+    'Multiple episodes may warrant higher ratings',
+  ],
+};
+
+// ============================================
+// BINGE EATING DISORDER CRITERIA (DC 9520)
+// ============================================
+export const BINGE_EATING_DISORDER_CRITERIA = {
+  diagnosticCode: '9520',
+  condition: 'Binge Eating Disorder',
+  cfrReference: '38 CFR 4.130, Diagnostic Code 9520',
+  usesSharedCriteria: true,
+  sharedCriteria: MENTAL_HEALTH_SHARED_CRITERIA,
+  ratings: MENTAL_HEALTH_SHARED_CRITERIA.ratings,
+  definitions: {
+    ...MENTAL_HEALTH_SHARED_CRITERIA.definitions,
+    bingeEating: {
+      term: 'Binge Eating',
+      definition: 'Eating significantly more food than most people would in a similar period, with a sense of lack of control over eating during the episode.',
+    },
+    lossOfControl: {
+      term: 'Loss of Control',
+      definition: 'Feeling unable to stop eating or control what or how much one is eating during a binge episode.',
+    },
+  },
+  importantNotes: [
+    ...MENTAL_HEALTH_SHARED_CRITERIA.importantNotes,
+    'Unlike anorexia/bulimia, binge eating disorder typically involves weight GAIN, not loss',
+    'NO compensatory behaviors (purging, excessive exercise) - this distinguishes it from bulimia',
+    'Frequency matters: episodes typically occur at least once weekly for 3 months',
+    'Document obesity-related health complications (diabetes, hypertension, sleep apnea)',
+    'Marked distress about binge eating is a key diagnostic criterion',
+  ],
+};
+
+// ============================================
+// DISSOCIATIVE IDENTITY DISORDER CRITERIA (DC 9416)
+// ============================================
+export const DISSOCIATIVE_IDENTITY_DISORDER_CRITERIA = {
+  diagnosticCode: '9416',
+  condition: 'Dissociative Identity Disorder',
+  cfrReference: '38 CFR 4.130, Diagnostic Code 9416',
+  usesSharedCriteria: true,
+  sharedCriteria: MENTAL_HEALTH_SHARED_CRITERIA,
+  ratings: MENTAL_HEALTH_SHARED_CRITERIA.ratings,
+  definitions: {
+    ...MENTAL_HEALTH_SHARED_CRITERIA.definitions,
+    dissociativeIdentity: {
+      term: 'Dissociative Identity Disorder (DID)',
+      definition: 'Formerly Multiple Personality Disorder. Characterized by two or more distinct personality states with gaps in recall of everyday events, personal information, and/or traumatic events.',
+    },
+    identitySwitching: {
+      term: 'Identity Switching',
+      definition: 'Transition from one personality state to another, often accompanied by changes in behavior, voice, mannerisms, and memory.',
+    },
+    dissociativeAmnesia: {
+      term: 'Dissociative Amnesia',
+      definition: 'Inability to recall important autobiographical information, usually of a traumatic or stressful nature, inconsistent with ordinary forgetting.',
+    },
+  },
+  importantNotes: [
+    ...MENTAL_HEALTH_SHARED_CRITERIA.importantNotes,
+    'Often co-occurs with PTSD due to trauma history',
+    'Document identity switching episodes, amnesia periods, and impact on functioning',
+    'Memory gaps for time periods and important events are key evidence',
+    'Track number of identities and their characteristics if disclosed in therapy',
+  ],
+};
+
+// ============================================
+// DISSOCIATIVE AMNESIA CRITERIA (DC 9417)
+// ============================================
+export const DISSOCIATIVE_AMNESIA_CRITERIA = {
+  diagnosticCode: '9417',
+  condition: 'Dissociative Amnesia',
+  cfrReference: '38 CFR 4.130, Diagnostic Code 9417',
+  usesSharedCriteria: true,
+  sharedCriteria: MENTAL_HEALTH_SHARED_CRITERIA,
+  ratings: MENTAL_HEALTH_SHARED_CRITERIA.ratings,
+  definitions: {
+    ...MENTAL_HEALTH_SHARED_CRITERIA.definitions,
+    dissociativeAmnesia: {
+      term: 'Dissociative Amnesia',
+      definition: 'Inability to recall important autobiographical information, usually traumatic or stressful, that is inconsistent with ordinary forgetting.',
+    },
+    fugueState: {
+      term: 'Dissociative Fugue',
+      definition: 'A subtype of dissociative amnesia involving sudden, unexpected travel away from home with inability to recall one\'s past and confusion about identity.',
+    },
+  },
+  importantNotes: [
+    ...MENTAL_HEALTH_SHARED_CRITERIA.importantNotes,
+    'Memory loss is for specific events, time periods, or autobiographical information',
+    'Not due to substance use, medical condition, or normal forgetting',
+    'Fugue states (if present) are particularly impairing - document thoroughly',
+    'Document time periods of amnesia and any recovery of memories',
+  ],
+};
+
+// ============================================
+// ACUTE STRESS DISORDER CRITERIA (DC 9413)
+// ============================================
+export const ACUTE_STRESS_DISORDER_CRITERIA = {
+  diagnosticCode: '9413',
+  condition: 'Acute Stress Disorder',
+  cfrReference: '38 CFR 4.130, Diagnostic Code 9413',
+  usesSharedCriteria: true,
+  sharedCriteria: MENTAL_HEALTH_SHARED_CRITERIA,
+  ratings: MENTAL_HEALTH_SHARED_CRITERIA.ratings,
+  definitions: {
+    ...MENTAL_HEALTH_SHARED_CRITERIA.definitions,
+    acuteStress: {
+      term: 'Acute Stress Disorder',
+      definition: 'Similar to PTSD but occurs within 3 days to 1 month after trauma exposure. If symptoms persist beyond 1 month, diagnosis typically changes to PTSD.',
+    },
+    dissociativeSymptoms: {
+      term: 'Dissociative Symptoms in ASD',
+      definition: 'Altered sense of reality, detachment, numbing, reduced awareness of surroundings, derealization, or depersonalization that occurs after trauma.',
+    },
+  },
+  importantNotes: [
+    ...MENTAL_HEALTH_SHARED_CRITERIA.importantNotes,
+    'Timing is critical: occurs 3 days to 1 month after trauma',
+    'If symptoms persist beyond 1 month, diagnosis becomes PTSD',
+    'Document the traumatic stressor, onset of symptoms, and timeline',
+    'Dissociative symptoms are prominent in acute stress disorder',
+  ],
+};
+
+// ============================================
+// ANTISOCIAL PERSONALITY DISORDER CRITERIA (DC 9301)
+// ============================================
+export const ANTISOCIAL_PERSONALITY_DISORDER_CRITERIA = {
+  diagnosticCode: '9301',
+  condition: 'Antisocial Personality Disorder',
+  cfrReference: '38 CFR 4.130, Diagnostic Code 9301',
+  usesSharedCriteria: true,
+  sharedCriteria: MENTAL_HEALTH_SHARED_CRITERIA,
+  ratings: MENTAL_HEALTH_SHARED_CRITERIA.ratings,
+  definitions: {
+    ...MENTAL_HEALTH_SHARED_CRITERIA.definitions,
+    antisocialPersonality: {
+      term: 'Antisocial Personality Disorder',
+      definition: 'Pattern of disregard for and violation of the rights of others, occurring since age 15. Characterized by deceitfulness, impulsivity, irritability, lack of remorse.',
+    },
+  },
+  importantNotes: [
+    ...MENTAL_HEALTH_SHARED_CRITERIA.importantNotes,
+    'Document pattern of interpersonal conflicts and legal issues',
+    'Employment history often shows frequent job changes or terminations',
+    'Track treatment compliance - often poor in antisocial personality',
+    'Focus documentation on occupational and social impairment',
+  ],
+};
+
+// ============================================
+// BORDERLINE PERSONALITY DISORDER CRITERIA (DC 9301)
+// ============================================
+export const BORDERLINE_PERSONALITY_DISORDER_CRITERIA = {
+  diagnosticCode: '9301',
+  condition: 'Borderline Personality Disorder',
+  cfrReference: '38 CFR 4.130, Diagnostic Code 9301',
+  usesSharedCriteria: true,
+  sharedCriteria: MENTAL_HEALTH_SHARED_CRITERIA,
+  ratings: MENTAL_HEALTH_SHARED_CRITERIA.ratings,
+  definitions: {
+    ...MENTAL_HEALTH_SHARED_CRITERIA.definitions,
+    borderlinePersonality: {
+      term: 'Borderline Personality Disorder',
+      definition: 'Pattern of instability in interpersonal relationships, self-image, and emotions. Marked impulsivity, fear of abandonment, identity disturbance, and self-harm.',
+    },
+    fearOfAbandonment: {
+      term: 'Fear of Abandonment',
+      definition: 'Frantic efforts to avoid real or imagined abandonment, leading to impulsive actions or relationship instability.',
+    },
+  },
+  importantNotes: [
+    ...MENTAL_HEALTH_SHARED_CRITERIA.importantNotes,
+    'Self-harm and suicidal behavior are common - document all incidents',
+    'Hospitalization for safety is often necessary - track frequency',
+    'Unstable relationships and fear of abandonment cause significant impairment',
+    'Document identity disturbance and emotional instability',
+    'Dialectical Behavior Therapy (DBT) is evidence-based treatment',
+  ],
+};
+
+// ============================================
+// NARCISSISTIC PERSONALITY DISORDER CRITERIA (DC 9301)
+// ============================================
+export const NARCISSISTIC_PERSONALITY_DISORDER_CRITERIA = {
+  diagnosticCode: '9301',
+  condition: 'Narcissistic Personality Disorder',
+  cfrReference: '38 CFR 4.130, Diagnostic Code 9301',
+  usesSharedCriteria: true,
+  sharedCriteria: MENTAL_HEALTH_SHARED_CRITERIA,
+  ratings: MENTAL_HEALTH_SHARED_CRITERIA.ratings,
+  definitions: {
+    ...MENTAL_HEALTH_SHARED_CRITERIA.definitions,
+    narcissisticPersonality: {
+      term: 'Narcissistic Personality Disorder',
+      definition: 'Pattern of grandiosity, need for admiration, and lack of empathy. Characterized by sense of entitlement, exploitative interpersonal relationships.',
+    },
+  },
+  importantNotes: [
+    ...MENTAL_HEALTH_SHARED_CRITERIA.importantNotes,
+    'Document interpersonal conflicts and relationship failures',
+    'Employment issues often stem from conflicts with authority or peers',
+    'Lack of empathy causes significant social impairment',
+    'Treatment compliance is often poor',
+  ],
+};
+
+// ============================================
+// AVOIDANT PERSONALITY DISORDER CRITERIA (DC 9301)
+// ============================================
+export const AVOIDANT_PERSONALITY_DISORDER_CRITERIA = {
+  diagnosticCode: '9301',
+  condition: 'Avoidant Personality Disorder',
+  cfrReference: '38 CFR 4.130, Diagnostic Code 9301',
+  usesSharedCriteria: true,
+  sharedCriteria: MENTAL_HEALTH_SHARED_CRITERIA,
+  ratings: MENTAL_HEALTH_SHARED_CRITERIA.ratings,
+  definitions: {
+    ...MENTAL_HEALTH_SHARED_CRITERIA.definitions,
+    avoidantPersonality: {
+      term: 'Avoidant Personality Disorder',
+      definition: 'Pattern of social inhibition, feelings of inadequacy, and hypersensitivity to negative evaluation. Avoids social situations due to fear of criticism or rejection.',
+    },
+  },
+  importantNotes: [
+    ...MENTAL_HEALTH_SHARED_CRITERIA.importantNotes,
+    'Social avoidance causes significant occupational impairment',
+    'May avoid job promotions or opportunities due to fear of increased social demands',
+    'Relationship difficulties due to fear of rejection',
+    'Document missed opportunities and social avoidance patterns',
+  ],
+};
+
 
 // ============================================
 // ANALYSIS FUNCTIONS - SLEEP APNEA
@@ -11349,6 +12245,16 @@ const analyzeMentalHealthCondition = (
         'Include notes about how symptoms affect work and relationships',
         'Document treatment and medication if applicable',
       ],
+      // Empty metrics for consistency
+      metrics: {
+        totalLogs: 0,
+        avgSeverity: 0,
+        severeSymptoms: 0,
+        hospitalized: false,
+        hospitalizationCount: 0,
+        dangerToSelf: false,
+        dangerToOthers: false,
+      },
     };
   }
 
@@ -11559,6 +12465,34 @@ const analyzeMentalHealthCondition = (
     ];
   }
 
+  // ===== CALCULATE METRICS FOR RATING CARD DISPLAY =====
+  // Count logs with severity 8+ as severe episodes
+  const severeSymptoms = relevantLogs.filter(log => log.severity >= 8).length;
+
+  // Calculate average severity
+  const logsWithSeverity = relevantLogs.filter(log => log.severity && log.severity > 0);
+  const avgSeverity = logsWithSeverity.length > 0
+    ? logsWithSeverity.reduce((sum, log) => sum + log.severity, 0) / logsWithSeverity.length
+    : 0;
+
+  // Check for hospitalization indicators
+  const hospitalizationLogs = relevantLogs.filter(log => {
+    const notes = (log.notes || '').toLowerCase();
+    return notes.includes('hospital') || notes.includes('inpatient') || notes.includes('admitted');
+  });
+  const hospitalized = hospitalizationLogs.length > 0;
+  const hospitalizationCount = hospitalizationLogs.length;
+
+  // Check for danger indicators
+  const dangerToSelf = relevantLogs.some(log => {
+    const notes = (log.notes || '').toLowerCase();
+    return notes.includes('suicidal') || notes.includes('self-harm') || notes.includes('danger to self');
+  });
+  const dangerToOthers = relevantLogs.some(log => {
+    const notes = (log.notes || '').toLowerCase();
+    return notes.includes('homicidal') || notes.includes('danger to others') || notes.includes('violent');
+  });
+
   return {
     hasData: true,
     condition: conditionCriteria.condition,
@@ -11570,6 +12504,16 @@ const analyzeMentalHealthCondition = (
     evidence,
     gaps,
     criteria: conditionCriteria,
+    // Metrics for rating card display
+    metrics: {
+      totalLogs: relevantLogs.length,
+      avgSeverity,
+      severeSymptoms,
+      hospitalized,
+      hospitalizationCount,
+      dangerToSelf,
+      dangerToOthers,
+    },
     disclaimer: 'CRITICAL DISCLAIMER: Mental health ratings are based on professional evaluation of functional impairment in work and social settings, not symptom frequency alone. This analysis helps you understand what your documentation might support, but a comprehensive mental health evaluation is required for any rating determination. All mental health concerns should be discussed with a qualified provider.',
     crisisResources: {
       veteransCrisisLine: '988 then Press 1',
@@ -17122,7 +18066,7 @@ export const analyzeKidneyStonesLogs = (logs) => {
   return {
       condition: 'Kidney Stones (Nephrolithiasis)',
       diagnosticCode: '7508',
-      
+
     hasData: true,
     totalLogs: stoneLogs.length,
     supportedRating,
@@ -17229,7 +18173,7 @@ export const analyzeChronicRenalDiseaseLogs = (logs, options = {}) => {
   return {
       condition: 'Chronic Kidney Disease',
       diagnosticCode: '7530',
-      
+
     hasData: true,
     totalLogs: renalLogs.length,
     supportedRating,
@@ -17351,7 +18295,7 @@ export const analyzeVoidingDysfunctionLogs = (logs) => {
   return {
       condition: 'Voiding Dysfunction',
       diagnosticCode: '7542',
-      
+
     hasData: true,
     totalLogs: voidingLogs.length,
     supportedRating,
@@ -17426,7 +18370,7 @@ export const analyzeSphincterImpairmentLogs = (logs) => {
   return {
       condition: 'Sphincter Control Impairment',
       diagnosticCode: '7332',
-      
+
     hasData: true,
     totalLogs: sphincterLogs.length,
     supportedRating,
@@ -17566,7 +18510,7 @@ export const analyzeIronDeficiencyAnemiaLogs = (logs, options = {}) => {
   return {
       condition: 'Iron Deficiency Anemia',
       diagnosticCode: '7720',
-      
+
     hasData: true,
     supportedRating,
     rationale,
@@ -17613,7 +18557,7 @@ export const analyzeFolateDeficiencyAnemiaLogs = (logs, options = {}) => {
   return {
       condition: 'Folic Acid Deficiency Anemia',
       diagnosticCode: '7721',
-      
+
     hasData: true,
     supportedRating,
     rationale,
@@ -17756,7 +18700,7 @@ export const analyzeHemolyticAnemiaLogs = (logs, options = {}) => {
   return {
       condition: 'Acquired Hemolytic Anemia',
       diagnosticCode: '7723',
-      
+
     hasData: true,
     supportedRating,
     rationale,
@@ -17840,7 +18784,7 @@ export const analyzeSickleCellAnemiaLogs = (logs, options = {}) => {
   return {
       condition: 'Sickle Cell Anemia',
       diagnosticCode: '7714',
-      
+
     hasData: true,
     supportedRating,
     rationale,
@@ -17905,7 +18849,7 @@ export const analyzeAplasticAnemiaLogs = (logs, options = {}) => {
   return {
       condition: 'Aplastic Anemia',
       diagnosticCode: '7716',
-      
+
     hasData: true,
     supportedRating,
     rationale,
@@ -17985,7 +18929,7 @@ export const analyzePolycythemiaVeraLogs = (logs, options = {}) => {
   return {
       condition: 'Polycythemia Vera',
       diagnosticCode: '7704',
-      
+
     hasData: true,
     supportedRating,
     rationale,
@@ -18075,7 +19019,7 @@ export const analyzeImmuneThrombocytopeniaLogs = (logs, options = {}) => {
   return {
       condition: 'Immune Thrombocytopenia (ITP)',
       diagnosticCode: '7705',
-      
+
     hasData: true,
     supportedRating,
     rationale,
@@ -18341,7 +19285,7 @@ export const analyzeNonHodgkinsLymphomaLogs = (logs, options = {}) => {
   return {
       condition: 'Non-Hodgkin\'s Lymphoma',
       diagnosticCode: '7715',
-      
+
     hasData: true,
     supportedRating,
     rationale,
@@ -18413,7 +19357,7 @@ export const analyzeMyeloproliferative7718Logs = (logs, options = {}) => {
   return {
       condition: 'Essential Thrombocythemia',
       diagnosticCode: '7718',
-      
+
     hasData: true,
     supportedRating,
     rationale,
@@ -18475,7 +19419,7 @@ export const analyzeChronicMyelogenousLeukemiaLogs = (logs, options = {}) => {
   return {
       condition: 'Chronic Myelogenous Leukemia',
       diagnosticCode: '7703',
-      
+
     hasData: true,
     supportedRating,
     rationale,
@@ -18527,7 +19471,7 @@ export const analyzeSolitaryPlasmacytomaLogs = (logs, options = {}) => {
   return {
       condition: 'Solitary Plasmacytoma',
       diagnosticCode: '7712',
-      
+
     hasData: true,
     supportedRating,
     rationale,
@@ -18597,7 +19541,7 @@ export const analyzeMyelodysplasticSyndromesLogs = (logs, options = {}) => {
   return {
       condition: 'Myelodysplastic Syndromes',
       diagnosticCode: '7703',
-      
+
     hasData: true,
     supportedRating,
     rationale,
@@ -18704,7 +19648,7 @@ export const analyzeEndometriosisLogs = (logs) => {
   return {
       condition: 'Endometriosis',
       diagnosticCode: '7629',
-      
+
     hasData: true,
     totalLogs: endoLogs.length,
     supportedRating,
@@ -18831,7 +19775,7 @@ export const analyzeFemaleReproductiveOrgansLogs = (logs) => {
   return {
       condition: 'Diseases of Female Reproductive Organs',
       diagnosticCode: '7610-7629',
-      
+
     hasData: true,
     totalLogs: gyneLogs.length,
     supportedRating,
@@ -18914,7 +19858,7 @@ export const analyzePelvicProlapseLogs = (logs) => {
   return {
       condition: 'Pelvic Organ Prolapse',
       diagnosticCode: '7628',
-      
+
     hasData: true,
     totalLogs: prolapseLogs.length,
     supportedRating,
@@ -18956,7 +19900,7 @@ export const analyzeFemaleArousalDisorderLogs = (logs) => {
   return {
       condition: 'Female Sexual Arousal Disorder (FSAD)',
       diagnosticCode: '7632',
-      
+
     hasData: true,
     totalLogs: fsadLogs.length,
     supportedRating: 0,
@@ -21809,6 +22753,439 @@ export const analyzeNTMLogs = (logs, options = {}) => {
 };
 
 // ============================================
+// PHASE 8A: ANALYSIS FUNCTIONS - MENTAL HEALTH EXPANSION
+// ============================================
+
+/**
+ * Analyzes Somatic Symptom Disorder symptom logs
+ */
+export const analyzeSomaticSymptomDisorderLogs = (logs, options = {}) => {
+  return analyzeMentalHealthCondition(
+      logs,
+      'somatic-symptom-disorder',
+      CONDITIONS.SOMATIC_SYMPTOM_DISORDER.symptomIds,
+      SOMATIC_SYMPTOM_DISORDER_CRITERIA,
+      options,
+  );
+};
+
+/**
+ * Analyzes Other Specified Somatic Symptom Disorder logs
+ */
+export const analyzeOtherSpecifiedSomaticLogs = (logs, options = {}) => {
+  return analyzeMentalHealthCondition(
+      logs,
+      'other-specified-somatic',
+      CONDITIONS.OTHER_SPECIFIED_SOMATIC.symptomIds,
+      OTHER_SPECIFIED_SOMATIC_CRITERIA,
+      options,
+  );
+};
+
+/**
+ * Analyzes Unspecified Somatic Symptom Disorder logs
+ */
+export const analyzeUnspecifiedSomaticLogs = (logs, options = {}) => {
+  return analyzeMentalHealthCondition(
+      logs,
+      'unspecified-somatic',
+      CONDITIONS.UNSPECIFIED_SOMATIC.symptomIds,
+      UNSPECIFIED_SOMATIC_CRITERIA,
+      options,
+  );
+};
+
+/**
+ * Analyzes Illness Anxiety Disorder symptom logs
+ */
+export const analyzeIllnessAnxietyLogs = (logs, options = {}) => {
+  return analyzeMentalHealthCondition(
+      logs,
+      'illness-anxiety',
+      CONDITIONS.ILLNESS_ANXIETY.symptomIds,
+      ILLNESS_ANXIETY_CRITERIA,
+      options,
+  );
+};
+
+/**
+ * Analyzes Other Specified Anxiety Disorder logs
+ */
+export const analyzeOtherSpecifiedAnxietyLogs = (logs, options = {}) => {
+  return analyzeMentalHealthCondition(
+      logs,
+      'other-specified-anxiety',
+      CONDITIONS.OTHER_SPECIFIED_ANXIETY.symptomIds,
+      OTHER_SPECIFIED_ANXIETY_CRITERIA,
+      options,
+  );
+};
+
+/**
+ * Analyzes Depersonalization/Derealization Disorder logs
+ */
+export const analyzeDepersonalizationLogs = (logs, options = {}) => {
+  return analyzeMentalHealthCondition(
+      logs,
+      'depersonalization-derealization',
+      CONDITIONS.DEPERSONALIZATION_DEREALIZATION.symptomIds,
+      DEPERSONALIZATION_DEREALIZATION_CRITERIA,
+      options,
+  );
+};
+
+/**
+ * Analyzes Cyclothymic Disorder symptom logs
+ */
+export const analyzeCyclothymicLogs = (logs, options = {}) => {
+  return analyzeMentalHealthCondition(
+      logs,
+      'cyclothymic',
+      CONDITIONS.CYCLOTHYMIC.symptomIds,
+      CYCLOTHYMIC_CRITERIA,
+      options,
+  );
+};
+
+/**
+ * Helper function to analyze eating disorder conditions
+ * Uses SPECIAL RATING FORMULA based on weight loss and incapacitating episodes
+ * Different from general mental health analysis
+ */
+const analyzeEatingDisorderCondition = (logs, conditionKey, symptomIds, criteria, options = {}) => {
+  const evaluationPeriodDays = options.days || 365;
+  const conditionCriteria = criteria;
+
+  // Filter logs for this condition's symptoms within evaluation period
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    return logDate >= cutoffDate && symptomIds.includes(log.symptomId);
+  });
+
+  if (relevantLogs.length === 0) {
+    return {
+      hasData: false,
+      condition: conditionCriteria.condition,
+      diagnosticCode: conditionCriteria.diagnosticCode,
+      // Empty metrics for consistency
+      metrics: {
+        totalLogs: 0,
+        avgSeverity: 0,
+        severeSymptoms: 0,
+        hospitalized: false,
+        hospitalizationCount: 0,
+        dangerToSelf: false,
+        dangerToOthers: false,
+      },
+    };
+  }
+
+  // Eating disorder specific tracking
+  const incapacitatingEpisodes = relevantLogs.filter(log =>
+      log.symptomId.includes('incapacitating-episode')
+  ).length;
+
+  const hospitalizations = relevantLogs.filter(log =>
+      log.symptomId.includes('hospitalization')
+  ).length;
+
+  const weightLossLogs = relevantLogs.filter(log =>
+      log.symptomId.includes('weight-loss')
+  );
+
+  const bingeEpisodes = relevantLogs.filter(log =>
+      log.symptomId.includes('binge-eating')
+  ).length;
+
+  const purgingEpisodes = relevantLogs.filter(log =>
+      log.symptomId.includes('purging')
+  ).length;
+
+  // Build evidence array
+  const evidence = [];
+  if (incapacitatingEpisodes > 0) {
+    evidence.push(`${incapacitatingEpisodes} incapacitating episode(s) documented`);
+  }
+  if (hospitalizations > 0) {
+    evidence.push(`${hospitalizations} hospitalization(s) for tube/parenteral feeding`);
+  }
+  if (weightLossLogs.length > 0) {
+    evidence.push(`Weight loss documented ${weightLossLogs.length} time(s)`);
+  }
+  if (bingeEpisodes > 0) {
+    evidence.push(`${bingeEpisodes} binge eating episode(s) documented`);
+  }
+  if (purgingEpisodes > 0) {
+    evidence.push(`${purgingEpisodes} purging episode(s) documented`);
+  }
+
+  evidence.push(`${relevantLogs.length} total eating disorder symptoms logged over ${evaluationPeriodDays} days`);
+
+  // ===== CALCULATE METRICS FOR RATING CARD DISPLAY =====
+  // Count logs with severity 8+ as severe episodes
+  const severeSymptoms = relevantLogs.filter(log => log.severity >= 8).length;
+
+  // Calculate average severity
+  const logsWithSeverity = relevantLogs.filter(log => log.severity && log.severity > 0);
+  const avgSeverity = logsWithSeverity.length > 0
+    ? logsWithSeverity.reduce((sum, log) => sum + log.severity, 0) / logsWithSeverity.length
+    : 0;
+
+  // Check for hospitalization (eating disorders track this via symptom ID)
+  const hospitalized = hospitalizations > 0;
+  const hospitalizationCount = hospitalizations;
+
+  // Check for danger indicators in notes
+  const dangerToSelf = relevantLogs.some(log => {
+    const notes = (log.notes || '').toLowerCase();
+    return notes.includes('suicidal') || notes.includes('self-harm') || notes.includes('danger to self');
+  });
+  const dangerToOthers = false; // Less common in eating disorders
+
+  return {
+    hasData: true,
+    condition: conditionCriteria.condition,
+    diagnosticCode: conditionCriteria.diagnosticCode,
+    evaluationPeriodDays,
+    supportedRating: 'Requires Medical Evaluation',
+    ratingRationale: [
+      'Eating disorders are rated based on weight loss percentage and incapacitating episodes',
+      'Medical records showing actual weight vs. expected minimum weight are required',
+      'Hospitalizations for tube feeding or parenteral nutrition significantly impact rating',
+      'Your symptom logs document eating disorder behaviors and episodes',
+    ],
+    assessmentLevel: 'Medical Evaluation Required',
+    evidence,
+    gaps: [
+      'CRITICAL: Medical records showing current weight and height',
+      'Calculate percentage of expected minimum weight (BMI charts)',
+      'Document incapacitating episodes requiring bed rest and physician treatment',
+      'Track hospitalization frequency for tube feeding or parenteral nutrition',
+      'Medical treatment records showing eating disorder diagnosis',
+      'Note: Incapacitating episodes must require bed rest and physician treatment, not just therapy',
+    ],
+    criteria: conditionCriteria,
+    // Metrics for rating card display
+    metrics: {
+      totalLogs: relevantLogs.length,
+      avgSeverity,
+      severeSymptoms,
+      hospitalized,
+      hospitalizationCount,
+      dangerToSelf,
+      dangerToOthers,
+    },
+    disclaimer: 'Eating disorders require objective medical evidence of weight loss and incapacitating episodes. Your documentation helps establish pattern, but medical records with actual weights, BMI calculations, and hospitalization records are essential for rating determination.',
+    crisisResources: {
+      veteransCrisisLine: '988 then Press 1',
+      text: '838255',
+      chat: 'https://www.veteranscrisisline.net/get-help-now/chat/',
+      neda: 'National Eating Disorders Association Hotline: 1-800-931-2237',
+    },
+  };
+};
+
+/**
+ * Analyzes Anorexia Nervosa symptom logs
+ * Note: Uses special eating disorder rating formula
+ */
+export const analyzeAnorexiaNervosaLogs = (logs, options = {}) => {
+  return analyzeEatingDisorderCondition(
+      logs,
+      'anorexia-nervosa',
+      CONDITIONS.ANOREXIA_NERVOSA.symptomIds,
+      ANOREXIA_NERVOSA_CRITERIA,
+      options,
+  );
+};
+
+/**
+ * Analyzes Bulimia Nervosa symptom logs
+ * Note: Uses special eating disorder rating formula
+ */
+export const analyzeBulimiaNervosaLogs = (logs, options = {}) => {
+  return analyzeEatingDisorderCondition(
+      logs,
+      'bulimia-nervosa',
+      CONDITIONS.BULIMIA_NERVOSA.symptomIds,
+      BULIMIA_NERVOSA_CRITERIA,
+      options,
+  );
+};
+
+/**
+ * Analyzes Schizophrenia symptom logs
+ */
+export const analyzeSchizophreniaLogs = (logs, options = {}) => {
+  return analyzeMentalHealthCondition(
+      logs,
+      'schizophrenia',
+      CONDITIONS.SCHIZOPHRENIA.symptomIds,
+      SCHIZOPHRENIA_CRITERIA,
+      options,
+  );
+};
+
+/**
+ * Analyzes Schizoaffective Disorder symptom logs
+ */
+export const analyzeSchizoaffectiveDisorderLogs = (logs, options = {}) => {
+  return analyzeMentalHealthCondition(
+      logs,
+      'schizoaffective-disorder',
+      CONDITIONS.SCHIZOAFFECTIVE_DISORDER.symptomIds,
+      SCHIZOAFFECTIVE_DISORDER_CRITERIA,
+      options,
+  );
+};
+
+/**
+ * Analyzes Delusional Disorder symptom logs
+ */
+export const analyzeDelusionalDisorderLogs = (logs, options = {}) => {
+  return analyzeMentalHealthCondition(
+      logs,
+      'delusional-disorder',
+      CONDITIONS.DELUSIONAL_DISORDER.symptomIds,
+      DELUSIONAL_DISORDER_CRITERIA,
+      options,
+  );
+};
+
+/**
+ * Analyzes Psychotic Disorder NOS symptom logs
+ */
+export const analyzePsychoticDisorderNOSLogs = (logs, options = {}) => {
+  return analyzeMentalHealthCondition(
+      logs,
+      'psychotic-disorder-nos',
+      CONDITIONS.PSYCHOTIC_DISORDER_NOS.symptomIds,
+      PSYCHOTIC_DISORDER_NOS_CRITERIA,
+      options,
+  );
+};
+
+/**
+ * Analyzes Brief Psychotic Disorder symptom logs
+ */
+export const analyzeBriefPsychoticDisorderLogs = (logs, options = {}) => {
+  return analyzeMentalHealthCondition(
+      logs,
+      'brief-psychotic-disorder',
+      CONDITIONS.BRIEF_PSYCHOTIC_DISORDER.symptomIds,
+      BRIEF_PSYCHOTIC_DISORDER_CRITERIA,
+      options,
+  );
+};
+
+/**
+ * Analyzes Binge Eating Disorder symptom logs
+ */
+export const analyzeBingeEatingDisorderLogs = (logs, options = {}) => {
+  return analyzeMentalHealthCondition(
+      logs,
+      'binge-eating-disorder',
+      CONDITIONS.BINGE_EATING_DISORDER.symptomIds,
+      BINGE_EATING_DISORDER_CRITERIA,
+      options,
+  );
+};
+
+/**
+ * Analyzes Dissociative Identity Disorder symptom logs
+ */
+export const analyzeDissociativeIdentityDisorderLogs = (logs, options = {}) => {
+  return analyzeMentalHealthCondition(
+      logs,
+      'dissociative-identity-disorder',
+      CONDITIONS.DISSOCIATIVE_IDENTITY_DISORDER.symptomIds,
+      DISSOCIATIVE_IDENTITY_DISORDER_CRITERIA,
+      options,
+  );
+};
+
+/**
+ * Analyzes Dissociative Amnesia symptom logs
+ */
+export const analyzeDissociativeAmnesiaLogs = (logs, options = {}) => {
+  return analyzeMentalHealthCondition(
+      logs,
+      'dissociative-amnesia',
+      CONDITIONS.DISSOCIATIVE_AMNESIA.symptomIds,
+      DISSOCIATIVE_AMNESIA_CRITERIA,
+      options,
+  );
+};
+
+/**
+ * Analyzes Acute Stress Disorder symptom logs
+ */
+export const analyzeAcuteStressDisorderLogs = (logs, options = {}) => {
+  return analyzeMentalHealthCondition(
+      logs,
+      'acute-stress-disorder',
+      CONDITIONS.ACUTE_STRESS_DISORDER.symptomIds,
+      ACUTE_STRESS_DISORDER_CRITERIA,
+      options,
+  );
+};
+
+/**
+ * Analyzes Antisocial Personality Disorder symptom logs
+ */
+export const analyzeAntisocialPersonalityDisorderLogs = (logs, options = {}) => {
+  return analyzeMentalHealthCondition(
+      logs,
+      'antisocial-personality-disorder',
+      CONDITIONS.ANTISOCIAL_PERSONALITY_DISORDER.symptomIds,
+      ANTISOCIAL_PERSONALITY_DISORDER_CRITERIA,
+      options,
+  );
+};
+
+/**
+ * Analyzes Borderline Personality Disorder symptom logs
+ */
+export const analyzeBorderlinePersonalityDisorderLogs = (logs, options = {}) => {
+  return analyzeMentalHealthCondition(
+      logs,
+      'borderline-personality-disorder',
+      CONDITIONS.BORDERLINE_PERSONALITY_DISORDER.symptomIds,
+      BORDERLINE_PERSONALITY_DISORDER_CRITERIA,
+      options,
+  );
+};
+
+/**
+ * Analyzes Narcissistic Personality Disorder symptom logs
+ */
+export const analyzeNarcissisticPersonalityDisorderLogs = (logs, options = {}) => {
+  return analyzeMentalHealthCondition(
+      logs,
+      'narcissistic-personality-disorder',
+      CONDITIONS.NARCISSISTIC_PERSONALITY_DISORDER.symptomIds,
+      NARCISSISTIC_PERSONALITY_DISORDER_CRITERIA,
+      options,
+  );
+};
+
+/**
+ * Analyzes Avoidant Personality Disorder symptom logs
+ */
+export const analyzeAvoidantPersonalityDisorderLogs = (logs, options = {}) => {
+  return analyzeMentalHealthCondition(
+      logs,
+      'avoidant-personality-disorder',
+      CONDITIONS.AVOIDANT_PERSONALITY_DISORDER.symptomIds,
+      AVOIDANT_PERSONALITY_DISORDER_CRITERIA,
+      options,
+  );
+};
+
+// ============================================
 // HELPER FUNCTIONS
 // ============================================
 
@@ -22102,17 +23479,54 @@ export const getQFeverRatingCriteria = (percent) => {
 export const getSalmonellaRatingCriteria = (percent) => {
   return SALMONELLA_CRITERIA.ratings.find(r => r.percent === percent) || null;
 };
-
 export const getShigellaRatingCriteria = (percent) => {
   return SHIGELLA_CRITERIA.ratings.find(r => r.percent === percent) || null;
 };
-
 export const getWestNileRatingCriteria = (percent) => {
   return WEST_NILE_CRITERIA.ratings.find(r => r.percent === percent) || null;
 };
-
 export const getNTMRatingCriteria = (percent) => {
   return NTM_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+// Phase 8B: Additional Mental Health getRatingCriteria helpers
+export const getSchizophreniaRatingCriteria = (percent) => {
+  return SCHIZOPHRENIA_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getSchizoaffectiveDisorderRatingCriteria = (percent) => {
+  return SCHIZOAFFECTIVE_DISORDER_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getDelusionalDisorderRatingCriteria = (percent) => {
+  return DELUSIONAL_DISORDER_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getPsychoticDisorderNOSRatingCriteria = (percent) => {
+  return PSYCHOTIC_DISORDER_NOS_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getBriefPsychoticDisorderRatingCriteria = (percent) => {
+  return BRIEF_PSYCHOTIC_DISORDER_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getBingeEatingDisorderRatingCriteria = (percent) => {
+  return BINGE_EATING_DISORDER_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getDissociativeIdentityDisorderRatingCriteria = (percent) => {
+  return DISSOCIATIVE_IDENTITY_DISORDER_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getDissociativeAmnesiaRatingCriteria = (percent) => {
+  return DISSOCIATIVE_AMNESIA_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getAcuteStressDisorderRatingCriteria = (percent) => {
+  return ACUTE_STRESS_DISORDER_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getAntisocialPersonalityDisorderRatingCriteria = (percent) => {
+  return ANTISOCIAL_PERSONALITY_DISORDER_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getBorderlinePersonalityDisorderRatingCriteria = (percent) => {
+  return BORDERLINE_PERSONALITY_DISORDER_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getNarcissisticPersonalityDisorderRatingCriteria = (percent) => {
+  return NARCISSISTIC_PERSONALITY_DISORDER_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getAvoidantPersonalityDisorderRatingCriteria = (percent) => {
+  return AVOIDANT_PERSONALITY_DISORDER_CRITERIA.ratings.find(r => r.percent === percent) || null;
 };
 
 
@@ -22167,6 +23581,29 @@ export const getAllSalmonellaRatings = () => SALMONELLA_CRITERIA.ratings;
 export const getAllShigellaRatings = () => SHIGELLA_CRITERIA.ratings;
 export const getAllWestNileRatings = () => WEST_NILE_CRITERIA.ratings;
 export const getAllNTMRatings = () => NTM_CRITERIA.ratings;
+export const getAllSomaticSymptomDisorderRatings = () => SOMATIC_SYMPTOM_DISORDER_CRITERIA.ratings;
+export const getAllOtherSpecifiedSomaticRatings = () => OTHER_SPECIFIED_SOMATIC_CRITERIA.ratings;
+export const getAllUnspecifiedSomaticRatings = () => UNSPECIFIED_SOMATIC_CRITERIA.ratings;
+export const getAllIllnessAnxietyRatings = () => ILLNESS_ANXIETY_CRITERIA.ratings;
+export const getAllOtherSpecifiedAnxietyRatings = () => OTHER_SPECIFIED_ANXIETY_CRITERIA.ratings;
+export const getAllDepersonalizationRatings = () => DEPERSONALIZATION_DEREALIZATION_CRITERIA.ratings;
+export const getAllCyclothymicRatings = () => CYCLOTHYMIC_CRITERIA.ratings;
+export const getAllAnorexiaNervosaRatings = () => ANOREXIA_NERVOSA_CRITERIA.ratings;
+export const getAllBulimiaNervosaRatings = () => BULIMIA_NERVOSA_CRITERIA.ratings;
+export const getAllSchizophreniaRatings = () => SCHIZOPHRENIA_CRITERIA.ratings;
+export const getAllSchizoaffectiveDisorderRatings = () => SCHIZOAFFECTIVE_DISORDER_CRITERIA.ratings;
+export const getAllDelusionalDisorderRatings = () => DELUSIONAL_DISORDER_CRITERIA.ratings;
+export const getAllPsychoticDisorderNOSRatings = () => PSYCHOTIC_DISORDER_NOS_CRITERIA.ratings;
+export const getAllBriefPsychoticDisorderRatings = () => BRIEF_PSYCHOTIC_DISORDER_CRITERIA.ratings;
+export const getAllBingeEatingDisorderRatings = () => BINGE_EATING_DISORDER_CRITERIA.ratings;
+export const getAllDissociativeIdentityDisorderRatings = () => DISSOCIATIVE_IDENTITY_DISORDER_CRITERIA.ratings;
+export const getAllDissociativeAmnesiaRatings = () => DISSOCIATIVE_AMNESIA_CRITERIA.ratings;
+export const getAllAcuteStressDisorderRatings = () => ACUTE_STRESS_DISORDER_CRITERIA.ratings;
+export const getAllAntisocialPersonalityDisorderRatings = () => ANTISOCIAL_PERSONALITY_DISORDER_CRITERIA.ratings;
+export const getAllBorderlinePersonalityDisorderRatings = () => BORDERLINE_PERSONALITY_DISORDER_CRITERIA.ratings;
+export const getAllNarcissisticPersonalityDisorderRatings = () => NARCISSISTIC_PERSONALITY_DISORDER_CRITERIA.ratings;
+export const getAllAvoidantPersonalityDisorderRatings = () => AVOIDANT_PERSONALITY_DISORDER_CRITERIA.ratings;
+
 
 
 export const getEpilepsyMajorDefinition = (term) => EPILEPSY_MAJOR_CRITERIA.definitions[term] || null;
@@ -22226,6 +23663,29 @@ export const getSalmonellaDefinition = (term) => SALMONELLA_CRITERIA.definitions
 export const getShigellaDefinition = (term) => SHIGELLA_CRITERIA.definitions[term] || null;
 export const getWestNileDefinition = (term) => WEST_NILE_CRITERIA.definitions[term] || null;
 export const getNTMDefinition = (term) => NTM_CRITERIA.definitions[term] || null;
+export const getSomaticSymptomDisorderDefinition = (term) => { return SOMATIC_SYMPTOM_DISORDER_CRITERIA.definitions[term] || null; };
+export const getOtherSpecifiedSomaticDefinition = (term) => { return OTHER_SPECIFIED_SOMATIC_CRITERIA.definitions[term] || null; };
+export const getUnspecifiedSomaticDefinition = (term) => { return UNSPECIFIED_SOMATIC_CRITERIA.definitions[term] || null; };
+export const getIllnessAnxietyDefinition = (term) => { return ILLNESS_ANXIETY_CRITERIA.definitions[term] || null; };
+export const getOtherSpecifiedAnxietyDefinition = (term) => { return OTHER_SPECIFIED_ANXIETY_CRITERIA.definitions[term] || null; };
+export const getDepersonalizationDefinition = (term) => { return DEPERSONALIZATION_DEREALIZATION_CRITERIA.definitions[term] || null; };
+export const getCyclothymicDefinition = (term) => { return CYCLOTHYMIC_CRITERIA.definitions[term] || null; };
+export const getAnorexiaNervosaDefinition = (term) => { return ANOREXIA_NERVOSA_CRITERIA.definitions[term] || null; };
+export const getBulimiaNervosaDefinition = (term) => { return BULIMIA_NERVOSA_CRITERIA.definitions[term] || null; };
+export const getSchizophreniaDefinition = (term) => SCHIZOPHRENIA_CRITERIA.definitions[term] || null;
+export const getSchizoaffectiveDisorderDefinition = (term) => SCHIZOAFFECTIVE_DISORDER_CRITERIA.definitions[term] || null;
+export const getDelusionalDisorderDefinition = (term) => DELUSIONAL_DISORDER_CRITERIA.definitions[term] || null;
+export const getPsychoticDisorderNOSDefinition = (term) => PSYCHOTIC_DISORDER_NOS_CRITERIA.definitions[term] || null;
+export const getBriefPsychoticDisorderDefinition = (term) => BRIEF_PSYCHOTIC_DISORDER_CRITERIA.definitions[term] || null;
+export const getBingeEatingDisorderDefinition = (term) => BINGE_EATING_DISORDER_CRITERIA.definitions[term] || null;
+export const getDissociativeIdentityDisorderDefinition = (term) => DISSOCIATIVE_IDENTITY_DISORDER_CRITERIA.definitions[term] || null;
+export const getDissociativeAmnesiaDefinition = (term) => DISSOCIATIVE_AMNESIA_CRITERIA.definitions[term] || null;
+export const getAcuteStressDisorderDefinition = (term) => ACUTE_STRESS_DISORDER_CRITERIA.definitions[term] || null;
+export const getAntisocialPersonalityDisorderDefinition = (term) => ANTISOCIAL_PERSONALITY_DISORDER_CRITERIA.definitions[term] || null;
+export const getBorderlinePersonalityDisorderDefinition = (term) => BORDERLINE_PERSONALITY_DISORDER_CRITERIA.definitions[term] || null;
+export const getNarcissisticPersonalityDisorderDefinition = (term) => NARCISSISTIC_PERSONALITY_DISORDER_CRITERIA.definitions[term] || null;
+export const getAvoidantPersonalityDisorderDefinition = (term) => AVOIDANT_PERSONALITY_DISORDER_CRITERIA.definitions[term] || null;
+
 
 
 

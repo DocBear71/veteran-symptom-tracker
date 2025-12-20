@@ -1317,6 +1317,619 @@ const SymptomHistory = ({ onCopyLog }) => {
                                   </div>
                               )}
 
+                              {/* PHASE 8A: MENTAL HEALTH EXPANSION - HISTORY DISPLAY */}
+                              {log.eatingDisorderData && (
+                                  <div className="text-xs text-gray-600 dark:text-gray-400 space-y-1 flex flex-col items-start">
+                                    {log.eatingDisorderData.currentWeight && (
+                                        <div>
+                                          <span className="font-semibold">Current Weight:</span> {log.eatingDisorderData.currentWeight} lbs
+                                          {log.eatingDisorderData.expectedMinimumWeight && (
+                                              <span className="ml-2 text-gray-500">
+                                        (Expected: {log.eatingDisorderData.expectedMinimumWeight} lbs)
+                                    </span>
+                                          )}
+                                        </div>
+                                    )}
+
+                                    {log.eatingDisorderData.incapacitatingEpisode && (
+                                        <div>
+                                <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200">
+                                    Incapacitating Episode
+                                </span>
+                                          {log.eatingDisorderData.episodeDuration && (
+                                              <span className="ml-2">Duration: {log.eatingDisorderData.episodeDuration}</span>
+                                          )}
+                                        </div>
+                                    )}
+
+                                    {log.eatingDisorderData.hospitalized && (
+                                        <div>
+                                <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200">
+                                    Hospitalized
+                                </span>
+                                          {log.eatingDisorderData.tubeFeeding && (
+                                              <span className="ml-2 text-amber-700 dark:text-amber-400">Tube Feeding</span>
+                                          )}
+                                          {log.eatingDisorderData.parenteralNutrition && (
+                                              <span className="ml-2 text-amber-700 dark:text-amber-400">Parenteral Nutrition</span>
+                                          )}
+                                        </div>
+                                    )}
+
+                                    {log.eatingDisorderData.bingeEpisode && (
+                                        <div>
+                                <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200">
+                                    Binge Episode
+                                </span>
+                                        </div>
+                                    )}
+
+                                    {log.eatingDisorderData.purgingEpisode && (
+                                        <div>
+                                <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200">
+                                    Purging Episode
+                                </span>
+                                        </div>
+                                    )}
+
+                                    {log.eatingDisorderData.compensatoryBehaviors && log.eatingDisorderData.compensatoryBehaviors.length > 0 && (
+                                        <div>
+                                          <span className="font-semibold">Compensatory Behaviors:</span> {log.eatingDisorderData.compensatoryBehaviors.join(', ')}
+                                        </div>
+                                    )}
+
+                                    {log.eatingDisorderData.restrictedIntake && (
+                                        <div>
+                                <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-200">
+                                    Restricted Intake
+                                </span>
+                                        </div>
+                                    )}
+                                  </div>
+                              )}
+
+                              {/* Anxiety Disorders Form Data */}
+                              {log.anxietyData && (
+                                  <div className="text-xs text-gray-600 dark:text-gray-400 space-y-1 flex flex-col items-start">
+                                    {/* Physical Symptoms */}
+                                    {(log.anxietyData.heartRacing || log.anxietyData.sweating || log.anxietyData.trembling ||
+                                        log.anxietyData.shortnessOfBreath || log.anxietyData.chestTightness || log.anxietyData.nausea ||
+                                        log.anxietyData.dizziness || log.anxietyData.hotFlashes || log.anxietyData.numbnessTingling) && (
+                                        <div>
+                                          <span className="font-semibold">Physical:</span>{' '}
+                                          {[
+                                            log.anxietyData.heartRacing && 'Heart racing',
+                                            log.anxietyData.sweating && 'Sweating',
+                                            log.anxietyData.trembling && 'Trembling',
+                                            log.anxietyData.shortnessOfBreath && 'Shortness of breath',
+                                            log.anxietyData.chestTightness && 'Chest tightness',
+                                            log.anxietyData.nausea && 'Nausea',
+                                            log.anxietyData.dizziness && 'Dizziness',
+                                            log.anxietyData.hotFlashes && 'Hot flashes',
+                                            log.anxietyData.numbnessTingling && 'Numbness/tingling',
+                                          ].filter(Boolean).join(', ')}
+                                        </div>
+                                    )}
+
+                                    {/* Cognitive Symptoms */}
+                                    {(log.anxietyData.racingThoughts || log.anxietyData.fearOfLosingControl ||
+                                        log.anxietyData.fearOfDying || log.anxietyData.feelingDetached ||
+                                        log.anxietyData.difficultyConcentrating) && (
+                                        <div>
+                                          <span className="font-semibold">Cognitive:</span>{' '}
+                                          {[
+                                            log.anxietyData.racingThoughts && 'Racing thoughts',
+                                            log.anxietyData.fearOfLosingControl && 'Fear of losing control',
+                                            log.anxietyData.fearOfDying && 'Fear of dying',
+                                            log.anxietyData.feelingDetached && 'Feeling detached',
+                                            log.anxietyData.difficultyConcentrating && 'Difficulty concentrating',
+                                          ].filter(Boolean).join(', ')}
+                                        </div>
+                                    )}
+
+                                    {/* Avoidance/Impact */}
+                                    {(log.anxietyData.avoidedSocial || log.anxietyData.leftEarly || log.anxietyData.calledOut ||
+                                        log.anxietyData.cancelledPlans || log.anxietyData.neededSafetyPerson) && (
+                                        <div>
+                                          <span className="font-semibold">Impact:</span>{' '}
+                                          {[
+                                            log.anxietyData.avoidedSocial && 'Avoided social situations',
+                                            log.anxietyData.leftEarly && 'Left early',
+                                            log.anxietyData.calledOut && 'Called out',
+                                            log.anxietyData.cancelledPlans && 'Cancelled plans',
+                                            log.anxietyData.neededSafetyPerson && 'Needed safety person',
+                                          ].filter(Boolean).join(', ')}
+                                        </div>
+                                    )}
+
+                                    {log.anxietyData.episodeDuration && (
+                                        <div>
+                                          <span className="font-semibold">Duration:</span> {log.anxietyData.episodeDuration}
+                                        </div>
+                                    )}
+
+                                    {log.anxietyData.wasPanicAttack && (
+                                        <div>
+                                <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200">
+                                    Panic Attack
+                                </span>
+                                        </div>
+                                    )}
+
+                                    {log.anxietyData.trigger && (
+                                        <div>
+                                          <span className="font-semibold">Trigger:</span> {log.anxietyData.trigger}
+                                        </div>
+                                    )}
+                                  </div>
+                              )}
+
+                              {/* Depression Form Data */}
+                              {log.depressionData && (
+                                  <div className="text-xs text-gray-600 dark:text-gray-400 space-y-1 flex flex-col items-start">
+                                    {/* Mood Symptoms */}
+                                    {(log.depressionData.depressedMood || log.depressionData.anhedonia ||
+                                        log.depressionData.worthlessness || log.depressionData.excessiveGuilt ||
+                                        log.depressionData.hopelessness || log.depressionData.irritability) && (
+                                        <div>
+                                          <span className="font-semibold">Mood:</span>{' '}
+                                          {[
+                                            log.depressionData.depressedMood && 'Depressed mood',
+                                            log.depressionData.anhedonia && 'Anhedonia',
+                                            log.depressionData.worthlessness && 'Worthlessness',
+                                            log.depressionData.excessiveGuilt && 'Excessive guilt',
+                                            log.depressionData.hopelessness && 'Hopelessness',
+                                            log.depressionData.irritability && 'Irritability',
+                                          ].filter(Boolean).join(', ')}
+                                        </div>
+                                    )}
+
+                                    {/* Physical/Vegetative Symptoms */}
+                                    {(log.depressionData.insomnia || log.depressionData.hypersomnia ||
+                                        log.depressionData.decreasedAppetite || log.depressionData.increasedAppetite ||
+                                        log.depressionData.fatigue || log.depressionData.psychomotorAgitation ||
+                                        log.depressionData.psychomotorRetardation) && (
+                                        <div>
+                                          <span className="font-semibold">Physical:</span>{' '}
+                                          {[
+                                            log.depressionData.insomnia && 'Insomnia',
+                                            log.depressionData.hypersomnia && 'Hypersomnia',
+                                            log.depressionData.decreasedAppetite && 'Decreased appetite',
+                                            log.depressionData.increasedAppetite && 'Increased appetite',
+                                            log.depressionData.fatigue && 'Fatigue',
+                                            log.depressionData.psychomotorAgitation && 'Agitation',
+                                            log.depressionData.psychomotorRetardation && 'Slowed movements',
+                                          ].filter(Boolean).join(', ')}
+                                        </div>
+                                    )}
+
+                                    {/* Cognitive Symptoms */}
+                                    {(log.depressionData.difficultyConcentrating || log.depressionData.difficultyDeciding ||
+                                        log.depressionData.memoryProblems || log.depressionData.thoughtsOfDeath) && (
+                                        <div>
+                                          <span className="font-semibold">Cognitive:</span>{' '}
+                                          {[
+                                            log.depressionData.difficultyConcentrating && 'Difficulty concentrating',
+                                            log.depressionData.difficultyDeciding && 'Difficulty deciding',
+                                            log.depressionData.memoryProblems && 'Memory problems',
+                                            log.depressionData.thoughtsOfDeath && 'Thoughts of death',
+                                          ].filter(Boolean).join(', ')}
+                                        </div>
+                                    )}
+
+                                    {/* Functional Impact */}
+                                    {(log.depressionData.unableToGetUp || log.depressionData.calledOutWork ||
+                                        log.depressionData.neglectedSelfCare || log.depressionData.socialWithdrawal ||
+                                        log.depressionData.unableToCompleteTasks) && (
+                                        <div>
+                                          <span className="font-semibold">Impact:</span>{' '}
+                                          {[
+                                            log.depressionData.unableToGetUp && 'Unable to get up',
+                                            log.depressionData.calledOutWork && 'Called out of work',
+                                            log.depressionData.neglectedSelfCare && 'Neglected self-care',
+                                            log.depressionData.socialWithdrawal && 'Social withdrawal',
+                                            log.depressionData.unableToCompleteTasks && 'Unable to complete tasks',
+                                          ].filter(Boolean).join(', ')}
+                                        </div>
+                                    )}
+
+                                    {log.depressionData.suicidalIdeation && (
+                                        <div>
+                                <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200">
+                                    Suicidal Ideation Present
+                                </span>
+                                        </div>
+                                    )}
+
+                                    {log.depressionData.trigger && (
+                                        <div>
+                                          <span className="font-semibold">Trigger:</span> {log.depressionData.trigger}
+                                        </div>
+                                    )}
+
+                                    {log.depressionData.episodeContext && (
+                                        <div>
+                                          <span className="font-semibold">Context:</span> {log.depressionData.episodeContext}
+                                        </div>
+                                    )}
+                                  </div>
+                              )}
+
+                              {/* Bipolar/Cyclothymic Form Data */}
+                              {log.bipolarData && (
+                                  <div className="text-xs text-gray-600 dark:text-gray-400 space-y-1 flex flex-col items-start">
+                                    {log.bipolarData.episodeType && (
+                                        <div>
+                                <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200">
+                                    {log.bipolarData.episodeType === 'manic' && 'Manic Episode'}
+                                  {log.bipolarData.episodeType === 'hypomanic' && 'Hypomanic Episode'}
+                                  {log.bipolarData.episodeType === 'depressive' && 'Depressive Episode'}
+                                  {log.bipolarData.episodeType === 'mixed' && 'Mixed Episode'}
+                                </span>
+                                        </div>
+                                    )}
+
+                                    {/* Manic/Hypomanic Symptoms */}
+                                    {(log.bipolarData.elevatedMood || log.bipolarData.irritableMood ||
+                                        log.bipolarData.increasedEnergy || log.bipolarData.decreasedSleep ||
+                                        log.bipolarData.moreTalkative || log.bipolarData.racingThoughts ||
+                                        log.bipolarData.distractibility || log.bipolarData.increasedActivity ||
+                                        log.bipolarData.riskyBehavior || log.bipolarData.grandiosity) && (
+                                        <div>
+                                          <span className="font-semibold">Manic/Hypomanic:</span>{' '}
+                                          {[
+                                            log.bipolarData.elevatedMood && 'Elevated mood',
+                                            log.bipolarData.irritableMood && 'Irritable',
+                                            log.bipolarData.increasedEnergy && 'Increased energy',
+                                            log.bipolarData.decreasedSleep && 'Decreased sleep need',
+                                            log.bipolarData.moreTalkative && 'More talkative',
+                                            log.bipolarData.racingThoughts && 'Racing thoughts',
+                                            log.bipolarData.distractibility && 'Distractible',
+                                            log.bipolarData.increasedActivity && 'Increased activity',
+                                            log.bipolarData.riskyBehavior && 'Risky behavior',
+                                            log.bipolarData.grandiosity && 'Grandiosity',
+                                          ].filter(Boolean).join(', ')}
+                                        </div>
+                                    )}
+
+                                    {/* Depressive Symptoms */}
+                                    {(log.bipolarData.depressedMood || log.bipolarData.anhedonia ||
+                                        log.bipolarData.fatigue || log.bipolarData.worthlessness) && (
+                                        <div>
+                                          <span className="font-semibold">Depressive:</span>{' '}
+                                          {[
+                                            log.bipolarData.depressedMood && 'Depressed mood',
+                                            log.bipolarData.anhedonia && 'Anhedonia',
+                                            log.bipolarData.fatigue && 'Fatigue',
+                                            log.bipolarData.worthlessness && 'Worthlessness',
+                                          ].filter(Boolean).join(', ')}
+                                        </div>
+                                    )}
+
+                                    {log.bipolarData.sleepHours && (
+                                        <div>
+                                          <span className="font-semibold">Sleep:</span> {log.bipolarData.sleepHours} hours
+                                        </div>
+                                    )}
+
+                                    {log.bipolarData.riskyBehaviors && log.bipolarData.riskyBehaviors.length > 0 && (
+                                        <div>
+                                          <span className="font-semibold">Risky Behaviors:</span> {log.bipolarData.riskyBehaviors.join(', ')}
+                                        </div>
+                                    )}
+
+                                    {/* Functional Impact */}
+                                    {(log.bipolarData.unableToWork || log.bipolarData.relationshipConflicts ||
+                                        log.bipolarData.legalProblems || log.bipolarData.hospitalizationRequired) && (
+                                        <div>
+                                          <span className="font-semibold">Impact:</span>{' '}
+                                          {[
+                                            log.bipolarData.unableToWork && 'Unable to work',
+                                            log.bipolarData.relationshipConflicts && 'Relationship conflicts',
+                                            log.bipolarData.legalProblems && 'Legal problems',
+                                            log.bipolarData.hospitalizationRequired && 'Hospitalization required',
+                                          ].filter(Boolean).join(', ')}
+                                        </div>
+                                    )}
+
+                                    {log.bipolarData.episodeDuration && (
+                                        <div>
+                                          <span className="font-semibold">Duration:</span> {log.bipolarData.episodeDuration}
+                                        </div>
+                                    )}
+                                  </div>
+                              )}
+
+                              {/* OCD Form Data */}
+                              {log.ocdData && (
+                                  <div className="text-xs text-gray-600 dark:text-gray-400 space-y-1 flex flex-col items-start">
+                                    {/* Obsession Types */}
+                                    {(log.ocdData.contaminationFears || log.ocdData.fearOfHarm ||
+                                        log.ocdData.needForSymmetry || log.ocdData.forbiddenThoughts ||
+                                        log.ocdData.religiousObsessions || log.ocdData.hoardingUrges ||
+                                        log.ocdData.otherObsession) && (
+                                        <div>
+                                          <span className="font-semibold">Obsessions:</span>{' '}
+                                          {[
+                                            log.ocdData.contaminationFears && 'Contamination',
+                                            log.ocdData.fearOfHarm && 'Fear of harm',
+                                            log.ocdData.needForSymmetry && 'Symmetry',
+                                            log.ocdData.forbiddenThoughts && 'Forbidden thoughts',
+                                            log.ocdData.religiousObsessions && 'Religious',
+                                            log.ocdData.hoardingUrges && 'Hoarding',
+                                            log.ocdData.otherObsession && log.ocdData.otherObsession,
+                                          ].filter(Boolean).join(', ')}
+                                        </div>
+                                    )}
+
+                                    {/* Compulsion Types */}
+                                    {(log.ocdData.washingCleaning || log.ocdData.checking ||
+                                        log.ocdData.repeating || log.ocdData.counting ||
+                                        log.ocdData.ordering || log.ocdData.mentalRituals ||
+                                        log.ocdData.reassuranceSeeking || log.ocdData.otherCompulsion) && (
+                                        <div>
+                                          <span className="font-semibold">Compulsions:</span>{' '}
+                                          {[
+                                            log.ocdData.washingCleaning && 'Washing/cleaning',
+                                            log.ocdData.checking && 'Checking',
+                                            log.ocdData.repeating && 'Repeating',
+                                            log.ocdData.counting && 'Counting',
+                                            log.ocdData.ordering && 'Ordering',
+                                            log.ocdData.mentalRituals && 'Mental rituals',
+                                            log.ocdData.reassuranceSeeking && 'Reassurance seeking',
+                                            log.ocdData.otherCompulsion && log.ocdData.otherCompulsion,
+                                          ].filter(Boolean).join(', ')}
+                                        </div>
+                                    )}
+
+                                    {log.ocdData.timeConsumed && (
+                                        <div>
+                                          <span className="font-semibold">Time Consumed:</span> {log.ocdData.timeConsumed}
+                                        </div>
+                                    )}
+
+                                    {log.ocdData.distressLevel !== undefined && log.ocdData.distressLevel !== 5 && (
+                                        <div>
+                                          <span className="font-semibold">Distress Level:</span> {log.ocdData.distressLevel}/10
+                                        </div>
+                                    )}
+
+                                    {/* Functional Impact */}
+                                    {(log.ocdData.lateToAppointments || log.ocdData.avoidedSituations ||
+                                        log.ocdData.interferedRoutines || log.ocdData.relationshipProblems ||
+                                        log.ocdData.unableToComplete) && (
+                                        <div>
+                                          <span className="font-semibold">Impact:</span>{' '}
+                                          {[
+                                            log.ocdData.lateToAppointments && 'Late to appointments',
+                                            log.ocdData.avoidedSituations && 'Avoided situations',
+                                            log.ocdData.interferedRoutines && 'Interfered with routines',
+                                            log.ocdData.relationshipProblems && 'Relationship problems',
+                                            log.ocdData.unableToComplete && 'Unable to complete tasks',
+                                          ].filter(Boolean).join(', ')}
+                                        </div>
+                                    )}
+
+                                    {log.ocdData.trigger && (
+                                        <div>
+                                          <span className="font-semibold">Trigger:</span> {log.ocdData.trigger}
+                                        </div>
+                                    )}
+                                  </div>
+                              )}
+
+                              {/* Adjustment Disorder Form Data */}
+                              {log.adjustmentDisorderData && (
+                                  <div className="text-xs text-gray-600 dark:text-gray-400 space-y-1 flex flex-col items-start">
+                                    {/* Stressor Information */}
+                                    {log.adjustmentDisorderData.stressor && (
+                                        <div>
+                                          <span className="font-semibold">Stressor:</span> {log.adjustmentDisorderData.stressor}
+                                        </div>
+                                    )}
+
+                                    {log.adjustmentDisorderData.stressorDate && (
+                                        <div>
+                                          <span className="font-semibold">Stressor Date:</span> {log.adjustmentDisorderData.stressorDate}
+                                          {log.adjustmentDisorderData.daysSinceStressor && (
+                                              <span className="ml-2 text-gray-500">
+                                        ({log.adjustmentDisorderData.daysSinceStressor} days ago
+                                                {parseInt(log.adjustmentDisorderData.daysSinceStressor) > 180 &&
+                                                    <span className="text-amber-600 dark:text-amber-400"> - Chronic</span>
+                                                })
+                                    </span>
+                                          )}
+                                        </div>
+                                    )}
+
+                                    {/* Presentation Type */}
+                                    {log.adjustmentDisorderData.presentationType && (
+                                        <div>
+                                <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">
+                                    {log.adjustmentDisorderData.presentationType === 'depressed' && 'With Depressed Mood'}
+                                  {log.adjustmentDisorderData.presentationType === 'anxiety' && 'With Anxiety'}
+                                  {log.adjustmentDisorderData.presentationType === 'mixed-emotions' && 'Mixed Anxiety & Depression'}
+                                  {log.adjustmentDisorderData.presentationType === 'conduct' && 'With Conduct Disturbance'}
+                                  {log.adjustmentDisorderData.presentationType === 'mixed-conduct-emotions' && 'Mixed Conduct & Emotions'}
+                                  {log.adjustmentDisorderData.presentationType === 'unspecified' && 'Unspecified'}
+                                </span>
+                                        </div>
+                                    )}
+
+                                    {/* Emotional/Behavioral Symptoms */}
+                                    {(log.adjustmentDisorderData.tearfulness || log.adjustmentDisorderData.hopelessness ||
+                                        log.adjustmentDisorderData.worry || log.adjustmentDisorderData.physicalTension ||
+                                        log.adjustmentDisorderData.impulsiveBehaviors || log.adjustmentDisorderData.aggression ||
+                                        log.adjustmentDisorderData.ruleViolations || log.adjustmentDisorderData.recklessBehavior) && (
+                                        <div>
+                                          <span className="font-semibold">Symptoms:</span>{' '}
+                                          {[
+                                            log.adjustmentDisorderData.tearfulness && 'Tearfulness',
+                                            log.adjustmentDisorderData.hopelessness && 'Hopelessness',
+                                            log.adjustmentDisorderData.worry && 'Worry',
+                                            log.adjustmentDisorderData.physicalTension && 'Physical tension',
+                                            log.adjustmentDisorderData.impulsiveBehaviors && 'Impulsive behaviors',
+                                            log.adjustmentDisorderData.aggression && 'Aggression',
+                                            log.adjustmentDisorderData.ruleViolations && 'Rule violations',
+                                            log.adjustmentDisorderData.recklessBehavior && 'Reckless behavior',
+                                          ].filter(Boolean).join(', ')}
+                                        </div>
+                                    )}
+
+                                    {/* Functional Impact */}
+                                    {(log.adjustmentDisorderData.workDifficulty || log.adjustmentDisorderData.relationshipProblems ||
+                                        log.adjustmentDisorderData.socialWithdrawal || log.adjustmentDisorderData.selfCareNeglect ||
+                                        log.adjustmentDisorderData.unableToFulfillResponsibilities) && (
+                                        <div>
+                                          <span className="font-semibold">Impact:</span>{' '}
+                                          {[
+                                            log.adjustmentDisorderData.workDifficulty && 'Work difficulty',
+                                            log.adjustmentDisorderData.relationshipProblems && 'Relationship problems',
+                                            log.adjustmentDisorderData.socialWithdrawal && 'Social withdrawal',
+                                            log.adjustmentDisorderData.selfCareNeglect && 'Self-care neglect',
+                                            log.adjustmentDisorderData.unableToFulfillResponsibilities && 'Unable to fulfill responsibilities',
+                                          ].filter(Boolean).join(', ')}
+                                        </div>
+                                    )}
+
+                                    {/* Progress Tracking */}
+                                    {log.adjustmentDisorderData.symptomsImproving !== null && (
+                                        <div>
+                                          <span className="font-semibold">Symptoms Improving:</span>{' '}
+                                          {log.adjustmentDisorderData.symptomsImproving === true && 'Yes'}
+                                          {log.adjustmentDisorderData.symptomsImproving === false && 'No'}
+                                          {log.adjustmentDisorderData.symptomsImproving === null && 'Unsure'}
+                                        </div>
+                                    )}
+
+                                    {log.adjustmentDisorderData.stillAffectingFunctioning !== null && (
+                                        <div>
+                                          <span className="font-semibold">Affecting Functioning:</span>{' '}
+                                          {log.adjustmentDisorderData.stillAffectingFunctioning === true && 'Yes'}
+                                          {log.adjustmentDisorderData.stillAffectingFunctioning === false && 'No'}
+                                          {log.adjustmentDisorderData.stillAffectingFunctioning === null && 'Somewhat'}
+                                        </div>
+                                    )}
+
+                                    {log.adjustmentDisorderData.context && (
+                                        <div>
+                                          <span className="font-semibold">Context:</span> {log.adjustmentDisorderData.context}
+                                        </div>
+                                    )}
+                                  </div>
+                              )}
+
+                              {/* Phase 8B: Binge Eating Disorder Details */}
+                              {log.bingeEatingData && (
+                                  <div className="bg-purple-50 dark:bg-purple-900/30 rounded-lg p-3 mb-2 text-sm">
+                                    <div className="flex items-center gap-2 mb-2">
+                                      <span className="text-purple-600 dark:text-purple-400">🍽️</span>
+                                      <span className="font-semibold text-purple-800 dark:text-purple-200">Binge Eating Details</span>
+                                    </div>
+                                    <div className="text-xs text-purple-700 dark:text-purple-300">
+                                      <div className="flex flex-wrap gap-2 mb-1">
+                                      {log.bingeEatingData.bingeEpisode && (
+                                          <span className="px-2 py-1 bg-purple-200 dark:bg-purple-900 text-purple-800 dark:text-purple-200 rounded-full text-xs inline-block">
+                                            Binge episode
+                                          </span>
+                                      )}
+                                      {log.bingeEatingData.lossOfControl && (
+                                          <span className="px-2 py-1 bg-red-200 dark:bg-red-900 text-red-800 dark:text-red-200 rounded-full text-xs inline-block ml-2">
+                                            Loss of control
+                                          </span>
+                                      )}
+                                      </div>
+                                      {log.bingeEatingData.distressLevel && (
+                                          <p className="text-xs text-purple-600 dark:text-purple-400 mt-1">
+                                            Distress level: {log.bingeEatingData.distressLevel}/10
+                                          </p>
+                                      )}
+                                    </div>
+                                  </div>
+                              )}
+
+                              {/* Phase 8B: Dissociative Disorders Details */}
+                              {log.dissociativeData && (
+                                  <div className="bg-indigo-50 dark:bg-indigo-900/30 rounded-lg p-3 mb-2 text-sm">
+                                    <div className="flex items-center gap-2 mb-2">
+                                      <span className="text-indigo-600 dark:text-indigo-400">🌀</span>
+                                      <span className="font-semibold text-indigo-800 dark:text-indigo-200">Dissociative Episode</span>
+                                    </div>
+                                    <div className="text-xs text-indigo-700 dark:text-indigo-300">
+                                      <div className="flex flex-wrap gap-2 mb-1">
+                                      {log.dissociativeData.memoryGap && (
+                                          <span className="px-2 py-1 bg-indigo-200 dark:bg-indigo-900 text-indigo-800 dark:text-indigo-200 rounded-full text-xs inline-block">
+                                            Memory gap
+                                          </span>
+                                      )}
+                                      {log.dissociativeData.lostTime && (
+                                          <span className="px-2 py-1 bg-indigo-200 dark:bg-indigo-900 text-indigo-800 dark:text-indigo-200 rounded-full text-xs inline-block ml-2">
+                                            Lost time
+                                          </span>
+                                      )}
+                                      </div>
+                                      {log.dissociativeData.duration && (
+                                          <p className="text-xs text-indigo-600 dark:text-indigo-400 mt-1">
+                                            Duration: {log.dissociativeData.duration}
+                                          </p>
+                                      )}
+                                    </div>
+                                  </div>
+                              )}
+
+                              {/* Phase 8B: Acute Stress Disorder Details */}
+                              {log.acuteStressData && (
+                                  <div className="bg-red-50 dark:bg-red-900/30 rounded-lg p-3 mb-2 text-sm">
+                                    <div className="flex items-center gap-2 mb-2">
+                                      <span className="text-red-600 dark:text-red-400">⚡</span>
+                                      <span className="font-semibold text-red-800 dark:text-red-200">Acute Stress Details</span>
+                                    </div>
+                                    <div className="text-xs text-red-700 dark:text-red-300">
+                                      {log.acuteStressData.traumaDate && (
+                                          <p className="text-xs text-red-600 dark:text-red-400 mb-1">
+                                            Trauma date: {new Date(log.acuteStressData.traumaDate).toLocaleDateString()}
+                                          </p>
+                                      )}
+                                      <div className="flex flex-wrap gap-2">
+                                      {log.acuteStressData.dissociativeSymptoms && (
+                                          <span className="px-2 py-1 bg-red-200 dark:bg-red-900 text-red-800 dark:text-red-200 rounded-full text-xs inline-block">
+                                            Dissociative symptoms
+                                          </span>
+                                      )}
+                                      {log.acuteStressData.avoidance && (
+                                          <span className="px-2 py-1 bg-orange-200 dark:bg-orange-900 text-orange-800 dark:text-orange-200 rounded-full text-xs inline-block ml-2">
+                                            Avoidance behaviors
+                                          </span>
+                                      )}
+                                    </div>
+                                  </div>
+                                  </div>
+                              )}
+
+                              {/* Phase 8B: Personality Disorders Details */}
+                              {log.personalityData && (
+                                  <div className="bg-amber-50 dark:bg-amber-900/30 rounded-lg p-3 mb-2 text-sm">
+                                    <div className="flex items-center gap-2 mb-2">
+                                      <span className="text-amber-600 dark:text-amber-400">🎭</span>
+                                      <span className="font-semibold text-amber-800 dark:text-amber-200">Functional Impact</span>
+                                    </div>
+                                    <div className="text-xs text-amber-700 dark:text-amber-300">
+                                      <div className="flex flex-wrap gap-2">
+                                      {log.personalityData.occupationalImpact && (
+                                          <span className="px-2 py-1 bg-amber-200 dark:bg-amber-900 text-amber-800 dark:text-amber-200 rounded-full text-xs inline-block">
+                                            💼 Work/school impact
+                                          </span>
+                                      )}
+                                      {log.personalityData.socialImpact && (
+                                          <span className="px-2 py-1 bg-amber-200 dark:bg-amber-900 text-amber-800 dark:text-amber-200 rounded-full text-xs inline-block ml-2">
+                                            👥 Relationship impact
+                                          </span>
+                                      )}
+                                    </div>
+                                    </div>
+                                  </div>
+                              )}
+
                               {log.notes && (
                                   <p className="text-sm text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-700 p-2 rounded">{log.notes}</p>
                               )}

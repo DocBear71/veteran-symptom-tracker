@@ -1,237 +1,178 @@
-import { useState } from 'react';
-import { formatRating, getRatingColorClass } from '../utils/ratingCriteria';
+import {ChevronDown, ChevronUp} from 'lucide-react';
+import {SINUSITIS_CRITERIA} from '../utils/ratingCriteria';
 
-/**
- * Sinusitis Rating Card Component
- * Shows sinusitis symptom analysis and VA rating
- */
-const SinusitisRatingCard = ({ analysis, expanded, onToggle }) => {
-  const [showDefinitions, setShowDefinitions] = useState(false);
-
-  if (!analysis.hasData) return null;
-
-  const {
-    condition,
-    diagnosticCode,
-    supportedRating,
-    ratingRationale,
-    evidence,
-    gaps,
-    criteria,
-    disclaimer,
-  } = analysis;
+export default function SinusitisRatingCard({analysis, expanded, onToggle}) {
+  if (!analysis || !analysis.hasData) return null;
+  const {supportedRating, rationale, evidenceGaps, metrics} = analysis;
+  const criteria = SINUSITIS_CRITERIA;
+  const isRatingSupported = (p) => supportedRating === p;
+  const getRatingRowColor = (p, s) => !s ?
+      'bg-gray-50 dark:bg-gray-700/30 border-gray-200 dark:border-gray-600' :
+      p >= 50 ?
+          'bg-orange-100 dark:bg-orange-900/30 border-orange-300 dark:border-orange-700' :
+          p >= 30 ?
+              'bg-yellow-100 dark:bg-yellow-900/30 border-yellow-300 dark:border-yellow-700' :
+              'bg-green-100 dark:bg-green-900/30 border-green-300 dark:border-green-700';
 
   return (
-      <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
-        {/* Header */}
-        <button
-            onClick={onToggle}
-            className="w-full p-4 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
-        >
-          <div className="flex items-center gap-3">
-            <span className="text-2xl">🤧</span>
-            <div className="text-left">
-              <h3 className="font-semibold text-gray-900 dark:text-white">
-                {condition}
-              </h3>
-              <p className="text-xs text-gray-500 dark:text-gray-400">
-                DC {diagnosticCode} • {criteria.cfrReference}
-              </p>
+      <div
+          className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden border-l-4 border-sky-500">
+        <button onClick={onToggle}
+                className="w-full px-6 py-4 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+          <div className="flex items-center gap-3"><span
+              className="text-2xl">🤧</span>
+            <div className="text-left"><h3
+                className="font-semibold text-lg text-gray-900 dark:text-white">Chronic
+              Sinusitis</h3><p
+                className="text-sm text-gray-600 dark:text-gray-400">DC {criteria.diagnosticCode} - {criteria.cfrReference}</p>
             </div>
           </div>
-          <div className="flex items-center gap-3">
-            {supportedRating && (
-                <span className={`px-3 py-1 rounded-full text-sm font-medium border ${
-                    supportedRating.includes('-')
-                        ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 border-blue-300 dark:border-blue-700'
-                        : getRatingColorClass(parseInt(supportedRating))
-                }`}>
-              {supportedRating}%
-            </span>
-            )}
-            <svg
-                className={`w-5 h-5 text-gray-400 transition-transform ${expanded ? 'rotate-180' : ''}`}
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7"/>
-            </svg>
-          </div>
+          <div className="flex items-center gap-4">
+            <div className="text-right">
+              <div
+                  className="text-2xl font-bold text-sky-600 dark:text-sky-400">{supportedRating !==
+              null ? `${supportedRating}%` : 'N/A'}</div>
+              <div
+                  className="text-xs text-gray-500 dark:text-gray-400">Supported
+                Rating
+              </div>
+            </div>
+            {expanded ?
+                <ChevronUp className="w-5 h-5 text-gray-400"/> :
+                <ChevronDown className="w-5 h-5 text-gray-400"/>}</div>
         </button>
-
-        {/* Expanded Content */}
         {expanded && (
-            <div className="p-4 border-t border-gray-200 dark:border-gray-700">
-              <div className="space-y-4 text-left">
-
-                {/* Evidence Summary */}
-                <div>
-                  <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-center">
-                    Evidence Summary
-                  </h4>
-                  <div className="bg-gray-50 dark:bg-gray-700/30 rounded-lg p-3 space-y-2">
-                    {evidence.map((item, i) => (
-                        <div key={i} className="flex items-start gap-2">
-                          <span className="text-green-600 dark:text-green-400 mt-0.5">✓</span>
-                          <span className="text-sm text-gray-700 dark:text-gray-300">{item}</span>
-                        </div>
-                    ))}
+            <div className="px-6 pb-6 space-y-6">
+              <div className="border-t border-gray-200 dark:border-gray-700"/>
+              <div><h4
+                  className="font-medium text-gray-900 dark:text-white mb-3 text-center">Evidence
+                Summary</h4>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                  <div
+                      className="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg text-center">
+                    <div
+                        className="text-2xl font-bold text-blue-600 dark:text-blue-400">{metrics?.totalLogs ||
+                        0}</div>
+                    <div
+                        className="text-xs text-blue-700 dark:text-blue-300">Total
+                      Logs
+                    </div>
+                  </div>
+                  <div
+                      className={`p-3 rounded-lg text-center ${metrics?.incapacitatingEpisodes >
+                      0 ?
+                          'bg-red-50 dark:bg-red-900/20' :
+                          'bg-gray-50 dark:bg-gray-700/30'}`}>
+                    <div
+                        className={`text-2xl font-bold ${metrics?.incapacitatingEpisodes >
+                        0 ?
+                            'text-red-600 dark:text-red-400' :
+                            'text-gray-400'}`}>{metrics?.incapacitatingEpisodes ||
+                        0}</div>
+                    <div
+                        className="text-xs text-gray-600 dark:text-gray-400">Incapacitating
+                    </div>
+                  </div>
+                  <div
+                      className={`p-3 rounded-lg text-center ${metrics?.nonIncapacitating >
+                      0 ?
+                          'bg-purple-50 dark:bg-purple-900/20' :
+                          'bg-gray-50 dark:bg-gray-700/30'}`}>
+                    <div
+                        className={`text-2xl font-bold ${metrics?.nonIncapacitating >
+                        0 ?
+                            'text-purple-600 dark:text-purple-400' :
+                            'text-gray-400'}`}>{metrics?.nonIncapacitating ||
+                        0}</div>
+                    <div
+                        className="text-xs text-gray-600 dark:text-gray-400">Non-Incap.
+                    </div>
+                  </div>
+                  <div
+                      className={`p-3 rounded-lg text-center ${metrics?.antibioticCourses >
+                      0 ?
+                          'bg-orange-50 dark:bg-orange-900/20' :
+                          'bg-gray-50 dark:bg-gray-700/30'}`}>
+                    <div
+                        className={`text-2xl font-bold ${metrics?.antibioticCourses >
+                        0 ?
+                            'text-orange-600 dark:text-orange-400' :
+                            'text-gray-400'}`}>{metrics?.antibioticCourses ||
+                        0}</div>
+                    <div
+                        className="text-xs text-gray-600 dark:text-gray-400">Antibiotics/yr
+                    </div>
                   </div>
                 </div>
-
-                {/* Rating Rationale */}
-                {ratingRationale && ratingRationale.length > 0 && (
-                    <div>
-                      <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-center">
-                        Analysis Rationale
-                      </h4>
-                      <div className="bg-gray-50 dark:bg-gray-700/30 rounded-lg p-3 space-y-2">
-                        {ratingRationale.map((reason, i) => (
-                            <div key={i} className="flex items-start gap-2">
-                              <span className="text-blue-600 dark:text-blue-400 mt-0.5">•</span>
-                              <span className="text-sm text-gray-700 dark:text-gray-300">{reason}</span>
-                            </div>
-                        ))}
+              </div>
+              {rationale?.length > 0 && (<div><h4
+                  className="font-medium text-gray-900 dark:text-white mb-2 text-center">Analysis
+                Rationale</h4>
+                <div
+                    className="bg-gray-50 dark:bg-gray-700/30 rounded-lg p-3 space-y-2">{rationale.map(
+                    (item, idx) => (
+                        <div key={idx} className="flex items-start gap-2"><span
+                            className="text-blue-600 dark:text-blue-400 mt-0.5">◆</span><span
+                            className="text-sm text-gray-700 dark:text-gray-300">{item}</span>
+                        </div>))}</div>
+              </div>)}
+              <div><h4
+                  className="font-medium text-gray-900 dark:text-white mb-2 text-center">VA
+                Rating Schedule</h4>
+                <div className="space-y-2">{criteria.ratings.map(r => {
+                  const s = isRatingSupported(r.percent);
+                  return (<div key={r.percent}
+                               className={`p-3 rounded-lg border ${s ?
+                                   'border-2' :
+                                   ''} ${getRatingRowColor(r.percent, s)}`}>
+                    <div className="flex items-center gap-3">
+                      <div className={`w-14 text-center font-bold ${s ?
+                          'text-gray-900 dark:text-white' :
+                          'text-gray-500 dark:text-gray-400'}`}>{r.percent}%
                       </div>
+                      <div className={`flex-1 text-sm ${s ?
+                          'text-gray-900 dark:text-white' :
+                          'text-gray-500 dark:text-gray-400'}`}>{r.summary}</div>
+                      {s && <span
+                          className="text-green-600 dark:text-green-400">✓</span>}
                     </div>
-                )}
-
-                {/* VA Rating Schedule */}
-                <div>
-                  <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-center">
-                    VA Rating Schedule
-                  </h4>
-                  <div className="space-y-2">
-                    {criteria.ratings.map(rating => {
-                      const ratingStr = rating.percent.toString();
-                      const isSupported = supportedRating === ratingStr ||
-                          (supportedRating && supportedRating.includes(ratingStr));
-
-                      return (
-                          <div
-                              key={rating.percent}
-                              className={`p-2 rounded-lg border flex items-center gap-3 ${
-                                  isSupported
-                                      ? `${getRatingColorClass(rating.percent)} border-2`
-                                      : 'bg-gray-50 dark:bg-gray-700/30 border-gray-200 dark:border-gray-600'
-                              }`}
-                          >
-                            <div className={`w-12 text-center font-bold ${
-                                isSupported
-                                    ? ''
-                                    : 'text-gray-500 dark:text-gray-400'
-                            }`}>
-                              {formatRating(rating.percent)}
-                            </div>
-                            <div className={`flex-1 text-sm ${
-                                isSupported
-                                    ? ''
-                                    : 'text-gray-500 dark:text-gray-400'
-                            }`}>
-                              {rating.summary}
-                            </div>
-                            {isSupported && !supportedRating.includes('-') && (
-                                <span className="text-green-600 dark:text-green-400">✓</span>
-                            )}
-                          </div>
-                      );
-                    })}
-                  </div>
-                </div>
-
-                {/* Documentation Gaps */}
-                {gaps && gaps.length > 0 && (
-                    <div>
-                      <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-center">
-                        Documentation Gaps
-                      </h4>
-                      <div className="bg-yellow-50 dark:bg-yellow-900/20 rounded-lg p-3 space-y-2">
-                        {gaps.map((gap, i) => (
-                            <div key={i} className="flex items-start gap-2">
-                              <span className="text-yellow-600 dark:text-yellow-400 mt-0.5">⚠</span>
-                              <span className="text-sm text-gray-700 dark:text-gray-300">{gap}</span>
-                            </div>
-                        ))}
-                      </div>
-                    </div>
-                )}
-
-                {/* Key Definitions */}
-                {criteria.definitions && Object.keys(criteria.definitions).length > 0 && (
-                    <div>
-                      <button
-                          onClick={() => setShowDefinitions(!showDefinitions)}
-                          className="flex items-center gap-2 text-sm text-blue-600 dark:text-blue-400 hover:underline"
-                      >
-                        <span>📖</span>
-                        <span>{showDefinitions ? 'Hide' : 'Show'} Sinusitis Rating Definitions</span>
-                      </button>
-
-                      {showDefinitions && (
-                          <div className="mt-3 space-y-2">
-                            {Object.values(criteria.definitions).map((def, i) => (
-                                <div key={i} className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-3">
-                                  <h5 className="font-medium text-blue-900 dark:text-blue-300 text-sm">
-                                    {def.term}
-                                  </h5>
-                                  <p className="text-sm text-blue-800 dark:text-blue-400 mt-1">
-                                    {def.definition}
-                                  </p>
-                                  {def.examples && (
-                                      <ul className="mt-2 text-xs text-blue-700 dark:text-blue-400 space-y-1">
-                                        {def.examples.map((example, j) => (
-                                            <li key={j}>• {example}</li>
-                                        ))}
-                                      </ul>
-                                  )}
-                                </div>
-                            ))}
-                          </div>
-                      )}
-                    </div>
-                )}
-
-                {/* Important Note */}
-                <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4 border-l-4 border-blue-500">
-                  <h4 className="font-medium text-blue-900 dark:text-blue-300 mb-2">
-                    Important: Sinusitis Documentation
-                  </h4>
-                  <ul className="space-y-2 text-sm text-blue-800 dark:text-blue-400">
-                    <li className="flex items-start gap-2">
-                      <span className="mt-0.5">•</span>
-                      <span>30% rating requires 3+ incapacitating episodes per year</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="mt-0.5">•</span>
-                      <span>Each episode must require prolonged antibiotics (10-14 days)</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="mt-0.5">•</span>
-                      <span>Document date, duration, and antibiotic for each episode</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="mt-0.5">•</span>
-                      <span>CT imaging showing chronic changes strengthens claim</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="mt-0.5">•</span>
-                      <span>ENT evaluation required for formal rating</span>
-                    </li>
-                  </ul>
-                </div>
-
-                {/* Disclaimer */}
-                {disclaimer && (
-                    <div className="bg-gray-100 dark:bg-gray-700/50 rounded-lg p-3 text-xs text-gray-600 dark:text-gray-400">
-                      <strong>Important:</strong> {disclaimer}
-                    </div>
-                )}
+                  </div>);
+                })}</div>
+              </div>
+              {evidenceGaps?.length > 0 && (<div><h4
+                  className="font-medium text-gray-900 dark:text-white mb-2 text-center">Documentation
+                Gaps</h4>
+                <div
+                    className="bg-amber-50 dark:bg-amber-900/20 rounded-lg p-3 space-y-2">{evidenceGaps.map(
+                    (gap, idx) => (
+                        <div key={idx} className="flex items-start gap-2"><span
+                            className="text-amber-600 dark:text-amber-400 mt-0.5">⚠</span><span
+                            className="text-sm text-gray-700 dark:text-gray-300">{gap}</span>
+                        </div>))}</div>
+              </div>)}
+              <div
+                  className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-200 dark:border-blue-800">
+                <h4 className="font-semibold text-blue-900 dark:text-blue-200 mb-2 flex items-center gap-2">
+                  <span>ℹ️</span>Important Information</h4>
+                <ul className="space-y-1">
+                  <li className="text-sm text-blue-800 dark:text-blue-300 flex items-start gap-2">
+                    <span className="text-blue-500 mt-0.5">•</span><span>Track incapacitating vs non-incapacitating episodes</span>
+                  </li>
+                  <li className="text-sm text-blue-800 dark:text-blue-300 flex items-start gap-2">
+                    <span className="text-blue-500 mt-0.5">•</span><span>Document antibiotic treatment courses per year</span>
+                  </li>
+                  <li className="text-sm text-blue-800 dark:text-blue-300 flex items-start gap-2">
+                    <span className="text-blue-500 mt-0.5">•</span><span>Note headaches, purulent discharge, tenderness</span>
+                  </li>
+                </ul>
+              </div>
+              <div
+                  className="bg-gray-100 dark:bg-gray-700/50 rounded-lg p-3 text-xs text-gray-600 dark:text-gray-400">
+                <strong>Important:</strong> Based on {criteria.cfrReference}.
+                For documentation purposes only.
               </div>
             </div>
         )}
       </div>
   );
-};
-
-export default SinusitisRatingCard;
+}

@@ -1,15 +1,36 @@
+import { useState } from 'react';
 import { ChevronDown, ChevronUp } from 'lucide-react';
-import { DIABETES_CRITERIA } from '../utils/ratingCriteria';
+import { MENTAL_HEALTH_SHARED_CRITERIA } from '../utils/ratingCriteria';
 
 /**
- * Diabetes Rating Card - Gold Standard Version
- * DC 7913 - 38 CFR 4.119
+ * Mental Health Rating Card - Gold Standard Version
+ * Generic card for mental health conditions using General Rating Formula
+ * 38 CFR 4.130
+ *
+ * Props:
+ * - getAllRatings: Optional function to get condition-specific ratings (e.g., eating disorders)
+ * - If not provided, uses MENTAL_HEALTH_SHARED_CRITERIA.ratings
  */
-export default function DiabetesRatingCard({ analysis, expanded, onToggle }) {
+export default function MentalHealthRatingCard({
+                                                 analysis,
+                                                 expanded,
+                                                 onToggle,
+                                                 icon = '🧠',
+                                                 conditionName,
+                                                 diagnosticCode,
+                                                 getAllRatings,
+                                                 getDefinition
+                                               }) {
+  const [showDefinitions, setShowDefinitions] = useState(false);
+
   if (!analysis || !analysis.hasData) return null;
 
-  const { supportedRating, rationale, evidenceGaps, metrics, ratingRationale, gaps } = analysis;
-  const criteria = DIABETES_CRITERIA;
+  const { supportedRating, rationale, evidenceGaps, metrics, condition, ratingRationale, gaps } = analysis;
+  const criteria = MENTAL_HEALTH_SHARED_CRITERIA;
+
+  // Use provided name/code or fall back to analysis
+  const displayName = conditionName || condition || 'Mental Health Condition';
+  const displayCode = diagnosticCode || analysis.diagnosticCode || '9400';
 
   // Handle both formats
   const displayRationale = rationale || ratingRationale || [];
@@ -20,6 +41,8 @@ export default function DiabetesRatingCard({ analysis, expanded, onToggle }) {
     if (rating === null || rating === undefined) return null;
     if (typeof rating === 'number') return rating;
     if (typeof rating === 'string') {
+      // Handle special cases like "Requires Medical Evaluation"
+      if (rating.includes('Requires') || rating.includes('Not Ratable')) return null;
       return parseInt(rating, 10) || null;
     }
     return null;
@@ -39,22 +62,35 @@ export default function DiabetesRatingCard({ analysis, expanded, onToggle }) {
     return 'bg-gray-100 dark:bg-gray-700/30 border-gray-300 dark:border-gray-600';
   };
 
+  // Get ratings - use getAllRatings function if provided, otherwise use default criteria
+  const getRatings = () => {
+    if (getAllRatings && typeof getAllRatings === 'function') {
+      const customRatings = getAllRatings();
+      if (customRatings && customRatings.length > 0) {
+        return customRatings;
+      }
+    }
+    return criteria?.ratings || [];
+  };
+
+  const ratings = getRatings();
+
   return (
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden border-l-4 border-blue-500">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden border-l-4 border-violet-500">
         <button
             onClick={onToggle}
             className="w-full px-6 py-4 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
         >
           <div className="flex items-center gap-3">
-            <span className="text-2xl">💉</span>
+            <span className="text-2xl">{icon}</span>
             <div className="text-left">
-              <h3 className="font-semibold text-lg text-gray-900 dark:text-white">Diabetes Mellitus</h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400">DC 7913 - 38 CFR 4.119</p>
+              <h3 className="font-semibold text-lg text-gray-900 dark:text-white">{displayName}</h3>
+              <p className="text-sm text-gray-600 dark:text-gray-400">DC {displayCode} - 38 CFR 4.130</p>
             </div>
           </div>
           <div className="flex items-center gap-4">
             <div className="text-right">
-              <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+              <div className="text-2xl font-bold text-violet-600 dark:text-violet-400">
                 {supportedRating !== null && supportedRating !== undefined ? `${supportedRating}%` : 'N/A'}
               </div>
               <div className="text-xs text-gray-500 dark:text-gray-400">Supported Rating</div>
@@ -67,7 +103,7 @@ export default function DiabetesRatingCard({ analysis, expanded, onToggle }) {
             <div className="px-6 pb-6 space-y-6">
               <div className="border-t border-gray-200 dark:border-gray-700" />
 
-              {/* Evidence Summary */}
+              {/* Evidence Summary - 4 Box Grid */}
               <div>
                 <h4 className="font-medium text-gray-900 dark:text-white mb-3 text-center">Evidence Summary</h4>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -75,17 +111,17 @@ export default function DiabetesRatingCard({ analysis, expanded, onToggle }) {
                     <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">{metrics?.totalLogs || 0}</div>
                     <div className="text-xs text-blue-700 dark:text-blue-300">Total Logs</div>
                   </div>
-                  <div className={`p-3 rounded-lg text-center ${metrics?.usesInsulin ? 'bg-red-50 dark:bg-red-900/20' : 'bg-gray-50 dark:bg-gray-700/30'}`}>
-                    <div className={`text-2xl font-bold ${metrics?.usesInsulin ? 'text-red-600 dark:text-red-400' : 'text-gray-400'}`}>{metrics?.usesInsulin ? '✓' : '—'}</div>
-                    <div className="text-xs text-gray-600 dark:text-gray-400">Insulin</div>
+                  <div className={`p-3 rounded-lg text-center ${metrics?.symptomDays > 0 ? 'bg-red-50 dark:bg-red-900/20' : 'bg-gray-50 dark:bg-gray-700/30'}`}>
+                    <div className={`text-2xl font-bold ${metrics?.symptomDays > 0 ? 'text-red-600 dark:text-red-400' : 'text-gray-400'}`}>{metrics?.symptomDays || 0}</div>
+                    <div className="text-xs text-gray-600 dark:text-gray-400">Symptom Days</div>
                   </div>
-                  <div className={`p-3 rounded-lg text-center ${metrics?.avgHbA1c ? 'bg-purple-50 dark:bg-purple-900/20' : 'bg-gray-50 dark:bg-gray-700/30'}`}>
-                    <div className={`text-xl font-bold ${metrics?.avgHbA1c ? 'text-purple-600 dark:text-purple-400' : 'text-gray-400'}`}>{metrics?.avgHbA1c || '—'}%</div>
-                    <div className="text-xs text-gray-600 dark:text-gray-400">HbA1c</div>
+                  <div className={`p-3 rounded-lg text-center ${metrics?.occupationalImpact ? 'bg-purple-50 dark:bg-purple-900/20' : 'bg-gray-50 dark:bg-gray-700/30'}`}>
+                    <div className={`text-2xl font-bold ${metrics?.occupationalImpact ? 'text-purple-600 dark:text-purple-400' : 'text-gray-400'}`}>{metrics?.occupationalImpact ? '✓' : '—'}</div>
+                    <div className="text-xs text-gray-600 dark:text-gray-400">Work Impact</div>
                   </div>
-                  <div className={`p-3 rounded-lg text-center ${metrics?.restrictedDiet ? 'bg-orange-50 dark:bg-orange-900/20' : 'bg-gray-50 dark:bg-gray-700/30'}`}>
-                    <div className={`text-2xl font-bold ${metrics?.restrictedDiet ? 'text-orange-600 dark:text-orange-400' : 'text-gray-400'}`}>{metrics?.restrictedDiet ? '✓' : '—'}</div>
-                    <div className="text-xs text-gray-600 dark:text-gray-400">Restricted</div>
+                  <div className={`p-3 rounded-lg text-center ${metrics?.socialImpact ? 'bg-orange-50 dark:bg-orange-900/20' : 'bg-gray-50 dark:bg-gray-700/30'}`}>
+                    <div className={`text-2xl font-bold ${metrics?.socialImpact ? 'text-orange-600 dark:text-orange-400' : 'text-gray-400'}`}>{metrics?.socialImpact ? '✓' : '—'}</div>
+                    <div className="text-xs text-gray-600 dark:text-gray-400">Social Impact</div>
                   </div>
                 </div>
               </div>
@@ -106,30 +142,34 @@ export default function DiabetesRatingCard({ analysis, expanded, onToggle }) {
               )}
 
               {/* VA Rating Schedule */}
-              <div>
-                <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-center">VA Rating Schedule</h4>
-                <div className="space-y-2">
-                  {criteria.ratings.map((rating, idx) => {
-                    const isSupported = isRatingSupported(rating.percent);
-                    return (
-                        <div
-                            key={idx}
-                            className={`p-3 rounded-lg border ${isSupported ? 'border-2' : ''} ${getRatingRowColor(rating.percent, isSupported)}`}
-                        >
-                          <div className="flex items-center gap-3">
-                            <div className={`w-14 text-center font-bold ${isSupported ? 'text-gray-900 dark:text-white' : 'text-gray-500 dark:text-gray-400'}`}>
-                              {rating.percent}%
+              {ratings.length > 0 && (
+                  <div>
+                    <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-center">VA Rating Schedule (General Rating Formula)</h4>
+                    <div className="space-y-2">
+                      {ratings.map((rating, idx) => {
+                        const percent = rating.percent ?? rating.rating ?? 0;
+                        const summary = rating.summary || rating.description || rating.criteria || '';
+                        const isSupported = isRatingSupported(percent);
+                        return (
+                            <div
+                                key={idx}
+                                className={`p-3 rounded-lg border ${isSupported ? 'border-2' : ''} ${getRatingRowColor(percent, isSupported)}`}
+                            >
+                              <div className="flex items-center gap-3">
+                                <div className={`w-14 text-center font-bold ${isSupported ? 'text-gray-900 dark:text-white' : 'text-gray-500 dark:text-gray-400'}`}>
+                                  {percent}%
+                                </div>
+                                <div className={`flex-1 text-sm ${isSupported ? 'text-gray-900 dark:text-white' : 'text-gray-500 dark:text-gray-400'}`}>
+                                  {summary}
+                                </div>
+                                {isSupported && <span className="text-green-600 dark:text-green-400">✓</span>}
+                              </div>
                             </div>
-                            <div className={`flex-1 text-sm ${isSupported ? 'text-gray-900 dark:text-white' : 'text-gray-500 dark:text-gray-400'}`}>
-                              {rating.summary}
-                            </div>
-                            {isSupported && <span className="text-green-600 dark:text-green-400">✓</span>}
-                          </div>
-                        </div>
-                    );
-                  })}
-                </div>
-              </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+              )}
 
               {/* Documentation Gaps */}
               {displayGaps?.length > 0 && (
@@ -154,22 +194,22 @@ export default function DiabetesRatingCard({ analysis, expanded, onToggle }) {
                 <ul className="space-y-1">
                   <li className="text-sm text-blue-800 dark:text-blue-300 flex items-start gap-2">
                     <span className="text-blue-500 mt-0.5">•</span>
-                    <span>Track insulin use and dosing requirements</span>
+                    <span>All mental health conditions use General Rating Formula</span>
                   </li>
                   <li className="text-sm text-blue-800 dark:text-blue-300 flex items-start gap-2">
                     <span className="text-blue-500 mt-0.5">•</span>
-                    <span>Document activity regulation requirements</span>
+                    <span>Document occupational and social impairment</span>
                   </li>
                   <li className="text-sm text-blue-800 dark:text-blue-300 flex items-start gap-2">
                     <span className="text-blue-500 mt-0.5">•</span>
-                    <span>Record hypoglycemic episodes and hospitalizations</span>
+                    <span>Track frequency and severity of symptoms</span>
                   </li>
                 </ul>
               </div>
 
               {/* Disclaimer */}
               <div className="bg-gray-100 dark:bg-gray-700/50 rounded-lg p-3 text-xs text-gray-600 dark:text-gray-400">
-                <strong>Important:</strong> Based on 38 CFR 4.119, DC 7913 - Diabetes Mellitus. For documentation purposes only.
+                <strong>Important:</strong> Based on 38 CFR 4.130 - General Rating Formula for Mental Disorders. For documentation purposes only.
               </div>
             </div>
         )}

@@ -1,15 +1,18 @@
+import { useState } from 'react';
 import { ChevronDown, ChevronUp } from 'lucide-react';
-import { IBS_CRITERIA } from '../utils/ratingCriteria';
+import { SLEEP_APNEA_CRITERIA } from '../utils/ratingCriteria';
 
 /**
- * IBS Rating Card Component - Gold Standard Version
- * DC 7319 - 38 CFR 4.114
+ * Sleep Apnea Rating Card Component - Gold Standard Version
+ * DC 6847 - 38 CFR 4.97
  */
-export default function IBSRatingCard({ analysis, expanded, onToggle }) {
-  if (!analysis || !analysis.hasData) return null;
+export default function SleepApneaRatingCard({ analysis, profile, expanded, onToggle, onSetupClick }) {
+  const [showDefinitions, setShowDefinitions] = useState(false);
 
-  const { supportedRating, rationale, evidenceGaps, metrics } = analysis;
-  const criteria = IBS_CRITERIA;
+  if (!analysis) return null;
+
+  const { supportedRating, rationale, evidenceGaps, metrics, evidence, requiresProfileSetup } = analysis;
+  const criteria = SLEEP_APNEA_CRITERIA;
 
   const isRatingSupported = (percent) => supportedRating === percent;
 
@@ -24,18 +27,31 @@ export default function IBSRatingCard({ analysis, expanded, onToggle }) {
     return 'bg-gray-100 dark:bg-gray-700/30 border-gray-300 dark:border-gray-600';
   };
 
+  const deviceTypeLabels = {
+    cpap: 'CPAP',
+    bipap: 'BiPAP',
+    apap: 'APAP',
+    inspire: 'Inspire Implant',
+    other: 'Other Device',
+  };
+
+  // Extract metrics
+  const totalLogs = metrics?.totalLogs || evidence?.sleepLogs?.total || 0;
+  const unrestedNights = metrics?.unrestedNights || evidence?.sleepLogs?.unrestedNights || 0;
+  const avgSleepQuality = metrics?.avgSleepQuality || evidence?.sleepLogs?.avgSleepQuality || null;
+  const usesDevice = profile?.usesBreathingDevice || metrics?.usesDevice || false;
+
   return (
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden border-l-4 border-lime-500">
-        {/* Collapsed Header */}
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden border-l-4 border-sky-500">
         <button
             onClick={onToggle}
             className="w-full px-6 py-4 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
         >
           <div className="flex items-center gap-3">
-            <span className="text-2xl">🫃</span>
+            <span className="text-2xl">😴</span>
             <div className="text-left">
               <h3 className="font-semibold text-lg text-gray-900 dark:text-white">
-                Irritable Bowel Syndrome
+                Sleep Apnea
               </h3>
               <p className="text-sm text-gray-600 dark:text-gray-400">
                 DC {criteria.diagnosticCode} - {criteria.cfrReference}
@@ -44,7 +60,7 @@ export default function IBSRatingCard({ analysis, expanded, onToggle }) {
           </div>
           <div className="flex items-center gap-4">
             <div className="text-right">
-              <div className="text-2xl font-bold text-lime-600 dark:text-lime-400">
+              <div className="text-2xl font-bold text-sky-600 dark:text-sky-400">
                 {supportedRating !== null ? `${supportedRating}%` : 'N/A'}
               </div>
               <div className="text-xs text-gray-500 dark:text-gray-400">Supported Rating</div>
@@ -57,58 +73,76 @@ export default function IBSRatingCard({ analysis, expanded, onToggle }) {
           </div>
         </button>
 
-        {/* Expanded Content */}
         {expanded && (
             <div className="px-6 pb-6 space-y-6">
               <div className="border-t border-gray-200 dark:border-gray-700" />
 
-              {/* Evidence Summary - 4 Box Grid */}
-              <div>
-                <h4 className="font-medium text-gray-900 dark:text-white mb-3 text-center">
-                  Evidence Summary
-                </h4>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                  <div className="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg text-center">
-                    <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-                      {metrics?.totalLogs || 0}
-                    </div>
-                    <div className="text-xs text-blue-700 dark:text-blue-300">Total Logs</div>
+              {/* Setup Required Banner */}
+              {requiresProfileSetup && onSetupClick && (
+                  <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-200 dark:border-blue-800">
+                    <p className="text-sm text-blue-800 dark:text-blue-300 mb-3">
+                      To analyze your Sleep Apnea rating, we need to know about your diagnosis and treatment.
+                    </p>
+                    <button
+                        onClick={onSetupClick}
+                        className="w-full py-2 px-4 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors"
+                    >
+                      Set Up Sleep Apnea Profile
+                    </button>
                   </div>
-                  <div className={`p-3 rounded-lg text-center ${
-                      metrics?.diarrheaEpisodes > 0 ? 'bg-red-50 dark:bg-red-900/20' : 'bg-gray-50 dark:bg-gray-700/30'
-                  }`}>
-                    <div className={`text-2xl font-bold ${
-                        metrics?.diarrheaEpisodes > 0 ? 'text-red-600 dark:text-red-400' : 'text-gray-400'
-                    }`}>
-                      {metrics?.diarrheaEpisodes || 0}
+              )}
+
+              {/* Evidence Summary */}
+              {!requiresProfileSetup && (
+                  <div>
+                    <h4 className="font-medium text-gray-900 dark:text-white mb-3 text-center">
+                      Evidence Summary
+                    </h4>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                      <div className="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg text-center">
+                        <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+                          {totalLogs}
+                        </div>
+                        <div className="text-xs text-blue-700 dark:text-blue-300">Sleep Logs</div>
+                      </div>
+                      <div className={`p-3 rounded-lg text-center ${
+                          unrestedNights > 0 ? 'bg-red-50 dark:bg-red-900/20' : 'bg-gray-50 dark:bg-gray-700/30'
+                      }`}>
+                        <div className={`text-2xl font-bold ${
+                            unrestedNights > 0 ? 'text-red-600 dark:text-red-400' : 'text-gray-400'
+                        }`}>
+                          {unrestedNights}
+                        </div>
+                        <div className="text-xs text-gray-600 dark:text-gray-400">Unrested Nights</div>
+                      </div>
+                      <div className={`p-3 rounded-lg text-center ${
+                          avgSleepQuality ? 'bg-purple-50 dark:bg-purple-900/20' : 'bg-gray-50 dark:bg-gray-700/30'
+                      }`}>
+                        <div className={`text-xl font-bold ${
+                            avgSleepQuality ? 'text-purple-600 dark:text-purple-400' : 'text-gray-400'
+                        }`}>
+                          {avgSleepQuality || '—'}/10
+                        </div>
+                        <div className="text-xs text-gray-600 dark:text-gray-400">Avg Quality</div>
+                      </div>
+                      <div className={`p-3 rounded-lg text-center ${
+                          usesDevice ? 'bg-orange-50 dark:bg-orange-900/20' : 'bg-gray-50 dark:bg-gray-700/30'
+                      }`}>
+                        <div className={`text-2xl font-bold ${
+                            usesDevice ? 'text-orange-600 dark:text-orange-400' : 'text-gray-400'
+                        }`}>
+                          {usesDevice ? '✓' : '—'}
+                        </div>
+                        <div className="text-xs text-gray-600 dark:text-gray-400">
+                          {usesDevice && profile?.deviceType ? deviceTypeLabels[profile.deviceType] : 'Device'}
+                        </div>
+                      </div>
                     </div>
-                    <div className="text-xs text-gray-600 dark:text-gray-400">Diarrhea</div>
                   </div>
-                  <div className={`p-3 rounded-lg text-center ${
-                      metrics?.constipationEpisodes > 0 ? 'bg-purple-50 dark:bg-purple-900/20' : 'bg-gray-50 dark:bg-gray-700/30'
-                  }`}>
-                    <div className={`text-2xl font-bold ${
-                        metrics?.constipationEpisodes > 0 ? 'text-purple-600 dark:text-purple-400' : 'text-gray-400'
-                    }`}>
-                      {metrics?.constipationEpisodes || 0}
-                    </div>
-                    <div className="text-xs text-gray-600 dark:text-gray-400">Constipation</div>
-                  </div>
-                  <div className={`p-3 rounded-lg text-center ${
-                      metrics?.abdominalDistress > 0 ? 'bg-orange-50 dark:bg-orange-900/20' : 'bg-gray-50 dark:bg-gray-700/30'
-                  }`}>
-                    <div className={`text-2xl font-bold ${
-                        metrics?.abdominalDistress > 0 ? 'text-orange-600 dark:text-orange-400' : 'text-gray-400'
-                    }`}>
-                      {metrics?.abdominalDistress || 0}
-                    </div>
-                    <div className="text-xs text-gray-600 dark:text-gray-400">Distress Days</div>
-                  </div>
-                </div>
-              </div>
+              )}
 
               {/* Analysis Rationale */}
-              {rationale?.length > 0 && (
+              {!requiresProfileSetup && rationale?.length > 0 && (
                   <div>
                     <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-center">
                       Analysis Rationale
@@ -159,7 +193,7 @@ export default function IBSRatingCard({ analysis, expanded, onToggle }) {
               </div>
 
               {/* Documentation Gaps */}
-              {evidenceGaps?.length > 0 && (
+              {!requiresProfileSetup && evidenceGaps?.length > 0 && (
                   <div>
                     <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-center">
                       Documentation Gaps
@@ -184,15 +218,15 @@ export default function IBSRatingCard({ analysis, expanded, onToggle }) {
                 <ul className="space-y-1">
                   <li className="text-sm text-blue-800 dark:text-blue-300 flex items-start gap-2">
                     <span className="text-blue-500 mt-0.5">•</span>
-                    <span>Track alternating diarrhea and constipation patterns</span>
+                    <span>50% rating requires CPAP/BiPAP use</span>
                   </li>
                   <li className="text-sm text-blue-800 dark:text-blue-300 flex items-start gap-2">
                     <span className="text-blue-500 mt-0.5">•</span>
-                    <span>Document frequency of bowel disturbance episodes</span>
+                    <span>Track nightly device compliance</span>
                   </li>
                   <li className="text-sm text-blue-800 dark:text-blue-300 flex items-start gap-2">
                     <span className="text-blue-500 mt-0.5">•</span>
-                    <span>Note abdominal pain/distress and impact on activities</span>
+                    <span>Document daytime hypersomnolence symptoms</span>
                   </li>
                 </ul>
               </div>

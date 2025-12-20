@@ -1,96 +1,149 @@
-import React from 'react';
-import { Activity } from 'lucide-react';
+import { ChevronDown, ChevronUp } from 'lucide-react';
+import { HEARING_LOSS_CRITERIA } from '../utils/ratingCriteria';
 
+/**
+ * Hearing Loss Rating Card Component - Gold Standard Version
+ * Displays VA rating analysis for Hearing Loss (DC 6100)
+ * Based on 38 CFR 4.85-4.86
+ */
+export default function HearingLossRatingCard({ analysis, expanded, onToggle }) {
+  if (!analysis || !analysis.hasData) return null;
 
-const HearingLossRatingCard = ({ analysis, expanded, onToggle }) => {
-    if (!analysis || !analysis.hasData) return null;
+  const { supportedRating, ratingRationale, evidence, gaps, metrics } = analysis;
+  const criteria = HEARING_LOSS_CRITERIA;
+
+  const normalizeRating = (rating) => {
+    if (typeof rating === 'number') return rating;
+    if (typeof rating === 'string') return parseInt(rating.replace('%', ''), 10);
+    return null;
+  };
+
+  const currentRating = normalizeRating(supportedRating);
+
+  const isRatingSupported = (levelRating) => {
+    return currentRating === normalizeRating(levelRating);
+  };
+
+  const getRatingRowColor = (levelRating, isSupported) => {
+    const percent = normalizeRating(levelRating);
+    if (!isSupported) return 'bg-gray-50 dark:bg-gray-700/30 border-gray-200 dark:border-gray-600';
+    if (percent >= 100) return 'bg-red-100 dark:bg-red-900/30 border-red-300 dark:border-red-700';
+    if (percent >= 60) return 'bg-orange-100 dark:bg-orange-900/30 border-orange-300 dark:border-orange-700';
+    if (percent >= 30) return 'bg-yellow-100 dark:bg-yellow-900/30 border-yellow-300 dark:border-yellow-700';
+    if (percent >= 10) return 'bg-green-100 dark:bg-green-900/30 border-green-300 dark:border-green-700';
+    return 'bg-gray-100 dark:bg-gray-700/30 border-gray-300 dark:border-gray-600';
+  };
+
   return (
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-        <div className="flex items-center gap-3 mb-4">
-          <Activity className="w-6 h-6 text-blue-600 dark:text-blue-400" />
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-            Hearing Loss
-          </h2>
-        </div>
-
-        <div className="space-y-4 text-left">
-          <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
-            <p className="text-sm text-gray-700 dark:text-gray-300">
-              <strong>Diagnostic Code:</strong> 6100 (38 CFR 4.85)
-            </p>
-            <p className="text-sm text-gray-700 dark:text-gray-300 mt-2">
-              Hearing loss ratings require <strong>pure-tone audiometry testing</strong> by an audiologist.
-              Symptom tracking helps document functional impact but cannot determine rating percentage.
-            </p>
-          </div>
-
-          <div className="space-y-3">
-            <h3 className="font-semibold text-gray-900 dark:text-white">VA Rating Levels:</h3>
-
-            <div className="border-l-4 border-red-500 pl-4 py-2 bg-red-50 dark:bg-red-900/20">
-              <div className="font-bold text-gray-900 dark:text-white">100% Rating</div>
-              <div className="text-sm text-gray-700 dark:text-gray-300">
-                • Bilateral loss averaging 55+ dB at 500, 1000, 2000 Hz<br/>
-                • With additional loss at 3000, 4000 Hz
-              </div>
-            </div>
-
-            <div className="border-l-4 border-orange-500 pl-4 py-2 bg-orange-50 dark:bg-orange-900/20">
-              <div className="font-bold text-gray-900 dark:text-white">60% Rating</div>
-              <div className="text-sm text-gray-700 dark:text-gray-300">
-                • Bilateral loss averaging 45-54 dB at speech frequencies
-              </div>
-            </div>
-
-            <div className="border-l-4 border-yellow-500 pl-4 py-2 bg-yellow-50 dark:bg-yellow-900/20">
-              <div className="font-bold text-gray-900 dark:text-white">30% Rating</div>
-              <div className="text-sm text-gray-700 dark:text-gray-300">
-                • Bilateral loss averaging 35-44 dB at speech frequencies
-              </div>
-            </div>
-
-            <div className="border-l-4 border-green-500 pl-4 py-2 bg-green-50 dark:bg-green-900/20">
-              <div className="font-bold text-gray-900 dark:text-white">10% Rating</div>
-              <div className="text-sm text-gray-700 dark:text-gray-300">
-                • Bilateral loss averaging 26-34 dB at speech frequencies
-              </div>
-            </div>
-
-            <div className="border-l-4 border-gray-400 pl-4 py-2 bg-gray-50 dark:bg-gray-900/20">
-              <div className="font-bold text-gray-900 dark:text-white">0% Rating</div>
-              <div className="text-sm text-gray-700 dark:text-gray-300">
-                • Hearing loss present but below compensable levels
-              </div>
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden border-l-4 border-cyan-500">
+        <button onClick={onToggle} className="w-full px-6 py-4 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+          <div className="flex items-center gap-3">
+            <span className="text-2xl">👂</span>
+            <div className="text-left">
+              <h3 className="font-semibold text-lg text-gray-900 dark:text-white">Hearing Loss</h3>
+              <p className="text-sm text-gray-600 dark:text-gray-400">DC 6100 - 38 CFR 4.85-4.86</p>
             </div>
           </div>
-
-          <div className="bg-amber-50 dark:bg-amber-900/20 p-4 rounded-lg">
-            <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
-              Critical Documentation:
-            </h3>
-            <ul className="text-sm text-gray-700 dark:text-gray-300 space-y-1">
-              <li>✓ Pure-tone audiometry test (required for all ratings)</li>
-              <li>✓ Speech recognition testing (Maryland CNC or similar)</li>
-              <li>✓ Test both ears separately</li>
-              <li>✓ Request copy of audiogram for records</li>
-              <li>✓ Document functional impact (phone, conversations, TV, etc.)</li>
-            </ul>
+          <div className="flex items-center gap-4">
+            <div className="text-right">
+              <div className="text-2xl font-bold text-cyan-600 dark:text-cyan-400">
+                {currentRating !== null ? `${currentRating}%` : 'N/A'}
+              </div>
+              <div className="text-xs text-gray-500 dark:text-gray-400">Supported Rating</div>
+            </div>
+            {expanded ? <ChevronUp className="w-5 h-5 text-gray-400" /> : <ChevronDown className="w-5 h-5 text-gray-400" />}
           </div>
+        </button>
 
-          <div className="bg-gray-50 dark:bg-gray-900/20 p-4 rounded-lg">
-            <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
-              What to Track:
-            </h3>
-            <ul className="text-sm text-gray-700 dark:text-gray-300 space-y-1">
-              <li>• Difficulty hearing in specific situations</li>
-              <li>• Which ear(s) affected (bilateral is higher rating)</li>
-              <li>• Impact on work, social activities, safety</li>
-              <li>• Use of hearing aids or assistive devices</li>
-            </ul>
-          </div>
-        </div>
+        {expanded && (
+            <div className="px-6 pb-6 space-y-6">
+              <div className="border-t border-gray-200 dark:border-gray-700" />
+
+              <div>
+                <h4 className="font-medium text-gray-900 dark:text-white mb-3 text-center">Evidence Summary</h4>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                  <div className="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg text-center">
+                    <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">{metrics?.totalLogs || 0}</div>
+                    <div className="text-xs text-blue-700 dark:text-blue-300">Total Logs</div>
+                  </div>
+                  <div className={`p-3 rounded-lg text-center ${metrics?.difficultyHearing > 0 ? 'bg-orange-50 dark:bg-orange-900/20' : 'bg-gray-50 dark:bg-gray-700/30'}`}>
+                    <div className={`text-2xl font-bold ${metrics?.difficultyHearing > 0 ? 'text-orange-600 dark:text-orange-400' : 'text-gray-400'}`}>{metrics?.difficultyHearing || 0}</div>
+                    <div className="text-xs text-gray-600 dark:text-gray-400">Difficulty Events</div>
+                  </div>
+                  <div className={`p-3 rounded-lg text-center ${metrics?.tinnitus ? 'bg-purple-50 dark:bg-purple-900/20' : 'bg-gray-50 dark:bg-gray-700/30'}`}>
+                    <div className={`text-2xl font-bold ${metrics?.tinnitus ? 'text-purple-600 dark:text-purple-400' : 'text-gray-400'}`}>{metrics?.tinnitus ? '✓' : '—'}</div>
+                    <div className="text-xs text-gray-600 dark:text-gray-400">Tinnitus</div>
+                  </div>
+                  <div className={`p-3 rounded-lg text-center ${metrics?.usesHearingAid ? 'bg-green-50 dark:bg-green-900/20' : 'bg-gray-50 dark:bg-gray-700/30'}`}>
+                    <div className={`text-2xl font-bold ${metrics?.usesHearingAid ? 'text-green-600 dark:text-green-400' : 'text-gray-400'}`}>{metrics?.usesHearingAid ? '✓' : '—'}</div>
+                    <div className="text-xs text-gray-600 dark:text-gray-400">Hearing Aid</div>
+                  </div>
+                </div>
+              </div>
+
+              {ratingRationale && ratingRationale.length > 0 && (
+                  <div>
+                    <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-center">Analysis Rationale</h4>
+                    <div className="bg-gray-50 dark:bg-gray-700/30 rounded-lg p-3 space-y-2">
+                      {ratingRationale.map((item, idx) => (
+                          <div key={idx} className="flex items-start gap-2">
+                            <span className="text-blue-600 dark:text-blue-400 mt-0.5">◆</span>
+                            <span className="text-sm text-gray-700 dark:text-gray-300">{item}</span>
+                          </div>
+                      ))}
+                    </div>
+                  </div>
+              )}
+
+              <div>
+                <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-center">VA Rating Schedule</h4>
+                <div className="space-y-2">
+                  {criteria.levels.map((level, idx) => {
+                    const isSupported = isRatingSupported(level.rating);
+                    return (
+                        <div key={idx} className={`p-3 rounded-lg border ${isSupported ? 'border-2' : ''} ${getRatingRowColor(level.rating, isSupported)}`}>
+                          <div className="flex items-center gap-3">
+                            <div className={`w-14 text-center font-bold ${isSupported ? 'text-gray-900 dark:text-white' : 'text-gray-500 dark:text-gray-400'}`}>{level.rating}</div>
+                            <div className={`flex-1 text-sm ${isSupported ? 'text-gray-900 dark:text-white' : 'text-gray-500 dark:text-gray-400'}`}>{level.criteria.join('; ')}</div>
+                            {isSupported && <span className="text-green-600 dark:text-green-400">✓</span>}
+                          </div>
+                        </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {gaps && gaps.length > 0 && (
+                  <div>
+                    <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-center">Documentation Gaps</h4>
+                    <div className="bg-amber-50 dark:bg-amber-900/20 rounded-lg p-3 space-y-2">
+                      {gaps.map((gap, idx) => (
+                          <div key={idx} className="flex items-start gap-2">
+                            <span className="text-amber-600 dark:text-amber-400 mt-0.5">⚠</span>
+                            <span className="text-sm text-gray-700 dark:text-gray-300">{gap}</span>
+                          </div>
+                      ))}
+                    </div>
+                  </div>
+              )}
+
+              <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-200 dark:border-blue-800">
+                <h4 className="font-semibold text-blue-900 dark:text-blue-200 mb-2 flex items-center gap-2">
+                  <span>ℹ️</span>Important Information
+                </h4>
+                <ul className="space-y-1">
+                  <li className="text-sm text-blue-800 dark:text-blue-300 flex items-start gap-2"><span className="text-blue-500 mt-0.5">•</span><span>VA rating requires official audiometry testing</span></li>
+                  <li className="text-sm text-blue-800 dark:text-blue-300 flex items-start gap-2"><span className="text-blue-500 mt-0.5">•</span><span>Document situations where you have difficulty hearing</span></li>
+                  <li className="text-sm text-blue-800 dark:text-blue-300 flex items-start gap-2"><span className="text-blue-500 mt-0.5">•</span><span>Tinnitus (ringing in ears) rated separately at 10%</span></li>
+                  <li className="text-sm text-blue-800 dark:text-blue-300 flex items-start gap-2"><span className="text-blue-500 mt-0.5">•</span><span>Maryland CNC word recognition test is also required</span></li>
+                </ul>
+              </div>
+
+              <div className="bg-gray-100 dark:bg-gray-700/50 rounded-lg p-3 text-xs text-gray-600 dark:text-gray-400">
+                <strong>Important:</strong> Based on 38 CFR 4.85-4.86, Diagnostic Code 6100 - Hearing Impairment. This analysis is for documentation purposes only.
+              </div>
+            </div>
+        )}
       </div>
   );
-};
-
-export default HearingLossRatingCard;
+}

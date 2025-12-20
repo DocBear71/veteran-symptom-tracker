@@ -96,9 +96,11 @@ export const symptomCategories = [
     symptoms: [
       { id: 'adjustment-depressed-mood', name: 'Adjustment Disorder - Depressed Mood' },
       { id: 'adjustment-anxiety', name: 'Adjustment Disorder - Anxiety' },
+      { id: 'adjustment-mixed-emotions', name: 'Adjustment Disorder - Mixed Emotions'},
       { id: 'adjustment-disturbance-conduct', name: 'Adjustment Disorder - Behavioral Changes' },
       { id: 'adjustment-work-difficulty', name: 'Adjustment Disorder - Work/School Difficulty' },
       { id: 'adjustment-relationship-problems', name: 'Adjustment Disorder - Relationship Problems' },
+      { id: 'adjustment-unspecified', name: 'Adjustment Disorder - Unspecified'}
     ]
   },
   {
@@ -1078,7 +1080,227 @@ export const symptomCategories = [
       { id: 'prosthesis-sores', name: 'Sores from Prosthesis' },
     ]
   },
+  // Phase 8A: Somatic Symptom Disorders
+  {
+    id: 'somatic-symptom-disorder',
+    name: 'Somatic Symptom Disorder',
+    symptoms: [
+      { id: 'somatic-pain', name: 'Somatic - Chronic Pain Preoccupation' },
+      { id: 'somatic-excessive-worry', name: 'Somatic - Excessive Worry About Health' },
+      { id: 'somatic-multiple-symptoms', name: 'Somatic - Multiple Physical Symptoms' },
+      { id: 'somatic-doctor-visits', name: 'Somatic - Frequent Doctor Visits' },
+      { id: 'somatic-functional-impairment', name: 'Somatic - Functional Impairment from Symptoms' },
+    ]
+  },
+  {
+    id: 'illness-anxiety',
+    name: 'Illness Anxiety Disorder',
+    symptoms: [
+      { id: 'illness-anxiety-fear', name: 'Illness Anxiety - Fear of Having Serious Illness' },
+      { id: 'illness-anxiety-body-checking', name: 'Illness Anxiety - Excessive Body Checking' },
+      { id: 'illness-anxiety-reassurance', name: 'Illness Anxiety - Reassurance Seeking' },
+      { id: 'illness-anxiety-avoidance', name: 'Illness Anxiety - Medical Appointment Avoidance' },
+      { id: 'illness-anxiety-distress', name: 'Illness Anxiety - High Anxiety About Health' },
+    ]
+  },
+  // Phase 8A: Cyclothymic Disorder
+  {
+    id: 'cyclothymic',
+    name: 'Cyclothymic Disorder Symptoms',
+    symptoms: [
+      { id: 'cyclothymic-hypomanic', name: 'Cyclothymic - Hypomanic Symptoms' },
+      { id: 'cyclothymic-depressive', name: 'Cyclothymic - Depressive Symptoms' },
+      { id: 'cyclothymic-mood-swing', name: 'Cyclothymic - Mood Swings' },
+      { id: 'cyclothymic-irritability', name: 'Cyclothymic - Irritability' },
+    ]
+  },
+  // Phase 8A: Depersonalization/Derealization
+  {
+    id: 'depersonalization',
+    name: 'Depersonalization/Derealization Symptoms',
+    symptoms: [
+      { id: 'depersonalization-detachment', name: 'Depersonalization - Feeling Detached from Self' },
+      { id: 'derealization-unreality', name: 'Derealization - Surroundings Feel Unreal' },
+      { id: 'depersonalization-robot', name: 'Depersonalization - Feeling Like Robot/Autopilot' },
+      { id: 'depersonalization-distress', name: 'Depersonalization - Distress from Episodes' },
+    ]
+  },
+  // Phase 8A: Eating Disorders
+  {
+    id: 'anorexia-nervosa',
+    name: 'Anorexia Nervosa Symptoms',
+    symptoms: [
+      { id: 'anorexia-restricted-eating', name: 'Anorexia - Restricted Food Intake' },
+      { id: 'anorexia-weight-loss', name: 'Anorexia - Significant Weight Loss' },
+      { id: 'anorexia-fear-weight-gain', name: 'Anorexia - Intense Fear of Weight Gain' },
+      { id: 'anorexia-body-image', name: 'Anorexia - Distorted Body Image' },
+      { id: 'anorexia-incapacitating-episode', name: 'Anorexia - Incapacitating Episode (Bed Rest Required)' },
+      { id: 'anorexia-hospitalization', name: 'Anorexia - Hospitalization' },
+    ]
+  },
+  {
+    id: 'bulimia-nervosa',
+    name: 'Bulimia Nervosa Symptoms',
+    symptoms: [
+      { id: 'bulimia-binge-eating', name: 'Bulimia - Binge Eating Episode' },
+      { id: 'bulimia-purging', name: 'Bulimia - Purging (Vomiting)' },
+      { id: 'bulimia-compensatory', name: 'Bulimia - Other Compensatory Behaviors' },
+      { id: 'bulimia-body-image', name: 'Bulimia - Body Image Concerns' },
+      { id: 'bulimia-incapacitating-episode', name: 'Bulimia - Incapacitating Episode (Bed Rest Required)' },
+      { id: 'bulimia-hospitalization', name: 'Bulimia - Hospitalization' },
+    ]
+  },
+  // PHASE 8B: ADDITIONAL MENTAL HEALTH CONDITIONS
+  // Schizophrenia (DC 9201)
+  {
+    id: 'schizophrenia',
+    name: 'Schizophrenia',
+    symptoms: [
+      { id: 'schizophrenia-hallucinations', name: 'Schizophrenia - Hallucinations', category: 'Schizophrenia Spectrum Symptoms' },
+      { id: 'schizophrenia-delusions', name: 'Schizophrenia - Delusions', category: 'Schizophrenia Spectrum Symptoms' },
+      { id: 'schizophrenia-disorganized-speech', name: 'Schizophrenia - Disorganized Speech', category: 'Schizophrenia Spectrum Symptoms' },
+      { id: 'schizophrenia-disorganized-behavior', name: 'Schizophrenia - Disorganized/Catatonic Behavior', category: 'Schizophrenia Spectrum Symptoms' },
+      { id: 'schizophrenia-negative-symptoms', name: 'Schizophrenia - Negative Symptoms', category: 'Schizophrenia Spectrum Symptoms' },
+    ]
+  },
 
+  // Schizoaffective Disorder (DC 9202)
+  {
+    id: 'schizoaffective-disorder',
+    name: 'Schizoaffective Disorder',
+    symptoms: [
+      { id: 'schizophrenia-hallucinations', name: 'Schizophrenia - Hallucinations', category: 'Schizophrenia Spectrum Symptoms' },
+      { id: 'schizophrenia-delusions', name: 'Schizophrenia - Delusions', category: 'Schizophrenia Spectrum Symptoms' },
+      { id: 'schizoaffective-mood-episodes', name: 'Schizoaffective - Mood Episodes', category: 'Schizophrenia Spectrum Symptoms' },
+      { id: 'psychotic-episode', name: 'Psychotic Episode', category: 'Schizophrenia Spectrum Symptoms' },
+    ]
+  },
+
+  // Delusional Disorder (DC 9203)
+  {
+    id: 'delusional-disorder',
+    name: 'Delusional Disorder',
+    symptoms: [
+      { id: 'schizophrenia-delusions', name: 'Schizophrenia - Delusions', category: 'Schizophrenia Spectrum Symptoms' },
+      { id: 'psychotic-episode', name: 'Psychotic Episode', category: 'Schizophrenia Spectrum Symptoms' },
+    ]
+  },
+
+  // Psychotic Disorder NOS (DC 9204)
+  {
+    id: 'psychotic-disorder-nos',
+    name: 'Psychotic Disorder NOS',
+    symptoms: [
+      { id: 'psychotic-episode', name: 'Psychotic Episode', category: 'Schizophrenia Spectrum Symptoms' },
+      { id: 'schizophrenia-hallucinations', name: 'Schizophrenia - Hallucinations', category: 'Schizophrenia Spectrum Symptoms' },
+      { id: 'schizophrenia-delusions', name: 'Schizophrenia - Delusions', category: 'Schizophrenia Spectrum Symptoms' },
+    ]
+  },
+
+  // Brief Psychotic Disorder (DC 9205)
+  {
+    id: 'brief-psychotic-disorder',
+    name: 'Brief Psychotic Disorder',
+    symptoms: [
+      { id: 'brief-psychotic-episode', name: 'Brief Psychotic Episode (<1 month)', category: 'Schizophrenia Spectrum Symptoms' },
+      { id: 'schizophrenia-hallucinations', name: 'Schizophrenia - Hallucinations', category: 'Schizophrenia Spectrum Symptoms' },
+      { id: 'schizophrenia-delusions', name: 'Schizophrenia - Delusions', category: 'Schizophrenia Spectrum Symptoms' },
+    ]
+  },
+
+  // Binge Eating Disorder (DC 9520)
+  {
+    id: 'binge-eating-disorder',
+    name: 'Binge Eating Disorder',
+    symptoms: [
+      { id: 'binge-eating-episode', name: 'Binge Eating - Episode', category: 'Binge Eating Disorder Symptoms' },
+      { id: 'binge-eating-loss-of-control', name: 'Binge Eating - Loss of Control', category: 'Binge Eating Disorder Symptoms' },
+      { id: 'binge-eating-distress', name: 'Binge Eating - Significant Distress', category: 'Binge Eating Disorder Symptoms' },
+    ]
+  },
+
+  // Dissociative Identity Disorder (DC 9416)
+  {
+    id: 'dissociative-identity-disorder',
+    name: 'Dissociative Identity Disorder',
+    symptoms: [
+      { id: 'dissociative-identity-switching', name: 'Dissociative Identity - Identity Switching', category: 'Dissociative Disorder Symptoms' },
+      { id: 'dissociative-amnesia-episode', name: 'Dissociative Amnesia - Memory Gap', category: 'Dissociative Disorder Symptoms' },
+      { id: 'dissociative-fugue', name: 'Dissociative - Fugue State', category: 'Dissociative Disorder Symptoms' },
+      { id: 'dissociative-time-loss', name: 'Dissociative - Lost Time', category: 'Dissociative Disorder Symptoms' },
+    ]
+  },
+
+  // Dissociative Amnesia (DC 9417) - shares symptoms with DID
+  {
+    id: 'dissociative-amnesia',
+    name: 'Dissociative Amnesia',
+    symptoms: [
+      { id: 'dissociative-amnesia-episode', name: 'Dissociative Amnesia - Memory Gap', category: 'Dissociative Disorder Symptoms' },
+      { id: 'dissociative-fugue', name: 'Dissociative - Fugue State', category: 'Dissociative Disorder Symptoms' },
+      { id: 'dissociative-time-loss', name: 'Dissociative - Lost Time', category: 'Dissociative Disorder Symptoms' },
+    ]
+  },
+
+  // Acute Stress Disorder (DC 9413)
+  {
+    id: 'acute-stress-disorder',
+    name: 'Acute Stress Disorder',
+    symptoms: [
+      { id: 'acute-stress-intrusion', name: 'Acute Stress - Intrusive Memories', category: 'Acute Stress Disorder Symptoms' },
+      { id: 'acute-stress-avoidance', name: 'Acute Stress - Avoidance', category: 'Acute Stress Disorder Symptoms' },
+      { id: 'acute-stress-arousal', name: 'Acute Stress - Hyperarousal', category: 'Acute Stress Disorder Symptoms' },
+      { id: 'acute-stress-dissociation', name: 'Acute Stress - Dissociative Symptoms', category: 'Acute Stress Disorder Symptoms' },
+    ]
+  },
+
+  // Antisocial Personality Disorder (DC 9301)
+  {
+    id: 'antisocial-personality-disorder',
+    name: 'Antisocial Personality Disorder',
+    symptoms: [
+      { id: 'personality-antisocial-behaviors', name: 'Antisocial Personality - Disregard for Others', category: 'Personality Disorder Symptoms' },
+      { id: 'personality-disorder-occupational-impairment', name: 'Personality Disorder - Occupational Impairment', category: 'Personality Disorder Symptoms' },
+      { id: 'personality-disorder-social-impairment', name: 'Personality Disorder - Social Impairment', category: 'Personality Disorder Symptoms' },
+    ]
+  },
+
+  // Borderline Personality Disorder (DC 9301)
+  {
+    id: 'borderline-personality-disorder',
+    name: 'Borderline Personality Disorder',
+    symptoms: [
+      { id: 'personality-borderline-instability', name: 'Borderline Personality - Emotional Instability', category: 'Personality Disorder Symptoms' },
+      { id: 'personality-borderline-fear-abandonment', name: 'Borderline Personality - Fear of Abandonment', category: 'Personality Disorder Symptoms' },
+      { id: 'personality-borderline-self-harm', name: 'Borderline Personality - Self-Harm/Suicidal Behavior', category: 'Personality Disorder Symptoms' },
+      { id: 'personality-disorder-occupational-impairment', name: 'Personality Disorder - Occupational Impairment', category: 'Personality Disorder Symptoms' },
+      { id: 'personality-disorder-social-impairment', name: 'Personality Disorder - Social Impairment', category: 'Personality Disorder Symptoms' },
+    ]
+  },
+
+  // Narcissistic Personality Disorder (DC 9301)
+  {
+    id: 'narcissistic-personality-disorder',
+    name: 'Narcissistic Personality Disorder',
+    symptoms: [
+      { id: 'personality-narcissistic-grandiosity', name: 'Narcissistic Personality - Grandiosity', category: 'Personality Disorder Symptoms' },
+      { id: 'personality-narcissistic-lack-empathy', name: 'Narcissistic Personality - Lack of Empathy', category: 'Personality Disorder Symptoms' },
+      { id: 'personality-disorder-occupational-impairment', name: 'Personality Disorder - Occupational Impairment', category: 'Personality Disorder Symptoms' },
+      { id: 'personality-disorder-social-impairment', name: 'Personality Disorder - Social Impairment', category: 'Personality Disorder Symptoms' },
+    ]
+  },
+
+  // Avoidant Personality Disorder (DC 9301)
+  {
+    id: 'avoidant-personality-disorder',
+    name: 'Avoidant Personality Disorder',
+    symptoms: [
+      { id: 'personality-avoidant-social-inhibition', name: 'Avoidant Personality - Social Inhibition', category: 'Personality Disorder Symptoms' },
+      { id: 'personality-avoidant-fear-rejection', name: 'Avoidant Personality - Fear of Rejection', category: 'Personality Disorder Symptoms' },
+      { id: 'personality-disorder-occupational-impairment', name: 'Personality Disorder - Occupational Impairment', category: 'Personality Disorder Symptoms' },
+      { id: 'personality-disorder-social-impairment', name: 'Personality Disorder - Social Impairment', category: 'Personality Disorder Symptoms' },
+    ]
+  },
 ];
 
 // Helper function to determine if a category is a "child" of another
@@ -1127,6 +1349,12 @@ const getParentCategory = (categoryName) => {
   if (name.includes('malaria')) return 'general-infectious';
   if (name.includes('gulf war') || name.includes('post-infectious')) return 'general-infectious';
   if (name.includes('q fever') || name.includes('west nile')) return 'general-infectious';
+  if (name.includes('somatic')) return 'somatic-symptom-disorder';
+  if (name.includes('illness-anxiety')) return 'illness-anxiety';
+  if (name.includes('cyclothymic')) return 'cyclothymic';
+  if (name.includes('depersonalization') || name.includes('derealization')) return 'depersonalization';
+  if (name.includes('anorexia')) return 'anorexia-nervosa';
+  if (name.includes('bulimia')) return 'bulimia-nervosa';
   return null; // No parent, this is a standalone category
 };
 

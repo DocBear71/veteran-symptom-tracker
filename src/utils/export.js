@@ -63,6 +63,15 @@ import {
     analyzeAdjustmentDisorderLogs,
     analyzeUnspecifiedAnxietyLogs,
     analyzeUnspecifiedDepressiveLogs,
+    analyzeSomaticSymptomDisorderLogs,
+    analyzeOtherSpecifiedSomaticLogs,
+    analyzeUnspecifiedSomaticLogs,
+    analyzeIllnessAnxietyLogs,
+    analyzeOtherSpecifiedAnxietyLogs,
+    analyzeDepersonalizationLogs,
+    analyzeCyclothymicLogs,
+    analyzeAnorexiaNervosaLogs,
+    analyzeBulimiaNervosaLogs,
     analyzeVisionLogs,
     analyzeKidneyStonesLogs,
     analyzeChronicRenalDiseaseLogs,
@@ -121,10 +130,11 @@ const APPOINTMENT_TYPE_LABELS = {
 
 // Generate PDF report
 export const generatePDF = (dateRange = 'all', options = { includeAppointments: true }) => {
-    const logs = filterLogsByDateRange(getSymptomLogs(), dateRange);
-    const appointments = options.includeAppointments
-        ? filterAppointmentsByDateRange(getAppointments(), dateRange)
-        : [];
+  const allLogs = getSymptomLogs();
+  const logs = filterLogsByDateRange(allLogs, dateRange);
+  const appointments = options.includeAppointments
+      ? filterAppointmentsByDateRange(getAppointments(), dateRange)
+      : [];
 
     if (logs.length === 0 && appointments.length === 0) {
         alert('No data to export for the selected date range');
@@ -191,7 +201,7 @@ export const generatePDF = (dateRange = 'all', options = { includeAppointments: 
         if (log.duration) universalInfo.push(formatDuration(log.duration));
         if (log.timeOfDay) universalInfo.push(formatTimeOfDay(log.timeOfDay));
         if (universalInfo.length > 0) {
-          notes = universalInfo.join(' | ') + (log.notes ? ` | ${log.notes}` : '');
+          notes = universalInfo.join(' | ') + (notes !== '-' ? ` | ${notes}` : '');
         }
 
         // Phase 1B: Add GI details
@@ -220,7 +230,7 @@ export const generatePDF = (dateRange = 'all', options = { includeAppointments: 
                 if (log.migraineData.lightSensitivity) migraineInfo.push('Light sensitivity');
                 if (log.migraineData.soundSensitivity) migraineInfo.push('Sound sensitivity');
                 if (migraineInfo.length > 0) {
-                    notes = migraineInfo.join(', ') + (log.notes ? ` | ${log.notes}` : '');
+                    notes = migraineInfo.join(', ') + (notes !== '-' ? ` | ${notes}` : '');
                 }
             }
 
@@ -233,7 +243,7 @@ export const generatePDF = (dateRange = 'all', options = { includeAppointments: 
                 if (log.sleepData.nightmares) sleepInfo.push('Nightmares');
                 if (log.sleepData.feelRested === false) sleepInfo.push('Not rested');
                 if (sleepInfo.length > 0) {
-                    notes = sleepInfo.join(', ') + (log.notes ? ` | ${log.notes}` : '');
+                    notes = sleepInfo.join(', ') + (notes !== '-' ? ` | ${notes}` : '');
                 }
             }
 
@@ -246,7 +256,7 @@ export const generatePDF = (dateRange = 'all', options = { includeAppointments: 
                 if (log.ptsdData.hypervigilance) ptsdInfo.push('Hypervigilance');
                 if (log.ptsdData.triggerDescription) ptsdInfo.push(`Trigger: ${log.ptsdData.triggerDescription}`);
                 if (ptsdInfo.length > 0) {
-                    notes = ptsdInfo.join(', ') + (log.notes ? ` | ${log.notes}` : '');
+                    notes = ptsdInfo.join(', ') + (notes !== '-' ? ` | ${notes}` : '');
                 }
             }
 
@@ -261,7 +271,7 @@ export const generatePDF = (dateRange = 'all', options = { includeAppointments: 
                     painInfo.push(`Affects: ${log.painData.affectedActivities.join(', ')}`);
                 }
                 if (painInfo.length > 0) {
-                    notes = painInfo.join(', ') + (log.notes ? ` | ${log.notes}` : '');
+                    notes = painInfo.join(', ') + (notes !== '-' ? ` | ${notes}` : '');
                 }
             }
 
@@ -285,7 +295,7 @@ export const generatePDF = (dateRange = 'all', options = { includeAppointments: 
           if (log.seizureData.witnessPresent) seizureInfo.push('WITNESSED');
           if (log.seizureData.recoveryTime) seizureInfo.push(`Recovery: ${log.seizureData.recoveryTime}`);
           if (seizureInfo.length > 0) {
-            notes = seizureInfo.join(', ') + (log.notes ? ` | ${log.notes}` : '');
+            notes = seizureInfo.join(', ') + (notes !== '-' ? ` | ${notes}` : '');
           }
         }
 
@@ -333,7 +343,7 @@ export const generatePDF = (dateRange = 'all', options = { includeAppointments: 
           }
 
           if (eyeInfo.length > 0) {
-            notes = eyeInfo.join(' | ') + (log.notes ? ` | ${log.notes}` : '');
+            notes = eyeInfo.join(' | ') + (notes !== '-' ? ` | ${notes}` : '');
           }
         }
 
@@ -411,7 +421,7 @@ export const generatePDF = (dateRange = 'all', options = { includeAppointments: 
           if (gd.workMissed) guInfo.push('Work missed');
 
           if (guInfo.length > 0) {
-            notes = guInfo.join(' | ') + (log.notes ? ` | ${log.notes}` : '');
+            notes = guInfo.join(' | ') + (notes !== '-' ? ` | ${notes}` : '');
           }
         }
 
@@ -495,7 +505,7 @@ export const generatePDF = (dateRange = 'all', options = { includeAppointments: 
           if (gd.workMissed) gyneInfo.push('Work missed');
 
           if (gyneInfo.length > 0) {
-            notes = gyneInfo.join(' | ') + (log.notes ? ` | ${log.notes}` : '');
+            notes = gyneInfo.join(' | ') + (notes !== '-' ? ` | ${notes}` : '');
           }
         }
 
@@ -536,7 +546,7 @@ export const generatePDF = (dateRange = 'all', options = { includeAppointments: 
           }
 
           if (hivInfo.length > 0) {
-            notes = hivInfo.join(' | ') + (log.notes ? ` | ${log.notes}` : '');
+            notes = hivInfo.join(' | ') + (notes !== '-' ? ` | ${notes}` : '');
           }
         }
 
@@ -558,7 +568,7 @@ export const generatePDF = (dateRange = 'all', options = { includeAppointments: 
           }
 
           if (hepInfo.length > 0) {
-            notes = hepInfo.join(' | ') + (log.notes ? ` | ${log.notes}` : '');
+            notes = hepInfo.join(' | ') + (notes !== '-' ? ` | ${notes}` : '');
           }
         }
 
@@ -587,7 +597,7 @@ export const generatePDF = (dateRange = 'all', options = { includeAppointments: 
           }
 
           if (lymeInfo.length > 0) {
-            notes = lymeInfo.join(' | ') + (log.notes ? ` | ${log.notes}` : '');
+            notes = lymeInfo.join(' | ') + (notes !== '-' ? ` | ${notes}` : '');
           }
         }
 
@@ -604,7 +614,7 @@ export const generatePDF = (dateRange = 'all', options = { includeAppointments: 
           if (md.continuousMedication) malariaInfo.push('Continuous Antimalarials');
 
           if (malariaInfo.length > 0) {
-            notes = malariaInfo.join(' | ') + (log.notes ? ` | ${log.notes}` : '');
+            notes = malariaInfo.join(' | ') + (notes !== '-' ? ` | ${notes}` : '');
           }
         }
 
@@ -620,7 +630,7 @@ export const generatePDF = (dateRange = 'all', options = { includeAppointments: 
           if (bd.neurobrucellosis) brucellosisInfo.push('Neurobrucellosis (CNS)');
 
           if (brucellosisInfo.length > 0) {
-            notes = brucellosisInfo.join(' | ') + (log.notes ? ` | ${log.notes}` : '');
+            notes = brucellosisInfo.join(' | ') + (notes !== '-' ? ` | ${notes}` : '');
           }
         }
 
@@ -636,7 +646,7 @@ export const generatePDF = (dateRange = 'all', options = { includeAppointments: 
           if (cd.weeksSinceInfection) campylobacterInfo.push(`${cd.weeksSinceInfection} weeks post-infection`);
 
           if (campylobacterInfo.length > 0) {
-            notes = campylobacterInfo.join(' | ') + (log.notes ? ` | ${log.notes}` : '');
+            notes = campylobacterInfo.join(' | ') + (notes !== '-' ? ` | ${notes}` : '');
           }
         }
 
@@ -652,7 +662,7 @@ export const generatePDF = (dateRange = 'all', options = { includeAppointments: 
           if (qd.monthsSinceInfection) qFeverInfo.push(`${qd.monthsSinceInfection} months post-infection`);
 
           if (qFeverInfo.length > 0) {
-            notes = qFeverInfo.join(' | ') + (log.notes ? ` | ${log.notes}` : '');
+            notes = qFeverInfo.join(' | ') + (notes !== '-' ? ` | ${notes}` : '');
           }
         }
 
@@ -668,7 +678,7 @@ export const generatePDF = (dateRange = 'all', options = { includeAppointments: 
           if (sal.severeComplications) salInfo.push('Severe Complications');
 
           if (salInfo.length > 0) {
-            notes = salInfo.join(' | ') + (log.notes ? ` | ${log.notes}` : '');
+            notes = salInfo.join(' | ') + (notes !== '-' ? ` | ${notes}` : '');
           }
         }
 
@@ -684,7 +694,7 @@ export const generatePDF = (dateRange = 'all', options = { includeAppointments: 
           if (shig.severeComplications) shigInfo.push('Severe Complications');
 
           if (shigInfo.length > 0) {
-            notes = shigInfo.join(' | ') + (log.notes ? ` | ${log.notes}` : '');
+            notes = shigInfo.join(' | ') + (notes !== '-' ? ` | ${notes}` : '');
           }
         }
 
@@ -700,7 +710,7 @@ export const generatePDF = (dateRange = 'all', options = { includeAppointments: 
           if (wn.permanentImpairment) wnInfo.push('Permanent Impairment');
 
           if (wnInfo.length > 0) {
-            notes = wnInfo.join(' | ') + (log.notes ? ` | ${log.notes}` : '');
+            notes = wnInfo.join(' | ') + (notes !== '-' ? ` | ${notes}` : '');
           }
         }
 
@@ -723,7 +733,7 @@ export const generatePDF = (dateRange = 'all', options = { includeAppointments: 
           if (ntm.disseminated) ntmInfo.push('Disseminated');
 
           if (ntmInfo.length > 0) {
-            notes = ntmInfo.join(' | ') + (log.notes ? ` | ${log.notes}` : '');
+            notes = ntmInfo.join(' | ') + (notes !== '-' ? ` | ${notes}` : '');
           }
         }
 
@@ -810,10 +820,421 @@ export const generatePDF = (dateRange = 'all', options = { includeAppointments: 
           if (dd.workMissed) dentalInfo.push('Work missed');
 
           if (dentalInfo.length > 0) {
-            notes = dentalInfo.join(' | ') + (log.notes ? ` | ${log.notes}` : '');
+            notes = dentalInfo.join(' | ') + (notes !== '-' ? ` | ${notes}` : '');
           }
         }
 
+        // PHASE 8A: MENTAL HEALTH FORMS DATA EXTRACTION
+        // Anxiety Disorders Form
+        if (log.anxietyData) {
+          const anxietyInfo = [];
+          const ad = log.anxietyData;
+
+          // Physical symptoms
+          const physicalSymptoms = [
+            ad.heartRacing && 'Heart racing',
+            ad.sweating && 'Sweating',
+            ad.trembling && 'Trembling',
+            ad.shortnessOfBreath && 'SOB',
+            ad.chestTightness && 'Chest tightness',
+            ad.nausea && 'Nausea',
+            ad.dizziness && 'Dizziness',
+            ad.hotFlashes && 'Hot flashes',
+            ad.numbnessTingling && 'Numbness/tingling'
+          ].filter(Boolean);
+          if (physicalSymptoms.length > 0) {
+            anxietyInfo.push(`Physical: ${physicalSymptoms.join(', ')}`);
+          }
+
+          // Cognitive symptoms
+          const cognitiveSymptoms = [
+            ad.racingThoughts && 'Racing thoughts',
+            ad.fearOfLosingControl && 'Fear losing control',
+            ad.fearOfDying && 'Fear of dying',
+            ad.feelingDetached && 'Detached',
+            ad.difficultyConcentrating && 'Poor concentration'
+          ].filter(Boolean);
+          if (cognitiveSymptoms.length > 0) {
+            anxietyInfo.push(`Cognitive: ${cognitiveSymptoms.join(', ')}`);
+          }
+
+          // Avoidance/Impact
+          const avoidance = [
+            ad.avoidedSocial && 'Avoided social',
+            ad.leftEarly && 'Left early',
+            ad.calledOut && 'Called out work',
+            ad.cancelledPlans && 'Cancelled plans',
+            ad.neededSafetyPerson && 'Needed safety person'
+          ].filter(Boolean);
+          if (avoidance.length > 0) {
+            anxietyInfo.push(`Impact: ${avoidance.join(', ')}`);
+          }
+
+          if (ad.episodeDuration) anxietyInfo.push(`Duration: ${ad.episodeDuration}`);
+          if (ad.wasPanicAttack) anxietyInfo.push('⚠️ PANIC ATTACK');
+          if (ad.trigger) anxietyInfo.push(`Trigger: ${ad.trigger}`);
+
+          if (anxietyInfo.length > 0) {
+            notes = anxietyInfo.join(' | ') + (notes !== '-' ? ` | ${notes}` : '');
+          }
+        }
+
+        // Depression Form
+        if (log.depressionData) {
+          const depressionInfo = [];
+          const dd = log.depressionData;
+
+          // Mood symptoms
+          const moodSymptoms = [
+            dd.depressedMood && 'Depressed mood',
+            dd.anhedonia && 'Anhedonia',
+            dd.worthlessness && 'Worthlessness',
+            dd.excessiveGuilt && 'Guilt',
+            dd.hopelessness && 'Hopelessness',
+            dd.irritability && 'Irritability'
+          ].filter(Boolean);
+          if (moodSymptoms.length > 0) {
+            depressionInfo.push(`Mood: ${moodSymptoms.join(', ')}`);
+          }
+
+          // Physical/vegetative
+          const physicalSymptoms = [
+            dd.insomnia && 'Insomnia',
+            dd.hypersomnia && 'Hypersomnia',
+            dd.decreasedAppetite && '↓Appetite',
+            dd.increasedAppetite && '↑Appetite',
+            dd.fatigue && 'Fatigue',
+            dd.psychomotorAgitation && 'Agitation',
+            dd.psychomotorRetardation && 'Slowed'
+          ].filter(Boolean);
+          if (physicalSymptoms.length > 0) {
+            depressionInfo.push(`Physical: ${physicalSymptoms.join(', ')}`);
+          }
+
+          // Cognitive
+          const cognitive = [
+            dd.difficultyConcentrating && 'Poor concentration',
+            dd.difficultyDeciding && 'Indecisive',
+            dd.memoryProblems && 'Memory issues',
+            dd.thoughtsOfDeath && 'Thoughts of death'
+          ].filter(Boolean);
+          if (cognitive.length > 0) {
+            depressionInfo.push(`Cognitive: ${cognitive.join(', ')}`);
+          }
+
+          // Functional impact
+          const impact = [
+            dd.unableToGetUp && 'Bed-bound',
+            dd.calledOutWork && 'Called out',
+            dd.neglectedSelfCare && 'Neglected self-care',
+            dd.socialWithdrawal && 'Withdrew socially',
+            dd.unableToCompleteTasks && 'Unable to complete tasks'
+          ].filter(Boolean);
+          if (impact.length > 0) {
+            depressionInfo.push(`Impact: ${impact.join(', ')}`);
+          }
+
+          if (dd.suicidalIdeation) depressionInfo.push('⚠️ SUICIDAL IDEATION');
+          if (dd.trigger) depressionInfo.push(`Trigger: ${dd.trigger}`);
+          if (dd.episodeContext) depressionInfo.push(`Context: ${dd.episodeContext}`);
+
+          if (depressionInfo.length > 0) {
+            notes = depressionInfo.join(' | ') + (notes !== '-' ? ` | ${notes}` : '');
+          }
+        }
+
+        // Bipolar/Cyclothymic Form
+        if (log.bipolarData) {
+          const bipolarInfo = [];
+          const bd = log.bipolarData;
+
+          if (bd.episodeType) {
+            const episodeMap = {
+              'manic': 'MANIC EPISODE',
+              'hypomanic': 'HYPOMANIC EPISODE',
+              'depressive': 'DEPRESSIVE EPISODE',
+              'mixed': 'MIXED EPISODE'
+            };
+            bipolarInfo.push(episodeMap[bd.episodeType] || bd.episodeType);
+          }
+
+          // Manic/hypomanic symptoms
+          const manicSymptoms = [
+            bd.elevatedMood && 'Elevated mood',
+            bd.irritableMood && 'Irritable',
+            bd.increasedEnergy && '↑Energy',
+            bd.decreasedSleep && '↓Sleep need',
+            bd.moreTalkative && 'Talkative',
+            bd.racingThoughts && 'Racing thoughts',
+            bd.distractibility && 'Distractible',
+            bd.increasedActivity && '↑Activity',
+            bd.riskyBehavior && 'Risky behavior',
+            bd.grandiosity && 'Grandiose'
+          ].filter(Boolean);
+          if (manicSymptoms.length > 0) {
+            bipolarInfo.push(`Manic: ${manicSymptoms.join(', ')}`);
+          }
+
+          // Depressive symptoms
+          const depressiveSymptoms = [
+            bd.depressedMood && 'Depressed',
+            bd.anhedonia && 'Anhedonia',
+            bd.fatigue && 'Fatigue',
+            bd.worthlessness && 'Worthless'
+          ].filter(Boolean);
+          if (depressiveSymptoms.length > 0) {
+            bipolarInfo.push(`Depressive: ${depressiveSymptoms.join(', ')}`);
+          }
+
+          if (bd.sleepHours) bipolarInfo.push(`Sleep: ${bd.sleepHours}hrs`);
+          if (bd.riskyBehaviors && bd.riskyBehaviors.length > 0) {
+            bipolarInfo.push(`Risky: ${bd.riskyBehaviors.join(', ')}`);
+          }
+
+          // Impact
+          const impact = [
+            bd.unableToWork && 'Unable to work',
+            bd.relationshipConflicts && 'Relationship conflicts',
+            bd.legalProblems && 'Legal problems',
+            bd.hospitalizationRequired && '⚠️ HOSPITALIZATION REQUIRED'
+          ].filter(Boolean);
+          if (impact.length > 0) {
+            bipolarInfo.push(`Impact: ${impact.join(', ')}`);
+          }
+
+          if (bd.episodeDuration) bipolarInfo.push(`Duration: ${bd.episodeDuration}`);
+
+          if (bipolarInfo.length > 0) {
+            notes = bipolarInfo.join(' | ') + (notes !== '-' ? ` | ${notes}` : '');
+          }
+        }
+
+        // OCD Form
+        if (log.ocdData) {
+
+          const ocdInfo = [];
+          const od = log.ocdData;
+
+          // Obsessions
+          const obsessions = [
+            od.contaminationFears && 'Contamination',
+            od.fearOfHarm && 'Fear of harm',
+            od.needForSymmetry && 'Symmetry',
+            od.forbiddenThoughts && 'Forbidden thoughts',
+            od.religiousObsessions && 'Religious',
+            od.hoardingUrges && 'Hoarding',
+            od.otherObsession && od.otherObsession
+          ].filter(Boolean);
+
+
+          if (obsessions.length > 0) {
+            ocdInfo.push(`Obsessions: ${obsessions.join(', ')}`);
+          }
+
+          // Compulsions
+          const compulsions = [
+            od.washingCleaning && 'Washing',
+            od.checking && 'Checking',
+            od.repeating && 'Repeating',
+            od.counting && 'Counting',
+            od.ordering && 'Ordering',
+            od.mentalRituals && 'Mental rituals',
+            od.reassuranceSeeking && 'Reassurance',
+            od.otherCompulsion && od.otherCompulsion
+          ].filter(Boolean);
+
+          if (compulsions.length > 0) {
+            ocdInfo.push(`Compulsions: ${compulsions.join(', ')}`);
+          }
+
+          if (od.timeConsumed) ocdInfo.push(`Time: ${od.timeConsumed}`);
+          if (od.distressLevel !== undefined && od.distressLevel !== 5) {
+            ocdInfo.push(`Distress: ${od.distressLevel}/10`);
+          }
+
+          // Impact
+          const impact = [
+            od.lateToAppointments && 'Late',
+            od.avoidedSituations && 'Avoided situations',
+            od.interferedRoutines && 'Disrupted routines',
+            od.relationshipProblems && 'Relationship issues',
+            od.unableToComplete && 'Unable to complete tasks'
+          ].filter(Boolean);
+
+          if (impact.length > 0) {
+            ocdInfo.push(`Impact: ${impact.join(', ')}`);
+          }
+
+          if (od.trigger) ocdInfo.push(`Trigger: ${od.trigger}`);
+
+          if (ocdInfo.length > 0) {
+            const oldNotes = notes;
+            notes = ocdInfo.join(' | ') + (notes !== '-' ? ` | ${notes}` : '');
+          } else {
+          }
+        }
+
+        // Adjustment Disorder Form
+        if (log.adjustmentDisorderData) {
+          const adjustmentInfo = [];
+          const ad = log.adjustmentDisorderData;
+
+          if (ad.stressor) adjustmentInfo.push(`Stressor: ${ad.stressor}`);
+          if (ad.stressorDate) {
+            adjustmentInfo.push(`Date: ${ad.stressorDate}`);
+            if (ad.daysSinceStressor) {
+              const chronic = parseInt(ad.daysSinceStressor) > 180 ? ' (CHRONIC)' : '';
+              adjustmentInfo.push(`${ad.daysSinceStressor} days ago${chronic}`);
+            }
+          }
+
+          if (ad.presentationType) {
+            const typeMap = {
+              'depressed': 'With Depressed Mood',
+              'anxiety': 'With Anxiety',
+              'mixed-emotions': 'Mixed Anxiety & Depression',
+              'conduct': 'With Conduct Disturbance',
+              'mixed-conduct-emotions': 'Mixed Conduct & Emotions',
+              'unspecified': 'Unspecified'
+            };
+            adjustmentInfo.push(typeMap[ad.presentationType] || ad.presentationType);
+          }
+
+          // Symptoms
+          const symptoms = [
+            ad.tearfulness && 'Tearful',
+            ad.hopelessness && 'Hopeless',
+            ad.worry && 'Worry',
+            ad.physicalTension && 'Tension',
+            ad.impulsiveBehaviors && 'Impulsive',
+            ad.aggression && 'Aggression',
+            ad.ruleViolations && 'Rule violations',
+            ad.recklessBehavior && 'Reckless'
+          ].filter(Boolean);
+          if (symptoms.length > 0) {
+            adjustmentInfo.push(`Symptoms: ${symptoms.join(', ')}`);
+          }
+
+          // Impact
+          const impact = [
+            ad.workDifficulty && 'Work difficulty',
+            ad.relationshipProblems && 'Relationship issues',
+            ad.socialWithdrawal && 'Withdrew',
+            ad.selfCareNeglect && 'Neglected self-care',
+            ad.unableToFulfillResponsibilities && 'Unable to function'
+          ].filter(Boolean);
+          if (impact.length > 0) {
+            adjustmentInfo.push(`Impact: ${impact.join(', ')}`);
+          }
+
+          // Progress
+          if (ad.symptomsImproving === true) adjustmentInfo.push('Improving');
+          else if (ad.symptomsImproving === false) adjustmentInfo.push('Not improving');
+
+          if (ad.stillAffectingFunctioning === true) adjustmentInfo.push('Still affecting functioning');
+          else if (ad.stillAffectingFunctioning === false) adjustmentInfo.push('No longer affecting functioning');
+
+          if (ad.context) adjustmentInfo.push(`Context: ${ad.context}`);
+
+          if (adjustmentInfo.length > 0) {
+            notes = adjustmentInfo.join(' | ') + (notes !== '-' ? ` | ${notes}` : '');
+          }
+        }
+
+        // Eating Disorders Form
+        if (log.eatingDisorderData) {
+          const eatingInfo = [];
+          const ed = log.eatingDisorderData;
+
+          if (ed.currentWeight && ed.expectedMinimumWeight) {
+            const weightLoss = ((ed.expectedMinimumWeight - ed.currentWeight) / ed.expectedMinimumWeight * 100).toFixed(1);
+            eatingInfo.push(`Weight: ${ed.currentWeight}lbs (Expected: ${ed.expectedMinimumWeight}lbs)`);
+            if (weightLoss > 0) eatingInfo.push(`Loss: ${weightLoss}%`);
+          }
+
+          if (ed.incapacitatingEpisode) {
+            eatingInfo.push('INCAPACITATING EPISODE');
+            if (ed.episodeDuration) eatingInfo.push(`Duration: ${ed.episodeDuration}`);
+          }
+
+          if (ed.hospitalized) {
+            eatingInfo.push('HOSPITALIZED');
+            if (ed.tubeFeeding) eatingInfo.push('Tube feeding');
+            if (ed.parenteralNutrition) eatingInfo.push('Parenteral nutrition');
+          }
+
+          if (ed.bingeEpisode) eatingInfo.push('Binge episode');
+          if (ed.purgingEpisode) eatingInfo.push('Purging episode');
+          if (ed.compensatoryBehaviors && ed.compensatoryBehaviors.length > 0) {
+            eatingInfo.push(`Compensatory: ${ed.compensatoryBehaviors.join(', ')}`);
+          }
+          if (ed.restrictedIntake) eatingInfo.push('Restricted intake');
+
+          if (eatingInfo.length > 0) {
+            notes = eatingInfo.join(' | ') + (notes !== '-' ? ` | ${notes}` : '');
+          }
+        }
+
+        // ========================================
+        // PHASE 8B: ADDITIONAL MENTAL HEALTH DATA EXTRACTION
+        // ========================================
+
+        // Binge Eating Disorder Form
+        if (log.bingeEatingData) {
+          const bedInfo = [];
+          const bed = log.bingeEatingData;
+
+          if (bed.bingeEpisode) bedInfo.push('Binge episode');
+          if (bed.lossOfControl) bedInfo.push('Loss of control');
+          if (bed.distressLevel !== undefined && bed.distressLevel !== 5) {
+            bedInfo.push(`Distress: ${bed.distressLevel}/10`);
+          }
+
+          if (bedInfo.length > 0) {
+            notes = bedInfo.join(', ') + (notes !== '-' ? ` | ${notes}` : '');
+          }
+        }
+
+        // Dissociative Disorders Form
+        if (log.dissociativeData) {
+          const dissocInfo = [];
+          const dd = log.dissociativeData;
+
+          if (dd.memoryGap) dissocInfo.push('Memory gap');
+          if (dd.lostTime) dissocInfo.push('Lost time');
+          if (dd.duration) dissocInfo.push(`Duration: ${dd.duration}`);
+
+          if (dissocInfo.length > 0) {
+            notes = dissocInfo.join(', ') + (notes !== '-' ? ` | ${notes}` : '');
+          }
+        }
+
+        // Acute Stress Disorder Form
+        if (log.acuteStressData) {
+          const asdInfo = [];
+          const asd = log.acuteStressData;
+
+          if (asd.traumaDate) asdInfo.push(`Trauma: ${asd.traumaDate}`);
+          if (asd.dissociativeSymptoms) asdInfo.push('Dissociative symptoms');
+          if (asd.avoidance) asdInfo.push('Avoidance');
+
+          if (asdInfo.length > 0) {
+            notes = asdInfo.join(', ') + (notes !== '-' ? ` | ${notes}` : '');
+          }
+        }
+
+        // Personality Disorders Form
+        if (log.personalityData) {
+          const pdInfo = [];
+          const pd = log.personalityData;
+
+          if (pd.occupationalImpact) pdInfo.push('Occupational impact');
+          if (pd.socialImpact) pdInfo.push('Social impact');
+
+          if (pdInfo.length > 0) {
+            notes = pdInfo.join(', ') + (notes !== '-' ? ` | ${notes}` : '');
+          }
+        }
 
         // Add medications
             if (linkedMeds.length > 0) {
@@ -999,6 +1420,47 @@ export const generateCSV = (dateRange = 'all', options = { includeAppointments: 
         'Missing Teeth Count', 'Prosthesis Type', 'Bone Condition', 'Palate Symptoms',
         'Swallowing Difficulty', 'Oral Mass Present', 'Mass Location', 'Mass Biopsy Result',
         'Infection Present', 'Infection Type', 'Speaking Difficulty', 'Pain with Eating', 'Dental Work Missed',
+        // Phase 8A: Mental Health Expansion
+        'Somatic - Pain Preoccupation', 'Somatic - Excessive Health Worry', 'Somatic - Multiple Symptoms', 'Somatic - Frequent Doctor Visits', 'Somatic - Functional Impairment',
+        'Illness Anxiety - Fear of Illness', 'Illness Anxiety - Body Checking', 'Illness Anxiety - Reassurance Seeking', 'Illness Anxiety - Appointment Avoidance',
+        'Illness Anxiety - Health Distress', 'Other Anxiety - Symptoms', 'Other Anxiety - Worry', 'Other Anxiety - Avoidance', 'Other Anxiety - Physical Symptoms',
+        'Depersonalization - Detachment', 'Derealization - Unreality', 'Depersonalization - Robot/Autopilot', 'Depersonalization - Distress', 'Cyclothymic - Hypomanic',
+        'Cyclothymic - Depressive', 'Cyclothymic - Mood Swings', 'Cyclothymic - Irritability', 'Anorexia - Restricted Eating', 'Anorexia - Weight Loss', 'Anorexia - Fear Weight Gain',
+        'Anorexia - Restricted Eating', 'Anorexia - Weight Loss', 'Anorexia - Fear Weight Gain', 'Anorexia - Body Image', 'Anorexia - Incapacitating Episode', 'Anorexia - Hospitalization',
+        'Bulimia - Binge Eating', 'Bulimia - Purging', 'Bulimia - Compensatory Behaviors', 'Bulimia - Body Image', 'Bulimia - Incapacitating Episode', 'Bulimia - Hospitalization',
+        // PHASE 8A EXTENDED: Mental Health Forms CSV Headers
+        // Anxiety Form (22 columns)
+        'Anxiety - Heart Racing', 'Anxiety - Sweating', 'Anxiety - Trembling', 'Anxiety - Shortness of Breath', 'Anxiety - Chest Tightness', 'Anxiety - Nausea', 'Anxiety - Dizziness',
+        'Anxiety - Hot Flashes', 'Anxiety - Numbness/Tingling', 'Anxiety - Racing Thoughts', 'Anxiety - Fear Losing Control', 'Anxiety - Fear of Dying', 'Anxiety - Feeling Detached',
+        'Anxiety - Difficulty Concentrating', 'Anxiety - Avoided Social', 'Anxiety - Left Early', 'Anxiety - Called Out', 'Anxiety - Cancelled Plans', 'Anxiety - Needed Safety Person',
+        'Anxiety - Episode Duration', 'Anxiety - Panic Attack', 'Anxiety - Trigger',
+        // Depression Form (23 columns)
+        'Depression - Depressed Mood', 'Depression - Anhedonia', 'Depression - Worthlessness', 'Depression - Excessive Guilt', 'Depression - Hopelessness', 'Depression - Irritability',
+        'Depression - Insomnia', 'Depression - Hypersomnia', 'Depression - Decreased Appetite', 'Depression - Increased Appetite', 'Depression - Fatigue', 'Depression - Psychomotor Agitation',
+        'Depression - Psychomotor Retardation', 'Depression - Difficulty Concentrating', 'Depression - Difficulty Deciding', 'Depression - Memory Problems', 'Depression - Thoughts of Death',
+        'Depression - Unable to Get Up', 'Depression - Called Out Work', 'Depression - Neglected Self-Care', 'Depression - Social Withdrawal', 'Depression - Unable to Complete Tasks',
+        'Depression - Suicidal Ideation', 'Depression - Trigger', 'Depression - Episode Context',
+        // Bipolar Form (25 columns)
+        'Bipolar - Episode Type', 'Bipolar - Elevated Mood', 'Bipolar - Irritable Mood', 'Bipolar - Increased Energy', 'Bipolar - Decreased Sleep Need', 'Bipolar - More Talkative',
+        'Bipolar - Racing Thoughts', 'Bipolar - Distractibility', 'Bipolar - Increased Activity', 'Bipolar - Risky Behavior', 'Bipolar - Grandiosity', 'Bipolar - Depressed Mood',
+        'Bipolar - Anhedonia', 'Bipolar - Fatigue', 'Bipolar - Worthlessness', 'Bipolar - Sleep Hours', 'Bipolar - Risky Behaviors List', 'Bipolar - Unable to Work',
+        'Bipolar - Relationship Conflicts', 'Bipolar - Legal Problems', 'Bipolar - Hospitalization Required', 'Bipolar - Episode Duration',
+        // OCD Form (20 columns)
+        'OCD - Contamination Fears', 'OCD - Fear of Harm', 'OCD - Need for Symmetry', 'OCD - Forbidden Thoughts', 'OCD - Religious Obsessions', 'OCD - Hoarding Urges',
+        'OCD - Other Obsession', 'OCD - Washing/Cleaning', 'OCD - Checking', 'OCD - Repeating', 'OCD - Counting', 'OCD - Ordering', 'OCD - Mental Rituals',
+        'OCD - Reassurance Seeking', 'OCD - Other Compulsion', 'OCD - Time Consumed', 'OCD - Distress Level', 'OCD - Late to Appointments', 'OCD - Avoided Situations',
+        'OCD - Interfered Routines', 'OCD - Relationship Problems', 'OCD - Unable to Complete', 'OCD - Trigger',
+        // Adjustment Disorder Form (17 columns)
+        'Adjustment - Stressor', 'Adjustment - Stressor Date', 'Adjustment - Days Since Stressor', 'Adjustment - Presentation Type', 'Adjustment - Tearfulness',
+        'Adjustment - Hopelessness', 'Adjustment - Worry', 'Adjustment - Physical Tension', 'Adjustment - Impulsive Behaviors', 'Adjustment - Aggression', 'Adjustment - Rule Violations',
+        'Adjustment - Reckless Behavior', 'Adjustment - Work Difficulty', 'Adjustment - Relationship Problems', 'Adjustment - Social Withdrawal', 'Adjustment - Self-Care Neglect',
+        'Adjustment - Unable to Fulfill Responsibilities', 'Adjustment - Symptoms Improving', 'Adjustment - Still Affecting Functioning', 'Adjustment - Context',
+        // Phase 8B: Additional Mental Health fields
+        'Binge Eating Episode', 'Binge Eating - Loss of Control', 'Binge Eating - Distress Level',
+        'Dissociative - Memory Gap', 'Dissociative - Lost Time', 'Dissociative - Duration',
+        'Acute Stress - Trauma Date', 'Acute Stress - Dissociative Symptoms', 'Acute Stress - Avoidance',
+        'Personality - Occupational Impact', 'Personality - Social Impact',
+        // Notes
         'Notes'
       ];
 
@@ -1242,6 +1704,142 @@ export const generateCSV = (dateRange = 'all', options = { includeAppointments: 
             log.dentalData?.speakingDifficulty ? 'Yes' : '',
             log.dentalData?.painWithEating ? 'Yes' : '',
             log.dentalData?.workMissed ? 'Yes' : '',
+            // Anxiety Form Data (22 columns)
+            log.anxietyData?.heartRacing ? 'Yes' : '',
+            log.anxietyData?.sweating ? 'Yes' : '',
+            log.anxietyData?.trembling ? 'Yes' : '',
+            log.anxietyData?.shortnessOfBreath ? 'Yes' : '',
+            log.anxietyData?.chestTightness ? 'Yes' : '',
+            log.anxietyData?.nausea ? 'Yes' : '',
+            log.anxietyData?.dizziness ? 'Yes' : '',
+            log.anxietyData?.hotFlashes ? 'Yes' : '',
+            log.anxietyData?.numbnessTingling ? 'Yes' : '',
+            log.anxietyData?.racingThoughts ? 'Yes' : '',
+            log.anxietyData?.fearOfLosingControl ? 'Yes' : '',
+            log.anxietyData?.fearOfDying ? 'Yes' : '',
+            log.anxietyData?.feelingDetached ? 'Yes' : '',
+            log.anxietyData?.difficultyConcentrating ? 'Yes' : '',
+            log.anxietyData?.avoidedSocial ? 'Yes' : '',
+            log.anxietyData?.leftEarly ? 'Yes' : '',
+            log.anxietyData?.calledOut ? 'Yes' : '',
+            log.anxietyData?.cancelledPlans ? 'Yes' : '',
+            log.anxietyData?.neededSafetyPerson ? 'Yes' : '',
+            log.anxietyData?.episodeDuration || '',
+            log.anxietyData?.wasPanicAttack ? 'Yes' : '',
+            log.anxietyData?.trigger || '',
+
+            // Depression Form Data (25 columns)
+            log.depressionData?.depressedMood ? 'Yes' : '',
+            log.depressionData?.anhedonia ? 'Yes' : '',
+            log.depressionData?.worthlessness ? 'Yes' : '',
+            log.depressionData?.excessiveGuilt ? 'Yes' : '',
+            log.depressionData?.hopelessness ? 'Yes' : '',
+            log.depressionData?.irritability ? 'Yes' : '',
+            log.depressionData?.insomnia ? 'Yes' : '',
+            log.depressionData?.hypersomnia ? 'Yes' : '',
+            log.depressionData?.decreasedAppetite ? 'Yes' : '',
+            log.depressionData?.increasedAppetite ? 'Yes' : '',
+            log.depressionData?.fatigue ? 'Yes' : '',
+            log.depressionData?.psychomotorAgitation ? 'Yes' : '',
+            log.depressionData?.psychomotorRetardation ? 'Yes' : '',
+            log.depressionData?.difficultyConcentrating ? 'Yes' : '',
+            log.depressionData?.difficultyDeciding ? 'Yes' : '',
+            log.depressionData?.memoryProblems ? 'Yes' : '',
+            log.depressionData?.thoughtsOfDeath ? 'Yes' : '',
+            log.depressionData?.unableToGetUp ? 'Yes' : '',
+            log.depressionData?.calledOutWork ? 'Yes' : '',
+            log.depressionData?.neglectedSelfCare ? 'Yes' : '',
+            log.depressionData?.socialWithdrawal ? 'Yes' : '',
+            log.depressionData?.unableToCompleteTasks ? 'Yes' : '',
+            log.depressionData?.suicidalIdeation ? 'Yes' : '',
+            log.depressionData?.trigger || '',
+            log.depressionData?.episodeContext || '',
+
+            // Bipolar Form Data (22 columns)
+            log.bipolarData?.episodeType || '',
+            log.bipolarData?.elevatedMood ? 'Yes' : '',
+            log.bipolarData?.irritableMood ? 'Yes' : '',
+            log.bipolarData?.increasedEnergy ? 'Yes' : '',
+            log.bipolarData?.decreasedSleep ? 'Yes' : '',
+            log.bipolarData?.moreTalkative ? 'Yes' : '',
+            log.bipolarData?.racingThoughts ? 'Yes' : '',
+            log.bipolarData?.distractibility ? 'Yes' : '',
+            log.bipolarData?.increasedActivity ? 'Yes' : '',
+            log.bipolarData?.riskyBehavior ? 'Yes' : '',
+            log.bipolarData?.grandiosity ? 'Yes' : '',
+            log.bipolarData?.depressedMood ? 'Yes' : '',
+            log.bipolarData?.anhedonia ? 'Yes' : '',
+            log.bipolarData?.fatigue ? 'Yes' : '',
+            log.bipolarData?.worthlessness ? 'Yes' : '',
+            log.bipolarData?.sleepHours || '',
+            log.bipolarData?.riskyBehaviors?.join('; ') || '',
+            log.bipolarData?.unableToWork ? 'Yes' : '',
+            log.bipolarData?.relationshipConflicts ? 'Yes' : '',
+            log.bipolarData?.legalProblems ? 'Yes' : '',
+            log.bipolarData?.hospitalizationRequired ? 'Yes' : '',
+            log.bipolarData?.episodeDuration || '',
+
+            // OCD Form Data (23 columns)
+            log.ocdData?.contaminationFears ? 'Yes' : '',
+            log.ocdData?.fearOfHarm ? 'Yes' : '',
+            log.ocdData?.needForSymmetry ? 'Yes' : '',
+            log.ocdData?.forbiddenThoughts ? 'Yes' : '',
+            log.ocdData?.religiousObsessions ? 'Yes' : '',
+            log.ocdData?.hoardingUrges ? 'Yes' : '',
+            log.ocdData?.otherObsession || '',
+            log.ocdData?.washingCleaning ? 'Yes' : '',
+            log.ocdData?.checking ? 'Yes' : '',
+            log.ocdData?.repeating ? 'Yes' : '',
+            log.ocdData?.counting ? 'Yes' : '',
+            log.ocdData?.ordering ? 'Yes' : '',
+            log.ocdData?.mentalRituals ? 'Yes' : '',
+            log.ocdData?.reassuranceSeeking ? 'Yes' : '',
+            log.ocdData?.otherCompulsion || '',
+            log.ocdData?.timeConsumed || '',
+            log.ocdData?.distressLevel !== undefined ? log.ocdData.distressLevel.toString() : '',
+            log.ocdData?.lateToAppointments ? 'Yes' : '',
+            log.ocdData?.avoidedSituations ? 'Yes' : '',
+            log.ocdData?.interferedRoutines ? 'Yes' : '',
+            log.ocdData?.relationshipProblems ? 'Yes' : '',
+            log.ocdData?.unableToComplete ? 'Yes' : '',
+            log.ocdData?.trigger || '',
+            // Adjustment Disorder Form Data (19 columns)
+            log.adjustmentDisorderData?.stressor || '',
+            log.adjustmentDisorderData?.stressorDate || '',
+            log.adjustmentDisorderData?.daysSinceStressor || '',
+            log.adjustmentDisorderData?.presentationType || '',
+            log.adjustmentDisorderData?.tearfulness ? 'Yes' : '',
+            log.adjustmentDisorderData?.hopelessness ? 'Yes' : '',
+            log.adjustmentDisorderData?.worry ? 'Yes' : '',
+            log.adjustmentDisorderData?.physicalTension ? 'Yes' : '',
+            log.adjustmentDisorderData?.impulsiveBehaviors ? 'Yes' : '',
+            log.adjustmentDisorderData?.aggression ? 'Yes' : '',
+            log.adjustmentDisorderData?.ruleViolations ? 'Yes' : '',
+            log.adjustmentDisorderData?.recklessBehavior ? 'Yes' : '',
+            log.adjustmentDisorderData?.workDifficulty ? 'Yes' : '',
+            log.adjustmentDisorderData?.relationshipProblems ? 'Yes' : '',
+            log.adjustmentDisorderData?.socialWithdrawal ? 'Yes' : '',
+            log.adjustmentDisorderData?.selfCareNeglect ? 'Yes' : '',
+            log.adjustmentDisorderData?.unableToFulfillResponsibilities ? 'Yes' : '',
+            log.adjustmentDisorderData?.symptomsImproving === true ? 'Yes' :
+                log.adjustmentDisorderData?.symptomsImproving === false ? 'No' :
+                    log.adjustmentDisorderData?.symptomsImproving === null ? 'Unsure' : '',
+            log.adjustmentDisorderData?.stillAffectingFunctioning === true ? 'Yes' :
+                log.adjustmentDisorderData?.stillAffectingFunctioning === false ? 'No' :
+                    log.adjustmentDisorderData?.stillAffectingFunctioning === null ? 'Somewhat' : '',
+            log.adjustmentDisorderData?.context || '',
+            // Phase 8B: Additional Mental Health data
+            log.bingeEatingData?.bingeEpisode ? 'Yes' : '',
+            log.bingeEatingData?.lossOfControl ? 'Yes' : '',
+            log.bingeEatingData?.distressLevel || '',
+            log.dissociativeData?.memoryGap ? 'Yes' : '',
+            log.dissociativeData?.lostTime ? 'Yes' : '',
+            log.dissociativeData?.duration || '',
+            log.acuteStressData?.traumaDate || '',
+            log.acuteStressData?.dissociativeSymptoms ? 'Yes' : '',
+            log.acuteStressData?.avoidance ? 'Yes' : '',
+            log.personalityData?.occupationalImpact ? 'Yes' : '',
+            log.personalityData?.socialImpact ? 'Yes' : '',
             log.notes || ''
           ];
         });
@@ -1607,6 +2205,15 @@ const analyzeAllConditions = (logs, options = {}) => {
         'adjustment-disorder': analyzeAdjustmentDisorderLogs,
         'unspecified-anxiety': analyzeUnspecifiedAnxietyLogs,
         'unspecified-depressive': analyzeUnspecifiedDepressiveLogs,
+        'somatic-symptom-disorder': analyzeSomaticSymptomDisorderLogs,
+        'other-specified-somatic': analyzeOtherSpecifiedSomaticLogs,
+        'unspecified-somatic': analyzeUnspecifiedSomaticLogs,
+        'illness-anxiety': analyzeIllnessAnxietyLogs,
+        'other-specified-anxiety': analyzeOtherSpecifiedAnxietyLogs,
+        'depersonalization-derealization': analyzeDepersonalizationLogs,
+        'cyclothymic': analyzeCyclothymicLogs,
+        'anorexia-nervosa': analyzeAnorexiaNervosaLogs,
+        'bulimia-nervosa': analyzeBulimiaNervosaLogs,
         'vision-loss': analyzeVisionLogs,
         // Phase 3: Genitourinary
         'kidney-stones': analyzeKidneyStonesLogs,
@@ -1853,30 +2460,1051 @@ export const generateVAClaimPackagePDF = async (dateRange = 'all', options = {})
         doc.text('2. DETAILED SYMPTOM ENTRIES', 14, currentY);
         doc.setFont(undefined, 'normal');
 
-          const detailData = filteredLogs.map(log => {
-            const linkedMeds = options.includeMedications !== false ? getMedicationLogsForSymptom(log.id) : [];
-            const backDatedTag = isBackDated(log) ? ' [BACK-DATED]' : '';
-            let notes = log.notes || '-';
+      const detailData = logs.map(log => {
+        const linkedMeds = getMedicationLogsForSymptom(log.id);
+        const backDatedTag = isBackDated(log) ? ' [BACK-DATED]' : '';
+        let notes = log.notes || '-';
 
-            // Add condition-specific details (migraine, sleep, PTSD, pain)
-            if (log.migraineData) {
-                const migraineInfo = [];
-                if (log.migraineData.prostrating) migraineInfo.push('PROSTRATING');
-                if (log.migraineData.duration) migraineInfo.push(formatDuration(log.migraineData.duration));
-                if (migraineInfo.length > 0) {
-                    notes = migraineInfo.join(', ') + (log.notes ? ` | ${log.notes}` : '');
-                }
+        // Phase 1A: Add universal fields first
+        const universalInfo = [];
+        if (log.isFlareUp) universalInfo.push('🔥 FLARE-UP');
+        if (log.duration) universalInfo.push(formatDuration(log.duration));
+        if (log.timeOfDay) universalInfo.push(formatTimeOfDay(log.timeOfDay));
+        if (universalInfo.length > 0) {
+          notes = universalInfo.join(' | ') + (notes !== '-' ? ` | ${notes}` : '');
+        }
+
+        // Phase 1B: Add GI details
+        if (log.giData) {
+          const giInfo = [];
+          if (log.giData.bristolScale) giInfo.push(`Bristol ${log.giData.bristolScale}`);
+          if (log.giData.frequencyPerDay) giInfo.push(`${log.giData.frequencyPerDay}x/day`);
+          if (log.giData.urgencyLevel && log.giData.urgencyLevel !== 'none') giInfo.push(formatUrgency(log.giData.urgencyLevel));
+          if (log.giData.bloodPresent) giInfo.push('BLOOD PRESENT');
+          if (log.giData.bloatingSeverity && log.giData.bloatingSeverity !== 'none') giInfo.push(`Bloating: ${log.giData.bloatingSeverity}`);
+          if (log.giData.abdominalPainLocation) giInfo.push(`Pain: ${formatPainLocation(log.giData.abdominalPainLocation)}`);
+          if (log.giData.mealRelated) giInfo.push('Meal-related');
+          if (log.giData.nighttimeSymptoms) giInfo.push('Nighttime');
+          if (giInfo.length > 0) {
+            notes = giInfo.join(', ') + (notes !== '-' ? ` | ${notes}` : '');
+          }
+        }
+
+        // Add migraine details
+        if (log.migraineData) {
+          const migraineInfo = [];
+          if (log.migraineData.prostrating) migraineInfo.push('PROSTRATING');
+          if (log.migraineData.duration) migraineInfo.push(formatDuration(log.migraineData.duration));
+          if (log.migraineData.aura) migraineInfo.push('Aura');
+          if (log.migraineData.nausea) migraineInfo.push('Nausea');
+          if (log.migraineData.lightSensitivity) migraineInfo.push('Light sensitivity');
+          if (log.migraineData.soundSensitivity) migraineInfo.push('Sound sensitivity');
+          if (migraineInfo.length > 0) {
+            notes = migraineInfo.join(', ') + (notes !== '-' ? ` | ${notes}` : '');
+          }
+        }
+
+        // Add sleep details
+        if (log.sleepData) {
+          const sleepInfo = [];
+          if (log.sleepData.hoursSlept) sleepInfo.push(`${log.sleepData.hoursSlept}hrs sleep`);
+          if (log.sleepData.quality) sleepInfo.push(`Quality: ${log.sleepData.quality}/10`);
+          if (log.sleepData.wakeUps) sleepInfo.push(`Woke ${log.sleepData.wakeUps}x`);
+          if (log.sleepData.nightmares) sleepInfo.push('Nightmares');
+          if (log.sleepData.feelRested === false) sleepInfo.push('Not rested');
+          if (sleepInfo.length > 0) {
+            notes = sleepInfo.join(', ') + (notes !== '-' ? ` | ${notes}` : '');
+          }
+        }
+
+        // Add PTSD details
+        if (log.ptsdData) {
+          const ptsdInfo = [];
+          if (log.ptsdData.flashbacks) ptsdInfo.push('Flashbacks');
+          if (log.ptsdData.intrusiveThoughts) ptsdInfo.push('Intrusive thoughts');
+          if (log.ptsdData.avoidance) ptsdInfo.push('Avoidance');
+          if (log.ptsdData.hypervigilance) ptsdInfo.push('Hypervigilance');
+          if (log.ptsdData.triggerDescription) ptsdInfo.push(`Trigger: ${log.ptsdData.triggerDescription}`);
+          if (ptsdInfo.length > 0) {
+            notes = ptsdInfo.join(', ') + (notes !== '-' ? ` | ${notes}` : '');
+          }
+        }
+
+        // Add pain details
+        if (log.painData) {
+          const painInfo = [];
+          if (log.painData.painType) painInfo.push(log.painData.painType);
+          if (log.painData.flareUp) painInfo.push('FLARE-UP');
+          if (log.painData.limitedRangeOfMotion) painInfo.push('Limited ROM');
+          if (log.painData.radiating) painInfo.push(`Radiating${log.painData.radiatingTo ? ` to ${log.painData.radiatingTo}` : ''}`);
+          if (log.painData.affectedActivities?.length > 0) {
+            painInfo.push(`Affects: ${log.painData.affectedActivities.join(', ')}`);
+          }
+          if (painInfo.length > 0) {
+            notes = painInfo.join(', ') + (notes !== '-' ? ` | ${notes}` : '');
+          }
+        }
+
+        // Phase 1E: Add seizure details
+        if (log.seizureData) {
+          const seizureInfo = [];
+          if (log.seizureData.episodeType) {
+            const typeMap = {
+              generalized: 'Grand Mal',
+              partial: 'Partial/Focal',
+              absence: 'Petit Mal',
+              psychogenic: 'Psychogenic',
+              other: 'Other'
+            };
+            seizureInfo.push(typeMap[log.seizureData.episodeType] || log.seizureData.episodeType);
+          }
+          if (log.seizureData.duration) seizureInfo.push(`${log.seizureData.duration}sec`);
+          if (log.seizureData.lossOfConsciousness === 'yes') seizureInfo.push('LOC');
+          else if (log.seizureData.lossOfConsciousness === 'partial') seizureInfo.push('Partial LOC');
+          if (log.seizureData.auraPresent) seizureInfo.push('Aura');
+          if (log.seizureData.witnessPresent) seizureInfo.push('WITNESSED');
+          if (log.seizureData.recoveryTime) seizureInfo.push(`Recovery: ${log.seizureData.recoveryTime}`);
+          if (seizureInfo.length > 0) {
+            notes = seizureInfo.join(', ') + (notes !== '-' ? ` | ${notes}` : '');
+          }
+        }
+
+        // Phase 2: Add eye/vision details
+        if (log.eyeData) {
+          const eyeInfo = [];
+
+          // Affected eye
+          if (log.eyeData.affectedEye) {
+            const eyeMap = { left: 'Left eye', right: 'Right eye', both: 'Both eyes' };
+            eyeInfo.push(eyeMap[log.eyeData.affectedEye] || log.eyeData.affectedEye);
+          }
+
+          // Visual acuity
+          if (log.eyeData.leftEyeAcuity || log.eyeData.rightEyeAcuity) {
+            const acuityInfo = [];
+            if (log.eyeData.leftEyeAcuity) acuityInfo.push(`L: ${log.eyeData.leftEyeAcuity}`);
+            if (log.eyeData.rightEyeAcuity) acuityInfo.push(`R: ${log.eyeData.rightEyeAcuity}`);
+            eyeInfo.push(acuityInfo.join(', '));
+          }
+
+          // Symptoms
+          if (log.eyeData.symptoms && log.eyeData.symptoms.length > 0) {
+            eyeInfo.push(`Symptoms: ${log.eyeData.symptoms.join(', ')}`);
+          }
+
+          // Field of vision
+          if (log.eyeData.fieldOfVision && log.eyeData.fieldOfVision.length > 0) {
+            eyeInfo.push(`Field: ${log.eyeData.fieldOfVision.join(', ')}`);
+          }
+
+          // Activities affected
+          if (log.eyeData.affectedActivities && log.eyeData.affectedActivities.length > 0) {
+            eyeInfo.push(`Affects: ${log.eyeData.affectedActivities.join(', ')}`);
+          }
+
+          // Triggers
+          if (log.eyeData.triggeringFactors) {
+            eyeInfo.push(`Triggers: ${log.eyeData.triggeringFactors}`);
+          }
+
+          // Associated conditions
+          if (log.eyeData.associatedConditions && log.eyeData.associatedConditions.length > 0) {
+            eyeInfo.push(`Related: ${log.eyeData.associatedConditions.join(', ')}`);
+          }
+
+          if (eyeInfo.length > 0) {
+            notes = eyeInfo.join(' | ') + (notes !== '-' ? ` | ${notes}` : '');
+          }
+        }
+
+        // Phase 3: Add genitourinary details
+        if (log.genitourinaryData) {
+          const guInfo = [];
+          const gd = log.genitourinaryData;
+
+          // System affected
+          if (gd.affectedSystem) {
+            const systemMap = {
+              kidney: 'Kidney/Renal',
+              bladder: 'Bladder/Voiding',
+              prostate: 'Prostate',
+              reproductive: 'Reproductive',
+              sphincter: 'Sphincter/Bowel'
+            };
+            guInfo.push(systemMap[gd.affectedSystem] || gd.affectedSystem);
+          }
+
+          // Kidney-specific
+          if (gd.affectedSystem === 'kidney') {
+            if (gd.stoneEpisode) guInfo.push('Stone episode');
+            if (gd.stonePassedToday) guInfo.push(`Stone passed${gd.stoneSize ? ` (${gd.stoneSize}mm)` : ''}`);
+            if (gd.procedureRecent && gd.procedureRecent !== 'none') {
+              guInfo.push(`Procedure: ${gd.procedureRecent}`);
             }
-
-            if (log.sleepData) {
-                const sleepInfo = [];
-                if (log.sleepData.hoursSlept) sleepInfo.push(`${log.sleepData.hoursSlept}hrs sleep`);
-                if (log.sleepData.quality) sleepInfo.push(`Quality: ${log.sleepData.quality}/10`);
-                if (sleepInfo.length > 0) {
-                    notes = sleepInfo.join(', ') + (log.notes ? ` | ${log.notes}` : '');
-                }
+            if (gd.dialysis) {
+              guInfo.push(`Dialysis: ${gd.dialysisType || 'yes'}${gd.dialysisFrequency ? ` (${gd.dialysisFrequency})` : ''}`);
             }
+            if (gd.kidneyPainLocation) guInfo.push(`Pain: ${gd.kidneyPainLocation}`);
+          }
 
+          // Bladder/Voiding-specific
+          if (gd.affectedSystem === 'bladder') {
+            if (gd.urinaryFrequency24h) guInfo.push(`Freq: ${gd.urinaryFrequency24h}/day`);
+            if (gd.nocturiaCount) guInfo.push(`Nocturia: ${gd.nocturiaCount}x/night`);
+            if (gd.incontinenceEpisode) {
+              guInfo.push(`Incontinence: ${gd.incontinenceType || 'yes'}${gd.padChangesRequired ? ` (${gd.padChangesRequired} pads)` : ''}`);
+            }
+            if (gd.catheterUse) guInfo.push(`Catheter: ${gd.catheterType || 'yes'}`);
+            if (gd.uti) guInfo.push('UTI symptoms');
+          }
+
+          // Prostate-specific
+          if (gd.affectedSystem === 'prostate') {
+            if (gd.prostateScore) guInfo.push(`IPSS: ${gd.prostateScore}`);
+            if (gd.nocturiaCount) guInfo.push(`Nocturia: ${gd.nocturiaCount}x/night`);
+            if (gd.prostateMedications && gd.prostateMedications.length > 0) {
+              guInfo.push(`Meds: ${gd.prostateMedications.join(', ')}`);
+            }
+          }
+
+          // Sphincter-specific
+          if (gd.affectedSystem === 'sphincter') {
+            if (gd.fecalIncontinenceEpisode) {
+              guInfo.push(`Incontinence: ${gd.fecalIncontinenceType || 'yes'}${gd.fecalIncontinenceFrequency ? ` (${gd.fecalIncontinenceFrequency})` : ''}`);
+            }
+            if (gd.fecalUrgency) guInfo.push('Urgency');
+          }
+
+          // Reproductive-specific
+          if (gd.affectedSystem === 'reproductive') {
+            if (gd.erectileDysfunction) guInfo.push(`ED: ${gd.edSeverity || 'yes'}`);
+            if (gd.testicular && gd.testicularSymptoms && gd.testicularSymptoms.length > 0) {
+              guInfo.push(`Testicular: ${gd.testicularSymptoms.join(', ')}`);
+            }
+          }
+
+          // Common fields
+          if (gd.activitiesAffected && gd.activitiesAffected.length > 0) {
+            guInfo.push(`Affects: ${gd.activitiesAffected.join(', ')}`);
+          }
+          if (gd.fluidRestriction) guInfo.push('Limiting fluids');
+          if (gd.workMissed) guInfo.push('Work missed');
+
+          if (guInfo.length > 0) {
+            notes = guInfo.join(' | ') + (notes !== '-' ? ` | ${notes}` : '');
+          }
+        }
+
+        // Phase 4: Gynecological data extraction
+        if (log.gynecologicalData) {
+          const gyneInfo = [];
+          const gd = log.gynecologicalData;
+
+          // Affected organ
+          if (gd.affectedOrgan) {
+            const organMap = {
+              'vulva': 'Vulva/Clitoris',
+              'vagina': 'Vagina',
+              'cervix': 'Cervix',
+              'uterus': 'Uterus',
+              'fallopian-tube': 'Fallopian Tube',
+              'ovary': 'Ovary',
+              'multiple': 'Multiple Organs'
+            };
+            gyneInfo.push(organMap[gd.affectedOrgan] || gd.affectedOrgan);
+          }
+
+          // Pain details
+          if (gd.painType) {
+            const painMap = {
+              'chronic-pelvic': 'Chronic Pelvic Pain',
+              'dysmenorrhea': 'Menstrual Pain',
+              'dyspareunia': 'Pain with Intercourse',
+              'ovulation': 'Ovulation Pain'
+            };
+            gyneInfo.push(painMap[gd.painType] || gd.painType);
+          }
+          if (gd.painLocation) gyneInfo.push(`Location: ${gd.painLocation}`);
+
+          // Endometriosis
+          if (gd.endometriosisDiagnosed) {
+            gyneInfo.push('Endometriosis');
+            if (gd.laparoscopyConfirmed) gyneInfo.push('Laparoscopy confirmed');
+            if (gd.lesionLocations && gd.lesionLocations.length > 0) {
+              gyneInfo.push(`Lesions: ${gd.lesionLocations.join(', ')}`);
+            }
+            if (gd.bowelSymptoms) gyneInfo.push('Bowel symptoms');
+            if (gd.bladderSymptoms) gyneInfo.push('Bladder symptoms');
+            if (gd.treatmentEffectiveness) {
+              gyneInfo.push(`Treatment: ${gd.treatmentEffectiveness.replace(/-/g, ' ')}`);
+            }
+          }
+
+          // Menstrual/PCOS
+          if (gd.cycleRegularity) gyneInfo.push(`Cycle: ${gd.cycleRegularity}`);
+          if (gd.flowHeaviness && gd.flowHeaviness !== 'moderate') {
+            gyneInfo.push(`Flow: ${gd.flowHeaviness}`);
+          }
+          if (gd.dysmenorrheaSeverity && gd.dysmenorrheaSeverity !== 'none') {
+            gyneInfo.push(`Dysmenorrhea: ${gd.dysmenorrheaSeverity}`);
+          }
+          if (gd.pcosDiagnosed) gyneInfo.push('PCOS');
+
+          // PID
+          if (gd.pidDiagnosed) {
+            gyneInfo.push('PID');
+            if (gd.pidType) gyneInfo.push(`Type: ${gd.pidType}`);
+            if (gd.recurrentInfections) gyneInfo.push('Recurrent infections');
+          }
+
+          // Prolapse
+          if (gd.prolapseDiagnosed) {
+            gyneInfo.push('Pelvic Prolapse');
+            if (gd.prolapseType) gyneInfo.push(`Type: ${gd.prolapseType}`);
+            if (gd.popStage) gyneInfo.push(`Stage: ${gd.popStage}`);
+          }
+
+          // Sexual function
+          if (gd.sexualDysfunction || gd.arousalDifficulty || gd.libidoDecreased) {
+            gyneInfo.push('FSAD');
+          }
+
+          // Treatment/Impact
+          if (gd.continuousTreatmentRequired) gyneInfo.push('Continuous treatment required');
+          if (gd.interferesDailyActivities) gyneInfo.push('Interferes with activities');
+          if (gd.workMissed) gyneInfo.push('Work missed');
+
+          if (gyneInfo.length > 0) {
+            notes = gyneInfo.join(' | ') + (notes !== '-' ? ` | ${notes}` : '');
+          }
+        }
+
+        // Phase 6: HIV/AIDS data extraction
+        if (log.hivData) {
+          const hivInfo = [];
+          const hd = log.hivData;
+
+          if (hd.infectionType) {
+            const infectionMap = {
+              'pcp': 'PCP Pneumonia',
+              'cmv': 'CMV',
+              'mac': 'MAC',
+              'toxoplasmosis': 'Toxoplasmosis',
+              'cryptococcal': 'Cryptococcal Meningitis',
+              'kaposi': "Kaposi's Sarcoma",
+              'lymphoma': 'Lymphoma',
+              'wasting': 'Wasting Syndrome',
+              'other': 'Other Opportunistic Infection'
+            };
+            hivInfo.push(infectionMap[hd.infectionType] || hd.infectionType);
+          }
+          if (hd.constitutionalSymptoms && hd.constitutionalSymptoms.length > 0) {
+            hivInfo.push(`Symptoms: ${hd.constitutionalSymptoms.join(', ')}`);
+          }
+          if (hd.weightLossPercentage) hivInfo.push(`Weight Loss: ${hd.weightLossPercentage}%`);
+          if (hd.onAntiretrovirals) hivInfo.push('On ART');
+          if (hd.cd4CountKnown && hd.cd4Range) {
+            const cd4Map = {
+              'below-200': 'CD4 <200',
+              '200-500': 'CD4 200-500',
+              'above-500': 'CD4 >500'
+            };
+            hivInfo.push(cd4Map[hd.cd4Range] || hd.cd4Range);
+          }
+          if (hd.treatmentCompliance) {
+            hivInfo.push(`Compliance: ${hd.treatmentCompliance}`);
+          }
+
+          if (hivInfo.length > 0) {
+            notes = hivInfo.join(' | ') + (notes !== '-' ? ` | ${notes}` : '');
+          }
+        }
+
+        // Phase 6: Hepatitis B/C data extraction
+        if (log.hepatitisData) {
+          const hepInfo = [];
+          const hep = log.hepatitisData;
+
+          if (hep.weightLossPercentage) hepInfo.push(`Weight Loss: ${hep.weightLossPercentage}%`);
+          if (hep.debilitating) hepInfo.push('Debilitating Symptoms');
+          if (hep.dietaryRestrictions) hepInfo.push('Dietary Restrictions Required');
+          if (hep.symptomFrequency) {
+            const freqMap = {
+              'daily': 'Daily Symptoms',
+              'intermittent': 'Intermittent Symptoms',
+              'rare': 'Rare Symptoms'
+            };
+            hepInfo.push(freqMap[hep.symptomFrequency] || hep.symptomFrequency);
+          }
+
+          if (hepInfo.length > 0) {
+            notes = hepInfo.join(' | ') + (notes !== '-' ? ` | ${notes}` : '');
+          }
+        }
+
+        // Phase 6: Lyme Disease data extraction
+        if (log.lymeData) {
+          const lymeInfo = [];
+          const ld = log.lymeData;
+
+          if (ld.activeTreatment) lymeInfo.push('Active Treatment (100% for 1 year)');
+          if (ld.treatmentCompleted) lymeInfo.push('Treatment Completed');
+          if (ld.treatmentStartDate) lymeInfo.push(`Started: ${new Date(ld.treatmentStartDate).toLocaleDateString()}`);
+          if (ld.treatmentCompletionDate) lymeInfo.push(`Completed: ${new Date(ld.treatmentCompletionDate).toLocaleDateString()}`);
+          if (ld.rashPresent) {
+            const rashMap = {
+              'bulls-eye': "Bull's-eye Rash",
+              'expanding-red': 'Expanding Red Rash',
+              'other': 'Other Rash'
+            };
+            lymeInfo.push(rashMap[ld.rashType] || 'Rash Present');
+          }
+          if (ld.neurologicalSymptoms && ld.neurologicalSymptoms.length > 0) {
+            lymeInfo.push(`Neuro: ${ld.neurologicalSymptoms.join(', ')}`);
+          }
+          if (ld.jointSymptoms && ld.jointSymptoms.length > 0) {
+            lymeInfo.push(`Joints: ${ld.jointSymptoms.join(', ')}`);
+          }
+
+          if (lymeInfo.length > 0) {
+            notes = lymeInfo.join(' | ') + (notes !== '-' ? ` | ${notes}` : '');
+          }
+        }
+
+        // Phase 6: Malaria data extraction
+        if (log.malariaData) {
+          const malariaInfo = [];
+          const md = log.malariaData;
+
+          if (md.relapseEpisode) malariaInfo.push('Relapse Episode');
+          if (md.cyclicalPattern) malariaInfo.push('Cyclical Pattern (48-72hr)');
+          if (md.feverTemperature) malariaInfo.push(`Temp: ${md.feverTemperature}°F`);
+          if (md.hospitalized) malariaInfo.push('Hospitalized');
+          if (md.severeComplications) malariaInfo.push('Severe Complications');
+          if (md.continuousMedication) malariaInfo.push('Continuous Antimalarials');
+
+          if (malariaInfo.length > 0) {
+            notes = malariaInfo.join(' | ') + (notes !== '-' ? ` | ${notes}` : '');
+          }
+        }
+
+        // Phase 6: Brucellosis data extraction
+        if (log.brucellosisData) {
+          const brucellosisInfo = [];
+          const bd = log.brucellosisData;
+
+          if (bd.relapseEpisode) brucellosisInfo.push('Relapse Episode');
+          if (bd.undulantFever) brucellosisInfo.push('Undulant Fever');
+          if (bd.chronicArthritis) brucellosisInfo.push('Chronic Arthritis/Spondylitis');
+          if (bd.multiOrganInvolvement) brucellosisInfo.push('Multi-Organ Involvement');
+          if (bd.neurobrucellosis) brucellosisInfo.push('Neurobrucellosis (CNS)');
+
+          if (brucellosisInfo.length > 0) {
+            notes = brucellosisInfo.join(' | ') + (notes !== '-' ? ` | ${notes}` : '');
+          }
+        }
+
+        // Phase 6: Campylobacter data extraction
+        if (log.campylobacterData) {
+          const campylobacterInfo = [];
+          const cd = log.campylobacterData;
+
+          if (cd.guillainBarre) campylobacterInfo.push('⚠️ GUILLAIN-BARRÉ SYNDROME');
+          if (cd.reactiveArthritis) campylobacterInfo.push('Reactive Arthritis');
+          if (cd.chronicIBS) campylobacterInfo.push('Post-Infectious IBS');
+          if (cd.stoolCultureConfirmed) campylobacterInfo.push('Stool Culture +');
+          if (cd.weeksSinceInfection) campylobacterInfo.push(`${cd.weeksSinceInfection} weeks post-infection`);
+
+          if (campylobacterInfo.length > 0) {
+            notes = campylobacterInfo.join(' | ') + (notes !== '-' ? ` | ${notes}` : '');
+          }
+        }
+
+        // Phase 6: Q Fever data extraction
+        if (log.qFeverData) {
+          const qFeverInfo = [];
+          const qd = log.qFeverData;
+
+          if (qd.endocarditis) qFeverInfo.push('⚠️ Q FEVER ENDOCARDITIS');
+          if (qd.chronicQFever) qFeverInfo.push('Chronic Q Fever (>6mo)');
+          if (qd.fatigueSyndrome) qFeverInfo.push('Q Fever Fatigue Syndrome');
+          if (qd.phaseIAntibodies) qFeverInfo.push('Phase I Ab+ (>1:800)');
+          if (qd.monthsSinceInfection) qFeverInfo.push(`${qd.monthsSinceInfection} months post-infection`);
+
+          if (qFeverInfo.length > 0) {
+            notes = qFeverInfo.join(' | ') + (notes !== '-' ? ` | ${notes}` : '');
+          }
+        }
+
+        // Phase 6: Salmonella data extraction
+        if (log.salmonellaData) {
+          const salInfo = [];
+          const sal = log.salmonellaData;
+
+          if (sal.stoolCultureConfirmed) salInfo.push('Stool Culture Confirmed');
+          if (sal.reactiveArthritis) salInfo.push('Reactive Arthritis');
+          if (sal.bacteremia) salInfo.push('Bacteremia/Sepsis');
+          if (sal.hospitalized) salInfo.push('Hospitalized');
+          if (sal.severeComplications) salInfo.push('Severe Complications');
+
+          if (salInfo.length > 0) {
+            notes = salInfo.join(' | ') + (notes !== '-' ? ` | ${notes}` : '');
+          }
+        }
+
+        // Phase 6: Shigella data extraction
+        if (log.shigellaData) {
+          const shigInfo = [];
+          const shig = log.shigellaData;
+
+          if (shig.stoolCultureConfirmed) shigInfo.push('Stool Culture Confirmed');
+          if (shig.reactiveArthritis) shigInfo.push('Reactive Arthritis');
+          if (shig.hus) shigInfo.push('HUS (Hemolytic Uremic Syndrome)');
+          if (shig.hospitalized) shigInfo.push('Hospitalized');
+          if (shig.severeComplications) shigInfo.push('Severe Complications');
+
+          if (shigInfo.length > 0) {
+            notes = shigInfo.join(' | ') + (notes !== '-' ? ` | ${notes}` : '');
+          }
+        }
+
+        // Phase 6: West Nile data extraction
+        if (log.westNileData) {
+          const wnInfo = [];
+          const wn = log.westNileData;
+
+          if (wn.serologyConfirmed) wnInfo.push('Serology Confirmed');
+          if (wn.neuroinvasive) wnInfo.push('Neuroinvasive Disease');
+          if (wn.encephalitis) wnInfo.push('Encephalitis');
+          if (wn.acuteFlaccidParalysis) wnInfo.push('Acute Flaccid Paralysis');
+          if (wn.permanentImpairment) wnInfo.push('Permanent Impairment');
+
+          if (wnInfo.length > 0) {
+            notes = wnInfo.join(' | ') + (notes !== '-' ? ` | ${notes}` : '');
+          }
+        }
+
+        // Phase 6: NTM data extraction
+        if (log.ntmData) {
+          const ntmInfo = [];
+          const ntm = log.ntmData;
+
+          if (ntm.ntmSpecies) {
+            const speciesMap = {
+              'mac': 'MAC',
+              'abscessus': 'M. abscessus',
+              'kansasii': 'M. kansasii',
+              'other': 'Other NTM'
+            };
+            ntmInfo.push(speciesMap[ntm.ntmSpecies] || ntm.ntmSpecies);
+          }
+          if (ntm.activeDisease) ntmInfo.push('Active Disease');
+          if (ntm.onTreatment) ntmInfo.push(`On Treatment (${ntm.monthsOnTreatment || '?'} months)`);
+          if (ntm.disseminated) ntmInfo.push('Disseminated');
+
+          if (ntmInfo.length > 0) {
+            notes = ntmInfo.join(' | ') + (notes !== '-' ? ` | ${notes}` : '');
+          }
+        }
+
+        // Phase 7: Dental/Oral data extraction
+        if (log.dentalData) {
+          const dentalInfo = [];
+          const dd = log.dentalData;
+
+          // Jaw symptoms
+          if (dd.jawPainSeverity !== undefined && dd.jawPainSeverity > 0) {
+            dentalInfo.push(`Jaw pain: ${dd.jawPainSeverity}/10`);
+          }
+          if (dd.jawOpening) {
+            dentalInfo.push(`Jaw opening: ${dd.jawOpening}mm`);
+          }
+
+          // Chewing/eating
+          if (dd.chewingDifficulty && dd.chewingDifficulty !== 'none') {
+            dentalInfo.push(`Chewing: ${dd.chewingDifficulty}`);
+          }
+          if (dd.dietaryRestrictions && dd.dietaryRestrictions !== 'none') {
+            const dietMap = {
+              'semi-solid': 'Semi-solid diet',
+              'soft': 'Soft foods',
+              'puree': 'Pureed diet',
+              'full-liquid': 'Liquid diet only'
+            };
+            dentalInfo.push(dietMap[dd.dietaryRestrictions] || dd.dietaryRestrictions);
+          }
+
+          // Tooth loss
+          if (dd.toothCount && dd.toothCount > 0) {
+            dentalInfo.push(`${dd.toothCount} teeth lost`);
+          }
+          if (dd.prosthesisType && dd.prosthesisType !== 'none') {
+            const prosthesisMap = {
+              'partial': 'Partial denture',
+              'complete-upper': 'Complete upper denture',
+              'complete-lower': 'Complete lower denture',
+              'complete-both': 'Complete dentures (both)',
+              'implants': 'Dental implants',
+              'bridge': 'Dental bridge'
+            };
+            dentalInfo.push(prosthesisMap[dd.prosthesisType] || dd.prosthesisType);
+          }
+
+          // Bone/fracture issues
+          if (dd.boneCondition && dd.boneCondition !== 'none') {
+            const boneMap = {
+              'osteomyelitis': 'Osteomyelitis',
+              'osteonecrosis': 'Osteonecrosis',
+              'nonunion': 'Fracture nonunion',
+              'malunion': 'Fracture malunion'
+            };
+            dentalInfo.push(boneMap[dd.boneCondition] || dd.boneCondition);
+          }
+
+          // Palate/swallowing
+          if (dd.palateSymptoms && dd.palateSymptoms.length > 0) {
+            dentalInfo.push(`Palate: ${dd.palateSymptoms.join(', ')}`);
+          }
+          if (dd.swallowingDifficulty && dd.swallowingDifficulty !== 'none') {
+            dentalInfo.push(`Swallowing: ${dd.swallowingDifficulty}`);
+          }
+
+          // Neoplasm/tumor
+          if (dd.oralMass) {
+            dentalInfo.push('Oral mass/tumor');
+            if (dd.massLocation) dentalInfo.push(`Location: ${dd.massLocation}`);
+            if (dd.massBiopsy) {
+              dentalInfo.push(dd.massBiopsy === 'malignant' ? 'Malignant' : 'Benign');
+            }
+          }
+
+          // Infection
+          if (dd.infection) {
+            dentalInfo.push('Infection present');
+            if (dd.infectionType) dentalInfo.push(`Type: ${dd.infectionType}`);
+          }
+
+          // Daily impact
+          if (dd.speakingDifficulty) dentalInfo.push('Speaking difficulty');
+          if (dd.painWithEating) dentalInfo.push('Pain with eating');
+          if (dd.workMissed) dentalInfo.push('Work missed');
+
+          if (dentalInfo.length > 0) {
+            notes = dentalInfo.join(' | ') + (notes !== '-' ? ` | ${notes}` : '');
+          }
+        }
+
+        // PHASE 8A: MENTAL HEALTH FORMS DATA EXTRACTION
+        // Anxiety Disorders Form
+        if (log.anxietyData) {
+          const anxietyInfo = [];
+          const ad = log.anxietyData;
+
+          // Physical symptoms
+          const physicalSymptoms = [
+            ad.heartRacing && 'Heart racing',
+            ad.sweating && 'Sweating',
+            ad.trembling && 'Trembling',
+            ad.shortnessOfBreath && 'SOB',
+            ad.chestTightness && 'Chest tightness',
+            ad.nausea && 'Nausea',
+            ad.dizziness && 'Dizziness',
+            ad.hotFlashes && 'Hot flashes',
+            ad.numbnessTingling && 'Numbness/tingling'
+          ].filter(Boolean);
+          if (physicalSymptoms.length > 0) {
+            anxietyInfo.push(`Physical: ${physicalSymptoms.join(', ')}`);
+          }
+
+          // Cognitive symptoms
+          const cognitiveSymptoms = [
+            ad.racingThoughts && 'Racing thoughts',
+            ad.fearOfLosingControl && 'Fear losing control',
+            ad.fearOfDying && 'Fear of dying',
+            ad.feelingDetached && 'Detached',
+            ad.difficultyConcentrating && 'Poor concentration'
+          ].filter(Boolean);
+          if (cognitiveSymptoms.length > 0) {
+            anxietyInfo.push(`Cognitive: ${cognitiveSymptoms.join(', ')}`);
+          }
+
+          // Avoidance/Impact
+          const avoidance = [
+            ad.avoidedSocial && 'Avoided social',
+            ad.leftEarly && 'Left early',
+            ad.calledOut && 'Called out work',
+            ad.cancelledPlans && 'Cancelled plans',
+            ad.neededSafetyPerson && 'Needed safety person'
+          ].filter(Boolean);
+          if (avoidance.length > 0) {
+            anxietyInfo.push(`Impact: ${avoidance.join(', ')}`);
+          }
+
+          if (ad.episodeDuration) anxietyInfo.push(`Duration: ${ad.episodeDuration}`);
+          if (ad.wasPanicAttack) anxietyInfo.push('⚠️ PANIC ATTACK');
+          if (ad.trigger) anxietyInfo.push(`Trigger: ${ad.trigger}`);
+
+          if (anxietyInfo.length > 0) {
+            notes = anxietyInfo.join(' | ') + (notes !== '-' ? ` | ${notes}` : '');
+          }
+        }
+
+        // Depression Form
+        if (log.depressionData) {
+          const depressionInfo = [];
+          const dd = log.depressionData;
+
+          // Mood symptoms
+          const moodSymptoms = [
+            dd.depressedMood && 'Depressed mood',
+            dd.anhedonia && 'Anhedonia',
+            dd.worthlessness && 'Worthlessness',
+            dd.excessiveGuilt && 'Guilt',
+            dd.hopelessness && 'Hopelessness',
+            dd.irritability && 'Irritability'
+          ].filter(Boolean);
+          if (moodSymptoms.length > 0) {
+            depressionInfo.push(`Mood: ${moodSymptoms.join(', ')}`);
+          }
+
+          // Physical/vegetative
+          const physicalSymptoms = [
+            dd.insomnia && 'Insomnia',
+            dd.hypersomnia && 'Hypersomnia',
+            dd.decreasedAppetite && '↓Appetite',
+            dd.increasedAppetite && '↑Appetite',
+            dd.fatigue && 'Fatigue',
+            dd.psychomotorAgitation && 'Agitation',
+            dd.psychomotorRetardation && 'Slowed'
+          ].filter(Boolean);
+          if (physicalSymptoms.length > 0) {
+            depressionInfo.push(`Physical: ${physicalSymptoms.join(', ')}`);
+          }
+
+          // Cognitive
+          const cognitive = [
+            dd.difficultyConcentrating && 'Poor concentration',
+            dd.difficultyDeciding && 'Indecisive',
+            dd.memoryProblems && 'Memory issues',
+            dd.thoughtsOfDeath && 'Thoughts of death'
+          ].filter(Boolean);
+          if (cognitive.length > 0) {
+            depressionInfo.push(`Cognitive: ${cognitive.join(', ')}`);
+          }
+
+          // Functional impact
+          const impact = [
+            dd.unableToGetUp && 'Bed-bound',
+            dd.calledOutWork && 'Called out',
+            dd.neglectedSelfCare && 'Neglected self-care',
+            dd.socialWithdrawal && 'Withdrew socially',
+            dd.unableToCompleteTasks && 'Unable to complete tasks'
+          ].filter(Boolean);
+          if (impact.length > 0) {
+            depressionInfo.push(`Impact: ${impact.join(', ')}`);
+          }
+
+          if (dd.suicidalIdeation) depressionInfo.push('⚠️ SUICIDAL IDEATION');
+          if (dd.trigger) depressionInfo.push(`Trigger: ${dd.trigger}`);
+          if (dd.episodeContext) depressionInfo.push(`Context: ${dd.episodeContext}`);
+
+          if (depressionInfo.length > 0) {
+            notes = depressionInfo.join(' | ') + (notes !== '-' ? ` | ${notes}` : '');
+          }
+        }
+
+        // Bipolar/Cyclothymic Form
+        if (log.bipolarData) {
+          const bipolarInfo = [];
+          const bd = log.bipolarData;
+
+          if (bd.episodeType) {
+            const episodeMap = {
+              'manic': 'MANIC EPISODE',
+              'hypomanic': 'HYPOMANIC EPISODE',
+              'depressive': 'DEPRESSIVE EPISODE',
+              'mixed': 'MIXED EPISODE'
+            };
+            bipolarInfo.push(episodeMap[bd.episodeType] || bd.episodeType);
+          }
+
+          // Manic/hypomanic symptoms
+          const manicSymptoms = [
+            bd.elevatedMood && 'Elevated mood',
+            bd.irritableMood && 'Irritable',
+            bd.increasedEnergy && '↑Energy',
+            bd.decreasedSleep && '↓Sleep need',
+            bd.moreTalkative && 'Talkative',
+            bd.racingThoughts && 'Racing thoughts',
+            bd.distractibility && 'Distractible',
+            bd.increasedActivity && '↑Activity',
+            bd.riskyBehavior && 'Risky behavior',
+            bd.grandiosity && 'Grandiose'
+          ].filter(Boolean);
+          if (manicSymptoms.length > 0) {
+            bipolarInfo.push(`Manic: ${manicSymptoms.join(', ')}`);
+          }
+
+          // Depressive symptoms
+          const depressiveSymptoms = [
+            bd.depressedMood && 'Depressed',
+            bd.anhedonia && 'Anhedonia',
+            bd.fatigue && 'Fatigue',
+            bd.worthlessness && 'Worthless'
+          ].filter(Boolean);
+          if (depressiveSymptoms.length > 0) {
+            bipolarInfo.push(`Depressive: ${depressiveSymptoms.join(', ')}`);
+          }
+
+          if (bd.sleepHours) bipolarInfo.push(`Sleep: ${bd.sleepHours}hrs`);
+          if (bd.riskyBehaviors && bd.riskyBehaviors.length > 0) {
+            bipolarInfo.push(`Risky: ${bd.riskyBehaviors.join(', ')}`);
+          }
+
+          // Impact
+          const impact = [
+            bd.unableToWork && 'Unable to work',
+            bd.relationshipConflicts && 'Relationship conflicts',
+            bd.legalProblems && 'Legal problems',
+            bd.hospitalizationRequired && '⚠️ HOSPITALIZATION REQUIRED'
+          ].filter(Boolean);
+          if (impact.length > 0) {
+            bipolarInfo.push(`Impact: ${impact.join(', ')}`);
+          }
+
+          if (bd.episodeDuration) bipolarInfo.push(`Duration: ${bd.episodeDuration}`);
+
+          if (bipolarInfo.length > 0) {
+            notes = bipolarInfo.join(' | ') + (notes !== '-' ? ` | ${notes}` : '');
+          }
+        }
+
+        // OCD Form
+        if (log.ocdData) {
+          const ocdInfo = [];
+          const od = log.ocdData;
+
+          // Obsessions
+          const obsessions = [
+            od.contaminationFears && 'Contamination',
+            od.fearOfHarm && 'Fear of harm',
+            od.needForSymmetry && 'Symmetry',
+            od.forbiddenThoughts && 'Forbidden thoughts',
+            od.religiousObsessions && 'Religious',
+            od.hoardingUrges && 'Hoarding',
+            od.otherObsession && od.otherObsession
+          ].filter(Boolean);
+
+          if (obsessions.length > 0) {
+            ocdInfo.push(`Obsessions: ${obsessions.join(', ')}`);
+          }
+
+          // Compulsions
+          const compulsions = [
+            od.washingCleaning && 'Washing',
+            od.checking && 'Checking',
+            od.repeating && 'Repeating',
+            od.counting && 'Counting',
+            od.ordering && 'Ordering',
+            od.mentalRituals && 'Mental rituals',
+            od.reassuranceSeeking && 'Reassurance',
+            od.otherCompulsion && od.otherCompulsion
+          ].filter(Boolean);
+
+          if (compulsions.length > 0) {
+            ocdInfo.push(`Compulsions: ${compulsions.join(', ')}`);
+          }
+
+          if (od.timeConsumed) ocdInfo.push(`Time: ${od.timeConsumed}`);
+          if (od.distressLevel !== undefined && od.distressLevel !== 5) {
+            ocdInfo.push(`Distress: ${od.distressLevel}/10`);
+          }
+
+          // Impact
+          const impact = [
+            od.lateToAppointments && 'Late',
+            od.avoidedSituations && 'Avoided situations',
+            od.interferedRoutines && 'Disrupted routines',
+            od.relationshipProblems && 'Relationship issues',
+            od.unableToComplete && 'Unable to complete tasks'
+          ].filter(Boolean);
+
+          if (impact.length > 0) {
+            ocdInfo.push(`Impact: ${impact.join(', ')}`);
+          }
+
+          if (od.trigger) ocdInfo.push(`Trigger: ${od.trigger}`);
+
+          if (ocdInfo.length > 0) {
+            const oldNotes = notes;
+            notes = ocdInfo.join(' | ') + (notes !== '-' ? ` | ${notes}` : '');
+          } else {
+          }
+        }
+
+        // Adjustment Disorder Form
+        if (log.adjustmentDisorderData) {
+          const adjustmentInfo = [];
+          const ad = log.adjustmentDisorderData;
+
+          if (ad.stressor) adjustmentInfo.push(`Stressor: ${ad.stressor}`);
+          if (ad.stressorDate) {
+            adjustmentInfo.push(`Date: ${ad.stressorDate}`);
+            if (ad.daysSinceStressor) {
+              const chronic = parseInt(ad.daysSinceStressor) > 180 ? ' (CHRONIC)' : '';
+              adjustmentInfo.push(`${ad.daysSinceStressor} days ago${chronic}`);
+            }
+          }
+
+          if (ad.presentationType) {
+            const typeMap = {
+              'depressed': 'With Depressed Mood',
+              'anxiety': 'With Anxiety',
+              'mixed-emotions': 'Mixed Anxiety & Depression',
+              'conduct': 'With Conduct Disturbance',
+              'mixed-conduct-emotions': 'Mixed Conduct & Emotions',
+              'unspecified': 'Unspecified'
+            };
+            adjustmentInfo.push(typeMap[ad.presentationType] || ad.presentationType);
+          }
+
+          // Symptoms
+          const symptoms = [
+            ad.tearfulness && 'Tearful',
+            ad.hopelessness && 'Hopeless',
+            ad.worry && 'Worry',
+            ad.physicalTension && 'Tension',
+            ad.impulsiveBehaviors && 'Impulsive',
+            ad.aggression && 'Aggression',
+            ad.ruleViolations && 'Rule violations',
+            ad.recklessBehavior && 'Reckless'
+          ].filter(Boolean);
+          if (symptoms.length > 0) {
+            adjustmentInfo.push(`Symptoms: ${symptoms.join(', ')}`);
+          }
+
+          // Impact
+          const impact = [
+            ad.workDifficulty && 'Work difficulty',
+            ad.relationshipProblems && 'Relationship issues',
+            ad.socialWithdrawal && 'Withdrew',
+            ad.selfCareNeglect && 'Neglected self-care',
+            ad.unableToFulfillResponsibilities && 'Unable to function'
+          ].filter(Boolean);
+          if (impact.length > 0) {
+            adjustmentInfo.push(`Impact: ${impact.join(', ')}`);
+          }
+
+          // Progress
+          if (ad.symptomsImproving === true) adjustmentInfo.push('Improving');
+          else if (ad.symptomsImproving === false) adjustmentInfo.push('Not improving');
+
+          if (ad.stillAffectingFunctioning === true) adjustmentInfo.push('Still affecting functioning');
+          else if (ad.stillAffectingFunctioning === false) adjustmentInfo.push('No longer affecting functioning');
+
+          if (ad.context) adjustmentInfo.push(`Context: ${ad.context}`);
+
+          if (adjustmentInfo.length > 0) {
+            notes = adjustmentInfo.join(' | ') + (notes !== '-' ? ` | ${notes}` : '');
+          }
+        }
+
+        // Eating Disorders Form
+        if (log.eatingDisorderData) {
+          const eatingInfo = [];
+          const ed = log.eatingDisorderData;
+
+          if (ed.currentWeight && ed.expectedMinimumWeight) {
+            const weightLoss = ((ed.expectedMinimumWeight - ed.currentWeight) / ed.expectedMinimumWeight * 100).toFixed(1);
+            eatingInfo.push(`Weight: ${ed.currentWeight}lbs (Expected: ${ed.expectedMinimumWeight}lbs)`);
+            if (weightLoss > 0) eatingInfo.push(`Loss: ${weightLoss}%`);
+          }
+
+          if (ed.incapacitatingEpisode) {
+            eatingInfo.push('INCAPACITATING EPISODE');
+            if (ed.episodeDuration) eatingInfo.push(`Duration: ${ed.episodeDuration}`);
+          }
+
+          if (ed.hospitalized) {
+            eatingInfo.push('HOSPITALIZED');
+            if (ed.tubeFeeding) eatingInfo.push('Tube feeding');
+            if (ed.parenteralNutrition) eatingInfo.push('Parenteral nutrition');
+          }
+
+          if (ed.bingeEpisode) eatingInfo.push('Binge episode');
+          if (ed.purgingEpisode) eatingInfo.push('Purging episode');
+          if (ed.compensatoryBehaviors && ed.compensatoryBehaviors.length > 0) {
+            eatingInfo.push(`Compensatory: ${ed.compensatoryBehaviors.join(', ')}`);
+          }
+          if (ed.restrictedIntake) eatingInfo.push('Restricted intake');
+
+          if (eatingInfo.length > 0) {
+            notes = eatingInfo.join(' | ') + (notes !== '-' ? ` | ${notes}` : '');
+          }
+        }
+
+        // ========================================
+        // PHASE 8B: ADDITIONAL MENTAL HEALTH DATA EXTRACTION
+        // ========================================
+
+        // Binge Eating Disorder Form
+        if (log.bingeEatingData) {
+          const bedInfo = [];
+          const bed = log.bingeEatingData;
+
+          if (bed.bingeEpisode) bedInfo.push('Binge episode');
+          if (bed.lossOfControl) bedInfo.push('Loss of control');
+          if (bed.distressLevel !== undefined && bed.distressLevel !== 5) {
+            bedInfo.push(`Distress: ${bed.distressLevel}/10`);
+          }
+
+          if (bedInfo.length > 0) {
+            notes = bedInfo.join(', ') + (notes !== '-' ? ` | ${notes}` : '');
+          }
+        }
+
+        // Dissociative Disorders Form
+        if (log.dissociativeData) {
+          const dissocInfo = [];
+          const dd = log.dissociativeData;
+
+          if (dd.memoryGap) dissocInfo.push('Memory gap');
+          if (dd.lostTime) dissocInfo.push('Lost time');
+          if (dd.duration) dissocInfo.push(`Duration: ${dd.duration}`);
+
+          if (dissocInfo.length > 0) {
+            notes = dissocInfo.join(', ') + (notes !== '-' ? ` | ${notes}` : '');
+          }
+        }
+
+        // Acute Stress Disorder Form
+        if (log.acuteStressData) {
+          const asdInfo = [];
+          const asd = log.acuteStressData;
+
+          if (asd.traumaDate) asdInfo.push(`Trauma: ${asd.traumaDate}`);
+          if (asd.dissociativeSymptoms) asdInfo.push('Dissociative symptoms');
+          if (asd.avoidance) asdInfo.push('Avoidance');
+
+          if (asdInfo.length > 0) {
+            notes = asdInfo.join(', ') + (notes !== '-' ? ` | ${notes}` : '');
+          }
+        }
+
+        // Personality Disorders Form
+        if (log.personalityData) {
+          const pdInfo = [];
+          const pd = log.personalityData;
+
+          if (pd.occupationalImpact) pdInfo.push('Occupational impact');
+          if (pd.socialImpact) pdInfo.push('Social impact');
+
+          if (pdInfo.length > 0) {
+            notes = pdInfo.join(', ') + (notes !== '-' ? ` | ${notes}` : '');
+          }
+        }
+
+        // Add medications.
             if (linkedMeds.length > 0) {
                 const medInfo = linkedMeds.map(m => `${m.medicationName} ${m.dosage}`).join(', ');
                 notes = `Meds: ${medInfo}` + (notes !== '-' ? ` | ${notes}` : '');

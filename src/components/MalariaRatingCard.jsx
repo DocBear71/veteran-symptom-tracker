@@ -1,162 +1,237 @@
-import React from 'react';
+import { ChevronDown, ChevronUp } from 'lucide-react';
+import { MALARIA_CRITERIA } from '../utils/ratingCriteria';
 
+/**
+ * Malaria Rating Card Component - Gold Standard Version
+ * Displays VA rating analysis for Malaria (DC 6304)
+ * Based on 38 CFR 4.88b
+ */
 export default function MalariaRatingCard({ analysis, expanded, onToggle }) {
-  if (!analysis.hasData) {
+  if (!analysis || !analysis.hasData) {
     return null;
   }
 
-  const getRatingColor = (rating) => {
-    if (rating >= 70) return 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300';
-    if (rating >= 50) return 'bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-300';
-    if (rating >= 30) return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300';
-    if (rating >= 10) return 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300';
-    return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300';
+  const { supportedRating, ratingRationale, evidence, gaps, metrics } = analysis;
+  const criteria = MALARIA_CRITERIA;
+
+  // Helper: Check if rating is supported
+  const isRatingSupported = (ratingPercent) => {
+    if (supportedRating === null || supportedRating === undefined) return false;
+    if (typeof supportedRating === 'number') return ratingPercent === supportedRating;
+    if (typeof supportedRating === 'string') {
+      if (supportedRating.includes('-')) {
+        const [low, high] = supportedRating.split('-').map(Number);
+        return ratingPercent >= low && ratingPercent <= high;
+      }
+      return ratingPercent === parseInt(supportedRating, 10);
+    }
+    return false;
   };
 
+  // Standardized color scheme across all rating cards
+  const getRatingRowColor = (percent, isSupported) => {
+    if (!isSupported) return 'bg-gray-50 dark:bg-gray-700/30 border-gray-200 dark:border-gray-600';
+    if (percent >= 100) return 'bg-red-100 dark:bg-red-900/30 border-red-300 dark:border-red-700';
+    if (percent >= 70) return 'bg-orange-100 dark:bg-orange-900/30 border-orange-300 dark:border-orange-700';
+    if (percent >= 50) return 'bg-amber-100 dark:bg-amber-900/30 border-amber-300 dark:border-amber-700';
+    if (percent >= 30) return 'bg-yellow-100 dark:bg-yellow-900/30 border-yellow-300 dark:border-yellow-700';
+    if (percent >= 10) return 'bg-green-100 dark:bg-green-900/30 border-green-300 dark:border-green-700';
+    return 'bg-gray-100 dark:bg-gray-700/30 border-gray-300 dark:border-gray-600';
+  };
+
+  const totalLogs = metrics?.totalLogs || 0;
+
   return (
-      <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6 shadow-sm">
-        <div
-            className="flex items-center justify-between mb-4 cursor-pointer"
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden border-l-4 border-emerald-500">
+        {/* === COLLAPSED HEADER === */}
+        <button
             onClick={onToggle}
+            className="w-full px-6 py-4 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
         >
           <div className="flex items-center gap-3">
-            <span className="text-3xl">🦟</span>
-            <div>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                {analysis.condition}
+            <span className="text-2xl">🦟</span>
+            <div className="text-left">
+              <h3 className="font-semibold text-lg text-gray-900 dark:text-white">
+                Malaria
               </h3>
               <p className="text-sm text-gray-600 dark:text-gray-400">
-                Diagnostic Code {analysis.diagnosticCode}
+                DC 6304 - 38 CFR 4.88b
               </p>
             </div>
           </div>
-
-          <div className="flex items-center gap-3">
-            {analysis.supportedRating !== null && (
-                <div className={`px-4 py-2 rounded-lg font-bold text-lg ${getRatingColor(analysis.supportedRating)}`}>
-                  {analysis.supportedRating}%
-                </div>
+          <div className="flex items-center gap-4">
+            <div className="text-right">
+              <div className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">
+                {supportedRating !== null ? `${supportedRating}%` : 'N/A'}
+              </div>
+              <div className="text-xs text-gray-500 dark:text-gray-400">
+                Supported Rating
+              </div>
+            </div>
+            {expanded ? (
+                <ChevronUp className="w-5 h-5 text-gray-400" />
+            ) : (
+                <ChevronDown className="w-5 h-5 text-gray-400" />
             )}
-            <span className="text-gray-400">
-            {expanded ? '▼' : '▶'}
-          </span>
           </div>
-        </div>
+        </button>
 
+        {/* === EXPANDED CONTENT === */}
         {expanded && (
-            <div>
-              {/* Rating Rationale */}
-              {analysis.ratingRationale && analysis.ratingRationale.length > 0 && (
-                  <div className="mb-4">
-                    <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">
-                      Rating Rationale
-                    </h4>
-                    <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-3 border border-blue-200 dark:border-blue-800">
-                      <ul className="space-y-1">
-                        {analysis.ratingRationale.map((reason, index) => (
-                            <li key={index} className="text-sm text-blue-900 dark:text-blue-200">
-                              {reason.startsWith('•') ? reason : `• ${reason}`}
-                            </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-              )}
+            <div className="px-6 pb-6 space-y-6">
+              <div className="border-t border-gray-200 dark:border-gray-700" />
 
-              {/* Evidence */}
-              {analysis.evidence && analysis.evidence.length > 0 && (
-                  <div className="mb-4">
-                    <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">
-                      Evidence Summary
-                    </h4>
-                    <div className="bg-green-50 dark:bg-green-900/20 rounded-lg p-3 border border-green-200 dark:border-green-800">
-                      <ul className="space-y-1">
-                        {analysis.evidence.map((item, index) => (
-                            <li key={index} className="text-sm text-green-900 dark:text-green-200">
-                              ✓ {item}
-                            </li>
-                        ))}
-                      </ul>
+              {/* Section 1: Evidence Summary (4-box grid) */}
+              <div>
+                <h4 className="font-medium text-gray-900 dark:text-white mb-3 text-center">
+                  Evidence Summary
+                </h4>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                  <div className="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg text-center">
+                    <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+                      {totalLogs}
                     </div>
+                    <div className="text-xs text-blue-700 dark:text-blue-300">Total Logs</div>
                   </div>
-              )}
 
-              {/* Symptom Metrics */}
-              {analysis.metrics?.symptomCounts && (
-                  <div className="mb-4">
-                    <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">
-                      Symptom Breakdown
-                    </h4>
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                      {analysis.metrics.symptomCounts.fever > 0 && (
-                          <div className="bg-red-50 dark:bg-red-900/20 p-3 rounded-lg">
-                            <p className="text-xs text-gray-600 dark:text-gray-400">Fever Episodes</p>
-                            <p className="text-2xl font-bold text-red-700 dark:text-red-300">
-                              {analysis.metrics.symptomCounts.fever}
-                            </p>
-                          </div>
-                      )}
-                      {analysis.metrics.symptomCounts.chills > 0 && (
-                          <div className="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg">
-                            <p className="text-xs text-gray-600 dark:text-gray-400">Chills</p>
-                            <p className="text-2xl font-bold text-blue-700 dark:text-blue-300">
-                              {analysis.metrics.symptomCounts.chills}
-                            </p>
-                          </div>
-                      )}
-                      {analysis.metrics.symptomCounts.sweats > 0 && (
-                          <div className="bg-indigo-50 dark:bg-indigo-900/20 p-3 rounded-lg">
-                            <p className="text-xs text-gray-600 dark:text-gray-400">Night Sweats</p>
-                            <p className="text-2xl font-bold text-indigo-700 dark:text-indigo-300">
-                              {analysis.metrics.symptomCounts.sweats}
-                            </p>
-                          </div>
-                      )}
-                      {analysis.metrics.relapseCount > 0 && (
-                          <div className="bg-orange-50 dark:bg-orange-900/20 p-3 rounded-lg border-2 border-orange-300">
-                            <p className="text-xs text-gray-600 dark:text-gray-400">Relapses</p>
-                            <p className="text-2xl font-bold text-orange-700 dark:text-orange-300">
-                              {analysis.metrics.relapseCount}
-                            </p>
-                          </div>
-                      )}
-                      {analysis.metrics.symptomCounts.jaundice > 0 && (
-                          <div className="bg-red-50 dark:bg-red-900/20 p-3 rounded-lg border-2 border-red-300">
-                            <p className="text-xs text-gray-600 dark:text-gray-400">Jaundice</p>
-                            <p className="text-2xl font-bold text-red-700 dark:text-red-300">
-                              {analysis.metrics.symptomCounts.jaundice}
-                            </p>
-                          </div>
-                      )}
+                  <div className={`p-3 rounded-lg text-center ${
+                      metrics?.symptomCounts?.fever > 0
+                          ? 'bg-red-50 dark:bg-red-900/20'
+                          : 'bg-gray-50 dark:bg-gray-700/30'
+                  }`}>
+                    <div className={`text-2xl font-bold ${
+                        metrics?.symptomCounts?.fever > 0
+                            ? 'text-red-600 dark:text-red-400'
+                            : 'text-gray-400 dark:text-gray-500'
+                    }`}>
+                      {metrics?.symptomCounts?.fever || 0}
                     </div>
+                    <div className="text-xs text-gray-600 dark:text-gray-400">Fever Episodes</div>
                   </div>
-              )}
 
-              {/* Gaps */}
-              {analysis.gaps && analysis.gaps.length > 0 && (
+                  <div className={`p-3 rounded-lg text-center ${
+                      metrics?.symptomCounts?.chills > 0
+                          ? 'bg-cyan-50 dark:bg-cyan-900/20'
+                          : 'bg-gray-50 dark:bg-gray-700/30'
+                  }`}>
+                    <div className={`text-2xl font-bold ${
+                        metrics?.symptomCounts?.chills > 0
+                            ? 'text-cyan-600 dark:text-cyan-400'
+                            : 'text-gray-400 dark:text-gray-500'
+                    }`}>
+                      {metrics?.symptomCounts?.chills || 0}
+                    </div>
+                    <div className="text-xs text-gray-600 dark:text-gray-400">Chills/Sweats</div>
+                  </div>
+
+                  <div className={`p-3 rounded-lg text-center ${
+                      metrics?.relapseCount > 0
+                          ? 'bg-orange-50 dark:bg-orange-900/20'
+                          : 'bg-gray-50 dark:bg-gray-700/30'
+                  }`}>
+                    <div className={`text-2xl font-bold ${
+                        metrics?.relapseCount > 0
+                            ? 'text-orange-600 dark:text-orange-400'
+                            : 'text-gray-400 dark:text-gray-500'
+                    }`}>
+                      {metrics?.relapseCount || 0}
+                    </div>
+                    <div className="text-xs text-gray-600 dark:text-gray-400">Relapses</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Section 2: Analysis Rationale */}
+              {ratingRationale && ratingRationale.length > 0 && (
                   <div>
-                    <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">
+                    <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-center">
+                      Analysis Rationale
+                    </h4>
+                    <div className="bg-gray-50 dark:bg-gray-700/30 rounded-lg p-3 space-y-2">
+                      {ratingRationale.map((item, idx) => (
+                          <div key={idx} className="flex items-start gap-2">
+                            <span className="text-blue-600 dark:text-blue-400 mt-0.5">◆</span>
+                            <span className="text-sm text-gray-700 dark:text-gray-300">{item}</span>
+                          </div>
+                      ))}
+                    </div>
+                  </div>
+              )}
+
+              {/* Section 3: VA Rating Schedule */}
+              <div>
+                <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-center">
+                  VA Rating Schedule
+                </h4>
+                <div className="space-y-2">
+                  {criteria.ratings.map(rating => {
+                    const isSupported = isRatingSupported(rating.percent);
+                    return (
+                        <div
+                            key={rating.percent}
+                            className={`p-3 rounded-lg border ${isSupported ? 'border-2' : ''} ${getRatingRowColor(rating.percent, isSupported)}`}
+                        >
+                          <div className="flex items-center gap-3">
+                            <div className={`w-14 text-center font-bold ${isSupported ? 'text-gray-900 dark:text-white' : 'text-gray-500 dark:text-gray-400'}`}>
+                              {rating.percent}%
+                            </div>
+                            <div className={`flex-1 text-sm ${isSupported ? 'text-gray-900 dark:text-white' : 'text-gray-500 dark:text-gray-400'}`}>
+                              {rating.summary}
+                            </div>
+                            {isSupported && (
+                                <span className="text-green-600 dark:text-green-400">✓</span>
+                            )}
+                          </div>
+                        </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Section 4: Documentation Gaps */}
+              {gaps && gaps.length > 0 && (
+                  <div>
+                    <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-center">
                       Documentation Gaps
                     </h4>
-                    <div className="bg-amber-50 dark:bg-amber-900/20 rounded-lg p-3 border border-amber-200 dark:border-amber-800">
-                      <ul className="space-y-1">
-                        {analysis.gaps.map((gap, index) => (
-                            <li key={index} className="text-sm text-amber-900 dark:text-amber-200">
-                              ⚠️ {gap}
-                            </li>
-                        ))}
-                      </ul>
+                    <div className="bg-amber-50 dark:bg-amber-900/20 rounded-lg p-3 space-y-2">
+                      {gaps.map((gap, idx) => (
+                          <div key={idx} className="flex items-start gap-2">
+                            <span className="text-amber-600 dark:text-amber-400 mt-0.5">⚠</span>
+                            <span className="text-sm text-gray-700 dark:text-gray-300">{gap}</span>
+                          </div>
+                      ))}
                     </div>
                   </div>
               )}
-            </div>
-        )}
 
-        {expanded && (
-            <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
-              <p className="text-xs text-gray-600 dark:text-gray-400">
-                Based on 38 CFR 4.88b, Diagnostic Code 6304 - Malaria. This analysis is for documentation purposes only. The VA makes all final rating determinations.
-              </p>
+              {/* Section 5: Important Information */}
+              <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-200 dark:border-blue-800">
+                <h4 className="font-semibold text-blue-900 dark:text-blue-200 mb-2 flex items-center gap-2">
+                  <span>ℹ️</span>
+                  Important Information
+                </h4>
+                <ul className="space-y-1">
+                  <li className="text-sm text-blue-800 dark:text-blue-300 flex items-start gap-2">
+                    <span className="text-blue-500 mt-0.5">•</span>
+                    <span>Document all fever episodes, chills, and sweating patterns</span>
+                  </li>
+                  <li className="text-sm text-blue-800 dark:text-blue-300 flex items-start gap-2">
+                    <span className="text-blue-500 mt-0.5">•</span>
+                    <span>Track any relapses or recurrences of malaria symptoms</span>
+                  </li>
+                  <li className="text-sm text-blue-800 dark:text-blue-300 flex items-start gap-2">
+                    <span className="text-blue-500 mt-0.5">•</span>
+                    <span>Record liver and spleen involvement if present</span>
+                  </li>
+                </ul>
+              </div>
+
+              {/* Section 6: Disclaimer */}
+              <div className="bg-gray-100 dark:bg-gray-700/50 rounded-lg p-3 text-xs text-gray-600 dark:text-gray-400">
+                <strong>Important:</strong> Based on 38 CFR 4.88b, Diagnostic Code 6304 - Malaria.
+                This analysis is for documentation purposes only. The VA makes all final rating determinations.
+              </div>
             </div>
         )}
       </div>

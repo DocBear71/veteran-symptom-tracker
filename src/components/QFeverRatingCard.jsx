@@ -1,190 +1,141 @@
-import React from 'react';
+import { ChevronDown, ChevronUp } from 'lucide-react';
+import { Q_FEVER_CRITERIA } from '../utils/ratingCriteria';
 
 export default function QFeverRatingCard({ analysis, expanded, onToggle }) {
-  if (!analysis.hasData) {
-    return null;
-  }
+  if (!analysis || !analysis.hasData) return null;
 
-  const getRatingColor = (rating) => {
-    if (rating >= 70) return 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300';
-    if (rating >= 50) return 'bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-300';
-    if (rating >= 30) return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300';
-    if (rating >= 10) return 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300';
-    return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300';
+  const { supportedRating, ratingRationale, evidence, gaps, metrics } = analysis;
+  const criteria = Q_FEVER_CRITERIA;
+
+  const isRatingSupported = (ratingPercent) => {
+    if (supportedRating === null || supportedRating === undefined) return false;
+    if (typeof supportedRating === 'number') return ratingPercent === supportedRating;
+    if (typeof supportedRating === 'string') {
+      if (supportedRating.includes('-')) {
+        const [low, high] = supportedRating.split('-').map(Number);
+        return ratingPercent >= low && ratingPercent <= high;
+      }
+      return ratingPercent === parseInt(supportedRating, 10);
+    }
+    return false;
+  };
+
+  // Standardized color scheme across all rating cards
+  const getRatingRowColor = (percent, isSupported) => {
+    if (!isSupported) return 'bg-gray-50 dark:bg-gray-700/30 border-gray-200 dark:border-gray-600';
+    if (percent >= 100) return 'bg-red-100 dark:bg-red-900/30 border-red-300 dark:border-red-700';
+    if (percent >= 70) return 'bg-orange-100 dark:bg-orange-900/30 border-orange-300 dark:border-orange-700';
+    if (percent >= 50) return 'bg-amber-100 dark:bg-amber-900/30 border-amber-300 dark:border-amber-700';
+    if (percent >= 30) return 'bg-yellow-100 dark:bg-yellow-900/30 border-yellow-300 dark:border-yellow-700';
+    if (percent >= 10) return 'bg-green-100 dark:bg-green-900/30 border-green-300 dark:border-green-700';
+    return 'bg-gray-100 dark:bg-gray-700/30 border-gray-300 dark:border-gray-600';
   };
 
   return (
-      <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6 shadow-sm">
-        <div
-            className="flex items-center justify-between mb-4 cursor-pointer"
-            onClick={onToggle}
-        >
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden border-l-4 border-emerald-500">
+        <button onClick={onToggle} className="w-full px-6 py-4 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
           <div className="flex items-center gap-3">
-            <span className="text-3xl">🐐</span>
-            <div>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                {analysis.condition}
-              </h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
-                Diagnostic Code {analysis.diagnosticCode}
-              </p>
+            <span className="text-2xl">🦠</span>
+            <div className="text-left">
+              <h3 className="font-semibold text-lg text-gray-900 dark:text-white">Q Fever</h3>
+              <p className="text-sm text-gray-600 dark:text-gray-400">DC 6332 - 38 CFR 4.88b</p>
             </div>
           </div>
+          <div className="flex items-center gap-4">
+            <div className="text-right">
+              <div className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">{supportedRating !== null ? `${supportedRating}%` : 'N/A'}</div>
+              <div className="text-xs text-gray-500 dark:text-gray-400">Supported Rating</div>
+            </div>
+            {expanded ? <ChevronUp className="w-5 h-5 text-gray-400" /> : <ChevronDown className="w-5 h-5 text-gray-400" />}
+          </div>
+        </button>
 
-          <div className="flex items-center gap-3">
-            {analysis.supportedRating !== null && (
-                <div className={`px-4 py-2 rounded-lg font-bold text-lg ${getRatingColor(analysis.supportedRating)}`}>
-                  {analysis.supportedRating}%
+        {expanded && (
+            <div className="px-6 pb-6 space-y-6">
+              <div className="border-t border-gray-200 dark:border-gray-700" />
+
+              <div>
+                <h4 className="font-medium text-gray-900 dark:text-white mb-3 text-center">Evidence Summary</h4>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                  <div className="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg text-center">
+                    <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">{metrics?.totalLogs || 0}</div>
+                    <div className="text-xs text-blue-700 dark:text-blue-300">Total Logs</div>
+                  </div>
+                  <div className={`p-3 rounded-lg text-center ${metrics?.symptomCounts?.fever > 0 ? 'bg-red-50 dark:bg-red-900/20' : 'bg-gray-50 dark:bg-gray-700/30'}`}>
+                    <div className={`text-2xl font-bold ${metrics?.symptomCounts?.fever > 0 ? 'text-red-600 dark:text-red-400' : 'text-gray-400'}`}>{metrics?.symptomCounts?.fever || 0}</div>
+                    <div className="text-xs text-gray-600 dark:text-gray-400">Fever</div>
+                  </div>
+                  <div className={`p-3 rounded-lg text-center ${metrics?.symptomCounts?.fatigue > 0 ? 'bg-purple-50 dark:bg-purple-900/20' : 'bg-gray-50 dark:bg-gray-700/30'}`}>
+                    <div className={`text-2xl font-bold ${metrics?.symptomCounts?.fatigue > 0 ? 'text-purple-600 dark:text-purple-400' : 'text-gray-400'}`}>{metrics?.symptomCounts?.fatigue || 0}</div>
+                    <div className="text-xs text-gray-600 dark:text-gray-400">Fatigue</div>
+                  </div>
+                  <div className={`p-3 rounded-lg text-center ${metrics?.symptomCounts?.headache > 0 ? 'bg-orange-50 dark:bg-orange-900/20' : 'bg-gray-50 dark:bg-gray-700/30'}`}>
+                    <div className={`text-2xl font-bold ${metrics?.symptomCounts?.headache > 0 ? 'text-orange-600 dark:text-orange-400' : 'text-gray-400'}`}>{metrics?.symptomCounts?.headache || 0}</div>
+                    <div className="text-xs text-gray-600 dark:text-gray-400">Headache</div>
+                  </div>
                 </div>
-            )}
-            <span className="text-gray-400">
-            {expanded ? '▼' : '▶'}
-          </span>
-          </div>
-        </div>
+              </div>
 
-        {expanded && (
-            <div>
-              {/* Rating Rationale */}
-              {analysis.ratingRationale && analysis.ratingRationale.length > 0 && (
-                  <div className="mb-4">
-                    <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">
-                      Rating Rationale
-                    </h4>
-                    <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-3 border border-blue-200 dark:border-blue-800">
-                      <ul className="space-y-1">
-                        {analysis.ratingRationale.map((reason, index) => (
-                            <li key={index} className="text-sm text-blue-900 dark:text-blue-200">
-                              {reason.startsWith('•') ? reason : `• ${reason}`}
-                            </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-              )}
-
-              {/* Evidence */}
-              {analysis.evidence && analysis.evidence.length > 0 && (
-                  <div className="mb-4">
-                    <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">
-                      Evidence Summary
-                    </h4>
-                    <div className="bg-green-50 dark:bg-green-900/20 rounded-lg p-3 border border-green-200 dark:border-green-800">
-                      <ul className="space-y-1">
-                        {analysis.evidence.map((item, index) => (
-                            <li key={index} className="text-sm text-green-900 dark:text-green-200">
-                              ✓ {item}
-                            </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-              )}
-
-              {/* Chronic Q Fever Alert */}
-              {(analysis.metrics?.chronicQFever || analysis.metrics?.endocarditis) && (
-                  <div className="mb-4">
-                    <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">
-                      Chronic Q Fever Status
-                    </h4>
-                    <div className="bg-red-50 dark:bg-red-900/20 rounded-lg p-3 border border-red-200 dark:border-red-800">
-                      <ul className="space-y-1">
-                        {analysis.metrics.endocarditis && (
-                            <li className="text-sm text-red-900 dark:text-red-200 font-semibold">
-                              ⚠️ Q Fever endocarditis - requires 18+ months of antibiotics
-                            </li>
-                        )}
-                        {analysis.metrics.chronicQFever && !analysis.metrics.endocarditis && (
-                            <li className="text-sm text-red-900 dark:text-red-200">
-                              ⚠️ Chronic Q fever ({analysis.metrics.monthsSinceInfection}+ months)
-                            </li>
-                        )}
-                        {analysis.metrics.fatigueSyndrome && (
-                            <li className="text-sm text-red-900 dark:text-red-200">
-                              Post-Q fever fatigue syndrome
-                            </li>
-                        )}
-                      </ul>
-                    </div>
-                  </div>
-              )}
-
-              {/* Symptom Metrics */}
-              {analysis.metrics?.symptomCounts && (
-                  <div className="mb-4">
-                    <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">
-                      Symptom Breakdown
-                    </h4>
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                      {analysis.metrics.symptomCounts.fever > 0 && (
-                          <div className="bg-red-50 dark:bg-red-900/20 p-3 rounded-lg">
-                            <p className="text-xs text-gray-600 dark:text-gray-400">Fever</p>
-                            <p className="text-2xl font-bold text-red-700 dark:text-red-300">
-                              {analysis.metrics.symptomCounts.fever}
-                            </p>
-                          </div>
-                      )}
-                      {analysis.metrics.symptomCounts.fatigue > 0 && (
-                          <div className="bg-purple-50 dark:bg-purple-900/20 p-3 rounded-lg">
-                            <p className="text-xs text-gray-600 dark:text-gray-400">Fatigue</p>
-                            <p className="text-2xl font-bold text-purple-700 dark:text-purple-300">
-                              {analysis.metrics.symptomCounts.fatigue}
-                            </p>
-                          </div>
-                      )}
-                      {analysis.metrics.symptomCounts.headache > 0 && (
-                          <div className="bg-indigo-50 dark:bg-indigo-900/20 p-3 rounded-lg">
-                            <p className="text-xs text-gray-600 dark:text-gray-400">Headache</p>
-                            <p className="text-2xl font-bold text-indigo-700 dark:text-indigo-300">
-                              {analysis.metrics.symptomCounts.headache}
-                            </p>
-                          </div>
-                      )}
-                      {analysis.metrics.symptomCounts.nightSweats > 0 && (
-                          <div className="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg">
-                            <p className="text-xs text-gray-600 dark:text-gray-400">Night Sweats</p>
-                            <p className="text-2xl font-bold text-blue-700 dark:text-blue-300">
-                              {analysis.metrics.symptomCounts.nightSweats}
-                            </p>
-                          </div>
-                      )}
-                      {analysis.metrics.monthsSinceInfection > 0 && (
-                          <div className="bg-orange-50 dark:bg-orange-900/20 p-3 rounded-lg border-2 border-orange-300">
-                            <p className="text-xs text-gray-600 dark:text-gray-400">Months Since Infection</p>
-                            <p className="text-2xl font-bold text-orange-700 dark:text-orange-300">
-                              {analysis.metrics.monthsSinceInfection}
-                            </p>
-                          </div>
-                      )}
-                    </div>
-                  </div>
-              )}
-
-              {/* Gaps */}
-              {analysis.gaps && analysis.gaps.length > 0 && (
+              {ratingRationale && ratingRationale.length > 0 && (
                   <div>
-                    <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">
-                      Documentation Gaps
-                    </h4>
-                    <div className="bg-amber-50 dark:bg-amber-900/20 rounded-lg p-3 border border-amber-200 dark:border-amber-800">
-                      <ul className="space-y-1">
-                        {analysis.gaps.map((gap, index) => (
-                            <li key={index} className="text-sm text-amber-900 dark:text-amber-200">
-                              ⚠️ {gap}
-                            </li>
-                        ))}
-                      </ul>
+                    <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-center">Analysis Rationale</h4>
+                    <div className="bg-gray-50 dark:bg-gray-700/30 rounded-lg p-3 space-y-2">
+                      {ratingRationale.map((item, idx) => (
+                          <div key={idx} className="flex items-start gap-2">
+                            <span className="text-blue-600 dark:text-blue-400 mt-0.5">◆</span>
+                            <span className="text-sm text-gray-700 dark:text-gray-300">{item}</span>
+                          </div>
+                      ))}
                     </div>
                   </div>
               )}
-            </div>
-        )}
 
-        {expanded && (
-            <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
-              <p className="text-xs text-gray-600 dark:text-gray-400">
-                Based on 38 CFR 4.88b, Diagnostic Code 6331 - Q Fever. Common in military deployments to Iraq/Afghanistan. This analysis is for documentation purposes only. The VA makes all final rating determinations.
-              </p>
+              <div>
+                <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-center">VA Rating Schedule</h4>
+                <div className="space-y-2">
+                  {criteria.ratings.map(rating => {
+                    const isSupported = isRatingSupported(rating.percent);
+                    return (
+                        <div key={rating.percent} className={`p-3 rounded-lg border ${isSupported ? 'border-2' : ''} ${getRatingRowColor(rating.percent, isSupported)}`}>
+                          <div className="flex items-center gap-3">
+                            <div className={`w-14 text-center font-bold ${isSupported ? 'text-gray-900 dark:text-white' : 'text-gray-500 dark:text-gray-400'}`}>{rating.percent}%</div>
+                            <div className={`flex-1 text-sm ${isSupported ? 'text-gray-900 dark:text-white' : 'text-gray-500 dark:text-gray-400'}`}>{rating.summary}</div>
+                            {isSupported && <span className="text-green-600 dark:text-green-400">✓</span>}
+                          </div>
+                        </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {gaps && gaps.length > 0 && (
+                  <div>
+                    <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-center">Documentation Gaps</h4>
+                    <div className="bg-amber-50 dark:bg-amber-900/20 rounded-lg p-3 space-y-2">
+                      {gaps.map((gap, idx) => (
+                          <div key={idx} className="flex items-start gap-2">
+                            <span className="text-amber-600 dark:text-amber-400 mt-0.5">⚠</span>
+                            <span className="text-sm text-gray-700 dark:text-gray-300">{gap}</span>
+                          </div>
+                      ))}
+                    </div>
+                  </div>
+              )}
+
+              <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-200 dark:border-blue-800">
+                <h4 className="font-semibold text-blue-900 dark:text-blue-200 mb-2 flex items-center gap-2">
+                  <span>ℹ️</span>Important Information
+                </h4>
+                <ul className="space-y-1">
+                  <li className="text-sm text-blue-800 dark:text-blue-300 flex items-start gap-2"><span className="text-blue-500 mt-0.5">•</span><span>Document high fever, severe headache, and fatigue episodes</span></li>
+                  <li className="text-sm text-blue-800 dark:text-blue-300 flex items-start gap-2"><span className="text-blue-500 mt-0.5">•</span><span>Track any cardiac or hepatic complications</span></li>
+                  <li className="text-sm text-blue-800 dark:text-blue-300 flex items-start gap-2"><span className="text-blue-500 mt-0.5">•</span><span>Associated with Gulf War deployments</span></li>
+                </ul>
+              </div>
+
+              <div className="bg-gray-100 dark:bg-gray-700/50 rounded-lg p-3 text-xs text-gray-600 dark:text-gray-400">
+                <strong>Important:</strong> Based on 38 CFR 4.88b, Diagnostic Code 6332 - Q Fever. This analysis is for documentation purposes only.
+              </div>
             </div>
         )}
       </div>

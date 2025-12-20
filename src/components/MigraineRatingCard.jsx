@@ -1,25 +1,18 @@
+import { useState } from 'react';
 import { ChevronDown, ChevronUp } from 'lucide-react';
-import { EPILEPSY_MAJOR_CRITERIA, EPILEPSY_MINOR_CRITERIA } from '../utils/ratingCriteria';
+import { MIGRAINE_CRITERIA } from '../utils/ratingCriteria';
 
 /**
- * Seizure/Epilepsy Rating Card Component - Gold Standard Version
- * DC 8910 - Major (Grand Mal) Seizures - 38 CFR 4.124a
- * DC 8911 - Minor (Petit Mal) Seizures - 38 CFR 4.124a
- *
- * Handles both seizure types with appropriate criteria display
+ * Migraine Rating Card Component - Gold Standard Version
+ * DC 8100 - 38 CFR 4.124a
  */
-export default function SeizureRatingCard({ analysis, expanded, onToggle }) {
+export default function MigraineRatingCard({ analysis, expanded, onToggle }) {
+  const [showDefinitions, setShowDefinitions] = useState(false);
+
   if (!analysis || !analysis.hasData) return null;
 
-  const { supportedRating, rationale, evidenceGaps, metrics } = analysis;
-
-  // Determine which criteria to use based on seizure type or show both
-  const seizureType = metrics?.seizureType || 'major'; // 'major', 'minor', or 'both'
-  const majorCriteria = EPILEPSY_MAJOR_CRITERIA;
-  const minorCriteria = EPILEPSY_MINOR_CRITERIA;
-
-  // Use appropriate criteria based on type
-  const primaryCriteria = seizureType === 'minor' ? minorCriteria : majorCriteria;
+  const { supportedRating, rationale, evidenceGaps, metrics, evidence } = analysis;
+  const criteria = MIGRAINE_CRITERIA;
 
   const isRatingSupported = (percent) => supportedRating === percent;
 
@@ -34,40 +27,32 @@ export default function SeizureRatingCard({ analysis, expanded, onToggle }) {
     return 'bg-gray-100 dark:bg-gray-700/30 border-gray-300 dark:border-gray-600';
   };
 
-  // Determine display title based on seizure type
-  const getConditionTitle = () => {
-    if (seizureType === 'minor') return 'Epilepsy - Minor Seizures (Petit Mal)';
-    if (seizureType === 'both') return 'Epilepsy - Major & Minor Seizures';
-    return 'Epilepsy - Major Seizures (Grand Mal)';
-  };
-
-  const getDiagnosticCode = () => {
-    if (seizureType === 'minor') return '8911';
-    if (seizureType === 'both') return '8910/8911';
-    return '8910';
-  };
+  // Extract metrics from either new format or legacy format
+  const totalMigraines = metrics?.totalMigraines || evidence?.totalMigraines || 0;
+  const prostratingCount = metrics?.prostratingCount || evidence?.prostratingCount || 0;
+  const prolongedCount = metrics?.prolongedCount || evidence?.prolongedCount || 0;
+  const monthlyRate = metrics?.monthlyRate || evidence?.monthlyRates?.prostrating || 0;
 
   return (
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden border-l-4 border-indigo-500">
-        {/* Collapsed Header */}
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden border-l-4 border-purple-500">
         <button
             onClick={onToggle}
             className="w-full px-6 py-4 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
         >
           <div className="flex items-center gap-3">
-            <span className="text-2xl">⚡</span>
+            <span className="text-2xl">🤕</span>
             <div className="text-left">
               <h3 className="font-semibold text-lg text-gray-900 dark:text-white">
-                {getConditionTitle()}
+                Migraine Headaches
               </h3>
               <p className="text-sm text-gray-600 dark:text-gray-400">
-                DC {getDiagnosticCode()} - 38 CFR 4.124a
+                DC {criteria.diagnosticCode} - {criteria.cfrReference}
               </p>
             </div>
           </div>
           <div className="flex items-center gap-4">
             <div className="text-right">
-              <div className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">
+              <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">
                 {supportedRating !== null ? `${supportedRating}%` : 'N/A'}
               </div>
               <div className="text-xs text-gray-500 dark:text-gray-400">Supported Rating</div>
@@ -80,71 +65,51 @@ export default function SeizureRatingCard({ analysis, expanded, onToggle }) {
           </div>
         </button>
 
-        {/* Expanded Content */}
         {expanded && (
             <div className="px-6 pb-6 space-y-6">
               <div className="border-t border-gray-200 dark:border-gray-700" />
 
-              {/* Evidence Summary - 4 Box Grid */}
+              {/* Evidence Summary */}
               <div>
                 <h4 className="font-medium text-gray-900 dark:text-white mb-3 text-center">
                   Evidence Summary
                 </h4>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                  {/* Total Logs */}
                   <div className="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg text-center">
                     <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-                      {metrics?.totalLogs || 0}
+                      {totalMigraines}
                     </div>
-                    <div className="text-xs text-blue-700 dark:text-blue-300">Total Logs</div>
+                    <div className="text-xs text-blue-700 dark:text-blue-300">Total Migraines</div>
                   </div>
-
-                  {/* Major Seizures */}
                   <div className={`p-3 rounded-lg text-center ${
-                      metrics?.majorSeizures > 0
-                          ? 'bg-red-50 dark:bg-red-900/20'
-                          : 'bg-gray-50 dark:bg-gray-700/30'
+                      prostratingCount > 0 ? 'bg-red-50 dark:bg-red-900/20' : 'bg-gray-50 dark:bg-gray-700/30'
                   }`}>
                     <div className={`text-2xl font-bold ${
-                        metrics?.majorSeizures > 0
-                            ? 'text-red-600 dark:text-red-400'
-                            : 'text-gray-400'
+                        prostratingCount > 0 ? 'text-red-600 dark:text-red-400' : 'text-gray-400'
                     }`}>
-                      {metrics?.majorSeizures || 0}
+                      {prostratingCount}
                     </div>
-                    <div className="text-xs text-gray-600 dark:text-gray-400">Major (Grand Mal)</div>
+                    <div className="text-xs text-gray-600 dark:text-gray-400">Prostrating</div>
                   </div>
-
-                  {/* Minor Seizures */}
                   <div className={`p-3 rounded-lg text-center ${
-                      metrics?.minorSeizures > 0
-                          ? 'bg-purple-50 dark:bg-purple-900/20'
-                          : 'bg-gray-50 dark:bg-gray-700/30'
+                      prolongedCount > 0 ? 'bg-purple-50 dark:bg-purple-900/20' : 'bg-gray-50 dark:bg-gray-700/30'
                   }`}>
                     <div className={`text-2xl font-bold ${
-                        metrics?.minorSeizures > 0
-                            ? 'text-purple-600 dark:text-purple-400'
-                            : 'text-gray-400'
+                        prolongedCount > 0 ? 'text-purple-600 dark:text-purple-400' : 'text-gray-400'
                     }`}>
-                      {metrics?.minorSeizures || 0}
+                      {prolongedCount}
                     </div>
-                    <div className="text-xs text-gray-600 dark:text-gray-400">Minor (Petit Mal)</div>
+                    <div className="text-xs text-gray-600 dark:text-gray-400">Prolonged (4+ hrs)</div>
                   </div>
-
-                  {/* On Medication */}
                   <div className={`p-3 rounded-lg text-center ${
-                      metrics?.onMedication
-                          ? 'bg-orange-50 dark:bg-orange-900/20'
-                          : 'bg-gray-50 dark:bg-gray-700/30'
+                      monthlyRate > 0 ? 'bg-orange-50 dark:bg-orange-900/20' : 'bg-gray-50 dark:bg-gray-700/30'
                   }`}>
-                    <div className={`text-2xl font-bold ${
-                        metrics?.onMedication
-                            ? 'text-orange-600 dark:text-orange-400'
-                            : 'text-gray-400'
+                    <div className={`text-xl font-bold ${
+                        monthlyRate > 0 ? 'text-orange-600 dark:text-orange-400' : 'text-gray-400'
                     }`}>
-                      {metrics?.onMedication ? '✓' : '—'}
+                      {monthlyRate}/mo
                     </div>
-                    <div className="text-xs text-gray-600 dark:text-gray-400">Anti-Seizure Rx</div>
+                    <div className="text-xs text-gray-600 dark:text-gray-400">Rate</div>
                   </div>
                 </div>
               </div>
@@ -166,51 +131,17 @@ export default function SeizureRatingCard({ analysis, expanded, onToggle }) {
                   </div>
               )}
 
-              {/* VA Rating Schedule - Major Seizures (DC 8910) */}
+              {/* VA Rating Schedule */}
               <div>
                 <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-center">
-                  VA Rating Schedule - Major Seizures (DC 8910)
+                  VA Rating Schedule
                 </h4>
                 <div className="space-y-2">
-                  {majorCriteria.ratings.map((rating) => {
-                    const isSupported = seizureType !== 'minor' && isRatingSupported(rating.percent);
+                  {criteria.ratings.map((rating) => {
+                    const isSupported = isRatingSupported(rating.percent);
                     return (
                         <div
-                            key={`major-${rating.percent}`}
-                            className={`p-3 rounded-lg border ${isSupported ? 'border-2' : ''} ${getRatingRowColor(rating.percent, isSupported)}`}
-                        >
-                          <div className="flex items-center gap-3">
-                            <div className={`w-14 text-center font-bold ${
-                                isSupported ? 'text-gray-900 dark:text-white' : 'text-gray-500 dark:text-gray-400'
-                            }`}>
-                              {rating.percent}%
-                            </div>
-                            <div className={`flex-1 text-sm ${
-                                isSupported ? 'text-gray-900 dark:text-white' : 'text-gray-500 dark:text-gray-400'
-                            }`}>
-                              {rating.summary}
-                            </div>
-                            {isSupported && (
-                                <span className="text-green-600 dark:text-green-400">✓</span>
-                            )}
-                          </div>
-                        </div>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* VA Rating Schedule - Minor Seizures (DC 8911) */}
-              <div>
-                <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-center">
-                  VA Rating Schedule - Minor Seizures (DC 8911)
-                </h4>
-                <div className="space-y-2">
-                  {minorCriteria.ratings.map((rating) => {
-                    const isSupported = seizureType === 'minor' && isRatingSupported(rating.percent);
-                    return (
-                        <div
-                            key={`minor-${rating.percent}`}
+                            key={rating.percent}
                             className={`p-3 rounded-lg border ${isSupported ? 'border-2' : ''} ${getRatingRowColor(rating.percent, isSupported)}`}
                         >
                           <div className="flex items-center gap-3">
@@ -251,6 +182,39 @@ export default function SeizureRatingCard({ analysis, expanded, onToggle }) {
                   </div>
               )}
 
+              {/* Definitions Toggle */}
+              <div>
+                <button
+                    onClick={() => setShowDefinitions(!showDefinitions)}
+                    className="text-sm text-blue-600 dark:text-blue-400 hover:underline"
+                >
+                  {showDefinitions ? 'Hide' : 'Show'} Key Term Definitions
+                </button>
+
+                {showDefinitions && (
+                    <div className="mt-3 space-y-3">
+                      <div className="bg-gray-50 dark:bg-gray-700/30 p-3 rounded-lg">
+                        <h5 className="font-medium text-gray-900 dark:text-white text-sm">Prostrating</h5>
+                        <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+                          A migraine that causes you to lie down and stop all activity. Renders you unable to perform normal daily activities.
+                        </p>
+                      </div>
+                      <div className="bg-gray-50 dark:bg-gray-700/30 p-3 rounded-lg">
+                        <h5 className="font-medium text-gray-900 dark:text-white text-sm">Prolonged Attack</h5>
+                        <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+                          A prostrating migraine lasting 4 hours or more despite treatment.
+                        </p>
+                      </div>
+                      <div className="bg-gray-50 dark:bg-gray-700/30 p-3 rounded-lg">
+                        <h5 className="font-medium text-gray-900 dark:text-white text-sm">Economic Inadaptability</h5>
+                        <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+                          Migraines severe enough to prevent you from maintaining substantially gainful employment.
+                        </p>
+                      </div>
+                    </div>
+                )}
+              </div>
+
               {/* Important Information */}
               <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-200 dark:border-blue-800">
                 <h4 className="font-semibold text-blue-900 dark:text-blue-200 mb-2 flex items-center gap-2">
@@ -260,27 +224,22 @@ export default function SeizureRatingCard({ analysis, expanded, onToggle }) {
                 <ul className="space-y-1">
                   <li className="text-sm text-blue-800 dark:text-blue-300 flex items-start gap-2">
                     <span className="text-blue-500 mt-0.5">•</span>
-                    <span><strong>Major seizure (DC 8910):</strong> Generalized tonic-clonic convulsion with unconsciousness</span>
+                    <span>Only prostrating migraines count toward VA rating</span>
                   </li>
                   <li className="text-sm text-blue-800 dark:text-blue-300 flex items-start gap-2">
                     <span className="text-blue-500 mt-0.5">•</span>
-                    <span><strong>Minor seizure (DC 8911):</strong> Brief interruption in consciousness (petit mal, myoclonic, akinetic)</span>
+                    <span>Document severity, duration, and frequency</span>
                   </li>
                   <li className="text-sm text-blue-800 dark:text-blue-300 flex items-start gap-2">
                     <span className="text-blue-500 mt-0.5">•</span>
-                    <span>Seizures must be witnessed or verified by a physician</span>
-                  </li>
-                  <li className="text-sm text-blue-800 dark:text-blue-300 flex items-start gap-2">
-                    <span className="text-blue-500 mt-0.5">•</span>
-                    <span>Minimum 10% rating when on continuous anti-seizure medication</span>
+                    <span>Note impact on work and daily activities</span>
                   </li>
                 </ul>
               </div>
 
               {/* Disclaimer */}
               <div className="bg-gray-100 dark:bg-gray-700/50 rounded-lg p-3 text-xs text-gray-600 dark:text-gray-400">
-                <strong>Important:</strong> Based on 38 CFR 4.124a, DC 8910 (Major Seizures) and DC 8911 (Minor Seizures).
-                Rating is based on seizure frequency over ordinary conditions of life. For documentation purposes only.
+                <strong>Important:</strong> Based on {criteria.cfrReference}. For documentation purposes only.
               </div>
             </div>
         )}

@@ -1,11 +1,17 @@
 import VoidingDysfunctionRatingCard from './VoidingDysfunctionRatingCard';
 
-export default function ProstateConditionsRatingCard({ analysis }) {
+/**
+ * Neurogenic Bladder Rating Card - Wrapper for VoidingDysfunctionRatingCard
+ * DC 7542 - Rated under Voiding Dysfunction criteria
+ */
+export default function NeurogenicBladderRatingCard({ analysis, expanded, onToggle }) {
   return (
       <VoidingDysfunctionRatingCard
           analysis={analysis}
-          conditionName="Prostate Conditions (BPH, Prostatitis)"
-          diagnosticCode="7527"
+          expanded={expanded}
+          onToggle={onToggle}
+          conditionName="Neurogenic Bladder"
+          diagnosticCode="7542"
       />
   );
 }
