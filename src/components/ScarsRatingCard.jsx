@@ -12,26 +12,28 @@ export default function ScarsRatingCard({ analysis, expanded, onToggle }) {
   const { supportedRating, ratingRationale, evidence, gaps, metrics } = analysis;
   const criteria = SCARS_CRITERIA;
 
+  // Normalize rating for comparison (handles string vs number)
   const normalizeRating = (rating) => {
+    if (rating === null || rating === undefined) return null;
     if (typeof rating === 'number') return rating;
-    if (typeof rating === 'string') return parseInt(rating.replace('%', ''), 10);
+    if (typeof rating === 'string') return parseInt(rating, 10);
     return null;
   };
 
-  const currentRating = normalizeRating(supportedRating);
+  const numericRating = normalizeRating(supportedRating);
+  const isRatingSupported = (p) => numericRating === p;
 
-  const isRatingSupported = (levelRating) => {
-    return currentRating === normalizeRating(levelRating);
-  };
-
-  const getRatingRowColor = (levelRating, isSupported) => {
-    const percent = normalizeRating(levelRating);
+  // Standardized color scheme across all rating cards
+  // 0% gets a distinct "supported but minimal" style visible in both light/dark modes
+  const getRatingRowColor = (percent, isSupported) => {
     if (!isSupported) return 'bg-gray-50 dark:bg-gray-700/30 border-gray-200 dark:border-gray-600';
-    if (percent >= 80) return 'bg-red-100 dark:bg-red-900/30 border-red-300 dark:border-red-700';
-    if (percent >= 50) return 'bg-orange-100 dark:bg-orange-900/30 border-orange-300 dark:border-orange-700';
-    if (percent >= 30) return 'bg-amber-100 dark:bg-amber-900/30 border-amber-300 dark:border-amber-700';
-    if (percent >= 10) return 'bg-yellow-100 dark:bg-yellow-900/30 border-yellow-300 dark:border-yellow-700';
-    return 'bg-green-100 dark:bg-green-900/30 border-green-300 dark:border-green-700';
+    if (percent >= 100) return 'bg-red-100 dark:bg-red-900/30 border-red-300 dark:border-red-700';
+    if (percent >= 70) return 'bg-orange-100 dark:bg-orange-900/30 border-orange-300 dark:border-orange-700';
+    if (percent >= 50) return 'bg-amber-100 dark:bg-amber-900/30 border-amber-300 dark:border-amber-700';
+    if (percent >= 30) return 'bg-yellow-100 dark:bg-yellow-900/30 border-yellow-300 dark:border-yellow-700';
+    if (percent >= 10) return 'bg-green-100 dark:bg-green-900/30 border-green-300 dark:border-green-700';
+    // 0-9%: Blue-gray that's visible in both light and dark modes
+    return 'bg-blue-50 dark:bg-blue-900/30 border-blue-200 dark:border-blue-700';
   };
 
   return (

@@ -18,24 +18,18 @@ export default function GenericRatingCard({ analysis, expanded, onToggle, icon =
   const displayRationale = rationale || ratingRationale || [];
   const displayGaps = evidenceGaps || gaps || [];
 
-  // Normalize supportedRating for comparison
-  const normalizeRating = (rating) => {
-    if (rating === null || rating === undefined) return null;
-    if (typeof rating === 'number') return rating;
-    if (typeof rating === 'string') {
-      // Handle special strings
-      if (rating.includes('Requires') || rating.includes('Not Ratable') || rating.includes('Clinical')) return null;
-      // Handle ranges like "0-10"
-      if (rating.includes('-')) {
-        const parts = rating.split('-');
-        return parseInt(parts[1], 10); // Use higher end for display
+  const isRatingSupported = (ratingPercent) => {
+    if (supportedRating === null || supportedRating === undefined) return false;
+    if (typeof supportedRating === 'number') return ratingPercent === supportedRating;
+    if (typeof supportedRating === 'string') {
+      if (supportedRating.includes('-')) {
+        const [low, high] = supportedRating.split('-').map(Number);
+        return ratingPercent >= low && ratingPercent <= high;
       }
-      return parseInt(rating, 10) || null;
+      return ratingPercent === parseInt(supportedRating, 10);
     }
-    return null;
+    return false;
   };
-
-  const numericRating = normalizeRating(supportedRating);
 
   const isRatingSupported = (percent) => {
     if (numericRating === null) return false;
@@ -48,6 +42,7 @@ export default function GenericRatingCard({ analysis, expanded, onToggle, icon =
   };
 
   // Standardized color scheme across all rating cards
+  // 0% gets a distinct "supported but minimal" style visible in both light/dark modes
   const getRatingRowColor = (percent, isSupported) => {
     if (!isSupported) return 'bg-gray-50 dark:bg-gray-700/30 border-gray-200 dark:border-gray-600';
     if (percent >= 100) return 'bg-red-100 dark:bg-red-900/30 border-red-300 dark:border-red-700';
@@ -55,7 +50,8 @@ export default function GenericRatingCard({ analysis, expanded, onToggle, icon =
     if (percent >= 50) return 'bg-amber-100 dark:bg-amber-900/30 border-amber-300 dark:border-amber-700';
     if (percent >= 30) return 'bg-yellow-100 dark:bg-yellow-900/30 border-yellow-300 dark:border-yellow-700';
     if (percent >= 10) return 'bg-green-100 dark:bg-green-900/30 border-green-300 dark:border-green-700';
-    return 'bg-gray-100 dark:bg-gray-700/30 border-gray-300 dark:border-gray-600';
+    // 0-9%: Blue-gray that's visible in both light and dark modes
+    return 'bg-blue-50 dark:bg-blue-900/30 border-blue-200 dark:border-blue-700';
   };
 
   // Format rating display

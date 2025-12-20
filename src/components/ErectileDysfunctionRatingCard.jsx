@@ -12,8 +12,18 @@ export default function ErectileDysfunctionRatingCard({ analysis, expanded, onTo
   const { supportedRating, rationale, evidenceGaps, metrics } = analysis;
   const criteria = ERECTILE_DYSFUNCTION_CRITERIA;
 
+  // Normalize rating for comparison
+  const normalizeRating = (rating) => {
+    if (rating === null || rating === undefined) return null;
+    if (typeof rating === 'number') return rating;
+    if (typeof rating === 'string') return parseInt(rating, 10);
+    return null;
+  };
+
+  const numericRating = normalizeRating(supportedRating);
+
   const isRatingSupported = (ratingPercent) => {
-    return supportedRating === ratingPercent || (ratingPercent === 0 && supportedRating !== null);
+    return numericRating === ratingPercent || (ratingPercent === 0 && numericRating !== null);
   };
 
   // Standardized color scheme across all rating cards
@@ -24,7 +34,7 @@ export default function ErectileDysfunctionRatingCard({ analysis, expanded, onTo
     if (percent >= 50) return 'bg-amber-100 dark:bg-amber-900/30 border-amber-300 dark:border-amber-700';
     if (percent >= 30) return 'bg-yellow-100 dark:bg-yellow-900/30 border-yellow-300 dark:border-yellow-700';
     if (percent >= 10) return 'bg-green-100 dark:bg-green-900/30 border-green-300 dark:border-green-700';
-    return 'bg-gray-100 dark:bg-gray-700/30 border-gray-300 dark:border-gray-600';
+    return 'bg-blue-50 dark:bg-blue-900/30 border-blue-200 dark:border-blue-700';
   };
 
   return (

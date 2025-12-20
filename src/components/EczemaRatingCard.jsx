@@ -12,29 +12,30 @@ export default function EczemaRatingCard({ analysis, expanded, onToggle }) {
   const { supportedRating, ratingRationale, evidence, gaps, metrics } = analysis;
   const criteria = ECZEMA_CRITERIA;
 
-  // Normalize rating for comparison (handle "60%" string format)
-  const normalizeRating = (rating) => {
-    if (typeof rating === 'number') return rating;
-    if (typeof rating === 'string') return parseInt(rating.replace('%', ''), 10);
-    return null;
+  const isRatingSupported = (ratingPercent) => {
+    if (supportedRating === null || supportedRating === undefined) return false;
+    if (typeof supportedRating === 'number') return ratingPercent === supportedRating;
+    if (typeof supportedRating === 'string') {
+      if (supportedRating.includes('-')) {
+        const [low, high] = supportedRating.split('-').map(Number);
+        return ratingPercent >= low && ratingPercent <= high;
+      }
+      return ratingPercent === parseInt(supportedRating, 10);
+    }
+    return false;
   };
 
-  const currentRating = normalizeRating(supportedRating);
-
-  // Helper: Check if rating is supported
-  const isRatingSupported = (levelRating) => {
-    const levelPercent = normalizeRating(levelRating);
-    return currentRating === levelPercent;
-  };
-
-  // Helper: Get rating row colors
-  const getRatingRowColor = (levelRating, isSupported) => {
-    const percent = normalizeRating(levelRating);
+  // Standardized color scheme across all rating cards
+  // 0% gets a distinct "supported but minimal" style visible in both light/dark modes
+  const getRatingRowColor = (percent, isSupported) => {
     if (!isSupported) return 'bg-gray-50 dark:bg-gray-700/30 border-gray-200 dark:border-gray-600';
-    if (percent >= 60) return 'bg-red-100 dark:bg-red-900/30 border-red-300 dark:border-red-700';
-    if (percent >= 30) return 'bg-orange-100 dark:bg-orange-900/30 border-orange-300 dark:border-orange-700';
-    if (percent >= 10) return 'bg-yellow-100 dark:bg-yellow-900/30 border-yellow-300 dark:border-yellow-700';
-    return 'bg-green-100 dark:bg-green-900/30 border-green-300 dark:border-green-700';
+    if (percent >= 100) return 'bg-red-100 dark:bg-red-900/30 border-red-300 dark:border-red-700';
+    if (percent >= 70) return 'bg-orange-100 dark:bg-orange-900/30 border-orange-300 dark:border-orange-700';
+    if (percent >= 50) return 'bg-amber-100 dark:bg-amber-900/30 border-amber-300 dark:border-amber-700';
+    if (percent >= 30) return 'bg-yellow-100 dark:bg-yellow-900/30 border-yellow-300 dark:border-yellow-700';
+    if (percent >= 10) return 'bg-green-100 dark:bg-green-900/30 border-green-300 dark:border-green-700';
+    // 0-9%: Blue-gray that's visible in both light and dark modes
+    return 'bg-blue-50 dark:bg-blue-900/30 border-blue-200 dark:border-blue-700';
   };
 
   const totalLogs = metrics?.totalLogs || 0;
