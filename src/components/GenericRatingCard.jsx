@@ -31,16 +31,6 @@ export default function GenericRatingCard({ analysis, expanded, onToggle, icon =
     return false;
   };
 
-  const isRatingSupported = (percent) => {
-    if (numericRating === null) return false;
-    // For ranges, check if percent falls within
-    if (typeof supportedRating === 'string' && supportedRating.includes('-')) {
-      const [low, high] = supportedRating.split('-').map(p => parseInt(p, 10));
-      return percent >= low && percent <= high;
-    }
-    return numericRating === percent;
-  };
-
   // Standardized color scheme across all rating cards
   // 0% gets a distinct "supported but minimal" style visible in both light/dark modes
   const getRatingRowColor = (percent, isSupported) => {
