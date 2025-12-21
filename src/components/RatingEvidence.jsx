@@ -129,6 +129,12 @@ import {
   analyzeGastritisLogs,
   analyzePancreatitisLogs,
   analyzeBiliaryTractLogs,
+  analyzeCOPDLogs,
+  analyzeChronicBronchitisLogs,
+  analyzeEmphysemaLogs,
+  analyzeBronchiectasisLogs,
+  analyzePulmonaryFibrosisLogs,
+  analyzeSarcoidosisLogs,
   getAllMigraineRatings,
   getAllSleepApneaRatings,
   getAllPTSDRatings,
@@ -282,6 +288,12 @@ import CirrhosisRatingCard from './CirrhosisRatingCard';
 import GastritisRatingCard from './GastritisRatingCard';
 import PancreatitisRatingCard from './PancreatitisRatingCard';
 import BiliaryTractRatingCard from './BiliaryTractRatingCard';
+import COPDRatingCard from './COPDRatingCard';
+import ChronicBronchitisRatingCard from './ChronicBronchitisRatingCard';
+import EmphysemaRatingCard from './EmphysemaRatingCard';
+import BronchiectasisRatingCard from './BronchiectasisRatingCard';
+import PulmonaryFibrosisRatingCard from './PulmonaryFibrosisRatingCard';
+import SarcoidosisRatingCard from './SarcoidosisRatingCard';
 
 // Storage key for sleep apnea profile
 const SLEEP_APNEA_PROFILE_KEY = 'symptomTracker_sleepApneaProfile';
@@ -651,10 +663,7 @@ const RatingEvidence = () => {
     const benignOralNeoplasmAnalysis = useMemo(() => {
       return analyzeBenignOralNeoplasmLogs(logs, { evaluationPeriodDays: evaluationDays });
     }, [logs, evaluationDays]);
-  // ============================================
   // PHASE 8A: MENTAL HEALTH EXPANSION - ANALYSIS HOOKS
-  // ============================================
-
   // Somatic Symptom Disorders
   const somaticSymptomDisorderAnalysis = useMemo(() =>
           analyzeSomaticSymptomDisorderLogs(logs, { days: evaluationDays }),
@@ -762,6 +771,25 @@ const RatingEvidence = () => {
   }, [logs, evaluationDays]);
   const biliaryTractAnalysis = useMemo(() => {
     return analyzeBiliaryTractLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  // Phase 11: Respiratory condition analyses
+  const copdAnalysis = useMemo(() => {
+    return analyzeCOPDLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  const chronicBronchitisAnalysis = useMemo(() => {
+    return analyzeChronicBronchitisLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  const emphysemaAnalysis = useMemo(() => {
+    return analyzeEmphysemaLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  const bronchiectasisAnalysis = useMemo(() => {
+    return analyzeBronchiectasisLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  const pulmonaryFibrosisAnalysis = useMemo(() => {
+    return analyzePulmonaryFibrosisLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  const sarcoidosisAnalysis = useMemo(() => {
+    return analyzeSarcoidosisLogs(logs, { evaluationPeriodDays: evaluationDays });
   }, [logs, evaluationDays]);
 
 
@@ -889,7 +917,13 @@ const RatingEvidence = () => {
         cirrhosisAnalysis.hasData ||
         gastritisAnalysis.hasData ||
         pancreatitisAnalysis.hasData ||
-        biliaryTractAnalysis.hasData
+        biliaryTractAnalysis.hasData ||
+        copdAnalysis.hasData ||
+        chronicBronchitisAnalysis.hasData ||
+        emphysemaAnalysis.hasData ||
+        bronchiectasisAnalysis.hasData ||
+        pulmonaryFibrosisAnalysis.hasData ||
+        sarcoidosisAnalysis.hasData
     ;
 
     return (
@@ -1721,6 +1755,36 @@ const RatingEvidence = () => {
               analysis={biliaryTractAnalysis}
               expanded={expandedSection === 'biliary-tract'}
               onToggle={() => toggleSection('biliary-tract')}
+          />
+          <COPDRatingCard
+              analysis={copdAnalysis}
+              expanded={expandedSection === 'copd'}
+              onToggle={() => toggleSection('copd')}
+          />
+          <ChronicBronchitisRatingCard
+              analysis={chronicBronchitisAnalysis}
+              expanded={expandedSection === 'chronic-bronchitis'}
+              onToggle={() => toggleSection('chronic-bronchitis')}
+          />
+          <EmphysemaRatingCard
+              analysis={emphysemaAnalysis}
+              expanded={expandedSection === 'emphysema'}
+              onToggle={() => toggleSection('emphysema')}
+          />
+          <BronchiectasisRatingCard
+              analysis={bronchiectasisAnalysis}
+              expanded={expandedSection === 'bronchiectasis'}
+              onToggle={() => toggleSection('bronchiectasis')}
+          />
+          <PulmonaryFibrosisRatingCard
+              analysis={pulmonaryFibrosisAnalysis}
+              expanded={expandedSection === 'pulmonary-fibrosis'}
+              onToggle={() => toggleSection('pulmonary-fibrosis')}
+          />
+          <SarcoidosisRatingCard
+              analysis={sarcoidosisAnalysis}
+              expanded={expandedSection === 'sarcoidosis'}
+              onToggle={() => toggleSection('sarcoidosis')}
           />
 
 

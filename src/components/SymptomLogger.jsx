@@ -1019,11 +1019,15 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
       ['diarrhea', 'constipation', 'bloating', 'abdominal-pain', 'nausea', 'rectal-bleeding'].includes(selectedSymptom);
 
   // Phase 1C: Respiratory condition detection - asthma, COPD, sleep apnea, etc.
+  // Phase 11: Added bronchiectasis, pulmonary fibrosis, sarcoidosis
   const isRespiratorySelected = selectedSymptom?.startsWith('asthma-') ||
       selectedSymptom?.startsWith('copd-') ||
       selectedSymptom?.startsWith('apnea-') ||
       selectedSymptom?.startsWith('emphysema-') ||
       selectedSymptom?.startsWith('bronchitis-') ||
+      selectedSymptom?.startsWith('bronchiectasis-') ||
+      selectedSymptom?.startsWith('pf-') ||
+      selectedSymptom?.startsWith('sarcoid-') ||
       selectedSymptom?.includes('breathing') ||
       selectedSymptom?.includes('wheez') ||
       selectedSymptom?.includes('cough') ||

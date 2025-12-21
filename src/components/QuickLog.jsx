@@ -698,11 +698,15 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
       ['diarrhea', 'constipation', 'bloating', 'abdominal-pain', 'nausea', 'rectal-bleeding'].includes(selectedChronic?.symptomId);
 
   // Respiratory: match respiratory symptoms
+  // Phase 11: Added bronchiectasis, pulmonary fibrosis, sarcoidosis
   const isRespiratoryRelated = selectedChronic?.symptomId?.startsWith('asthma-') ||
       selectedChronic?.symptomId?.startsWith('copd-') ||
       selectedChronic?.symptomId?.startsWith('apnea-') ||
       selectedChronic?.symptomId?.startsWith('emphysema-') ||
       selectedChronic?.symptomId?.startsWith('bronchitis-') ||
+      selectedChronic?.symptomId?.startsWith('bronchiectasis-') ||
+      selectedChronic?.symptomId?.startsWith('pf-') ||
+      selectedChronic?.symptomId?.startsWith('sarcoid-') ||
       selectedChronic?.symptomId?.includes('breathing') ||
       selectedChronic?.symptomId?.includes('wheez') ||
       selectedChronic?.symptomId?.includes('cough') ||

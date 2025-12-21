@@ -1159,11 +1159,15 @@ const EditLogModal = ({log, isOpen, onClose, onSaved}) => {
             log?.giData; // Also show if log already has GI data
 
         // PHASE 1C: Respiratory condition detection
+        // Phase 11: Added bronchiectasis, pulmonary fibrosis, sarcoidosis
         const isRespiratoryRelated = log?.symptomId?.startsWith('asthma-') ||
             log?.symptomId?.startsWith('copd-') ||
             log?.symptomId?.startsWith('apnea-') ||
             log?.symptomId?.startsWith('emphysema-') ||
             log?.symptomId?.startsWith('bronchitis-') ||
+            log?.symptomId?.startsWith('bronchiectasis-') ||
+            log?.symptomId?.startsWith('pf-') ||
+            log?.symptomId?.startsWith('sarcoid-') ||
             log?.symptomId?.includes('breathing') ||
             log?.symptomId?.includes('wheez') ||
             log?.symptomId?.includes('cough') ||

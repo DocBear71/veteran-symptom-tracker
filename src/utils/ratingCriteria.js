@@ -272,6 +272,44 @@ export const CONDITIONS = {
     symptomIds: [ 'emphysema-shortness-breath', 'emphysema-barrel-chest', 'emphysema-wheezing', 'emphysema-fatigue', 'emphysema-oxygen-use', 'emphysema-exacerbation',
     ],
   },
+  // Phase 11: Bronchiectasis (DC 6601)
+  BRONCHIECTASIS: {
+    id: 'bronchiectasis',
+    name: 'Bronchiectasis',
+    diagnosticCode: '6601',
+    cfrReference: '38 CFR 4.97',
+    symptomIds: [
+      'bronchiectasis-cough', 'bronchiectasis-sputum', 'bronchiectasis-purulent-sputum',
+      'bronchiectasis-hemoptysis', 'bronchiectasis-infection', 'bronchiectasis-incapacitating',
+      'bronchiectasis-antibiotic', 'bronchiectasis-shortness-breath', 'bronchiectasis-fatigue',
+      'bronchiectasis-weight-loss', 'bronchiectasis-anorexia',
+    ],
+  },
+  // Phase 11: Pulmonary Fibrosis / Interstitial Lung Disease (DC 6825)
+  PULMONARY_FIBROSIS: {
+    id: 'pulmonary-fibrosis',
+    name: 'Pulmonary Fibrosis (Interstitial Lung Disease)',
+    diagnosticCode: '6825',
+    cfrReference: '38 CFR 4.97',
+    symptomIds: [
+      'pf-shortness-breath', 'pf-dry-cough', 'pf-fatigue', 'pf-exercise-intolerance',
+      'pf-oxygen-use', 'pf-clubbing', 'pf-weight-loss', 'pf-chest-discomfort',
+      'pf-exacerbation', 'pf-hospitalization',
+    ],
+  },
+  // Phase 11: Sarcoidosis (DC 6846)
+  SARCOIDOSIS: {
+    id: 'sarcoidosis',
+    name: 'Sarcoidosis',
+    diagnosticCode: '6846',
+    cfrReference: '38 CFR 4.97',
+    symptomIds: [
+      'sarcoid-shortness-breath', 'sarcoid-cough', 'sarcoid-chest-pain', 'sarcoid-fatigue',
+      'sarcoid-fever', 'sarcoid-night-sweats', 'sarcoid-weight-loss', 'sarcoid-skin-lesions',
+      'sarcoid-eye-symptoms', 'sarcoid-joint-pain', 'sarcoid-lymph-nodes', 'sarcoid-cardiac',
+      'sarcoid-corticosteroid',
+    ],
+  },
   HEARING_LOSS: {
     id: 'hearing-loss',
     name: 'Hearing Loss',
@@ -5666,6 +5704,479 @@ export const EMPHYSEMA_CRITERIA = {
   pftNote: 'Both spirometry and DLCO testing are important for emphysema evaluation. DLCO may be significantly reduced even when FEV-1 is only mildly impaired due to alveolar destruction.',
 
   disclaimer: 'This analysis is based on logged symptoms and available measurements. VA rating requires pulmonary function testing. DLCO is particularly important for emphysema evaluation. Ratings cannot be combined with other respiratory conditions under DC 6600-6847.',
+};
+
+// ============================================
+// BRONCHIECTASIS RATING CRITERIA (DC 6601)
+// Phase 11 - Rated by incapacitating episodes OR as chronic bronchitis (DC 6600)
+// ============================================
+
+export const BRONCHIECTASIS_CRITERIA = {
+  diagnosticCode: '6601',
+  condition: 'Bronchiectasis',
+  cfrReference: '38 CFR 4.97, Diagnostic Code 6601',
+
+  ratings: [
+    {
+      percent: 100,
+      summary: 'Incapacitating episodes of infection totaling 6+ weeks per year',
+      criteria: {
+        incapacitatingWeeks: [6, 52],
+      },
+      criteriaDescription: [
+        'Incapacitating episodes of infection of at least six weeks total duration per year',
+        'An incapacitating episode requires bedrest and treatment by a physician',
+      ],
+      evidenceNeeded: [
+        'Medical records documenting each incapacitating episode',
+        'Physician orders for bedrest during episodes',
+        'Documentation of total weeks of incapacitating episodes',
+        'Treatment records for each infection episode',
+      ],
+    },
+    {
+      percent: 60,
+      summary: 'Incapacitating episodes 4-6 weeks/year, OR near-constant symptoms with hemoptysis requiring continuous antibiotics',
+      criteria: {
+        incapacitatingWeeks: [4, 6],
+        nearConstantSymptoms: true,
+        continuousAntibiotics: true,
+      },
+      criteriaDescription: [
+        'Incapacitating episodes of infection of four to six weeks total duration per year, OR',
+        'Near constant findings of cough with purulent sputum associated with anorexia, weight loss, and frank hemoptysis and requiring antibiotic usage almost continuously',
+      ],
+      evidenceNeeded: [
+        'Documentation of incapacitating episodes with bedrest orders',
+        'Medical records showing persistent purulent cough',
+        'Evidence of weight loss and decreased appetite',
+        'Records of hemoptysis (blood in sputum)',
+        'Pharmacy records showing continuous/frequent antibiotic courses',
+      ],
+    },
+    {
+      percent: 30,
+      summary: 'Incapacitating episodes 2-4 weeks/year, OR daily productive cough with prolonged antibiotics >2x/year',
+      criteria: {
+        incapacitatingWeeks: [2, 4],
+        dailyProductiveCough: true,
+        prolongedAntibiotics: true,
+      },
+      criteriaDescription: [
+        'Incapacitating episodes of infection of two to four weeks total duration per year, OR',
+        'Daily productive cough with sputum that is at times purulent or blood-tinged and that requires prolonged (lasting four to six weeks) antibiotic usage more than twice a year',
+      ],
+      evidenceNeeded: [
+        'Documentation of incapacitating episodes',
+        'Daily symptom logs showing productive cough',
+        'Records of antibiotic courses lasting 4-6 weeks',
+        'Evidence of purulent or blood-tinged sputum',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Intermittent productive cough with acute infection requiring antibiotics at least twice a year',
+      criteria: {
+        intermittentCough: true,
+        antibioticCourses: 2,
+      },
+      criteriaDescription: [
+        'Intermittent productive cough with acute infection requiring a course of antibiotics at least twice a year',
+      ],
+      evidenceNeeded: [
+        'Symptom logs showing intermittent productive cough',
+        'Medical records of at least 2 infections per year',
+        'Documentation of antibiotic prescriptions',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'Diagnosed but minimal symptoms or well-controlled',
+      criteria: {
+        minimal: true,
+      },
+      criteriaDescription: [
+        'Bronchiectasis diagnosed but symptoms controlled',
+        'No significant infections requiring treatment',
+      ],
+      evidenceNeeded: [
+        'Diagnosis confirmation (CT scan)',
+      ],
+    },
+  ],
+
+  alternativeRating: {
+    note: 'Or rate according to pulmonary impairment as for chronic bronchitis (DC 6600)',
+    reference: 'CHRONIC_BRONCHITIS_CRITERIA',
+  },
+
+  definitions: {
+    incapacitatingEpisode: {
+      term: 'Incapacitating Episode',
+      definition: 'An episode of bronchiectasis infection that requires bedrest AND treatment by a physician. Both requirements must be met for VA rating purposes.',
+      examples: [
+        'Severe respiratory infection requiring bedrest',
+        'Physician-ordered rest period during exacerbation',
+        'Unable to perform normal activities due to infection',
+      ],
+    },
+    bronchiectasis: {
+      term: 'Bronchiectasis',
+      definition: 'Permanent dilation (widening) of the bronchi caused by destruction of the muscle and elastic tissue. Usually results from chronic infection or inflammation.',
+      examples: [
+        'Diagnosed by CT scan showing dilated airways',
+        'Chronic productive cough with daily sputum',
+        'Recurrent respiratory infections',
+      ],
+    },
+    purulentSputum: {
+      term: 'Purulent Sputum',
+      definition: 'Mucus/phlegm that contains pus, typically yellow, green, or brown in color, indicating bacterial infection.',
+      examples: [
+        'Yellow or green mucus production',
+        'Thick, discolored sputum',
+        'Foul-smelling sputum',
+      ],
+    },
+    hemoptysis: {
+      term: 'Hemoptysis',
+      definition: 'Coughing up blood or blood-streaked sputum from the respiratory tract.',
+      examples: [
+        'Bright red blood in sputum',
+        'Blood-streaked mucus',
+        'Pink-tinged sputum',
+      ],
+    },
+    prolongedAntibiotics: {
+      term: 'Prolonged Antibiotic Usage',
+      definition: 'Antibiotic courses lasting four to six weeks, significantly longer than standard 7-14 day courses.',
+      examples: [
+        '4-6 week antibiotic prescription',
+        'Extended treatment for persistent infection',
+        'Multiple courses per year',
+      ],
+    },
+  },
+
+  disclaimer: 'This analysis is based on logged symptoms. VA rating requires documentation of incapacitating episodes (bedrest + physician treatment) OR can be rated based on pulmonary function testing as chronic bronchitis (DC 6600). Ratings cannot be combined with other respiratory conditions under DC 6600-6847.',
+};
+
+// ============================================
+// PULMONARY FIBROSIS / INTERSTITIAL LUNG DISEASE RATING CRITERIA (DC 6825)
+// Phase 11 - Uses General Rating Formula for Interstitial Lung Disease (FVC/DLCO based)
+// ============================================
+
+export const PULMONARY_FIBROSIS_CRITERIA = {
+  diagnosticCode: '6825',
+  condition: 'Pulmonary Fibrosis (Diffuse Interstitial Fibrosis)',
+  cfrReference: '38 CFR 4.97, Diagnostic Code 6825',
+
+  ratings: [
+    {
+      percent: 100,
+      summary: 'FVC <50%, OR DLCO <40%, OR max exercise <15 ml/kg/min, OR cor pulmonale, OR requires oxygen therapy',
+      criteria: {
+        fvcPercent: [0, 49],
+        dlcoPercent: [0, 39],
+        maxExercise: [0, 14],
+        corPulmonale: true,
+        pulmonaryHypertension: true,
+        oxygenTherapy: true,
+      },
+      criteriaDescription: [
+        'Forced Vital Capacity (FVC) less than 50-percent predicted, OR',
+        'Diffusion Capacity (DLCO) less than 40-percent predicted, OR',
+        'Maximum exercise capacity less than 15 ml/kg/min oxygen consumption with cardiorespiratory limitation, OR',
+        'Cor pulmonale (right heart failure), OR',
+        'Pulmonary hypertension, OR',
+        'Requires outpatient oxygen therapy',
+      ],
+      evidenceNeeded: [
+        'Pulmonary function test showing FVC <50% predicted',
+        'DLCO testing showing <40% predicted',
+        'Documentation of supplemental oxygen prescription',
+        'Echocardiogram showing cor pulmonale or pulmonary hypertension',
+        'Exercise testing if available',
+      ],
+    },
+    {
+      percent: 60,
+      summary: 'FVC 50-64%, OR DLCO 40-55%, OR max exercise 15-20 ml/kg/min',
+      criteria: {
+        fvcPercent: [50, 64],
+        dlcoPercent: [40, 55],
+        maxExercise: [15, 20],
+      },
+      criteriaDescription: [
+        'FVC of 50- to 64-percent predicted, OR',
+        'DLCO (SB) of 40- to 55-percent predicted, OR',
+        'Maximum exercise capacity of 15 to 20 ml/kg/min oxygen consumption with cardiorespiratory limitation',
+      ],
+      evidenceNeeded: [
+        'Spirometry showing FVC 50-64% predicted',
+        'DLCO testing showing 40-55% predicted',
+        'Cardiopulmonary exercise testing if available',
+      ],
+    },
+    {
+      percent: 30,
+      summary: 'FVC 65-74%, OR DLCO 56-65%',
+      criteria: {
+        fvcPercent: [65, 74],
+        dlcoPercent: [56, 65],
+      },
+      criteriaDescription: [
+        'FVC of 65- to 74-percent predicted, OR',
+        'DLCO (SB) of 56- to 65-percent predicted',
+      ],
+      evidenceNeeded: [
+        'Spirometry showing FVC 65-74% predicted',
+        'DLCO testing showing 56-65% predicted',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'FVC 75-80%, OR DLCO 66-80%',
+      criteria: {
+        fvcPercent: [75, 80],
+        dlcoPercent: [66, 80],
+      },
+      criteriaDescription: [
+        'FVC of 75- to 80-percent predicted, OR',
+        'DLCO (SB) of 66- to 80-percent predicted',
+      ],
+      evidenceNeeded: [
+        'Spirometry showing FVC 75-80% predicted',
+        'DLCO testing showing 66-80% predicted',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'FVC and DLCO >80% predicted',
+      criteria: {
+        fvcPercent: [81, 100],
+        dlcoPercent: [81, 100],
+      },
+      criteriaDescription: [
+        'FVC greater than 80% of predicted value',
+        'DLCO greater than 80% of predicted value',
+        'No significant pulmonary impairment demonstrated',
+      ],
+      evidenceNeeded: [
+        'Pulmonary function test results',
+      ],
+    },
+  ],
+
+  definitions: {
+    interstitialLungDisease: {
+      term: 'Interstitial Lung Disease (ILD)',
+      definition: 'A group of disorders causing progressive scarring of lung tissue, affecting the ability to breathe and get oxygen to the bloodstream.',
+      examples: [
+        'Idiopathic pulmonary fibrosis (IPF)',
+        'Fibrosing alveolitis',
+        'Interstitial pneumonitis',
+        'Drug-induced pulmonary fibrosis',
+      ],
+    },
+    fvc: {
+      term: 'FVC (Forced Vital Capacity)',
+      definition: 'The total amount of air that can be forcibly exhaled after taking the deepest breath possible. Key measurement for restrictive lung diseases like pulmonary fibrosis.',
+      examples: [
+        'Reduced FVC indicates restricted lung expansion',
+        'Expressed as percentage of predicted normal',
+        'Lower values indicate more severe restriction',
+      ],
+    },
+    dlco: {
+      term: 'DLCO (Diffusion Capacity)',
+      definition: 'Measures how well oxygen passes from the lungs into the bloodstream. Particularly important in interstitial lung disease.',
+      examples: [
+        'Reduced DLCO indicates impaired gas exchange',
+        'Often affected early in pulmonary fibrosis',
+        'Measured by single-breath carbon monoxide test',
+      ],
+    },
+    corPulmonale: {
+      term: 'Cor Pulmonale',
+      definition: 'Right-sided heart failure caused by lung disease. The right ventricle enlarges due to chronic high pulmonary pressures.',
+      examples: [
+        'Complication of severe pulmonary fibrosis',
+        'Diagnosed by echocardiogram',
+        'Signs include leg swelling, enlarged liver',
+      ],
+    },
+    fingerClubbing: {
+      term: 'Finger Clubbing',
+      definition: 'Enlargement of the fingertips and nails that curve around the fingertips. Associated with chronic lung disease and low oxygen levels.',
+      examples: [
+        'Nails curve downward like spoons inverted',
+        'Soft tissue at nail base becomes spongy',
+        'Common finding in pulmonary fibrosis',
+      ],
+    },
+  },
+
+  pftNote: 'Interstitial lung disease is evaluated using FVC (not FEV-1) as the primary spirometric measure, along with DLCO. FVC reflects the restrictive pattern characteristic of fibrotic lung disease.',
+
+  disclaimer: 'This analysis is based on logged symptoms and available measurements. VA rating requires pulmonary function testing (FVC and DLCO). Ratings cannot be combined with other respiratory conditions under DC 6600-6847.',
+};
+
+// ============================================
+// SARCOIDOSIS RATING CRITERIA (DC 6846)
+// Phase 11 - Has specific rating criteria OR rate as chronic bronchitis (DC 6600)
+// ============================================
+
+export const SARCOIDOSIS_CRITERIA = {
+  diagnosticCode: '6846',
+  condition: 'Sarcoidosis',
+  cfrReference: '38 CFR 4.97, Diagnostic Code 6846',
+
+  ratings: [
+    {
+      percent: 100,
+      summary: 'Cor pulmonale, OR cardiac involvement with CHF, OR progressive disease with fever/night sweats/weight loss despite treatment',
+      criteria: {
+        corPulmonale: true,
+        cardiacInvolvement: true,
+        congestiveHeartFailure: true,
+        progressiveDisease: true,
+        systemicSymptoms: true,
+      },
+      criteriaDescription: [
+        'Cor pulmonale (right heart failure from lung involvement), OR',
+        'Cardiac involvement with congestive heart failure, OR',
+        'Progressive pulmonary disease with fever, night sweats, and weight loss despite treatment',
+      ],
+      evidenceNeeded: [
+        'Echocardiogram showing cor pulmonale or cardiac involvement',
+        'Documentation of congestive heart failure',
+        'Medical records showing progressive disease despite treatment',
+        'Documentation of systemic symptoms (fever, night sweats, weight loss)',
+        'Treatment records showing failed response to therapy',
+      ],
+    },
+    {
+      percent: 60,
+      summary: 'Pulmonary involvement requiring systemic high-dose (therapeutic) corticosteroids for control',
+      criteria: {
+        pulmonaryInvolvement: true,
+        highDoseCorticosteroids: true,
+        therapeuticDose: true,
+      },
+      criteriaDescription: [
+        'Pulmonary involvement requiring systemic high dose (therapeutic) corticosteroids for control',
+        'High-dose typically means prednisone 20mg+ daily or equivalent',
+      ],
+      evidenceNeeded: [
+        'Documentation of pulmonary sarcoidosis',
+        'Prescription records for high-dose systemic corticosteroids',
+        'Medical records showing need for therapeutic steroid doses',
+        'Evidence that lower doses do not control disease',
+      ],
+    },
+    {
+      percent: 30,
+      summary: 'Pulmonary involvement with persistent symptoms requiring chronic low-dose or intermittent corticosteroids',
+      criteria: {
+        pulmonaryInvolvement: true,
+        persistentSymptoms: true,
+        maintenanceCorticosteroids: true,
+      },
+      criteriaDescription: [
+        'Pulmonary involvement with persistent symptoms requiring chronic low dose (maintenance) or intermittent corticosteroids',
+        'Low-dose/maintenance typically means prednisone <20mg daily',
+      ],
+      evidenceNeeded: [
+        'Documentation of pulmonary sarcoidosis with ongoing symptoms',
+        'Prescription records for maintenance steroid therapy',
+        'Symptom logs showing persistent respiratory symptoms',
+        'Medical records of intermittent steroid courses',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'Chronic hilar adenopathy or stable lung infiltrates without symptoms or physiologic impairment',
+      criteria: {
+        asymptomatic: true,
+        stableDisease: true,
+      },
+      criteriaDescription: [
+        'Chronic hilar adenopathy or stable lung infiltrates without symptoms or physiologic impairment',
+        'Disease present on imaging but not causing functional problems',
+      ],
+      evidenceNeeded: [
+        'Imaging showing hilar adenopathy or lung infiltrates',
+        'Documentation that condition is stable',
+        'No treatment required',
+      ],
+    },
+  ],
+
+  alternativeRating: {
+    note: 'Or rate active disease or residuals as chronic bronchitis (DC 6600) and extra-pulmonary involvement under specific body system involved',
+    reference: 'CHRONIC_BRONCHITIS_CRITERIA',
+  },
+
+  definitions: {
+    sarcoidosis: {
+      term: 'Sarcoidosis',
+      definition: 'An inflammatory disease that can affect multiple organs, most commonly the lungs and lymph nodes. Characterized by granulomas (clusters of inflammatory cells).',
+      examples: [
+        'Often discovered on routine chest X-ray',
+        'Can affect lungs, skin, eyes, heart, nervous system',
+        'Variable course - may resolve or become chronic',
+      ],
+    },
+    hilarAdenopathy: {
+      term: 'Hilar Adenopathy',
+      definition: 'Enlargement of lymph nodes at the hilum (root) of the lung where blood vessels and bronchi enter. A common finding in sarcoidosis.',
+      examples: [
+        'Bilateral hilar lymphadenopathy on chest X-ray',
+        'May be the only finding in early sarcoidosis',
+        'Often asymptomatic',
+      ],
+    },
+    corPulmonale: {
+      term: 'Cor Pulmonale',
+      definition: 'Right-sided heart failure secondary to lung disease. Occurs when pulmonary sarcoidosis causes pulmonary hypertension.',
+      examples: [
+        'Severe complication of pulmonary sarcoidosis',
+        'Signs include leg edema, enlarged liver',
+        'Diagnosed by echocardiogram',
+      ],
+    },
+    systemicCorticosteroids: {
+      term: 'Systemic Corticosteroids',
+      definition: 'Oral or injectable steroids used throughout the body, as opposed to inhaled steroids which act locally in the lungs.',
+      examples: [
+        'Prednisone (oral)',
+        'Methylprednisolone (oral or IV)',
+        'Dexamethasone',
+      ],
+    },
+    highDoseVsLowDose: {
+      term: 'High-Dose vs. Low-Dose Corticosteroids',
+      definition: 'High-dose (therapeutic): Prednisone 20mg+ daily or equivalent, used to control active disease. Low-dose (maintenance): Prednisone <20mg daily, used to prevent flares.',
+      examples: [
+        'High-dose: 40-60mg prednisone for acute flares',
+        'Low-dose: 5-15mg prednisone for maintenance',
+        'Intermittent: Periodic courses during flares',
+      ],
+    },
+    extraPulmonaryInvolvement: {
+      term: 'Extra-Pulmonary Involvement',
+      definition: 'Sarcoidosis affecting organs other than the lungs, which should be rated separately under the appropriate body system.',
+      examples: [
+        'Skin lesions (rate under dermatology codes)',
+        'Eye involvement/uveitis (rate under eye codes)',
+        'Cardiac sarcoidosis (rate under cardiac codes)',
+        'Neurological involvement (rate under neuro codes)',
+      ],
+    },
+  },
+
+  disclaimer: 'This analysis is based on logged symptoms. VA rating requires documentation of pulmonary involvement and treatment requirements. Extra-pulmonary sarcoidosis should be rated separately under the specific body system involved. Active disease may alternatively be rated as chronic bronchitis (DC 6600) based on pulmonary function testing.',
 };
 
 
@@ -25087,6 +25598,333 @@ export const analyzeBiliaryTractLogs = (logs, options = {}) => {
 };
 
 // ============================================
+// ANALYSIS FUNCTIONS - BRONCHIECTASIS (DC 6601)
+// Phase 11 - Rated by incapacitating episodes OR as chronic bronchitis
+// ============================================
+
+/**
+ * Analyze Bronchiectasis symptom logs against VA rating criteria
+ * DC 6601 - Rated by incapacitating episodes or pulmonary function (as DC 6600)
+ */
+export const analyzeBronchiectasisLogs = (logs, options = {}) => {
+  const conditionCriteria = BRONCHIECTASIS_CRITERIA;
+  const evaluationPeriodDays = options.days || 365;
+  const symptomIds = CONDITIONS.BRONCHIECTASIS.symptomIds;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    const symptomId = getLogSymptomId(log);
+    return logDate >= cutoffDate && symptomId && symptomIds.includes(symptomId);
+  });
+
+  if (relevantLogs.length === 0) {
+    return {
+      hasData: false,
+      condition: conditionCriteria.condition,
+      diagnosticCode: conditionCriteria.diagnosticCode,
+      message: 'No bronchiectasis symptoms logged in evaluation period',
+    };
+  }
+
+  const incapacitatingLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'bronchiectasis-incapacitating');
+  const infectionLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'bronchiectasis-infection');
+  const antibioticLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'bronchiectasis-antibiotic');
+  const hemoptysisLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'bronchiectasis-hemoptysis');
+  const purulentSputumLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'bronchiectasis-purulent-sputum');
+  const dailySputumLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'bronchiectasis-sputum');
+  const weightLossLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'bronchiectasis-weight-loss');
+  const anorexiaLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'bronchiectasis-anorexia');
+
+  const estimatedIncapacitatingWeeks = incapacitatingLogs.length;
+  const hasNearConstantSymptoms = purulentSputumLogs.length >= 10 && (hemoptysisLogs.length > 0 || weightLossLogs.length > 0 || anorexiaLogs.length > 0);
+  const hasContinuousAntibiotics = antibioticLogs.length >= 6;
+  const hasDailyProductiveCough = dailySputumLogs.length >= 20 || purulentSputumLogs.length >= 10;
+  const hasProlongedAntibiotics = antibioticLogs.length >= 3;
+  const hasIntermittentInfections = infectionLogs.length >= 2 || antibioticLogs.length >= 2;
+
+  let supportedRating = 0;
+  let ratingRationale = [];
+  const gaps = [];
+  const evidence = [];
+
+  if (incapacitatingLogs.length > 0) evidence.push(`${incapacitatingLogs.length} incapacitating episodes (~${estimatedIncapacitatingWeeks} weeks)`);
+  if (infectionLogs.length > 0) evidence.push(`${infectionLogs.length} respiratory infections documented`);
+  if (antibioticLogs.length > 0) evidence.push(`${antibioticLogs.length} antibiotic courses recorded`);
+  if (hemoptysisLogs.length > 0) evidence.push(`${hemoptysisLogs.length} hemoptysis episodes`);
+
+  if (estimatedIncapacitatingWeeks >= 6) {
+    supportedRating = 100;
+    ratingRationale = [`${estimatedIncapacitatingWeeks} weeks incapacitating episodes (6+ weeks criteria)`];
+  } else if (estimatedIncapacitatingWeeks >= 4 || (hasNearConstantSymptoms && hasContinuousAntibiotics)) {
+    supportedRating = 60;
+    ratingRationale = [estimatedIncapacitatingWeeks >= 4 ? `${estimatedIncapacitatingWeeks} weeks incapacitating episodes` : 'Near-constant symptoms with continuous antibiotics'];
+  } else if (estimatedIncapacitatingWeeks >= 2 || (hasDailyProductiveCough && hasProlongedAntibiotics)) {
+    supportedRating = 30;
+    ratingRationale = [estimatedIncapacitatingWeeks >= 2 ? `${estimatedIncapacitatingWeeks} weeks incapacitating episodes` : 'Daily productive cough with prolonged antibiotics'];
+  } else if (hasIntermittentInfections) {
+    supportedRating = 10;
+    ratingRationale = ['Intermittent infections requiring antibiotics 2+ times/year'];
+  }
+
+  if (incapacitatingLogs.length === 0) gaps.push('Document incapacitating episodes (requires bedrest + physician treatment)');
+  if (antibioticLogs.length < 2) gaps.push('Log all antibiotic courses with duration');
+  if (supportedRating < 100) gaps.push('Consider PFTs - can rate as DC 6600 (chronic bronchitis)');
+
+  return {
+    hasData: true,
+    condition: conditionCriteria.condition,
+    diagnosticCode: conditionCriteria.diagnosticCode,
+    evaluationPeriodDays,
+    supportedRating: supportedRating.toString(),
+    ratingRationale,
+    evidence,
+    gaps,
+    metrics: {
+      totalLogs: relevantLogs.length,
+      incapacitatingEpisodes: incapacitatingLogs.length,
+      estimatedIncapacitatingWeeks,
+      infectionEpisodes: infectionLogs.length,
+      antibioticCourses: antibioticLogs.length,
+      hemoptysisEpisodes: hemoptysisLogs.length,
+    },
+    criteria: conditionCriteria,
+    disclaimer: conditionCriteria.disclaimer,
+  };
+};
+
+// ============================================
+// ANALYSIS FUNCTIONS - PULMONARY FIBROSIS (DC 6825)
+// Phase 11 - Uses Interstitial Lung Disease formula (FVC/DLCO based)
+// ============================================
+
+/**
+ * Analyze Pulmonary Fibrosis symptom logs against VA rating criteria
+ * DC 6825 - Uses General Rating Formula for Interstitial Lung Disease
+ */
+export const analyzePulmonaryFibrosisLogs = (logs, options = {}) => {
+  const conditionCriteria = PULMONARY_FIBROSIS_CRITERIA;
+  const evaluationPeriodDays = options.days || 90;
+  const symptomIds = CONDITIONS.PULMONARY_FIBROSIS.symptomIds;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    const symptomId = getLogSymptomId(log);
+    return logDate >= cutoffDate && symptomId && symptomIds.includes(symptomId);
+  });
+
+  const fvcMeasurements = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    return logDate >= cutoffDate && log.type === 'measurement' && log.measurementType === 'fvc';
+  });
+
+  const dlcoMeasurements = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    return logDate >= cutoffDate && log.type === 'measurement' && log.measurementType === 'dlco';
+  });
+
+  if (relevantLogs.length === 0 && fvcMeasurements.length === 0 && dlcoMeasurements.length === 0) {
+    return {
+      hasData: false,
+      condition: conditionCriteria.condition,
+      diagnosticCode: conditionCriteria.diagnosticCode,
+      message: 'No pulmonary fibrosis symptoms or PFT measurements logged',
+    };
+  }
+
+  const oxygenUseLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'pf-oxygen-use');
+  const exacerbationLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'pf-exacerbation');
+  const hospitalizationLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'pf-hospitalization');
+  const hasOxygenUse = oxygenUseLogs.length > 0;
+
+  let fvcPercent = null;
+  if (fvcMeasurements.length > 0) {
+    const latestFVC = fvcMeasurements[fvcMeasurements.length - 1];
+    if (latestFVC.values?.fvc && latestFVC.values?.fvcPredicted) {
+      fvcPercent = (latestFVC.values.fvc / latestFVC.values.fvcPredicted) * 100;
+    }
+  }
+
+  let dlcoPercent = null;
+  if (dlcoMeasurements.length > 0) {
+    const latestDLCO = dlcoMeasurements[dlcoMeasurements.length - 1];
+    if (latestDLCO.values?.dlco && latestDLCO.values?.dlcoPredicted) {
+      dlcoPercent = (latestDLCO.values.dlco / latestDLCO.values.dlcoPredicted) * 100;
+    }
+  }
+
+  let supportedRating = null;
+  let ratingRationale = [];
+  const gaps = [];
+  const evidence = [];
+
+  if (relevantLogs.length > 0) evidence.push(`${relevantLogs.length} symptom logs in ${evaluationPeriodDays} days`);
+  if (fvcPercent !== null) evidence.push(`FVC: ${fvcPercent.toFixed(0)}% predicted`);
+  if (dlcoPercent !== null) evidence.push(`DLCO: ${dlcoPercent.toFixed(0)}% predicted`);
+  if (hasOxygenUse) evidence.push('Supplemental oxygen use documented');
+
+  // Rating determination based on ILD formula (FVC/DLCO)
+  if (hasOxygenUse || (fvcPercent !== null && fvcPercent < 50) || (dlcoPercent !== null && dlcoPercent < 40)) {
+    supportedRating = 100;
+    ratingRationale = [];
+    if (hasOxygenUse) ratingRationale.push('Requires supplemental oxygen therapy');
+    if (fvcPercent !== null && fvcPercent < 50) ratingRationale.push(`FVC ${fvcPercent.toFixed(0)}% (<50% criteria)`);
+    if (dlcoPercent !== null && dlcoPercent < 40) ratingRationale.push(`DLCO ${dlcoPercent.toFixed(0)}% (<40% criteria)`);
+  } else if ((fvcPercent !== null && fvcPercent >= 50 && fvcPercent <= 64) || (dlcoPercent !== null && dlcoPercent >= 40 && dlcoPercent <= 55)) {
+    supportedRating = 60;
+    if (fvcPercent !== null && fvcPercent >= 50 && fvcPercent <= 64) ratingRationale.push(`FVC ${fvcPercent.toFixed(0)}% (50-64% criteria)`);
+    if (dlcoPercent !== null && dlcoPercent >= 40 && dlcoPercent <= 55) ratingRationale.push(`DLCO ${dlcoPercent.toFixed(0)}% (40-55% criteria)`);
+  } else if ((fvcPercent !== null && fvcPercent >= 65 && fvcPercent <= 74) || (dlcoPercent !== null && dlcoPercent >= 56 && dlcoPercent <= 65)) {
+    supportedRating = 30;
+    if (fvcPercent !== null && fvcPercent >= 65 && fvcPercent <= 74) ratingRationale.push(`FVC ${fvcPercent.toFixed(0)}% (65-74% criteria)`);
+    if (dlcoPercent !== null && dlcoPercent >= 56 && dlcoPercent <= 65) ratingRationale.push(`DLCO ${dlcoPercent.toFixed(0)}% (56-65% criteria)`);
+  } else if ((fvcPercent !== null && fvcPercent >= 75 && fvcPercent <= 80) || (dlcoPercent !== null && dlcoPercent >= 66 && dlcoPercent <= 80)) {
+    supportedRating = 10;
+    if (fvcPercent !== null && fvcPercent >= 75 && fvcPercent <= 80) ratingRationale.push(`FVC ${fvcPercent.toFixed(0)}% (75-80% criteria)`);
+    if (dlcoPercent !== null && dlcoPercent >= 66 && dlcoPercent <= 80) ratingRationale.push(`DLCO ${dlcoPercent.toFixed(0)}% (66-80% criteria)`);
+  } else if (fvcPercent === null && dlcoPercent === null) {
+    supportedRating = 'Requires PFT';
+    ratingRationale = ['Pulmonary function tests (FVC and DLCO) required for rating'];
+  } else {
+    supportedRating = 0;
+    ratingRationale = ['PFT values above compensable thresholds'];
+  }
+
+  if (fvcMeasurements.length === 0) gaps.push('Get FVC (Forced Vital Capacity) testing - required for ILD rating');
+  if (dlcoMeasurements.length === 0) gaps.push('Get DLCO (Diffusion Capacity) testing - important for ILD');
+  if (!hasOxygenUse && exacerbationLogs.length > 0) gaps.push('Document if supplemental oxygen is prescribed');
+
+  return {
+    hasData: true,
+    condition: conditionCriteria.condition,
+    diagnosticCode: conditionCriteria.diagnosticCode,
+    evaluationPeriodDays,
+    supportedRating: supportedRating?.toString() || 'Requires PFT',
+    ratingRationale,
+    evidence,
+    gaps,
+    metrics: {
+      totalLogs: relevantLogs.length,
+      fvcPercent: fvcPercent ? fvcPercent.toFixed(0) : null,
+      dlcoPercent: dlcoPercent ? dlcoPercent.toFixed(0) : null,
+      oxygenUseDays: oxygenUseLogs.length,
+      exacerbations: exacerbationLogs.length,
+      hospitalizations: hospitalizationLogs.length,
+    },
+    criteria: conditionCriteria,
+    disclaimer: conditionCriteria.disclaimer,
+  };
+};
+
+// ============================================
+// ANALYSIS FUNCTIONS - SARCOIDOSIS (DC 6846)
+// Phase 11 - Specific criteria OR rate as chronic bronchitis (DC 6600)
+// ============================================
+
+/**
+ * Analyze Sarcoidosis symptom logs against VA rating criteria
+ * DC 6846 - Has specific rating criteria based on treatment requirements
+ */
+export const analyzeSarcoidosisLogs = (logs, options = {}) => {
+  const conditionCriteria = SARCOIDOSIS_CRITERIA;
+  const evaluationPeriodDays = options.days || 90;
+  const symptomIds = CONDITIONS.SARCOIDOSIS.symptomIds;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    const symptomId = getLogSymptomId(log);
+    return logDate >= cutoffDate && symptomId && symptomIds.includes(symptomId);
+  });
+
+  if (relevantLogs.length === 0) {
+    return {
+      hasData: false,
+      condition: conditionCriteria.condition,
+      diagnosticCode: conditionCriteria.diagnosticCode,
+      message: 'No sarcoidosis symptoms logged in evaluation period',
+    };
+  }
+
+  const dyspneaLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'sarcoid-shortness-breath');
+  const feverLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'sarcoid-fever');
+  const nightSweatsLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'sarcoid-night-sweats');
+  const weightLossLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'sarcoid-weight-loss');
+  const corticosteroidLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'sarcoid-corticosteroid');
+  const cardiacLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'sarcoid-cardiac');
+  const skinLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'sarcoid-skin-lesions');
+  const eyeLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'sarcoid-eye-symptoms');
+
+  const hasSystemicSymptoms = feverLogs.length > 0 && nightSweatsLogs.length > 0 && weightLossLogs.length > 0;
+  const hasCardiacInvolvement = cardiacLogs.length > 0;
+  const hasPulmonarySymptoms = dyspneaLogs.length > 0;
+  const hasCorticosteroidUse = corticosteroidLogs.length > 0;
+  const frequentCorticosteroidUse = corticosteroidLogs.length >= 10;
+  const hasExtraPulmonary = skinLogs.length > 0 || eyeLogs.length > 0 || cardiacLogs.length > 0;
+
+  let supportedRating = 0;
+  let ratingRationale = [];
+  const gaps = [];
+  const evidence = [];
+
+  if (dyspneaLogs.length > 0) evidence.push(`${dyspneaLogs.length} days with shortness of breath`);
+  if (corticosteroidLogs.length > 0) evidence.push(`${corticosteroidLogs.length} days on corticosteroids`);
+  if (hasSystemicSymptoms) evidence.push('Systemic symptoms (fever, night sweats, weight loss) documented');
+  if (hasCardiacInvolvement) evidence.push('Cardiac involvement documented');
+  if (hasExtraPulmonary) evidence.push('Extra-pulmonary involvement documented');
+
+  // Rating determination
+  if (hasCardiacInvolvement || hasSystemicSymptoms) {
+    supportedRating = 100;
+    ratingRationale = [];
+    if (hasCardiacInvolvement) ratingRationale.push('Cardiac involvement documented');
+    if (hasSystemicSymptoms) ratingRationale.push('Progressive disease with fever, night sweats, and weight loss');
+  } else if (frequentCorticosteroidUse && hasPulmonarySymptoms) {
+    supportedRating = 60;
+    ratingRationale = ['Pulmonary involvement requiring frequent/high-dose corticosteroids'];
+  } else if (hasCorticosteroidUse && hasPulmonarySymptoms) {
+    supportedRating = 30;
+    ratingRationale = ['Pulmonary involvement with persistent symptoms requiring corticosteroids'];
+  } else if (hasPulmonarySymptoms) {
+    supportedRating = 0;
+    ratingRationale = ['Pulmonary symptoms present but no corticosteroid treatment documented'];
+    gaps.push('Document corticosteroid use if prescribed');
+  }
+
+  if (!hasCorticosteroidUse) gaps.push('Log corticosteroid use (prednisone, etc.) - key rating factor');
+  if (!hasPulmonarySymptoms) gaps.push('Document pulmonary symptoms (shortness of breath, cough)');
+  if (hasExtraPulmonary) gaps.push('Extra-pulmonary sarcoidosis should be rated separately under specific body system');
+
+  return {
+    hasData: true,
+    condition: conditionCriteria.condition,
+    diagnosticCode: conditionCriteria.diagnosticCode,
+    evaluationPeriodDays,
+    supportedRating: supportedRating.toString(),
+    ratingRationale,
+    evidence,
+    gaps,
+    metrics: {
+      totalLogs: relevantLogs.length,
+      dyspneaDays: dyspneaLogs.length,
+      corticosteroidDays: corticosteroidLogs.length,
+      hasSystemicSymptoms,
+      hasCardiacInvolvement,
+      hasExtraPulmonary,
+    },
+    criteria: conditionCriteria,
+    disclaimer: conditionCriteria.disclaimer,
+  };
+};
+
+// ============================================
 // HELPER FUNCTIONS
 // ============================================
 
@@ -25459,6 +26297,16 @@ export const getPancreatitisRatingCriteria = (percent) => {
 export const getBiliaryTractRatingCriteria = (percent) => {
   return BILIARY_TRACT_CRITERIA.ratings.find(r => r.percent === percent) || null;
 };
+// Phase 11: Respiratory getRatingCriteria functions
+export const getBronchiectasisRatingCriteria = (percent) => {
+  return BRONCHIECTASIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getPulmonaryFibrosisRatingCriteria = (percent) => {
+  return PULMONARY_FIBROSIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getSarcoidosisRatingCriteria = (percent) => {
+  return SARCOIDOSIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
 
 
 export const getAllLumbosacralStrainRatings = () => LUMBOSACRAL_STRAIN_CRITERIA.ratings;
@@ -25543,6 +26391,10 @@ export const getAllCirrhosisRatings = () => CIRRHOSIS_CRITERIA.ratings;
 export const getAllGastritisRatings = () => GASTRITIS_CRITERIA.ratings;
 export const getAllPancreatitisRatings = () => PANCREATITIS_CRITERIA.ratings;
 export const getAllBiliaryTractRatings = () => BILIARY_TRACT_CRITERIA.ratings;
+export const getAllBronchiectasisRatings = () => BRONCHIECTASIS_CRITERIA.ratings;
+export const getAllPulmonaryFibrosisRatings = () => PULMONARY_FIBROSIS_CRITERIA.ratings;
+export const getAllSarcoidosisRatings = () => SARCOIDOSIS_CRITERIA.ratings;
+
 
 
 
@@ -25634,6 +26486,9 @@ export const getCirrhosisDefinition = (term) => CIRRHOSIS_CRITERIA.definitions[t
 export const getGastritisDefinition = (term) => GASTRITIS_CRITERIA.definitions[term] || null;
 export const getPancreatitisDefinition = (term) => PANCREATITIS_CRITERIA.definitions[term] || null;
 export const getBiliaryTractDefinition = (term) => BILIARY_TRACT_CRITERIA.definitions[term] || null;
+export const getBronchiectasisDefinition = (term) => BRONCHIECTASIS_CRITERIA.definitions[term] || null;
+export const getPulmonaryFibrosisDefinition = (term) => PULMONARY_FIBROSIS_CRITERIA.definitions[term] || null;
+export const getSarcoidosisDefinition = (term) => SARCOIDOSIS_CRITERIA.definitions[term] || null;
 
 
 

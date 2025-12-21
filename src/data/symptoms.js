@@ -1452,6 +1452,61 @@ export const symptomCategories = [
       { id: 'biliary-attack', name: 'Biliary - Acute Attack Episode' },
     ]
   },
+  // Phase 11: Bronchiectasis (DC 6601)
+  {
+    id: 'bronchiectasis',
+    name: 'Bronchiectasis Symptoms',
+    symptoms: [
+      { id: 'bronchiectasis-cough', name: 'Bronchiectasis - Chronic Cough' },
+      { id: 'bronchiectasis-sputum', name: 'Bronchiectasis - Daily Sputum Production' },
+      { id: 'bronchiectasis-purulent-sputum', name: 'Bronchiectasis - Purulent Sputum' },
+      { id: 'bronchiectasis-hemoptysis', name: 'Bronchiectasis - Hemoptysis (Blood in Sputum)' },
+      { id: 'bronchiectasis-infection', name: 'Bronchiectasis - Respiratory Infection Episode' },
+      { id: 'bronchiectasis-incapacitating', name: 'Bronchiectasis - Incapacitating Episode' },
+      { id: 'bronchiectasis-antibiotic', name: 'Bronchiectasis - Antibiotic Course' },
+      { id: 'bronchiectasis-shortness-breath', name: 'Bronchiectasis - Shortness of Breath' },
+      { id: 'bronchiectasis-fatigue', name: 'Bronchiectasis - Fatigue' },
+      { id: 'bronchiectasis-weight-loss', name: 'Bronchiectasis - Weight Loss' },
+      { id: 'bronchiectasis-anorexia', name: 'Bronchiectasis - Loss of Appetite' },
+    ]
+  },
+  // Phase 11: Pulmonary Fibrosis / Interstitial Lung Disease (DC 6825)
+  {
+    id: 'pulmonary-fibrosis',
+    name: 'Pulmonary Fibrosis Symptoms',
+    symptoms: [
+      { id: 'pf-shortness-breath', name: 'Pulmonary Fibrosis - Shortness of Breath' },
+      { id: 'pf-dry-cough', name: 'Pulmonary Fibrosis - Dry Cough' },
+      { id: 'pf-fatigue', name: 'Pulmonary Fibrosis - Fatigue' },
+      { id: 'pf-exercise-intolerance', name: 'Pulmonary Fibrosis - Exercise Intolerance' },
+      { id: 'pf-oxygen-use', name: 'Pulmonary Fibrosis - Supplemental Oxygen Use' },
+      { id: 'pf-clubbing', name: 'Pulmonary Fibrosis - Finger Clubbing' },
+      { id: 'pf-weight-loss', name: 'Pulmonary Fibrosis - Unexplained Weight Loss' },
+      { id: 'pf-chest-discomfort', name: 'Pulmonary Fibrosis - Chest Discomfort' },
+      { id: 'pf-exacerbation', name: 'Pulmonary Fibrosis - Acute Exacerbation' },
+      { id: 'pf-hospitalization', name: 'Pulmonary Fibrosis - Hospitalization' },
+    ]
+  },
+  // Phase 11: Sarcoidosis (DC 6846)
+  {
+    id: 'sarcoidosis',
+    name: 'Sarcoidosis Symptoms',
+    symptoms: [
+      { id: 'sarcoid-shortness-breath', name: 'Sarcoidosis - Shortness of Breath' },
+      { id: 'sarcoid-cough', name: 'Sarcoidosis - Dry Cough' },
+      { id: 'sarcoid-chest-pain', name: 'Sarcoidosis - Chest Pain/Discomfort' },
+      { id: 'sarcoid-fatigue', name: 'Sarcoidosis - Fatigue' },
+      { id: 'sarcoid-fever', name: 'Sarcoidosis - Fever' },
+      { id: 'sarcoid-night-sweats', name: 'Sarcoidosis - Night Sweats' },
+      { id: 'sarcoid-weight-loss', name: 'Sarcoidosis - Weight Loss' },
+      { id: 'sarcoid-skin-lesions', name: 'Sarcoidosis - Skin Lesions/Rash' },
+      { id: 'sarcoid-eye-symptoms', name: 'Sarcoidosis - Eye Symptoms (Uveitis)' },
+      { id: 'sarcoid-joint-pain', name: 'Sarcoidosis - Joint Pain/Swelling' },
+      { id: 'sarcoid-lymph-nodes', name: 'Sarcoidosis - Swollen Lymph Nodes' },
+      { id: 'sarcoid-cardiac', name: 'Sarcoidosis - Cardiac Symptoms (Palpitations/Arrhythmia)' },
+      { id: 'sarcoid-corticosteroid', name: 'Sarcoidosis - Corticosteroid Use' },
+    ]
+  },
 ];
 
 // Helper function to determine if a category is a "child" of another
@@ -1477,6 +1532,9 @@ const getParentCategory = (categoryName) => {
   if (name.includes('copd')) return 'copd';
   if (name.includes('bronchitis')) return 'chronic-bronchitis';
   if (name.includes('emphysema')) return 'emphysema';
+  if (name.includes('bronchiectasis')) return 'bronchiectasis';
+  if (name.includes('pulmonary fibrosis') || name.includes('interstitial')) return 'pulmonary-fibrosis';
+  if (name.includes('sarcoidosis')) return 'sarcoidosis';
   if (name.includes('rhinitis')) return 'rhinitis';
   if (name.includes('sinusitis')) return 'sinusitis';
   if (name.includes('gynecological')) return 'gynecological';

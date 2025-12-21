@@ -308,6 +308,49 @@ const SymptomHistory = ({ onCopyLog }) => {
                                   </div>
                               )}
 
+                              {/* Respiratory Details */}
+                              {log.respiratoryData && (
+                                  <div className="bg-sky-50 dark:bg-sky-900/30 rounded-lg p-3 mb-2 text-sm">
+                                    <div className="flex flex-wrap gap-2 mb-2">
+                                      {log.respiratoryData.spo2 && (
+                                          <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                                              parseInt(log.respiratoryData.spo2) < 90
+                                                  ? 'bg-red-200 dark:bg-red-900 text-red-800 dark:text-red-200'
+                                                  : parseInt(log.respiratoryData.spo2) < 95
+                                                      ? 'bg-yellow-200 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200'
+                                                      : 'bg-green-200 dark:bg-green-900 text-green-800 dark:text-green-200'
+                                          }`}>
+                                            SpO₂: {log.respiratoryData.spo2}%
+                                          </span>
+                                      )}
+                                      {log.respiratoryData.peakFlow && (
+                                          <span className="px-2 py-1 bg-sky-200 dark:bg-sky-800 text-sky-800 dark:text-sky-200 rounded-full text-xs">
+                                            Peak Flow: {log.respiratoryData.peakFlow} L/min
+                                          </span>
+                                      )}
+                                      {log.respiratoryData.rescueInhalerUsed === true && (
+                                          <span className="px-2 py-1 bg-orange-200 dark:bg-orange-800 text-orange-800 dark:text-orange-200 rounded-full text-xs">
+                                            🚨 Rescue Inhaler{log.respiratoryData.inhalerPuffs ? `: ${log.respiratoryData.inhalerPuffs} puffs` : ''}
+                                          </span>
+                                      )}
+                                      {log.respiratoryData.activityTrigger && (
+                                          <span className="px-2 py-1 bg-sky-200 dark:bg-sky-800 text-sky-800 dark:text-sky-200 rounded-full text-xs">
+                                            Trigger: {log.respiratoryData.activityTrigger === 'rest' ? 'At rest' :
+                                              log.respiratoryData.activityTrigger === 'mild' ? 'Mild exertion' :
+                                                  log.respiratoryData.activityTrigger === 'moderate' ? 'Moderate exertion' :
+                                                      log.respiratoryData.activityTrigger === 'severe' ? 'Severe exertion' :
+                                                          log.respiratoryData.activityTrigger}
+                                          </span>
+                                      )}
+                                    </div>
+                                    <div className="flex flex-wrap gap-1 text-xs text-sky-700 dark:text-sky-300">
+                                      {log.respiratoryData.wheezing && <span>• Wheezing</span>}
+                                      {log.respiratoryData.chestTightness && <span>• Chest tightness</span>}
+                                      {log.respiratoryData.coughing && <span>• Coughing</span>}
+                                    </div>
+                                  </div>
+                              )}
+
                               {/* Migraine Details */}
                               {log.migraineData && (
                                   <div className="bg-purple-50 dark:bg-purple-900/30 rounded-lg p-3 mb-2 text-sm">
@@ -2105,6 +2148,8 @@ const SymptomHistory = ({ onCopyLog }) => {
                                     </div>
                                   </div>
                               )}
+
+
 
                               {log.notes && (
                                   <p className="text-sm text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-700 p-2 rounded">{log.notes}</p>

@@ -1438,6 +1438,8 @@ export const generateCSV = (dateRange = 'all', options = { includeAppointments: 
         'Medications Taken',
         // GI fields
         'Bristol Scale', 'GI Frequency', 'Urgency', 'Blood Present', 'Bloating', 'GI Pain Location', 'Meal Related', 'Nighttime GI',
+        // Phase 11: Respiratory fields
+        'SpO2 %', 'Peak Flow (L/min)', 'Rescue Inhaler Used', 'Inhaler Puffs', 'Activity Trigger', 'Wheezing', 'Chest Tightness', 'Coughing',
         // Migraine fields
         'Prostrating', 'Migraine Duration', 'Associated Symptoms', 'Triggers',
         // Sleep fields
@@ -1604,6 +1606,15 @@ export const generateCSV = (dateRange = 'all', options = { includeAppointments: 
             log.giData?.abdominalPainLocation ? formatPainLocation(log.giData.abdominalPainLocation) : '',
             log.giData?.mealRelated ? 'Yes' : '',
             log.giData?.nighttimeSymptoms ? 'Yes' : '',
+            // Phase 11: Respiratory fields
+            log.respiratoryData?.spo2 || '',
+            log.respiratoryData?.peakFlow || '',
+            log.respiratoryData?.rescueInhalerUsed === true ? 'Yes' : (log.respiratoryData?.rescueInhalerUsed === false ? 'No' : ''),
+            log.respiratoryData?.inhalerPuffs || '',
+            log.respiratoryData?.activityTrigger || '',
+            log.respiratoryData?.wheezing ? 'Yes' : '',
+            log.respiratoryData?.chestTightness ? 'Yes' : '',
+            log.respiratoryData?.coughing ? 'Yes' : '',
             // Migraine fields
             log.migraineData?.prostrating ? 'Yes' : (log.migraineData?.prostrating === false ? 'No' : ''),
             log.migraineData?.duration ? formatDuration(log.migraineData.duration) : '',
@@ -2614,6 +2625,21 @@ export const generateVAClaimPackagePDF = async (dateRange = 'all', options = {})
           if (log.giData.nighttimeSymptoms) giInfo.push('Nighttime');
           if (giInfo.length > 0) {
             notes = giInfo.join(', ') + (notes !== '-' ? ` | ${notes}` : '');
+          }
+        }
+
+        // Phase 11: Add respiratory details
+        if (log.respiratoryData) {
+          const respInfo = [];
+          if (log.respiratoryData.spo2) respInfo.push(`SpO₂: ${log.respiratoryData.spo2}%`);
+          if (log.respiratoryData.peakFlow) respInfo.push(`Peak Flow: ${log.respiratoryData.peakFlow} L/min`);
+          if (log.respiratoryData.rescueInhalerUsed) respInfo.push(`RESCUE INHALER${log.respiratoryData.inhalerPuffs ? ` (${log.respiratoryData.inhalerPuffs} puffs)` : ''}`);
+          if (log.respiratoryData.activityTrigger) respInfo.push(`Trigger: ${log.respiratoryData.activityTrigger}`);
+          if (log.respiratoryData.wheezing) respInfo.push('Wheezing');
+          if (log.respiratoryData.chestTightness) respInfo.push('Chest tightness');
+          if (log.respiratoryData.coughing) respInfo.push('Coughing');
+          if (respInfo.length > 0) {
+            notes = respInfo.join(', ') + (notes !== '-' ? ` | ${notes}` : '');
           }
         }
 
