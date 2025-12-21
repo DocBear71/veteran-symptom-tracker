@@ -1930,6 +1930,182 @@ const SymptomHistory = ({ onCopyLog }) => {
                                   </div>
                               )}
 
+                              {/* Phase 9: Cardiovascular Data Display */}
+                              {log.cardiovascularData && (
+                                  <div className="flex flex-wrap gap-1 mt-1">
+                                    {log.cardiovascularData.activityLevel && (
+                                        <span className="px-2 py-0.5 bg-rose-100 dark:bg-rose-900/30 text-rose-700 dark:text-rose-300 rounded text-xs">
+                                  METs: {log.cardiovascularData.activityLevel === 'greater-than-10' ? '>10' :
+                                            log.cardiovascularData.activityLevel === 'less-than-1' ? '<1' :
+                                                log.cardiovascularData.activityLevel}
+                                </span>
+                                    )}
+                                    {log.cardiovascularData.atRest && (
+                                        <span className="px-2 py-0.5 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 rounded text-xs">
+                                  At rest
+                                </span>
+                                    )}
+                                    {log.cardiovascularData.withExertion && (
+                                        <span className="px-2 py-0.5 bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 rounded text-xs">
+                                  With exertion
+                                </span>
+                                    )}
+                                    {log.cardiovascularData.treatmentRequired && log.cardiovascularData.treatmentRequired !== 'none' && (
+                                        <span className="px-2 py-0.5 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded text-xs">
+                                  Tx: {log.cardiovascularData.treatmentRequired}
+                                </span>
+                                    )}
+                                    {log.cardiovascularData.hospitalized && (
+                                        <span className="px-2 py-0.5 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 rounded text-xs">
+                                  Hospitalized
+                                </span>
+                                    )}
+                                    {log.cardiovascularData.hasAICD && (
+                                        <span className="px-2 py-0.5 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 rounded text-xs">
+                                  AICD
+                                </span>
+                                    )}
+                                    {log.cardiovascularData.aicdShockDelivered && (
+                                        <span className="px-2 py-0.5 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 rounded text-xs">
+                                  AICD Shock
+                                </span>
+                                    )}
+                                    {log.cardiovascularData.activeInfection && (
+                                        <span className="px-2 py-0.5 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 rounded text-xs">
+                                  Active infection
+                                </span>
+                                    )}
+                                    {log.cardiovascularData.painWorseWithBreathing && (
+                                        <span className="px-2 py-0.5 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 rounded text-xs">
+                                  Worse w/ breathing
+                                </span>
+                                    )}
+                                    {log.cardiovascularData.painReliefLeaningForward && (
+                                        <span className="px-2 py-0.5 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded text-xs">
+                                  Relief leaning forward
+                                </span>
+                                    )}
+                                    {log.cardiovascularData.affectedLeg && (
+                                        <span className="px-2 py-0.5 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded text-xs">
+                                  {log.cardiovascularData.affectedLeg === 'left' ? 'Left leg' :
+                                      log.cardiovascularData.affectedLeg === 'right' ? 'Right leg' : 'Both legs'}
+                                </span>
+                                    )}
+                                    {log.cardiovascularData.compressionUsed && (
+                                        <span className="px-2 py-0.5 bg-teal-100 dark:bg-teal-900/30 text-teal-700 dark:text-teal-300 rounded text-xs">
+                                  Compression
+                                </span>
+                                    )}
+                                    {log.cardiovascularData.elevationHelps && (
+                                        <span className="px-2 py-0.5 bg-teal-100 dark:bg-teal-900/30 text-teal-700 dark:text-teal-300 rounded text-xs">
+                                  Elevation helps
+                                </span>
+                                    )}
+                                  </div>
+                              )}
+
+                              {/* Phase 10: Digestive Details */}
+                              {log.digestiveData && (
+                                  <div className="bg-amber-50 dark:bg-amber-900/30 rounded-lg p-3 mb-2 text-sm">
+                                    <div className="flex items-center gap-2 mb-2">
+                                      <span className="text-amber-600 dark:text-amber-400">🫁</span>
+                                      <span className="font-semibold text-amber-800 dark:text-amber-200">Digestive Details</span>
+                                    </div>
+                                    <div className="flex flex-wrap gap-2">
+                                      {/* Cirrhosis fields */}
+                                      {log.digestiveData.hasAscites && (
+                                          <span className="px-2 py-1 bg-amber-200 dark:bg-amber-800 text-amber-800 dark:text-amber-200 rounded-full text-xs">
+                                            Ascites{log.digestiveData.ascitesSeverity ? ` (${log.digestiveData.ascitesSeverity})` : ''}
+                                          </span>
+                                      )}
+                                      {log.digestiveData.hasEncephalopathy && (
+                                          <span className="px-2 py-1 bg-red-200 dark:bg-red-800 text-red-800 dark:text-red-200 rounded-full text-xs">
+                                            🧠 Encephalopathy
+                                          </span>
+                                      )}
+                                      {log.digestiveData.hasVaricealBleed && (
+                                          <span className="px-2 py-1 bg-red-300 dark:bg-red-700 text-red-800 dark:text-red-200 rounded-full text-xs">
+                                            🩸 Variceal bleed
+                                          </span>
+                                      )}
+                                      {log.digestiveData.onLactulose && (
+                                          <span className="px-2 py-1 bg-amber-200 dark:bg-amber-800 text-amber-800 dark:text-amber-200 rounded-full text-xs">
+                                            💊 On lactulose
+                                          </span>
+                                      )}
+                                      {log.digestiveData.onDiuretics && (
+                                          <span className="px-2 py-1 bg-amber-200 dark:bg-amber-800 text-amber-800 dark:text-amber-200 rounded-full text-xs">
+                                            💊 On diuretics
+                                          </span>
+                                      )}
+                                      {/* Gastritis fields */}
+                                      {log.digestiveData.episodeDuration && (
+                                          <span className="px-2 py-1 bg-amber-200 dark:bg-amber-800 text-amber-800 dark:text-amber-200 rounded-full text-xs">
+                                            Episode: {log.digestiveData.episodeDuration} days
+                                          </span>
+                                      )}
+                                      {log.digestiveData.onDailyMedication && (
+                                          <span className="px-2 py-1 bg-amber-200 dark:bg-amber-800 text-amber-800 dark:text-amber-200 rounded-full text-xs">
+                                            💊 Daily medication{log.digestiveData.medicationType ? ` (${log.digestiveData.medicationType})` : ''}
+                                          </span>
+                                      )}
+                                      {log.digestiveData.hasGIBleeding && (
+                                          <span className="px-2 py-1 bg-red-300 dark:bg-red-700 text-red-800 dark:text-red-200 rounded-full text-xs">
+                                            🩸 GI bleeding
+                                          </span>
+                                      )}
+                                      {/* Pancreatitis fields */}
+                                      {log.digestiveData.painLocation && (
+                                          <span className="px-2 py-1 bg-amber-200 dark:bg-amber-800 text-amber-800 dark:text-amber-200 rounded-full text-xs">
+                                            Pain: {log.digestiveData.painLocation}
+                                          </span>
+                                      )}
+                                      {log.digestiveData.onEnzymes && (
+                                          <span className="px-2 py-1 bg-amber-200 dark:bg-amber-800 text-amber-800 dark:text-amber-200 rounded-full text-xs">
+                                            💊 On enzymes
+                                          </span>
+                                      )}
+                                      {log.digestiveData.hasMaldigestion && (
+                                          <span className="px-2 py-1 bg-amber-200 dark:bg-amber-800 text-amber-800 dark:text-amber-200 rounded-full text-xs">
+                                            Maldigestion
+                                          </span>
+                                      )}
+                                      {log.digestiveData.hasDietaryRestriction && (
+                                          <span className="px-2 py-1 bg-amber-200 dark:bg-amber-800 text-amber-800 dark:text-amber-200 rounded-full text-xs">
+                                            🍽️ Diet restriction{log.digestiveData.dietaryRestrictionType ? ` (${log.digestiveData.dietaryRestrictionType})` : ''}
+                                          </span>
+                                      )}
+                                      {/* Biliary fields */}
+                                      {log.digestiveData.attackWithNausea && log.digestiveData.attackWithVomiting && (
+                                          <span className="px-2 py-1 bg-green-200 dark:bg-green-800 text-green-800 dark:text-green-200 rounded-full text-xs">
+                                            ✓ Attack with N/V (documented)
+                                          </span>
+                                      )}
+                                      {log.digestiveData.attackWithNausea && !log.digestiveData.attackWithVomiting && (
+                                          <span className="px-2 py-1 bg-amber-200 dark:bg-amber-800 text-amber-800 dark:text-amber-200 rounded-full text-xs">
+                                            Nausea
+                                          </span>
+                                      )}
+                                      {log.digestiveData.attackWithVomiting && !log.digestiveData.attackWithNausea && (
+                                          <span className="px-2 py-1 bg-amber-200 dark:bg-amber-800 text-amber-800 dark:text-amber-200 rounded-full text-xs">
+                                            Vomiting
+                                          </span>
+                                      )}
+                                      {log.digestiveData.hadStrictureDilation && (
+                                          <span className="px-2 py-1 bg-purple-200 dark:bg-purple-800 text-purple-800 dark:text-purple-200 rounded-full text-xs">
+                                            Stricture dilation
+                                          </span>
+                                      )}
+                                      {/* Common field */}
+                                      {log.digestiveData.hospitalized && (
+                                          <span className="px-2 py-1 bg-red-300 dark:bg-red-700 text-red-800 dark:text-red-200 rounded-full text-xs">
+                                            🏥 Hospitalized
+                                          </span>
+                                      )}
+                                    </div>
+                                  </div>
+                              )}
+
                               {log.notes && (
                                   <p className="text-sm text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-700 p-2 rounded">{log.notes}</p>
                               )}

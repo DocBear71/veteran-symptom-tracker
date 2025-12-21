@@ -120,6 +120,15 @@ import {
   analyzeBorderlinePersonalityDisorderLogs,
   analyzeNarcissisticPersonalityDisorderLogs,
   analyzeAvoidantPersonalityDisorderLogs,
+  analyzeCardiomyopathyLogs,
+  analyzeSVTLogs,
+  analyzeVentricularArrhythmiaLogs,
+  analyzePericarditisLogs,
+  analyzePostPhlebiticLogs,
+  analyzeCirrhosisLogs,
+  analyzeGastritisLogs,
+  analyzePancreatitisLogs,
+  analyzeBiliaryTractLogs,
   getAllMigraineRatings,
   getAllSleepApneaRatings,
   getAllPTSDRatings,
@@ -265,6 +274,14 @@ import ShigellaRatingCard from './ShigellaRatingCard';
 import WestNileRatingCard from './WestNileRatingCard';
 import NTMRatingCard from './NTMRatingCard';
 import Phase8BMentalHealthRatingCard from './Phase8BMentalHealthRatingCard';
+import CardiomyopathyRatingCard from './CardiomyopathyRatingCard.jsx';
+import ArrhythmiaRatingCard from './ArrhythmiaRatingCard.jsx';
+import PericarditisRatingCard from './PericarditisRatingCard.jsx';
+import PostPhlebiticRatingCard from './PostPhlebiticRatingCard.jsx';
+import CirrhosisRatingCard from './CirrhosisRatingCard';
+import GastritisRatingCard from './GastritisRatingCard';
+import PancreatitisRatingCard from './PancreatitisRatingCard';
+import BiliaryTractRatingCard from './BiliaryTractRatingCard';
 
 // Storage key for sleep apnea profile
 const SLEEP_APNEA_PROFILE_KEY = 'symptomTracker_sleepApneaProfile';
@@ -717,6 +734,35 @@ const RatingEvidence = () => {
   const avoidantPersonalityDisorderAnalysis = useMemo(() => {
     return analyzeAvoidantPersonalityDisorderLogs(logs, { evaluationPeriodDays: evaluationDays });
   }, [logs, evaluationDays]);
+  // Phase 9: Cardiovascular Analysis Hooks
+  const cardiomyopathyAnalysis = useMemo(() => {
+    return analyzeCardiomyopathyLogs(logs,{ evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  const svtAnalysis = useMemo(() => {
+    return analyzeSVTLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  const ventricularArrhythmiaAnalysis = useMemo(() => {
+    return analyzeVentricularArrhythmiaLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  const pericarditisAnalysis = useMemo(() => {
+    return analyzePericarditisLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  const postPhlebiticAnalysis = useMemo(() => {
+    return analyzePostPhlebiticLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  // Phase 10: Digestive Analysis Hooks
+  const cirrhosisAnalysis = useMemo(() => {
+    return analyzeCirrhosisLogs(logs, [], { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  const gastritisAnalysis = useMemo(() => {
+    return analyzeGastritisLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  const pancreatitisAnalysis = useMemo(() => {
+    return analyzePancreatitisLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  const biliaryTractAnalysis = useMemo(() => {
+    return analyzeBiliaryTractLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
 
 
   // Toggle section expansion
@@ -834,7 +880,16 @@ const RatingEvidence = () => {
         antisocialPersonalityDisorderAnalysis.hasData ||
         borderlinePersonalityDisorderAnalysis.hasData ||
         narcissisticPersonalityDisorderAnalysis.hasData ||
-        avoidantPersonalityDisorderAnalysis.hasData
+        avoidantPersonalityDisorderAnalysis.hasData ||
+        cardiomyopathyAnalysis.hasData ||
+        svtAnalysis.hasData ||
+        ventricularArrhythmiaAnalysis.hasData ||
+        pericarditisAnalysis.hasData ||
+        postPhlebiticAnalysis.hasData ||
+        cirrhosisAnalysis.hasData ||
+        gastritisAnalysis.hasData ||
+        pancreatitisAnalysis.hasData ||
+        biliaryTractAnalysis.hasData
     ;
 
     return (
@@ -1619,6 +1674,53 @@ const RatingEvidence = () => {
               analysis={avoidantPersonalityDisorderAnalysis}
               expanded={expandedSection === 'avoidant-personality-disorder'}
               onToggle={() => toggleSection('avoidant-personality-disorder')}
+          />
+          {/* Phase 9: Cardiovascular Rating Cards */}
+          <CardiomyopathyRatingCard
+              analysis={cardiomyopathyAnalysis}
+              expanded={expandedSection === 'cardiomyopathy'}
+              onToggle={() => toggleSection('cardiomyopathy')}
+          />
+          <ArrhythmiaRatingCard
+              analysis={svtAnalysis}
+              expanded={expandedSection === 'svt'}
+              onToggle={() => toggleSection('svt')}
+          />
+          <ArrhythmiaRatingCard
+              analysis={ventricularArrhythmiaAnalysis}
+              expanded={expandedSection === 'ventricular-arrhythmia'}
+              onToggle={() => toggleSection('ventricular-arrhythmia')}
+          />
+          <PericarditisRatingCard
+              analysis={pericarditisAnalysis}
+              expanded={expandedSection === 'pericarditis'}
+              onToggle={() => toggleSection('pericarditis')}
+          />
+          <PostPhlebiticRatingCard
+              analysis={postPhlebiticAnalysis}
+              expanded={expandedSection === 'post-phlebitic'}
+              onToggle={() => toggleSection('post-phlebitic')}
+          />
+          {/* Phase 10: Digestive Rating Cards */}
+          <CirrhosisRatingCard
+              analysis={cirrhosisAnalysis}
+              expanded={expandedSection === 'cirrhosis'}
+              onToggle={() => toggleSection('cirrhosis')}
+          />
+          <GastritisRatingCard
+              analysis={gastritisAnalysis}
+              expanded={expandedSection === 'gastritis'}
+              onToggle={() => toggleSection('gastritis')}
+          />
+          <PancreatitisRatingCard
+              analysis={pancreatitisAnalysis}
+              expanded={expandedSection === 'pancreatitis'}
+              onToggle={() => toggleSection('pancreatitis')}
+          />
+          <BiliaryTractRatingCard
+              analysis={biliaryTractAnalysis}
+              expanded={expandedSection === 'biliary-tract'}
+              onToggle={() => toggleSection('biliary-tract')}
           />
 
 

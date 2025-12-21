@@ -549,6 +549,54 @@ const EditLogModal = ({log, isOpen, onClose, onSaved}) => {
     socialImpact: false,
   });
 
+  // Phase 9: Cardiovascular data
+  const [cardiovascularData, setCardiovascularData] = useState({
+    activityLevel: '',
+    symptomTrigger: '',
+    symptomDuration: '',
+    atRest: false,
+    withExertion: false,
+    episodeType: '',
+    treatmentRequired: '',
+    hospitalized: false,
+    hasAICD: false,
+    aicdShockDelivered: false,
+    vagalManeuverUsed: false,
+    activeInfection: false,
+    painWorseWithBreathing: false,
+    painReliefLeaningForward: false,
+    affectedLeg: '',
+    compressionUsed: false,
+    elevationHelps: false,
+  });
+
+  // Phase 10: Digestive data
+  const [digestiveData, setDigestiveData] = useState({
+    hasMeldScore: false,
+    meldScore: '',
+    hasAscites: false,
+    ascitesSeverity: '',
+    hasEncephalopathy: false,
+    encephalopathyGrade: '',
+    hasVaricealBleed: false,
+    onLactulose: false,
+    onDiuretics: false,
+    episodeDuration: '',
+    onDailyMedication: false,
+    medicationType: '',
+    hasGIBleeding: false,
+    painLocation: '',
+    onEnzymes: false,
+    hasDietaryRestriction: false,
+    dietaryRestrictionType: '',
+    hasMaldigestion: false,
+    attackWithNausea: false,
+    attackWithVomiting: false,
+    hadStrictureDilation: false,
+    hospitalized: false,
+    hospitalizationReason: '',
+  });
+
   useEffect(() => {
           if (isOpen && log) {
             setSeverity(log.severity || 5);
@@ -975,6 +1023,59 @@ const EditLogModal = ({log, isOpen, onClose, onSaved}) => {
             }
             if (log.personalityData) {
               setPersonalityData(log.personalityData);
+            }
+            // Phase 9: Load cardiovascular data
+            if (log.cardiovascularData) {
+              setCardiovascularData(log.cardiovascularData);
+            } else {
+              setCardiovascularData({
+                activityLevel: '',
+                symptomTrigger: '',
+                atRest: false,
+                withExertion: false,
+                episodeType: '',
+                treatmentRequired: '',
+                hospitalized: false,
+                hasAICD: false,
+                aicdShockDelivered: false,
+                vagalManeuverUsed: false,
+                activeInfection: false,
+                painWorseWithBreathing: false,
+                painReliefLeaningForward: false,
+                affectedLeg: '',
+                compressionUsed: false,
+                elevationHelps: false,
+              });
+            }
+            // Phase 10: Load digestive data
+            if (log.digestiveData) {
+              setDigestiveData(log.digestiveData);
+            } else {
+              setDigestiveData({
+                hasMeldScore: false,
+                meldScore: '',
+                hasAscites: false,
+                ascitesSeverity: '',
+                hasEncephalopathy: false,
+                encephalopathyGrade: '',
+                hasVaricealBleed: false,
+                onLactulose: false,
+                onDiuretics: false,
+                episodeDuration: '',
+                onDailyMedication: false,
+                medicationType: '',
+                hasGIBleeding: false,
+                painLocation: '',
+                onEnzymes: false,
+                hasDietaryRestriction: false,
+                dietaryRestrictionType: '',
+                hasMaldigestion: false,
+                attackWithNausea: false,
+                attackWithVomiting: false,
+                hadStrictureDilation: false,
+                hospitalized: false,
+                hospitalizationReason: '',
+              });
             }
           }
   }, [isOpen, log]);
@@ -1474,6 +1575,29 @@ const EditLogModal = ({log, isOpen, onClose, onSaved}) => {
             isNarcissisticPersonalityRelated ||
             isAvoidantPersonalityRelated;
 
+        // Phase 9: Cardiovascular detection
+        const isCardiacRelated = log?.symptomId?.startsWith('cardiac-') ||
+            log?.symptomId?.startsWith('cardiomyopathy-');
+
+        const isArrhythmiaRelated = log?.symptomId?.startsWith('svt-') ||
+            log?.symptomId?.startsWith('ventricular-arrhythmia-') ||
+            log?.symptomId?.startsWith('arrhythmia-') ||
+            log?.symptomId?.startsWith('aicd-');
+
+        const isPericarditisRelated = log?.symptomId?.startsWith('pericarditis-');
+
+        const isPostPhlebiticRelated = log?.symptomId?.startsWith('post-phlebitic-');
+
+        const isCardiovascularRelated = isCardiacRelated || isArrhythmiaRelated ||
+            isPericarditisRelated || isPostPhlebiticRelated;
+        // Phase 10: Digestive condition detection
+        const isCirrhosisRelated = log?.symptomId?.startsWith('cirrhosis-');
+        const isGastritisRelated = log?.symptomId?.startsWith('gastritis-');
+        const isPancreatitisRelated = log?.symptomId?.startsWith('pancreatitis-');
+        const isBiliaryRelated = log?.symptomId?.startsWith('biliary-');
+        const isDigestivePhase10Related = isCirrhosisRelated || isGastritisRelated ||
+            isPancreatitisRelated || isBiliaryRelated;
+
 
         const handleSave = () => {
           if (isMigraine && migraineData.prostrating === null) {
@@ -1561,6 +1685,14 @@ const EditLogModal = ({log, isOpen, onClose, onSaved}) => {
           }
           if (isAcuteStressRelated) updates.acuteStressData = { ...acuteStressData };
           if (isPersonalityDisorderRelated) updates.personalityData = { ...personalityData };
+          // Phase 9: Save cardiovascular data
+          if (isCardiovascularRelated) {
+            updates.cardiovascularData = { ...cardiovascularData };
+          }
+          // Phase 10: Save digestive data
+          if (isDigestivePhase10Related) {
+            updates.digestiveData = { ...digestiveData };
+          }
 
 
           const result = updateSymptomLog(log.id, updates);
@@ -8256,6 +8388,372 @@ const EditLogModal = ({log, isOpen, onClose, onSaved}) => {
                           />
                           <span className="text-sm text-gray-700 dark:text-gray-300">Impact on relationships</span>
                         </label>
+                      </div>
+                  )}
+
+                  {/* Phase 9: Cardiovascular Form */}
+                  {isCardiovascularRelated && (
+                      <div className="space-y-4 p-3 bg-red-50 dark:bg-red-900/20 rounded-lg">
+                        <h4 className="font-medium text-gray-900 dark:text-white">❤️ Cardiovascular Details</h4>
+
+                        {(isCardiacRelated || isPericarditisRelated) && (
+                            <>
+                              <div className="grid grid-cols-2 gap-2">
+                                <label className="flex items-center gap-2">
+                                  <input type="checkbox" checked={cardiovascularData.atRest}
+                                         onChange={(e) => setCardiovascularData(prev => ({...prev, atRest: e.target.checked}))}
+                                         className="rounded" />
+                                  <span className="text-sm text-gray-700 dark:text-gray-300">Symptoms at rest</span>
+                                </label>
+                                <label className="flex items-center gap-2">
+                                  <input type="checkbox" checked={cardiovascularData.withExertion}
+                                         onChange={(e) => setCardiovascularData(prev => ({...prev, withExertion: e.target.checked}))}
+                                         className="rounded" />
+                                  <span className="text-sm text-gray-700 dark:text-gray-300">Symptoms with exertion</span>
+                                </label>
+                              </div>
+                              <div>
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                  Activity level when symptoms occur
+                                </label>
+                                <select value={cardiovascularData.activityLevel}
+                                        onChange={(e) => setCardiovascularData(prev => ({...prev, activityLevel: e.target.value}))}
+                                        className="w-full p-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600">
+                                  <option value="">Select activity level...</option>
+                                  <option value="rest">At rest (eating, sitting)</option>
+                                  <option value="minimal">Minimal (dressing, walking in house)</option>
+                                  <option value="light">Light (light housework, 2-3 mph walk)</option>
+                                  <option value="moderate">Moderate (stairs, 4 mph walk)</option>
+                                  <option value="heavy">Heavy (heavy housework, cycling)</option>
+                                  <option value="vigorous">Vigorous (running, sports)</option>
+                                </select>
+                              </div>
+                            </>
+                        )}
+
+                        {isPericarditisRelated && (
+                            <div className="space-y-2 border-t border-red-200 dark:border-red-800 pt-3">
+                              <label className="flex items-center gap-2">
+                                <input type="checkbox" checked={cardiovascularData.activeInfection}
+                                       onChange={(e) => setCardiovascularData(prev => ({...prev, activeInfection: e.target.checked}))}
+                                       className="rounded" />
+                                <span className="text-sm text-gray-700 dark:text-gray-300">Active infection period</span>
+                              </label>
+                              <label className="flex items-center gap-2">
+                                <input type="checkbox" checked={cardiovascularData.painWorseWithBreathing}
+                                       onChange={(e) => setCardiovascularData(prev => ({...prev, painWorseWithBreathing: e.target.checked}))}
+                                       className="rounded" />
+                                <span className="text-sm text-gray-700 dark:text-gray-300">Pain worse with breathing</span>
+                              </label>
+                            </div>
+                        )}
+
+                        {isArrhythmiaRelated && (
+                            <div className="space-y-3 border-t border-red-200 dark:border-red-800 pt-3">
+                              <div>
+                                <label className="block text-sm text-gray-700 dark:text-gray-300 mb-1">Treatment required</label>
+                                <select value={cardiovascularData.treatmentRequired}
+                                        onChange={(e) => setCardiovascularData(prev => ({...prev, treatmentRequired: e.target.value}))}
+                                        className="w-full p-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600">
+                                  <option value="">Select treatment...</option>
+                                  <option value="none">No treatment needed</option>
+                                  <option value="vagal">Vagal maneuver</option>
+                                  <option value="oral">Oral medication</option>
+                                  <option value="iv">IV medication</option>
+                                  <option value="cardioversion">Cardioversion</option>
+                                  <option value="ablation">Ablation</option>
+                                </select>
+                              </div>
+                              <div className="grid grid-cols-2 gap-2">
+                                <label className="flex items-center gap-2">
+                                  <input type="checkbox" checked={cardiovascularData.hospitalized}
+                                         onChange={(e) => setCardiovascularData(prev => ({...prev, hospitalized: e.target.checked}))}
+                                         className="rounded" />
+                                  <span className="text-sm text-gray-700 dark:text-gray-300">Hospitalized</span>
+                                </label>
+                                <label className="flex items-center gap-2">
+                                  <input type="checkbox" checked={cardiovascularData.hasAICD}
+                                         onChange={(e) => setCardiovascularData(prev => ({...prev, hasAICD: e.target.checked}))}
+                                         className="rounded" />
+                                  <span className="text-sm text-gray-700 dark:text-gray-300">Has AICD</span>
+                                </label>
+                              </div>
+                            </div>
+                        )}
+
+                        {isPostPhlebiticRelated && (
+                            <div className="space-y-3 border-t border-red-200 dark:border-red-800 pt-3">
+                              <div>
+                                <label className="block text-sm text-gray-700 dark:text-gray-300 mb-1">Affected leg</label>
+                                <select value={cardiovascularData.affectedLeg}
+                                        onChange={(e) => setCardiovascularData(prev => ({...prev, affectedLeg: e.target.value}))}
+                                        className="w-full p-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600">
+                                  <option value="">Select leg...</option>
+                                  <option value="left">Left leg</option>
+                                  <option value="right">Right leg</option>
+                                  <option value="both">Both legs</option>
+                                </select>
+                              </div>
+                              <div className="grid grid-cols-2 gap-2">
+                                <label className="flex items-center gap-2">
+                                  <input type="checkbox" checked={cardiovascularData.compressionUsed}
+                                         onChange={(e) => setCardiovascularData(prev => ({...prev, compressionUsed: e.target.checked}))}
+                                         className="rounded" />
+                                  <span className="text-sm text-gray-700 dark:text-gray-300">Using compression</span>
+                                </label>
+                                <label className="flex items-center gap-2">
+                                  <input type="checkbox" checked={cardiovascularData.elevationHelps}
+                                         onChange={(e) => setCardiovascularData(prev => ({...prev, elevationHelps: e.target.checked}))}
+                                         className="rounded" />
+                                  <span className="text-sm text-gray-700 dark:text-gray-300">Elevation helps</span>
+                                </label>
+                              </div>
+                            </div>
+                        )}
+                      </div>
+                  )}
+
+                  {/* Phase 10: Digestive Form */}
+                  {isDigestivePhase10Related && (
+                      <div className="bg-amber-50 dark:bg-amber-900/20 p-4 rounded-lg border border-amber-200 dark:border-amber-800">
+                        <h4 className="font-medium text-amber-900 dark:text-amber-200 mb-3 flex items-center gap-2">
+                          🫁 Digestive Details
+                        </h4>
+
+                        {/* Cirrhosis specific */}
+                        {isCirrhosisRelated && (
+                            <div className="space-y-3 mb-3">
+                              <div className="grid grid-cols-2 gap-2">
+                                <label className="flex items-center gap-2">
+                                  <input
+                                      type="checkbox"
+                                      checked={digestiveData.hasAscites}
+                                      onChange={(e) => setDigestiveData(prev => ({
+                                        ...prev,
+                                        hasAscites: e.target.checked
+                                      }))}
+                                      className="rounded"
+                                  />
+                                  <span className="text-sm text-gray-700 dark:text-gray-300">Ascites present</span>
+                                </label>
+                                <label className="flex items-center gap-2">
+                                  <input
+                                      type="checkbox"
+                                      checked={digestiveData.hasEncephalopathy}
+                                      onChange={(e) => setDigestiveData(prev => ({
+                                        ...prev,
+                                        hasEncephalopathy: e.target.checked
+                                      }))}
+                                      className="rounded"
+                                  />
+                                  <span className="text-sm text-gray-700 dark:text-gray-300">Encephalopathy</span>
+                                </label>
+                                <label className="flex items-center gap-2">
+                                  <input
+                                      type="checkbox"
+                                      checked={digestiveData.hasVaricealBleed}
+                                      onChange={(e) => setDigestiveData(prev => ({
+                                        ...prev,
+                                        hasVaricealBleed: e.target.checked
+                                      }))}
+                                      className="rounded"
+                                  />
+                                  <span className="text-sm text-gray-700 dark:text-gray-300">Variceal bleeding</span>
+                                </label>
+                                <label className="flex items-center gap-2">
+                                  <input
+                                      type="checkbox"
+                                      checked={digestiveData.onLactulose}
+                                      onChange={(e) => setDigestiveData(prev => ({
+                                        ...prev,
+                                        onLactulose: e.target.checked
+                                      }))}
+                                      className="rounded"
+                                  />
+                                  <span className="text-sm text-gray-700 dark:text-gray-300">On lactulose</span>
+                                </label>
+                              </div>
+                              {digestiveData.hasAscites && (
+                                  <select
+                                      value={digestiveData.ascitesSeverity}
+                                      onChange={(e) => setDigestiveData(prev => ({
+                                        ...prev,
+                                        ascitesSeverity: e.target.value
+                                      }))}
+                                      className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600"
+                                  >
+                                    <option value="">Select ascites severity...</option>
+                                    <option value="mild">Mild</option>
+                                    <option value="moderate">Moderate</option>
+                                    <option value="severe">Severe (tense)</option>
+                                  </select>
+                              )}
+                            </div>
+                        )}
+
+                        {/* Gastritis specific */}
+                        {isGastritisRelated && (
+                            <div className="space-y-3 mb-3">
+                              <select
+                                  value={digestiveData.episodeDuration}
+                                  onChange={(e) => setDigestiveData(prev => ({
+                                    ...prev,
+                                    episodeDuration: e.target.value
+                                  }))}
+                                  className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600"
+                              >
+                                <option value="">Select episode duration...</option>
+                                <option value="1">1 day</option>
+                                <option value="2">2 days</option>
+                                <option value="3">3+ days (meets VA criteria)</option>
+                                <option value="4-7">4-7 days</option>
+                                <option value="7+">More than 7 days</option>
+                              </select>
+                              <div className="grid grid-cols-2 gap-2">
+                                <label className="flex items-center gap-2">
+                                  <input
+                                      type="checkbox"
+                                      checked={digestiveData.onDailyMedication}
+                                      onChange={(e) => setDigestiveData(prev => ({
+                                        ...prev,
+                                        onDailyMedication: e.target.checked
+                                      }))}
+                                      className="rounded"
+                                  />
+                                  <span className="text-sm text-gray-700 dark:text-gray-300">On daily medication</span>
+                                </label>
+                                <label className="flex items-center gap-2">
+                                  <input
+                                      type="checkbox"
+                                      checked={digestiveData.hasGIBleeding}
+                                      onChange={(e) => setDigestiveData(prev => ({
+                                        ...prev,
+                                        hasGIBleeding: e.target.checked
+                                      }))}
+                                      className="rounded"
+                                  />
+                                  <span className="text-sm text-gray-700 dark:text-gray-300">GI bleeding</span>
+                                </label>
+                              </div>
+                            </div>
+                        )}
+
+                        {/* Pancreatitis specific */}
+                        {isPancreatitisRelated && (
+                            <div className="space-y-3 mb-3">
+                              <select
+                                  value={digestiveData.painLocation}
+                                  onChange={(e) => setDigestiveData(prev => ({
+                                    ...prev,
+                                    painLocation: e.target.value
+                                  }))}
+                                  className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600"
+                              >
+                                <option value="">Select pain location...</option>
+                                <option value="epigastric">Epigastric</option>
+                                <option value="mid-back">Mid-back</option>
+                                <option value="both">Both</option>
+                              </select>
+                              <div className="grid grid-cols-2 gap-2">
+                                <label className="flex items-center gap-2">
+                                  <input
+                                      type="checkbox"
+                                      checked={digestiveData.onEnzymes}
+                                      onChange={(e) => setDigestiveData(prev => ({
+                                        ...prev,
+                                        onEnzymes: e.target.checked
+                                      }))}
+                                      className="rounded"
+                                  />
+                                  <span className="text-sm text-gray-700 dark:text-gray-300">On enzymes</span>
+                                </label>
+                                <label className="flex items-center gap-2">
+                                  <input
+                                      type="checkbox"
+                                      checked={digestiveData.hasMaldigestion}
+                                      onChange={(e) => setDigestiveData(prev => ({
+                                        ...prev,
+                                        hasMaldigestion: e.target.checked
+                                      }))}
+                                      className="rounded"
+                                  />
+                                  <span className="text-sm text-gray-700 dark:text-gray-300">Maldigestion</span>
+                                </label>
+                                <label className="flex items-center gap-2">
+                                  <input
+                                      type="checkbox"
+                                      checked={digestiveData.hasDietaryRestriction}
+                                      onChange={(e) => setDigestiveData(prev => ({
+                                        ...prev,
+                                        hasDietaryRestriction: e.target.checked
+                                      }))}
+                                      className="rounded"
+                                  />
+                                  <span className="text-sm text-gray-700 dark:text-gray-300">Dietary restriction</span>
+                                </label>
+                              </div>
+                            </div>
+                        )}
+
+                        {/* Biliary specific */}
+                        {isBiliaryRelated && (
+                            <div className="space-y-3 mb-3">
+                              <div className="grid grid-cols-2 gap-2">
+                                <label className="flex items-center gap-2">
+                                  <input
+                                      type="checkbox"
+                                      checked={digestiveData.attackWithNausea}
+                                      onChange={(e) => setDigestiveData(prev => ({
+                                        ...prev,
+                                        attackWithNausea: e.target.checked
+                                      }))}
+                                      className="rounded"
+                                  />
+                                  <span className="text-sm text-gray-700 dark:text-gray-300">Nausea with attack</span>
+                                </label>
+                                <label className="flex items-center gap-2">
+                                  <input
+                                      type="checkbox"
+                                      checked={digestiveData.attackWithVomiting}
+                                      onChange={(e) => setDigestiveData(prev => ({
+                                        ...prev,
+                                        attackWithVomiting: e.target.checked
+                                      }))}
+                                      className="rounded"
+                                  />
+                                  <span className="text-sm text-gray-700 dark:text-gray-300">Vomiting with attack</span>
+                                </label>
+                                <label className="flex items-center gap-2">
+                                  <input
+                                      type="checkbox"
+                                      checked={digestiveData.hadStrictureDilation}
+                                      onChange={(e) => setDigestiveData(prev => ({
+                                        ...prev,
+                                        hadStrictureDilation: e.target.checked
+                                      }))}
+                                      className="rounded"
+                                  />
+                                  <span className="text-sm text-gray-700 dark:text-gray-300">Had stricture dilation</span>
+                                </label>
+                              </div>
+                            </div>
+                        )}
+
+                        {/* Common hospitalization */}
+                        <div className="pt-2 border-t border-amber-200 dark:border-amber-700">
+                          <label className="flex items-center gap-2">
+                            <input
+                                type="checkbox"
+                                checked={digestiveData.hospitalized}
+                                onChange={(e) => setDigestiveData(prev => ({
+                                  ...prev,
+                                  hospitalized: e.target.checked
+                                }))}
+                                className="rounded"
+                            />
+                            <span className="text-sm text-gray-700 dark:text-gray-300">Hospitalized for this</span>
+                          </label>
+                        </div>
                       </div>
                   )}
 

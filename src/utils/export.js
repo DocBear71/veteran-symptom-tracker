@@ -9,111 +9,117 @@ import {
     generateHbA1cTrendChart
 } from './chartExport';
 import {
-    CONDITIONS,
-    analyzeMigraineLogs,
-    analyzeSleepApneaLogs,
-    analyzePTSDLogs,
-    analyzeMajorDepressionLogs,
-    analyzeGeneralizedAnxietyLogs,
-    analyzePanicDisorderLogs,
-    analyzeBipolarLogs,
-    analyzeLumbosacralStrainLogs,
-    analyzeIntervertebralDiscLogs,
-    analyzeKneeInstabilityLogs,
-    analyzeTBILogs,
-    analyzeHypertensionLogs,
-    analyzeDiabetesLogs,
-    analyzeIBSLogs,
-    analyzeGERDLogs,
-    analyzeRadiculopathyLogs,
-    analyzeChronicFatigueLogs,
-    analyzePeripheralNeuropathyLogs,
-    analyzeMenieresLogs,
-    analyzeRhinitisLogs,
-    analyzeTMJLogs,
-    analyzePlantarFasciitisLogs,
-    analyzeInsomniaLogs,
-    analyzeSinusitisLogs,
-    analyzeShoulderLogs,
-    analyzeHipLogs,
-    analyzeAnkleLogs,
-    analyzeWristLogs,
-    analyzeElbowLogs,
-    analyzeDegenerativeArthritisLogs,
-    analyzeTinnitusLogs,
-    analyzeFibromyalgiaLogs,
-    analyzeAsthmaLogs,
-    analyzeHearingLossLogs,
-    analyzeScarsLogs,
-    analyzePsoriasisLogs,
-    analyzeEczemaLogs,
-    analyzeTBIResidualsLogs,
-    analyzeGERDComplicationsLogs,
-    analyzeUlcerativeColitisLogs,
-    analyzePepticUlcerLogs,
-    analyzeHemorrhoidLogs,
-    analyzeDiverticulitisLogs,
-    analyzeHypothyroidismLogs,
-    analyzeRaynaudsLogs,
-    analyzeVaricoseVeinsLogs,
-    analyzeChronicUrticariaLogs,
-    analyzeSocialAnxietyLogs,
-    analyzeOCDLogs,
-    analyzePersistentDepressiveLogs,
-    analyzeAdjustmentDisorderLogs,
-    analyzeUnspecifiedAnxietyLogs,
-    analyzeUnspecifiedDepressiveLogs,
-    analyzeSomaticSymptomDisorderLogs,
-    analyzeOtherSpecifiedSomaticLogs,
-    analyzeUnspecifiedSomaticLogs,
-    analyzeIllnessAnxietyLogs,
-    analyzeOtherSpecifiedAnxietyLogs,
-    analyzeDepersonalizationLogs,
-    analyzeCyclothymicLogs,
-    analyzeAnorexiaNervosaLogs,
-    analyzeBulimiaNervosaLogs,
-    analyzeVisionLogs,
-    analyzeKidneyStonesLogs,
-    analyzeChronicRenalDiseaseLogs,
-    analyzeVoidingDysfunctionLogs,
-    analyzeSphincterImpairmentLogs,
-    analyzeErectileDysfunctionLogs,
-    analyzeEndometriosisLogs,
-    analyzeFemaleReproductiveOrgansLogs,
-    analyzePelvicProlapseLogs,
-    analyzeFemaleArousalDisorderLogs,
-    analyzeIronDeficiencyAnemiaLogs,
-    analyzeFolateDeficiencyAnemiaLogs,
-    analyzePerniciousAnemiaLogs,
-    analyzeHemolyticAnemiaLogs,
-    analyzeSickleCellAnemiaLogs,
-    analyzeAplasticAnemiaLogs,
-    analyzePolycythemiaVeraLogs,
-    analyzeImmuneThrombocytopeniaLogs,
-    analyzeLeukemiaLogs,
-    analyzeHodgkinsLymphomaLogs,
-    analyzeMultipleMyelomaLogs,
-    analyzeNonHodgkinsLymphomaLogs,
-    analyzeMyeloproliferative7718Logs,
-    analyzeChronicMyelogenousLeukemiaLogs,
-    analyzeSolitaryPlasmacytomaLogs,
-    analyzeMyelodysplasticSyndromesLogs,
-    analyzeToothLossLogs,
-    analyzeMandibleNonunionLogs,
-    analyzeMalignantOralNeoplasmLogs,
-    analyzeBenignOralNeoplasmLogs,
-    analyzeHIVLogs,
-    analyzeHepatitisCLogs,
-    analyzeHepatitisBLogs,
-    analyzeLymeDiseaseLogs,
-    analyzeMalariaLogs,
-    analyzeBrucellosisLogs,
-    analyzeCampylobacterLogs,
-    analyzeQFeverLogs,
-    analyzeSalmonellaLogs,
-    analyzeShigellaLogs,
-    analyzeWestNileLogs,
-    analyzeNTMLogs,
+  CONDITIONS,
+  analyzeMigraineLogs,
+  analyzeSleepApneaLogs,
+  analyzePTSDLogs,
+  analyzeMajorDepressionLogs,
+  analyzeGeneralizedAnxietyLogs,
+  analyzePanicDisorderLogs,
+  analyzeBipolarLogs,
+  analyzeLumbosacralStrainLogs,
+  analyzeIntervertebralDiscLogs,
+  analyzeKneeInstabilityLogs,
+  analyzeTBILogs,
+  analyzeHypertensionLogs,
+  analyzeDiabetesLogs,
+  analyzeIBSLogs,
+  analyzeGERDLogs,
+  analyzeRadiculopathyLogs,
+  analyzeChronicFatigueLogs,
+  analyzePeripheralNeuropathyLogs,
+  analyzeMenieresLogs,
+  analyzeRhinitisLogs,
+  analyzeTMJLogs,
+  analyzePlantarFasciitisLogs,
+  analyzeInsomniaLogs,
+  analyzeSinusitisLogs,
+  analyzeShoulderLogs,
+  analyzeHipLogs,
+  analyzeAnkleLogs,
+  analyzeWristLogs,
+  analyzeElbowLogs,
+  analyzeDegenerativeArthritisLogs,
+  analyzeTinnitusLogs,
+  analyzeFibromyalgiaLogs,
+  analyzeAsthmaLogs,
+  analyzeHearingLossLogs,
+  analyzeScarsLogs,
+  analyzePsoriasisLogs,
+  analyzeEczemaLogs,
+  analyzeTBIResidualsLogs,
+  analyzeGERDComplicationsLogs,
+  analyzeUlcerativeColitisLogs,
+  analyzePepticUlcerLogs,
+  analyzeHemorrhoidLogs,
+  analyzeDiverticulitisLogs,
+  analyzeHypothyroidismLogs,
+  analyzeRaynaudsLogs,
+  analyzeVaricoseVeinsLogs,
+  analyzeChronicUrticariaLogs,
+  analyzeSocialAnxietyLogs,
+  analyzeOCDLogs,
+  analyzePersistentDepressiveLogs,
+  analyzeAdjustmentDisorderLogs,
+  analyzeUnspecifiedAnxietyLogs,
+  analyzeUnspecifiedDepressiveLogs,
+  analyzeSomaticSymptomDisorderLogs,
+  analyzeOtherSpecifiedSomaticLogs,
+  analyzeUnspecifiedSomaticLogs,
+  analyzeIllnessAnxietyLogs,
+  analyzeOtherSpecifiedAnxietyLogs,
+  analyzeDepersonalizationLogs,
+  analyzeCyclothymicLogs,
+  analyzeAnorexiaNervosaLogs,
+  analyzeBulimiaNervosaLogs,
+  analyzeVisionLogs,
+  analyzeKidneyStonesLogs,
+  analyzeChronicRenalDiseaseLogs,
+  analyzeVoidingDysfunctionLogs,
+  analyzeSphincterImpairmentLogs,
+  analyzeErectileDysfunctionLogs,
+  analyzeEndometriosisLogs,
+  analyzeFemaleReproductiveOrgansLogs,
+  analyzePelvicProlapseLogs,
+  analyzeFemaleArousalDisorderLogs,
+  analyzeIronDeficiencyAnemiaLogs,
+  analyzeFolateDeficiencyAnemiaLogs,
+  analyzePerniciousAnemiaLogs,
+  analyzeHemolyticAnemiaLogs,
+  analyzeSickleCellAnemiaLogs,
+  analyzeAplasticAnemiaLogs,
+  analyzePolycythemiaVeraLogs,
+  analyzeImmuneThrombocytopeniaLogs,
+  analyzeLeukemiaLogs,
+  analyzeHodgkinsLymphomaLogs,
+  analyzeMultipleMyelomaLogs,
+  analyzeNonHodgkinsLymphomaLogs,
+  analyzeMyeloproliferative7718Logs,
+  analyzeChronicMyelogenousLeukemiaLogs,
+  analyzeSolitaryPlasmacytomaLogs,
+  analyzeMyelodysplasticSyndromesLogs,
+  analyzeToothLossLogs,
+  analyzeMandibleNonunionLogs,
+  analyzeMalignantOralNeoplasmLogs,
+  analyzeBenignOralNeoplasmLogs,
+  analyzeHIVLogs,
+  analyzeHepatitisCLogs,
+  analyzeHepatitisBLogs,
+  analyzeLymeDiseaseLogs,
+  analyzeMalariaLogs,
+  analyzeBrucellosisLogs,
+  analyzeCampylobacterLogs,
+  analyzeQFeverLogs,
+  analyzeSalmonellaLogs,
+  analyzeShigellaLogs,
+  analyzeWestNileLogs,
+  analyzeNTMLogs,
+  analyzeCardiomyopathyLogs,
+  analyzeSVTLogs,
+  analyzeVentricularArrhythmiaLogs,
+  analyzePericarditisLogs,
+  analyzePostPhlebiticLogs, analyzeCirrhosisLogs, analyzeGastritisLogs,
+  analyzePancreatitisLogs, analyzeBiliaryTractLogs,
 } from './ratingCriteria';
 
 // Appointment type labels for export
@@ -1236,7 +1242,75 @@ export const generatePDF = (dateRange = 'all', options = { includeAppointments: 
           }
         }
 
-        // Add medications
+        // Phase 9: Cardiovascular data extraction
+        if (log.cardiovascularData) {
+          const cvInfo = [];
+          const cv = log.cardiovascularData;
+
+          if (cv.activityLevel) {
+            const metsMap = {
+              'greater-than-10': '>10 METs',
+              '7-10': '7-10 METs',
+              '5-7': '5-7 METs',
+              '3-5': '3-5 METs',
+              '1-3': '1-3 METs',
+              'less-than-1': '<1 METs'
+            };
+            cvInfo.push(metsMap[cv.activityLevel] || cv.activityLevel);
+          }
+          if (cv.atRest) cvInfo.push('Symptoms at rest');
+          if (cv.withExertion) cvInfo.push('Symptoms with exertion');
+          if (cv.treatmentRequired && cv.treatmentRequired !== 'none') {
+            const treatmentMap = {
+              'vagal': 'Vagal maneuver',
+              'oral': 'Oral medication',
+              'iv': 'IV medication',
+              'cardioversion': 'Cardioversion',
+              'ablation': 'Ablation'
+            };
+            cvInfo.push(treatmentMap[cv.treatmentRequired] || cv.treatmentRequired);
+          }
+          if (cv.hospitalized) cvInfo.push('Hospitalized');
+          if (cv.hasAICD) cvInfo.push('AICD implanted');
+          if (cv.aicdShockDelivered) cvInfo.push('AICD shock delivered');
+          if (cv.activeInfection) cvInfo.push('Active infection');
+          if (cv.affectedLeg) {
+            const legMap = { 'left': 'Left leg', 'right': 'Right leg', 'both': 'Both legs' };
+            cvInfo.push(legMap[cv.affectedLeg] || cv.affectedLeg);
+          }
+          if (cv.compressionUsed) cvInfo.push('Compression therapy');
+
+          if (cvInfo.length > 0) {
+            notes = cvInfo.join(' | ') + (notes !== '-' ? ` | ${notes}` : '');
+          }
+        }
+
+        // Phase 10: Digestive Form
+        if (log.digestiveData) {
+          const dgInfo = [];
+          const dg = log.digestiveData;
+
+          if (dg.hasAscites) dgInfo.push(`Ascites${dg.ascitesSeverity ? ` (${dg.ascitesSeverity})` : ''}`);
+          if (dg.hasEncephalopathy) dgInfo.push('Encephalopathy');
+          if (dg.hasVaricealBleed) dgInfo.push('Variceal bleed');
+          if (dg.onLactulose) dgInfo.push('On lactulose');
+          if (dg.episodeDuration) dgInfo.push(`Episode: ${dg.episodeDuration} days`);
+          if (dg.onDailyMedication) dgInfo.push('Daily medication');
+          if (dg.hasGIBleeding) dgInfo.push('GI bleeding');
+          if (dg.onEnzymes) dgInfo.push('On enzymes');
+          if (dg.hasMaldigestion) dgInfo.push('Maldigestion');
+          if (dg.hasDietaryRestriction) dgInfo.push('Diet restriction');
+          if (dg.attackWithNausea && dg.attackWithVomiting) dgInfo.push('Attack with N/V');
+          if (dg.hadStrictureDilation) dgInfo.push('Stricture dilation');
+          if (dg.hospitalized) dgInfo.push('Hospitalized');
+
+          if (dgInfo.length > 0) {
+            notes = dgInfo.join(', ') + (notes !== '-' ? ` | ${notes}` : '');
+          }
+        }
+
+
+        // Add medications to the PDF file after all the symptoms
             if (linkedMeds.length > 0) {
                 const medInfo = linkedMeds.map(m => `${m.medicationName} ${m.dosage}`).join(', ');
                 notes = `Meds: ${medInfo}` + (notes !== '-' ? ` | ${notes}` : '');
@@ -1249,6 +1323,8 @@ export const generatePDF = (dateRange = 'all', options = { includeAppointments: 
             notes
         ];
       });
+
+
 
         autoTable(doc, {
             startY: currentY + 4,
@@ -1460,6 +1536,17 @@ export const generateCSV = (dateRange = 'all', options = { includeAppointments: 
         'Dissociative - Memory Gap', 'Dissociative - Lost Time', 'Dissociative - Duration',
         'Acute Stress - Trauma Date', 'Acute Stress - Dissociative Symptoms', 'Acute Stress - Avoidance',
         'Personality - Occupational Impact', 'Personality - Social Impact',
+        // Phase 9: Cardiovascular fields
+        'Cardiovascular - At Rest', 'Cardiovascular - With Exertion', 'Cardiovascular - Activity Level',
+        'Cardiovascular - Has AICD', 'Cardiovascular - AICD Shock', 'Cardiovascular - Hospitalized',
+        'Cardiovascular - Active Infection', 'Cardiovascular - Pain With Breathing',
+        'Cardiovascular - Affected Leg', 'Cardiovascular - Compression Used',
+        // Phase 10: Digestive fields
+        'Digestive - Has Ascites', 'Digestive - Ascites Severity', 'Digestive - Encephalopathy',
+        'Digestive - Variceal Bleed', 'Digestive - On Lactulose', 'Digestive - Episode Duration',
+        'Digestive - Daily Medication', 'Digestive - GI Bleeding', 'Digestive - On Enzymes',
+        'Digestive - Maldigestion', 'Digestive - Dietary Restriction', 'Digestive - Attack With Nausea',
+        'Digestive - Attack With Vomiting', 'Digestive - Stricture Dilation', 'Digestive - Hospitalized',
         // Notes
         'Notes'
       ];
@@ -1840,6 +1927,36 @@ export const generateCSV = (dateRange = 'all', options = { includeAppointments: 
             log.acuteStressData?.avoidance ? 'Yes' : '',
             log.personalityData?.occupationalImpact ? 'Yes' : '',
             log.personalityData?.socialImpact ? 'Yes' : '',
+            // Phase 9: Cardiovascular
+            log.cardiovascularData?.activityLevel || '',
+            log.cardiovascularData?.atRest ? 'Yes' : '',
+            log.cardiovascularData?.withExertion ? 'Yes' : '',
+            log.cardiovascularData?.treatmentRequired || '',
+            log.cardiovascularData?.hospitalized ? 'Yes' : '',
+            log.cardiovascularData?.hasAICD ? 'Yes' : '',
+            log.cardiovascularData?.aicdShockDelivered ? 'Yes' : '',
+            log.cardiovascularData?.activeInfection ? 'Yes' : '',
+            log.cardiovascularData?.painWorseWithBreathing ? 'Yes' : '',
+            log.cardiovascularData?.painReliefLeaningForward ? 'Yes' : '',
+            log.cardiovascularData?.affectedLeg || '',
+            log.cardiovascularData?.compressionUsed ? 'Yes' : '',
+            log.cardiovascularData?.elevationHelps ? 'Yes' : '',
+            // Phase 10: Digestive data
+            log.digestiveData?.hasAscites ? 'Yes' : '',
+            log.digestiveData?.ascitesSeverity || '',
+            log.digestiveData?.hasEncephalopathy ? 'Yes' : '',
+            log.digestiveData?.hasVaricealBleed ? 'Yes' : '',
+            log.digestiveData?.onLactulose ? 'Yes' : '',
+            log.digestiveData?.episodeDuration || '',
+            log.digestiveData?.onDailyMedication ? 'Yes' : '',
+            log.digestiveData?.hasGIBleeding ? 'Yes' : '',
+            log.digestiveData?.onEnzymes ? 'Yes' : '',
+            log.digestiveData?.hasMaldigestion ? 'Yes' : '',
+            log.digestiveData?.hasDietaryRestriction ? 'Yes' : '',
+            log.digestiveData?.attackWithNausea ? 'Yes' : '',
+            log.digestiveData?.attackWithVomiting ? 'Yes' : '',
+            log.digestiveData?.hadStrictureDilation ? 'Yes' : '',
+            log.digestiveData?.hospitalized ? 'Yes' : '',
             log.notes || ''
           ];
         });
@@ -2263,6 +2380,16 @@ const analyzeAllConditions = (logs, options = {}) => {
         'shigella': analyzeShigellaLogs,
         'west-nile': analyzeWestNileLogs,
         'ntm': analyzeNTMLogs,
+        // Phase 9: Cardiovascular
+        'cardiomyopathy': analyzeCardiomyopathyLogs,
+        'svt': analyzeSVTLogs,
+        'ventricular-arrhythmia': analyzeVentricularArrhythmiaLogs,
+        'pericarditis': analyzePericarditisLogs,
+        'post-phlebitic': analyzePostPhlebiticLogs,
+        'cirrhosis': analyzeCirrhosisLogs,
+        'gastritis': analyzeGastritisLogs,
+        'pancreatitis': analyzePancreatitisLogs,
+        'biliaryTract': analyzeBiliaryTractLogs,
       };
 
     const analyses = [];
@@ -3504,7 +3631,74 @@ export const generateVAClaimPackagePDF = async (dateRange = 'all', options = {})
           }
         }
 
-        // Add medications.
+        // Phase 9: Cardiovascular data extraction
+        if (log.cardiovascularData) {
+          const cvInfo = [];
+          const cv = log.cardiovascularData;
+
+          if (cv.activityLevel) {
+            const metsMap = {
+              'greater-than-10': '>10 METs',
+              '7-10': '7-10 METs',
+              '5-7': '5-7 METs',
+              '3-5': '3-5 METs',
+              '1-3': '1-3 METs',
+              'less-than-1': '<1 METs'
+            };
+            cvInfo.push(metsMap[cv.activityLevel] || cv.activityLevel);
+          }
+          if (cv.atRest) cvInfo.push('Symptoms at rest');
+          if (cv.withExertion) cvInfo.push('Symptoms with exertion');
+          if (cv.treatmentRequired && cv.treatmentRequired !== 'none') {
+            const treatmentMap = {
+              'vagal': 'Vagal maneuver',
+              'oral': 'Oral medication',
+              'iv': 'IV medication',
+              'cardioversion': 'Cardioversion',
+              'ablation': 'Ablation'
+            };
+            cvInfo.push(treatmentMap[cv.treatmentRequired] || cv.treatmentRequired);
+          }
+          if (cv.hospitalized) cvInfo.push('Hospitalized');
+          if (cv.hasAICD) cvInfo.push('AICD implanted');
+          if (cv.aicdShockDelivered) cvInfo.push('AICD shock delivered');
+          if (cv.activeInfection) cvInfo.push('Active infection');
+          if (cv.affectedLeg) {
+            const legMap = { 'left': 'Left leg', 'right': 'Right leg', 'both': 'Both legs' };
+            cvInfo.push(legMap[cv.affectedLeg] || cv.affectedLeg);
+          }
+          if (cv.compressionUsed) cvInfo.push('Compression therapy');
+
+          if (cvInfo.length > 0) {
+            notes = cvInfo.join(' | ') + (notes !== '-' ? ` | ${notes}` : '');
+          }
+        }
+
+        // Phase 10: Digestive Form
+        if (log.digestiveData) {
+          const dgInfo = [];
+          const dg = log.digestiveData;
+
+          if (dg.hasAscites) dgInfo.push(`Ascites${dg.ascitesSeverity ? ` (${dg.ascitesSeverity})` : ''}`);
+          if (dg.hasEncephalopathy) dgInfo.push('Encephalopathy');
+          if (dg.hasVaricealBleed) dgInfo.push('Variceal bleed');
+          if (dg.onLactulose) dgInfo.push('On lactulose');
+          if (dg.episodeDuration) dgInfo.push(`Episode: ${dg.episodeDuration} days`);
+          if (dg.onDailyMedication) dgInfo.push('Daily medication');
+          if (dg.hasGIBleeding) dgInfo.push('GI bleeding');
+          if (dg.onEnzymes) dgInfo.push('On enzymes');
+          if (dg.hasMaldigestion) dgInfo.push('Maldigestion');
+          if (dg.hasDietaryRestriction) dgInfo.push('Diet restriction');
+          if (dg.attackWithNausea && dg.attackWithVomiting) dgInfo.push('Attack with N/V');
+          if (dg.hadStrictureDilation) dgInfo.push('Stricture dilation');
+          if (dg.hospitalized) dgInfo.push('Hospitalized');
+
+          if (dgInfo.length > 0) {
+            notes = dgInfo.join(', ') + (notes !== '-' ? ` | ${notes}` : '');
+          }
+        }
+
+        // Add medications to the PDF after all the symptoms are completed.
             if (linkedMeds.length > 0) {
                 const medInfo = linkedMeds.map(m => `${m.medicationName} ${m.dosage}`).join(', ');
                 notes = `Meds: ${medInfo}` + (notes !== '-' ? ` | ${notes}` : '');

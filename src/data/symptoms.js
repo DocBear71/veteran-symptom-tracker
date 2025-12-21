@@ -1301,6 +1301,157 @@ export const symptomCategories = [
       { id: 'personality-disorder-social-impairment', name: 'Personality Disorder - Social Impairment', category: 'Personality Disorder Symptoms' },
     ]
   },
+  // Phase 9: Cardiovascular Conditions
+  {
+    id: 'heart-disease',
+    name: 'Heart Disease Symptoms (General)',
+    symptoms: [
+      // Heart failure symptoms (used for METs-based ratings)
+      { id: 'cardiac-breathlessness', name: 'Cardiac - Breathlessness/Dyspnea' },
+      { id: 'cardiac-fatigue', name: 'Cardiac - Fatigue with Exertion' },
+      { id: 'cardiac-angina', name: 'Cardiac - Chest Pain/Angina' },
+      { id: 'cardiac-dizziness', name: 'Cardiac - Dizziness' },
+      { id: 'cardiac-syncope', name: 'Cardiac - Syncope (Fainting)' },
+      { id: 'cardiac-palpitations', name: 'Cardiac - Palpitations' },
+      { id: 'cardiac-edema', name: 'Cardiac - Swelling/Edema (Ankles/Legs)' },
+      { id: 'cardiac-orthopnea', name: 'Cardiac - Difficulty Breathing Lying Down' },
+    ]
+  },
+  {
+    id: 'cardiomyopathy',
+    name: 'Cardiomyopathy Symptoms (DC 7020)',
+    symptoms: [
+      { id: 'cardiomyopathy-breathlessness', name: 'Cardiomyopathy - Breathlessness' },
+      { id: 'cardiomyopathy-fatigue', name: 'Cardiomyopathy - Fatigue' },
+      { id: 'cardiomyopathy-edema', name: 'Cardiomyopathy - Swelling/Edema' },
+      { id: 'cardiomyopathy-palpitations', name: 'Cardiomyopathy - Palpitations' },
+      { id: 'cardiomyopathy-chest-pain', name: 'Cardiomyopathy - Chest Discomfort' },
+      { id: 'cardiomyopathy-dizziness', name: 'Cardiomyopathy - Dizziness/Lightheadedness' },
+      { id: 'cardiomyopathy-syncope', name: 'Cardiomyopathy - Syncope (Fainting)' },
+      { id: 'cardiomyopathy-activity-limitation', name: 'Cardiomyopathy - Activity Limitation' },
+    ]
+  },
+  {
+    id: 'arrhythmia',
+    name: 'Arrhythmia Symptoms (DC 7010/7011)',
+    symptoms: [
+      // Supraventricular Tachycardia (SVT) - DC 7010
+      { id: 'svt-episode', name: 'SVT - Episode (Rapid Heartbeat)' },
+      { id: 'svt-treatment-iv', name: 'SVT - IV Medication Required' },
+      { id: 'svt-treatment-cardioversion', name: 'SVT - Cardioversion Required' },
+      { id: 'svt-treatment-ablation', name: 'SVT - Ablation Procedure' },
+      { id: 'svt-vagal-maneuver', name: 'SVT - Vagal Maneuver Used' },
+      { id: 'svt-oral-medication', name: 'SVT - Oral Medication for Control' },
+      // Ventricular Arrhythmias - DC 7011
+      { id: 'ventricular-arrhythmia-episode', name: 'Ventricular Arrhythmia - Episode' },
+      { id: 'ventricular-arrhythmia-hospitalization', name: 'Ventricular Arrhythmia - Hospitalization' },
+      { id: 'aicd-implant', name: 'AICD (Defibrillator) - Implanted' },
+      { id: 'aicd-shock', name: 'AICD - Shock Delivered' },
+      // General arrhythmia symptoms
+      { id: 'arrhythmia-palpitations', name: 'Arrhythmia - Palpitations' },
+      { id: 'arrhythmia-racing-heart', name: 'Arrhythmia - Racing Heart' },
+      { id: 'arrhythmia-skipped-beats', name: 'Arrhythmia - Skipped/Irregular Beats' },
+      { id: 'arrhythmia-dizziness', name: 'Arrhythmia - Dizziness' },
+      { id: 'arrhythmia-syncope', name: 'Arrhythmia - Syncope (Fainting)' },
+      { id: 'arrhythmia-chest-discomfort', name: 'Arrhythmia - Chest Discomfort' },
+    ]
+  },
+  {
+    id: 'pericarditis',
+    name: 'Pericarditis Symptoms (DC 7002)',
+    symptoms: [
+      { id: 'pericarditis-chest-pain', name: 'Pericarditis - Sharp Chest Pain' },
+      { id: 'pericarditis-pain-breathing', name: 'Pericarditis - Pain Worse with Breathing' },
+      { id: 'pericarditis-pain-lying-down', name: 'Pericarditis - Pain Worse Lying Down' },
+      { id: 'pericarditis-fever', name: 'Pericarditis - Fever' },
+      { id: 'pericarditis-palpitations', name: 'Pericarditis - Palpitations' },
+      { id: 'pericarditis-shortness-breath', name: 'Pericarditis - Shortness of Breath' },
+      { id: 'pericarditis-active-infection', name: 'Pericarditis - Active Infection Period' },
+      { id: 'pericarditis-effusion', name: 'Pericarditis - Pericardial Effusion' },
+    ]
+  },
+  {
+    id: 'post-phlebitic',
+    name: 'Post-Phlebitic Syndrome (DC 7121)',
+    symptoms: [
+      { id: 'post-phlebitic-edema', name: 'Post-Phlebitic - Leg Swelling/Edema' },
+      { id: 'post-phlebitic-pain', name: 'Post-Phlebitic - Leg Pain' },
+      { id: 'post-phlebitic-aching', name: 'Post-Phlebitic - Aching/Fatigue' },
+      { id: 'post-phlebitic-pigmentation', name: 'Post-Phlebitic - Skin Discoloration' },
+      { id: 'post-phlebitic-eczema', name: 'Post-Phlebitic - Stasis Eczema' },
+      { id: 'post-phlebitic-ulcer', name: 'Post-Phlebitic - Venous Ulcer' },
+      { id: 'post-phlebitic-induration', name: 'Post-Phlebitic - Subcutaneous Induration' },
+      { id: 'post-phlebitic-pain-rest', name: 'Post-Phlebitic - Pain at Rest' },
+    ]
+  },
+  // Phase 10: Cirrhosis (DC 7312)
+  {
+    id: 'cirrhosis',
+    name: 'Cirrhosis Symptoms',
+    symptoms: [
+      { id: 'cirrhosis-fatigue', name: 'Cirrhosis - Fatigue/Weakness' },
+      { id: 'cirrhosis-ascites', name: 'Cirrhosis - Ascites (Abdominal Fluid)' },
+      { id: 'cirrhosis-edema', name: 'Cirrhosis - Leg Swelling/Edema' },
+      { id: 'cirrhosis-jaundice', name: 'Cirrhosis - Jaundice (Yellowing)' },
+      { id: 'cirrhosis-encephalopathy', name: 'Cirrhosis - Hepatic Encephalopathy (Confusion)' },
+      { id: 'cirrhosis-variceal-bleed', name: 'Cirrhosis - Variceal Hemorrhage' },
+      { id: 'cirrhosis-sbp', name: 'Cirrhosis - Spontaneous Bacterial Peritonitis' },
+      { id: 'cirrhosis-coagulopathy', name: 'Cirrhosis - Bleeding/Coagulopathy' },
+      { id: 'cirrhosis-splenomegaly', name: 'Cirrhosis - Enlarged Spleen' },
+      { id: 'cirrhosis-anorexia', name: 'Cirrhosis - Loss of Appetite' },
+      { id: 'cirrhosis-malaise', name: 'Cirrhosis - Malaise' },
+      { id: 'cirrhosis-abdominal-pain', name: 'Cirrhosis - Abdominal Pain' },
+      { id: 'cirrhosis-itching', name: 'Cirrhosis - Pruritus (Itching)' },
+      { id: 'cirrhosis-hospitalization', name: 'Cirrhosis - Hospitalization' },
+    ]
+  },
+  // Phase 10: Gastritis (DC 7307) - Rates as Peptic Ulcer DC 7304
+  {
+    id: 'gastritis',
+    name: 'Gastritis Symptoms',
+    symptoms: [
+      { id: 'gastritis-abdominal-pain', name: 'Gastritis - Abdominal Pain' },
+      { id: 'gastritis-nausea', name: 'Gastritis - Nausea' },
+      { id: 'gastritis-vomiting', name: 'Gastritis - Vomiting' },
+      { id: 'gastritis-bloating', name: 'Gastritis - Bloating/Fullness' },
+      { id: 'gastritis-indigestion', name: 'Gastritis - Indigestion' },
+      { id: 'gastritis-hematemesis', name: 'Gastritis - Vomiting Blood' },
+      { id: 'gastritis-melena', name: 'Gastritis - Tarry Stools (Melena)' },
+      { id: 'gastritis-hospitalization', name: 'Gastritis - Hospitalization' },
+    ]
+  },
+  // Phase 10: Chronic Pancreatitis (DC 7347)
+  {
+    id: 'pancreatitis',
+    name: 'Pancreatitis Symptoms',
+    symptoms: [
+      { id: 'pancreatitis-abdominal-pain', name: 'Pancreatitis - Abdominal Pain' },
+      { id: 'pancreatitis-back-pain', name: 'Pancreatitis - Mid-Back Pain' },
+      { id: 'pancreatitis-nausea', name: 'Pancreatitis - Nausea' },
+      { id: 'pancreatitis-vomiting', name: 'Pancreatitis - Vomiting' },
+      { id: 'pancreatitis-maldigestion', name: 'Pancreatitis - Maldigestion/Steatorrhea' },
+      { id: 'pancreatitis-weight-loss', name: 'Pancreatitis - Weight Loss' },
+      { id: 'pancreatitis-enzyme-use', name: 'Pancreatitis - Enzyme Supplementation' },
+      { id: 'pancreatitis-dietary-restriction', name: 'Pancreatitis - Dietary Restriction Required' },
+      { id: 'pancreatitis-tube-feeding', name: 'Pancreatitis - Tube Feeding Required' },
+      { id: 'pancreatitis-cyst', name: 'Pancreatitis - Cyst/Pseudocyst' },
+      { id: 'pancreatitis-hospitalization', name: 'Pancreatitis - Hospitalization' },
+    ]
+  },
+  // Phase 10: Chronic Biliary Tract Disease (DC 7314)
+  {
+    id: 'biliary-tract',
+    name: 'Biliary Tract Disease Symptoms',
+    symptoms: [
+      { id: 'biliary-ruq-pain', name: 'Biliary - Right Upper Quadrant Pain' },
+      { id: 'biliary-nausea', name: 'Biliary - Nausea' },
+      { id: 'biliary-vomiting', name: 'Biliary - Vomiting' },
+      { id: 'biliary-jaundice', name: 'Biliary - Jaundice' },
+      { id: 'biliary-fever', name: 'Biliary - Fever/Cholangitis' },
+      { id: 'biliary-dilation', name: 'Biliary - Stricture Dilation Procedure' },
+      { id: 'biliary-attack', name: 'Biliary - Acute Attack Episode' },
+    ]
+  },
 ];
 
 // Helper function to determine if a category is a "child" of another
@@ -1355,6 +1506,14 @@ const getParentCategory = (categoryName) => {
   if (name.includes('depersonalization') || name.includes('derealization')) return 'depersonalization';
   if (name.includes('anorexia')) return 'anorexia-nervosa';
   if (name.includes('bulimia')) return 'bulimia-nervosa';
+  if (name.includes('cardiomyopathy')) return 'heart-disease';
+  if (name.includes('arrhythmia') || name.includes('svt') || name.includes('tachycardia')) return 'heart-disease';
+  if (name.includes('pericarditis')) return 'heart-disease';
+  if (name.includes('post-phlebitic')) return 'varicose-veins';
+  if (name.includes('cirrhosis')) return 'cirrhosis';
+  if (name.includes('gastritis')) return 'gastritis';
+  if (name.includes('pancreatitis')) return 'pancreatitis';
+  if (name.includes('biliary')) return 'biliary-tract';
   return null; // No parent, this is a standalone category
 };
 

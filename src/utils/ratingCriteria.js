@@ -1259,6 +1259,110 @@ export const CONDITIONS = {
     cfrReference: '38 CFR 4.130',
     symptomIds: ['personality-avoidant-social-inhibition', 'personality-avoidant-fear-rejection', 'personality-disorder-occupational-impairment', 'personality-disorder-social-impairment'],
   },
+  // Phase 9: Cardiovascular Conditions
+  CARDIOMYOPATHY: {
+    id: 'cardiomyopathy',
+    name: 'Cardiomyopathy',
+    diagnosticCode: '7020',
+    cfrReference: '38 CFR 4.104',
+    symptomIds: [
+      'cardiomyopathy-breathlessness', 'cardiomyopathy-fatigue', 'cardiomyopathy-edema',
+      'cardiomyopathy-palpitations', 'cardiomyopathy-chest-pain', 'cardiomyopathy-dizziness',
+      'cardiomyopathy-syncope', 'cardiomyopathy-activity-limitation',
+      'cardiac-breathlessness', 'cardiac-fatigue', 'cardiac-angina', 'cardiac-dizziness',
+      'cardiac-syncope', 'cardiac-palpitations', 'cardiac-edema', 'cardiac-orthopnea',
+    ],
+  },
+  SVT: {
+    id: 'svt',
+    name: 'Supraventricular Tachycardia',
+    diagnosticCode: '7010',
+    cfrReference: '38 CFR 4.104',
+    symptomIds: [
+      'svt-episode', 'svt-treatment-iv', 'svt-treatment-cardioversion', 'svt-treatment-ablation',
+      'svt-vagal-maneuver', 'svt-oral-medication',
+      'arrhythmia-palpitations', 'arrhythmia-racing-heart', 'arrhythmia-skipped-beats',
+      'arrhythmia-dizziness', 'arrhythmia-syncope', 'arrhythmia-chest-discomfort',
+    ],
+  },
+  VENTRICULAR_ARRHYTHMIA: {
+    id: 'ventricular-arrhythmia',
+    name: 'Ventricular Arrhythmias',
+    diagnosticCode: '7011',
+    cfrReference: '38 CFR 4.104',
+    symptomIds: [
+      'ventricular-arrhythmia-episode', 'ventricular-arrhythmia-hospitalization',
+      'aicd-implant', 'aicd-shock',
+      'arrhythmia-palpitations', 'arrhythmia-racing-heart', 'arrhythmia-syncope',
+    ],
+  },
+  PERICARDITIS: {
+    id: 'pericarditis',
+    name: 'Pericarditis',
+    diagnosticCode: '7002',
+    cfrReference: '38 CFR 4.104',
+    symptomIds: [
+      'pericarditis-chest-pain', 'pericarditis-pain-breathing', 'pericarditis-pain-lying-down',
+      'pericarditis-fever', 'pericarditis-palpitations', 'pericarditis-shortness-breath',
+      'pericarditis-active-infection', 'pericarditis-effusion',
+    ],
+  },
+  POST_PHLEBITIC: {
+    id: 'post-phlebitic',
+    name: 'Post-Phlebitic Syndrome',
+    diagnosticCode: '7121',
+    cfrReference: '38 CFR 4.104',
+    symptomIds: [
+      'post-phlebitic-edema', 'post-phlebitic-pain', 'post-phlebitic-aching',
+      'post-phlebitic-pigmentation', 'post-phlebitic-eczema', 'post-phlebitic-ulcer',
+      'post-phlebitic-induration', 'post-phlebitic-pain-rest',
+    ],
+  },
+  // Phase 10: Digestive Completion
+  CIRRHOSIS: {
+    id: 'cirrhosis',
+    name: 'Cirrhosis of the Liver',
+    diagnosticCode: '7312',
+    cfrReference: '38 CFR 4.114',
+    symptomIds: [
+      'cirrhosis-fatigue', 'cirrhosis-ascites', 'cirrhosis-edema', 'cirrhosis-jaundice',
+      'cirrhosis-encephalopathy', 'cirrhosis-variceal-bleed', 'cirrhosis-sbp', 'cirrhosis-coagulopathy',
+      'cirrhosis-splenomegaly', 'cirrhosis-anorexia', 'cirrhosis-malaise', 'cirrhosis-abdominal-pain',
+      'cirrhosis-itching', 'cirrhosis-hospitalization',
+    ],
+  },
+  GASTRITIS: {
+    id: 'gastritis',
+    name: 'Gastritis, Chronic',
+    diagnosticCode: '7307',
+    cfrReference: '38 CFR 4.114',
+    symptomIds: [
+      'gastritis-abdominal-pain', 'gastritis-nausea', 'gastritis-vomiting', 'gastritis-bloating',
+      'gastritis-indigestion', 'gastritis-hematemesis', 'gastritis-melena', 'gastritis-hospitalization',
+    ],
+  },
+  PANCREATITIS: {
+    id: 'pancreatitis',
+    name: 'Pancreatitis, Chronic',
+    diagnosticCode: '7347',
+    cfrReference: '38 CFR 4.114',
+    symptomIds: [
+      'pancreatitis-abdominal-pain', 'pancreatitis-back-pain', 'pancreatitis-nausea', 'pancreatitis-vomiting',
+      'pancreatitis-maldigestion', 'pancreatitis-weight-loss', 'pancreatitis-enzyme-use',
+      'pancreatitis-dietary-restriction', 'pancreatitis-tube-feeding', 'pancreatitis-cyst',
+      'pancreatitis-hospitalization',
+    ],
+  },
+  BILIARY_TRACT: {
+    id: 'biliary-tract',
+    name: 'Chronic Biliary Tract Disease',
+    diagnosticCode: '7314',
+    cfrReference: '38 CFR 4.114',
+    symptomIds: [
+      'biliary-ruq-pain', 'biliary-nausea', 'biliary-vomiting', 'biliary-jaundice',
+      'biliary-fever', 'biliary-dilation', 'biliary-attack',
+    ],
+  },
 };
 
 
@@ -11454,165 +11558,6 @@ export const BULIMIA_NERVOSA_CRITERIA = {
   ],
 };
 
-
-// ============================================
-// ANALYSIS FUNCTIONS - MIGRAINE
-// ============================================
-
-/**
- * Analyzes migraine logs to determine supported rating level
- */
-export const analyzeMigraineLogs = (logs, options = {}) => {
-  const {
-    evaluationPeriodDays = 90,
-    includeWorkImpact = false,
-  } = options;
-
-  const cutoffDate = new Date();
-  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
-
-  const relevantLogs = logs.filter(log => {
-    const logDate = new Date(log.timestamp);
-    return logDate >= cutoffDate && getLogSymptomId(log) === 'migraine';
-  });
-
-  if (relevantLogs.length === 0) {
-    return {
-      hasData: false,
-      message: 'No migraine logs found in the evaluation period',
-      supportedRating: null,
-      evidence: [],
-      gaps: ['Start logging migraines to build your evidence'],
-    };
-  }
-
-  const totalMigraines = relevantLogs.length;
-  const prostratingMigraines = relevantLogs.filter(
-      log => log.migraineData?.prostrating === true);
-  const prostratingCount = prostratingMigraines.length;
-
-  const prolongedDurations = ['4-24h', '1-2d', 'more-than-2d', 'ongoing'];
-  const prolongedMigraines = prostratingMigraines.filter(log =>
-      prolongedDurations.includes(log.migraineData?.duration),
-  );
-  const prolongedCount = prolongedMigraines.length;
-
-  const monthsInPeriod = evaluationPeriodDays / 30;
-  const totalPerMonth = totalMigraines / monthsInPeriod;
-  const prostratingPerMonth = prostratingCount / monthsInPeriod;
-  const prolongedProstratingPerMonth = prolongedCount / monthsInPeriod;
-
-  const oldestLog = relevantLogs.reduce((oldest, log) =>
-      new Date(log.timestamp) < new Date(oldest.timestamp) ? log : oldest,
-  );
-  const newestLog = relevantLogs.reduce((newest, log) =>
-      new Date(log.timestamp) > new Date(newest.timestamp) ? log : newest,
-  );
-
-  const evidence = {
-    evaluationPeriod: {
-      startDate: oldestLog.timestamp,
-      endDate: newestLog.timestamp,
-      days: evaluationPeriodDays,
-      months: monthsInPeriod.toFixed(1),
-    },
-    totalMigraines,
-    prostratingCount,
-    prolongedCount,
-    monthlyRates: {
-      total: totalPerMonth.toFixed(1),
-      prostrating: prostratingPerMonth.toFixed(1),
-      prolongedProstrating: prolongedProstratingPerMonth.toFixed(1),
-    },
-    severityBreakdown: {
-      prostrating: prostratingCount,
-      nonProstrating: totalMigraines - prostratingCount,
-      prolongedProstrating: prolongedCount,
-    },
-  };
-
-  let supportedRating = 0;
-  let ratingRationale = [];
-  let gaps = [];
-
-  if (prostratingPerMonth >= 4 && prolongedCount > 0) {
-    supportedRating = 50;
-    ratingRationale = [
-      `${prostratingPerMonth.toFixed(
-          1)} prostrating attacks per month (≥4 required)`,
-      `${prolongedCount} prolonged attacks documented`,
-      'Pattern suggests very frequent, prostrating, prolonged attacks',
-    ];
-    gaps = [
-      'Consider documenting work impact (missed days, reduced productivity)',
-      'Note any job accommodations needed due to migraines',
-    ];
-  } else if (prostratingPerMonth >= 1) {
-    supportedRating = 30;
-    ratingRationale = [
-      `${prostratingPerMonth.toFixed(
-          1)} prostrating attacks per month (≥1 required)`,
-      'Pattern supports characteristic prostrating attacks averaging monthly',
-    ];
-    gaps = [];
-    if (prolongedCount === 0) {
-      gaps.push(
-          'Document duration of attacks (4+ hours supports higher rating)');
-    }
-    if (prostratingPerMonth < 4) {
-      gaps.push(`Current frequency (${prostratingPerMonth.toFixed(
-          1)}/month) - 4+/month may support 50% rating`);
-    }
-  } else if (prostratingPerMonth >= 0.5) {
-    supportedRating = 10;
-    ratingRationale = [
-      `${prostratingPerMonth.toFixed(1)} prostrating attacks per month`,
-      'Pattern supports prostrating attacks averaging once every 2 months',
-    ];
-    gaps = [
-      `Increase documentation frequency - 1+/month may support 30% rating`,
-      'Ensure all prostrating episodes are logged',
-    ];
-  } else {
-    supportedRating = 0;
-    if (prostratingCount === 0 && totalMigraines > 0) {
-      ratingRationale = [
-        `${totalMigraines} migraines logged, but none marked as prostrating`,
-        'Non-prostrating migraines support 0% rating',
-      ];
-      gaps = [
-        'If migraines prevent normal activities, mark them as "prostrating"',
-        'Document severity accurately - prostrating attacks are key to higher ratings',
-      ];
-    } else if (prostratingCount > 0) {
-      ratingRationale = [
-        `${prostratingPerMonth.toFixed(2)} prostrating attacks per month`,
-        'Frequency below threshold for 10% (need ≥0.5/month)',
-      ];
-      gaps = [
-        'Continue logging all prostrating episodes',
-        'Ensure you\'re capturing every migraine that prevents normal activities',
-      ];
-    } else {
-      ratingRationale = ['Insufficient data to determine rating'];
-      gaps = ['Begin logging migraine episodes with severity and duration'];
-    }
-  }
-
-  return {
-    hasData: true,
-    condition: 'Migraine',
-    diagnosticCode: '8100',
-    evaluationPeriodDays,
-    supportedRating,
-    ratingRationale,
-    evidence,
-    gaps,
-    criteria: MIGRAINE_CRITERIA,
-    disclaimer: 'This analysis is for documentation guidance only. The VA makes all final rating determinations based on the complete evidence of record.',
-  };
-};
-
 // SCHIZOPHRENIA CRITERIA (DC 9201)
 // ============================================
 export const SCHIZOPHRENIA_CRITERIA = {
@@ -11987,6 +11932,1002 @@ export const AVOIDANT_PERSONALITY_DISORDER_CRITERIA = {
     'Relationship difficulties due to fear of rejection',
     'Document missed opportunities and social avoidance patterns',
   ],
+};
+
+// ============================================
+// PHASE 9: CARDIOVASCULAR CONDITIONS
+// ============================================
+
+// DC 7020: Cardiomyopathy
+export const CARDIOMYOPATHY_CRITERIA = {
+  diagnosticCode: '7020',
+  condition: 'Cardiomyopathy',
+  cfrReference: '38 CFR 4.104, Diagnostic Code 7020',
+
+  note: 'Cardiomyopathy is rated under the General Rating Formula for Diseases of the Heart. Rating is based on METs (metabolic equivalents) at which symptoms develop, or on documented cardiac hypertrophy/dilatation.',
+
+  ratings: [
+    {
+      percent: 100,
+      summary: 'Workload ≤3.0 METs causes heart failure symptoms',
+      criteriaDescription: [
+        'Workload of 3.0 METs or less results in heart failure symptoms',
+        'Heart failure symptoms include: breathlessness, fatigue, angina, dizziness, syncope, palpitations',
+        'Severely limited - symptoms with minimal activity (eating, dressing, walking slowly)',
+      ],
+      evidenceNeeded: [
+        'Exercise stress test showing symptoms at ≤3.0 METs',
+        'OR medical estimate with specific activity examples',
+        'Echocardiogram or equivalent showing cardiac impairment',
+        'Symptom logs documenting limitations',
+      ],
+    },
+    {
+      percent: 60,
+      summary: 'Workload 3.1-5.0 METs causes heart failure symptoms',
+      criteriaDescription: [
+        'Workload of 3.1 to 5.0 METs results in heart failure symptoms',
+        'Moderate limitation - symptoms with light housework, walking 2-3 mph',
+      ],
+      evidenceNeeded: [
+        'Exercise stress test or medical estimate',
+        'Documentation of symptoms at specified activity level',
+        'Echocardiogram showing cardiac changes',
+      ],
+    },
+    {
+      percent: 30,
+      summary: 'Workload 5.1-7.0 METs causes symptoms OR cardiac hypertrophy/dilatation',
+      criteriaDescription: [
+        'Workload of 5.1 to 7.0 METs results in heart failure symptoms, OR',
+        'Evidence of cardiac hypertrophy or dilatation confirmed by echocardiogram or equivalent',
+        'Mild-moderate limitation - symptoms with climbing stairs, brisk walking',
+      ],
+      evidenceNeeded: [
+        'Exercise stress test or medical estimate',
+        'OR echocardiogram/MRI showing hypertrophy or dilatation',
+        'Symptom documentation',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Workload 7.1-10.0 METs causes symptoms OR continuous medication required',
+      criteriaDescription: [
+        'Workload of 7.1 to 10.0 METs results in heart failure symptoms, OR',
+        'Continuous medication required for control',
+        'Minimal limitation - symptoms only with moderate exertion',
+      ],
+      evidenceNeeded: [
+        'Exercise stress test or medical estimate',
+        'Prescription records showing continuous medication',
+        'Symptom logs',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'Asymptomatic or symptoms only above 10 METs',
+      criteriaDescription: [
+        'No symptoms at workloads up to 10 METs',
+        'OR asymptomatic with normal cardiac function',
+      ],
+      evidenceNeeded: [],
+    },
+  ],
+
+  definitions: {
+    METs: {
+      term: 'METs (Metabolic Equivalents)',
+      definition: 'One MET is the energy cost of standing quietly at rest (oxygen uptake of 3.5 mL/kg/min). Higher METs indicate greater exertion capacity.',
+      examples: [
+        '1-3 METs: Eating, dressing, walking slowly around home',
+        '3-5 METs: Light housework, walking 2-3 mph',
+        '5-7 METs: Climbing one flight of stairs, walking 4 mph',
+        '7-10 METs: Heavy housework, moderate cycling',
+        '>10 METs: Vigorous exercise, running, competitive sports',
+      ],
+    },
+    heartFailureSymptoms: {
+      term: 'Heart Failure Symptoms',
+      definition: 'Symptoms that indicate the heart is not pumping effectively.',
+      examples: [
+        'Breathlessness/dyspnea',
+        'Fatigue with exertion',
+        'Angina/chest pain',
+        'Dizziness',
+        'Syncope (fainting)',
+        'Palpitations',
+        'Arrhythmia',
+      ],
+    },
+  },
+
+  disclaimer: 'This analysis is based on logged cardiomyopathy symptoms and any recorded METs capacity or ejection fraction. Document symptoms at specific activity levels and record any cardiac testing results.',
+};
+
+// DC 7010: Supraventricular Tachycardia (SVT)
+export const SVT_CRITERIA = {
+  diagnosticCode: '7010',
+  condition: 'Supraventricular Tachycardia',
+  cfrReference: '38 CFR 4.104, Diagnostic Code 7010',
+
+  note: 'SVT includes: atrial fibrillation, atrial flutter, sinus tachycardia, AVNRT, AVRT, atrial tachycardia, junctional tachycardia, and multifocal atrial tachycardia. A treatment intervention is when a symptomatic patient requires IV medication, cardioversion, or ablation.',
+
+  ratings: [
+    {
+      percent: 30,
+      summary: 'ECG-confirmed SVT with 5+ treatment interventions per year',
+      criteriaDescription: [
+        'Supraventricular tachycardia confirmed by ECG',
+        'WITH five or more treatment interventions per year',
+        'Treatment interventions: IV pharmacologic adjustment, cardioversion, and/or ablation',
+      ],
+      evidenceNeeded: [
+        'ECG documentation of SVT episodes',
+        'Medical records of treatment interventions',
+        'Hospital/ER visit records',
+        'Procedure records for cardioversion or ablation',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'ECG-confirmed SVT with 1-4 interventions/year OR continuous oral meds OR vagal maneuvers',
+      criteriaDescription: [
+        'Supraventricular tachycardia confirmed by ECG with ONE of:',
+        '• 1 to 4 treatment interventions per year',
+        '• Continuous use of oral medications to control',
+        '• Use of vagal maneuvers to control',
+      ],
+      evidenceNeeded: [
+        'ECG documentation of SVT',
+        'Medication records for oral antiarrhythmics',
+        'Documentation of vagal maneuver use',
+        'Medical records of any interventions',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'SVT present but not requiring treatment',
+      criteriaDescription: [
+        'Documented SVT that does not require medication or interventions',
+        'Asymptomatic or self-limiting episodes',
+      ],
+      evidenceNeeded: [],
+    },
+  ],
+
+  definitions: {
+    treatmentIntervention: {
+      term: 'Treatment Intervention',
+      definition: 'For DC 7010, an intervention is when a symptomatic patient requires IV pharmacologic adjustment, cardioversion, and/or ablation for symptom relief.',
+      examples: [
+        'IV adenosine administration',
+        'IV beta-blocker or calcium channel blocker',
+        'Electrical cardioversion',
+        'Catheter ablation procedure',
+      ],
+    },
+    vagalManeuver: {
+      term: 'Vagal Maneuver',
+      definition: 'Physical techniques used to stimulate the vagus nerve to slow heart rate.',
+      examples: [
+        'Valsalva maneuver (bearing down)',
+        'Carotid sinus massage',
+        'Cold water face immersion',
+        'Coughing',
+      ],
+    },
+  },
+
+  disclaimer: 'This analysis is based on logged SVT episodes and treatments. Document each episode with date, ECG confirmation if available, and any treatment required (IV meds, cardioversion, ablation, vagal maneuvers, or oral medications).',
+};
+
+// DC 7011: Ventricular Arrhythmias
+export const VENTRICULAR_ARRHYTHMIA_CRITERIA = {
+  diagnosticCode: '7011',
+  condition: 'Ventricular Arrhythmias (Sustained)',
+  cfrReference: '38 CFR 4.104, Diagnostic Code 7011',
+
+  note: 'A 100% rating applies during hospitalization for initial therapy or ventricular aneurysmectomy, or with an AICD in place. After stabilization, rate under the General Rating Formula for Diseases of the Heart.',
+
+  ratings: [
+    {
+      percent: 100,
+      summary: 'Hospitalization for ventricular arrhythmia OR AICD in place',
+      criteriaDescription: [
+        'For indefinite period from date of hospital admission for initial medical therapy for sustained ventricular arrhythmia, OR',
+        'For indefinite period from date of hospital admission for ventricular aneurysmectomy, OR',
+        'With an automatic implantable cardioverter-defibrillator (AICD) in place',
+      ],
+      evidenceNeeded: [
+        'Hospital admission records for ventricular arrhythmia',
+        'OR AICD implantation records',
+        'Cardiology follow-up documentation',
+      ],
+    },
+    {
+      percent: 60,
+      summary: 'Post-stabilization: 3.1-5.0 METs causes symptoms (General Rating Formula)',
+      criteriaDescription: [
+        'After stabilization, rate under General Rating Formula',
+        'Workload of 3.1 to 5.0 METs results in heart failure symptoms',
+      ],
+      evidenceNeeded: [
+        'Exercise stress test or medical estimate post-stabilization',
+        'Symptom documentation',
+      ],
+    },
+    {
+      percent: 30,
+      summary: 'Post-stabilization: 5.1-7.0 METs causes symptoms OR cardiac hypertrophy/dilatation',
+      criteriaDescription: [
+        'After stabilization, rate under General Rating Formula',
+        'Workload of 5.1 to 7.0 METs results in symptoms, OR',
+        'Cardiac hypertrophy or dilatation on echocardiogram',
+      ],
+      evidenceNeeded: [
+        'Post-stabilization cardiac testing',
+        'Echocardiogram results',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Post-stabilization: 7.1-10.0 METs causes symptoms OR continuous medication',
+      criteriaDescription: [
+        'After stabilization, rate under General Rating Formula',
+        'Workload of 7.1 to 10.0 METs results in symptoms, OR',
+        'Continuous medication required for control',
+      ],
+      evidenceNeeded: [
+        'Medication records',
+        'Symptom documentation',
+      ],
+    },
+  ],
+
+  definitions: {
+    AICD: {
+      term: 'AICD (Automatic Implantable Cardioverter-Defibrillator)',
+      definition: 'A device implanted in the chest that monitors heart rhythm and delivers shocks to correct life-threatening arrhythmias.',
+      examples: [
+        'Also called ICD (Implantable Cardioverter-Defibrillator)',
+        'Monitors for ventricular tachycardia/fibrillation',
+        'Delivers shock to restore normal rhythm',
+      ],
+    },
+    sustainedVentricularArrhythmia: {
+      term: 'Sustained Ventricular Arrhythmia',
+      definition: 'Ventricular tachycardia or fibrillation lasting more than 30 seconds or requiring intervention to terminate.',
+    },
+  },
+
+  disclaimer: 'This analysis is based on logged ventricular arrhythmia events. If you have an AICD, document the implant date. After stabilization, document METs capacity and symptoms for ongoing rating determination.',
+};
+
+// DC 7002: Pericarditis
+export const PERICARDITIS_CRITERIA = {
+  diagnosticCode: '7002',
+  condition: 'Pericarditis',
+  cfrReference: '38 CFR 4.104, Diagnostic Code 7002',
+
+  note: 'During active infection with cardiac involvement and for 3 months following cessation of therapy, rate at 100%. Thereafter, rate under the General Rating Formula for Diseases of the Heart with diagnosis confirmed by physical exam and echo/Doppler/catheterization.',
+
+  ratings: [
+    {
+      percent: 100,
+      summary: 'Active infection with cardiac involvement (and 3 months post-treatment)',
+      criteriaDescription: [
+        'During active infection with cardiac involvement',
+        'AND for three months following cessation of therapy for the active infection',
+        'Requires confirmed pericarditis with ongoing treatment',
+      ],
+      evidenceNeeded: [
+        'Medical diagnosis of active pericarditis',
+        'Treatment records showing therapy dates',
+        'Echocardiogram or imaging showing pericardial involvement',
+      ],
+    },
+    {
+      percent: 60,
+      summary: 'Post-active: 3.1-5.0 METs causes symptoms',
+      criteriaDescription: [
+        'After active infection resolves (more than 3 months post-treatment)',
+        'Workload of 3.1 to 5.0 METs results in heart failure symptoms',
+        'Diagnosis confirmed by echo, Doppler, or catheterization',
+      ],
+      evidenceNeeded: [
+        'Post-treatment cardiac evaluation',
+        'Exercise stress test or medical estimate',
+        'Echo/Doppler confirmation',
+      ],
+    },
+    {
+      percent: 30,
+      summary: 'Post-active: 5.1-7.0 METs causes symptoms OR cardiac hypertrophy/dilatation',
+      criteriaDescription: [
+        'After active infection resolves',
+        'Workload of 5.1 to 7.0 METs results in symptoms, OR',
+        'Cardiac hypertrophy or dilatation on echo',
+      ],
+      evidenceNeeded: [
+        'Cardiac testing results',
+        'Symptom documentation',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Post-active: 7.1-10.0 METs causes symptoms OR continuous medication',
+      criteriaDescription: [
+        'After active infection resolves',
+        'Workload of 7.1 to 10.0 METs results in symptoms, OR',
+        'Continuous medication required for control',
+      ],
+      evidenceNeeded: [
+        'Medication records',
+        'Symptom documentation',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'Resolved pericarditis with no residual symptoms',
+      criteriaDescription: [
+        'History of pericarditis, fully resolved',
+        'No symptoms at workloads up to 10 METs',
+        'No ongoing cardiac impairment',
+      ],
+      evidenceNeeded: [],
+    },
+  ],
+
+  definitions: {
+    pericarditis: {
+      term: 'Pericarditis',
+      definition: 'Inflammation of the pericardium (the sac surrounding the heart). Can be acute, recurrent, or constrictive.',
+      symptoms: [
+        'Sharp chest pain (worse with breathing or lying down)',
+        'Pain relieved by sitting up and leaning forward',
+        'Pericardial friction rub on exam',
+        'Fever',
+        'Shortness of breath',
+      ],
+    },
+    pericardialEffusion: {
+      term: 'Pericardial Effusion',
+      definition: 'Accumulation of fluid in the pericardial sac, which can occur with pericarditis.',
+    },
+  },
+
+  disclaimer: 'This analysis is based on logged pericarditis symptoms. Document active infection periods, treatment dates, and any residual symptoms. After resolution, track symptoms at various activity levels.',
+};
+
+// DC 7121: Post-Phlebitic Syndrome
+export const POST_PHLEBITIC_CRITERIA = {
+  diagnosticCode: '7121',
+  condition: 'Post-Phlebitic Syndrome',
+  cfrReference: '38 CFR 4.104, Diagnostic Code 7121',
+
+  note: 'Post-phlebitic syndrome results from deep vein thrombosis (DVT) and causes chronic venous insufficiency. Rate each extremity separately and combine using the bilateral factor if applicable.',
+
+  ratings: [
+    {
+      percent: 100,
+      summary: 'Massive board-like edema with constant pain at rest',
+      criteriaDescription: [
+        'Massive board-like edema',
+        'WITH constant pain at rest',
+        'Findings attributed to venous disease',
+      ],
+      evidenceNeeded: [
+        'Medical documentation of severe edema',
+        'Pain logs showing constant rest pain',
+        'Photos of affected extremity',
+        'History of DVT',
+      ],
+    },
+    {
+      percent: 60,
+      summary: 'Persistent edema, stasis pigmentation/eczema, AND persistent ulceration',
+      criteriaDescription: [
+        'Persistent edema or subcutaneous induration',
+        'Stasis pigmentation or eczema',
+        'AND persistent ulceration',
+        'All findings attributed to venous disease',
+      ],
+      evidenceNeeded: [
+        'Medical documentation of all three findings',
+        'Photos of skin changes and ulcers',
+        'Wound care records',
+      ],
+    },
+    {
+      percent: 40,
+      summary: 'Persistent edema AND stasis pigmentation/eczema, with/without intermittent ulceration',
+      criteriaDescription: [
+        'Persistent edema',
+        'AND stasis pigmentation or eczema',
+        'With or without intermittent ulceration',
+      ],
+      evidenceNeeded: [
+        'Medical documentation of edema and skin changes',
+        'Photos showing pigmentation',
+        'Ulcer history if applicable',
+      ],
+    },
+    {
+      percent: 20,
+      summary: 'Persistent edema incompletely relieved by elevation, with/without beginning stasis pigmentation',
+      criteriaDescription: [
+        'Persistent edema incompletely relieved by elevation of extremity',
+        'With or without beginning stasis pigmentation or eczema',
+      ],
+      evidenceNeeded: [
+        'Documentation of persistent swelling',
+        'Notes on response to elevation',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Intermittent edema OR aching/fatigue after standing/walking, relieved by elevation/compression',
+      criteriaDescription: [
+        'Intermittent edema of extremity, OR',
+        'Aching and fatigue in leg after prolonged standing or walking',
+        'Symptoms relieved by elevation of extremity or compression hosiery',
+      ],
+      evidenceNeeded: [
+        'Symptom logs',
+        'Notes on what provides relief',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'Asymptomatic post-DVT',
+      criteriaDescription: [
+        'History of DVT but no current symptoms',
+        'No edema, pigmentation changes, or ulceration',
+      ],
+      evidenceNeeded: [],
+    },
+  ],
+
+  definitions: {
+    postPhlebiticSyndrome: {
+      term: 'Post-Phlebitic Syndrome',
+      definition: 'Chronic venous insufficiency that develops after deep vein thrombosis (DVT). Also called post-thrombotic syndrome.',
+      causes: [
+        'Prior deep vein thrombosis (DVT)',
+        'Damage to venous valves',
+        'Chronic venous hypertension',
+      ],
+    },
+    stasisPigmentation: {
+      term: 'Stasis Pigmentation',
+      definition: 'Brownish discoloration of skin from chronic poor circulation and hemosiderin deposition.',
+    },
+    venousUlcer: {
+      term: 'Venous Ulcer',
+      definition: 'Open wound caused by venous insufficiency, typically occurring above the ankle.',
+    },
+  },
+
+  bilateralNote: 'Rate each extremity separately and combine using the bilateral factor (38 CFR 4.26) if both legs are affected.',
+
+  disclaimer: 'This analysis is based on logged post-phlebitic syndrome symptoms. Document symptoms for each affected leg separately. Key factors are edema persistence, skin changes, and ulceration.',
+};
+
+// ============================================
+// PHASE 10: CIRRHOSIS (DC 7312)
+// ============================================
+
+export const CIRRHOSIS_CRITERIA = {
+  diagnosticCode: '7312',
+  condition: 'Cirrhosis of the Liver',
+  cfrReference: '38 CFR 4.114, Diagnostic Code 7312',
+
+  note: 'Cirrhosis is rated based on MELD score when available, or on symptomatology. Biochemical studies, imaging, or biopsy must confirm liver dysfunction.',
+
+  ratings: [
+    {
+      percent: 100,
+      summary: 'MELD ≥15 OR daily debilitating symptoms with major complication',
+      criteriaDescription: [
+        'Liver disease with MELD score ≥15, OR',
+        'Continuous daily debilitating symptoms with generalized weakness AND at least one of:',
+        '- Ascites (fluid in abdomen)',
+        '- History of spontaneous bacterial peritonitis',
+        '- Hepatic encephalopathy',
+        '- Variceal hemorrhage',
+        '- Coagulopathy',
+        '- Portal gastropathy',
+        '- Hepatopulmonary or hepatorenal syndrome',
+      ],
+      evidenceNeeded: [
+        'MELD score calculation from lab values',
+        'Documentation of major complications',
+        'Hospitalization records',
+        'Daily symptom logs',
+      ],
+    },
+    {
+      percent: 60,
+      summary: 'MELD 12-14 OR daily fatigue with variceal bleed/encephalopathy in past year',
+      criteriaDescription: [
+        'Liver disease with MELD score 12-14, OR',
+        'Daily fatigue AND at least one episode in past year of:',
+        '- Variceal hemorrhage, OR',
+        '- Portal gastropathy or hepatic encephalopathy',
+      ],
+      evidenceNeeded: [
+        'MELD score documentation',
+        'Episode documentation with dates',
+        'Hospital/ER records',
+      ],
+    },
+    {
+      percent: 30,
+      summary: 'MELD 10-11 OR portal hypertension signs with symptoms',
+      criteriaDescription: [
+        'Liver disease with MELD score 10-11, OR',
+        'Signs of portal hypertension (splenomegaly or ascites) AND either:',
+        '- Weakness, anorexia, abdominal pain, or malaise',
+      ],
+      evidenceNeeded: [
+        'MELD score or imaging showing portal hypertension',
+        'Symptom logs documenting weakness/anorexia/pain/malaise',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'MELD 7-9 OR symptoms (anorexia, weakness, pain, malaise)',
+      criteriaDescription: [
+        'Liver disease with MELD score 7-9, OR',
+        'Evidence of anorexia, weakness, abdominal pain, or malaise',
+      ],
+      evidenceNeeded: [
+        'Lab values for MELD calculation',
+        'Symptom logs',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'Asymptomatic with history of liver disease',
+      criteriaDescription: [
+        'History of liver disease, currently asymptomatic',
+        'No active symptoms or complications',
+      ],
+      evidenceNeeded: [
+        'Medical records confirming diagnosis',
+      ],
+    },
+  ],
+
+  definitions: {
+    meld: {
+      term: 'MELD Score',
+      definition: 'Model for End-Stage Liver Disease score. Calculated from bilirubin, INR, creatinine, and sodium. Higher scores indicate more severe liver disease.',
+    },
+    ascites: {
+      term: 'Ascites',
+      definition: 'Accumulation of fluid in the abdominal cavity, often causing abdominal swelling and discomfort.',
+    },
+    hepaticEncephalopathy: {
+      term: 'Hepatic Encephalopathy',
+      definition: 'Brain dysfunction caused by liver failure. Symptoms include confusion, altered consciousness, personality changes.',
+    },
+    varicealHemorrhage: {
+      term: 'Variceal Hemorrhage',
+      definition: 'Bleeding from enlarged veins (varices) in the esophagus or stomach due to portal hypertension.',
+    },
+  },
+
+  importantNotes: [
+    'MELD score is the primary rating factor when available',
+    'Without MELD score, rate based on symptomatology per Note (3)',
+    'Hepatocellular carcinoma with cirrhosis is rated under DC 7343 instead',
+    'Lab confirmation of liver dysfunction required (hyponatremia, thrombocytopenia, coagulopathy)',
+  ],
+
+  disclaimer: 'This analysis is based on logged cirrhosis symptoms and any MELD scores recorded. VA rating requires confirmed diagnosis and documented complications. Continue hepatology care and track all symptoms and lab values.',
+};
+
+// ============================================
+// PHASE 10: GASTRITIS (DC 7307) - Rates as DC 7304
+// ============================================
+
+export const GASTRITIS_CRITERIA = {
+  diagnosticCode: '7307',
+  condition: 'Gastritis, Chronic',
+  cfrReference: '38 CFR 4.114, Diagnostic Code 7307',
+
+  note: 'Chronic gastritis is rated as peptic ulcer disease (DC 7304). This includes H. pylori infection, drug-induced gastritis, Zollinger-Ellison syndrome, and portal-hypertensive gastropathy.',
+
+  ratings: [
+    {
+      percent: 60,
+      summary: 'Continuous pain, intermittent vomiting, bleeding with anemia, hospitalization 1+/year',
+      criteriaDescription: [
+        'Continuous abdominal pain with intermittent vomiting',
+        'Recurrent hematemesis (vomiting blood) or melena (tarry stools)',
+        'Manifestations of anemia',
+        'Requires hospitalization at least once in the past 12 months',
+      ],
+      evidenceNeeded: [
+        'Daily pain logs',
+        'Documentation of vomiting episodes',
+        'Lab work showing anemia',
+        'Hospital admission records',
+      ],
+    },
+    {
+      percent: 40,
+      summary: 'Episodes lasting 3+ days, 4+ times/year, daily medication',
+      criteriaDescription: [
+        'Episodes of abdominal pain, nausea, or vomiting that:',
+        '- Last for at least three consecutive days',
+        '- Occur four or more times in the past 12 months',
+        '- Are managed by daily prescribed medication',
+      ],
+      evidenceNeeded: [
+        'Symptom logs showing episode duration and frequency',
+        'Prescription records for daily medication (PPIs, H2 blockers)',
+      ],
+    },
+    {
+      percent: 20,
+      summary: 'Episodes lasting 3+ days, 1-3 times/year, daily medication',
+      criteriaDescription: [
+        'Episodes of abdominal pain, nausea, or vomiting that:',
+        '- Last for at least three consecutive days',
+        '- Occur one to three times in the past 12 months',
+        '- Are managed by daily prescribed medication',
+      ],
+      evidenceNeeded: [
+        'Symptom logs showing episode duration and frequency',
+        'Prescription records for daily medication',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'History documented, currently asymptomatic',
+      criteriaDescription: [
+        'History of gastritis documented by endoscopy or diagnostic imaging',
+        'Currently asymptomatic or well-controlled',
+      ],
+      evidenceNeeded: [
+        'Endoscopy or imaging records showing gastritis',
+      ],
+    },
+  ],
+
+  definitions: {
+    chronicGastritis: {
+      term: 'Chronic Gastritis',
+      definition: 'Long-term inflammation of the stomach lining. Can be caused by H. pylori, NSAIDs, alcohol, or autoimmune conditions.',
+    },
+  },
+
+  importantNotes: [
+    'Gastritis is rated using peptic ulcer disease criteria (DC 7304)',
+    'Includes H. pylori infection, drug-induced gastritis, Zollinger-Ellison syndrome',
+    'Episode duration (3+ consecutive days) is key for compensable rating',
+    'Daily medication requirement must be documented',
+  ],
+
+  disclaimer: 'This analysis is based on logged gastritis symptoms. VA requires documented diagnosis and pattern of episodes. Track symptom episodes with duration and medication use.',
+};
+
+// ============================================
+// PHASE 10: CHRONIC PANCREATITIS (DC 7347)
+// ============================================
+
+export const PANCREATITIS_CRITERIA = {
+  diagnosticCode: '7347',
+  condition: 'Pancreatitis, Chronic',
+  cfrReference: '38 CFR 4.114, Diagnostic Code 7347',
+
+  note: 'Chronic pancreatitis is rated based on pain episodes, hospitalizations, and maldigestion/malabsorption requiring dietary restriction and enzyme supplementation.',
+
+  ratings: [
+    {
+      percent: 100,
+      summary: 'Daily pain requiring 3+ hospitalizations/year, physician pain management, maldigestion requiring enzymes',
+      criteriaDescription: [
+        'Daily episodes of abdominal or mid-back pain requiring:',
+        '- Three or more hospitalizations per year, AND',
+        '- Pain management by a physician, AND',
+        '- Maldigestion and malabsorption requiring dietary restriction and pancreatic enzyme supplementation',
+      ],
+      evidenceNeeded: [
+        'Hospital admission records (3+ per year)',
+        'Pain management documentation',
+        'Prescription for pancreatic enzymes',
+        'Dietary restriction documentation',
+      ],
+    },
+    {
+      percent: 60,
+      summary: '3+ pain episodes/year with 1+ hospitalization for complications or tube feeding',
+      criteriaDescription: [
+        'Three or more episodes of abdominal or mid-back pain per year, AND',
+        'At least one episode per year requiring hospitalization for:',
+        '- Complications related to abdominal pain, OR',
+        '- Complications of tube enteral feeding',
+      ],
+      evidenceNeeded: [
+        'Pain episode logs (3+ per year)',
+        'Hospital admission records',
+        'Documentation of complications',
+      ],
+    },
+    {
+      percent: 30,
+      summary: '1+ episode/year requiring ongoing outpatient treatment for pain or complications',
+      criteriaDescription: [
+        'At least one episode per year of abdominal or mid-back pain requiring:',
+        '- Ongoing outpatient medical treatment for pain, OR',
+        '- Treatment for digestive problems, OR',
+        '- Management of complications (cyst, pseudocyst, obstruction, ascites)',
+      ],
+      evidenceNeeded: [
+        'Pain episode documentation',
+        'Outpatient treatment records',
+        'Imaging showing complications if present',
+      ],
+    },
+  ],
+
+  definitions: {
+    maldigestion: {
+      term: 'Maldigestion',
+      definition: 'Impaired breakdown of food in the digestive tract due to pancreatic enzyme deficiency.',
+    },
+    steatorrhea: {
+      term: 'Steatorrhea',
+      definition: 'Fatty, foul-smelling stools indicating fat malabsorption from pancreatic insufficiency.',
+    },
+    pseudocyst: {
+      term: 'Pancreatic Pseudocyst',
+      definition: 'Fluid collection enclosed by fibrous tissue, often developing after pancreatitis episodes.',
+    },
+  },
+
+  importantNotes: [
+    'Diagnostic studies must confirm that abdominal pain results from pancreatitis',
+    'Diabetes from pancreatic insufficiency is rated separately under DC 7913',
+    'Hospitalizations are key rating factor for higher percentages',
+    'Enzyme supplementation requirement indicates maldigestion',
+  ],
+
+  disclaimer: 'This analysis is based on logged pancreatitis symptoms. VA requires confirmed diagnosis with imaging and pattern of pain episodes. Track all hospitalizations, treatments, and enzyme/dietary requirements.',
+};
+
+// ============================================
+// PHASE 10: CHRONIC BILIARY TRACT DISEASE (DC 7314)
+// ============================================
+
+export const BILIARY_TRACT_CRITERIA = {
+  diagnosticCode: '7314',
+  condition: 'Chronic Biliary Tract Disease',
+  cfrReference: '38 CFR 4.114, Diagnostic Code 7314',
+
+  note: 'Chronic biliary tract disease is rated based on frequency of clinically documented attacks. This includes cholangitis, biliary strictures, Sphincter of Oddi dysfunction, bile duct injury, and choledochal cyst.',
+
+  ratings: [
+    {
+      percent: 30,
+      summary: '3+ documented attacks with nausea/vomiting in past 12 months, OR stricture dilation required',
+      criteriaDescription: [
+        'Three or more clinically documented attacks of right upper quadrant pain with nausea and vomiting during the past 12 months, OR',
+        'Requiring dilation of biliary tract strictures at least once during the past 12 months',
+      ],
+      evidenceNeeded: [
+        'Medical documentation of 3+ attacks with symptoms',
+        'OR procedure records for stricture dilation',
+        'ER/urgent care visit records',
+      ],
+    },
+    {
+      percent: 10,
+      summary: '1-2 documented attacks with nausea/vomiting in past 12 months',
+      criteriaDescription: [
+        'One or two clinically documented attacks of right upper quadrant pain with nausea and vomiting in the past 12 months',
+      ],
+      evidenceNeeded: [
+        'Medical documentation of attacks',
+        'ER/clinic visit records showing symptoms',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'Asymptomatic, no documented attacks in past 12 months',
+      criteriaDescription: [
+        'Asymptomatic, without history of a clinically documented attack of right upper quadrant pain with nausea and vomiting in the past 12 months',
+      ],
+      evidenceNeeded: [
+        'Medical records confirming diagnosis',
+      ],
+    },
+  ],
+
+  definitions: {
+    ruqPain: {
+      term: 'Right Upper Quadrant (RUQ) Pain',
+      definition: 'Pain in the upper right area of the abdomen, typically associated with gallbladder or biliary tract issues.',
+    },
+    cholangitis: {
+      term: 'Cholangitis',
+      definition: 'Infection of the bile ducts, often presenting with fever, jaundice, and abdominal pain (Charcot triad).',
+    },
+    sphincterOfOddi: {
+      term: 'Sphincter of Oddi Dysfunction',
+      definition: 'Disorder affecting the valve controlling bile and pancreatic juice flow into the small intestine.',
+    },
+  },
+
+  importantNotes: [
+    'Attacks must be "clinically documented" - self-reported logs support but may need medical visit confirmation',
+    'RUQ pain with nausea AND vomiting required for attack to count',
+    'Stricture dilation procedure qualifies for 30% even without multiple attacks',
+    'Includes cholangitis, strictures, Sphincter of Oddi dysfunction, bile duct injury, choledochal cyst',
+  ],
+
+  disclaimer: 'This analysis is based on logged biliary tract symptoms. VA requires clinically documented attacks. Seek medical evaluation during attacks to establish documentation.',
+};
+
+// ============================================
+// ANALYSIS FUNCTIONS - MIGRAINE
+// ============================================
+
+/**
+ * Analyzes migraine logs to determine supported rating level
+ */
+export const analyzeMigraineLogs = (logs, options = {}) => {
+  const {
+    evaluationPeriodDays = 90,
+    includeWorkImpact = false,
+  } = options;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    return logDate >= cutoffDate && getLogSymptomId(log) === 'migraine';
+  });
+
+  if (relevantLogs.length === 0) {
+    return {
+      hasData: false,
+      message: 'No migraine logs found in the evaluation period',
+      supportedRating: null,
+      evidence: [],
+      gaps: ['Start logging migraines to build your evidence'],
+    };
+  }
+
+  const totalMigraines = relevantLogs.length;
+  const prostratingMigraines = relevantLogs.filter(
+      log => log.migraineData?.prostrating === true);
+  const prostratingCount = prostratingMigraines.length;
+
+  const prolongedDurations = ['4-24h', '1-2d', 'more-than-2d', 'ongoing'];
+  const prolongedMigraines = prostratingMigraines.filter(log =>
+      prolongedDurations.includes(log.migraineData?.duration),
+  );
+  const prolongedCount = prolongedMigraines.length;
+
+  const monthsInPeriod = evaluationPeriodDays / 30;
+  const totalPerMonth = totalMigraines / monthsInPeriod;
+  const prostratingPerMonth = prostratingCount / monthsInPeriod;
+  const prolongedProstratingPerMonth = prolongedCount / monthsInPeriod;
+
+  const oldestLog = relevantLogs.reduce((oldest, log) =>
+      new Date(log.timestamp) < new Date(oldest.timestamp) ? log : oldest,
+  );
+  const newestLog = relevantLogs.reduce((newest, log) =>
+      new Date(log.timestamp) > new Date(newest.timestamp) ? log : newest,
+  );
+
+  const evidence = {
+    evaluationPeriod: {
+      startDate: oldestLog.timestamp,
+      endDate: newestLog.timestamp,
+      days: evaluationPeriodDays,
+      months: monthsInPeriod.toFixed(1),
+    },
+    totalMigraines,
+    prostratingCount,
+    prolongedCount,
+    monthlyRates: {
+      total: totalPerMonth.toFixed(1),
+      prostrating: prostratingPerMonth.toFixed(1),
+      prolongedProstrating: prolongedProstratingPerMonth.toFixed(1),
+    },
+    severityBreakdown: {
+      prostrating: prostratingCount,
+      nonProstrating: totalMigraines - prostratingCount,
+      prolongedProstrating: prolongedCount,
+    },
+  };
+
+  let supportedRating = 0;
+  let ratingRationale = [];
+  let gaps = [];
+
+  if (prostratingPerMonth >= 4 && prolongedCount > 0) {
+    supportedRating = 50;
+    ratingRationale = [
+      `${prostratingPerMonth.toFixed(
+          1)} prostrating attacks per month (≥4 required)`,
+      `${prolongedCount} prolonged attacks documented`,
+      'Pattern suggests very frequent, prostrating, prolonged attacks',
+    ];
+    gaps = [
+      'Consider documenting work impact (missed days, reduced productivity)',
+      'Note any job accommodations needed due to migraines',
+    ];
+  } else if (prostratingPerMonth >= 1) {
+    supportedRating = 30;
+    ratingRationale = [
+      `${prostratingPerMonth.toFixed(
+          1)} prostrating attacks per month (≥1 required)`,
+      'Pattern supports characteristic prostrating attacks averaging monthly',
+    ];
+    gaps = [];
+    if (prolongedCount === 0) {
+      gaps.push(
+          'Document duration of attacks (4+ hours supports higher rating)');
+    }
+    if (prostratingPerMonth < 4) {
+      gaps.push(`Current frequency (${prostratingPerMonth.toFixed(
+          1)}/month) - 4+/month may support 50% rating`);
+    }
+  } else if (prostratingPerMonth >= 0.5) {
+    supportedRating = 10;
+    ratingRationale = [
+      `${prostratingPerMonth.toFixed(1)} prostrating attacks per month`,
+      'Pattern supports prostrating attacks averaging once every 2 months',
+    ];
+    gaps = [
+      `Increase documentation frequency - 1+/month may support 30% rating`,
+      'Ensure all prostrating episodes are logged',
+    ];
+  } else {
+    supportedRating = 0;
+    if (prostratingCount === 0 && totalMigraines > 0) {
+      ratingRationale = [
+        `${totalMigraines} migraines logged, but none marked as prostrating`,
+        'Non-prostrating migraines support 0% rating',
+      ];
+      gaps = [
+        'If migraines prevent normal activities, mark them as "prostrating"',
+        'Document severity accurately - prostrating attacks are key to higher ratings',
+      ];
+    } else if (prostratingCount > 0) {
+      ratingRationale = [
+        `${prostratingPerMonth.toFixed(2)} prostrating attacks per month`,
+        'Frequency below threshold for 10% (need ≥0.5/month)',
+      ];
+      gaps = [
+        'Continue logging all prostrating episodes',
+        'Ensure you\'re capturing every migraine that prevents normal activities',
+      ];
+    } else {
+      ratingRationale = ['Insufficient data to determine rating'];
+      gaps = ['Begin logging migraine episodes with severity and duration'];
+    }
+  }
+
+  return {
+    hasData: true,
+    condition: 'Migraine',
+    diagnosticCode: '8100',
+    evaluationPeriodDays,
+    supportedRating,
+    ratingRationale,
+    evidence,
+    gaps,
+    criteria: MIGRAINE_CRITERIA,
+    disclaimer: 'This analysis is for documentation guidance only. The VA makes all final rating determinations based on the complete evidence of record.',
+  };
 };
 
 
@@ -18070,8 +19011,8 @@ export const analyzeKidneyStonesLogs = (logs) => {
     hasData: true,
     totalLogs: stoneLogs.length,
     supportedRating,
-    rationale,
-    evidenceGaps,
+    ratingRationale: rationale,
+    gaps: evidenceGaps,
     metrics: {
       stoneEpisodes,
       stonesPassed,
@@ -18177,8 +19118,8 @@ export const analyzeChronicRenalDiseaseLogs = (logs, options = {}) => {
     hasData: true,
     totalLogs: renalLogs.length,
     supportedRating,
-    rationale,
-    evidenceGaps,
+    ratingRationale: rationale,
+    gaps: evidenceGaps,
     metrics: {
       egfrMeasurements: egfrMeasurements.length,
       lowestEGFR,
@@ -18299,8 +19240,8 @@ export const analyzeVoidingDysfunctionLogs = (logs) => {
     hasData: true,
     totalLogs: voidingLogs.length,
     supportedRating,
-    rationale,
-    evidenceGaps,
+    ratingRationale: rationale,
+    gaps: evidenceGaps,
     metrics: {
       incontinenceEpisodes: incontinenceLogs.length,
       avgPadChanges,
@@ -18374,8 +19315,8 @@ export const analyzeSphincterImpairmentLogs = (logs) => {
     hasData: true,
     totalLogs: sphincterLogs.length,
     supportedRating,
-    rationale,
-    evidenceGaps,
+    ratingRationale: rationale,
+    gaps: evidenceGaps,
     metrics: {
       episodes,
       totalDaysLogged,
@@ -18513,8 +19454,8 @@ export const analyzeIronDeficiencyAnemiaLogs = (logs, options = {}) => {
 
     hasData: true,
     supportedRating,
-    rationale,
-    evidenceGaps,
+    ratingRationale: rationale,
+    gaps: evidenceGaps,
     metrics,
     criteriaReference: IRON_DEFICIENCY_ANEMIA_CRITERIA
   };
@@ -18787,8 +19728,8 @@ export const analyzeSickleCellAnemiaLogs = (logs, options = {}) => {
 
     hasData: true,
     supportedRating,
-    rationale,
-    evidenceGaps,
+    ratingRationale: rationale,
+    gaps: evidenceGaps,
     metrics,
     criteriaReference: SICKLE_CELL_ANEMIA_CRITERIA
   };
@@ -19652,8 +20593,8 @@ export const analyzeEndometriosisLogs = (logs) => {
     hasData: true,
     totalLogs: endoLogs.length,
     supportedRating,
-    rationale,
-    evidenceGaps,
+    ratingRationale: rationale,
+    gaps: evidenceGaps,
     metrics: {
       laparoscopyConfirmed,
       hasBowelBladderLesions,
@@ -19779,8 +20720,8 @@ export const analyzeFemaleReproductiveOrgansLogs = (logs) => {
     hasData: true,
     totalLogs: gyneLogs.length,
     supportedRating,
-    rationale,
-    evidenceGaps,
+    ratingRationale: rationale,
+    gaps: evidenceGaps,
     metrics: {
       requiresContinuousTreatment,
       hasUncontrolledSymptoms,
@@ -19862,8 +20803,8 @@ export const analyzePelvicProlapseLogs = (logs) => {
     hasData: true,
     totalLogs: prolapseLogs.length,
     supportedRating,
-    rationale,
-    evidenceGaps,
+    ratingRationale: rationale,
+    gaps: evidenceGaps,
     metrics: {
       prolapseTypes,
       popStages,
@@ -23186,6 +24127,966 @@ export const analyzeAvoidantPersonalityDisorderLogs = (logs, options = {}) => {
 };
 
 // ============================================
+// PHASE 9: CARDIOVASCULAR ANALYSIS FUNCTIONS
+// ============================================
+
+/**
+ * Analyze Cardiomyopathy symptom logs (DC 7020)
+ * Uses General Rating Formula for Diseases of the Heart (METs-based)
+ */
+export const analyzeCardiomyopathyLogs = (logs, measurements = [], options = {}) => {
+  const { evaluationPeriodDays = 365 } = options;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const symptomIds = [
+    'cardiomyopathy-breathlessness', 'cardiomyopathy-fatigue', 'cardiomyopathy-edema',
+    'cardiomyopathy-palpitations', 'cardiomyopathy-chest-pain', 'cardiomyopathy-dizziness',
+    'cardiomyopathy-syncope', 'cardiomyopathy-activity-limitation',
+    'cardiac-breathlessness', 'cardiac-fatigue', 'cardiac-angina', 'cardiac-dizziness',
+    'cardiac-syncope', 'cardiac-palpitations', 'cardiac-edema', 'cardiac-orthopnea'
+  ];
+
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    const symptomId = getLogSymptomId(log);
+    return logDate >= cutoffDate && symptomId && symptomIds.includes(symptomId);
+  });
+
+  const metsReadings = Array.isArray(measurements) ? measurements.filter(m =>
+      m.type === 'mets-capacity' && new Date(m.timestamp) >= cutoffDate
+  ) : [];
+  const efReadings = Array.isArray(measurements) ? measurements.filter(m =>
+      m.type === 'ejection-fraction' && new Date(m.timestamp) >= cutoffDate
+  ) : [];
+
+  if (relevantLogs.length === 0 && metsReadings.length === 0 && efReadings.length === 0) {
+    return {
+      hasData: false,
+      condition: 'Cardiomyopathy',
+      diagnosticCode: '7020',
+      message: 'No cardiomyopathy logs found',
+      supportedRating: null,
+      ratingRationale: [],
+      evidenceGaps: ['Start logging cardiomyopathy symptoms and record METs capacity from stress tests'],
+      metrics: { totalLogs: 0 },
+    };
+  }
+
+  const breathlessnessLogs = relevantLogs.filter(log =>
+      ['cardiomyopathy-breathlessness', 'cardiac-breathlessness'].includes(getLogSymptomId(log))
+  );
+  const fatigueLogs = relevantLogs.filter(log =>
+      ['cardiomyopathy-fatigue', 'cardiac-fatigue'].includes(getLogSymptomId(log))
+  );
+  const syncopeLogs = relevantLogs.filter(log =>
+      ['cardiomyopathy-syncope', 'cardiac-syncope'].includes(getLogSymptomId(log))
+  );
+  const edemaLogs = relevantLogs.filter(log =>
+      ['cardiomyopathy-edema', 'cardiac-edema'].includes(getLogSymptomId(log))
+  );
+
+  let lowestMets = null;
+  if (metsReadings.length > 0) {
+    lowestMets = Math.min(...metsReadings.map(m => parseFloat(m.values?.mets_level || 99)));
+  }
+
+  let hasHypertrophyOrDilatation = false;
+  let latestEF = null;
+  if (efReadings.length > 0) {
+    latestEF = efReadings[efReadings.length - 1];
+    if (latestEF.values?.hypertrophy || latestEF.values?.dilatation) {
+      hasHypertrophyOrDilatation = true;
+    }
+  }
+
+  let supportedRating = 0;
+  let rationale = [];
+  let evidenceGaps = [];
+
+  if (lowestMets !== null) {
+    if (lowestMets <= 3.0) {
+      supportedRating = 100;
+      rationale = [`METs capacity ≤3.0 (${lowestMets} METs documented)`, 'Severely limited functional capacity supports 100% rating'];
+    } else if (lowestMets <= 5.0) {
+      supportedRating = 60;
+      rationale = [`METs capacity 3.1-5.0 (${lowestMets} METs documented)`, 'Moderately limited functional capacity supports 60% rating'];
+    } else if (lowestMets <= 7.0 || hasHypertrophyOrDilatation) {
+      supportedRating = 30;
+      rationale = [lowestMets <= 7.0 ? `METs capacity 5.1-7.0 (${lowestMets} METs)` : 'Cardiac hypertrophy/dilatation documented', 'Pattern supports 30% rating'];
+    } else if (lowestMets <= 10.0) {
+      supportedRating = 10;
+      rationale = [`METs capacity 7.1-10.0 (${lowestMets} METs documented)`, 'Mild limitation supports 10% rating'];
+    }
+  } else if (hasHypertrophyOrDilatation) {
+    supportedRating = 30;
+    rationale = ['Cardiac hypertrophy or dilatation documented', 'Supports 30% rating even without METs testing'];
+  } else if (relevantLogs.length >= 10) {
+    supportedRating = 10;
+    rationale = ['Cardiac symptoms documented', 'METs testing recommended for accurate rating'];
+  }
+
+  if (metsReadings.length === 0) evidenceGaps.push('No METs capacity documented - request exercise stress test');
+  if (efReadings.length === 0) evidenceGaps.push('No ejection fraction documented - echocardiogram recommended');
+
+  return {
+    hasData: true,
+    condition: 'Cardiomyopathy',
+    diagnosticCode: '7020',
+    evaluationPeriodDays,
+    supportedRating,
+    ratingRationale: rationale,
+    gaps: evidenceGaps,
+    metrics: {
+      totalLogs: relevantLogs.length,
+      breathlessnessCount: breathlessnessLogs.length,
+      fatigueCount: fatigueLogs.length,
+      syncopeCount: syncopeLogs.length,
+      edemaCount: edemaLogs.length,
+      metsLevel: lowestMets,
+      ejectionFraction: latestEF?.values?.ef_percent || null,
+      hasHypertrophyOrDilatation,
+    },
+    criteria: CARDIOMYOPATHY_CRITERIA,
+  };
+};
+
+/**
+ * Analyze SVT (Supraventricular Tachycardia) symptom logs (DC 7010)
+ */
+export const analyzeSVTLogs = (logs, options = {}) => {
+  const { evaluationPeriodDays = 365 } = options;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const symptomIds = [
+    'svt-episode', 'svt-treatment-iv', 'svt-treatment-cardioversion', 'svt-treatment-ablation',
+    'svt-vagal-maneuver', 'svt-oral-medication',
+    'arrhythmia-palpitations', 'arrhythmia-racing-heart', 'arrhythmia-skipped-beats',
+    'arrhythmia-dizziness', 'arrhythmia-syncope', 'arrhythmia-chest-discomfort'
+  ];
+
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    const symptomId = getLogSymptomId(log);
+    return logDate >= cutoffDate && symptomId && symptomIds.includes(symptomId);
+  });
+
+  if (relevantLogs.length === 0) {
+    return {
+      hasData: false,
+      condition: 'Supraventricular Tachycardia',
+      diagnosticCode: '7010',
+      message: 'No SVT logs found',
+      supportedRating: null,
+      ratingRationale: [],
+      evidenceGaps: ['Start logging SVT episodes and any treatments required'],
+      metrics: { totalLogs: 0 },
+    };
+  }
+
+  const episodeLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'svt-episode');
+  const ivTreatmentLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'svt-treatment-iv');
+  const cardioversionLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'svt-treatment-cardioversion');
+  const ablationLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'svt-treatment-ablation');
+  const vagalLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'svt-vagal-maneuver');
+  const oralMedLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'svt-oral-medication');
+
+  const treatmentInterventions = ivTreatmentLogs.length + cardioversionLogs.length + ablationLogs.length;
+
+  let supportedRating = 0;
+  let rationale = [];
+  let evidenceGaps = [];
+
+  if (treatmentInterventions >= 5) {
+    supportedRating = 30;
+    rationale = [`${treatmentInterventions} treatment interventions documented`, 'Pattern supports 30% rating (5+ interventions/year)'];
+  } else if (treatmentInterventions >= 1 || oralMedLogs.length > 0 || vagalLogs.length > 0) {
+    supportedRating = 10;
+    rationale = [];
+    if (treatmentInterventions >= 1) rationale.push(`${treatmentInterventions} treatment intervention(s) documented`);
+    if (oralMedLogs.length > 0) rationale.push('Oral medication use documented');
+    if (vagalLogs.length > 0) rationale.push('Vagal maneuver use documented');
+    rationale.push('Pattern supports 10% rating');
+  }
+
+  if (episodeLogs.length === 0) evidenceGaps.push('Log SVT episodes with ECG confirmation if available');
+  if (treatmentInterventions === 0 && oralMedLogs.length === 0) {
+    evidenceGaps.push('Document any treatments required (IV meds, cardioversion, ablation, oral meds)');
+  }
+
+  return {
+    hasData: true,
+    condition: 'Supraventricular Tachycardia',
+    diagnosticCode: '7010',
+    evaluationPeriodDays,
+    supportedRating,
+    ratingRationale: rationale,
+    gaps: evidenceGaps,
+    metrics: {
+      totalLogs: relevantLogs.length,
+      episodeCount: episodeLogs.length,
+      treatmentInterventions,
+      ivTreatments: ivTreatmentLogs.length,
+      cardioversions: cardioversionLogs.length,
+      ablations: ablationLogs.length,
+      vagalManeuvers: vagalLogs.length,
+      oralMedicationLogs: oralMedLogs.length,
+    },
+    criteria: SVT_CRITERIA,
+  };
+};
+
+/**
+ * Analyze Ventricular Arrhythmia symptom logs (DC 7011)
+ */
+export const analyzeVentricularArrhythmiaLogs = (logs, options = {}) => {
+  const { evaluationPeriodDays = 365 } = options;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const symptomIds = [
+    'ventricular-arrhythmia-episode', 'ventricular-arrhythmia-hospitalization',
+    'aicd-implant', 'aicd-shock',
+    'arrhythmia-palpitations', 'arrhythmia-racing-heart', 'arrhythmia-syncope'
+  ];
+
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    const symptomId = getLogSymptomId(log);
+    return logDate >= cutoffDate && symptomId && symptomIds.includes(symptomId);
+  });
+
+  if (relevantLogs.length === 0) {
+    return {
+      hasData: false,
+      condition: 'Ventricular Arrhythmias',
+      diagnosticCode: '7011',
+      message: 'No ventricular arrhythmia logs found',
+      supportedRating: null,
+      ratingRationale: [],
+      evidenceGaps: ['Start logging ventricular arrhythmia episodes and any AICD events'],
+      metrics: { totalLogs: 0 },
+    };
+  }
+
+  const episodeLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'ventricular-arrhythmia-episode');
+  const hospitalizationLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'ventricular-arrhythmia-hospitalization');
+  const aicdImplantLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'aicd-implant');
+  const aicdShockLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'aicd-shock');
+
+  const hasAICD = aicdImplantLogs.length > 0;
+
+  let supportedRating = 0;
+  let rationale = [];
+  let evidenceGaps = [];
+
+  if (hasAICD || hospitalizationLogs.length > 0) {
+    supportedRating = 100;
+    rationale = [];
+    if (hasAICD) rationale.push('AICD (implantable defibrillator) in place');
+    if (hospitalizationLogs.length > 0) rationale.push(`${hospitalizationLogs.length} hospitalization(s) for ventricular arrhythmia`);
+    rationale.push('100% rating applies with AICD or during/following hospitalization');
+  } else if (episodeLogs.length > 0) {
+    supportedRating = 10;
+    rationale = ['Ventricular arrhythmia episodes documented', 'Rate under General Rating Formula after stabilization'];
+  }
+
+  if (!hasAICD && hospitalizationLogs.length === 0) {
+    evidenceGaps.push('Document AICD implant or hospitalizations for 100% rating');
+  }
+  if (aicdShockLogs.length > 0) {
+    rationale.push(`${aicdShockLogs.length} AICD shock(s) delivered`);
+  }
+
+  return {
+    hasData: true,
+    condition: 'Ventricular Arrhythmias',
+    diagnosticCode: '7011',
+    evaluationPeriodDays,
+    supportedRating,
+    ratingRationale: rationale,
+    gaps: evidenceGaps,
+    metrics: {
+      totalLogs: relevantLogs.length,
+      episodeCount: episodeLogs.length,
+      hospitalizations: hospitalizationLogs.length,
+      hasAICD,
+      aicdShocks: aicdShockLogs.length,
+    },
+    criteria: VENTRICULAR_ARRHYTHMIA_CRITERIA,
+  };
+};
+
+/**
+ * Analyze Pericarditis symptom logs (DC 7002)
+ */
+export const analyzePericarditisLogs = (logs, measurements = [], options = {}) => {
+  const { evaluationPeriodDays = 365 } = options;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const symptomIds = [
+    'pericarditis-chest-pain', 'pericarditis-pain-breathing', 'pericarditis-pain-lying-down',
+    'pericarditis-fever', 'pericarditis-palpitations', 'pericarditis-shortness-breath',
+    'pericarditis-active-infection', 'pericarditis-effusion'
+  ];
+
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    const symptomId = getLogSymptomId(log);
+    return logDate >= cutoffDate && symptomId && symptomIds.includes(symptomId);
+  });
+
+  if (relevantLogs.length === 0) {
+    return {
+      hasData: false,
+      condition: 'Pericarditis',
+      diagnosticCode: '7002',
+      message: 'No pericarditis logs found',
+      supportedRating: null,
+      ratingRationale: [],
+      evidenceGaps: ['Start logging pericarditis symptoms including chest pain and active infection periods'],
+      metrics: { totalLogs: 0 },
+    };
+  }
+
+  const activeInfectionLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'pericarditis-active-infection');
+  const chestPainLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'pericarditis-chest-pain');
+  const effusionLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'pericarditis-effusion');
+
+  const metsReadings = Array.isArray(measurements) ? measurements.filter(m =>
+      m.type === 'mets-capacity' && new Date(m.timestamp) >= cutoffDate
+  ) : [];
+
+  let lowestMets = null;
+  if (metsReadings.length > 0) {
+    lowestMets = Math.min(...metsReadings.map(m => parseFloat(m.values?.mets_level || 99)));
+  }
+
+  let supportedRating = 0;
+  let rationale = [];
+  let evidenceGaps = [];
+
+  // Check for active infection (recent logs within 90 days suggest active)
+  const recentCutoff = new Date();
+  recentCutoff.setDate(recentCutoff.getDate() - 90);
+  const recentActiveInfection = activeInfectionLogs.some(log => new Date(log.timestamp) >= recentCutoff);
+
+  if (recentActiveInfection) {
+    supportedRating = 100;
+    rationale = ['Active pericarditis infection documented', '100% rating during active infection and 3 months post-treatment'];
+  } else if (lowestMets !== null) {
+    if (lowestMets <= 5.0) {
+      supportedRating = 60;
+      rationale = [`Post-active: METs ${lowestMets} (3.1-5.0 range)`, 'Supports 60% rating'];
+    } else if (lowestMets <= 7.0) {
+      supportedRating = 30;
+      rationale = [`Post-active: METs ${lowestMets} (5.1-7.0 range)`, 'Supports 30% rating'];
+    } else if (lowestMets <= 10.0) {
+      supportedRating = 10;
+      rationale = [`Post-active: METs ${lowestMets} (7.1-10.0 range)`, 'Supports 10% rating'];
+    }
+  } else if (chestPainLogs.length > 0 || effusionLogs.length > 0) {
+    supportedRating = 10;
+    rationale = ['Pericarditis symptoms documented', 'METs testing needed for accurate post-active rating'];
+  }
+
+  if (metsReadings.length === 0 && !recentActiveInfection) {
+    evidenceGaps.push('METs capacity needed for post-active pericarditis rating');
+  }
+  if (activeInfectionLogs.length === 0) {
+    evidenceGaps.push('Document active infection periods for 100% rating eligibility');
+  }
+
+  return {
+    hasData: true,
+    condition: 'Pericarditis',
+    diagnosticCode: '7002',
+    evaluationPeriodDays,
+    supportedRating,
+    ratingRationale: rationale,
+    gaps: evidenceGaps,
+    metrics: {
+      totalLogs: relevantLogs.length,
+      activeInfectionLogs: activeInfectionLogs.length,
+      chestPainLogs: chestPainLogs.length,
+      effusionLogs: effusionLogs.length,
+      metsLevel: lowestMets,
+      recentActiveInfection,
+    },
+    criteria: PERICARDITIS_CRITERIA,
+  };
+};
+
+/**
+ * Analyze Post-Phlebitic Syndrome symptom logs (DC 7121)
+ */
+export const analyzePostPhlebiticLogs = (logs, options = {}) => {
+  const { evaluationPeriodDays = 90 } = options;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const symptomIds = [
+    'post-phlebitic-edema', 'post-phlebitic-pain', 'post-phlebitic-aching',
+    'post-phlebitic-pigmentation', 'post-phlebitic-eczema', 'post-phlebitic-ulcer',
+    'post-phlebitic-induration', 'post-phlebitic-pain-rest'
+  ];
+
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    const symptomId = getLogSymptomId(log);
+    return logDate >= cutoffDate && symptomId && symptomIds.includes(symptomId);
+  });
+
+  if (relevantLogs.length === 0) {
+    return {
+      hasData: false,
+      condition: 'Post-Phlebitic Syndrome',
+      diagnosticCode: '7121',
+      message: 'No post-phlebitic syndrome logs found',
+      supportedRating: null,
+      ratingRationale: [],
+      evidenceGaps: ['Start logging post-phlebitic symptoms including edema, skin changes, and ulcers'],
+      metrics: { totalLogs: 0 },
+    };
+  }
+
+  const edemaLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'post-phlebitic-edema');
+  const pigmentationLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'post-phlebitic-pigmentation');
+  const eczemaLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'post-phlebitic-eczema');
+  const ulcerLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'post-phlebitic-ulcer');
+  const painRestLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'post-phlebitic-pain-rest');
+  const achingLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'post-phlebitic-aching');
+
+  const hasSkinChanges = pigmentationLogs.length > 0 || eczemaLogs.length > 0;
+
+  let supportedRating = 0;
+  let rationale = [];
+  let evidenceGaps = [];
+
+  if (painRestLogs.length >= 30 && edemaLogs.length >= 30) {
+    supportedRating = 100;
+    rationale = ['Constant pain at rest with massive edema documented', 'Pattern supports 100% rating'];
+  } else if (ulcerLogs.length >= 5 && edemaLogs.length >= 10 && hasSkinChanges) {
+    supportedRating = 60;
+    rationale = ['Persistent edema, skin changes, and persistent ulceration', 'Pattern supports 60% rating'];
+  } else if (edemaLogs.length >= 10 && hasSkinChanges) {
+    supportedRating = 40;
+    rationale = ['Persistent edema with stasis pigmentation/eczema', 'Pattern supports 40% rating'];
+  } else if (edemaLogs.length >= 5) {
+    supportedRating = 20;
+    rationale = ['Persistent edema documented', 'Pattern supports 20% rating'];
+  } else if (achingLogs.length > 0 || edemaLogs.length > 0) {
+    supportedRating = 10;
+    rationale = ['Intermittent symptoms documented', 'Pattern supports 10% rating'];
+  }
+
+  evidenceGaps.push('Track symptoms separately for each leg if bilateral');
+  if (ulcerLogs.length === 0) evidenceGaps.push('Document any venous ulcers - significantly affects rating');
+  if (!hasSkinChanges) evidenceGaps.push('Document skin pigmentation changes or stasis eczema');
+
+  return {
+    hasData: true,
+    condition: 'Post-Phlebitic Syndrome',
+    diagnosticCode: '7121',
+    evaluationPeriodDays,
+    supportedRating,
+    ratingRationale: rationale,
+    gaps: evidenceGaps,
+    metrics: {
+      totalLogs: relevantLogs.length,
+      edemaCount: edemaLogs.length,
+      pigmentationCount: pigmentationLogs.length,
+      eczemaCount: eczemaLogs.length,
+      ulcerCount: ulcerLogs.length,
+      painAtRestCount: painRestLogs.length,
+      achingCount: achingLogs.length,
+    },
+    criteria: POST_PHLEBITIC_CRITERIA,
+  };
+};
+
+
+// ============================================
+// PHASE 10: DIGESTIVE ANALYSIS FUNCTIONS
+// ============================================
+
+/**
+ * Analyze Cirrhosis symptom logs (DC 7312)
+ */
+export const analyzeCirrhosisLogs = (logs, measurements = [], options = {}) => {
+  const { evaluationPeriodDays = 365 } = options;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const symptomIds = [
+    'cirrhosis-fatigue', 'cirrhosis-ascites', 'cirrhosis-edema', 'cirrhosis-jaundice',
+    'cirrhosis-encephalopathy', 'cirrhosis-variceal-bleed', 'cirrhosis-sbp', 'cirrhosis-coagulopathy',
+    'cirrhosis-splenomegaly', 'cirrhosis-anorexia', 'cirrhosis-malaise', 'cirrhosis-abdominal-pain',
+    'cirrhosis-itching', 'cirrhosis-hospitalization'
+  ];
+
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    const symptomId = getLogSymptomId(log);
+    return logDate >= cutoffDate && symptomId && symptomIds.includes(symptomId);
+  });
+
+  if (relevantLogs.length === 0) {
+    return {
+      hasData: false,
+      condition: 'Cirrhosis of the Liver',
+      diagnosticCode: '7312',
+      message: 'No cirrhosis logs found',
+      supportedRating: null,
+      ratingRationale: [],
+      gaps: ['Start logging cirrhosis symptoms including fatigue, ascites, and complications'],
+      metrics: { totalLogs: 0 },
+    };
+  }
+
+  // Get MELD score from measurements
+  const meldReadings = Array.isArray(measurements) ? measurements.filter(m =>
+      m.type === 'meld-score' && new Date(m.timestamp) >= cutoffDate
+  ) : [];
+
+  let latestMeld = null;
+  if (meldReadings.length > 0) {
+    const sorted = meldReadings.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+    latestMeld = sorted[0]?.values?.meld_score;
+  }
+
+  // Count specific symptoms
+  const fatigueLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'cirrhosis-fatigue');
+  const ascitesLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'cirrhosis-ascites');
+  const encephalopathyLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'cirrhosis-encephalopathy');
+  const varicealBleedLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'cirrhosis-variceal-bleed');
+  const sbpLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'cirrhosis-sbp');
+  const hospitalizationLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'cirrhosis-hospitalization');
+  const anorexiaLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'cirrhosis-anorexia');
+  const malaiseLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'cirrhosis-malaise');
+  const painLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'cirrhosis-abdominal-pain');
+  const splenomegalyLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'cirrhosis-splenomegaly');
+
+  const hasMajorComplication = encephalopathyLogs.length > 0 || varicealBleedLogs.length > 0 ||
+      sbpLogs.length > 0 || ascitesLogs.length > 0;
+  const hasPortalHypertensionSigns = ascitesLogs.length > 0 || splenomegalyLogs.length > 0;
+  const hasMildSymptoms = anorexiaLogs.length > 0 || fatigueLogs.length > 0 ||
+      malaiseLogs.length > 0 || painLogs.length > 0;
+
+  let supportedRating = 0;
+  let ratingRationale = [];
+  let gaps = [];
+
+  // Determine rating based on MELD or symptoms
+  if (latestMeld && latestMeld >= 15) {
+    supportedRating = 100;
+    ratingRationale = [`MELD score ${latestMeld} (≥15 supports 100%)`];
+  } else if (hasMajorComplication && fatigueLogs.length >= 20) {
+    supportedRating = 100;
+    ratingRationale = ['Daily debilitating symptoms with major complication documented'];
+    if (encephalopathyLogs.length > 0) ratingRationale.push('Hepatic encephalopathy documented');
+    if (varicealBleedLogs.length > 0) ratingRationale.push('Variceal hemorrhage documented');
+    if (sbpLogs.length > 0) ratingRationale.push('Spontaneous bacterial peritonitis documented');
+    if (ascitesLogs.length > 0) ratingRationale.push('Ascites documented');
+  } else if (latestMeld && latestMeld >= 12) {
+    supportedRating = 60;
+    ratingRationale = [`MELD score ${latestMeld} (12-14 supports 60%)`];
+  } else if (fatigueLogs.length >= 10 && (varicealBleedLogs.length > 0 || encephalopathyLogs.length > 0)) {
+    supportedRating = 60;
+    ratingRationale = ['Daily fatigue with variceal hemorrhage or encephalopathy in past year'];
+  } else if (latestMeld && latestMeld >= 10) {
+    supportedRating = 30;
+    ratingRationale = [`MELD score ${latestMeld} (10-11 supports 30%)`];
+  } else if (hasPortalHypertensionSigns && hasMildSymptoms) {
+    supportedRating = 30;
+    ratingRationale = ['Portal hypertension signs with weakness/anorexia/pain/malaise'];
+  } else if (latestMeld && latestMeld > 6) {
+    supportedRating = 10;
+    ratingRationale = [`MELD score ${latestMeld} (7-9 supports 10%)`];
+  } else if (hasMildSymptoms) {
+    supportedRating = 10;
+    ratingRationale = ['Symptoms documented (anorexia, weakness, pain, or malaise)'];
+  } else {
+    ratingRationale = ['Cirrhosis symptoms documented', 'Document symptom severity for rating determination'];
+  }
+
+  // Documentation gaps
+  if (!latestMeld) {
+    gaps.push('Record MELD score from lab values for accurate rating');
+  }
+  if (ascitesLogs.length === 0) {
+    gaps.push('Document ascites episodes if present');
+  }
+  if (encephalopathyLogs.length === 0 && hospitalizationLogs.length > 0) {
+    gaps.push('Document hepatic encephalopathy episodes if experienced');
+  }
+
+  return {
+    hasData: true,
+    condition: 'Cirrhosis of the Liver',
+    diagnosticCode: '7312',
+    evaluationPeriodDays,
+    supportedRating,
+    ratingRationale,
+    gaps,
+    metrics: {
+      totalLogs: relevantLogs.length,
+      meldScore: latestMeld,
+      fatigueLogs: fatigueLogs.length,
+      ascitesLogs: ascitesLogs.length,
+      encephalopathyLogs: encephalopathyLogs.length,
+      varicealBleedLogs: varicealBleedLogs.length,
+      hospitalizationLogs: hospitalizationLogs.length,
+    },
+    criteria: CIRRHOSIS_CRITERIA,
+  };
+};
+
+/**
+ * Analyze Gastritis symptom logs (DC 7307) - Rated as Peptic Ulcer DC 7304
+ */
+export const analyzeGastritisLogs = (logs, options = {}) => {
+  const { evaluationPeriodDays = 365 } = options;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const symptomIds = [
+    'gastritis-abdominal-pain', 'gastritis-nausea', 'gastritis-vomiting', 'gastritis-bloating',
+    'gastritis-indigestion', 'gastritis-hematemesis', 'gastritis-melena', 'gastritis-hospitalization'
+  ];
+
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    const symptomId = getLogSymptomId(log);
+    return logDate >= cutoffDate && symptomId && symptomIds.includes(symptomId);
+  });
+
+  if (relevantLogs.length === 0) {
+    return {
+      hasData: false,
+      condition: 'Gastritis, Chronic',
+      diagnosticCode: '7307',
+      message: 'No gastritis logs found',
+      supportedRating: null,
+      ratingRationale: [],
+      gaps: ['Start logging gastritis symptoms including pain episodes, nausea, and any bleeding'],
+      metrics: { totalLogs: 0 },
+    };
+  }
+
+  const painLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'gastritis-abdominal-pain');
+  const nauseaLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'gastritis-nausea');
+  const vomitingLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'gastritis-vomiting');
+  const bleedingLogs = relevantLogs.filter(log =>
+      getLogSymptomId(log) === 'gastritis-hematemesis' || getLogSymptomId(log) === 'gastritis-melena'
+  );
+  const hospitalizationLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'gastritis-hospitalization');
+
+  // Estimate episodes (clusters of symptoms)
+  const totalSymptomDays = new Set(relevantLogs.map(log =>
+      new Date(log.timestamp).toDateString()
+  )).size;
+
+  let supportedRating = 0;
+  let ratingRationale = [];
+  let gaps = [];
+
+  if (hospitalizationLogs.length >= 1 && bleedingLogs.length > 0) {
+    supportedRating = 60;
+    ratingRationale = [
+      'Hospitalization with GI bleeding documented',
+      'Consistent with severe gastritis (rated as peptic ulcer disease)',
+    ];
+  } else if (painLogs.length >= 12 || totalSymptomDays >= 12) {
+    supportedRating = 40;
+    ratingRationale = [
+      'Multiple symptom episodes documented',
+      'Pattern suggests 4+ episodes per year lasting 3+ days',
+    ];
+    gaps.push('Confirm daily medication use (PPI or H2 blocker)');
+  } else if (painLogs.length >= 3 || totalSymptomDays >= 9) {
+    supportedRating = 20;
+    ratingRationale = [
+      'Symptom episodes documented',
+      'Pattern suggests 1-3 episodes per year',
+    ];
+    gaps.push('Confirm daily medication use for gastritis');
+  } else {
+    ratingRationale = [
+      'Gastritis symptoms logged',
+      'Document episode duration (must be 3+ consecutive days for compensable rating)',
+    ];
+  }
+
+  if (bleedingLogs.length === 0) {
+    gaps.push('Document any GI bleeding if present');
+  }
+
+  return {
+    hasData: true,
+    condition: 'Gastritis, Chronic',
+    diagnosticCode: '7307',
+    evaluationPeriodDays,
+    supportedRating,
+    ratingRationale,
+    gaps,
+    metrics: {
+      totalLogs: relevantLogs.length,
+      painLogs: painLogs.length,
+      nauseaLogs: nauseaLogs.length,
+      vomitingLogs: vomitingLogs.length,
+      bleedingLogs: bleedingLogs.length,
+      hospitalizationLogs: hospitalizationLogs.length,
+      totalSymptomDays,
+    },
+    criteria: GASTRITIS_CRITERIA,
+  };
+};
+
+/**
+ * Analyze Chronic Pancreatitis symptom logs (DC 7347)
+ */
+export const analyzePancreatitisLogs = (logs, options = {}) => {
+  const { evaluationPeriodDays = 365 } = options;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const symptomIds = [
+    'pancreatitis-abdominal-pain', 'pancreatitis-back-pain', 'pancreatitis-nausea', 'pancreatitis-vomiting',
+    'pancreatitis-maldigestion', 'pancreatitis-weight-loss', 'pancreatitis-enzyme-use',
+    'pancreatitis-dietary-restriction', 'pancreatitis-tube-feeding', 'pancreatitis-cyst',
+    'pancreatitis-hospitalization'
+  ];
+
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    const symptomId = getLogSymptomId(log);
+    return logDate >= cutoffDate && symptomId && symptomIds.includes(symptomId);
+  });
+
+  if (relevantLogs.length === 0) {
+    return {
+      hasData: false,
+      condition: 'Pancreatitis, Chronic',
+      diagnosticCode: '7347',
+      message: 'No pancreatitis logs found',
+      supportedRating: null,
+      ratingRationale: [],
+      gaps: ['Start logging pancreatitis symptoms including pain episodes and hospitalizations'],
+      metrics: { totalLogs: 0 },
+    };
+  }
+
+  const painLogs = relevantLogs.filter(log =>
+      getLogSymptomId(log) === 'pancreatitis-abdominal-pain' || getLogSymptomId(log) === 'pancreatitis-back-pain'
+  );
+  const hospitalizationLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'pancreatitis-hospitalization');
+  const enzymeLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'pancreatitis-enzyme-use');
+  const dietaryLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'pancreatitis-dietary-restriction');
+  const tubeFeedingLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'pancreatitis-tube-feeding');
+  const maldigestionLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'pancreatitis-maldigestion');
+  const complicationLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'pancreatitis-cyst');
+
+  // Count unique pain days to estimate episodes
+  const painDays = new Set(painLogs.map(log => new Date(log.timestamp).toDateString())).size;
+  const hasMaldigestion = maldigestionLogs.length > 0 || enzymeLogs.length > 0;
+  const hasDietaryRestriction = dietaryLogs.length > 0;
+
+  let supportedRating = 0;
+  let ratingRationale = [];
+  let gaps = [];
+
+  if (hospitalizationLogs.length >= 3 && hasMaldigestion && hasDietaryRestriction && painDays >= 30) {
+    supportedRating = 100;
+    ratingRationale = [
+      `${hospitalizationLogs.length} hospitalizations in evaluation period (3+ required)`,
+      'Maldigestion requiring enzyme supplementation documented',
+      'Dietary restriction documented',
+      'Daily pain pattern documented',
+    ];
+  } else if (painDays >= 10 && hospitalizationLogs.length >= 1) {
+    supportedRating = 60;
+    ratingRationale = [
+      'Multiple pain episodes documented',
+      `${hospitalizationLogs.length} hospitalization(s) for complications`,
+    ];
+    if (tubeFeedingLogs.length > 0) {
+      ratingRationale.push('Tube feeding complications documented');
+    }
+  } else if (painDays >= 3 || complicationLogs.length > 0) {
+    supportedRating = 30;
+    ratingRationale = [
+      'Pain episodes requiring ongoing treatment documented',
+    ];
+    if (complicationLogs.length > 0) {
+      ratingRationale.push('Complications (cyst/pseudocyst) documented');
+    }
+  } else {
+    ratingRationale = [
+      'Pancreatitis symptoms documented',
+      'Continue logging pain episodes and hospitalizations',
+    ];
+  }
+
+  // Documentation gaps
+  if (hospitalizationLogs.length === 0) {
+    gaps.push('Document hospitalizations for pancreatitis if any');
+  }
+  if (!hasMaldigestion) {
+    gaps.push('Document maldigestion symptoms and enzyme use if applicable');
+  }
+  if (!hasDietaryRestriction) {
+    gaps.push('Document dietary restrictions if required');
+  }
+
+  return {
+    hasData: true,
+    condition: 'Pancreatitis, Chronic',
+    diagnosticCode: '7347',
+    evaluationPeriodDays,
+    supportedRating,
+    ratingRationale,
+    gaps,
+    metrics: {
+      totalLogs: relevantLogs.length,
+      painLogs: painLogs.length,
+      painDays,
+      hospitalizationLogs: hospitalizationLogs.length,
+      enzymeLogs: enzymeLogs.length,
+      hasMaldigestion,
+      hasDietaryRestriction,
+      complicationLogs: complicationLogs.length,
+    },
+    criteria: PANCREATITIS_CRITERIA,
+  };
+};
+
+/**
+ * Analyze Chronic Biliary Tract Disease symptom logs (DC 7314)
+ */
+export const analyzeBiliaryTractLogs = (logs, options = {}) => {
+  const { evaluationPeriodDays = 365 } = options;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const symptomIds = [
+    'biliary-ruq-pain', 'biliary-nausea', 'biliary-vomiting', 'biliary-jaundice',
+    'biliary-fever', 'biliary-dilation', 'biliary-attack'
+  ];
+
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    const symptomId = getLogSymptomId(log);
+    return logDate >= cutoffDate && symptomId && symptomIds.includes(symptomId);
+  });
+
+  if (relevantLogs.length === 0) {
+    return {
+      hasData: false,
+      condition: 'Chronic Biliary Tract Disease',
+      diagnosticCode: '7314',
+      message: 'No biliary tract disease logs found',
+      supportedRating: null,
+      ratingRationale: [],
+      gaps: ['Start logging biliary symptoms including RUQ pain attacks with nausea/vomiting'],
+      metrics: { totalLogs: 0 },
+    };
+  }
+
+  const ruqPainLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'biliary-ruq-pain');
+  const nauseaLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'biliary-nausea');
+  const vomitingLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'biliary-vomiting');
+  const attackLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'biliary-attack');
+  const dilationLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'biliary-dilation');
+  const feverLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'biliary-fever');
+
+  // Count documented attacks (RUQ pain with nausea AND vomiting)
+  // Estimate by looking at days with all three symptoms or explicit attack logs
+  const attackDays = new Set(attackLogs.map(log => new Date(log.timestamp).toDateString())).size;
+  const ruqPainDays = new Set(ruqPainLogs.map(log => new Date(log.timestamp).toDateString()));
+  const nauseaDays = new Set(nauseaLogs.map(log => new Date(log.timestamp).toDateString()));
+  const vomitingDays = new Set(vomitingLogs.map(log => new Date(log.timestamp).toDateString()));
+
+  // Count days with RUQ pain + nausea + vomiting
+  let symptomClusterDays = 0;
+  ruqPainDays.forEach(day => {
+    if (nauseaDays.has(day) && vomitingDays.has(day)) {
+      symptomClusterDays++;
+    }
+  });
+
+  const totalDocumentedAttacks = Math.max(attackDays, symptomClusterDays);
+  const hasStrictureDilation = dilationLogs.length > 0;
+
+  let supportedRating = 0;
+  let ratingRationale = [];
+  let gaps = [];
+
+  if (totalDocumentedAttacks >= 3 || hasStrictureDilation) {
+    supportedRating = 30;
+    ratingRationale = [];
+    if (totalDocumentedAttacks >= 3) {
+      ratingRationale.push(`${totalDocumentedAttacks} documented attacks with RUQ pain, nausea, and vomiting`);
+    }
+    if (hasStrictureDilation) {
+      ratingRationale.push('Biliary stricture dilation procedure documented');
+    }
+  } else if (totalDocumentedAttacks >= 1) {
+    supportedRating = 10;
+    ratingRationale = [
+      `${totalDocumentedAttacks} documented attack(s) in evaluation period`,
+      '1-2 attacks supports 10% rating',
+    ];
+  } else if (ruqPainLogs.length > 0) {
+    ratingRationale = [
+      'RUQ pain logged but full attack criteria not met',
+      'Attack requires RUQ pain WITH nausea AND vomiting on same day',
+    ];
+    gaps.push('Log nausea and vomiting when they occur with RUQ pain');
+  }
+
+  // Documentation gaps
+  if (totalDocumentedAttacks < 3 && !hasStrictureDilation) {
+    gaps.push('Document attacks with medical visits for clinical confirmation');
+  }
+  if (feverLogs.length === 0 && totalDocumentedAttacks > 0) {
+    gaps.push('Document fever/cholangitis episodes if present');
+  }
+
+  return {
+    hasData: true,
+    condition: 'Chronic Biliary Tract Disease',
+    diagnosticCode: '7314',
+    evaluationPeriodDays,
+    supportedRating,
+    ratingRationale,
+    gaps,
+    metrics: {
+      totalLogs: relevantLogs.length,
+      ruqPainLogs: ruqPainLogs.length,
+      nauseaLogs: nauseaLogs.length,
+      vomitingLogs: vomitingLogs.length,
+      attackLogs: attackLogs.length,
+      dilationLogs: dilationLogs.length,
+      totalDocumentedAttacks,
+      hasStrictureDilation,
+    },
+    criteria: BILIARY_TRACT_CRITERIA,
+  };
+};
+
+// ============================================
 // HELPER FUNCTIONS
 // ============================================
 
@@ -23528,6 +25429,36 @@ export const getNarcissisticPersonalityDisorderRatingCriteria = (percent) => {
 export const getAvoidantPersonalityDisorderRatingCriteria = (percent) => {
   return AVOIDANT_PERSONALITY_DISORDER_CRITERIA.ratings.find(r => r.percent === percent) || null;
 };
+// Phase 9: Cardiovascular getRatingCriteria functions
+export const getCardiomyopathyRatingCriteria = (percent) => {
+  return CARDIOMYOPATHY_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getSVTRatingCriteria = (percent) => {
+  return SVT_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getVentricularArrhythmiaRatingCriteria = (percent) => {
+  return VENTRICULAR_ARRHYTHMIA_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getPericarditisRatingCriteria = (percent) => {
+  return PERICARDITIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getPostPhlebiticRatingCriteria = (percent) => {
+  return POST_PHLEBITIC_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+
+// Phase 10: Digestive getRatingCriteria functions
+export const getCirrhosisRatingCriteria = (percent) => {
+  return CIRRHOSIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getGastritisRatingCriteria = (percent) => {
+  return GASTRITIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getPancreatitisRatingCriteria = (percent) => {
+  return PANCREATITIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getBiliaryTractRatingCriteria = (percent) => {
+  return BILIARY_TRACT_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
 
 
 export const getAllLumbosacralStrainRatings = () => LUMBOSACRAL_STRAIN_CRITERIA.ratings;
@@ -23603,6 +25534,15 @@ export const getAllAntisocialPersonalityDisorderRatings = () => ANTISOCIAL_PERSO
 export const getAllBorderlinePersonalityDisorderRatings = () => BORDERLINE_PERSONALITY_DISORDER_CRITERIA.ratings;
 export const getAllNarcissisticPersonalityDisorderRatings = () => NARCISSISTIC_PERSONALITY_DISORDER_CRITERIA.ratings;
 export const getAllAvoidantPersonalityDisorderRatings = () => AVOIDANT_PERSONALITY_DISORDER_CRITERIA.ratings;
+export const getAllCardiomyopathyRatings = () => CARDIOMYOPATHY_CRITERIA.ratings;
+export const getAllSVTRatings = () => SVT_CRITERIA.ratings;
+export const getAllVentricularArrhythmiaRatings = () => VENTRICULAR_ARRHYTHMIA_CRITERIA.ratings;
+export const getAllPericarditisRatings = () => PERICARDITIS_CRITERIA.ratings;
+export const getAllPostPhlebiticRatings = () => POST_PHLEBITIC_CRITERIA.ratings;
+export const getAllCirrhosisRatings = () => CIRRHOSIS_CRITERIA.ratings;
+export const getAllGastritisRatings = () => GASTRITIS_CRITERIA.ratings;
+export const getAllPancreatitisRatings = () => PANCREATITIS_CRITERIA.ratings;
+export const getAllBiliaryTractRatings = () => BILIARY_TRACT_CRITERIA.ratings;
 
 
 
@@ -23685,7 +25625,15 @@ export const getAntisocialPersonalityDisorderDefinition = (term) => ANTISOCIAL_P
 export const getBorderlinePersonalityDisorderDefinition = (term) => BORDERLINE_PERSONALITY_DISORDER_CRITERIA.definitions[term] || null;
 export const getNarcissisticPersonalityDisorderDefinition = (term) => NARCISSISTIC_PERSONALITY_DISORDER_CRITERIA.definitions[term] || null;
 export const getAvoidantPersonalityDisorderDefinition = (term) => AVOIDANT_PERSONALITY_DISORDER_CRITERIA.definitions[term] || null;
-
+export const getCardiomyopathyDefinition = (term) => CARDIOMYOPATHY_CRITERIA.definitions[term] || null;
+export const getSVTDefinition = (term) => SVT_CRITERIA.definitions[term] || null;
+export const getVentricularArrhythmiaDefinition = (term) => VENTRICULAR_ARRHYTHMIA_CRITERIA.definitions[term] || null;
+export const getPericarditisDefinition = (term) => PERICARDITIS_CRITERIA.definitions[term] || null;
+export const getPostPhlebiticDefinition = (term) => POST_PHLEBITIC_CRITERIA.definitions[term] || null;
+export const getCirrhosisDefinition = (term) => CIRRHOSIS_CRITERIA.definitions[term] || null;
+export const getGastritisDefinition = (term) => GASTRITIS_CRITERIA.definitions[term] || null;
+export const getPancreatitisDefinition = (term) => PANCREATITIS_CRITERIA.definitions[term] || null;
+export const getBiliaryTractDefinition = (term) => BILIARY_TRACT_CRITERIA.definitions[term] || null;
 
 
 

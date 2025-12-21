@@ -1880,6 +1880,196 @@ export const MEASUREMENT_TYPES = {
     },
     format: (values) => `${values.weight} ${values.unit}`,
   },
+  // Phase 9: Cardiovascular Measurements
+  'ejection-fraction': {
+    label: 'Ejection Fraction (EF)',
+    icon: '❤️',
+    category: 'cardiovascular',
+    fields: {
+      ef_percent: { label: 'Ejection Fraction', type: 'number', unit: '%', step: '1', min: 5, max: 80 },
+      test_type: {
+        label: 'Test Type',
+        type: 'select',
+        options: [
+          { value: 'echocardiogram', label: 'Echocardiogram (Echo)' },
+          { value: 'muga', label: 'MUGA Scan' },
+          { value: 'cardiac-mri', label: 'Cardiac MRI' },
+          { value: 'cardiac-ct', label: 'Cardiac CT' },
+          { value: 'nuclear', label: 'Nuclear Stress Test' },
+        ]
+      },
+      lvedd: { label: 'LVEDD (LV End Diastolic Diameter)', type: 'number', unit: 'mm', step: '1', required: false },
+      lvesd: { label: 'LVESD (LV End Systolic Diameter)', type: 'number', unit: 'mm', step: '1', required: false },
+      hypertrophy: { label: 'Cardiac Hypertrophy Present', type: 'boolean' },
+      dilatation: { label: 'Cardiac Dilatation Present', type: 'boolean' },
+    },
+    interpretation: (values) => {
+      const ef = values.ef_percent;
+      const hypertrophy = values.hypertrophy;
+      const dilatation = values.dilatation;
+
+      let severity = '';
+      let vaImplication = '';
+
+      if (ef >= 55) {
+        severity = 'Normal (≥55%)';
+        if (hypertrophy || dilatation) {
+          vaImplication = 'May support 30% rating with documented hypertrophy/dilatation';
+        } else {
+          vaImplication = 'Normal EF - rate based on METs and symptoms';
+        }
+      } else if (ef >= 40) {
+        severity = 'Mildly Reduced (40-54%)';
+        vaImplication = 'Reduced EF supports higher rating when combined with symptoms';
+      } else if (ef >= 30) {
+        severity = 'Moderately Reduced (30-39%)';
+        vaImplication = 'Significant impairment - document functional limitations';
+      } else {
+        severity = 'Severely Reduced (<30%)';
+        vaImplication = 'Severe impairment - likely supports higher rating';
+      }
+
+      return `${severity}. ${vaImplication}`;
+    },
+    format: (values) => {
+      let result = `EF: ${values.ef_percent}%`;
+      if (values.test_type) {
+        const testNames = {
+          'echocardiogram': 'Echo',
+          'muga': 'MUGA',
+          'cardiac-mri': 'MRI',
+          'cardiac-ct': 'CT',
+          'nuclear': 'Nuclear'
+        };
+        result += ` (${testNames[values.test_type] || values.test_type})`;
+      }
+      if (values.hypertrophy) result += ', Hypertrophy';
+      if (values.dilatation) result += ', Dilatation';
+      return result;
+    }
+  },
+  'mets-capacity': {
+    label: 'METs Capacity (Exercise Tolerance)',
+    icon: '🏃',
+    category: 'cardiovascular',
+    fields: {
+      mets_level: { label: 'METs Level', type: 'number', unit: 'METs', step: '0.1', min: 1, max: 20 },
+      test_type: {
+        label: 'Assessment Method',
+        type: 'select',
+        options: [
+          { value: 'exercise-test', label: 'Exercise Stress Test (Measured)' },
+          { value: 'estimated', label: 'Estimated by Provider' },
+          { value: 'interview', label: 'Based on Activity Interview' },
+        ]
+      },
+      symptoms_at_mets: {
+        label: 'Symptoms Experienced',
+        type: 'multiselect',
+        options: [
+          { value: 'breathlessness', label: 'Breathlessness/Dyspnea' },
+          { value: 'fatigue', label: 'Fatigue' },
+          { value: 'angina', label: 'Angina/Chest Pain' },
+          { value: 'dizziness', label: 'Dizziness' },
+          { value: 'syncope', label: 'Syncope (Fainting)' },
+          { value: 'palpitations', label: 'Palpitations' },
+        ]
+      },
+      activity_examples: { label: 'Activity Examples at This Level', type: 'text', required: false },
+    },
+    interpretation: (values) => {
+      const mets = values.mets_level;
+      let rating = '';
+      let examples = '';
+
+      if (mets <= 3.0) {
+        rating = 'May support 100% rating';
+        examples = 'Activities: Eating, dressing, walking slowly around home';
+      } else if (mets <= 5.0) {
+        rating = 'May support 60% rating';
+        examples = 'Activities: Light housework, walking 2-3 mph on level ground';
+      } else if (mets <= 7.0) {
+        rating = 'May support 30% rating';
+        examples = 'Activities: Climbing one flight of stairs, walking 4 mph, light yard work';
+      } else if (mets <= 10.0) {
+        rating = 'May support 10% rating';
+        examples = 'Activities: Heavy housework, moderate cycling, recreational sports';
+      } else {
+        rating = 'Normal exercise capacity';
+        examples = 'Activities: Vigorous exercise, running, competitive sports';
+      }
+
+      return `METs ${mets}: ${rating}. ${examples}`;
+    },
+    format: (values) => {
+      let result = `${values.mets_level} METs`;
+      if (values.test_type === 'exercise-test') {
+        result += ' (measured)';
+      } else if (values.test_type === 'estimated') {
+        result += ' (estimated)';
+      }
+      if (values.symptoms_at_mets && values.symptoms_at_mets.length > 0) {
+        result += ` - symptoms: ${values.symptoms_at_mets.join(', ')}`;
+      }
+      return result;
+    }
+  },
+  // Phase 10: Liver Function - MELD Score
+  'meld-score': {
+    label: 'MELD Score (Liver Function)',
+    icon: '🫀',
+    category: 'digestive',
+    fields: {
+      meld_score: { label: 'MELD Score', type: 'number', unit: '', step: '1', min: 6, max: 40 },
+      bilirubin: { label: 'Bilirubin', type: 'number', unit: 'mg/dL', step: '0.1', min: 0, max: 50, required: false },
+      inr: { label: 'INR', type: 'number', unit: '', step: '0.1', min: 0.5, max: 10, required: false },
+      creatinine_liver: { label: 'Creatinine', type: 'number', unit: 'mg/dL', step: '0.1', min: 0, max: 15, required: false },
+      sodium: { label: 'Sodium', type: 'number', unit: 'mEq/L', step: '1', min: 100, max: 160, required: false },
+      on_dialysis: {
+        label: 'On Dialysis?',
+        type: 'select',
+        options: [
+          { value: 'no', label: 'No' },
+          { value: 'yes', label: 'Yes (or 2+ dialysis sessions in past week)' },
+        ]
+      },
+    },
+    interpretation: (values) => {
+      const meld = values.meld_score;
+      let rating = '';
+      let severity = '';
+
+      if (meld >= 15) {
+        rating = 'May support 100% rating';
+        severity = 'Severe liver disease - high priority for transplant evaluation';
+      } else if (meld >= 12) {
+        rating = 'May support 60% rating';
+        severity = 'Moderate-severe liver disease';
+      } else if (meld >= 10) {
+        rating = 'May support 30% rating';
+        severity = 'Moderate liver disease with portal hypertension likely';
+      } else if (meld > 6) {
+        rating = 'May support 10% rating';
+        severity = 'Mild liver disease';
+      } else {
+        rating = 'May support 0% rating';
+        severity = 'Minimal liver impairment';
+      }
+
+      return `MELD ${meld}: ${rating}. ${severity}`;
+    },
+    format: (values) => {
+      let result = `MELD ${values.meld_score}`;
+      const components = [];
+      if (values.bilirubin) components.push(`Bili: ${values.bilirubin}`);
+      if (values.inr) components.push(`INR: ${values.inr}`);
+      if (values.creatinine_liver) components.push(`Cr: ${values.creatinine_liver}`);
+      if (components.length > 0) {
+        result += ` (${components.join(', ')})`;
+      }
+      return result;
+    }
+  },
 };
 
 
@@ -2033,6 +2223,14 @@ export const interpretMeasurement = (measurementTypeId, values, metadata = {}) =
       // No general interpretation thresholds
       return null;
     }
+    case 'meld-score': {
+      const { meld_score } = values;
+      if (meld_score >= 15) return { label: 'Severe (≥15)', color: 'red', rating: '100%' };
+      if (meld_score >= 12) return { label: 'Moderate-Severe (12-14)', color: 'orange', rating: '60%' };
+      if (meld_score >= 10) return { label: 'Moderate (10-11)', color: 'yellow', rating: '30%' };
+      if (meld_score > 6) return { label: 'Mild (7-9)', color: 'green', rating: '10%' };
+      return { label: 'Minimal (≤6)', color: 'green', rating: '0%' };
+    }
 
     default:
       return null;
@@ -2174,6 +2372,17 @@ export const formatMeasurementValue = (measurementTypeId, values) => {
       }
 
       return parts.join(' | ');
+    }
+    case 'meld-score': {
+      let result = `MELD ${values.meld_score}`;
+      const components = [];
+      if (values.bilirubin) components.push(`Bili: ${values.bilirubin}`);
+      if (values.inr) components.push(`INR: ${values.inr}`);
+      if (values.creatinine_liver) components.push(`Cr: ${values.creatinine_liver}`);
+      if (components.length > 0) {
+        result += ` (${components.join(', ')})`;
+      }
+      return result;
     }
     default:
       return Object.entries(values)
