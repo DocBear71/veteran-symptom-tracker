@@ -1507,6 +1507,173 @@ export const symptomCategories = [
       { id: 'sarcoid-corticosteroid', name: 'Sarcoidosis - Corticosteroid Use' },
     ]
   },
+  // ============================================
+  // PHASE 1A: MAJOR NEUROLOGICAL CONDITIONS
+  // ============================================
+  // Multiple Sclerosis (DC 8018)
+  {
+    id: 'multiple-sclerosis',
+    name: 'Multiple Sclerosis Symptoms',
+    symptoms: [
+      { id: 'ms-fatigue', name: 'MS - Fatigue (Lassitude)' },
+      { id: 'ms-numbness-tingling', name: 'MS - Numbness/Tingling' },
+      { id: 'ms-vision-problems', name: 'MS - Vision Problems (Optic Neuritis)' },
+      { id: 'ms-double-vision', name: 'MS - Double Vision (Diplopia)' },
+      { id: 'ms-muscle-weakness', name: 'MS - Muscle Weakness' },
+      { id: 'ms-spasticity', name: 'MS - Spasticity/Muscle Stiffness' },
+      { id: 'ms-balance-problems', name: 'MS - Balance Problems/Ataxia' },
+      { id: 'ms-cognitive-fog', name: 'MS - Cognitive Fog/Difficulty Concentrating' },
+      { id: 'ms-bladder-dysfunction', name: 'MS - Bladder Dysfunction' },
+      { id: 'ms-bowel-dysfunction', name: 'MS - Bowel Dysfunction' },
+      { id: 'ms-heat-sensitivity', name: 'MS - Heat Sensitivity (Uhthoff Phenomenon)' },
+      { id: 'ms-lhermittes-sign', name: "MS - Lhermitte's Sign (Electric Shock Sensation)" },
+      { id: 'ms-pain', name: 'MS - Pain (Neuropathic)' },
+      { id: 'ms-tremor', name: 'MS - Tremor' },
+      { id: 'ms-speech-difficulty', name: 'MS - Speech Difficulty (Dysarthria)' },
+      { id: 'ms-swallowing-difficulty', name: 'MS - Swallowing Difficulty (Dysphagia)' },
+      { id: 'ms-relapse', name: 'MS - Relapse/Exacerbation' },
+      { id: 'ms-vertigo', name: 'MS - Vertigo/Dizziness' },
+      { id: 'ms-depression', name: 'MS - Depression (MS-related)' },
+      { id: 'ms-walking-difficulty', name: 'MS - Walking Difficulty/Gait Problems' },
+    ]
+  },
+  // Parkinson's Disease (DC 8004)
+  {
+    id: 'parkinsons-disease',
+    name: "Parkinson's Disease Symptoms",
+    symptoms: [
+      { id: 'pd-resting-tremor', name: "Parkinson's - Resting Tremor" },
+      { id: 'pd-rigidity', name: "Parkinson's - Rigidity/Muscle Stiffness" },
+      { id: 'pd-bradykinesia', name: "Parkinson's - Bradykinesia (Slow Movement)" },
+      { id: 'pd-postural-instability', name: "Parkinson's - Postural Instability" },
+      { id: 'pd-freezing-gait', name: "Parkinson's - Freezing of Gait" },
+      { id: 'pd-shuffling-walk', name: "Parkinson's - Shuffling Walk" },
+      { id: 'pd-masked-face', name: "Parkinson's - Masked Face (Hypomimia)" },
+      { id: 'pd-soft-speech', name: "Parkinson's - Soft Speech (Hypophonia)" },
+      { id: 'pd-micrographia', name: "Parkinson's - Small Handwriting (Micrographia)" },
+      { id: 'pd-sleep-disturbance', name: "Parkinson's - Sleep Disturbance" },
+      { id: 'pd-rem-sleep-disorder', name: "Parkinson's - REM Sleep Behavior Disorder" },
+      { id: 'pd-depression', name: "Parkinson's - Depression" },
+      { id: 'pd-anxiety', name: "Parkinson's - Anxiety" },
+      { id: 'pd-cognitive-changes', name: "Parkinson's - Cognitive Changes" },
+      { id: 'pd-constipation', name: "Parkinson's - Constipation" },
+      { id: 'pd-urinary-problems', name: "Parkinson's - Urinary Problems" },
+      { id: 'pd-swallowing-difficulty', name: "Parkinson's - Swallowing Difficulty" },
+      { id: 'pd-drooling', name: "Parkinson's - Drooling (Sialorrhea)" },
+      { id: 'pd-loss-smell', name: "Parkinson's - Loss of Smell (Anosmia)" },
+      { id: 'pd-fatigue', name: "Parkinson's - Fatigue" },
+      { id: 'pd-pain', name: "Parkinson's - Pain" },
+      { id: 'pd-falls', name: "Parkinson's - Falls" },
+      { id: 'pd-off-episodes', name: "Parkinson's - OFF Episodes (Medication Wearing Off)" },
+      { id: 'pd-dyskinesia', name: "Parkinson's - Dyskinesia (Involuntary Movements)" },
+    ]
+  },
+  // Myasthenia Gravis (DC 8025)
+  {
+    id: 'myasthenia-gravis',
+    name: 'Myasthenia Gravis Symptoms',
+    symptoms: [
+      { id: 'mg-ptosis', name: 'Myasthenia Gravis - Ptosis (Drooping Eyelid)' },
+      { id: 'mg-diplopia', name: 'Myasthenia Gravis - Diplopia (Double Vision)' },
+      { id: 'mg-facial-weakness', name: 'Myasthenia Gravis - Facial Weakness' },
+      { id: 'mg-difficulty-chewing', name: 'Myasthenia Gravis - Difficulty Chewing' },
+      { id: 'mg-difficulty-swallowing', name: 'Myasthenia Gravis - Difficulty Swallowing' },
+      { id: 'mg-slurred-speech', name: 'Myasthenia Gravis - Slurred Speech (Dysarthria)' },
+      { id: 'mg-limb-weakness', name: 'Myasthenia Gravis - Limb Weakness' },
+      { id: 'mg-neck-weakness', name: 'Myasthenia Gravis - Neck Weakness (Head Drop)' },
+      { id: 'mg-respiratory-weakness', name: 'Myasthenia Gravis - Respiratory Weakness' },
+      { id: 'mg-fatigue-activity', name: 'Myasthenia Gravis - Fatigue Worsening with Activity' },
+      { id: 'mg-improvement-rest', name: 'Myasthenia Gravis - Improvement with Rest' },
+      { id: 'mg-crisis', name: 'Myasthenia Gravis - Myasthenic Crisis' },
+      { id: 'mg-hospitalization', name: 'Myasthenia Gravis - Hospitalization' },
+      { id: 'mg-voice-fatigue', name: 'Myasthenia Gravis - Voice Fatigue' },
+      { id: 'mg-arm-elevation-difficulty', name: 'Myasthenia Gravis - Difficulty Raising Arms' },
+    ]
+  },
+  // ============================================
+  // PHASE 1B: ADDITIONAL NEUROLOGICAL CONDITIONS
+  // ============================================
+
+  // Narcolepsy (DC 8108)
+  {
+    id: 'narcolepsy',
+    name: 'Narcolepsy Symptoms',
+    symptoms: [
+      { id: 'narco-sleep-attack', name: 'Narcolepsy - Sleep Attack' },
+      { id: 'narco-excessive-sleepiness', name: 'Narcolepsy - Excessive Daytime Sleepiness' },
+      { id: 'narco-cataplexy', name: 'Narcolepsy - Cataplexy Episode' },
+      { id: 'narco-sleep-paralysis', name: 'Narcolepsy - Sleep Paralysis' },
+      { id: 'narco-hypnagogic-hallucination', name: 'Narcolepsy - Hypnagogic Hallucination' },
+      { id: 'narco-hypnopompic-hallucination', name: 'Narcolepsy - Hypnopompic Hallucination' },
+      { id: 'narco-disrupted-sleep', name: 'Narcolepsy - Disrupted Nighttime Sleep' },
+      { id: 'narco-automatic-behavior', name: 'Narcolepsy - Automatic Behavior' },
+      { id: 'narco-memory-problems', name: 'Narcolepsy - Memory Problems' },
+      { id: 'narco-difficulty-concentrating', name: 'Narcolepsy - Difficulty Concentrating' },
+      { id: 'narco-microsleep', name: 'Narcolepsy - Microsleep Episode' },
+    ]
+  },
+
+  // ALS - Amyotrophic Lateral Sclerosis (DC 8017)
+  {
+    id: 'als',
+    name: 'ALS (Amyotrophic Lateral Sclerosis) Symptoms',
+    symptoms: [
+      { id: 'als-muscle-weakness', name: 'ALS - Muscle Weakness' },
+      { id: 'als-fasciculations', name: 'ALS - Fasciculations (Muscle Twitching)' },
+      { id: 'als-muscle-cramps', name: 'ALS - Muscle Cramps' },
+      { id: 'als-spasticity', name: 'ALS - Spasticity' },
+      { id: 'als-difficulty-speaking', name: 'ALS - Difficulty Speaking (Dysarthria)' },
+      { id: 'als-difficulty-swallowing', name: 'ALS - Difficulty Swallowing (Dysphagia)' },
+      { id: 'als-respiratory-difficulty', name: 'ALS - Respiratory Difficulty' },
+      { id: 'als-fatigue', name: 'ALS - Fatigue' },
+      { id: 'als-muscle-atrophy', name: 'ALS - Muscle Atrophy' },
+      { id: 'als-hand-weakness', name: 'ALS - Hand/Grip Weakness' },
+      { id: 'als-foot-drop', name: 'ALS - Foot Drop' },
+      { id: 'als-tripping-falling', name: 'ALS - Tripping/Falling' },
+      { id: 'als-emotional-lability', name: 'ALS - Emotional Lability (PBA)' },
+      { id: 'als-drooling', name: 'ALS - Drooling (Sialorrhea)' },
+      { id: 'als-weight-loss', name: 'ALS - Weight Loss' },
+    ]
+  },
+
+  // Syringomyelia (DC 8024)
+  {
+    id: 'syringomyelia',
+    name: 'Syringomyelia Symptoms',
+    symptoms: [
+      { id: 'syring-pain', name: 'Syringomyelia - Pain (Burning/Aching)' },
+      { id: 'syring-weakness', name: 'Syringomyelia - Muscle Weakness' },
+      { id: 'syring-sensory-loss', name: 'Syringomyelia - Sensory Loss' },
+      { id: 'syring-temp-insensitivity', name: 'Syringomyelia - Temperature Insensitivity' },
+      { id: 'syring-pain-insensitivity', name: 'Syringomyelia - Pain Insensitivity' },
+      { id: 'syring-muscle-wasting', name: 'Syringomyelia - Muscle Wasting' },
+      { id: 'syring-stiffness', name: 'Syringomyelia - Stiffness' },
+      { id: 'syring-headache', name: 'Syringomyelia - Headache' },
+      { id: 'syring-numbness-tingling', name: 'Syringomyelia - Numbness/Tingling' },
+      { id: 'syring-bowel-bladder', name: 'Syringomyelia - Bowel/Bladder Dysfunction' },
+      { id: 'syring-scoliosis', name: 'Syringomyelia - Scoliosis' },
+    ]
+  },
+
+  // Myelitis (DC 8010) - includes Transverse Myelitis
+  {
+    id: 'myelitis',
+    name: 'Myelitis Symptoms',
+    symptoms: [
+      { id: 'myel-weakness', name: 'Myelitis - Weakness' },
+      { id: 'myel-sensory-changes', name: 'Myelitis - Sensory Changes' },
+      { id: 'myel-bladder-dysfunction', name: 'Myelitis - Bladder Dysfunction' },
+      { id: 'myel-bowel-dysfunction', name: 'Myelitis - Bowel Dysfunction' },
+      { id: 'myel-pain', name: 'Myelitis - Pain' },
+      { id: 'myel-spasticity', name: 'Myelitis - Spasticity' },
+      { id: 'myel-fatigue', name: 'Myelitis - Fatigue' },
+      { id: 'myel-numbness', name: 'Myelitis - Numbness' },
+      { id: 'myel-tingling', name: 'Myelitis - Tingling/Paresthesias' },
+      { id: 'myel-band-sensation', name: 'Myelitis - Band-like Sensation' },
+      { id: 'myel-sexual-dysfunction', name: 'Myelitis - Sexual Dysfunction' },
+      { id: 'myel-paralysis', name: 'Myelitis - Paralysis' },
+    ]
+  },
 ];
 
 // Helper function to determine if a category is a "child" of another
@@ -1572,6 +1739,13 @@ const getParentCategory = (categoryName) => {
   if (name.includes('gastritis')) return 'gastritis';
   if (name.includes('pancreatitis')) return 'pancreatitis';
   if (name.includes('biliary')) return 'biliary-tract';
+  if (name.includes('multiple sclerosis') || name.includes(' ms ')) return 'multiple-sclerosis';
+  if (name.includes('parkinson')) return 'parkinsons-disease';
+  if (name.includes('myasthenia')) return 'myasthenia-gravis';
+  if (name.includes('narcolepsy')) return 'narcolepsy';
+  if (name.includes('als') || name.includes('amyotrophic')) return 'als';
+  if (name.includes('syringomyelia')) return 'syringomyelia';
+  if (name.includes('myelitis')) return 'myelitis';
   return null; // No parent, this is a standalone category
 };
 

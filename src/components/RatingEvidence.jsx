@@ -135,6 +135,13 @@ import {
   analyzeBronchiectasisLogs,
   analyzePulmonaryFibrosisLogs,
   analyzeSarcoidosisLogs,
+  analyzeMultipleSclerosisLogs,
+  analyzeParkinsonsDiseaseLogs,
+  analyzeMyastheniaGravisLogs,
+  analyzeNarcolepsyLogs,
+  analyzeALSLogs,
+  analyzeSyringomyeliaLogs,
+  analyzeMyelitisLogs,
   getAllMigraineRatings,
   getAllSleepApneaRatings,
   getAllPTSDRatings,
@@ -294,6 +301,13 @@ import EmphysemaRatingCard from './EmphysemaRatingCard';
 import BronchiectasisRatingCard from './BronchiectasisRatingCard';
 import PulmonaryFibrosisRatingCard from './PulmonaryFibrosisRatingCard';
 import SarcoidosisRatingCard from './SarcoidosisRatingCard';
+import MSRatingCard from './MSRatingCard';
+import ParkinsonsRatingCard from './ParkinsonsRatingCard';
+import MyastheniaGravisRatingCard from './MyastheniaGravisRatingCard';
+import NarcolepsyRatingCard from './NarcolepsyRatingCard';
+import ALSRatingCard from './ALSRatingCard';
+import SyringomyeliaRatingCard from './SyringomyeliaRatingCard';
+import MyelitisRatingCard from './MyelitisRatingCard';
 
 // Storage key for sleep apnea profile
 const SLEEP_APNEA_PROFILE_KEY = 'symptomTracker_sleepApneaProfile';
@@ -791,6 +805,29 @@ const RatingEvidence = () => {
   const sarcoidosisAnalysis = useMemo(() => {
     return analyzeSarcoidosisLogs(logs, { evaluationPeriodDays: evaluationDays });
   }, [logs, evaluationDays]);
+  // Phase 1A: Neurological condition analysis
+  const multipleSclerosisAnalysis = useMemo(() => {
+    return analyzeMultipleSclerosisLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  const parkinsonsAnalysis = useMemo(() => {
+    return analyzeParkinsonsDiseaseLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  const myastheniaGravisAnalysis = useMemo(() => {
+    return analyzeMyastheniaGravisLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  // Phase 1B: Additional Neurological Analysis
+  const narcolepsyAnalysis = useMemo(() => {
+    return analyzeNarcolepsyLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  const alsAnalysis = useMemo(() => {
+    return analyzeALSLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  const syringomyeliaAnalysis = useMemo(() => {
+    return analyzeSyringomyeliaLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  const myelitisAnalysis = useMemo(() => {
+    return analyzeMyelitisLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
 
 
   // Toggle section expansion
@@ -923,7 +960,14 @@ const RatingEvidence = () => {
         emphysemaAnalysis.hasData ||
         bronchiectasisAnalysis.hasData ||
         pulmonaryFibrosisAnalysis.hasData ||
-        sarcoidosisAnalysis.hasData
+        sarcoidosisAnalysis.hasData ||
+        multipleSclerosisAnalysis.hasData ||
+        parkinsonsAnalysis.hasData ||
+        myastheniaGravisAnalysis.hasData ||
+        narcolepsyAnalysis.hasData ||
+        alsAnalysis.hasData ||
+        syringomyeliaAnalysis.hasData ||
+        myelitisAnalysis.hasData
     ;
 
     return (
@@ -1785,6 +1829,43 @@ const RatingEvidence = () => {
               analysis={sarcoidosisAnalysis}
               expanded={expandedSection === 'sarcoidosis'}
               onToggle={() => toggleSection('sarcoidosis')}
+          />
+          {/* Phase 1A: Neurological Conditions */}
+          <MSRatingCard
+              analysis={multipleSclerosisAnalysis}
+              expanded={expandedSection === 'multiple-sclerosis'}
+              onToggle={() => toggleSection('multiple-sclerosis')}
+          />
+          <ParkinsonsRatingCard
+              analysis={parkinsonsAnalysis}
+              expanded={expandedSection === 'parkinsons'}
+              onToggle={() => toggleSection('parkinsons')}
+          />
+          <MyastheniaGravisRatingCard
+              analysis={myastheniaGravisAnalysis}
+              expanded={expandedSection === 'myasthenia-gravis'}
+              onToggle={() => toggleSection('myasthenia-gravis')}
+          />
+          {/* Phase 1B: Additional Neurological Rating Cards */}
+          <NarcolepsyRatingCard
+              analysis={narcolepsyAnalysis}
+              expanded={expandedSection === 'narcolepsy'}
+              onToggle={() => toggleSection('narcolepsy')}
+          />
+          <ALSRatingCard
+              analysis={alsAnalysis}
+              expanded={expandedSection === 'als'}
+              onToggle={() => toggleSection('als')}
+          />
+          <SyringomyeliaRatingCard
+              analysis={syringomyeliaAnalysis}
+              expanded={expandedSection === 'syringomyelia'}
+              onToggle={() => toggleSection('syringomyelia')}
+          />
+          <MyelitisRatingCard
+              analysis={myelitisAnalysis}
+              expanded={expandedSection === 'myelitis'}
+              onToggle={() => toggleSection('myelitis')}
           />
 
 

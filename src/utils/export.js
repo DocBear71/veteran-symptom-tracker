@@ -120,6 +120,13 @@ import {
   analyzePericarditisLogs,
   analyzePostPhlebiticLogs, analyzeCirrhosisLogs, analyzeGastritisLogs,
   analyzePancreatitisLogs, analyzeBiliaryTractLogs,
+  analyzeMultipleSclerosisLogs,
+  analyzeParkinsonsDiseaseLogs,
+  analyzeMyastheniaGravisLogs,
+  analyzeNarcolepsyLogs,
+  analyzeALSLogs,
+  analyzeSyringomyeliaLogs,
+  analyzeMyelitisLogs,
 } from './ratingCriteria';
 
 // Appointment type labels for export
@@ -1309,6 +1316,136 @@ export const generatePDF = (dateRange = 'all', options = { includeAppointments: 
           }
         }
 
+        // Phase 1A: Multiple Sclerosis Form
+        if (log.multipleSclerosisData) {
+          const msInfo = [];
+          const ms = log.multipleSclerosisData;
+
+          if (ms.isRelapse) msInfo.push(`Relapse${ms.relapseDuration ? ` (${ms.relapseDuration} days)` : ''}`);
+          if (ms.relapseRecovery) msInfo.push(`Recovery: ${ms.relapseRecovery}`);
+          if (ms.mobilityAid && ms.mobilityAid !== 'none') msInfo.push(`Mobility: ${ms.mobilityAid}`);
+          if (ms.assistanceNeeded) msInfo.push('Assistance needed');
+          if (ms.onDMT) msInfo.push('On DMT');
+          if (ms.recentSteroids) msInfo.push('IV steroids');
+          if (ms.heatTriggered) msInfo.push('Heat triggered');
+
+          if (msInfo.length > 0) {
+            notes = msInfo.join(', ') + (notes !== '-' ? ` | ${notes}` : '');
+          }
+        }
+
+        // Phase 1A: Parkinson's Disease Form
+        if (log.parkinsonsData) {
+          const pdInfo = [];
+          const pd = log.parkinsonsData;
+
+          if (pd.tremorSide) pdInfo.push(`Tremor: ${pd.tremorSide}${pd.tremorSeverity ? ` (${pd.tremorSeverity})` : ''}`);
+          if (pd.freezingEpisodes) pdInfo.push(`Freezing: ${pd.freezingEpisodes}x`);
+          if (pd.fallsToday) pdInfo.push(`Falls: ${pd.fallsToday}`);
+          if (pd.medicationState) pdInfo.push(`Med state: ${pd.medicationState}`);
+          if (pd.mobilityAid && pd.mobilityAid !== 'none') pdInfo.push(`Mobility: ${pd.mobilityAid}`);
+          if (pd.speechAffected) pdInfo.push('Speech affected');
+          if (pd.swallowingAffected) pdInfo.push('Swallowing affected');
+          if (pd.hallucinationsPresent) pdInfo.push('Hallucinations');
+          if (pd.confusionPresent) pdInfo.push('Confusion');
+
+          if (pdInfo.length > 0) {
+            notes = pdInfo.join(', ') + (notes !== '-' ? ` | ${notes}` : '');
+          }
+        }
+
+        // Phase 1A: Myasthenia Gravis Form
+        if (log.myastheniaData) {
+          const mgInfo = [];
+          const mg = log.myastheniaData;
+
+          if (mg.worseWithActivity && mg.betterWithRest) mgInfo.push('Fatigable weakness pattern');
+          else if (mg.worseWithActivity) mgInfo.push('Worse with activity');
+          if (mg.timeOfDayWorst) mgInfo.push(`Worst: ${mg.timeOfDayWorst}`);
+          if (mg.ptosisPresent) mgInfo.push(`Ptosis${mg.ptosisSide ? ` (${mg.ptosisSide})` : ''}`);
+          if (mg.doubleVision) mgInfo.push('Double vision');
+          if (mg.canRaiseArms) mgInfo.push(`Arm hold: ${mg.canRaiseArms}s`);
+          if (mg.breathingDifficulty) mgInfo.push('⚠️ Breathing difficulty');
+          if (mg.emergencySigns) mgInfo.push('🚨 Crisis signs');
+          if (mg.onPyridostigmine) mgInfo.push('On Mestinon');
+
+          if (mgInfo.length > 0) {
+            notes = mgInfo.join(', ') + (notes !== '-' ? ` | ${notes}` : '');
+          }
+        }
+
+        // Phase 1B: Narcolepsy Form
+        if (log.narcolepsyData) {
+          const narcoInfo = [];
+          const narco = log.narcolepsyData;
+
+          if (narco.sleepAttackDuration) narcoInfo.push(`Attack: ${narco.sleepAttackDuration}`);
+          if (narco.sleepAttackTrigger) narcoInfo.push(`Trigger: ${narco.sleepAttackTrigger}`);
+          if (narco.cataplexyTrigger) narcoInfo.push(`Cataplexy: ${narco.cataplexyTrigger}`);
+          if (narco.cataplexyAffected) narcoInfo.push(`Affected: ${narco.cataplexyAffected}`);
+          if (narco.fellDuringCataplexy) narcoInfo.push('Fell');
+          if (narco.onStimulants) narcoInfo.push('On stimulants');
+          if (narco.onSodiumOxybate) narcoInfo.push('On Xyrem/Xywav');
+          if (narco.sleepStudyConfirmed) narcoInfo.push('MSLT confirmed');
+
+          if (narcoInfo.length > 0) {
+            notes = narcoInfo.join(', ') + (notes !== '-' ? ` | ${notes}` : '');
+          }
+        }
+
+        // Phase 1B: ALS Form
+        if (log.alsData) {
+          const alsInfo = [];
+          const als = log.alsData;
+
+          if (als.weaknessLocation) alsInfo.push(`Weakness: ${als.weaknessLocation}${als.weaknessSide ? ` (${als.weaknessSide})` : ''}`);
+          if (als.speechClarity) alsInfo.push(`Speech: ${als.speechClarity}`);
+          if (als.swallowingSolids) alsInfo.push(`Swallow solids: ${als.swallowingSolids}`);
+          if (als.swallowingLiquids) alsInfo.push(`Swallow liquids: ${als.swallowingLiquids}`);
+          if (als.breathingDifficulty) alsInfo.push(`Breathing: ${als.breathingDifficulty}`);
+          if (als.usesBiPAP) alsInfo.push('BiPAP');
+          if (als.usesVentilator) alsInfo.push('Ventilator');
+          if (als.usesFeedingTube) alsInfo.push('Feeding tube');
+          if (als.mobilityStatus) alsInfo.push(`Mobility: ${als.mobilityStatus}`);
+
+          if (alsInfo.length > 0) {
+            notes = alsInfo.join(', ') + (notes !== '-' ? ` | ${notes}` : '');
+          }
+        }
+
+        // Phase 1B: Syringomyelia Form
+        if (log.syringomyeliaData) {
+          const syringInfo = [];
+          const syring = log.syringomyeliaData;
+
+          if (syring.painType) syringInfo.push(`Pain: ${syring.painType}`);
+          if (syring.sensoryLossPattern) syringInfo.push(`Sensory: ${syring.sensoryLossPattern}`);
+          if (syring.hadBurnInjury) syringInfo.push('Burn injury');
+          if (syring.hadCutInjury) syringInfo.push('Cut injury');
+          if (syring.syrinxLocation) syringInfo.push(`Syrinx: ${syring.syrinxLocation}`);
+
+          if (syringInfo.length > 0) {
+            notes = syringInfo.join(', ') + (notes !== '-' ? ` | ${notes}` : '');
+          }
+        }
+
+        // Phase 1B: Myelitis Form
+        if (log.myelitisData) {
+          const myelInfo = [];
+          const myel = log.myelitisData;
+
+          if (myel.weaknessDistribution) myelInfo.push(`Distribution: ${myel.weaknessDistribution}`);
+          if (myel.sensoryLevel) myelInfo.push(`Level: ${myel.sensoryLevel}`);
+          if (myel.bladderSymptoms) myelInfo.push(`Bladder: ${myel.bladderSymptoms}`);
+          if (myel.usesCatheter) myelInfo.push('Catheter');
+          if (myel.bowelSymptoms) myelInfo.push(`Bowel: ${myel.bowelSymptoms}`);
+          if (myel.mobilityStatus) myelInfo.push(`Mobility: ${myel.mobilityStatus}`);
+          if (myel.causeOfMyelitis) myelInfo.push(`Cause: ${myel.causeOfMyelitis}`);
+
+          if (myelInfo.length > 0) {
+            notes = myelInfo.join(', ') + (notes !== '-' ? ` | ${notes}` : '');
+          }
+        }
 
         // Add medications to the PDF file after all the symptoms
             if (linkedMeds.length > 0) {
@@ -1483,8 +1620,6 @@ export const generateCSV = (dateRange = 'all', options = { includeAppointments: 
         'Campylobacter GBS', 'Campylobacter Arthritis', 'Campylobacter IBS', 'Campylobacter Culture Confirmed', 'Campylobacter Weeks Since Infection',
         // Phase 6: Infectious Diseases - Q Fever fields
         'Q Fever Chronic', 'Q Fever Endocarditis', 'Q Fever Fatigue Syndrome', 'Q Fever Phase I Antibodies', 'Q Fever Months Since Infection',
-        // Phase 6: Infectious Diseases - Q Fever fields
-        'Q Fever Chronic', 'Q Fever Endocarditis', 'Q Fever Fatigue Syndrome', 'Q Fever Phase I Antibodies', 'Q Fever Months Since Infection',
         // Phase 6: Infectious Diseases - Salmonella fields
         'Salmonella Hospitalized', 'Salmonella Bacteremia', 'Salmonella Reactive Arthritis', 'Salmonella Severe Complications', 'Salmonella Stool Culture',
         // Phase 6: Infectious Diseases - Shigella fields
@@ -1549,6 +1684,29 @@ export const generateCSV = (dateRange = 'all', options = { includeAppointments: 
         'Digestive - Daily Medication', 'Digestive - GI Bleeding', 'Digestive - On Enzymes',
         'Digestive - Maldigestion', 'Digestive - Dietary Restriction', 'Digestive - Attack With Nausea',
         'Digestive - Attack With Vomiting', 'Digestive - Stricture Dilation', 'Digestive - Hospitalized',
+        // Phase 1A: Neurological fields
+        'MS - Is Relapse', 'MS - Relapse Duration', 'MS - Relapse Recovery', 'MS - Mobility Aid',
+        'MS - Assistance Needed', 'MS - On DMT', 'MS - Recent Steroids', 'MS - Heat Triggered',
+        'PD - Tremor Side', 'PD - Tremor Severity', 'PD - Freezing Episodes', 'PD - Falls',
+        'PD - Medication State', 'PD - Mobility Aid', 'PD - Speech Affected', 'PD - Swallowing Affected',
+        'PD - Hallucinations', 'PD - Confusion',
+        'MG - Worse With Activity', 'MG - Better With Rest', 'MG - Time Of Day Worst',
+        'MG - Ptosis Present', 'MG - Ptosis Side', 'MG - Double Vision', 'MG - Arm Hold Duration',
+        'MG - Breathing Difficulty', 'MG - Emergency Signs', 'MG - On Pyridostigmine',
+        // Phase 1B: Narcolepsy fields
+        'Narcolepsy - Sleep Attack Duration', 'Narcolepsy - Attack Trigger', 'Narcolepsy - Cataplexy Trigger',
+        'Narcolepsy - Cataplexy Affected', 'Narcolepsy - Fell During Cataplexy', 'Narcolepsy - On Stimulants',
+        'Narcolepsy - Sleep Study Confirmed',
+        // Phase 1B: ALS fields
+        'ALS - Weakness Location', 'ALS - Weakness Side', 'ALS - Speech Clarity',
+        'ALS - Swallowing Solids', 'ALS - Swallowing Liquids', 'ALS - Breathing Difficulty',
+        'ALS - Uses BiPAP', 'ALS - Uses Ventilator', 'ALS - Uses Feeding Tube', 'ALS - Mobility Status',
+        // Phase 1B: Syringomyelia fields
+        'Syringomyelia - Pain Type', 'Syringomyelia - Pain Location', 'Syringomyelia - Sensory Pattern',
+        'Syringomyelia - Burn Injury', 'Syringomyelia - Cut Injury', 'Syringomyelia - Syrinx Location',
+        // Phase 1B: Myelitis fields
+        'Myelitis - Weakness Distribution', 'Myelitis - Sensory Level', 'Myelitis - Bladder Symptoms',
+        'Myelitis - Uses Catheter', 'Myelitis - Bowel Symptoms', 'Myelitis - Mobility Status', 'Myelitis - Cause',
         // Notes
         'Notes'
       ];
@@ -1968,6 +2126,69 @@ export const generateCSV = (dateRange = 'all', options = { includeAppointments: 
             log.digestiveData?.attackWithVomiting ? 'Yes' : '',
             log.digestiveData?.hadStrictureDilation ? 'Yes' : '',
             log.digestiveData?.hospitalized ? 'Yes' : '',
+            // Phase 1A: Neurological data
+            log.multipleSclerosisData?.isRelapse ? 'Yes' : '',
+            log.multipleSclerosisData?.relapseDuration || '',
+            log.multipleSclerosisData?.relapseRecovery || '',
+            log.multipleSclerosisData?.mobilityAid || '',
+            log.multipleSclerosisData?.assistanceNeeded ? 'Yes' : '',
+            log.multipleSclerosisData?.onDMT ? 'Yes' : '',
+            log.multipleSclerosisData?.recentSteroids ? 'Yes' : '',
+            log.multipleSclerosisData?.heatTriggered ? 'Yes' : '',
+            log.parkinsonsData?.tremorSide || '',
+            log.parkinsonsData?.tremorSeverity || '',
+            log.parkinsonsData?.freezingEpisodes || '',
+            log.parkinsonsData?.fallsToday || '',
+            log.parkinsonsData?.medicationState || '',
+            log.parkinsonsData?.mobilityAid || '',
+            log.parkinsonsData?.speechAffected ? 'Yes' : '',
+            log.parkinsonsData?.swallowingAffected ? 'Yes' : '',
+            log.parkinsonsData?.hallucinationsPresent ? 'Yes' : '',
+            log.parkinsonsData?.confusionPresent ? 'Yes' : '',
+            log.myastheniaData?.worseWithActivity ? 'Yes' : '',
+            log.myastheniaData?.betterWithRest ? 'Yes' : '',
+            log.myastheniaData?.timeOfDayWorst || '',
+            log.myastheniaData?.ptosisPresent ? 'Yes' : '',
+            log.myastheniaData?.ptosisSide || '',
+            log.myastheniaData?.doubleVision ? 'Yes' : '',
+            log.myastheniaData?.canRaiseArms || '',
+            log.myastheniaData?.breathingDifficulty ? 'Yes' : '',
+            log.myastheniaData?.emergencySigns ? 'Yes' : '',
+            log.myastheniaData?.onPyridostigmine ? 'Yes' : '',
+            // Phase 1B: Narcolepsy data
+            log.narcolepsyData?.sleepAttackDuration || '',
+            log.narcolepsyData?.sleepAttackTrigger || '',
+            log.narcolepsyData?.cataplexyTrigger || '',
+            log.narcolepsyData?.cataplexyAffected || '',
+            log.narcolepsyData?.fellDuringCataplexy ? 'Yes' : '',
+            log.narcolepsyData?.onStimulants ? 'Yes' : '',
+            log.narcolepsyData?.sleepStudyConfirmed ? 'Yes' : '',
+            // Phase 1B: ALS data
+            log.alsData?.weaknessLocation || '',
+            log.alsData?.weaknessSide || '',
+            log.alsData?.speechClarity || '',
+            log.alsData?.swallowingSolids || '',
+            log.alsData?.swallowingLiquids || '',
+            log.alsData?.breathingDifficulty || '',
+            log.alsData?.usesBiPAP ? 'Yes' : '',
+            log.alsData?.usesVentilator ? 'Yes' : '',
+            log.alsData?.usesFeedingTube ? 'Yes' : '',
+            log.alsData?.mobilityStatus || '',
+            // Phase 1B: Syringomyelia data
+            log.syringomyeliaData?.painType || '',
+            log.syringomyeliaData?.painLocation || '',
+            log.syringomyeliaData?.sensoryLossPattern || '',
+            log.syringomyeliaData?.hadBurnInjury ? 'Yes' : '',
+            log.syringomyeliaData?.hadCutInjury ? 'Yes' : '',
+            log.syringomyeliaData?.syrinxLocation || '',
+            // Phase 1B: Myelitis data
+            log.myelitisData?.weaknessDistribution || '',
+            log.myelitisData?.sensoryLevel || '',
+            log.myelitisData?.bladderSymptoms || '',
+            log.myelitisData?.usesCatheter ? 'Yes' : '',
+            log.myelitisData?.bowelSymptoms || '',
+            log.myelitisData?.mobilityStatus || '',
+            log.myelitisData?.causeOfMyelitis || '',
             log.notes || ''
           ];
         });
@@ -2401,6 +2622,15 @@ const analyzeAllConditions = (logs, options = {}) => {
         'gastritis': analyzeGastritisLogs,
         'pancreatitis': analyzePancreatitisLogs,
         'biliaryTract': analyzeBiliaryTractLogs,
+        // Phase 1A: Neurological Conditions
+        'multiple-sclerosis': analyzeMultipleSclerosisLogs,
+        'parkinsons-disease': analyzeParkinsonsDiseaseLogs,
+        'myasthenia-gravis': analyzeMyastheniaGravisLogs,
+        // Phase 1B: Additional Neurological
+        'narcolepsy': analyzeNarcolepsyLogs,
+        'als': analyzeALSLogs,
+        'syringomyelia': analyzeSyringomyeliaLogs,
+        'myelitis': analyzeMyelitisLogs,
       };
 
     const analyses = [];
@@ -3724,6 +3954,137 @@ export const generateVAClaimPackagePDF = async (dateRange = 'all', options = {})
           }
         }
 
+        // Phase 1A: Multiple Sclerosis Form
+        if (log.multipleSclerosisData) {
+          const msInfo = [];
+          const ms = log.multipleSclerosisData;
+
+          if (ms.isRelapse) msInfo.push(`Relapse${ms.relapseDuration ? ` (${ms.relapseDuration} days)` : ''}`);
+          if (ms.relapseRecovery) msInfo.push(`Recovery: ${ms.relapseRecovery}`);
+          if (ms.mobilityAid && ms.mobilityAid !== 'none') msInfo.push(`Mobility: ${ms.mobilityAid}`);
+          if (ms.assistanceNeeded) msInfo.push('Assistance needed');
+          if (ms.onDMT) msInfo.push('On DMT');
+          if (ms.recentSteroids) msInfo.push('IV steroids');
+          if (ms.heatTriggered) msInfo.push('Heat triggered');
+
+          if (msInfo.length > 0) {
+            notes = msInfo.join(', ') + (notes !== '-' ? ` | ${notes}` : '');
+          }
+        }
+
+        // Phase 1A: Parkinson's Disease Form
+        if (log.parkinsonsData) {
+          const pdInfo = [];
+          const pd = log.parkinsonsData;
+
+          if (pd.tremorSide) pdInfo.push(`Tremor: ${pd.tremorSide}${pd.tremorSeverity ? ` (${pd.tremorSeverity})` : ''}`);
+          if (pd.freezingEpisodes) pdInfo.push(`Freezing: ${pd.freezingEpisodes}x`);
+          if (pd.fallsToday) pdInfo.push(`Falls: ${pd.fallsToday}`);
+          if (pd.medicationState) pdInfo.push(`Med state: ${pd.medicationState}`);
+          if (pd.mobilityAid && pd.mobilityAid !== 'none') pdInfo.push(`Mobility: ${pd.mobilityAid}`);
+          if (pd.speechAffected) pdInfo.push('Speech affected');
+          if (pd.swallowingAffected) pdInfo.push('Swallowing affected');
+          if (pd.hallucinationsPresent) pdInfo.push('Hallucinations');
+          if (pd.confusionPresent) pdInfo.push('Confusion');
+
+          if (pdInfo.length > 0) {
+            notes = pdInfo.join(', ') + (notes !== '-' ? ` | ${notes}` : '');
+          }
+        }
+
+        // Phase 1A: Myasthenia Gravis Form
+        if (log.myastheniaData) {
+          const mgInfo = [];
+          const mg = log.myastheniaData;
+
+          if (mg.worseWithActivity && mg.betterWithRest) mgInfo.push('Fatigable weakness pattern');
+          else if (mg.worseWithActivity) mgInfo.push('Worse with activity');
+          if (mg.timeOfDayWorst) mgInfo.push(`Worst: ${mg.timeOfDayWorst}`);
+          if (mg.ptosisPresent) mgInfo.push(`Ptosis${mg.ptosisSide ? ` (${mg.ptosisSide})` : ''}`);
+          if (mg.doubleVision) mgInfo.push('Double vision');
+          if (mg.canRaiseArms) mgInfo.push(`Arm hold: ${mg.canRaiseArms}s`);
+          if (mg.breathingDifficulty) mgInfo.push('⚠️ Breathing difficulty');
+          if (mg.emergencySigns) mgInfo.push('🚨 Crisis signs');
+          if (mg.onPyridostigmine) mgInfo.push('On Mestinon');
+
+          if (mgInfo.length > 0) {
+            notes = mgInfo.join(', ') + (notes !== '-' ? ` | ${notes}` : '');
+          }
+        }
+
+        // Phase 1B: Narcolepsy Form
+        if (log.narcolepsyData) {
+          const narcoInfo = [];
+          const narco = log.narcolepsyData;
+
+          if (narco.sleepAttackDuration) narcoInfo.push(`Attack: ${narco.sleepAttackDuration}`);
+          if (narco.sleepAttackTrigger) narcoInfo.push(`Trigger: ${narco.sleepAttackTrigger}`);
+          if (narco.cataplexyTrigger) narcoInfo.push(`Cataplexy: ${narco.cataplexyTrigger}`);
+          if (narco.cataplexyAffected) narcoInfo.push(`Affected: ${narco.cataplexyAffected}`);
+          if (narco.fellDuringCataplexy) narcoInfo.push('Fell');
+          if (narco.onStimulants) narcoInfo.push('On stimulants');
+          if (narco.onSodiumOxybate) narcoInfo.push('On Xyrem/Xywav');
+          if (narco.sleepStudyConfirmed) narcoInfo.push('MSLT confirmed');
+
+          if (narcoInfo.length > 0) {
+            notes = narcoInfo.join(', ') + (notes !== '-' ? ` | ${notes}` : '');
+          }
+        }
+
+        // Phase 1B: ALS Form
+        if (log.alsData) {
+          const alsInfo = [];
+          const als = log.alsData;
+
+          if (als.weaknessLocation) alsInfo.push(`Weakness: ${als.weaknessLocation}${als.weaknessSide ? ` (${als.weaknessSide})` : ''}`);
+          if (als.speechClarity) alsInfo.push(`Speech: ${als.speechClarity}`);
+          if (als.swallowingSolids) alsInfo.push(`Swallow solids: ${als.swallowingSolids}`);
+          if (als.swallowingLiquids) alsInfo.push(`Swallow liquids: ${als.swallowingLiquids}`);
+          if (als.breathingDifficulty) alsInfo.push(`Breathing: ${als.breathingDifficulty}`);
+          if (als.usesBiPAP) alsInfo.push('BiPAP');
+          if (als.usesVentilator) alsInfo.push('Ventilator');
+          if (als.usesFeedingTube) alsInfo.push('Feeding tube');
+          if (als.mobilityStatus) alsInfo.push(`Mobility: ${als.mobilityStatus}`);
+
+          if (alsInfo.length > 0) {
+            notes = alsInfo.join(', ') + (notes !== '-' ? ` | ${notes}` : '');
+          }
+        }
+
+        // Phase 1B: Syringomyelia Form
+        if (log.syringomyeliaData) {
+          const syringInfo = [];
+          const syring = log.syringomyeliaData;
+
+          if (syring.painType) syringInfo.push(`Pain: ${syring.painType}`);
+          if (syring.sensoryLossPattern) syringInfo.push(`Sensory: ${syring.sensoryLossPattern}`);
+          if (syring.hadBurnInjury) syringInfo.push('Burn injury');
+          if (syring.hadCutInjury) syringInfo.push('Cut injury');
+          if (syring.syrinxLocation) syringInfo.push(`Syrinx: ${syring.syrinxLocation}`);
+
+          if (syringInfo.length > 0) {
+            notes = syringInfo.join(', ') + (notes !== '-' ? ` | ${notes}` : '');
+          }
+        }
+
+        // Phase 1B: Myelitis Form
+        if (log.myelitisData) {
+          const myelInfo = [];
+          const myel = log.myelitisData;
+
+          if (myel.weaknessDistribution) myelInfo.push(`Distribution: ${myel.weaknessDistribution}`);
+          if (myel.sensoryLevel) myelInfo.push(`Level: ${myel.sensoryLevel}`);
+          if (myel.bladderSymptoms) myelInfo.push(`Bladder: ${myel.bladderSymptoms}`);
+          if (myel.usesCatheter) myelInfo.push('Catheter');
+          if (myel.bowelSymptoms) myelInfo.push(`Bowel: ${myel.bowelSymptoms}`);
+          if (myel.mobilityStatus) myelInfo.push(`Mobility: ${myel.mobilityStatus}`);
+          if (myel.causeOfMyelitis) myelInfo.push(`Cause: ${myel.causeOfMyelitis}`);
+
+          if (myelInfo.length > 0) {
+            notes = myelInfo.join(', ') + (notes !== '-' ? ` | ${notes}` : '');
+          }
+        }
+
         // Add medications to the PDF after all the symptoms are completed.
             if (linkedMeds.length > 0) {
                 const medInfo = linkedMeds.map(m => `${m.medicationName} ${m.dosage}`).join(', ');
@@ -3893,7 +4254,7 @@ export const generateVAClaimPackagePDF = async (dateRange = 'all', options = {})
                     currentY += 5;
 
                     evidenceLines.slice(0, 5).forEach((evidence) => {
-                        const lines = doc.splitTextToSize(`✓ ${evidence}`, 180);
+                        const lines = doc.splitTextToSize(`- ${evidence}`, 180);
                         doc.setFontSize(9);
                         doc.setTextColor(22, 163, 74);
                         doc.text(lines, 18, currentY);
@@ -3914,7 +4275,7 @@ export const generateVAClaimPackagePDF = async (dateRange = 'all', options = {})
                 currentY += 5;
 
                 analysis.gaps.slice(0, 3).forEach((gap) => {
-                    const lines = doc.splitTextToSize(`⚠ ${gap}`, 180);
+                    const lines = doc.splitTextToSize(`* ${gap}`, 170);
                     doc.setFontSize(9);
                     doc.setTextColor(245, 158, 11);
                     doc.text(lines, 18, currentY);

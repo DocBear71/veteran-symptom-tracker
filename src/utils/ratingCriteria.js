@@ -1401,6 +1401,105 @@ export const CONDITIONS = {
       'biliary-fever', 'biliary-dilation', 'biliary-attack',
     ],
   },
+  // ============================================
+  // PHASE 1A: MAJOR NEUROLOGICAL CONDITIONS
+  // ============================================
+  MULTIPLE_SCLEROSIS: {
+    id: 'multiple-sclerosis',
+    name: 'Multiple Sclerosis',
+    diagnosticCode: '8018',
+    cfrReference: '38 CFR 4.124a',
+    symptomIds: [
+      'ms-fatigue', 'ms-numbness-tingling', 'ms-vision-problems', 'ms-double-vision',
+      'ms-muscle-weakness', 'ms-spasticity', 'ms-balance-problems', 'ms-cognitive-fog',
+      'ms-bladder-dysfunction', 'ms-bowel-dysfunction', 'ms-heat-sensitivity',
+      'ms-lhermittes-sign', 'ms-pain', 'ms-tremor', 'ms-speech-difficulty',
+      'ms-swallowing-difficulty', 'ms-relapse', 'ms-vertigo', 'ms-depression',
+      'ms-walking-difficulty',
+    ],
+  },
+  PARKINSONS_DISEASE: {
+    id: 'parkinsons-disease',
+    name: "Parkinson's Disease",
+    diagnosticCode: '8004',
+    cfrReference: '38 CFR 4.124a',
+    symptomIds: [
+      'pd-resting-tremor', 'pd-rigidity', 'pd-bradykinesia', 'pd-postural-instability',
+      'pd-freezing-gait', 'pd-shuffling-walk', 'pd-masked-face', 'pd-soft-speech',
+      'pd-micrographia', 'pd-sleep-disturbance', 'pd-rem-sleep-disorder', 'pd-depression',
+      'pd-anxiety', 'pd-cognitive-changes', 'pd-constipation', 'pd-urinary-problems',
+      'pd-swallowing-difficulty', 'pd-drooling', 'pd-loss-smell', 'pd-fatigue',
+      'pd-pain', 'pd-falls', 'pd-off-episodes', 'pd-dyskinesia',
+    ],
+  },
+  MYASTHENIA_GRAVIS: {
+    id: 'myasthenia-gravis',
+    name: 'Myasthenia Gravis',
+    diagnosticCode: '8025',
+    cfrReference: '38 CFR 4.124a',
+    symptomIds: [
+      'mg-ptosis', 'mg-diplopia', 'mg-facial-weakness', 'mg-difficulty-chewing',
+      'mg-difficulty-swallowing', 'mg-slurred-speech', 'mg-limb-weakness',
+      'mg-neck-weakness', 'mg-respiratory-weakness', 'mg-fatigue-activity',
+      'mg-improvement-rest', 'mg-crisis', 'mg-hospitalization', 'mg-voice-fatigue',
+      'mg-arm-elevation-difficulty',
+    ],
+  },
+  // ============================================
+  // PHASE 1B: ADDITIONAL NEUROLOGICAL CONDITIONS
+  // ============================================
+
+  NARCOLEPSY: {
+    id: 'narcolepsy',
+    name: 'Narcolepsy',
+    diagnosticCode: '8108',
+    cfrReference: '38 CFR 4.124a',
+    symptomIds: [
+      'narco-sleep-attack', 'narco-excessive-sleepiness', 'narco-cataplexy',
+      'narco-sleep-paralysis', 'narco-hypnagogic-hallucination', 'narco-hypnopompic-hallucination',
+      'narco-disrupted-sleep', 'narco-automatic-behavior', 'narco-memory-problems',
+      'narco-difficulty-concentrating', 'narco-microsleep',
+    ],
+  },
+
+  ALS: {
+    id: 'als',
+    name: 'Amyotrophic Lateral Sclerosis (ALS)',
+    diagnosticCode: '8017',
+    cfrReference: '38 CFR 4.124a',
+    symptomIds: [
+      'als-muscle-weakness', 'als-fasciculations', 'als-muscle-cramps', 'als-spasticity',
+      'als-difficulty-speaking', 'als-difficulty-swallowing', 'als-respiratory-difficulty',
+      'als-fatigue', 'als-muscle-atrophy', 'als-hand-weakness', 'als-foot-drop',
+      'als-tripping-falling', 'als-emotional-lability', 'als-drooling', 'als-weight-loss',
+    ],
+  },
+
+  SYRINGOMYELIA: {
+    id: 'syringomyelia',
+    name: 'Syringomyelia',
+    diagnosticCode: '8024',
+    cfrReference: '38 CFR 4.124a',
+    symptomIds: [
+      'syring-pain', 'syring-weakness', 'syring-sensory-loss', 'syring-temp-insensitivity',
+      'syring-pain-insensitivity', 'syring-muscle-wasting', 'syring-stiffness',
+      'syring-headache', 'syring-numbness-tingling', 'syring-bowel-bladder', 'syring-scoliosis',
+    ],
+  },
+
+  MYELITIS: {
+    id: 'myelitis',
+    name: 'Myelitis',
+    diagnosticCode: '8010',
+    cfrReference: '38 CFR 4.124a',
+    symptomIds: [
+      'myel-weakness', 'myel-sensory-changes', 'myel-bladder-dysfunction',
+      'myel-bowel-dysfunction', 'myel-pain', 'myel-spasticity', 'myel-fatigue',
+      'myel-numbness', 'myel-tingling', 'myel-band-sensation', 'myel-sexual-dysfunction',
+      'myel-paralysis',
+    ],
+  },
+
 };
 
 
@@ -5129,7 +5228,7 @@ export const ASTHMA_CRITERIA = {
     },
     {
       percent: 60,
-      summary: 'FEV-1 40-55% predicted, OR FEV-1/FVC 40-55%, OR monthly MD visits for exacerbations, OR ≥3 systemic steroid courses/year',
+      summary: 'FEV-1 40-55% predicted, OR FEV-1/FVC 40-55%, OR monthly MD visits for exacerbations, OR >=3 systemic steroid courses/year',
       criteria: {
         fev1Percent: [40, 55],
         fev1FvcRatio: [40, 55],
@@ -5146,7 +5245,7 @@ export const ASTHMA_CRITERIA = {
         'Spirometry results showing FEV-1 40-55% predicted',
         'FEV-1/FVC ratio in 40-55% range',
         'Medical records showing monthly physician visits for asthma',
-        'Documentation of ≥3 oral steroid courses per year',
+        'Documentation of >=3 oral steroid courses per year',
       ],
     },
     {
@@ -7274,7 +7373,7 @@ export const EPILEPSY_MAJOR_CRITERIA = {
       percent: 100,
       summary: 'Averaging at least 1 major seizure per month over the last year',
       criteriaDescription: [
-        'At least 12 major seizures in the past year (average ≥1/month)',
+        'At least 12 major seizures in the past year (average >=1/month)',
         'Major seizure = generalized tonic-clonic convulsion with unconsciousness',
         'Frequency documented over ordinary conditions of life (not hospitalized)'
       ],
@@ -7290,7 +7389,7 @@ export const EPILEPSY_MAJOR_CRITERIA = {
       percent: 80,
       summary: 'Averaging at least 1 major seizure in 3 months over the last year',
       criteriaDescription: [
-        'At least 4 major seizures in the past year (average ≥1 per 3 months)',
+        'At least 4 major seizures in the past year (average >=1 per 3 months)',
         'OR more than 10 minor seizures weekly (see DC 8911)',
         'Pattern of seizures every 3 months or less'
       ],
@@ -7305,7 +7404,7 @@ export const EPILEPSY_MAJOR_CRITERIA = {
       percent: 60,
       summary: 'Averaging at least 1 major seizure in 4 months over the last year',
       criteriaDescription: [
-        'At least 3 major seizures in the past year (average ≥1 per 4 months)',
+        'At least 3 major seizures in the past year (average >=1 per 4 months)',
         'OR 9-10 minor seizures per week',
         'Regular pattern of seizures'
       ],
@@ -12938,9 +13037,9 @@ export const CIRRHOSIS_CRITERIA = {
   ratings: [
     {
       percent: 100,
-      summary: 'MELD ≥15 OR daily debilitating symptoms with major complication',
+      summary: 'MELD >=15 OR daily debilitating symptoms with major complication',
       criteriaDescription: [
-        'Liver disease with MELD score ≥15, OR',
+        'Liver disease with MELD score >=15, OR',
         'Continuous daily debilitating symptoms with generalized weakness AND at least one of:',
         '- Ascites (fluid in abdomen)',
         '- History of spontaneous bacterial peritonitis',
@@ -13283,6 +13382,708 @@ export const BILIARY_TRACT_CRITERIA = {
   disclaimer: 'This analysis is based on logged biliary tract symptoms. VA requires clinically documented attacks. Seek medical evaluation during attacks to establish documentation.',
 };
 
+
+// ============================================
+// PHASE 1A: MULTIPLE SCLEROSIS CRITERIA (DC 8018)
+// ============================================
+
+export const MULTIPLE_SCLEROSIS_CRITERIA = {
+  diagnosticCode: '8018',
+  condition: 'Multiple Sclerosis',
+  cfrReference: '38 CFR 4.124a, Diagnostic Code 8018',
+
+  minimumRating: 30,
+  ratingNote: 'MS has a minimum rating of 30%. Higher ratings are based on specific residuals rated under appropriate diagnostic codes.',
+
+  ratings: [
+    {
+      percent: 30,
+      summary: 'Minimum rating - ascertainable residuals present',
+      criteria: {
+        residualsPresent: true,
+        minimumRating: true,
+      },
+      criteriaDescription: [
+        'Minimum rating assigned when ascertainable residuals are present',
+        'Residuals may include fatigue, numbness, weakness, cognitive issues, bladder dysfunction, etc.',
+        'Higher ratings require evaluation of specific residuals under appropriate DCs',
+      ],
+      evidenceNeeded: [
+        'MS diagnosis confirmed by neurologist',
+        'Documentation of current residual symptoms',
+        'Symptom logs showing ongoing functional impact',
+      ],
+    },
+  ],
+
+  additionalRatingGuidance: [
+    {
+      residual: 'Visual Impairment',
+      description: 'Optic neuritis or other visual deficits',
+      ratingMethod: 'Rate under DC 6066 (visual impairment) based on corrected visual acuity',
+    },
+    {
+      residual: 'Bladder Dysfunction',
+      description: 'Neurogenic bladder, incontinence, or voiding dysfunction',
+      ratingMethod: 'Rate under DC 7542 (neurogenic bladder) or voiding dysfunction criteria',
+    },
+    {
+      residual: 'Bowel Dysfunction',
+      description: 'Constipation, incontinence, or bowel control issues',
+      ratingMethod: 'Rate under DC 7332 (sphincter impairment)',
+    },
+    {
+      residual: 'Extremity Weakness/Paralysis',
+      description: 'Weakness or paralysis of upper or lower extremities',
+      ratingMethod: 'Rate under peripheral nerve codes (DC 8510-8530) based on affected nerve',
+    },
+    {
+      residual: 'Cognitive Impairment',
+      description: 'Memory issues, concentration problems, processing speed',
+      ratingMethod: 'May be rated under DC 9326 (dementia) if severe, or as part of minimum rating',
+    },
+    {
+      residual: 'Fatigue',
+      description: 'MS-related fatigue (lassitude)',
+      ratingMethod: 'Considered in minimum rating; may also support CFS rating if criteria met',
+    },
+    {
+      residual: 'Spasticity',
+      description: 'Muscle stiffness, spasms, increased tone',
+      ratingMethod: 'Rate based on functional limitation of affected extremity',
+    },
+    {
+      residual: 'Tremor/Ataxia',
+      description: 'Intention tremor or coordination problems',
+      ratingMethod: 'Rate based on functional impairment of affected extremity',
+    },
+  ],
+
+  definitions: {
+    multipleSclerosis: {
+      term: 'Multiple Sclerosis',
+      definition: 'A chronic autoimmune disease affecting the central nervous system where the immune system attacks the protective myelin sheath covering nerve fibers, causing communication problems between the brain and body.',
+      examples: [
+        'Relapsing-remitting MS (RRMS) - most common form with flares and remissions',
+        'Secondary progressive MS (SPMS) - follows RRMS with gradual worsening',
+        'Primary progressive MS (PPMS) - steady progression from onset',
+      ],
+    },
+    relapse: {
+      term: 'Relapse/Exacerbation',
+      definition: 'A new neurological symptom or worsening of existing symptoms lasting at least 24 hours, not attributed to fever or infection. Also called flare, attack, or exacerbation.',
+      examples: [
+        'New numbness or weakness lasting more than 24 hours',
+        'Vision problems (optic neuritis)',
+        'Increased spasticity or walking difficulty',
+        'New bladder dysfunction',
+      ],
+    },
+    uhthoffPhenomenon: {
+      term: "Uhthoff's Phenomenon",
+      definition: 'Temporary worsening of MS symptoms triggered by increased body temperature (heat, exercise, fever). Symptoms resolve when body temperature returns to normal.',
+      examples: [
+        'Vision blurring after exercise or hot shower',
+        'Increased weakness in warm weather',
+        'Worsening fatigue with heat exposure',
+      ],
+    },
+    lhermittesSign: {
+      term: "Lhermitte's Sign",
+      definition: 'An electric shock-like sensation running down the spine and into the limbs when bending the neck forward. Indicates demyelination in the cervical spinal cord.',
+      examples: [
+        'Electric shock down spine when looking down',
+        'Tingling in arms/legs with neck flexion',
+        'Brief, reproducible sensation',
+      ],
+    },
+    spasticity: {
+      term: 'Spasticity',
+      definition: 'Abnormal muscle stiffness and involuntary spasms due to damage to nerve pathways. Common in MS affecting legs more than arms.',
+      examples: [
+        'Stiff, heavy-feeling legs',
+        'Muscle spasms, especially at night',
+        'Difficulty with walking due to stiffness',
+        'Clonus (rhythmic contractions)',
+      ],
+    },
+  },
+
+  disclaimer: 'MS has a minimum rating of 30% when ascertainable residuals are present. Additional ratings may be assigned for specific residuals (vision, bladder, bowel, extremity weakness, etc.) under their respective diagnostic codes. The combined rating uses VA combined ratings table. This analysis tracks symptoms to document residuals and their functional impact.',
+};
+
+// ============================================
+// PHASE 1A: PARKINSON\'S DISEASE CRITERIA (DC 8004)
+// ============================================
+
+export const PARKINSONS_DISEASE_CRITERIA = {
+  diagnosticCode: '8004',
+  condition: "Parkinson's Disease",
+  cfrReference: '38 CFR 4.124a, Diagnostic Code 8004',
+
+  minimumRating: 30,
+  ratingNote: "Parkinson's disease (Paralysis Agitans) has a minimum rating of 30%. Higher ratings based on specific residuals under appropriate diagnostic codes.",
+
+  ratings: [
+    {
+      percent: 30,
+      summary: 'Minimum rating - ascertainable residuals present',
+      criteria: {
+        residualsPresent: true,
+        minimumRating: true,
+      },
+      criteriaDescription: [
+        'Minimum rating assigned when ascertainable residuals are present',
+        'Cardinal motor symptoms: tremor, rigidity, bradykinesia, postural instability',
+        'Non-motor symptoms also considered: sleep, cognitive, autonomic',
+        'Higher ratings require evaluation of specific residuals under appropriate DCs',
+      ],
+      evidenceNeeded: [
+        "Parkinson's disease diagnosis confirmed by neurologist",
+        'Documentation of motor symptoms (tremor, rigidity, bradykinesia)',
+        'Documentation of non-motor symptoms (sleep, cognitive, autonomic)',
+        'Symptom logs showing ongoing functional impact',
+        'Medication requirements and response',
+      ],
+    },
+  ],
+
+  additionalRatingGuidance: [
+    {
+      residual: 'Tremor',
+      description: 'Resting tremor affecting daily activities',
+      ratingMethod: 'Rate based on functional impairment of affected extremity under peripheral nerve codes',
+    },
+    {
+      residual: 'Rigidity/Bradykinesia',
+      description: 'Muscle stiffness and slowness of movement',
+      ratingMethod: 'Rate based on limitation of motion and functional impairment',
+    },
+    {
+      residual: 'Gait/Balance Impairment',
+      description: 'Shuffling gait, freezing, falls, postural instability',
+      ratingMethod: 'Consider under minimum rating; severe cases may warrant separate evaluation',
+    },
+    {
+      residual: 'Speech Impairment',
+      description: 'Soft speech (hypophonia), slurred speech',
+      ratingMethod: 'May be rated under DC 8210 (vagus nerve) if severe',
+    },
+    {
+      residual: 'Swallowing Difficulty',
+      description: 'Dysphagia affecting nutrition',
+      ratingMethod: 'Rate under digestive system codes if severe',
+    },
+    {
+      residual: 'Cognitive Impairment',
+      description: "Parkinson's dementia or cognitive changes",
+      ratingMethod: 'Rate under DC 9326 (dementia) if meeting criteria',
+    },
+    {
+      residual: 'Depression/Anxiety',
+      description: 'PD-related mood disorders',
+      ratingMethod: 'Rate under mental health codes (DC 9434/9400)',
+    },
+    {
+      residual: 'Sleep Disorders',
+      description: 'REM sleep behavior disorder, insomnia',
+      ratingMethod: 'Consider under minimum rating or rate separately if meeting sleep disorder criteria',
+    },
+    {
+      residual: 'Bladder Dysfunction',
+      description: 'Urinary urgency, frequency, incontinence',
+      ratingMethod: 'Rate under voiding dysfunction criteria',
+    },
+    {
+      residual: 'Constipation',
+      description: 'Autonomic dysfunction affecting bowel',
+      ratingMethod: 'Consider under minimum rating',
+    },
+  ],
+
+  definitions: {
+    parkinsonsDisease: {
+      term: "Parkinson's Disease",
+      definition: 'A progressive neurodegenerative disorder caused by loss of dopamine-producing neurons in the brain. Characterized by motor symptoms (tremor, rigidity, bradykinesia, postural instability) and non-motor symptoms.',
+      examples: [
+        'Idiopathic PD - most common, cause unknown',
+        'Early-onset PD - diagnosed before age 50',
+        'Parkinsonism - similar symptoms from other causes',
+      ],
+    },
+    restingTremor: {
+      term: 'Resting Tremor',
+      definition: 'Involuntary shaking that occurs when muscles are relaxed, characteristic of PD. Often starts on one side, typically in hand ("pill-rolling" tremor). Decreases with intentional movement.',
+      examples: [
+        'Hand tremor at rest, stops when reaching for object',
+        'Jaw or lip tremor',
+        'Leg tremor when sitting',
+      ],
+    },
+    bradykinesia: {
+      term: 'Bradykinesia',
+      definition: 'Slowness of movement and difficulty initiating movement. A cardinal feature of PD affecting daily activities.',
+      examples: [
+        'Slow to start walking',
+        'Decreased arm swing when walking',
+        'Difficulty with fine motor tasks (buttons, writing)',
+        'Reduced facial expression (masked face)',
+      ],
+    },
+    rigidity: {
+      term: 'Rigidity',
+      definition: 'Muscle stiffness throughout the range of motion (different from spasticity). Can be "cogwheel" (ratchety) or "lead-pipe" (smooth resistance).',
+      examples: [
+        'Stiff muscles in arms, legs, trunk',
+        'Difficulty turning in bed',
+        'Reduced arm swing',
+        'Stooped posture',
+      ],
+    },
+    freezingOfGait: {
+      term: 'Freezing of Gait',
+      definition: 'Sudden, brief inability to move feet forward despite intention to walk. Feet feel "glued to floor." Common trigger of falls.',
+      examples: [
+        'Freezing when starting to walk',
+        'Freezing in doorways or narrow spaces',
+        'Freezing when turning',
+        'Freezing when approaching destination',
+      ],
+    },
+    offEpisodes: {
+      term: 'OFF Episodes',
+      definition: 'Periods when PD medication wears off before next dose, causing return of symptoms. More common as disease progresses.',
+      examples: [
+        'Predictable wearing off before next dose',
+        'Sudden unexpected OFF periods',
+        'Morning akinesia before first dose',
+      ],
+    },
+    dyskinesia: {
+      term: 'Dyskinesia',
+      definition: 'Involuntary, uncontrolled movements often caused by long-term levodopa use. Different from tremor - more flowing/writhing.',
+      examples: [
+        'Choreiform movements (dance-like)',
+        'Dystonia (sustained muscle contractions)',
+        'Peak-dose dyskinesia',
+        'Diphasic dyskinesia (beginning/end of dose)',
+      ],
+    },
+  },
+
+  disclaimer: "Parkinson's disease has a minimum rating of 30% when ascertainable residuals are present. Additional ratings may be assigned for specific residuals under their respective diagnostic codes and combined using VA combined ratings table. This analysis tracks both motor and non-motor symptoms to document disease progression and functional impact.",
+};
+
+// ============================================
+// PHASE 1A: MYASTHENIA GRAVIS CRITERIA (DC 8025)
+// ============================================
+
+export const MYASTHENIA_GRAVIS_CRITERIA = {
+  diagnosticCode: '8025',
+  condition: 'Myasthenia Gravis',
+  cfrReference: '38 CFR 4.124a, Diagnostic Code 8025',
+
+  minimumRating: 30,
+  ratingNote: 'Myasthenia Gravis has a minimum rating of 30%. Higher ratings based on specific muscle group involvement and functional impairment.',
+
+  ratings: [
+    {
+      percent: 30,
+      summary: 'Minimum rating - ascertainable residuals present',
+      criteria: {
+        residualsPresent: true,
+        minimumRating: true,
+      },
+      criteriaDescription: [
+        'Minimum rating assigned when ascertainable residuals are present',
+        'May include ocular symptoms (ptosis, diplopia) or generalized weakness',
+        'Symptoms characteristically worsen with activity and improve with rest',
+        'Higher ratings for severe involvement of specific muscle groups',
+      ],
+      evidenceNeeded: [
+        'MG diagnosis confirmed (antibody testing, EMG, response to treatment)',
+        'Documentation of affected muscle groups',
+        'Pattern of fatigable weakness (worse with activity, better with rest)',
+        'Current treatment regimen and response',
+        'Symptom logs showing functional impact',
+      ],
+    },
+  ],
+
+  additionalRatingGuidance: [
+    {
+      residual: 'Ocular Myasthenia',
+      description: 'Ptosis (drooping eyelid) and/or diplopia (double vision)',
+      ratingMethod: 'Rate under eye codes if vision affected; may be part of minimum rating if mild',
+    },
+    {
+      residual: 'Bulbar Weakness',
+      description: 'Difficulty chewing, swallowing, speaking',
+      ratingMethod: 'Rate based on functional impairment; severe cases may warrant additional rating',
+    },
+    {
+      residual: 'Limb Weakness',
+      description: 'Proximal arm/leg weakness affecting function',
+      ratingMethod: 'Rate under appropriate peripheral nerve codes based on affected muscles',
+    },
+    {
+      residual: 'Respiratory Weakness',
+      description: 'Weakness of breathing muscles',
+      ratingMethod: 'Rate under respiratory codes if FVC affected; myasthenic crisis warrants 100%',
+    },
+    {
+      residual: 'Neck Weakness',
+      description: 'Head drop from neck extensor weakness',
+      ratingMethod: 'Consider under minimum rating or rate based on functional limitation',
+    },
+  ],
+
+  mgfaClassification: [
+    {
+      class: 'I',
+      description: 'Ocular MG - weakness limited to eye muscles',
+      symptoms: ['Ptosis', 'Diplopia'],
+    },
+    {
+      class: 'II',
+      description: 'Mild generalized MG',
+      subclasses: [
+        { id: 'IIa', description: 'Predominantly limb/axial muscles' },
+        { id: 'IIb', description: 'Predominantly bulbar/respiratory muscles' },
+      ],
+    },
+    {
+      class: 'III',
+      description: 'Moderate generalized MG',
+      subclasses: [
+        { id: 'IIIa', description: 'Predominantly limb/axial muscles' },
+        { id: 'IIIb', description: 'Predominantly bulbar/respiratory muscles' },
+      ],
+    },
+    {
+      class: 'IV',
+      description: 'Severe generalized MG',
+      subclasses: [
+        { id: 'IVa', description: 'Predominantly limb/axial muscles' },
+        { id: 'IVb', description: 'Predominantly bulbar/respiratory muscles' },
+      ],
+    },
+    {
+      class: 'V',
+      description: 'Intubation required (with or without mechanical ventilation)',
+      symptoms: ['Myasthenic crisis'],
+    },
+  ],
+
+  definitions: {
+    myastheniaGravis: {
+      term: 'Myasthenia Gravis',
+      definition: 'An autoimmune neuromuscular disorder caused by antibodies blocking acetylcholine receptors at the neuromuscular junction. Characterized by fatigable muscle weakness that worsens with activity and improves with rest.',
+      examples: [
+        'Ocular MG - affects only eye muscles',
+        'Generalized MG - affects multiple muscle groups',
+        'MG with thymoma - associated with thymus tumor',
+      ],
+    },
+    fatigableWeakness: {
+      term: 'Fatigable Weakness',
+      definition: 'The hallmark of MG - muscles become weaker with repeated use and recover strength after rest. Different from fatigue (tiredness).',
+      examples: [
+        'Voice becomes softer after talking',
+        'Chewing difficulty worsens during meal',
+        'Arm weakness when holding arms up',
+        'Ptosis worsens throughout day',
+      ],
+    },
+    ptosis: {
+      term: 'Ptosis',
+      definition: 'Drooping of one or both upper eyelids due to weakness of the levator palpebrae muscle. Often the first symptom of MG.',
+      examples: [
+        'Unilateral or bilateral eyelid drooping',
+        'Worse at end of day or with sustained upward gaze',
+        'May shift from one eye to other',
+        'Ice pack test may temporarily improve',
+      ],
+    },
+    diplopia: {
+      term: 'Diplopia',
+      definition: 'Double vision caused by weakness of extraocular muscles. Common early symptom of MG.',
+      examples: [
+        'Horizontal or vertical double vision',
+        'Worse with sustained gaze',
+        'May be intermittent',
+        'Improves with rest or one eye closed',
+      ],
+    },
+    myasthenicCrisis: {
+      term: 'Myasthenic Crisis',
+      definition: 'Life-threatening worsening of MG with severe weakness of respiratory muscles requiring mechanical ventilation. Medical emergency.',
+      examples: [
+        'Severe shortness of breath',
+        'Inability to clear secretions',
+        'Respiratory failure requiring intubation',
+        'Triggered by infection, surgery, medication changes',
+      ],
+    },
+    bulbarSymptoms: {
+      term: 'Bulbar Symptoms',
+      definition: 'Symptoms affecting muscles controlled by cranial nerves from the brainstem - swallowing, speech, and facial muscles.',
+      examples: [
+        'Difficulty chewing (jaw fatigue)',
+        'Difficulty swallowing (dysphagia)',
+        'Nasal or slurred speech',
+        'Facial weakness (expressionless face)',
+      ],
+    },
+  },
+
+  disclaimer: 'Myasthenia Gravis has a minimum rating of 30% when ascertainable residuals are present. The characteristic pattern of fatigable weakness (worsening with activity, improving with rest) should be documented. Additional ratings may be assigned for specific residuals affecting vision, swallowing, respiration, or limb function. Myasthenic crisis requiring ventilation warrants 100% during the acute period.',
+};
+
+// ============================================
+// PHASE 1B: ADDITIONAL NEUROLOGICAL - CRITERIA
+// ============================================
+
+// Narcolepsy (DC 8108) - 38 CFR 4.124a
+export const NARCOLEPSY_CRITERIA = {
+  diagnosticCode: '8108',
+  condition: 'Narcolepsy',
+  cfrReference: '38 CFR 4.124a',
+
+  ratings: [
+    {
+      percent: 80,
+      summary: 'Severe - daily sleep attacks, frequent cataplexy, major occupational impairment',
+      criteria: ['Daily or near-daily sleep attacks', 'Frequent cataplexy episodes', 'Unable to maintain employment', 'Symptoms uncontrolled despite treatment'],
+    },
+    {
+      percent: 60,
+      summary: 'Moderately severe - frequent sleep attacks, cataplexy present, significant impairment',
+      criteria: ['Multiple sleep attacks per week', 'Cataplexy episodes present', 'Significant occupational impairment', 'Partial response to treatment'],
+    },
+    {
+      percent: 40,
+      summary: 'Moderate - regular sleep attacks, mild cataplexy, moderate impairment',
+      criteria: ['Weekly sleep attacks', 'Mild or infrequent cataplexy', 'Moderate occupational impact', 'Requires medication management'],
+    },
+    {
+      percent: 20,
+      summary: 'Mild - occasional sleep attacks, controlled with medication',
+      criteria: ['Occasional sleep attacks (less than weekly)', 'No or rare cataplexy', 'Mild occupational impact', 'Well-controlled on medication'],
+    },
+    {
+      percent: 10,
+      summary: 'Minimal - rare symptoms, well controlled',
+      criteria: ['Rare sleep attacks', 'No cataplexy', 'Minimal functional impairment', 'Excellent response to treatment'],
+    },
+  ],
+
+  note: 'Narcolepsy is rated based on frequency of sleep attacks, presence and severity of cataplexy, and overall functional impairment. Document sleep study results (MSLT showing sleep latency <8 minutes and 2+ SOREMPs), medication use, and impact on daily activities and employment.',
+
+  definitions: {
+    sleepAttack: {
+      term: 'Sleep Attack',
+      definition: 'Sudden, irresistible episode of sleep occurring at inappropriate times, often without warning. May last seconds to minutes.',
+    },
+    cataplexy: {
+      term: 'Cataplexy',
+      definition: 'Sudden loss of muscle tone triggered by strong emotions (laughter, surprise, anger). Pathognomonic for Type 1 narcolepsy. Can range from mild (facial drooping, slurred speech) to complete collapse.',
+    },
+    hypnagogicHallucination: {
+      term: 'Hypnagogic Hallucination',
+      definition: 'Vivid, often frightening hallucinations occurring at sleep onset. May be visual, auditory, or tactile.',
+    },
+    sleepParalysis: {
+      term: 'Sleep Paralysis',
+      definition: 'Temporary inability to move or speak while falling asleep or waking up. Often accompanied by hallucinations and sense of presence.',
+    },
+    automaticBehavior: {
+      term: 'Automatic Behavior',
+      definition: 'Performing routine tasks without conscious awareness during microsleep episodes. May result in errors, memory gaps, or dangerous situations.',
+    },
+  },
+
+  disclaimer: 'This analysis is for documentation purposes only. VA rating decisions require sleep study confirmation (MSLT) and C&P examination findings.',
+};
+
+// ALS - Amyotrophic Lateral Sclerosis (DC 8017) - 38 CFR 4.124a
+export const ALS_CRITERIA = {
+  diagnosticCode: '8017',
+  condition: 'Amyotrophic Lateral Sclerosis (ALS)',
+  cfrReference: '38 CFR 4.124a',
+
+  ratings: [
+    {
+      percent: 100,
+      summary: 'Total disability - complete dependence, respiratory failure, or terminal stage',
+      criteria: ['Complete dependence for all ADLs', 'Respiratory failure requiring ventilatory support', 'Unable to communicate or swallow', 'Terminal stage of disease'],
+    },
+    {
+      percent: 80,
+      summary: 'Severe - marked weakness in multiple regions, significant respiratory/bulbar involvement',
+      criteria: ['Marked weakness in 3+ body regions', 'Significant respiratory compromise (FVC <50%)', 'Severe dysphagia requiring modified diet or feeding tube', 'Requires wheelchair or bed-bound'],
+    },
+    {
+      percent: 60,
+      summary: 'Moderately severe - progressive weakness, moderate respiratory/bulbar symptoms',
+      criteria: ['Progressive weakness in 2+ body regions', 'Moderate respiratory involvement (FVC 50-70%)', 'Moderate dysphagia', 'Requires assistance with ADLs'],
+    },
+    {
+      percent: 40,
+      summary: 'Moderate - definite weakness, early bulbar or respiratory involvement',
+      criteria: ['Definite weakness affecting function', 'Early respiratory or bulbar symptoms', 'Can perform most ADLs with difficulty', 'Ambulatory with assistance'],
+    },
+    {
+      percent: 30,
+      summary: 'Minimum rating - confirmed ALS diagnosis with symptoms',
+      criteria: ['Confirmed ALS diagnosis', 'Early motor symptoms present', 'Mild functional impairment', 'Ambulatory and independent'],
+    },
+  ],
+
+  note: 'ALS is a progressive, fatal motor neuron disease. VA presumes service connection for veterans who develop ALS. Given the progressive nature, ratings should be reviewed regularly. Additional ratings may apply for respiratory failure, dysphagia, speech impairment, and depression.',
+
+  definitions: {
+    upperMotorNeuron: {
+      term: 'Upper Motor Neuron Signs',
+      definition: 'Signs of corticospinal tract involvement: spasticity, hyperreflexia, Babinski sign, clonus.',
+    },
+    lowerMotorNeuron: {
+      term: 'Lower Motor Neuron Signs',
+      definition: 'Signs of anterior horn cell involvement: weakness, atrophy, fasciculations, hyporeflexia.',
+    },
+    bulbarSymptoms: {
+      term: 'Bulbar Symptoms',
+      definition: 'Symptoms from brainstem motor neuron involvement: dysarthria (slurred speech), dysphagia (difficulty swallowing), sialorrhea (drooling), emotional lability.',
+    },
+    fasciculations: {
+      term: 'Fasciculations',
+      definition: 'Visible spontaneous muscle twitches caused by denervation of muscle fibers. Common early sign of ALS.',
+    },
+    fvc: {
+      term: 'Forced Vital Capacity (FVC)',
+      definition: 'Measure of respiratory muscle strength. FVC <50% indicates significant respiratory compromise in ALS.',
+    },
+  },
+
+  disclaimer: 'This analysis is for documentation purposes only. ALS is presumptively service-connected for veterans. VA rating decisions require neurological examination and EMG/nerve conduction studies.',
+};
+
+// Syringomyelia (DC 8024) - 38 CFR 4.124a
+export const SYRINGOMYELIA_CRITERIA = {
+  diagnosticCode: '8024',
+  condition: 'Syringomyelia',
+  cfrReference: '38 CFR 4.124a',
+
+  ratings: [
+    {
+      percent: 100,
+      summary: 'Severe - profound sensory/motor deficits, complete dependence',
+      criteria: ['Profound sensory loss', 'Severe weakness or paralysis', 'Complete dependence for ADLs', 'Severe pain uncontrolled by treatment'],
+    },
+    {
+      percent: 80,
+      summary: 'Marked sensory loss, significant weakness, major functional impairment',
+      criteria: ['Marked cape-distribution sensory loss', 'Significant upper extremity weakness', 'Requires assistance for most ADLs', 'Chronic pain with limited control'],
+    },
+    {
+      percent: 60,
+      summary: 'Moderate sensory/motor deficits with functional limitations',
+      criteria: ['Moderate sensory loss affecting function', 'Moderate weakness', 'Burns/injuries from sensory loss', 'Significant pain requiring treatment'],
+    },
+    {
+      percent: 40,
+      summary: 'Definite sensory changes and mild weakness',
+      criteria: ['Definite dissociated sensory loss', 'Mild weakness', 'Some functional impairment', 'Intermittent pain'],
+    },
+    {
+      percent: 20,
+      summary: 'Mild symptoms with minimal functional impact',
+      criteria: ['Mild sensory changes', 'Minimal or no weakness', 'Minor functional impairment', 'Symptoms controlled'],
+    },
+  ],
+
+  note: 'Syringomyelia is rated based on the extent of sensory loss, motor weakness, pain, and functional impairment. The characteristic "cape-like" or "suspended" sensory loss pattern (loss of pain/temperature sensation with preserved touch) is pathognomonic. Document MRI findings showing syrinx location and size.',
+
+  definitions: {
+    syrinx: {
+      term: 'Syrinx',
+      definition: 'Fluid-filled cavity (cyst) within the spinal cord that damages nerve fibers and causes progressive neurological symptoms.',
+    },
+    dissociatedSensoryLoss: {
+      term: 'Dissociated Sensory Loss',
+      definition: 'Loss of pain and temperature sensation with preserved light touch and proprioception. Caused by damage to crossing spinothalamic fibers.',
+    },
+    capeDistribution: {
+      term: 'Cape Distribution',
+      definition: 'Pattern of sensory loss affecting shoulders, arms, and upper back in a cape-like pattern, characteristic of cervical syringomyelia.',
+    },
+    charcotJoint: {
+      term: 'Charcot Joint',
+      definition: 'Neuropathic arthropathy (joint destruction) resulting from loss of protective pain sensation.',
+    },
+  },
+
+  disclaimer: 'This analysis is for documentation purposes only. VA rating decisions require MRI confirmation and neurological examination.',
+};
+
+// Myelitis (DC 8010) - 38 CFR 4.124a
+export const MYELITIS_CRITERIA = {
+  diagnosticCode: '8010',
+  condition: 'Myelitis',
+  cfrReference: '38 CFR 4.124a',
+
+  ratings: [
+    {
+      percent: 100,
+      summary: 'Complete or near-complete paralysis, total dependence',
+      criteria: ['Complete or near-complete paralysis below lesion level', 'Total loss of bladder/bowel control', 'Complete dependence for all ADLs', 'Respiratory compromise if cervical'],
+    },
+    {
+      percent: 80,
+      summary: 'Severe - marked weakness/paralysis, significant bladder/bowel dysfunction',
+      criteria: ['Marked weakness or incomplete paralysis', 'Significant bladder/bowel dysfunction', 'Requires wheelchair or significant assistance', 'Severe sensory loss'],
+    },
+    {
+      percent: 60,
+      summary: 'Moderately severe - significant weakness, bladder/bowel involvement',
+      criteria: ['Significant weakness affecting ambulation', 'Moderate bladder/bowel dysfunction', 'Requires assistive devices', 'Moderate sensory impairment'],
+    },
+    {
+      percent: 40,
+      summary: 'Moderate - definite weakness, some bladder/bowel symptoms',
+      criteria: ['Definite weakness', 'Mild bladder/bowel symptoms', 'Ambulatory with difficulty', 'Sensory changes present'],
+    },
+    {
+      percent: 20,
+      summary: 'Mild residuals with minimal functional impact',
+      criteria: ['Mild weakness', 'Minimal or resolved bladder/bowel symptoms', 'Minor sensory changes', 'Good functional recovery'],
+    },
+  ],
+
+  note: 'Myelitis (including transverse myelitis) is rated based on residual deficits after acute phase resolves. The level of spinal cord involvement determines affected body regions. Additional ratings may apply for bladder dysfunction (DC 7542), bowel dysfunction (DC 7332), and sexual dysfunction.',
+
+  definitions: {
+    transverseMyelitis: {
+      term: 'Transverse Myelitis',
+      definition: 'Inflammation across the full width of the spinal cord at one or more levels, causing motor, sensory, and autonomic dysfunction below the lesion.',
+    },
+    sensoryLevel: {
+      term: 'Sensory Level',
+      definition: 'The highest spinal cord level at which sensation is impaired, indicating the location of the lesion.',
+    },
+    spasticity: {
+      term: 'Spasticity',
+      definition: 'Increased muscle tone and stiffness due to upper motor neuron damage, often seen in chronic myelitis.',
+    },
+    neurogenicBladder: {
+      term: 'Neurogenic Bladder',
+      definition: 'Bladder dysfunction resulting from spinal cord damage, may cause retention, incontinence, or both.',
+    },
+  },
+
+  disclaimer: 'This analysis is for documentation purposes only. VA rating decisions require MRI findings, lumbar puncture results (if available), and neurological examination.',
+};
+
 // ============================================
 // ANALYSIS FUNCTIONS - MIGRAINE
 // ============================================
@@ -13367,7 +14168,7 @@ export const analyzeMigraineLogs = (logs, options = {}) => {
     supportedRating = 50;
     ratingRationale = [
       `${prostratingPerMonth.toFixed(
-          1)} prostrating attacks per month (≥4 required)`,
+          1)} prostrating attacks per month (>=4 required)`,
       `${prolongedCount} prolonged attacks documented`,
       'Pattern suggests very frequent, prostrating, prolonged attacks',
     ];
@@ -13379,7 +14180,7 @@ export const analyzeMigraineLogs = (logs, options = {}) => {
     supportedRating = 30;
     ratingRationale = [
       `${prostratingPerMonth.toFixed(
-          1)} prostrating attacks per month (≥1 required)`,
+          1)} prostrating attacks per month (>=1 required)`,
       'Pattern supports characteristic prostrating attacks averaging monthly',
     ];
     gaps = [];
@@ -13415,7 +14216,7 @@ export const analyzeMigraineLogs = (logs, options = {}) => {
     } else if (prostratingCount > 0) {
       ratingRationale = [
         `${prostratingPerMonth.toFixed(2)} prostrating attacks per month`,
-        'Frequency below threshold for 10% (need ≥0.5/month)',
+        'Frequency below threshold for 10% (need >=0.5/month)',
       ];
       gaps = [
         'Continue logging all prostrating episodes',
@@ -14486,11 +15287,11 @@ export const analyzeHypertensionLogs = (logs, options = {}) => {
     if (diastolic130.isPredominant) {
       supportedRating = '60';
       ratingRationale.push(
-          `${diastolic130.percentage}% of readings show diastolic ≥130 mmHg`,
+          `${diastolic130.percentage}% of readings show diastolic >=130 mmHg`,
           `Meets "predominantly" threshold (>50% required)`,
           `${diastolic130.qualifyingReadings} of ${diastolic130.totalReadings} readings qualify`
       );
-      evidence.push(`${diastolic130.qualifyingReadings} readings with diastolic ≥130`);
+      evidence.push(`${diastolic130.qualifyingReadings} readings with diastolic >=130`);
     }
 
     // 40%: Diastolic predominantly 120 or more
@@ -14499,11 +15300,11 @@ export const analyzeHypertensionLogs = (logs, options = {}) => {
       if (diastolic120.isPredominant) {
         supportedRating = '40';
         ratingRationale.push(
-            `${diastolic120.percentage}% of readings show diastolic ≥120 mmHg`,
+            `${diastolic120.percentage}% of readings show diastolic >=120 mmHg`,
             `Meets "predominantly" threshold (>50% required)`,
             `${diastolic120.qualifyingReadings} of ${diastolic120.totalReadings} readings qualify`
         );
-        evidence.push(`${diastolic120.qualifyingReadings} readings with diastolic ≥120`);
+        evidence.push(`${diastolic120.qualifyingReadings} readings with diastolic >=120`);
 
         // Check if close to 60%
         if (diastolic130.percentage >= 40) {
@@ -14520,18 +15321,18 @@ export const analyzeHypertensionLogs = (logs, options = {}) => {
           supportedRating = '20';
           if (diastolic110.isPredominant) {
             ratingRationale.push(
-                `${diastolic110.percentage}% of readings show diastolic ≥110 mmHg`,
+                `${diastolic110.percentage}% of readings show diastolic >=110 mmHg`,
                 `Meets "predominantly" threshold (>50% required)`,
                 `${diastolic110.qualifyingReadings} of ${diastolic110.totalReadings} readings qualify`
             );
-            evidence.push(`${diastolic110.qualifyingReadings} readings with diastolic ≥110`);
+            evidence.push(`${diastolic110.qualifyingReadings} readings with diastolic >=110`);
           }
           if (systolic200.isPredominant) {
             ratingRationale.push(
-                `${systolic200.percentage}% of readings show systolic ≥200 mmHg`,
+                `${systolic200.percentage}% of readings show systolic >=200 mmHg`,
                 `Meets "predominantly" threshold (>50% required)`
             );
-            evidence.push(`${systolic200.qualifyingReadings} readings with systolic ≥200`);
+            evidence.push(`${systolic200.qualifyingReadings} readings with systolic >=200`);
           }
 
           // Check if close to 40%
@@ -14552,18 +15353,18 @@ export const analyzeHypertensionLogs = (logs, options = {}) => {
             supportedRating = '10';
             if (diastolic100.isPredominant) {
               ratingRationale.push(
-                  `${diastolic100.percentage}% of readings show diastolic ≥100 mmHg`,
+                  `${diastolic100.percentage}% of readings show diastolic >=100 mmHg`,
                   `Meets "predominantly" threshold (>50% required)`,
                   `${diastolic100.qualifyingReadings} of ${diastolic100.totalReadings} readings qualify`
               );
-              evidence.push(`${diastolic100.qualifyingReadings} readings with diastolic ≥100`);
+              evidence.push(`${diastolic100.qualifyingReadings} readings with diastolic >=100`);
             }
             if (systolic160.isPredominant) {
               ratingRationale.push(
-                  `${systolic160.percentage}% of readings show systolic ≥160 mmHg`,
+                  `${systolic160.percentage}% of readings show systolic >=160 mmHg`,
                   `Meets "predominantly" threshold (>50% required)`
               );
-              evidence.push(`${systolic160.qualifyingReadings} readings with systolic ≥160`);
+              evidence.push(`${systolic160.qualifyingReadings} readings with systolic >=160`);
             }
 
             // Check if close to 20%
@@ -14578,25 +15379,25 @@ export const analyzeHypertensionLogs = (logs, options = {}) => {
               supportedRating = '10';
               ratingRationale.push(
                   'On continuous BP medication',
-                  'Has documented history of diastolic ≥100 mmHg',
+                  'Has documented history of diastolic >=100 mmHg',
                   'Meets medication + history criteria for 10% rating'
               );
               evidence.push('Taking BP medication regularly');
               evidence.push('History of elevated diastolic readings');
             } else {
-              gaps.push('On medication but no documented history of diastolic ≥100');
-              gaps.push('Need historical evidence of diastolic ≥100 to support medication-based rating');
+              gaps.push('On medication but no documented history of diastolic >=100');
+              gaps.push('Need historical evidence of diastolic >=100 to support medication-based rating');
             }
           } else {
             // No rating supported
             ratingRationale.push(
                 `Current readings don't meet "predominantly" threshold for any rating`,
-                `Highest: Diastolic ≥100 in ${diastolic100.percentage}% of readings (need >50%)`
+                `Highest: Diastolic >=100 in ${diastolic100.percentage}% of readings (need >50%)`
             );
             gaps.push('Continue logging BP to establish pattern');
 
             if (diastolic100.percentage >= 30) {
-              gaps.push(`Close to 10% rating threshold - ${diastolic100.percentage}% at diastolic ≥100`);
+              gaps.push(`Close to 10% rating threshold - ${diastolic100.percentage}% at diastolic >=100`);
             }
           }
         }
@@ -14875,7 +15676,7 @@ export const analyzeDiabetesLogs = (logs, options = {}) => {
     }
   }
   else if (latestHbA1c && latestHbA1c >= 6.5) {
-    // Has diabetes diagnosis (HbA1c ≥6.5%) but medication not documented
+    // Has diabetes diagnosis (HbA1c >=6.5%) but medication not documented
     supportedRating = '10';
     ratingRationale.push(
         `Diabetes diagnosis confirmed (HbA1c ${latestHbA1c}%)`,
@@ -17361,7 +18162,7 @@ export const analyzeAsthmaLogs = (logs, options = {}) => {
   } else if (mdVisitsPerMonth >= 1) {
     supportedRating = 60;
     ratingRationale = [
-      `${mdVisitsPerMonth.toFixed(1)} physician visits per month for exacerbations (≥1/month required)`,
+      `${mdVisitsPerMonth.toFixed(1)} physician visits per month for exacerbations (>=1/month required)`,
       'Pattern of monthly medical visits supports 60% rating',
     ];
   }
@@ -19057,15 +19858,15 @@ export function analyzeEpilepsyMajorLogs(logs, evaluationDays = 90) {
   if (averagePerMonth >= 1) {
     supportedRating = '100%';
     ratingRationale.push(`Averaging ${lastYear} major seizures over last year (${averagePerMonth.toFixed(1)} per month)`);
-    ratingRationale.push('Meets 100% criteria: ≥1 major seizure per month average');
+    ratingRationale.push('Meets 100% criteria: >=1 major seizure per month average');
   } else if (lastYear >= 4) {
     supportedRating = '80%';
     ratingRationale.push(`${lastYear} major seizures in last year (average 1 per 3 months)`);
-    ratingRationale.push('Meets 80% criteria: ≥1 major seizure per 3 months');
+    ratingRationale.push('Meets 80% criteria: >=1 major seizure per 3 months');
   } else if (lastYear >= 3) {
     supportedRating = '60%';
     ratingRationale.push(`${lastYear} major seizures in last year (average 1 per 4 months)`);
-    ratingRationale.push('Meets 60% criteria: ≥1 major seizure per 4 months');
+    ratingRationale.push('Meets 60% criteria: >=1 major seizure per 4 months');
   } else if (last6Months >= 1 || lastYear >= 2) {
     supportedRating = '40%';
     if (last6Months >= 1) {
@@ -19074,11 +19875,11 @@ export function analyzeEpilepsyMajorLogs(logs, evaluationDays = 90) {
     if (lastYear >= 2) {
       ratingRationale.push(`${lastYear} major seizures in last year`);
     }
-    ratingRationale.push('Meets 40% criteria: ≥1 seizure in last 6 months OR ≥2 in last year');
+    ratingRationale.push('Meets 40% criteria: >=1 seizure in last 6 months OR >=2 in last year');
   } else if (last2Years >= 1) {
     supportedRating = '20%';
     ratingRationale.push(`${last2Years} major seizure(s) in last 2 years`);
-    ratingRationale.push('Meets 20% criteria: ≥1 major seizure in last 2 years');
+    ratingRationale.push('Meets 20% criteria: >=1 major seizure in last 2 years');
   } else {
     supportedRating = '10%';
     ratingRationale.push('Documented seizure history with symptom logs');
@@ -19214,7 +20015,7 @@ export function analyzeEpilepsyMinorLogs(logs, evaluationDays = 90) {
   } else if (last6Months >= 2) {
     supportedRating = '20%';
     ratingRationale.push(`${last6Months} minor seizures in last 6 months`);
-    ratingRationale.push('Meets 20% criteria: ≥2 minor seizures in last 6 months');
+    ratingRationale.push('Meets 20% criteria: >=2 minor seizures in last 6 months');
   } else {
     supportedRating = '10%';
     ratingRationale.push('Documented minor seizure history');
@@ -22190,7 +22991,7 @@ export const analyzeHIVLogs = (logs, options = {}) => {
   ) {
     supportedRating = 100;
     ratingRationale.push(
-      'Pathological weight loss (≥10% body weight) with debilitating constitutional symptoms',
+      'Pathological weight loss (>=10% body weight) with debilitating constitutional symptoms',
       `Weight loss: ${weightLossPercentage}% documented`,
       `${totalConstitutionalSymptoms} constitutional symptoms over evaluation period`,
       'Chronic diarrhea and/or severe fatigue documented',
@@ -25199,7 +26000,7 @@ export const analyzeCirrhosisLogs = (logs, measurements = [], options = {}) => {
   // Determine rating based on MELD or symptoms
   if (latestMeld && latestMeld >= 15) {
     supportedRating = 100;
-    ratingRationale = [`MELD score ${latestMeld} (≥15 supports 100%)`];
+    ratingRationale = [`MELD score ${latestMeld} (>=15 supports 100%)`];
   } else if (hasMajorComplication && fatigueLogs.length >= 20) {
     supportedRating = 100;
     ratingRationale = ['Daily debilitating symptoms with major complication documented'];
@@ -25924,6 +26725,1120 @@ export const analyzeSarcoidosisLogs = (logs, options = {}) => {
   };
 };
 
+
+// ============================================
+// PHASE 1A: MULTIPLE SCLEROSIS ANALYSIS (DC 8018)
+// ============================================
+
+/**
+ * Analyze Multiple Sclerosis symptom logs against VA rating criteria
+ * DC 8018 - Minimum rating 30%, higher ratings based on specific residuals
+ */
+export const analyzeMultipleSclerosisLogs = (logs, options = {}) => {
+  const conditionCriteria = MULTIPLE_SCLEROSIS_CRITERIA;
+  const evaluationPeriodDays = options.days || 90;
+  const symptomIds = CONDITIONS.MULTIPLE_SCLEROSIS.symptomIds;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    const symptomId = getLogSymptomId(log);
+    return logDate >= cutoffDate && symptomId && symptomIds.includes(symptomId);
+  });
+
+  if (relevantLogs.length === 0) {
+    return {
+      hasData: false,
+      condition: conditionCriteria.condition,
+      diagnosticCode: conditionCriteria.diagnosticCode,
+      message: 'No multiple sclerosis symptoms logged in evaluation period',
+    };
+  }
+
+  // Categorize symptoms by type for evidence building
+  const fatigueLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'ms-fatigue');
+  const numbnessLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'ms-numbness-tingling');
+  const visionLogs = relevantLogs.filter(log =>
+      ['ms-vision-problems', 'ms-double-vision'].includes(getLogSymptomId(log))
+  );
+  const weaknessLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'ms-muscle-weakness');
+  const spasticityLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'ms-spasticity');
+  const balanceLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'ms-balance-problems');
+  const cognitiveLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'ms-cognitive-fog');
+  const bladderLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'ms-bladder-dysfunction');
+  const bowelLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'ms-bowel-dysfunction');
+  const relapseLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'ms-relapse');
+  const walkingLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'ms-walking-difficulty');
+  const painLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'ms-pain');
+  const heatSensitivityLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'ms-heat-sensitivity');
+
+  // Build evidence summary
+  const evidence = [];
+  evidence.push(`${relevantLogs.length} MS symptom logs in ${evaluationPeriodDays} days`);
+
+  if (fatigueLogs.length > 0) evidence.push(`Fatigue: ${fatigueLogs.length} days`);
+  if (numbnessLogs.length > 0) evidence.push(`Numbness/tingling: ${numbnessLogs.length} occurrences`);
+  if (visionLogs.length > 0) evidence.push(`Vision problems: ${visionLogs.length} occurrences`);
+  if (weaknessLogs.length > 0) evidence.push(`Muscle weakness: ${weaknessLogs.length} occurrences`);
+  if (spasticityLogs.length > 0) evidence.push(`Spasticity: ${spasticityLogs.length} occurrences`);
+  if (balanceLogs.length > 0) evidence.push(`Balance problems: ${balanceLogs.length} occurrences`);
+  if (cognitiveLogs.length > 0) evidence.push(`Cognitive issues: ${cognitiveLogs.length} occurrences`);
+  if (bladderLogs.length > 0) evidence.push(`Bladder dysfunction: ${bladderLogs.length} occurrences`);
+  if (bowelLogs.length > 0) evidence.push(`Bowel dysfunction: ${bowelLogs.length} occurrences`);
+  if (relapseLogs.length > 0) evidence.push(`Relapses: ${relapseLogs.length} documented`);
+  if (walkingLogs.length > 0) evidence.push(`Walking difficulty: ${walkingLogs.length} occurrences`);
+
+  // MS has minimum 30% rating when residuals present
+  let supportedRating = 30;
+  let ratingRationale = [
+    'Minimum 30% rating supported - ascertainable MS residuals documented',
+  ];
+
+  // Identify which residuals may warrant additional separate ratings
+  const additionalRatingPotential = [];
+
+  if (visionLogs.length > 5) {
+    additionalRatingPotential.push('Vision impairment may warrant separate rating under eye codes');
+  }
+  if (bladderLogs.length > 5) {
+    additionalRatingPotential.push('Bladder dysfunction may warrant separate rating under DC 7542');
+  }
+  if (bowelLogs.length > 5) {
+    additionalRatingPotential.push('Bowel dysfunction may warrant separate rating under DC 7332');
+  }
+  if (weaknessLogs.length > 10 || walkingLogs.length > 10) {
+    additionalRatingPotential.push('Extremity weakness may warrant separate rating under peripheral nerve codes');
+  }
+  if (cognitiveLogs.length > 10) {
+    additionalRatingPotential.push('Cognitive impairment should be evaluated for potential separate rating');
+  }
+
+  // Evidence gaps
+  const gaps = [];
+  if (relapseLogs.length === 0) {
+    gaps.push('Document any relapses/exacerbations with dates and duration');
+  }
+  if (relevantLogs.length < 10) {
+    gaps.push('Continue logging symptoms regularly to establish pattern');
+  }
+  if (bladderLogs.length === 0 && bowelLogs.length === 0) {
+    gaps.push('Document any bladder or bowel dysfunction if present');
+  }
+  if (visionLogs.length === 0) {
+    gaps.push('Document any vision problems if present (may warrant separate rating)');
+  }
+
+  return {
+    hasData: true,
+    condition: conditionCriteria.condition,
+    diagnosticCode: conditionCriteria.diagnosticCode,
+    evaluationPeriodDays,
+    supportedRating: supportedRating.toString(),
+    ratingRationale,
+    additionalRatingPotential,
+    evidence,
+    gaps,
+    metrics: {
+      totalLogs: relevantLogs.length,
+      fatigueDays: fatigueLogs.length,
+      numbnessOccurrences: numbnessLogs.length,
+      visionOccurrences: visionLogs.length,
+      weaknessOccurrences: weaknessLogs.length,
+      spasticityOccurrences: spasticityLogs.length,
+      balanceOccurrences: balanceLogs.length,
+      cognitiveOccurrences: cognitiveLogs.length,
+      bladderOccurrences: bladderLogs.length,
+      bowelOccurrences: bowelLogs.length,
+      relapseCount: relapseLogs.length,
+      walkingOccurrences: walkingLogs.length,
+    },
+    criteria: conditionCriteria,
+    disclaimer: conditionCriteria.disclaimer,
+  };
+};
+
+// ============================================
+// PHASE 1A: PARKINSON'S DISEASE ANALYSIS (DC 8004)
+// ============================================
+
+/**
+ * Analyze Parkinson's Disease symptom logs against VA rating criteria
+ * DC 8004 - Minimum rating 30%, higher ratings based on specific residuals
+ */
+export const analyzeParkinsonsDiseaseLogs = (logs, options = {}) => {
+  const conditionCriteria = PARKINSONS_DISEASE_CRITERIA;
+  const evaluationPeriodDays = options.days || 90;
+  const symptomIds = CONDITIONS.PARKINSONS_DISEASE.symptomIds;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    const symptomId = getLogSymptomId(log);
+    return logDate >= cutoffDate && symptomId && symptomIds.includes(symptomId);
+  });
+
+  if (relevantLogs.length === 0) {
+    return {
+      hasData: false,
+      condition: conditionCriteria.condition,
+      diagnosticCode: conditionCriteria.diagnosticCode,
+      message: "No Parkinson's disease symptoms logged in evaluation period",
+    };
+  }
+
+  // Categorize motor symptoms (cardinal features)
+  const tremorLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'pd-resting-tremor');
+  const rigidityLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'pd-rigidity');
+  const bradykinesiaLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'pd-bradykinesia');
+  const posturalLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'pd-postural-instability');
+  const freezingLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'pd-freezing-gait');
+  const shufflingLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'pd-shuffling-walk');
+  const fallsLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'pd-falls');
+
+  // Categorize non-motor symptoms
+  const sleepLogs = relevantLogs.filter(log =>
+      ['pd-sleep-disturbance', 'pd-rem-sleep-disorder'].includes(getLogSymptomId(log))
+  );
+  const depressionLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'pd-depression');
+  const anxietyLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'pd-anxiety');
+  const cognitiveLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'pd-cognitive-changes');
+  const swallowingLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'pd-swallowing-difficulty');
+  const speechLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'pd-soft-speech');
+  const constipationLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'pd-constipation');
+  const urinaryLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'pd-urinary-problems');
+
+  // Medication-related
+  const offEpisodeLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'pd-off-episodes');
+  const dyskinesiaLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'pd-dyskinesia');
+
+  // Build evidence summary
+  const evidence = [];
+  evidence.push(`${relevantLogs.length} PD symptom logs in ${evaluationPeriodDays} days`);
+
+  // Motor symptoms
+  if (tremorLogs.length > 0) evidence.push(`Resting tremor: ${tremorLogs.length} occurrences`);
+  if (rigidityLogs.length > 0) evidence.push(`Rigidity: ${rigidityLogs.length} occurrences`);
+  if (bradykinesiaLogs.length > 0) evidence.push(`Bradykinesia: ${bradykinesiaLogs.length} occurrences`);
+  if (posturalLogs.length > 0) evidence.push(`Postural instability: ${posturalLogs.length} occurrences`);
+  if (freezingLogs.length > 0) evidence.push(`Freezing of gait: ${freezingLogs.length} episodes`);
+  if (fallsLogs.length > 0) evidence.push(`Falls: ${fallsLogs.length} documented`);
+
+  // Non-motor symptoms
+  if (sleepLogs.length > 0) evidence.push(`Sleep disturbances: ${sleepLogs.length} occurrences`);
+  if (depressionLogs.length > 0) evidence.push(`Depression symptoms: ${depressionLogs.length} occurrences`);
+  if (cognitiveLogs.length > 0) evidence.push(`Cognitive changes: ${cognitiveLogs.length} occurrences`);
+  if (swallowingLogs.length > 0) evidence.push(`Swallowing difficulty: ${swallowingLogs.length} occurrences`);
+
+  // Medication effects
+  if (offEpisodeLogs.length > 0) evidence.push(`OFF episodes: ${offEpisodeLogs.length} documented`);
+  if (dyskinesiaLogs.length > 0) evidence.push(`Dyskinesia: ${dyskinesiaLogs.length} occurrences`);
+
+  // PD has minimum 30% rating when residuals present
+  let supportedRating = 30;
+  let ratingRationale = [
+    "Minimum 30% rating supported - ascertainable Parkinson's residuals documented",
+  ];
+
+  // Count cardinal motor symptoms present
+  const cardinalSymptomsPresent = [
+    tremorLogs.length > 0,
+    rigidityLogs.length > 0,
+    bradykinesiaLogs.length > 0,
+    posturalLogs.length > 0,
+  ].filter(Boolean).length;
+
+  if (cardinalSymptomsPresent >= 3) {
+    ratingRationale.push(`${cardinalSymptomsPresent} of 4 cardinal motor symptoms documented`);
+  }
+
+  // Identify which residuals may warrant additional separate ratings
+  const additionalRatingPotential = [];
+
+  if (depressionLogs.length > 5 || anxietyLogs.length > 5) {
+    additionalRatingPotential.push('Depression/anxiety may warrant separate rating under mental health codes');
+  }
+  if (cognitiveLogs.length > 10) {
+    additionalRatingPotential.push('Cognitive impairment should be evaluated for dementia rating if severe');
+  }
+  if (swallowingLogs.length > 5) {
+    additionalRatingPotential.push('Dysphagia may warrant evaluation under digestive system codes');
+  }
+  if (urinaryLogs.length > 5) {
+    additionalRatingPotential.push('Urinary dysfunction may warrant separate rating under voiding dysfunction');
+  }
+  if (tremorLogs.length > 15 || rigidityLogs.length > 15) {
+    additionalRatingPotential.push('Severe motor symptoms may warrant evaluation of extremity functional impairment');
+  }
+
+  // Evidence gaps
+  const gaps = [];
+  if (tremorLogs.length === 0 && rigidityLogs.length === 0 && bradykinesiaLogs.length === 0) {
+    gaps.push('Document cardinal motor symptoms (tremor, rigidity, bradykinesia)');
+  }
+  if (relevantLogs.length < 10) {
+    gaps.push('Continue logging symptoms regularly to establish pattern and progression');
+  }
+  if (fallsLogs.length === 0 && posturalLogs.length > 0) {
+    gaps.push('Document any falls if occurring - important for safety assessment');
+  }
+  if (offEpisodeLogs.length === 0) {
+    gaps.push('Document medication wearing-off or OFF episodes if occurring');
+  }
+
+  return {
+    hasData: true,
+    condition: conditionCriteria.condition,
+    diagnosticCode: conditionCriteria.diagnosticCode,
+    evaluationPeriodDays,
+    supportedRating: supportedRating.toString(),
+    ratingRationale,
+    additionalRatingPotential,
+    evidence,
+    gaps,
+    metrics: {
+      totalLogs: relevantLogs.length,
+      tremorOccurrences: tremorLogs.length,
+      rigidityOccurrences: rigidityLogs.length,
+      bradykinesiaOccurrences: bradykinesiaLogs.length,
+      posturalOccurrences: posturalLogs.length,
+      freezingEpisodes: freezingLogs.length,
+      fallCount: fallsLogs.length,
+      sleepOccurrences: sleepLogs.length,
+      depressionOccurrences: depressionLogs.length,
+      cognitiveOccurrences: cognitiveLogs.length,
+      offEpisodes: offEpisodeLogs.length,
+      dyskinesiaOccurrences: dyskinesiaLogs.length,
+      cardinalSymptomsPresent,
+    },
+    criteria: conditionCriteria,
+    disclaimer: conditionCriteria.disclaimer,
+  };
+};
+
+// ============================================
+// PHASE 1A: MYASTHENIA GRAVIS ANALYSIS (DC 8025)
+// ============================================
+
+/**
+ * Analyze Myasthenia Gravis symptom logs against VA rating criteria
+ * DC 8025 - Minimum rating 30%, higher ratings based on muscle group involvement
+ */
+export const analyzeMyastheniaGravisLogs = (logs, options = {}) => {
+  const conditionCriteria = MYASTHENIA_GRAVIS_CRITERIA;
+  const evaluationPeriodDays = options.days || 90;
+  const symptomIds = CONDITIONS.MYASTHENIA_GRAVIS.symptomIds;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    const symptomId = getLogSymptomId(log);
+    return logDate >= cutoffDate && symptomId && symptomIds.includes(symptomId);
+  });
+
+  if (relevantLogs.length === 0) {
+    return {
+      hasData: false,
+      condition: conditionCriteria.condition,
+      diagnosticCode: conditionCriteria.diagnosticCode,
+      message: 'No myasthenia gravis symptoms logged in evaluation period',
+    };
+  }
+
+  // Categorize by muscle group involvement
+  // Ocular symptoms
+  const ptosisLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'mg-ptosis');
+  const diplopiaLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'mg-diplopia');
+
+  // Bulbar symptoms
+  const facialLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'mg-facial-weakness');
+  const chewingLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'mg-difficulty-chewing');
+  const swallowingLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'mg-difficulty-swallowing');
+  const speechLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'mg-slurred-speech');
+  const voiceLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'mg-voice-fatigue');
+
+  // Limb/axial symptoms
+  const limbLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'mg-limb-weakness');
+  const neckLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'mg-neck-weakness');
+  const armLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'mg-arm-elevation-difficulty');
+
+  // Respiratory
+  const respiratoryLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'mg-respiratory-weakness');
+
+  // Crisis/hospitalization
+  const crisisLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'mg-crisis');
+  const hospitalizationLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'mg-hospitalization');
+
+  // Characteristic features
+  const fatigueActivityLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'mg-fatigue-activity');
+  const improvementRestLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'mg-improvement-rest');
+
+  // Determine involvement pattern
+  const hasOcularOnly = (ptosisLogs.length > 0 || diplopiaLogs.length > 0) &&
+      limbLogs.length === 0 && respiratoryLogs.length === 0 &&
+      chewingLogs.length === 0 && swallowingLogs.length === 0;
+
+  const hasBulbarInvolvement = chewingLogs.length > 0 || swallowingLogs.length > 0 ||
+      speechLogs.length > 0 || facialLogs.length > 0;
+
+  const hasGeneralizedWeakness = limbLogs.length > 0 || neckLogs.length > 0 || armLogs.length > 0;
+
+  const hasRespiratoryInvolvement = respiratoryLogs.length > 0;
+
+  const hasCrisis = crisisLogs.length > 0;
+
+  // Build evidence summary
+  const evidence = [];
+  evidence.push(`${relevantLogs.length} MG symptom logs in ${evaluationPeriodDays} days`);
+
+  // Ocular
+  if (ptosisLogs.length > 0) evidence.push(`Ptosis: ${ptosisLogs.length} occurrences`);
+  if (diplopiaLogs.length > 0) evidence.push(`Diplopia: ${diplopiaLogs.length} occurrences`);
+
+  // Bulbar
+  if (chewingLogs.length > 0) evidence.push(`Difficulty chewing: ${chewingLogs.length} occurrences`);
+  if (swallowingLogs.length > 0) evidence.push(`Difficulty swallowing: ${swallowingLogs.length} occurrences`);
+  if (speechLogs.length > 0) evidence.push(`Slurred speech: ${speechLogs.length} occurrences`);
+
+  // Limb/axial
+  if (limbLogs.length > 0) evidence.push(`Limb weakness: ${limbLogs.length} occurrences`);
+  if (neckLogs.length > 0) evidence.push(`Neck weakness: ${neckLogs.length} occurrences`);
+
+  // Respiratory
+  if (respiratoryLogs.length > 0) evidence.push(`Respiratory weakness: ${respiratoryLogs.length} occurrences`);
+
+  // Crisis
+  if (crisisLogs.length > 0) evidence.push(`Myasthenic crisis: ${crisisLogs.length} episodes`);
+  if (hospitalizationLogs.length > 0) evidence.push(`Hospitalizations: ${hospitalizationLogs.length}`);
+
+  // Characteristic pattern
+  if (fatigueActivityLogs.length > 0) evidence.push(`Fatigue with activity documented: ${fatigueActivityLogs.length} times`);
+  if (improvementRestLogs.length > 0) evidence.push(`Improvement with rest documented: ${improvementRestLogs.length} times`);
+
+  // MG has minimum 30% rating when residuals present
+  let supportedRating = 30;
+  let ratingRationale = [
+    'Minimum 30% rating supported - ascertainable MG residuals documented',
+  ];
+
+  // Note severity based on involvement pattern
+  if (hasCrisis) {
+    supportedRating = 100;
+    ratingRationale = [
+      'Myasthenic crisis documented - 100% rating during crisis/recovery period',
+      'Rate residuals after stabilization',
+    ];
+  } else if (hasRespiratoryInvolvement) {
+    ratingRationale.push('Respiratory involvement present - may warrant higher rating');
+    ratingRationale.push('PFT (FVC) testing recommended to document respiratory impairment');
+  } else if (hasBulbarInvolvement && hasGeneralizedWeakness) {
+    ratingRationale.push('Generalized MG with bulbar involvement documented');
+  } else if (hasOcularOnly) {
+    ratingRationale.push('Ocular MG pattern - symptoms limited to eye muscles');
+  }
+
+  // Identify additional rating potential
+  const additionalRatingPotential = [];
+
+  if (ptosisLogs.length > 5 || diplopiaLogs.length > 5) {
+    additionalRatingPotential.push('Visual impairment from ptosis/diplopia may warrant separate eye rating');
+  }
+  if (swallowingLogs.length > 5) {
+    additionalRatingPotential.push('Dysphagia may warrant evaluation under digestive codes if affecting nutrition');
+  }
+  if (respiratoryLogs.length > 0) {
+    additionalRatingPotential.push('Respiratory weakness should be evaluated with PFT for potential respiratory rating');
+  }
+  if (limbLogs.length > 10) {
+    additionalRatingPotential.push('Limb weakness may warrant evaluation under peripheral nerve codes');
+  }
+
+  // Evidence gaps
+  const gaps = [];
+  if (fatigueActivityLogs.length === 0 && improvementRestLogs.length === 0) {
+    gaps.push('Document characteristic fatigable weakness pattern (worse with activity, better with rest)');
+  }
+  if (relevantLogs.length < 10) {
+    gaps.push('Continue logging symptoms regularly to establish pattern');
+  }
+  if (respiratoryLogs.length > 0) {
+    gaps.push('Get pulmonary function testing (FVC) to document respiratory involvement');
+  }
+  if (crisisLogs.length === 0 && (respiratoryLogs.length > 0 || swallowingLogs.length > 5)) {
+    gaps.push('Be aware of crisis warning signs - seek emergency care if breathing/swallowing severely affected');
+  }
+
+  // Determine MGFA class approximation based on logged symptoms
+  let mgfaClassEstimate = 'I';
+  if (hasCrisis) {
+    mgfaClassEstimate = 'V';
+  } else if (hasRespiratoryInvolvement || (hasBulbarInvolvement && hasGeneralizedWeakness && (swallowingLogs.length > 10 || respiratoryLogs.length > 5))) {
+    mgfaClassEstimate = 'IV';
+  } else if (hasBulbarInvolvement && hasGeneralizedWeakness) {
+    mgfaClassEstimate = 'III';
+  } else if (hasGeneralizedWeakness || hasBulbarInvolvement) {
+    mgfaClassEstimate = 'II';
+  }
+
+  return {
+    hasData: true,
+    condition: conditionCriteria.condition,
+    diagnosticCode: conditionCriteria.diagnosticCode,
+    evaluationPeriodDays,
+    supportedRating: supportedRating.toString(),
+    ratingRationale,
+    additionalRatingPotential,
+    evidence,
+    gaps,
+    mgfaClassEstimate,
+    metrics: {
+      totalLogs: relevantLogs.length,
+      ptosisOccurrences: ptosisLogs.length,
+      diplopiaOccurrences: diplopiaLogs.length,
+      chewingOccurrences: chewingLogs.length,
+      swallowingOccurrences: swallowingLogs.length,
+      speechOccurrences: speechLogs.length,
+      limbOccurrences: limbLogs.length,
+      neckOccurrences: neckLogs.length,
+      respiratoryOccurrences: respiratoryLogs.length,
+      crisisCount: crisisLogs.length,
+      hospitalizationCount: hospitalizationLogs.length,
+      hasOcularOnly,
+      hasBulbarInvolvement,
+      hasGeneralizedWeakness,
+      hasRespiratoryInvolvement,
+    },
+    criteria: conditionCriteria,
+    disclaimer: conditionCriteria.disclaimer,
+  };
+};
+
+
+// ============================================
+// PHASE 1B: ADDITIONAL NEUROLOGICAL - ANALYSIS
+// ============================================
+
+/**
+ * Analyze Narcolepsy symptoms (DC 8108)
+ * Rated on frequency of sleep attacks, cataplexy, and functional impairment
+ */
+export const analyzeNarcolepsyLogs = (logs, options = {}) => {
+  const evaluationPeriodDays = options.evaluationPeriodDays || 90;
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const conditionCriteria = NARCOLEPSY_CRITERIA;
+
+  // Filter relevant logs
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    if (logDate < cutoffDate) return false;
+    const symptomId = (log.symptomId || log.symptom || '').toLowerCase();
+    const category = (log.category || '').toLowerCase();
+    return symptomId.startsWith('narco-') || category.includes('narcolepsy');
+  });
+
+  if (relevantLogs.length === 0) {
+    return { hasData: false, condition: conditionCriteria.condition };
+  }
+
+  // Count specific symptom types
+  const sleepAttacks = relevantLogs.filter(l =>
+      (l.symptomId || '').includes('sleep-attack') || (l.symptomId || '').includes('microsleep')
+  ).length;
+
+  const cataplexyEpisodes = relevantLogs.filter(l =>
+      (l.symptomId || '').includes('cataplexy')
+  ).length;
+
+  const sleepParalysis = relevantLogs.filter(l =>
+      (l.symptomId || '').includes('sleep-paralysis')
+  ).length;
+
+  const hallucinations = relevantLogs.filter(l =>
+      (l.symptomId || '').includes('hallucination')
+  ).length;
+
+  const excessiveSleepiness = relevantLogs.filter(l =>
+      (l.symptomId || '').includes('excessive-sleepiness')
+  ).length;
+
+  const automaticBehavior = relevantLogs.filter(l =>
+      (l.symptomId || '').includes('automatic-behavior')
+  ).length;
+
+  // Calculate frequencies
+  const weeksInPeriod = evaluationPeriodDays / 7;
+  const sleepAttacksPerWeek = sleepAttacks / weeksInPeriod;
+  const cataplexyPerWeek = cataplexyEpisodes / weeksInPeriod;
+
+  // Check for narcolepsy-specific data
+  const hasCataplexy = cataplexyEpisodes > 0;
+  const hasType1Features = hasCataplexy; // Type 1 narcolepsy has cataplexy
+
+  // Determine rating
+  let supportedRating = null;
+  let ratingRationale = [];
+  const evidence = [];
+  const gaps = [];
+
+  // 80%: Severe - daily sleep attacks, frequent cataplexy
+  if (sleepAttacksPerWeek >= 7 && cataplexyPerWeek >= 3) {
+    supportedRating = 80;
+    ratingRationale = [
+      'Daily or near-daily sleep attacks documented',
+      'Frequent cataplexy episodes',
+      'Severe functional impairment indicated',
+    ];
+  }
+  // 60%: Moderately severe - multiple weekly attacks, cataplexy present
+  else if (sleepAttacksPerWeek >= 3 && hasCataplexy) {
+    supportedRating = 60;
+    ratingRationale = [
+      'Multiple sleep attacks per week',
+      'Cataplexy episodes present',
+      'Significant functional impairment',
+    ];
+  }
+  // 40%: Moderate - weekly attacks, mild cataplexy
+  else if (sleepAttacksPerWeek >= 1 || (hasCataplexy && cataplexyPerWeek >= 0.5)) {
+    supportedRating = 40;
+    ratingRationale = [
+      'Weekly sleep attacks or cataplexy episodes',
+      'Moderate functional impact',
+    ];
+  }
+  // 20%: Mild - occasional attacks
+  else if (sleepAttacks >= 2 || hasCataplexy) {
+    supportedRating = 20;
+    ratingRationale = [
+      'Occasional sleep attacks or cataplexy documented',
+      'Mild functional impact',
+    ];
+  }
+  // 10%: Minimal symptoms
+  else if (relevantLogs.length >= 3) {
+    supportedRating = 10;
+    ratingRationale = [
+      'Narcolepsy symptoms present',
+      'Minimal functional impairment documented',
+    ];
+  }
+
+  // Build evidence
+  if (sleepAttacks > 0) evidence.push(`${sleepAttacks} sleep attacks logged (${sleepAttacksPerWeek.toFixed(1)}/week)`);
+  if (hasCataplexy) evidence.push(`${cataplexyEpisodes} cataplexy episodes (Type 1 narcolepsy)`);
+  if (sleepParalysis > 0) evidence.push(`${sleepParalysis} sleep paralysis episodes`);
+  if (hallucinations > 0) evidence.push(`${hallucinations} hypnagogic/hypnopompic hallucinations`);
+  if (automaticBehavior > 0) evidence.push(`${automaticBehavior} automatic behavior episodes`);
+
+  // Identify gaps
+  if (sleepAttacks < 5) gaps.push('Continue logging sleep attacks to establish frequency pattern');
+  if (!hasCataplexy) gaps.push('Document cataplexy episodes if present (indicates Type 1 narcolepsy)');
+  if (relevantLogs.length < 10) gaps.push('More symptom logs strengthen claim documentation');
+  gaps.push('Obtain sleep study (MSLT) showing sleep latency <8 min and 2+ SOREMPs');
+
+  return {
+    hasData: true,
+    condition: conditionCriteria.condition,
+    diagnosticCode: conditionCriteria.diagnosticCode,
+    cfrReference: conditionCriteria.cfrReference,
+    evaluationPeriodDays,
+    supportedRating,
+    ratingRationale,
+    evidence,
+    gaps,
+    metrics: {
+      totalLogs: relevantLogs.length,
+      sleepAttacks,
+      sleepAttacksPerWeek: parseFloat(sleepAttacksPerWeek.toFixed(1)),
+      cataplexyEpisodes,
+      hasCataplexy,
+      hasType1Features,
+      sleepParalysis,
+      hallucinations,
+      automaticBehavior,
+      excessiveSleepiness,
+    },
+    criteria: conditionCriteria,
+    disclaimer: conditionCriteria.disclaimer,
+  };
+};
+
+/**
+ * Analyze ALS symptoms (DC 8017)
+ * Progressive motor neuron disease - rated on extent of weakness and bulbar/respiratory involvement
+ */
+export const analyzeALSLogs = (logs, options = {}) => {
+  const evaluationPeriodDays = options.evaluationPeriodDays || 90;
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const conditionCriteria = ALS_CRITERIA;
+
+  // Filter relevant logs
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    if (logDate < cutoffDate) return false;
+    const symptomId = (log.symptomId || log.symptom || '').toLowerCase();
+    const category = (log.category || '').toLowerCase();
+    return symptomId.startsWith('als-') || category.includes('als') || category.includes('amyotrophic');
+  });
+
+  if (relevantLogs.length === 0) {
+    return { hasData: false, condition: conditionCriteria.condition };
+  }
+
+  // Count specific symptom types
+  const weaknessLogs = relevantLogs.filter(l =>
+      (l.symptomId || '').includes('weakness') || (l.symptomId || '').includes('atrophy')
+  ).length;
+
+  const fasciculationLogs = relevantLogs.filter(l =>
+      (l.symptomId || '').includes('fasciculation')
+  ).length;
+
+  const bulbarLogs = relevantLogs.filter(l =>
+      (l.symptomId || '').includes('speaking') || (l.symptomId || '').includes('swallowing') || (l.symptomId || '').includes('drooling')
+  ).length;
+
+  const respiratoryLogs = relevantLogs.filter(l =>
+      (l.symptomId || '').includes('respiratory')
+  ).length;
+
+  const mobilityLogs = relevantLogs.filter(l =>
+      (l.symptomId || '').includes('foot-drop') || (l.symptomId || '').includes('tripping')
+  ).length;
+
+  const spasticityLogs = relevantLogs.filter(l =>
+      (l.symptomId || '').includes('spasticity') || (l.symptomId || '').includes('cramp')
+  ).length;
+
+  const emotionalLability = relevantLogs.filter(l =>
+      (l.symptomId || '').includes('emotional-lability')
+  ).length;
+
+  // Determine severity indicators
+  const hasBulbarInvolvement = bulbarLogs >= 2;
+  const hasRespiratoryInvolvement = respiratoryLogs >= 1;
+  const hasSignificantWeakness = weaknessLogs >= 5;
+  const hasMobilityIssues = mobilityLogs >= 2;
+
+  // Calculate average severity
+  const avgSeverity = relevantLogs.length > 0
+      ? relevantLogs.reduce((sum, log) => sum + (log.severity || 5), 0) / relevantLogs.length
+      : 0;
+
+  // Determine rating - ALS is progressive, minimum 30%
+  let supportedRating = 30; // Minimum for confirmed ALS
+  let ratingRationale = [];
+  const evidence = [];
+  const gaps = [];
+
+  // 100%: Total disability
+  if (hasRespiratoryInvolvement && hasBulbarInvolvement && avgSeverity >= 8) {
+    supportedRating = 100;
+    ratingRationale = [
+      'Respiratory involvement documented',
+      'Severe bulbar symptoms (speech/swallowing)',
+      'High symptom severity indicates advanced disease',
+    ];
+  }
+  // 80%: Severe
+  else if ((hasRespiratoryInvolvement || hasBulbarInvolvement) && hasSignificantWeakness) {
+    supportedRating = 80;
+    ratingRationale = [
+      hasBulbarInvolvement ? 'Bulbar involvement present' : 'Respiratory symptoms present',
+      'Significant weakness documented',
+      'Multiple body regions affected',
+    ];
+  }
+  // 60%: Moderately severe
+  else if (hasSignificantWeakness && (hasBulbarInvolvement || hasMobilityIssues)) {
+    supportedRating = 60;
+    ratingRationale = [
+      'Progressive weakness in multiple regions',
+      hasBulbarInvolvement ? 'Early bulbar involvement' : 'Mobility significantly affected',
+    ];
+  }
+  // 40%: Moderate
+  else if (weaknessLogs >= 3 || hasMobilityIssues) {
+    supportedRating = 40;
+    ratingRationale = [
+      'Definite weakness affecting function',
+      'Motor symptoms documented',
+    ];
+  }
+  // 30%: Minimum - confirmed ALS
+  else {
+    ratingRationale = [
+      'ALS diagnosis with early motor symptoms',
+      'Minimum 30% rating for confirmed ALS',
+    ];
+  }
+
+  // Build evidence
+  evidence.push(`${relevantLogs.length} ALS-related symptoms logged`);
+  if (weaknessLogs > 0) evidence.push(`${weaknessLogs} weakness/atrophy episodes`);
+  if (fasciculationLogs > 0) evidence.push(`${fasciculationLogs} fasciculation episodes`);
+  if (bulbarLogs > 0) evidence.push(`${bulbarLogs} bulbar symptoms (speech/swallowing)`);
+  if (respiratoryLogs > 0) evidence.push(`${respiratoryLogs} respiratory difficulty episodes`);
+  evidence.push(`Average symptom severity: ${avgSeverity.toFixed(1)}/10`);
+
+  // Identify gaps
+  if (!hasRespiratoryInvolvement) gaps.push('Document respiratory symptoms if present - key rating factor');
+  if (!hasBulbarInvolvement) gaps.push('Log speech/swallowing difficulties if occurring');
+  gaps.push('Obtain pulmonary function tests (FVC) for respiratory status');
+  gaps.push('EMG/nerve conduction studies document disease progression');
+
+  return {
+    hasData: true,
+    condition: conditionCriteria.condition,
+    diagnosticCode: conditionCriteria.diagnosticCode,
+    cfrReference: conditionCriteria.cfrReference,
+    evaluationPeriodDays,
+    supportedRating,
+    ratingRationale,
+    evidence,
+    gaps,
+    metrics: {
+      totalLogs: relevantLogs.length,
+      avgSeverity: parseFloat(avgSeverity.toFixed(1)),
+      weaknessLogs,
+      fasciculationLogs,
+      bulbarLogs,
+      respiratoryLogs,
+      mobilityLogs,
+      spasticityLogs,
+      emotionalLability,
+      hasBulbarInvolvement,
+      hasRespiratoryInvolvement,
+    },
+    criteria: conditionCriteria,
+    disclaimer: conditionCriteria.disclaimer,
+  };
+};
+
+/**
+ * Analyze Syringomyelia symptoms (DC 8024)
+ * Rated on sensory loss, motor weakness, and functional impairment
+ */
+export const analyzeSyringomyeliaLogs = (logs, options = {}) => {
+  const evaluationPeriodDays = options.evaluationPeriodDays || 90;
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const conditionCriteria = SYRINGOMYELIA_CRITERIA;
+
+  // Filter relevant logs
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    if (logDate < cutoffDate) return false;
+    const symptomId = (log.symptomId || log.symptom || '').toLowerCase();
+    const category = (log.category || '').toLowerCase();
+    return symptomId.startsWith('syring-') || category.includes('syringomyelia');
+  });
+
+  if (relevantLogs.length === 0) {
+    return { hasData: false, condition: conditionCriteria.condition };
+  }
+
+  // Count specific symptom types
+  const painLogs = relevantLogs.filter(l =>
+      (l.symptomId || '').includes('pain')
+  ).length;
+
+  const weaknessLogs = relevantLogs.filter(l =>
+      (l.symptomId || '').includes('weakness') || (l.symptomId || '').includes('muscle-wasting')
+  ).length;
+
+  const sensoryLogs = relevantLogs.filter(l =>
+      (l.symptomId || '').includes('sensory') || (l.symptomId || '').includes('numbness') ||
+      (l.symptomId || '').includes('tingling') || (l.symptomId || '').includes('insensitivity')
+  ).length;
+
+  const tempInsensitivity = relevantLogs.filter(l =>
+      (l.symptomId || '').includes('temp-insensitivity')
+  ).length;
+
+  const painInsensitivity = relevantLogs.filter(l =>
+      (l.symptomId || '').includes('pain-insensitivity')
+  ).length;
+
+  const bowelBladderLogs = relevantLogs.filter(l =>
+      (l.symptomId || '').includes('bowel-bladder')
+  ).length;
+
+  // Determine severity indicators
+  const hasDissociatedSensoryLoss = tempInsensitivity > 0 || painInsensitivity > 0;
+  const hasSignificantSensoryLoss = sensoryLogs >= 5;
+  const hasWeakness = weaknessLogs >= 2;
+  const hasAutonomicInvolvement = bowelBladderLogs > 0;
+
+  // Calculate average severity
+  const avgSeverity = relevantLogs.length > 0
+      ? relevantLogs.reduce((sum, log) => sum + (log.severity || 5), 0) / relevantLogs.length
+      : 0;
+
+  // Determine rating
+  let supportedRating = null;
+  let ratingRationale = [];
+  const evidence = [];
+  const gaps = [];
+
+  // 100%: Severe - profound deficits
+  if (avgSeverity >= 8 && hasSignificantSensoryLoss && hasWeakness && hasAutonomicInvolvement) {
+    supportedRating = 100;
+    ratingRationale = [
+      'Profound sensory and motor deficits',
+      'Bowel/bladder involvement',
+      'Severe functional impairment',
+    ];
+  }
+  // 80%: Marked deficits
+  else if (avgSeverity >= 7 && hasSignificantSensoryLoss && hasWeakness) {
+    supportedRating = 80;
+    ratingRationale = [
+      'Marked sensory loss documented',
+      'Significant weakness present',
+      'Major functional impairment',
+    ];
+  }
+  // 60%: Moderate deficits
+  else if ((hasSignificantSensoryLoss || hasWeakness) && avgSeverity >= 5) {
+    supportedRating = 60;
+    ratingRationale = [
+      'Moderate sensory or motor deficits',
+      'Functional limitations present',
+    ];
+  }
+  // 40%: Definite symptoms
+  else if (hasDissociatedSensoryLoss || (sensoryLogs >= 3 && weaknessLogs >= 1)) {
+    supportedRating = 40;
+    ratingRationale = [
+      hasDissociatedSensoryLoss ? 'Characteristic dissociated sensory loss' : 'Definite sensory changes',
+      'Mild to moderate functional impairment',
+    ];
+  }
+  // 20%: Mild symptoms
+  else if (relevantLogs.length >= 3) {
+    supportedRating = 20;
+    ratingRationale = [
+      'Syringomyelia symptoms present',
+      'Mild functional impact',
+    ];
+  }
+
+  // Build evidence
+  evidence.push(`${relevantLogs.length} syringomyelia symptoms logged`);
+  if (sensoryLogs > 0) evidence.push(`${sensoryLogs} sensory symptom episodes`);
+  if (hasDissociatedSensoryLoss) evidence.push('Dissociated sensory loss (temp/pain insensitivity) - characteristic finding');
+  if (weaknessLogs > 0) evidence.push(`${weaknessLogs} weakness/atrophy episodes`);
+  if (painLogs > 0) evidence.push(`${painLogs} pain episodes`);
+  evidence.push(`Average severity: ${avgSeverity.toFixed(1)}/10`);
+
+  // Identify gaps
+  if (!hasDissociatedSensoryLoss) gaps.push('Document temperature/pain insensitivity if present - characteristic of syringomyelia');
+  if (sensoryLogs < 5) gaps.push('Continue logging sensory symptoms to establish pattern');
+  gaps.push('MRI showing syrinx size and location strengthens claim');
+  if (hasAutonomicInvolvement) gaps.push('Bladder/bowel dysfunction may warrant separate rating');
+
+  return {
+    hasData: true,
+    condition: conditionCriteria.condition,
+    diagnosticCode: conditionCriteria.diagnosticCode,
+    cfrReference: conditionCriteria.cfrReference,
+    evaluationPeriodDays,
+    supportedRating,
+    ratingRationale,
+    evidence,
+    gaps,
+    metrics: {
+      totalLogs: relevantLogs.length,
+      avgSeverity: parseFloat(avgSeverity.toFixed(1)),
+      painLogs,
+      weaknessLogs,
+      sensoryLogs,
+      tempInsensitivity,
+      painInsensitivity,
+      bowelBladderLogs,
+      hasDissociatedSensoryLoss,
+    },
+    criteria: conditionCriteria,
+    disclaimer: conditionCriteria.disclaimer,
+  };
+};
+
+/**
+ * Analyze Myelitis symptoms (DC 8010)
+ * Rated on motor/sensory deficits, bladder/bowel involvement, and functional impairment
+ */
+export const analyzeMyelitisLogs = (logs, options = {}) => {
+  const evaluationPeriodDays = options.evaluationPeriodDays || 90;
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const conditionCriteria = MYELITIS_CRITERIA;
+
+  // Filter relevant logs
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    if (logDate < cutoffDate) return false;
+    const symptomId = (log.symptomId || log.symptom || '').toLowerCase();
+    const category = (log.category || '').toLowerCase();
+    return symptomId.startsWith('myel-') || category.includes('myelitis');
+  });
+
+  if (relevantLogs.length === 0) {
+    return { hasData: false, condition: conditionCriteria.condition };
+  }
+
+  // Count specific symptom types
+  const weaknessLogs = relevantLogs.filter(l =>
+      (l.symptomId || '').includes('weakness') || (l.symptomId || '').includes('paralysis')
+  ).length;
+
+  const sensoryLogs = relevantLogs.filter(l =>
+      (l.symptomId || '').includes('sensory') || (l.symptomId || '').includes('numbness') ||
+      (l.symptomId || '').includes('tingling') || (l.symptomId || '').includes('band-sensation')
+  ).length;
+
+  const bladderLogs = relevantLogs.filter(l =>
+      (l.symptomId || '').includes('bladder')
+  ).length;
+
+  const bowelLogs = relevantLogs.filter(l =>
+      (l.symptomId || '').includes('bowel')
+  ).length;
+
+  const painLogs = relevantLogs.filter(l =>
+      (l.symptomId || '').includes('pain')
+  ).length;
+
+  const spasticityLogs = relevantLogs.filter(l =>
+      (l.symptomId || '').includes('spasticity')
+  ).length;
+
+  const paralysisLogs = relevantLogs.filter(l =>
+      (l.symptomId || '').includes('paralysis')
+  ).length;
+
+  const sexualDysfunctionLogs = relevantLogs.filter(l =>
+      (l.symptomId || '').includes('sexual-dysfunction')
+  ).length;
+
+  // Determine severity indicators
+  const hasParalysis = paralysisLogs > 0;
+  const hasBladderInvolvement = bladderLogs >= 2;
+  const hasBowelInvolvement = bowelLogs >= 2;
+  const hasSignificantWeakness = weaknessLogs >= 5;
+  const hasAutonomicInvolvement = hasBladderInvolvement || hasBowelInvolvement;
+
+  // Calculate average severity
+  const avgSeverity = relevantLogs.length > 0
+      ? relevantLogs.reduce((sum, log) => sum + (log.severity || 5), 0) / relevantLogs.length
+      : 0;
+
+  // Determine rating
+  let supportedRating = null;
+  let ratingRationale = [];
+  const evidence = [];
+  const gaps = [];
+
+  // 100%: Complete/near-complete paralysis
+  if (hasParalysis && avgSeverity >= 8 && hasAutonomicInvolvement) {
+    supportedRating = 100;
+    ratingRationale = [
+      'Paralysis documented',
+      'Complete or near-complete loss of function below lesion',
+      'Bladder/bowel involvement present',
+    ];
+  }
+  // 80%: Severe - marked weakness, significant autonomic
+  else if (hasSignificantWeakness && hasAutonomicInvolvement && avgSeverity >= 7) {
+    supportedRating = 80;
+    ratingRationale = [
+      'Marked weakness documented',
+      'Significant bladder/bowel dysfunction',
+      'Severe sensory impairment',
+    ];
+  }
+  // 60%: Moderately severe
+  else if ((hasSignificantWeakness || hasAutonomicInvolvement) && avgSeverity >= 5) {
+    supportedRating = 60;
+    ratingRationale = [
+      hasSignificantWeakness ? 'Significant weakness affecting ambulation' : 'Autonomic dysfunction present',
+      'Moderate functional impairment',
+    ];
+  }
+  // 40%: Moderate
+  else if (weaknessLogs >= 3 || (hasBladderInvolvement || hasBowelInvolvement)) {
+    supportedRating = 40;
+    ratingRationale = [
+      'Definite weakness or bladder/bowel symptoms',
+      'Ambulatory with difficulty',
+    ];
+  }
+  // 20%: Mild residuals
+  else if (relevantLogs.length >= 3) {
+    supportedRating = 20;
+    ratingRationale = [
+      'Myelitis residuals present',
+      'Mild functional impairment',
+    ];
+  }
+
+  // Build evidence
+  evidence.push(`${relevantLogs.length} myelitis symptoms logged`);
+  if (weaknessLogs > 0) evidence.push(`${weaknessLogs} weakness episodes`);
+  if (hasParalysis) evidence.push('Paralysis documented');
+  if (sensoryLogs > 0) evidence.push(`${sensoryLogs} sensory symptom episodes`);
+  if (bladderLogs > 0) evidence.push(`${bladderLogs} bladder dysfunction episodes`);
+  if (bowelLogs > 0) evidence.push(`${bowelLogs} bowel dysfunction episodes`);
+  if (spasticityLogs > 0) evidence.push(`${spasticityLogs} spasticity episodes`);
+  evidence.push(`Average severity: ${avgSeverity.toFixed(1)}/10`);
+
+  // Identify gaps
+  if (!hasAutonomicInvolvement) gaps.push('Document bladder/bowel symptoms if present - may warrant separate ratings');
+  if (weaknessLogs < 5) gaps.push('Continue logging weakness episodes to establish severity');
+  gaps.push('MRI documenting spinal cord lesion location and extent');
+  if (hasBladderInvolvement) gaps.push('Bladder dysfunction (DC 7542) may be rated separately');
+  if (hasBowelInvolvement) gaps.push('Bowel dysfunction (DC 7332) may be rated separately');
+
+  return {
+    hasData: true,
+    condition: conditionCriteria.condition,
+    diagnosticCode: conditionCriteria.diagnosticCode,
+    cfrReference: conditionCriteria.cfrReference,
+    evaluationPeriodDays,
+    supportedRating,
+    ratingRationale,
+    evidence,
+    gaps,
+    metrics: {
+      totalLogs: relevantLogs.length,
+      avgSeverity: parseFloat(avgSeverity.toFixed(1)),
+      weaknessLogs,
+      sensoryLogs,
+      bladderLogs,
+      bowelLogs,
+      painLogs,
+      spasticityLogs,
+      paralysisLogs,
+      sexualDysfunctionLogs,
+      hasParalysis,
+      hasAutonomicInvolvement,
+    },
+    criteria: conditionCriteria,
+    disclaimer: conditionCriteria.disclaimer,
+  };
+};
+
 // ============================================
 // HELPER FUNCTIONS
 // ============================================
@@ -26307,6 +28222,31 @@ export const getPulmonaryFibrosisRatingCriteria = (percent) => {
 export const getSarcoidosisRatingCriteria = (percent) => {
   return SARCOIDOSIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
 };
+export const getMultipleSclerosisRatingCriteria = (percent) => {
+  return MULTIPLE_SCLEROSIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
+}
+export const getParkinsonsRatingCriteria = (percent) => {
+  return PARKINSONS_DISEASE_CRITERIA.ratings.find(r => r.percent === percent) || null;
+}
+export const getMyastheniaGravisRatingCriteria = (percent) => {
+  return MYASTHENIA_GRAVIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
+}
+// Narcolepsy helpers
+export const getNarcolepsyRatingCriteria = (percent) => {
+  return NARCOLEPSY_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+// ALS helpers
+export const getALSRatingCriteria = (percent) => {
+  return ALS_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+// Syringomyelia helpers
+export const getSyringomyeliaRatingCriteria = (percent) => {
+  return SYRINGOMYELIA_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+// Myelitis helpers
+export const getMyelitisRatingCriteria = (percent) => {
+  return MYELITIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
 
 
 export const getAllLumbosacralStrainRatings = () => LUMBOSACRAL_STRAIN_CRITERIA.ratings;
@@ -26394,6 +28334,13 @@ export const getAllBiliaryTractRatings = () => BILIARY_TRACT_CRITERIA.ratings;
 export const getAllBronchiectasisRatings = () => BRONCHIECTASIS_CRITERIA.ratings;
 export const getAllPulmonaryFibrosisRatings = () => PULMONARY_FIBROSIS_CRITERIA.ratings;
 export const getAllSarcoidosisRatings = () => SARCOIDOSIS_CRITERIA.ratings;
+export const getAllMultipleSclerosisDefinition = () => MULTIPLE_SCLEROSIS_CRITERIA.ratings;
+export const getAllParkinsonsDefinition = () => PARKINSONS_DISEASE_CRITERIA.ratings;
+export const getAllMyastheniaGravisDefinition = () => MYASTHENIA_GRAVIS_CRITERIA.ratings;
+export const getAllNarcolepsyRatings = () => NARCOLEPSY_CRITERIA.ratings;
+export const getAllALSRatings = () => ALS_CRITERIA.ratings;
+export const getAllSyringomyeliaRatings = () => SYRINGOMYELIA_CRITERIA.ratings;
+export const getAllMyelitisRatings = () => MYELITIS_CRITERIA.ratings;
 
 
 
@@ -26489,6 +28436,13 @@ export const getBiliaryTractDefinition = (term) => BILIARY_TRACT_CRITERIA.defini
 export const getBronchiectasisDefinition = (term) => BRONCHIECTASIS_CRITERIA.definitions[term] || null;
 export const getPulmonaryFibrosisDefinition = (term) => PULMONARY_FIBROSIS_CRITERIA.definitions[term] || null;
 export const getSarcoidosisDefinition = (term) => SARCOIDOSIS_CRITERIA.definitions[term] || null;
+export const getMultipleSclerosisDefinition = (term) => MULTIPLE_SCLEROSIS_CRITERIA.definitions[term] || null;
+export const getParkinsonsDefinition = (term) => PARKINSONS_DISEASE_CRITERIA.definitions[term] || null;
+export const getMyastheniaGravisDefinition = (term) => MYASTHENIA_GRAVIS_CRITERIA.definitions[term] || null;
+export const getNarcolepsyDefinition = (term) => NARCOLEPSY_CRITERIA.definitions[term] || null;
+export const getALSDefinition = (term) => ALS_CRITERIA.definitions[term] || null;
+export const getSyringomyeliaDefinition = (term) => SYRINGOMYELIA_CRITERIA.definitions[term] || null;
+export const getMyelitisDefinition = (term) => MYELITIS_CRITERIA.definitions[term] || null;
 
 
 

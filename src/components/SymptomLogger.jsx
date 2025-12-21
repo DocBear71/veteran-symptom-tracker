@@ -731,6 +731,139 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
     hospitalized: false,
     hospitalizationReason: '',
   });
+  // ============================================
+  // PHASE 1A: MAJOR NEUROLOGICAL CONDITIONS STATE
+  // ============================================
+  const [multipleSclerosisData, setMultipleSclerosisData] = useState({
+    // Relapse tracking
+    isRelapse: false,
+    relapseDuration: '', // days
+    relapseRecovery: '', // full, partial, none
+    // Functional impact
+    mobilityAid: '', // none, cane, walker, wheelchair
+    assistanceNeeded: false,
+    assistanceType: '', // dressing, bathing, transfers, all
+    // Treatment
+    onDMT: false, // disease-modifying therapy
+    dmtType: '', // interferon, glatiramer, natalizumab, ocrelizumab, etc.
+    recentSteroids: false, // IV steroids for relapse
+    // Severity indicators
+    edssEstimate: '', // 0-10 scale (patient estimate)
+    heatTriggered: false,
+  });
+
+  const [parkinsonsData, setParkinsonsData] = useState({
+    // Motor symptom tracking
+    tremorSide: '', // left, right, both
+    tremorSeverity: '', // mild, moderate, severe
+    freezingEpisodes: '', // number today
+    fallsToday: '', // number
+    // Medication status
+    onTime: '', // minutes since last dose
+    medicationState: '', // on, off, wearing-off, dyskinesia
+    // Functional impact
+    mobilityAid: '', // none, cane, walker, wheelchair
+    assistanceNeeded: false,
+    speechAffected: false,
+    swallowingAffected: false,
+    // Cognitive/mood
+    hallucinationsPresent: false,
+    confusionPresent: false,
+  });
+
+  const [myastheniaData, setMyastheniaData] = useState({
+    // Symptom pattern
+    worseWithActivity: false,
+    betterWithRest: false,
+    timeOfDayWorst: '', // morning, afternoon, evening
+    // Affected areas
+    ocularOnly: false,
+    bulbarInvolved: false, // chewing, swallowing, speech
+    limbsInvolved: false,
+    respiratoryInvolved: false,
+    // Severity indicators
+    canRaiseArms: '', // seconds
+    ptosisPresent: false,
+    ptosisSide: '', // left, right, both
+    doubleVision: false,
+    // Treatment/crisis
+    onPyridostigmine: false,
+    dosesTakenToday: '',
+    breathingDifficulty: false,
+    emergencySigns: false, // crisis warning signs
+  });
+
+  // ============================================
+  // PHASE 1B: ADDITIONAL NEUROLOGICAL STATE
+  // ============================================
+
+  // Narcolepsy data (DC 8108)
+  const [narcolepsyData, setNarcolepsyData] = useState({
+    sleepAttackDuration: '', // seconds, minutes
+    sleepAttackTrigger: '', // emotion, boredom, eating, driving, other
+    cataplexyTrigger: '', // laughter, surprise, anger, other
+    cataplexyAffected: '', // face, arms, legs, whole-body
+    fellDuringCataplexy: false,
+    hallucinationType: '', // visual, auditory, tactile, multiple
+    paralysisAtSleep: false, // sleep onset
+    paralysisAtWake: false, // waking
+    automaticBehaviorActivity: '', // driving, working, talking, eating
+    onStimulants: false,
+    stimulantType: '', // modafinil, armodafinil, amphetamine, other
+    onSodiumOxybate: false,
+    sleepStudyConfirmed: false,
+  });
+
+  // ALS data (DC 8017)
+  const [alsData, setAlsData] = useState({
+    weaknessLocation: '', // hands, arms, legs, trunk, bulbar
+    weaknessSide: '', // left, right, both
+    fasciculationLocation: '', // arms, legs, tongue, trunk, widespread
+    speechClarity: '', // normal, mild-slurred, moderate-slurred, severe, unintelligible
+    swallowingSolids: '', // normal, difficulty, unable
+    swallowingLiquids: '', // normal, difficulty, unable, aspirating
+    breathingDifficulty: '', // none, with-exertion, at-rest, using-bipap, ventilator
+    usesBiPAP: false,
+    usesVentilator: false,
+    usesFeedingTube: false,
+    feedingTubeType: '', // peg, ng-tube
+    mobilityStatus: '', // ambulatory, cane, walker, wheelchair, bedridden
+    fvcPercent: '', // forced vital capacity percentage
+    weightChange: '', // stable, losing, significant-loss
+  });
+
+  // Syringomyelia data (DC 8024)
+  const [syringomyeliaData, setSyringomyeliaData] = useState({
+    painType: '', // burning, aching, stabbing, electric
+    painLocation: '', // neck, shoulders, arms, back, legs
+    sensoryLossPattern: '', // cape, arms, legs, trunk
+    tempInsensitivityArea: '', // hands, arms, shoulders, trunk
+    hadBurnInjury: false, // from temperature insensitivity
+    hadCutInjury: false, // from pain insensitivity
+    weaknessLocation: '', // hands, arms, shoulders
+    muscleWastingLocation: '', // hands, arms, shoulders
+    hasScoliosis: false,
+    hasHeadaches: false,
+    headacheWithCough: false, // Chiari-related
+    syrinxLocation: '', // cervical, thoracic, both
+  });
+
+  // Myelitis data (DC 8010)
+  const [myelitisData, setMyelitisData] = useState({
+    weaknessDistribution: '', // paraplegia, quadriplegia, hemiplegia, monoplegia
+    sensoryLevel: '', // cervical, thoracic, lumbar
+    bladderSymptoms: '', // retention, incontinence, both, urgency
+    usesCatheter: false,
+    catheterType: '', // intermittent, indwelling, suprapubic
+    bowelSymptoms: '', // constipation, incontinence, both
+    usesBowelProgram: false,
+    spasticityLocation: '', // legs, arms, trunk, all
+    onBaclofenPump: false,
+    painType: '', // neuropathic, spastic, both
+    mobilityStatus: '', // ambulatory, cane, walker, wheelchair, bedridden
+    hasSexualDysfunction: false,
+    causeOfMyelitis: '', // transverse, infectious, ms-related, unknown
+  });
 
   // Phase 1H - Track processed prefillData to avoid re-processing
   const processedPrefillId = useRef(null);
@@ -918,11 +1051,36 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
       if (prefillData.cardiovascularData) {
         setCardiovascularData(prefillData.cardiovascularData);
       }
-
       // Phase 10: Digestive prefills
       if (prefillData.digestiveData) {
         setDigestiveData(prefillData.digestiveData);
       }
+      // Phase 11:
+
+      // Phase 1A: Include neurological data
+      if (prefillData.multipleSclerosisData) {
+        setMultipleSclerosisData(prefillData.multipleSclerosisData);
+      }
+      if (prefillData.parkinsonsData) {
+        setParkinsonsData(prefillData.parkinsonsData);
+      }
+      if (prefillData.myastheniaData) {
+        setMyastheniaData(prefillData.myastheniaData);
+      }
+      // Phase 1B: Include neurological data
+      if (prefillData.narcolepsyData) {
+        setNarcolepsyData(prefillData.narcolepsyData);
+      }
+      if (prefillData.alsData) {
+        setAlsData(prefillData.alsData);
+      }
+      if (prefillData.syringomyeliaData) {
+        setSyringomyeliaData(prefillData.syringomyeliaData);
+      }
+      if (prefillData.myelitisData) {
+        setMyelitisData(prefillData.myelitisData);
+      }
+
 
       console.log('✅ All prefill data set');
       // Clear prefillData AFTER state updates have been queued
@@ -1454,6 +1612,74 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
   const isDigestivePhase10Related = isCirrhosisRelated || isGastritisRelated ||
       isPancreatitisRelated || isBiliaryRelated;
 
+  // ============================================
+  // PHASE 1A: NEUROLOGICAL CONDITION DETECTION
+  // ============================================
+  const isMultipleSclerosisRelated = selectedSymptom?.startsWith('ms-') ||
+      selectedCategory === 'multiple-sclerosis' ||
+      ['ms-fatigue', 'ms-numbness-tingling', 'ms-vision-problems', 'ms-double-vision',
+        'ms-muscle-weakness', 'ms-spasticity', 'ms-balance-problems', 'ms-cognitive-fog',
+        'ms-bladder-dysfunction', 'ms-bowel-dysfunction', 'ms-heat-sensitivity',
+        'ms-lhermittes-sign', 'ms-pain', 'ms-tremor', 'ms-speech-difficulty',
+        'ms-swallowing-difficulty', 'ms-relapse', 'ms-vertigo', 'ms-depression',
+        'ms-walking-difficulty'].includes(selectedSymptom);
+
+  const isParkinsonsRelated = selectedSymptom?.startsWith('pd-') ||
+      selectedCategory === 'parkinsons-disease' ||
+      ['pd-resting-tremor', 'pd-rigidity', 'pd-bradykinesia', 'pd-postural-instability',
+        'pd-freezing-gait', 'pd-shuffling-walk', 'pd-masked-face', 'pd-soft-speech',
+        'pd-micrographia', 'pd-sleep-disturbance', 'pd-rem-sleep-disorder', 'pd-depression',
+        'pd-anxiety', 'pd-cognitive-changes', 'pd-constipation', 'pd-urinary-problems',
+        'pd-swallowing-difficulty', 'pd-drooling', 'pd-loss-smell', 'pd-fatigue',
+        'pd-pain', 'pd-falls', 'pd-off-episodes', 'pd-dyskinesia'].includes(selectedSymptom);
+
+  const isMyastheniaRelated = selectedSymptom?.startsWith('mg-') ||
+      selectedCategory === 'myasthenia-gravis' ||
+      ['mg-ptosis', 'mg-diplopia', 'mg-facial-weakness', 'mg-difficulty-chewing',
+        'mg-difficulty-swallowing', 'mg-slurred-speech', 'mg-limb-weakness',
+        'mg-neck-weakness', 'mg-respiratory-weakness', 'mg-fatigue-activity',
+        'mg-improvement-rest', 'mg-crisis', 'mg-hospitalization', 'mg-voice-fatigue',
+        'mg-arm-elevation-difficulty'].includes(selectedSymptom);
+
+  // Combined Phase 1A neurological detection
+  const isNeurologicalPhase1ARelated = isMultipleSclerosisRelated ||
+      isParkinsonsRelated || isMyastheniaRelated;
+
+  // ============================================
+  // PHASE 1B: ADDITIONAL NEUROLOGICAL DETECTION
+  // ============================================
+
+  const isNarcolepsyRelated = selectedSymptom?.startsWith('narco-') ||
+      selectedCategory === 'narcolepsy' ||
+      ['narco-sleep-attack', 'narco-excessive-sleepiness', 'narco-cataplexy',
+        'narco-sleep-paralysis', 'narco-hypnagogic-hallucination', 'narco-hypnopompic-hallucination',
+        'narco-disrupted-sleep', 'narco-automatic-behavior', 'narco-memory-problems',
+        'narco-difficulty-concentrating', 'narco-microsleep'].includes(selectedSymptom);
+
+  const isALSRelated = selectedSymptom?.startsWith('als-') ||
+      selectedCategory === 'als' ||
+      ['als-muscle-weakness', 'als-fasciculations', 'als-muscle-cramps', 'als-spasticity',
+        'als-difficulty-speaking', 'als-difficulty-swallowing', 'als-respiratory-difficulty',
+        'als-fatigue', 'als-muscle-atrophy', 'als-hand-weakness', 'als-foot-drop',
+        'als-tripping-falling', 'als-emotional-lability', 'als-drooling', 'als-weight-loss'].includes(selectedSymptom);
+
+  const isSyringomyeliaRelated = selectedSymptom?.startsWith('syring-') ||
+      selectedCategory === 'syringomyelia' ||
+      ['syring-pain', 'syring-weakness', 'syring-sensory-loss', 'syring-temp-insensitivity',
+        'syring-pain-insensitivity', 'syring-muscle-wasting', 'syring-stiffness',
+        'syring-headache', 'syring-numbness-tingling', 'syring-bowel-bladder', 'syring-scoliosis'].includes(selectedSymptom);
+
+  const isMyelitisRelated = selectedSymptom?.startsWith('myel-') ||
+      selectedCategory === 'myelitis' ||
+      ['myel-weakness', 'myel-sensory-changes', 'myel-bladder-dysfunction',
+        'myel-bowel-dysfunction', 'myel-pain', 'myel-spasticity', 'myel-fatigue',
+        'myel-numbness', 'myel-tingling', 'myel-band-sensation', 'myel-sexual-dysfunction',
+        'myel-paralysis'].includes(selectedSymptom);
+
+  // Combined Phase 1B neurological detection
+  const isNeurologicalPhase1BRelated = isNarcolepsyRelated || isALSRelated ||
+      isSyringomyeliaRelated || isMyelitisRelated;
+
   // Reset condition-specific data when symptom changes
   useEffect(() => {
     // Phase 1H: Skip reset during prefill operation
@@ -1945,6 +2171,129 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
         hospitalizationReason: '',
       });
     }
+    // Phase 1A: Reset neurological data
+    if (!isMultipleSclerosisRelated) {
+      setMultipleSclerosisData({
+        isRelapse: false,
+        relapseDuration: '',
+        relapseRecovery: '',
+        mobilityAid: '',
+        assistanceNeeded: false,
+        assistanceType: '',
+        onDMT: false,
+        dmtType: '',
+        recentSteroids: false,
+        edssEstimate: '',
+        heatTriggered: false,
+      });
+    }
+    if (!isParkinsonsRelated) {
+      setParkinsonsData({
+        tremorSide: '',
+        tremorSeverity: '',
+        freezingEpisodes: '',
+        fallsToday: '',
+        onTime: '',
+        medicationState: '',
+        mobilityAid: '',
+        assistanceNeeded: false,
+        speechAffected: false,
+        swallowingAffected: false,
+        hallucinationsPresent: false,
+        confusionPresent: false,
+      });
+    }
+    if (!isMyastheniaRelated) {
+      setMyastheniaData({
+        worseWithActivity: false,
+        betterWithRest: false,
+        timeOfDayWorst: '',
+        ocularOnly: false,
+        bulbarInvolved: false,
+        limbsInvolved: false,
+        respiratoryInvolved: false,
+        canRaiseArms: '',
+        ptosisPresent: false,
+        ptosisSide: '',
+        doubleVision: false,
+        onPyridostigmine: false,
+        dosesTakenToday: '',
+        breathingDifficulty: false,
+        emergencySigns: false,
+      });
+    }
+    // Phase 1B: Reset narcolepsy data
+    if (!isNarcolepsyRelated) {
+      setNarcolepsyData({
+        sleepAttackDuration: '',
+        sleepAttackTrigger: '',
+        cataplexyTrigger: '',
+        cataplexyAffected: '',
+        fellDuringCataplexy: false,
+        hallucinationType: '',
+        paralysisAtSleep: false,
+        paralysisAtWake: false,
+        automaticBehaviorActivity: '',
+        onStimulants: false,
+        stimulantType: '',
+        onSodiumOxybate: false,
+        sleepStudyConfirmed: false,
+      });
+    }
+    // Phase 1B: Reset ALS data
+    if (!isALSRelated) {
+      setAlsData({
+        weaknessLocation: '',
+        weaknessSide: '',
+        fasciculationLocation: '',
+        speechClarity: '',
+        swallowingSolids: '',
+        swallowingLiquids: '',
+        breathingDifficulty: '',
+        usesBiPAP: false,
+        usesVentilator: false,
+        usesFeedingTube: false,
+        feedingTubeType: '',
+        mobilityStatus: '',
+        fvcPercent: '',
+        weightChange: '',
+      });
+    }
+    // Phase 1B: Reset syringomyelia data
+    if (!isSyringomyeliaRelated) {
+      setSyringomyeliaData({
+        painType: '',
+        painLocation: '',
+        sensoryLossPattern: '',
+        tempInsensitivityArea: '',
+        hadBurnInjury: false,
+        hadCutInjury: false,
+        weaknessLocation: '',
+        muscleWastingLocation: '',
+        hasScoliosis: false,
+        hasHeadaches: false,
+        headacheWithCough: false,
+        syrinxLocation: '',
+      });
+    }
+    // Phase 1B: Reset myelitis data
+    if (!isMyelitisRelated) {
+      setMyelitisData({
+        weaknessDistribution: '',
+        sensoryLevel: '',
+        bladderSymptoms: '',
+        usesCatheter: false,
+        catheterType: '',
+        bowelSymptoms: '',
+        usesBowelProgram: false,
+        spasticityLocation: '',
+        onBaclofenPump: false,
+        painType: '',
+        mobilityStatus: '',
+        hasSexualDysfunction: false,
+        causeOfMyelitis: '',
+      });
+    }
   }, [selectedSymptom, isMigraineSelected, isSleepSelected, isNightmareSelected, isPTSDRelated, isPainSelected,
     isGISelected, isRespiratorySelected, isJointSelected, isSeizureSelected, isEyeRelated, isGenitourinaryRelated,
     isGynecologicalRelated, isAnemiaRelated, isSickleCellRelated, isBleedingDisorderRelated, isInfectionRelated,
@@ -1953,7 +2302,8 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
     isQFeverRelated, isSalmonellaRelated, isShigellaRelated,isWestNileRelated, isNTMRelated, isAnorexiaRelated,
     isBulimiaRelated, isAnxietyFormRelated, isDepressionFormRelated, isBipolarFormRelated, isOCDFormRelated,
     isAdjustmentDisorderFormRelated, isBingeEatingRelated, isDissociativeRelated, isAcuteStressRelated,
-    isPersonalityDisorderRelated, isCardiovascularRelated, isDigestivePhase10Related]);
+    isPersonalityDisorderRelated, isCardiovascularRelated, isDigestivePhase10Related,
+    isNarcolepsyRelated, isALSRelated, isSyringomyeliaRelated, isMyelitisRelated]);
 
 
   // Phase 3: Detect genitourinary system based on symptom
@@ -2245,6 +2595,29 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
     // Phase 10: Include digestive data
     if (isDigestivePhase10Related && digestiveData) {
       entry.digestiveData = { ...digestiveData };
+    }
+    // Phase 1A: Include neurological data
+    if (isMultipleSclerosisRelated && multipleSclerosisData) {
+      entry.multipleSclerosisData = { ...multipleSclerosisData };
+    }
+    if (isParkinsonsRelated && parkinsonsData) {
+      entry.parkinsonsData = { ...parkinsonsData };
+    }
+    if (isMyastheniaRelated && myastheniaData) {
+      entry.myastheniaData = { ...myastheniaData };
+    }
+    // Phase 1B: Include neurological data
+    if (isNarcolepsyRelated && narcolepsyData) {
+      entry.narcolepsyData = { ...narcolepsyData };
+    }
+    if (isALSRelated && alsData) {
+      entry.alsData = { ...alsData };
+    }
+    if (isSyringomyeliaRelated && syringomyeliaData) {
+      entry.syringomyeliaData = { ...syringomyeliaData };
+    }
+    if (isMyelitisRelated && myelitisData) {
+      entry.myelitisData = { ...myelitisData };
     }
 
 
@@ -9525,6 +9898,1252 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
                     />
                     <span className="text-sm text-gray-700 dark:text-gray-300">Hospitalized for this condition</span>
                   </label>
+                </div>
+              </div>
+          )}
+
+          {/* ============================================ */}
+          {/* PHASE 1A: NEUROLOGICAL CONDITION FORMS */}
+          {/* ============================================ */}
+
+          {/* Multiple Sclerosis Form */}
+          {isMultipleSclerosisRelated && (
+              <div className="bg-purple-50 dark:bg-purple-900/20 p-4 rounded-lg border border-purple-200 dark:border-purple-800">
+                <h4 className="font-medium text-purple-900 dark:text-purple-200 mb-3 flex items-center gap-2">
+                  🧠 Multiple Sclerosis Details
+                </h4>
+
+                {/* Relapse tracking */}
+                {selectedSymptom === 'ms-relapse' && (
+                    <div className="space-y-3 mb-4">
+                      <label className="flex items-center gap-2">
+                        <input
+                            type="checkbox"
+                            checked={multipleSclerosisData.isRelapse}
+                            onChange={(e) => setMultipleSclerosisData(prev => ({
+                              ...prev,
+                              isRelapse: e.target.checked
+                            }))}
+                            className="rounded"
+                        />
+                        <span className="text-sm text-gray-700 dark:text-gray-300">Confirmed relapse/exacerbation</span>
+                      </label>
+                      {multipleSclerosisData.isRelapse && (
+                          <>
+                            <div>
+                              <label className="block text-sm text-gray-600 dark:text-gray-400 mb-1">Relapse Duration (days)</label>
+                              <input
+                                  type="number"
+                                  value={multipleSclerosisData.relapseDuration}
+                                  onChange={(e) => setMultipleSclerosisData(prev => ({
+                                    ...prev,
+                                    relapseDuration: e.target.value
+                                  }))}
+                                  className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600"
+                                  placeholder="Number of days"
+                                  min="1"
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-sm text-gray-600 dark:text-gray-400 mb-1">Recovery Status</label>
+                              <select
+                                  value={multipleSclerosisData.relapseRecovery}
+                                  onChange={(e) => setMultipleSclerosisData(prev => ({
+                                    ...prev,
+                                    relapseRecovery: e.target.value
+                                  }))}
+                                  className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600"
+                              >
+                                <option value="">Select recovery status...</option>
+                                <option value="ongoing">Still ongoing</option>
+                                <option value="full">Full recovery</option>
+                                <option value="partial">Partial recovery</option>
+                                <option value="none">No recovery (new baseline)</option>
+                              </select>
+                            </div>
+                            <label className="flex items-center gap-2">
+                              <input
+                                  type="checkbox"
+                                  checked={multipleSclerosisData.recentSteroids}
+                                  onChange={(e) => setMultipleSclerosisData(prev => ({
+                                    ...prev,
+                                    recentSteroids: e.target.checked
+                                  }))}
+                                  className="rounded"
+                              />
+                              <span className="text-sm text-gray-700 dark:text-gray-300">Received IV steroids for this relapse</span>
+                            </label>
+                          </>
+                      )}
+                    </div>
+                )}
+
+                {/* Heat sensitivity tracking */}
+                {selectedSymptom === 'ms-heat-sensitivity' && (
+                    <label className="flex items-center gap-2 mb-3">
+                      <input
+                          type="checkbox"
+                          checked={multipleSclerosisData.heatTriggered}
+                          onChange={(e) => setMultipleSclerosisData(prev => ({
+                            ...prev,
+                            heatTriggered: e.target.checked
+                          }))}
+                          className="rounded"
+                      />
+                      <span className="text-sm text-gray-700 dark:text-gray-300">Symptoms triggered by heat/exercise (Uhthoff's)</span>
+                    </label>
+                )}
+
+                {/* Functional impact - show for mobility-related symptoms */}
+                {['ms-walking-difficulty', 'ms-balance-problems', 'ms-muscle-weakness'].includes(selectedSymptom) && (
+                    <div className="space-y-3 mb-4">
+                      <div>
+                        <label className="block text-sm text-gray-600 dark:text-gray-400 mb-1">Mobility Aid Used</label>
+                        <select
+                            value={multipleSclerosisData.mobilityAid}
+                            onChange={(e) => setMultipleSclerosisData(prev => ({
+                              ...prev,
+                              mobilityAid: e.target.value
+                            }))}
+                            className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600"
+                        >
+                          <option value="">Select if applicable...</option>
+                          <option value="none">No mobility aid needed</option>
+                          <option value="cane">Cane</option>
+                          <option value="walker">Walker</option>
+                          <option value="wheelchair">Wheelchair</option>
+                          <option value="scooter">Scooter</option>
+                        </select>
+                      </div>
+                      <label className="flex items-center gap-2">
+                        <input
+                            type="checkbox"
+                            checked={multipleSclerosisData.assistanceNeeded}
+                            onChange={(e) => setMultipleSclerosisData(prev => ({
+                              ...prev,
+                              assistanceNeeded: e.target.checked
+                            }))}
+                            className="rounded"
+                        />
+                        <span className="text-sm text-gray-700 dark:text-gray-300">Required assistance from another person</span>
+                      </label>
+                    </div>
+                )}
+
+                {/* Treatment tracking */}
+                <div className="grid grid-cols-2 gap-3">
+                  <label className="flex items-center gap-2">
+                    <input
+                        type="checkbox"
+                        checked={multipleSclerosisData.onDMT}
+                        onChange={(e) => setMultipleSclerosisData(prev => ({
+                          ...prev,
+                          onDMT: e.target.checked
+                        }))}
+                        className="rounded"
+                    />
+                    <span className="text-sm text-gray-700 dark:text-gray-300">On disease-modifying therapy</span>
+                  </label>
+                </div>
+              </div>
+          )}
+
+          {/* Parkinson's Disease Form */}
+          {isParkinsonsRelated && (
+              <div className="bg-indigo-50 dark:bg-indigo-900/20 p-4 rounded-lg border border-indigo-200 dark:border-indigo-800">
+                <h4 className="font-medium text-indigo-900 dark:text-indigo-200 mb-3 flex items-center gap-2">
+                  🧠 Parkinson's Disease Details
+                </h4>
+
+                {/* Motor symptoms - tremor */}
+                {selectedSymptom === 'pd-resting-tremor' && (
+                    <div className="space-y-3 mb-4">
+                      <div>
+                        <label className="block text-sm text-gray-600 dark:text-gray-400 mb-1">Tremor Location</label>
+                        <select
+                            value={parkinsonsData.tremorSide}
+                            onChange={(e) => setParkinsonsData(prev => ({
+                              ...prev,
+                              tremorSide: e.target.value
+                            }))}
+                            className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600"
+                        >
+                          <option value="">Select affected side...</option>
+                          <option value="left">Left side</option>
+                          <option value="right">Right side</option>
+                          <option value="both">Both sides</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label className="block text-sm text-gray-600 dark:text-gray-400 mb-1">Tremor Severity</label>
+                        <select
+                            value={parkinsonsData.tremorSeverity}
+                            onChange={(e) => setParkinsonsData(prev => ({
+                              ...prev,
+                              tremorSeverity: e.target.value
+                            }))}
+                            className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600"
+                        >
+                          <option value="">Select severity...</option>
+                          <option value="mild">Mild - noticeable but not interfering</option>
+                          <option value="moderate">Moderate - interferes with some tasks</option>
+                          <option value="severe">Severe - significantly limits function</option>
+                        </select>
+                      </div>
+                    </div>
+                )}
+
+                {/* Freezing episodes */}
+                {selectedSymptom === 'pd-freezing-gait' && (
+                    <div className="mb-4">
+                      <label className="block text-sm text-gray-600 dark:text-gray-400 mb-1">Number of Freezing Episodes Today</label>
+                      <input
+                          type="number"
+                          value={parkinsonsData.freezingEpisodes}
+                          onChange={(e) => setParkinsonsData(prev => ({
+                            ...prev,
+                            freezingEpisodes: e.target.value
+                          }))}
+                          className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600"
+                          placeholder="Number of episodes"
+                          min="0"
+                      />
+                    </div>
+                )}
+
+                {/* Falls */}
+                {selectedSymptom === 'pd-falls' && (
+                    <div className="mb-4">
+                      <label className="block text-sm text-gray-600 dark:text-gray-400 mb-1">Number of Falls</label>
+                      <input
+                          type="number"
+                          value={parkinsonsData.fallsToday}
+                          onChange={(e) => setParkinsonsData(prev => ({
+                            ...prev,
+                            fallsToday: e.target.value
+                          }))}
+                          className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600"
+                          placeholder="Number of falls"
+                          min="0"
+                      />
+                    </div>
+                )}
+
+                {/* OFF episodes / medication state */}
+                {['pd-off-episodes', 'pd-dyskinesia'].includes(selectedSymptom) && (
+                    <div className="space-y-3 mb-4">
+                      <div>
+                        <label className="block text-sm text-gray-600 dark:text-gray-400 mb-1">Current Medication State</label>
+                        <select
+                            value={parkinsonsData.medicationState}
+                            onChange={(e) => setParkinsonsData(prev => ({
+                              ...prev,
+                              medicationState: e.target.value
+                            }))}
+                            className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600"
+                        >
+                          <option value="">Select state...</option>
+                          <option value="on">ON - medication working well</option>
+                          <option value="wearing-off">Wearing OFF - medication effect fading</option>
+                          <option value="off">OFF - medication not working</option>
+                          <option value="dyskinesia">Dyskinesia - involuntary movements</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label className="block text-sm text-gray-600 dark:text-gray-400 mb-1">Time Since Last Dose (minutes)</label>
+                        <input
+                            type="number"
+                            value={parkinsonsData.onTime}
+                            onChange={(e) => setParkinsonsData(prev => ({
+                              ...prev,
+                              onTime: e.target.value
+                            }))}
+                            className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600"
+                            placeholder="Minutes since last dose"
+                            min="0"
+                        />
+                      </div>
+                    </div>
+                )}
+
+                {/* Cognitive/psychiatric symptoms */}
+                {['pd-cognitive-changes', 'pd-depression', 'pd-anxiety'].includes(selectedSymptom) && (
+                    <div className="grid grid-cols-2 gap-3 mb-4">
+                      <label className="flex items-center gap-2">
+                        <input
+                            type="checkbox"
+                            checked={parkinsonsData.hallucinationsPresent}
+                            onChange={(e) => setParkinsonsData(prev => ({
+                              ...prev,
+                              hallucinationsPresent: e.target.checked
+                            }))}
+                            className="rounded"
+                        />
+                        <span className="text-sm text-gray-700 dark:text-gray-300">Hallucinations present</span>
+                      </label>
+                      <label className="flex items-center gap-2">
+                        <input
+                            type="checkbox"
+                            checked={parkinsonsData.confusionPresent}
+                            onChange={(e) => setParkinsonsData(prev => ({
+                              ...prev,
+                              confusionPresent: e.target.checked
+                            }))}
+                            className="rounded"
+                        />
+                        <span className="text-sm text-gray-700 dark:text-gray-300">Confusion present</span>
+                      </label>
+                    </div>
+                )}
+
+                {/* Functional impact - mobility */}
+                <div className="space-y-3">
+                  <div>
+                    <label className="block text-sm text-gray-600 dark:text-gray-400 mb-1">Mobility Aid Used</label>
+                    <select
+                        value={parkinsonsData.mobilityAid}
+                        onChange={(e) => setParkinsonsData(prev => ({
+                          ...prev,
+                          mobilityAid: e.target.value
+                        }))}
+                        className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600"
+                    >
+                      <option value="">Select if applicable...</option>
+                      <option value="none">No mobility aid needed</option>
+                      <option value="cane">Cane</option>
+                      <option value="walker">Walker</option>
+                      <option value="wheelchair">Wheelchair</option>
+                    </select>
+                  </div>
+                  <div className="grid grid-cols-2 gap-3">
+                    <label className="flex items-center gap-2">
+                      <input
+                          type="checkbox"
+                          checked={parkinsonsData.speechAffected}
+                          onChange={(e) => setParkinsonsData(prev => ({
+                            ...prev,
+                            speechAffected: e.target.checked
+                          }))}
+                          className="rounded"
+                      />
+                      <span className="text-sm text-gray-700 dark:text-gray-300">Speech affected</span>
+                    </label>
+                    <label className="flex items-center gap-2">
+                      <input
+                          type="checkbox"
+                          checked={parkinsonsData.swallowingAffected}
+                          onChange={(e) => setParkinsonsData(prev => ({
+                            ...prev,
+                            swallowingAffected: e.target.checked
+                          }))}
+                          className="rounded"
+                      />
+                      <span className="text-sm text-gray-700 dark:text-gray-300">Swallowing affected</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+          )}
+
+          {/* Myasthenia Gravis Form */}
+          {isMyastheniaRelated && (
+              <div className="bg-teal-50 dark:bg-teal-900/20 p-4 rounded-lg border border-teal-200 dark:border-teal-800">
+                <h4 className="font-medium text-teal-900 dark:text-teal-200 mb-3 flex items-center gap-2">
+                  💪 Myasthenia Gravis Details
+                </h4>
+
+                {/* Characteristic pattern - always show */}
+                <div className="grid grid-cols-2 gap-3 mb-4">
+                  <label className="flex items-center gap-2">
+                    <input
+                        type="checkbox"
+                        checked={myastheniaData.worseWithActivity}
+                        onChange={(e) => setMyastheniaData(prev => ({
+                          ...prev,
+                          worseWithActivity: e.target.checked
+                        }))}
+                        className="rounded"
+                    />
+                    <span className="text-sm text-gray-700 dark:text-gray-300">Worse with activity</span>
+                  </label>
+                  <label className="flex items-center gap-2">
+                    <input
+                        type="checkbox"
+                        checked={myastheniaData.betterWithRest}
+                        onChange={(e) => setMyastheniaData(prev => ({
+                          ...prev,
+                          betterWithRest: e.target.checked
+                        }))}
+                        className="rounded"
+                    />
+                    <span className="text-sm text-gray-700 dark:text-gray-300">Better with rest</span>
+                  </label>
+                </div>
+
+                {/* Time pattern */}
+                <div className="mb-4">
+                  <label className="block text-sm text-gray-600 dark:text-gray-400 mb-1">Worst Time of Day</label>
+                  <select
+                      value={myastheniaData.timeOfDayWorst}
+                      onChange={(e) => setMyastheniaData(prev => ({
+                        ...prev,
+                        timeOfDayWorst: e.target.value
+                      }))}
+                      className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600"
+                  >
+                    <option value="">Select if pattern exists...</option>
+                    <option value="morning">Morning</option>
+                    <option value="afternoon">Afternoon</option>
+                    <option value="evening">Evening (most common for MG)</option>
+                    <option value="variable">Variable/unpredictable</option>
+                  </select>
+                </div>
+
+                {/* Ocular symptoms */}
+                {['mg-ptosis', 'mg-diplopia'].includes(selectedSymptom) && (
+                    <div className="space-y-3 mb-4">
+                      <label className="flex items-center gap-2">
+                        <input
+                            type="checkbox"
+                            checked={myastheniaData.ptosisPresent}
+                            onChange={(e) => setMyastheniaData(prev => ({
+                              ...prev,
+                              ptosisPresent: e.target.checked
+                            }))}
+                            className="rounded"
+                        />
+                        <span className="text-sm text-gray-700 dark:text-gray-300">Ptosis (drooping eyelid) present</span>
+                      </label>
+                      {myastheniaData.ptosisPresent && (
+                          <div>
+                            <label className="block text-sm text-gray-600 dark:text-gray-400 mb-1">Which Eye(s)</label>
+                            <select
+                                value={myastheniaData.ptosisSide}
+                                onChange={(e) => setMyastheniaData(prev => ({
+                                  ...prev,
+                                  ptosisSide: e.target.value
+                                }))}
+                                className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600"
+                            >
+                              <option value="">Select...</option>
+                              <option value="left">Left eye</option>
+                              <option value="right">Right eye</option>
+                              <option value="both">Both eyes</option>
+                              <option value="alternating">Alternating</option>
+                            </select>
+                          </div>
+                      )}
+                      <label className="flex items-center gap-2">
+                        <input
+                            type="checkbox"
+                            checked={myastheniaData.doubleVision}
+                            onChange={(e) => setMyastheniaData(prev => ({
+                              ...prev,
+                              doubleVision: e.target.checked
+                            }))}
+                            className="rounded"
+                        />
+                        <span className="text-sm text-gray-700 dark:text-gray-300">Double vision present</span>
+                      </label>
+                      <label className="flex items-center gap-2">
+                        <input
+                            type="checkbox"
+                            checked={myastheniaData.ocularOnly}
+                            onChange={(e) => setMyastheniaData(prev => ({
+                              ...prev,
+                              ocularOnly: e.target.checked
+                            }))}
+                            className="rounded"
+                        />
+                        <span className="text-sm text-gray-700 dark:text-gray-300">Symptoms limited to eyes only</span>
+                      </label>
+                    </div>
+                )}
+
+                {/* Limb weakness - arm raise test */}
+                {['mg-limb-weakness', 'mg-arm-elevation-difficulty'].includes(selectedSymptom) && (
+                    <div className="mb-4">
+                      <label className="block text-sm text-gray-600 dark:text-gray-400 mb-1">
+                        How long can you hold arms extended? (seconds)
+                      </label>
+                      <input
+                          type="number"
+                          value={myastheniaData.canRaiseArms}
+                          onChange={(e) => setMyastheniaData(prev => ({
+                            ...prev,
+                            canRaiseArms: e.target.value
+                          }))}
+                          className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600"
+                          placeholder="Seconds before fatigue"
+                          min="0"
+                      />
+                      <p className="text-xs text-gray-500 mt-1">Normal is 2+ minutes. Less than 60 seconds suggests significant weakness.</p>
+                    </div>
+                )}
+
+                {/* Bulbar symptoms */}
+                {['mg-difficulty-chewing', 'mg-difficulty-swallowing', 'mg-slurred-speech'].includes(selectedSymptom) && (
+                    <label className="flex items-center gap-2 mb-4">
+                      <input
+                          type="checkbox"
+                          checked={myastheniaData.bulbarInvolved}
+                          onChange={(e) => setMyastheniaData(prev => ({
+                            ...prev,
+                            bulbarInvolved: e.target.checked
+                          }))}
+                          className="rounded"
+                      />
+                      <span className="text-sm text-gray-700 dark:text-gray-300">Bulbar muscles affected (chewing/swallowing/speech)</span>
+                    </label>
+                )}
+
+                {/* Respiratory - CRITICAL */}
+                {selectedSymptom === 'mg-respiratory-weakness' && (
+                    <div className="space-y-3 mb-4 p-3 bg-red-50 dark:bg-red-900/30 rounded border border-red-200 dark:border-red-800">
+                      <p className="text-sm font-medium text-red-800 dark:text-red-200">
+                        ⚠️ Respiratory weakness can be life-threatening
+                      </p>
+                      <label className="flex items-center gap-2">
+                        <input
+                            type="checkbox"
+                            checked={myastheniaData.breathingDifficulty}
+                            onChange={(e) => setMyastheniaData(prev => ({
+                              ...prev,
+                              breathingDifficulty: e.target.checked
+                            }))}
+                            className="rounded"
+                        />
+                        <span className="text-sm text-gray-700 dark:text-gray-300">Currently having breathing difficulty</span>
+                      </label>
+                      <label className="flex items-center gap-2">
+                        <input
+                            type="checkbox"
+                            checked={myastheniaData.emergencySigns}
+                            onChange={(e) => setMyastheniaData(prev => ({
+                              ...prev,
+                              emergencySigns: e.target.checked
+                            }))}
+                            className="rounded"
+                        />
+                        <span className="text-sm text-gray-700 dark:text-gray-300">
+                          Crisis warning signs (severe weakness, can't swallow, struggling to breathe)
+                        </span>
+                      </label>
+                      {myastheniaData.emergencySigns && (
+                          <p className="text-sm font-bold text-red-800 dark:text-red-200">
+                            🚨 If experiencing crisis symptoms, seek emergency care immediately!
+                          </p>
+                      )}
+                    </div>
+                )}
+
+                {/* Treatment */}
+                <div className="grid grid-cols-2 gap-3">
+                  <label className="flex items-center gap-2">
+                    <input
+                        type="checkbox"
+                        checked={myastheniaData.onPyridostigmine}
+                        onChange={(e) => setMyastheniaData(prev => ({
+                          ...prev,
+                          onPyridostigmine: e.target.checked
+                        }))}
+                        className="rounded"
+                    />
+                    <span className="text-sm text-gray-700 dark:text-gray-300">Taking Mestinon/pyridostigmine</span>
+                  </label>
+                </div>
+                {myastheniaData.onPyridostigmine && (
+                    <div className="mt-3">
+                      <label className="block text-sm text-gray-600 dark:text-gray-400 mb-1">Doses Taken Today</label>
+                      <input
+                          type="number"
+                          value={myastheniaData.dosesTakenToday}
+                          onChange={(e) => setMyastheniaData(prev => ({
+                            ...prev,
+                            dosesTakenToday: e.target.value
+                          }))}
+                          className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600"
+                          placeholder="Number of doses"
+                          min="0"
+                      />
+                    </div>
+                )}
+              </div>
+          )}
+
+          {/* ============================================ */}
+          {/* PHASE 1B: NARCOLEPSY FORM */}
+          {/* ============================================ */}
+          {isNarcolepsyRelated && (
+              <div className="bg-indigo-50 dark:bg-indigo-900/20 p-4 rounded-lg border border-indigo-200 dark:border-indigo-800">
+                <h4 className="font-medium text-indigo-900 dark:text-indigo-200 mb-3 flex items-center gap-2">
+                  <span>😴</span> Narcolepsy Details
+                </h4>
+                <div className="space-y-3">
+                  {/* Sleep Attack Details */}
+                  {(selectedSymptom === 'narco-sleep-attack' || selectedSymptom === 'narco-microsleep') && (
+                      <>
+                        <div className="grid grid-cols-2 gap-3">
+                          <div>
+                            <label className="block text-sm text-gray-600 dark:text-gray-400 mb-1">Attack Duration</label>
+                            <select
+                                value={narcolepsyData.sleepAttackDuration}
+                                onChange={(e) => setNarcolepsyData(prev => ({...prev, sleepAttackDuration: e.target.value}))}
+                                className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600"
+                            >
+                              <option value="">Select duration</option>
+                              <option value="seconds">Seconds (microsleep)</option>
+                              <option value="1-5-min">1-5 minutes</option>
+                              <option value="5-15-min">5-15 minutes</option>
+                              <option value="15-30-min">15-30 minutes</option>
+                              <option value="30-plus-min">30+ minutes</option>
+                            </select>
+                          </div>
+                          <div>
+                            <label className="block text-sm text-gray-600 dark:text-gray-400 mb-1">Trigger/Situation</label>
+                            <select
+                                value={narcolepsyData.sleepAttackTrigger}
+                                onChange={(e) => setNarcolepsyData(prev => ({...prev, sleepAttackTrigger: e.target.value}))}
+                                className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600"
+                            >
+                              <option value="">Select trigger</option>
+                              <option value="driving">While driving</option>
+                              <option value="working">At work</option>
+                              <option value="eating">While eating</option>
+                              <option value="conversation">During conversation</option>
+                              <option value="boredom">During boring activity</option>
+                              <option value="no-trigger">No apparent trigger</option>
+                            </select>
+                          </div>
+                        </div>
+                      </>
+                  )}
+                  {/* Cataplexy Details */}
+                  {selectedSymptom === 'narco-cataplexy' && (
+                      <>
+                        <div className="grid grid-cols-2 gap-3">
+                          <div>
+                            <label className="block text-sm text-gray-600 dark:text-gray-400 mb-1">Emotional Trigger</label>
+                            <select
+                                value={narcolepsyData.cataplexyTrigger}
+                                onChange={(e) => setNarcolepsyData(prev => ({...prev, cataplexyTrigger: e.target.value}))}
+                                className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600"
+                            >
+                              <option value="">Select trigger</option>
+                              <option value="laughter">Laughter</option>
+                              <option value="surprise">Surprise</option>
+                              <option value="anger">Anger</option>
+                              <option value="excitement">Excitement</option>
+                              <option value="stress">Stress</option>
+                              <option value="other">Other emotion</option>
+                            </select>
+                          </div>
+                          <div>
+                            <label className="block text-sm text-gray-600 dark:text-gray-400 mb-1">Muscles Affected</label>
+                            <select
+                                value={narcolepsyData.cataplexyAffected}
+                                onChange={(e) => setNarcolepsyData(prev => ({...prev, cataplexyAffected: e.target.value}))}
+                                className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600"
+                            >
+                              <option value="">Select affected area</option>
+                              <option value="face">Face only (drooping)</option>
+                              <option value="neck">Head/neck (nodding)</option>
+                              <option value="arms">Arms (dropping objects)</option>
+                              <option value="legs">Legs (buckling)</option>
+                              <option value="whole-body">Whole body (collapse)</option>
+                            </select>
+                          </div>
+                        </div>
+                        <label className="flex items-center gap-2">
+                          <input
+                              type="checkbox"
+                              checked={narcolepsyData.fellDuringCataplexy}
+                              onChange={(e) => setNarcolepsyData(prev => ({...prev, fellDuringCataplexy: e.target.checked}))}
+                              className="rounded"
+                          />
+                          <span className="text-sm text-gray-700 dark:text-gray-300">Fell during this episode</span>
+                        </label>
+                      </>
+                  )}
+                  {/* Hallucination Details */}
+                  {(selectedSymptom === 'narco-hypnagogic-hallucination' || selectedSymptom === 'narco-hypnopompic-hallucination') && (
+                      <div>
+                        <label className="block text-sm text-gray-600 dark:text-gray-400 mb-1">Hallucination Type</label>
+                        <select
+                            value={narcolepsyData.hallucinationType}
+                            onChange={(e) => setNarcolepsyData(prev => ({...prev, hallucinationType: e.target.value}))}
+                            className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600"
+                        >
+                          <option value="">Select type</option>
+                          <option value="visual">Visual</option>
+                          <option value="auditory">Auditory</option>
+                          <option value="tactile">Tactile (feeling of presence/touch)</option>
+                          <option value="multiple">Multiple types</option>
+                        </select>
+                      </div>
+                  )}
+                  {/* Sleep Paralysis Details */}
+                  {selectedSymptom === 'narco-sleep-paralysis' && (
+                      <div className="grid grid-cols-2 gap-3">
+                        <label className="flex items-center gap-2">
+                          <input
+                              type="checkbox"
+                              checked={narcolepsyData.paralysisAtSleep}
+                              onChange={(e) => setNarcolepsyData(prev => ({...prev, paralysisAtSleep: e.target.checked}))}
+                              className="rounded"
+                          />
+                          <span className="text-sm text-gray-700 dark:text-gray-300">Occurred falling asleep</span>
+                        </label>
+                        <label className="flex items-center gap-2">
+                          <input
+                              type="checkbox"
+                              checked={narcolepsyData.paralysisAtWake}
+                              onChange={(e) => setNarcolepsyData(prev => ({...prev, paralysisAtWake: e.target.checked}))}
+                              className="rounded"
+                          />
+                          <span className="text-sm text-gray-700 dark:text-gray-300">Occurred waking up</span>
+                        </label>
+                      </div>
+                  )}
+                  {/* Treatment Info - show for all narcolepsy */}
+                  <div className="border-t border-indigo-200 dark:border-indigo-700 pt-3 mt-3">
+                    <p className="text-sm font-medium text-indigo-800 dark:text-indigo-300 mb-2">Treatment Status</p>
+                    <div className="grid grid-cols-2 gap-3">
+                      <label className="flex items-center gap-2">
+                        <input
+                            type="checkbox"
+                            checked={narcolepsyData.onStimulants}
+                            onChange={(e) => setNarcolepsyData(prev => ({...prev, onStimulants: e.target.checked}))}
+                            className="rounded"
+                        />
+                        <span className="text-sm text-gray-700 dark:text-gray-300">On stimulant medication</span>
+                      </label>
+                      <label className="flex items-center gap-2">
+                        <input
+                            type="checkbox"
+                            checked={narcolepsyData.onSodiumOxybate}
+                            onChange={(e) => setNarcolepsyData(prev => ({...prev, onSodiumOxybate: e.target.checked}))}
+                            className="rounded"
+                        />
+                        <span className="text-sm text-gray-700 dark:text-gray-300">On Xyrem/Xywav</span>
+                      </label>
+                      <label className="flex items-center gap-2 col-span-2">
+                        <input
+                            type="checkbox"
+                            checked={narcolepsyData.sleepStudyConfirmed}
+                            onChange={(e) => setNarcolepsyData(prev => ({...prev, sleepStudyConfirmed: e.target.checked}))}
+                            className="rounded"
+                        />
+                        <span className="text-sm text-gray-700 dark:text-gray-300">Sleep study (MSLT) confirmed diagnosis</span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+          )}
+
+          {/* ============================================ */}
+          {/* PHASE 1B: ALS FORM */}
+          {/* ============================================ */}
+          {isALSRelated && (
+              <div className="bg-rose-50 dark:bg-rose-900/20 p-4 rounded-lg border border-rose-200 dark:border-rose-800">
+                <h4 className="font-medium text-rose-900 dark:text-rose-200 mb-3 flex items-center gap-2">
+                  <span>💪</span> ALS Details
+                </h4>
+                <div className="space-y-3">
+                  {/* Weakness Details */}
+                  {(selectedSymptom?.includes('weakness') || selectedSymptom?.includes('atrophy')) && (
+                      <div className="grid grid-cols-2 gap-3">
+                        <div>
+                          <label className="block text-sm text-gray-600 dark:text-gray-400 mb-1">Location</label>
+                          <select
+                              value={alsData.weaknessLocation}
+                              onChange={(e) => setAlsData(prev => ({...prev, weaknessLocation: e.target.value}))}
+                              className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600"
+                          >
+                            <option value="">Select location</option>
+                            <option value="hands">Hands</option>
+                            <option value="arms">Arms</option>
+                            <option value="legs">Legs</option>
+                            <option value="trunk">Trunk/core</option>
+                            <option value="bulbar">Bulbar (face/throat)</option>
+                            <option value="multiple">Multiple areas</option>
+                          </select>
+                        </div>
+                        <div>
+                          <label className="block text-sm text-gray-600 dark:text-gray-400 mb-1">Side</label>
+                          <select
+                              value={alsData.weaknessSide}
+                              onChange={(e) => setAlsData(prev => ({...prev, weaknessSide: e.target.value}))}
+                              className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600"
+                          >
+                            <option value="">Select side</option>
+                            <option value="left">Left</option>
+                            <option value="right">Right</option>
+                            <option value="both">Both sides</option>
+                          </select>
+                        </div>
+                      </div>
+                  )}
+                  {/* Fasciculations */}
+                  {selectedSymptom === 'als-fasciculations' && (
+                      <div>
+                        <label className="block text-sm text-gray-600 dark:text-gray-400 mb-1">Fasciculation Location</label>
+                        <select
+                            value={alsData.fasciculationLocation}
+                            onChange={(e) => setAlsData(prev => ({...prev, fasciculationLocation: e.target.value}))}
+                            className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600"
+                        >
+                          <option value="">Select location</option>
+                          <option value="arms">Arms</option>
+                          <option value="legs">Legs</option>
+                          <option value="tongue">Tongue</option>
+                          <option value="trunk">Trunk/back</option>
+                          <option value="widespread">Widespread</option>
+                        </select>
+                      </div>
+                  )}
+                  {/* Speech */}
+                  {selectedSymptom === 'als-difficulty-speaking' && (
+                      <div>
+                        <label className="block text-sm text-gray-600 dark:text-gray-400 mb-1">Speech Clarity</label>
+                        <select
+                            value={alsData.speechClarity}
+                            onChange={(e) => setAlsData(prev => ({...prev, speechClarity: e.target.value}))}
+                            className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600"
+                        >
+                          <option value="">Select clarity</option>
+                          <option value="mild-slurred">Mildly slurred</option>
+                          <option value="moderate-slurred">Moderately slurred</option>
+                          <option value="severe-slurred">Severely slurred</option>
+                          <option value="unintelligible">Mostly unintelligible</option>
+                        </select>
+                      </div>
+                  )}
+                  {/* Swallowing */}
+                  {selectedSymptom === 'als-difficulty-swallowing' && (
+                      <div className="grid grid-cols-2 gap-3">
+                        <div>
+                          <label className="block text-sm text-gray-600 dark:text-gray-400 mb-1">Swallowing Solids</label>
+                          <select
+                              value={alsData.swallowingSolids}
+                              onChange={(e) => setAlsData(prev => ({...prev, swallowingSolids: e.target.value}))}
+                              className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600"
+                          >
+                            <option value="">Select ability</option>
+                            <option value="normal">Normal</option>
+                            <option value="difficulty">Some difficulty</option>
+                            <option value="soft-only">Soft foods only</option>
+                            <option value="unable">Unable</option>
+                          </select>
+                        </div>
+                        <div>
+                          <label className="block text-sm text-gray-600 dark:text-gray-400 mb-1">Swallowing Liquids</label>
+                          <select
+                              value={alsData.swallowingLiquids}
+                              onChange={(e) => setAlsData(prev => ({...prev, swallowingLiquids: e.target.value}))}
+                              className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600"
+                          >
+                            <option value="">Select ability</option>
+                            <option value="normal">Normal</option>
+                            <option value="difficulty">Some difficulty</option>
+                            <option value="thickened-only">Thickened liquids only</option>
+                            <option value="aspirating">Frequent aspiration</option>
+                          </select>
+                        </div>
+                      </div>
+                  )}
+                  {/* Respiratory */}
+                  {selectedSymptom === 'als-respiratory-difficulty' && (
+                      <>
+                        <div>
+                          <label className="block text-sm text-gray-600 dark:text-gray-400 mb-1">Breathing Difficulty</label>
+                          <select
+                              value={alsData.breathingDifficulty}
+                              onChange={(e) => setAlsData(prev => ({...prev, breathingDifficulty: e.target.value}))}
+                              className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600"
+                          >
+                            <option value="">Select severity</option>
+                            <option value="with-exertion">With exertion only</option>
+                            <option value="at-rest">At rest</option>
+                            <option value="lying-flat">Worse lying flat</option>
+                            <option value="severe">Severe (constant)</option>
+                          </select>
+                        </div>
+                        <div className="grid grid-cols-2 gap-3">
+                          <label className="flex items-center gap-2">
+                            <input
+                                type="checkbox"
+                                checked={alsData.usesBiPAP}
+                                onChange={(e) => setAlsData(prev => ({...prev, usesBiPAP: e.target.checked}))}
+                                className="rounded"
+                            />
+                            <span className="text-sm text-gray-700 dark:text-gray-300">Uses BiPAP/CPAP</span>
+                          </label>
+                          <label className="flex items-center gap-2">
+                            <input
+                                type="checkbox"
+                                checked={alsData.usesVentilator}
+                                onChange={(e) => setAlsData(prev => ({...prev, usesVentilator: e.target.checked}))}
+                                className="rounded"
+                            />
+                            <span className="text-sm text-gray-700 dark:text-gray-300">On ventilator</span>
+                          </label>
+                        </div>
+                      </>
+                  )}
+                  {/* Mobility Status - show for relevant symptoms */}
+                  {(selectedSymptom?.includes('foot-drop') || selectedSymptom?.includes('tripping') || selectedSymptom?.includes('weakness')) && (
+                      <div>
+                        <label className="block text-sm text-gray-600 dark:text-gray-400 mb-1">Current Mobility Status</label>
+                        <select
+                            value={alsData.mobilityStatus}
+                            onChange={(e) => setAlsData(prev => ({...prev, mobilityStatus: e.target.value}))}
+                            className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600"
+                        >
+                          <option value="">Select status</option>
+                          <option value="ambulatory">Ambulatory (no aid)</option>
+                          <option value="cane">Uses cane</option>
+                          <option value="walker">Uses walker</option>
+                          <option value="wheelchair">Wheelchair</option>
+                          <option value="bedridden">Bedridden</option>
+                        </select>
+                      </div>
+                  )}
+                  {/* Feeding tube */}
+                  <label className="flex items-center gap-2">
+                    <input
+                        type="checkbox"
+                        checked={alsData.usesFeedingTube}
+                        onChange={(e) => setAlsData(prev => ({...prev, usesFeedingTube: e.target.checked}))}
+                        className="rounded"
+                    />
+                    <span className="text-sm text-gray-700 dark:text-gray-300">Has feeding tube (PEG/G-tube)</span>
+                  </label>
+                </div>
+              </div>
+          )}
+
+          {/* ============================================ */}
+          {/* PHASE 1B: SYRINGOMYELIA FORM */}
+          {/* ============================================ */}
+          {isSyringomyeliaRelated && (
+              <div className="bg-violet-50 dark:bg-violet-900/20 p-4 rounded-lg border border-violet-200 dark:border-violet-800">
+                <h4 className="font-medium text-violet-900 dark:text-violet-200 mb-3 flex items-center gap-2">
+                  <span>🔬</span> Syringomyelia Details
+                </h4>
+                <div className="space-y-3">
+                  {/* Pain Details */}
+                  {selectedSymptom === 'syring-pain' && (
+                      <div className="grid grid-cols-2 gap-3">
+                        <div>
+                          <label className="block text-sm text-gray-600 dark:text-gray-400 mb-1">Pain Type</label>
+                          <select
+                              value={syringomyeliaData.painType}
+                              onChange={(e) => setSyringomyeliaData(prev => ({...prev, painType: e.target.value}))}
+                              className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600"
+                          >
+                            <option value="">Select type</option>
+                            <option value="burning">Burning</option>
+                            <option value="aching">Deep aching</option>
+                            <option value="stabbing">Stabbing</option>
+                            <option value="electric">Electric/shooting</option>
+                          </select>
+                        </div>
+                        <div>
+                          <label className="block text-sm text-gray-600 dark:text-gray-400 mb-1">Pain Location</label>
+                          <select
+                              value={syringomyeliaData.painLocation}
+                              onChange={(e) => setSyringomyeliaData(prev => ({...prev, painLocation: e.target.value}))}
+                              className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600"
+                          >
+                            <option value="">Select location</option>
+                            <option value="neck">Neck</option>
+                            <option value="shoulders">Shoulders</option>
+                            <option value="arms">Arms</option>
+                            <option value="back">Back</option>
+                            <option value="cape">Cape distribution (shoulders/arms/back)</option>
+                          </select>
+                        </div>
+                      </div>
+                  )}
+                  {/* Sensory Loss */}
+                  {(selectedSymptom === 'syring-sensory-loss' || selectedSymptom === 'syring-numbness-tingling') && (
+                      <div>
+                        <label className="block text-sm text-gray-600 dark:text-gray-400 mb-1">Sensory Loss Pattern</label>
+                        <select
+                            value={syringomyeliaData.sensoryLossPattern}
+                            onChange={(e) => setSyringomyeliaData(prev => ({...prev, sensoryLossPattern: e.target.value}))}
+                            className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600"
+                        >
+                          <option value="">Select pattern</option>
+                          <option value="cape">Cape distribution (classic)</option>
+                          <option value="arms">Arms only</option>
+                          <option value="hands">Hands only</option>
+                          <option value="suspended">Suspended (mid-trunk band)</option>
+                        </select>
+                      </div>
+                  )}
+                  {/* Temperature/Pain Insensitivity */}
+                  {(selectedSymptom === 'syring-temp-insensitivity' || selectedSymptom === 'syring-pain-insensitivity') && (
+                      <>
+                        <div>
+                          <label className="block text-sm text-gray-600 dark:text-gray-400 mb-1">Area Affected</label>
+                          <select
+                              value={syringomyeliaData.tempInsensitivityArea}
+                              onChange={(e) => setSyringomyeliaData(prev => ({...prev, tempInsensitivityArea: e.target.value}))}
+                              className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600"
+                          >
+                            <option value="">Select area</option>
+                            <option value="hands">Hands</option>
+                            <option value="arms">Arms</option>
+                            <option value="shoulders">Shoulders/upper back</option>
+                            <option value="trunk">Trunk</option>
+                          </select>
+                        </div>
+                        <div className="grid grid-cols-2 gap-3">
+                          <label className="flex items-center gap-2">
+                            <input
+                                type="checkbox"
+                                checked={syringomyeliaData.hadBurnInjury}
+                                onChange={(e) => setSyringomyeliaData(prev => ({...prev, hadBurnInjury: e.target.checked}))}
+                                className="rounded"
+                            />
+                            <span className="text-sm text-gray-700 dark:text-gray-300">Burn injury from insensitivity</span>
+                          </label>
+                          <label className="flex items-center gap-2">
+                            <input
+                                type="checkbox"
+                                checked={syringomyeliaData.hadCutInjury}
+                                onChange={(e) => setSyringomyeliaData(prev => ({...prev, hadCutInjury: e.target.checked}))}
+                                className="rounded"
+                            />
+                            <span className="text-sm text-gray-700 dark:text-gray-300">Cut/injury unnoticed</span>
+                          </label>
+                        </div>
+                      </>
+                  )}
+                  {/* Weakness/Wasting */}
+                  {(selectedSymptom === 'syring-weakness' || selectedSymptom === 'syring-muscle-wasting') && (
+                      <div>
+                        <label className="block text-sm text-gray-600 dark:text-gray-400 mb-1">Location</label>
+                        <select
+                            value={syringomyeliaData.weaknessLocation}
+                            onChange={(e) => setSyringomyeliaData(prev => ({...prev, weaknessLocation: e.target.value}))}
+                            className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600"
+                        >
+                          <option value="">Select location</option>
+                          <option value="hands">Hands (intrinsic muscles)</option>
+                          <option value="arms">Arms</option>
+                          <option value="shoulders">Shoulders</option>
+                        </select>
+                      </div>
+                  )}
+                  {/* Headache with Chiari */}
+                  {selectedSymptom === 'syring-headache' && (
+                      <label className="flex items-center gap-2">
+                        <input
+                            type="checkbox"
+                            checked={syringomyeliaData.headacheWithCough}
+                            onChange={(e) => setSyringomyeliaData(prev => ({...prev, headacheWithCough: e.target.checked}))}
+                            className="rounded"
+                        />
+                        <span className="text-sm text-gray-700 dark:text-gray-300">Worse with coughing/straining (Chiari-type)</span>
+                      </label>
+                  )}
+                  {/* Syrinx Location */}
+                  <div>
+                    <label className="block text-sm text-gray-600 dark:text-gray-400 mb-1">Syrinx Location (if known)</label>
+                    <select
+                        value={syringomyeliaData.syrinxLocation}
+                        onChange={(e) => setSyringomyeliaData(prev => ({...prev, syrinxLocation: e.target.value}))}
+                        className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600"
+                    >
+                      <option value="">Select location</option>
+                      <option value="cervical">Cervical (neck)</option>
+                      <option value="thoracic">Thoracic (mid-back)</option>
+                      <option value="both">Both cervical and thoracic</option>
+                      <option value="unknown">Unknown</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+          )}
+
+          {/* ============================================ */}
+          {/* PHASE 1B: MYELITIS FORM */}
+          {/* ============================================ */}
+          {isMyelitisRelated && (
+              <div className="bg-cyan-50 dark:bg-cyan-900/20 p-4 rounded-lg border border-cyan-200 dark:border-cyan-800">
+                <h4 className="font-medium text-cyan-900 dark:text-cyan-200 mb-3 flex items-center gap-2">
+                  <span>🧬</span> Myelitis Details
+                </h4>
+                <div className="space-y-3">
+                  {/* Weakness/Paralysis */}
+                  {(selectedSymptom === 'myel-weakness' || selectedSymptom === 'myel-paralysis') && (
+                      <div className="grid grid-cols-2 gap-3">
+                        <div>
+                          <label className="block text-sm text-gray-600 dark:text-gray-400 mb-1">Distribution</label>
+                          <select
+                              value={myelitisData.weaknessDistribution}
+                              onChange={(e) => setMyelitisData(prev => ({...prev, weaknessDistribution: e.target.value}))}
+                              className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600"
+                          >
+                            <option value="">Select distribution</option>
+                            <option value="paraplegia">Paraplegia (both legs)</option>
+                            <option value="quadriplegia">Quadriplegia (all limbs)</option>
+                            <option value="hemiplegia">Hemiplegia (one side)</option>
+                            <option value="monoplegia">Monoplegia (one limb)</option>
+                          </select>
+                        </div>
+                        <div>
+                          <label className="block text-sm text-gray-600 dark:text-gray-400 mb-1">Mobility Status</label>
+                          <select
+                              value={myelitisData.mobilityStatus}
+                              onChange={(e) => setMyelitisData(prev => ({...prev, mobilityStatus: e.target.value}))}
+                              className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600"
+                          >
+                            <option value="">Select status</option>
+                            <option value="ambulatory">Ambulatory (no aid)</option>
+                            <option value="cane">Uses cane</option>
+                            <option value="walker">Uses walker</option>
+                            <option value="wheelchair">Wheelchair</option>
+                            <option value="bedridden">Bedridden</option>
+                          </select>
+                        </div>
+                      </div>
+                  )}
+                  {/* Sensory Level */}
+                  {selectedSymptom === 'myel-sensory-changes' && (
+                      <div>
+                        <label className="block text-sm text-gray-600 dark:text-gray-400 mb-1">Sensory Level</label>
+                        <select
+                            value={myelitisData.sensoryLevel}
+                            onChange={(e) => setMyelitisData(prev => ({...prev, sensoryLevel: e.target.value}))}
+                            className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600"
+                        >
+                          <option value="">Select level</option>
+                          <option value="cervical">Cervical (neck level)</option>
+                          <option value="thoracic-upper">Upper thoracic (chest)</option>
+                          <option value="thoracic-lower">Lower thoracic (abdomen)</option>
+                          <option value="lumbar">Lumbar (lower back)</option>
+                        </select>
+                      </div>
+                  )}
+                  {/* Bladder Dysfunction */}
+                  {selectedSymptom === 'myel-bladder-dysfunction' && (
+                      <>
+                        <div>
+                          <label className="block text-sm text-gray-600 dark:text-gray-400 mb-1">Bladder Symptoms</label>
+                          <select
+                              value={myelitisData.bladderSymptoms}
+                              onChange={(e) => setMyelitisData(prev => ({...prev, bladderSymptoms: e.target.value}))}
+                              className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600"
+                          >
+                            <option value="">Select type</option>
+                            <option value="retention">Retention (can't empty)</option>
+                            <option value="incontinence">Incontinence</option>
+                            <option value="both">Both retention and incontinence</option>
+                            <option value="urgency">Urgency/frequency</option>
+                          </select>
+                        </div>
+                        <label className="flex items-center gap-2">
+                          <input
+                              type="checkbox"
+                              checked={myelitisData.usesCatheter}
+                              onChange={(e) => setMyelitisData(prev => ({...prev, usesCatheter: e.target.checked}))}
+                              className="rounded"
+                          />
+                          <span className="text-sm text-gray-700 dark:text-gray-300">Uses catheter</span>
+                        </label>
+                        {myelitisData.usesCatheter && (
+                            <div>
+                              <label className="block text-sm text-gray-600 dark:text-gray-400 mb-1">Catheter Type</label>
+                              <select
+                                  value={myelitisData.catheterType}
+                                  onChange={(e) => setMyelitisData(prev => ({...prev, catheterType: e.target.value}))}
+                                  className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600"
+                              >
+                                <option value="">Select type</option>
+                                <option value="intermittent">Intermittent (self-cath)</option>
+                                <option value="indwelling">Indwelling (Foley)</option>
+                                <option value="suprapubic">Suprapubic</option>
+                              </select>
+                            </div>
+                        )}
+                      </>
+                  )}
+                  {/* Bowel Dysfunction */}
+                  {selectedSymptom === 'myel-bowel-dysfunction' && (
+                      <>
+                        <div>
+                          <label className="block text-sm text-gray-600 dark:text-gray-400 mb-1">Bowel Symptoms</label>
+                          <select
+                              value={myelitisData.bowelSymptoms}
+                              onChange={(e) => setMyelitisData(prev => ({...prev, bowelSymptoms: e.target.value}))}
+                              className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600"
+                          >
+                            <option value="">Select type</option>
+                            <option value="constipation">Constipation</option>
+                            <option value="incontinence">Fecal incontinence</option>
+                            <option value="both">Both</option>
+                          </select>
+                        </div>
+                        <label className="flex items-center gap-2">
+                          <input
+                              type="checkbox"
+                              checked={myelitisData.usesBowelProgram}
+                              onChange={(e) => setMyelitisData(prev => ({...prev, usesBowelProgram: e.target.checked}))}
+                              className="rounded"
+                          />
+                          <span className="text-sm text-gray-700 dark:text-gray-300">Uses bowel program/routine</span>
+                        </label>
+                      </>
+                  )}
+                  {/* Spasticity */}
+                  {selectedSymptom === 'myel-spasticity' && (
+                      <>
+                        <div>
+                          <label className="block text-sm text-gray-600 dark:text-gray-400 mb-1">Spasticity Location</label>
+                          <select
+                              value={myelitisData.spasticityLocation}
+                              onChange={(e) => setMyelitisData(prev => ({...prev, spasticityLocation: e.target.value}))}
+                              className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600"
+                          >
+                            <option value="">Select location</option>
+                            <option value="legs">Legs only</option>
+                            <option value="arms">Arms only</option>
+                            <option value="trunk">Trunk</option>
+                            <option value="all">All limbs</option>
+                          </select>
+                        </div>
+                        <label className="flex items-center gap-2">
+                          <input
+                              type="checkbox"
+                              checked={myelitisData.onBaclofenPump}
+                              onChange={(e) => setMyelitisData(prev => ({...prev, onBaclofenPump: e.target.checked}))}
+                              className="rounded"
+                          />
+                          <span className="text-sm text-gray-700 dark:text-gray-300">Has intrathecal baclofen pump</span>
+                        </label>
+                      </>
+                  )}
+                  {/* Cause of Myelitis */}
+                  <div>
+                    <label className="block text-sm text-gray-600 dark:text-gray-400 mb-1">Cause (if known)</label>
+                    <select
+                        value={myelitisData.causeOfMyelitis}
+                        onChange={(e) => setMyelitisData(prev => ({...prev, causeOfMyelitis: e.target.value}))}
+                        className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600"
+                    >
+                      <option value="">Select cause</option>
+                      <option value="transverse">Transverse myelitis (idiopathic)</option>
+                      <option value="infectious">Post-infectious</option>
+                      <option value="ms-related">MS-related</option>
+                      <option value="nmo">NMO spectrum</option>
+                      <option value="unknown">Unknown</option>
+                    </select>
+                  </div>
                 </div>
               </div>
           )}

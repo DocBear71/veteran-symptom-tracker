@@ -2149,7 +2149,364 @@ const SymptomHistory = ({ onCopyLog }) => {
                                   </div>
                               )}
 
+                              {/* Phase 1A: Multiple Sclerosis data */}
+                              {log.multipleSclerosisData && (
+                                  <div className="mt-2">
+                                    <div className="flex flex-wrap gap-1">
+                                      {log.multipleSclerosisData.isRelapse && (
+                                          <span className="px-2 py-1 bg-red-200 dark:bg-red-800 text-red-800 dark:text-red-200 rounded-full text-xs">
+                                            🔄 Relapse{log.multipleSclerosisData.relapseDuration ? ` (${log.multipleSclerosisData.relapseDuration} days)` : ''}
+                                          </span>
+                                      )}
+                                      {log.multipleSclerosisData.relapseRecovery && (
+                                          <span className="px-2 py-1 bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 rounded-full text-xs">
+                                            Recovery: {log.multipleSclerosisData.relapseRecovery}
+                                          </span>
+                                      )}
+                                      {log.multipleSclerosisData.mobilityAid && log.multipleSclerosisData.mobilityAid !== 'none' && (
+                                          <span className="px-2 py-1 bg-orange-100 dark:bg-orange-900 text-orange-800 dark:text-orange-200 rounded-full text-xs">
+                                            🦯 {log.multipleSclerosisData.mobilityAid}
+                                          </span>
+                                      )}
+                                      {log.multipleSclerosisData.assistanceNeeded && (
+                                          <span className="px-2 py-1 bg-amber-200 dark:bg-amber-800 text-amber-800 dark:text-amber-200 rounded-full text-xs">
+                                            🤝 Assistance needed
+                                          </span>
+                                      )}
+                                      {log.multipleSclerosisData.onDMT && (
+                                          <span className="px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-xs">
+                                            💊 On DMT
+                                          </span>
+                                      )}
+                                      {log.multipleSclerosisData.recentSteroids && (
+                                          <span className="px-2 py-1 bg-indigo-100 dark:bg-indigo-900 text-indigo-800 dark:text-indigo-200 rounded-full text-xs">
+                                            💉 IV Steroids
+                                          </span>
+                                      )}
+                                      {log.multipleSclerosisData.heatTriggered && (
+                                          <span className="px-2 py-1 bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 rounded-full text-xs">
+                                            🌡️ Heat triggered
+                                          </span>
+                                      )}
+                                    </div>
+                                  </div>
+                              )}
 
+                              {/* Phase 1A: Parkinson's Disease data */}
+                              {log.parkinsonsData && (
+                                  <div className="mt-2">
+                                    <div className="flex flex-wrap gap-1">
+                                      {log.parkinsonsData.tremorSide && (
+                                          <span className="px-2 py-1 bg-indigo-100 dark:bg-indigo-900 text-indigo-800 dark:text-indigo-200 rounded-full text-xs">
+                                            👋 Tremor: {log.parkinsonsData.tremorSide}{log.parkinsonsData.tremorSeverity ? ` (${log.parkinsonsData.tremorSeverity})` : ''}
+                                          </span>
+                                      )}
+                                      {log.parkinsonsData.freezingEpisodes && (
+                                          <span className="px-2 py-1 bg-blue-200 dark:bg-blue-800 text-blue-800 dark:text-blue-200 rounded-full text-xs">
+                                            🧊 Freezing: {log.parkinsonsData.freezingEpisodes}x
+                                          </span>
+                                      )}
+                                      {log.parkinsonsData.fallsToday && (
+                                          <span className="px-2 py-1 bg-red-200 dark:bg-red-800 text-red-800 dark:text-red-200 rounded-full text-xs">
+                                            ⚠️ Falls: {log.parkinsonsData.fallsToday}
+                                          </span>
+                                      )}
+                                      {log.parkinsonsData.medicationState && (
+                                          <span className={`px-2 py-1 rounded-full text-xs ${
+                                              log.parkinsonsData.medicationState === 'on' ? 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200' :
+                                                  log.parkinsonsData.medicationState === 'off' ? 'bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200' :
+                                                      log.parkinsonsData.medicationState === 'dyskinesia' ? 'bg-orange-200 dark:bg-orange-800 text-orange-800 dark:text-orange-200' :
+                                                          'bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200'
+                                          }`}>
+                                            💊 {log.parkinsonsData.medicationState.toUpperCase()}
+                                          </span>
+                                      )}
+                                      {log.parkinsonsData.mobilityAid && log.parkinsonsData.mobilityAid !== 'none' && (
+                                          <span className="px-2 py-1 bg-orange-100 dark:bg-orange-900 text-orange-800 dark:text-orange-200 rounded-full text-xs">
+                                            🦯 {log.parkinsonsData.mobilityAid}
+                                          </span>
+                                      )}
+                                      {log.parkinsonsData.speechAffected && (
+                                          <span className="px-2 py-1 bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 rounded-full text-xs">
+                                            🗣️ Speech affected
+                                          </span>
+                                      )}
+                                      {log.parkinsonsData.swallowingAffected && (
+                                          <span className="px-2 py-1 bg-amber-200 dark:bg-amber-800 text-amber-800 dark:text-amber-200 rounded-full text-xs">
+                                            🍽️ Swallowing affected
+                                          </span>
+                                      )}
+                                      {log.parkinsonsData.hallucinationsPresent && (
+                                          <span className="px-2 py-1 bg-pink-200 dark:bg-pink-800 text-pink-800 dark:text-pink-200 rounded-full text-xs">
+                                            👁️ Hallucinations
+                                          </span>
+                                      )}
+                                      {log.parkinsonsData.confusionPresent && (
+                                          <span className="px-2 py-1 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-full text-xs">
+                                            😵 Confusion
+                                          </span>
+                                      )}
+                                    </div>
+                                  </div>
+                              )}
+
+                              {/* Phase 1A: Myasthenia Gravis data */}
+                              {log.myastheniaData && (
+                                  <div className="mt-2">
+                                    <div className="flex flex-wrap gap-1">
+                                      {log.myastheniaData.worseWithActivity && log.myastheniaData.betterWithRest && (
+                                          <span className="px-2 py-1 bg-teal-100 dark:bg-teal-900 text-teal-800 dark:text-teal-200 rounded-full text-xs">
+                                            🔄 Fatigable weakness pattern
+                                          </span>
+                                      )}
+                                      {log.myastheniaData.worseWithActivity && !log.myastheniaData.betterWithRest && (
+                                          <span className="px-2 py-1 bg-teal-100 dark:bg-teal-900 text-teal-800 dark:text-teal-200 rounded-full text-xs">
+                                            📉 Worse with activity
+                                          </span>
+                                      )}
+                                      {log.myastheniaData.timeOfDayWorst && (
+                                          <span className="px-2 py-1 bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 rounded-full text-xs">
+                                            🕐 Worst: {log.myastheniaData.timeOfDayWorst}
+                                          </span>
+                                      )}
+                                      {log.myastheniaData.ptosisPresent && (
+                                          <span className="px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-xs">
+                                            👁️ Ptosis{log.myastheniaData.ptosisSide ? ` (${log.myastheniaData.ptosisSide})` : ''}
+                                          </span>
+                                      )}
+                                      {log.myastheniaData.doubleVision && (
+                                          <span className="px-2 py-1 bg-indigo-100 dark:bg-indigo-900 text-indigo-800 dark:text-indigo-200 rounded-full text-xs">
+                                            👀 Double vision
+                                          </span>
+                                      )}
+                                      {log.myastheniaData.canRaiseArms && (
+                                          <span className="px-2 py-1 bg-orange-100 dark:bg-orange-900 text-orange-800 dark:text-orange-200 rounded-full text-xs">
+                                            💪 Arm hold: {log.myastheniaData.canRaiseArms}s
+                                          </span>
+                                      )}
+                                      {log.myastheniaData.breathingDifficulty && (
+                                          <span className="px-2 py-1 bg-red-200 dark:bg-red-800 text-red-800 dark:text-red-200 rounded-full text-xs">
+                                            ⚠️ Breathing difficulty
+                                          </span>
+                                      )}
+                                      {log.myastheniaData.emergencySigns && (
+                                          <span className="px-2 py-1 bg-red-300 dark:bg-red-700 text-red-900 dark:text-red-100 rounded-full text-xs font-medium">
+                                            🚨 Crisis signs
+                                          </span>
+                                      )}
+                                      {log.myastheniaData.onPyridostigmine && (
+                                          <span className="px-2 py-1 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-full text-xs">
+                                            💊 On Mestinon
+                                          </span>
+                                      )}
+                                    </div>
+                                  </div>
+                              )}
+
+                              {/* ============================================ */}
+                              {/* PHASE 1B: NARCOLEPSY BADGES */}
+                              {/* ============================================ */}
+                              {log.narcolepsyData && (
+                                  <div className="mt-2">
+                                    <div className="flex flex-wrap gap-1">
+                                      {log.narcolepsyData.sleepAttackDuration && (
+                                          <span className="px-2 py-1 bg-indigo-100 dark:bg-indigo-900 text-indigo-800 dark:text-indigo-200 rounded-full text-xs">
+                                            😴 Attack: {log.narcolepsyData.sleepAttackDuration}
+                                          </span>
+                                      )}
+                                      {log.narcolepsyData.sleepAttackTrigger && (
+                                          <span className="px-2 py-1 bg-indigo-200 dark:bg-indigo-800 text-indigo-800 dark:text-indigo-200 rounded-full text-xs">
+                                            Trigger: {log.narcolepsyData.sleepAttackTrigger}
+                                          </span>
+                                      )}
+                                      {log.narcolepsyData.cataplexyTrigger && (
+                                          <span className="px-2 py-1 bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 rounded-full text-xs">
+                                            ⚡ Cataplexy: {log.narcolepsyData.cataplexyTrigger}
+                                          </span>
+                                      )}
+                                      {log.narcolepsyData.cataplexyAffected && (
+                                          <span className="px-2 py-1 bg-purple-200 dark:bg-purple-800 text-purple-800 dark:text-purple-200 rounded-full text-xs">
+                                            Affected: {log.narcolepsyData.cataplexyAffected}
+                                          </span>
+                                      )}
+                                      {log.narcolepsyData.fellDuringCataplexy && (
+                                          <span className="px-2 py-1 bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 rounded-full text-xs">
+                                            ⚠️ Fell
+                                          </span>
+                                      )}
+                                      {log.narcolepsyData.onStimulants && (
+                                          <span className="px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-xs">
+                                            💊 On Stimulants
+                                          </span>
+                                      )}
+                                      {log.narcolepsyData.onSodiumOxybate && (
+                                          <span className="px-2 py-1 bg-blue-200 dark:bg-blue-800 text-blue-800 dark:text-blue-200 rounded-full text-xs">
+                                            💊 Xyrem/Xywav
+                                          </span>
+                                      )}
+                                      {log.narcolepsyData.sleepStudyConfirmed && (
+                                          <span className="px-2 py-1 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-full text-xs">
+                                            ✓ MSLT Confirmed
+                                          </span>
+                                      )}
+                                    </div>
+                                  </div>
+                              )}
+
+                              {/* ============================================ */}
+                              {/* PHASE 1B: ALS BADGES */}
+                              {/* ============================================ */}
+                              {log.alsData && (
+                                  <div className="mt-2">
+                                    <div className="flex flex-wrap gap-1">
+                                      {log.alsData.weaknessLocation && (
+                                          <span className="px-2 py-1 bg-rose-100 dark:bg-rose-900 text-rose-800 dark:text-rose-200 rounded-full text-xs">
+                                            💪 Weakness: {log.alsData.weaknessLocation}{log.alsData.weaknessSide ? ` (${log.alsData.weaknessSide})` : ''}
+                                          </span>
+                                      )}
+                                      {log.alsData.fasciculationLocation && (
+                                          <span className="px-2 py-1 bg-rose-200 dark:bg-rose-800 text-rose-800 dark:text-rose-200 rounded-full text-xs">
+                                            Fasciculations: {log.alsData.fasciculationLocation}
+                                          </span>
+                                      )}
+                                      {log.alsData.speechClarity && (
+                                          <span className="px-2 py-1 bg-orange-100 dark:bg-orange-900 text-orange-800 dark:text-orange-200 rounded-full text-xs">
+                                            🗣️ Speech: {log.alsData.speechClarity}
+                                          </span>
+                                      )}
+                                      {log.alsData.swallowingSolids && log.alsData.swallowingSolids !== 'normal' && (
+                                          <span className="px-2 py-1 bg-amber-100 dark:bg-amber-900 text-amber-800 dark:text-amber-200 rounded-full text-xs">
+                                            Swallow: {log.alsData.swallowingSolids}
+                                          </span>
+                                      )}
+                                      {log.alsData.breathingDifficulty && (
+                                          <span className="px-2 py-1 bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 rounded-full text-xs">
+                                            🫁 Breathing: {log.alsData.breathingDifficulty}
+                                          </span>
+                                      )}
+                                      {log.alsData.usesBiPAP && (
+                                          <span className="px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-xs">
+                                            BiPAP
+                                          </span>
+                                      )}
+                                      {log.alsData.usesVentilator && (
+                                          <span className="px-2 py-1 bg-red-200 dark:bg-red-800 text-red-800 dark:text-red-200 rounded-full text-xs font-medium">
+                                            🚨 Ventilator
+                                          </span>
+                                      )}
+                                      {log.alsData.usesFeedingTube && (
+                                          <span className="px-2 py-1 bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 rounded-full text-xs">
+                                            Feeding Tube
+                                          </span>
+                                      )}
+                                      {log.alsData.mobilityStatus && log.alsData.mobilityStatus !== 'ambulatory' && (
+                                          <span className="px-2 py-1 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-full text-xs">
+                                            🚶 {log.alsData.mobilityStatus}
+                                          </span>
+                                      )}
+                                    </div>
+                                  </div>
+                              )}
+
+                              {/* ============================================ */}
+                              {/* PHASE 1B: SYRINGOMYELIA BADGES */}
+                              {/* ============================================ */}
+                              {log.syringomyeliaData && (
+                                  <div className="mt-2">
+                                    <div className="flex flex-wrap gap-1">
+                                      {log.syringomyeliaData.painType && (
+                                          <span className="px-2 py-1 bg-violet-100 dark:bg-violet-900 text-violet-800 dark:text-violet-200 rounded-full text-xs">
+                                            Pain: {log.syringomyeliaData.painType}
+                                          </span>
+                                      )}
+                                      {log.syringomyeliaData.sensoryLossPattern && (
+                                          <span className="px-2 py-1 bg-violet-200 dark:bg-violet-800 text-violet-800 dark:text-violet-200 rounded-full text-xs">
+                                            🔬 Sensory: {log.syringomyeliaData.sensoryLossPattern}
+                                          </span>
+                                      )}
+                                      {log.syringomyeliaData.tempInsensitivityArea && (
+                                          <span className="px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-xs">
+                                            🌡️ Temp insensitive: {log.syringomyeliaData.tempInsensitivityArea}
+                                          </span>
+                                      )}
+                                      {log.syringomyeliaData.hadBurnInjury && (
+                                          <span className="px-2 py-1 bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 rounded-full text-xs">
+                                            🔥 Burn Injury
+                                          </span>
+                                      )}
+                                      {log.syringomyeliaData.hadCutInjury && (
+                                          <span className="px-2 py-1 bg-red-200 dark:bg-red-800 text-red-800 dark:text-red-200 rounded-full text-xs">
+                                            ✂️ Cut Injury
+                                          </span>
+                                      )}
+                                      {log.syringomyeliaData.syrinxLocation && (
+                                          <span className="px-2 py-1 bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 rounded-full text-xs">
+                                            Syrinx: {log.syringomyeliaData.syrinxLocation}
+                                          </span>
+                                      )}
+                                      {log.syringomyeliaData.headacheWithCough && (
+                                          <span className="px-2 py-1 bg-amber-100 dark:bg-amber-900 text-amber-800 dark:text-amber-200 rounded-full text-xs">
+                                            Headache w/ cough (Chiari)
+                                          </span>
+                                      )}
+                                    </div>
+                                  </div>
+                              )}
+
+                              {/* ============================================ */}
+                              {/* PHASE 1B: MYELITIS BADGES */}
+                              {/* ============================================ */}
+                              {log.myelitisData && (
+                                  <div className="mt-2">
+                                    <div className="flex flex-wrap gap-1">
+                                      {log.myelitisData.weaknessDistribution && (
+                                          <span className="px-2 py-1 bg-cyan-100 dark:bg-cyan-900 text-cyan-800 dark:text-cyan-200 rounded-full text-xs">
+                                            🧬 {log.myelitisData.weaknessDistribution}
+                                          </span>
+                                      )}
+                                      {log.myelitisData.sensoryLevel && (
+                                          <span className="px-2 py-1 bg-cyan-200 dark:bg-cyan-800 text-cyan-800 dark:text-cyan-200 rounded-full text-xs">
+                                            Level: {log.myelitisData.sensoryLevel}
+                                          </span>
+                                      )}
+                                      {log.myelitisData.bladderSymptoms && (
+                                          <span className="px-2 py-1 bg-amber-100 dark:bg-amber-900 text-amber-800 dark:text-amber-200 rounded-full text-xs">
+                                            Bladder: {log.myelitisData.bladderSymptoms}
+                                          </span>
+                                      )}
+                                      {log.myelitisData.usesCatheter && (
+                                          <span className="px-2 py-1 bg-orange-100 dark:bg-orange-900 text-orange-800 dark:text-orange-200 rounded-full text-xs">
+                                            Uses Catheter
+                                          </span>
+                                      )}
+                                      {log.myelitisData.bowelSymptoms && (
+                                          <span className="px-2 py-1 bg-amber-200 dark:bg-amber-800 text-amber-800 dark:text-amber-200 rounded-full text-xs">
+                                            Bowel: {log.myelitisData.bowelSymptoms}
+                                          </span>
+                                      )}
+                                      {log.myelitisData.spasticityLocation && (
+                                          <span className="px-2 py-1 bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 rounded-full text-xs">
+                                            Spasticity: {log.myelitisData.spasticityLocation}
+                                          </span>
+                                      )}
+                                      {log.myelitisData.onBaclofenPump && (
+                                          <span className="px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-xs">
+                                            💊 Baclofen Pump
+                                          </span>
+                                      )}
+                                      {log.myelitisData.mobilityStatus && log.myelitisData.mobilityStatus !== 'ambulatory' && (
+                                          <span className="px-2 py-1 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-full text-xs">
+                                            🚶 {log.myelitisData.mobilityStatus}
+                                          </span>
+                                      )}
+                                      {log.myelitisData.causeOfMyelitis && (
+                                          <span className="px-2 py-1 bg-teal-100 dark:bg-teal-900 text-teal-800 dark:text-teal-200 rounded-full text-xs">
+                                            Cause: {log.myelitisData.causeOfMyelitis}
+                                          </span>
+                                      )}
+                                    </div>
+                                  </div>
+                              )}
 
                               {log.notes && (
                                   <p className="text-sm text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-700 p-2 rounded">{log.notes}</p>
