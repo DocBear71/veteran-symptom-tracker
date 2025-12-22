@@ -127,6 +127,32 @@ import {
   analyzeALSLogs,
   analyzeSyringomyeliaLogs,
   analyzeMyelitisLogs,
+  analyzeUpperRadicularGroupLogs,
+  analyzeMiddleRadicularGroupLogs,
+  analyzeLowerRadicularGroupLogs,
+  analyzeAllRadicularGroupsLogs,
+  analyzeRadialNerveLogs,
+  analyzeMedianNerveLogs,
+  analyzeUlnarNerveLogs,
+  analyzeMusculocutaneousNerveLogs,
+  analyzeCircumflexNerveLogs,
+  analyzeLongThoracicNerveLogs,
+  analyzeSciaticNerveLogs,
+  analyzeCommonPeronealNerveLogs,
+  analyzeSuperficialPeronealNerveLogs,
+  analyzeDeepPeronealNerveLogs,
+  analyzeTibialNerveLogs,
+  analyzePosteriorTibialNerveLogs,
+  analyzeFemoralNerveLogs,
+  analyzeSaphenousNerveLogs,
+  analyzeObturatorNerveLogs,
+  analyzeLateralFemoralCutaneousNerveLogs,
+  analyzeIlioinguinalNerveLogs,
+  analyzeEpilepsyMajorLogs,
+  analyzeEpilepsyMinorLogs,
+  analyzeJacksonianEpilepsyLogs,
+  analyzeDiencephalicEpilepsyLogs,
+  analyzePsychomotorEpilepsyLogs,
 } from './ratingCriteria';
 
 // Appointment type labels for export
@@ -307,6 +333,64 @@ export const generatePDF = (dateRange = 'all', options = { includeAppointments: 
           if (log.seizureData.auraPresent) seizureInfo.push('Aura');
           if (log.seizureData.witnessPresent) seizureInfo.push('WITNESSED');
           if (log.seizureData.recoveryTime) seizureInfo.push(`Recovery: ${log.seizureData.recoveryTime}`);
+
+          // Phase 1D: Jacksonian/Focal (DC 8912) details
+          if (log.seizureData.focalOnsetLocation) {
+            seizureInfo.push(`Focal Onset: ${log.seizureData.focalOnsetLocation}`);
+          }
+          if (log.seizureData.focalSpread === true) {
+            seizureInfo.push('Jacksonian March');
+          }
+          if (log.seizureData.secondaryGeneralization === true) {
+            seizureInfo.push('SECONDARY GENERALIZATION (Major)');
+          }
+          if (log.seizureData.awarenessPreserved === true) {
+            seizureInfo.push('Awareness Preserved');
+          } else if (log.seizureData.awarenessPreserved === false) {
+            seizureInfo.push('Awareness Impaired');
+          }
+
+          // Phase 1D: Diencephalic (DC 8913) details
+          if (log.seizureData.autonomicSymptoms && log.seizureData.autonomicSymptoms.length > 0) {
+            const autonomicLabels = {
+              'flushing': 'Flushing',
+              'sweating': 'Sweating',
+              'bp-change': 'BP Change',
+              'hr-change': 'HR Change',
+              'pupil-change': 'Pupil Changes',
+              'temperature': 'Temp Change',
+              'gi-symptoms': 'GI Symptoms',
+              'lacrimation': 'Tearing'
+            };
+            const autonomicStr = log.seizureData.autonomicSymptoms
+            .map(s => autonomicLabels[s] || s)
+            .join(', ');
+            seizureInfo.push(`Autonomic: ${autonomicStr}`);
+          }
+
+          // Phase 1D: Psychomotor (DC 8914) details
+          if (log.seizureData.automaticState === true) {
+            seizureInfo.push('AUTOMATIC STATE (Major)');
+          }
+          if (log.seizureData.automatisms && log.seizureData.automatisms.length > 0) {
+            const automatismLabels = {
+              'lip-smacking': 'Lip Smacking',
+              'chewing': 'Chewing',
+              'hand-movements': 'Hand Movements',
+              'picking': 'Picking',
+              'wandering': 'Wandering',
+              'complex-behavior': 'Complex Behavior'
+            };
+            const autoStr = log.seizureData.automatisms
+            .map(a => automatismLabels[a] || a)
+            .join(', ');
+            seizureInfo.push(`Automatisms: ${autoStr}`);
+          }
+          if (log.seizureData.hallucinations) seizureInfo.push('Hallucinations');
+          if (log.seizureData.perceptualIllusions) seizureInfo.push('Déjà vu/Jamais vu');
+          if (log.seizureData.moodChange) seizureInfo.push('Mood Change');
+          if (log.seizureData.memoryDisturbance) seizureInfo.push('Memory Disturbance');
+
           if (seizureInfo.length > 0) {
             notes = seizureInfo.join(', ') + (notes !== '-' ? ` | ${notes}` : '');
           }
@@ -1447,6 +1531,32 @@ export const generatePDF = (dateRange = 'all', options = { includeAppointments: 
           }
         }
 
+        // Phase 1C: Peripheral Nerve Form
+        if (log.peripheralNerveData) {
+          const pnInfo = [];
+          const pn = log.peripheralNerveData;
+
+          if (pn.affectedSide) pnInfo.push(`Side: ${pn.affectedSide}`);
+          if (pn.severityLevel) pnInfo.push(`Severity: ${pn.severityLevel}`);
+          if (pn.nerveLocation === 'upper' && pn.isDominantSide) {
+            pnInfo.push(pn.isDominantSide === 'yes' ? 'Major (Dominant)' : 'Minor');
+          }
+          if (pn.nerveConditionType && pn.nerveConditionType !== 'unknown') {
+            pnInfo.push(`Type: ${pn.nerveConditionType}`);
+          }
+          if (pn.hasMotorInvolvement) pnInfo.push('Motor');
+          if (pn.hasSensoryInvolvement) pnInfo.push('Sensory');
+          if (pn.hasSensoryInvolvement && !pn.hasMotorInvolvement) pnInfo.push('Wholly Sensory');
+          if (pn.hasAtrophy) pnInfo.push(`Atrophy${pn.atrophyLocation ? `: ${pn.atrophyLocation}` : ''}`);
+          if (pn.hasDeformity) pnInfo.push(`Deformity: ${pn.deformityType || 'present'}`);
+          if (pn.usesAssistiveDevice) pnInfo.push(`Device: ${pn.assistiveDeviceType || 'brace/splint'}`);
+          if (pn.hasEMGNCS) pnInfo.push('EMG/NCS confirmed');
+
+          if (pnInfo.length > 0) {
+            notes = pnInfo.join(', ') + (notes !== '-' ? ` | ${notes}` : '');
+          }
+        }
+
         // Add medications to the PDF file after all the symptoms
             if (linkedMeds.length > 0) {
                 const medInfo = linkedMeds.map(m => `${m.medicationName} ${m.dosage}`).join(', ');
@@ -1585,8 +1695,12 @@ export const generateCSV = (dateRange = 'all', options = { includeAppointments: 
         'PTSD Symptoms', 'PTSD Trigger',
         // Pain fields
         'Pain Type', 'Pain Flare Up', 'Radiating', 'Limited ROM', 'Activities Affected',
+
         // Phase 1E: Seizure fields
         'Seizure Type', 'Seizure Duration (sec)', 'Loss of Consciousness', 'Aura Present', 'Witness Present', 'Recovery Time',
+        // Phase 1D: Epilepsy Expansion fields (DC 8912, 8913, 8914)
+        'Focal Onset Location', 'Jacksonian March', 'Secondary Generalization', 'Awareness Preserved',
+        'Autonomic Symptoms', 'Automatic State', 'Automatisms', 'Hallucinations', 'Perceptual Illusions', 'Mood Change', 'Memory Disturbance',
         // Phase 2: Eye/Vision fields
         'Affected Eye', 'Left Eye Acuity', 'Right Eye Acuity', 'Eye Symptoms', 'Field of Vision', 'Affected Activities', 'Triggering Factors', 'Associated Conditions',
         // Phase 3: Genitourinary fields
@@ -1707,6 +1821,12 @@ export const generateCSV = (dateRange = 'all', options = { includeAppointments: 
         // Phase 1B: Myelitis fields
         'Myelitis - Weakness Distribution', 'Myelitis - Sensory Level', 'Myelitis - Bladder Symptoms',
         'Myelitis - Uses Catheter', 'Myelitis - Bowel Symptoms', 'Myelitis - Mobility Status', 'Myelitis - Cause',
+        // Phase 1C: Peripheral Nerve fields
+        'PN - Affected Side', 'PN - Dominant Side', 'PN - Condition Type', 'PN - Severity Level',
+        'PN - Motor Involvement', 'PN - Sensory Involvement', 'PN - Wholly Sensory',
+        'PN - Has Atrophy', 'PN - Atrophy Location', 'PN - Has Deformity', 'PN - Deformity Type',
+        'PN - Uses Assistive Device', 'PN - Device Type', 'PN - EMG/NCS Confirmed', 'PN - EMG/NCS Findings',
+        'PN - Nerve Location', 'PN - Functional Limitations',
         // Notes
         'Notes'
       ];
@@ -1799,6 +1919,18 @@ export const generateCSV = (dateRange = 'all', options = { includeAppointments: 
             log.seizureData?.auraPresent === true ? 'Yes' : (log.seizureData?.auraPresent === false ? 'No' : ''),
             log.seizureData?.witnessPresent === true ? 'Yes' : (log.seizureData?.witnessPresent === false ? 'No' : ''),
             log.seizureData?.recoveryTime || '',
+            // Phase 1D: Epilepsy Expansion fields
+            log.seizureData?.focalOnsetLocation || '',
+            log.seizureData?.focalSpread === true ? 'Yes' : (log.seizureData?.focalSpread === false ? 'No' : ''),
+            log.seizureData?.secondaryGeneralization === true ? 'Yes (Major)' : (log.seizureData?.secondaryGeneralization === false ? 'No' : ''),
+            log.seizureData?.awarenessPreserved === true ? 'Yes' : (log.seizureData?.awarenessPreserved === false ? 'No' : ''),
+            log.seizureData?.autonomicSymptoms?.join('; ') || '',
+            log.seizureData?.automaticState === true ? 'Yes (Major)' : (log.seizureData?.automaticState === false ? 'No' : ''),
+            log.seizureData?.automatisms?.join('; ') || '',
+            log.seizureData?.hallucinations === true ? 'Yes' : (log.seizureData?.hallucinations === false ? 'No' : ''),
+            log.seizureData?.perceptualIllusions === true ? 'Yes' : (log.seizureData?.perceptualIllusions === false ? 'No' : ''),
+            log.seizureData?.moodChange === true ? 'Yes' : (log.seizureData?.moodChange === false ? 'No' : ''),
+            log.seizureData?.memoryDisturbance === true ? 'Yes' : (log.seizureData?.memoryDisturbance === false ? 'No' : ''),
             // Phase 2: Eye/Vision fields
             log.eyeData?.affectedEye ? (log.eyeData.affectedEye === 'left' ? 'Left' : log.eyeData.affectedEye === 'right' ? 'Right' : 'Both') : '',
             log.eyeData?.leftEyeAcuity || '',
@@ -2189,6 +2321,24 @@ export const generateCSV = (dateRange = 'all', options = { includeAppointments: 
             log.myelitisData?.bowelSymptoms || '',
             log.myelitisData?.mobilityStatus || '',
             log.myelitisData?.causeOfMyelitis || '',
+            // Phase 1C: Peripheral Nerve data
+            log.peripheralNerveData?.affectedSide || '',
+            log.peripheralNerveData?.isDominantSide || '',
+            log.peripheralNerveData?.nerveConditionType || '',
+            log.peripheralNerveData?.severityLevel || '',
+            log.peripheralNerveData?.hasMotorInvolvement ? 'Yes' : '',
+            log.peripheralNerveData?.hasSensoryInvolvement ? 'Yes' : '',
+            (log.peripheralNerveData?.hasSensoryInvolvement && !log.peripheralNerveData?.hasMotorInvolvement) ? 'Yes' : '',
+            log.peripheralNerveData?.hasAtrophy ? 'Yes' : '',
+            log.peripheralNerveData?.atrophyLocation || '',
+            log.peripheralNerveData?.hasDeformity ? 'Yes' : '',
+            log.peripheralNerveData?.deformityType || '',
+            log.peripheralNerveData?.usesAssistiveDevice ? 'Yes' : '',
+            log.peripheralNerveData?.assistiveDeviceType || '',
+            log.peripheralNerveData?.hasEMGNCS ? 'Yes' : '',
+            log.peripheralNerveData?.emgNCSFindings || '',
+            log.peripheralNerveData?.nerveLocation || '',
+            log.peripheralNerveData?.functionalLimitations || '',
             log.notes || ''
           ];
         });
@@ -2631,6 +2781,34 @@ const analyzeAllConditions = (logs, options = {}) => {
         'als': analyzeALSLogs,
         'syringomyelia': analyzeSyringomyeliaLogs,
         'myelitis': analyzeMyelitisLogs,
+        // Phase 1C: Peripheral Nerves - Upper Extremity
+        'upper-radicular-nerve': analyzeUpperRadicularGroupLogs,
+        'middle-radicular-nerve': analyzeMiddleRadicularGroupLogs,
+        'lower-radicular-nerve': analyzeLowerRadicularGroupLogs,
+        'all-radicular-nerve': analyzeAllRadicularGroupsLogs,
+        'radial-nerve': analyzeRadialNerveLogs,
+        'median-nerve': analyzeMedianNerveLogs,
+        'ulnar-nerve': analyzeUlnarNerveLogs,
+        'musculocutaneous-nerve': analyzeMusculocutaneousNerveLogs,
+        'circumflex-nerve': analyzeCircumflexNerveLogs,
+        'long-thoracic-nerve': analyzeLongThoracicNerveLogs,
+        // Phase 1C: Peripheral Nerves - Lower Extremity
+        'sciatic-nerve': analyzeSciaticNerveLogs,
+        'common-peroneal-nerve': analyzeCommonPeronealNerveLogs,
+        'superficial-peroneal-nerve': analyzeSuperficialPeronealNerveLogs,
+        'deep-peroneal-nerve': analyzeDeepPeronealNerveLogs,
+        'tibial-nerve': analyzeTibialNerveLogs,
+        'posterior-tibial-nerve': analyzePosteriorTibialNerveLogs,
+        'femoral-nerve': analyzeFemoralNerveLogs,
+        'saphenous-nerve': analyzeSaphenousNerveLogs,
+        'obturator-nerve': analyzeObturatorNerveLogs,
+        'lateral-femoral-cutaneous-nerve': analyzeLateralFemoralCutaneousNerveLogs,
+        'ilioinguinal-nerve': analyzeIlioinguinalNerveLogs,
+        'epilepsy-major': analyzeEpilepsyMajorLogs,
+        'epilepsy-minor': analyzeEpilepsyMinorLogs,
+        'epilepsy-jacksonian': analyzeJacksonianEpilepsyLogs,
+        'epilepsy-diencephalic': analyzeDiencephalicEpilepsyLogs,
+        'epilepsy-psychomotor': analyzePsychomotorEpilepsyLogs,
       };
 
     const analyses = [];
@@ -2947,6 +3125,64 @@ export const generateVAClaimPackagePDF = async (dateRange = 'all', options = {})
           if (log.seizureData.auraPresent) seizureInfo.push('Aura');
           if (log.seizureData.witnessPresent) seizureInfo.push('WITNESSED');
           if (log.seizureData.recoveryTime) seizureInfo.push(`Recovery: ${log.seizureData.recoveryTime}`);
+
+          // Phase 1D: Jacksonian/Focal (DC 8912) details
+          if (log.seizureData.focalOnsetLocation) {
+            seizureInfo.push(`Focal Onset: ${log.seizureData.focalOnsetLocation}`);
+          }
+          if (log.seizureData.focalSpread === true) {
+            seizureInfo.push('Jacksonian March');
+          }
+          if (log.seizureData.secondaryGeneralization === true) {
+            seizureInfo.push('SECONDARY GENERALIZATION (Major)');
+          }
+          if (log.seizureData.awarenessPreserved === true) {
+            seizureInfo.push('Awareness Preserved');
+          } else if (log.seizureData.awarenessPreserved === false) {
+            seizureInfo.push('Awareness Impaired');
+          }
+
+          // Phase 1D: Diencephalic (DC 8913) details
+          if (log.seizureData.autonomicSymptoms && log.seizureData.autonomicSymptoms.length > 0) {
+            const autonomicLabels = {
+              'flushing': 'Flushing',
+              'sweating': 'Sweating',
+              'bp-change': 'BP Change',
+              'hr-change': 'HR Change',
+              'pupil-change': 'Pupil Changes',
+              'temperature': 'Temp Change',
+              'gi-symptoms': 'GI Symptoms',
+              'lacrimation': 'Tearing'
+            };
+            const autonomicStr = log.seizureData.autonomicSymptoms
+            .map(s => autonomicLabels[s] || s)
+            .join(', ');
+            seizureInfo.push(`Autonomic: ${autonomicStr}`);
+          }
+
+          // Phase 1D: Psychomotor (DC 8914) details
+          if (log.seizureData.automaticState === true) {
+            seizureInfo.push('AUTOMATIC STATE (Major)');
+          }
+          if (log.seizureData.automatisms && log.seizureData.automatisms.length > 0) {
+            const automatismLabels = {
+              'lip-smacking': 'Lip Smacking',
+              'chewing': 'Chewing',
+              'hand-movements': 'Hand Movements',
+              'picking': 'Picking',
+              'wandering': 'Wandering',
+              'complex-behavior': 'Complex Behavior'
+            };
+            const autoStr = log.seizureData.automatisms
+            .map(a => automatismLabels[a] || a)
+            .join(', ');
+            seizureInfo.push(`Automatisms: ${autoStr}`);
+          }
+          if (log.seizureData.hallucinations) seizureInfo.push('Hallucinations');
+          if (log.seizureData.perceptualIllusions) seizureInfo.push('Déjà vu/Jamais vu');
+          if (log.seizureData.moodChange) seizureInfo.push('Mood Change');
+          if (log.seizureData.memoryDisturbance) seizureInfo.push('Memory Disturbance');
+
           if (seizureInfo.length > 0) {
             notes = seizureInfo.join(', ') + (notes !== '-' ? ` | ${notes}` : '');
           }
@@ -4082,6 +4318,32 @@ export const generateVAClaimPackagePDF = async (dateRange = 'all', options = {})
 
           if (myelInfo.length > 0) {
             notes = myelInfo.join(', ') + (notes !== '-' ? ` | ${notes}` : '');
+          }
+        }
+
+        // Phase 1C: Peripheral Nerve Form
+        if (log.peripheralNerveData) {
+          const pnInfo = [];
+          const pn = log.peripheralNerveData;
+
+          if (pn.affectedSide) pnInfo.push(`Side: ${pn.affectedSide}`);
+          if (pn.severityLevel) pnInfo.push(`Severity: ${pn.severityLevel}`);
+          if (pn.nerveLocation === 'upper' && pn.isDominantSide) {
+            pnInfo.push(pn.isDominantSide === 'yes' ? 'Major (Dominant)' : 'Minor');
+          }
+          if (pn.nerveConditionType && pn.nerveConditionType !== 'unknown') {
+            pnInfo.push(`Type: ${pn.nerveConditionType}`);
+          }
+          if (pn.hasMotorInvolvement) pnInfo.push('Motor');
+          if (pn.hasSensoryInvolvement) pnInfo.push('Sensory');
+          if (pn.hasSensoryInvolvement && !pn.hasMotorInvolvement) pnInfo.push('Wholly Sensory');
+          if (pn.hasAtrophy) pnInfo.push(`Atrophy${pn.atrophyLocation ? `: ${pn.atrophyLocation}` : ''}`);
+          if (pn.hasDeformity) pnInfo.push(`Deformity: ${pn.deformityType || 'present'}`);
+          if (pn.usesAssistiveDevice) pnInfo.push(`Device: ${pn.assistiveDeviceType || 'brace/splint'}`);
+          if (pn.hasEMGNCS) pnInfo.push('EMG/NCS confirmed');
+
+          if (pnInfo.length > 0) {
+            notes = pnInfo.join(', ') + (notes !== '-' ? ` | ${notes}` : '');
           }
         }
 

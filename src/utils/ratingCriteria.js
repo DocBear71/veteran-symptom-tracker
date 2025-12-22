@@ -350,16 +350,37 @@ export const CONDITIONS = {
     name: 'Epilepsy, Grand Mal',
     diagnosticCode: '8910',
     cfrReference: '38 CFR 4.124a',
-    symptomIds: [ 'seizure-major', 'seizure-partial', 'seizure-psychomotor', 'aura-pre-seizure']
-    ,
+    symptomIds: [ 'seizure-major', 'seizure-partial', 'seizure-psychomotor', 'aura-pre-seizure'],
   },
   EPILEPSY_MINOR: {
     id: 'epilepsy-minor',
     name: 'Epilepsy, Petit Mal',
     diagnosticCode: '8911',
     cfrReference: '38 CFR 4.124a',
-    symptomIds: ['seizure-minor', 'aura-pre-seizure']
-    ,
+    symptomIds: ['seizure-minor', 'aura-pre-seizure'],
+  },
+
+  // Phase 1D: Epilepsy Expansion
+  EPILEPSY_JACKSONIAN: {
+    id: 'epilepsy-jacksonian',
+    name: 'Epilepsy, Jacksonian/Focal',
+    diagnosticCode: '8912',
+    cfrReference: '38 CFR 4.124a',
+    category: 'neurological',
+  },
+  EPILEPSY_DIENCEPHALIC: {
+    id: 'epilepsy-diencephalic',
+    name: 'Epilepsy, Diencephalic',
+    diagnosticCode: '8913',
+    cfrReference: '38 CFR 4.124a',
+    category: 'neurological',
+  },
+  EPILEPSY_PSYCHOMOTOR: {
+    id: 'epilepsy-psychomotor',
+    name: 'Epilepsy, Psychomotor',
+    diagnosticCode: '8914',
+    cfrReference: '38 CFR 4.124a',
+    category: 'neurological',
   },
   GERD_COMPLICATIONS: {
     id: 'gerd-complications',
@@ -1499,6 +1520,240 @@ export const CONDITIONS = {
       'myel-paralysis',
     ],
   },
+
+  // ============================================
+  // PHASE 1C: PERIPHERAL NERVE CONDITIONS
+  // DC 8510-8530 (Paralysis), 8610-8630 (Neuritis), 8710-8730 (Neuralgia)
+  // 38 CFR 4.124a
+  // ============================================
+
+  // UPPER EXTREMITY NERVES
+
+  UPPER_RADICULAR_GROUP: {
+    id: 'upper-radicular-nerve',
+    name: 'Upper Radicular Group (C5-C6)',
+    diagnosticCodes: { paralysis: '8510', neuritis: '8610', neuralgia: '8710' },
+    symptomIds: [
+      'uprn-shoulder-weakness', 'uprn-elbow-weakness', 'uprn-shoulder-movement-loss',
+      'uprn-elbow-movement-loss', 'uprn-numbness', 'uprn-tingling', 'uprn-pain',
+      'uprn-muscle-atrophy', 'uprn-reflex-loss'
+    ]
+  },
+
+  MIDDLE_RADICULAR_GROUP: {
+    id: 'middle-radicular-nerve',
+    name: 'Middle Radicular Group (C7)',
+    diagnosticCodes: { paralysis: '8511', neuritis: '8611', neuralgia: '8711' },
+    symptomIds: [
+      'mdrn-arm-weakness', 'mdrn-wrist-extension-weakness', 'mdrn-elbow-extension-weakness',
+      'mdrn-finger-extension-weakness', 'mdrn-numbness', 'mdrn-tingling', 'mdrn-pain',
+      'mdrn-muscle-atrophy', 'mdrn-reflex-loss'
+    ]
+  },
+
+  LOWER_RADICULAR_GROUP: {
+    id: 'lower-radicular-nerve',
+    name: 'Lower Radicular Group (C8-T1)',
+    diagnosticCodes: { paralysis: '8512', neuritis: '8612', neuralgia: '8712' },
+    symptomIds: [
+      'lwrn-hand-weakness', 'lwrn-grip-weakness', 'lwrn-finger-flexion-weakness',
+      'lwrn-intrinsic-muscle-weakness', 'lwrn-numbness', 'lwrn-tingling', 'lwrn-pain',
+      'lwrn-muscle-atrophy', 'lwrn-clumsiness'
+    ]
+  },
+
+  ALL_RADICULAR_GROUPS: {
+    id: 'all-radicular-nerve',
+    name: 'All Radicular Groups (Brachial Plexus)',
+    diagnosticCodes: { paralysis: '8513', neuritis: '8613', neuralgia: '8713' },
+    symptomIds: [
+      'alrn-complete-arm-paralysis', 'alrn-arm-weakness', 'alrn-shoulder-weakness',
+      'alrn-elbow-weakness', 'alrn-wrist-weakness', 'alrn-hand-weakness',
+      'alrn-numbness', 'alrn-tingling', 'alrn-pain', 'alrn-muscle-atrophy'
+    ]
+  },
+
+  RADIAL_NERVE: {
+    id: 'radial-nerve',
+    name: 'Radial Nerve (Musculospiral)',
+    diagnosticCodes: { paralysis: '8514', neuritis: '8614', neuralgia: '8714' },
+    symptomIds: [
+      'radn-wrist-drop', 'radn-finger-drop', 'radn-extension-weakness',
+      'radn-supination-weakness', 'radn-thumb-extension-loss', 'radn-grip-weakness',
+      'radn-numbness', 'radn-tingling', 'radn-pain', 'radn-muscle-atrophy'
+    ]
+  },
+
+  MEDIAN_NERVE: {
+    id: 'median-nerve',
+    name: 'Median Nerve (Carpal Tunnel)',
+    diagnosticCodes: { paralysis: '8515', neuritis: '8615', neuralgia: '8715' },
+    symptomIds: [
+      'medn-numbness', 'medn-tingling', 'medn-pain', 'medn-night-symptoms',
+      'medn-thenar-weakness', 'medn-thenar-atrophy', 'medn-grip-weakness',
+      'medn-dropping-objects', 'medn-opposition-weakness', 'medn-pronation-weakness',
+      'medn-ape-hand', 'medn-trophic-changes'
+    ]
+  },
+
+  ULNAR_NERVE: {
+    id: 'ulnar-nerve',
+    name: 'Ulnar Nerve (Cubital Tunnel)',
+    diagnosticCodes: { paralysis: '8516', neuritis: '8616', neuralgia: '8716' },
+    symptomIds: [
+      'ulnn-numbness', 'ulnn-tingling', 'ulnn-pain', 'ulnn-elbow-pain',
+      'ulnn-grip-weakness', 'ulnn-pinch-weakness', 'ulnn-finger-spread-weakness',
+      'ulnn-claw-hand', 'ulnn-interossei-atrophy', 'ulnn-hypothenar-atrophy',
+      'ulnn-thumb-adduction-weakness', 'ulnn-wrist-flexion-weakness'
+    ]
+  },
+
+  MUSCULOCUTANEOUS_NERVE: {
+    id: 'musculocutaneous-nerve',
+    name: 'Musculocutaneous Nerve',
+    diagnosticCodes: { paralysis: '8517', neuritis: '8617', neuralgia: '8717' },
+    symptomIds: [
+      'mscn-biceps-weakness', 'mscn-elbow-flexion-weakness', 'mscn-supination-weakness',
+      'mscn-numbness', 'mscn-tingling', 'mscn-pain', 'mscn-muscle-atrophy'
+    ]
+  },
+
+  CIRCUMFLEX_NERVE: {
+    id: 'circumflex-nerve',
+    name: 'Circumflex (Axillary) Nerve',
+    diagnosticCodes: { paralysis: '8518', neuritis: '8618', neuralgia: '8718' },
+    symptomIds: [
+      'crcn-shoulder-abduction-weakness', 'crcn-arm-raise-difficulty',
+      'crcn-external-rotation-weakness', 'crcn-deltoid-weakness', 'crcn-deltoid-atrophy',
+      'crcn-numbness', 'crcn-tingling', 'crcn-pain'
+    ]
+  },
+
+  LONG_THORACIC_NERVE: {
+    id: 'long-thoracic-nerve',
+    name: 'Long Thoracic Nerve',
+    diagnosticCodes: { paralysis: '8519', neuritis: '8619', neuralgia: '8719' },
+    symptomIds: [
+      'ltn-winged-scapula', 'ltn-arm-elevation-difficulty', 'ltn-shoulder-weakness',
+      'ltn-pushing-difficulty', 'ltn-serratus-weakness', 'ltn-pain', 'ltn-fatigue'
+    ]
+  },
+
+  // LOWER EXTREMITY NERVES
+
+  SCIATIC_NERVE: {
+    id: 'sciatic-nerve',
+    name: 'Sciatic Nerve',
+    diagnosticCodes: { paralysis: '8520', neuritis: '8620', neuralgia: '8720' },
+    symptomIds: [
+      'scin-radiating-pain', 'scin-leg-weakness', 'scin-foot-drop',
+      'scin-knee-flexion-weakness', 'scin-numbness', 'scin-tingling', 'scin-burning',
+      'scin-muscle-atrophy', 'scin-difficulty-walking', 'scin-sitting-pain'
+    ]
+  },
+
+  COMMON_PERONEAL_NERVE: {
+    id: 'common-peroneal-nerve',
+    name: 'Common Peroneal (External Popliteal) Nerve',
+    diagnosticCodes: { paralysis: '8521', neuritis: '8621', neuralgia: '8721' },
+    symptomIds: [
+      'cpn-foot-drop', 'cpn-dorsiflexion-weakness', 'cpn-toe-extension-weakness',
+      'cpn-eversion-weakness', 'cpn-steppage-gait', 'cpn-tripping',
+      'cpn-numbness', 'cpn-tingling', 'cpn-pain', 'cpn-muscle-atrophy'
+    ]
+  },
+
+  SUPERFICIAL_PERONEAL_NERVE: {
+    id: 'superficial-peroneal-nerve',
+    name: 'Superficial Peroneal (Musculocutaneous) Nerve',
+    diagnosticCodes: { paralysis: '8522', neuritis: '8622', neuralgia: '8722' },
+    symptomIds: [
+      'spn-eversion-weakness', 'spn-ankle-instability', 'spn-numbness',
+      'spn-tingling', 'spn-pain', 'spn-muscle-atrophy'
+    ]
+  },
+
+  DEEP_PERONEAL_NERVE: {
+    id: 'deep-peroneal-nerve',
+    name: 'Deep Peroneal (Anterior Tibial) Nerve',
+    diagnosticCodes: { paralysis: '8523', neuritis: '8623', neuralgia: '8723' },
+    symptomIds: [
+      'dpn-dorsiflexion-loss', 'dpn-toe-extension-weakness', 'dpn-foot-drop',
+      'dpn-numbness', 'dpn-tingling', 'dpn-pain', 'dpn-muscle-atrophy'
+    ]
+  },
+
+  TIBIAL_NERVE: {
+    id: 'tibial-nerve',
+    name: 'Tibial (Internal Popliteal) Nerve',
+    diagnosticCodes: { paralysis: '8524', neuritis: '8624', neuralgia: '8724' },
+    symptomIds: [
+      'tibn-plantar-flexion-weakness', 'tibn-toe-flexion-weakness',
+      'tibn-foot-inversion-weakness', 'tibn-calf-weakness', 'tibn-difficulty-walking-tiptoe',
+      'tibn-numbness', 'tibn-tingling', 'tibn-burning', 'tibn-muscle-atrophy'
+    ]
+  },
+
+  POSTERIOR_TIBIAL_NERVE: {
+    id: 'posterior-tibial-nerve',
+    name: 'Posterior Tibial Nerve',
+    diagnosticCodes: { paralysis: '8525', neuritis: '8625', neuralgia: '8725' },
+    symptomIds: [
+      'ptn-sole-paralysis', 'ptn-toe-flexion-weakness', 'ptn-foot-adduction-weakness',
+      'ptn-numbness', 'ptn-tingling', 'ptn-burning', 'ptn-tarsal-tunnel', 'ptn-muscle-atrophy'
+    ]
+  },
+
+  FEMORAL_NERVE: {
+    id: 'femoral-nerve',
+    name: 'Femoral (Anterior Crural) Nerve',
+    diagnosticCodes: { paralysis: '8526', neuritis: '8626', neuralgia: '8726' },
+    symptomIds: [
+      'femn-quadriceps-weakness', 'femn-knee-extension-weakness', 'femn-knee-buckling',
+      'femn-difficulty-stairs', 'femn-difficulty-rising', 'femn-numbness',
+      'femn-tingling', 'femn-pain', 'femn-muscle-atrophy'
+    ]
+  },
+
+  SAPHENOUS_NERVE: {
+    id: 'saphenous-nerve',
+    name: 'Saphenous (Internal Saphenous) Nerve',
+    diagnosticCodes: { paralysis: '8527', neuritis: '8627', neuralgia: '8727' },
+    symptomIds: [
+      'sapn-numbness', 'sapn-tingling', 'sapn-pain', 'sapn-burning', 'sapn-hypersensitivity'
+    ]
+  },
+
+  OBTURATOR_NERVE: {
+    id: 'obturator-nerve',
+    name: 'Obturator Nerve',
+    diagnosticCodes: { paralysis: '8528', neuritis: '8628', neuralgia: '8728' },
+    symptomIds: [
+      'obtn-thigh-adduction-weakness', 'obtn-groin-pain', 'obtn-medial-thigh-pain',
+      'obtn-numbness', 'obtn-tingling', 'obtn-gait-instability', 'obtn-muscle-atrophy'
+    ]
+  },
+
+  LATERAL_FEMORAL_CUTANEOUS_NERVE: {
+    id: 'lateral-femoral-cutaneous-nerve',
+    name: 'Lateral Femoral Cutaneous Nerve (Meralgia Paresthetica)',
+    diagnosticCodes: { paralysis: '8529', neuritis: '8629', neuralgia: '8729' },
+    symptomIds: [
+      'lfcn-numbness', 'lfcn-tingling', 'lfcn-burning', 'lfcn-hypersensitivity',
+      'lfcn-pain-standing', 'lfcn-pain-walking'
+    ]
+  },
+
+  ILIOINGUINAL_NERVE: {
+    id: 'ilioinguinal-nerve',
+    name: 'Ilio-inguinal Nerve',
+    diagnosticCodes: { paralysis: '8530', neuritis: '8630', neuralgia: '8730' },
+    symptomIds: [
+      'iin-groin-numbness', 'iin-genital-numbness', 'iin-inner-thigh-numbness',
+      'iin-groin-pain', 'iin-burning', 'iin-hypersensitivity', 'iin-pain-movement'
+    ]
+  },
+
 
 };
 
@@ -7598,6 +7853,203 @@ export const EPILEPSY_MINOR_CRITERIA = {
       term: 'Myoclonic Seizure',
       definition: 'Sudden, brief jerking movements of muscles. Can affect arms, legs, or entire body. Person remains conscious. May occur in clusters.'
     },
+  },
+};
+
+
+// ============================================
+// PHASE 1D: EPILEPSY EXPANSION CRITERIA
+// ============================================
+
+// EPILEPSY - JACKSONIAN/FOCAL (DC 8912)
+export const EPILEPSY_JACKSONIAN_CRITERIA = {
+  diagnosticCode: '8912',
+  condition: 'Epilepsy, Jacksonian and Focal Motor or Sensory',
+  cfrReference: '38 CFR 4.124a, Diagnostic Code 8912',
+  description: 'Focal epilepsy characterized by seizures beginning in one area of the body (motor) or with sensory symptoms, which may spread (Jacksonian march). Rate as minor seizures, except when major seizures predominate.',
+  note: 'Per 38 CFR 4.124a: "Rate as minor seizures, except in the presence of major and minor seizures, rate the predominating type." Jacksonian seizures that secondarily generalize to tonic-clonic (grand mal) should be rated as major seizures.',
+  disclaimer: 'This analysis is for documentation purposes only. The VA determines final ratings based on complete medical evidence, C&P examination findings, and the predominating seizure type.',
+  ratings: [
+    {
+      percent: 100,
+      summary: 'Averaging at least 1 major seizure per month over the last year',
+      requirements: [
+        'Secondary generalization to tonic-clonic convulsions with unconsciousness',
+        'Average of 1+ generalized seizure per month for 12 months',
+        'Medical documentation of seizure frequency',
+      ],
+      note: 'Only applicable when focal seizures predominantly secondarily generalize',
+    },
+    {
+      percent: 80,
+      summary: 'At least 1 major seizure in 3 months over the last year; OR more than 10 minor seizures weekly',
+      requirements: [
+        'Average 1 major (generalized) seizure every 3 months, OR',
+        'More than 10 focal seizures per week',
+      ],
+    },
+    {
+      percent: 60,
+      summary: 'At least 1 major seizure in 4 months over the last year; OR 9-10 minor seizures per week',
+      requirements: [
+        'Average 1 major seizure every 4 months, OR',
+        '9-10 focal seizures per week',
+      ],
+    },
+    {
+      percent: 40,
+      summary: 'At least 1 major seizure in last 6 months or 2 in last year; OR 5-8 minor seizures weekly',
+      requirements: [
+        '1+ major seizure in last 6 months OR 2+ in last year, OR',
+        '5-8 focal seizures per week',
+      ],
+    },
+    {
+      percent: 20,
+      summary: 'At least 1 major seizure in last 2 years; OR at least 2 minor seizures in last 6 months',
+      requirements: [
+        '1+ major seizure in last 2 years, OR',
+        '2+ focal seizures in last 6 months',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Confirmed diagnosis of focal epilepsy with history of seizures',
+      requirements: [
+        'Confirmed diagnosis by physician',
+        'History of focal/Jacksonian seizures',
+        'On continuous anti-epileptic medication (minimum 10% if on medication)',
+      ],
+    },
+  ],
+  definitions: {
+    focalMotorSeizure: 'Seizure beginning with motor activity (jerking, twitching) in one specific body area, typically face, hand, or foot.',
+    focalSensorySeizure: 'Seizure beginning with sensory symptoms (tingling, numbness, visual disturbance) in one specific area.',
+    jacksonianMarch: 'Progressive spread of motor or sensory seizure activity from initial focus to adjacent body areas, following the motor/sensory cortex representation.',
+    secondaryGeneralization: 'When a focal seizure spreads to involve both hemispheres, resulting in tonic-clonic convulsion with loss of consciousness.',
+  },
+};
+
+// EPILEPSY - DIENCEPHALIC (DC 8913)
+export const EPILEPSY_DIENCEPHALIC_CRITERIA = {
+  diagnosticCode: '8913',
+  condition: 'Epilepsy, Diencephalic',
+  cfrReference: '38 CFR 4.124a, Diagnostic Code 8913',
+  description: 'Epilepsy involving the diencephalon (thalamus/hypothalamus) characterized primarily by autonomic symptoms. Rate as minor seizures, except when major seizures predominate.',
+  note: 'Per 38 CFR 4.124a: "Rate as minor seizures, except in the presence of major and minor seizures, rate the predominating type." Diencephalic epilepsy primarily presents with autonomic symptoms and is typically rated under minor seizure criteria.',
+  disclaimer: 'This analysis is for documentation purposes only. The VA determines final ratings based on complete medical evidence and C&P examination findings.',
+  ratings: [
+    {
+      percent: 80,
+      summary: 'More than 10 minor (autonomic) seizures weekly',
+      requirements: [
+        'More than 10 autonomic seizure episodes per week',
+        'Medical documentation of frequency',
+      ],
+    },
+    {
+      percent: 60,
+      summary: '9-10 minor (autonomic) seizures per week',
+      requirements: [
+        '9-10 autonomic seizure episodes per week',
+      ],
+    },
+    {
+      percent: 40,
+      summary: '5-8 minor (autonomic) seizures weekly',
+      requirements: [
+        '5-8 autonomic seizure episodes per week',
+      ],
+    },
+    {
+      percent: 20,
+      summary: 'At least 2 minor seizures in last 6 months',
+      requirements: [
+        '2+ autonomic seizure episodes in last 6 months',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Confirmed diagnosis of diencephalic epilepsy with history of seizures',
+      requirements: [
+        'Confirmed diagnosis by physician/neurologist',
+        'History of autonomic seizure episodes',
+        'On continuous anti-epileptic medication (minimum 10%)',
+      ],
+    },
+  ],
+  definitions: {
+    autonomicSeizure: 'Seizure characterized by changes in autonomic nervous system function including flushing, sweating, blood pressure changes, heart rate changes, pupillary changes, temperature dysregulation, GI symptoms.',
+    diencephalon: 'Brain region including thalamus and hypothalamus that regulates autonomic functions, sleep-wake cycles, and hormonal release.',
+  },
+};
+
+// EPILEPSY - PSYCHOMOTOR (DC 8914)
+export const EPILEPSY_PSYCHOMOTOR_CRITERIA = {
+  diagnosticCode: '8914',
+  condition: 'Epilepsy, Psychomotor',
+  cfrReference: '38 CFR 4.124a, Diagnostic Code 8914',
+  description: 'Complex partial seizures originating in temporal lobe. Can be rated as MAJOR or MINOR depending on presentation characteristics.',
+  note: 'Per 38 CFR 4.124a: MAJOR seizures - characterized by automatic states AND/OR generalized convulsions with unconsciousness. MINOR seizures - characterized by brief transient episodes of random motor movements, hallucinations, perceptual illusions, abnormalities of thinking, memory or mood, or autonomic disturbances.',
+  disclaimer: 'This analysis is for documentation purposes only. The VA determines final ratings based on complete medical evidence. Psychomotor seizure classification (major vs minor) depends on specific episode characteristics.',
+  ratings: [
+    {
+      percent: 100,
+      summary: 'Averaging at least 1 major psychomotor seizure per month over the last year',
+      requirements: [
+        'Episodes with automatic states AND/OR convulsions with unconsciousness',
+        'Average 1+ such episode per month for 12 months',
+        'Medical documentation of seizure characteristics and frequency',
+      ],
+      seizureType: 'major',
+    },
+    {
+      percent: 80,
+      summary: 'At least 1 major seizure in 3 months over last year; OR more than 10 minor seizures weekly',
+      requirements: [
+        'Average 1 major psychomotor seizure every 3 months, OR',
+        'More than 10 minor psychomotor episodes per week',
+      ],
+    },
+    {
+      percent: 60,
+      summary: 'At least 1 major seizure in 4 months over last year; OR 9-10 minor seizures per week',
+      requirements: [
+        'Average 1 major psychomotor seizure every 4 months, OR',
+        '9-10 minor psychomotor episodes per week',
+      ],
+    },
+    {
+      percent: 40,
+      summary: 'At least 1 major seizure in last 6 months or 2 in last year; OR 5-8 minor seizures weekly',
+      requirements: [
+        '1+ major psychomotor seizure in last 6 months OR 2+ in last year, OR',
+        '5-8 minor psychomotor episodes per week',
+      ],
+    },
+    {
+      percent: 20,
+      summary: 'At least 1 major seizure in last 2 years; OR at least 2 minor seizures in last 6 months',
+      requirements: [
+        '1+ major psychomotor seizure in last 2 years, OR',
+        '2+ minor psychomotor episodes in last 6 months',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Confirmed diagnosis of psychomotor epilepsy with history of seizures',
+      requirements: [
+        'Confirmed diagnosis by physician/neurologist',
+        'History of psychomotor seizures',
+        'On continuous anti-epileptic medication (minimum 10%)',
+      ],
+    },
+  ],
+  definitions: {
+    majorPsychomotor: 'Psychomotor seizures characterized by automatic states (complex automatisms, purposeless wandering, complex behaviors performed without awareness) AND/OR generalized convulsions with unconsciousness.',
+    minorPsychomotor: 'Psychomotor seizures characterized by brief transient episodes of: random motor movements, hallucinations, perceptual illusions (déjà vu, jamais vu), abnormalities of thinking, memory disturbance, mood changes, or autonomic disturbances.',
+    automaticState: 'Period during which patient performs complex behaviors without conscious awareness or memory of the event.',
+    oralAutomatisms: 'Repetitive mouth/lip movements including lip smacking, chewing, swallowing - common in temporal lobe seizures.',
   },
 };
 
@@ -14085,6 +14537,1018 @@ export const MYELITIS_CRITERIA = {
 };
 
 // ============================================
+// PHASE 1C: PERIPHERAL NERVE CRITERIA
+// 38 CFR 4.124a - Diseases of the Peripheral Nerves
+// ============================================
+
+// UPPER RADICULAR GROUP (C5-C6) - DC 8510/8610/8710
+export const UPPER_RADICULAR_GROUP_CRITERIA = {
+  diagnosticCodes: { paralysis: '8510', neuritis: '8610', neuralgia: '8710' },
+  condition: 'Upper Radicular Group (C5-C6) Paralysis',
+  cfrReference: '38 CFR 4.124a',
+  bodyLocation: 'upper',
+  ratings: [
+    {
+      percent: 70,
+      summary: 'Complete paralysis (major extremity) - all shoulder and elbow movements lost or severely affected',
+      criteria: ['Complete paralysis of upper radicular group', 'All shoulder movements lost or severely affected', 'All elbow movements lost or severely affected', 'Hand and wrist movements not affected'],
+      extremity: 'major'
+    },
+    {
+      percent: 60,
+      summary: 'Complete paralysis (minor extremity) - all shoulder and elbow movements lost or severely affected',
+      criteria: ['Complete paralysis of upper radicular group', 'All shoulder movements lost or severely affected', 'All elbow movements lost or severely affected', 'Hand and wrist movements not affected'],
+      extremity: 'minor'
+    },
+    {
+      percent: 50,
+      summary: 'Severe incomplete paralysis (major extremity)',
+      criteria: ['Severe incomplete paralysis', 'Significant loss of shoulder function', 'Significant loss of elbow function', 'Motor and sensory involvement'],
+      extremity: 'major'
+    },
+    {
+      percent: 40,
+      summary: 'Severe incomplete paralysis (minor) OR Moderate incomplete paralysis (major)',
+      criteria: ['Severe incomplete paralysis (minor extremity)', 'OR Moderate incomplete paralysis (major extremity)', 'Moderate functional impairment', 'Mixed motor and sensory symptoms'],
+      extremity: 'both'
+    },
+    {
+      percent: 30,
+      summary: 'Moderate incomplete paralysis (minor extremity)',
+      criteria: ['Moderate incomplete paralysis', 'Noticeable weakness', 'Some sensory changes', 'Functional limitations present'],
+      extremity: 'minor'
+    },
+    {
+      percent: 20,
+      summary: 'Mild incomplete paralysis (major or minor extremity)',
+      criteria: ['Mild incomplete paralysis', 'Minimal weakness', 'Primarily sensory symptoms', 'Minor functional impact'],
+      extremity: 'both'
+    },
+  ],
+  note: 'The upper radicular group involves C5-C6 nerve roots affecting shoulder and elbow function. Ratings differ based on major (dominant) vs minor (non-dominant) extremity. When involvement is wholly sensory, rate as mild or at most moderate. Neuritis (8610) and neuralgia (8710) are rated using the same criteria.',
+  definitions: {
+    'complete paralysis': {
+      term: 'Complete Paralysis',
+      definition: 'Total loss of motor function in muscles supplied by the affected nerve group. For upper radicular group: all shoulder and elbow movements lost or severely affected.'
+    },
+    'incomplete paralysis': {
+      term: 'Incomplete Paralysis',
+      definition: 'Degree of lost or impaired function substantially less than complete paralysis. May be due to varied level of nerve lesion or partial regeneration.'
+    },
+    'major extremity': {
+      term: 'Major Extremity',
+      definition: 'The dominant arm for upper extremity conditions. Higher ratings apply due to greater functional impact.'
+    },
+    'minor extremity': {
+      term: 'Minor Extremity',
+      definition: 'The non-dominant arm for upper extremity conditions. Lower ratings apply compared to major extremity.'
+    },
+  },
+  disclaimer: 'This analysis is for documentation purposes only. Peripheral nerve ratings require neurological examination documenting motor and sensory deficits. VA determines major/minor extremity based on handedness.',
+};
+
+// MIDDLE RADICULAR GROUP (C7) - DC 8511/8611/8711
+export const MIDDLE_RADICULAR_GROUP_CRITERIA = {
+  diagnosticCodes: { paralysis: '8511', neuritis: '8611', neuralgia: '8711' },
+  condition: 'Middle Radicular Group (C7) Paralysis',
+  cfrReference: '38 CFR 4.124a',
+  bodyLocation: 'upper',
+  ratings: [
+    {
+      percent: 70,
+      summary: 'Complete paralysis (major) - arm adduction/abduction/rotation, elbow flexion, wrist extension lost',
+      criteria: ['Complete paralysis of middle radicular group', 'Adduction of arm lost or severely affected', 'Abduction and rotation of arm lost or severely affected', 'Flexion of elbow lost or severely affected', 'Extension of wrist lost or severely affected'],
+      extremity: 'major'
+    },
+    {
+      percent: 60,
+      summary: 'Complete paralysis (minor) - arm adduction/abduction/rotation, elbow flexion, wrist extension lost',
+      criteria: ['Complete paralysis of middle radicular group', 'Adduction of arm lost or severely affected', 'Abduction and rotation of arm lost or severely affected', 'Flexion of elbow lost or severely affected', 'Extension of wrist lost or severely affected'],
+      extremity: 'minor'
+    },
+    {
+      percent: 50,
+      summary: 'Severe incomplete paralysis (major extremity)',
+      criteria: ['Severe incomplete paralysis', 'Significant loss of arm rotation', 'Significant elbow flexion weakness', 'Significant wrist extension weakness'],
+      extremity: 'major'
+    },
+    {
+      percent: 40,
+      summary: 'Severe incomplete paralysis (minor) OR Moderate incomplete paralysis (major)',
+      criteria: ['Severe incomplete paralysis (minor)', 'OR Moderate incomplete paralysis (major)', 'Moderate functional limitations', 'Mixed motor and sensory deficits'],
+      extremity: 'both'
+    },
+    {
+      percent: 30,
+      summary: 'Moderate incomplete paralysis (minor extremity)',
+      criteria: ['Moderate incomplete paralysis', 'Noticeable weakness in C7 distribution', 'Some sensory changes', 'Functional limitations present'],
+      extremity: 'minor'
+    },
+    {
+      percent: 20,
+      summary: 'Mild incomplete paralysis (major or minor extremity)',
+      criteria: ['Mild incomplete paralysis', 'Minimal weakness', 'Primarily sensory symptoms', 'Minor functional impact'],
+      extremity: 'both'
+    },
+  ],
+  note: 'The middle radicular group involves the C7 nerve root affecting arm rotation, elbow flexion, and wrist extension. Neuritis (8611) and neuralgia (8711) use the same rating criteria.',
+  definitions: {
+    'complete paralysis': {
+      term: 'Complete Paralysis',
+      definition: 'Total loss of motor function. For middle radicular group: arm adduction, abduction, rotation, elbow flexion, and wrist extension all lost or severely affected.'
+    },
+    'incomplete paralysis': {
+      term: 'Incomplete Paralysis',
+      definition: 'Partial loss of function substantially less than complete paralysis picture.'
+    },
+  },
+  disclaimer: 'This analysis is for documentation purposes only. Peripheral nerve ratings require neurological examination documenting motor and sensory deficits.',
+};
+
+// LOWER RADICULAR GROUP (C8-T1) - DC 8512/8612/8712
+export const LOWER_RADICULAR_GROUP_CRITERIA = {
+  diagnosticCodes: { paralysis: '8512', neuritis: '8612', neuralgia: '8712' },
+  condition: 'Lower Radicular Group (C8-T1) Paralysis',
+  cfrReference: '38 CFR 4.124a',
+  bodyLocation: 'upper',
+  ratings: [
+    {
+      percent: 70,
+      summary: 'Complete paralysis (major) - all intrinsic hand muscles paralyzed, substantial loss of hand use',
+      criteria: ['Complete paralysis of lower radicular group', 'All intrinsic muscles of hand paralyzed', 'Some or all flexors of wrist and fingers paralyzed', 'Substantial loss of use of hand'],
+      extremity: 'major'
+    },
+    {
+      percent: 60,
+      summary: 'Complete paralysis (minor) - all intrinsic hand muscles paralyzed, substantial loss of hand use',
+      criteria: ['Complete paralysis of lower radicular group', 'All intrinsic muscles of hand paralyzed', 'Some or all flexors of wrist and fingers paralyzed', 'Substantial loss of use of hand'],
+      extremity: 'minor'
+    },
+    {
+      percent: 50,
+      summary: 'Severe incomplete paralysis (major extremity)',
+      criteria: ['Severe incomplete paralysis', 'Significant intrinsic hand muscle weakness', 'Significant grip impairment', 'Major functional loss'],
+      extremity: 'major'
+    },
+    {
+      percent: 40,
+      summary: 'Severe incomplete paralysis (minor) OR Moderate incomplete paralysis (major)',
+      criteria: ['Severe incomplete paralysis (minor)', 'OR Moderate incomplete paralysis (major)', 'Moderate hand function impairment', 'Mixed motor and sensory deficits'],
+      extremity: 'both'
+    },
+    {
+      percent: 30,
+      summary: 'Moderate incomplete paralysis (minor extremity)',
+      criteria: ['Moderate incomplete paralysis', 'Noticeable hand weakness', 'Grip strength reduced', 'Fine motor difficulties'],
+      extremity: 'minor'
+    },
+    {
+      percent: 20,
+      summary: 'Mild incomplete paralysis (major or minor extremity)',
+      criteria: ['Mild incomplete paralysis', 'Minimal weakness', 'Primarily sensory symptoms', 'Minor functional impact'],
+      extremity: 'both'
+    },
+  ],
+  note: 'The lower radicular group involves C8-T1 nerve roots affecting hand intrinsic muscles and finger/wrist flexors. Neuritis (8612) and neuralgia (8712) use the same rating criteria.',
+  definitions: {
+    'complete paralysis': {
+      term: 'Complete Paralysis',
+      definition: 'Total loss of motor function. For lower radicular group: all intrinsic muscles of hand and some or all flexors of wrist and fingers paralyzed, resulting in substantial loss of use of hand.'
+    },
+    'intrinsic muscles': {
+      term: 'Intrinsic Hand Muscles',
+      definition: 'Small muscles within the hand that control fine motor movements, including the lumbricals, interossei, thenar, and hypothenar muscles.'
+    },
+  },
+  disclaimer: 'This analysis is for documentation purposes only. Peripheral nerve ratings require neurological examination documenting motor and sensory deficits.',
+};
+
+// ALL RADICULAR GROUPS (BRACHIAL PLEXUS) - DC 8513/8613/8713
+export const ALL_RADICULAR_GROUPS_CRITERIA = {
+  diagnosticCodes: { paralysis: '8513', neuritis: '8613', neuralgia: '8713' },
+  condition: 'All Radicular Groups (Complete Brachial Plexus) Paralysis',
+  cfrReference: '38 CFR 4.124a',
+  bodyLocation: 'upper',
+  ratings: [
+    {
+      percent: 90,
+      summary: 'Complete paralysis (major extremity) - total loss of arm function',
+      criteria: ['Complete paralysis of all radicular groups', 'Total loss of shoulder, elbow, wrist, and hand function', 'Complete brachial plexus injury', 'Arm essentially non-functional'],
+      extremity: 'major'
+    },
+    {
+      percent: 80,
+      summary: 'Complete paralysis (minor extremity) - total loss of arm function',
+      criteria: ['Complete paralysis of all radicular groups', 'Total loss of shoulder, elbow, wrist, and hand function', 'Complete brachial plexus injury', 'Arm essentially non-functional'],
+      extremity: 'minor'
+    },
+    {
+      percent: 70,
+      summary: 'Severe incomplete paralysis (major extremity)',
+      criteria: ['Severe incomplete paralysis', 'Significant loss of function at all levels', 'Multiple radicular group involvement', 'Major functional impairment'],
+      extremity: 'major'
+    },
+    {
+      percent: 60,
+      summary: 'Severe incomplete paralysis (minor extremity)',
+      criteria: ['Severe incomplete paralysis', 'Significant loss of function at all levels', 'Multiple radicular group involvement', 'Major functional impairment'],
+      extremity: 'minor'
+    },
+    {
+      percent: 40,
+      summary: 'Moderate incomplete paralysis (major extremity)',
+      criteria: ['Moderate incomplete paralysis', 'Moderate loss at multiple levels', 'Mixed motor and sensory deficits', 'Moderate functional limitations'],
+      extremity: 'major'
+    },
+    {
+      percent: 30,
+      summary: 'Moderate incomplete paralysis (minor extremity)',
+      criteria: ['Moderate incomplete paralysis', 'Moderate loss at multiple levels', 'Mixed motor and sensory deficits', 'Moderate functional limitations'],
+      extremity: 'minor'
+    },
+    {
+      percent: 20,
+      summary: 'Mild incomplete paralysis (major or minor extremity)',
+      criteria: ['Mild incomplete paralysis', 'Minimal weakness at multiple levels', 'Primarily sensory symptoms', 'Minor functional impact'],
+      extremity: 'both'
+    },
+  ],
+  note: 'All radicular groups involvement indicates complete brachial plexus injury affecting C5-T1. This is the most severe upper extremity nerve rating. Neuritis (8613) and neuralgia (8713) use the same criteria.',
+  definitions: {
+    'brachial plexus': {
+      term: 'Brachial Plexus',
+      definition: 'Network of nerves formed by C5-T1 nerve roots that controls movement and sensation in the shoulder, arm, and hand.'
+    },
+    'complete paralysis': {
+      term: 'Complete Paralysis',
+      definition: 'Total loss of motor function throughout the entire arm from shoulder to hand.'
+    },
+  },
+  disclaimer: 'This analysis is for documentation purposes only. Brachial plexus injury ratings require comprehensive neurological examination.',
+};
+
+// RADIAL NERVE (MUSCULOSPIRAL) - DC 8514/8614/8714
+export const RADIAL_NERVE_CRITERIA = {
+  diagnosticCodes: { paralysis: '8514', neuritis: '8614', neuralgia: '8714' },
+  condition: 'Radial Nerve (Musculospiral) Paralysis',
+  cfrReference: '38 CFR 4.124a',
+  bodyLocation: 'upper',
+  ratings: [
+    {
+      percent: 70,
+      summary: 'Complete paralysis (major) - wrist drop, finger drop, cannot extend hand/fingers/thumb',
+      criteria: ['Complete paralysis of radial nerve', 'Drop of hand and fingers', 'Wrist and fingers perpetually flexed', 'Thumb adducted falling within line of outer border of index finger', 'Cannot extend hand at wrist', 'Cannot extend proximal phalanges of fingers', 'Cannot extend thumb', 'Cannot make lateral movement of wrist', 'Supination of hand weakened', 'Extension and flexion of elbow weakened', 'Loss of synergic motion of extensors impairs hand grip seriously'],
+      extremity: 'major'
+    },
+    {
+      percent: 60,
+      summary: 'Complete paralysis (minor) - wrist drop, finger drop, cannot extend hand/fingers/thumb',
+      criteria: ['Complete paralysis of radial nerve', 'Drop of hand and fingers', 'Wrist and fingers perpetually flexed', 'Thumb adducted', 'Cannot extend hand, fingers, or thumb', 'Cannot make lateral wrist movement', 'Weakened supination and elbow function'],
+      extremity: 'minor'
+    },
+    {
+      percent: 50,
+      summary: 'Severe incomplete paralysis (major extremity)',
+      criteria: ['Severe incomplete paralysis', 'Significant wrist extension weakness', 'Significant finger extension weakness', 'Marked functional impairment'],
+      extremity: 'major'
+    },
+    {
+      percent: 40,
+      summary: 'Severe incomplete paralysis (minor extremity)',
+      criteria: ['Severe incomplete paralysis', 'Significant wrist extension weakness', 'Significant finger extension weakness', 'Marked functional impairment'],
+      extremity: 'minor'
+    },
+    {
+      percent: 30,
+      summary: 'Moderate incomplete paralysis (major extremity)',
+      criteria: ['Moderate incomplete paralysis', 'Noticeable extension weakness', 'Some grip impairment', 'Moderate functional limitations'],
+      extremity: 'major'
+    },
+    {
+      percent: 20,
+      summary: 'Moderate incomplete paralysis (minor) OR Mild incomplete paralysis (major or minor)',
+      criteria: ['Moderate incomplete paralysis (minor)', 'OR Mild incomplete paralysis (either extremity)', 'Mild to moderate weakness', 'Some sensory symptoms', 'Minor to moderate functional impact'],
+      extremity: 'both'
+    },
+  ],
+  note: 'The radial nerve controls wrist and finger extension. Complete paralysis results in classic "wrist drop." Note: Lesions involving only dissociation of extensor communis digitorum or paralysis below the extensor communis digitorum will not exceed moderate rating. Total paralysis of the triceps occurs only as the greatest rarity.',
+  definitions: {
+    'wrist drop': {
+      term: 'Wrist Drop',
+      definition: 'Inability to extend the wrist, causing the hand to hang limply. Classic sign of radial nerve palsy.'
+    },
+    'synergic motion': {
+      term: 'Synergic Motion',
+      definition: 'Coordinated movement of multiple muscles working together. Loss impairs complex movements like grip.'
+    },
+  },
+  disclaimer: 'This analysis is for documentation purposes only. Radial nerve ratings require neurological examination documenting motor and sensory deficits.',
+};
+
+// MEDIAN NERVE - DC 8515/8615/8715
+export const MEDIAN_NERVE_CRITERIA = {
+  diagnosticCodes: { paralysis: '8515', neuritis: '8615', neuralgia: '8715' },
+  condition: 'Median Nerve Paralysis (Carpal Tunnel Syndrome)',
+  cfrReference: '38 CFR 4.124a',
+  bodyLocation: 'upper',
+  ratings: [
+    {
+      percent: 70,
+      summary: 'Complete paralysis (major) - ape hand deformity, cannot make fist, thumb opposition lost',
+      criteria: ['Complete paralysis of median nerve', 'Hand inclined to ulnar side', 'Index and middle fingers more extended than normal', 'Considerable atrophy of thenar eminence muscles', 'Thumb in plane of hand (ape hand)', 'Pronation incomplete and defective', 'Absence of flexion of index finger', 'Feeble flexion of middle finger', 'Cannot make a fist', 'Index and middle fingers remain extended', 'Cannot flex distal phalanx of thumb', 'Defective opposition and abduction of thumb at right angles to palm', 'Flexion of wrist weakened', 'Pain with trophic disturbances'],
+      extremity: 'major'
+    },
+    {
+      percent: 60,
+      summary: 'Complete paralysis (minor) - ape hand deformity, cannot make fist, thumb opposition lost',
+      criteria: ['Complete paralysis of median nerve', 'Ape hand deformity', 'Cannot make a fist', 'Thenar atrophy', 'Lost thumb opposition', 'Pain with trophic disturbances'],
+      extremity: 'minor'
+    },
+    {
+      percent: 50,
+      summary: 'Severe incomplete paralysis (major extremity)',
+      criteria: ['Severe incomplete paralysis', 'Significant thenar weakness/atrophy', 'Marked sensory loss in median distribution', 'Significant functional impairment', 'Difficulty with pinch and grip'],
+      extremity: 'major'
+    },
+    {
+      percent: 40,
+      summary: 'Severe incomplete paralysis (minor extremity)',
+      criteria: ['Severe incomplete paralysis', 'Significant thenar weakness/atrophy', 'Marked sensory loss', 'Significant functional impairment'],
+      extremity: 'minor'
+    },
+    {
+      percent: 30,
+      summary: 'Moderate incomplete paralysis (major extremity)',
+      criteria: ['Moderate incomplete paralysis', 'Noticeable thenar weakness', 'Moderate sensory symptoms', 'Moderate functional limitations', 'Night symptoms common'],
+      extremity: 'major'
+    },
+    {
+      percent: 20,
+      summary: 'Moderate incomplete paralysis (minor extremity)',
+      criteria: ['Moderate incomplete paralysis', 'Noticeable thenar weakness', 'Moderate sensory symptoms', 'Moderate functional limitations'],
+      extremity: 'minor'
+    },
+    {
+      percent: 10,
+      summary: 'Mild incomplete paralysis (major or minor extremity)',
+      criteria: ['Mild incomplete paralysis', 'Primarily sensory symptoms', 'Numbness and tingling in median distribution', 'Minimal weakness', 'Minor functional impact'],
+      extremity: 'both'
+    },
+  ],
+  note: 'The median nerve is most commonly affected at the wrist (carpal tunnel syndrome). It controls thumb opposition, index/middle finger flexion, and sensation to the palmar thumb, index, middle, and half of ring finger. When involvement is wholly sensory, rate as mild or at most moderate.',
+  definitions: {
+    'ape hand': {
+      term: 'Ape Hand Deformity',
+      definition: 'Flattening of the thenar eminence with thumb lying in the same plane as the palm, resembling an ape hand. Results from thenar muscle atrophy due to median nerve damage.'
+    },
+    'thenar eminence': {
+      term: 'Thenar Eminence',
+      definition: 'The fleshy mound at the base of the thumb formed by the thenar muscles (abductor pollicis brevis, flexor pollicis brevis, opponens pollicis).'
+    },
+    'carpal tunnel syndrome': {
+      term: 'Carpal Tunnel Syndrome',
+      definition: 'Compression of the median nerve at the wrist causing numbness, tingling, and weakness in the hand. Most common entrapment neuropathy.'
+    },
+    'trophic disturbances': {
+      term: 'Trophic Disturbances',
+      definition: 'Changes in skin, nails, or hair due to nerve damage, including dry/shiny skin, brittle nails, and hair loss in affected areas.'
+    },
+  },
+  disclaimer: 'This analysis is for documentation purposes only. Median nerve/carpal tunnel ratings require nerve conduction studies and clinical examination.',
+};
+
+// ULNAR NERVE - DC 8516/8616/8716
+export const ULNAR_NERVE_CRITERIA = {
+  diagnosticCodes: { paralysis: '8516', neuritis: '8616', neuralgia: '8716' },
+  condition: 'Ulnar Nerve Paralysis (Cubital Tunnel Syndrome)',
+  cfrReference: '38 CFR 4.124a',
+  bodyLocation: 'upper',
+  ratings: [
+    {
+      percent: 60,
+      summary: 'Complete paralysis (major) - claw hand deformity, cannot spread fingers, lost thumb adduction',
+      criteria: ['Complete paralysis of ulnar nerve', 'Griffin claw deformity due to flexor contraction of ring and little fingers', 'Atrophy very marked in dorsal interspace', 'Atrophy of thenar and hypothenar eminences', 'Loss of extension of ring and little fingers', 'Cannot spread the fingers (or reverse)', 'Cannot adduct the thumb', 'Flexion of wrist weakened'],
+      extremity: 'major'
+    },
+    {
+      percent: 50,
+      summary: 'Complete paralysis (minor) - claw hand deformity, cannot spread fingers, lost thumb adduction',
+      criteria: ['Complete paralysis of ulnar nerve', 'Griffin claw deformity', 'Marked interosseous atrophy', 'Thenar and hypothenar atrophy', 'Cannot spread or adduct fingers', 'Cannot adduct thumb', 'Weakened wrist flexion'],
+      extremity: 'minor'
+    },
+    {
+      percent: 40,
+      summary: 'Severe incomplete paralysis (major extremity)',
+      criteria: ['Severe incomplete paralysis', 'Significant interosseous weakness/atrophy', 'Marked grip weakness', 'Significant sensory loss in ulnar distribution', 'Major functional impairment'],
+      extremity: 'major'
+    },
+    {
+      percent: 30,
+      summary: 'Severe incomplete paralysis (minor) OR Moderate incomplete paralysis (major)',
+      criteria: ['Severe incomplete paralysis (minor)', 'OR Moderate incomplete paralysis (major)', 'Noticeable weakness and atrophy', 'Moderate to significant sensory symptoms', 'Moderate to significant functional limitations'],
+      extremity: 'both'
+    },
+    {
+      percent: 20,
+      summary: 'Moderate incomplete paralysis (minor extremity)',
+      criteria: ['Moderate incomplete paralysis', 'Noticeable weakness', 'Moderate sensory symptoms', 'Moderate functional limitations'],
+      extremity: 'minor'
+    },
+    {
+      percent: 10,
+      summary: 'Mild incomplete paralysis (major or minor extremity)',
+      criteria: ['Mild incomplete paralysis', 'Primarily sensory symptoms', 'Numbness in ring/little fingers', 'Minimal weakness', 'Minor functional impact'],
+      extremity: 'both'
+    },
+  ],
+  note: 'The ulnar nerve is commonly affected at the elbow (cubital tunnel syndrome). It controls finger spreading/adduction, thumb adduction, and sensation to the little finger and half of ring finger. Claw hand deformity is characteristic of complete ulnar nerve palsy.',
+  definitions: {
+    'claw hand': {
+      term: 'Claw Hand (Griffin Claw)',
+      definition: 'Deformity with hyperextension at MCP joints and flexion at IP joints of ring and little fingers, due to loss of intrinsic muscle function with intact extrinsic flexors.'
+    },
+    'interossei muscles': {
+      term: 'Interossei Muscles',
+      definition: 'Small muscles between the metacarpal bones that spread (dorsal interossei) and adduct (palmar interossei) the fingers.'
+    },
+    'hypothenar eminence': {
+      term: 'Hypothenar Eminence',
+      definition: 'The fleshy mound on the ulnar side of the palm at the base of the little finger.'
+    },
+    'cubital tunnel syndrome': {
+      term: 'Cubital Tunnel Syndrome',
+      definition: 'Compression of the ulnar nerve at the elbow causing numbness in the ring/little fingers and hand weakness. Second most common entrapment neuropathy.'
+    },
+  },
+  disclaimer: 'This analysis is for documentation purposes only. Ulnar nerve/cubital tunnel ratings require nerve conduction studies and clinical examination.',
+};
+
+// MUSCULOCUTANEOUS NERVE - DC 8517/8617/8717
+export const MUSCULOCUTANEOUS_NERVE_CRITERIA = {
+  diagnosticCodes: { paralysis: '8517', neuritis: '8617', neuralgia: '8717' },
+  condition: 'Musculocutaneous Nerve Paralysis',
+  cfrReference: '38 CFR 4.124a',
+  bodyLocation: 'upper',
+  ratings: [
+    {
+      percent: 30,
+      summary: 'Complete paralysis (major) - weakness but not loss of elbow flexion and forearm supination',
+      criteria: ['Complete paralysis of musculocutaneous nerve', 'Weakness of elbow flexion', 'Weakness of forearm supination', 'Biceps weakness', 'Note: Not complete loss due to other muscle compensation'],
+      extremity: 'major'
+    },
+    {
+      percent: 20,
+      summary: 'Complete paralysis (minor) OR Severe incomplete paralysis (major or minor)',
+      criteria: ['Complete paralysis (minor extremity)', 'OR Severe incomplete paralysis (either)', 'Significant biceps weakness', 'Elbow flexion impaired', 'Supination weakness'],
+      extremity: 'both'
+    },
+    {
+      percent: 10,
+      summary: 'Moderate incomplete paralysis (major or minor)',
+      criteria: ['Moderate incomplete paralysis', 'Noticeable biceps weakness', 'Some elbow flexion weakness', 'Sensory symptoms in lateral forearm'],
+      extremity: 'both'
+    },
+    {
+      percent: 0,
+      summary: 'Mild incomplete paralysis (major or minor)',
+      criteria: ['Mild incomplete paralysis', 'Minimal weakness', 'Primarily sensory symptoms', 'No significant functional impact'],
+      extremity: 'both'
+    },
+  ],
+  note: 'The musculocutaneous nerve innervates the biceps and brachialis muscles (elbow flexion) and provides sensation to the lateral forearm. Complete paralysis does not result in total loss of elbow flexion because other muscles (brachioradialis) can compensate.',
+  definitions: {
+    'musculocutaneous nerve': {
+      term: 'Musculocutaneous Nerve',
+      definition: 'Nerve arising from C5-C7 that innervates the biceps, brachialis, and coracobrachialis muscles and provides sensory innervation to the lateral forearm.'
+    },
+  },
+  disclaimer: 'This analysis is for documentation purposes only. Musculocutaneous nerve ratings require neurological examination.',
+};
+
+// CIRCUMFLEX (AXILLARY) NERVE - DC 8518/8618/8718
+export const CIRCUMFLEX_NERVE_CRITERIA = {
+  diagnosticCodes: { paralysis: '8518', neuritis: '8618', neuralgia: '8718' },
+  condition: 'Circumflex (Axillary) Nerve Paralysis',
+  cfrReference: '38 CFR 4.124a',
+  bodyLocation: 'upper',
+  ratings: [
+    {
+      percent: 50,
+      summary: 'Complete paralysis (major) - arm abduction impossible, outward rotation weakened',
+      criteria: ['Complete paralysis of circumflex nerve', 'Abduction of arm is impossible', 'Outward rotation is weakened', 'Deltoid muscle paralyzed', 'Teres minor muscle paralyzed'],
+      extremity: 'major'
+    },
+    {
+      percent: 40,
+      summary: 'Complete paralysis (minor) - arm abduction impossible, outward rotation weakened',
+      criteria: ['Complete paralysis of circumflex nerve', 'Abduction of arm is impossible', 'Outward rotation is weakened', 'Deltoid and teres minor paralyzed'],
+      extremity: 'minor'
+    },
+    {
+      percent: 30,
+      summary: 'Severe incomplete paralysis (major extremity)',
+      criteria: ['Severe incomplete paralysis', 'Significant deltoid weakness', 'Marked difficulty with arm abduction', 'Significant functional impairment'],
+      extremity: 'major'
+    },
+    {
+      percent: 20,
+      summary: 'Severe incomplete paralysis (minor extremity)',
+      criteria: ['Severe incomplete paralysis', 'Significant deltoid weakness', 'Marked difficulty with arm abduction'],
+      extremity: 'minor'
+    },
+    {
+      percent: 10,
+      summary: 'Moderate incomplete paralysis (major or minor)',
+      criteria: ['Moderate incomplete paralysis', 'Noticeable shoulder weakness', 'Some abduction difficulty', 'Sensory loss over lateral shoulder'],
+      extremity: 'both'
+    },
+    {
+      percent: 0,
+      summary: 'Mild incomplete paralysis (major or minor)',
+      criteria: ['Mild incomplete paralysis', 'Minimal weakness', 'Primarily sensory symptoms', 'No significant functional impact'],
+      extremity: 'both'
+    },
+  ],
+  note: 'The circumflex (axillary) nerve innervates the deltoid and teres minor muscles. It is commonly injured with shoulder dislocations. The muscles supplied control arm abduction and external rotation.',
+  definitions: {
+    'circumflex nerve': {
+      term: 'Circumflex (Axillary) Nerve',
+      definition: 'Nerve arising from C5-C6 that innervates the deltoid and teres minor muscles and provides sensation to the lateral shoulder ("badge area").'
+    },
+  },
+  disclaimer: 'This analysis is for documentation purposes only. Circumflex nerve ratings require neurological examination.',
+};
+
+// LONG THORACIC NERVE - DC 8519/8619/8719
+export const LONG_THORACIC_NERVE_CRITERIA = {
+  diagnosticCodes: { paralysis: '8519', neuritis: '8619', neuralgia: '8719' },
+  condition: 'Long Thoracic Nerve Paralysis',
+  cfrReference: '38 CFR 4.124a',
+  bodyLocation: 'upper',
+  ratings: [
+    {
+      percent: 30,
+      summary: 'Complete paralysis (major) - cannot raise arm above shoulder, winged scapula',
+      criteria: ['Complete paralysis of long thoracic nerve', 'Inability to raise arm above shoulder level', 'Winged scapula deformity', 'Serratus anterior muscle paralyzed'],
+      extremity: 'major'
+    },
+    {
+      percent: 20,
+      summary: 'Complete paralysis (minor) OR Severe incomplete paralysis (major or minor)',
+      criteria: ['Complete paralysis (minor extremity)', 'OR Severe incomplete paralysis (either)', 'Significant scapular winging', 'Difficulty raising arm above shoulder', 'Serratus anterior weakness'],
+      extremity: 'both'
+    },
+    {
+      percent: 10,
+      summary: 'Moderate incomplete paralysis (major or minor)',
+      criteria: ['Moderate incomplete paralysis', 'Noticeable scapular winging with effort', 'Some difficulty with overhead activities', 'Moderate serratus weakness'],
+      extremity: 'both'
+    },
+    {
+      percent: 0,
+      summary: 'Mild incomplete paralysis (major or minor)',
+      criteria: ['Mild incomplete paralysis', 'Minimal scapular winging', 'Minor functional impact', 'Slight serratus weakness'],
+      extremity: 'both'
+    },
+  ],
+  note: 'The long thoracic nerve innervates the serratus anterior muscle which stabilizes the scapula. Paralysis results in "winged scapula" and inability to raise the arm above shoulder level. Note: Not to be combined with lost motion above shoulder level.',
+  definitions: {
+    'winged scapula': {
+      term: 'Winged Scapula',
+      definition: 'Prominence of the medial border of the scapula away from the chest wall due to serratus anterior weakness, most visible when pushing against a wall.'
+    },
+    'serratus anterior': {
+      term: 'Serratus Anterior Muscle',
+      definition: 'Muscle that anchors the scapula to the chest wall and rotates it upward during arm elevation. Essential for overhead arm movements.'
+    },
+  },
+  disclaimer: 'This analysis is for documentation purposes only. Long thoracic nerve ratings require neurological examination.',
+};
+
+
+// ============================================
+// LOWER EXTREMITY PERIPHERAL NERVE CRITERIA
+// ============================================
+
+// SCIATIC NERVE - DC 8520/8620/8720
+export const SCIATIC_NERVE_CRITERIA = {
+  diagnosticCodes: { paralysis: '8520', neuritis: '8620', neuralgia: '8720' },
+  condition: 'Sciatic Nerve Paralysis',
+  cfrReference: '38 CFR 4.124a',
+  bodyLocation: 'lower',
+  ratings: [
+    {
+      percent: 80,
+      summary: 'Complete paralysis - foot dangles and drops, no movement below knee, knee flexion weakened or lost',
+      criteria: ['Complete paralysis of sciatic nerve', 'Foot dangles and drops', 'No active movement possible of muscles below the knee', 'Flexion of knee weakened or (very rarely) lost'],
+    },
+    {
+      percent: 60,
+      summary: 'Severe incomplete paralysis with marked muscular atrophy',
+      criteria: ['Severe incomplete paralysis', 'Marked muscular atrophy', 'Significant weakness below knee', 'Significant functional impairment', 'Foot drop may be present'],
+    },
+    {
+      percent: 40,
+      summary: 'Moderately severe incomplete paralysis',
+      criteria: ['Moderately severe incomplete paralysis', 'Moderate to significant weakness', 'Some muscular atrophy', 'Noticeable gait disturbance', 'Moderate functional limitations'],
+    },
+    {
+      percent: 20,
+      summary: 'Moderate incomplete paralysis',
+      criteria: ['Moderate incomplete paralysis', 'Noticeable weakness', 'Some sensory changes', 'Mild gait disturbance', 'Moderate functional impact'],
+    },
+    {
+      percent: 10,
+      summary: 'Mild incomplete paralysis',
+      criteria: ['Mild incomplete paralysis', 'Primarily sensory symptoms', 'Minimal weakness', 'Radiating pain', 'Minor functional impact'],
+    },
+  ],
+  note: 'The sciatic nerve is the largest nerve in the body, controlling most leg and foot muscles. It divides into the tibial and common peroneal nerves. Complete paralysis results in foot drop and loss of all movement below the knee. Lower extremity nerves do not have major/minor distinction.',
+  definitions: {
+    'sciatic nerve': {
+      term: 'Sciatic Nerve',
+      definition: 'Largest nerve in the body arising from L4-S3, running from lower back through buttock and down the leg. Controls muscles of posterior thigh, entire leg below knee, and most foot muscles.'
+    },
+    'foot drop': {
+      term: 'Foot Drop',
+      definition: 'Inability to dorsiflex the foot, causing the foot to drag during walking. Results from weakness of anterior leg muscles.'
+    },
+  },
+  disclaimer: 'This analysis is for documentation purposes only. Sciatic nerve ratings require neurological examination documenting motor and sensory deficits.',
+};
+
+// COMMON PERONEAL (EXTERNAL POPLITEAL) NERVE - DC 8521/8621/8721
+export const COMMON_PERONEAL_NERVE_CRITERIA = {
+  diagnosticCodes: { paralysis: '8521', neuritis: '8621', neuralgia: '8721' },
+  condition: 'Common Peroneal (External Popliteal) Nerve Paralysis',
+  cfrReference: '38 CFR 4.124a',
+  bodyLocation: 'lower',
+  ratings: [
+    {
+      percent: 40,
+      summary: 'Complete paralysis - foot drop, cannot dorsiflex foot, toe extension lost',
+      criteria: ['Complete paralysis of common peroneal nerve', 'Foot drop and slight droop of first phalanges of all toes', 'Cannot dorsiflex the foot', 'Extension (dorsal flexion) of proximal phalanges of toes lost', 'Abduction of foot lost', 'Adduction weakened', 'Anesthesia covers entire dorsum of foot and toes'],
+    },
+    {
+      percent: 30,
+      summary: 'Severe incomplete paralysis',
+      criteria: ['Severe incomplete paralysis', 'Significant foot drop', 'Marked dorsiflexion weakness', 'Significant toe extension weakness', 'Steppage gait', 'Significant sensory loss'],
+    },
+    {
+      percent: 20,
+      summary: 'Moderate incomplete paralysis',
+      criteria: ['Moderate incomplete paralysis', 'Noticeable dorsiflexion weakness', 'Some foot drop tendency', 'Tripping or stumbling', 'Moderate sensory symptoms'],
+    },
+    {
+      percent: 10,
+      summary: 'Mild incomplete paralysis',
+      criteria: ['Mild incomplete paralysis', 'Minimal weakness', 'Primarily sensory symptoms', 'Numbness on dorsum of foot', 'Minor functional impact'],
+    },
+  ],
+  note: 'The common peroneal nerve wraps around the fibular head and is vulnerable to compression. It controls foot dorsiflexion and eversion. Complete paralysis results in classic foot drop with steppage gait.',
+  definitions: {
+    'common peroneal nerve': {
+      term: 'Common Peroneal Nerve',
+      definition: 'Branch of sciatic nerve that wraps around the fibular head, controlling dorsiflexion and eversion of the foot. Most commonly injured lower extremity nerve.'
+    },
+    'steppage gait': {
+      term: 'Steppage Gait',
+      definition: 'High-stepping gait pattern used to compensate for foot drop, lifting the knee high to clear the dragging foot.'
+    },
+  },
+  disclaimer: 'This analysis is for documentation purposes only. Common peroneal nerve ratings require neurological examination.',
+};
+
+// SUPERFICIAL PERONEAL NERVE - DC 8522/8622/8722
+export const SUPERFICIAL_PERONEAL_NERVE_CRITERIA = {
+  diagnosticCodes: { paralysis: '8522', neuritis: '8622', neuralgia: '8722' },
+  condition: 'Superficial Peroneal (Musculocutaneous) Nerve Paralysis',
+  cfrReference: '38 CFR 4.124a',
+  bodyLocation: 'lower',
+  ratings: [
+    {
+      percent: 30,
+      summary: 'Complete paralysis - foot eversion weakened',
+      criteria: ['Complete paralysis of superficial peroneal nerve', 'Eversion of foot weakened', 'Peroneus longus and brevis paralyzed', 'Ankle instability'],
+    },
+    {
+      percent: 20,
+      summary: 'Severe incomplete paralysis',
+      criteria: ['Severe incomplete paralysis', 'Significant eversion weakness', 'Noticeable ankle instability', 'Significant sensory loss'],
+    },
+    {
+      percent: 10,
+      summary: 'Moderate incomplete paralysis',
+      criteria: ['Moderate incomplete paralysis', 'Some eversion weakness', 'Moderate sensory symptoms', 'Numbness on lower leg and dorsum of foot'],
+    },
+    {
+      percent: 0,
+      summary: 'Mild incomplete paralysis',
+      criteria: ['Mild incomplete paralysis', 'Minimal weakness', 'Primarily sensory symptoms', 'Minor functional impact'],
+    },
+  ],
+  note: 'The superficial peroneal nerve controls foot eversion (peroneus longus and brevis) and provides sensation to the lower lateral leg and dorsum of foot (except first web space).',
+  definitions: {
+    'superficial peroneal nerve': {
+      term: 'Superficial Peroneal Nerve',
+      definition: 'Branch of common peroneal nerve that innervates the peroneus longus and brevis (foot eversion) and provides sensation to lower lateral leg and most of foot dorsum.'
+    },
+    'eversion': {
+      term: 'Foot Eversion',
+      definition: 'Turning the sole of the foot outward. Controlled by the peroneal muscles.'
+    },
+  },
+  disclaimer: 'This analysis is for documentation purposes only. Superficial peroneal nerve ratings require neurological examination.',
+};
+
+// DEEP PERONEAL (ANTERIOR TIBIAL) NERVE - DC 8523/8623/8723
+export const DEEP_PERONEAL_NERVE_CRITERIA = {
+  diagnosticCodes: { paralysis: '8523', neuritis: '8623', neuralgia: '8723' },
+  condition: 'Deep Peroneal (Anterior Tibial) Nerve Paralysis',
+  cfrReference: '38 CFR 4.124a',
+  bodyLocation: 'lower',
+  ratings: [
+    {
+      percent: 30,
+      summary: 'Complete paralysis - dorsal flexion of foot lost',
+      criteria: ['Complete paralysis of deep peroneal nerve', 'Dorsal flexion of foot lost', 'Tibialis anterior paralyzed', 'Toe extensors paralyzed', 'Foot drop'],
+    },
+    {
+      percent: 20,
+      summary: 'Severe incomplete paralysis',
+      criteria: ['Severe incomplete paralysis', 'Significant dorsiflexion weakness', 'Marked toe extension weakness', 'Foot drop tendency'],
+    },
+    {
+      percent: 10,
+      summary: 'Moderate incomplete paralysis',
+      criteria: ['Moderate incomplete paralysis', 'Noticeable dorsiflexion weakness', 'Some toe extension weakness', 'Sensory loss in first web space'],
+    },
+    {
+      percent: 0,
+      summary: 'Mild incomplete paralysis',
+      criteria: ['Mild incomplete paralysis', 'Minimal weakness', 'Primarily sensory symptoms', 'Numbness in first web space', 'Minor functional impact'],
+    },
+  ],
+  note: 'The deep peroneal nerve controls foot dorsiflexion (tibialis anterior) and toe extension. It provides sensation only to the first web space between the great and second toes.',
+  definitions: {
+    'deep peroneal nerve': {
+      term: 'Deep Peroneal Nerve',
+      definition: 'Branch of common peroneal nerve that innervates the tibialis anterior (foot dorsiflexion) and toe extensors. Sensory only to first web space.'
+    },
+    'dorsiflexion': {
+      term: 'Dorsiflexion',
+      definition: 'Bending the foot upward toward the shin. Essential for clearing the foot during walking.'
+    },
+  },
+  disclaimer: 'This analysis is for documentation purposes only. Deep peroneal nerve ratings require neurological examination.',
+};
+
+// TIBIAL (INTERNAL POPLITEAL) NERVE - DC 8524/8624/8724
+export const TIBIAL_NERVE_CRITERIA = {
+  diagnosticCodes: { paralysis: '8524', neuritis: '8624', neuralgia: '8724' },
+  condition: 'Tibial (Internal Popliteal) Nerve Paralysis',
+  cfrReference: '38 CFR 4.124a',
+  bodyLocation: 'lower',
+  ratings: [
+    {
+      percent: 40,
+      summary: 'Complete paralysis - plantar flexion lost, toe flexion/separation abolished, cannot move sole muscles',
+      criteria: ['Complete paralysis of tibial nerve', 'Plantar flexion lost', 'Frank adduction of foot impossible', 'Flexion and separation of toes abolished', 'No muscle in sole can move', 'In lesions high in popliteal fossa, plantar flexion of foot is lost'],
+    },
+    {
+      percent: 30,
+      summary: 'Severe incomplete paralysis',
+      criteria: ['Severe incomplete paralysis', 'Significant plantar flexion weakness', 'Marked toe flexion weakness', 'Cannot walk on tiptoes', 'Significant sensory loss on sole'],
+    },
+    {
+      percent: 20,
+      summary: 'Moderate incomplete paralysis',
+      criteria: ['Moderate incomplete paralysis', 'Noticeable calf weakness', 'Some plantar flexion weakness', 'Difficulty with tiptoe walking', 'Moderate sensory symptoms'],
+    },
+    {
+      percent: 10,
+      summary: 'Mild incomplete paralysis',
+      criteria: ['Mild incomplete paralysis', 'Minimal weakness', 'Primarily sensory symptoms', 'Burning or numbness in sole', 'Minor functional impact'],
+    },
+  ],
+  note: 'The tibial nerve controls plantar flexion (calf muscles), toe flexion, and foot inversion. It provides sensation to the sole of the foot. High lesions in the popliteal fossa affect all tibial nerve functions.',
+  definitions: {
+    'tibial nerve': {
+      term: 'Tibial Nerve',
+      definition: 'Branch of sciatic nerve that controls the calf muscles (plantar flexion), toe flexors, and provides sensation to the sole of the foot.'
+    },
+    'plantar flexion': {
+      term: 'Plantar Flexion',
+      definition: 'Pointing the foot downward, as when standing on tiptoes. Controlled by the gastrocnemius and soleus muscles.'
+    },
+  },
+  disclaimer: 'This analysis is for documentation purposes only. Tibial nerve ratings require neurological examination.',
+};
+
+// POSTERIOR TIBIAL NERVE - DC 8525/8625/8725
+export const POSTERIOR_TIBIAL_NERVE_CRITERIA = {
+  diagnosticCodes: { paralysis: '8525', neuritis: '8625', neuralgia: '8725' },
+  condition: 'Posterior Tibial Nerve Paralysis',
+  cfrReference: '38 CFR 4.124a',
+  bodyLocation: 'lower',
+  ratings: [
+    {
+      percent: 30,
+      summary: 'Complete paralysis - sole paralysis, often with painful paralysis of causalgic nature',
+      criteria: ['Complete paralysis of posterior tibial nerve', 'Paralysis of all muscles of sole of foot', 'Frequently with painful paralysis of a causalgic nature', 'Toes cannot be flexed', 'Adduction is weakened', 'Plantar flexion is impaired'],
+    },
+    {
+      percent: 20,
+      summary: 'Severe incomplete paralysis',
+      criteria: ['Severe incomplete paralysis', 'Significant sole muscle weakness', 'Marked toe flexion weakness', 'Significant sensory loss', 'May have causalgic pain'],
+    },
+    {
+      percent: 10,
+      summary: 'Moderate OR Mild incomplete paralysis',
+      criteria: ['Moderate or mild incomplete paralysis', 'Some intrinsic foot weakness', 'Sensory symptoms on sole', 'Tarsal tunnel syndrome symptoms', 'Burning or numbness'],
+    },
+  ],
+  note: 'The posterior tibial nerve passes through the tarsal tunnel at the ankle. It controls the intrinsic muscles of the sole and provides sensation to the sole. Tarsal tunnel syndrome is compression at this level. Causalgic (burning) pain is common with this nerve injury.',
+  definitions: {
+    'posterior tibial nerve': {
+      term: 'Posterior Tibial Nerve',
+      definition: 'Terminal branch of the tibial nerve that passes behind the medial malleolus through the tarsal tunnel, innervating intrinsic foot muscles and sole sensation.'
+    },
+    'tarsal tunnel syndrome': {
+      term: 'Tarsal Tunnel Syndrome',
+      definition: 'Compression of the posterior tibial nerve at the ankle causing burning pain, numbness, and tingling on the sole of the foot.'
+    },
+    'causalgia': {
+      term: 'Causalgia',
+      definition: 'Severe burning pain due to nerve injury, often accompanied by skin changes. Now termed Complex Regional Pain Syndrome Type II.'
+    },
+  },
+  disclaimer: 'This analysis is for documentation purposes only. Posterior tibial nerve ratings require neurological examination.',
+};
+
+// FEMORAL (ANTERIOR CRURAL) NERVE - DC 8526/8626/8726
+export const FEMORAL_NERVE_CRITERIA = {
+  diagnosticCodes: { paralysis: '8526', neuritis: '8626', neuralgia: '8726' },
+  condition: 'Femoral (Anterior Crural) Nerve Paralysis',
+  cfrReference: '38 CFR 4.124a',
+  bodyLocation: 'lower',
+  ratings: [
+    {
+      percent: 40,
+      summary: 'Complete paralysis - quadriceps extensor muscles paralyzed',
+      criteria: ['Complete paralysis of femoral nerve', 'Paralysis of quadriceps extensor muscles', 'Cannot extend knee', 'Knee buckling/giving way', 'Cannot climb stairs', 'Difficulty rising from seated position'],
+    },
+    {
+      percent: 30,
+      summary: 'Severe incomplete paralysis',
+      criteria: ['Severe incomplete paralysis', 'Significant quadriceps weakness', 'Knee frequently gives way', 'Marked difficulty with stairs', 'Significant functional impairment'],
+    },
+    {
+      percent: 20,
+      summary: 'Moderate incomplete paralysis',
+      criteria: ['Moderate incomplete paralysis', 'Noticeable quadriceps weakness', 'Some knee instability', 'Difficulty with stairs', 'Sensory loss on anterior thigh'],
+    },
+    {
+      percent: 10,
+      summary: 'Mild incomplete paralysis',
+      criteria: ['Mild incomplete paralysis', 'Minimal weakness', 'Primarily sensory symptoms', 'Numbness on anterior thigh', 'Minor functional impact'],
+    },
+  ],
+  note: 'The femoral nerve controls the quadriceps muscle (knee extension) and provides sensation to the anterior thigh and medial leg. Complete paralysis results in inability to extend the knee and frequent falls.',
+  definitions: {
+    'femoral nerve': {
+      term: 'Femoral Nerve',
+      definition: 'Major nerve of the anterior thigh arising from L2-L4, innervating the quadriceps (knee extension) and providing sensation to anterior thigh and medial leg via saphenous branch.'
+    },
+    'quadriceps': {
+      term: 'Quadriceps Muscle',
+      definition: 'Large four-headed muscle of the anterior thigh responsible for knee extension. Essential for walking, climbing stairs, and rising from sitting.'
+    },
+  },
+  disclaimer: 'This analysis is for documentation purposes only. Femoral nerve ratings require neurological examination.',
+};
+
+// SAPHENOUS (INTERNAL SAPHENOUS) NERVE - DC 8527/8627/8727
+export const SAPHENOUS_NERVE_CRITERIA = {
+  diagnosticCodes: { paralysis: '8527', neuritis: '8627', neuralgia: '8727' },
+  condition: 'Saphenous (Internal Saphenous) Nerve Paralysis',
+  cfrReference: '38 CFR 4.124a',
+  bodyLocation: 'lower',
+  ratings: [
+    {
+      percent: 10,
+      summary: 'Severe to complete paralysis',
+      criteria: ['Severe to complete involvement', 'Significant sensory loss along medial leg', 'Sensory loss from knee to medial ankle', 'No motor component (purely sensory nerve)'],
+    },
+    {
+      percent: 0,
+      summary: 'Mild to moderate involvement',
+      criteria: ['Mild to moderate involvement', 'Some numbness along medial leg', 'Tingling or burning', 'Minor sensory symptoms'],
+    },
+  ],
+  note: 'The saphenous nerve is a purely sensory branch of the femoral nerve. It has no motor function. It provides sensation to the medial leg from knee to ankle. Maximum rating is 10% even for complete involvement due to sensory-only function.',
+  definitions: {
+    'saphenous nerve': {
+      term: 'Saphenous Nerve',
+      definition: 'Purely sensory branch of the femoral nerve providing sensation to the medial leg from knee to ankle. Commonly injured during vein stripping or knee surgery.'
+    },
+  },
+  disclaimer: 'This analysis is for documentation purposes only. Saphenous nerve ratings require sensory examination.',
+};
+
+// OBTURATOR NERVE - DC 8528/8628/8728
+export const OBTURATOR_NERVE_CRITERIA = {
+  diagnosticCodes: { paralysis: '8528', neuritis: '8628', neuralgia: '8728' },
+  condition: 'Obturator Nerve Paralysis',
+  cfrReference: '38 CFR 4.124a',
+  bodyLocation: 'lower',
+  ratings: [
+    {
+      percent: 10,
+      summary: 'Severe to complete paralysis',
+      criteria: ['Severe to complete paralysis', 'Thigh adduction significantly weakened', 'Gait instability', 'Sensory loss on medial thigh'],
+    },
+    {
+      percent: 0,
+      summary: 'Mild to moderate involvement',
+      criteria: ['Mild to moderate involvement', 'Some adduction weakness', 'Minor sensory symptoms', 'Minimal functional impact'],
+    },
+  ],
+  note: 'The obturator nerve controls thigh adduction (bringing legs together) and provides sensation to the medial thigh. It is uncommonly injured in isolation. Maximum rating is 10% due to limited functional impact.',
+  definitions: {
+    'obturator nerve': {
+      term: 'Obturator Nerve',
+      definition: 'Nerve arising from L2-L4 that innervates the adductor muscles of the thigh and provides sensation to the medial thigh.'
+    },
+    'adduction': {
+      term: 'Thigh Adduction',
+      definition: 'Movement of the thigh toward the midline (bringing legs together). Controlled by the adductor muscles.'
+    },
+  },
+  disclaimer: 'This analysis is for documentation purposes only. Obturator nerve ratings require neurological examination.',
+};
+
+// LATERAL FEMORAL CUTANEOUS NERVE (MERALGIA PARESTHETICA) - DC 8529/8629/8729
+export const LATERAL_FEMORAL_CUTANEOUS_NERVE_CRITERIA = {
+  diagnosticCodes: { paralysis: '8529', neuritis: '8629', neuralgia: '8729' },
+  condition: 'Lateral Femoral Cutaneous Nerve (Meralgia Paresthetica)',
+  cfrReference: '38 CFR 4.124a',
+  bodyLocation: 'lower',
+  ratings: [
+    {
+      percent: 10,
+      summary: 'Severe to complete involvement',
+      criteria: ['Severe to complete involvement', 'Significant numbness on lateral thigh', 'Burning pain (meralgia paresthetica)', 'Hypersensitivity to touch', 'Pain worse with standing/walking'],
+    },
+    {
+      percent: 0,
+      summary: 'Mild to moderate involvement',
+      criteria: ['Mild to moderate involvement', 'Some numbness or tingling', 'Intermittent symptoms', 'Minor functional impact'],
+    },
+  ],
+  note: 'The lateral femoral cutaneous nerve is purely sensory, providing sensation to the lateral thigh. Meralgia paresthetica is compression of this nerve at the inguinal ligament, causing burning pain and numbness on the outer thigh. Maximum rating is 10% due to sensory-only function.',
+  definitions: {
+    'lateral femoral cutaneous nerve': {
+      term: 'Lateral Femoral Cutaneous Nerve',
+      definition: 'Purely sensory nerve arising from L2-L3 that provides sensation to the lateral (outer) thigh.'
+    },
+    'meralgia paresthetica': {
+      term: 'Meralgia Paresthetica',
+      definition: 'Condition caused by compression of the lateral femoral cutaneous nerve, typically at the inguinal ligament, causing burning pain, numbness, and tingling on the outer thigh.'
+    },
+  },
+  disclaimer: 'This analysis is for documentation purposes only. Lateral femoral cutaneous nerve ratings require sensory examination.',
+};
+
+// ILIO-INGUINAL NERVE - DC 8530/8630/8730
+export const ILIOINGUINAL_NERVE_CRITERIA = {
+  diagnosticCodes: { paralysis: '8530', neuritis: '8630', neuralgia: '8730' },
+  condition: 'Ilio-inguinal Nerve Paralysis',
+  cfrReference: '38 CFR 4.124a',
+  bodyLocation: 'lower',
+  ratings: [
+    {
+      percent: 10,
+      summary: 'Severe to complete involvement',
+      criteria: ['Severe to complete involvement', 'Significant groin/genital numbness', 'Pain in inguinal region', 'Hypersensitivity', 'Pain with movement or coughing'],
+    },
+    {
+      percent: 0,
+      summary: 'Mild to moderate involvement',
+      criteria: ['Mild to moderate involvement', 'Some groin numbness', 'Intermittent symptoms', 'Minor functional impact'],
+    },
+  ],
+  note: 'The ilio-inguinal nerve provides sensation to the groin, upper medial thigh, and genital area. It is commonly injured during inguinal hernia repair or other lower abdominal surgeries. Maximum rating is 10% due to sensory-only function.',
+  definitions: {
+    'ilio-inguinal nerve': {
+      term: 'Ilio-inguinal Nerve',
+      definition: 'Sensory nerve arising from L1 that provides sensation to the groin, upper medial thigh, and parts of the external genitalia.'
+    },
+  },
+  disclaimer: 'This analysis is for documentation purposes only. Ilio-inguinal nerve ratings require sensory examination.',
+};
+
+// ============================================
 // ANALYSIS FUNCTIONS - MIGRAINE
 // ============================================
 
@@ -18557,7 +20021,7 @@ const analyzeRespiratoryPFT = (logs, options, conditionConfig) => {
 export const analyzeCOPDLogs = (logs, options = {}) => {
   return analyzeRespiratoryPFT(logs, options, {
     conditionId: 'copd',
-    conditionName: 'Chronic Obstructive Pulmonary Disease',
+    condition: 'Chronic Obstructive Pulmonary Disease',
     diagnosticCode: '6604',
     symptomIds: [
       'copd-shortness-breath',
@@ -18579,7 +20043,7 @@ export const analyzeCOPDLogs = (logs, options = {}) => {
 export const analyzeChronicBronchitisLogs = (logs, options = {}) => {
   return analyzeRespiratoryPFT(logs, options, {
     conditionId: 'chronic-bronchitis',
-    conditionName: 'Chronic Bronchitis',
+    condition: 'Chronic Bronchitis',
     diagnosticCode: '6600',
     symptomIds: [
       'bronchitis-productive-cough',
@@ -18599,7 +20063,7 @@ export const analyzeChronicBronchitisLogs = (logs, options = {}) => {
 export const analyzeEmphysemaLogs = (logs, options = {}) => {
   return analyzeRespiratoryPFT(logs, options, {
     conditionId: 'emphysema',
-    conditionName: 'Pulmonary Emphysema',
+    condition: 'Pulmonary Emphysema',
     diagnosticCode: '6603',
     symptomIds: [
       'emphysema-shortness-breath',
@@ -20058,6 +21522,438 @@ export function analyzeEpilepsyMinorLogs(logs, evaluationDays = 90) {
       lastYear,
       averagePerWeek,
     },
+  };
+}
+
+// ============================================
+// PHASE 1D: EPILEPSY EXPANSION ANALYSIS FUNCTIONS
+// ============================================
+
+/**
+ * Analyze Jacksonian/Focal Epilepsy (DC 8912)
+ * Rates as minor seizures unless major (secondary generalization) predominates
+ */
+export function analyzeJacksonianEpilepsyLogs(logs, options = {}) {
+  const { days = 365 } = options;
+
+  // Jacksonian-specific symptom IDs
+  const jacksonianSymptomIds = [
+    'jack-focal-motor', 'jack-focal-sensory', 'jack-march',
+    'jack-unilateral-jerking', 'jack-tingling-numbness', 'jack-visual-disturbance',
+    'jack-secondary-generalization', 'jack-preserved-awareness', 'jack-impaired-awareness',
+    'seizure-partial', // Also include generic partial seizure
+  ];
+
+  const jacksonianLogs = logs.filter(log =>
+      jacksonianSymptomIds.includes(log.symptomId) ||
+      log.symptomId?.startsWith('jack-')
+  );
+
+  if (jacksonianLogs.length === 0) {
+    return {
+      hasData: false,
+      condition: 'Epilepsy, Jacksonian/Focal',
+      diagnosticCodes: '8912',
+    };
+  }
+
+  const now = new Date();
+  const msPerDay = 24 * 60 * 60 * 1000;
+
+  // Count seizures with secondary generalization (these count as major)
+  const majorSeizures = jacksonianLogs.filter(log =>
+      log.symptomId === 'jack-secondary-generalization' ||
+      log.seizureData?.lossOfConsciousness === 'yes' ||
+      log.seizureData?.episodeType === 'generalized'
+  );
+
+  // Minor seizures (focal without generalization)
+  const minorSeizures = jacksonianLogs.filter(log =>
+      !majorSeizures.includes(log)
+  );
+
+  // Time-based analysis
+  const lastYear = jacksonianLogs.filter(log => {
+    const daysDiff = (now - new Date(log.timestamp)) / msPerDay;
+    return daysDiff <= 365;
+  });
+
+  const last6Months = jacksonianLogs.filter(log => {
+    const daysDiff = (now - new Date(log.timestamp)) / msPerDay;
+    return daysDiff <= 180;
+  });
+
+  const last2Years = jacksonianLogs.filter(log => {
+    const daysDiff = (now - new Date(log.timestamp)) / msPerDay;
+    return daysDiff <= 730;
+  });
+
+  // Calculate weekly frequency for minor seizures (last 4 weeks)
+  const last4Weeks = minorSeizures.filter(log => {
+    const daysDiff = (now - new Date(log.timestamp)) / msPerDay;
+    return daysDiff <= 28;
+  });
+  const weeklyMinorAverage = last4Weeks.length / 4;
+
+  // Determine if major or minor predominates
+  const majorPredominates = majorSeizures.length > minorSeizures.length;
+
+  // Calculate rating based on VA criteria
+  let supportedRating = 10;
+  let ratingRationale = [];
+
+  if (majorPredominates) {
+    // Rate as major seizures
+    const majorInYear = majorSeizures.filter(log => {
+      const daysDiff = (now - new Date(log.timestamp)) / msPerDay;
+      return daysDiff <= 365;
+    }).length;
+    const avgPerMonth = majorInYear / 12;
+
+    if (avgPerMonth >= 1) {
+      supportedRating = 100;
+      ratingRationale.push(`Major seizures predominate with ${majorInYear} in last year (${avgPerMonth.toFixed(1)}/month)`);
+    } else if (majorInYear >= 4) {
+      supportedRating = 80;
+      ratingRationale.push(`Major seizures predominate: ${majorInYear} in last year (avg 1 per 3 months)`);
+    } else if (majorInYear >= 3) {
+      supportedRating = 60;
+      ratingRationale.push(`Major seizures predominate: ${majorInYear} in last year (avg 1 per 4 months)`);
+    } else if (last6Months.filter(l => majorSeizures.includes(l)).length >= 1 || majorInYear >= 2) {
+      supportedRating = 40;
+      ratingRationale.push('Major seizures predominate: meets 40% criteria');
+    } else {
+      supportedRating = 20;
+      ratingRationale.push('Major seizures predominate with documented history');
+    }
+  } else {
+    // Rate as minor seizures
+    if (weeklyMinorAverage > 10) {
+      supportedRating = 80;
+      ratingRationale.push(`More than 10 focal seizures weekly (avg ${weeklyMinorAverage.toFixed(1)}/week)`);
+    } else if (weeklyMinorAverage >= 9) {
+      supportedRating = 60;
+      ratingRationale.push(`9-10 focal seizures per week (avg ${weeklyMinorAverage.toFixed(1)}/week)`);
+    } else if (weeklyMinorAverage >= 5) {
+      supportedRating = 40;
+      ratingRationale.push(`5-8 focal seizures per week (avg ${weeklyMinorAverage.toFixed(1)}/week)`);
+    } else if (last6Months.length >= 2) {
+      supportedRating = 20;
+      ratingRationale.push(`${last6Months.length} focal seizures in last 6 months`);
+    } else {
+      supportedRating = 10;
+      ratingRationale.push('Confirmed diagnosis with documented focal seizure history');
+    }
+  }
+
+  // Evidence gaps
+  const gaps = [];
+  if (majorSeizures.length === 0 && minorSeizures.length > 0) {
+    gaps.push('Document if any focal seizures secondarily generalize to tonic-clonic');
+  }
+  gaps.push('Obtain EEG showing focal epileptiform activity if available');
+  gaps.push('Document anti-epileptic medication regimen');
+  gaps.push('Record specific body areas affected during focal seizures');
+
+  return {
+    hasData: true,
+    condition: 'Epilepsy, Jacksonian/Focal',
+    diagnosticCodes: '8912',
+    cfrReference: '38 CFR 4.124a',
+    supportedRating,
+    ratingRationale,
+    gaps,
+    metrics: {
+      totalLogs: jacksonianLogs.length,
+      majorSeizures: majorSeizures.length,
+      minorSeizures: minorSeizures.length,
+      majorPredominates,
+      weeklyMinorAverage,
+      lastYearCount: lastYear.length,
+    },
+    criteria: EPILEPSY_JACKSONIAN_CRITERIA,
+  };
+}
+
+/**
+ * Analyze Diencephalic Epilepsy (DC 8913)
+ * Rates as minor seizures (autonomic symptoms)
+ */
+export function analyzeDiencephalicEpilepsyLogs(logs, options = {}) {
+  const { days = 365 } = options;
+
+  const diencephalicSymptomIds = [
+    'dien-autonomic-seizure', 'dien-flushing', 'dien-sweating',
+    'dien-blood-pressure', 'dien-heart-rate', 'dien-pupil-changes',
+    'dien-temperature', 'dien-lacrimation', 'dien-gi-symptoms', 'dien-hypothalamic',
+  ];
+
+  const diencephalicLogs = logs.filter(log =>
+      diencephalicSymptomIds.includes(log.symptomId) ||
+      log.symptomId?.startsWith('dien-')
+  );
+
+  if (diencephalicLogs.length === 0) {
+    return {
+      hasData: false,
+      condition: 'Epilepsy, Diencephalic',
+      diagnosticCodes: '8913',
+    };
+  }
+
+  const now = new Date();
+  const msPerDay = 24 * 60 * 60 * 1000;
+
+  // Time-based analysis
+  const last6Months = diencephalicLogs.filter(log => {
+    const daysDiff = (now - new Date(log.timestamp)) / msPerDay;
+    return daysDiff <= 180;
+  });
+
+  // Calculate weekly frequency (last 4 weeks)
+  const last4Weeks = diencephalicLogs.filter(log => {
+    const daysDiff = (now - new Date(log.timestamp)) / msPerDay;
+    return daysDiff <= 28;
+  });
+  const weeklyAverage = last4Weeks.length / 4;
+
+  // Rate as minor seizures per 38 CFR
+  let supportedRating = 10;
+  let ratingRationale = [];
+
+  if (weeklyAverage > 10) {
+    supportedRating = 80;
+    ratingRationale.push(`More than 10 autonomic seizures weekly (avg ${weeklyAverage.toFixed(1)}/week)`);
+  } else if (weeklyAverage >= 9) {
+    supportedRating = 60;
+    ratingRationale.push(`9-10 autonomic seizures per week (avg ${weeklyAverage.toFixed(1)}/week)`);
+  } else if (weeklyAverage >= 5) {
+    supportedRating = 40;
+    ratingRationale.push(`5-8 autonomic seizures per week (avg ${weeklyAverage.toFixed(1)}/week)`);
+  } else if (last6Months.length >= 2) {
+    supportedRating = 20;
+    ratingRationale.push(`${last6Months.length} autonomic seizures in last 6 months`);
+  } else {
+    supportedRating = 10;
+    ratingRationale.push('Confirmed diagnosis with documented autonomic seizure history');
+  }
+
+  ratingRationale.push('Diencephalic epilepsy rates as minor seizures per 38 CFR 4.124a');
+
+  // Common autonomic symptoms logged
+  const symptomCounts = {};
+  diencephalicLogs.forEach(log => {
+    const symptom = log.symptomId;
+    symptomCounts[symptom] = (symptomCounts[symptom] || 0) + 1;
+  });
+
+  const gaps = [];
+  gaps.push('Document autonomic symptoms during each episode');
+  gaps.push('Obtain neurologist evaluation confirming diencephalic origin');
+  gaps.push('Record episode duration and recovery time');
+  gaps.push('Document anti-epileptic medication effectiveness');
+
+  return {
+    hasData: true,
+    condition: 'Epilepsy, Diencephalic',
+    diagnosticCodes: '8913',
+    cfrReference: '38 CFR 4.124a',
+    supportedRating,
+    ratingRationale,
+    gaps,
+    metrics: {
+      totalLogs: diencephalicLogs.length,
+      weeklyAverage,
+      last6MonthsCount: last6Months.length,
+      symptomCounts,
+    },
+    criteria: EPILEPSY_DIENCEPHALIC_CRITERIA,
+  };
+}
+
+/**
+ * Analyze Psychomotor Epilepsy (DC 8914)
+ * Can be major OR minor depending on episode characteristics
+ */
+export function analyzePsychomotorEpilepsyLogs(logs, options = {}) {
+  const { days = 365 } = options;
+
+  // Major psychomotor symptoms (automatic states, convulsions with LOC)
+  const majorPsychomotorIds = [
+    'psych-automatic-state', 'psych-convulsion-loc', 'psych-prolonged-confusion',
+    'psych-wandering', 'psych-complex-behavior',
+    'seizure-psychomotor', // Existing generic - check seizureData for type
+  ];
+
+  // Minor psychomotor symptoms (brief transient episodes)
+  const minorPsychomotorIds = [
+    'psych-random-motor', 'psych-hallucination', 'psych-perceptual-illusion',
+    'psych-deja-vu', 'psych-thinking-abnormality', 'psych-memory-disturbance',
+    'psych-mood-change', 'psych-autonomic', 'psych-lip-smacking', 'psych-hand-movements',
+  ];
+
+  const allPsychomotorIds = [...majorPsychomotorIds, ...minorPsychomotorIds];
+
+  const psychomotorLogs = logs.filter(log =>
+      allPsychomotorIds.includes(log.symptomId) ||
+      log.symptomId?.startsWith('psych-')
+  );
+
+  if (psychomotorLogs.length === 0) {
+    return {
+      hasData: false,
+      condition: 'Epilepsy, Psychomotor',
+      diagnosticCodes: '8914',
+    };
+  }
+
+  const now = new Date();
+  const msPerDay = 24 * 60 * 60 * 1000;
+
+  // Classify each log as major or minor
+  const majorSeizures = psychomotorLogs.filter(log => {
+    // Check if symptom ID indicates major type
+    if (majorPsychomotorIds.includes(log.symptomId)) {
+      // If it's the generic 'seizure-psychomotor', check seizureData
+      if (log.symptomId === 'seizure-psychomotor') {
+        return log.seizureData?.lossOfConsciousness === 'yes' ||
+            log.seizureData?.episodeType === 'automatic-state' ||
+            log.seizureData?.episodeType === 'convulsion';
+      }
+      return true;
+    }
+    // Also check seizureData for LOC
+    return log.seizureData?.lossOfConsciousness === 'yes';
+  });
+
+  const minorSeizures = psychomotorLogs.filter(log => !majorSeizures.includes(log));
+
+  // Time-based analysis
+  const lastYear = psychomotorLogs.filter(log => {
+    const daysDiff = (now - new Date(log.timestamp)) / msPerDay;
+    return daysDiff <= 365;
+  });
+
+  const last6Months = psychomotorLogs.filter(log => {
+    const daysDiff = (now - new Date(log.timestamp)) / msPerDay;
+    return daysDiff <= 180;
+  });
+
+  const last2Years = psychomotorLogs.filter(log => {
+    const daysDiff = (now - new Date(log.timestamp)) / msPerDay;
+    return daysDiff <= 730;
+  });
+
+  // Weekly frequency for minor seizures
+  const last4Weeks = minorSeizures.filter(log => {
+    const daysDiff = (now - new Date(log.timestamp)) / msPerDay;
+    return daysDiff <= 28;
+  });
+  const weeklyMinorAverage = last4Weeks.length / 4;
+
+  // Major seizure analysis
+  const majorInYear = majorSeizures.filter(log => {
+    const daysDiff = (now - new Date(log.timestamp)) / msPerDay;
+    return daysDiff <= 365;
+  });
+  const majorIn6Months = majorSeizures.filter(log => {
+    const daysDiff = (now - new Date(log.timestamp)) / msPerDay;
+    return daysDiff <= 180;
+  });
+  const majorIn2Years = majorSeizures.filter(log => {
+    const daysDiff = (now - new Date(log.timestamp)) / msPerDay;
+    return daysDiff <= 730;
+  });
+
+  // Determine rating
+  let supportedRating = 10;
+  let ratingRationale = [];
+  let seizureClassification = 'minor';
+
+  // Check major seizure criteria first
+  const avgMajorPerMonth = majorInYear.length / 12;
+
+  if (avgMajorPerMonth >= 1) {
+    supportedRating = 100;
+    seizureClassification = 'major';
+    ratingRationale.push(`Major psychomotor seizures: ${majorInYear.length} in last year (${avgMajorPerMonth.toFixed(1)}/month)`);
+    ratingRationale.push('Episodes with automatic states/convulsions with LOC');
+  } else if (majorInYear.length >= 4) {
+    supportedRating = 80;
+    seizureClassification = 'major';
+    ratingRationale.push(`Major psychomotor seizures: ${majorInYear.length} in last year (avg 1 per 3 months)`);
+  } else if (majorInYear.length >= 3) {
+    supportedRating = 60;
+    seizureClassification = 'major';
+    ratingRationale.push(`Major psychomotor seizures: ${majorInYear.length} in last year (avg 1 per 4 months)`);
+  } else if (majorIn6Months.length >= 1 || majorInYear.length >= 2) {
+    supportedRating = 40;
+    seizureClassification = 'major';
+    ratingRationale.push(`Major psychomotor seizures: ${majorIn6Months.length} in 6 months, ${majorInYear.length} in year`);
+  } else if (majorIn2Years.length >= 1) {
+    // 20% for major, but check if minor gives higher
+    if (weeklyMinorAverage > 10) {
+      supportedRating = 80;
+      seizureClassification = 'minor';
+      ratingRationale.push(`Minor psychomotor seizures: ${weeklyMinorAverage.toFixed(1)}/week (>10)`);
+    } else if (weeklyMinorAverage >= 9) {
+      supportedRating = 60;
+      seizureClassification = 'minor';
+      ratingRationale.push(`Minor psychomotor seizures: ${weeklyMinorAverage.toFixed(1)}/week (9-10)`);
+    } else if (weeklyMinorAverage >= 5) {
+      supportedRating = 40;
+      seizureClassification = 'minor';
+      ratingRationale.push(`Minor psychomotor seizures: ${weeklyMinorAverage.toFixed(1)}/week (5-8)`);
+    } else {
+      supportedRating = 20;
+      seizureClassification = 'major';
+      ratingRationale.push(`Major psychomotor seizure within last 2 years`);
+    }
+  } else {
+    // No major seizures in 2 years, rate on minor
+    if (weeklyMinorAverage > 10) {
+      supportedRating = 80;
+      ratingRationale.push(`Minor psychomotor seizures: ${weeklyMinorAverage.toFixed(1)}/week (>10)`);
+    } else if (weeklyMinorAverage >= 9) {
+      supportedRating = 60;
+      ratingRationale.push(`Minor psychomotor seizures: ${weeklyMinorAverage.toFixed(1)}/week (9-10)`);
+    } else if (weeklyMinorAverage >= 5) {
+      supportedRating = 40;
+      ratingRationale.push(`Minor psychomotor seizures: ${weeklyMinorAverage.toFixed(1)}/week (5-8)`);
+    } else if (last6Months.length >= 2) {
+      supportedRating = 20;
+      ratingRationale.push(`${last6Months.length} psychomotor episodes in last 6 months`);
+    } else {
+      supportedRating = 10;
+      ratingRationale.push('Confirmed diagnosis with documented psychomotor seizure history');
+    }
+  }
+
+  const gaps = [];
+  gaps.push('Document specific characteristics of each episode (automatic state vs brief transient)');
+  gaps.push('Record loss of consciousness status for each seizure');
+  gaps.push('Note presence of hallucinations, perceptual illusions, or automatisms');
+  gaps.push('Obtain neurologist confirmation of temporal lobe epilepsy');
+  gaps.push('Document anti-epileptic medication regimen and effectiveness');
+
+  return {
+    hasData: true,
+    condition: 'Epilepsy, Psychomotor',
+    diagnosticCodes: '8914',
+    cfrReference: '38 CFR 4.124a',
+    supportedRating,
+    ratingRationale,
+    gaps,
+    metrics: {
+      totalLogs: psychomotorLogs.length,
+      majorSeizures: majorSeizures.length,
+      minorSeizures: minorSeizures.length,
+      seizureClassification,
+      weeklyMinorAverage,
+      majorInYear: majorInYear.length,
+      avgMajorPerMonth,
+    },
+    criteria: EPILEPSY_PSYCHOMOTOR_CRITERIA,
   };
 }
 
@@ -27840,6 +29736,1886 @@ export const analyzeMyelitisLogs = (logs, options = {}) => {
 };
 
 // ============================================
+// PHASE 1C: PERIPHERAL NERVE ANALYSIS FUNCTIONS
+// 38 CFR 4.124a
+// ============================================
+
+/**
+ * Helper function to determine severity level for peripheral nerve conditions
+ * Based on symptom frequency, motor vs sensory involvement, and functional impact
+ */
+const determineNerveSeverity = (logs, motorSymptomIds, sensorySymptomIds, functionalSymptomIds = []) => {
+  const motorLogs = logs.filter(log => motorSymptomIds.some(id =>
+      getLogSymptomId(log).toLowerCase() === id.toLowerCase()
+  ));
+  const sensoryLogs = logs.filter(log => sensorySymptomIds.some(id =>
+      getLogSymptomId(log).toLowerCase() === id.toLowerCase()
+  ));
+  const functionalLogs = logs.filter(log => functionalSymptomIds.some(id =>
+      getLogSymptomId(log).toLowerCase() === id.toLowerCase()
+  ));
+
+  const hasMotorInvolvement = motorLogs.length > 0;
+  const hasSensoryInvolvement = sensoryLogs.length > 0;
+  const hasFunctionalImpact = functionalLogs.length > 0;
+
+  // Calculate average severity from logs
+  const allLogs = [...motorLogs, ...sensoryLogs, ...functionalLogs];
+  const severityScores = allLogs
+  .map(log => log.severity)
+  .filter(s => s !== undefined && s !== null);
+  const avgSeverity = severityScores.length > 0
+      ? severityScores.reduce((a, b) => a + b, 0) / severityScores.length
+      : 0;
+
+  // Determine paralysis type based on involvement pattern
+  // Per 38 CFR 4.124a: "When involvement is wholly sensory, rate as mild or at most moderate"
+  const isWholySensory = hasSensoryInvolvement && !hasMotorInvolvement;
+
+  let severityLevel = 'mild';
+  if (isWholySensory) {
+    // Sensory only - max is moderate per VA regulation
+    severityLevel = avgSeverity >= 7 ? 'moderate' : 'mild';
+  } else if (hasMotorInvolvement) {
+    if (avgSeverity >= 9 || (motorLogs.length >= 10 && hasFunctionalImpact)) {
+      severityLevel = 'complete';
+    } else if (avgSeverity >= 7 || (motorLogs.length >= 5 && avgSeverity >= 6)) {
+      severityLevel = 'severe';
+    } else if (avgSeverity >= 5 || motorLogs.length >= 3) {
+      severityLevel = 'moderate';
+    } else {
+      severityLevel = 'mild';
+    }
+  }
+
+  return {
+    severityLevel,
+    hasMotorInvolvement,
+    hasSensoryInvolvement,
+    isWholySensory,
+    hasFunctionalImpact,
+    motorLogCount: motorLogs.length,
+    sensoryLogCount: sensoryLogs.length,
+    avgSeverity: avgSeverity.toFixed(1),
+    totalLogs: allLogs.length,
+  };
+};
+
+/**
+ * Helper function to determine rating based on severity and extremity for upper extremity nerves
+ */
+const getUpperExtremityNerveRating = (severityLevel, isMajorExtremity, ratingScale) => {
+  // ratingScale is an object like: { complete: {major: 70, minor: 60}, severe: {major: 50, minor: 40}, ... }
+  const scale = ratingScale[severityLevel];
+  if (!scale) return ratingScale.mild?.major || ratingScale.mild?.both || 0;
+
+  if (scale.both !== undefined) return scale.both;
+  return isMajorExtremity ? scale.major : scale.minor;
+};
+
+/**
+ * Analyze Upper Radicular Group (C5-C6) - DC 8510/8610/8710
+ */
+export const analyzeUpperRadicularGroupLogs = (logs, options = {}) => {
+  const { days = 90, isMajorExtremity = true } = options;
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - days);
+
+  const symptomIds = CONDITIONS.UPPER_RADICULAR_GROUP.symptomIds;
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.date);
+    return logDate >= cutoffDate && symptomIds.some(id =>
+        getLogSymptomId(log).toLowerCase() === id.toLowerCase()
+    );
+  });
+
+  if (relevantLogs.length === 0) {
+    return { hasData: false, supportedRating: null, ratingRationale: [], gaps: [], metrics: {} };
+  }
+
+  const motorSymptoms = ['uprn-shoulder-weakness', 'uprn-elbow-weakness', 'uprn-shoulder-movement-loss', 'uprn-elbow-movement-loss', 'uprn-muscle-atrophy'];
+  const sensorySymptoms = ['uprn-numbness', 'uprn-tingling', 'uprn-pain'];
+  const functionalSymptoms = ['uprn-reflex-loss'];
+
+  const severity = determineNerveSeverity(relevantLogs, motorSymptoms, sensorySymptoms, functionalSymptoms);
+
+  const ratingScale = {
+    complete: { major: 70, minor: 60 },
+    severe: { major: 50, minor: 40 },
+    moderate: { major: 40, minor: 30 },
+    mild: { both: 20 },
+  };
+
+  const supportedRating = getUpperExtremityNerveRating(severity.severityLevel, isMajorExtremity, ratingScale);
+
+  const ratingRationale = [];
+  const extremityText = isMajorExtremity ? 'major (dominant)' : 'minor (non-dominant)';
+
+  ratingRationale.push(`${relevantLogs.length} upper radicular group symptoms logged in ${days} days`);
+  ratingRationale.push(`Affected extremity: ${extremityText}`);
+  ratingRationale.push(`Severity level: ${severity.severityLevel} incomplete paralysis`);
+
+  if (severity.hasMotorInvolvement) {
+    ratingRationale.push(`Motor involvement documented (${severity.motorLogCount} motor symptoms)`);
+  }
+  if (severity.isWholySensory) {
+    ratingRationale.push('Involvement is wholly sensory - rating limited to moderate per 38 CFR 4.124a');
+  }
+  ratingRationale.push(`Average symptom severity: ${severity.avgSeverity}/10`);
+
+  const gaps = [];
+  if (!severity.hasMotorInvolvement) {
+    gaps.push('Document motor deficits (weakness, movement loss) if present for higher rating');
+  }
+  if (relevantLogs.length < 5) {
+    gaps.push('Continue logging symptoms regularly to establish pattern');
+  }
+  gaps.push('Obtain EMG/nerve conduction study to confirm diagnosis and severity');
+
+  return {
+    hasData: true,
+    supportedRating,
+    ratingRationale,
+    gaps,
+    metrics: {
+      totalLogs: relevantLogs.length,
+      motorLogs: severity.motorLogCount,
+      sensoryLogs: severity.sensoryLogCount,
+      avgSeverity: severity.avgSeverity,
+      severityLevel: severity.severityLevel,
+      isMajorExtremity,
+      isWholySensory: severity.isWholySensory,
+    },
+    condition: 'Upper Radicular Group (C5-C6)',
+    diagnosticCodes: { paralysis: '8510', neuritis: '8610', neuralgia: '8710' },
+  };
+};
+
+/**
+ * Analyze Middle Radicular Group (C7) - DC 8511/8611/8711
+ */
+export const analyzeMiddleRadicularGroupLogs = (logs, options = {}) => {
+  const { days = 90, isMajorExtremity = true } = options;
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - days);
+
+  const symptomIds = CONDITIONS.MIDDLE_RADICULAR_GROUP.symptomIds;
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.date);
+    return logDate >= cutoffDate && symptomIds.some(id =>
+        getLogSymptomId(log).toLowerCase() === id.toLowerCase()
+    );
+  });
+
+  if (relevantLogs.length === 0) {
+    return { hasData: false, supportedRating: null, ratingRationale: [], gaps: [], metrics: {} };
+  }
+
+  const motorSymptoms = ['mdrn-arm-weakness', 'mdrn-wrist-extension-weakness', 'mdrn-elbow-extension-weakness', 'mdrn-finger-extension-weakness', 'mdrn-muscle-atrophy'];
+  const sensorySymptoms = ['mdrn-numbness', 'mdrn-tingling', 'mdrn-pain'];
+  const functionalSymptoms = ['mdrn-reflex-loss'];
+
+  const severity = determineNerveSeverity(relevantLogs, motorSymptoms, sensorySymptoms, functionalSymptoms);
+
+  const ratingScale = {
+    complete: { major: 70, minor: 60 },
+    severe: { major: 50, minor: 40 },
+    moderate: { major: 40, minor: 30 },
+    mild: { both: 20 },
+  };
+
+  const supportedRating = getUpperExtremityNerveRating(severity.severityLevel, isMajorExtremity, ratingScale);
+
+  const ratingRationale = [];
+  const extremityText = isMajorExtremity ? 'major (dominant)' : 'minor (non-dominant)';
+
+  ratingRationale.push(`${relevantLogs.length} middle radicular group symptoms logged in ${days} days`);
+  ratingRationale.push(`Affected extremity: ${extremityText}`);
+  ratingRationale.push(`Severity level: ${severity.severityLevel} incomplete paralysis`);
+
+  if (severity.hasMotorInvolvement) {
+    ratingRationale.push(`Motor involvement documented (${severity.motorLogCount} motor symptoms)`);
+  }
+  if (severity.isWholySensory) {
+    ratingRationale.push('Involvement is wholly sensory - rating limited to moderate per 38 CFR 4.124a');
+  }
+  ratingRationale.push(`Average symptom severity: ${severity.avgSeverity}/10`);
+
+  const gaps = [];
+  if (!severity.hasMotorInvolvement) {
+    gaps.push('Document motor deficits (wrist/elbow/finger extension weakness) if present');
+  }
+  if (relevantLogs.length < 5) {
+    gaps.push('Continue logging symptoms regularly to establish pattern');
+  }
+  gaps.push('Obtain EMG/nerve conduction study to confirm diagnosis and severity');
+
+  return {
+    hasData: true,
+    supportedRating,
+    ratingRationale,
+    gaps,
+    metrics: {
+      totalLogs: relevantLogs.length,
+      motorLogs: severity.motorLogCount,
+      sensoryLogs: severity.sensoryLogCount,
+      avgSeverity: severity.avgSeverity,
+      severityLevel: severity.severityLevel,
+      isMajorExtremity,
+      isWholySensory: severity.isWholySensory,
+    },
+    condition: 'Middle Radicular Group (C7)',
+    diagnosticCodes: { paralysis: '8511', neuritis: '8611', neuralgia: '8711' },
+  };
+};
+
+/**
+ * Analyze Lower Radicular Group (C8-T1) - DC 8512/8612/8712
+ */
+export const analyzeLowerRadicularGroupLogs = (logs, options = {}) => {
+  const { days = 90, isMajorExtremity = true } = options;
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - days);
+
+  const symptomIds = CONDITIONS.LOWER_RADICULAR_GROUP.symptomIds;
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.date);
+    return logDate >= cutoffDate && symptomIds.some(id =>
+        getLogSymptomId(log).toLowerCase() === id.toLowerCase()
+    );
+  });
+
+  if (relevantLogs.length === 0) {
+    return { hasData: false, supportedRating: null, ratingRationale: [], gaps: [], metrics: {} };
+  }
+
+  const motorSymptoms = ['lwrn-hand-weakness', 'lwrn-grip-weakness', 'lwrn-finger-flexion-weakness', 'lwrn-intrinsic-muscle-weakness', 'lwrn-muscle-atrophy'];
+  const sensorySymptoms = ['lwrn-numbness', 'lwrn-tingling', 'lwrn-pain'];
+  const functionalSymptoms = ['lwrn-clumsiness'];
+
+  const severity = determineNerveSeverity(relevantLogs, motorSymptoms, sensorySymptoms, functionalSymptoms);
+
+  const ratingScale = {
+    complete: { major: 70, minor: 60 },
+    severe: { major: 50, minor: 40 },
+    moderate: { major: 40, minor: 30 },
+    mild: { both: 20 },
+  };
+
+  const supportedRating = getUpperExtremityNerveRating(severity.severityLevel, isMajorExtremity, ratingScale);
+
+  const ratingRationale = [];
+  const extremityText = isMajorExtremity ? 'major (dominant)' : 'minor (non-dominant)';
+
+  ratingRationale.push(`${relevantLogs.length} lower radicular group symptoms logged in ${days} days`);
+  ratingRationale.push(`Affected extremity: ${extremityText}`);
+  ratingRationale.push(`Severity level: ${severity.severityLevel} incomplete paralysis`);
+
+  if (severity.hasMotorInvolvement) {
+    ratingRationale.push(`Motor involvement documented (${severity.motorLogCount} motor symptoms)`);
+  }
+  if (severity.isWholySensory) {
+    ratingRationale.push('Involvement is wholly sensory - rating limited to moderate per 38 CFR 4.124a');
+  }
+  ratingRationale.push(`Average symptom severity: ${severity.avgSeverity}/10`);
+
+  const gaps = [];
+  if (!severity.hasMotorInvolvement) {
+    gaps.push('Document motor deficits (hand/grip weakness, intrinsic muscle weakness) if present');
+  }
+  if (relevantLogs.length < 5) {
+    gaps.push('Continue logging symptoms regularly to establish pattern');
+  }
+  gaps.push('Obtain EMG/nerve conduction study to confirm diagnosis and severity');
+
+  return {
+    hasData: true,
+    supportedRating,
+    ratingRationale,
+    gaps,
+    metrics: {
+      totalLogs: relevantLogs.length,
+      motorLogs: severity.motorLogCount,
+      sensoryLogs: severity.sensoryLogCount,
+      avgSeverity: severity.avgSeverity,
+      severityLevel: severity.severityLevel,
+      isMajorExtremity,
+      isWholySensory: severity.isWholySensory,
+    },
+    condition: 'Lower Radicular Group (C8-T1)',
+    diagnosticCodes: { paralysis: '8512', neuritis: '8612', neuralgia: '8712' },
+  };
+};
+
+/**
+ * Analyze All Radicular Groups (Brachial Plexus) - DC 8513/8613/8713
+ */
+export const analyzeAllRadicularGroupsLogs = (logs, options = {}) => {
+  const { days = 90, isMajorExtremity = true } = options;
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - days);
+
+  const symptomIds = CONDITIONS.ALL_RADICULAR_GROUPS.symptomIds;
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.date);
+    return logDate >= cutoffDate && symptomIds.some(id =>
+        getLogSymptomId(log).toLowerCase() === id.toLowerCase()
+    );
+  });
+
+  if (relevantLogs.length === 0) {
+    return { hasData: false, supportedRating: null, ratingRationale: [], gaps: [], metrics: {} };
+  }
+
+  const motorSymptoms = ['alrn-complete-arm-paralysis', 'alrn-arm-weakness', 'alrn-shoulder-weakness', 'alrn-elbow-weakness', 'alrn-wrist-weakness', 'alrn-hand-weakness', 'alrn-muscle-atrophy'];
+  const sensorySymptoms = ['alrn-numbness', 'alrn-tingling', 'alrn-pain'];
+
+  const severity = determineNerveSeverity(relevantLogs, motorSymptoms, sensorySymptoms, []);
+
+  // All radicular groups has different rating scale - higher ratings
+  const ratingScale = {
+    complete: { major: 90, minor: 80 },
+    severe: { major: 70, minor: 60 },
+    moderate: { major: 40, minor: 30 },
+    mild: { both: 20 },
+  };
+
+  const supportedRating = getUpperExtremityNerveRating(severity.severityLevel, isMajorExtremity, ratingScale);
+
+  const ratingRationale = [];
+  const extremityText = isMajorExtremity ? 'major (dominant)' : 'minor (non-dominant)';
+
+  ratingRationale.push(`${relevantLogs.length} brachial plexus symptoms logged in ${days} days`);
+  ratingRationale.push(`Affected extremity: ${extremityText}`);
+  ratingRationale.push(`Severity level: ${severity.severityLevel} incomplete paralysis`);
+
+  if (severity.hasMotorInvolvement) {
+    ratingRationale.push(`Motor involvement documented (${severity.motorLogCount} motor symptoms)`);
+  }
+  if (severity.isWholySensory) {
+    ratingRationale.push('Involvement is wholly sensory - rating limited to moderate per 38 CFR 4.124a');
+  }
+  ratingRationale.push(`Average symptom severity: ${severity.avgSeverity}/10`);
+
+  const gaps = [];
+  if (!severity.hasMotorInvolvement) {
+    gaps.push('Document motor deficits at all levels (shoulder, elbow, wrist, hand) if present');
+  }
+  if (relevantLogs.length < 5) {
+    gaps.push('Continue logging symptoms regularly to establish pattern');
+  }
+  gaps.push('Comprehensive brachial plexus evaluation with EMG/NCS required');
+
+  return {
+    hasData: true,
+    supportedRating,
+    ratingRationale,
+    gaps,
+    metrics: {
+      totalLogs: relevantLogs.length,
+      motorLogs: severity.motorLogCount,
+      sensoryLogs: severity.sensoryLogCount,
+      avgSeverity: severity.avgSeverity,
+      severityLevel: severity.severityLevel,
+      isMajorExtremity,
+      isWholySensory: severity.isWholySensory,
+    },
+    condition: 'All Radicular Groups (Brachial Plexus)',
+    diagnosticCodes: { paralysis: '8513', neuritis: '8613', neuralgia: '8713' },
+  };
+};
+
+/**
+ * Analyze Radial Nerve (Musculospiral) - DC 8514/8614/8714
+ */
+export const analyzeRadialNerveLogs = (logs, options = {}) => {
+  const { days = 90, isMajorExtremity = true } = options;
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - days);
+
+  const symptomIds = CONDITIONS.RADIAL_NERVE.symptomIds;
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.date);
+    return logDate >= cutoffDate && symptomIds.some(id =>
+        getLogSymptomId(log).toLowerCase() === id.toLowerCase()
+    );
+  });
+
+  if (relevantLogs.length === 0) {
+    return { hasData: false, supportedRating: null, ratingRationale: [], gaps: [], metrics: {} };
+  }
+
+  const motorSymptoms = ['radn-wrist-drop', 'radn-finger-drop', 'radn-extension-weakness', 'radn-supination-weakness', 'radn-thumb-extension-loss', 'radn-grip-weakness', 'radn-muscle-atrophy'];
+  const sensorySymptoms = ['radn-numbness', 'radn-tingling', 'radn-pain'];
+
+  const severity = determineNerveSeverity(relevantLogs, motorSymptoms, sensorySymptoms, []);
+
+  const ratingScale = {
+    complete: { major: 70, minor: 60 },
+    severe: { major: 50, minor: 40 },
+    moderate: { major: 30, minor: 20 },
+    mild: { both: 20 },
+  };
+
+  const supportedRating = getUpperExtremityNerveRating(severity.severityLevel, isMajorExtremity, ratingScale);
+
+  const ratingRationale = [];
+  const extremityText = isMajorExtremity ? 'major (dominant)' : 'minor (non-dominant)';
+
+  ratingRationale.push(`${relevantLogs.length} radial nerve symptoms logged in ${days} days`);
+  ratingRationale.push(`Affected extremity: ${extremityText}`);
+  ratingRationale.push(`Severity level: ${severity.severityLevel} incomplete paralysis`);
+
+  // Check for wrist drop - hallmark of radial nerve palsy
+  const hasWristDrop = relevantLogs.some(log =>
+      getLogSymptomId(log).toLowerCase() === 'radn-wrist-drop'
+  );
+  if (hasWristDrop) {
+    ratingRationale.push('Wrist drop documented - hallmark sign of radial nerve palsy');
+  }
+
+  if (severity.hasMotorInvolvement) {
+    ratingRationale.push(`Motor involvement documented (${severity.motorLogCount} motor symptoms)`);
+  }
+  if (severity.isWholySensory) {
+    ratingRationale.push('Involvement is wholly sensory - rating limited to moderate per 38 CFR 4.124a');
+  }
+  ratingRationale.push(`Average symptom severity: ${severity.avgSeverity}/10`);
+
+  const gaps = [];
+  if (!hasWristDrop && severity.hasMotorInvolvement) {
+    gaps.push('Document presence or absence of wrist drop');
+  }
+  if (!severity.hasMotorInvolvement) {
+    gaps.push('Document motor deficits (wrist drop, extension weakness) if present');
+  }
+  if (relevantLogs.length < 5) {
+    gaps.push('Continue logging symptoms regularly to establish pattern');
+  }
+  gaps.push('Obtain EMG/nerve conduction study to confirm diagnosis and severity');
+
+  return {
+    hasData: true,
+    supportedRating,
+    ratingRationale,
+    gaps,
+    metrics: {
+      totalLogs: relevantLogs.length,
+      motorLogs: severity.motorLogCount,
+      sensoryLogs: severity.sensoryLogCount,
+      avgSeverity: severity.avgSeverity,
+      severityLevel: severity.severityLevel,
+      isMajorExtremity,
+      isWholySensory: severity.isWholySensory,
+      hasWristDrop,
+    },
+    condition: 'Radial Nerve (Musculospiral)',
+    diagnosticCodes: { paralysis: '8514', neuritis: '8614', neuralgia: '8714' },
+  };
+};
+
+/**
+ * Analyze Median Nerve (Carpal Tunnel) - DC 8515/8615/8715
+ */
+export const analyzeMedianNerveLogs = (logs, options = {}) => {
+  const { days = 90, isMajorExtremity = true } = options;
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - days);
+
+  const symptomIds = CONDITIONS.MEDIAN_NERVE.symptomIds;
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.date);
+    return logDate >= cutoffDate && symptomIds.some(id =>
+        getLogSymptomId(log).toLowerCase() === id.toLowerCase()
+    );
+  });
+
+  if (relevantLogs.length === 0) {
+    return { hasData: false, supportedRating: null, ratingRationale: [], gaps: [], metrics: {} };
+  }
+
+  const motorSymptoms = ['medn-thenar-weakness', 'medn-thenar-atrophy', 'medn-grip-weakness', 'medn-dropping-objects', 'medn-opposition-weakness', 'medn-pronation-weakness', 'medn-ape-hand'];
+  const sensorySymptoms = ['medn-numbness', 'medn-tingling', 'medn-pain', 'medn-night-symptoms', 'medn-trophic-changes'];
+
+  const severity = determineNerveSeverity(relevantLogs, motorSymptoms, sensorySymptoms, []);
+
+  const ratingScale = {
+    complete: { major: 70, minor: 60 },
+    severe: { major: 50, minor: 40 },
+    moderate: { major: 30, minor: 20 },
+    mild: { both: 10 },
+  };
+
+  const supportedRating = getUpperExtremityNerveRating(severity.severityLevel, isMajorExtremity, ratingScale);
+
+  const ratingRationale = [];
+  const extremityText = isMajorExtremity ? 'major (dominant)' : 'minor (non-dominant)';
+
+  ratingRationale.push(`${relevantLogs.length} median nerve/carpal tunnel symptoms logged in ${days} days`);
+  ratingRationale.push(`Affected extremity: ${extremityText}`);
+  ratingRationale.push(`Severity level: ${severity.severityLevel} incomplete paralysis`);
+
+  // Check for thenar atrophy - sign of severe/chronic carpal tunnel
+  const hasThenarAtrophy = relevantLogs.some(log =>
+      getLogSymptomId(log).toLowerCase() === 'medn-thenar-atrophy'
+  );
+  if (hasThenarAtrophy) {
+    ratingRationale.push('Thenar atrophy documented - indicates severe/chronic involvement');
+  }
+
+  // Check for night symptoms - classic carpal tunnel presentation
+  const hasNightSymptoms = relevantLogs.some(log =>
+      getLogSymptomId(log).toLowerCase() === 'medn-night-symptoms'
+  );
+  if (hasNightSymptoms) {
+    ratingRationale.push('Night symptoms documented - classic carpal tunnel presentation');
+  }
+
+  if (severity.hasMotorInvolvement) {
+    ratingRationale.push(`Motor involvement documented (${severity.motorLogCount} motor symptoms)`);
+  }
+  if (severity.isWholySensory) {
+    ratingRationale.push('Involvement is wholly sensory - rating limited to moderate per 38 CFR 4.124a');
+  }
+  ratingRationale.push(`Average symptom severity: ${severity.avgSeverity}/10`);
+
+  const gaps = [];
+  if (!severity.hasMotorInvolvement) {
+    gaps.push('Document motor deficits (thenar weakness, opposition difficulty) if present');
+  }
+  if (!hasThenarAtrophy && severity.severityLevel === 'severe') {
+    gaps.push('Document presence or absence of thenar atrophy');
+  }
+  if (relevantLogs.length < 5) {
+    gaps.push('Continue logging symptoms regularly to establish pattern');
+  }
+  gaps.push('Obtain nerve conduction study to confirm carpal tunnel diagnosis and severity');
+
+  return {
+    hasData: true,
+    supportedRating,
+    ratingRationale,
+    gaps,
+    metrics: {
+      totalLogs: relevantLogs.length,
+      motorLogs: severity.motorLogCount,
+      sensoryLogs: severity.sensoryLogCount,
+      avgSeverity: severity.avgSeverity,
+      severityLevel: severity.severityLevel,
+      isMajorExtremity,
+      isWholySensory: severity.isWholySensory,
+      hasThenarAtrophy,
+      hasNightSymptoms,
+    },
+    condition: 'Median Nerve (Carpal Tunnel)',
+    diagnosticCodes: { paralysis: '8515', neuritis: '8615', neuralgia: '8715' },
+  };
+};
+
+/**
+ * Analyze Ulnar Nerve (Cubital Tunnel) - DC 8516/8616/8716
+ */
+export const analyzeUlnarNerveLogs = (logs, options = {}) => {
+  const { days = 90, isMajorExtremity = true } = options;
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - days);
+
+  const symptomIds = CONDITIONS.ULNAR_NERVE.symptomIds;
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.date);
+    return logDate >= cutoffDate && symptomIds.some(id =>
+        getLogSymptomId(log).toLowerCase() === id.toLowerCase()
+    );
+  });
+
+  if (relevantLogs.length === 0) {
+    return { hasData: false, supportedRating: null, ratingRationale: [], gaps: [], metrics: {} };
+  }
+
+  const motorSymptoms = ['ulnn-grip-weakness', 'ulnn-pinch-weakness', 'ulnn-finger-spread-weakness', 'ulnn-claw-hand', 'ulnn-interossei-atrophy', 'ulnn-hypothenar-atrophy', 'ulnn-thumb-adduction-weakness', 'ulnn-wrist-flexion-weakness'];
+  const sensorySymptoms = ['ulnn-numbness', 'ulnn-tingling', 'ulnn-pain', 'ulnn-elbow-pain'];
+
+  const severity = determineNerveSeverity(relevantLogs, motorSymptoms, sensorySymptoms, []);
+
+  const ratingScale = {
+    complete: { major: 60, minor: 50 },
+    severe: { major: 40, minor: 30 },
+    moderate: { major: 30, minor: 20 },
+    mild: { both: 10 },
+  };
+
+  const supportedRating = getUpperExtremityNerveRating(severity.severityLevel, isMajorExtremity, ratingScale);
+
+  const ratingRationale = [];
+  const extremityText = isMajorExtremity ? 'major (dominant)' : 'minor (non-dominant)';
+
+  ratingRationale.push(`${relevantLogs.length} ulnar nerve/cubital tunnel symptoms logged in ${days} days`);
+  ratingRationale.push(`Affected extremity: ${extremityText}`);
+  ratingRationale.push(`Severity level: ${severity.severityLevel} incomplete paralysis`);
+
+  // Check for claw hand - hallmark of severe ulnar palsy
+  const hasClawHand = relevantLogs.some(log =>
+      getLogSymptomId(log).toLowerCase() === 'ulnn-claw-hand'
+  );
+  if (hasClawHand) {
+    ratingRationale.push('Claw hand deformity documented - hallmark sign of ulnar nerve palsy');
+  }
+
+  // Check for interossei atrophy
+  const hasInterosseiAtrophy = relevantLogs.some(log =>
+      getLogSymptomId(log).toLowerCase() === 'ulnn-interossei-atrophy'
+  );
+  if (hasInterosseiAtrophy) {
+    ratingRationale.push('Interossei muscle atrophy documented');
+  }
+
+  if (severity.hasMotorInvolvement) {
+    ratingRationale.push(`Motor involvement documented (${severity.motorLogCount} motor symptoms)`);
+  }
+  if (severity.isWholySensory) {
+    ratingRationale.push('Involvement is wholly sensory - rating limited to moderate per 38 CFR 4.124a');
+  }
+  ratingRationale.push(`Average symptom severity: ${severity.avgSeverity}/10`);
+
+  const gaps = [];
+  if (!severity.hasMotorInvolvement) {
+    gaps.push('Document motor deficits (grip weakness, finger spread weakness) if present');
+  }
+  if (!hasClawHand && severity.severityLevel === 'severe') {
+    gaps.push('Document presence or absence of claw hand deformity');
+  }
+  if (relevantLogs.length < 5) {
+    gaps.push('Continue logging symptoms regularly to establish pattern');
+  }
+  gaps.push('Obtain nerve conduction study to confirm cubital tunnel diagnosis and severity');
+
+  return {
+    hasData: true,
+    supportedRating,
+    ratingRationale,
+    gaps,
+    metrics: {
+      totalLogs: relevantLogs.length,
+      motorLogs: severity.motorLogCount,
+      sensoryLogs: severity.sensoryLogCount,
+      avgSeverity: severity.avgSeverity,
+      severityLevel: severity.severityLevel,
+      isMajorExtremity,
+      isWholySensory: severity.isWholySensory,
+      hasClawHand,
+      hasInterosseiAtrophy,
+    },
+    condition: 'Ulnar Nerve (Cubital Tunnel)',
+    diagnosticCodes: { paralysis: '8516', neuritis: '8616', neuralgia: '8716' },
+  };
+};
+
+/**
+ * Analyze Musculocutaneous Nerve - DC 8517/8617/8717
+ */
+export const analyzeMusculocutaneousNerveLogs = (logs, options = {}) => {
+  const { days = 90, isMajorExtremity = true } = options;
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - days);
+
+  const symptomIds = CONDITIONS.MUSCULOCUTANEOUS_NERVE.symptomIds;
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.date);
+    return logDate >= cutoffDate && symptomIds.some(id =>
+        getLogSymptomId(log).toLowerCase() === id.toLowerCase()
+    );
+  });
+
+  if (relevantLogs.length === 0) {
+    return { hasData: false, supportedRating: null, ratingRationale: [], gaps: [], metrics: {} };
+  }
+
+  const motorSymptoms = ['mscn-biceps-weakness', 'mscn-elbow-flexion-weakness', 'mscn-supination-weakness', 'mscn-muscle-atrophy'];
+  const sensorySymptoms = ['mscn-numbness', 'mscn-tingling', 'mscn-pain'];
+
+  const severity = determineNerveSeverity(relevantLogs, motorSymptoms, sensorySymptoms, []);
+
+  // Musculocutaneous has lower max ratings
+  const ratingScale = {
+    complete: { major: 30, minor: 20 },
+    severe: { both: 20 },
+    moderate: { both: 10 },
+    mild: { both: 0 },
+  };
+
+  const supportedRating = getUpperExtremityNerveRating(severity.severityLevel, isMajorExtremity, ratingScale);
+
+  const ratingRationale = [];
+  const extremityText = isMajorExtremity ? 'major (dominant)' : 'minor (non-dominant)';
+
+  ratingRationale.push(`${relevantLogs.length} musculocutaneous nerve symptoms logged in ${days} days`);
+  ratingRationale.push(`Affected extremity: ${extremityText}`);
+  ratingRationale.push(`Severity level: ${severity.severityLevel} incomplete paralysis`);
+
+  if (severity.hasMotorInvolvement) {
+    ratingRationale.push(`Motor involvement documented (${severity.motorLogCount} motor symptoms)`);
+  }
+  if (severity.isWholySensory) {
+    ratingRationale.push('Involvement is wholly sensory - rating limited to moderate per 38 CFR 4.124a');
+  }
+  ratingRationale.push(`Average symptom severity: ${severity.avgSeverity}/10`);
+  ratingRationale.push('Note: Complete paralysis does not result in total loss of elbow flexion due to compensation by other muscles');
+
+  const gaps = [];
+  if (!severity.hasMotorInvolvement) {
+    gaps.push('Document motor deficits (biceps weakness, elbow flexion weakness) if present');
+  }
+  if (relevantLogs.length < 5) {
+    gaps.push('Continue logging symptoms regularly to establish pattern');
+  }
+  gaps.push('Obtain EMG/nerve conduction study to confirm diagnosis');
+
+  return {
+    hasData: true,
+    supportedRating,
+    ratingRationale,
+    gaps,
+    metrics: {
+      totalLogs: relevantLogs.length,
+      motorLogs: severity.motorLogCount,
+      sensoryLogs: severity.sensoryLogCount,
+      avgSeverity: severity.avgSeverity,
+      severityLevel: severity.severityLevel,
+      isMajorExtremity,
+      isWholySensory: severity.isWholySensory,
+    },
+    condition: 'Musculocutaneous Nerve',
+    diagnosticCodes: { paralysis: '8517', neuritis: '8617', neuralgia: '8717' },
+  };
+};
+
+/**
+ * Analyze Circumflex (Axillary) Nerve - DC 8518/8618/8718
+ */
+export const analyzeCircumflexNerveLogs = (logs, options = {}) => {
+  const { days = 90, isMajorExtremity = true } = options;
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - days);
+
+  const symptomIds = CONDITIONS.CIRCUMFLEX_NERVE.symptomIds;
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.date);
+    return logDate >= cutoffDate && symptomIds.some(id =>
+        getLogSymptomId(log).toLowerCase() === id.toLowerCase()
+    );
+  });
+
+  if (relevantLogs.length === 0) {
+    return { hasData: false, supportedRating: null, ratingRationale: [], gaps: [], metrics: {} };
+  }
+
+  const motorSymptoms = ['crcn-shoulder-abduction-weakness', 'crcn-arm-raise-difficulty', 'crcn-external-rotation-weakness', 'crcn-deltoid-weakness', 'crcn-deltoid-atrophy'];
+  const sensorySymptoms = ['crcn-numbness', 'crcn-tingling', 'crcn-pain'];
+
+  const severity = determineNerveSeverity(relevantLogs, motorSymptoms, sensorySymptoms, []);
+
+  const ratingScale = {
+    complete: { major: 50, minor: 40 },
+    severe: { major: 30, minor: 20 },
+    moderate: { both: 10 },
+    mild: { both: 0 },
+  };
+
+  const supportedRating = getUpperExtremityNerveRating(severity.severityLevel, isMajorExtremity, ratingScale);
+
+  const ratingRationale = [];
+  const extremityText = isMajorExtremity ? 'major (dominant)' : 'minor (non-dominant)';
+
+  ratingRationale.push(`${relevantLogs.length} circumflex (axillary) nerve symptoms logged in ${days} days`);
+  ratingRationale.push(`Affected extremity: ${extremityText}`);
+  ratingRationale.push(`Severity level: ${severity.severityLevel} incomplete paralysis`);
+
+  // Check for deltoid atrophy
+  const hasDeltoidAtrophy = relevantLogs.some(log =>
+      getLogSymptomId(log).toLowerCase() === 'crcn-deltoid-atrophy'
+  );
+  if (hasDeltoidAtrophy) {
+    ratingRationale.push('Deltoid atrophy documented - indicates chronic/severe involvement');
+  }
+
+  if (severity.hasMotorInvolvement) {
+    ratingRationale.push(`Motor involvement documented (${severity.motorLogCount} motor symptoms)`);
+  }
+  if (severity.isWholySensory) {
+    ratingRationale.push('Involvement is wholly sensory - rating limited to moderate per 38 CFR 4.124a');
+  }
+  ratingRationale.push(`Average symptom severity: ${severity.avgSeverity}/10`);
+
+  const gaps = [];
+  if (!severity.hasMotorInvolvement) {
+    gaps.push('Document motor deficits (shoulder abduction weakness, deltoid weakness) if present');
+  }
+  if (relevantLogs.length < 5) {
+    gaps.push('Continue logging symptoms regularly to establish pattern');
+  }
+  gaps.push('Obtain EMG/nerve conduction study to confirm diagnosis');
+
+  return {
+    hasData: true,
+    supportedRating,
+    ratingRationale,
+    gaps,
+    metrics: {
+      totalLogs: relevantLogs.length,
+      motorLogs: severity.motorLogCount,
+      sensoryLogs: severity.sensoryLogCount,
+      avgSeverity: severity.avgSeverity,
+      severityLevel: severity.severityLevel,
+      isMajorExtremity,
+      isWholySensory: severity.isWholySensory,
+      hasDeltoidAtrophy,
+    },
+    condition: 'Circumflex (Axillary) Nerve',
+    diagnosticCodes: { paralysis: '8518', neuritis: '8618', neuralgia: '8718' },
+  };
+};
+
+/**
+ * Analyze Long Thoracic Nerve - DC 8519/8619/8719
+ */
+export const analyzeLongThoracicNerveLogs = (logs, options = {}) => {
+  const { days = 90, isMajorExtremity = true } = options;
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - days);
+
+  const symptomIds = CONDITIONS.LONG_THORACIC_NERVE.symptomIds;
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.date);
+    return logDate >= cutoffDate && symptomIds.some(id =>
+        getLogSymptomId(log).toLowerCase() === id.toLowerCase()
+    );
+  });
+
+  if (relevantLogs.length === 0) {
+    return { hasData: false, supportedRating: null, ratingRationale: [], gaps: [], metrics: {} };
+  }
+
+  const motorSymptoms = ['ltn-winged-scapula', 'ltn-arm-elevation-difficulty', 'ltn-shoulder-weakness', 'ltn-pushing-difficulty', 'ltn-serratus-weakness'];
+  const sensorySymptoms = ['ltn-pain', 'ltn-fatigue'];
+
+  const severity = determineNerveSeverity(relevantLogs, motorSymptoms, sensorySymptoms, []);
+
+  // Long thoracic has lower max ratings
+  const ratingScale = {
+    complete: { major: 30, minor: 20 },
+    severe: { both: 20 },
+    moderate: { both: 10 },
+    mild: { both: 0 },
+  };
+
+  const supportedRating = getUpperExtremityNerveRating(severity.severityLevel, isMajorExtremity, ratingScale);
+
+  const ratingRationale = [];
+  const extremityText = isMajorExtremity ? 'major (dominant)' : 'minor (non-dominant)';
+
+  ratingRationale.push(`${relevantLogs.length} long thoracic nerve symptoms logged in ${days} days`);
+  ratingRationale.push(`Affected extremity: ${extremityText}`);
+  ratingRationale.push(`Severity level: ${severity.severityLevel} incomplete paralysis`);
+
+  // Check for winged scapula - hallmark sign
+  const hasWingedScapula = relevantLogs.some(log =>
+      getLogSymptomId(log).toLowerCase() === 'ltn-winged-scapula'
+  );
+  if (hasWingedScapula) {
+    ratingRationale.push('Winged scapula documented - hallmark sign of long thoracic nerve palsy');
+  }
+
+  if (severity.hasMotorInvolvement) {
+    ratingRationale.push(`Motor involvement documented (${severity.motorLogCount} motor symptoms)`);
+  }
+  ratingRationale.push(`Average symptom severity: ${severity.avgSeverity}/10`);
+  ratingRationale.push('Note: Not to be combined with lost motion above shoulder level');
+
+  const gaps = [];
+  if (!hasWingedScapula) {
+    gaps.push('Document presence or absence of winged scapula');
+  }
+  if (!severity.hasMotorInvolvement) {
+    gaps.push('Document motor deficits (difficulty raising arm above shoulder) if present');
+  }
+  if (relevantLogs.length < 5) {
+    gaps.push('Continue logging symptoms regularly to establish pattern');
+  }
+  gaps.push('Obtain clinical examination documenting scapular winging');
+
+  return {
+    hasData: true,
+    supportedRating,
+    ratingRationale,
+    gaps,
+    metrics: {
+      totalLogs: relevantLogs.length,
+      motorLogs: severity.motorLogCount,
+      sensoryLogs: severity.sensoryLogCount,
+      avgSeverity: severity.avgSeverity,
+      severityLevel: severity.severityLevel,
+      isMajorExtremity,
+      hasWingedScapula,
+    },
+    condition: 'Long Thoracic Nerve',
+    diagnosticCodes: { paralysis: '8519', neuritis: '8619', neuralgia: '8719' },
+  };
+};
+
+// ============================================
+// LOWER EXTREMITY NERVE ANALYSIS FUNCTIONS
+// Note: Lower extremity nerves do NOT have major/minor distinction
+// ============================================
+
+/**
+ * Analyze Sciatic Nerve - DC 8520/8620/8720
+ */
+export const analyzeSciaticNerveLogs = (logs, options = {}) => {
+  const { days = 90 } = options;
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - days);
+
+  const symptomIds = CONDITIONS.SCIATIC_NERVE.symptomIds;
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.date);
+    return logDate >= cutoffDate && symptomIds.some(id =>
+        getLogSymptomId(log).toLowerCase() === id.toLowerCase()
+    );
+  });
+
+  if (relevantLogs.length === 0) {
+    return { hasData: false, supportedRating: null, ratingRationale: [], gaps: [], metrics: {} };
+  }
+
+  const motorSymptoms = ['scin-leg-weakness', 'scin-foot-drop', 'scin-knee-flexion-weakness', 'scin-muscle-atrophy', 'scin-difficulty-walking'];
+  const sensorySymptoms = ['scin-radiating-pain', 'scin-numbness', 'scin-tingling', 'scin-burning', 'scin-sitting-pain'];
+
+  const severity = determineNerveSeverity(relevantLogs, motorSymptoms, sensorySymptoms, []);
+
+  // Sciatic nerve rating scale (no major/minor distinction for lower extremity)
+  let supportedRating;
+  switch (severity.severityLevel) {
+    case 'complete':
+      supportedRating = 80;
+      break;
+    case 'severe':
+      supportedRating = 60;
+      break;
+    case 'moderate':
+      // Check for "moderately severe" based on atrophy
+      const hasAtrophy = relevantLogs.some(log =>
+          getLogSymptomId(log).toLowerCase() === 'scin-muscle-atrophy'
+      );
+      supportedRating = hasAtrophy ? 40 : 20;
+      break;
+    default:
+      supportedRating = 10;
+  }
+
+  const ratingRationale = [];
+  ratingRationale.push(`${relevantLogs.length} sciatic nerve symptoms logged in ${days} days`);
+  ratingRationale.push(`Severity level: ${severity.severityLevel} incomplete paralysis`);
+
+  // Check for foot drop
+  const hasFootDrop = relevantLogs.some(log =>
+      getLogSymptomId(log).toLowerCase() === 'scin-foot-drop'
+  );
+  if (hasFootDrop) {
+    ratingRationale.push('Foot drop documented - indicates significant motor involvement');
+  }
+
+  // Check for muscle atrophy
+  const hasAtrophy = relevantLogs.some(log =>
+      getLogSymptomId(log).toLowerCase() === 'scin-muscle-atrophy'
+  );
+  if (hasAtrophy) {
+    ratingRationale.push('Marked muscular atrophy documented - supports higher rating');
+  }
+
+  if (severity.hasMotorInvolvement) {
+    ratingRationale.push(`Motor involvement documented (${severity.motorLogCount} motor symptoms)`);
+  }
+  if (severity.isWholySensory) {
+    ratingRationale.push('Involvement is wholly sensory - rating limited to moderate per 38 CFR 4.124a');
+  }
+  ratingRationale.push(`Average symptom severity: ${severity.avgSeverity}/10`);
+
+  const gaps = [];
+  if (!severity.hasMotorInvolvement) {
+    gaps.push('Document motor deficits (leg weakness, foot drop) if present');
+  }
+  if (!hasAtrophy && severity.severityLevel === 'severe') {
+    gaps.push('Document presence or absence of muscular atrophy');
+  }
+  if (relevantLogs.length < 5) {
+    gaps.push('Continue logging symptoms regularly to establish pattern');
+  }
+  gaps.push('Obtain EMG/nerve conduction study to confirm diagnosis and severity');
+
+  return {
+    hasData: true,
+    supportedRating,
+    ratingRationale,
+    gaps,
+    metrics: {
+      totalLogs: relevantLogs.length,
+      motorLogs: severity.motorLogCount,
+      sensoryLogs: severity.sensoryLogCount,
+      avgSeverity: severity.avgSeverity,
+      severityLevel: severity.severityLevel,
+      isWholySensory: severity.isWholySensory,
+      hasFootDrop,
+      hasAtrophy,
+    },
+    condition: 'Sciatic Nerve',
+    diagnosticCodes: { paralysis: '8520', neuritis: '8620', neuralgia: '8720' },
+  };
+};
+
+/**
+ * Analyze Common Peroneal (External Popliteal) Nerve - DC 8521/8621/8721
+ */
+export const analyzeCommonPeronealNerveLogs = (logs, options = {}) => {
+  const { days = 90 } = options;
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - days);
+
+  const symptomIds = CONDITIONS.COMMON_PERONEAL_NERVE.symptomIds;
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.date);
+    return logDate >= cutoffDate && symptomIds.some(id =>
+        getLogSymptomId(log).toLowerCase() === id.toLowerCase()
+    );
+  });
+
+  if (relevantLogs.length === 0) {
+    return { hasData: false, supportedRating: null, ratingRationale: [], gaps: [], metrics: {} };
+  }
+
+  const motorSymptoms = ['cpn-foot-drop', 'cpn-dorsiflexion-weakness', 'cpn-toe-extension-weakness', 'cpn-eversion-weakness', 'cpn-steppage-gait', 'cpn-tripping', 'cpn-muscle-atrophy'];
+  const sensorySymptoms = ['cpn-numbness', 'cpn-tingling', 'cpn-pain'];
+
+  const severity = determineNerveSeverity(relevantLogs, motorSymptoms, sensorySymptoms, []);
+
+  let supportedRating;
+  switch (severity.severityLevel) {
+    case 'complete':
+      supportedRating = 40;
+      break;
+    case 'severe':
+      supportedRating = 30;
+      break;
+    case 'moderate':
+      supportedRating = 20;
+      break;
+    default:
+      supportedRating = 10;
+  }
+
+  const ratingRationale = [];
+  ratingRationale.push(`${relevantLogs.length} common peroneal nerve symptoms logged in ${days} days`);
+  ratingRationale.push(`Severity level: ${severity.severityLevel} incomplete paralysis`);
+
+  // Check for foot drop - hallmark sign
+  const hasFootDrop = relevantLogs.some(log =>
+      getLogSymptomId(log).toLowerCase() === 'cpn-foot-drop'
+  );
+  if (hasFootDrop) {
+    ratingRationale.push('Foot drop documented - hallmark sign of common peroneal nerve palsy');
+  }
+
+  // Check for steppage gait
+  const hasSteppageGait = relevantLogs.some(log =>
+      getLogSymptomId(log).toLowerCase() === 'cpn-steppage-gait'
+  );
+  if (hasSteppageGait) {
+    ratingRationale.push('Steppage gait documented - compensatory gait pattern for foot drop');
+  }
+
+  if (severity.hasMotorInvolvement) {
+    ratingRationale.push(`Motor involvement documented (${severity.motorLogCount} motor symptoms)`);
+  }
+  if (severity.isWholySensory) {
+    ratingRationale.push('Involvement is wholly sensory - rating limited to moderate per 38 CFR 4.124a');
+  }
+  ratingRationale.push(`Average symptom severity: ${severity.avgSeverity}/10`);
+
+  const gaps = [];
+  if (!hasFootDrop && severity.hasMotorInvolvement) {
+    gaps.push('Document presence or absence of foot drop');
+  }
+  if (!severity.hasMotorInvolvement) {
+    gaps.push('Document motor deficits (foot drop, dorsiflexion weakness) if present');
+  }
+  if (relevantLogs.length < 5) {
+    gaps.push('Continue logging symptoms regularly to establish pattern');
+  }
+  gaps.push('Obtain EMG/nerve conduction study to confirm diagnosis');
+
+  return {
+    hasData: true,
+    supportedRating,
+    ratingRationale,
+    gaps,
+    metrics: {
+      totalLogs: relevantLogs.length,
+      motorLogs: severity.motorLogCount,
+      sensoryLogs: severity.sensoryLogCount,
+      avgSeverity: severity.avgSeverity,
+      severityLevel: severity.severityLevel,
+      isWholySensory: severity.isWholySensory,
+      hasFootDrop,
+      hasSteppageGait,
+    },
+    condition: 'Common Peroneal (External Popliteal) Nerve',
+    diagnosticCodes: { paralysis: '8521', neuritis: '8621', neuralgia: '8721' },
+  };
+};
+
+/**
+ * Analyze Superficial Peroneal Nerve - DC 8522/8622/8722
+ */
+export const analyzeSuperficialPeronealNerveLogs = (logs, options = {}) => {
+  const { days = 90 } = options;
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - days);
+
+  const symptomIds = CONDITIONS.SUPERFICIAL_PERONEAL_NERVE.symptomIds;
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.date);
+    return logDate >= cutoffDate && symptomIds.some(id =>
+        getLogSymptomId(log).toLowerCase() === id.toLowerCase()
+    );
+  });
+
+  if (relevantLogs.length === 0) {
+    return { hasData: false, supportedRating: null, ratingRationale: [], gaps: [], metrics: {} };
+  }
+
+  const motorSymptoms = ['spn-eversion-weakness', 'spn-ankle-instability', 'spn-muscle-atrophy'];
+  const sensorySymptoms = ['spn-numbness', 'spn-tingling', 'spn-pain'];
+
+  const severity = determineNerveSeverity(relevantLogs, motorSymptoms, sensorySymptoms, []);
+
+  // Superficial peroneal has lower max ratings
+  let supportedRating;
+  switch (severity.severityLevel) {
+    case 'complete':
+      supportedRating = 30;
+      break;
+    case 'severe':
+      supportedRating = 20;
+      break;
+    case 'moderate':
+      supportedRating = 10;
+      break;
+    default:
+      supportedRating = 0;
+  }
+
+  const ratingRationale = [];
+  ratingRationale.push(`${relevantLogs.length} superficial peroneal nerve symptoms logged in ${days} days`);
+  ratingRationale.push(`Severity level: ${severity.severityLevel} incomplete paralysis`);
+
+  if (severity.hasMotorInvolvement) {
+    ratingRationale.push(`Motor involvement documented (${severity.motorLogCount} motor symptoms)`);
+  }
+  if (severity.isWholySensory) {
+    ratingRationale.push('Involvement is wholly sensory - rating limited to moderate per 38 CFR 4.124a');
+  }
+  ratingRationale.push(`Average symptom severity: ${severity.avgSeverity}/10`);
+
+  const gaps = [];
+  if (!severity.hasMotorInvolvement) {
+    gaps.push('Document motor deficits (eversion weakness, ankle instability) if present');
+  }
+  if (relevantLogs.length < 5) {
+    gaps.push('Continue logging symptoms regularly to establish pattern');
+  }
+  gaps.push('Obtain EMG/nerve conduction study to confirm diagnosis');
+
+  return {
+    hasData: true,
+    supportedRating,
+    ratingRationale,
+    gaps,
+    metrics: {
+      totalLogs: relevantLogs.length,
+      motorLogs: severity.motorLogCount,
+      sensoryLogs: severity.sensoryLogCount,
+      avgSeverity: severity.avgSeverity,
+      severityLevel: severity.severityLevel,
+      isWholySensory: severity.isWholySensory,
+    },
+    condition: 'Superficial Peroneal Nerve',
+    diagnosticCodes: { paralysis: '8522', neuritis: '8622', neuralgia: '8722' },
+  };
+};
+
+/**
+ * Analyze Deep Peroneal (Anterior Tibial) Nerve - DC 8523/8623/8723
+ */
+export const analyzeDeepPeronealNerveLogs = (logs, options = {}) => {
+  const { days = 90 } = options;
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - days);
+
+  const symptomIds = CONDITIONS.DEEP_PERONEAL_NERVE.symptomIds;
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.date);
+    return logDate >= cutoffDate && symptomIds.some(id =>
+        getLogSymptomId(log).toLowerCase() === id.toLowerCase()
+    );
+  });
+
+  if (relevantLogs.length === 0) {
+    return { hasData: false, supportedRating: null, ratingRationale: [], gaps: [], metrics: {} };
+  }
+
+  const motorSymptoms = ['dpn-dorsiflexion-loss', 'dpn-toe-extension-weakness', 'dpn-foot-drop', 'dpn-muscle-atrophy'];
+  const sensorySymptoms = ['dpn-numbness', 'dpn-tingling', 'dpn-pain'];
+
+  const severity = determineNerveSeverity(relevantLogs, motorSymptoms, sensorySymptoms, []);
+
+  // Deep peroneal has lower max ratings
+  let supportedRating;
+  switch (severity.severityLevel) {
+    case 'complete':
+      supportedRating = 30;
+      break;
+    case 'severe':
+      supportedRating = 20;
+      break;
+    case 'moderate':
+      supportedRating = 10;
+      break;
+    default:
+      supportedRating = 0;
+  }
+
+  const ratingRationale = [];
+  ratingRationale.push(`${relevantLogs.length} deep peroneal nerve symptoms logged in ${days} days`);
+  ratingRationale.push(`Severity level: ${severity.severityLevel} incomplete paralysis`);
+
+  // Check for dorsiflexion loss
+  const hasDorsiflexionLoss = relevantLogs.some(log =>
+      getLogSymptomId(log).toLowerCase() === 'dpn-dorsiflexion-loss'
+  );
+  if (hasDorsiflexionLoss) {
+    ratingRationale.push('Dorsiflexion loss documented - indicates significant motor involvement');
+  }
+
+  if (severity.hasMotorInvolvement) {
+    ratingRationale.push(`Motor involvement documented (${severity.motorLogCount} motor symptoms)`);
+  }
+  if (severity.isWholySensory) {
+    ratingRationale.push('Involvement is wholly sensory - rating limited to moderate per 38 CFR 4.124a');
+  }
+  ratingRationale.push(`Average symptom severity: ${severity.avgSeverity}/10`);
+
+  const gaps = [];
+  if (!severity.hasMotorInvolvement) {
+    gaps.push('Document motor deficits (dorsiflexion weakness, foot drop) if present');
+  }
+  if (relevantLogs.length < 5) {
+    gaps.push('Continue logging symptoms regularly to establish pattern');
+  }
+  gaps.push('Obtain EMG/nerve conduction study to confirm diagnosis');
+
+  return {
+    hasData: true,
+    supportedRating,
+    ratingRationale,
+    gaps,
+    metrics: {
+      totalLogs: relevantLogs.length,
+      motorLogs: severity.motorLogCount,
+      sensoryLogs: severity.sensoryLogCount,
+      avgSeverity: severity.avgSeverity,
+      severityLevel: severity.severityLevel,
+      isWholySensory: severity.isWholySensory,
+      hasDorsiflexionLoss,
+    },
+    condition: 'Deep Peroneal (Anterior Tibial) Nerve',
+    diagnosticCodes: { paralysis: '8523', neuritis: '8623', neuralgia: '8723' },
+  };
+};
+
+/**
+ * Analyze Tibial (Internal Popliteal) Nerve - DC 8524/8624/8724
+ */
+export const analyzeTibialNerveLogs = (logs, options = {}) => {
+  const { days = 90 } = options;
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - days);
+
+  const symptomIds = CONDITIONS.TIBIAL_NERVE.symptomIds;
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.date);
+    return logDate >= cutoffDate && symptomIds.some(id =>
+        getLogSymptomId(log).toLowerCase() === id.toLowerCase()
+    );
+  });
+
+  if (relevantLogs.length === 0) {
+    return { hasData: false, supportedRating: null, ratingRationale: [], gaps: [], metrics: {} };
+  }
+
+  const motorSymptoms = ['tibn-plantar-flexion-weakness', 'tibn-toe-flexion-weakness', 'tibn-foot-inversion-weakness', 'tibn-calf-weakness', 'tibn-difficulty-walking-tiptoe', 'tibn-muscle-atrophy'];
+  const sensorySymptoms = ['tibn-numbness', 'tibn-tingling', 'tibn-burning'];
+
+  const severity = determineNerveSeverity(relevantLogs, motorSymptoms, sensorySymptoms, []);
+
+  let supportedRating;
+  switch (severity.severityLevel) {
+    case 'complete':
+      supportedRating = 40;
+      break;
+    case 'severe':
+      supportedRating = 30;
+      break;
+    case 'moderate':
+      supportedRating = 20;
+      break;
+    default:
+      supportedRating = 10;
+  }
+
+  const ratingRationale = [];
+  ratingRationale.push(`${relevantLogs.length} tibial nerve symptoms logged in ${days} days`);
+  ratingRationale.push(`Severity level: ${severity.severityLevel} incomplete paralysis`);
+
+  // Check for plantar flexion weakness
+  const hasPlantarFlexionWeakness = relevantLogs.some(log =>
+      getLogSymptomId(log).toLowerCase() === 'tibn-plantar-flexion-weakness'
+  );
+  if (hasPlantarFlexionWeakness) {
+    ratingRationale.push('Plantar flexion weakness documented');
+  }
+
+  // Check for difficulty walking on tiptoe
+  const hasTiptoeWalkingDifficulty = relevantLogs.some(log =>
+      getLogSymptomId(log).toLowerCase() === 'tibn-difficulty-walking-tiptoe'
+  );
+  if (hasTiptoeWalkingDifficulty) {
+    ratingRationale.push('Difficulty walking on tiptoe documented - indicates significant calf weakness');
+  }
+
+  if (severity.hasMotorInvolvement) {
+    ratingRationale.push(`Motor involvement documented (${severity.motorLogCount} motor symptoms)`);
+  }
+  if (severity.isWholySensory) {
+    ratingRationale.push('Involvement is wholly sensory - rating limited to moderate per 38 CFR 4.124a');
+  }
+  ratingRationale.push(`Average symptom severity: ${severity.avgSeverity}/10`);
+
+  const gaps = [];
+  if (!severity.hasMotorInvolvement) {
+    gaps.push('Document motor deficits (plantar flexion weakness, calf weakness) if present');
+  }
+  if (relevantLogs.length < 5) {
+    gaps.push('Continue logging symptoms regularly to establish pattern');
+  }
+  gaps.push('Obtain EMG/nerve conduction study to confirm diagnosis');
+
+  return {
+    hasData: true,
+    supportedRating,
+    ratingRationale,
+    gaps,
+    metrics: {
+      totalLogs: relevantLogs.length,
+      motorLogs: severity.motorLogCount,
+      sensoryLogs: severity.sensoryLogCount,
+      avgSeverity: severity.avgSeverity,
+      severityLevel: severity.severityLevel,
+      isWholySensory: severity.isWholySensory,
+      hasPlantarFlexionWeakness,
+      hasTiptoeWalkingDifficulty,
+    },
+    condition: 'Tibial (Internal Popliteal) Nerve',
+    diagnosticCodes: { paralysis: '8524', neuritis: '8624', neuralgia: '8724' },
+  };
+};
+
+/**
+ * Analyze Posterior Tibial Nerve - DC 8525/8625/8725
+ */
+export const analyzePosteriorTibialNerveLogs = (logs, options = {}) => {
+  const { days = 90 } = options;
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - days);
+
+  const symptomIds = CONDITIONS.POSTERIOR_TIBIAL_NERVE.symptomIds;
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.date);
+    return logDate >= cutoffDate && symptomIds.some(id =>
+        getLogSymptomId(log).toLowerCase() === id.toLowerCase()
+    );
+  });
+
+  if (relevantLogs.length === 0) {
+    return { hasData: false, supportedRating: null, ratingRationale: [], gaps: [], metrics: {} };
+  }
+
+  const motorSymptoms = ['ptn-sole-paralysis', 'ptn-toe-flexion-weakness', 'ptn-foot-adduction-weakness', 'ptn-muscle-atrophy'];
+  const sensorySymptoms = ['ptn-numbness', 'ptn-tingling', 'ptn-burning', 'ptn-tarsal-tunnel'];
+
+  const severity = determineNerveSeverity(relevantLogs, motorSymptoms, sensorySymptoms, []);
+
+  // Posterior tibial has lower max ratings
+  let supportedRating;
+  switch (severity.severityLevel) {
+    case 'complete':
+      supportedRating = 30;
+      break;
+    case 'severe':
+      supportedRating = 20;
+      break;
+    default:
+      supportedRating = 10; // Moderate and mild both rate 10%
+  }
+
+  const ratingRationale = [];
+  ratingRationale.push(`${relevantLogs.length} posterior tibial nerve symptoms logged in ${days} days`);
+  ratingRationale.push(`Severity level: ${severity.severityLevel} incomplete paralysis`);
+
+  // Check for tarsal tunnel symptoms
+  const hasTarsalTunnel = relevantLogs.some(log =>
+      getLogSymptomId(log).toLowerCase() === 'ptn-tarsal-tunnel'
+  );
+  if (hasTarsalTunnel) {
+    ratingRationale.push('Tarsal tunnel syndrome symptoms documented');
+  }
+
+  // Check for burning pain (causalgic)
+  const hasBurningPain = relevantLogs.some(log =>
+      getLogSymptomId(log).toLowerCase() === 'ptn-burning'
+  );
+  if (hasBurningPain) {
+    ratingRationale.push('Burning (causalgic) pain documented - common with posterior tibial nerve injury');
+  }
+
+  if (severity.hasMotorInvolvement) {
+    ratingRationale.push(`Motor involvement documented (${severity.motorLogCount} motor symptoms)`);
+  }
+  if (severity.isWholySensory) {
+    ratingRationale.push('Involvement is wholly sensory - rating limited to moderate per 38 CFR 4.124a');
+  }
+  ratingRationale.push(`Average symptom severity: ${severity.avgSeverity}/10`);
+
+  const gaps = [];
+  if (!severity.hasMotorInvolvement) {
+    gaps.push('Document motor deficits (sole weakness, toe flexion weakness) if present');
+  }
+  if (relevantLogs.length < 5) {
+    gaps.push('Continue logging symptoms regularly to establish pattern');
+  }
+  gaps.push('Obtain EMG/nerve conduction study to confirm diagnosis');
+
+  return {
+    hasData: true,
+    supportedRating,
+    ratingRationale,
+    gaps,
+    metrics: {
+      totalLogs: relevantLogs.length,
+      motorLogs: severity.motorLogCount,
+      sensoryLogs: severity.sensoryLogCount,
+      avgSeverity: severity.avgSeverity,
+      severityLevel: severity.severityLevel,
+      isWholySensory: severity.isWholySensory,
+      hasTarsalTunnel,
+      hasBurningPain,
+    },
+    condition: 'Posterior Tibial Nerve',
+    diagnosticCodes: { paralysis: '8525', neuritis: '8625', neuralgia: '8725' },
+  };
+};
+
+/**
+ * Analyze Femoral (Anterior Crural) Nerve - DC 8526/8626/8726
+ */
+export const analyzeFemoralNerveLogs = (logs, options = {}) => {
+  const { days = 90 } = options;
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - days);
+
+  const symptomIds = CONDITIONS.FEMORAL_NERVE.symptomIds;
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.date);
+    return logDate >= cutoffDate && symptomIds.some(id =>
+        getLogSymptomId(log).toLowerCase() === id.toLowerCase()
+    );
+  });
+
+  if (relevantLogs.length === 0) {
+    return { hasData: false, supportedRating: null, ratingRationale: [], gaps: [], metrics: {} };
+  }
+
+  const motorSymptoms = ['femn-quadriceps-weakness', 'femn-knee-extension-weakness', 'femn-knee-buckling', 'femn-difficulty-stairs', 'femn-difficulty-rising', 'femn-muscle-atrophy'];
+  const sensorySymptoms = ['femn-numbness', 'femn-tingling', 'femn-pain'];
+
+  const severity = determineNerveSeverity(relevantLogs, motorSymptoms, sensorySymptoms, []);
+
+  let supportedRating;
+  switch (severity.severityLevel) {
+    case 'complete':
+      supportedRating = 40;
+      break;
+    case 'severe':
+      supportedRating = 30;
+      break;
+    case 'moderate':
+      supportedRating = 20;
+      break;
+    default:
+      supportedRating = 10;
+  }
+
+  const ratingRationale = [];
+  ratingRationale.push(`${relevantLogs.length} femoral nerve symptoms logged in ${days} days`);
+  ratingRationale.push(`Severity level: ${severity.severityLevel} incomplete paralysis`);
+
+  // Check for knee buckling
+  const hasKneeBuckling = relevantLogs.some(log =>
+      getLogSymptomId(log).toLowerCase() === 'femn-knee-buckling'
+  );
+  if (hasKneeBuckling) {
+    ratingRationale.push('Knee buckling/giving way documented - indicates significant quadriceps weakness');
+  }
+
+  // Check for difficulty with stairs
+  const hasDifficultyStairs = relevantLogs.some(log =>
+      getLogSymptomId(log).toLowerCase() === 'femn-difficulty-stairs'
+  );
+  if (hasDifficultyStairs) {
+    ratingRationale.push('Difficulty with stairs documented - functional impact of quadriceps weakness');
+  }
+
+  if (severity.hasMotorInvolvement) {
+    ratingRationale.push(`Motor involvement documented (${severity.motorLogCount} motor symptoms)`);
+  }
+  if (severity.isWholySensory) {
+    ratingRationale.push('Involvement is wholly sensory - rating limited to moderate per 38 CFR 4.124a');
+  }
+  ratingRationale.push(`Average symptom severity: ${severity.avgSeverity}/10`);
+
+  const gaps = [];
+  if (!severity.hasMotorInvolvement) {
+    gaps.push('Document motor deficits (quadriceps weakness, knee buckling) if present');
+  }
+  if (relevantLogs.length < 5) {
+    gaps.push('Continue logging symptoms regularly to establish pattern');
+  }
+  gaps.push('Obtain EMG/nerve conduction study to confirm diagnosis');
+
+  return {
+    hasData: true,
+    supportedRating,
+    ratingRationale,
+    gaps,
+    metrics: {
+      totalLogs: relevantLogs.length,
+      motorLogs: severity.motorLogCount,
+      sensoryLogs: severity.sensoryLogCount,
+      avgSeverity: severity.avgSeverity,
+      severityLevel: severity.severityLevel,
+      isWholySensory: severity.isWholySensory,
+      hasKneeBuckling,
+      hasDifficultyStairs,
+    },
+    condition: 'Femoral (Anterior Crural) Nerve',
+    diagnosticCodes: { paralysis: '8526', neuritis: '8626', neuralgia: '8726' },
+  };
+};
+
+/**
+ * Analyze Saphenous (Internal Saphenous) Nerve - DC 8527/8627/8727
+ * Note: Purely sensory nerve - max rating is 10%
+ */
+export const analyzeSaphenousNerveLogs = (logs, options = {}) => {
+  const { days = 90 } = options;
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - days);
+
+  const symptomIds = CONDITIONS.SAPHENOUS_NERVE.symptomIds;
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.date);
+    return logDate >= cutoffDate && symptomIds.some(id =>
+        getLogSymptomId(log).toLowerCase() === id.toLowerCase()
+    );
+  });
+
+  if (relevantLogs.length === 0) {
+    return { hasData: false, supportedRating: null, ratingRationale: [], gaps: [], metrics: {} };
+  }
+
+  // Saphenous is purely sensory
+  const sensorySymptoms = ['sapn-numbness', 'sapn-tingling', 'sapn-pain', 'sapn-burning', 'sapn-hypersensitivity'];
+
+  const severityScores = relevantLogs
+  .map(log => log.severity)
+  .filter(s => s !== undefined && s !== null);
+  const avgSeverity = severityScores.length > 0
+      ? severityScores.reduce((a, b) => a + b, 0) / severityScores.length
+      : 0;
+
+  // Max rating is 10% for this purely sensory nerve
+  const supportedRating = avgSeverity >= 5 || relevantLogs.length >= 5 ? 10 : 0;
+
+  const ratingRationale = [];
+  ratingRationale.push(`${relevantLogs.length} saphenous nerve symptoms logged in ${days} days`);
+  ratingRationale.push('Saphenous nerve is purely sensory - no motor function');
+  ratingRationale.push(`Average symptom severity: ${avgSeverity.toFixed(1)}/10`);
+
+  if (supportedRating === 10) {
+    ratingRationale.push('Severe to complete involvement - 10% rating (maximum for this nerve)');
+  } else {
+    ratingRationale.push('Mild to moderate involvement - 0% rating');
+  }
+
+  const gaps = [];
+  if (relevantLogs.length < 5) {
+    gaps.push('Continue logging symptoms regularly to establish pattern');
+  }
+  gaps.push('Document distribution of sensory loss (medial leg from knee to ankle)');
+
+  return {
+    hasData: true,
+    supportedRating,
+    ratingRationale,
+    gaps,
+    metrics: {
+      totalLogs: relevantLogs.length,
+      avgSeverity: avgSeverity.toFixed(1),
+      isPurelySensory: true,
+    },
+    condition: 'Saphenous (Internal Saphenous) Nerve',
+    diagnosticCodes: { paralysis: '8527', neuritis: '8627', neuralgia: '8727' },
+  };
+};
+
+/**
+ * Analyze Obturator Nerve - DC 8528/8628/8728
+ */
+export const analyzeObturatorNerveLogs = (logs, options = {}) => {
+  const { days = 90 } = options;
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - days);
+
+  const symptomIds = CONDITIONS.OBTURATOR_NERVE.symptomIds;
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.date);
+    return logDate >= cutoffDate && symptomIds.some(id =>
+        getLogSymptomId(log).toLowerCase() === id.toLowerCase()
+    );
+  });
+
+  if (relevantLogs.length === 0) {
+    return { hasData: false, supportedRating: null, ratingRationale: [], gaps: [], metrics: {} };
+  }
+
+  const motorSymptoms = ['obtn-thigh-adduction-weakness', 'obtn-gait-instability', 'obtn-muscle-atrophy'];
+  const sensorySymptoms = ['obtn-groin-pain', 'obtn-medial-thigh-pain', 'obtn-numbness', 'obtn-tingling'];
+
+  const severity = determineNerveSeverity(relevantLogs, motorSymptoms, sensorySymptoms, []);
+
+  // Max rating is 10% for obturator nerve
+  const supportedRating = (severity.severityLevel === 'complete' || severity.severityLevel === 'severe') ? 10 : 0;
+
+  const ratingRationale = [];
+  ratingRationale.push(`${relevantLogs.length} obturator nerve symptoms logged in ${days} days`);
+  ratingRationale.push(`Severity level: ${severity.severityLevel}`);
+
+  if (severity.hasMotorInvolvement) {
+    ratingRationale.push(`Motor involvement documented (${severity.motorLogCount} motor symptoms)`);
+  }
+  ratingRationale.push(`Average symptom severity: ${severity.avgSeverity}/10`);
+
+  if (supportedRating === 10) {
+    ratingRationale.push('Severe to complete involvement - 10% rating (maximum for this nerve)');
+  } else {
+    ratingRationale.push('Mild to moderate involvement - 0% rating');
+  }
+
+  const gaps = [];
+  if (!severity.hasMotorInvolvement) {
+    gaps.push('Document motor deficits (thigh adduction weakness) if present');
+  }
+  if (relevantLogs.length < 5) {
+    gaps.push('Continue logging symptoms regularly to establish pattern');
+  }
+  gaps.push('Obtain EMG/nerve conduction study to confirm diagnosis');
+
+  return {
+    hasData: true,
+    supportedRating,
+    ratingRationale,
+    gaps,
+    metrics: {
+      totalLogs: relevantLogs.length,
+      motorLogs: severity.motorLogCount,
+      sensoryLogs: severity.sensoryLogCount,
+      avgSeverity: severity.avgSeverity,
+      severityLevel: severity.severityLevel,
+    },
+    condition: 'Obturator Nerve',
+    diagnosticCodes: { paralysis: '8528', neuritis: '8628', neuralgia: '8728' },
+  };
+};
+
+/**
+ * Analyze Lateral Femoral Cutaneous Nerve (Meralgia Paresthetica) - DC 8529/8629/8729
+ * Note: Purely sensory nerve - max rating is 10%
+ */
+export const analyzeLateralFemoralCutaneousNerveLogs = (logs, options = {}) => {
+  const { days = 90 } = options;
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - days);
+
+  const symptomIds = CONDITIONS.LATERAL_FEMORAL_CUTANEOUS_NERVE.symptomIds;
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.date);
+    return logDate >= cutoffDate && symptomIds.some(id =>
+        getLogSymptomId(log).toLowerCase() === id.toLowerCase()
+    );
+  });
+
+  if (relevantLogs.length === 0) {
+    return { hasData: false, supportedRating: null, ratingRationale: [], gaps: [], metrics: {} };
+  }
+
+  // Purely sensory nerve
+  const sensorySymptoms = ['lfcn-numbness', 'lfcn-tingling', 'lfcn-burning', 'lfcn-hypersensitivity', 'lfcn-pain-standing', 'lfcn-pain-walking'];
+
+  const severityScores = relevantLogs
+  .map(log => log.severity)
+  .filter(s => s !== undefined && s !== null);
+  const avgSeverity = severityScores.length > 0
+      ? severityScores.reduce((a, b) => a + b, 0) / severityScores.length
+      : 0;
+
+  // Max rating is 10% for this purely sensory nerve
+  const supportedRating = avgSeverity >= 5 || relevantLogs.length >= 5 ? 10 : 0;
+
+  const ratingRationale = [];
+  ratingRationale.push(`${relevantLogs.length} lateral femoral cutaneous nerve (meralgia paresthetica) symptoms logged in ${days} days`);
+  ratingRationale.push('Lateral femoral cutaneous nerve is purely sensory - no motor function');
+  ratingRationale.push(`Average symptom severity: ${avgSeverity.toFixed(1)}/10`);
+
+  // Check for burning pain - classic meralgia paresthetica
+  const hasBurningPain = relevantLogs.some(log =>
+      getLogSymptomId(log).toLowerCase() === 'lfcn-burning'
+  );
+  if (hasBurningPain) {
+    ratingRationale.push('Burning pain documented - classic meralgia paresthetica presentation');
+  }
+
+  if (supportedRating === 10) {
+    ratingRationale.push('Severe to complete involvement - 10% rating (maximum for this nerve)');
+  } else {
+    ratingRationale.push('Mild to moderate involvement - 0% rating');
+  }
+
+  const gaps = [];
+  if (relevantLogs.length < 5) {
+    gaps.push('Continue logging symptoms regularly to establish pattern');
+  }
+  gaps.push('Document distribution of sensory loss (lateral/outer thigh)');
+
+  return {
+    hasData: true,
+    supportedRating,
+    ratingRationale,
+    gaps,
+    metrics: {
+      totalLogs: relevantLogs.length,
+      avgSeverity: avgSeverity.toFixed(1),
+      isPurelySensory: true,
+      hasBurningPain,
+    },
+    condition: 'Lateral Femoral Cutaneous Nerve (Meralgia Paresthetica)',
+    diagnosticCodes: { paralysis: '8529', neuritis: '8629', neuralgia: '8729' },
+  };
+};
+
+/**
+ * Analyze Ilio-inguinal Nerve - DC 8530/8630/8730
+ * Note: Primarily sensory nerve - max rating is 10%
+ */
+export const analyzeIlioinguinalNerveLogs = (logs, options = {}) => {
+  const { days = 90 } = options;
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - days);
+
+  const symptomIds = CONDITIONS.ILIOINGUINAL_NERVE.symptomIds;
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.date);
+    return logDate >= cutoffDate && symptomIds.some(id =>
+        getLogSymptomId(log).toLowerCase() === id.toLowerCase()
+    );
+  });
+
+  if (relevantLogs.length === 0) {
+    return { hasData: false, supportedRating: null, ratingRationale: [], gaps: [], metrics: {} };
+  }
+
+  // Primarily sensory nerve
+  const sensorySymptoms = ['iin-groin-numbness', 'iin-genital-numbness', 'iin-inner-thigh-numbness', 'iin-groin-pain', 'iin-burning', 'iin-hypersensitivity', 'iin-pain-movement'];
+
+  const severityScores = relevantLogs
+  .map(log => log.severity)
+  .filter(s => s !== undefined && s !== null);
+  const avgSeverity = severityScores.length > 0
+      ? severityScores.reduce((a, b) => a + b, 0) / severityScores.length
+      : 0;
+
+  // Max rating is 10% for this primarily sensory nerve
+  const supportedRating = avgSeverity >= 5 || relevantLogs.length >= 5 ? 10 : 0;
+
+  const ratingRationale = [];
+  ratingRationale.push(`${relevantLogs.length} ilio-inguinal nerve symptoms logged in ${days} days`);
+  ratingRationale.push('Ilio-inguinal nerve is primarily sensory');
+  ratingRationale.push(`Average symptom severity: ${avgSeverity.toFixed(1)}/10`);
+
+  // Check for pain with movement
+  const hasPainWithMovement = relevantLogs.some(log =>
+      getLogSymptomId(log).toLowerCase() === 'iin-pain-movement'
+  );
+  if (hasPainWithMovement) {
+    ratingRationale.push('Pain with movement/coughing documented - common post-surgical finding');
+  }
+
+  if (supportedRating === 10) {
+    ratingRationale.push('Severe to complete involvement - 10% rating (maximum for this nerve)');
+  } else {
+    ratingRationale.push('Mild to moderate involvement - 0% rating');
+  }
+
+  const gaps = [];
+  if (relevantLogs.length < 5) {
+    gaps.push('Continue logging symptoms regularly to establish pattern');
+  }
+  gaps.push('Document distribution of sensory loss (groin, upper medial thigh, genital area)');
+
+  return {
+    hasData: true,
+    supportedRating,
+    ratingRationale,
+    gaps,
+    metrics: {
+      totalLogs: relevantLogs.length,
+      avgSeverity: avgSeverity.toFixed(1),
+      isPurelySensory: true,
+      hasPainWithMovement,
+    },
+    condition: 'Ilio-inguinal Nerve',
+    diagnosticCodes: { paralysis: '8530', neuritis: '8630', neuralgia: '8730' },
+  };
+};
+
+// ============================================
 // HELPER FUNCTIONS
 // ============================================
 
@@ -28247,6 +32023,82 @@ export const getSyringomyeliaRatingCriteria = (percent) => {
 export const getMyelitisRatingCriteria = (percent) => {
   return MYELITIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
 };
+// PHASE 1C: PERIPHERAL NERVE getRatingCriteria HELPERS
+// Upper Extremity Nerves
+export const getUpperRadicularGroupRatingCriteria = (percent) => {
+  return UPPER_RADICULAR_GROUP_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getMiddleRadicularGroupRatingCriteria = (percent) => {
+  return MIDDLE_RADICULAR_GROUP_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getLowerRadicularGroupRatingCriteria = (percent) => {
+  return LOWER_RADICULAR_GROUP_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getAllRadicularGroupsRatingCriteria = (percent) => {
+  return ALL_RADICULAR_GROUPS_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getRadialNerveRatingCriteria = (percent) => {
+  return RADIAL_NERVE_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getMedianNerveRatingCriteria = (percent) => {
+  return MEDIAN_NERVE_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getUlnarNerveRatingCriteria = (percent) => {
+  return ULNAR_NERVE_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getMusculocutaneousNerveRatingCriteria = (percent) => {
+  return MUSCULOCUTANEOUS_NERVE_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getCircumflexNerveRatingCriteria = (percent) => {
+  return CIRCUMFLEX_NERVE_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getLongThoracicNerveRatingCriteria = (percent) => {
+  return LONG_THORACIC_NERVE_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+// Lower Extremity Nerves
+export const getSciaticNerveRatingCriteria = (percent) => {
+  return SCIATIC_NERVE_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getCommonPeronealNerveRatingCriteria = (percent) => {
+  return COMMON_PERONEAL_NERVE_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getSuperficialPeronealNerveRatingCriteria = (percent) => {
+  return SUPERFICIAL_PERONEAL_NERVE_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getDeepPeronealNerveRatingCriteria = (percent) => {
+  return DEEP_PERONEAL_NERVE_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getTibialNerveRatingCriteria = (percent) => {
+  return TIBIAL_NERVE_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getPosteriorTibialNerveRatingCriteria = (percent) => {
+  return POSTERIOR_TIBIAL_NERVE_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getFemoralNerveRatingCriteria = (percent) => {
+  return FEMORAL_NERVE_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getSaphenousNerveRatingCriteria = (percent) => {
+  return SAPHENOUS_NERVE_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getObturatorNerveRatingCriteria = (percent) => {
+  return OBTURATOR_NERVE_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getLateralFemoralCutaneousNerveRatingCriteria = (percent) => {
+  return LATERAL_FEMORAL_CUTANEOUS_NERVE_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getIlioinguinalNerveRatingCriteria = (percent) => {
+  return ILIOINGUINAL_NERVE_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+
+export const getJacksonianEpilepsyRatingCriteria = (percent) => {
+  return  EPILEPSY_JACKSONIAN_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getDiencephalicEpilepsyRatingCriteria = (percent) => {
+  return  EPILEPSY_DIENCEPHALIC_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getPsychomotorEpilepsyRatingCriteria = (percent) => {
+  return  EPILEPSY_PSYCHOMOTOR_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
 
 
 export const getAllLumbosacralStrainRatings = () => LUMBOSACRAL_STRAIN_CRITERIA.ratings;
@@ -28341,6 +32193,30 @@ export const getAllNarcolepsyRatings = () => NARCOLEPSY_CRITERIA.ratings;
 export const getAllALSRatings = () => ALS_CRITERIA.ratings;
 export const getAllSyringomyeliaRatings = () => SYRINGOMYELIA_CRITERIA.ratings;
 export const getAllMyelitisRatings = () => MYELITIS_CRITERIA.ratings;
+export const getAllUpperRadicularGroupRatings = () => UPPER_RADICULAR_GROUP_CRITERIA.ratings;
+export const getAllMiddleRadicularGroupRatings = () => MIDDLE_RADICULAR_GROUP_CRITERIA.ratings;
+export const getAllLowerRadicularGroupRatings = () => LOWER_RADICULAR_GROUP_CRITERIA.ratings;
+export const getAllAllRadicularGroupsRatings = () => ALL_RADICULAR_GROUPS_CRITERIA.ratings;
+export const getAllRadialNerveRatings = () => RADIAL_NERVE_CRITERIA.ratings;
+export const getAllMedianNerveRatings = () => MEDIAN_NERVE_CRITERIA.ratings;
+export const getAllUlnarNerveRatings = () => ULNAR_NERVE_CRITERIA.ratings;
+export const getAllMusculocutaneousNerveRatings = () => MUSCULOCUTANEOUS_NERVE_CRITERIA.ratings;
+export const getAllCircumflexNerveRatings = () => CIRCUMFLEX_NERVE_CRITERIA.ratings;
+export const getAllLongThoracicNerveRatings = () => LONG_THORACIC_NERVE_CRITERIA.ratings;
+export const getAllSciaticNerveRatings = () => SCIATIC_NERVE_CRITERIA.ratings;
+export const getAllCommonPeronealNerveRatings = () => COMMON_PERONEAL_NERVE_CRITERIA.ratings;
+export const getAllSuperficialPeronealNerveRatings = () => SUPERFICIAL_PERONEAL_NERVE_CRITERIA.ratings;
+export const getAllDeepPeronealNerveRatings = () => DEEP_PERONEAL_NERVE_CRITERIA.ratings;
+export const getAllTibialNerveRatings = () => TIBIAL_NERVE_CRITERIA.ratings;
+export const getAllPosteriorTibialNerveRatings = () => POSTERIOR_TIBIAL_NERVE_CRITERIA.ratings;
+export const getAllFemoralNerveRatings = () => FEMORAL_NERVE_CRITERIA.ratings;
+export const getAllSaphenousNerveRatings = () => SAPHENOUS_NERVE_CRITERIA.ratings;
+export const getAllObturatorNerveRatings = () => OBTURATOR_NERVE_CRITERIA.ratings;
+export const getAllLateralFemoralCutaneousNerveRatings = () => LATERAL_FEMORAL_CUTANEOUS_NERVE_CRITERIA.ratings;
+export const getAllIlioinguinalNerveRatings = () => ILIOINGUINAL_NERVE_CRITERIA.ratings;
+export const getAllJacksonianEpilepsyRatings = () => EPILEPSY_JACKSONIAN_CRITERIA.ratings;
+export const getAllDiencephalicEpilepsyRatings = () => EPILEPSY_DIENCEPHALIC_CRITERIA.ratings;
+export const getAllPsychomotorEpilepsyRatings = () => EPILEPSY_PSYCHOMOTOR_CRITERIA.ratings;
 
 
 
@@ -28443,6 +32319,30 @@ export const getNarcolepsyDefinition = (term) => NARCOLEPSY_CRITERIA.definitions
 export const getALSDefinition = (term) => ALS_CRITERIA.definitions[term] || null;
 export const getSyringomyeliaDefinition = (term) => SYRINGOMYELIA_CRITERIA.definitions[term] || null;
 export const getMyelitisDefinition = (term) => MYELITIS_CRITERIA.definitions[term] || null;
+export const getUpperRadicularGroupDefinition = (term) => UPPER_RADICULAR_GROUP_CRITERIA.definitions?.[term] || null;
+export const getMiddleRadicularGroupDefinition = (term) => MIDDLE_RADICULAR_GROUP_CRITERIA.definitions?.[term] || null;
+export const getLowerRadicularGroupDefinition = (term) => LOWER_RADICULAR_GROUP_CRITERIA.definitions?.[term] || null;
+export const getAllRadicularGroupsDefinition = (term) => ALL_RADICULAR_GROUPS_CRITERIA.definitions?.[term] || null;
+export const getRadialNerveDefinition = (term) => RADIAL_NERVE_CRITERIA.definitions?.[term] || null;
+export const getMedianNerveDefinition = (term) => MEDIAN_NERVE_CRITERIA.definitions?.[term] || null;
+export const getUlnarNerveDefinition = (term) => ULNAR_NERVE_CRITERIA.definitions?.[term] || null;
+export const getMusculocutaneousNerveDefinition = (term) => MUSCULOCUTANEOUS_NERVE_CRITERIA.definitions?.[term] || null;
+export const getCircumflexNerveDefinition = (term) => CIRCUMFLEX_NERVE_CRITERIA.definitions?.[term] || null;
+export const getLongThoracicNerveDefinition = (term) => LONG_THORACIC_NERVE_CRITERIA.definitions?.[term] || null;
+export const getSciaticNerveDefinition = (term) => SCIATIC_NERVE_CRITERIA.definitions?.[term] || null;
+export const getCommonPeronealNerveDefinition = (term) => COMMON_PERONEAL_NERVE_CRITERIA.definitions?.[term] || null;
+export const getSuperficialPeronealNerveDefinition = (term) => SUPERFICIAL_PERONEAL_NERVE_CRITERIA.definitions?.[term] || null;
+export const getDeepPeronealNerveDefinition = (term) => DEEP_PERONEAL_NERVE_CRITERIA.definitions?.[term] || null;
+export const getTibialNerveDefinition = (term) => TIBIAL_NERVE_CRITERIA.definitions?.[term] || null;
+export const getPosteriorTibialNerveDefinition = (term) => POSTERIOR_TIBIAL_NERVE_CRITERIA.definitions?.[term] || null;
+export const getFemoralNerveDefinition = (term) => FEMORAL_NERVE_CRITERIA.definitions?.[term] || null;
+export const getSaphenousNerveDefinition = (term) => SAPHENOUS_NERVE_CRITERIA.definitions?.[term] || null;
+export const getObturatorNerveDefinition = (term) => OBTURATOR_NERVE_CRITERIA.definitions?.[term] || null;
+export const getLateralFemoralCutaneousNerveDefinition = (term) => LATERAL_FEMORAL_CUTANEOUS_NERVE_CRITERIA.definitions?.[term] || null;
+export const getIlioinguinalNerveDefinition = (term) => ILIOINGUINAL_NERVE_CRITERIA.definitions?.[term] || null;
+export const getJacksonianEpilepsyDefinition = (term) => EPILEPSY_JACKSONIAN_CRITERIA.definitions[term] || null;
+export const getDiencephalicEpilepsyDefinition = (term) => EPILEPSY_DIENCEPHALIC_CRITERIA.definitions[term] || null;
+export const getPsychomotorEpilepsyDefinition = (term) => EPILEPSY_PSYCHOMOTOR_CRITERIA.definitions[term] || null;
 
 
 

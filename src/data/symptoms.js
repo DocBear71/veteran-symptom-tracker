@@ -137,6 +137,70 @@ export const symptomCategories = [
       { id: 'aura-pre-seizure', name: 'Aura/Warning Signs (Pre-Seizure)' },
     ]
   },
+  // ============================================
+// PHASE 1D: EPILEPSY EXPANSION SYMPTOMS
+// DC 8912, 8913, 8914
+// ============================================
+
+// Jacksonian/Focal Epilepsy (DC 8912)
+  {
+    id: 'jacksonian-epilepsy',
+    name: 'Jacksonian/Focal Epilepsy (DC 8912) Symptoms',
+    symptoms: [
+      { id: 'jack-focal-motor', name: 'Jacksonian - Focal Motor Seizure' },
+      { id: 'jack-focal-sensory', name: 'Jacksonian - Focal Sensory Seizure' },
+      { id: 'jack-march', name: 'Jacksonian - March (Spreading Motor Activity)' },
+      { id: 'jack-unilateral-jerking', name: 'Jacksonian - Unilateral Jerking/Twitching' },
+      { id: 'jack-tingling-numbness', name: 'Jacksonian - Focal Tingling/Numbness' },
+      { id: 'jack-visual-disturbance', name: 'Jacksonian - Visual Disturbance (Focal)' },
+      { id: 'jack-secondary-generalization', name: 'Jacksonian - Secondary Generalization' },
+      { id: 'jack-preserved-awareness', name: 'Jacksonian - Seizure with Preserved Awareness' },
+      { id: 'jack-impaired-awareness', name: 'Jacksonian - Seizure with Impaired Awareness' },
+    ]
+  },
+
+// Diencephalic Epilepsy (DC 8913)
+  {
+    id: 'diencephalic-epilepsy',
+    name: 'Diencephalic Epilepsy (DC 8913) Symptoms',
+    symptoms: [
+      { id: 'dien-autonomic-seizure', name: 'Diencephalic - Autonomic Seizure' },
+      { id: 'dien-flushing', name: 'Diencephalic - Sudden Flushing' },
+      { id: 'dien-sweating', name: 'Diencephalic - Profuse Sweating Episode' },
+      { id: 'dien-blood-pressure', name: 'Diencephalic - Blood Pressure Changes' },
+      { id: 'dien-heart-rate', name: 'Diencephalic - Heart Rate Changes' },
+      { id: 'dien-pupil-changes', name: 'Diencephalic - Pupillary Changes' },
+      { id: 'dien-temperature', name: 'Diencephalic - Temperature Dysregulation' },
+      { id: 'dien-lacrimation', name: 'Diencephalic - Excessive Tearing/Salivation' },
+      { id: 'dien-gi-symptoms', name: 'Diencephalic - GI Symptoms (Nausea/Vomiting)' },
+      { id: 'dien-hypothalamic', name: 'Diencephalic - Hypothalamic Symptoms' },
+    ]
+  },
+
+// Psychomotor Epilepsy (DC 8914)
+  {
+    id: 'psychomotor-epilepsy',
+    name: 'Psychomotor Epilepsy (DC 8914) Symptoms',
+    symptoms: [
+      // Major-type symptoms (automatic states, convulsions with LOC)
+      { id: 'psych-automatic-state', name: 'Psychomotor - Automatic State/Automatism' },
+      { id: 'psych-convulsion-loc', name: 'Psychomotor - Convulsion with Loss of Consciousness' },
+      { id: 'psych-prolonged-confusion', name: 'Psychomotor - Prolonged Post-ictal Confusion' },
+      { id: 'psych-wandering', name: 'Psychomotor - Purposeless Wandering' },
+      { id: 'psych-complex-behavior', name: 'Psychomotor - Complex Automatic Behavior' },
+      // Minor-type symptoms (brief episodes)
+      { id: 'psych-random-motor', name: 'Psychomotor - Brief Random Motor Movements' },
+      { id: 'psych-hallucination', name: 'Psychomotor - Hallucinations (Brief)' },
+      { id: 'psych-perceptual-illusion', name: 'Psychomotor - Perceptual Illusions' },
+      { id: 'psych-deja-vu', name: 'Psychomotor - Déjà Vu/Jamais Vu Episodes' },
+      { id: 'psych-thinking-abnormality', name: 'Psychomotor - Abnormalities of Thinking' },
+      { id: 'psych-memory-disturbance', name: 'Psychomotor - Memory Disturbance (Episodic)' },
+      { id: 'psych-mood-change', name: 'Psychomotor - Sudden Mood Changes' },
+      { id: 'psych-autonomic', name: 'Psychomotor - Autonomic Disturbances' },
+      { id: 'psych-lip-smacking', name: 'Psychomotor - Oral Automatisms (Lip Smacking/Chewing)' },
+      { id: 'psych-hand-movements', name: 'Psychomotor - Repetitive Hand Movements' },
+    ]
+  },
   {
     id: 'hearing',
     name: 'Hearing Symptoms',
@@ -1674,6 +1738,364 @@ export const symptomCategories = [
       { id: 'myel-paralysis', name: 'Myelitis - Paralysis' },
     ]
   },
+  // ============================================
+  // PHASE 1C: PERIPHERAL NERVE CONDITIONS
+  // DC 8510-8530 (Paralysis), 8610-8630 (Neuritis), 8710-8730 (Neuralgia)
+  // 38 CFR 4.124a - Diseases of the Peripheral Nerves
+  // ============================================
+
+  // UPPER EXTREMITY NERVES
+  // ======================
+
+  // Upper Radicular Group - C5-C6 (DC 8510/8610/8710)
+  {
+    id: 'upper-radicular-nerve',
+    name: 'Upper Radicular Group (C5-C6) Nerve Symptoms',
+    symptoms: [
+      { id: 'uprn-shoulder-weakness', name: 'Upper Radicular - Shoulder Weakness' },
+      { id: 'uprn-elbow-weakness', name: 'Upper Radicular - Elbow Weakness' },
+      { id: 'uprn-shoulder-movement-loss', name: 'Upper Radicular - Loss of Shoulder Movement' },
+      { id: 'uprn-elbow-movement-loss', name: 'Upper Radicular - Loss of Elbow Movement' },
+      { id: 'uprn-numbness', name: 'Upper Radicular - Numbness (C5-C6 Distribution)' },
+      { id: 'uprn-tingling', name: 'Upper Radicular - Tingling' },
+      { id: 'uprn-pain', name: 'Upper Radicular - Pain' },
+      { id: 'uprn-muscle-atrophy', name: 'Upper Radicular - Muscle Atrophy (Deltoid/Biceps)' },
+      { id: 'uprn-reflex-loss', name: 'Upper Radicular - Reflex Loss (Biceps/Brachioradialis)' },
+    ]
+  },
+
+  // Middle Radicular Group - C7 (DC 8511/8611/8711)
+  {
+    id: 'middle-radicular-nerve',
+    name: 'Middle Radicular Group (C7) Nerve Symptoms',
+    symptoms: [
+      { id: 'mdrn-arm-weakness', name: 'Middle Radicular - Arm Weakness' },
+      { id: 'mdrn-wrist-extension-weakness', name: 'Middle Radicular - Wrist Extension Weakness' },
+      { id: 'mdrn-elbow-extension-weakness', name: 'Middle Radicular - Elbow Extension Weakness' },
+      { id: 'mdrn-finger-extension-weakness', name: 'Middle Radicular - Finger Extension Weakness' },
+      { id: 'mdrn-numbness', name: 'Middle Radicular - Numbness (C7 Distribution)' },
+      { id: 'mdrn-tingling', name: 'Middle Radicular - Tingling' },
+      { id: 'mdrn-pain', name: 'Middle Radicular - Pain' },
+      { id: 'mdrn-muscle-atrophy', name: 'Middle Radicular - Muscle Atrophy (Triceps)' },
+      { id: 'mdrn-reflex-loss', name: 'Middle Radicular - Reflex Loss (Triceps)' },
+    ]
+  },
+
+  // Lower Radicular Group - C8-T1 (DC 8512/8612/8712)
+  {
+    id: 'lower-radicular-nerve',
+    name: 'Lower Radicular Group (C8-T1) Nerve Symptoms',
+    symptoms: [
+      { id: 'lwrn-hand-weakness', name: 'Lower Radicular - Hand Weakness' },
+      { id: 'lwrn-grip-weakness', name: 'Lower Radicular - Grip Weakness' },
+      { id: 'lwrn-finger-flexion-weakness', name: 'Lower Radicular - Finger Flexion Weakness' },
+      { id: 'lwrn-intrinsic-muscle-weakness', name: 'Lower Radicular - Intrinsic Hand Muscle Weakness' },
+      { id: 'lwrn-numbness', name: 'Lower Radicular - Numbness (C8-T1 Distribution)' },
+      { id: 'lwrn-tingling', name: 'Lower Radicular - Tingling' },
+      { id: 'lwrn-pain', name: 'Lower Radicular - Pain' },
+      { id: 'lwrn-muscle-atrophy', name: 'Lower Radicular - Muscle Atrophy (Hand Intrinsics)' },
+      { id: 'lwrn-clumsiness', name: 'Lower Radicular - Fine Motor Clumsiness' },
+    ]
+  },
+
+  // All Radicular Groups - Complete Brachial Plexus (DC 8513/8613/8713)
+  {
+    id: 'all-radicular-nerve',
+    name: 'All Radicular Groups (Brachial Plexus) Nerve Symptoms',
+    symptoms: [
+      { id: 'alrn-complete-arm-paralysis', name: 'All Radicular - Complete Arm Paralysis' },
+      { id: 'alrn-arm-weakness', name: 'All Radicular - Severe Arm Weakness' },
+      { id: 'alrn-shoulder-weakness', name: 'All Radicular - Shoulder Weakness' },
+      { id: 'alrn-elbow-weakness', name: 'All Radicular - Elbow Weakness' },
+      { id: 'alrn-wrist-weakness', name: 'All Radicular - Wrist Weakness' },
+      { id: 'alrn-hand-weakness', name: 'All Radicular - Hand Weakness' },
+      { id: 'alrn-numbness', name: 'All Radicular - Numbness (Entire Arm)' },
+      { id: 'alrn-tingling', name: 'All Radicular - Tingling' },
+      { id: 'alrn-pain', name: 'All Radicular - Pain' },
+      { id: 'alrn-muscle-atrophy', name: 'All Radicular - Muscle Atrophy' },
+    ]
+  },
+
+  // Musculospiral (Radial) Nerve (DC 8514/8614/8714)
+  {
+    id: 'radial-nerve',
+    name: 'Radial Nerve (Musculospiral) Symptoms',
+    symptoms: [
+      { id: 'radn-wrist-drop', name: 'Radial Nerve - Wrist Drop' },
+      { id: 'radn-finger-drop', name: 'Radial Nerve - Finger Drop' },
+      { id: 'radn-extension-weakness', name: 'Radial Nerve - Extension Weakness (Wrist/Fingers)' },
+      { id: 'radn-supination-weakness', name: 'Radial Nerve - Supination Weakness' },
+      { id: 'radn-thumb-extension-loss', name: 'Radial Nerve - Thumb Extension Loss' },
+      { id: 'radn-grip-weakness', name: 'Radial Nerve - Grip Weakness' },
+      { id: 'radn-numbness', name: 'Radial Nerve - Numbness (Dorsal Hand/Thumb)' },
+      { id: 'radn-tingling', name: 'Radial Nerve - Tingling' },
+      { id: 'radn-pain', name: 'Radial Nerve - Pain' },
+      { id: 'radn-muscle-atrophy', name: 'Radial Nerve - Muscle Atrophy' },
+    ]
+  },
+
+  // Median Nerve (DC 8515/8615/8715) - Carpal Tunnel
+  {
+    id: 'median-nerve',
+    name: 'Median Nerve (Carpal Tunnel) Symptoms',
+    symptoms: [
+      { id: 'medn-numbness', name: 'Median Nerve - Numbness (Thumb/Index/Middle Fingers)' },
+      { id: 'medn-tingling', name: 'Median Nerve - Tingling' },
+      { id: 'medn-pain', name: 'Median Nerve - Pain' },
+      { id: 'medn-night-symptoms', name: 'Median Nerve - Night Symptoms (Waking from Sleep)' },
+      { id: 'medn-thenar-weakness', name: 'Median Nerve - Thenar Weakness (Thumb Base)' },
+      { id: 'medn-thenar-atrophy', name: 'Median Nerve - Thenar Atrophy' },
+      { id: 'medn-grip-weakness', name: 'Median Nerve - Grip Weakness' },
+      { id: 'medn-dropping-objects', name: 'Median Nerve - Dropping Objects' },
+      { id: 'medn-opposition-weakness', name: 'Median Nerve - Thumb Opposition Weakness' },
+      { id: 'medn-pronation-weakness', name: 'Median Nerve - Pronation Weakness' },
+      { id: 'medn-ape-hand', name: 'Median Nerve - Ape Hand Deformity' },
+      { id: 'medn-trophic-changes', name: 'Median Nerve - Trophic Changes (Skin/Nail)' },
+    ]
+  },
+
+  // Ulnar Nerve (DC 8516/8616/8716) - Cubital Tunnel
+  {
+    id: 'ulnar-nerve',
+    name: 'Ulnar Nerve (Cubital Tunnel) Symptoms',
+    symptoms: [
+      { id: 'ulnn-numbness', name: 'Ulnar Nerve - Numbness (Ring/Little Fingers)' },
+      { id: 'ulnn-tingling', name: 'Ulnar Nerve - Tingling' },
+      { id: 'ulnn-pain', name: 'Ulnar Nerve - Pain' },
+      { id: 'ulnn-elbow-pain', name: 'Ulnar Nerve - Elbow Pain (Funny Bone Area)' },
+      { id: 'ulnn-grip-weakness', name: 'Ulnar Nerve - Grip Weakness' },
+      { id: 'ulnn-pinch-weakness', name: 'Ulnar Nerve - Pinch Weakness' },
+      { id: 'ulnn-finger-spread-weakness', name: 'Ulnar Nerve - Finger Spread Weakness' },
+      { id: 'ulnn-claw-hand', name: 'Ulnar Nerve - Claw Hand Deformity' },
+      { id: 'ulnn-interossei-atrophy', name: 'Ulnar Nerve - Interossei Muscle Atrophy' },
+      { id: 'ulnn-hypothenar-atrophy', name: 'Ulnar Nerve - Hypothenar Atrophy' },
+      { id: 'ulnn-thumb-adduction-weakness', name: 'Ulnar Nerve - Thumb Adduction Weakness' },
+      { id: 'ulnn-wrist-flexion-weakness', name: 'Ulnar Nerve - Wrist Flexion Weakness' },
+    ]
+  },
+
+  // Musculocutaneous Nerve (DC 8517/8617/8717)
+  {
+    id: 'musculocutaneous-nerve',
+    name: 'Musculocutaneous Nerve Symptoms',
+    symptoms: [
+      { id: 'mscn-biceps-weakness', name: 'Musculocutaneous - Biceps Weakness' },
+      { id: 'mscn-elbow-flexion-weakness', name: 'Musculocutaneous - Elbow Flexion Weakness' },
+      { id: 'mscn-supination-weakness', name: 'Musculocutaneous - Forearm Supination Weakness' },
+      { id: 'mscn-numbness', name: 'Musculocutaneous - Numbness (Lateral Forearm)' },
+      { id: 'mscn-tingling', name: 'Musculocutaneous - Tingling' },
+      { id: 'mscn-pain', name: 'Musculocutaneous - Pain' },
+      { id: 'mscn-muscle-atrophy', name: 'Musculocutaneous - Muscle Atrophy (Biceps)' },
+    ]
+  },
+
+  // Circumflex Nerve (DC 8518/8618/8718)
+  {
+    id: 'circumflex-nerve',
+    name: 'Circumflex (Axillary) Nerve Symptoms',
+    symptoms: [
+      { id: 'crcn-shoulder-abduction-weakness', name: 'Circumflex - Shoulder Abduction Weakness' },
+      { id: 'crcn-arm-raise-difficulty', name: 'Circumflex - Difficulty Raising Arm' },
+      { id: 'crcn-external-rotation-weakness', name: 'Circumflex - External Rotation Weakness' },
+      { id: 'crcn-deltoid-weakness', name: 'Circumflex - Deltoid Weakness' },
+      { id: 'crcn-deltoid-atrophy', name: 'Circumflex - Deltoid Atrophy' },
+      { id: 'crcn-numbness', name: 'Circumflex - Numbness (Lateral Shoulder)' },
+      { id: 'crcn-tingling', name: 'Circumflex - Tingling' },
+      { id: 'crcn-pain', name: 'Circumflex - Pain' },
+    ]
+  },
+
+  // Long Thoracic Nerve (DC 8519/8619/8719)
+  {
+    id: 'long-thoracic-nerve',
+    name: 'Long Thoracic Nerve Symptoms',
+    symptoms: [
+      { id: 'ltn-winged-scapula', name: 'Long Thoracic - Winged Scapula' },
+      { id: 'ltn-arm-elevation-difficulty', name: 'Long Thoracic - Difficulty Raising Arm Above Shoulder' },
+      { id: 'ltn-shoulder-weakness', name: 'Long Thoracic - Shoulder Weakness' },
+      { id: 'ltn-pushing-difficulty', name: 'Long Thoracic - Difficulty Pushing' },
+      { id: 'ltn-serratus-weakness', name: 'Long Thoracic - Serratus Anterior Weakness' },
+      { id: 'ltn-pain', name: 'Long Thoracic - Pain' },
+      { id: 'ltn-fatigue', name: 'Long Thoracic - Shoulder Fatigue' },
+    ]
+  },
+
+  // LOWER EXTREMITY NERVES
+  // ======================
+
+  // Sciatic Nerve (DC 8520/8620/8720)
+  {
+    id: 'sciatic-nerve',
+    name: 'Sciatic Nerve Symptoms',
+    symptoms: [
+      { id: 'scin-radiating-pain', name: 'Sciatic - Radiating Pain (Buttock to Leg)' },
+      { id: 'scin-leg-weakness', name: 'Sciatic - Leg Weakness' },
+      { id: 'scin-foot-drop', name: 'Sciatic - Foot Drop' },
+      { id: 'scin-knee-flexion-weakness', name: 'Sciatic - Knee Flexion Weakness' },
+      { id: 'scin-numbness', name: 'Sciatic - Numbness (Leg/Foot)' },
+      { id: 'scin-tingling', name: 'Sciatic - Tingling' },
+      { id: 'scin-burning', name: 'Sciatic - Burning Sensation' },
+      { id: 'scin-muscle-atrophy', name: 'Sciatic - Muscle Atrophy (Leg)' },
+      { id: 'scin-difficulty-walking', name: 'Sciatic - Difficulty Walking' },
+      { id: 'scin-sitting-pain', name: 'Sciatic - Pain Worse with Sitting' },
+    ]
+  },
+
+  // External Popliteal (Common Peroneal) Nerve (DC 8521/8621/8721)
+  {
+    id: 'common-peroneal-nerve',
+    name: 'Common Peroneal Nerve Symptoms',
+    symptoms: [
+      { id: 'cpn-foot-drop', name: 'Common Peroneal - Foot Drop' },
+      { id: 'cpn-dorsiflexion-weakness', name: 'Common Peroneal - Dorsiflexion Weakness' },
+      { id: 'cpn-toe-extension-weakness', name: 'Common Peroneal - Toe Extension Weakness' },
+      { id: 'cpn-eversion-weakness', name: 'Common Peroneal - Foot Eversion Weakness' },
+      { id: 'cpn-steppage-gait', name: 'Common Peroneal - Steppage Gait' },
+      { id: 'cpn-tripping', name: 'Common Peroneal - Tripping/Stumbling' },
+      { id: 'cpn-numbness', name: 'Common Peroneal - Numbness (Dorsum of Foot)' },
+      { id: 'cpn-tingling', name: 'Common Peroneal - Tingling' },
+      { id: 'cpn-pain', name: 'Common Peroneal - Pain' },
+      { id: 'cpn-muscle-atrophy', name: 'Common Peroneal - Muscle Atrophy (Anterior Leg)' },
+    ]
+  },
+
+  // Superficial Peroneal Nerve (DC 8522/8622/8722)
+  {
+    id: 'superficial-peroneal-nerve',
+    name: 'Superficial Peroneal Nerve Symptoms',
+    symptoms: [
+      { id: 'spn-eversion-weakness', name: 'Superficial Peroneal - Foot Eversion Weakness' },
+      { id: 'spn-ankle-instability', name: 'Superficial Peroneal - Ankle Instability' },
+      { id: 'spn-numbness', name: 'Superficial Peroneal - Numbness (Lower Leg/Dorsum Foot)' },
+      { id: 'spn-tingling', name: 'Superficial Peroneal - Tingling' },
+      { id: 'spn-pain', name: 'Superficial Peroneal - Pain' },
+      { id: 'spn-muscle-atrophy', name: 'Superficial Peroneal - Muscle Atrophy (Peroneal)' },
+    ]
+  },
+
+  // Deep Peroneal (Anterior Tibial) Nerve (DC 8523/8623/8723)
+  {
+    id: 'deep-peroneal-nerve',
+    name: 'Deep Peroneal (Anterior Tibial) Nerve Symptoms',
+    symptoms: [
+      { id: 'dpn-dorsiflexion-loss', name: 'Deep Peroneal - Dorsiflexion Loss' },
+      { id: 'dpn-toe-extension-weakness', name: 'Deep Peroneal - Toe Extension Weakness' },
+      { id: 'dpn-foot-drop', name: 'Deep Peroneal - Foot Drop' },
+      { id: 'dpn-numbness', name: 'Deep Peroneal - Numbness (Web Space 1st/2nd Toe)' },
+      { id: 'dpn-tingling', name: 'Deep Peroneal - Tingling' },
+      { id: 'dpn-pain', name: 'Deep Peroneal - Pain' },
+      { id: 'dpn-muscle-atrophy', name: 'Deep Peroneal - Muscle Atrophy' },
+    ]
+  },
+
+  // Internal Popliteal (Tibial) Nerve (DC 8524/8624/8724)
+  {
+    id: 'tibial-nerve',
+    name: 'Tibial (Internal Popliteal) Nerve Symptoms',
+    symptoms: [
+      { id: 'tibn-plantar-flexion-weakness', name: 'Tibial - Plantar Flexion Weakness' },
+      { id: 'tibn-toe-flexion-weakness', name: 'Tibial - Toe Flexion Weakness' },
+      { id: 'tibn-foot-inversion-weakness', name: 'Tibial - Foot Inversion Weakness' },
+      { id: 'tibn-calf-weakness', name: 'Tibial - Calf Weakness' },
+      { id: 'tibn-difficulty-walking-tiptoe', name: 'Tibial - Difficulty Walking on Tiptoe' },
+      { id: 'tibn-numbness', name: 'Tibial - Numbness (Sole of Foot)' },
+      { id: 'tibn-tingling', name: 'Tibial - Tingling' },
+      { id: 'tibn-burning', name: 'Tibial - Burning Pain' },
+      { id: 'tibn-muscle-atrophy', name: 'Tibial - Muscle Atrophy (Calf/Sole)' },
+    ]
+  },
+
+  // Posterior Tibial Nerve (DC 8525/8625/8725)
+  {
+    id: 'posterior-tibial-nerve',
+    name: 'Posterior Tibial Nerve Symptoms',
+    symptoms: [
+      { id: 'ptn-sole-paralysis', name: 'Posterior Tibial - Sole of Foot Paralysis' },
+      { id: 'ptn-toe-flexion-weakness', name: 'Posterior Tibial - Toe Flexion Weakness' },
+      { id: 'ptn-foot-adduction-weakness', name: 'Posterior Tibial - Foot Adduction Weakness' },
+      { id: 'ptn-numbness', name: 'Posterior Tibial - Numbness (Sole)' },
+      { id: 'ptn-tingling', name: 'Posterior Tibial - Tingling' },
+      { id: 'ptn-burning', name: 'Posterior Tibial - Burning Pain (Causalgic)' },
+      { id: 'ptn-tarsal-tunnel', name: 'Posterior Tibial - Tarsal Tunnel Symptoms' },
+      { id: 'ptn-muscle-atrophy', name: 'Posterior Tibial - Muscle Atrophy' },
+    ]
+  },
+
+  // Anterior Crural (Femoral) Nerve (DC 8526/8626/8726)
+  {
+    id: 'femoral-nerve',
+    name: 'Femoral (Anterior Crural) Nerve Symptoms',
+    symptoms: [
+      { id: 'femn-quadriceps-weakness', name: 'Femoral - Quadriceps Weakness' },
+      { id: 'femn-knee-extension-weakness', name: 'Femoral - Knee Extension Weakness' },
+      { id: 'femn-knee-buckling', name: 'Femoral - Knee Buckling/Giving Way' },
+      { id: 'femn-difficulty-stairs', name: 'Femoral - Difficulty with Stairs' },
+      { id: 'femn-difficulty-rising', name: 'Femoral - Difficulty Rising from Chair' },
+      { id: 'femn-numbness', name: 'Femoral - Numbness (Anterior Thigh/Medial Leg)' },
+      { id: 'femn-tingling', name: 'Femoral - Tingling' },
+      { id: 'femn-pain', name: 'Femoral - Pain' },
+      { id: 'femn-muscle-atrophy', name: 'Femoral - Muscle Atrophy (Quadriceps)' },
+    ]
+  },
+
+  // Internal Saphenous Nerve (DC 8527/8627/8727)
+  {
+    id: 'saphenous-nerve',
+    name: 'Saphenous Nerve Symptoms',
+    symptoms: [
+      { id: 'sapn-numbness', name: 'Saphenous - Numbness (Medial Leg/Ankle)' },
+      { id: 'sapn-tingling', name: 'Saphenous - Tingling' },
+      { id: 'sapn-pain', name: 'Saphenous - Pain (Medial Knee to Ankle)' },
+      { id: 'sapn-burning', name: 'Saphenous - Burning Sensation' },
+      { id: 'sapn-hypersensitivity', name: 'Saphenous - Hypersensitivity to Touch' },
+    ]
+  },
+
+  // Obturator Nerve (DC 8528/8628/8728)
+  {
+    id: 'obturator-nerve',
+    name: 'Obturator Nerve Symptoms',
+    symptoms: [
+      { id: 'obtn-thigh-adduction-weakness', name: 'Obturator - Thigh Adduction Weakness' },
+      { id: 'obtn-groin-pain', name: 'Obturator - Groin Pain' },
+      { id: 'obtn-medial-thigh-pain', name: 'Obturator - Medial Thigh Pain' },
+      { id: 'obtn-numbness', name: 'Obturator - Numbness (Medial Thigh)' },
+      { id: 'obtn-tingling', name: 'Obturator - Tingling' },
+      { id: 'obtn-gait-instability', name: 'Obturator - Gait Instability' },
+      { id: 'obtn-muscle-atrophy', name: 'Obturator - Muscle Atrophy (Adductors)' },
+    ]
+  },
+
+  // External Cutaneous Nerve of Thigh (DC 8529/8629/8729) - Meralgia Paresthetica
+  {
+    id: 'lateral-femoral-cutaneous-nerve',
+    name: 'Lateral Femoral Cutaneous Nerve (Meralgia Paresthetica) Symptoms',
+    symptoms: [
+      { id: 'lfcn-numbness', name: 'Lateral Femoral Cutaneous - Numbness (Outer Thigh)' },
+      { id: 'lfcn-tingling', name: 'Lateral Femoral Cutaneous - Tingling' },
+      { id: 'lfcn-burning', name: 'Lateral Femoral Cutaneous - Burning Pain' },
+      { id: 'lfcn-hypersensitivity', name: 'Lateral Femoral Cutaneous - Hypersensitivity' },
+      { id: 'lfcn-pain-standing', name: 'Lateral Femoral Cutaneous - Pain Worse with Standing' },
+      { id: 'lfcn-pain-walking', name: 'Lateral Femoral Cutaneous - Pain Worse with Walking' },
+    ]
+  },
+
+  // Ilio-inguinal Nerve (DC 8530/8630/8730)
+  {
+    id: 'ilioinguinal-nerve',
+    name: 'Ilio-inguinal Nerve Symptoms',
+    symptoms: [
+      { id: 'iin-groin-numbness', name: 'Ilio-inguinal - Groin Numbness' },
+      { id: 'iin-genital-numbness', name: 'Ilio-inguinal - Genital Area Numbness' },
+      { id: 'iin-inner-thigh-numbness', name: 'Ilio-inguinal - Inner Thigh Numbness' },
+      { id: 'iin-groin-pain', name: 'Ilio-inguinal - Groin Pain' },
+      { id: 'iin-burning', name: 'Ilio-inguinal - Burning Sensation' },
+      { id: 'iin-hypersensitivity', name: 'Ilio-inguinal - Hypersensitivity' },
+      { id: 'iin-pain-movement', name: 'Ilio-inguinal - Pain with Movement/Coughing' },
+    ]
+  },
+
+
 ];
 
 // Helper function to determine if a category is a "child" of another
@@ -1746,6 +2168,28 @@ const getParentCategory = (categoryName) => {
   if (name.includes('als') || name.includes('amyotrophic')) return 'als';
   if (name.includes('syringomyelia')) return 'syringomyelia';
   if (name.includes('myelitis')) return 'myelitis';
+  if (name.includes('upper radicular')) return 'peripheral-nerve';
+  if (name.includes('middle radicular')) return 'peripheral-nerve';
+  if (name.includes('lower radicular')) return 'peripheral-nerve';
+  if (name.includes('all radicular') || name.includes('brachial plexus')) return 'peripheral-nerve';
+  if (name.includes('radial nerve') || name.includes('musculospiral')) return 'peripheral-nerve';
+  if (name.includes('median nerve') || name.includes('carpal tunnel')) return 'peripheral-nerve';
+  if (name.includes('ulnar nerve') || name.includes('cubital tunnel')) return 'peripheral-nerve';
+  if (name.includes('musculocutaneous nerve')) return 'peripheral-nerve';
+  if (name.includes('circumflex') || name.includes('axillary')) return 'peripheral-nerve';
+  if (name.includes('long thoracic')) return 'peripheral-nerve';
+  if (name.includes('sciatic nerve')) return 'peripheral-nerve';
+  if (name.includes('peroneal')) return 'peripheral-nerve';
+  if (name.includes('tibial nerve') || name.includes('internal popliteal')) return 'peripheral-nerve';
+  if (name.includes('posterior tibial')) return 'peripheral-nerve';
+  if (name.includes('femoral nerve') || name.includes('anterior crural')) return 'peripheral-nerve';
+  if (name.includes('saphenous')) return 'peripheral-nerve';
+  if (name.includes('obturator')) return 'peripheral-nerve';
+  if (name.includes('lateral femoral cutaneous') || name.includes('meralgia')) return 'peripheral-nerve';
+  if (name.includes('ilio-inguinal') || name.includes('ilioinguinal')) return 'peripheral-nerve';
+  if (name.includes('jacksonian') || name.includes('focal epilepsy')) return 'epilepsy';
+  if (name.includes('diencephalic')) return 'epilepsy';
+  if (name.includes('psychomotor epilepsy')) return 'epilepsy';
   return null; // No parent, this is a standalone category
 };
 

@@ -114,11 +114,27 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
 
   const [seizureData, setSeizureData] = useState({
     episodeType: '',             // generalized/partial/absence/psychogenic/other
-    duration: '',                // duration in minutes
+    duration: '',                // duration in seconds
     lossOfConsciousness: null,   // yes/no/partial
     auraPresent: null,           // true/false
     recoveryTime: '',            // minutes/hours
     witnessPresent: null,        // true/false
+    // Phase 1D: Jacksonian/Focal (DC 8912) specific fields
+    focalOnsetLocation: '',      // face/hand/arm/leg/foot/sensory
+    focalSpread: null,           // true/false - did it spread (Jacksonian march)
+    spreadPattern: '',           // description of spread
+    secondaryGeneralization: null, // true/false - did it become generalized
+    awarenessPreserved: null,    // true/false - awareness during focal seizure
+    // Phase 1D: Diencephalic (DC 8913) specific fields
+    autonomicSymptoms: [],       // flushing, sweating, bp-change, hr-change, pupil-change, temperature, gi-symptoms
+    // Phase 1D: Psychomotor (DC 8914) specific fields
+    automatisms: [],             // lip-smacking, chewing, hand-movements, wandering, complex-behavior
+    hallucinations: null,        // true/false
+    hallucinationType: '',       // visual/auditory/olfactory/gustatory
+    perceptualIllusions: null,   // true/false - déjà vu, jamais vu, etc.
+    moodChange: null,            // true/false
+    memoryDisturbance: null,     // true/false
+    automaticState: null,        // true/false - complex behavior without awareness
   });
 
   // Phase 2: Eye & Vision data
@@ -865,6 +881,28 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
     causeOfMyelitis: '', // transverse, infectious, ms-related, unknown
   });
 
+  // ============================================
+  // PHASE 1C: PERIPHERAL NERVE DATA
+  // DC 8510-8530 (Paralysis), 8610-8630 (Neuritis), 8710-8730 (Neuralgia)
+  // ============================================
+  const [peripheralNerveData, setPeripheralNerveData] = useState({
+    affectedSide: '',
+    isDominantSide: '',
+    nerveConditionType: '',
+    severityLevel: '',
+    hasMotorInvolvement: false,
+    hasSensoryInvolvement: false,
+    hasAtrophy: false,
+    atrophyLocation: '',
+    hasDeformity: false,
+    deformityType: '',
+    functionalLimitations: '',
+    usesAssistiveDevice: false,
+    assistiveDeviceType: '',
+    hasEMGNCS: false,
+    emgNCSFindings: '',
+  });
+
   // Phase 1H - Track processed prefillData to avoid re-processing
   const processedPrefillId = useRef(null);
   const isPrefilling = useRef(false);
@@ -915,35 +953,27 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
       // Set condition-specific data
       console.log('🔍 Checking condition-specific data...');
       if (prefillData.migraineData) {
-        console.log('💊 Setting migraine data:', prefillData.migraineData);
         setMigraineData({ ...prefillData.migraineData });
       }
       if (prefillData.sleepData) {
-        console.log('😴 Setting sleep data:', prefillData.sleepData);
         setSleepData({ ...prefillData.sleepData });
       }
       if (prefillData.ptsdData) {
-        console.log('🧠 Setting PTSD data:', prefillData.ptsdData);
         setPtsdData({ ...prefillData.ptsdData });
       }
       if (prefillData.painData) {
-        console.log('🩹 Setting pain data:', prefillData.painData);
         setPainData({ ...prefillData.painData });
       }
       if (prefillData.giData) {
-        console.log('🫃 Setting GI data:', prefillData.giData);
         setGIData({ ...prefillData.giData });
       }
       if (prefillData.respiratoryData) {
-        console.log('🫁 Setting respiratory data:', prefillData.respiratoryData);
         setRespiratoryData({ ...prefillData.respiratoryData });
       }
       if (prefillData.jointData) {
-        console.log('🦴 Setting joint data:', prefillData.jointData);
         setJointData({ ...prefillData.jointData });
       }
       if (prefillData.seizureData) {
-        console.log('⚡ Setting seizure data:', prefillData.seizureData);
         setSeizureData({ ...prefillData.seizureData });
       }
       if (prefillData.eyeData) {
@@ -951,60 +981,46 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
         setEyeData({ ...prefillData.eyeData });
       }
       if (prefillData.genitourinaryData) {
-        console.log('🫘 Setting genitourinary data:', prefillData.genitourinaryData);
         setGenitourinaryData({ ...prefillData.genitourinaryData });
       }
       if (prefillData.gynecologicalData) {
-        console.log('🌸 Setting gynecological data:', prefillData.gynecologicalData);
         setGynecologicalData({ ...prefillData.gynecologicalData });
       }
       // Phase 5: Hemic/Lymphatic prefills
       if (prefillData.anemiaData) {
-        console.log('🩸 Setting anemia data:', prefillData.anemiaData);
         setAnemiaData({ ...prefillData.anemiaData });
       }
       if (prefillData.sickleCellData) {
-        console.log('🩸 Setting sickle cell data:', prefillData.sickleCellData);
         setSickleCellData({ ...prefillData.sickleCellData });
       }
       if (prefillData.bleedingDisorderData) {
-        console.log('🩸 Setting bleeding disorder data:', prefillData.bleedingDisorderData);
         setBleedingDisorderData({ ...prefillData.bleedingDisorderData });
       }
       if (prefillData.infectionData) {
-        console.log('🦠 Setting infection data:', prefillData.infectionData);
         setInfectionData({ ...prefillData.infectionData });
       }
       if (prefillData.lymphomaLeukemiaData) {
-        console.log('🎗️ Setting lymphoma/leukemia data:', prefillData.lymphomaLeukemiaData);
         setLymphomaLeukemiaData({ ...prefillData.lymphomaLeukemiaData });
       }
       if (prefillData.polycythemiaData) {
-        console.log('🔴 Setting polycythemia data:', prefillData.polycythemiaData);
         setPolycythemiaData({ ...prefillData.polycythemiaData });
       }
       if (prefillData.treatmentData) {
-        console.log('💊 Setting treatment data:', prefillData.treatmentData);
         setTreatmentData({ ...prefillData.treatmentData });
       }
       if (prefillData.b12DeficiencyData) {
-        console.log('💊 Setting B12 deficiency data:', prefillData.b12DeficiencyData);
         setB12DeficiencyData({ ...prefillData.b12DeficiencyData });
       }
       if (prefillData.dentalData) {
-        console.log('🦷 Setting dental data:', prefillData.dentalData);
         setDentalData({...prefillData.dentalData});
       }
       if (prefillData.hivData) {
-        console.log('🦠 Setting HIV data:', prefillData.hivData);
         setHivData({ ...prefillData.hivData });
       }
       if (prefillData.hepatitisData) {
-        console.log('🦠 Setting Hepatitis data:', prefillData.hepatitisData);
         setHepatitisData({ ...prefillData.hepatitisData });
       }
       if (prefillData.lymeData) {
-        console.log('🦟 Setting Lyme data:', prefillData.lymeData);
         setLymeData({ ...prefillData.lymeData });
       }
       if (prefillData.malariaData) {
@@ -1079,6 +1095,10 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
       }
       if (prefillData.myelitisData) {
         setMyelitisData(prefillData.myelitisData);
+      }
+      // Phase 1C: Include peripheral nerve data
+      if (prefillData.peripheralNerveData) {
+        setPeripheralNerveData(prefillData.peripheralNerveData);
       }
 
 
@@ -1158,14 +1178,21 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
     'adjustment-unspecified'
   ].includes(selectedSymptom);
 
-  // Pain: match ANY pain-related symptom only
-  const isPainSelected = selectedSymptom?.includes('pain') ||
+  // Peripheral nerve prefixes to exclude from generic pain/GU detection
+  const peripheralNervePrefixes = ['uprn-', 'mdrn-', 'lwrn-', 'alrn-', 'radn-', 'medn-', 'ulnn-',
+    'mscn-', 'crcn-', 'ltn-', 'scin-', 'cpn-', 'spn-', 'dpn-', 'tibn-', 'ptn-', 'femn-',
+    'sapn-', 'obtn-', 'lfcn-', 'iin-'];
+  const isPeripheralNerveSymptom = peripheralNervePrefixes.some(prefix => selectedSymptom?.startsWith(prefix));
+
+  const isPainSelected = !isPeripheralNerveSymptom && (
+      selectedSymptom?.includes('pain') ||
       selectedSymptom?.includes('-ache') ||
       selectedSymptom?.includes('stiff') ||
       ['sciatica', 'radiculopathy', 'stenosis', 'arthritis', 'bursitis', 'tendinitis',
         'strain', 'sprain', 'rom-limited', 'swelling', 'instability', 'weakness',
         'numbness', 'tingling', 'cramping', 'spasms', 'plantar-fasciitis', 'ddd',
-        'spondylosis', 'spondylolisthesis', 'herniated', 'bulging'].some(term => selectedSymptom?.includes(term));
+        'spondylosis', 'spondylolisthesis', 'herniated', 'bulging'].some(term => selectedSymptom?.includes(term))
+  );
 
   // Phase 1B: GI condition detection - match IBS, GERD, and future GI conditions
   const isGISelected = selectedSymptom?.startsWith('ibs') ||
@@ -1213,7 +1240,20 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
       selectedSymptom?.includes('epilep') ||
       selectedSymptom?.includes('convuls') ||
       selectedSymptom?.startsWith('seizure-') ||
+      selectedSymptom?.startsWith('jack-') ||
+      selectedSymptom?.startsWith('dien-') ||
+      selectedSymptom?.startsWith('psych-') ||
       ['absence-seizure', 'tonic-clonic', 'focal-seizure', 'grand-mal', 'petit-mal'].includes(selectedSymptom);
+
+  // Phase 1D: Specific epilepsy type detection
+  const isJacksonianEpilepsy = selectedSymptom?.startsWith('jack-') ||
+      selectedSymptom === 'seizure-partial' ||
+      selectedSymptom?.includes('focal');
+
+  const isDiencephalicEpilepsy = selectedSymptom?.startsWith('dien-');
+
+  const isPsychomotorEpilepsy = selectedSymptom?.startsWith('psych-') ||
+      selectedSymptom === 'seizure-psychomotor';
 
   // Phase 2: Eye & Vision detection
   const isEyeRelated = selectedSymptom?.includes('vision') ||
@@ -1226,7 +1266,8 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
        'peripheral-vision-loss', 'diabetic-retinopathy', 'glaucoma-symptoms'].includes(selectedSymptom);
 
   // Phase 3: Genitourinary detection
-  const isGenitourinaryRelated = selectedSymptom?.includes('kidney') ||
+  const isGenitourinaryRelated = !isPeripheralNerveSymptom && (
+      selectedSymptom?.includes('kidney') ||
       selectedSymptom?.includes('urinary') ||
       selectedSymptom?.includes('prostate') ||
       selectedSymptom?.includes('bladder') ||
@@ -1237,12 +1278,13 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
       selectedSymptom?.includes('testicular') ||
       selectedSymptom?.includes('genital') ||
       ['kidney-stones', 'kidney-pain', 'blood-in-urine', 'kidney-infection',
-       'renal-swelling', 'renal-fatigue', 'renal-nausea', 'decreased-urination',
-       'foamy-urine', 'high-blood-pressure', 'urinary-frequency', 'urinary-urgency',
-       'painful-urination', 'urinary-incontinence', 'urine-retention', 'weak-stream',
-       'hesitancy', 'nocturia', 'bladder-pain', 'recurrent-uti', 'incomplete-emptying',
-       'prostate-symptoms', 'prostate-pain', 'erectile-dysfunction', 'testicular-pain',
-       'genital-pain', 'fecal-incontinence', 'bowel-urgency', 'bowel-frequency'].includes(selectedSymptom);
+        'renal-swelling', 'renal-fatigue', 'renal-nausea', 'decreased-urination',
+        'foamy-urine', 'high-blood-pressure', 'urinary-frequency', 'urinary-urgency',
+        'painful-urination', 'urinary-incontinence', 'urine-retention', 'weak-stream',
+        'hesitancy', 'nocturia', 'bladder-pain', 'recurrent-uti', 'incomplete-emptying',
+        'prostate-symptoms', 'prostate-pain', 'erectile-dysfunction', 'testicular-pain',
+        'genital-pain', 'fecal-incontinence', 'bowel-urgency', 'bowel-frequency'].includes(selectedSymptom)
+  );
 
   // Phase 4: Gynecological condition detection
   const isGynecologicalRelated = selectedSymptom?.includes('menstrual') ||
@@ -1676,6 +1718,145 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
         'myel-numbness', 'myel-tingling', 'myel-band-sensation', 'myel-sexual-dysfunction',
         'myel-paralysis'].includes(selectedSymptom);
 
+  // ============================================
+  // PHASE 1C: PERIPHERAL NERVE DETECTION
+  // ============================================
+
+  // Upper Extremity Nerves
+  const isUpperRadicularRelated = selectedSymptom?.startsWith('uprn-') ||
+      selectedCategory === 'upper-radicular-nerve' ||
+      ['uprn-shoulder-weakness', 'uprn-elbow-weakness', 'uprn-shoulder-movement-loss',
+        'uprn-elbow-movement-loss', 'uprn-numbness', 'uprn-tingling', 'uprn-pain',
+        'uprn-muscle-atrophy', 'uprn-reflex-loss'].includes(selectedSymptom);
+
+  const isMiddleRadicularRelated = selectedSymptom?.startsWith('mdrn-') ||
+      selectedCategory === 'middle-radicular-nerve' ||
+      ['mdrn-arm-weakness', 'mdrn-wrist-extension-weakness', 'mdrn-elbow-extension-weakness',
+        'mdrn-finger-extension-weakness', 'mdrn-numbness', 'mdrn-tingling', 'mdrn-pain',
+        'mdrn-muscle-atrophy', 'mdrn-reflex-loss'].includes(selectedSymptom);
+
+  const isLowerRadicularRelated = selectedSymptom?.startsWith('lwrn-') ||
+      selectedCategory === 'lower-radicular-nerve' ||
+      ['lwrn-hand-weakness', 'lwrn-grip-weakness', 'lwrn-finger-flexion-weakness',
+        'lwrn-intrinsic-muscle-weakness', 'lwrn-numbness', 'lwrn-tingling', 'lwrn-pain',
+        'lwrn-muscle-atrophy', 'lwrn-clumsiness'].includes(selectedSymptom);
+
+  const isAllRadicularRelated = selectedSymptom?.startsWith('alrn-') ||
+      selectedCategory === 'all-radicular-nerve' ||
+      ['alrn-complete-arm-paralysis', 'alrn-arm-weakness', 'alrn-shoulder-weakness',
+        'alrn-elbow-weakness', 'alrn-wrist-weakness', 'alrn-hand-weakness',
+        'alrn-numbness', 'alrn-tingling', 'alrn-pain', 'alrn-muscle-atrophy'].includes(selectedSymptom);
+
+  const isRadialNerveRelated = selectedSymptom?.startsWith('radn-') ||
+      selectedCategory === 'radial-nerve' ||
+      ['radn-wrist-drop', 'radn-finger-drop', 'radn-extension-weakness',
+        'radn-supination-weakness', 'radn-thumb-extension-loss', 'radn-grip-weakness',
+        'radn-numbness', 'radn-tingling', 'radn-pain', 'radn-muscle-atrophy'].includes(selectedSymptom);
+
+  const isMedianNerveRelated = selectedSymptom?.startsWith('medn-') ||
+      selectedCategory === 'median-nerve' ||
+      ['medn-numbness', 'medn-tingling', 'medn-pain', 'medn-night-symptoms',
+        'medn-thenar-weakness', 'medn-thenar-atrophy', 'medn-grip-weakness',
+        'medn-dropping-objects', 'medn-opposition-weakness', 'medn-pronation-weakness',
+        'medn-ape-hand', 'medn-trophic-changes'].includes(selectedSymptom);
+
+  const isUlnarNerveRelated = selectedSymptom?.startsWith('ulnn-') ||
+      selectedCategory === 'ulnar-nerve' ||
+      ['ulnn-numbness', 'ulnn-tingling', 'ulnn-pain', 'ulnn-elbow-pain',
+        'ulnn-grip-weakness', 'ulnn-pinch-weakness', 'ulnn-finger-spread-weakness',
+        'ulnn-claw-hand', 'ulnn-interossei-atrophy', 'ulnn-hypothenar-atrophy',
+        'ulnn-thumb-adduction-weakness', 'ulnn-wrist-flexion-weakness'].includes(selectedSymptom);
+
+  const isMusculocutaneousNerveRelated = selectedSymptom?.startsWith('mscn-') ||
+      selectedCategory === 'musculocutaneous-nerve' ||
+      ['mscn-biceps-weakness', 'mscn-elbow-flexion-weakness', 'mscn-supination-weakness',
+        'mscn-numbness', 'mscn-tingling', 'mscn-pain', 'mscn-muscle-atrophy'].includes(selectedSymptom);
+
+  const isCircumflexNerveRelated = selectedSymptom?.startsWith('crcn-') ||
+      selectedCategory === 'circumflex-nerve' ||
+      ['crcn-shoulder-abduction-weakness', 'crcn-arm-raise-difficulty',
+        'crcn-external-rotation-weakness', 'crcn-deltoid-weakness', 'crcn-deltoid-atrophy',
+        'crcn-numbness', 'crcn-tingling', 'crcn-pain'].includes(selectedSymptom);
+
+  const isLongThoracicNerveRelated = selectedSymptom?.startsWith('ltn-') ||
+      selectedCategory === 'long-thoracic-nerve' ||
+      ['ltn-winged-scapula', 'ltn-arm-elevation-difficulty', 'ltn-shoulder-weakness',
+        'ltn-pushing-difficulty', 'ltn-serratus-weakness', 'ltn-pain', 'ltn-fatigue'].includes(selectedSymptom);
+
+  // Lower Extremity Nerves
+  const isSciaticNerveRelated = selectedSymptom?.startsWith('scin-') ||
+      selectedCategory === 'sciatic-nerve' ||
+      ['scin-radiating-pain', 'scin-leg-weakness', 'scin-foot-drop',
+        'scin-knee-flexion-weakness', 'scin-numbness', 'scin-tingling', 'scin-burning',
+        'scin-muscle-atrophy', 'scin-difficulty-walking', 'scin-sitting-pain'].includes(selectedSymptom);
+
+  const isCommonPeronealNerveRelated = selectedSymptom?.startsWith('cpn-') ||
+      selectedCategory === 'common-peroneal-nerve' ||
+      ['cpn-foot-drop', 'cpn-dorsiflexion-weakness', 'cpn-toe-extension-weakness',
+        'cpn-eversion-weakness', 'cpn-steppage-gait', 'cpn-tripping',
+        'cpn-numbness', 'cpn-tingling', 'cpn-pain', 'cpn-muscle-atrophy'].includes(selectedSymptom);
+
+  const isSuperficialPeronealNerveRelated = selectedSymptom?.startsWith('spn-') ||
+      selectedCategory === 'superficial-peroneal-nerve' ||
+      ['spn-eversion-weakness', 'spn-ankle-instability', 'spn-numbness',
+        'spn-tingling', 'spn-pain', 'spn-muscle-atrophy'].includes(selectedSymptom);
+
+  const isDeepPeronealNerveRelated = selectedSymptom?.startsWith('dpn-') ||
+      selectedCategory === 'deep-peroneal-nerve' ||
+      ['dpn-dorsiflexion-loss', 'dpn-toe-extension-weakness', 'dpn-foot-drop',
+        'dpn-numbness', 'dpn-tingling', 'dpn-pain', 'dpn-muscle-atrophy'].includes(selectedSymptom);
+
+  const isTibialNerveRelated = selectedSymptom?.startsWith('tibn-') ||
+      selectedCategory === 'tibial-nerve' ||
+      ['tibn-plantar-flexion-weakness', 'tibn-toe-flexion-weakness',
+        'tibn-foot-inversion-weakness', 'tibn-calf-weakness', 'tibn-difficulty-walking-tiptoe',
+        'tibn-numbness', 'tibn-tingling', 'tibn-burning', 'tibn-muscle-atrophy'].includes(selectedSymptom);
+
+  const isPosteriorTibialNerveRelated = selectedSymptom?.startsWith('ptn-') ||
+      selectedCategory === 'posterior-tibial-nerve' ||
+      ['ptn-sole-paralysis', 'ptn-toe-flexion-weakness', 'ptn-foot-adduction-weakness',
+        'ptn-numbness', 'ptn-tingling', 'ptn-burning', 'ptn-tarsal-tunnel',
+        'ptn-muscle-atrophy'].includes(selectedSymptom);
+
+  const isFemoralNerveRelated = selectedSymptom?.startsWith('femn-') ||
+      selectedCategory === 'femoral-nerve' ||
+      ['femn-quadriceps-weakness', 'femn-knee-extension-weakness', 'femn-knee-buckling',
+        'femn-difficulty-stairs', 'femn-difficulty-rising', 'femn-numbness',
+        'femn-tingling', 'femn-pain', 'femn-muscle-atrophy'].includes(selectedSymptom);
+
+  const isSaphenousNerveRelated = selectedSymptom?.startsWith('sapn-') ||
+      selectedCategory === 'saphenous-nerve' ||
+      ['sapn-numbness', 'sapn-tingling', 'sapn-pain', 'sapn-burning',
+        'sapn-hypersensitivity'].includes(selectedSymptom);
+
+  const isObturatorNerveRelated = selectedSymptom?.startsWith('obtn-') ||
+      selectedCategory === 'obturator-nerve' ||
+      ['obtn-thigh-adduction-weakness', 'obtn-groin-pain', 'obtn-medial-thigh-pain',
+        'obtn-numbness', 'obtn-tingling', 'obtn-gait-instability', 'obtn-muscle-atrophy'].includes(selectedSymptom);
+
+  const isLateralFemoralCutaneousNerveRelated = selectedSymptom?.startsWith('lfcn-') ||
+      selectedCategory === 'lateral-femoral-cutaneous-nerve' ||
+      ['lfcn-numbness', 'lfcn-tingling', 'lfcn-burning', 'lfcn-hypersensitivity',
+        'lfcn-pain-standing', 'lfcn-pain-walking'].includes(selectedSymptom);
+
+  const isIlioinguinalNerveRelated = selectedSymptom?.startsWith('iin-') ||
+      selectedCategory === 'ilioinguinal-nerve' ||
+      ['iin-groin-numbness', 'iin-genital-numbness', 'iin-inner-thigh-numbness',
+        'iin-groin-pain', 'iin-burning', 'iin-hypersensitivity', 'iin-pain-movement'].includes(selectedSymptom);
+
+  // Combined detection flags
+  const isUpperExtremityNerveRelated = isUpperRadicularRelated || isMiddleRadicularRelated ||
+      isLowerRadicularRelated || isAllRadicularRelated || isRadialNerveRelated ||
+      isMedianNerveRelated || isUlnarNerveRelated || isMusculocutaneousNerveRelated ||
+      isCircumflexNerveRelated || isLongThoracicNerveRelated;
+
+  const isLowerExtremityNerveRelated = isSciaticNerveRelated || isCommonPeronealNerveRelated ||
+      isSuperficialPeronealNerveRelated || isDeepPeronealNerveRelated || isTibialNerveRelated ||
+      isPosteriorTibialNerveRelated || isFemoralNerveRelated || isSaphenousNerveRelated ||
+      isObturatorNerveRelated || isLateralFemoralCutaneousNerveRelated || isIlioinguinalNerveRelated;
+
+  const isPeripheralNerveRelated = isUpperExtremityNerveRelated || isLowerExtremityNerveRelated;
+
   // Combined Phase 1B neurological detection
   const isNeurologicalPhase1BRelated = isNarcolepsyRelated || isALSRelated ||
       isSyringomyeliaRelated || isMyelitisRelated;
@@ -1737,6 +1918,15 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
       setSeizureData({
         episodeType: '', duration: '', lossOfConsciousness: null,
         auraPresent: null, recoveryTime: '', witnessPresent: null,
+        // Phase 1D: Jacksonian fields
+        focalOnsetLocation: '', focalSpread: null, spreadPattern: '',
+        secondaryGeneralization: null, awarenessPreserved: null,
+        // Phase 1D: Diencephalic fields
+        autonomicSymptoms: [],
+        // Phase 1D: Psychomotor fields
+        automatisms: [], hallucinations: null, hallucinationType: '',
+        perceptualIllusions: null, moodChange: null, memoryDisturbance: null,
+        automaticState: null,
       });
     }
     // Phase 2: Reset eye data
@@ -2294,16 +2484,36 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
         causeOfMyelitis: '',
       });
     }
+    // Phase 1C: Reset peripheral nerve data
+    if (!isPeripheralNerveRelated) {
+      setPeripheralNerveData({
+        affectedSide: '',
+        isDominantSide: '',
+        nerveConditionType: '',
+        severityLevel: '',
+        hasMotorInvolvement: false,
+        hasSensoryInvolvement: false,
+        hasAtrophy: false,
+        atrophyLocation: '',
+        hasDeformity: false,
+        deformityType: '',
+        functionalLimitations: '',
+        usesAssistiveDevice: false,
+        assistiveDeviceType: '',
+        hasEMGNCS: false,
+        emgNCSFindings: '',
+      });
+    }
   }, [selectedSymptom, isMigraineSelected, isSleepSelected, isNightmareSelected, isPTSDRelated, isPainSelected,
     isGISelected, isRespiratorySelected, isJointSelected, isSeizureSelected, isEyeRelated, isGenitourinaryRelated,
     isGynecologicalRelated, isAnemiaRelated, isSickleCellRelated, isBleedingDisorderRelated, isInfectionRelated,
     isLymphomaLeukemiaRelated, isPolycythemiaRelated, isTreatmentRelated, isB12DeficiencyRelated, isDentalOralRelated,
     isHIVRelated, isHepatitisRelated, isLymeRelated, isMalariaRelated, isBrucellosisRelated, isCampylobacterRelated,
-    isQFeverRelated, isSalmonellaRelated, isShigellaRelated,isWestNileRelated, isNTMRelated, isAnorexiaRelated,
+    isQFeverRelated, isSalmonellaRelated, isShigellaRelated, isWestNileRelated, isNTMRelated, isAnorexiaRelated,
     isBulimiaRelated, isAnxietyFormRelated, isDepressionFormRelated, isBipolarFormRelated, isOCDFormRelated,
     isAdjustmentDisorderFormRelated, isBingeEatingRelated, isDissociativeRelated, isAcuteStressRelated,
     isPersonalityDisorderRelated, isCardiovascularRelated, isDigestivePhase10Related,
-    isNarcolepsyRelated, isALSRelated, isSyringomyeliaRelated, isMyelitisRelated]);
+    isNarcolepsyRelated, isALSRelated, isSyringomyeliaRelated, isMyelitisRelated, isPeripheralNerveRelated]);
 
 
   // Phase 3: Detect genitourinary system based on symptom
@@ -2618,6 +2828,13 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
     }
     if (isMyelitisRelated && myelitisData) {
       entry.myelitisData = { ...myelitisData };
+    }
+  // Phase 1C: Include peripheral nerve data
+    if (isPeripheralNerveRelated && peripheralNerveData) {
+      entry.peripheralNerveData = {
+        ...peripheralNerveData,
+        nerveLocation: isUpperExtremityNerveRelated ? 'upper' : 'lower',
+      };
     }
 
 
@@ -4442,25 +4659,17 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
                 {/* Duration */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Duration of Episode
+                    Duration of Episode (seconds)
                   </label>
-                  <div className="grid grid-cols-2 gap-3">
-                    <input
-                        type="number"
-                        min="0"
-                        max="999"
-                        value={seizureData.duration}
-                        onChange={(e) => setSeizureData(prev => ({ ...prev, duration: e.target.value }))}
-                        placeholder="Duration"
-                        className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
-                    />
-                    <select
-                        className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
-                        disabled
-                    >
-                      <option>seconds</option>
-                    </select>
-                  </div>
+                  <input
+                      type="number"
+                      min="0"
+                      max="9999"
+                      value={seizureData.duration}
+                      onChange={(e) => setSeizureData(prev => ({ ...prev, duration: e.target.value }))}
+                      placeholder="e.g., 30"
+                      className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                  />
                   <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Approximate duration in seconds</p>
                 </div>
 
@@ -4587,6 +4796,334 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
                   </div>
                   <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Witness statements strengthen VA claims</p>
                 </div>
+
+                {/* Phase 1D: Jacksonian/Focal Epilepsy (DC 8912) Specific Fields */}
+                {isJacksonianEpilepsy && (
+                    <div className="border-t border-purple-200 dark:border-purple-700 pt-4 mt-4">
+                      <h4 className="font-medium text-purple-800 dark:text-purple-300 mb-3">
+                        🎯 Focal/Jacksonian Details (DC 8912)
+                      </h4>
+
+                      {/* Focal Onset Location */}
+                      <div className="mb-3">
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                          Where did the seizure start?
+                        </label>
+                        <select
+                            value={seizureData.focalOnsetLocation}
+                            onChange={(e) => setSeizureData(prev => ({ ...prev, focalOnsetLocation: e.target.value }))}
+                            className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                        >
+                          <option value="">Select location...</option>
+                          <option value="face">Face/Mouth</option>
+                          <option value="hand">Hand/Fingers</option>
+                          <option value="arm">Arm</option>
+                          <option value="leg">Leg</option>
+                          <option value="foot">Foot/Toes</option>
+                          <option value="sensory-face">Sensory - Face</option>
+                          <option value="sensory-arm">Sensory - Arm/Hand</option>
+                          <option value="sensory-leg">Sensory - Leg/Foot</option>
+                          <option value="visual">Visual Disturbance</option>
+                        </select>
+                      </div>
+
+                      {/* Jacksonian March */}
+                      <div className="mb-3">
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                          Did the seizure spread to other body areas? (Jacksonian March)
+                        </label>
+                        <div className="grid grid-cols-2 gap-2">
+                          <button
+                              type="button"
+                              onClick={() => setSeizureData(prev => ({ ...prev, focalSpread: true }))}
+                              className={`p-2 rounded-lg border transition-colors ${
+                                  seizureData.focalSpread === true
+                                      ? 'bg-purple-100 dark:bg-purple-900/50 border-purple-400 dark:border-purple-600'
+                                      : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700'
+                              }`}
+                          >
+                            Yes, it spread
+                          </button>
+                          <button
+                              type="button"
+                              onClick={() => setSeizureData(prev => ({ ...prev, focalSpread: false }))}
+                              className={`p-2 rounded-lg border transition-colors ${
+                                  seizureData.focalSpread === false
+                                      ? 'bg-purple-100 dark:bg-purple-900/50 border-purple-400 dark:border-purple-600'
+                                      : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700'
+                              }`}
+                          >
+                            No, stayed localized
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Secondary Generalization */}
+                      <div className="mb-3">
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                          Did it become a full body convulsion? (Secondary Generalization)
+                        </label>
+                        <div className="grid grid-cols-2 gap-2">
+                          <button
+                              type="button"
+                              onClick={() => setSeizureData(prev => ({ ...prev, secondaryGeneralization: true }))}
+                              className={`p-2 rounded-lg border transition-colors ${
+                                  seizureData.secondaryGeneralization === true
+                                      ? 'bg-red-100 dark:bg-red-900/50 border-red-400 dark:border-red-600'
+                                      : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700'
+                              }`}
+                          >
+                            Yes (Major)
+                          </button>
+                          <button
+                              type="button"
+                              onClick={() => setSeizureData(prev => ({ ...prev, secondaryGeneralization: false }))}
+                              className={`p-2 rounded-lg border transition-colors ${
+                                  seizureData.secondaryGeneralization === false
+                                      ? 'bg-green-100 dark:bg-green-900/50 border-green-400 dark:border-green-600'
+                                      : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700'
+                              }`}
+                          >
+                            No (Minor)
+                          </button>
+                        </div>
+                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                          Secondary generalization rates as major seizure per 38 CFR 4.124a
+                        </p>
+                      </div>
+
+                      {/* Awareness */}
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                          Was awareness preserved during the focal seizure?
+                        </label>
+                        <div className="grid grid-cols-2 gap-2">
+                          <button
+                              type="button"
+                              onClick={() => setSeizureData(prev => ({ ...prev, awarenessPreserved: true }))}
+                              className={`p-2 rounded-lg border transition-colors ${
+                                  seizureData.awarenessPreserved === true
+                                      ? 'bg-purple-100 dark:bg-purple-900/50 border-purple-400'
+                                      : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700'
+                              }`}
+                          >
+                            Yes, aware
+                          </button>
+                          <button
+                              type="button"
+                              onClick={() => setSeizureData(prev => ({ ...prev, awarenessPreserved: false }))}
+                              className={`p-2 rounded-lg border transition-colors ${
+                                  seizureData.awarenessPreserved === false
+                                      ? 'bg-purple-100 dark:bg-purple-900/50 border-purple-400'
+                                      : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700'
+                              }`}
+                          >
+                            No, impaired
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                )}
+
+                {/* Phase 1D: Diencephalic Epilepsy (DC 8913) Specific Fields */}
+                {isDiencephalicEpilepsy && (
+                    <div className="border-t border-purple-200 dark:border-purple-700 pt-4 mt-4">
+                      <h4 className="font-medium text-purple-800 dark:text-purple-300 mb-3">
+                        🌡️ Autonomic Symptoms (DC 8913)
+                      </h4>
+                      <p className="text-xs text-purple-600 dark:text-purple-400 mb-3">
+                        Select all autonomic symptoms experienced during this episode
+                      </p>
+
+                      <div className="grid grid-cols-2 gap-2">
+                        {[
+                          { id: 'flushing', label: '🔴 Sudden Flushing' },
+                          { id: 'sweating', label: '💧 Profuse Sweating' },
+                          { id: 'bp-change', label: '📊 Blood Pressure Change' },
+                          { id: 'hr-change', label: '💓 Heart Rate Change' },
+                          { id: 'pupil-change', label: '👁️ Pupil Changes' },
+                          { id: 'temperature', label: '🌡️ Temperature Change' },
+                          { id: 'gi-symptoms', label: '🤢 GI Symptoms' },
+                          { id: 'lacrimation', label: '😢 Tearing/Salivation' },
+                        ].map(symptom => (
+                            <label key={symptom.id} className={`flex items-center gap-2 p-2 rounded-lg border cursor-pointer transition-colors ${
+                                seizureData.autonomicSymptoms?.includes(symptom.id)
+                                    ? 'bg-purple-100 dark:bg-purple-900/50 border-purple-300 dark:border-purple-700'
+                                    : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700'
+                            }`}>
+                              <input
+                                  type="checkbox"
+                                  checked={seizureData.autonomicSymptoms?.includes(symptom.id) || false}
+                                  onChange={(e) => {
+                                    const current = seizureData.autonomicSymptoms || [];
+                                    if (e.target.checked) {
+                                      setSeizureData(prev => ({ ...prev, autonomicSymptoms: [...current, symptom.id] }));
+                                    } else {
+                                      setSeizureData(prev => ({ ...prev, autonomicSymptoms: current.filter(s => s !== symptom.id) }));
+                                    }
+                                  }}
+                                  className="w-4 h-4 text-purple-600 rounded"
+                              />
+                              <span className="text-sm text-gray-700 dark:text-gray-300">{symptom.label}</span>
+                            </label>
+                        ))}
+                      </div>
+                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
+                        Diencephalic epilepsy rates as minor seizures per 38 CFR 4.124a
+                      </p>
+                    </div>
+                )}
+
+                {/* Phase 1D: Psychomotor Epilepsy (DC 8914) Specific Fields */}
+                {isPsychomotorEpilepsy && (
+                    <div className="border-t border-purple-200 dark:border-purple-700 pt-4 mt-4">
+                      <h4 className="font-medium text-purple-800 dark:text-purple-300 mb-3">
+                        🧠 Psychomotor Details (DC 8914)
+                      </h4>
+                      <p className="text-xs text-purple-600 dark:text-purple-400 mb-3">
+                        Psychomotor seizures can be rated as major or minor depending on characteristics
+                      </p>
+
+                      {/* Automatic State - indicates MAJOR */}
+                      <div className="mb-3">
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                          Was there an automatic state? (Complex behavior without awareness)
+                        </label>
+                        <div className="grid grid-cols-2 gap-2">
+                          <button
+                              type="button"
+                              onClick={() => setSeizureData(prev => ({ ...prev, automaticState: true }))}
+                              className={`p-2 rounded-lg border transition-colors ${
+                                  seizureData.automaticState === true
+                                      ? 'bg-red-100 dark:bg-red-900/50 border-red-400 dark:border-red-600'
+                                      : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700'
+                              }`}
+                          >
+                            Yes (Major)
+                          </button>
+                          <button
+                              type="button"
+                              onClick={() => setSeizureData(prev => ({ ...prev, automaticState: false }))}
+                              className={`p-2 rounded-lg border transition-colors ${
+                                  seizureData.automaticState === false
+                                      ? 'bg-green-100 dark:bg-green-900/50 border-green-400 dark:border-green-600'
+                                      : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700'
+                              }`}
+                          >
+                            No
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Automatisms */}
+                      <div className="mb-3">
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                          Automatisms observed (select all that apply)
+                        </label>
+                        <div className="grid grid-cols-2 gap-2">
+                          {[
+                            { id: 'lip-smacking', label: 'Lip Smacking' },
+                            { id: 'chewing', label: 'Chewing Motions' },
+                            { id: 'hand-movements', label: 'Hand Movements' },
+                            { id: 'picking', label: 'Picking at Clothes' },
+                            { id: 'wandering', label: 'Purposeless Wandering' },
+                            { id: 'complex-behavior', label: 'Complex Behavior' },
+                          ].map(auto => (
+                              <label key={auto.id} className={`flex items-center gap-2 p-2 rounded-lg border cursor-pointer transition-colors ${
+                                  seizureData.automatisms?.includes(auto.id)
+                                      ? 'bg-purple-100 dark:bg-purple-900/50 border-purple-300'
+                                      : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700'
+                              }`}>
+                                <input
+                                    type="checkbox"
+                                    checked={seizureData.automatisms?.includes(auto.id) || false}
+                                    onChange={(e) => {
+                                      const current = seizureData.automatisms || [];
+                                      if (e.target.checked) {
+                                        setSeizureData(prev => ({ ...prev, automatisms: [...current, auto.id] }));
+                                      } else {
+                                        setSeizureData(prev => ({ ...prev, automatisms: current.filter(a => a !== auto.id) }));
+                                      }
+                                    }}
+                                    className="w-4 h-4 text-purple-600 rounded"
+                                />
+                                <span className="text-sm text-gray-700 dark:text-gray-300">{auto.label}</span>
+                              </label>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Minor Symptoms Row */}
+                      <div className="mb-3">
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                          Brief transient symptoms (indicate Minor type)
+                        </label>
+                        <div className="grid grid-cols-2 gap-2">
+                          <label className={`flex items-center gap-2 p-2 rounded-lg border cursor-pointer ${
+                              seizureData.hallucinations ? 'bg-blue-100 dark:bg-blue-900/50 border-blue-300' : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700'
+                          }`}>
+                            <input
+                                type="checkbox"
+                                checked={seizureData.hallucinations || false}
+                                onChange={(e) => setSeizureData(prev => ({ ...prev, hallucinations: e.target.checked }))}
+                                className="w-4 h-4 text-blue-600 rounded"
+                            />
+                            <span className="text-sm">Hallucinations</span>
+                          </label>
+                          <label className={`flex items-center gap-2 p-2 rounded-lg border cursor-pointer ${
+                              seizureData.perceptualIllusions ? 'bg-blue-100 dark:bg-blue-900/50 border-blue-300' : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700'
+                          }`}>
+                            <input
+                                type="checkbox"
+                                checked={seizureData.perceptualIllusions || false}
+                                onChange={(e) => setSeizureData(prev => ({ ...prev, perceptualIllusions: e.target.checked }))}
+                                className="w-4 h-4 text-blue-600 rounded"
+                            />
+                            <span className="text-sm">Déjà vu/Jamais vu</span>
+                          </label>
+                          <label className={`flex items-center gap-2 p-2 rounded-lg border cursor-pointer ${
+                              seizureData.moodChange ? 'bg-blue-100 dark:bg-blue-900/50 border-blue-300' : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700'
+                          }`}>
+                            <input
+                                type="checkbox"
+                                checked={seizureData.moodChange || false}
+                                onChange={(e) => setSeizureData(prev => ({ ...prev, moodChange: e.target.checked }))}
+                                className="w-4 h-4 text-blue-600 rounded"
+                            />
+                            <span className="text-sm">Sudden Mood Change</span>
+                          </label>
+                          <label className={`flex items-center gap-2 p-2 rounded-lg border cursor-pointer ${
+                              seizureData.memoryDisturbance ? 'bg-blue-100 dark:bg-blue-900/50 border-blue-300' : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700'
+                          }`}>
+                            <input
+                                type="checkbox"
+                                checked={seizureData.memoryDisturbance || false}
+                                onChange={(e) => setSeizureData(prev => ({ ...prev, memoryDisturbance: e.target.checked }))}
+                                className="w-4 h-4 text-blue-600 rounded"
+                            />
+                            <span className="text-sm">Memory Disturbance</span>
+                          </label>
+                        </div>
+                      </div>
+
+                      {/* Rating Classification Indicator */}
+                      <div className={`p-3 rounded-lg ${
+                          seizureData.automaticState === true || seizureData.lossOfConsciousness === 'yes'
+                              ? 'bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800'
+                              : 'bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800'
+                      }`}>
+                        <p className="text-sm font-medium">
+                          {seizureData.automaticState === true || seizureData.lossOfConsciousness === 'yes'
+                              ? '⚠️ This episode has MAJOR seizure characteristics'
+                              : 'ℹ️ This episode has MINOR seizure characteristics'
+                          }
+                        </p>
+                        <p className="text-xs mt-1 text-gray-600 dark:text-gray-400">
+                          Per 38 CFR 4.124a: Major = automatic states or convulsions with LOC
+                        </p>
+                      </div>
+                    </div>
+                )}
               </div>
           )}
 
@@ -11143,6 +11680,260 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
                       <option value="nmo">NMO spectrum</option>
                       <option value="unknown">Unknown</option>
                     </select>
+                  </div>
+                </div>
+              </div>
+          )}
+
+
+          {/* ============================================ */}
+          {/* PHASE 1C: PERIPHERAL NERVE FORM */}
+          {/* ============================================ */}
+          {isPeripheralNerveRelated && (
+              <div className="bg-purple-50 dark:bg-purple-900/20 p-4 rounded-lg border border-purple-200 dark:border-purple-800">
+                <h4 className="font-medium text-purple-900 dark:text-purple-200 mb-3 flex items-center gap-2">
+                  <span>🔌</span> Peripheral Nerve Details
+                </h4>
+                <p className="text-sm text-purple-600 dark:text-purple-400 mb-3">
+                  These details help determine your VA rating based on 38 CFR 4.124a criteria.
+                </p>
+                <div className="space-y-3">
+                  {/* Affected Side */}
+                  <div>
+                    <label className="block text-sm text-gray-600 dark:text-gray-400 mb-1">Affected Side *</label>
+                    <select
+                        value={peripheralNerveData.affectedSide}
+                        onChange={(e) => setPeripheralNerveData(prev => ({...prev, affectedSide: e.target.value}))}
+                        className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600"
+                    >
+                      <option value="">Select affected side</option>
+                      <option value="left">Left</option>
+                      <option value="right">Right</option>
+                      <option value="bilateral">Bilateral (Both Sides)</option>
+                    </select>
+                  </div>
+
+                  {/* Dominant Hand Question - Only for Upper Extremity */}
+                  {isUpperExtremityNerveRelated && (
+                      <div>
+                        <label className="block text-sm text-gray-600 dark:text-gray-400 mb-1">
+                          Is this your dominant (major) hand/arm? *
+                        </label>
+                        <select
+                            value={peripheralNerveData.isDominantSide}
+                            onChange={(e) => setPeripheralNerveData(prev => ({...prev, isDominantSide: e.target.value}))}
+                            className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600"
+                        >
+                          <option value="">Select...</option>
+                          <option value="yes">Yes - This is my dominant hand/arm</option>
+                          <option value="no">No - This is my non-dominant hand/arm</option>
+                          <option value="unknown">Unknown / Ambidextrous</option>
+                        </select>
+                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                          VA rates dominant (major) extremity higher than non-dominant (minor).
+                        </p>
+                      </div>
+                  )}
+
+                  {/* Type of Nerve Condition */}
+                  <div>
+                    <label className="block text-sm text-gray-600 dark:text-gray-400 mb-1">Type of Nerve Condition</label>
+                    <select
+                        value={peripheralNerveData.nerveConditionType}
+                        onChange={(e) => setPeripheralNerveData(prev => ({...prev, nerveConditionType: e.target.value}))}
+                        className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600"
+                    >
+                      <option value="">Select type (if known)</option>
+                      <option value="paralysis">Paralysis (Motor loss)</option>
+                      <option value="neuritis">Neuritis (Nerve inflammation)</option>
+                      <option value="neuralgia">Neuralgia (Nerve pain)</option>
+                      <option value="unknown">Unknown / Not specified</option>
+                    </select>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                      All three types use the same rating criteria per 38 CFR 4.124a.
+                    </p>
+                  </div>
+
+                  {/* Severity Level */}
+                  <div>
+                    <label className="block text-sm text-gray-600 dark:text-gray-400 mb-1">Overall Severity Level</label>
+                    <select
+                        value={peripheralNerveData.severityLevel}
+                        onChange={(e) => setPeripheralNerveData(prev => ({...prev, severityLevel: e.target.value}))}
+                        className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600"
+                    >
+                      <option value="">Select severity</option>
+                      <option value="complete">Complete - Total loss of function</option>
+                      <option value="severe">Severe - Major functional loss</option>
+                      <option value="moderate">Moderate - Noticeable impairment</option>
+                      <option value="mild">Mild - Minor symptoms</option>
+                    </select>
+                  </div>
+
+                  {/* Motor vs Sensory Involvement */}
+                  <div>
+                    <label className="block text-sm text-gray-600 dark:text-gray-400 mb-2">
+                      Type of Involvement (check all that apply)
+                    </label>
+                    <div className="space-y-2">
+                      <label className="flex items-center gap-2">
+                        <input
+                            type="checkbox"
+                            checked={peripheralNerveData.hasMotorInvolvement}
+                            onChange={(e) => setPeripheralNerveData(prev => ({...prev, hasMotorInvolvement: e.target.checked}))}
+                            className="rounded"
+                        />
+                        <span className="text-sm text-gray-700 dark:text-gray-300">
+                          Motor involvement (weakness, paralysis, atrophy)
+                        </span>
+                      </label>
+                      <label className="flex items-center gap-2">
+                        <input
+                            type="checkbox"
+                            checked={peripheralNerveData.hasSensoryInvolvement}
+                            onChange={(e) => setPeripheralNerveData(prev => ({...prev, hasSensoryInvolvement: e.target.checked}))}
+                            className="rounded"
+                        />
+                        <span className="text-sm text-gray-700 dark:text-gray-300">
+                          Sensory involvement (numbness, tingling, pain)
+                        </span>
+                      </label>
+                    </div>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                      Note: Per VA regulations, when involvement is wholly sensory, rating should be mild or at most moderate.
+                    </p>
+                  </div>
+
+                  {/* Atrophy */}
+                  <div>
+                    <label className="flex items-center gap-2">
+                      <input
+                          type="checkbox"
+                          checked={peripheralNerveData.hasAtrophy}
+                          onChange={(e) => setPeripheralNerveData(prev => ({...prev, hasAtrophy: e.target.checked}))}
+                          className="rounded"
+                      />
+                      <span className="text-sm text-gray-700 dark:text-gray-300">Muscle atrophy present</span>
+                    </label>
+                    {peripheralNerveData.hasAtrophy && (
+                        <div className="mt-2">
+                          <label className="block text-sm text-gray-600 dark:text-gray-400 mb-1">Atrophy Location</label>
+                          <input
+                              type="text"
+                              value={peripheralNerveData.atrophyLocation}
+                              onChange={(e) => setPeripheralNerveData(prev => ({...prev, atrophyLocation: e.target.value}))}
+                              placeholder="e.g., thenar eminence, interossei, deltoid, calf"
+                              className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600"
+                          />
+                        </div>
+                    )}
+                  </div>
+
+                  {/* Deformity */}
+                  <div>
+                    <label className="flex items-center gap-2">
+                      <input
+                          type="checkbox"
+                          checked={peripheralNerveData.hasDeformity}
+                          onChange={(e) => setPeripheralNerveData(prev => ({...prev, hasDeformity: e.target.checked}))}
+                          className="rounded"
+                      />
+                      <span className="text-sm text-gray-700 dark:text-gray-300">Deformity present</span>
+                    </label>
+                    {peripheralNerveData.hasDeformity && (
+                        <div className="mt-2">
+                          <label className="block text-sm text-gray-600 dark:text-gray-400 mb-1">Deformity Type</label>
+                          <select
+                              value={peripheralNerveData.deformityType}
+                              onChange={(e) => setPeripheralNerveData(prev => ({...prev, deformityType: e.target.value}))}
+                              className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600"
+                          >
+                            <option value="">Select deformity type</option>
+                            <option value="wrist-drop">Wrist Drop (Radial nerve)</option>
+                            <option value="finger-drop">Finger Drop</option>
+                            <option value="foot-drop">Foot Drop (Peroneal/Sciatic)</option>
+                            <option value="claw-hand">Claw Hand (Ulnar nerve)</option>
+                            <option value="ape-hand">Ape Hand (Median nerve)</option>
+                            <option value="winged-scapula">Winged Scapula (Long thoracic)</option>
+                            <option value="other">Other</option>
+                          </select>
+                        </div>
+                    )}
+                  </div>
+
+                  {/* Assistive Device */}
+                  <div>
+                    <label className="flex items-center gap-2">
+                      <input
+                          type="checkbox"
+                          checked={peripheralNerveData.usesAssistiveDevice}
+                          onChange={(e) => setPeripheralNerveData(prev => ({...prev, usesAssistiveDevice: e.target.checked}))}
+                          className="rounded"
+                      />
+                      <span className="text-sm text-gray-700 dark:text-gray-300">Uses assistive device</span>
+                    </label>
+                    {peripheralNerveData.usesAssistiveDevice && (
+                        <div className="mt-2">
+                          <label className="block text-sm text-gray-600 dark:text-gray-400 mb-1">Device Type</label>
+                          <select
+                              value={peripheralNerveData.assistiveDeviceType}
+                              onChange={(e) => setPeripheralNerveData(prev => ({...prev, assistiveDeviceType: e.target.value}))}
+                              className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600"
+                          >
+                            <option value="">Select device type</option>
+                            <option value="wrist-splint">Wrist Splint</option>
+                            <option value="hand-brace">Hand Brace</option>
+                            <option value="afo">AFO (Ankle-Foot Orthosis)</option>
+                            <option value="knee-brace">Knee Brace</option>
+                            <option value="cane">Cane</option>
+                            <option value="walker">Walker</option>
+                            <option value="other">Other</option>
+                          </select>
+                        </div>
+                    )}
+                  </div>
+
+                  {/* EMG/NCS Testing */}
+                  <div>
+                    <label className="flex items-center gap-2">
+                      <input
+                          type="checkbox"
+                          checked={peripheralNerveData.hasEMGNCS}
+                          onChange={(e) => setPeripheralNerveData(prev => ({...prev, hasEMGNCS: e.target.checked}))}
+                          className="rounded"
+                      />
+                      <span className="text-sm text-gray-700 dark:text-gray-300">
+                        Has had EMG/Nerve Conduction Study
+                      </span>
+                    </label>
+                    {peripheralNerveData.hasEMGNCS && (
+                        <div className="mt-2">
+                          <label className="block text-sm text-gray-600 dark:text-gray-400 mb-1">
+                            EMG/NCS Findings (if known)
+                          </label>
+                          <textarea
+                              value={peripheralNerveData.emgNCSFindings}
+                              onChange={(e) => setPeripheralNerveData(prev => ({...prev, emgNCSFindings: e.target.value}))}
+                              placeholder="e.g., moderate carpal tunnel syndrome, axonal loss, demyelination"
+                              rows={2}
+                              className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600"
+                          />
+                        </div>
+                    )}
+                  </div>
+
+                  {/* Functional Limitations */}
+                  <div>
+                    <label className="block text-sm text-gray-600 dark:text-gray-400 mb-1">
+                      Functional Limitations (optional)
+                    </label>
+                    <textarea
+                        value={peripheralNerveData.functionalLimitations}
+                        onChange={(e) => setPeripheralNerveData(prev => ({...prev, functionalLimitations: e.target.value}))}
+                        placeholder="Describe how this affects daily activities, work, etc."
+                        rows={2}
+                        className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600"
+                    />
                   </div>
                 </div>
               </div>

@@ -437,14 +437,15 @@ const SymptomHistory = ({ onCopyLog }) => {
                                         </p>
                                     )}
                                     <div className="flex flex-wrap gap-2 mb-1">
-                                      {log.seizureData.durationSeconds && (
+                                      {log.seizureData.duration && (
                                           <span className="px-2 py-1 bg-yellow-200 dark:bg-yellow-800 text-yellow-800 dark:text-yellow-200 rounded-full text-xs">
-                                            Duration: {log.seizureData.durationSeconds}s
+                                            Duration: {log.seizureData.duration}s
                                           </span>
                                       )}
                                       {log.seizureData.lossOfConsciousness && (
                                           <span className="px-2 py-1 bg-red-200 dark:bg-red-900 text-red-800 dark:text-red-200 rounded-full text-xs font-semibold">
-                                            Loss of Consciousness
+                                            {log.seizureData.lossOfConsciousness === 'yes' ? 'Loss of Consciousness' :
+                                                log.seizureData.lossOfConsciousness === 'partial' ? 'Partial LOC' : ''}
                                           </span>
                                       )}
                                       {log.seizureData.auraPresent && (
@@ -460,8 +461,135 @@ const SymptomHistory = ({ onCopyLog }) => {
                                     </div>
                                     {log.seizureData.recoveryTime && (
                                         <p className="text-xs text-yellow-700 dark:text-yellow-300">
-                                          Recovery: {log.seizureData.recoveryTime}
+                                          Recovery: {
+                                          log.seizureData.recoveryTime === 'immediate' ? '< 5 minutes' :
+                                              log.seizureData.recoveryTime === 'minutes' ? '5-30 minutes' :
+                                                  log.seizureData.recoveryTime === '30-60min' ? '30-60 minutes' :
+                                                      log.seizureData.recoveryTime === 'hours' ? '1-4 hours' :
+                                                          log.seizureData.recoveryTime === 'prolonged' ? '> 4 hours' :
+                                                              log.seizureData.recoveryTime
+                                        }
                                         </p>
+                                    )}
+
+                                    {/* Phase 1D: Jacksonian/Focal (DC 8912) Details */}
+                                    {(log.seizureData.focalOnsetLocation || log.seizureData.focalSpread !== null ||
+                                        log.seizureData.secondaryGeneralization !== null) && (
+                                        <div className="mt-2 pt-2 border-t border-yellow-200 dark:border-yellow-700">
+                                          <p className="text-xs font-semibold text-purple-700 dark:text-purple-300 mb-1">
+                                            🎯 Focal/Jacksonian Details
+                                          </p>
+                                          <div className="flex flex-wrap gap-1">
+                                            {log.seizureData.focalOnsetLocation && (
+                                                <span className="px-2 py-0.5 bg-purple-200 dark:bg-purple-900 text-purple-800 dark:text-purple-200 rounded-full text-xs">
+                                                  Onset: {log.seizureData.focalOnsetLocation}
+                                                </span>
+                                            )}
+                                            {log.seizureData.focalSpread === true && (
+                                                <span className="px-2 py-0.5 bg-purple-200 dark:bg-purple-900 text-purple-800 dark:text-purple-200 rounded-full text-xs">
+                                                  Jacksonian March
+                                                </span>
+                                            )}
+                                            {log.seizureData.secondaryGeneralization === true && (
+                                                <span className="px-2 py-0.5 bg-red-200 dark:bg-red-900 text-red-800 dark:text-red-200 rounded-full text-xs font-semibold">
+                                                  ⚠️ Secondary Generalization (Major)
+                                                </span>
+                                            )}
+                                            {log.seizureData.awarenessPreserved === true && (
+                                                <span className="px-2 py-0.5 bg-green-200 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-full text-xs">
+                                                  Awareness Preserved
+                                                </span>
+                                            )}
+                                            {log.seizureData.awarenessPreserved === false && (
+                                                <span className="px-2 py-0.5 bg-orange-200 dark:bg-orange-900 text-orange-800 dark:text-orange-200 rounded-full text-xs">
+                                                  Awareness Impaired
+                                                </span>
+                                            )}
+                                          </div>
+                                        </div>
+                                    )}
+
+                                    {/* Phase 1D: Diencephalic (DC 8913) Details */}
+                                    {log.seizureData.autonomicSymptoms && log.seizureData.autonomicSymptoms.length > 0 && (
+                                        <div className="mt-2 pt-2 border-t border-yellow-200 dark:border-yellow-700">
+                                          <p className="text-xs font-semibold text-teal-700 dark:text-teal-300 mb-1">
+                                            🌡️ Autonomic Symptoms (Diencephalic)
+                                          </p>
+                                          <div className="flex flex-wrap gap-1">
+                                            {log.seizureData.autonomicSymptoms.map((symptom, idx) => (
+                                                <span key={idx} className="px-2 py-0.5 bg-teal-200 dark:bg-teal-900 text-teal-800 dark:text-teal-200 rounded-full text-xs">
+                                                  {symptom === 'flushing' && '🔴 Flushing'}
+                                                  {symptom === 'sweating' && '💧 Sweating'}
+                                                  {symptom === 'bp-change' && '📊 BP Change'}
+                                                  {symptom === 'hr-change' && '💓 HR Change'}
+                                                  {symptom === 'pupil-change' && '👁️ Pupils'}
+                                                  {symptom === 'temperature' && '🌡️ Temp'}
+                                                  {symptom === 'gi-symptoms' && '🤢 GI'}
+                                                  {symptom === 'lacrimation' && '😢 Tearing'}
+                                                </span>
+                                            ))}
+                                          </div>
+                                        </div>
+                                    )}
+
+                                    {/* Phase 1D: Psychomotor (DC 8914) Details */}
+                                    {(log.seizureData.automaticState !== null ||
+                                        (log.seizureData.automatisms && log.seizureData.automatisms.length > 0) ||
+                                        log.seizureData.hallucinations || log.seizureData.perceptualIllusions ||
+                                        log.seizureData.moodChange || log.seizureData.memoryDisturbance) && (
+                                        <div className="mt-2 pt-2 border-t border-yellow-200 dark:border-yellow-700">
+                                          <p className="text-xs font-semibold text-indigo-700 dark:text-indigo-300 mb-1">
+                                            🧠 Psychomotor Details
+                                          </p>
+                                          <div className="flex flex-wrap gap-1">
+                                            {log.seizureData.automaticState === true && (
+                                                <span className="px-2 py-0.5 bg-red-200 dark:bg-red-900 text-red-800 dark:text-red-200 rounded-full text-xs font-semibold">
+                                                  ⚠️ Automatic State (Major)
+                                                </span>
+                                            )}
+                                            {log.seizureData.automatisms && log.seizureData.automatisms.map((auto, idx) => (
+                                                <span key={idx} className="px-2 py-0.5 bg-indigo-200 dark:bg-indigo-900 text-indigo-800 dark:text-indigo-200 rounded-full text-xs">
+                                                  {auto === 'lip-smacking' && 'Lip Smacking'}
+                                                  {auto === 'chewing' && 'Chewing'}
+                                                  {auto === 'hand-movements' && 'Hand Movements'}
+                                                  {auto === 'picking' && 'Picking'}
+                                                  {auto === 'wandering' && 'Wandering'}
+                                                  {auto === 'complex-behavior' && 'Complex Behavior'}
+                                                </span>
+                                            ))}
+                                            {log.seizureData.hallucinations && (
+                                                <span className="px-2 py-0.5 bg-blue-200 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-xs">
+                                                  Hallucinations
+                                                </span>
+                                            )}
+                                            {log.seizureData.perceptualIllusions && (
+                                                <span className="px-2 py-0.5 bg-blue-200 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-xs">
+                                                  Déjà vu/Jamais vu
+                                                </span>
+                                            )}
+                                            {log.seizureData.moodChange && (
+                                                <span className="px-2 py-0.5 bg-blue-200 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-xs">
+                                                  Mood Change
+                                                </span>
+                                            )}
+                                            {log.seizureData.memoryDisturbance && (
+                                                <span className="px-2 py-0.5 bg-blue-200 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-xs">
+                                                  Memory Disturbance
+                                                </span>
+                                            )}
+                                          </div>
+                                          {/* Major/Minor indicator for psychomotor */}
+                                          {(log.seizureData.automaticState === true || log.seizureData.lossOfConsciousness === 'yes') ? (
+                                              <p className="text-xs text-red-600 dark:text-red-400 mt-1 font-medium">
+                                                ⚠️ Major seizure characteristics
+                                              </p>
+                                          ) : (log.seizureData.automatisms?.length > 0 || log.seizureData.hallucinations ||
+                                              log.seizureData.perceptualIllusions || log.seizureData.moodChange) && (
+                                              <p className="text-xs text-blue-600 dark:text-blue-400 mt-1">
+                                                ℹ️ Minor seizure characteristics
+                                              </p>
+                                          )}
+                                        </div>
                                     )}
                                   </div>
                               )}
@@ -2502,6 +2630,96 @@ const SymptomHistory = ({ onCopyLog }) => {
                                       {log.myelitisData.causeOfMyelitis && (
                                           <span className="px-2 py-1 bg-teal-100 dark:bg-teal-900 text-teal-800 dark:text-teal-200 rounded-full text-xs">
                                             Cause: {log.myelitisData.causeOfMyelitis}
+                                          </span>
+                                      )}
+                                    </div>
+                                  </div>
+                              )}
+
+                              {/* ============================================ */}
+                              {/* PHASE 1C: PERIPHERAL NERVE BADGES */}
+                              {/* ============================================ */}
+                              {log.peripheralNerveData && (
+                                  <div className="mt-2">
+                                    <div className="flex flex-wrap gap-1">
+                                      {/* Affected Side */}
+                                      {log.peripheralNerveData.affectedSide && (
+                                          <span className="px-2 py-1 bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 rounded-full text-xs">
+                                            🔌 {log.peripheralNerveData.affectedSide === 'bilateral' ? 'Bilateral' :
+                                              log.peripheralNerveData.affectedSide.charAt(0).toUpperCase() + log.peripheralNerveData.affectedSide.slice(1)}
+                                          </span>
+                                      )}
+                                      {/* Severity Level */}
+                                      {log.peripheralNerveData.severityLevel && (
+                                          <span className={`px-2 py-1 rounded-full text-xs ${
+                                              log.peripheralNerveData.severityLevel === 'complete' ? 'bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200' :
+                                                  log.peripheralNerveData.severityLevel === 'severe' ? 'bg-orange-100 dark:bg-orange-900 text-orange-800 dark:text-orange-200' :
+                                                      log.peripheralNerveData.severityLevel === 'moderate' ? 'bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200' :
+                                                          'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200'
+                                          }`}>
+                                            {log.peripheralNerveData.severityLevel.charAt(0).toUpperCase() + log.peripheralNerveData.severityLevel.slice(1)}
+                                          </span>
+                                      )}
+                                      {/* Major/Minor Extremity (Upper only) */}
+                                      {log.peripheralNerveData.nerveLocation === 'upper' && log.peripheralNerveData.isDominantSide && (
+                                          <span className={`px-2 py-1 rounded-full text-xs ${
+                                              log.peripheralNerveData.isDominantSide === 'yes'
+                                                  ? 'bg-purple-200 dark:bg-purple-800 text-purple-800 dark:text-purple-200'
+                                                  : 'bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200'
+                                          }`}>
+                                            {log.peripheralNerveData.isDominantSide === 'yes' ? '💪 Major (Dominant)' : 'Minor'}
+                                          </span>
+                                      )}
+                                      {/* Condition Type */}
+                                      {log.peripheralNerveData.nerveConditionType && log.peripheralNerveData.nerveConditionType !== 'unknown' && (
+                                          <span className="px-2 py-1 bg-indigo-100 dark:bg-indigo-900 text-indigo-800 dark:text-indigo-200 rounded-full text-xs">
+                                            {log.peripheralNerveData.nerveConditionType.charAt(0).toUpperCase() + log.peripheralNerveData.nerveConditionType.slice(1)}
+                                          </span>
+                                      )}
+                                      {/* Motor Involvement */}
+                                      {log.peripheralNerveData.hasMotorInvolvement && (
+                                          <span className="px-2 py-1 bg-rose-100 dark:bg-rose-900 text-rose-800 dark:text-rose-200 rounded-full text-xs">
+                                            ⚡ Motor
+                                          </span>
+                                      )}
+                                      {/* Sensory Involvement */}
+                                      {log.peripheralNerveData.hasSensoryInvolvement && (
+                                          <span className="px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-xs">
+                                            🔵 Sensory
+                                          </span>
+                                      )}
+                                      {/* Wholly Sensory Note */}
+                                      {log.peripheralNerveData.hasSensoryInvolvement && !log.peripheralNerveData.hasMotorInvolvement && (
+                                          <span className="px-2 py-1 bg-blue-200 dark:bg-blue-800 text-blue-800 dark:text-blue-200 rounded-full text-xs">
+                                            ℹ️ Wholly Sensory
+                                          </span>
+                                      )}
+                                      {/* Atrophy */}
+                                      {log.peripheralNerveData.hasAtrophy && (
+                                          <span className="px-2 py-1 bg-amber-100 dark:bg-amber-900 text-amber-800 dark:text-amber-200 rounded-full text-xs">
+                                            📉 Atrophy{log.peripheralNerveData.atrophyLocation ? `: ${log.peripheralNerveData.atrophyLocation}` : ''}
+                                          </span>
+                                      )}
+                                      {/* Deformity */}
+                                      {log.peripheralNerveData.hasDeformity && (
+                                          <span className="px-2 py-1 bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 rounded-full text-xs">
+                                            ⚠️ {log.peripheralNerveData.deformityType ?
+                                              log.peripheralNerveData.deformityType.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ') :
+                                              'Deformity'}
+                                          </span>
+                                      )}
+                                      {/* Assistive Device */}
+                                      {log.peripheralNerveData.usesAssistiveDevice && (
+                                          <span className="px-2 py-1 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-full text-xs">
+                                            🦯 {log.peripheralNerveData.assistiveDeviceType ?
+                                              log.peripheralNerveData.assistiveDeviceType.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ') :
+                                              'Assistive Device'}
+                                          </span>
+                                      )}
+                                      {/* EMG/NCS */}
+                                      {log.peripheralNerveData.hasEMGNCS && (
+                                          <span className="px-2 py-1 bg-teal-100 dark:bg-teal-900 text-teal-800 dark:text-teal-200 rounded-full text-xs">
+                                            ✓ EMG/NCS Confirmed
                                           </span>
                                       )}
                                     </div>
