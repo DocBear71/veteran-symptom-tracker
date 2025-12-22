@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import { getSymptomLogs, saveSymptomLog } from '../utils/storage';
+import { getMeasurements } from '../utils/measurements';
 import {
   analyzeMigraineLogs,
   analyzeSleepApneaLogs,
@@ -124,6 +125,9 @@ import {
   analyzeNarcissisticPersonalityDisorderLogs,
   analyzeAvoidantPersonalityDisorderLogs,
   analyzeCardiomyopathyLogs,
+  analyzeCADLogs,
+  analyzePostMILogs,
+  analyzeHypertensiveHeartLogs,
   analyzeSVTLogs,
   analyzeVentricularArrhythmiaLogs,
   analyzePericarditisLogs,
@@ -316,6 +320,9 @@ import CardiomyopathyRatingCard from './CardiomyopathyRatingCard.jsx';
 import ArrhythmiaRatingCard from './ArrhythmiaRatingCard.jsx';
 import PericarditisRatingCard from './PericarditisRatingCard.jsx';
 import PostPhlebiticRatingCard from './PostPhlebiticRatingCard.jsx';
+import CADRatingCard from './CADRatingCard';
+import PostMIRatingCard from './PostMIRatingCard';
+import HypertensiveHeartRatingCard from './HypertensiveHeartRatingCard';
 import CirrhosisRatingCard from './CirrhosisRatingCard';
 import GastritisRatingCard from './GastritisRatingCard';
 import PancreatitisRatingCard from './PancreatitisRatingCard';
@@ -334,6 +341,7 @@ import ALSRatingCard from './ALSRatingCard';
 import SyringomyeliaRatingCard from './SyringomyeliaRatingCard';
 import MyelitisRatingCard from './MyelitisRatingCard';
 import PeripheralNerveRatingCard from './PeripheralNerveRatingCard';
+import measurements from './Measurements.jsx';
 
 // Storage key for sleep apnea profile
 const SLEEP_APNEA_PROFILE_KEY = 'symptomTracker_sleepApneaProfile';
@@ -367,6 +375,7 @@ const saveSleepApneaProfile = (profile) => {
  */
 const RatingEvidence = () => {
     const [logs, setLogs] = useState([]);
+    const [measurements, setMeasurements] = useState([]);
     const [evaluationDays, setEvaluationDays] = useState(90);
     const [expandedSection, setExpandedSection] = useState(null);
     const [sleepApneaProfile, setSleepApneaProfile] = useState(getSleepApneaProfile());
@@ -374,6 +383,7 @@ const RatingEvidence = () => {
 
     useEffect(() => {
         setLogs(getSymptomLogs());
+        setMeasurements(getMeasurements());
     }, []);
 
   // Analyze migraine logs
@@ -788,8 +798,8 @@ const RatingEvidence = () => {
   }, [logs, evaluationDays]);
   // Phase 9: Cardiovascular Analysis Hooks
   const cardiomyopathyAnalysis = useMemo(() => {
-    return analyzeCardiomyopathyLogs(logs,{ evaluationPeriodDays: evaluationDays });
-  }, [logs, evaluationDays]);
+    return analyzeCardiomyopathyLogs(logs, measurements, { evaluationPeriodDays: evaluationDays });
+  }, [logs, measurements, evaluationDays]);
   const svtAnalysis = useMemo(() => {
     return analyzeSVTLogs(logs, { evaluationPeriodDays: evaluationDays });
   }, [logs, evaluationDays]);
@@ -797,15 +807,25 @@ const RatingEvidence = () => {
     return analyzeVentricularArrhythmiaLogs(logs, { evaluationPeriodDays: evaluationDays });
   }, [logs, evaluationDays]);
   const pericarditisAnalysis = useMemo(() => {
-    return analyzePericarditisLogs(logs, { evaluationPeriodDays: evaluationDays });
-  }, [logs, evaluationDays]);
+    return analyzePericarditisLogs(logs, measurements, { evaluationPeriodDays: evaluationDays });
+  }, [logs, measurements, evaluationDays]);
   const postPhlebiticAnalysis = useMemo(() => {
     return analyzePostPhlebiticLogs(logs, { evaluationPeriodDays: evaluationDays });
   }, [logs, evaluationDays]);
+  // Phase 2A: Major Cardiac Conditions (METs-based)
+  const cadAnalysis = useMemo(() => {
+    return analyzeCADLogs(logs, measurements,{ evaluationPeriodDays: evaluationDays });
+  }, [logs, measurements, evaluationDays]);
+  const postMIAnalysis = useMemo(() => {
+    return analyzePostMILogs(logs, measurements, { evaluationPeriodDays: evaluationDays });
+  }, [logs, measurements, evaluationDays]);
+  const hypertensiveHeartAnalysis = useMemo(() => {
+    return analyzeHypertensiveHeartLogs(logs, measurements, { evaluationPeriodDays: evaluationDays });
+  }, [logs, measurements, evaluationDays]);
   // Phase 10: Digestive Analysis Hooks
   const cirrhosisAnalysis = useMemo(() => {
-    return analyzeCirrhosisLogs(logs, [], { evaluationPeriodDays: evaluationDays });
-  }, [logs, evaluationDays]);
+    return analyzeCirrhosisLogs(logs, measurements, [], { evaluationPeriodDays: evaluationDays });
+  }, [logs, measurements, evaluationDays]);
   const gastritisAnalysis = useMemo(() => {
     return analyzeGastritisLogs(logs, { evaluationPeriodDays: evaluationDays });
   }, [logs, evaluationDays]);
@@ -1051,6 +1071,9 @@ const RatingEvidence = () => {
         ventricularArrhythmiaAnalysis.hasData ||
         pericarditisAnalysis.hasData ||
         postPhlebiticAnalysis.hasData ||
+        cadAnalysis.hasData ||
+        postMIAnalysis.hasData ||
+        hypertensiveHeartAnalysis.hasData ||
         cirrhosisAnalysis.hasData ||
         gastritisAnalysis.hasData ||
         pancreatitisAnalysis.hasData ||
@@ -1920,6 +1943,22 @@ const RatingEvidence = () => {
                 analysis={postPhlebiticAnalysis}
                 expanded={expandedSection === 'post-phlebitic'}
                 onToggle={() => toggleSection('post-phlebitic')}
+            />
+            {/* Phase 2A: Major Cardiac Conditions */}
+            <CADRatingCard
+                analysis={cadAnalysis}
+                expanded={expandedSection === 'cad'}
+                onToggle={() => toggleSection('cad')}
+            />
+            <PostMIRatingCard
+                analysis={postMIAnalysis}
+                expanded={expandedSection === 'post-mi'}
+                onToggle={() => toggleSection('post-mi')}
+            />
+            <HypertensiveHeartRatingCard
+                analysis={hypertensiveHeartAnalysis}
+                expanded={expandedSection === 'hypertensive-heart'}
+                onToggle={() => toggleSection('hypertensive-heart')}
             />
             {/* Phase 10: Digestive Rating Cards */}
             <CirrhosisRatingCard

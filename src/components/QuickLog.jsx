@@ -1171,9 +1171,12 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
     'personality-disorder-social-impairment',
   ].includes(selectedChronic?.symptomId);
 
-  // Phase 9: Cardiovascular detection
+  // Phase 9: Cardiovascular detection (including Phase 2A METs-based conditions)
   const isCardiacRelated = selectedChronic?.symptomId?.startsWith('cardiac-') ||
-      selectedChronic?.symptomId?.startsWith('cardiomyopathy-');
+      selectedChronic?.symptomId?.startsWith('cardiomyopathy-') ||
+      selectedChronic?.symptomId?.startsWith('cad-') ||
+      selectedChronic?.symptomId?.startsWith('post-mi-') ||
+      selectedChronic?.symptomId?.startsWith('hhd-');
 
   const isArrhythmiaRelated = selectedChronic?.symptomId?.startsWith('svt-') ||
       selectedChronic?.symptomId?.startsWith('ventricular-arrhythmia-') ||

@@ -4,7 +4,7 @@
 // Profile-aware storage for measurement data
 // All measurements are isolated by active profile ID
 
-import { getActiveProfileId } from '../utils/profiles';
+import { getActiveProfileId } from './profiles.js';
 import { getMeasurementType } from '../data/measurementTypes';
 
 // ============================================

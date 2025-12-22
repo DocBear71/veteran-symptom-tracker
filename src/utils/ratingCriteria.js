@@ -8,8 +8,11 @@
 // DISCLAIMER: This is for documentation guidance only.
 // The VA makes all final rating determinations.
 
-
-import { getMeasurements, analyzeBloodPressurePredominance, getAverageBloodPressure } from './measurements';
+import {
+  analyzeBloodPressurePredominance,
+  getAverageBloodPressure,
+  getMeasurements,
+} from './measurements';
 
 // ============================================
 // HELPER FUNCTIONS
@@ -17,7 +20,7 @@ import { getMeasurements, analyzeBloodPressurePredominance, getAverageBloodPress
 
 /**
  * Safely get symptom ID from a log entry
- * Checks both log.symptomId and log.symptom for backward compatibility
+ * Checks both log.symptomId and log. Symptom for backward compatibility
  * @param {Object} log - The log entry
  * @returns {string|null} - The symptom ID or null
  */
@@ -1375,6 +1378,46 @@ export const CONDITIONS = {
       'post-phlebitic-edema', 'post-phlebitic-pain', 'post-phlebitic-aching',
       'post-phlebitic-pigmentation', 'post-phlebitic-eczema', 'post-phlebitic-ulcer',
       'post-phlebitic-induration', 'post-phlebitic-pain-rest',
+    ],
+  },
+  // Phase 2A: Major Cardiac Conditions (METs-based)
+  CAD: {
+    id: 'cad',
+    name: 'Coronary Artery Disease',
+    diagnosticCode: '7005',
+    cfrReference: '38 CFR 4.104',
+    symptomIds: [
+      'cad-angina-stable', 'cad-angina-unstable', 'cad-dyspnea-exertion', 'cad-dyspnea-rest',
+      'cad-fatigue', 'cad-dizziness', 'cad-syncope', 'cad-palpitations', 'cad-diaphoresis',
+      'cad-nausea', 'cad-activity-limitation', 'cad-nitroglycerin-use', 'cad-hospitalization',
+      'cardiac-breathlessness', 'cardiac-fatigue', 'cardiac-angina', 'cardiac-dizziness',
+      'cardiac-syncope', 'cardiac-palpitations', 'cardiac-edema', 'cardiac-orthopnea',
+    ],
+  },
+  POST_MI: {
+    id: 'post-mi',
+    name: 'Myocardial Infarction (Post-MI)',
+    diagnosticCode: '7006',
+    cfrReference: '38 CFR 4.104',
+    symptomIds: [
+      'post-mi-chest-pain', 'post-mi-dyspnea-exertion', 'post-mi-dyspnea-rest', 'post-mi-fatigue',
+      'post-mi-weakness', 'post-mi-dizziness', 'post-mi-syncope', 'post-mi-palpitations',
+      'post-mi-edema', 'post-mi-activity-limitation', 'post-mi-anxiety', 'post-mi-hospitalization',
+      'cardiac-breathlessness', 'cardiac-fatigue', 'cardiac-angina', 'cardiac-dizziness',
+      'cardiac-syncope', 'cardiac-palpitations', 'cardiac-edema', 'cardiac-orthopnea',
+    ],
+  },
+  HYPERTENSIVE_HEART: {
+    id: 'hypertensive-heart',
+    name: 'Hypertensive Heart Disease',
+    diagnosticCode: '7007',
+    cfrReference: '38 CFR 4.104',
+    symptomIds: [
+      'hhd-dyspnea-exertion', 'hhd-dyspnea-rest', 'hhd-orthopnea', 'hhd-pnd', 'hhd-fatigue',
+      'hhd-edema', 'hhd-weight-gain', 'hhd-chest-discomfort', 'hhd-palpitations', 'hhd-dizziness',
+      'hhd-syncope', 'hhd-activity-limitation', 'hhd-hospitalization',
+      'cardiac-breathlessness', 'cardiac-fatigue', 'cardiac-angina', 'cardiac-dizziness',
+      'cardiac-syncope', 'cardiac-palpitations', 'cardiac-edema', 'cardiac-orthopnea',
     ],
   },
   // Phase 10: Digestive Completion
@@ -13475,6 +13518,320 @@ export const POST_PHLEBITIC_CRITERIA = {
   disclaimer: 'This analysis is based on logged post-phlebitic syndrome symptoms. Document symptoms for each affected leg separately. Key factors are edema persistence, skin changes, and ulceration.',
 };
 
+
+// ============================================
+// PHASE 2A: CORONARY ARTERY DISEASE (DC 7005)
+// ============================================
+
+export const CAD_CRITERIA = {
+  diagnosticCode: '7005',
+  condition: 'Coronary Artery Disease (Arteriosclerotic Heart Disease)',
+  cfrReference: '38 CFR 4.104, Diagnostic Code 7005',
+
+  note: 'CAD is rated under the General Rating Formula for Diseases of the Heart based on METs capacity at which cardiac symptoms develop. Includes conditions such as angina pectoris, atherosclerotic heart disease, and ischemic heart disease.',
+
+  ratings: [
+    {
+      percent: 100,
+      summary: 'Documented CHF OR workload ≤3.0 METs causes symptoms',
+      criteriaDescription: [
+        'Chronic congestive heart failure (CHF) documented, OR',
+        'Workload of 3.0 METs or less results in dyspnea, fatigue, angina, dizziness, or syncope',
+        'Severely limited - symptoms with minimal activity (eating, dressing, walking slowly)',
+      ],
+      evidenceNeeded: [
+        'Medical diagnosis of CHF with treatment records',
+        'OR exercise stress test showing symptoms at ≤3.0 METs',
+        'OR medical estimate with specific activity limitations',
+        'Ejection fraction if available',
+        'Symptom logs documenting severe limitations',
+      ],
+    },
+    {
+      percent: 60,
+      summary: 'More than one MI OR workload 3.1-5.0 METs causes symptoms',
+      criteriaDescription: [
+        'More than one documented myocardial infarction, OR',
+        'Workload of 3.1 to 5.0 METs results in cardiac symptoms',
+        'Moderate limitation - symptoms with light housework, walking 2-3 mph',
+      ],
+      evidenceNeeded: [
+        'Medical records documenting multiple MIs',
+        'OR exercise stress test results',
+        'Cardiac catheterization or imaging results',
+        'Symptom documentation',
+      ],
+    },
+    {
+      percent: 30,
+      summary: 'Workload 5.1-7.0 METs causes symptoms OR cardiac hypertrophy/dilatation',
+      criteriaDescription: [
+        'Workload of 5.1 to 7.0 METs results in cardiac symptoms, OR',
+        'Evidence of cardiac hypertrophy or dilatation on echo/imaging',
+        'Mild-moderate limitation - symptoms climbing stairs, brisk walking',
+      ],
+      evidenceNeeded: [
+        'Exercise stress test or medical estimate',
+        'OR echocardiogram showing hypertrophy/dilatation',
+        'Coronary angiography if available',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Workload 7.1-10.0 METs causes symptoms OR continuous medication required',
+      criteriaDescription: [
+        'Workload of 7.1 to 10.0 METs results in cardiac symptoms, OR',
+        'Continuous medication required for control (beta blockers, statins, nitrates, etc.)',
+        'Mild limitation - symptoms only with moderate to heavy exertion',
+      ],
+      evidenceNeeded: [
+        'Exercise stress test or medical estimate',
+        'Prescription records showing continuous cardiac medications',
+        'Symptom logs at various activity levels',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'Asymptomatic or symptoms only above 10 METs',
+      criteriaDescription: [
+        'CAD diagnosis but no symptoms at workloads up to 10 METs',
+        'Normal exercise capacity despite coronary disease',
+      ],
+      evidenceNeeded: [],
+    },
+  ],
+
+  definitions: {
+    METs: {
+      term: 'METs (Metabolic Equivalents)',
+      definition: 'One MET is the energy cost of standing quietly at rest. Higher METs indicate greater exertion capacity.',
+      examples: [
+        '1-3 METs: Eating, dressing, walking slowly around home',
+        '3-5 METs: Light housework, walking 2-3 mph',
+        '5-7 METs: Climbing one flight of stairs, walking 4 mph',
+        '7-10 METs: Heavy housework, moderate cycling',
+        '>10 METs: Vigorous exercise, running, competitive sports',
+      ],
+    },
+    angina: {
+      term: 'Angina Pectoris',
+      definition: 'Chest pain or discomfort caused by reduced blood flow to the heart muscle.',
+      types: [
+        'Stable angina: Predictable, triggered by exertion, relieved by rest or nitroglycerin',
+        'Unstable angina: Unpredictable, may occur at rest, requires urgent evaluation',
+      ],
+    },
+    CHF: {
+      term: 'Congestive Heart Failure',
+      definition: 'Condition where the heart cannot pump blood efficiently, causing fluid backup in lungs and tissues.',
+      symptoms: ['Shortness of breath', 'Fatigue', 'Swelling in legs/ankles', 'Persistent cough'],
+    },
+  },
+
+  disclaimer: 'This analysis is based on logged CAD symptoms and any recorded METs capacity. Document angina episodes, activity limitations, and medication use. METs testing provides the most accurate rating determination.',
+};
+
+// ============================================
+// PHASE 2A: MYOCARDIAL INFARCTION (DC 7006)
+// ============================================
+
+export const POST_MI_CRITERIA = {
+  diagnosticCode: '7006',
+  condition: 'Myocardial Infarction (Heart Attack)',
+  cfrReference: '38 CFR 4.104, Diagnostic Code 7006',
+
+  note: 'During and for 3 months following a myocardial infarction documented by laboratory tests, the rating is 100%. Thereafter, rate under the General Rating Formula for Diseases of the Heart based on METs capacity.',
+
+  ratings: [
+    {
+      percent: 100,
+      summary: 'During MI and for 3 months following',
+      criteriaDescription: [
+        'During the acute myocardial infarction period',
+        'AND for three months following the MI documented by lab tests',
+        'This rating is automatic during recovery period',
+      ],
+      evidenceNeeded: [
+        'Medical records confirming MI (troponin levels, EKG changes)',
+        'Hospital admission records',
+        'Discharge summary with MI diagnosis',
+        'Date of MI for calculating 3-month period',
+      ],
+    },
+    {
+      percent: 60,
+      summary: 'Post-recovery: More than one MI OR 3.1-5.0 METs causes symptoms',
+      criteriaDescription: [
+        'After 3-month recovery period:',
+        'History of more than one documented MI, OR',
+        'Workload of 3.1 to 5.0 METs results in cardiac symptoms',
+      ],
+      evidenceNeeded: [
+        'Records of multiple MI events',
+        'OR exercise stress test results',
+        'Post-MI cardiac evaluation',
+      ],
+    },
+    {
+      percent: 30,
+      summary: 'Post-recovery: 5.1-7.0 METs causes symptoms OR cardiac hypertrophy/dilatation',
+      criteriaDescription: [
+        'After 3-month recovery period:',
+        'Workload of 5.1 to 7.0 METs results in symptoms, OR',
+        'Cardiac hypertrophy or dilatation on echocardiogram',
+      ],
+      evidenceNeeded: [
+        'Post-MI stress test',
+        'Echocardiogram results',
+        'Symptom documentation',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Post-recovery: 7.1-10.0 METs causes symptoms OR continuous medication',
+      criteriaDescription: [
+        'After 3-month recovery period:',
+        'Workload of 7.1 to 10.0 METs results in symptoms, OR',
+        'Continuous medication required (aspirin, beta blockers, statins, ACE inhibitors)',
+      ],
+      evidenceNeeded: [
+        'Post-MI medication list',
+        'Exercise tolerance documentation',
+        'Follow-up cardiac evaluations',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'Post-recovery: Asymptomatic with no limitations',
+      criteriaDescription: [
+        'History of MI, fully recovered',
+        'No symptoms at workloads up to 10 METs',
+        'Normal cardiac function restored',
+      ],
+      evidenceNeeded: [],
+    },
+  ],
+
+  definitions: {
+    myocardialInfarction: {
+      term: 'Myocardial Infarction (MI)',
+      definition: 'Death of heart muscle tissue due to blocked blood flow, commonly called a heart attack.',
+      labMarkers: [
+        'Elevated troponin levels',
+        'EKG changes (ST elevation, Q waves)',
+        'Imaging showing wall motion abnormalities',
+      ],
+    },
+    recoveryPeriod: {
+      term: '3-Month Recovery Period',
+      definition: 'The VA provides an automatic 100% rating during the MI and for 3 months following to allow for cardiac rehabilitation and recovery.',
+    },
+  },
+
+  disclaimer: 'This analysis is based on logged post-MI symptoms. Document the date of your MI, any subsequent cardiac events, and current activity limitations. Keep records of cardiac rehabilitation participation.',
+};
+
+// ============================================
+// PHASE 2A: HYPERTENSIVE HEART DISEASE (DC 7007)
+// ============================================
+
+export const HYPERTENSIVE_HEART_CRITERIA = {
+  diagnosticCode: '7007',
+  condition: 'Hypertensive Heart Disease',
+  cfrReference: '38 CFR 4.104, Diagnostic Code 7007',
+
+  note: 'Hypertensive heart disease requires documented hypertension with cardiac involvement. Rate under the General Rating Formula for Diseases of the Heart. Hypertension alone is rated under DC 7101.',
+
+  ratings: [
+    {
+      percent: 100,
+      summary: 'Documented CHF OR workload ≤3.0 METs causes symptoms',
+      criteriaDescription: [
+        'Chronic congestive heart failure documented, OR',
+        'Workload of 3.0 METs or less results in dyspnea, fatigue, angina, dizziness, or syncope',
+        'Hypertension must be documented as cause of cardiac impairment',
+      ],
+      evidenceNeeded: [
+        'Diagnosis of CHF secondary to hypertension',
+        'History of documented hypertension',
+        'Exercise stress test or medical estimate',
+        'Echocardiogram showing cardiac changes',
+      ],
+    },
+    {
+      percent: 60,
+      summary: 'Workload 3.1-5.0 METs causes symptoms',
+      criteriaDescription: [
+        'Workload of 3.1 to 5.0 METs results in cardiac symptoms',
+        'With documented hypertension as underlying cause',
+        'Symptoms include dyspnea, fatigue, angina, dizziness',
+      ],
+      evidenceNeeded: [
+        'Blood pressure records showing hypertension',
+        'Exercise stress test results',
+        'Documentation linking cardiac symptoms to hypertension',
+      ],
+    },
+    {
+      percent: 30,
+      summary: 'Workload 5.1-7.0 METs causes symptoms OR cardiac hypertrophy/dilatation',
+      criteriaDescription: [
+        'Workload of 5.1 to 7.0 METs results in symptoms, OR',
+        'Left ventricular hypertrophy (LVH) on echocardiogram, OR',
+        'Cardiac dilatation documented',
+        'With underlying hypertension',
+      ],
+      evidenceNeeded: [
+        'Echocardiogram showing LVH or dilatation',
+        'Blood pressure history',
+        'Exercise tolerance documentation',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Workload 7.1-10.0 METs causes symptoms OR continuous medication required',
+      criteriaDescription: [
+        'Workload of 7.1 to 10.0 METs results in symptoms, OR',
+        'Continuous medication required for blood pressure AND cardiac control',
+        'Minimal cardiac limitation with controlled hypertension',
+      ],
+      evidenceNeeded: [
+        'Medication records',
+        'Blood pressure logs',
+        'Symptom documentation',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'Hypertension without cardiac involvement',
+      criteriaDescription: [
+        'Hypertension present but no cardiac symptoms or structural changes',
+        'Should be rated under DC 7101 (Hypertension) instead',
+      ],
+      evidenceNeeded: [],
+    },
+  ],
+
+  definitions: {
+    hypertensiveHeartDisease: {
+      term: 'Hypertensive Heart Disease',
+      definition: 'Heart conditions caused by chronically elevated blood pressure, including left ventricular hypertrophy and heart failure.',
+      manifestations: [
+        'Left ventricular hypertrophy (LVH)',
+        'Diastolic dysfunction',
+        'Heart failure with preserved or reduced ejection fraction',
+        'Coronary artery disease',
+      ],
+    },
+    LVH: {
+      term: 'Left Ventricular Hypertrophy (LVH)',
+      definition: 'Thickening of the heart\'s main pumping chamber wall, often caused by chronic high blood pressure.',
+    },
+  },
+
+  disclaimer: 'This analysis is based on logged hypertensive heart disease symptoms. Document both your blood pressure readings AND cardiac symptoms. The key distinction is having cardiac involvement beyond hypertension alone.',
+};
+
 // ============================================
 // PHASE 10: CIRRHOSIS (DC 7312)
 // ============================================
@@ -15801,7 +16158,7 @@ export const analyzeSleepApneaLogs = (
     },
   };
 
-  let supportedRating = null;
+  let supportedRating = 0;
   let ratingRationale = [];
   let gaps = [];
   let requiresProfileSetup = false;
@@ -16073,7 +16430,7 @@ const analyzeMentalHealthCondition = (
     functionalImpact: notesAnalysis,
   };
 
-  let supportedRating = null;
+  let supportedRating = 0;
   let ratingRationale = [];
   let gaps = [];
   let assessmentLevel = 'preliminary';
@@ -16726,7 +17083,7 @@ export const analyzeHypertensionLogs = (logs, options = {}) => {
 
   const evidence = [];
   const gaps = [];
-  let supportedRating = null;
+  let supportedRating = 0;
   const ratingRationale = [];
 
   // ==================================================================
@@ -16983,7 +17340,7 @@ export const analyzeDiabetesLogs = (logs, options = {}) => {
 
   const evidence = [];
   const gaps = [];
-  let supportedRating = null;
+  let supportedRating = 0;
   const ratingRationale = [];
 
   // ==================================================================
@@ -17116,7 +17473,7 @@ export const analyzeDiabetesLogs = (logs, options = {}) => {
       } control`);
     }
 
-    // Check if could qualify for higher
+    // Check if this could qualify for higher
     if (latestHbA1c && latestHbA1c >= 7.5) {
       gaps.push('Poor control may support higher rating with hospitalization documentation');
     }
@@ -17133,7 +17490,7 @@ export const analyzeDiabetesLogs = (logs, options = {}) => {
       ratingRationale.push(`HbA1c ${latestHbA1c}% with oral medication`);
     }
 
-    // Check if actually needs insulin
+    // Check if this actually needs insulin
     if (poorControl) {
       gaps.push('Poor control despite oral medication - may need insulin therapy');
       gaps.push('Discuss with healthcare provider if insulin should be started');
@@ -17292,7 +17649,7 @@ export const analyzeIBSLogs = (logs, options = {}) => {
 
   const evidence = [];
   const gaps = [];
-  let supportedRating = null;
+  let supportedRating = 0;
   const ratingRationale = [];
 
   // Count episodes by type
@@ -17416,7 +17773,7 @@ export const analyzeGERDLogs = (logs, options = {}) => {
 
   const evidence = [];
   const gaps = [];
-  let supportedRating = null;
+  let supportedRating = 0;
   const ratingRationale = [];
 
   // Count symptoms by type
@@ -17549,7 +17906,7 @@ export const analyzeRadiculopathyLogs = (logs, options = {}) => {
 
   const evidence = [];
   const gaps = [];
-  let supportedRating = null;
+  let supportedRating = 0;
   const ratingRationale = [];
 
   // Count symptoms by type
@@ -17691,7 +18048,7 @@ export const analyzeChronicFatigueLogs = (logs, options = {}) => {
 
   const evidence = [];
   const gaps = [];
-  let supportedRating = null;
+  let supportedRating = 0;
   const ratingRationale = [];
 
   // Count symptoms by type
@@ -17849,7 +18206,7 @@ export const analyzePeripheralNeuropathyLogs = (logs, options = {}) => {
 
   const evidence = [];
   const gaps = [];
-  let supportedRating = null;
+  let supportedRating = 0;
   const ratingRationale = [];
 
   // Count symptoms by type
@@ -17985,7 +18342,7 @@ export const analyzeMenieresLogs = (logs, options = {}) => {
 
   const evidence = [];
   const gaps = [];
-  let supportedRating = null;
+  let supportedRating = 0;
   const ratingRationale = [];
 
   // Count symptoms by type
@@ -18120,7 +18477,7 @@ export const analyzeRhinitisLogs = (logs, options = {}) => {
 
   const evidence = [];
   const gaps = [];
-  let supportedRating = null;
+  let supportedRating = 0;
   const ratingRationale = [];
 
   // Count symptoms by type
@@ -18230,7 +18587,7 @@ export const analyzeTMJLogs = (logs, options = {}) => {
 
   const evidence = [];
   const gaps = [];
-  let supportedRating = null;
+  let supportedRating = 0;
   const ratingRationale = [];
 
   // Count symptoms by type
@@ -18352,7 +18709,7 @@ export const analyzePlantarFasciitisLogs = (logs, options = {}) => {
 
   const evidence = [];
   const gaps = [];
-  let supportedRating = null;
+  let supportedRating = 0;
   const ratingRationale = [];
 
   // Count symptoms by type
@@ -18473,7 +18830,7 @@ export const analyzeInsomniaLogs = (logs, options = {}) => {
 
   const evidence = [];
   const gaps = [];
-  let supportedRating = null;
+  let supportedRating = 0;
   const ratingRationale = [];
 
   // Count symptoms by type
@@ -18613,7 +18970,7 @@ export const analyzeSinusitisLogs = (logs, options = {}) => {
 
   const evidence = [];
   const gaps = [];
-  let supportedRating = null;
+  let supportedRating = 0;
   const ratingRationale = [];
 
   // Count symptoms by type
@@ -18732,7 +19089,7 @@ export const analyzeShoulderLogs = (logs, options = {}) => {
 
   const evidence = [];
   const gaps = [];
-  let supportedRating = null;
+  let supportedRating = 0;
   const ratingRationale = [];
 
   // Count symptoms by type
@@ -18865,7 +19222,7 @@ export const analyzeHipLogs = (logs, options = {}) => {
 
   const evidence = [];
   const gaps = [];
-  let supportedRating = null;
+  let supportedRating = 0;
   const ratingRationale = [];
 
   // Count symptoms by type
@@ -19008,7 +19365,7 @@ export const analyzeAnkleLogs = (logs, options = {}) => {
   const evidence = [];
   const gaps = [];
   const ratingRationale = [];
-  let supportedRating = '10';
+  let supportedRating = 0;
 
   // Build evidence
   if (painCount > 0) evidence.push(`${painCount} ankle pain episodes documented`);
@@ -19134,7 +19491,7 @@ export const analyzeWristLogs = (logs, options = {}) => {
   const evidence = [];
   const gaps = [];
   const ratingRationale = [];
-  let supportedRating = '10';
+  let supportedRating = 0;
 
   // Build evidence
   if (painCount > 0) evidence.push(`${painCount} wrist pain episodes documented`);
@@ -19251,7 +19608,7 @@ export const analyzeElbowLogs = (logs, options = {}) => {
   const evidence = [];
   const gaps = [];
   const ratingRationale = [];
-  let supportedRating = '10';
+  let supportedRating = 0;
 
   // Build evidence
   if (painCount > 0) evidence.push(`${painCount} elbow pain episodes documented`);
@@ -19378,7 +19735,7 @@ export const analyzeDegenerativeArthritisLogs = (logs, options = {}) => {
   const evidence = [];
   const gaps = [];
   const ratingRationale = [];
-  let supportedRating = '10';
+  let supportedRating = 0;
 
   // Build evidence
   if (jointPainCount > 0) evidence.push(`${jointPainCount} joint pain episodes documented`);
@@ -20407,7 +20764,7 @@ export const analyzeTBIResidualsLogs = (logs, options = {}) => {
   const monthsInPeriod = evaluationPeriodDays / 30;
   const symptomsPerMonth = relevantLogs.length / monthsInPeriod;
 
-  let supportedRating = '10%';
+  let supportedRating = 0;
   let ratingRationale = [];
 
   if (symptomsPerMonth >= 10) {
@@ -20492,8 +20849,8 @@ export const analyzeGERDComplicationsLogs = (logs, options = {}) => {
       log.gerdComplicationData?.complicationType === 'stricture'
   );
 
-  let supportedRating = '10%';
-  let ratingRationale = ['Documented GERD complications requiring ongoing treatment'];
+  let supportedRating = 0;
+  let ratingRationale = [];
 
   if (hasBarretts) {
     supportedRating = '60%';
@@ -20586,13 +20943,12 @@ export const analyzeUlcerativeColitisLogs = (logs, options = {}) => {
   if (feverLogs.length > 0) evidence.push(`${feverLogs.length} fever/systemic symptom episodes logged`);
 
   // Determine rating
-  let supportedRating = 10;
+  let supportedRating = 0;
   let ratingRationale = [];
   let gaps = [];
 
   // Calculate daily averages
-  const daysInPeriod = evaluationPeriodDays;
-  const diarrheaPerDay = diarrheaLogs.length / daysInPeriod;
+  const diarrheaPerDay = diarrheaLogs.length / evaluationPeriodDays;
 
   if (hospitalizationLogs.length >= 1 && (diarrheaPerDay >= 6 || bleedingLogs.length >= 180 || incontinenceLogs.length > 0)) {
     supportedRating = 100;
@@ -20942,7 +21298,7 @@ export const analyzeHypothyroidismLogs = (logs, options = {}) => {
   // Check for myxedema criteria (all 4 symptom categories)
   const hasAllMyxedemaSymptoms = coldLogs.length > 0 && weaknessLogs.length > 0 && depressionLogs.length > 0;
 
-  let supportedRating = 30;
+  let supportedRating = 0;
   let ratingRationale = [];
   let gaps = [];
 
@@ -21215,7 +21571,7 @@ export const analyzeChronicUrticariaLogs = (logs, options = {}) => {
   // Chronic urticaria = 2+ outbreaks per week for 6+ weeks
   const isChronicPattern = outbreaksPerWeek >= 2 && evaluationPeriodDays >= 42;
 
-  let supportedRating = 10;
+  let supportedRating = 0;
   let ratingRationale = [];
   let gaps = [];
 
@@ -21316,7 +21672,7 @@ export function analyzeEpilepsyMajorLogs(logs, evaluationDays = 90) {
   const averagePerMonth = lastYear > 0 ? lastYear / 12 : 0;
 
   // Determine rating based on VA criteria
-  let supportedRating = null;
+  let supportedRating = 0;
   let ratingRationale = [];
 
   if (averagePerMonth >= 1) {
@@ -21461,7 +21817,7 @@ export function analyzeEpilepsyMinorLogs(logs, evaluationDays = 90) {
   const averagePerWeek = last7Days > 0 ? last7Days : (last30Days / weeksTracked);
 
   // Determine rating based on weekly frequency
-  let supportedRating = null;
+  let supportedRating = 0;
   let ratingRationale = [];
 
   if (averagePerWeek > 10) {
@@ -21599,7 +21955,7 @@ export function analyzeJacksonianEpilepsyLogs(logs, options = {}) {
   const majorPredominates = majorSeizures.length > minorSeizures.length;
 
   // Calculate rating based on VA criteria
-  let supportedRating = 10;
+  let supportedRating = 0;
   let ratingRationale = [];
 
   if (majorPredominates) {
@@ -21718,7 +22074,7 @@ export function analyzeDiencephalicEpilepsyLogs(logs, options = {}) {
   const weeklyAverage = last4Weeks.length / 4;
 
   // Rate as minor seizures per 38 CFR
-  let supportedRating = 10;
+  let supportedRating = 0;
   let ratingRationale = [];
 
   if (weeklyAverage > 10) {
@@ -21866,7 +22222,7 @@ export function analyzePsychomotorEpilepsyLogs(logs, options = {}) {
   });
 
   // Determine rating
-  let supportedRating = 10;
+  let supportedRating = 0;
   let ratingRationale = [];
   let seizureClassification = 'minor';
 
@@ -22002,7 +22358,7 @@ export const analyzeVisionLogs = (logs) => {
     }
   });
 
-  // Determine worst visual acuity (for rating purposes)
+  // Determine the worst visual acuity (for rating purposes)
   const acuityRanking = {
     '20/20': 1, '20/25': 2, '20/30': 3, '20/40': 4, '20/50': 5,
     '20/70': 6, '20/100': 7, '20/200': 8, 'CF': 9, 'HM': 10, 'LP': 11, 'NLP': 12
@@ -24119,7 +24475,7 @@ export const analyzeTinnitusLogs = (logs, options = {}) => {
     'Pattern establishes recurrent tinnitus',
   ];
 
-  let supportedRating = '10';
+  let supportedRating = 0;
   const ratingRationale = [
     'Tinnitus has a flat 10% rating for all recurrent cases',
     'Your symptom logs document recurrent tinnitus',
@@ -24204,7 +24560,7 @@ export const analyzeFibromyalgiaLogs = (logs, options = {}) => {
   if (hasStiffness) evidence.push('Morning stiffness documented');
   if (hasCognitive) evidence.push('Cognitive issues (fibro fog) documented');
 
-  let supportedRating = '10-20';
+  let supportedRating = 0;
   let ratingRationale = [];
   let gaps = [];
 
@@ -24310,7 +24666,7 @@ export const analyzeToothLossLogs = (logs, options = {}) => {
 
   const evidence = [];
   const gaps = [];
-  let supportedRating = null;
+  let supportedRating = 0;
   const ratingRationale = [];
 
   // Check for dentalData with tooth count
@@ -24471,7 +24827,7 @@ export const analyzeMandibleNonunionLogs = (logs, options = {}) => {
 
   const evidence = [];
   const gaps = [];
-  let supportedRating = null;
+  let supportedRating = 0;
   const ratingRationale = [];
 
   // Count symptom types
@@ -24570,7 +24926,7 @@ export const analyzeMalignantOralNeoplasmLogs = (logs, options = {}) => {
 
   const evidence = [];
   const gaps = [];
-  let supportedRating = null;
+  let supportedRating = 0;
   const ratingRationale = [];
 
   // Check for treatment status in dentalData
@@ -24681,7 +25037,7 @@ export const analyzeBenignOralNeoplasmLogs = (logs, options = {}) => {
 
   const evidence = [];
   const gaps = [];
-  let supportedRating = null;
+  let supportedRating = 0;
   const ratingRationale = [];
 
   // Check for mass data
@@ -27363,10 +27719,10 @@ export const analyzeCardiomyopathyLogs = (logs, measurements = [], options = {})
   });
 
   const metsReadings = Array.isArray(measurements) ? measurements.filter(m =>
-      m.type === 'mets-capacity' && new Date(m.timestamp) >= cutoffDate
+      m.measurementType === 'mets-capacity' && new Date(m.timestamp) >= cutoffDate
   ) : [];
   const efReadings = Array.isArray(measurements) ? measurements.filter(m =>
-      m.type === 'ejection-fraction' && new Date(m.timestamp) >= cutoffDate
+      m.measurementType === 'ejection-fraction' && new Date(m.timestamp) >= cutoffDate
   ) : [];
 
   if (relevantLogs.length === 0 && metsReadings.length === 0 && efReadings.length === 0) {
@@ -27457,6 +27813,500 @@ export const analyzeCardiomyopathyLogs = (logs, measurements = [], options = {})
       hasHypertrophyOrDilatation,
     },
     criteria: CARDIOMYOPATHY_CRITERIA,
+  };
+};
+
+/**
+ * Analyze Coronary Artery Disease (CAD) symptom logs (DC 7005)
+ * Uses General Rating Formula for Diseases of the Heart (METs-based)
+ */
+export const analyzeCADLogs = (logs, measurements = [], options = {}) => {
+  const { evaluationPeriodDays = 365 } = options;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const symptomIds = [
+    'cad-angina-stable', 'cad-angina-unstable', 'cad-dyspnea-exertion', 'cad-dyspnea-rest',
+    'cad-fatigue', 'cad-dizziness', 'cad-syncope', 'cad-palpitations', 'cad-diaphoresis',
+    'cad-nausea', 'cad-activity-limitation', 'cad-nitroglycerin-use', 'cad-hospitalization',
+    'cardiac-breathlessness', 'cardiac-fatigue', 'cardiac-angina', 'cardiac-dizziness',
+    'cardiac-syncope', 'cardiac-palpitations', 'cardiac-edema', 'cardiac-orthopnea'
+  ];
+
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    const symptomId = getLogSymptomId(log);
+    return logDate >= cutoffDate && symptomId && symptomIds.includes(symptomId);
+  });
+
+  // Get METs readings from measurements
+  const metsReadings = Array.isArray(measurements) ? measurements.filter(m =>
+      m.measurementType === 'mets-capacity' && new Date(m.timestamp) >= cutoffDate
+  ) : [];
+  const efReadings = Array.isArray(measurements) ? measurements.filter(m =>
+      m.measurementType === 'ejection-fraction' && new Date(m.timestamp) >= cutoffDate
+  ) : [];
+
+  if (relevantLogs.length === 0 && metsReadings.length === 0 && efReadings.length === 0) {
+    return {
+      hasData: false,
+      condition: 'Coronary Artery Disease',
+      diagnosticCode: '7005',
+      message: 'No CAD symptoms logged',
+      supportedRating: null,
+      ratingRationale: [],
+      gaps: ['Start logging CAD symptoms and record METs capacity from stress tests'],
+      metrics: { totalLogs: 0 },
+    };
+  }
+
+  // Categorize symptoms
+  const anginaLogs = relevantLogs.filter(log =>
+      ['cad-angina-stable', 'cad-angina-unstable', 'cardiac-angina'].includes(getLogSymptomId(log))
+  );
+  const unstableAnginaLogs = relevantLogs.filter(log =>
+      getLogSymptomId(log) === 'cad-angina-unstable'
+  );
+  const dyspneaLogs = relevantLogs.filter(log =>
+      ['cad-dyspnea-exertion', 'cad-dyspnea-rest', 'cardiac-breathlessness'].includes(getLogSymptomId(log))
+  );
+  const dyspneaRestLogs = relevantLogs.filter(log =>
+      getLogSymptomId(log) === 'cad-dyspnea-rest'
+  );
+  const syncopeLogs = relevantLogs.filter(log =>
+      ['cad-syncope', 'cardiac-syncope'].includes(getLogSymptomId(log))
+  );
+  const nitroLogs = relevantLogs.filter(log =>
+      getLogSymptomId(log) === 'cad-nitroglycerin-use'
+  );
+  const hospitalizationLogs = relevantLogs.filter(log =>
+      getLogSymptomId(log) === 'cad-hospitalization'
+  );
+
+  // Get lowest METs if available
+  let lowestMets = null;
+  if (metsReadings.length > 0) {
+    lowestMets = Math.min(...metsReadings.map(m => parseFloat(m.values?.mets_level || 99)));
+  }
+
+  // Check for hypertrophy/dilatation from EF readings
+  let hasHypertrophyOrDilatation = false;
+  let latestEF = null;
+  if (efReadings.length > 0) {
+    latestEF = efReadings[efReadings.length - 1];
+    if (latestEF.values?.hypertrophy || latestEF.values?.dilatation) {
+      hasHypertrophyOrDilatation = true;
+    }
+  }
+
+  // Determine rating based on METs and symptoms
+  let supportedRating = 0;
+  let rationale = [];
+  let evidenceGaps = [];
+
+  // Check for CHF indicators (supports 100%)
+  const hasCHFIndicators = dyspneaRestLogs.length > 0 &&
+      (relevantLogs.filter(log => ['cad-fatigue', 'cardiac-fatigue'].includes(getLogSymptomId(log))).length > 5 ||
+          relevantLogs.filter(log => ['cardiac-edema', 'hhd-edema'].includes(getLogSymptomId(log))).length > 0);
+
+  if (lowestMets !== null) {
+    if (lowestMets <= 3.0 || hasCHFIndicators) {
+      supportedRating = 100;
+      rationale = [
+        lowestMets <= 3.0 ? `METs capacity ≤3.0 (${lowestMets} METs documented)` : 'Symptoms consistent with CHF (dyspnea at rest, significant fatigue)',
+        'Severely limited functional capacity supports 100% rating'
+      ];
+    } else if (lowestMets <= 5.0) {
+      supportedRating = 60;
+      rationale = [`METs capacity 3.1-5.0 (${lowestMets} METs documented)`, 'Moderate limitation supports 60% rating'];
+    } else if (lowestMets <= 7.0 || hasHypertrophyOrDilatation) {
+      supportedRating = 30;
+      rationale = [
+        lowestMets <= 7.0 ? `METs capacity 5.1-7.0 (${lowestMets} METs)` : 'Cardiac hypertrophy/dilatation documented',
+        'Pattern supports 30% rating'
+      ];
+    } else if (lowestMets <= 10.0) {
+      supportedRating = 10;
+      rationale = [`METs capacity 7.1-10.0 (${lowestMets} METs documented)`, 'Mild limitation supports 10% rating'];
+    }
+  } else if (hasCHFIndicators) {
+    supportedRating = 100;
+    rationale = ['Symptoms consistent with CHF documented', 'METs testing recommended to confirm rating'];
+  } else if (hasHypertrophyOrDilatation) {
+    supportedRating = 30;
+    rationale = ['Cardiac hypertrophy or dilatation documented', 'Supports 30% rating'];
+  } else if (unstableAnginaLogs.length > 0 || hospitalizationLogs.length > 0) {
+    supportedRating = 60;
+    rationale = [
+      unstableAnginaLogs.length > 0 ? `${unstableAnginaLogs.length} unstable angina episodes logged` : '',
+      hospitalizationLogs.length > 0 ? `${hospitalizationLogs.length} cardiac hospitalizations` : '',
+      'Significant cardiac events suggest at least 60% - METs testing recommended'
+    ].filter(Boolean);
+  } else if (anginaLogs.length >= 5 || nitroLogs.length >= 3) {
+    supportedRating = 30;
+    rationale = [
+      anginaLogs.length >= 5 ? `${anginaLogs.length} angina episodes documented` : '',
+      nitroLogs.length >= 3 ? `Nitroglycerin used ${nitroLogs.length} times` : '',
+      'Pattern suggests at least 30% - METs testing recommended'
+    ].filter(Boolean);
+  } else if (relevantLogs.length >= 10) {
+    supportedRating = 10;
+    rationale = ['CAD symptoms documented', 'Continuous medication likely required - confirms 10% minimum'];
+  }
+
+  // Add evidence gaps
+  if (metsReadings.length === 0) evidenceGaps.push('No METs capacity documented - request exercise stress test');
+  if (efReadings.length === 0) evidenceGaps.push('No ejection fraction documented - echocardiogram recommended');
+  if (anginaLogs.length === 0 && relevantLogs.length > 0) evidenceGaps.push('Document angina episodes specifically for stronger evidence');
+
+  return {
+    hasData: true,
+    condition: 'Coronary Artery Disease',
+    diagnosticCode: '7005',
+    cfrReference: '38 CFR 4.104',
+    evaluationPeriodDays,
+    supportedRating,
+    ratingRationale: rationale,
+    gaps: evidenceGaps,
+    metrics: {
+      totalLogs: relevantLogs.length,
+      anginaCount: anginaLogs.length,
+      unstableAnginaCount: unstableAnginaLogs.length,
+      dyspneaCount: dyspneaLogs.length,
+      syncopeCount: syncopeLogs.length,
+      nitroUseCount: nitroLogs.length,
+      hospitalizationCount: hospitalizationLogs.length,
+      metsLevel: lowestMets,
+      ejectionFraction: latestEF?.values?.ef_percent || null,
+      hasHypertrophyOrDilatation,
+    },
+    criteria: CAD_CRITERIA,
+  };
+};
+
+/**
+ * Analyze Post-Myocardial Infarction symptom logs (DC 7006)
+ * 100% rating during MI and 3 months following, then METs-based
+ */
+export const analyzePostMILogs = (logs, measurements = [], options = {}) => {
+  const { evaluationPeriodDays = 365, miDate = null } = options;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const symptomIds = [
+    'post-mi-chest-pain', 'post-mi-dyspnea-exertion', 'post-mi-dyspnea-rest', 'post-mi-fatigue',
+    'post-mi-weakness', 'post-mi-dizziness', 'post-mi-syncope', 'post-mi-palpitations',
+    'post-mi-edema', 'post-mi-activity-limitation', 'post-mi-anxiety', 'post-mi-hospitalization',
+    'cardiac-breathlessness', 'cardiac-fatigue', 'cardiac-angina', 'cardiac-dizziness',
+    'cardiac-syncope', 'cardiac-palpitations', 'cardiac-edema', 'cardiac-orthopnea'
+  ];
+
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    const symptomId = getLogSymptomId(log);
+    return logDate >= cutoffDate && symptomId && symptomIds.includes(symptomId);
+  });
+
+  // Get METs and EF readings
+  const metsReadings = Array.isArray(measurements) ? measurements.filter(m =>
+      m.measurementType === 'mets-capacity' && new Date(m.timestamp) >= cutoffDate
+  ) : [];
+  const efReadings = Array.isArray(measurements) ? measurements.filter(m =>
+      m.measurementType === 'ejection-fraction' && new Date(m.timestamp) >= cutoffDate
+  ) : [];
+
+  if (relevantLogs.length === 0 && metsReadings.length === 0 && efReadings.length === 0) {
+    return {
+      hasData: false,
+      condition: 'Myocardial Infarction (Post-MI)',
+      diagnosticCode: '7006',
+      message: 'No post-MI symptoms logged',
+      supportedRating: null,
+      ratingRationale: [],
+      gaps: ['Start logging post-MI symptoms and record METs capacity'],
+      metrics: { totalLogs: 0 },
+    };
+  }
+
+  // Check if within 3-month recovery period
+  let isInRecoveryPeriod = false;
+  if (miDate) {
+    const miDateObj = new Date(miDate);
+    const threeMonthsAfterMI = new Date(miDateObj);
+    threeMonthsAfterMI.setMonth(threeMonthsAfterMI.getMonth() + 3);
+    isInRecoveryPeriod = new Date() <= threeMonthsAfterMI;
+  }
+
+  // Categorize symptoms
+  const chestPainLogs = relevantLogs.filter(log =>
+      ['post-mi-chest-pain', 'cardiac-angina'].includes(getLogSymptomId(log))
+  );
+  const dyspneaLogs = relevantLogs.filter(log =>
+      ['post-mi-dyspnea-exertion', 'post-mi-dyspnea-rest', 'cardiac-breathlessness'].includes(getLogSymptomId(log))
+  );
+  const fatigueLogs = relevantLogs.filter(log =>
+      ['post-mi-fatigue', 'cardiac-fatigue'].includes(getLogSymptomId(log))
+  );
+  const syncopeLogs = relevantLogs.filter(log =>
+      ['post-mi-syncope', 'cardiac-syncope'].includes(getLogSymptomId(log))
+  );
+  const edemaLogs = relevantLogs.filter(log =>
+      ['post-mi-edema', 'cardiac-edema'].includes(getLogSymptomId(log))
+  );
+  const hospitalizationLogs = relevantLogs.filter(log =>
+      getLogSymptomId(log) === 'post-mi-hospitalization'
+  );
+
+  // Get lowest METs
+  let lowestMets = null;
+  if (metsReadings.length > 0) {
+    lowestMets = Math.min(...metsReadings.map(m => parseFloat(m.values?.mets_level || 99)));
+  }
+
+  // Check for hypertrophy/dilatation
+  let hasHypertrophyOrDilatation = false;
+  let latestEF = null;
+  if (efReadings.length > 0) {
+    latestEF = efReadings[efReadings.length - 1];
+    if (latestEF.values?.hypertrophy || latestEF.values?.dilatation) {
+      hasHypertrophyOrDilatation = true;
+    }
+  }
+
+  let supportedRating = 0;
+  let rationale = [];
+  let evidenceGaps = [];
+
+  // If in recovery period, automatic 100%
+  if (isInRecoveryPeriod) {
+    supportedRating = 100;
+    rationale = ['Within 3-month recovery period following MI', 'Automatic 100% rating per 38 CFR 4.104'];
+  } else if (lowestMets !== null) {
+    if (lowestMets <= 3.0) {
+      supportedRating = 100;
+      rationale = [`METs capacity ≤3.0 (${lowestMets} METs documented)`, 'Severely limited capacity supports 100% rating'];
+    } else if (lowestMets <= 5.0) {
+      supportedRating = 60;
+      rationale = [`METs capacity 3.1-5.0 (${lowestMets} METs documented)`, 'Moderate limitation supports 60% rating'];
+    } else if (lowestMets <= 7.0 || hasHypertrophyOrDilatation) {
+      supportedRating = 30;
+      rationale = [
+        lowestMets <= 7.0 ? `METs capacity 5.1-7.0 (${lowestMets} METs)` : 'Cardiac hypertrophy/dilatation documented',
+        'Supports 30% rating'
+      ];
+    } else if (lowestMets <= 10.0) {
+      supportedRating = 10;
+      rationale = [`METs capacity 7.1-10.0 (${lowestMets} METs)`, 'Mild limitation supports 10% rating'];
+    }
+  } else if (hasHypertrophyOrDilatation) {
+    supportedRating = 30;
+    rationale = ['Cardiac hypertrophy or dilatation documented', 'Supports 30% rating'];
+  } else if (hospitalizationLogs.length > 0) {
+    supportedRating = 60;
+    rationale = [`${hospitalizationLogs.length} post-MI hospitalizations`, 'Significant events suggest at least 60% - METs testing needed'];
+  } else if (relevantLogs.length >= 10) {
+    supportedRating = 10;
+    rationale = ['Post-MI symptoms documented', 'Continuous medication likely - supports minimum 10%'];
+  }
+
+  // Evidence gaps
+  if (metsReadings.length === 0) evidenceGaps.push('No METs capacity documented - request cardiac stress test');
+  if (efReadings.length === 0) evidenceGaps.push('No ejection fraction documented - echocardiogram recommended');
+  if (!miDate) evidenceGaps.push('Document MI date for accurate recovery period tracking');
+
+  return {
+    hasData: true,
+    condition: 'Myocardial Infarction (Post-MI)',
+    diagnosticCode: '7006',
+    cfrReference: '38 CFR 4.104',
+    evaluationPeriodDays,
+    supportedRating,
+    ratingRationale: rationale,
+    gaps: evidenceGaps,
+    metrics: {
+      totalLogs: relevantLogs.length,
+      chestPainCount: chestPainLogs.length,
+      dyspneaCount: dyspneaLogs.length,
+      fatigueCount: fatigueLogs.length,
+      syncopeCount: syncopeLogs.length,
+      edemaCount: edemaLogs.length,
+      hospitalizationCount: hospitalizationLogs.length,
+      metsLevel: lowestMets,
+      ejectionFraction: latestEF?.values?.ef_percent || null,
+      hasHypertrophyOrDilatation,
+      isInRecoveryPeriod,
+    },
+    criteria: POST_MI_CRITERIA,
+  };
+};
+
+/**
+ * Analyze Hypertensive Heart Disease symptom logs (DC 7007)
+ * Requires hypertension WITH cardiac involvement
+ */
+export const analyzeHypertensiveHeartLogs = (logs, measurements = [], options = {}) => {
+  const { evaluationPeriodDays = 365 } = options;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const symptomIds = [
+    'hhd-dyspnea-exertion', 'hhd-dyspnea-rest', 'hhd-orthopnea', 'hhd-pnd', 'hhd-fatigue',
+    'hhd-edema', 'hhd-weight-gain', 'hhd-chest-discomfort', 'hhd-palpitations', 'hhd-dizziness',
+    'hhd-syncope', 'hhd-activity-limitation', 'hhd-hospitalization',
+    'cardiac-breathlessness', 'cardiac-fatigue', 'cardiac-angina', 'cardiac-dizziness',
+    'cardiac-syncope', 'cardiac-palpitations', 'cardiac-edema', 'cardiac-orthopnea'
+  ];
+
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    const symptomId = getLogSymptomId(log);
+    return logDate >= cutoffDate && symptomId && symptomIds.includes(symptomId);
+  });
+
+  // Get METs, EF, and BP readings
+  const metsReadings = Array.isArray(measurements) ? measurements.filter(m =>
+      m.measurementType === 'mets-capacity' && new Date(m.timestamp) >= cutoffDate
+  ) : [];
+  const efReadings = Array.isArray(measurements) ? measurements.filter(m =>
+      m.measurementType === 'ejection-fraction' && new Date(m.timestamp) >= cutoffDate
+  ) : [];
+  const bpReadings = Array.isArray(measurements) ? measurements.filter(m =>
+      m.measurementType === 'blood-pressure' && new Date(m.timestamp) >= cutoffDate
+  ) : [];
+
+  if (relevantLogs.length === 0 && metsReadings.length === 0 && efReadings.length === 0) {
+    return {
+      hasData: false,
+      condition: 'Hypertensive Heart Disease',
+      diagnosticCode: '7007',
+      message: 'No hypertensive heart disease symptoms logged',
+      supportedRating: null,
+      ratingRationale: [],
+      gaps: ['Start logging HHD symptoms and record METs capacity and blood pressure'],
+      metrics: { totalLogs: 0 },
+    };
+  }
+
+  // Categorize symptoms
+  const dyspneaLogs = relevantLogs.filter(log =>
+      ['hhd-dyspnea-exertion', 'hhd-dyspnea-rest', 'cardiac-breathlessness'].includes(getLogSymptomId(log))
+  );
+  const dyspneaRestLogs = relevantLogs.filter(log =>
+      getLogSymptomId(log) === 'hhd-dyspnea-rest'
+  );
+  const orthopneaLogs = relevantLogs.filter(log =>
+      ['hhd-orthopnea', 'hhd-pnd', 'cardiac-orthopnea'].includes(getLogSymptomId(log))
+  );
+  const edemaLogs = relevantLogs.filter(log =>
+      ['hhd-edema', 'cardiac-edema'].includes(getLogSymptomId(log))
+  );
+  const fatigueLogs = relevantLogs.filter(log =>
+      ['hhd-fatigue', 'cardiac-fatigue'].includes(getLogSymptomId(log))
+  );
+  const syncopeLogs = relevantLogs.filter(log =>
+      ['hhd-syncope', 'cardiac-syncope'].includes(getLogSymptomId(log))
+  );
+  const hospitalizationLogs = relevantLogs.filter(log =>
+      getLogSymptomId(log) === 'hhd-hospitalization'
+  );
+
+  // Get lowest METs
+  let lowestMets = null;
+  if (metsReadings.length > 0) {
+    lowestMets = Math.min(...metsReadings.map(m => parseFloat(m.values?.mets_level || 99)));
+  }
+
+  // Check for LVH or dilatation
+  let hasHypertrophyOrDilatation = false;
+  let latestEF = null;
+  if (efReadings.length > 0) {
+    latestEF = efReadings[efReadings.length - 1];
+    if (latestEF.values?.hypertrophy || latestEF.values?.dilatation) {
+      hasHypertrophyOrDilatation = true;
+    }
+  }
+
+  // Check for documented hypertension
+  let hasDocumentedHypertension = bpReadings.length > 0;
+  let avgSystolic = 0;
+  if (bpReadings.length > 0) {
+    avgSystolic = bpReadings.reduce((sum, r) => sum + (r.values?.systolic || 0), 0) / bpReadings.length;
+  }
+
+  // Check for CHF indicators
+  const hasCHFIndicators = (dyspneaRestLogs.length > 0 || orthopneaLogs.length >= 2) &&
+      (edemaLogs.length >= 2 || fatigueLogs.length >= 5);
+
+  let supportedRating = 0;
+  let rationale = [];
+  let evidenceGaps = [];
+
+  if (lowestMets !== null) {
+    if (lowestMets <= 3.0 || hasCHFIndicators) {
+      supportedRating = 100;
+      rationale = [
+        lowestMets <= 3.0 ? `METs capacity ≤3.0 (${lowestMets} METs documented)` : 'CHF symptoms documented (dyspnea at rest, orthopnea, edema)',
+        'Severely limited capacity supports 100% rating'
+      ];
+    } else if (lowestMets <= 5.0) {
+      supportedRating = 60;
+      rationale = [`METs capacity 3.1-5.0 (${lowestMets} METs documented)`, 'Moderate limitation supports 60% rating'];
+    } else if (lowestMets <= 7.0 || hasHypertrophyOrDilatation) {
+      supportedRating = 30;
+      rationale = [
+        lowestMets <= 7.0 ? `METs capacity 5.1-7.0 (${lowestMets} METs)` : 'Left ventricular hypertrophy/dilatation documented',
+        'Supports 30% rating'
+      ];
+    } else if (lowestMets <= 10.0) {
+      supportedRating = 10;
+      rationale = [`METs capacity 7.1-10.0 (${lowestMets} METs)`, 'Mild limitation supports 10% rating'];
+    }
+  } else if (hasCHFIndicators) {
+    supportedRating = 100;
+    rationale = ['CHF symptoms documented', 'METs testing recommended to confirm rating'];
+  } else if (hasHypertrophyOrDilatation) {
+    supportedRating = 30;
+    rationale = ['Left ventricular hypertrophy documented', 'Supports 30% rating'];
+  } else if (hospitalizationLogs.length > 0) {
+    supportedRating = 60;
+    rationale = [`${hospitalizationLogs.length} heart failure hospitalizations`, 'Significant events suggest at least 60%'];
+  } else if (relevantLogs.length >= 10) {
+    supportedRating = 10;
+    rationale = ['HHD symptoms documented', 'Continuous medication likely - supports minimum 10%'];
+  }
+
+  // Evidence gaps
+  if (metsReadings.length === 0) evidenceGaps.push('No METs capacity documented - request cardiac stress test');
+  if (efReadings.length === 0) evidenceGaps.push('No ejection fraction/LVH assessment - echocardiogram recommended');
+  if (!hasDocumentedHypertension) evidenceGaps.push('Document blood pressure readings to establish hypertension connection');
+
+  return {
+    hasData: true,
+    condition: 'Hypertensive Heart Disease',
+    diagnosticCode: '7007',
+    cfrReference: '38 CFR 4.104',
+    evaluationPeriodDays,
+    supportedRating,
+    ratingRationale: rationale,
+    gaps: evidenceGaps,
+    metrics: {
+      totalLogs: relevantLogs.length,
+      dyspneaCount: dyspneaLogs.length,
+      orthopneaCount: orthopneaLogs.length,
+      edemaCount: edemaLogs.length,
+      fatigueCount: fatigueLogs.length,
+      syncopeCount: syncopeLogs.length,
+      hospitalizationCount: hospitalizationLogs.length,
+      metsLevel: lowestMets,
+      ejectionFraction: latestEF?.values?.ef_percent || null,
+      hasHypertrophyOrDilatation,
+      avgSystolicBP: avgSystolic > 0 ? Math.round(avgSystolic) : null,
+      bpReadingsCount: bpReadings.length,
+    },
+    criteria: HYPERTENSIVE_HEART_CRITERIA,
   };
 };
 
@@ -27668,7 +28518,7 @@ export const analyzePericarditisLogs = (logs, measurements = [], options = {}) =
   const effusionLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'pericarditis-effusion');
 
   const metsReadings = Array.isArray(measurements) ? measurements.filter(m =>
-      m.type === 'mets-capacity' && new Date(m.timestamp) >= cutoffDate
+      m.measurementType === 'mets-capacity' && new Date(m.timestamp) >= cutoffDate
   ) : [];
 
   let lowestMets = null;
@@ -27862,7 +28712,7 @@ export const analyzeCirrhosisLogs = (logs, measurements = [], options = {}) => {
 
   // Get MELD score from measurements
   const meldReadings = Array.isArray(measurements) ? measurements.filter(m =>
-      m.type === 'meld-score' && new Date(m.timestamp) >= cutoffDate
+      m.measurementType === 'meld-score' && new Date(m.timestamp) >= cutoffDate
   ) : [];
 
   let latestMeld = null;
@@ -28455,7 +29305,7 @@ export const analyzePulmonaryFibrosisLogs = (logs, options = {}) => {
     }
   }
 
-  let supportedRating = null;
+  let supportedRating = 0;
   let ratingRationale = [];
   const gaps = [];
   const evidence = [];
@@ -29178,7 +30028,7 @@ export const analyzeNarcolepsyLogs = (logs, options = {}) => {
   const hasType1Features = hasCataplexy; // Type 1 narcolepsy has cataplexy
 
   // Determine rating
-  let supportedRating = null;
+  let supportedRating = 0;
   let ratingRationale = [];
   const evidence = [];
   const gaps = [];
@@ -29482,7 +30332,7 @@ export const analyzeSyringomyeliaLogs = (logs, options = {}) => {
       : 0;
 
   // Determine rating
-  let supportedRating = null;
+  let supportedRating = 0;
   let ratingRationale = [];
   const evidence = [];
   const gaps = [];
@@ -29641,7 +30491,7 @@ export const analyzeMyelitisLogs = (logs, options = {}) => {
       : 0;
 
   // Determine rating
-  let supportedRating = null;
+  let supportedRating = 0;
   let ratingRationale = [];
   const evidence = [];
   const gaps = [];
@@ -30693,7 +31543,7 @@ export const analyzeSciaticNerveLogs = (logs, options = {}) => {
   const severity = determineNerveSeverity(relevantLogs, motorSymptoms, sensorySymptoms, []);
 
   // Sciatic nerve rating scale (no major/minor distinction for lower extremity)
-  let supportedRating;
+  let supportedRating = 0;
   switch (severity.severityLevel) {
     case 'complete':
       supportedRating = 80;
@@ -30797,7 +31647,7 @@ export const analyzeCommonPeronealNerveLogs = (logs, options = {}) => {
 
   const severity = determineNerveSeverity(relevantLogs, motorSymptoms, sensorySymptoms, []);
 
-  let supportedRating;
+  let supportedRating = 0;
   switch (severity.severityLevel) {
     case 'complete':
       supportedRating = 40;
@@ -30898,7 +31748,7 @@ export const analyzeSuperficialPeronealNerveLogs = (logs, options = {}) => {
   const severity = determineNerveSeverity(relevantLogs, motorSymptoms, sensorySymptoms, []);
 
   // Superficial peroneal has lower max ratings
-  let supportedRating;
+  let supportedRating = 0;
   switch (severity.severityLevel) {
     case 'complete':
       supportedRating = 30;
@@ -30978,7 +31828,7 @@ export const analyzeDeepPeronealNerveLogs = (logs, options = {}) => {
   const severity = determineNerveSeverity(relevantLogs, motorSymptoms, sensorySymptoms, []);
 
   // Deep peroneal has lower max ratings
-  let supportedRating;
+  let supportedRating = 0;
   switch (severity.severityLevel) {
     case 'complete':
       supportedRating = 30;
@@ -31066,7 +31916,7 @@ export const analyzeTibialNerveLogs = (logs, options = {}) => {
 
   const severity = determineNerveSeverity(relevantLogs, motorSymptoms, sensorySymptoms, []);
 
-  let supportedRating;
+  let supportedRating = 0;
   switch (severity.severityLevel) {
     case 'complete':
       supportedRating = 40;
@@ -31164,7 +32014,7 @@ export const analyzePosteriorTibialNerveLogs = (logs, options = {}) => {
   const severity = determineNerveSeverity(relevantLogs, motorSymptoms, sensorySymptoms, []);
 
   // Posterior tibial has lower max ratings
-  let supportedRating;
+  let supportedRating = 0;
   switch (severity.severityLevel) {
     case 'complete':
       supportedRating = 30;
@@ -31258,7 +32108,7 @@ export const analyzeFemoralNerveLogs = (logs, options = {}) => {
 
   const severity = determineNerveSeverity(relevantLogs, motorSymptoms, sensorySymptoms, []);
 
-  let supportedRating;
+  let supportedRating = 0;
   switch (severity.severityLevel) {
     case 'complete':
       supportedRating = 40;

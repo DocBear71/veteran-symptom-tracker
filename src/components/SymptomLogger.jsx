@@ -1594,14 +1594,26 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
   // PHASE 9: CARDIOVASCULAR CONDITIONS - DETECTION LOGIC
   // ============================================
 
-  // General cardiac symptoms (heart disease, cardiomyopathy)
+  // General cardiac symptoms (heart disease, cardiomyopathy, CAD, Post-MI, HHD)
   const isCardiacRelated = selectedSymptom?.startsWith('cardiac-') ||
       selectedSymptom?.startsWith('cardiomyopathy-') ||
+      selectedSymptom?.startsWith('cad-') ||
+      selectedSymptom?.startsWith('post-mi-') ||
+      selectedSymptom?.startsWith('hhd-') ||
       ['cardiac-breathlessness', 'cardiac-fatigue', 'cardiac-angina', 'cardiac-dizziness',
-       'cardiac-syncope', 'cardiac-palpitations', 'cardiac-edema', 'cardiac-orthopnea',
-       'cardiomyopathy-breathlessness', 'cardiomyopathy-fatigue', 'cardiomyopathy-edema',
-       'cardiomyopathy-palpitations', 'cardiomyopathy-chest-pain', 'cardiomyopathy-dizziness',
-       'cardiomyopathy-syncope', 'cardiomyopathy-activity-limitation'].includes(selectedSymptom);
+        'cardiac-syncope', 'cardiac-palpitations', 'cardiac-edema', 'cardiac-orthopnea',
+        'cardiomyopathy-breathlessness', 'cardiomyopathy-fatigue', 'cardiomyopathy-edema',
+        'cardiomyopathy-palpitations', 'cardiomyopathy-chest-pain', 'cardiomyopathy-dizziness',
+        'cardiomyopathy-syncope', 'cardiomyopathy-activity-limitation',
+        'cad-angina-stable', 'cad-angina-unstable', 'cad-dyspnea-exertion', 'cad-dyspnea-rest',
+        'cad-fatigue', 'cad-dizziness', 'cad-syncope', 'cad-palpitations', 'cad-diaphoresis',
+        'cad-nausea', 'cad-activity-limitation', 'cad-nitroglycerin-use', 'cad-hospitalization',
+        'post-mi-chest-pain', 'post-mi-dyspnea-exertion', 'post-mi-dyspnea-rest', 'post-mi-fatigue',
+        'post-mi-weakness', 'post-mi-dizziness', 'post-mi-syncope', 'post-mi-palpitations',
+        'post-mi-edema', 'post-mi-activity-limitation', 'post-mi-anxiety', 'post-mi-hospitalization',
+        'hhd-dyspnea-exertion', 'hhd-dyspnea-rest', 'hhd-orthopnea', 'hhd-pnd', 'hhd-fatigue',
+        'hhd-edema', 'hhd-weight-gain', 'hhd-chest-discomfort', 'hhd-palpitations', 'hhd-dizziness',
+        'hhd-syncope', 'hhd-activity-limitation', 'hhd-hospitalization'].includes(selectedSymptom);
 
   // Arrhythmia symptoms (SVT, ventricular)
   const isArrhythmiaRelated = selectedSymptom?.startsWith('svt-') ||

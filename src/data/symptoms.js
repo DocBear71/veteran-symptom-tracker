@@ -1448,6 +1448,65 @@ export const symptomCategories = [
       { id: 'post-phlebitic-pain-rest', name: 'Post-Phlebitic - Pain at Rest' },
     ]
   },
+  // Phase 2A: Coronary Artery Disease (DC 7005)
+  {
+    id: 'cad',
+    name: 'Coronary Artery Disease (CAD) Symptoms (DC 7005)',
+    symptoms: [
+      { id: 'cad-angina-stable', name: 'CAD - Stable Angina (Predictable Chest Pain)' },
+      { id: 'cad-angina-unstable', name: 'CAD - Unstable Angina (Unpredictable/Worsening)' },
+      { id: 'cad-dyspnea-exertion', name: 'CAD - Shortness of Breath with Exertion' },
+      { id: 'cad-dyspnea-rest', name: 'CAD - Shortness of Breath at Rest' },
+      { id: 'cad-fatigue', name: 'CAD - Fatigue/Exercise Intolerance' },
+      { id: 'cad-dizziness', name: 'CAD - Dizziness/Lightheadedness' },
+      { id: 'cad-syncope', name: 'CAD - Syncope (Fainting)' },
+      { id: 'cad-palpitations', name: 'CAD - Palpitations' },
+      { id: 'cad-diaphoresis', name: 'CAD - Diaphoresis (Sweating with Exertion)' },
+      { id: 'cad-nausea', name: 'CAD - Nausea with Chest Symptoms' },
+      { id: 'cad-activity-limitation', name: 'CAD - Activity Limitation' },
+      { id: 'cad-nitroglycerin-use', name: 'CAD - Nitroglycerin Use' },
+      { id: 'cad-hospitalization', name: 'CAD - Hospitalization/ER Visit' },
+    ]
+  },
+  // Phase 2A: Myocardial Infarction Residuals (DC 7006)
+  {
+    id: 'post-mi',
+    name: 'Post-Myocardial Infarction Symptoms (DC 7006)',
+    symptoms: [
+      { id: 'post-mi-chest-pain', name: 'Post-MI - Chest Pain/Discomfort' },
+      { id: 'post-mi-dyspnea-exertion', name: 'Post-MI - Shortness of Breath with Exertion' },
+      { id: 'post-mi-dyspnea-rest', name: 'Post-MI - Shortness of Breath at Rest' },
+      { id: 'post-mi-fatigue', name: 'Post-MI - Fatigue/Exercise Intolerance' },
+      { id: 'post-mi-weakness', name: 'Post-MI - Weakness' },
+      { id: 'post-mi-dizziness', name: 'Post-MI - Dizziness' },
+      { id: 'post-mi-syncope', name: 'Post-MI - Syncope (Fainting)' },
+      { id: 'post-mi-palpitations', name: 'Post-MI - Palpitations/Arrhythmia' },
+      { id: 'post-mi-edema', name: 'Post-MI - Swelling/Edema' },
+      { id: 'post-mi-activity-limitation', name: 'Post-MI - Activity Limitation' },
+      { id: 'post-mi-anxiety', name: 'Post-MI - Cardiac Anxiety' },
+      { id: 'post-mi-hospitalization', name: 'Post-MI - Hospitalization/ER Visit' },
+    ]
+  },
+  // Phase 2A: Hypertensive Heart Disease (DC 7007)
+  {
+    id: 'hypertensive-heart',
+    name: 'Hypertensive Heart Disease Symptoms (DC 7007)',
+    symptoms: [
+      { id: 'hhd-dyspnea-exertion', name: 'HHD - Shortness of Breath with Exertion' },
+      { id: 'hhd-dyspnea-rest', name: 'HHD - Shortness of Breath at Rest' },
+      { id: 'hhd-orthopnea', name: 'HHD - Difficulty Breathing Lying Down' },
+      { id: 'hhd-pnd', name: 'HHD - Paroxysmal Nocturnal Dyspnea (Waking Breathless)' },
+      { id: 'hhd-fatigue', name: 'HHD - Fatigue/Exercise Intolerance' },
+      { id: 'hhd-edema', name: 'HHD - Swelling/Edema (Ankles/Legs)' },
+      { id: 'hhd-weight-gain', name: 'HHD - Rapid Weight Gain (Fluid Retention)' },
+      { id: 'hhd-chest-discomfort', name: 'HHD - Chest Discomfort/Pressure' },
+      { id: 'hhd-palpitations', name: 'HHD - Palpitations' },
+      { id: 'hhd-dizziness', name: 'HHD - Dizziness/Lightheadedness' },
+      { id: 'hhd-syncope', name: 'HHD - Syncope (Fainting)' },
+      { id: 'hhd-activity-limitation', name: 'HHD - Activity Limitation' },
+      { id: 'hhd-hospitalization', name: 'HHD - Hospitalization for Heart Failure' },
+    ]
+  },
   // Phase 10: Cirrhosis (DC 7312)
   {
     id: 'cirrhosis',
@@ -2156,6 +2215,9 @@ const getParentCategory = (categoryName) => {
   if (name.includes('cardiomyopathy')) return 'heart-disease';
   if (name.includes('arrhythmia') || name.includes('svt') || name.includes('tachycardia')) return 'heart-disease';
   if (name.includes('pericarditis')) return 'heart-disease';
+  if (name.includes('cad') || name.includes('coronary artery')) return 'heart-disease';
+  if (name.includes('post-mi') || name.includes('myocardial infarction')) return 'heart-disease';
+  if (name.includes('hhd') || name.includes('hypertensive heart')) return 'heart-disease';
   if (name.includes('post-phlebitic')) return 'varicose-veins';
   if (name.includes('cirrhosis')) return 'cirrhosis';
   if (name.includes('gastritis')) return 'gastritis';

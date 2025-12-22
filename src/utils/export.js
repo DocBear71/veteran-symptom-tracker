@@ -118,8 +118,14 @@ import {
   analyzeSVTLogs,
   analyzeVentricularArrhythmiaLogs,
   analyzePericarditisLogs,
-  analyzePostPhlebiticLogs, analyzeCirrhosisLogs, analyzeGastritisLogs,
-  analyzePancreatitisLogs, analyzeBiliaryTractLogs,
+  analyzePostPhlebiticLogs,
+  analyzeCADLogs,
+  analyzePostMILogs,
+  analyzeHypertensiveHeartLogs,
+  analyzeCirrhosisLogs,
+  analyzeGastritisLogs,
+  analyzePancreatitisLogs,
+  analyzeBiliaryTractLogs,
   analyzeMultipleSclerosisLogs,
   analyzeParkinsonsDiseaseLogs,
   analyzeMyastheniaGravisLogs,
@@ -2768,6 +2774,10 @@ const analyzeAllConditions = (logs, options = {}) => {
         'ventricular-arrhythmia': analyzeVentricularArrhythmiaLogs,
         'pericarditis': analyzePericarditisLogs,
         'post-phlebitic': analyzePostPhlebiticLogs,
+        // Phase 2A: Major Cardiac Conditions
+        'cad': analyzeCADLogs,
+        'post-mi': analyzePostMILogs,
+        'hypertensive-heart': analyzeHypertensiveHeartLogs,
         'cirrhosis': analyzeCirrhosisLogs,
         'gastritis': analyzeGastritisLogs,
         'pancreatitis': analyzePancreatitisLogs,
@@ -2823,8 +2833,11 @@ const analyzeAllConditions = (logs, options = {}) => {
                 // Sleep apnea needs profile data - pass empty object for now
                 result = analyzeFunc(logs, {}, { evaluationPeriodDays });
             } else if (conditionId === 'hypertension' || conditionId === 'diabetes' || conditionId === 'asthma' || conditionId === 'chronic-renal-disease') {
-                // These need measurements - will be handled by the function itself
-                result = analyzeFunc(logs, { evaluationPeriodDays });
+              // These need measurements - will be handled by the function itself
+              result = analyzeFunc(logs, { evaluationPeriodDays });
+            } else if (conditionId === 'cad' || conditionId === 'post-mi' || conditionId === 'hypertensive-heart') {
+              // Phase 2A: METs-based cardiac conditions need measurements
+              result = analyzeFunc(logs, [], { evaluationPeriodDays });
             } else {
                 result = analyzeFunc(logs, { evaluationPeriodDays });
             }

@@ -1258,203 +1258,439 @@ export const MEASUREMENT_TYPES = {
       normal: { percent: [81, 200], label: 'Normal (>80% predicted)', color: 'green' },
     },
   },
-  // Phase 5: Hemic/Lymphatic Measurements
-  'complete-blood-count': {
-    label: 'Complete Blood Count (CBC)',
+  // ============================================
+  // PHASE 5: HEMIC/LYMPHATIC MEASUREMENTS
+  // ============================================
+
+  COMPLETE_BLOOD_COUNT: {
+    id: 'complete-blood-count',
+    name: 'Complete Blood Count (CBC)',
+    shortName: 'CBC',
     icon: '🩸',
-    category: 'hemic-lymphatic',
-    fields: {
-      rbc: { label: 'Red Blood Cells (RBC)', type: 'number', unit: 'million/μL', step: '0.01' },
-      hemoglobin: { label: 'Hemoglobin (Hgb)', type: 'number', unit: 'g/dL', step: '0.1' },
-      hematocrit: { label: 'Hematocrit (Hct)', type: 'number', unit: '%', step: '0.1' },
-      wbc: { label: 'White Blood Cells (WBC)', type: 'number', unit: 'thousand/μL', step: '0.1' },
-      platelets: { label: 'Platelets', type: 'number', unit: 'thousand/μL', step: '1' },
-      mcv: { label: 'MCV (Mean Corpuscular Volume)', type: 'number', unit: 'fL', step: '0.1' },
-      mch: { label: 'MCH (Mean Corpuscular Hemoglobin)', type: 'number', unit: 'pg', step: '0.1' },
-      mchc: { label: 'MCHC', type: 'number', unit: 'g/dL', step: '0.1' },
+    description: 'Complete blood count for anemia and blood disorder documentation',
+
+    fields: [
+      {
+        key: 'hemoglobin',
+        label: 'Hemoglobin (Hgb)',
+        unit: 'g/dL',
+        type: 'number',
+        min: 3,
+        max: 20,
+        step: 0.1,
+        required: true,
+        placeholder: '14.0',
+        help: 'Normal: Male 13.5-17.5, Female 12-16 g/dL',
+      },
+      {
+        key: 'hematocrit',
+        label: 'Hematocrit (Hct)',
+        unit: '%',
+        type: 'number',
+        min: 15,
+        max: 65,
+        step: 0.1,
+        required: false,
+        placeholder: '42',
+        help: 'Normal: Male 38-50%, Female 36-44%',
+      },
+      {
+        key: 'rbc',
+        label: 'Red Blood Cells (RBC)',
+        unit: 'million/μL',
+        type: 'number',
+        min: 1,
+        max: 8,
+        step: 0.01,
+        required: false,
+        placeholder: '5.0',
+        help: 'Normal: Male 4.7-6.1, Female 4.2-5.4',
+      },
+      {
+        key: 'wbc',
+        label: 'White Blood Cells (WBC)',
+        unit: 'thousand/μL',
+        type: 'number',
+        min: 0.5,
+        max: 50,
+        step: 0.1,
+        required: false,
+        placeholder: '7.0',
+        help: 'Normal: 4.5-11 thousand/μL',
+      },
+      {
+        key: 'platelets',
+        label: 'Platelets',
+        unit: 'thousand/μL',
+        type: 'number',
+        min: 10,
+        max: 1000,
+        step: 1,
+        required: false,
+        placeholder: '250',
+        help: 'Normal: 150-400 thousand/μL',
+      },
+      {
+        key: 'mcv',
+        label: 'MCV (Mean Corpuscular Volume)',
+        unit: 'fL',
+        type: 'number',
+        min: 50,
+        max: 130,
+        step: 0.1,
+        required: false,
+        placeholder: '90',
+        help: 'Normal: 80-100 fL',
+      },
+    ],
+
+    metadata: [
+      {
+        key: 'fasting',
+        label: 'Fasting sample?',
+        type: 'boolean',
+        default: false,
+      },
+      {
+        key: 'labName',
+        label: 'Lab/Facility',
+        type: 'text',
+        placeholder: 'VA Medical Center',
+      },
+    ],
+
+    relatedConditions: ['iron-deficiency-anemia', 'pernicious-anemia', 'sickle-cell', 'leukemia', 'aplastic-anemia'],
+
+    interpretation: {
+      low_hgb: { hemoglobin: [0, 12], label: 'Low Hemoglobin (Anemia)', color: 'red' },
+      normal: { hemoglobin: [12, 17.5], label: 'Normal', color: 'green' },
+      high_hgb: { hemoglobin: [17.5, 99], label: 'Elevated Hemoglobin', color: 'orange' },
     },
-    interpretation: (values) => {
-      const issues = [];
-
-      // RBC normal ranges: Male 4.7-6.1, Female 4.2-5.4 million/μL
-      if (values.rbc < 4.0) issues.push('Low RBC (anemia)');
-      if (values.rbc > 6.5) issues.push('High RBC (polycythemia)');
-
-      // Hemoglobin normal: Male 13.5-17.5, Female 12-16 g/dL
-      if (values.hemoglobin < 12) issues.push('Low hemoglobin (anemia)');
-      if (values.hemoglobin > 18) issues.push('High hemoglobin');
-
-      // Hematocrit normal: Male 38-50%, Female 36-44%
-      if (values.hematocrit < 35) issues.push('Low hematocrit');
-      if (values.hematocrit > 52) issues.push('High hematocrit');
-
-      // WBC normal: 4.5-11 thousand/μL
-      if (values.wbc < 4.0) issues.push('Low WBC (leukopenia)');
-      if (values.wbc > 11) issues.push('High WBC (leukocytosis)');
-
-      // Platelets normal: 150-400 thousand/μL
-      if (values.platelets < 150) issues.push('Low platelets (thrombocytopenia)');
-      if (values.platelets > 450) issues.push('High platelets (thrombocytosis)');
-
-      // MCV normal: 80-100 fL
-      if (values.mcv < 80) issues.push('Microcytic (small RBCs)');
-      if (values.mcv > 100) issues.push('Macrocytic (large RBCs)');
-
-      return issues.length > 0 ? issues.join(', ') : 'All values within normal range';
-    },
-    format: (values) => {
-      const parts = [];
-      if (values.rbc) parts.push(`RBC: ${values.rbc} M/μL`);
-      if (values.hemoglobin) parts.push(`Hgb: ${values.hemoglobin} g/dL`);
-      if (values.hematocrit) parts.push(`Hct: ${values.hematocrit}%`);
-      if (values.wbc) parts.push(`WBC: ${values.wbc} K/μL`);
-      if (values.platelets) parts.push(`Plt: ${values.platelets} K/μL`);
-      return parts.join(', ');
-    }
   },
 
-  'absolute-neutrophil-count': {
-    label: 'Absolute Neutrophil Count (ANC)',
+  ABSOLUTE_NEUTROPHIL_COUNT: {
+    id: 'absolute-neutrophil-count',
+    name: 'Absolute Neutrophil Count (ANC)',
+    shortName: 'ANC',
     icon: '⚪',
-    category: 'hemic-lymphatic',
-    fields: {
-      anc: { label: 'ANC', type: 'number', unit: '/μL', step: '1' },
+    description: 'Neutrophil count for infection risk assessment',
+
+    fields: [
+      {
+        key: 'anc',
+        label: 'ANC',
+        unit: '/μL',
+        type: 'number',
+        min: 0,
+        max: 20000,
+        step: 1,
+        required: true,
+        placeholder: '4000',
+        help: 'Normal: 1500-8000/μL',
+      },
+    ],
+
+    metadata: [],
+
+    relatedConditions: ['leukemia', 'aplastic-anemia'],
+
+    interpretation: {
+      severe: { anc: [0, 500], label: 'Severe Neutropenia (High Infection Risk)', color: 'red' },
+      moderate: { anc: [500, 1000], label: 'Moderate Neutropenia', color: 'orange' },
+      mild: { anc: [1000, 1500], label: 'Mild Neutropenia', color: 'yellow' },
+      normal: { anc: [1500, 99999], label: 'Normal', color: 'green' },
     },
-    interpretation: (values) => {
-      if (values.anc < 500) return 'Severe neutropenia (high infection risk)';
-      if (values.anc < 1000) return 'Moderate neutropenia';
-      if (values.anc < 1500) return 'Mild neutropenia';
-      return 'Normal neutrophil count';
-    },
-    format: (values) => `ANC: ${values.anc}/μL`
   },
 
-  'iron-panel': {
-    label: 'Iron Panel',
+  IRON_PANEL: {
+    id: 'iron-panel',
+    name: 'Iron Panel',
+    shortName: 'Iron',
     icon: '🔬',
-    category: 'hemic-lymphatic',
-    fields: {
-      serum_iron: { label: 'Serum Iron', type: 'number', unit: 'μg/dL', step: '1' },
-      tibc: { label: 'TIBC (Total Iron Binding Capacity)', type: 'number', unit: 'μg/dL', step: '1' },
-      ferritin: { label: 'Ferritin', type: 'number', unit: 'ng/mL', step: '1' },
-      transferrin_saturation: { label: 'Transferrin Saturation', type: 'number', unit: '%', step: '1' },
+    description: 'Iron studies for anemia evaluation',
+
+    fields: [
+      {
+        key: 'serum_iron',
+        label: 'Serum Iron',
+        unit: 'μg/dL',
+        type: 'number',
+        min: 10,
+        max: 300,
+        step: 1,
+        required: false,
+        placeholder: '100',
+        help: 'Normal: 60-170 μg/dL',
+      },
+      {
+        key: 'ferritin',
+        label: 'Ferritin',
+        unit: 'ng/mL',
+        type: 'number',
+        min: 1,
+        max: 2000,
+        step: 1,
+        required: true,
+        placeholder: '100',
+        help: 'Normal: Male 24-336, Female 11-307 ng/mL',
+      },
+      {
+        key: 'tibc',
+        label: 'TIBC (Total Iron Binding Capacity)',
+        unit: 'μg/dL',
+        type: 'number',
+        min: 100,
+        max: 600,
+        step: 1,
+        required: false,
+        placeholder: '350',
+        help: 'Normal: 240-450 μg/dL',
+      },
+      {
+        key: 'transferrin_saturation',
+        label: 'Transferrin Saturation',
+        unit: '%',
+        type: 'number',
+        min: 1,
+        max: 100,
+        step: 1,
+        required: false,
+        placeholder: '30',
+        help: 'Normal: 20-50%',
+      },
+    ],
+
+    metadata: [],
+
+    relatedConditions: ['iron-deficiency-anemia'],
+
+    interpretation: {
+      low: { ferritin: [0, 15], label: 'Iron Deficiency', color: 'red' },
+      low_normal: { ferritin: [15, 30], label: 'Low-Normal (Consider Supplementation)', color: 'yellow' },
+      normal: { ferritin: [30, 300], label: 'Normal', color: 'green' },
+      elevated: { ferritin: [300, 9999], label: 'Elevated Ferritin', color: 'orange' },
     },
-    interpretation: (values) => {
-      const issues = [];
-
-      // Serum Iron normal: 60-170 μg/dL
-      if (values.serum_iron < 60) issues.push('Low serum iron');
-      if (values.serum_iron > 170) issues.push('High serum iron');
-
-      // TIBC normal: 240-450 μg/dL
-      if (values.tibc > 450) issues.push('High TIBC (suggests iron deficiency)');
-
-      // Ferritin normal: Male 24-336, Female 11-307 ng/mL
-      if (values.ferritin < 15) issues.push('Low ferritin (iron deficiency)');
-      if (values.ferritin > 400) issues.push('High ferritin');
-
-      // Transferrin Saturation normal: 20-50%
-      if (values.transferrin_saturation < 20) issues.push('Low transferrin saturation');
-      if (values.transferrin_saturation > 50) issues.push('High transferrin saturation');
-
-      return issues.length > 0 ? issues.join(', ') : 'Normal iron levels';
-    },
-    format: (values) => {
-      const parts = [];
-      if (values.serum_iron) parts.push(`Iron: ${values.serum_iron} μg/dL`);
-      if (values.ferritin) parts.push(`Ferritin: ${values.ferritin} ng/mL`);
-      if (values.transferrin_saturation) parts.push(`Sat: ${values.transferrin_saturation}%`);
-      return parts.join(', ');
-    }
   },
 
-  'vitamin-b12-folate': {
-    label: 'Vitamin B12 & Folate',
+  VITAMIN_B12_FOLATE: {
+    id: 'vitamin-b12-folate',
+    name: 'Vitamin B12 & Folate',
+    shortName: 'B12/Folate',
     icon: '💊',
-    category: 'hemic-lymphatic',
-    fields: {
-      vitamin_b12: { label: 'Vitamin B12', type: 'number', unit: 'pg/mL', step: '1' },
-      folate: { label: 'Folate (Folic Acid)', type: 'number', unit: 'ng/mL', step: '0.1' },
-      methylmalonic_acid: { label: 'Methylmalonic Acid (MMA)', type: 'number', unit: 'nmol/L', step: '1' },
+    description: 'B12 and folate levels for macrocytic anemia',
+
+    fields: [
+      {
+        key: 'vitamin_b12',
+        label: 'Vitamin B12',
+        unit: 'pg/mL',
+        type: 'number',
+        min: 50,
+        max: 2000,
+        step: 1,
+        required: true,
+        placeholder: '500',
+        help: 'Normal: 200-900 pg/mL',
+      },
+      {
+        key: 'folate',
+        label: 'Folate (Folic Acid)',
+        unit: 'ng/mL',
+        type: 'number',
+        min: 0.5,
+        max: 30,
+        step: 0.1,
+        required: false,
+        placeholder: '10',
+        help: 'Normal: >3.0 ng/mL',
+      },
+      {
+        key: 'methylmalonic_acid',
+        label: 'Methylmalonic Acid (MMA)',
+        unit: 'nmol/L',
+        type: 'number',
+        min: 50,
+        max: 2000,
+        step: 1,
+        required: false,
+        placeholder: '150',
+        help: 'Normal: <270 nmol/L (elevated in B12 deficiency)',
+      },
+    ],
+
+    metadata: [],
+
+    relatedConditions: ['pernicious-anemia', 'folate-deficiency-anemia'],
+
+    interpretation: {
+      deficient: { vitamin_b12: [0, 200], label: 'B12 Deficiency', color: 'red' },
+      low_normal: { vitamin_b12: [200, 300], label: 'Low-Normal B12', color: 'yellow' },
+      normal: { vitamin_b12: [300, 9999], label: 'Normal', color: 'green' },
     },
-    interpretation: (values) => {
-      const issues = [];
-
-      // B12 normal: 200-900 pg/mL
-      if (values.vitamin_b12 < 200) issues.push('B12 deficiency');
-      if (values.vitamin_b12 < 300) issues.push('Low-normal B12 (consider supplementation)');
-
-      // Folate normal: >3.0 ng/mL
-      if (values.folate < 3.0) issues.push('Folate deficiency');
-
-      // MMA normal: <270 nmol/L (elevated in B12 deficiency)
-      if (values.methylmalonic_acid > 270) issues.push('Elevated MMA (suggests B12 deficiency)');
-
-      return issues.length > 0 ? issues.join(', ') : 'Normal B12 and folate levels';
-    },
-    format: (values) => {
-      const parts = [];
-      if (values.vitamin_b12) parts.push(`B12: ${values.vitamin_b12} pg/mL`);
-      if (values.folate) parts.push(`Folate: ${values.folate} ng/mL`);
-      return parts.join(', ');
-    }
   },
 
-  'reticulocyte-count': {
-    label: 'Reticulocyte Count',
+  RETICULOCYTE_COUNT: {
+    id: 'reticulocyte-count',
+    name: 'Reticulocyte Count',
+    shortName: 'Retic',
     icon: '🔴',
-    category: 'hemic-lymphatic',
-    fields: {
-      reticulocyte_percent: { label: 'Reticulocyte %', type: 'number', unit: '%', step: '0.1' },
-      reticulocyte_absolute: { label: 'Absolute Reticulocyte Count', type: 'number', unit: 'thousand/μL', step: '1' },
+    description: 'Immature red blood cell count',
+
+    fields: [
+      {
+        key: 'reticulocyte_percent',
+        label: 'Reticulocyte %',
+        unit: '%',
+        type: 'number',
+        min: 0,
+        max: 25,
+        step: 0.1,
+        required: true,
+        placeholder: '1.5',
+        help: 'Normal: 0.5-2.5%',
+      },
+      {
+        key: 'reticulocyte_absolute',
+        label: 'Absolute Reticulocyte Count',
+        unit: 'thousand/μL',
+        type: 'number',
+        min: 0,
+        max: 500,
+        step: 1,
+        required: false,
+        placeholder: '75',
+      },
+    ],
+
+    metadata: [],
+
+    relatedConditions: ['hemolytic-anemia', 'aplastic-anemia'],
+
+    interpretation: {
+      low: { reticulocyte_percent: [0, 0.5], label: 'Low (Bone Marrow Not Responding)', color: 'red' },
+      normal: { reticulocyte_percent: [0.5, 2.5], label: 'Normal', color: 'green' },
+      high: { reticulocyte_percent: [2.5, 99], label: 'High (Active RBC Production)', color: 'yellow' },
     },
-    interpretation: (values) => {
-      // Normal: 0.5-2.5%
-      if (values.reticulocyte_percent < 0.5) return 'Low reticulocytes (bone marrow not responding)';
-      if (values.reticulocyte_percent > 2.5) return 'High reticulocytes (bone marrow responding to anemia)';
-      return 'Normal reticulocyte count';
-    },
-    format: (values) => {
-      const parts = [];
-      if (values.reticulocyte_percent) parts.push(`${values.reticulocyte_percent}%`);
-      if (values.reticulocyte_absolute) parts.push(`(${values.reticulocyte_absolute} K/μL)`);
-      return parts.join(' ');
-    }
   },
 
-  'hemoglobin-electrophoresis': {
-    label: 'Hemoglobin Electrophoresis (Sickle Cell)',
+  HEMOGLOBIN_ELECTROPHORESIS: {
+    id: 'hemoglobin-electrophoresis',
+    name: 'Hemoglobin Electrophoresis',
+    shortName: 'Hgb Electro',
     icon: '🧬',
-    category: 'hemic-lymphatic',
-    fields: {
-      hgb_a: { label: 'Hemoglobin A', type: 'number', unit: '%', step: '0.1' },
-      hgb_s: { label: 'Hemoglobin S (Sickle)', type: 'number', unit: '%', step: '0.1' },
-      hgb_f: { label: 'Hemoglobin F (Fetal)', type: 'number', unit: '%', step: '0.1' },
-      hgb_a2: { label: 'Hemoglobin A2', type: 'number', unit: '%', step: '0.1' },
+    description: 'Hemoglobin types for sickle cell and thalassemia',
+
+    fields: [
+      {
+        key: 'hgb_a',
+        label: 'Hemoglobin A',
+        unit: '%',
+        type: 'number',
+        min: 0,
+        max: 100,
+        step: 0.1,
+        required: false,
+        placeholder: '97',
+      },
+      {
+        key: 'hgb_s',
+        label: 'Hemoglobin S (Sickle)',
+        unit: '%',
+        type: 'number',
+        min: 0,
+        max: 100,
+        step: 0.1,
+        required: true,
+        placeholder: '0',
+        help: '>50% indicates sickle cell disease',
+      },
+      {
+        key: 'hgb_f',
+        label: 'Hemoglobin F (Fetal)',
+        unit: '%',
+        type: 'number',
+        min: 0,
+        max: 100,
+        step: 0.1,
+        required: false,
+        placeholder: '1',
+      },
+      {
+        key: 'hgb_a2',
+        label: 'Hemoglobin A2',
+        unit: '%',
+        type: 'number',
+        min: 0,
+        max: 15,
+        step: 0.1,
+        required: false,
+        placeholder: '2.5',
+      },
+    ],
+
+    metadata: [],
+
+    relatedConditions: ['sickle-cell-anemia'],
+
+    interpretation: {
+      sickle_disease: { hgb_s: [50, 100], label: 'Sickle Cell Disease (HbSS)', color: 'red' },
+      sickle_trait: { hgb_s: [1, 50], label: 'Sickle Cell Trait or HbSC', color: 'yellow' },
+      normal: { hgb_s: [0, 1], label: 'Normal Hemoglobin Pattern', color: 'green' },
     },
-    interpretation: (values) => {
-      if (values.hgb_s > 50) return 'Sickle cell disease (HbSS)';
-      if (values.hgb_s > 0 && values.hgb_s < 50) return 'Sickle cell trait or HbSC';
-      if (values.hgb_f > 2) return 'Elevated fetal hemoglobin';
-      return 'Normal hemoglobin pattern';
-    },
-    format: (values) => {
-      const parts = [];
-      if (values.hgb_a) parts.push(`HbA: ${values.hgb_a}%`);
-      if (values.hgb_s) parts.push(`HbS: ${values.hgb_s}%`);
-      if (values.hgb_f) parts.push(`HbF: ${values.hgb_f}%`);
-      return parts.join(', ');
-    }
   },
-// Phase 7: Dental/Oral Measurements
-  'jaw-opening': {
-    label: 'Jaw Opening (Interincisal Range)',
+
+  // ============================================
+  // PHASE 7: DENTAL/ORAL MEASUREMENTS
+  // ============================================
+
+  JAW_OPENING: {
+    id: 'jaw-opening',
+    name: 'Jaw Opening (Interincisal Range)',
+    shortName: 'Jaw ROM',
     icon: '📏',
-    category: 'dental-oral',
-    fields: {
-      max_opening: { label: 'Maximum Unassisted Vertical Opening', type: 'number', unit: 'mm', step: '1' },
-      lateral_excursion: { label: 'Lateral Excursion Range', type: 'number', unit: 'mm', step: '1' },
-      dietary_restrictions: {
+    description: 'Maximum mouth opening for TMJ documentation',
+
+    fields: [
+      {
+        key: 'max_opening',
+        label: 'Maximum Unassisted Vertical Opening',
+        unit: 'mm',
+        type: 'number',
+        min: 0,
+        max: 60,
+        step: 1,
+        required: true,
+        placeholder: '40',
+        help: 'Normal: 35-50mm',
+      },
+      {
+        key: 'lateral_excursion',
+        label: 'Lateral Excursion Range',
+        unit: 'mm',
+        type: 'number',
+        min: 0,
+        max: 20,
+        step: 1,
+        required: false,
+        placeholder: '8',
+        help: 'Normal: >4mm',
+      },
+      {
+        key: 'pain_level',
+        label: 'Pain with Opening (0-10)',
+        unit: '',
+        type: 'number',
+        min: 0,
+        max: 10,
+        step: 1,
+        required: false,
+        placeholder: '0',
+      },
+    ],
+
+    metadata: [
+      {
+        key: 'dietary_restrictions',
         label: 'Dietary Restrictions',
         type: 'select',
         options: [
@@ -1463,109 +1699,80 @@ export const MEASUREMENT_TYPES = {
           { value: 'soft', label: 'Soft foods required' },
           { value: 'puree', label: 'Pureed foods required' },
           { value: 'full-liquid', label: 'Full liquid diet required' },
-        ]
+        ],
+        default: 'none',
       },
-      pain_level: { label: 'Pain with Opening (0-10)', type: 'number', unit: '/10', step: '1', min: 0, max: 10 },
-      clicking_popping: { label: 'Clicking/Popping Present', type: 'boolean' },
-      locking_episodes: { label: 'Locking Episodes', type: 'boolean' },
+      {
+        key: 'clicking_popping',
+        label: 'Clicking/Popping present?',
+        type: 'boolean',
+        default: false,
+      },
+      {
+        key: 'locking_episodes',
+        label: 'Locking episodes?',
+        type: 'boolean',
+        default: false,
+      },
+    ],
+
+    relatedConditions: ['tmj'],
+
+    interpretation: {
+      normal: { max_opening: [35, 99], label: 'Normal Range (35-50mm)', color: 'green' },
+      mild: { max_opening: [30, 35], label: 'Mild Limitation (30-34mm)', color: 'yellow' },
+      moderate: { max_opening: [21, 30], label: 'Moderate Limitation (21-29mm)', color: 'orange' },
+      severe: { max_opening: [11, 21], label: 'Severe Limitation (11-20mm)', color: 'red' },
+      very_severe: { max_opening: [0, 11], label: 'Very Severe (0-10mm)', color: 'red' },
     },
-    interpretation: (values) => {
-      const opening = values.max_opening;
-      const lateral = values.lateral_excursion;
-      const diet = values.dietary_restrictions;
-
-      let severity = '';
-      let vaRating = '';
-
-      // Determine severity based on VA criteria (DC 9905)
-      if (opening >= 35) {
-        severity = 'Normal range (35-50mm)';
-        vaRating = 'No rating for jaw opening alone';
-      } else if (opening >= 30) {
-        severity = 'Mild limitation (30-34mm)';
-        if (diet === 'full-liquid' || diet === 'puree') {
-          vaRating = 'May support 30% rating with dietary restrictions';
-        } else if (diet === 'soft' || diet === 'semi-solid') {
-          vaRating = 'May support 20% rating with dietary restrictions';
-        } else {
-          vaRating = 'May support 10% rating without dietary restrictions';
-        }
-      } else if (opening >= 21) {
-        severity = 'Moderate limitation (21-29mm)';
-        if (diet === 'full-liquid' || diet === 'puree') {
-          vaRating = 'May support 40% rating with dietary restrictions';
-        } else if (diet === 'soft' || diet === 'semi-solid') {
-          vaRating = 'May support 30% rating with dietary restrictions';
-        } else {
-          vaRating = 'May support 20% rating without dietary restrictions';
-        }
-      } else if (opening >= 11) {
-        severity = 'Severe limitation (11-20mm)';
-        if (diet === 'full-liquid' || diet === 'puree') {
-          vaRating = 'May support 40% rating with dietary restrictions';
-        } else {
-          vaRating = 'May support 30% rating without dietary restrictions';
-        }
-      } else if (opening >= 0) {
-        severity = 'Very severe limitation (0-10mm)';
-        if (diet === 'full-liquid' || diet === 'puree') {
-          vaRating = 'May support 50% rating with dietary restrictions';
-        } else {
-          vaRating = 'May support 40% rating without dietary restrictions';
-        }
-      }
-
-      // Lateral excursion consideration
-      let lateralNote = '';
-      if (lateral !== undefined && lateral >= 0 && lateral <= 4) {
-        lateralNote = ' Limited lateral excursion (0-4mm) may support additional 10% rating.';
-      }
-
-      return `${severity}. ${vaRating}.${lateralNote} Normal maximum opening is 35-50mm.`;
-    },
-    format: (values) => {
-      const parts = [`${values.max_opening}mm opening`];
-
-      if (values.lateral_excursion !== undefined && values.lateral_excursion !== null) {
-        parts.push(`${values.lateral_excursion}mm lateral`);
-      }
-
-      if (values.dietary_restrictions && values.dietary_restrictions !== 'none') {
-        const dietLabels = {
-          'semi-solid': 'Semi-solid diet',
-          'soft': 'Soft diet',
-          'puree': 'Pureed diet',
-          'full-liquid': 'Liquid diet',
-        };
-        parts.push(dietLabels[values.dietary_restrictions]);
-      }
-
-      if (values.pain_level !== undefined && values.pain_level > 0) {
-        parts.push(`Pain: ${values.pain_level}/10`);
-      }
-
-      const extras = [];
-      if (values.clicking_popping) extras.push('Clicking/popping');
-      if (values.locking_episodes) extras.push('Locking');
-      if (extras.length > 0) {
-        parts.push(extras.join(', '));
-      }
-
-      return parts.join(' | ');
-    }
   },
 
-  'tooth-count': {
-    label: 'Tooth Loss Documentation',
+  TOOTH_COUNT: {
+    id: 'tooth-count',
+    name: 'Tooth Loss Documentation',
+    shortName: 'Tooth Loss',
     icon: '🦷',
-    category: 'dental-oral',
-    fields: {
-      total_missing: { label: 'Total Missing Teeth', type: 'number', step: '1', min: 0, max: 32 },
-      upper_missing: { label: 'Upper Teeth Missing', type: 'number', step: '1', min: 0, max: 16 },
-      lower_missing: { label: 'Lower Teeth Missing', type: 'number', step: '1', min: 0, max: 16 },
-      anterior_missing: { label: 'Anterior (Front) Teeth Missing', type: 'number', step: '1', min: 0, max: 12 },
-      posterior_missing: { label: 'Posterior (Back) Teeth Missing', type: 'number', step: '1', min: 0, max: 20 },
-      prosthesis_type: {
+    description: 'Document missing teeth for VA dental claims',
+
+    fields: [
+      {
+        key: 'total_missing',
+        label: 'Total Missing Teeth',
+        unit: '',
+        type: 'number',
+        min: 0,
+        max: 32,
+        step: 1,
+        required: true,
+        placeholder: '0',
+      },
+      {
+        key: 'upper_missing',
+        label: 'Upper Teeth Missing',
+        unit: '',
+        type: 'number',
+        min: 0,
+        max: 16,
+        step: 1,
+        required: false,
+        placeholder: '0',
+      },
+      {
+        key: 'lower_missing',
+        label: 'Lower Teeth Missing',
+        unit: '',
+        type: 'number',
+        min: 0,
+        max: 16,
+        step: 1,
+        required: false,
+        placeholder: '0',
+      },
+    ],
+
+    metadata: [
+      {
+        key: 'prosthesis_type',
         label: 'Prosthesis Type',
         type: 'select',
         options: [
@@ -1576,142 +1783,113 @@ export const MEASUREMENT_TYPES = {
           { value: 'complete-both', label: 'Complete dentures (both)' },
           { value: 'implants', label: 'Dental implants' },
           { value: 'bridge', label: 'Fixed bridge' },
-        ]
+        ],
+        default: 'none',
       },
-      prosthesis_restores_function: { label: 'Prosthesis Restores Masticatory Function', type: 'boolean' },
-      caused_by_bone_loss: { label: 'Tooth Loss Due to Bone Loss (Trauma/Disease)', type: 'boolean' },
-      periodontal_disease: { label: 'Tooth Loss Due to Periodontal Disease Only', type: 'boolean' },
+      {
+        key: 'prosthesis_restores_function',
+        label: 'Prosthesis restores masticatory function?',
+        type: 'boolean',
+        default: false,
+      },
+      {
+        key: 'caused_by_bone_loss',
+        label: 'Tooth loss due to bone loss (trauma/disease)?',
+        type: 'boolean',
+        default: false,
+      },
+    ],
+
+    relatedConditions: ['tooth-loss'],
+
+    interpretation: {
+      none: { total_missing: [0, 0], label: 'No Missing Teeth', color: 'green' },
+      partial: { total_missing: [1, 16], label: 'Partial Tooth Loss', color: 'yellow' },
+      significant: { total_missing: [17, 31], label: 'Significant Tooth Loss', color: 'orange' },
+      complete: { total_missing: [32, 32], label: 'Complete Tooth Loss', color: 'red' },
     },
-    interpretation: (values) => {
-      const total = values.total_missing;
-      const restorable = values.prosthesis_restores_function;
-      const boneLoss = values.caused_by_bone_loss;
-      const periodontal = values.periodontal_disease;
-
-      // VA only rates tooth loss if due to bone loss from trauma/disease, NOT periodontal disease
-      if (periodontal) {
-        return 'Tooth loss from periodontal disease alone is not considered disabling for VA rating purposes. Must be due to bone loss through trauma or disease (e.g., osteomyelitis).';
-      }
-
-      if (!boneLoss) {
-        return 'For VA rating eligibility, tooth loss must be documented as resulting from loss of substance of maxilla/mandible (bone loss through trauma or disease, not periodontal disease).';
-      }
-
-      // VA ratings per DC 9913
-      if (total === 32) {
-        return restorable ?
-            'Loss of all teeth - 0% if restorable by prosthesis, 40% if not restorable' :
-            'Loss of all teeth - May support 40% rating (not restorable by prosthesis)';
-      } else if (values.upper_missing === 16) {
-        return restorable ?
-            'Loss of all upper teeth - 0% if restorable, 30% if not restorable' :
-            'Loss of all upper teeth - May support 30% rating (not restorable)';
-      } else if (values.lower_missing === 16) {
-        return restorable ?
-            'Loss of all lower teeth - 0% if restorable, 30% if not restorable' :
-            'Loss of all lower teeth - May support 30% rating (not restorable)';
-      }
-
-      // Partial loss patterns
-      let rating = 'Document specific tooth loss pattern for VA rating. ';
-
-      if (values.upper_missing && values.anterior_missing >= 6) {
-        rating += 'All upper anterior teeth missing may support 10% rating if not restorable. ';
-      }
-      if (values.lower_missing && values.anterior_missing >= 6) {
-        rating += 'All lower anterior teeth missing may support 10% rating if not restorable. ';
-      }
-      if (values.upper_missing && values.lower_missing && values.posterior_missing >= 8) {
-        rating += 'All upper and lower posterior teeth missing may support 20% rating if not restorable. ';
-      }
-      if (values.upper_missing && values.lower_missing && values.anterior_missing >= 12) {
-        rating += 'All upper and lower anterior teeth missing may support 20% rating if not restorable.';
-      }
-
-      return rating || 'Partial tooth loss documented. VA rating depends on specific pattern and whether restorable by prosthesis.';
-    },
-    format: (values) => {
-      const parts = [`${values.total_missing} teeth missing`];
-
-      if (values.upper_missing) parts.push(`${values.upper_missing} upper`);
-      if (values.lower_missing) parts.push(`${values.lower_missing} lower`);
-      if (values.anterior_missing) parts.push(`${values.anterior_missing} anterior`);
-      if (values.posterior_missing) parts.push(`${values.posterior_missing} posterior`);
-
-      if (values.prosthesis_type && values.prosthesis_type !== 'none') {
-        const prosTypes = {
-          'partial-removable': 'Partial denture',
-          'complete-upper': 'Upper denture',
-          'complete-lower': 'Lower denture',
-          'complete-both': 'Full dentures',
-          'implants': 'Implants',
-          'bridge': 'Bridge',
-        };
-        parts.push(prosTypes[values.prosthesis_type]);
-
-        if (values.prosthesis_restores_function !== undefined) {
-          parts.push(values.prosthesis_restores_function ? 'Function restored' : 'Function NOT restored');
-        }
-      }
-
-      if (values.caused_by_bone_loss) parts.push('Bone loss cause');
-      if (values.periodontal_disease) parts.push('Periodontal disease');
-
-      return parts.join(' | ');
-    }
   },
-  // Phase 6: Infectious Disease Measurements
-  'cd4-count': {
-    label: 'CD4 T-Cell Count',
+
+  // ============================================
+  // PHASE 6: INFECTIOUS DISEASE MEASUREMENTS
+  // ============================================
+
+  CD4_COUNT: {
+    id: 'cd4-count',
+    name: 'CD4 T-Cell Count',
+    shortName: 'CD4',
     icon: '🔬',
-    category: 'hiv-aids',
     description: 'Immune system cell count for HIV monitoring',
-    fields: {
-      count: {
-        label: 'CD4 Count (cells/μL)',
+
+    fields: [
+      {
+        key: 'count',
+        label: 'CD4 Count',
+        unit: 'cells/μL',
         type: 'number',
         min: 0,
         max: 2000,
         step: 1,
         required: true,
+        placeholder: '500',
+        help: 'Normal: >500 cells/μL',
       },
-      percentage: {
-        label: 'CD4 Percentage (%)',
+      {
+        key: 'percentage',
+        label: 'CD4 Percentage',
+        unit: '%',
         type: 'number',
         min: 0,
         max: 100,
         step: 0.1,
         required: false,
+        placeholder: '30',
       },
-      testDate: {
-        label: 'Test Date',
-        type: 'date',
-        required: true,
+    ],
+
+    metadata: [
+      {
+        key: 'onART',
+        label: 'On antiretroviral therapy (ART)?',
+        type: 'boolean',
+        default: false,
       },
+    ],
+
+    relatedConditions: ['hiv'],
+
+    interpretation: {
+      normal: { count: [500, 9999], label: 'Normal Immune Function', color: 'green' },
+      moderate: { count: [200, 500], label: 'Moderately Compromised', color: 'yellow' },
+      severe: { count: [0, 200], label: 'Severely Compromised (AIDS)', color: 'red' },
     },
-    interpretation: (values) => {
-      const count = values.count;
-      if (count >= 500) return { level: 'normal', text: 'Normal immune function' };
-      if (count >= 200) return { level: 'moderate', text: 'Moderately compromised immunity' };
-      return { level: 'severe', text: 'Severely compromised immunity - increased infection risk' };
-    },
-    format: (values) => `${values.count} cells/μL${values.percentage ? ` (${values.percentage}%)` : ''}`,
   },
-  'viral-load': {
-    label: 'Viral Load',
+
+  VIRAL_LOAD: {
+    id: 'viral-load',
+    name: 'Viral Load',
+    shortName: 'Viral Load',
     icon: '🦠',
-    category: 'hiv-aids',
     description: 'HIV or Hepatitis viral load measurement',
-    fields: {
-      viralLoad: {
-        label: 'Viral Load (copies/mL)',
+
+    fields: [
+      {
+        key: 'viralLoad',
+        label: 'Viral Load',
+        unit: 'copies/mL',
         type: 'number',
         min: 0,
         max: 10000000,
         step: 1,
         required: true,
+        placeholder: '0',
+        help: 'Goal: Undetectable (<50 copies/mL)',
       },
-      virusType: {
+    ],
+
+    metadata: [
+      {
+        key: 'virusType',
         label: 'Virus Type',
         type: 'select',
         options: [
@@ -1719,113 +1897,107 @@ export const MEASUREMENT_TYPES = {
           { value: 'hep-c', label: 'Hepatitis C' },
           { value: 'hep-b', label: 'Hepatitis B' },
         ],
-        required: true,
+        default: 'hiv',
       },
-      undetectable: {
-        label: 'Undetectable',
-        type: 'checkbox',
-        required: false,
+      {
+        key: 'undetectable',
+        label: 'Undetectable?',
+        type: 'boolean',
+        default: false,
       },
-      testDate: {
-        label: 'Test Date',
-        type: 'date',
-        required: true,
-      },
-    },
-    interpretation: (values) => {
-      if (values.undetectable) return { level: 'good', text: 'Undetectable - treatment effective' };
-      const load = values.viralLoad;
-      if (load < 50) return { level: 'good', text: 'Very low/undetectable' };
-      if (load < 1000) return { level: 'moderate', text: 'Low viral load' };
-      if (load < 100000) return { level: 'caution', text: 'Moderate viral load' };
-      return { level: 'severe', text: 'High viral load - discuss treatment with provider' };
-    },
-    format: (values) => {
-      if (values.undetectable) return 'Undetectable';
-      return `${values.viralLoad.toLocaleString()} copies/mL`;
+    ],
+
+    relatedConditions: ['hiv', 'hepatitis-c', 'hepatitis-b'],
+
+    interpretation: {
+      undetectable: { viralLoad: [0, 50], label: 'Undetectable - Treatment Effective', color: 'green' },
+      low: { viralLoad: [50, 1000], label: 'Low Viral Load', color: 'yellow' },
+      moderate: { viralLoad: [1000, 100000], label: 'Moderate Viral Load', color: 'orange' },
+      high: { viralLoad: [100000, 99999999], label: 'High Viral Load', color: 'red' },
     },
   },
-  'liver-enzymes': {
-    label: 'Liver Function Tests',
+
+  LIVER_ENZYMES: {
+    id: 'liver-enzymes',
+    name: 'Liver Function Tests',
+    shortName: 'LFTs',
     icon: '🧪',
-    category: 'hepatitis',
-    description: 'Liver enzyme levels (ALT, AST, Bilirubin)',
-    fields: {
-      alt: {
-        label: 'ALT (U/L)',
+    description: 'Liver enzyme levels for hepatitis monitoring',
+
+    fields: [
+      {
+        key: 'alt',
+        label: 'ALT',
+        unit: 'U/L',
         type: 'number',
         min: 0,
-        max: 500,
+        max: 1000,
         step: 1,
         required: false,
-        helpText: 'Normal: 7-55 U/L',
+        placeholder: '25',
+        help: 'Normal: 7-55 U/L',
       },
-      ast: {
-        label: 'AST (U/L)',
+      {
+        key: 'ast',
+        label: 'AST',
+        unit: 'U/L',
         type: 'number',
         min: 0,
-        max: 500,
+        max: 1000,
         step: 1,
         required: false,
-        helpText: 'Normal: 8-48 U/L',
+        placeholder: '25',
+        help: 'Normal: 8-48 U/L',
       },
-      bilirubin: {
-        label: 'Total Bilirubin (mg/dL)',
+      {
+        key: 'bilirubin',
+        label: 'Total Bilirubin',
+        unit: 'mg/dL',
         type: 'number',
         min: 0,
-        max: 20,
+        max: 30,
         step: 0.1,
         required: false,
-        helpText: 'Normal: 0.1-1.2 mg/dL',
+        placeholder: '0.8',
+        help: 'Normal: 0.1-1.2 mg/dL',
       },
-      testDate: {
-        label: 'Test Date',
-        type: 'date',
-        required: true,
-      },
-    },
-    interpretation: (values) => {
-      const altHigh = values.alt > 55;
-      const astHigh = values.ast > 48;
-      const bilirubinHigh = values.bilirubin > 1.2;
+    ],
 
-      if (altHigh || astHigh || bilirubinHigh) {
-        return { level: 'caution', text: 'Elevated liver enzymes - consult provider' };
-      }
-      return { level: 'normal', text: 'Liver function within normal limits' };
-    },
-    format: (values) => {
-      const parts = [];
-      if (values.alt) parts.push(`ALT: ${values.alt}`);
-      if (values.ast) parts.push(`AST: ${values.ast}`);
-      if (values.bilirubin) parts.push(`Bili: ${values.bilirubin}`);
-      return parts.join(', ') || 'No values recorded';
+    metadata: [],
+
+    relatedConditions: ['hepatitis-c', 'hepatitis-b', 'cirrhosis'],
+
+    interpretation: {
+      normal: { alt: [0, 55], label: 'Normal', color: 'green' },
+      elevated: { alt: [55, 200], label: 'Elevated', color: 'yellow' },
+      high: { alt: [200, 9999], label: 'Significantly Elevated', color: 'red' },
     },
   },
-  'body-temperature': {
-    label: 'Body Temperature',
+
+  BODY_TEMPERATURE: {
+    id: 'body-temperature',
+    name: 'Body Temperature',
+    shortName: 'Temp',
     icon: '🌡️',
-    category: 'general-infectious',
-    description: 'Body temperature for fever tracking',
-    fields: {
-      temperature: {
+    description: 'Temperature for fever tracking',
+
+    fields: [
+      {
+        key: 'temperature',
         label: 'Temperature',
+        unit: '°F',
         type: 'number',
         min: 95,
         max: 108,
         step: 0.1,
         required: true,
+        placeholder: '98.6',
       },
-      unit: {
-        label: 'Unit',
-        type: 'select',
-        options: [
-          { value: 'F', label: '°F (Fahrenheit)' },
-          { value: 'C', label: '°C (Celsius)' },
-        ],
-        required: true,
-      },
-      location: {
+    ],
+
+    metadata: [
+      {
+        key: 'location',
         label: 'Measurement Location',
         type: 'select',
         options: [
@@ -1834,60 +2006,49 @@ export const MEASUREMENT_TYPES = {
           { value: 'forehead', label: 'Forehead (Temporal)' },
           { value: 'armpit', label: 'Armpit (Axillary)' },
         ],
-        required: false,
+        default: 'oral',
       },
-    },
-    interpretation: (values) => {
-      let tempF = values.temperature;
-      if (values.unit === 'C') {
-        tempF = (values.temperature * 9/5) + 32;
-      }
+    ],
 
-      if (tempF >= 103) return { level: 'severe', text: 'High fever - seek medical attention' };
-      if (tempF >= 100.4) return { level: 'caution', text: 'Fever present' };
-      if (tempF >= 99) return { level: 'moderate', text: 'Low-grade fever' };
-      return { level: 'normal', text: 'Normal temperature' };
+    relatedConditions: [],
+
+    interpretation: {
+      normal: { temperature: [97, 99], label: 'Normal', color: 'green' },
+      low_grade: { temperature: [99, 100.4], label: 'Low-Grade Fever', color: 'yellow' },
+      fever: { temperature: [100.4, 103], label: 'Fever', color: 'orange' },
+      high_fever: { temperature: [103, 999], label: 'High Fever - Seek Care', color: 'red' },
     },
-    format: (values) => `${values.temperature}°${values.unit}`,
   },
-  'body-weight-tracking': {
-    label: 'Body Weight',
-    icon: '⚖️',
-    category: 'general-infectious',
-    description: 'Track weight changes (for HIV wasting syndrome monitoring)',
-    fields: {
-      weight: {
-        label: 'Weight',
-        type: 'number',
-        min: 50,
-        max: 500,
-        step: 0.1,
-        required: true,
-      },
-      unit: {
-        label: 'Unit',
-        type: 'select',
-        options: [
-          { value: 'lbs', label: 'Pounds (lbs)' },
-          { value: 'kg', label: 'Kilograms (kg)' },
-        ],
-        required: true,
-      },
-    },
-    interpretation: (values) => {
-      // This will need historical comparison to detect weight loss
-      return { level: 'info', text: 'Weight recorded' };
-    },
-    format: (values) => `${values.weight} ${values.unit}`,
-  },
-  // Phase 9: Cardiovascular Measurements
-  'ejection-fraction': {
-    label: 'Ejection Fraction (EF)',
+
+  // ============================================
+  // PHASE 9: CARDIOVASCULAR MEASUREMENTS
+  // ============================================
+
+  EJECTION_FRACTION: {
+    id: 'ejection-fraction',
+    name: 'Ejection Fraction (EF)',
+    shortName: 'EF',
     icon: '❤️',
-    category: 'cardiovascular',
-    fields: {
-      ef_percent: { label: 'Ejection Fraction', type: 'number', unit: '%', step: '1', min: 5, max: 80 },
-      test_type: {
+    description: 'Heart pumping efficiency for cardiac rating',
+
+    fields: [
+      {
+        key: 'ef_percent',
+        label: 'Ejection Fraction',
+        unit: '%',
+        type: 'number',
+        min: 5,
+        max: 80,
+        step: 1,
+        required: true,
+        placeholder: '55',
+        help: 'Normal: ≥55%',
+      },
+    ],
+
+    metadata: [
+      {
+        key: 'test_type',
         label: 'Test Type',
         type: 'select',
         options: [
@@ -1896,182 +2057,165 @@ export const MEASUREMENT_TYPES = {
           { value: 'cardiac-mri', label: 'Cardiac MRI' },
           { value: 'cardiac-ct', label: 'Cardiac CT' },
           { value: 'nuclear', label: 'Nuclear Stress Test' },
-        ]
+        ],
+        default: 'echocardiogram',
       },
-      lvedd: { label: 'LVEDD (LV End Diastolic Diameter)', type: 'number', unit: 'mm', step: '1', required: false },
-      lvesd: { label: 'LVESD (LV End Systolic Diameter)', type: 'number', unit: 'mm', step: '1', required: false },
-      hypertrophy: { label: 'Cardiac Hypertrophy Present', type: 'boolean' },
-      dilatation: { label: 'Cardiac Dilatation Present', type: 'boolean' },
+      {
+        key: 'hypertrophy',
+        label: 'Cardiac hypertrophy present?',
+        type: 'boolean',
+        default: false,
+      },
+      {
+        key: 'dilatation',
+        label: 'Cardiac dilatation present?',
+        type: 'boolean',
+        default: false,
+      },
+    ],
+
+    relatedConditions: ['cardiomyopathy', 'cad', 'post-mi', 'hypertensive-heart'],
+
+    interpretation: {
+      normal: { ef_percent: [55, 99], label: 'Normal (≥55%)', color: 'green' },
+      mild: { ef_percent: [40, 55], label: 'Mildly Reduced (40-54%)', color: 'yellow' },
+      moderate: { ef_percent: [30, 40], label: 'Moderately Reduced (30-39%)', color: 'orange' },
+      severe: { ef_percent: [0, 30], label: 'Severely Reduced (<30%)', color: 'red' },
     },
-    interpretation: (values) => {
-      const ef = values.ef_percent;
-      const hypertrophy = values.hypertrophy;
-      const dilatation = values.dilatation;
-
-      let severity = '';
-      let vaImplication = '';
-
-      if (ef >= 55) {
-        severity = 'Normal (≥55%)';
-        if (hypertrophy || dilatation) {
-          vaImplication = 'May support 30% rating with documented hypertrophy/dilatation';
-        } else {
-          vaImplication = 'Normal EF - rate based on METs and symptoms';
-        }
-      } else if (ef >= 40) {
-        severity = 'Mildly Reduced (40-54%)';
-        vaImplication = 'Reduced EF supports higher rating when combined with symptoms';
-      } else if (ef >= 30) {
-        severity = 'Moderately Reduced (30-39%)';
-        vaImplication = 'Significant impairment - document functional limitations';
-      } else {
-        severity = 'Severely Reduced (<30%)';
-        vaImplication = 'Severe impairment - likely supports higher rating';
-      }
-
-      return `${severity}. ${vaImplication}`;
-    },
-    format: (values) => {
-      let result = `EF: ${values.ef_percent}%`;
-      if (values.test_type) {
-        const testNames = {
-          'echocardiogram': 'Echo',
-          'muga': 'MUGA',
-          'cardiac-mri': 'MRI',
-          'cardiac-ct': 'CT',
-          'nuclear': 'Nuclear'
-        };
-        result += ` (${testNames[values.test_type] || values.test_type})`;
-      }
-      if (values.hypertrophy) result += ', Hypertrophy';
-      if (values.dilatation) result += ', Dilatation';
-      return result;
-    }
   },
-  'mets-capacity': {
-    label: 'METs Capacity (Exercise Tolerance)',
+
+  METS_CAPACITY: {
+    id: 'mets-capacity',
+    name: 'METs Capacity (Exercise Tolerance)',
+    shortName: 'METs',
     icon: '🏃',
-    category: 'cardiovascular',
-    fields: {
-      mets_level: { label: 'METs Level', type: 'number', unit: 'METs', step: '0.1', min: 1, max: 20 },
-      test_type: {
+    description: 'Metabolic equivalents for cardiac functional capacity',
+
+    fields: [
+      {
+        key: 'mets_level',
+        label: 'METs Level',
+        unit: 'METs',
+        type: 'number',
+        min: 1,
+        max: 20,
+        step: 0.1,
+        required: true,
+        placeholder: '7',
+        help: '1 MET = resting energy expenditure',
+      },
+    ],
+
+    metadata: [
+      {
+        key: 'test_type',
         label: 'Assessment Method',
         type: 'select',
         options: [
           { value: 'exercise-test', label: 'Exercise Stress Test (Measured)' },
           { value: 'estimated', label: 'Estimated by Provider' },
           { value: 'interview', label: 'Based on Activity Interview' },
-        ]
+        ],
+        default: 'estimated',
       },
-      symptoms_at_mets: {
-        label: 'Symptoms Experienced',
-        type: 'multiselect',
-        options: [
-          { value: 'breathlessness', label: 'Breathlessness/Dyspnea' },
-          { value: 'fatigue', label: 'Fatigue' },
-          { value: 'angina', label: 'Angina/Chest Pain' },
-          { value: 'dizziness', label: 'Dizziness' },
-          { value: 'syncope', label: 'Syncope (Fainting)' },
-          { value: 'palpitations', label: 'Palpitations' },
-        ]
+      {
+        key: 'symptoms_present',
+        label: 'Symptoms at this METs level?',
+        type: 'boolean',
+        default: false,
       },
-      activity_examples: { label: 'Activity Examples at This Level', type: 'text', required: false },
-    },
-    interpretation: (values) => {
-      const mets = values.mets_level;
-      let rating = '';
-      let examples = '';
+    ],
 
-      if (mets <= 3.0) {
-        rating = 'May support 100% rating';
-        examples = 'Activities: Eating, dressing, walking slowly around home';
-      } else if (mets <= 5.0) {
-        rating = 'May support 60% rating';
-        examples = 'Activities: Light housework, walking 2-3 mph on level ground';
-      } else if (mets <= 7.0) {
-        rating = 'May support 30% rating';
-        examples = 'Activities: Climbing one flight of stairs, walking 4 mph, light yard work';
-      } else if (mets <= 10.0) {
-        rating = 'May support 10% rating';
-        examples = 'Activities: Heavy housework, moderate cycling, recreational sports';
-      } else {
-        rating = 'Normal exercise capacity';
-        examples = 'Activities: Vigorous exercise, running, competitive sports';
-      }
+    relatedConditions: ['cardiomyopathy', 'cad', 'post-mi', 'hypertensive-heart', 'pericarditis'],
 
-      return `METs ${mets}: ${rating}. ${examples}`;
+    interpretation: {
+      severe: { mets_level: [0, 3], label: '≤3 METs (100% Rating)', color: 'red' },
+      moderate: { mets_level: [3, 5], label: '3.1-5 METs (60% Rating)', color: 'orange' },
+      mild_moderate: { mets_level: [5, 7], label: '5.1-7 METs (30% Rating)', color: 'yellow' },
+      mild: { mets_level: [7, 10], label: '7.1-10 METs (10% Rating)', color: 'green' },
+      normal: { mets_level: [10, 99], label: '>10 METs (Normal)', color: 'green' },
     },
-    format: (values) => {
-      let result = `${values.mets_level} METs`;
-      if (values.test_type === 'exercise-test') {
-        result += ' (measured)';
-      } else if (values.test_type === 'estimated') {
-        result += ' (estimated)';
-      }
-      if (values.symptoms_at_mets && values.symptoms_at_mets.length > 0) {
-        result += ` - symptoms: ${values.symptoms_at_mets.join(', ')}`;
-      }
-      return result;
-    }
   },
-  // Phase 10: Liver Function - MELD Score
-  'meld-score': {
-    label: 'MELD Score (Liver Function)',
+
+  // ============================================
+  // PHASE 10: LIVER FUNCTION - MELD SCORE
+  // ============================================
+
+  MELD_SCORE: {
+    id: 'meld-score',
+    name: 'MELD Score (Liver Function)',
+    shortName: 'MELD',
     icon: '🫀',
-    category: 'digestive',
-    fields: {
-      meld_score: { label: 'MELD Score', type: 'number', unit: '', step: '1', min: 6, max: 40 },
-      bilirubin: { label: 'Bilirubin', type: 'number', unit: 'mg/dL', step: '0.1', min: 0, max: 50, required: false },
-      inr: { label: 'INR', type: 'number', unit: '', step: '0.1', min: 0.5, max: 10, required: false },
-      creatinine_liver: { label: 'Creatinine', type: 'number', unit: 'mg/dL', step: '0.1', min: 0, max: 15, required: false },
-      sodium: { label: 'Sodium', type: 'number', unit: 'mEq/L', step: '1', min: 100, max: 160, required: false },
-      on_dialysis: {
-        label: 'On Dialysis?',
-        type: 'select',
-        options: [
-          { value: 'no', label: 'No' },
-          { value: 'yes', label: 'Yes (or 2+ dialysis sessions in past week)' },
-        ]
+    description: 'Model for End-Stage Liver Disease score',
+
+    fields: [
+      {
+        key: 'meld_score',
+        label: 'MELD Score',
+        unit: '',
+        type: 'number',
+        min: 6,
+        max: 40,
+        step: 1,
+        required: true,
+        placeholder: '10',
+        help: 'Calculated score 6-40',
       },
-    },
-    interpretation: (values) => {
-      const meld = values.meld_score;
-      let rating = '';
-      let severity = '';
+      {
+        key: 'bilirubin',
+        label: 'Bilirubin',
+        unit: 'mg/dL',
+        type: 'number',
+        min: 0,
+        max: 50,
+        step: 0.1,
+        required: false,
+        placeholder: '1.0',
+      },
+      {
+        key: 'inr',
+        label: 'INR',
+        unit: '',
+        type: 'number',
+        min: 0.5,
+        max: 10,
+        step: 0.1,
+        required: false,
+        placeholder: '1.0',
+      },
+      {
+        key: 'creatinine_liver',
+        label: 'Creatinine',
+        unit: 'mg/dL',
+        type: 'number',
+        min: 0,
+        max: 15,
+        step: 0.1,
+        required: false,
+        placeholder: '1.0',
+      },
+    ],
 
-      if (meld >= 15) {
-        rating = 'May support 100% rating';
-        severity = 'Severe liver disease - high priority for transplant evaluation';
-      } else if (meld >= 12) {
-        rating = 'May support 60% rating';
-        severity = 'Moderate-severe liver disease';
-      } else if (meld >= 10) {
-        rating = 'May support 30% rating';
-        severity = 'Moderate liver disease with portal hypertension likely';
-      } else if (meld > 6) {
-        rating = 'May support 10% rating';
-        severity = 'Mild liver disease';
-      } else {
-        rating = 'May support 0% rating';
-        severity = 'Minimal liver impairment';
-      }
+    metadata: [
+      {
+        key: 'on_dialysis',
+        label: 'On dialysis?',
+        type: 'boolean',
+        default: false,
+      },
+    ],
 
-      return `MELD ${meld}: ${rating}. ${severity}`;
+    relatedConditions: ['cirrhosis'],
+
+    interpretation: {
+      severe: { meld_score: [15, 99], label: 'Severe (≥15) - 100% Rating', color: 'red' },
+      moderate_severe: { meld_score: [12, 15], label: 'Moderate-Severe (12-14) - 60% Rating', color: 'orange' },
+      moderate: { meld_score: [10, 12], label: 'Moderate (10-11) - 30% Rating', color: 'yellow' },
+      mild: { meld_score: [7, 10], label: 'Mild (7-9) - 10% Rating', color: 'green' },
+      minimal: { meld_score: [0, 7], label: 'Minimal (≤6) - 0% Rating', color: 'green' },
     },
-    format: (values) => {
-      let result = `MELD ${values.meld_score}`;
-      const components = [];
-      if (values.bilirubin) components.push(`Bili: ${values.bilirubin}`);
-      if (values.inr) components.push(`INR: ${values.inr}`);
-      if (values.creatinine_liver) components.push(`Cr: ${values.creatinine_liver}`);
-      if (components.length > 0) {
-        result += ` (${components.join(', ')})`;
-      }
-      return result;
-    }
   },
 };
-
 
 
 // Helper to get measurement type by ID

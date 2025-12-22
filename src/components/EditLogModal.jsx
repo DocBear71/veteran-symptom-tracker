@@ -1936,9 +1936,12 @@ const EditLogModal = ({log, isOpen, onClose, onSaved}) => {
             isNarcissisticPersonalityRelated ||
             isAvoidantPersonalityRelated;
 
-        // Phase 9: Cardiovascular detection
+        // Phase 9: Cardiovascular detection (including Phase 2A METs-based conditions)
         const isCardiacRelated = log?.symptomId?.startsWith('cardiac-') ||
-            log?.symptomId?.startsWith('cardiomyopathy-');
+            log?.symptomId?.startsWith('cardiomyopathy-') ||
+            log?.symptomId?.startsWith('cad-') ||
+            log?.symptomId?.startsWith('post-mi-') ||
+            log?.symptomId?.startsWith('hhd-');
 
         const isArrhythmiaRelated = log?.symptomId?.startsWith('svt-') ||
             log?.symptomId?.startsWith('ventricular-arrhythmia-') ||
