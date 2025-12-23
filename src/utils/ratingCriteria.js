@@ -432,6 +432,115 @@ export const CONDITIONS = {
     symptomIds: [ 'hypo-fatigue', 'hypo-cold-intolerance', 'hypo-weight-gain', 'hypo-depression', 'hypo-muscle-weakness', 'hypo-constipation', 'hypo-dry-skin',
     ],
   },
+  HYPERTHYROIDISM: {
+    id: 'hyperthyroidism',
+    name: 'Hyperthyroidism/Graves\' Disease',
+    diagnosticCode: '7900',
+    cfrReference: '38 CFR 4.119',
+    symptomIds: [
+      'hyper-weight-loss', 'hyper-rapid-heartbeat', 'hyper-tremor', 'hyper-heat-intolerance',
+      'hyper-sweating', 'hyper-anxiety', 'hyper-irritability', 'hyper-fatigue', 'hyper-muscle-weakness',
+      'hyper-sleep-difficulty', 'hyper-appetite-increase', 'hyper-bowel-changes',
+      'graves-eye-bulging', 'graves-eye-irritation', 'graves-double-vision', 'graves-eye-pain', 'graves-light-sensitivity'
+    ],
+  },
+  THYROIDITIS: {
+    id: 'thyroiditis',
+    name: 'Thyroiditis',
+    diagnosticCode: '7906',
+    cfrReference: '38 CFR 4.119',
+    symptomIds: [
+      'thyroiditis-neck-pain', 'thyroiditis-swelling', 'thyroiditis-difficulty-swallowing',
+      'thyroiditis-hyper-phase', 'thyroiditis-hypo-phase', 'thyroiditis-fatigue'
+    ],
+  },
+  HYPERPARATHYROIDISM: {
+    id: 'hyperparathyroidism',
+    name: 'Hyperparathyroidism',
+    diagnosticCode: '7904',
+    cfrReference: '38 CFR 4.119',
+    symptomIds: [
+      'hpth-fatigue', 'hpth-bone-pain', 'hpth-kidney-stones', 'hpth-abdominal-pain',
+      'hpth-nausea', 'hpth-constipation', 'hpth-confusion', 'hpth-depression',
+      'hpth-muscle-weakness', 'hpth-excessive-thirst', 'hpth-frequent-urination',
+      'hpth-anorexia', 'hpth-fracture'
+    ],
+  },
+  HYPOPARATHYROIDISM: {
+    id: 'hypoparathyroidism',
+    name: 'Hypoparathyroidism',
+    diagnosticCode: '7905',
+    cfrReference: '38 CFR 4.119',
+    symptomIds: [
+      'hopth-muscle-cramps', 'hopth-tingling', 'hopth-muscle-spasms', 'hopth-fatigue',
+      'hopth-dry-skin', 'hopth-brittle-nails', 'hopth-hair-loss', 'hopth-seizures',
+      'hopth-depression', 'hopth-anxiety', 'hopth-memory-problems', 'hopth-cataracts'
+    ],
+  },
+  // ============================================
+  // PHASE 3B: ADRENAL & PITUITARY CONDITIONS
+  // ============================================
+
+  // Addison's Disease (Adrenocortical Insufficiency) - DC 7911
+  ADDISONS_DISEASE: {
+    name: "Addison's Disease",
+    code: 'ADDISONS_DISEASE',
+    diagnosticCode: '7911',
+    cfrReference: '38 CFR 4.119',
+    description: "Adrenocortical insufficiency characterized by inadequate production of cortisol and aldosterone",
+    symptomIds: [
+      'addisons-crisis', 'addisons-episode', 'addisons-fatigue', 'addisons-weight-loss',
+      'addisons-hypotension', 'addisons-hyperpigmentation', 'addisons-salt-craving',
+      'addisons-nausea', 'addisons-abdominal-pain', 'addisons-muscle-weakness',
+      'addisons-muscle-pain', 'addisons-irritability', 'addisons-dizziness',
+      'addisons-hypoglycemia', 'addisons-dehydration'
+    ],
+  },
+
+  // Cushing's Syndrome - DC 7907
+  CUSHINGS_SYNDROME: {
+    name: "Cushing's Syndrome",
+    code: 'CUSHINGS_SYNDROME',
+    diagnosticCode: '7907',
+    cfrReference: '38 CFR 4.119',
+    description: "Condition caused by prolonged exposure to high cortisol levels",
+    symptomIds: [
+      'cushings-weight-gain', 'cushings-moon-face', 'cushings-buffalo-hump',
+      'cushings-striae', 'cushings-thin-skin', 'cushings-bruising',
+      'cushings-muscle-weakness', 'cushings-muscle-wasting', 'cushings-fatigue',
+      'cushings-hypertension', 'cushings-glucose', 'cushings-osteoporosis',
+      'cushings-mood', 'cushings-insomnia', 'cushings-infections',
+      'cushings-acne', 'cushings-hirsutism', 'cushings-menstrual', 'cushings-erectile'
+    ],
+  },
+
+  // Diabetes Insipidus - DC 7909
+  DIABETES_INSIPIDUS: {
+    name: 'Diabetes Insipidus',
+    code: 'DIABETES_INSIPIDUS',
+    diagnosticCode: '7909',
+    cfrReference: '38 CFR 4.119',
+    description: "Condition characterized by excretion of large amounts of dilute urine due to inadequate ADH",
+    symptomIds: [
+      'di-polyuria', 'di-polydipsia', 'di-nocturia', 'di-dehydration',
+      'di-fatigue', 'di-dizziness', 'di-headache', 'di-muscle-cramps',
+      'di-constipation', 'di-weight-loss'
+    ],
+  },
+
+  // Hyperaldosteronism (Conn's Syndrome) - DC 7917
+  HYPERALDOSTERONISM: {
+    name: 'Hyperaldosteronism',
+    code: 'HYPERALDOSTERONISM',
+    diagnosticCode: '7917',
+    cfrReference: '38 CFR 4.119',
+    description: "Excessive aldosterone production causing hypertension and hypokalemia",
+    symptomIds: [
+      'haldo-hypertension', 'haldo-muscle-weakness', 'haldo-muscle-cramps',
+      'haldo-fatigue', 'haldo-headaches', 'haldo-polyuria', 'haldo-polydipsia',
+      'haldo-numbness', 'haldo-palpitations', 'haldo-constipation', 'haldo-mood'
+    ],
+  },
   RAYNAUDS: {
     id: 'raynauds',
     name: "Raynaud's Syndrome",
@@ -7352,6 +7461,405 @@ export const HYPOTHYROIDISM_CRITERIA = {
   ratingNote: 'The 30% rating continues for 6 months after initial diagnosis. After that period, the VA rates residuals of the disease or medical treatment under the most appropriate diagnostic codes.',
 
   disclaimer: 'This analysis is based on logged hypothyroidism symptoms. Most Veterans will receive the 30% initial rating, then be rated on residual symptoms. Track all symptoms and medication side effects.',
+};
+
+// ============================================
+// HYPERTHYROIDISM/GRAVES' DISEASE CRITERIA (DC 7900)
+// ============================================
+export const HYPERTHYROIDISM_CRITERIA = {
+  diagnosticCode: '7900',
+  condition: 'Hyperthyroidism/Graves\' Disease',
+  cfrReference: '38 CFR 4.119',
+  ratings: [
+    {
+      percent: 30,
+      summary: 'For six months after initial diagnosis',
+      criteria: {
+        initialDiagnosis: true,
+      },
+      requirements: [
+        'Initial diagnosis of hyperthyroidism or Graves\' disease',
+        '30% rating continues for six months after initial diagnosis',
+        'After six months, rate residuals under appropriate diagnostic codes',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'After initial period - rate residuals separately',
+      criteria: {
+        residualsOnly: true,
+      },
+      requirements: [
+        'After six-month initial period',
+        'Rate cardiac involvement under DC 7008 (hyperthyroid heart disease)',
+        'Rate eye involvement under appropriate eye DCs (6061-6066, 6090)',
+        'Rate other residuals under appropriate body system codes',
+      ],
+    },
+  ],
+  definitions: {
+    gravesDisease: {
+      term: 'Graves\' Disease',
+      definition: 'An autoimmune disorder causing hyperthyroidism, often with eye involvement (Graves\' ophthalmopathy).',
+    },
+    hyperthyroidism: {
+      term: 'Hyperthyroidism',
+      definition: 'Overactive thyroid producing excess thyroid hormone, causing increased metabolism, rapid heartbeat, and other symptoms.',
+    },
+    exophthalmos: {
+      term: 'Exophthalmos',
+      definition: 'Bulging of the eyes, a hallmark of Graves\' disease caused by inflammation of tissues behind the eyes.',
+    },
+  },
+  note: 'Hyperthyroid heart disease (DC 7008) and eye involvement from Graves\' disease should be separately evaluated under their respective diagnostic codes. Track all symptoms including cardiac and eye manifestations.',
+  disclaimer: 'This analysis is based on logged hyperthyroidism symptoms. The initial 30% rating applies for six months after diagnosis. After that period, residual symptoms are rated under appropriate body system codes.',
+};
+
+// ============================================
+// THYROIDITIS CRITERIA (DC 7906)
+// ============================================
+export const THYROIDITIS_CRITERIA = {
+  diagnosticCode: '7906',
+  condition: 'Thyroiditis',
+  cfrReference: '38 CFR 4.119',
+  ratings: [
+    {
+      percent: 30,
+      summary: 'Manifesting as hyperthyroidism - rate as DC 7900',
+      criteria: {
+        hyperthyroidPhase: true,
+      },
+      requirements: [
+        'Thyroiditis with hyperthyroid symptoms',
+        'Evaluate as hyperthyroidism (DC 7900)',
+        'Weight loss, rapid heartbeat, heat intolerance, anxiety',
+      ],
+    },
+    {
+      percent: 30,
+      summary: 'Manifesting as hypothyroidism - rate as DC 7903',
+      criteria: {
+        hypothyroidPhase: true,
+      },
+      requirements: [
+        'Thyroiditis with hypothyroid symptoms',
+        'Evaluate as hypothyroidism (DC 7903)',
+        'Fatigue, cold intolerance, weight gain, depression',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'With normal thyroid function (euthyroid)',
+      criteria: {
+        euthyroid: true,
+      },
+      requirements: [
+        'Thyroiditis with normal thyroid function',
+        'No hyperthyroid or hypothyroid symptoms',
+      ],
+    },
+  ],
+  definitions: {
+    thyroiditis: {
+      term: 'Thyroiditis',
+      definition: 'Inflammation of the thyroid gland that can cause temporary hyperthyroidism followed by hypothyroidism, or may resolve to normal function.',
+    },
+    hashimotos: {
+      term: 'Hashimoto\'s Thyroiditis',
+      definition: 'An autoimmune form of thyroiditis that typically leads to hypothyroidism.',
+    },
+    subacute: {
+      term: 'Subacute Thyroiditis',
+      definition: 'Painful thyroid inflammation often following viral infection, causing temporary thyroid dysfunction.',
+    },
+  },
+  note: 'Thyroiditis is rated based on its functional manifestation: as hyperthyroidism (DC 7900) if causing excess thyroid hormone, as hypothyroidism (DC 7903) if causing thyroid deficiency, or 0% if thyroid function is normal.',
+  disclaimer: 'This analysis is based on logged thyroiditis symptoms. Rating depends on current thyroid function status - track both hyperthyroid and hypothyroid symptoms.',
+};
+
+// ============================================
+// HYPERPARATHYROIDISM CRITERIA (DC 7904)
+// ============================================
+export const HYPERPARATHYROIDISM_CRITERIA = {
+  diagnosticCode: '7904',
+  condition: 'Hyperparathyroidism',
+  cfrReference: '38 CFR 4.119',
+  ratings: [
+    {
+      percent: 100,
+      summary: 'For six months following surgery',
+      criteria: {
+        postSurgery: true,
+      },
+      requirements: [
+        'Following parathyroid surgery',
+        '100% rating for six months from date of discharge',
+        'After six months, rate on residuals based on VA examination',
+      ],
+    },
+    {
+      percent: 60,
+      summary: 'Hypercalcemia with objective findings',
+      criteria: {
+        hypercalcemia: true,
+        objectiveFindings: true,
+      },
+      requirements: [
+        'Total Ca >12 mg/dL (3-3.5 mmol/L), OR',
+        'Ionized Ca >5.6 mg/dL (2-2.5 mmol/L), OR',
+        'Creatinine clearance <60 mL/min, OR',
+        'Bone mineral density T-score <-2.5 SD at any site, OR',
+        'Previous fragility fracture',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Symptoms despite surgery or requires continuous medication',
+      criteria: {
+        persistentSymptoms: true,
+      },
+      requirements: [
+        'Symptoms (fatigue, anorexia, nausea, constipation) despite surgery, OR',
+        'Not a surgical candidate but requires continuous medication for control',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'Asymptomatic',
+      criteria: {
+        asymptomatic: true,
+      },
+      requirements: [
+        'No symptoms',
+        'Condition controlled without medication',
+      ],
+    },
+  ],
+  definitions: {
+    hyperparathyroidism: {
+      term: 'Hyperparathyroidism',
+      definition: 'Overproduction of parathyroid hormone (PTH) causing elevated calcium levels, bone loss, kidney stones, and other complications.',
+    },
+    hypercalcemia: {
+      term: 'Hypercalcemia',
+      definition: 'Elevated calcium levels in the blood, causing symptoms like fatigue, confusion, constipation, and bone pain.',
+    },
+    fragilityFracture: {
+      term: 'Fragility Fracture',
+      definition: 'A fracture resulting from minimal trauma (such as a fall from standing height) indicating weakened bones.',
+    },
+  },
+  note: 'Chronic residuals such as kidney stones, decreased renal function, fractures, vision problems, and cardiovascular complications should be evaluated under their appropriate diagnostic codes.',
+  disclaimer: 'This analysis is based on logged hyperparathyroidism symptoms. Lab values (calcium levels, creatinine clearance) and bone density testing significantly impact the rating.',
+};
+
+// ============================================
+// HYPOPARATHYROIDISM CRITERIA (DC 7905)
+// ============================================
+export const HYPOPARATHYROIDISM_CRITERIA = {
+  diagnosticCode: '7905',
+  condition: 'Hypoparathyroidism',
+  cfrReference: '38 CFR 4.119',
+  ratings: [
+    {
+      percent: 100,
+      summary: 'For three months after initial diagnosis',
+      criteria: {
+        initialDiagnosis: true,
+      },
+      requirements: [
+        'Initial diagnosis of hypoparathyroidism',
+        '100% rating for three months after initial diagnosis',
+        'After three months, rate chronic residuals under appropriate codes',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'After initial period - rate residuals separately',
+      criteria: {
+        residualsOnly: true,
+      },
+      requirements: [
+        'After three-month initial period',
+        'Rate kidney stones under DC 7508-7509',
+        'Rate cataracts under appropriate eye DC',
+        'Rate decreased renal function under DC 7530-7541',
+        'Rate congestive heart failure under DC 7006',
+      ],
+    },
+  ],
+  definitions: {
+    hypoparathyroidism: {
+      term: 'Hypoparathyroidism',
+      definition: 'Underproduction of parathyroid hormone (PTH) causing low calcium levels, muscle cramps, spasms, and neurological symptoms.',
+    },
+    tetany: {
+      term: 'Tetany',
+      definition: 'Involuntary muscle contractions and spasms caused by low calcium levels, a hallmark of hypoparathyroidism.',
+    },
+    hypocalcemia: {
+      term: 'Hypocalcemia',
+      definition: 'Low calcium levels in the blood causing numbness, tingling, muscle cramps, and potentially seizures.',
+    },
+  },
+  note: 'Chronic residuals including kidney stones, cataracts, decreased renal function, and congestive heart failure should be evaluated under their respective diagnostic codes after the initial rating period.',
+  disclaimer: 'This analysis is based on logged hypoparathyroidism symptoms. The initial 100% rating applies for three months after diagnosis. Track all residual symptoms for separate rating consideration.',
+};
+
+// ============================================
+// PHASE 3B: ADRENAL & PITUITARY CRITERIA
+// ============================================
+
+/**
+ * Addison's Disease Rating Criteria - DC 7911
+ * 38 CFR 4.119
+ */
+export const ADDISONS_DISEASE_CRITERIA = {
+  diagnosticCode: '7911',
+  cfrReference: '38 CFR 4.119',
+  condition: "Addison's Disease (Adrenocortical Insufficiency)",
+  ratings: [
+    {
+      percent: 60,
+      criteria: 'Four or more crises during the past year',
+      summary: 'Four or more adrenal crises per year',
+    },
+    {
+      percent: 40,
+      criteria: 'Three crises during the past year, or; five or more episodes during the past year',
+      summary: 'Three crises OR five or more episodes per year',
+    },
+    {
+      percent: 20,
+      criteria: 'One or two crises during the past year, or; two to four episodes during the past year, or; weakness and fatigability, or; corticosteroid therapy required for control',
+      summary: '1-2 crises OR 2-4 episodes OR weakness/fatigue OR requires corticosteroids',
+    },
+  ],
+  notes: [
+    'An Addisonian "crisis" consists of rapid onset of peripheral vascular collapse with acute hypotension and shock',
+    'Crisis findings may include: anorexia, nausea, vomiting, dehydration, profound weakness, pain in abdomen/legs/back, fever, apathy, depressed mentation with possible progression to coma, renal shutdown, and death',
+    'An Addisonian "episode" is less acute and less severe than a crisis',
+    'Episode may consist of: anorexia, nausea, vomiting, diarrhea, dehydration, weakness, malaise, orthostatic hypotension, or hypoglycemia, but no peripheral vascular collapse',
+    'Tuberculous Addison\'s disease is evaluated as active or inactive tuberculosis',
+  ],
+  definitions: {
+    "Addisonian Crisis": "Rapid onset of peripheral vascular collapse with acute hypotension and shock, potentially life-threatening",
+    "Addisonian Episode": "Less severe event without vascular collapse - may include nausea, weakness, orthostatic hypotension, or hypoglycemia",
+    "Adrenocortical Insufficiency": "Inadequate production of cortisol and/or aldosterone by the adrenal glands",
+    "Hyperpigmentation": "Darkening of skin, especially in creases, scars, and mucous membranes, due to elevated ACTH",
+  },
+  disclaimer: 'This analysis is for documentation purposes only. VA ratings require official medical evaluation and C&P examination.',
+};
+
+/**
+ * Cushing's Syndrome Rating Criteria - DC 7907
+ * 38 CFR 4.119
+ */
+export const CUSHINGS_SYNDROME_CRITERIA = {
+  diagnosticCode: '7907',
+  cfrReference: '38 CFR 4.119',
+  condition: "Cushing's Syndrome",
+  ratings: [
+    {
+      percent: 100,
+      criteria: 'As active, progressive disease, including areas of osteoporosis, hypertension, and proximal upper and lower extremity muscle wasting that results in inability to rise from squatting position, climb stairs, rise from a deep chair without assistance, or raise arms',
+      summary: 'Active progressive disease with osteoporosis, HTN, AND severe proximal muscle wasting',
+    },
+    {
+      percent: 60,
+      criteria: 'Proximal upper or lower extremity muscle wasting that results in inability to rise from squatting position, climb stairs, rise from a deep chair without assistance, or raise arms',
+      summary: 'Proximal muscle wasting causing functional limitations',
+    },
+    {
+      percent: 30,
+      criteria: 'With striae, obesity, moon face, glucose intolerance, and vascular fragility',
+      summary: 'Classic Cushingoid features: striae, obesity, moon face, glucose intolerance, vascular fragility',
+    },
+  ],
+  notes: [
+    'Evaluations continue for six months following initial diagnosis',
+    'After six months, rate on residuals under the appropriate diagnostic codes within the appropriate body systems',
+    'Proximal muscle weakness specifically affects ability to rise from squatting, climb stairs, rise from chair, or raise arms',
+  ],
+  definitions: {
+    "Cushing's Syndrome": "Condition resulting from prolonged exposure to elevated cortisol levels",
+    "Moon Face": "Rounded, full facial appearance due to fat redistribution",
+    "Buffalo Hump": "Fat accumulation between the shoulders (dorsocervical fat pad)",
+    "Striae": "Purple or pink stretch marks, typically on abdomen, thighs, breasts, and arms",
+    "Proximal Muscle Weakness": "Weakness affecting muscles closest to the trunk - thighs, upper arms, shoulders",
+    "Vascular Fragility": "Thin skin and blood vessels that bruise easily",
+  },
+  disclaimer: 'This analysis is for documentation purposes only. VA ratings require official medical evaluation and C&P examination.',
+};
+
+/**
+ * Diabetes Insipidus Rating Criteria - DC 7909
+ * 38 CFR 4.119
+ */
+export const DIABETES_INSIPIDUS_CRITERIA = {
+  diagnosticCode: '7909',
+  cfrReference: '38 CFR 4.119',
+  condition: 'Diabetes Insipidus',
+  ratings: [
+    {
+      percent: 30,
+      criteria: 'For three months after initial diagnosis',
+      summary: 'For three months after initial diagnosis',
+    },
+    {
+      percent: 10,
+      criteria: 'With persistent polyuria or requiring continuous hormonal therapy',
+      summary: 'Persistent polyuria OR requires continuous hormonal therapy',
+    },
+  ],
+  notes: [
+    'Initial 30% rating applies for three months after diagnosis',
+    'If diabetes insipidus has subsided after initial period, rate residuals under appropriate diagnostic codes',
+    'Hormonal therapy typically involves desmopressin (DDAVP)',
+  ],
+  definitions: {
+    "Diabetes Insipidus": "Condition characterized by excretion of large amounts of severely diluted urine due to inadequate ADH production or kidney response",
+    "Polyuria": "Excessive urination, typically >3 liters per day",
+    "Polydipsia": "Excessive thirst",
+    "ADH (Vasopressin)": "Antidiuretic hormone that regulates water balance",
+    "Desmopressin": "Synthetic ADH used to treat diabetes insipidus",
+  },
+  disclaimer: 'This analysis is for documentation purposes only. VA ratings require official medical evaluation and C&P examination.',
+};
+
+/**
+ * Hyperaldosteronism Rating Criteria - DC 7917
+ * 38 CFR 4.119
+ */
+export const HYPERALDOSTERONISM_CRITERIA = {
+  diagnosticCode: '7917',
+  cfrReference: '38 CFR 4.119',
+  condition: 'Hyperaldosteronism',
+  ratings: [
+    {
+      percent: 100,
+      criteria: 'If malignant neoplasm - 100% during active disease and treatment',
+      summary: 'Malignant - rate as malignant neoplasm',
+    },
+    {
+      percent: 0,
+      criteria: 'If benign - evaluate residuals under appropriate diagnostic codes',
+      summary: 'Benign - rate residuals (hypertension, hypokalemia effects)',
+    },
+  ],
+  notes: [
+    'Evaluate as malignant or benign neoplasm as appropriate',
+    'Common residuals include hypertension (rate under DC 7101) and hypokalemia-related symptoms',
+    'Conn\'s syndrome (aldosterone-producing adenoma) is the most common cause',
+    'Symptoms largely driven by hypertension and low potassium',
+  ],
+  definitions: {
+    "Hyperaldosteronism": "Excessive production of aldosterone by the adrenal glands",
+    "Conn's Syndrome": "Primary hyperaldosteronism caused by an aldosterone-producing adrenal adenoma",
+    "Hypokalemia": "Low potassium levels in the blood, causing muscle weakness, cramps, and cardiac effects",
+    "Aldosterone": "Hormone that regulates sodium and potassium balance, affecting blood pressure",
+  },
+  disclaimer: 'This analysis is for documentation purposes only. VA ratings require official medical evaluation and C&P examination.',
 };
 
 export const RAYNAUDS_CRITERIA = {
@@ -21539,6 +22047,1001 @@ export const analyzeHypothyroidismLogs = (logs, options = {}) => {
   };
 };
 
+// ============================================
+// PHASE 3A: ENDOCRINE ANALYSIS FUNCTIONS
+// ============================================
+
+/**
+ * Analyze Hyperthyroidism/Graves' Disease symptom logs
+ * DC 7900 - 38 CFR 4.119
+ */
+export const analyzeHyperthyroidismLogs = (logs, options = {}) => {
+  const { days = 90 } = options;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - days);
+
+  const symptomIds = CONDITIONS.HYPERTHYROIDISM.symptomIds;
+
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.date || log.timestamp);
+    const symptomId = getLogSymptomId(log);
+    return logDate >= cutoffDate && symptomId && symptomIds.includes(symptomId);
+  });
+
+  if (relevantLogs.length === 0) {
+    return {
+      hasData: false,
+      condition: 'Hyperthyroidism/Graves\' Disease',
+      diagnosticCode: '7900',
+      supportedRating: null,
+      ratingRationale: [],
+      gaps: ['Start logging hyperthyroidism symptoms including rapid heartbeat, weight loss, tremor, and heat intolerance'],
+      metrics: {},
+    };
+  }
+
+  // Categorize symptoms
+  const cardiacSymptoms = relevantLogs.filter(log =>
+      getLogSymptomId(log) === 'hyper-rapid-heartbeat'
+  );
+  const metabolicSymptoms = relevantLogs.filter(log =>
+      ['hyper-weight-loss', 'hyper-heat-intolerance', 'hyper-sweating', 'hyper-appetite-increase'].includes(getLogSymptomId(log))
+  );
+  const neurologicSymptoms = relevantLogs.filter(log =>
+      ['hyper-tremor', 'hyper-anxiety', 'hyper-irritability', 'hyper-sleep-difficulty'].includes(getLogSymptomId(log))
+  );
+  const muscleSymptoms = relevantLogs.filter(log =>
+      ['hyper-fatigue', 'hyper-muscle-weakness'].includes(getLogSymptomId(log))
+  );
+  const eyeSymptoms = relevantLogs.filter(log =>
+      ['graves-eye-bulging', 'graves-eye-irritation', 'graves-double-vision', 'graves-eye-pain', 'graves-light-sensitivity'].includes(getLogSymptomId(log))
+  );
+
+  // Calculate average severity
+  const severities = relevantLogs.map(log => log.severity || 5).filter(s => s > 0);
+  const avgSeverity = severities.length > 0
+      ? severities.reduce((a, b) => a + b, 0) / severities.length
+      : 0;
+
+  // Determine rating - Hyperthyroidism gets 30% for 6 months, then rate residuals
+  let supportedRating = 30;
+  const ratingRationale = [];
+  const gaps = [];
+
+  ratingRationale.push(`${relevantLogs.length} hyperthyroidism symptoms logged in ${days} days`);
+  ratingRationale.push('Initial 30% rating applies for 6 months after diagnosis');
+
+  if (cardiacSymptoms.length > 0) {
+    ratingRationale.push(`${cardiacSymptoms.length} cardiac symptoms (rapid/irregular heartbeat) - may warrant separate evaluation under DC 7008`);
+  }
+
+  if (eyeSymptoms.length > 0) {
+    ratingRationale.push(`${eyeSymptoms.length} Graves\' eye symptoms documented - may warrant separate evaluation under eye DCs`);
+    gaps.push('Obtain ophthalmology evaluation for Graves\' eye disease - separately ratable');
+  }
+
+  if (metabolicSymptoms.length > 0) {
+    ratingRationale.push(`Metabolic symptoms documented: weight loss, heat intolerance, sweating`);
+  }
+
+  if (neurologicSymptoms.length > 0) {
+    ratingRationale.push(`Neurological symptoms documented: tremor, anxiety, sleep difficulty`);
+  }
+
+  ratingRationale.push(`Average symptom severity: ${avgSeverity.toFixed(1)}/10`);
+  ratingRationale.push('After 6 months, rate residuals under appropriate diagnostic codes');
+
+  // Documentation gaps
+  if (cardiacSymptoms.length === 0) {
+    gaps.push('Document cardiac symptoms (rapid heartbeat, palpitations) if present - separately ratable');
+  }
+  if (eyeSymptoms.length === 0) {
+    gaps.push('Document eye symptoms (bulging, double vision, irritation) if present - separately ratable');
+  }
+  gaps.push('Track thyroid lab values (TSH, T3, T4) when available');
+  gaps.push('Document any hospitalizations or thyroid storm episodes');
+
+  return {
+    hasData: true,
+    condition: 'Hyperthyroidism/Graves\' Disease',
+    diagnosticCode: '7900',
+    cfrReference: '38 CFR 4.119',
+    supportedRating,
+    ratingRationale,
+    gaps,
+    metrics: {
+      totalLogs: relevantLogs.length,
+      cardiacSymptoms: cardiacSymptoms.length,
+      metabolicSymptoms: metabolicSymptoms.length,
+      neurologicSymptoms: neurologicSymptoms.length,
+      muscleSymptoms: muscleSymptoms.length,
+      eyeSymptoms: eyeSymptoms.length,
+      avgSeverity: parseFloat(avgSeverity.toFixed(1)),
+      hasGravesEyeDisease: eyeSymptoms.length > 0,
+    },
+    criteria: HYPERTHYROIDISM_CRITERIA,
+  };
+};
+
+/**
+ * Analyze Thyroiditis symptom logs
+ * DC 7906 - 38 CFR 4.119
+ */
+export const analyzeThyroiditisLogs = (logs, options = {}) => {
+  const { days = 90 } = options;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - days);
+
+  const symptomIds = CONDITIONS.THYROIDITIS.symptomIds;
+
+  // Also check for hyper/hypo symptoms that indicate thyroid dysfunction phase
+  const hyperSymptomIds = CONDITIONS.HYPERTHYROIDISM.symptomIds;
+  const hypoSymptomIds = CONDITIONS.HYPOTHYROIDISM.symptomIds;
+
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.date || log.timestamp);
+    const symptomId = getLogSymptomId(log);
+    return logDate >= cutoffDate && symptomId && symptomIds.includes(symptomId);
+  });
+
+  // Also get hyper/hypo logs to determine phase
+  const hyperLogs = logs.filter(log => {
+    const logDate = new Date(log.date || log.timestamp);
+    const symptomId = getLogSymptomId(log);
+    return logDate >= cutoffDate && symptomId && hyperSymptomIds.includes(symptomId);
+  });
+
+  const hypoLogs = logs.filter(log => {
+    const logDate = new Date(log.date || log.timestamp);
+    const symptomId = getLogSymptomId(log);
+    return logDate >= cutoffDate && symptomId && hypoSymptomIds.includes(symptomId);
+  });
+
+  const allRelevantLogs = [...relevantLogs, ...hyperLogs, ...hypoLogs];
+
+  if (relevantLogs.length === 0 && hyperLogs.length === 0 && hypoLogs.length === 0) {
+    return {
+      hasData: false,
+      condition: 'Thyroiditis',
+      diagnosticCode: '7906',
+      supportedRating: null,
+      ratingRationale: [],
+      gaps: ['Start logging thyroiditis symptoms including neck pain, swelling, and thyroid dysfunction symptoms'],
+      metrics: {},
+    };
+  }
+
+  // Categorize thyroiditis-specific symptoms
+  const neckSymptoms = relevantLogs.filter(log =>
+      ['thyroiditis-neck-pain', 'thyroiditis-swelling', 'thyroiditis-difficulty-swallowing'].includes(getLogSymptomId(log))
+  );
+  const hyperPhaseMarkers = relevantLogs.filter(log =>
+      getLogSymptomId(log) === 'thyroiditis-hyper-phase'
+  );
+  const hypoPhaseMarkers = relevantLogs.filter(log =>
+      getLogSymptomId(log) === 'thyroiditis-hypo-phase'
+  );
+
+  // Calculate average severity
+  const severities = allRelevantLogs.map(log => log.severity || 5).filter(s => s > 0);
+  const avgSeverity = severities.length > 0
+      ? severities.reduce((a, b) => a + b, 0) / severities.length
+      : 0;
+
+  // Determine phase and rating
+  let supportedRating = 0;
+  let currentPhase = 'euthyroid';
+  const ratingRationale = [];
+  const gaps = [];
+
+  // Determine predominant phase
+  if (hyperPhaseMarkers.length > hypoPhaseMarkers.length || hyperLogs.length > hypoLogs.length) {
+    currentPhase = 'hyperthyroid';
+    supportedRating = 30;
+    ratingRationale.push('Thyroiditis manifesting as hyperthyroidism - rated under DC 7900');
+    ratingRationale.push('30% rating for hyperthyroid phase');
+  } else if (hypoPhaseMarkers.length > hyperPhaseMarkers.length || hypoLogs.length > hyperLogs.length) {
+    currentPhase = 'hypothyroid';
+    supportedRating = 30;
+    ratingRationale.push('Thyroiditis manifesting as hypothyroidism - rated under DC 7903');
+    ratingRationale.push('30% rating for hypothyroid phase (without myxedema)');
+  } else {
+    currentPhase = 'euthyroid';
+    supportedRating = 0;
+    ratingRationale.push('Thyroiditis with normal thyroid function (euthyroid)');
+    ratingRationale.push('0% rating when thyroid function is normal');
+  }
+
+  ratingRationale.push(`${allRelevantLogs.length} total symptoms logged in ${days} days`);
+
+  if (neckSymptoms.length > 0) {
+    ratingRationale.push(`${neckSymptoms.length} neck/thyroid symptoms (pain, swelling, difficulty swallowing)`);
+  }
+
+  ratingRationale.push(`Average symptom severity: ${avgSeverity.toFixed(1)}/10`);
+
+  // Documentation gaps
+  gaps.push('Document current thyroid function status (hyper, hypo, or normal)');
+  gaps.push('Track thyroid lab values (TSH, T3, T4) to establish phase');
+  if (currentPhase === 'euthyroid') {
+    gaps.push('Log hyperthyroid or hypothyroid symptoms if they develop');
+  }
+
+  return {
+    hasData: true,
+    condition: 'Thyroiditis',
+    diagnosticCode: '7906',
+    cfrReference: '38 CFR 4.119',
+    supportedRating,
+    ratingRationale,
+    gaps,
+    metrics: {
+      totalLogs: allRelevantLogs.length,
+      thyroiditisSpecificLogs: relevantLogs.length,
+      hyperLogs: hyperLogs.length,
+      hypoLogs: hypoLogs.length,
+      neckSymptoms: neckSymptoms.length,
+      avgSeverity: parseFloat(avgSeverity.toFixed(1)),
+      currentPhase,
+    },
+    criteria: THYROIDITIS_CRITERIA,
+  };
+};
+
+/**
+ * Analyze Hyperparathyroidism symptom logs
+ * DC 7904 - 38 CFR 4.119
+ */
+export const analyzeHyperparathyroidismLogs = (logs, options = {}) => {
+  const { days = 90 } = options;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - days);
+
+  const symptomIds = CONDITIONS.HYPERPARATHYROIDISM.symptomIds;
+
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.date || log.timestamp);
+    const symptomId = getLogSymptomId(log);
+    return logDate >= cutoffDate && symptomId && symptomIds.includes(symptomId);
+  });
+
+  if (relevantLogs.length === 0) {
+    return {
+      hasData: false,
+      condition: 'Hyperparathyroidism',
+      diagnosticCode: '7904',
+      supportedRating: null,
+      ratingRationale: [],
+      gaps: ['Start logging hyperparathyroidism symptoms including fatigue, bone pain, kidney stones, and GI symptoms'],
+      metrics: {},
+    };
+  }
+
+  // Categorize symptoms - "Stones, Bones, Groans, and Moans"
+  const kidneySymptoms = relevantLogs.filter(log =>
+      ['hpth-kidney-stones', 'hpth-excessive-thirst', 'hpth-frequent-urination'].includes(getLogSymptomId(log))
+  );
+  const boneSymptoms = relevantLogs.filter(log =>
+      ['hpth-bone-pain', 'hpth-fracture', 'hpth-muscle-weakness'].includes(getLogSymptomId(log))
+  );
+  const giSymptoms = relevantLogs.filter(log =>
+      ['hpth-abdominal-pain', 'hpth-nausea', 'hpth-constipation', 'hpth-anorexia'].includes(getLogSymptomId(log))
+  );
+  const neuroSymptoms = relevantLogs.filter(log =>
+      ['hpth-confusion', 'hpth-depression', 'hpth-fatigue'].includes(getLogSymptomId(log))
+  );
+  const fractureLogs = relevantLogs.filter(log =>
+      getLogSymptomId(log) === 'hpth-fracture'
+  );
+
+  // Calculate average severity
+  const severities = relevantLogs.map(log => log.severity || 5).filter(s => s > 0);
+  const avgSeverity = severities.length > 0
+      ? severities.reduce((a, b) => a + b, 0) / severities.length
+      : 0;
+
+  // Determine rating based on symptoms
+  let supportedRating = 0;
+  const ratingRationale = [];
+  const gaps = [];
+
+  ratingRationale.push(`${relevantLogs.length} hyperparathyroidism symptoms logged in ${days} days`);
+
+  // Check for hypercalcemia indicators (60% criteria)
+  const hasHypercalcemiaIndicators = fractureLogs.length > 0 ||
+      (kidneySymptoms.length >= 3 && boneSymptoms.length >= 2);
+
+  // Check for persistent symptoms (10% criteria)
+  const hasPersistentSymptoms = giSymptoms.length > 0 || neuroSymptoms.length > 0;
+
+  if (hasHypercalcemiaIndicators) {
+    supportedRating = 60;
+    ratingRationale.push('Symptoms suggest significant hypercalcemia');
+    if (fractureLogs.length > 0) {
+      ratingRationale.push('Fragility fracture documented - supports 60% rating');
+    }
+    ratingRationale.push('60% rating requires lab confirmation: Ca >12 mg/dL, creatinine clearance <60, or T-score <-2.5');
+  } else if (hasPersistentSymptoms) {
+    supportedRating = 10;
+    ratingRationale.push('Persistent symptoms (fatigue, anorexia, nausea, constipation) documented');
+    ratingRationale.push('10% rating for symptoms despite treatment or requiring continuous medication');
+  } else {
+    supportedRating = 0;
+    ratingRationale.push('Minimal symptoms documented - may be asymptomatic');
+    ratingRationale.push('0% rating if asymptomatic and controlled');
+  }
+
+  // Add symptom category details
+  if (kidneySymptoms.length > 0) {
+    ratingRationale.push(`Kidney symptoms: ${kidneySymptoms.length} (stones, thirst, urination)`);
+  }
+  if (boneSymptoms.length > 0) {
+    ratingRationale.push(`Bone symptoms: ${boneSymptoms.length} (pain, weakness, fractures)`);
+  }
+  if (giSymptoms.length > 0) {
+    ratingRationale.push(`GI symptoms: ${giSymptoms.length} (abdominal pain, nausea, constipation)`);
+  }
+  if (neuroSymptoms.length > 0) {
+    ratingRationale.push(`Neuropsychiatric symptoms: ${neuroSymptoms.length} (confusion, depression, fatigue)`);
+  }
+
+  ratingRationale.push(`Average symptom severity: ${avgSeverity.toFixed(1)}/10`);
+
+  // Documentation gaps
+  gaps.push('Document calcium levels and other lab values when available');
+  gaps.push('Obtain bone density (DEXA) scan results - T-score <-2.5 supports higher rating');
+  if (kidneySymptoms.length > 0) {
+    gaps.push('Document creatinine clearance if kidney involvement present');
+  }
+  gaps.push('Note if surgery performed or if continuous medication required');
+
+  return {
+    hasData: true,
+    condition: 'Hyperparathyroidism',
+    diagnosticCode: '7904',
+    cfrReference: '38 CFR 4.119',
+    supportedRating,
+    ratingRationale,
+    gaps,
+    metrics: {
+      totalLogs: relevantLogs.length,
+      kidneySymptoms: kidneySymptoms.length,
+      boneSymptoms: boneSymptoms.length,
+      giSymptoms: giSymptoms.length,
+      neuroSymptoms: neuroSymptoms.length,
+      hasFracture: fractureLogs.length > 0,
+      avgSeverity: parseFloat(avgSeverity.toFixed(1)),
+    },
+    criteria: HYPERPARATHYROIDISM_CRITERIA,
+  };
+};
+
+/**
+ * Analyze Hypoparathyroidism symptom logs
+ * DC 7905 - 38 CFR 4.119
+ */
+export const analyzeHypoparathyroidismLogs = (logs, options = {}) => {
+  const { days = 90 } = options;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - days);
+
+  const symptomIds = CONDITIONS.HYPOPARATHYROIDISM.symptomIds;
+
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.date || log.timestamp);
+    const symptomId = getLogSymptomId(log);
+    return logDate >= cutoffDate && symptomId && symptomIds.includes(symptomId);
+  });
+
+  if (relevantLogs.length === 0) {
+    return {
+      hasData: false,
+      condition: 'Hypoparathyroidism',
+      diagnosticCode: '7905',
+      supportedRating: null,
+      ratingRationale: [],
+      gaps: ['Start logging hypoparathyroidism symptoms including muscle cramps, tingling, spasms, and fatigue'],
+      metrics: {},
+    };
+  }
+
+  // Categorize symptoms
+  const neuromuscularSymptoms = relevantLogs.filter(log =>
+      ['hopth-muscle-cramps', 'hopth-tingling', 'hopth-muscle-spasms'].includes(getLogSymptomId(log))
+  );
+  const neuropsychSymptoms = relevantLogs.filter(log =>
+      ['hopth-seizures', 'hopth-depression', 'hopth-anxiety', 'hopth-memory-problems'].includes(getLogSymptomId(log))
+  );
+  const integumentarySymptoms = relevantLogs.filter(log =>
+      ['hopth-dry-skin', 'hopth-brittle-nails', 'hopth-hair-loss'].includes(getLogSymptomId(log))
+  );
+  const otherSymptoms = relevantLogs.filter(log =>
+      ['hopth-fatigue', 'hopth-cataracts'].includes(getLogSymptomId(log))
+  );
+  const seizureLogs = relevantLogs.filter(log =>
+      getLogSymptomId(log) === 'hopth-seizures'
+  );
+  const cataractLogs = relevantLogs.filter(log =>
+      getLogSymptomId(log) === 'hopth-cataracts'
+  );
+
+  // Calculate average severity
+  const severities = relevantLogs.map(log => log.severity || 5).filter(s => s > 0);
+  const avgSeverity = severities.length > 0
+      ? severities.reduce((a, b) => a + b, 0) / severities.length
+      : 0;
+
+  // Hypoparathyroidism gets 100% for 3 months, then rate residuals
+  // Since we can't determine diagnosis date, we note both options
+  let supportedRating = 100;
+  const ratingRationale = [];
+  const gaps = [];
+
+  ratingRationale.push(`${relevantLogs.length} hypoparathyroidism symptoms logged in ${days} days`);
+  ratingRationale.push('Initial 100% rating applies for 3 months after diagnosis');
+  ratingRationale.push('After 3 months, rate chronic residuals under appropriate codes');
+
+  // Document symptom categories
+  if (neuromuscularSymptoms.length > 0) {
+    ratingRationale.push(`${neuromuscularSymptoms.length} neuromuscular symptoms (cramps, tingling, spasms/tetany)`);
+  }
+
+  if (seizureLogs.length > 0) {
+    ratingRationale.push(`${seizureLogs.length} seizure episodes documented - rate separately under DC 8910-8914`);
+  }
+
+  if (cataractLogs.length > 0) {
+    ratingRationale.push('Cataracts documented - rate separately under eye diagnostic codes');
+  }
+
+  if (neuropsychSymptoms.length > 0) {
+    ratingRationale.push(`${neuropsychSymptoms.length} neuropsychiatric symptoms (depression, anxiety, memory issues)`);
+  }
+
+  if (integumentarySymptoms.length > 0) {
+    ratingRationale.push(`${integumentarySymptoms.length} integumentary symptoms (dry skin, brittle nails, hair loss)`);
+  }
+
+  ratingRationale.push(`Average symptom severity: ${avgSeverity.toFixed(1)}/10`);
+
+  // Documentation gaps
+  gaps.push('Document diagnosis date to determine if within initial 3-month period');
+  gaps.push('Track calcium and PTH lab values when available');
+  if (seizureLogs.length > 0) {
+    gaps.push('Seizures from hypocalcemia may be separately rated - document all episodes');
+  }
+  if (cataractLogs.length > 0) {
+    gaps.push('Obtain ophthalmology evaluation for cataracts - separately ratable');
+  }
+  gaps.push('Document any kidney complications (nephrolithiasis)');
+  gaps.push('Note if cardiac involvement present (CHF) - separately ratable');
+
+  return {
+    hasData: true,
+    condition: 'Hypoparathyroidism',
+    diagnosticCode: '7905',
+    cfrReference: '38 CFR 4.119',
+    supportedRating,
+    ratingRationale,
+    gaps,
+    metrics: {
+      totalLogs: relevantLogs.length,
+      neuromuscularSymptoms: neuromuscularSymptoms.length,
+      neuropsychSymptoms: neuropsychSymptoms.length,
+      integumentarySymptoms: integumentarySymptoms.length,
+      hasSeizures: seizureLogs.length > 0,
+      hasCataracts: cataractLogs.length > 0,
+      avgSeverity: parseFloat(avgSeverity.toFixed(1)),
+    },
+    criteria: HYPOPARATHYROIDISM_CRITERIA,
+  };
+};
+
+// ============================================
+// PHASE 3B: ADRENAL & PITUITARY ANALYSIS FUNCTIONS
+// ============================================
+
+/**
+ * Analyze Addison's Disease symptom logs
+ * DC 7911 - 38 CFR 4.119
+ */
+export const analyzeAddisonsDiseaseLog = (logs, options = {}) => {
+  const { days = 365 } = options; // Use 365 days for crisis/episode counting
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - days);
+
+  const symptomIds = CONDITIONS.ADDISONS_DISEASE.symptomIds;
+
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.date || log.timestamp);
+    const symptomId = getLogSymptomId(log);
+    return logDate >= cutoffDate && symptomId && symptomIds.includes(symptomId);
+  });
+
+  if (relevantLogs.length === 0) {
+    return {
+      hasData: false,
+      condition: "Addison's Disease",
+      diagnosticCode: '7911',
+      supportedRating: null,
+      ratingRationale: [],
+      gaps: ['Start logging Addison\'s disease symptoms including crises, episodes, fatigue, and other symptoms'],
+      metrics: {},
+    };
+  }
+
+  // Count crises and episodes (most critical for rating)
+  const crisisLogs = relevantLogs.filter(log =>
+      getLogSymptomId(log) === 'addisons-crisis'
+  );
+  const episodeLogs = relevantLogs.filter(log =>
+      getLogSymptomId(log) === 'addisons-episode'
+  );
+
+  // Other symptom categories
+  const fatigueWeaknessLogs = relevantLogs.filter(log =>
+      ['addisons-fatigue', 'addisons-muscle-weakness'].includes(getLogSymptomId(log))
+  );
+  const giSymptomLogs = relevantLogs.filter(log =>
+      ['addisons-nausea', 'addisons-abdominal-pain'].includes(getLogSymptomId(log))
+  );
+  const cardiovascularLogs = relevantLogs.filter(log =>
+      ['addisons-hypotension', 'addisons-dizziness'].includes(getLogSymptomId(log))
+  );
+  const skinLogs = relevantLogs.filter(log =>
+      getLogSymptomId(log) === 'addisons-hyperpigmentation'
+  );
+
+  // Calculate average severity
+  const severities = relevantLogs.map(log => log.severity || 5).filter(s => s > 0);
+  const avgSeverity = severities.length > 0
+      ? severities.reduce((a, b) => a + b, 0) / severities.length
+      : 0;
+
+  const crisisCount = crisisLogs.length;
+  const episodeCount = episodeLogs.length;
+
+  // Determine rating based on crisis/episode frequency
+  let supportedRating = 0;
+  const ratingRationale = [];
+  const gaps = [];
+
+  if (crisisCount >= 4) {
+    supportedRating = 60;
+    ratingRationale.push(`${crisisCount} adrenal crises documented in past year`);
+    ratingRationale.push('4+ crises per year supports 60% rating');
+  } else if (crisisCount >= 3 || episodeCount >= 5) {
+    supportedRating = 40;
+    if (crisisCount >= 3) {
+      ratingRationale.push(`${crisisCount} adrenal crises documented in past year`);
+    }
+    if (episodeCount >= 5) {
+      ratingRationale.push(`${episodeCount} adrenal episodes documented in past year`);
+    }
+    ratingRationale.push('3 crises OR 5+ episodes supports 40% rating');
+  } else if (crisisCount >= 1 || episodeCount >= 2 || fatigueWeaknessLogs.length > 0) {
+    supportedRating = 20;
+    if (crisisCount >= 1) {
+      ratingRationale.push(`${crisisCount} adrenal crisis documented in past year`);
+    }
+    if (episodeCount >= 2) {
+      ratingRationale.push(`${episodeCount} adrenal episodes documented in past year`);
+    }
+    if (fatigueWeaknessLogs.length > 0) {
+      ratingRationale.push(`Weakness and fatigability documented (${fatigueWeaknessLogs.length} logs)`);
+    }
+    ratingRationale.push('1-2 crises OR 2-4 episodes OR weakness/fatigue supports 20% rating');
+  } else {
+    supportedRating = 20;
+    ratingRationale.push('Symptoms documented - minimum 20% if on corticosteroid therapy');
+  }
+
+  ratingRationale.push(`${relevantLogs.length} total symptoms logged in past ${days} days`);
+  ratingRationale.push(`Average symptom severity: ${avgSeverity.toFixed(1)}/10`);
+
+  // Add symptom category details
+  if (cardiovascularLogs.length > 0) {
+    ratingRationale.push(`Cardiovascular symptoms: ${cardiovascularLogs.length} (hypotension, dizziness)`);
+  }
+  if (giSymptomLogs.length > 0) {
+    ratingRationale.push(`GI symptoms: ${giSymptomLogs.length} (nausea, abdominal pain)`);
+  }
+  if (skinLogs.length > 0) {
+    ratingRationale.push('Hyperpigmentation documented');
+  }
+
+  // Documentation gaps
+  if (crisisCount === 0 && episodeCount === 0) {
+    gaps.push('Document any adrenal crises or episodes with detailed descriptions');
+  }
+  gaps.push('Note if currently on corticosteroid replacement therapy');
+  gaps.push('Document any emergency room visits or hospitalizations for adrenal insufficiency');
+  if (crisisCount > 0) {
+    gaps.push('For crises: document vital signs, treatments required, and recovery time');
+  }
+
+  return {
+    hasData: true,
+    condition: "Addison's Disease",
+    diagnosticCode: '7911',
+    cfrReference: '38 CFR 4.119',
+    supportedRating,
+    ratingRationale,
+    gaps,
+    metrics: {
+      totalLogs: relevantLogs.length,
+      crisisCount,
+      episodeCount,
+      fatigueWeaknessLogs: fatigueWeaknessLogs.length,
+      giSymptomLogs: giSymptomLogs.length,
+      cardiovascularLogs: cardiovascularLogs.length,
+      hasHyperpigmentation: skinLogs.length > 0,
+      avgSeverity: parseFloat(avgSeverity.toFixed(1)),
+      evaluationPeriodDays: days,
+    },
+    criteria: ADDISONS_DISEASE_CRITERIA,
+  };
+};
+
+/**
+ * Analyze Cushing's Syndrome symptom logs
+ * DC 7907 - 38 CFR 4.119
+ */
+export const analyzeCushingsSyndromeLogs = (logs, options = {}) => {
+  const { days = 90 } = options;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - days);
+
+  const symptomIds = CONDITIONS.CUSHINGS_SYNDROME.symptomIds;
+
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.date || log.timestamp);
+    const symptomId = getLogSymptomId(log);
+    return logDate >= cutoffDate && symptomId && symptomIds.includes(symptomId);
+  });
+
+  if (relevantLogs.length === 0) {
+    return {
+      hasData: false,
+      condition: "Cushing's Syndrome",
+      diagnosticCode: '7907',
+      supportedRating: null,
+      ratingRationale: [],
+      gaps: ['Start logging Cushing\'s syndrome symptoms including weight changes, skin changes, and muscle weakness'],
+      metrics: {},
+    };
+  }
+
+  // Key symptom categories for rating determination
+  const cushingoidFeatures = relevantLogs.filter(log =>
+      ['cushings-moon-face', 'cushings-buffalo-hump', 'cushings-striae',
+        'cushings-weight-gain', 'cushings-thin-skin', 'cushings-bruising'].includes(getLogSymptomId(log))
+  );
+
+  const muscleWastingLogs = relevantLogs.filter(log =>
+      ['cushings-muscle-weakness', 'cushings-muscle-wasting'].includes(getLogSymptomId(log))
+  );
+
+  const metabolicLogs = relevantLogs.filter(log =>
+      ['cushings-hypertension', 'cushings-glucose', 'cushings-osteoporosis'].includes(getLogSymptomId(log))
+  );
+
+  const otherLogs = relevantLogs.filter(log =>
+      ['cushings-fatigue', 'cushings-mood', 'cushings-insomnia',
+        'cushings-infections', 'cushings-acne', 'cushings-hirsutism',
+        'cushings-menstrual', 'cushings-erectile'].includes(getLogSymptomId(log))
+  );
+
+  // Check for specific 100% criteria components
+  const hasOsteoporosis = relevantLogs.some(log => getLogSymptomId(log) === 'cushings-osteoporosis');
+  const hasHypertension = relevantLogs.some(log => getLogSymptomId(log) === 'cushings-hypertension');
+  const hasSevereMuscleWasting = muscleWastingLogs.length >= 3 ||
+      muscleWastingLogs.some(log => (log.severity || 5) >= 8);
+
+  // Check for 30% criteria components
+  const hasStriae = relevantLogs.some(log => getLogSymptomId(log) === 'cushings-striae');
+  const hasMoonFace = relevantLogs.some(log => getLogSymptomId(log) === 'cushings-moon-face');
+  const hasWeightGain = relevantLogs.some(log => getLogSymptomId(log) === 'cushings-weight-gain');
+  const hasGlucoseIntolerance = relevantLogs.some(log => getLogSymptomId(log) === 'cushings-glucose');
+  const hasVascularFragility = relevantLogs.some(log =>
+      ['cushings-thin-skin', 'cushings-bruising'].includes(getLogSymptomId(log))
+  );
+
+  // Calculate average severity
+  const severities = relevantLogs.map(log => log.severity || 5).filter(s => s > 0);
+  const avgSeverity = severities.length > 0
+      ? severities.reduce((a, b) => a + b, 0) / severities.length
+      : 0;
+
+  // Determine rating
+  let supportedRating = 0;
+  const ratingRationale = [];
+  const gaps = [];
+
+  // Check for 100% rating (most severe)
+  if (hasOsteoporosis && hasHypertension && hasSevereMuscleWasting) {
+    supportedRating = 100;
+    ratingRationale.push('Active progressive disease documented with:');
+    ratingRationale.push('- Osteoporosis/bone involvement');
+    ratingRationale.push('- Hypertension');
+    ratingRationale.push('- Severe proximal muscle wasting');
+    ratingRationale.push('100% rating for active progressive disease with all three findings');
+  }
+  // Check for 60% rating
+  else if (hasSevereMuscleWasting) {
+    supportedRating = 60;
+    ratingRationale.push('Proximal muscle wasting documented');
+    ratingRationale.push(`${muscleWastingLogs.length} muscle weakness/wasting symptoms logged`);
+    ratingRationale.push('60% rating for muscle wasting causing functional limitations');
+  }
+  // Check for 30% rating (classic Cushingoid features)
+  else if (cushingoidFeatures.length >= 2) {
+    supportedRating = 30;
+    ratingRationale.push('Classic Cushingoid features documented:');
+    if (hasStriae) ratingRationale.push('- Striae (stretch marks)');
+    if (hasWeightGain) ratingRationale.push('- Central obesity');
+    if (hasMoonFace) ratingRationale.push('- Moon face');
+    if (hasGlucoseIntolerance) ratingRationale.push('- Glucose intolerance');
+    if (hasVascularFragility) ratingRationale.push('- Vascular fragility/easy bruising');
+    ratingRationale.push('30% rating for typical Cushingoid presentation');
+  } else {
+    supportedRating = 30;
+    ratingRationale.push('Cushing\'s syndrome symptoms documented');
+    ratingRationale.push('Minimum 30% rating applies for 6 months after diagnosis');
+  }
+
+  ratingRationale.push(`${relevantLogs.length} total symptoms logged in ${days} days`);
+  ratingRationale.push(`Average symptom severity: ${avgSeverity.toFixed(1)}/10`);
+  ratingRationale.push('Note: Ratings continue for 6 months after diagnosis, then rate residuals');
+
+  // Documentation gaps
+  if (!hasSevereMuscleWasting) {
+    gaps.push('Document any difficulty rising from chair, climbing stairs, or raising arms');
+  }
+  if (!hasOsteoporosis) {
+    gaps.push('Document any bone density issues or fractures');
+  }
+  if (!hasHypertension) {
+    gaps.push('Track and document blood pressure readings');
+  }
+  if (!hasGlucoseIntolerance) {
+    gaps.push('Document any blood sugar abnormalities');
+  }
+  gaps.push('Note diagnosis date to determine if within initial 6-month period');
+
+  return {
+    hasData: true,
+    condition: "Cushing's Syndrome",
+    diagnosticCode: '7907',
+    cfrReference: '38 CFR 4.119',
+    supportedRating,
+    ratingRationale,
+    gaps,
+    metrics: {
+      totalLogs: relevantLogs.length,
+      cushingoidFeatures: cushingoidFeatures.length,
+      muscleWastingLogs: muscleWastingLogs.length,
+      metabolicLogs: metabolicLogs.length,
+      hasOsteoporosis,
+      hasHypertension,
+      hasSevereMuscleWasting,
+      hasStriae,
+      hasMoonFace,
+      avgSeverity: parseFloat(avgSeverity.toFixed(1)),
+    },
+    criteria: CUSHINGS_SYNDROME_CRITERIA,
+  };
+};
+
+/**
+ * Analyze Diabetes Insipidus symptom logs
+ * DC 7909 - 38 CFR 4.119
+ */
+export const analyzeDiabetesInsipidusLogs = (logs, options = {}) => {
+  const { days = 90 } = options;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - days);
+
+  const symptomIds = CONDITIONS.DIABETES_INSIPIDUS.symptomIds;
+
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.date || log.timestamp);
+    const symptomId = getLogSymptomId(log);
+    return logDate >= cutoffDate && symptomId && symptomIds.includes(symptomId);
+  });
+
+  if (relevantLogs.length === 0) {
+    return {
+      hasData: false,
+      condition: 'Diabetes Insipidus',
+      diagnosticCode: '7909',
+      supportedRating: null,
+      ratingRationale: [],
+      gaps: ['Start logging diabetes insipidus symptoms including excessive urination and thirst'],
+      metrics: {},
+    };
+  }
+
+  // Key symptom categories
+  const polyuriaLogs = relevantLogs.filter(log =>
+      ['di-polyuria', 'di-nocturia'].includes(getLogSymptomId(log))
+  );
+  const polydipsiaLogs = relevantLogs.filter(log =>
+      getLogSymptomId(log) === 'di-polydipsia'
+  );
+  const dehydrationLogs = relevantLogs.filter(log =>
+      ['di-dehydration', 'di-dizziness', 'di-headache'].includes(getLogSymptomId(log))
+  );
+  const otherLogs = relevantLogs.filter(log =>
+      ['di-fatigue', 'di-muscle-cramps', 'di-constipation', 'di-weight-loss'].includes(getLogSymptomId(log))
+  );
+
+  // Calculate average severity
+  const severities = relevantLogs.map(log => log.severity || 5).filter(s => s > 0);
+  const avgSeverity = severities.length > 0
+      ? severities.reduce((a, b) => a + b, 0) / severities.length
+      : 0;
+
+  // Check for persistent polyuria (key criterion for 10% after initial period)
+  const hasPersistentPolyuria = polyuriaLogs.length >= 5; // Multiple logs suggest persistence
+
+  // Determine rating
+  let supportedRating = 30;
+  const ratingRationale = [];
+  const gaps = [];
+
+  ratingRationale.push(`${relevantLogs.length} diabetes insipidus symptoms logged in ${days} days`);
+  ratingRationale.push('Initial 30% rating applies for 3 months after diagnosis');
+
+  if (hasPersistentPolyuria) {
+    ratingRationale.push(`Persistent polyuria documented (${polyuriaLogs.length} polyuria/nocturia logs)`);
+    ratingRationale.push('After initial 3 months: 10% for persistent polyuria or continuous therapy');
+    supportedRating = '30/10'; // Indicate both possible ratings
+  } else {
+    ratingRationale.push('After 3 months, if condition subsides, rate residuals under appropriate codes');
+  }
+
+  if (polydipsiaLogs.length > 0) {
+    ratingRationale.push(`Polydipsia (excessive thirst) documented: ${polydipsiaLogs.length} logs`);
+  }
+
+  if (dehydrationLogs.length > 0) {
+    ratingRationale.push(`Dehydration-related symptoms: ${dehydrationLogs.length} logs`);
+  }
+
+  ratingRationale.push(`Average symptom severity: ${avgSeverity.toFixed(1)}/10`);
+
+  // Documentation gaps
+  gaps.push('Document diagnosis date to determine rating period');
+  gaps.push('Note if on continuous hormonal therapy (desmopressin/DDAVP)');
+  if (polyuriaLogs.length < 3) {
+    gaps.push('Document frequency and volume of urination');
+  }
+  gaps.push('Track fluid intake and urine output if possible');
+
+  return {
+    hasData: true,
+    condition: 'Diabetes Insipidus',
+    diagnosticCode: '7909',
+    cfrReference: '38 CFR 4.119',
+    supportedRating: 30, // Default to initial rating
+    ratingRationale,
+    gaps,
+    metrics: {
+      totalLogs: relevantLogs.length,
+      polyuriaLogs: polyuriaLogs.length,
+      polydipsiaLogs: polydipsiaLogs.length,
+      dehydrationLogs: dehydrationLogs.length,
+      hasPersistentPolyuria,
+      avgSeverity: parseFloat(avgSeverity.toFixed(1)),
+    },
+    criteria: DIABETES_INSIPIDUS_CRITERIA,
+  };
+};
+
+/**
+ * Analyze Hyperaldosteronism symptom logs
+ * DC 7917 - 38 CFR 4.119
+ */
+export const analyzeHyperaldosteronismLogs = (logs, options = {}) => {
+  const { days = 90 } = options;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - days);
+
+  const symptomIds = CONDITIONS.HYPERALDOSTERONISM.symptomIds;
+
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.date || log.timestamp);
+    const symptomId = getLogSymptomId(log);
+    return logDate >= cutoffDate && symptomId && symptomIds.includes(symptomId);
+  });
+
+  if (relevantLogs.length === 0) {
+    return {
+      hasData: false,
+      condition: 'Hyperaldosteronism',
+      diagnosticCode: '7917',
+      supportedRating: null,
+      ratingRationale: [],
+      gaps: ['Start logging hyperaldosteronism symptoms including hypertension, muscle weakness, and fatigue'],
+      metrics: {},
+    };
+  }
+
+  // Key symptom categories
+  const hypertensionLogs = relevantLogs.filter(log =>
+      getLogSymptomId(log) === 'haldo-hypertension'
+  );
+  const hypokalemiaLogs = relevantLogs.filter(log =>
+      ['haldo-muscle-weakness', 'haldo-muscle-cramps', 'haldo-numbness',
+        'haldo-palpitations', 'haldo-constipation'].includes(getLogSymptomId(log))
+  );
+  const otherLogs = relevantLogs.filter(log =>
+      ['haldo-fatigue', 'haldo-headaches', 'haldo-polyuria',
+        'haldo-polydipsia', 'haldo-mood'].includes(getLogSymptomId(log))
+  );
+
+  // Calculate average severity
+  const severities = relevantLogs.map(log => log.severity || 5).filter(s => s > 0);
+  const avgSeverity = severities.length > 0
+      ? severities.reduce((a, b) => a + b, 0) / severities.length
+      : 0;
+
+  // Hyperaldosteronism is rated as neoplasm or by residuals
+  // Most common residual is hypertension - guide to rate under DC 7101
+  const ratingRationale = [];
+  const gaps = [];
+
+  ratingRationale.push(`${relevantLogs.length} hyperaldosteronism symptoms logged in ${days} days`);
+  ratingRationale.push('Per VA: Evaluate as benign or malignant neoplasm as appropriate');
+  ratingRationale.push('For benign cases, rate residuals under appropriate diagnostic codes');
+
+  if (hypertensionLogs.length > 0) {
+    ratingRationale.push(`Hypertension documented (${hypertensionLogs.length} logs) - rate under DC 7101`);
+  }
+
+  if (hypokalemiaLogs.length > 0) {
+    ratingRationale.push(`Hypokalemia symptoms: ${hypokalemiaLogs.length} (weakness, cramps, numbness, palpitations)`);
+  }
+
+  ratingRationale.push(`Average symptom severity: ${avgSeverity.toFixed(1)}/10`);
+  ratingRationale.push('Primary residual (hypertension) rated separately under cardiovascular codes');
+
+  // Documentation gaps
+  gaps.push('Document blood pressure readings for hypertension rating');
+  gaps.push('Note potassium levels when available');
+  gaps.push('Document if benign adenoma (Conn\'s syndrome) or other cause');
+  if (hypertensionLogs.length === 0) {
+    gaps.push('Track and log blood pressure - primary manifestation for rating');
+  }
+
+  return {
+    hasData: true,
+    condition: 'Hyperaldosteronism',
+    diagnosticCode: '7917',
+    cfrReference: '38 CFR 4.119',
+    supportedRating: 0, // Rated via residuals
+    ratingRationale,
+    gaps,
+    metrics: {
+      totalLogs: relevantLogs.length,
+      hypertensionLogs: hypertensionLogs.length,
+      hypokalemiaLogs: hypokalemiaLogs.length,
+      otherLogs: otherLogs.length,
+      avgSeverity: parseFloat(avgSeverity.toFixed(1)),
+    },
+    criteria: HYPERALDOSTERONISM_CRITERIA,
+  };
+};
+
 /**
  * Analyze Raynaud's symptom logs
  */
@@ -33334,6 +34837,31 @@ export const getColdInjuryRatingCriteria = (percent) => {
 export const getPADRatingCriteria = (percent) => {
   return PAD_CRITERIA.ratings.find(r => r.percent === percent) || null;
 };
+export const getHyperthyroidismRatingCriteria = (percent) => {
+  return HYPERTHYROIDISM_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getThyroiditisRatingCriteria = (percent) => {
+  return THYROIDITIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getHyperparathyroidismRatingCriteria = (percent) => {
+  return HYPERPARATHYROIDISM_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getHypoparathyroidismRatingCriteria = (percent) => {
+  return HYPOPARATHYROIDISM_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+// Phase 3B: Adrenal & Pituitary Helper Functions
+export const getAddisonsDiseaseRatingCriteria = (percent) => {
+  return ADDISONS_DISEASE_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getCushingsSyndromeRatingCriteria = (percent) => {
+  return CUSHINGS_SYNDROME_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getDiabetesInsipidusRatingCriteria = (percent) => {
+  return DIABETES_INSIPIDUS_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getHyperaldosteronismRatingCriteria = (percent) => {
+  return HYPERALDOSTERONISM_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
 // Phase 10: Digestive getRatingCriteria functions
 export const getCirrhosisRatingCriteria = (percent) => {
   return CIRRHOSIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
@@ -33576,8 +35104,17 @@ export const getAllIlioinguinalNerveRatings = () => ILIOINGUINAL_NERVE_CRITERIA.
 export const getAllJacksonianEpilepsyRatings = () => EPILEPSY_JACKSONIAN_CRITERIA.ratings;
 export const getAllDiencephalicEpilepsyRatings = () => EPILEPSY_DIENCEPHALIC_CRITERIA.ratings;
 export const getAllPsychomotorEpilepsyRatings = () => EPILEPSY_PSYCHOMOTOR_CRITERIA.ratings;
-export const getColdInjuryRatings = () => COLD_INJURY_CRITERIA.ratings;
-export const getPADRatings = () => PAD_CRITERIA.ratings;
+export const getAllColdInjuryRatings = () => COLD_INJURY_CRITERIA.ratings;
+export const getAllPADRatings = () => PAD_CRITERIA.ratings;
+export const getAllHyperthyroidismRatings = () => HYPERTHYROIDISM_CRITERIA.ratings;
+export const getAllThyroiditisRatings = () => THYROIDITIS_CRITERIA.ratings;
+export const getAllHyperparathyroidismRatings = () => HYPERPARATHYROIDISM_CRITERIA.ratings;
+export const getAllHypoparathyroidismRatings = () => HYPOPARATHYROIDISM_CRITERIA.ratings;
+export const getAllAddisonsDiseaseRatings = () => ADDISONS_DISEASE_CRITERIA.ratings;
+export const getAllCushingsSyndromeRatings = () => CUSHINGS_SYNDROME_CRITERIA.ratings;
+export const getAllDiabetesInsipidusRatings = () => DIABETES_INSIPIDUS_CRITERIA.ratings;
+export const getAllHyperaldosteronismRatings = () => HYPERALDOSTERONISM_CRITERIA.ratings;
+
 
 
 
@@ -33706,6 +35243,15 @@ export const getDiencephalicEpilepsyDefinition = (term) => EPILEPSY_DIENCEPHALIC
 export const getPsychomotorEpilepsyDefinition = (term) => EPILEPSY_PSYCHOMOTOR_CRITERIA.definitions[term] || null;
 export const getColdInjuryDefinition = (term) => COLD_INJURY_CRITERIA.definitions[term] || null;
 export const getPADDefinition = (term) => PAD_CRITERIA.definitions[term] || null;
+export const getHyperthyroidismDefinition = (term) => HYPERTHYROIDISM_CRITERIA.definitions[term] || null;
+export const getThyroiditisDefinition = (term) => THYROIDITIS_CRITERIA.definitions[term] || null;
+export const getHyperparathyroidismDefinition = (term) => HYPERPARATHYROIDISM_CRITERIA.definitions[term] || null;
+export const getHypoparathyroidismDefinition = (term) => HYPOPARATHYROIDISM_CRITERIA.definitions[term] || null;
+export const getAddisonsDiseaseDefinition = (term) => ADDISONS_DISEASE_CRITERIA.definitions[term] || null;
+export const getCushingsSyndromeDefinition = (term) => CUSHINGS_SYNDROME_CRITERIA.definitions[term] || null;
+export const getDiabetesInsipidusDefinition = (term) => DIABETES_INSIPIDUS_CRITERIA.definitions[term] || null;
+export const getHyperaldosteronismDefinition = (term) => HYPERALDOSTERONISM_CRITERIA.definitions[term] || null;
+
 
 
 

@@ -761,13 +761,28 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
     setSymptomFrequency(frequency);
   };
 
+
+  // Peripheral nerve prefixes to exclude from generic pain/GU detection
+  const peripheralNervePrefixes = ['uprn-', 'mdrn-', 'lwrn-', 'alrn-', 'radn-', 'medn-', 'ulnn-',
+    'mscn-', 'crcn-', 'ltn-', 'scin-', 'cpn-', 'spn-', 'dpn-', 'tibn-', 'ptn-', 'femn-',
+    'sapn-', 'obtn-', 'lfcn-', 'iin-'];
+  const isPeripheralNerveSymptomQL = peripheralNervePrefixes.some(prefix => selectedChronic?.symptomId?.startsWith(prefix));
+
+  // Phase 3A: Endocrine prefixes to exclude from generic pain/GU detection
+  const endocrinePrefixes = ['hyper-', 'graves-', 'thyroiditis-', 'hpth-', 'hopth-', 'hypo-',
+    'addisons-', 'cushings-', 'di-', 'haldo-'];
+  const isEndocrineSymptomQL = endocrinePrefixes.some(prefix => selectedChronic?.symptomId?.startsWith(prefix));
+
+
   // Determine symptom type - EXPANDED DETECTION
   const isMigraine = selectedChronic?.symptomId === 'migraine';
 
   // Sleep: match sleep-related symptoms only
-  const isSleepRelated = selectedChronic?.symptomId?.includes('sleep') ||
-      selectedChronic?.symptomId?.includes('insomnia') ||
-      ['sleep-issues', 'nightmares'].includes(selectedChronic?.symptomId);
+  const isSleepRelated = !isEndocrineSymptomQL && (
+      selectedChronic?.symptomId === 'sleep-issues' ||
+      selectedChronic?.symptomId === 'sleep-quality' ||
+      selectedChronic?.symptomId?.includes('insomnia')
+  );
 
   // PTSD - Specific PTSD symptoms only
   const isPTSDRelated = selectedChronic?.symptomId?.includes('ptsd') ||
@@ -818,14 +833,8 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
     'adjustment-unspecified'
   ].includes(selectedChronic?.symptomId);
 
-  // Peripheral nerve prefixes to exclude from generic pain/GU detection
-  const peripheralNervePrefixes = ['uprn-', 'mdrn-', 'lwrn-', 'alrn-', 'radn-', 'medn-', 'ulnn-',
-    'mscn-', 'crcn-', 'ltn-', 'scin-', 'cpn-', 'spn-', 'dpn-', 'tibn-', 'ptn-', 'femn-',
-    'sapn-', 'obtn-', 'lfcn-', 'iin-'];
-  const isPeripheralNerveSymptomQL = peripheralNervePrefixes.some(prefix => selectedChronic?.symptomId?.startsWith(prefix));
-
   // Pain: match ANY pain-related symptom only
-  const isPainRelated = !isPeripheralNerveSymptomQL && (
+  const isPainRelated = !isPeripheralNerveSymptomQL && !isEndocrineSymptomQL && (
       selectedChronic?.symptomId?.includes('pain') ||
       selectedChronic?.symptomId?.includes('-ache') ||
       selectedChronic?.symptomId?.includes('stiff') ||
@@ -907,7 +916,7 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
         'peripheral-vision-loss', 'diabetic-retinopathy', 'glaucoma-symptoms'].includes(selectedChronic?.symptomId);
 
   // Phase 3: Genitourinary detection
-  const isGenitourinaryRelated = !isPeripheralNerveSymptomQL && (
+  const isGenitourinaryRelated = !isPeripheralNerveSymptomQL && !isEndocrineSymptomQL && (
       selectedChronic?.symptomId?.includes('kidney') ||
       selectedChronic?.symptomId?.includes('urinary') ||
       selectedChronic?.symptomId?.includes('prostate') ||
@@ -928,7 +937,8 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
   );
 
   // Phase 4: Gynecological detection
-  const isGynecologicalRelated = selectedChronic?.symptomId?.includes('menstrual') ||
+  const isGynecologicalRelated = !isEndocrineSymptomQL && (
+      selectedChronic?.symptomId?.includes('menstrual') ||
       selectedChronic?.symptomId?.includes('pelvic') ||
       selectedChronic?.symptomId?.includes('endometriosis') ||
       selectedChronic?.symptomId?.includes('ovarian') ||
@@ -948,7 +958,8 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
         'pelvic-pressure', 'vaginal-bulge', 'incomplete-bladder-emptying', 'bowel-dysfunction-prolapse',
         'sexual-dysfunction', 'decreased-libido', 'arousal-difficulty', 'infertility',
         'hirsutism', 'hormonal-acne', 'pcos-weight-changes', 'breast-pain', 'nipple-discharge',
-        'uterine-cramping'].includes(selectedChronic?.symptomId);
+        'uterine-cramping'].includes(selectedChronic?.symptomId)
+  );
 
   // Phase 5: Hemic/Lymphatic condition detection
   const isAnemiaRelated = [
@@ -1220,6 +1231,31 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
       selectedChronic?.category === 'myelitis';
   const isNeurologicalPhase1BRelated = isNarcolepsyRelated || isALSRelated ||
       isSyringomyeliaRelated || isMyelitisRelated;
+  // ============================================
+  // PHASE 3A: ENDOCRINE - THYROID & PARATHYROID DETECTION
+  // ============================================
+  const isHyperthyroidismRelated = selectedChronic?.symptomId?.startsWith('hyper-') ||
+      selectedChronic?.symptomId?.startsWith('graves-') ||
+      selectedChronic?.category === 'hyperthyroidism';
+  const isThyroiditisRelated = selectedChronic?.symptomId?.startsWith('thyroiditis-') ||
+      selectedChronic?.category === 'thyroiditis';
+  const isHyperparathyroidismRelated = selectedChronic?.symptomId?.startsWith('hpth-') ||
+      selectedChronic?.category === 'hyperparathyroidism';
+  const isHypoparathyroidismRelated = selectedChronic?.symptomId?.startsWith('hopth-') ||
+      selectedChronic?.category === 'hypoparathyroidism';
+  const isEndocrinePhase3ARelated = isHyperthyroidismRelated || isThyroiditisRelated ||
+      isHyperparathyroidismRelated || isHypoparathyroidismRelated;
+  // Phase 3B: Adrenal & Pituitary Detection
+  const isAddisonsDiseaseRelated = selectedChronic?.symptomId?.startsWith('addisons-') ||
+      selectedChronic?.category === 'addisons-disease';
+  const isCushingsSyndromeRelated = selectedChronic?.symptomId?.startsWith('cushings-') ||
+      selectedChronic?.category === 'cushings-syndrome';
+  const isDiabetesInsipidusRelated = selectedChronic?.symptomId?.startsWith('di-') ||
+      selectedChronic?.category === 'diabetes-insipidus';
+  const isHyperaldosteronismRelated = selectedChronic?.symptomId?.startsWith('haldo-') ||
+      selectedChronic?.category === 'hyperaldosteronism';
+  const isEndocrinePhase3BRelated = isAddisonsDiseaseRelated || isCushingsSyndromeRelated ||
+      isDiabetesInsipidusRelated || isHyperaldosteronismRelated;
   // ============================================
   // PHASE 1C: PERIPHERAL NERVE DETECTION
   // ============================================

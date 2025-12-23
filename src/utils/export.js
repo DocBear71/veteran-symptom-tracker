@@ -161,6 +161,14 @@ import {
   analyzeJacksonianEpilepsyLogs,
   analyzeDiencephalicEpilepsyLogs,
   analyzePsychomotorEpilepsyLogs,
+  analyzeHyperthyroidismLogs,
+  analyzeThyroiditisLogs,
+  analyzeHyperparathyroidismLogs,
+  analyzeHypoparathyroidismLogs,
+  analyzeAddisonsDiseaseLog,
+  analyzeCushingsSyndromeLogs,
+  analyzeDiabetesInsipidusLogs,
+  analyzeHyperaldosteronismLogs,
 } from './ratingCriteria';
 
 // Appointment type labels for export
@@ -2825,6 +2833,16 @@ const analyzeAllConditions = (logs, options = {}) => {
         'epilepsy-jacksonian': analyzeJacksonianEpilepsyLogs,
         'epilepsy-diencephalic': analyzeDiencephalicEpilepsyLogs,
         'epilepsy-psychomotor': analyzePsychomotorEpilepsyLogs,
+        // Phase 3A: Endocrine - Thyroid & Parathyroid
+        'hyperthyroidism': analyzeHyperthyroidismLogs,
+        'thyroiditis': analyzeThyroiditisLogs,
+        'hyperparathyroidism': analyzeHyperparathyroidismLogs,
+        'hypoparathyroidism': analyzeHypoparathyroidismLogs,
+        // Phase 3B: Adrenal & Pituitary
+        'addisons-disease': analyzeAddisonsDiseaseLog,
+        'cushings-syndrome': analyzeCushingsSyndromeLogs,
+        'diabetes-insipidus': analyzeDiabetesInsipidusLogs,
+        'hyperaldosteronism': analyzeHyperaldosteronismLogs,
       };
 
     const analyses = [];

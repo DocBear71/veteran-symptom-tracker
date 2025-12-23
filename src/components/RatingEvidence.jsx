@@ -172,6 +172,14 @@ import {
   analyzeObturatorNerveLogs,
   analyzeLateralFemoralCutaneousNerveLogs,
   analyzeIlioinguinalNerveLogs,
+  analyzeHyperthyroidismLogs,
+  analyzeThyroiditisLogs,
+  analyzeHyperparathyroidismLogs,
+  analyzeHypoparathyroidismLogs,
+  analyzeAddisonsDiseaseLog,
+  analyzeCushingsSyndromeLogs,
+  analyzeDiabetesInsipidusLogs,
+  analyzeHyperaldosteronismLogs,
   getAllMigraineRatings,
   getAllSleepApneaRatings,
   getAllPTSDRatings,
@@ -346,6 +354,14 @@ import PeripheralNerveRatingCard from './PeripheralNerveRatingCard';
 import measurements from './Measurements.jsx';
 import ColdInjuryRatingCard from './ColdInjuryRatingCard.jsx';
 import PADRatingCard from './PADRatingCard.jsx';
+import HyperthyroidismRatingCard from './HyperthyroidismRatingCard';
+import ThyroiditisRatingCard from './ThyroiditisRatingCard';
+import HyperparathyroidismRatingCard from './HyperparathyroidismRatingCard';
+import HypoparathyroidismRatingCard from './HypoparathyroidismRatingCard';
+import AddisonsDiseaseRatingCard from './AddisonsDiseaseRatingCard';
+import CushingsSyndromeRatingCard from './CushingsSyndromeRatingCard';
+import DiabetesInsipidusRatingCard from './DiabetesInsipidusRatingCard';
+import HyperaldosteronismRatingCard from './HyperaldosteronismRatingCard';
 
 // Storage key for sleep apnea profile
 const SLEEP_APNEA_PROFILE_KEY = 'symptomTracker_sleepApneaProfile';
@@ -956,6 +972,32 @@ const RatingEvidence = () => {
   const ilioinguinalNerveAnalysis = useMemo(() => {
     return analyzeIlioinguinalNerveLogs(logs, { days: evaluationDays });
   }, [logs, evaluationDays]);
+  // Phase 3A: Endocrine - Thyroid & Parathyroid Analysis
+  const hyperthyroidismAnalysis = useMemo(() => {
+    return analyzeHyperthyroidismLogs(logs, { days: evaluationDays });
+  }, [logs, evaluationDays]);
+  const thyroiditisAnalysis = useMemo(() => {
+    return analyzeThyroiditisLogs(logs, { days: evaluationDays });
+  }, [logs, evaluationDays]);
+  const hyperparathyroidismAnalysis = useMemo(() => {
+    return analyzeHyperparathyroidismLogs(logs, { days: evaluationDays });
+  }, [logs, evaluationDays]);
+  const hypoparathyroidismAnalysis = useMemo(() => {
+    return analyzeHypoparathyroidismLogs(logs, { days: evaluationDays });
+  }, [logs, evaluationDays]);
+  // Phase 3B: Adrenal & Pituitary Analysis
+  const addisonsDiseaseAnalysis = useMemo(() => {
+    return analyzeAddisonsDiseaseLog(logs, { days: 365 }); // Uses 365 days for crisis/episode counting
+  }, [logs]);
+  const cushingsSyndromeAnalysis = useMemo(() => {
+    return analyzeCushingsSyndromeLogs(logs, { days: evaluationDays });
+  }, [logs, evaluationDays]);
+  const diabetesInsipidusAnalysis = useMemo(() => {
+    return analyzeDiabetesInsipidusLogs(logs, { days: evaluationDays });
+  }, [logs, evaluationDays]);
+  const hyperaldosteronismAnalysis = useMemo(() => {
+    return analyzeHyperaldosteronismLogs(logs, { days: evaluationDays });
+  }, [logs, evaluationDays]);
 
 
   // Toggle section expansion
@@ -1122,7 +1164,15 @@ const RatingEvidence = () => {
         saphenousNerveAnalysis.hasData ||
         obturatorNerveAnalysis.hasData ||
         lateralFemoralCutaneousNerveAnalysis.hasData ||
-        ilioinguinalNerveAnalysis.hasData
+        ilioinguinalNerveAnalysis.hasData ||
+        hyperthyroidismAnalysis.hasData ||
+        thyroiditisAnalysis.hasData ||
+        hyperparathyroidismAnalysis.hasData ||
+        hypoparathyroidismAnalysis.hasData ||
+        addisonsDiseaseAnalysis.hasData ||
+        cushingsSyndromeAnalysis.hasData ||
+        diabetesInsipidusAnalysis.hasData ||
+        hyperaldosteronismAnalysis.hasData
     ;
 
     return (
@@ -2132,7 +2182,6 @@ const RatingEvidence = () => {
                 expanded={expandedSection === 'long-thoracic-nerve'}
                 onToggle={() => toggleSection('long-thoracic-nerve')}
             />
-
             {/* Lower Extremity Nerves */}
             <PeripheralNerveRatingCard
                 nerveType="sciatic"
@@ -2199,6 +2248,48 @@ const RatingEvidence = () => {
                 analysis={ilioinguinalNerveAnalysis}
                 expanded={expandedSection === 'ilioinguinal-nerve'}
                 onToggle={() => toggleSection('ilioinguinal-nerve')}
+            />
+            {/* Phase 3A: Endocrine - Thyroid & Parathyroid Rating Cards */}
+            <HyperthyroidismRatingCard
+                analysis={hyperthyroidismAnalysis}
+                expanded={expandedSection === 'hyperthyroidism'}
+                onToggle={() => toggleSection('hyperthyroidism')}
+            />
+            <ThyroiditisRatingCard
+                analysis={thyroiditisAnalysis}
+                expanded={expandedSection === 'thyroiditis'}
+                onToggle={() => toggleSection('thyroiditis')}
+            />
+            <HyperparathyroidismRatingCard
+                analysis={hyperparathyroidismAnalysis}
+                expanded={expandedSection === 'hyperparathyroidism'}
+                onToggle={() => toggleSection('hyperparathyroidism')}
+            />
+            <HypoparathyroidismRatingCard
+                analysis={hypoparathyroidismAnalysis}
+                expanded={expandedSection === 'hypoparathyroidism'}
+                onToggle={() => toggleSection('hypoparathyroidism')}
+            />
+            {/* Phase 3B: Adrenal & Pituitary Rating Cards */}
+            <AddisonsDiseaseRatingCard
+                analysis={addisonsDiseaseAnalysis}
+                expanded={expandedSection === 'addisons-disease'}
+                onToggle={() => toggleSection('addisons-disease')}
+            />
+            <CushingsSyndromeRatingCard
+                analysis={cushingsSyndromeAnalysis}
+                expanded={expandedSection === 'cushings-syndrome'}
+                onToggle={() => toggleSection('cushings-syndrome')}
+            />
+            <DiabetesInsipidusRatingCard
+                analysis={diabetesInsipidusAnalysis}
+                expanded={expandedSection === 'diabetes-insipidus'}
+                onToggle={() => toggleSection('diabetes-insipidus')}
+            />
+            <HyperaldosteronismRatingCard
+                analysis={hyperaldosteronismAnalysis}
+                expanded={expandedSection === 'hyperaldosteronism'}
+                onToggle={() => toggleSection('hyperaldosteronism')}
             />
 
 

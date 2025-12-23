@@ -2193,7 +2193,180 @@ export const symptomCategories = [
       { id: 'iin-pain-movement', name: 'Ilio-inguinal - Pain with Movement/Coughing' },
     ]
   },
+// ============================================
+  // PHASE 3A: ENDOCRINE - THYROID & PARATHYROID
+  // ============================================
 
+  // Hyperthyroidism/Graves' Disease (DC 7900)
+  {
+    id: 'hyperthyroidism',
+    name: 'Hyperthyroidism/Graves\' Disease Symptoms',
+    symptoms: [
+      { id: 'hyper-weight-loss', name: 'Hyperthyroidism - Unintentional Weight Loss' },
+      { id: 'hyper-rapid-heartbeat', name: 'Hyperthyroidism - Rapid/Irregular Heartbeat' },
+      { id: 'hyper-tremor', name: 'Hyperthyroidism - Tremor (Hands/Fingers)' },
+      { id: 'hyper-heat-intolerance', name: 'Hyperthyroidism - Heat Intolerance' },
+      { id: 'hyper-sweating', name: 'Hyperthyroidism - Excessive Sweating' },
+      { id: 'hyper-anxiety', name: 'Hyperthyroidism - Anxiety/Nervousness' },
+      { id: 'hyper-irritability', name: 'Hyperthyroidism - Irritability' },
+      { id: 'hyper-fatigue', name: 'Hyperthyroidism - Fatigue' },
+      { id: 'hyper-muscle-weakness', name: 'Hyperthyroidism - Muscle Weakness' },
+      { id: 'hyper-sleep-difficulty', name: 'Hyperthyroidism - Difficulty Sleeping' },
+      { id: 'hyper-appetite-increase', name: 'Hyperthyroidism - Increased Appetite' },
+      { id: 'hyper-bowel-changes', name: 'Hyperthyroidism - Frequent Bowel Movements' },
+      // Graves' specific eye symptoms
+      { id: 'graves-eye-bulging', name: 'Graves\' - Eye Bulging (Exophthalmos)' },
+      { id: 'graves-eye-irritation', name: 'Graves\' - Eye Irritation/Grittiness' },
+      { id: 'graves-double-vision', name: 'Graves\' - Double Vision (Diplopia)' },
+      { id: 'graves-eye-pain', name: 'Graves\' - Eye Pain/Pressure' },
+      { id: 'graves-light-sensitivity', name: 'Graves\' - Light Sensitivity' },
+    ]
+  },
+
+  // Thyroiditis (DC 7906) - uses hyperthyroid or hypothyroid symptoms
+  {
+    id: 'thyroiditis',
+    name: 'Thyroiditis Symptoms',
+    symptoms: [
+      { id: 'thyroiditis-neck-pain', name: 'Thyroiditis - Neck Pain/Tenderness' },
+      { id: 'thyroiditis-swelling', name: 'Thyroiditis - Thyroid Swelling' },
+      { id: 'thyroiditis-difficulty-swallowing', name: 'Thyroiditis - Difficulty Swallowing' },
+      { id: 'thyroiditis-hyper-phase', name: 'Thyroiditis - Hyperthyroid Phase Symptoms' },
+      { id: 'thyroiditis-hypo-phase', name: 'Thyroiditis - Hypothyroid Phase Symptoms' },
+      { id: 'thyroiditis-fatigue', name: 'Thyroiditis - Fatigue' },
+    ]
+  },
+
+  // Hyperparathyroidism (DC 7904)
+  {
+    id: 'hyperparathyroidism',
+    name: 'Hyperparathyroidism Symptoms',
+    symptoms: [
+      { id: 'hpth-fatigue', name: 'Hyperparathyroidism - Fatigue' },
+      { id: 'hpth-bone-pain', name: 'Hyperparathyroidism - Bone Pain' },
+      { id: 'hpth-kidney-stones', name: 'Hyperparathyroidism - Kidney Stones' },
+      { id: 'hpth-abdominal-pain', name: 'Hyperparathyroidism - Abdominal Pain' },
+      { id: 'hpth-nausea', name: 'Hyperparathyroidism - Nausea' },
+      { id: 'hpth-constipation', name: 'Hyperparathyroidism - Constipation' },
+      { id: 'hpth-confusion', name: 'Hyperparathyroidism - Confusion/Brain Fog' },
+      { id: 'hpth-depression', name: 'Hyperparathyroidism - Depression' },
+      { id: 'hpth-muscle-weakness', name: 'Hyperparathyroidism - Muscle Weakness' },
+      { id: 'hpth-excessive-thirst', name: 'Hyperparathyroidism - Excessive Thirst' },
+      { id: 'hpth-frequent-urination', name: 'Hyperparathyroidism - Frequent Urination' },
+      { id: 'hpth-anorexia', name: 'Hyperparathyroidism - Loss of Appetite' },
+      { id: 'hpth-fracture', name: 'Hyperparathyroidism - Fragility Fracture' },
+    ]
+  },
+
+  // Hypoparathyroidism (DC 7905)
+  {
+    id: 'hypoparathyroidism',
+    name: 'Hypoparathyroidism Symptoms',
+    symptoms: [
+      { id: 'hopth-muscle-cramps', name: 'Hypoparathyroidism - Muscle Cramps' },
+      { id: 'hopth-tingling', name: 'Hypoparathyroidism - Tingling (Fingers/Toes/Lips)' },
+      { id: 'hopth-muscle-spasms', name: 'Hypoparathyroidism - Muscle Spasms (Tetany)' },
+      { id: 'hopth-fatigue', name: 'Hypoparathyroidism - Fatigue' },
+      { id: 'hopth-dry-skin', name: 'Hypoparathyroidism - Dry Skin' },
+      { id: 'hopth-brittle-nails', name: 'Hypoparathyroidism - Brittle Nails' },
+      { id: 'hopth-hair-loss', name: 'Hypoparathyroidism - Hair Loss' },
+      { id: 'hopth-seizures', name: 'Hypoparathyroidism - Seizures' },
+      { id: 'hopth-depression', name: 'Hypoparathyroidism - Depression' },
+      { id: 'hopth-anxiety', name: 'Hypoparathyroidism - Anxiety' },
+      { id: 'hopth-memory-problems', name: 'Hypoparathyroidism - Memory Problems' },
+      { id: 'hopth-cataracts', name: 'Hypoparathyroidism - Cataracts' },
+    ]
+  },
+// ============================================
+// PHASE 3B: ADRENAL & PITUITARY CONDITIONS
+// ============================================
+
+// Addison's Disease (Adrenocortical Insufficiency) - DC 7911
+  {
+    id: 'addisons-disease',
+    name: "Addison's Disease Symptoms",
+    symptoms: [
+      { id: 'addisons-crisis', name: "Addison's Disease - Adrenal Crisis", description: 'Rapid onset vascular collapse with shock, severe weakness, confusion' },
+      { id: 'addisons-episode', name: "Addison's Disease - Episode", description: 'Less severe event: nausea, weakness, orthostatic hypotension, malaise' },
+      { id: 'addisons-fatigue', name: "Addison's Disease - Fatigue", description: 'Persistent exhaustion and lack of energy' },
+      { id: 'addisons-weight-loss', name: "Addison's Disease - Weight Loss", description: 'Unintentional weight loss' },
+      { id: 'addisons-hypotension', name: "Addison's Disease - Low Blood Pressure", description: 'Chronic low blood pressure or orthostatic hypotension' },
+      { id: 'addisons-hyperpigmentation', name: "Addison's Disease - Skin Darkening", description: 'Hyperpigmentation, especially in skin creases, scars, gums' },
+      { id: 'addisons-salt-craving', name: "Addison's Disease - Salt Craving", description: 'Intense craving for salty foods' },
+      { id: 'addisons-nausea', name: "Addison's Disease - Nausea/Vomiting", description: 'Nausea, vomiting, or loss of appetite' },
+      { id: 'addisons-abdominal-pain', name: "Addison's Disease - Abdominal Pain", description: 'Abdominal pain, often with diarrhea' },
+      { id: 'addisons-muscle-weakness', name: "Addison's Disease - Muscle Weakness", description: 'Generalized muscle weakness' },
+      { id: 'addisons-muscle-pain', name: "Addison's Disease - Muscle/Joint Pain", description: 'Muscle aches or joint pain' },
+      { id: 'addisons-irritability', name: "Addison's Disease - Irritability", description: 'Mood changes, irritability, or depression' },
+      { id: 'addisons-dizziness', name: "Addison's Disease - Dizziness", description: 'Dizziness or lightheadedness, especially when standing' },
+      { id: 'addisons-hypoglycemia', name: "Addison's Disease - Low Blood Sugar", description: 'Hypoglycemia symptoms: shakiness, sweating, confusion' },
+      { id: 'addisons-dehydration', name: "Addison's Disease - Dehydration", description: 'Signs of dehydration despite adequate fluid intake' },
+    ],
+  },
+
+// Cushing's Syndrome - DC 7907
+  {
+    id: 'cushings-syndrome',
+    name: "Cushing's Syndrome Symptoms",
+    symptoms: [
+      { id: 'cushings-weight-gain', name: "Cushing's Syndrome - Central Weight Gain", description: 'Weight gain concentrated in face, neck, trunk, abdomen' },
+      { id: 'cushings-moon-face', name: "Cushing's Syndrome - Moon Face", description: 'Round, full face (moon facies)' },
+      { id: 'cushings-buffalo-hump', name: "Cushing's Syndrome - Buffalo Hump", description: 'Fat accumulation between shoulders (dorsocervical fat pad)' },
+      { id: 'cushings-striae', name: "Cushing's Syndrome - Stretch Marks", description: 'Purple or pink stretch marks (striae) on abdomen, thighs, arms' },
+      { id: 'cushings-thin-skin', name: "Cushing's Syndrome - Thin/Fragile Skin", description: 'Thin skin that bruises easily, slow wound healing' },
+      { id: 'cushings-bruising', name: "Cushing's Syndrome - Easy Bruising", description: 'Bruises appearing with minimal or no trauma' },
+      { id: 'cushings-muscle-weakness', name: "Cushing's Syndrome - Proximal Muscle Weakness", description: 'Weakness in upper arms and thighs, difficulty rising from chair or climbing stairs' },
+      { id: 'cushings-muscle-wasting', name: "Cushing's Syndrome - Muscle Wasting", description: 'Loss of muscle mass in arms and legs' },
+      { id: 'cushings-fatigue', name: "Cushing's Syndrome - Fatigue", description: 'Persistent tiredness and lack of energy' },
+      { id: 'cushings-hypertension', name: "Cushing's Syndrome - High Blood Pressure", description: 'Elevated blood pressure' },
+      { id: 'cushings-glucose', name: "Cushing's Syndrome - Glucose Intolerance", description: 'High blood sugar or diabetes symptoms' },
+      { id: 'cushings-osteoporosis', name: "Cushing's Syndrome - Bone Loss", description: 'Osteoporosis symptoms, fractures, bone pain' },
+      { id: 'cushings-mood', name: "Cushing's Syndrome - Mood Changes", description: 'Depression, anxiety, irritability, or cognitive difficulties' },
+      { id: 'cushings-insomnia', name: "Cushing's Syndrome - Sleep Problems", description: 'Difficulty sleeping or insomnia' },
+      { id: 'cushings-infections', name: "Cushing's Syndrome - Frequent Infections", description: 'Increased susceptibility to infections' },
+      { id: 'cushings-acne', name: "Cushing's Syndrome - Acne", description: 'Acne or facial flushing' },
+      { id: 'cushings-hirsutism', name: "Cushing's Syndrome - Excess Hair Growth", description: 'Excess facial or body hair (women)' },
+      { id: 'cushings-menstrual', name: "Cushing's Syndrome - Menstrual Irregularity", description: 'Irregular or absent menstrual periods' },
+      { id: 'cushings-erectile', name: "Cushing's Syndrome - Erectile Dysfunction", description: 'Decreased libido or erectile dysfunction (men)' },
+    ],
+  },
+
+// Diabetes Insipidus - DC 7909
+  {
+    id: 'diabetes-insipidus',
+    name: 'Diabetes Insipidus Symptoms',
+    symptoms: [
+      { id: 'di-polyuria', name: 'Diabetes Insipidus - Excessive Urination', description: 'Producing large volumes of dilute urine (polyuria)' },
+      { id: 'di-polydipsia', name: 'Diabetes Insipidus - Excessive Thirst', description: 'Intense thirst requiring frequent drinking (polydipsia)' },
+      { id: 'di-nocturia', name: 'Diabetes Insipidus - Nighttime Urination', description: 'Waking frequently at night to urinate (nocturia)' },
+      { id: 'di-dehydration', name: 'Diabetes Insipidus - Dehydration', description: 'Signs of dehydration: dry mouth, dry skin, fatigue' },
+      { id: 'di-fatigue', name: 'Diabetes Insipidus - Fatigue', description: 'Tiredness from fluid/electrolyte imbalance or sleep disruption' },
+      { id: 'di-dizziness', name: 'Diabetes Insipidus - Dizziness', description: 'Lightheadedness or dizziness from dehydration' },
+      { id: 'di-headache', name: 'Diabetes Insipidus - Headache', description: 'Headaches related to dehydration or electrolyte imbalance' },
+      { id: 'di-muscle-cramps', name: 'Diabetes Insipidus - Muscle Cramps', description: 'Muscle cramps from electrolyte imbalance' },
+      { id: 'di-constipation', name: 'Diabetes Insipidus - Constipation', description: 'Constipation due to chronic dehydration' },
+      { id: 'di-weight-loss', name: 'Diabetes Insipidus - Weight Loss', description: 'Weight loss from excessive fluid loss' },
+    ],
+  },
+
+// Hyperaldosteronism (Conn's Syndrome) - DC 7917
+  {
+    id: 'hyperaldosteronism',
+    name: 'Hyperaldosteronism Symptoms',
+    symptoms: [
+      { id: 'haldo-hypertension', name: 'Hyperaldosteronism - High Blood Pressure', description: 'Resistant hypertension, often difficult to control' },
+      { id: 'haldo-muscle-weakness', name: 'Hyperaldosteronism - Muscle Weakness', description: 'Generalized muscle weakness from low potassium' },
+      { id: 'haldo-muscle-cramps', name: 'Hyperaldosteronism - Muscle Cramps/Spasms', description: 'Muscle cramps or spasms from hypokalemia' },
+      { id: 'haldo-fatigue', name: 'Hyperaldosteronism - Fatigue', description: 'Persistent fatigue and tiredness' },
+      { id: 'haldo-headaches', name: 'Hyperaldosteronism - Headaches', description: 'Frequent headaches, often from hypertension' },
+      { id: 'haldo-polyuria', name: 'Hyperaldosteronism - Frequent Urination', description: 'Increased urination, especially at night' },
+      { id: 'haldo-polydipsia', name: 'Hyperaldosteronism - Increased Thirst', description: 'Excessive thirst' },
+      { id: 'haldo-numbness', name: 'Hyperaldosteronism - Numbness/Tingling', description: 'Numbness or tingling from electrolyte imbalance' },
+      { id: 'haldo-palpitations', name: 'Hyperaldosteronism - Heart Palpitations', description: 'Irregular heartbeat or palpitations from hypokalemia' },
+      { id: 'haldo-constipation', name: 'Hyperaldosteronism - Constipation', description: 'Constipation from low potassium affecting gut motility' },
+      { id: 'haldo-mood', name: 'Hyperaldosteronism - Mood Changes', description: 'Anxiety, irritability, or mood swings' },
+    ],
+  },
 
 ];
 
@@ -2272,6 +2445,15 @@ const getParentCategory = (categoryName) => {
   if (name.includes('als') || name.includes('amyotrophic')) return 'als';
   if (name.includes('syringomyelia')) return 'syringomyelia';
   if (name.includes('myelitis')) return 'myelitis';
+  if (name.includes('hyperthyroidism') || name.includes('graves')) return 'endocrine';
+  if (name.includes('thyroiditis')) return 'endocrine';
+  if (name.includes('hyperparathyroidism')) return 'endocrine';
+  if (name.includes('hypoparathyroidism')) return 'endocrine';
+  if (name.includes('hypothyroidism')) return 'endocrine';
+  if (name.includes('addisons') || name.includes('adrenal')) return 'endocrine';
+  if (name.includes('cushings') || name.includes('cushing')) return 'endocrine';
+  if (name.includes('diabetes insipidus')) return 'endocrine';
+  if (name.includes('hyperaldosteronism') || name.includes('aldosterone')) return 'endocrine';
   if (name.includes('upper radicular')) return 'peripheral-nerve';
   if (name.includes('middle radicular')) return 'peripheral-nerve';
   if (name.includes('lower radicular')) return 'peripheral-nerve';

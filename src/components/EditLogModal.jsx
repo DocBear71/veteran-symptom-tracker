@@ -1410,13 +1410,25 @@ const EditLogModal = ({log, isOpen, onClose, onSaved}) => {
           }
   }, [isOpen, log]);
 
+        // Peripheral nerve prefixes to exclude from generic pain/GU detection
+        const peripheralNervePrefixes = ['uprn-', 'mdrn-', 'lwrn-', 'alrn-', 'radn-', 'medn-', 'ulnn-',
+          'mscn-', 'crcn-', 'ltn-', 'scin-', 'cpn-', 'spn-', 'dpn-', 'tibn-', 'ptn-', 'femn-',
+          'sapn-', 'obtn-', 'lfcn-', 'iin-'];
+        const isPeripheralNerveSymptomELM = peripheralNervePrefixes.some(prefix => log?.symptomId?.startsWith(prefix));
+
+        // Phase 3A: Endocrine prefixes to exclude from generic pain/GU detection
+        const endocrinePrefixes = ['hyper-', 'graves-', 'thyroiditis-', 'hpth-', 'hopth-', 'hypo-',
+          'addisons-', 'cushings-', 'di-', 'haldo-'];
+        const isEndocrineSymptomELM = endocrinePrefixes.some(prefix => log?.symptomId?.startsWith(prefix));
+
         const isMigraine = log?.symptomId === 'migraine';
 
         // Sleep: match sleep-related symptoms only
-        const isSleepRelated = log?.symptomId?.includes('sleep') ||
-            log?.symptomId?.includes('insomnia') ||
-            ['sleep-issues', 'nightmares'].includes(log?.symptomId) ||
-            log?.sleepData; // Also show if log already has sleep data
+        const isSleepRelated = !isEndocrineSymptomELM && (
+            log?.symptomId === 'sleep-issues' ||
+            log?.symptomId === 'sleep-quality' ||
+            log?.symptomId?.includes('insomnia')
+        ) || log?.sleepData; // Also show if log already has sleep data
 
 
         // PTSD - All PTSD symptoms (must be specific to avoid catching all mental health)
@@ -1468,14 +1480,8 @@ const EditLogModal = ({log, isOpen, onClose, onSaved}) => {
           'adjustment-unspecified'
         ].includes(log?.symptomId);
 
-        // Peripheral nerve prefixes to exclude from generic pain/GU detection
-        const peripheralNervePrefixes = ['uprn-', 'mdrn-', 'lwrn-', 'alrn-', 'radn-', 'medn-', 'ulnn-',
-          'mscn-', 'crcn-', 'ltn-', 'scin-', 'cpn-', 'spn-', 'dpn-', 'tibn-', 'ptn-', 'femn-',
-          'sapn-', 'obtn-', 'lfcn-', 'iin-'];
-        const isPeripheralNerveSymptomELM = peripheralNervePrefixes.some(prefix => log?.symptomId?.startsWith(prefix));
-
         // Pain: match ANY pain-related symptom only
-        const isPainRelated = !isPeripheralNerveSymptomELM && (
+        const isPainRelated = !isPeripheralNerveSymptomELM && !isEndocrineSymptomELM && (
             log?.symptomId?.includes('pain') ||
             log?.symptomId?.includes('-ache') ||
             log?.symptomId?.includes('stiff') ||
@@ -1567,7 +1573,7 @@ const EditLogModal = ({log, isOpen, onClose, onSaved}) => {
             log?.eyeData;
 
         // Phase 3: Genitourinary detection
-        const isGenitourinaryRelated = !isPeripheralNerveSymptomELM && (
+        const isGenitourinaryRelated = !isPeripheralNerveSymptomELM && !isEndocrineSymptomELM && (
             log?.symptomId?.includes('kidney') ||
             log?.symptomId?.includes('urinary') ||
             log?.symptomId?.includes('prostate') ||
@@ -1589,7 +1595,8 @@ const EditLogModal = ({log, isOpen, onClose, onSaved}) => {
         );
 
         // Phase 4: Gynecological detection
-        const isGynecologicalRelated = log?.symptomId?.includes('menstrual') ||
+        const isGynecologicalRelated = !isEndocrineSymptomELM && (
+            log?.symptomId?.includes('menstrual') ||
             log?.symptomId?.includes('pelvic') ||
             log?.symptomId?.includes('endometriosis') ||
             log?.symptomId?.includes('ovarian') ||
@@ -1609,7 +1616,7 @@ const EditLogModal = ({log, isOpen, onClose, onSaved}) => {
               'pelvic-pressure', 'vaginal-bulge', 'incomplete-bladder-emptying', 'bowel-dysfunction-prolapse',
               'sexual-dysfunction', 'decreased-libido', 'arousal-difficulty', 'infertility',
               'hirsutism', 'hormonal-acne', 'pcos-weight-changes', 'breast-pain', 'nipple-discharge',
-              'uterine-cramping'].includes(log?.symptomId) ||
+              'uterine-cramping'].includes(log?.symptomId)) ||
             log?.gynecologicalData;
 
         // Phase 5: Hemic/Lymphatic condition detection
@@ -2002,89 +2009,114 @@ const EditLogModal = ({log, isOpen, onClose, onSaved}) => {
 
         const isNeurologicalPhase1BRelated = isNarcolepsyRelated || isALSRelated ||
             isSyringomyeliaRelated || isMyelitisRelated;
+        // ============================================
+        // PHASE 3A: ENDOCRINE - THYROID & PARATHYROID DETECTION
+        // ============================================
+        const isHyperthyroidismRelated = log?.symptomId?.startsWith('hyper-') ||
+            log?.symptomId?.startsWith('graves-') ||
+            log?.category === 'hyperthyroidism';
+        const isThyroiditisRelated = log?.symptomId?.startsWith('thyroiditis-') ||
+            log?.category === 'thyroiditis';
+        const isHyperparathyroidismRelated = log?.symptomId?.startsWith('hpth-') ||
+            log?.category === 'hyperparathyroidism';
+        const isHypoparathyroidismRelated = log?.symptomId?.startsWith('hopth-') ||
+            log?.category === 'hypoparathyroidism';
+        const isEndocrinePhase3ARelated = isHyperthyroidismRelated || isThyroiditisRelated ||
+            isHyperparathyroidismRelated || isHypoparathyroidismRelated;
+        // Phase 3B: Adrenal & Pituitary Detection
+        const isAddisonsDiseaseRelated = log?.symptomId?.startsWith('addisons-') ||
+            log?.category === 'addisons-disease';
+        const isCushingsSyndromeRelated = log?.symptomId?.startsWith('cushings-') ||
+            log?.category === 'cushings-syndrome';
+        const isDiabetesInsipidusRelated = log?.symptomId?.startsWith('di-') ||
+            log?.category === 'diabetes-insipidus';
+        const isHyperaldosteronismRelated = log?.symptomId?.startsWith('haldo-') ||
+            log?.category === 'hyperaldosteronism';
+        const isEndocrinePhase3BRelated = isAddisonsDiseaseRelated || isCushingsSyndromeRelated ||
+            isDiabetesInsipidusRelated || isHyperaldosteronismRelated;
 
-  // ============================================
-  // PHASE 1C: PERIPHERAL NERVE DETECTION
-  // ============================================
+        // ============================================
+        // PHASE 1C: PERIPHERAL NERVE DETECTION
+        // ============================================
 
-  // Upper Extremity Nerves
-  const isUpperRadicularRelated = log?.symptomId?.startsWith('uprn-') ||
-      log?.category === 'upper-radicular-nerve';
+        // Upper Extremity Nerves
+        const isUpperRadicularRelated = log?.symptomId?.startsWith('uprn-') ||
+            log?.category === 'upper-radicular-nerve';
 
-  const isMiddleRadicularRelated = log?.symptomId?.startsWith('mdrn-') ||
-      log?.category === 'middle-radicular-nerve';
+        const isMiddleRadicularRelated = log?.symptomId?.startsWith('mdrn-') ||
+            log?.category === 'middle-radicular-nerve';
 
-  const isLowerRadicularRelated = log?.symptomId?.startsWith('lwrn-') ||
-      log?.category === 'lower-radicular-nerve';
+        const isLowerRadicularRelated = log?.symptomId?.startsWith('lwrn-') ||
+            log?.category === 'lower-radicular-nerve';
 
-  const isAllRadicularRelated = log?.symptomId?.startsWith('alrn-') ||
-      log?.category === 'all-radicular-nerve';
+        const isAllRadicularRelated = log?.symptomId?.startsWith('alrn-') ||
+            log?.category === 'all-radicular-nerve';
 
-  const isRadialNerveRelated = log?.symptomId?.startsWith('radn-') ||
-      log?.category === 'radial-nerve';
+        const isRadialNerveRelated = log?.symptomId?.startsWith('radn-') ||
+            log?.category === 'radial-nerve';
 
-  const isMedianNerveRelated = log?.symptomId?.startsWith('medn-') ||
-      log?.category === 'median-nerve';
+        const isMedianNerveRelated = log?.symptomId?.startsWith('medn-') ||
+            log?.category === 'median-nerve';
 
-  const isUlnarNerveRelated = log?.symptomId?.startsWith('ulnn-') ||
-      log?.category === 'ulnar-nerve';
+        const isUlnarNerveRelated = log?.symptomId?.startsWith('ulnn-') ||
+            log?.category === 'ulnar-nerve';
 
-  const isMusculocutaneousNerveRelated = log?.symptomId?.startsWith('mscn-') ||
-      log?.category === 'musculocutaneous-nerve';
+        const isMusculocutaneousNerveRelated = log?.symptomId?.startsWith('mscn-') ||
+            log?.category === 'musculocutaneous-nerve';
 
-  const isCircumflexNerveRelated = log?.symptomId?.startsWith('crcn-') ||
-      log?.category === 'circumflex-nerve';
+        const isCircumflexNerveRelated = log?.symptomId?.startsWith('crcn-') ||
+            log?.category === 'circumflex-nerve';
 
-  const isLongThoracicNerveRelated = log?.symptomId?.startsWith('ltn-') ||
-      log?.category === 'long-thoracic-nerve';
+        const isLongThoracicNerveRelated = log?.symptomId?.startsWith('ltn-') ||
+            log?.category === 'long-thoracic-nerve';
 
-  // Lower Extremity Nerves
-  const isSciaticNerveRelated = log?.symptomId?.startsWith('scin-') ||
-      log?.category === 'sciatic-nerve';
+        // Lower Extremity Nerves
+        const isSciaticNerveRelated = log?.symptomId?.startsWith('scin-') ||
+            log?.category === 'sciatic-nerve';
 
-  const isCommonPeronealNerveRelated = log?.symptomId?.startsWith('cpn-') ||
-      log?.category === 'common-peroneal-nerve';
+        const isCommonPeronealNerveRelated = log?.symptomId?.startsWith('cpn-') ||
+            log?.category === 'common-peroneal-nerve';
 
-  const isSuperficialPeronealNerveRelated = log?.symptomId?.startsWith('spn-') ||
-      log?.category === 'superficial-peroneal-nerve';
+        const isSuperficialPeronealNerveRelated = log?.symptomId?.startsWith('spn-') ||
+            log?.category === 'superficial-peroneal-nerve';
 
-  const isDeepPeronealNerveRelated = log?.symptomId?.startsWith('dpn-') ||
-      log?.category === 'deep-peroneal-nerve';
+        const isDeepPeronealNerveRelated = log?.symptomId?.startsWith('dpn-') ||
+            log?.category === 'deep-peroneal-nerve';
 
-  const isTibialNerveRelated = log?.symptomId?.startsWith('tibn-') ||
-      log?.category === 'tibial-nerve';
+        const isTibialNerveRelated = log?.symptomId?.startsWith('tibn-') ||
+            log?.category === 'tibial-nerve';
 
-  const isPosteriorTibialNerveRelated = log?.symptomId?.startsWith('ptn-') ||
-      log?.category === 'posterior-tibial-nerve';
+        const isPosteriorTibialNerveRelated = log?.symptomId?.startsWith('ptn-') ||
+            log?.category === 'posterior-tibial-nerve';
 
-  const isFemoralNerveRelated = log?.symptomId?.startsWith('femn-') ||
-      log?.category === 'femoral-nerve';
+        const isFemoralNerveRelated = log?.symptomId?.startsWith('femn-') ||
+            log?.category === 'femoral-nerve';
 
-  const isSaphenousNerveRelated = log?.symptomId?.startsWith('sapn-') ||
-      log?.category === 'saphenous-nerve';
+        const isSaphenousNerveRelated = log?.symptomId?.startsWith('sapn-') ||
+            log?.category === 'saphenous-nerve';
 
-  const isObturatorNerveRelated = log?.symptomId?.startsWith('obtn-') ||
-      log?.category === 'obturator-nerve';
+        const isObturatorNerveRelated = log?.symptomId?.startsWith('obtn-') ||
+            log?.category === 'obturator-nerve';
 
-  const isLateralFemoralCutaneousNerveRelated = log?.symptomId?.startsWith('lfcn-') ||
-      log?.category === 'lateral-femoral-cutaneous-nerve';
+        const isLateralFemoralCutaneousNerveRelated = log?.symptomId?.startsWith('lfcn-') ||
+            log?.category === 'lateral-femoral-cutaneous-nerve';
 
-  const isIlioinguinalNerveRelated = log?.symptomId?.startsWith('iin-') ||
-      log?.category === 'ilioinguinal-nerve';
+        const isIlioinguinalNerveRelated = log?.symptomId?.startsWith('iin-') ||
+            log?.category === 'ilioinguinal-nerve';
 
-  // Combined detection flags
-  const isUpperExtremityNerveRelated = isUpperRadicularRelated || isMiddleRadicularRelated ||
-      isLowerRadicularRelated || isAllRadicularRelated || isRadialNerveRelated ||
-      isMedianNerveRelated || isUlnarNerveRelated || isMusculocutaneousNerveRelated ||
-      isCircumflexNerveRelated || isLongThoracicNerveRelated;
+        // Combined detection flags
+        const isUpperExtremityNerveRelated = isUpperRadicularRelated || isMiddleRadicularRelated ||
+            isLowerRadicularRelated || isAllRadicularRelated || isRadialNerveRelated ||
+            isMedianNerveRelated || isUlnarNerveRelated || isMusculocutaneousNerveRelated ||
+            isCircumflexNerveRelated || isLongThoracicNerveRelated;
 
-  const isLowerExtremityNerveRelated = isSciaticNerveRelated || isCommonPeronealNerveRelated ||
-      isSuperficialPeronealNerveRelated || isDeepPeronealNerveRelated || isTibialNerveRelated ||
-      isPosteriorTibialNerveRelated || isFemoralNerveRelated || isSaphenousNerveRelated ||
-      isObturatorNerveRelated || isLateralFemoralCutaneousNerveRelated || isIlioinguinalNerveRelated;
+        const isLowerExtremityNerveRelated = isSciaticNerveRelated || isCommonPeronealNerveRelated ||
+            isSuperficialPeronealNerveRelated || isDeepPeronealNerveRelated || isTibialNerveRelated ||
+            isPosteriorTibialNerveRelated || isFemoralNerveRelated || isSaphenousNerveRelated ||
+            isObturatorNerveRelated || isLateralFemoralCutaneousNerveRelated || isIlioinguinalNerveRelated;
 
-  const isPeripheralNerveRelated = isUpperExtremityNerveRelated || isLowerExtremityNerveRelated ||
-      log?.peripheralNerveData;
+        const isPeripheralNerveRelated = isUpperExtremityNerveRelated || isLowerExtremityNerveRelated ||
+            log?.peripheralNerveData;
 
 
         const handleSave = () => {

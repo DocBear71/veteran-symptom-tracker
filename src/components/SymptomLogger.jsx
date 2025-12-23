@@ -1117,13 +1117,28 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
     }
   }, [prefillData]);
 
+
+  // Peripheral nerve prefixes to exclude from generic pain/GU detection
+  const peripheralNervePrefixes = ['uprn-', 'mdrn-', 'lwrn-', 'alrn-', 'radn-', 'medn-', 'ulnn-',
+    'mscn-', 'crcn-', 'ltn-', 'scin-', 'cpn-', 'spn-', 'dpn-', 'tibn-', 'ptn-', 'femn-',
+    'sapn-', 'obtn-', 'lfcn-', 'iin-'];
+  const isPeripheralNerveSymptom = peripheralNervePrefixes.some(prefix => selectedSymptom?.startsWith(prefix));
+
+  // Phase 3A: Endocrine prefixes to exclude from generic pain/GU detection
+  const endocrinePrefixes = ['hyper-', 'graves-', 'thyroiditis-', 'hpth-', 'hopth-', 'hypo-',
+    'addisons-', 'cushings-', 'di-', 'haldo-'];
+  const isEndocrineSymptom = endocrinePrefixes.some(prefix => selectedSymptom?.startsWith(prefix));
+
+
   // Determine which special form to show - EXPANDED DETECTION
   const isMigraineSelected = selectedSymptom === 'migraine';
 
   // Sleep: match sleep-related symptoms only
-  const isSleepSelected = selectedSymptom === 'sleep-issues' ||
-      selectedSymptom?.includes('insomnia') ||
-      selectedSymptom?.includes('sleep');
+  const isSleepSelected = !isEndocrineSymptom && (
+      selectedSymptom === 'sleep-issues' ||
+      selectedSymptom === 'sleep-quality' ||
+      selectedSymptom?.includes('insomnia')
+  );
 
   const isNightmareSelected = selectedSymptom === 'nightmares';
 
@@ -1178,13 +1193,7 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
     'adjustment-unspecified'
   ].includes(selectedSymptom);
 
-  // Peripheral nerve prefixes to exclude from generic pain/GU detection
-  const peripheralNervePrefixes = ['uprn-', 'mdrn-', 'lwrn-', 'alrn-', 'radn-', 'medn-', 'ulnn-',
-    'mscn-', 'crcn-', 'ltn-', 'scin-', 'cpn-', 'spn-', 'dpn-', 'tibn-', 'ptn-', 'femn-',
-    'sapn-', 'obtn-', 'lfcn-', 'iin-'];
-  const isPeripheralNerveSymptom = peripheralNervePrefixes.some(prefix => selectedSymptom?.startsWith(prefix));
-
-  const isPainSelected = !isPeripheralNerveSymptom && (
+  const isPainSelected = !isPeripheralNerveSymptom && !isEndocrineSymptom && (
       selectedSymptom?.includes('pain') ||
       selectedSymptom?.includes('-ache') ||
       selectedSymptom?.includes('stiff') ||
@@ -1266,7 +1275,7 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
        'peripheral-vision-loss', 'diabetic-retinopathy', 'glaucoma-symptoms'].includes(selectedSymptom);
 
   // Phase 3: Genitourinary detection
-  const isGenitourinaryRelated = !isPeripheralNerveSymptom && (
+  const isGenitourinaryRelated = !isPeripheralNerveSymptom && !isEndocrineSymptom && (
       selectedSymptom?.includes('kidney') ||
       selectedSymptom?.includes('urinary') ||
       selectedSymptom?.includes('prostate') ||
@@ -1287,7 +1296,8 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
   );
 
   // Phase 4: Gynecological condition detection
-  const isGynecologicalRelated = selectedSymptom?.includes('menstrual') ||
+  const isGynecologicalRelated = !isEndocrineSymptom && (
+      selectedSymptom?.includes('menstrual') ||
       selectedSymptom?.includes('pelvic') ||
       selectedSymptom?.includes('endometriosis') ||
       selectedSymptom?.includes('ovarian') ||
@@ -1307,7 +1317,8 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
         'pelvic-pressure', 'vaginal-bulge', 'incomplete-bladder-emptying', 'bowel-dysfunction-prolapse',
         'sexual-dysfunction', 'decreased-libido', 'arousal-difficulty', 'infertility',
         'hirsutism', 'hormonal-acne', 'pcos-weight-changes', 'breast-pain', 'nipple-discharge',
-        'uterine-cramping'].includes(selectedSymptom);
+        'uterine-cramping'].includes(selectedSymptom)
+  );
 
   // Phase 5: Hemic/Lymphatic condition detection
   const isAnemiaRelated = [
@@ -1872,6 +1883,46 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
   // Combined Phase 1B neurological detection
   const isNeurologicalPhase1BRelated = isNarcolepsyRelated || isALSRelated ||
       isSyringomyeliaRelated || isMyelitisRelated;
+
+  // Phase 3A: Endocrine - Thyroid & Parathyroid Detection
+  const isHyperthyroidismRelated = selectedSymptom?.startsWith('hyper-') ||
+      selectedSymptom?.startsWith('graves-') ||
+      selectedCategory === 'hyperthyroidism' ||
+      ['hyper-weight-loss', 'hyper-rapid-heartbeat', 'hyper-tremor', 'hyper-heat-intolerance',
+        'hyper-sweating', 'hyper-anxiety', 'hyper-irritability', 'hyper-fatigue',
+        'hyper-muscle-weakness', 'hyper-sleep-difficulty', 'hyper-appetite-increase',
+        'hyper-bowel-changes', 'graves-eye-bulging', 'graves-eye-irritation',
+        'graves-double-vision', 'graves-eye-pain', 'graves-light-sensitivity'].includes(selectedSymptom);
+  const isThyroiditisRelated = selectedSymptom?.startsWith('thyroiditis-') ||
+      selectedCategory === 'thyroiditis' ||
+      ['thyroiditis-neck-pain', 'thyroiditis-swelling', 'thyroiditis-difficulty-swallowing',
+        'thyroiditis-hyper-phase', 'thyroiditis-hypo-phase', 'thyroiditis-fatigue'].includes(selectedSymptom);
+  const isHyperparathyroidismRelated = selectedSymptom?.startsWith('hpth-') ||
+      selectedCategory === 'hyperparathyroidism' ||
+      ['hpth-fatigue', 'hpth-bone-pain', 'hpth-kidney-stones', 'hpth-abdominal-pain',
+        'hpth-nausea', 'hpth-constipation', 'hpth-confusion', 'hpth-depression',
+        'hpth-muscle-weakness', 'hpth-excessive-thirst', 'hpth-frequent-urination',
+        'hpth-anorexia', 'hpth-fracture'].includes(selectedSymptom);
+  const isHypoparathyroidismRelated = selectedSymptom?.startsWith('hopth-') ||
+      selectedCategory === 'hypoparathyroidism' ||
+      ['hopth-muscle-cramps', 'hopth-tingling', 'hopth-muscle-spasms', 'hopth-fatigue',
+        'hopth-dry-skin', 'hopth-brittle-nails', 'hopth-hair-loss', 'hopth-seizures',
+        'hopth-depression', 'hopth-anxiety', 'hopth-memory-problems', 'hopth-cataracts'].includes(selectedSymptom);
+  // Combined Phase 3A Endocrine detection
+  const isEndocrinePhase3ARelated = isHyperthyroidismRelated || isThyroiditisRelated ||
+      isHyperparathyroidismRelated || isHypoparathyroidismRelated;
+  // Phase 3B: Adrenal & Pituitary Detection
+  const isAddisonsDiseaseRelated = selectedSymptom?.startsWith('addisons-') ||
+      selectedCategory === 'addisons-disease';
+  const isCushingsSyndromeRelated = selectedSymptom?.startsWith('cushings-') ||
+      selectedCategory === 'cushings-syndrome';
+  const isDiabetesInsipidusRelated = selectedSymptom?.startsWith('di-') ||
+      selectedCategory === 'diabetes-insipidus';
+  const isHyperaldosteronismRelated = selectedSymptom?.startsWith('haldo-') ||
+      selectedCategory === 'hyperaldosteronism';
+  // Combined Phase 3B Endocrine detection
+  const isEndocrinePhase3BRelated = isAddisonsDiseaseRelated || isCushingsSyndromeRelated ||
+      isDiabetesInsipidusRelated || isHyperaldosteronismRelated;
 
   // Reset condition-specific data when symptom changes
   useEffect(() => {
