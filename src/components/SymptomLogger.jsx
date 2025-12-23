@@ -1150,6 +1150,19 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
       selectedSymptom?.startsWith('hr-')
   );
 
+  // Phase 5A: Exclude hernia and adhesion symptoms from pain detection
+  const isHerniaOrAdhesionSymptom = (
+      selectedSymptom?.startsWith('hernia-') ||
+      selectedSymptom?.startsWith('pa-')
+  );
+  // Phase 5B: Exclude esophageal and post-surgical digestive symptoms from pain detection
+  const isDigestivePhase5BSymptom = (
+      selectedSymptom?.startsWith('es-') ||
+      selectedSymptom?.startsWith('esp-') ||
+      selectedSymptom?.startsWith('pgs-') ||
+      selectedSymptom?.startsWith('if-')
+  );
+
   // Determine which special form to show - EXPANDED DETECTION
   const isMigraineSelected = selectedSymptom === 'migraine';
 
@@ -1213,7 +1226,7 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
     'adjustment-unspecified'
   ].includes(selectedSymptom);
 
-  const isPainSelected = !isPeripheralNerveSymptom && !isEndocrineSymptom && !isFootConditionSymptom && (
+  const isPainSelected = !isPeripheralNerveSymptom && !isEndocrineSymptom && !isFootConditionSymptom && !isHerniaOrAdhesionSymptom && !isDigestivePhase5BSymptom && (
       selectedSymptom?.includes('pain') ||
       selectedSymptom?.includes('-ache') ||
       selectedSymptom?.includes('stiff') ||

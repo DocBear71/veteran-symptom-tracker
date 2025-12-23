@@ -185,6 +185,11 @@ import {
   analyzeMetatarsalgiaLogs,
   analyzeHalluxValgusLogs,
   analyzeHalluxRigidusLogs,
+  analyzeHerniaLogs,
+  analyzePeritonealAdhesionsLogs,
+  analyzeEsophagealLogs,
+  analyzePostgastrectomyLogs,
+  analyzeIntestinalFistulaLogs,
 } from './ratingCriteria';
 
 // Appointment type labels for export
@@ -2956,6 +2961,13 @@ const analyzeAllConditions = (logs, options = {}) => {
         'metatarsalgia': analyzeMetatarsalgiaLogs,
         'hallux-valgus': analyzeHalluxValgusLogs,
         'hallux-rigidus': analyzeHalluxRigidusLogs,
+        // Phase 5A: Hernia & Structural
+        'hernia': analyzeHerniaLogs,
+        'peritoneal-adhesions': analyzePeritonealAdhesionsLogs,
+        // Phase 5B: Esophageal & Post-Surgical
+        'esophageal': analyzeEsophagealLogs,
+        'postgastrectomy': analyzePostgastrectomyLogs,
+        'intestinal-fistula': analyzeIntestinalFistulaLogs,
       };
 
     const analyses = [];

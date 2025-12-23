@@ -2105,13 +2105,99 @@ export const CONDITIONS = {
       'hr-shoe-difficulty', 'hr-functional-loss'
     ],
   },
+  // ========== PHASE 5A: DIGESTIVE SYSTEM - HERNIA & STRUCTURAL ==========
+  // Hernia (All Types) - DC 7338
+  HERNIA: {
+    id: 'hernia',
+    name: 'Hernia',
+    diagnosticCode: '7338',
+    cfrReference: '38 CFR 4.114',
+    description: 'Includes inguinal, femoral, umbilical, ventral, incisional, and other hernias (not hiatal)',
+    symptomIds: [
+      'hernia-groin-bulge', 'hernia-abdominal-bulge', 'hernia-umbilical-bulge',
+      'hernia-pain-bending', 'hernia-pain-adl', 'hernia-pain-walking', 'hernia-pain-stairs',
+      'hernia-pain-straining', 'hernia-pain-standing', 'hernia-reducible', 'hernia-irreducible',
+      'hernia-truss-required', 'hernia-size-small', 'hernia-size-medium', 'hernia-size-large',
+      'hernia-recurrent', 'hernia-post-surgical', 'hernia-strangulation-risk', 'hernia-functional-limitation'
+    ],
+  },
+  // Peritoneal Adhesions - DC 7301
+  PERITONEAL_ADHESIONS: {
+    id: 'peritoneal-adhesions',
+    name: 'Peritoneal Adhesions',
+    diagnosticCode: '7301',
+    cfrReference: '38 CFR 4.114',
+    description: 'Adhesions of peritoneum due to surgery, trauma, disease, or infection',
+    symptomIds: [
+      'pa-abdominal-pain', 'pa-nausea', 'pa-vomiting', 'pa-colic', 'pa-constipation',
+      'pa-diarrhea', 'pa-distension', 'pa-obstruction-partial', 'pa-obstruction-complete',
+      'pa-hospitalization', 'pa-dietary-modification', 'pa-tpn-required', 'pa-post-surgical',
+      'pa-post-trauma', 'pa-inflammatory', 'pa-recurrent', 'pa-inoperable'
+    ],
+  },
 
+  // ========== PHASE 5B: DIGESTIVE SYSTEM - ESOPHAGEAL & POST-SURGICAL ==========
 
+  // Esophageal Stricture - DC 7203
+  ESOPHAGEAL_STRICTURE: {
+    id: 'esophageal-stricture',
+    name: 'Esophageal Stricture',
+    diagnosticCode: '7203',
+    cfrReference: '38 CFR 4.114',
+    description: 'Narrowing of the esophagus causing swallowing difficulties',
+    symptomIds: [
+      'es-dysphagia-solids', 'es-dysphagia-liquids', 'es-dysphagia-pills', 'es-food-impaction',
+      'es-regurgitation', 'es-aspiration', 'es-weight-loss', 'es-undernutrition',
+      'es-dilatation', 'es-dilatation-steroids', 'es-stent', 'es-peg-tube',
+      'es-daily-medication', 'es-recurrent', 'es-refractory'
+    ],
+  },
+
+  // Esophageal Spasm/Motility Disorder - DC 7204 (rates as DC 7203)
+  ESOPHAGEAL_SPASM: {
+    id: 'esophageal-spasm',
+    name: 'Esophageal Spasm/Motility Disorder',
+    diagnosticCode: '7204',
+    cfrReference: '38 CFR 4.114',
+    description: 'Esophageal motility disorders including achalasia, diffuse spasm, nutcracker esophagus',
+    symptomIds: [
+      'esp-chest-pain', 'esp-dysphagia', 'esp-food-sticking', 'esp-regurgitation',
+      'esp-heartburn', 'esp-triggered-hot-cold', 'esp-triggered-stress', 'esp-nocturnal',
+      'esp-weight-loss', 'esp-achalasia'
+    ],
+  },
+
+  // Postgastrectomy Syndrome - DC 7308 (rates as DC 7303)
+  POSTGASTRECTOMY: {
+    id: 'postgastrectomy',
+    name: 'Postgastrectomy Syndrome',
+    diagnosticCode: '7308',
+    cfrReference: '38 CFR 4.114',
+    description: 'Chronic complications following stomach surgery including dumping syndrome',
+    symptomIds: [
+      'pgs-dumping-early', 'pgs-dumping-late', 'pgs-nausea', 'pgs-vomiting', 'pgs-vomiting-daily',
+      'pgs-diarrhea', 'pgs-diarrhea-explosive', 'pgs-syncope', 'pgs-sweating',
+      'pgs-abdominal-pain', 'pgs-dietary-modification', 'pgs-medication',
+      'pgs-tpn', 'pgs-tube-feeding', 'pgs-weight-loss'
+    ],
+  },
+
+  // Intestinal Fistula - DC 7330
+  INTESTINAL_FISTULA: {
+    id: 'intestinal-fistula',
+    name: 'Intestinal Fistula',
+    diagnosticCode: '7330',
+    cfrReference: '38 CFR 4.114',
+    description: 'External fistula of the intestine',
+    symptomIds: [
+      'if-drainage-minimal', 'if-drainage-moderate', 'if-drainage-heavy', 'if-fecal-discharge',
+      'if-persistent-drainage', 'if-skin-irritation', 'if-infection', 'if-pain',
+      'if-enteral-nutrition', 'if-tpn', 'if-low-bmi', 'if-very-low-bmi',
+      'if-post-surgical', 'if-post-radiation', 'if-post-trauma'
+    ],
+  },
 
 };
-
-
-
 // ============================================
 // MIGRAINE RATING CRITERIA (DC 8100)
 // ============================================
@@ -16252,6 +16338,547 @@ export const BILIARY_TRACT_CRITERIA = {
   disclaimer: 'This analysis is based on logged biliary tract symptoms. VA requires clinically documented attacks. Seek medical evaluation during attacks to establish documentation.',
 };
 
+// ============================================
+// PHASE 5A: HERNIA (DC 7338)
+// ============================================
+
+export const HERNIA_CRITERIA = {
+  diagnosticCode: '7338',
+  condition: 'Hernia',
+  cfrReference: '38 CFR 4.114, Diagnostic Code 7338',
+
+  note: 'DC 7338 covers all hernia types including inguinal, femoral, umbilical, ventral, incisional, and other hernias (excluding hiatal). Ratings are based on hernia size, duration, repairability, and pain with specific activities.',
+
+  ratings: [
+    {
+      percent: 100,
+      summary: 'Irreparable hernia ≥15cm for 12+ months with pain during 3+ activities',
+      criteriaDescription: [
+        'Irreparable hernia (new or recurrent) present for 12 months or more',
+        'Size equal to 15 cm or greater in one dimension for 12+ months',
+        'Pain when performing at least three of: (1) bending over, (2) ADLs, (3) walking, (4) climbing stairs',
+      ],
+      evidenceNeeded: [
+        'Medical documentation of hernia size ≥15cm',
+        'Documentation hernia is irreparable',
+        'Symptom logs showing pain with 3+ activities',
+        'Duration of 12+ months documented',
+      ],
+    },
+    {
+      percent: 60,
+      summary: 'Irreparable hernia ≥15cm for 12+ months with pain during 2 activities',
+      criteriaDescription: [
+        'Irreparable hernia (new or recurrent) present for 12 months or more',
+        'Size equal to 15 cm or greater in one dimension for 12+ months',
+        'Pain when performing two of: (1) bending over, (2) ADLs, (3) walking, (4) climbing stairs',
+      ],
+      evidenceNeeded: [
+        'Medical documentation of hernia size ≥15cm',
+        'Documentation hernia is irreparable',
+        'Symptom logs showing pain with 2 activities',
+        'Duration of 12+ months documented',
+      ],
+    },
+    {
+      percent: 30,
+      summary: 'Irreparable hernia 3-15cm for 12+ months with pain during 2+ activities',
+      criteriaDescription: [
+        'Irreparable hernia (new or recurrent) present for 12 months or more',
+        'Size equal to 3 cm or greater but less than 15 cm in one dimension for 12+ months',
+        'Pain when performing at least two of: (1) bending over, (2) ADLs, (3) walking, (4) climbing stairs',
+      ],
+      evidenceNeeded: [
+        'Medical documentation of hernia size 3-15cm',
+        'Documentation hernia is irreparable',
+        'Symptom logs showing pain with 2+ activities',
+        'Duration of 12+ months documented',
+      ],
+    },
+    {
+      percent: 20,
+      summary: 'Irreparable hernia 3-15cm for 12+ months with pain during 1 activity',
+      criteriaDescription: [
+        'Irreparable hernia (new or recurrent) present for 12 months or more',
+        'Size equal to 3 cm or greater but less than 15 cm in one dimension for 12+ months',
+        'Pain when performing one of: (1) bending over, (2) ADLs, (3) walking, (4) climbing stairs',
+      ],
+      evidenceNeeded: [
+        'Medical documentation of hernia size 3-15cm',
+        'Documentation hernia is irreparable',
+        'Symptom logs showing pain with 1 activity',
+        'Duration of 12+ months documented',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Irreparable hernia <3cm for 12+ months',
+      criteriaDescription: [
+        'Irreparable hernia (new or recurrent) present for 12 months or more',
+        'Hernia size smaller than 3 cm',
+      ],
+      evidenceNeeded: [
+        'Medical documentation of hernia size <3cm',
+        'Documentation hernia is irreparable',
+        'Duration of 12+ months documented',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'Asymptomatic hernia - present and repairable, or repaired',
+      criteriaDescription: [
+        'Asymptomatic hernia; present and repairable, or already repaired',
+      ],
+      evidenceNeeded: [
+        'Medical documentation of hernia status',
+        'Surgical records if repaired',
+      ],
+    },
+  ],
+
+  definitions: {
+    irreparableHernia: {
+      term: 'Irreparable Hernia',
+      definition: 'A hernia that cannot be surgically repaired or has failed previous repair attempts.',
+    },
+    adls: {
+      term: 'Activities of Daily Living (ADLs)',
+      definition: 'Basic self-care activities including bathing, dressing, hygiene, and transfers.',
+    },
+    incarcerated: {
+      term: 'Incarcerated Hernia',
+      definition: 'A hernia that cannot be pushed back into place (irreducible), with tissue trapped outside the abdominal wall.',
+    },
+    strangulated: {
+      term: 'Strangulated Hernia',
+      definition: 'A hernia where blood supply to trapped tissue is cut off - a surgical emergency.',
+    },
+  },
+
+  importantNotes: [
+    'With two compensable inguinal hernias, evaluate the more severe first, then add 10% for the second (unless first is 100%)',
+    'Any ADL (bathing, dressing, hygiene, transfers) counts as one activity',
+    'Hernia must be present for 12+ months to qualify for compensable rating',
+    'Hiatal hernias are rated separately under DC 7346',
+  ],
+
+  disclaimer: 'This analysis is based on logged hernia symptoms. VA ratings require medical documentation of hernia size and repairability status.',
+};
+
+// ============================================
+// PHASE 5A: PERITONEAL ADHESIONS (DC 7301)
+// ============================================
+
+export const PERITONEAL_ADHESIONS_CRITERIA = {
+  diagnosticCode: '7301',
+  condition: 'Peritoneal Adhesions',
+  cfrReference: '38 CFR 4.114, Diagnostic Code 7301',
+
+  note: 'Peritoneal adhesions are rated based on severity of obstruction, dietary modification requirements, hospitalization history, and associated symptoms. Adhesions may result from surgery, trauma, inflammatory disease (Crohn\'s, cholecystitis), or infection.',
+
+  ratings: [
+    {
+      percent: 80,
+      summary: 'Persistent partial obstruction - inoperable/refractory or requires TPN',
+      criteriaDescription: [
+        'Persistent partial bowel obstruction that is either inoperable and refractory to treatment, OR',
+        'Requires total parenteral nutrition (TPN) for obstructive symptoms',
+      ],
+      evidenceNeeded: [
+        'Medical documentation of persistent partial obstruction',
+        'Documentation obstruction is inoperable or refractory',
+        'TPN orders and administration records if applicable',
+      ],
+    },
+    {
+      percent: 50,
+      summary: 'Symptomatic with hospitalization 1+/year, dietary modification, and GI symptoms',
+      criteriaDescription: [
+        'Symptomatic peritoneal adhesions persisting/recurring after surgery, trauma, or inflammatory disease',
+        'Clinical evidence of recurrent obstruction requiring hospitalization at least once a year',
+        'Medically-directed dietary modification (not TPN)',
+        'At least one of: abdominal pain, nausea, vomiting, colic, constipation, or diarrhea',
+      ],
+      evidenceNeeded: [
+        'Medical documentation of symptomatic adhesions',
+        'Hospitalization records for obstruction (1+/year)',
+        'Dietary modification orders from healthcare provider',
+        'Symptom logs documenting GI symptoms',
+      ],
+    },
+    {
+      percent: 30,
+      summary: 'Symptomatic with dietary modification and GI symptoms (no hospitalization required)',
+      criteriaDescription: [
+        'Symptomatic peritoneal adhesions persisting/recurring after surgery, trauma, or inflammatory disease',
+        'Medically-directed dietary modification (not TPN)',
+        'At least one of: abdominal pain, nausea, vomiting, colic, constipation, or diarrhea',
+      ],
+      evidenceNeeded: [
+        'Medical documentation of symptomatic adhesions',
+        'Dietary modification orders from healthcare provider',
+        'Symptom logs documenting GI symptoms',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Symptomatic with GI symptoms only (no dietary modification)',
+      criteriaDescription: [
+        'Symptomatic peritoneal adhesions persisting/recurring after surgery, trauma, or inflammatory disease',
+        'At least one of: abdominal pain, nausea, vomiting, colic, constipation, or diarrhea',
+      ],
+      evidenceNeeded: [
+        'Medical documentation of symptomatic adhesions',
+        'Symptom logs documenting GI symptoms',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'History of adhesions, currently asymptomatic',
+      criteriaDescription: [
+        'History of peritoneal adhesions',
+        'Currently asymptomatic',
+      ],
+      evidenceNeeded: [
+        'Medical documentation confirming adhesion history',
+      ],
+    },
+  ],
+
+  definitions: {
+    peritonealAdhesions: {
+      term: 'Peritoneal Adhesions',
+      definition: 'Bands of scar tissue that form between abdominal organs and tissues, often after surgery, causing organs to stick together.',
+    },
+    tpn: {
+      term: 'Total Parenteral Nutrition (TPN)',
+      definition: 'Intravenous feeding that bypasses the digestive system entirely, delivering nutrients directly into the bloodstream.',
+    },
+    partialObstruction: {
+      term: 'Partial Bowel Obstruction',
+      definition: 'Incomplete blockage of the intestine that restricts but does not completely stop the passage of contents.',
+    },
+    colic: {
+      term: 'Colic',
+      definition: 'Severe spasmodic abdominal pain caused by intestinal obstruction or spasm.',
+    },
+  },
+
+  importantNotes: [
+    'Adhesions must be "symptomatic" and confirmed by healthcare provider',
+    'Can result from surgery, trauma, inflammatory disease (Crohn\'s, cholecystitis), or infection',
+    'Dietary modification must be medically-directed (not self-imposed)',
+    'Hospitalization requirement is "at least once a year" for 50% rating',
+    'TPN requirement or inoperable status needed for 80% rating',
+  ],
+
+  disclaimer: 'This analysis is based on logged adhesion symptoms. VA ratings require medical documentation of adhesions and their cause.',
+};
+
+
+// ============================================
+// PHASE 5B: ESOPHAGEAL STRICTURE (DC 7203)
+// ============================================
+
+export const ESOPHAGEAL_STRICTURE_CRITERIA = {
+  diagnosticCode: '7203',
+  condition: 'Esophageal Stricture',
+  cfrReference: '38 CFR 4.114, Diagnostic Code 7203',
+
+  note: 'Esophageal stricture is rated based on severity of dysphagia, dilatation requirements, aspiration risk, and nutritional impact. Also used for rating DC 7204 (Esophageal Spasm/Motility Disorders).',
+
+  ratings: [
+    {
+      percent: 80,
+      summary: 'Refractory stricture with aspiration, undernutrition, and PEG tube',
+      criteriaDescription: [
+        'Recurrent or refractory stricture with aspiration',
+        'Undernutrition requiring PEG tube',
+      ],
+      evidenceNeeded: [
+        'Medical documentation of refractory stricture (cannot achieve target after 5+ dilatations)',
+        'Documentation of aspiration events',
+        'Nutritional assessment showing undernutrition',
+        'PEG tube placement records',
+      ],
+    },
+    {
+      percent: 50,
+      summary: 'Refractory stricture with dysphagia, aspiration, and undernutrition OR ≥3 dilatations/year',
+      criteriaDescription: [
+        'Recurrent or refractory stricture with dysphagia, aspiration, and undernutrition, OR',
+        'Requiring dilatation three or more times per 12-month period',
+      ],
+      evidenceNeeded: [
+        'Medical documentation of stricture characteristics',
+        'Documentation of aspiration and undernutrition, OR',
+        'Procedure records showing 3+ dilatations per year',
+      ],
+    },
+    {
+      percent: 30,
+      summary: 'Recurrent stricture with dysphagia requiring ≤2 dilatations/year',
+      criteriaDescription: [
+        'Recurrent stricture with dysphagia',
+        'Requiring dilatation two or fewer times per 12-month period',
+      ],
+      evidenceNeeded: [
+        'Medical documentation of recurrent stricture',
+        'Swallowing study or endoscopy findings',
+        'Procedure records showing dilatation frequency',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Dysphagia controlled with daily medication',
+      criteriaDescription: [
+        'Dysphagia controlled by daily medication',
+      ],
+      evidenceNeeded: [
+        'Medical documentation of dysphagia diagnosis',
+        'Medication records showing daily treatment',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'History of esophageal stricture, asymptomatic',
+      criteriaDescription: [
+        'History of esophageal stricture',
+        'Currently asymptomatic without treatment',
+      ],
+      evidenceNeeded: [
+        'Medical records confirming diagnosis history',
+      ],
+    },
+  ],
+
+  definitions: {
+    recurrentStricture: {
+      term: 'Recurrent Stricture',
+      definition: 'A stricture that cannot maintain a target diameter of greater than 14mm for more than 4 weeks.',
+    },
+    refractoryStricture: {
+      term: 'Refractory Stricture',
+      definition: 'A stricture that cannot achieve a target diameter of 14mm after five dilation sessions at two-week intervals.',
+    },
+    dysphagia: {
+      term: 'Dysphagia',
+      definition: 'Difficulty swallowing food, liquids, or medications.',
+    },
+    pegTube: {
+      term: 'PEG Tube',
+      definition: 'Percutaneous endoscopic gastrostomy - a feeding tube placed through the abdominal wall into the stomach.',
+    },
+    aspiration: {
+      term: 'Aspiration',
+      definition: 'Entry of food, liquid, or secretions into the airway and lungs.',
+    },
+  },
+
+  importantNotes: [
+    'DC 7204 (Esophageal Spasm/Motility) is rated using DC 7203 criteria',
+    'Includes achalasia, diffuse esophageal spasm, corkscrew esophagus, nutcracker esophagus',
+    'Dilatation frequency is key differentiator between 30% and 50% ratings',
+    'PEG tube requirement indicates severe nutritional compromise (80%)',
+  ],
+
+  disclaimer: 'This analysis is based on logged esophageal symptoms. VA ratings require medical documentation of stricture characteristics and treatment history.',
+};
+
+// ============================================
+// PHASE 5B: POSTGASTRECTOMY SYNDROME (DC 7308)
+// Rated as Chronic Complications of Upper GI Surgery (DC 7303)
+// ============================================
+
+export const POSTGASTRECTOMY_CRITERIA = {
+  diagnosticCode: '7308',
+  condition: 'Postgastrectomy Syndrome',
+  cfrReference: '38 CFR 4.114, Diagnostic Code 7308 (rated as DC 7303)',
+
+  note: 'Postgastrectomy syndrome is rated under DC 7303 (Chronic Complications of Upper GI Surgery). Ratings are based on severity of dumping syndrome, nutritional requirements, and symptom frequency.',
+
+  ratings: [
+    {
+      percent: 80,
+      summary: 'Requires TPN or tube feeding for 30+ days during 12-month period',
+      criteriaDescription: [
+        'Chronic complications requiring total parenteral nutrition (TPN) or tube feeding',
+        'Nutritional support required for a period of 30 or more consecutive days during a 12-month period',
+      ],
+      evidenceNeeded: [
+        'TPN or tube feeding orders and administration records',
+        'Documentation of 30+ consecutive days of nutritional support',
+        'Medical records showing chronic post-surgical complications',
+      ],
+    },
+    {
+      percent: 50,
+      summary: 'Daily vomiting OR 6+ watery BMs/day OR explosive unpredictable BMs',
+      criteriaDescription: [
+        'Chronic complications with daily vomiting despite dietary modification, OR',
+        'Six or more watery bowel movements per day despite dietary modification, OR',
+        'Explosive, unpredictable bowel movements that interfere with daily activities',
+      ],
+      evidenceNeeded: [
+        'Symptom logs documenting daily vomiting frequency',
+        'Documentation of watery bowel movement frequency (6+/day)',
+        'Records of explosive/unpredictable bowel movements',
+        'Evidence of dietary modification attempts',
+      ],
+    },
+    {
+      percent: 30,
+      summary: 'Post-prandial syncope with sweating OR medication required for dumping',
+      criteriaDescription: [
+        'Chronic complications with post-prandial syncope associated with sweating, OR',
+        'Requires medication for control of dumping syndrome',
+      ],
+      evidenceNeeded: [
+        'Documentation of syncope/lightheadedness after meals',
+        'Records of associated sweating episodes',
+        'Medication records for dumping syndrome treatment',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Chronic symptoms controlled with dietary modification only',
+      criteriaDescription: [
+        'Chronic complications controlled by dietary modification alone',
+        'No medication required for symptom control',
+      ],
+      evidenceNeeded: [
+        'Documentation of chronic post-surgical symptoms',
+        'Dietary modification plan from healthcare provider',
+        'Symptom logs showing control with diet',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'History of gastrectomy, asymptomatic',
+      criteriaDescription: [
+        'History of gastrectomy or gastric surgery',
+        'Currently asymptomatic',
+      ],
+      evidenceNeeded: [
+        'Surgical records confirming procedure',
+      ],
+    },
+  ],
+
+  definitions: {
+    dumpingSyndrome: {
+      term: 'Dumping Syndrome',
+      definition: 'Rapid gastric emptying causing symptoms either early (within 30 minutes - cramping, diarrhea, sweating) or late (1-3 hours - hypoglycemia symptoms).',
+    },
+    postPrandialSyncope: {
+      term: 'Post-Prandial Syncope',
+      definition: 'Fainting or near-fainting that occurs after eating, often due to rapid blood sugar changes.',
+    },
+    tpn: {
+      term: 'Total Parenteral Nutrition (TPN)',
+      definition: 'Intravenous feeding that bypasses the digestive system entirely.',
+    },
+    tubFeeding: {
+      term: 'Tube Feeding',
+      definition: 'Enteral nutrition delivered via nasogastric, gastrostomy, or jejunostomy tube.',
+    },
+  },
+
+  importantNotes: [
+    'DC 7308 is rated under DC 7303 (Chronic Complications of Upper GI Surgery)',
+    'Early dumping: symptoms within 30 min (cramping, diarrhea, sweating, dizziness)',
+    'Late dumping: symptoms 1-3 hours after eating (weakness, sweating, shakiness)',
+    'Dietary modification must be medically-directed and documented',
+    '30 consecutive days of TPN/tube feeding required for 80% rating',
+  ],
+
+  disclaimer: 'This analysis is based on logged postgastrectomy symptoms. VA ratings require medical documentation of surgery and chronic complications.',
+};
+
+// ============================================
+// PHASE 5B: INTESTINAL FISTULA (DC 7330)
+// ============================================
+
+export const INTESTINAL_FISTULA_CRITERIA = {
+  diagnosticCode: '7330',
+  condition: 'Intestinal Fistula',
+  cfrReference: '38 CFR 4.114, Diagnostic Code 7330',
+
+  note: 'Intestinal fistula (external) is rated based on nutritional requirements, discharge amount, and BMI impact. Ratings consider TPN needs, drainage volume, and duration.',
+
+  ratings: [
+    {
+      percent: 100,
+      summary: 'Requires TPN for fistula-related symptoms',
+      criteriaDescription: [
+        'Intestinal fistula requiring total parenteral nutrition (TPN) for fistula-related symptoms',
+      ],
+      evidenceNeeded: [
+        'Medical documentation of intestinal fistula',
+        'TPN orders and administration records',
+        'Documentation linking TPN to fistula symptoms',
+      ],
+    },
+    {
+      percent: 60,
+      summary: 'Requires enteral nutrition OR heavy drainage (3+ bags/10+ pads daily) with low BMI',
+      criteriaDescription: [
+        'Requires enteral nutrition for fistula-related symptoms, OR',
+        'Discharge filling 3+ ostomy bags (130cc sized) OR 10+ pads per day with BMI <16, OR',
+        'Discharge filling 3+ ostomy bags OR 10+ pads per day with drainage 3+ months',
+      ],
+      evidenceNeeded: [
+        'Enteral nutrition orders if applicable',
+        'Daily drainage volume documentation',
+        'BMI measurements if applicable',
+        'Duration of drainage documentation',
+      ],
+    },
+    {
+      percent: 30,
+      summary: 'Persistent drainage 1-3 months OR moderate drainage with low BMI',
+      criteriaDescription: [
+        'Discharge filling 3+ ostomy bags OR 10+ pads per day with BMI 16-18, OR',
+        'Discharge filling 3+ ostomy bags OR 10+ pads per day with drainage 1-3 months, OR',
+        'Discharge filling less than 3 bags OR 10 pads per day with BMI <16',
+      ],
+      evidenceNeeded: [
+        'Daily drainage documentation',
+        'BMI measurements',
+        'Duration of fistula drainage',
+      ],
+    },
+  ],
+
+  definitions: {
+    intestinalFistula: {
+      term: 'Intestinal Fistula',
+      definition: 'An abnormal connection between the intestine and the skin surface (external fistula) or another organ.',
+    },
+    enteralNutrition: {
+      term: 'Enteral Nutrition',
+      definition: 'Nutrition delivered directly to the stomach or intestine via feeding tube.',
+    },
+    tpn: {
+      term: 'Total Parenteral Nutrition (TPN)',
+      definition: 'Complete nutrition delivered intravenously, bypassing the digestive system.',
+    },
+    ostomyBag: {
+      term: 'Ostomy Bag',
+      definition: 'A pouching system used to collect waste; standard size referenced is 130cc.',
+    },
+  },
+
+  importantNotes: [
+    'TPN requirement for fistula symptoms qualifies for 100% rating',
+    'Drainage volume measured by ostomy bags (130cc size) or pad changes',
+    'BMI is a key factor in determining rating level',
+    'Duration of drainage (1-3 months vs 3+ months) affects rating',
+    'Both drainage amount AND either BMI or duration required for 60%/30%',
+  ],
+
+  disclaimer: 'This analysis is based on logged fistula symptoms. VA ratings require medical documentation of fistula, drainage measurements, and nutritional status.',
+};
 
 // ============================================
 // PHASE 1A: MULTIPLE SCLEROSIS CRITERIA (DC 8018)
@@ -22566,7 +23193,7 @@ export const analyzeOsteomyelitisLogs = (logs, options = {}) => {
 // ============================================
 
 /**
- * Analyzes multi-joint arthritis symptom logs to determine supported VA rating level
+ * Analyzes multijoint arthritis symptom logs to determine supported VA rating level
  * Has its own unique rating schedule for active inflammatory process
  */
 export const analyzeMultiJointArthritisLogs = (logs, options = {}) => {
@@ -22575,7 +23202,7 @@ export const analyzeMultiJointArthritisLogs = (logs, options = {}) => {
   const cutoffDate = new Date();
   cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
 
-  // Filter multi-joint arthritis symptom logs
+  // Filter multijoint arthritis symptom logs
   const mjaSymptoms = logs.filter(log => {
     const logDate = new Date(log.timestamp);
     return logDate >= cutoffDate && CONDITIONS.MULTI_JOINT_ARTHRITIS.symptomIds.includes(getLogSymptomId(log));
@@ -33983,6 +34610,886 @@ export const analyzeBiliaryTractLogs = (logs, options = {}) => {
   };
 };
 
+
+// ============================================
+// PHASE 5A: HERNIA ANALYSIS (DC 7338)
+// ============================================
+
+/**
+ * Analyze Hernia symptom logs against VA rating criteria
+ * DC 7338 - Rated by size, repairability, and pain with activities
+ */
+export const analyzeHerniaLogs = (logs, options = {}) => {
+  const evaluationPeriodDays = options.days || 365;
+  const symptomIds = CONDITIONS.HERNIA.symptomIds;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    const symptomId = getLogSymptomId(log);
+    return logDate >= cutoffDate && symptomId && symptomIds.includes(symptomId);
+  });
+
+  if (relevantLogs.length === 0) {
+    return {
+      hasData: false,
+      condition: 'Hernia',
+      diagnosticCode: '7338',
+      message: 'No hernia symptoms logged in evaluation period',
+    };
+  }
+
+  // Categorize symptoms
+  const painBendingLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'hernia-pain-bending');
+  const painAdlLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'hernia-pain-adl');
+  const painWalkingLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'hernia-pain-walking');
+  const painStairsLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'hernia-pain-stairs');
+  const painStrainingLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'hernia-pain-straining');
+  const painStandingLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'hernia-pain-standing');
+
+  const reducibleLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'hernia-reducible');
+  const irreducibleLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'hernia-irreducible');
+
+  const sizeSmallLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'hernia-size-small');
+  const sizeMediumLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'hernia-size-medium');
+  const sizeLargeLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'hernia-size-large');
+
+  const trussLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'hernia-truss-required');
+  const recurrentLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'hernia-recurrent');
+  const postSurgicalLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'hernia-post-surgical');
+  const strangulationLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'hernia-strangulation-risk');
+  const functionalLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'hernia-functional-limitation');
+
+  const bulgeLogs = relevantLogs.filter(log =>
+      ['hernia-groin-bulge', 'hernia-abdominal-bulge', 'hernia-umbilical-bulge'].includes(getLogSymptomId(log))
+  );
+
+  // Determine hernia characteristics
+  const isIrreducible = irreducibleLogs.length > 0;
+  const isLargeSize = sizeLargeLogs.length > 0; // ≥15cm
+  const isMediumSize = sizeMediumLogs.length > 0; // 3-15cm
+  const isSmallSize = sizeSmallLogs.length > 0 && !isMediumSize && !isLargeSize; // <3cm
+
+  // Count pain activities (the 4 specific activities VA considers)
+  let painActivitiesCount = 0;
+  const painActivities = [];
+
+  if (painBendingLogs.length > 0) {
+    painActivitiesCount++;
+    painActivities.push('bending over');
+  }
+  if (painAdlLogs.length > 0) {
+    painActivitiesCount++;
+    painActivities.push('ADLs');
+  }
+  if (painWalkingLogs.length > 0) {
+    painActivitiesCount++;
+    painActivities.push('walking');
+  }
+  if (painStairsLogs.length > 0) {
+    painActivitiesCount++;
+    painActivities.push('climbing stairs');
+  }
+
+  // Calculate total pain logs for severity tracking
+  const totalPainLogs = painBendingLogs.length + painAdlLogs.length + painWalkingLogs.length +
+      painStairsLogs.length + painStrainingLogs.length + painStandingLogs.length;
+
+  let supportedRating = 0;
+  let ratingRationale = [];
+  const gaps = [];
+
+  // Determine rating based on VA criteria
+  // Note: VA requires 12+ months duration which we can't verify from logs alone
+  // We document current status and note duration requirement
+
+  if (isIrreducible || irreducibleLogs.length > 0 || recurrentLogs.length > 0) {
+    // Irreparable/recurrent hernia pathway
+    if (isLargeSize && painActivitiesCount >= 3) {
+      supportedRating = 100;
+      ratingRationale = [
+        `Hernia size ≥15cm documented`,
+        `Pain with ${painActivitiesCount} activities: ${painActivities.join(', ')}`,
+        'Irreducible/irreparable hernia documented',
+        'Note: VA requires 12+ months duration - ensure medical documentation',
+      ];
+    } else if (isLargeSize && painActivitiesCount >= 2) {
+      supportedRating = 60;
+      ratingRationale = [
+        `Hernia size ≥15cm documented`,
+        `Pain with ${painActivitiesCount} activities: ${painActivities.join(', ')}`,
+        'Irreducible/irreparable hernia documented',
+        'Note: VA requires 12+ months duration - ensure medical documentation',
+      ];
+    } else if (isMediumSize && painActivitiesCount >= 2) {
+      supportedRating = 30;
+      ratingRationale = [
+        `Hernia size 3-15cm documented`,
+        `Pain with ${painActivitiesCount} activities: ${painActivities.join(', ')}`,
+        'Irreducible/irreparable hernia documented',
+      ];
+    } else if (isMediumSize && painActivitiesCount >= 1) {
+      supportedRating = 20;
+      ratingRationale = [
+        `Hernia size 3-15cm documented`,
+        `Pain with ${painActivitiesCount} activity: ${painActivities.join(', ')}`,
+        'Irreducible/irreparable hernia documented',
+      ];
+    } else if (isSmallSize || (!isLargeSize && !isMediumSize)) {
+      supportedRating = 10;
+      ratingRationale = [
+        'Irreducible/irreparable hernia documented',
+        isSmallSize ? 'Hernia size <3cm documented' : 'Document hernia size for accurate rating',
+      ];
+    }
+  } else if (reducibleLogs.length > 0 || bulgeLogs.length > 0) {
+    // Reducible/repairable hernia - typically 0% unless symptomatic
+    supportedRating = 0;
+    ratingRationale = [
+      'Hernia present but appears reducible/repairable',
+      'Asymptomatic repairable hernias rated at 0%',
+      `${totalPainLogs} pain episodes logged - document if hernia becomes irreparable`,
+    ];
+  }
+
+  // Documentation gaps
+  if (!isLargeSize && !isMediumSize && !isSmallSize) {
+    gaps.push('Document hernia size (measured in cm) for accurate rating');
+  }
+  if (irreducibleLogs.length === 0 && reducibleLogs.length === 0) {
+    gaps.push('Document whether hernia is reducible or irreducible');
+  }
+  if (painActivitiesCount < 3 && (isLargeSize || isMediumSize)) {
+    gaps.push(`Log pain with specific activities: bending, ADLs, walking, stairs (${3 - painActivitiesCount} more types needed for higher rating)`);
+  }
+  if (supportedRating > 0) {
+    gaps.push('Obtain medical documentation confirming hernia is irreparable and duration of 12+ months');
+  }
+  if (strangulationLogs.length > 0) {
+    gaps.push('URGENT: Strangulation symptoms logged - seek immediate medical attention');
+  }
+
+  return {
+    hasData: true,
+    condition: 'Hernia',
+    diagnosticCode: '7338',
+    cfrReference: '38 CFR 4.114',
+    evaluationPeriodDays,
+    supportedRating,
+    ratingRationale,
+    gaps,
+    metrics: {
+      totalLogs: relevantLogs.length,
+      bulgeLogs: bulgeLogs.length,
+      totalPainLogs,
+      painActivitiesCount,
+      painActivities,
+      irreducibleLogs: irreducibleLogs.length,
+      reducibleLogs: reducibleLogs.length,
+      sizeLargeLogs: sizeLargeLogs.length,
+      sizeMediumLogs: sizeMediumLogs.length,
+      sizeSmallLogs: sizeSmallLogs.length,
+      trussLogs: trussLogs.length,
+      recurrentLogs: recurrentLogs.length,
+      strangulationLogs: strangulationLogs.length,
+      functionalLogs: functionalLogs.length,
+    },
+    criteria: HERNIA_CRITERIA,
+  };
+};
+
+// ============================================
+// PHASE 5A: PERITONEAL ADHESIONS ANALYSIS (DC 7301)
+// ============================================
+
+/**
+ * Analyze Peritoneal Adhesions symptom logs against VA rating criteria
+ * DC 7301 - Rated by obstruction severity, dietary modification, and symptoms
+ */
+export const analyzePeritonealAdhesionsLogs = (logs, options = {}) => {
+  const evaluationPeriodDays = options.days || 365;
+  const symptomIds = CONDITIONS.PERITONEAL_ADHESIONS.symptomIds;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    const symptomId = getLogSymptomId(log);
+    return logDate >= cutoffDate && symptomId && symptomIds.includes(symptomId);
+  });
+
+  if (relevantLogs.length === 0) {
+    return {
+      hasData: false,
+      condition: 'Peritoneal Adhesions',
+      diagnosticCode: '7301',
+      message: 'No peritoneal adhesion symptoms logged in evaluation period',
+    };
+  }
+
+  // Categorize symptoms
+  const abdominalPainLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'pa-abdominal-pain');
+  const nauseaLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'pa-nausea');
+  const vomitingLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'pa-vomiting');
+  const colicLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'pa-colic');
+  const constipationLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'pa-constipation');
+  const diarrheaLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'pa-diarrhea');
+  const distensionLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'pa-distension');
+
+  const partialObstructionLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'pa-obstruction-partial');
+  const completeObstructionLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'pa-obstruction-complete');
+  const hospitalizationLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'pa-hospitalization');
+  const dietaryModLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'pa-dietary-modification');
+  const tpnLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'pa-tpn-required');
+  const inoperableLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'pa-inoperable');
+  const recurrentLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'pa-recurrent');
+
+  const causeLogs = relevantLogs.filter(log =>
+      ['pa-post-surgical', 'pa-post-trauma', 'pa-inflammatory'].includes(getLogSymptomId(log))
+  );
+
+  // Count GI symptoms (the 6 symptoms VA considers)
+  let giSymptomsCount = 0;
+  const giSymptoms = [];
+
+  if (abdominalPainLogs.length > 0) {
+    giSymptomsCount++;
+    giSymptoms.push('abdominal pain');
+  }
+  if (nauseaLogs.length > 0) {
+    giSymptomsCount++;
+    giSymptoms.push('nausea');
+  }
+  if (vomitingLogs.length > 0) {
+    giSymptomsCount++;
+    giSymptoms.push('vomiting');
+  }
+  if (colicLogs.length > 0) {
+    giSymptomsCount++;
+    giSymptoms.push('colic');
+  }
+  if (constipationLogs.length > 0) {
+    giSymptomsCount++;
+    giSymptoms.push('constipation');
+  }
+  if (diarrheaLogs.length > 0) {
+    giSymptomsCount++;
+    giSymptoms.push('diarrhea');
+  }
+
+  const hasTPN = tpnLogs.length > 0;
+  const hasInoperableObstruction = inoperableLogs.length > 0 || (partialObstructionLogs.length > 0 && inoperableLogs.length > 0);
+  const hasPersistentObstruction = partialObstructionLogs.length >= 3 || completeObstructionLogs.length > 0;
+  const hasHospitalization = hospitalizationLogs.length > 0;
+  const hasDietaryModification = dietaryModLogs.length > 0;
+  const hasGISymptoms = giSymptomsCount > 0;
+
+  let supportedRating = 0;
+  let ratingRationale = [];
+  const gaps = [];
+
+  // Determine rating based on VA criteria
+  if (hasTPN || (hasPersistentObstruction && hasInoperableObstruction)) {
+    supportedRating = 80;
+    ratingRationale = [
+      hasTPN ? 'Total parenteral nutrition (TPN) required' : 'Persistent partial obstruction - inoperable/refractory',
+      `${partialObstructionLogs.length + completeObstructionLogs.length} obstruction episodes documented`,
+    ];
+  } else if (hasHospitalization && hasDietaryModification && hasGISymptoms) {
+    supportedRating = 50;
+    ratingRationale = [
+      `Hospitalization required (${hospitalizationLogs.length} episodes logged)`,
+      'Medically-directed dietary modification documented',
+      `GI symptoms present: ${giSymptoms.join(', ')}`,
+    ];
+  } else if (hasDietaryModification && hasGISymptoms) {
+    supportedRating = 30;
+    ratingRationale = [
+      'Medically-directed dietary modification documented',
+      `GI symptoms present: ${giSymptoms.join(', ')}`,
+    ];
+  } else if (hasGISymptoms) {
+    supportedRating = 10;
+    ratingRationale = [
+      'Symptomatic adhesions with GI symptoms',
+      `Symptoms documented: ${giSymptoms.join(', ')}`,
+    ];
+  }
+
+  // Add cause information to rationale if available
+  if (causeLogs.length > 0 && supportedRating > 0) {
+    const causes = [];
+    if (relevantLogs.some(log => getLogSymptomId(log) === 'pa-post-surgical')) causes.push('post-surgical');
+    if (relevantLogs.some(log => getLogSymptomId(log) === 'pa-post-trauma')) causes.push('post-trauma');
+    if (relevantLogs.some(log => getLogSymptomId(log) === 'pa-inflammatory')) causes.push('inflammatory disease');
+    ratingRationale.push(`Adhesion cause: ${causes.join(', ')}`);
+  }
+
+  // Documentation gaps
+  if (causeLogs.length === 0) {
+    gaps.push('Document cause of adhesions (surgery, trauma, or inflammatory disease)');
+  }
+  if (!hasDietaryModification && supportedRating < 50) {
+    gaps.push('Document if medically-directed dietary modification is required');
+  }
+  if (!hasHospitalization && supportedRating < 80) {
+    gaps.push('Document any hospitalizations for obstruction episodes');
+  }
+  if (giSymptomsCount === 0) {
+    gaps.push('Log specific GI symptoms: pain, nausea, vomiting, colic, constipation, diarrhea');
+  }
+  if (completeObstructionLogs.length > 0) {
+    gaps.push('Complete obstruction episodes require emergency documentation');
+  }
+
+  return {
+    hasData: true,
+    condition: 'Peritoneal Adhesions',
+    diagnosticCode: '7301',
+    cfrReference: '38 CFR 4.114',
+    evaluationPeriodDays,
+    supportedRating,
+    ratingRationale,
+    gaps,
+    metrics: {
+      totalLogs: relevantLogs.length,
+      abdominalPainLogs: abdominalPainLogs.length,
+      nauseaLogs: nauseaLogs.length,
+      vomitingLogs: vomitingLogs.length,
+      colicLogs: colicLogs.length,
+      constipationLogs: constipationLogs.length,
+      diarrheaLogs: diarrheaLogs.length,
+      distensionLogs: distensionLogs.length,
+      giSymptomsCount,
+      giSymptoms,
+      partialObstructionLogs: partialObstructionLogs.length,
+      completeObstructionLogs: completeObstructionLogs.length,
+      hospitalizationLogs: hospitalizationLogs.length,
+      dietaryModLogs: dietaryModLogs.length,
+      tpnLogs: tpnLogs.length,
+      inoperableLogs: inoperableLogs.length,
+      recurrentLogs: recurrentLogs.length,
+    },
+    criteria: PERITONEAL_ADHESIONS_CRITERIA,
+  };
+};
+
+// ============================================
+// PHASE 5B: ESOPHAGEAL STRICTURE ANALYSIS (DC 7203)
+// Also used for DC 7204 (Esophageal Spasm/Motility)
+// ============================================
+
+/**
+ * Analyze Esophageal Stricture/Spasm symptom logs against VA rating criteria
+ * DC 7203 - Rated by dysphagia severity, dilatation frequency, aspiration, nutritional impact
+ * DC 7204 - Esophageal Spasm/Motility rated using DC 7203 criteria
+ */
+export const analyzeEsophagealLogs = (logs, options = {}) => {
+  const evaluationPeriodDays = options.days || 365;
+
+  // Combine symptom IDs from both DC 7203 and DC 7204
+  const strictureSymptomIds = CONDITIONS.ESOPHAGEAL_STRICTURE.symptomIds;
+  const spasmSymptomIds = CONDITIONS.ESOPHAGEAL_SPASM.symptomIds;
+  const allSymptomIds = [...strictureSymptomIds, ...spasmSymptomIds];
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    const symptomId = getLogSymptomId(log);
+    return logDate >= cutoffDate && symptomId && allSymptomIds.includes(symptomId);
+  });
+
+  if (relevantLogs.length === 0) {
+    return {
+      hasData: false,
+      condition: 'Esophageal Stricture/Spasm',
+      diagnosticCode: '7203/7204',
+      message: 'No esophageal symptoms logged in evaluation period',
+    };
+  }
+
+  // Categorize stricture symptoms
+  const dysphagiaSolidsLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'es-dysphagia-solids');
+  const dysphagiaLiquidsLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'es-dysphagia-liquids');
+  const dysphagiaPillsLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'es-dysphagia-pills');
+  const foodImpactionLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'es-food-impaction');
+  const regurgitationLogs = relevantLogs.filter(log =>
+      getLogSymptomId(log) === 'es-regurgitation' || getLogSymptomId(log) === 'esp-regurgitation'
+  );
+  const aspirationLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'es-aspiration');
+  const weightLossLogs = relevantLogs.filter(log =>
+      getLogSymptomId(log) === 'es-weight-loss' || getLogSymptomId(log) === 'esp-weight-loss'
+  );
+  const undernutritionLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'es-undernutrition');
+  const dilatationLogs = relevantLogs.filter(log =>
+      getLogSymptomId(log) === 'es-dilatation' || getLogSymptomId(log) === 'es-dilatation-steroids'
+  );
+  const stentLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'es-stent');
+  const pegTubeLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'es-peg-tube');
+  const dailyMedLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'es-daily-medication');
+  const recurrentLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'es-recurrent');
+  const refractoryLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'es-refractory');
+
+  // Categorize spasm symptoms
+  const spasmChestPainLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'esp-chest-pain');
+  const spasmDysphagiaLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'esp-dysphagia');
+  const achalasiaLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'esp-achalasia');
+
+  // Calculate totals
+  const totalDysphagiaLogs = dysphagiaSolidsLogs.length + dysphagiaLiquidsLogs.length +
+      dysphagiaPillsLogs.length + spasmDysphagiaLogs.length;
+  const hasDysphagia = totalDysphagiaLogs > 0;
+  const hasAspiration = aspirationLogs.length > 0;
+  const hasUndernutrition = undernutritionLogs.length > 0 || weightLossLogs.length >= 3;
+  const hasPEGTube = pegTubeLogs.length > 0;
+  const hasRefractory = refractoryLogs.length > 0;
+  const hasRecurrent = recurrentLogs.length > 0;
+  const dilatationCount = dilatationLogs.length;
+  const hasDailyMedication = dailyMedLogs.length > 0;
+
+  // Determine if this is stricture or spasm
+  const isStrictureRelated = strictureSymptomIds.some(id =>
+      relevantLogs.some(log => getLogSymptomId(log) === id)
+  );
+  const isSpasmRelated = spasmSymptomIds.some(id =>
+      relevantLogs.some(log => getLogSymptomId(log) === id)
+  );
+
+  let supportedRating = 0;
+  let ratingRationale = [];
+  const gaps = [];
+
+  // Determine rating based on VA criteria
+  if ((hasRefractory || hasRecurrent) && hasAspiration && hasUndernutrition && hasPEGTube) {
+    supportedRating = 80;
+    ratingRationale = [
+      'Refractory/recurrent stricture documented',
+      'Aspiration documented',
+      'Undernutrition present',
+      'PEG tube required',
+    ];
+  } else if ((hasRefractory || hasRecurrent) && hasDysphagia && hasAspiration && hasUndernutrition) {
+    supportedRating = 50;
+    ratingRationale = [
+      'Refractory/recurrent stricture with dysphagia',
+      'Aspiration documented',
+      'Undernutrition present',
+    ];
+  } else if (dilatationCount >= 3) {
+    supportedRating = 50;
+    ratingRationale = [
+      `${dilatationCount} dilatation procedures documented (≥3/year criteria met)`,
+    ];
+  } else if (hasRecurrent && hasDysphagia && dilatationCount > 0 && dilatationCount <= 2) {
+    supportedRating = 30;
+    ratingRationale = [
+      'Recurrent stricture with dysphagia',
+      `${dilatationCount} dilatation(s) documented (≤2/year)`,
+    ];
+  } else if (hasDysphagia && hasDailyMedication) {
+    supportedRating = 10;
+    ratingRationale = [
+      'Dysphagia present',
+      'Daily medication required for control',
+    ];
+  } else if (hasDysphagia || isSpasmRelated) {
+    supportedRating = 10;
+    ratingRationale = [
+      hasDysphagia ? `Dysphagia documented (${totalDysphagiaLogs} episodes)` : 'Esophageal spasm symptoms documented',
+      'Document daily medication use if applicable for confirmed 10% rating',
+    ];
+  }
+
+  // Add condition type to rationale
+  if (supportedRating > 0) {
+    if (isStrictureRelated && isSpasmRelated) {
+      ratingRationale.push('Symptoms include both stricture and motility disorder');
+    } else if (isSpasmRelated && !isStrictureRelated) {
+      ratingRationale.push('DC 7204 (Esophageal Spasm) rated using DC 7203 criteria');
+    }
+  }
+
+  // Documentation gaps
+  if (!hasRecurrent && !hasRefractory && supportedRating < 50) {
+    gaps.push('Document if stricture is recurrent or refractory for higher rating consideration');
+  }
+  if (dilatationCount === 0 && hasDysphagia) {
+    gaps.push('Document dilatation procedures if performed');
+  }
+  if (!hasAspiration && supportedRating >= 30) {
+    gaps.push('Document aspiration episodes if occurring');
+  }
+  if (!hasDailyMedication && supportedRating < 30) {
+    gaps.push('Document daily medication use for dysphagia if applicable');
+  }
+  if (aspirationLogs.length > 0) {
+    gaps.push('Aspiration documented - ensure pulmonary evaluation is current');
+  }
+
+  return {
+    hasData: true,
+    condition: 'Esophageal Stricture/Spasm',
+    diagnosticCode: '7203/7204',
+    cfrReference: '38 CFR 4.114',
+    evaluationPeriodDays,
+    supportedRating,
+    ratingRationale,
+    gaps,
+    metrics: {
+      totalLogs: relevantLogs.length,
+      totalDysphagiaLogs,
+      dysphagiaSolidsLogs: dysphagiaSolidsLogs.length,
+      dysphagiaLiquidsLogs: dysphagiaLiquidsLogs.length,
+      foodImpactionLogs: foodImpactionLogs.length,
+      aspirationLogs: aspirationLogs.length,
+      weightLossLogs: weightLossLogs.length,
+      undernutritionLogs: undernutritionLogs.length,
+      dilatationCount,
+      pegTubeLogs: pegTubeLogs.length,
+      dailyMedLogs: dailyMedLogs.length,
+      recurrentLogs: recurrentLogs.length,
+      refractoryLogs: refractoryLogs.length,
+      spasmChestPainLogs: spasmChestPainLogs.length,
+      achalasiaLogs: achalasiaLogs.length,
+      isStrictureRelated,
+      isSpasmRelated,
+    },
+    criteria: ESOPHAGEAL_STRICTURE_CRITERIA,
+  };
+};
+
+// ============================================
+// PHASE 5B: POSTGASTRECTOMY SYNDROME ANALYSIS (DC 7308)
+// Rated as DC 7303 (Chronic Complications of Upper GI Surgery)
+// ============================================
+
+/**
+ * Analyze Postgastrectomy Syndrome symptom logs against VA rating criteria
+ * DC 7308 - Rated using DC 7303 criteria
+ */
+export const analyzePostgastrectomyLogs = (logs, options = {}) => {
+  const evaluationPeriodDays = options.days || 365;
+  const symptomIds = CONDITIONS.POSTGASTRECTOMY.symptomIds;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    const symptomId = getLogSymptomId(log);
+    return logDate >= cutoffDate && symptomId && symptomIds.includes(symptomId);
+  });
+
+  if (relevantLogs.length === 0) {
+    return {
+      hasData: false,
+      condition: 'Postgastrectomy Syndrome',
+      diagnosticCode: '7308',
+      message: 'No postgastrectomy symptoms logged in evaluation period',
+    };
+  }
+
+  // Categorize symptoms
+  const dumpingEarlyLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'pgs-dumping-early');
+  const dumpingLateLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'pgs-dumping-late');
+  const nauseaLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'pgs-nausea');
+  const vomitingLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'pgs-vomiting');
+  const vomitingDailyLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'pgs-vomiting-daily');
+  const diarrheaLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'pgs-diarrhea');
+  const diarrheaExplosiveLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'pgs-diarrhea-explosive');
+  const syncopeLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'pgs-syncope');
+  const sweatingLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'pgs-sweating');
+  const abdominalPainLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'pgs-abdominal-pain');
+  const dietaryModLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'pgs-dietary-modification');
+  const medicationLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'pgs-medication');
+  const tpnLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'pgs-tpn');
+  const tubeFeedingLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'pgs-tube-feeding');
+  const weightLossLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'pgs-weight-loss');
+
+  // Determine key indicators
+  const hasTPN = tpnLogs.length > 0;
+  const hasTubeFeeding = tubeFeedingLogs.length > 0;
+  const hasDailyVomiting = vomitingDailyLogs.length > 0 || vomitingLogs.length >= 20; // Approximate daily
+  const hasExplosiveDiarrhea = diarrheaExplosiveLogs.length > 0;
+  const hasFrequentWateryBMs = diarrheaLogs.length >= 15; // Approximating 6+/day frequency
+  const hasSyncopeWithSweating = syncopeLogs.length > 0 && sweatingLogs.length > 0;
+  const hasMedication = medicationLogs.length > 0;
+  const hasDietaryModification = dietaryModLogs.length > 0;
+  const hasDumpingSyndrome = dumpingEarlyLogs.length > 0 || dumpingLateLogs.length > 0;
+
+  let supportedRating = 0;
+  let ratingRationale = [];
+  const gaps = [];
+
+  // Determine rating based on VA criteria (DC 7303)
+  if (hasTPN || hasTubeFeeding) {
+    supportedRating = 80;
+    ratingRationale = [
+      hasTPN ? 'Total parenteral nutrition (TPN) required' : 'Tube feeding required',
+      'Note: VA requires 30+ consecutive days during 12-month period',
+    ];
+  } else if (hasDailyVomiting) {
+    supportedRating = 50;
+    ratingRationale = [
+      'Daily vomiting despite dietary modification',
+      `${vomitingLogs.length + vomitingDailyLogs.length} vomiting episodes documented`,
+    ];
+  } else if (hasFrequentWateryBMs || hasExplosiveDiarrhea) {
+    supportedRating = 50;
+    ratingRationale = hasExplosiveDiarrhea
+        ? ['Explosive, unpredictable bowel movements documented']
+        : [`Frequent watery bowel movements (${diarrheaLogs.length} episodes documented)`];
+  } else if (hasSyncopeWithSweating) {
+    supportedRating = 30;
+    ratingRationale = [
+      'Post-prandial syncope/lightheadedness documented',
+      'Associated sweating episodes documented',
+    ];
+  } else if (hasMedication && hasDumpingSyndrome) {
+    supportedRating = 30;
+    ratingRationale = [
+      'Dumping syndrome documented',
+      'Medication required for control',
+    ];
+  } else if (hasDietaryModification && (hasDumpingSyndrome || nauseaLogs.length > 0 || diarrheaLogs.length > 0)) {
+    supportedRating = 10;
+    ratingRationale = [
+      'Chronic symptoms present',
+      'Controlled with dietary modification',
+    ];
+  } else if (hasDumpingSyndrome || nauseaLogs.length > 0 || vomitingLogs.length > 0) {
+    supportedRating = 10;
+    ratingRationale = [
+      'Postgastrectomy symptoms documented',
+      'Document dietary modification plan for confirmed rating',
+    ];
+  }
+
+  // Documentation gaps
+  if (!hasDietaryModification && supportedRating <= 30) {
+    gaps.push('Document medically-directed dietary modification if in use');
+  }
+  if (!hasMedication && hasDumpingSyndrome && supportedRating < 50) {
+    gaps.push('Document medication use for dumping syndrome if applicable');
+  }
+  if (hasTPN || hasTubeFeeding) {
+    gaps.push('Document 30+ consecutive days of TPN/tube feeding for 80% rating confirmation');
+  }
+  if (syncopeLogs.length > 0 && sweatingLogs.length === 0) {
+    gaps.push('Document sweating with syncope episodes for 30% rating');
+  }
+  if (diarrheaLogs.length > 0 && !hasExplosiveDiarrhea) {
+    gaps.push('Document if bowel movements are explosive/unpredictable for higher rating');
+  }
+
+  return {
+    hasData: true,
+    condition: 'Postgastrectomy Syndrome',
+    diagnosticCode: '7308',
+    cfrReference: '38 CFR 4.114 (rated as DC 7303)',
+    evaluationPeriodDays,
+    supportedRating,
+    ratingRationale,
+    gaps,
+    metrics: {
+      totalLogs: relevantLogs.length,
+      dumpingEarlyLogs: dumpingEarlyLogs.length,
+      dumpingLateLogs: dumpingLateLogs.length,
+      nauseaLogs: nauseaLogs.length,
+      vomitingLogs: vomitingLogs.length,
+      vomitingDailyLogs: vomitingDailyLogs.length,
+      diarrheaLogs: diarrheaLogs.length,
+      diarrheaExplosiveLogs: diarrheaExplosiveLogs.length,
+      syncopeLogs: syncopeLogs.length,
+      sweatingLogs: sweatingLogs.length,
+      abdominalPainLogs: abdominalPainLogs.length,
+      dietaryModLogs: dietaryModLogs.length,
+      medicationLogs: medicationLogs.length,
+      tpnLogs: tpnLogs.length,
+      tubeFeedingLogs: tubeFeedingLogs.length,
+      weightLossLogs: weightLossLogs.length,
+    },
+    criteria: POSTGASTRECTOMY_CRITERIA,
+  };
+};
+
+// ============================================
+// PHASE 5B: INTESTINAL FISTULA ANALYSIS (DC 7330)
+// ============================================
+
+/**
+ * Analyze Intestinal Fistula symptom logs against VA rating criteria
+ * DC 7330 - Rated by TPN needs, drainage amount, BMI, and duration
+ */
+export const analyzeIntestinalFistulaLogs = (logs, options = {}) => {
+  const evaluationPeriodDays = options.days || 365;
+  const symptomIds = CONDITIONS.INTESTINAL_FISTULA.symptomIds;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    const symptomId = getLogSymptomId(log);
+    return logDate >= cutoffDate && symptomId && symptomIds.includes(symptomId);
+  });
+
+  if (relevantLogs.length === 0) {
+    return {
+      hasData: false,
+      condition: 'Intestinal Fistula',
+      diagnosticCode: '7330',
+      message: 'No intestinal fistula symptoms logged in evaluation period',
+    };
+  }
+
+  // Categorize symptoms
+  const drainageMinimalLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'if-drainage-minimal');
+  const drainageModerateLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'if-drainage-moderate');
+  const drainageHeavyLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'if-drainage-heavy');
+  const fecalDischargeLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'if-fecal-discharge');
+  const persistentDrainageLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'if-persistent-drainage');
+  const skinIrritationLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'if-skin-irritation');
+  const infectionLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'if-infection');
+  const painLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'if-pain');
+  const enteralNutritionLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'if-enteral-nutrition');
+  const tpnLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'if-tpn');
+  const lowBMILogs = relevantLogs.filter(log => getLogSymptomId(log) === 'if-low-bmi');
+  const veryLowBMILogs = relevantLogs.filter(log => getLogSymptomId(log) === 'if-very-low-bmi');
+
+  const causeLogs = relevantLogs.filter(log =>
+      ['if-post-surgical', 'if-post-radiation', 'if-post-trauma'].includes(getLogSymptomId(log))
+  );
+
+  // Determine key indicators
+  const hasTPN = tpnLogs.length > 0;
+  const hasEnteralNutrition = enteralNutritionLogs.length > 0;
+  const hasHeavyDrainage = drainageHeavyLogs.length > 0;
+  const hasModerateDrainage = drainageModerateLogs.length > 0;
+  const hasMinimalDrainage = drainageMinimalLogs.length > 0;
+  const hasVeryLowBMI = veryLowBMILogs.length > 0; // BMI < 16
+  const hasLowBMI = lowBMILogs.length > 0; // BMI 16-18
+  const hasPersistentDrainage = persistentDrainageLogs.length > 0;
+
+  // Estimate drainage duration based on log frequency
+  const drainageDurationMonths = persistentDrainageLogs.length >= 3 ? '3+' :
+      persistentDrainageLogs.length >= 1 ? '1-3' : '<1';
+
+  let supportedRating = 0;
+  let ratingRationale = [];
+  const gaps = [];
+
+  // Determine rating based on VA criteria
+  if (hasTPN) {
+    supportedRating = 100;
+    ratingRationale = [
+      'Total parenteral nutrition (TPN) required for fistula-related symptoms',
+    ];
+  } else if (hasEnteralNutrition) {
+    supportedRating = 60;
+    ratingRationale = [
+      'Enteral nutrition required for fistula-related symptoms',
+    ];
+  } else if (hasHeavyDrainage && hasVeryLowBMI) {
+    supportedRating = 60;
+    ratingRationale = [
+      'Heavy drainage documented (3+ bags or 10+ pads/day)',
+      'BMI < 16 documented',
+    ];
+  } else if (hasHeavyDrainage && drainageDurationMonths === '3+') {
+    supportedRating = 60;
+    ratingRationale = [
+      'Heavy drainage documented (3+ bags or 10+ pads/day)',
+      'Drainage persisting 3+ months',
+    ];
+  } else if (hasHeavyDrainage && hasLowBMI) {
+    supportedRating = 30;
+    ratingRationale = [
+      'Heavy drainage documented (3+ bags or 10+ pads/day)',
+      'BMI 16-18 documented',
+    ];
+  } else if (hasHeavyDrainage && (drainageDurationMonths === '1-3')) {
+    supportedRating = 30;
+    ratingRationale = [
+      'Heavy drainage documented (3+ bags or 10+ pads/day)',
+      'Drainage persisting 1-3 months',
+    ];
+  } else if ((hasModerateDrainage || hasMinimalDrainage) && hasVeryLowBMI) {
+    supportedRating = 30;
+    ratingRationale = [
+      'Fistula drainage documented',
+      'BMI < 16 documented',
+    ];
+  } else if (hasModerateDrainage || hasMinimalDrainage || fecalDischargeLogs.length > 0) {
+    // Has fistula symptoms but doesn't meet higher criteria
+    supportedRating = 30;
+    ratingRationale = [
+      'Intestinal fistula with drainage documented',
+      'Document drainage volume and BMI for accurate rating',
+    ];
+  }
+
+  // Add cause to rationale if documented
+  if (causeLogs.length > 0 && supportedRating > 0) {
+    const causes = [];
+    if (relevantLogs.some(log => getLogSymptomId(log) === 'if-post-surgical')) causes.push('post-surgical');
+    if (relevantLogs.some(log => getLogSymptomId(log) === 'if-post-radiation')) causes.push('post-radiation');
+    if (relevantLogs.some(log => getLogSymptomId(log) === 'if-post-trauma')) causes.push('post-trauma');
+    ratingRationale.push(`Fistula cause: ${causes.join(', ')}`);
+  }
+
+  // Documentation gaps
+  if (!hasHeavyDrainage && !hasModerateDrainage && !hasMinimalDrainage) {
+    gaps.push('Document drainage amount (bags/day or pad changes) for accurate rating');
+  }
+  if (!hasVeryLowBMI && !hasLowBMI) {
+    gaps.push('Document BMI if below 18 - affects rating level');
+  }
+  if (!hasPersistentDrainage && supportedRating < 60) {
+    gaps.push('Document drainage duration (1-3 months vs 3+ months)');
+  }
+  if (causeLogs.length === 0) {
+    gaps.push('Document fistula cause (surgical, radiation, trauma)');
+  }
+  if (infectionLogs.length > 0) {
+    gaps.push('Infection documented - ensure appropriate medical follow-up');
+  }
+
+  return {
+    hasData: true,
+    condition: 'Intestinal Fistula',
+    diagnosticCode: '7330',
+    cfrReference: '38 CFR 4.114',
+    evaluationPeriodDays,
+    supportedRating,
+    ratingRationale,
+    gaps,
+    metrics: {
+      totalLogs: relevantLogs.length,
+      drainageMinimalLogs: drainageMinimalLogs.length,
+      drainageModerateLogs: drainageModerateLogs.length,
+      drainageHeavyLogs: drainageHeavyLogs.length,
+      fecalDischargeLogs: fecalDischargeLogs.length,
+      persistentDrainageLogs: persistentDrainageLogs.length,
+      skinIrritationLogs: skinIrritationLogs.length,
+      infectionLogs: infectionLogs.length,
+      painLogs: painLogs.length,
+      enteralNutritionLogs: enteralNutritionLogs.length,
+      tpnLogs: tpnLogs.length,
+      lowBMILogs: lowBMILogs.length,
+      veryLowBMILogs: veryLowBMILogs.length,
+      drainageDurationMonths,
+    },
+    criteria: INTESTINAL_FISTULA_CRITERIA,
+  };
+};
+
+
 // ============================================
 // ANALYSIS FUNCTIONS - BRONCHIECTASIS (DC 6601)
 // Phase 11 - Rated by incapacitating episodes OR as chronic bronchitis
@@ -38302,12 +39809,27 @@ export const getMetatarsalgiaRatingCriteria = (percent) => {
   return METATARSALGIA_CRITERIA.ratings.find(r => r.percent === percent) || null;
 };
 export const getHalluxValgusRatingCriteria = (percent) => {
-  return HALLUX_VALGUS_CRITERIA.ratings.find(r => r.percent === percent) ||
-      null;
+  return HALLUX_VALGUS_CRITERIA.ratings.find(r => r.percent === percent) || null;
 };
 export const getHalluxRigidusRatingCriteria = (percent) => {
-  return HALLUX_RIGIDUS_CRITERIA.ratings.find(r => r.percent === percent) ||
-      null;
+  return HALLUX_RIGIDUS_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+// Phase 5A: Hernia & Structural getRatingCriteria functions
+export const getHerniaRatingCriteria = (percent) => {
+  return HERNIA_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getPeritonealAdhesionsRatingCriteria = (percent) => {
+  return PERITONEAL_ADHESIONS_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+// Phase 5B: Esophageal & Post-Surgical getRatingCriteria functions
+export const getEsophagealStrictureRatingCriteria = (percent) => {
+  return ESOPHAGEAL_STRICTURE_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getPostgastrectomyRatingCriteria = (percent) => {
+  return POSTGASTRECTOMY_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getIntestinalFistulaRatingCriteria = (percent) => {
+  return INTESTINAL_FISTULA_CRITERIA.ratings.find(r => r.percent === percent) || null;
 };
 
 
@@ -38455,6 +39977,11 @@ export const getAllClawFootRatings = () => CLAW_FOOT_CRITERIA.ratings;
 export const getAllMetatarsalgiaRatings = () => METATARSALGIA_CRITERIA.ratings;
 export const getAllHalluxValgusRatings = () => HALLUX_VALGUS_CRITERIA.ratings;
 export const getAllHalluxRigidusRatings = () => HALLUX_RIGIDUS_CRITERIA.ratings;
+export const getAllHerniaRatings = () => HERNIA_CRITERIA.ratings;
+export const getAllPeritonealAdhesionsRatings = () => PERITONEAL_ADHESIONS_CRITERIA.ratings;
+export const getAllEsophagealStrictureRatings = () => ESOPHAGEAL_STRICTURE_CRITERIA.ratings;
+export const getAllPostgastrectomyRatings = () => POSTGASTRECTOMY_CRITERIA.ratings;
+export const getAllIntestinalFistulaRatings = () => INTESTINAL_FISTULA_CRITERIA.ratings;
 
 
 
@@ -38608,6 +40135,11 @@ export const getClawFootDefinition = (term) => CLAW_FOOT_CRITERIA.definitions[te
 export const getMetatarsalgiaDefinition = (term) => METATARSALGIA_CRITERIA.definitions[term] || null;
 export const getHalluxValgusDefinition = (term) => HALLUX_VALGUS_CRITERIA.definitions[term] || null;
 export const getHalluxRigidusDefinition = (term) => HALLUX_RIGIDUS_CRITERIA.definitions[term] || null;
+export const getHerniaDefinition = (term) => HERNIA_CRITERIA.definitions[term] || null;
+export const getPeritonealAdhesionsDefinition = (term) => PERITONEAL_ADHESIONS_CRITERIA.definitions[term] || null;
+export const getEsophagealStrictureDefinition = (term) => ESOPHAGEAL_STRICTURE_CRITERIA.definitions[term] || null;
+export const getPostgastrectomyDefinition = (term) => POSTGASTRECTOMY_CRITERIA.definitions[term] || null;
+export const getIntestinalFistulaDefinition = (term) => INTESTINAL_FISTULA_CRITERIA.definitions[term] || null;
 
 
 

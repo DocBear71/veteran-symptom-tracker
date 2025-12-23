@@ -2681,6 +2681,143 @@ export const symptomCategories = [
       { id: 'hr-functional-loss', name: 'Hallux Rigidus - Functional Loss', description: 'Significant walking limitations due to rigid toe' },
     ],
   },
+  // ========== PHASE 5A: DIGESTIVE SYSTEM - HERNIA & STRUCTURAL ==========
+
+  // Hernia (Inguinal, Ventral, Femoral, Umbilical, Incisional) - DC 7338
+  {
+    id: 'hernia',
+    name: 'Hernia (DC 7338)',
+    symptoms: [
+      { id: 'hernia-groin-bulge', name: 'Hernia - Groin Bulge', description: 'Visible or palpable bulge in groin area (inguinal hernia)' },
+      { id: 'hernia-abdominal-bulge', name: 'Hernia - Abdominal Bulge', description: 'Visible or palpable bulge in abdominal wall (ventral/incisional hernia)' },
+      { id: 'hernia-umbilical-bulge', name: 'Hernia - Umbilical Bulge', description: 'Bulge at or near the navel (umbilical hernia)' },
+      { id: 'hernia-pain-bending', name: 'Hernia - Pain with Bending', description: 'Pain when bending over' },
+      { id: 'hernia-pain-adl', name: 'Hernia - Pain with ADLs', description: 'Pain during activities of daily living (bathing, dressing, hygiene, transfers)' },
+      { id: 'hernia-pain-walking', name: 'Hernia - Pain with Walking', description: 'Pain when walking' },
+      { id: 'hernia-pain-stairs', name: 'Hernia - Pain with Climbing Stairs', description: 'Pain when climbing stairs' },
+      { id: 'hernia-pain-straining', name: 'Hernia - Pain with Straining', description: 'Pain when coughing, sneezing, or lifting' },
+      { id: 'hernia-pain-standing', name: 'Hernia - Pain with Standing', description: 'Pain worsens with prolonged standing' },
+      { id: 'hernia-reducible', name: 'Hernia - Reducible', description: 'Hernia can be pushed back in when lying down' },
+      { id: 'hernia-irreducible', name: 'Hernia - Irreducible/Incarcerated', description: 'Hernia cannot be pushed back in, trapped outside abdominal wall' },
+      { id: 'hernia-truss-required', name: 'Hernia - Truss/Support Required', description: 'Requires wearing a truss or supportive belt' },
+      { id: 'hernia-size-small', name: 'Hernia - Size <3cm', description: 'Hernia measures less than 3 cm in largest dimension' },
+      { id: 'hernia-size-medium', name: 'Hernia - Size 3-15cm', description: 'Hernia measures 3 to 15 cm in largest dimension' },
+      { id: 'hernia-size-large', name: 'Hernia - Size ≥15cm', description: 'Hernia measures 15 cm or greater in largest dimension' },
+      { id: 'hernia-recurrent', name: 'Hernia - Recurrent', description: 'Hernia has returned after previous repair' },
+      { id: 'hernia-post-surgical', name: 'Hernia - Post-Surgical/Incisional', description: 'Hernia developed at site of previous surgical incision' },
+      { id: 'hernia-strangulation-risk', name: 'Hernia - Strangulation Symptoms', description: 'Severe pain, nausea, vomiting suggesting possible strangulation' },
+      { id: 'hernia-functional-limitation', name: 'Hernia - Functional Limitation', description: 'Unable to work or perform normal activities due to hernia' },
+    ],
+  },
+
+  // Peritoneal Adhesions - DC 7301
+  {
+    id: 'peritoneal-adhesions',
+    name: 'Peritoneal Adhesions (DC 7301)',
+    symptoms: [
+      { id: 'pa-abdominal-pain', name: 'Adhesions - Abdominal Pain', description: 'Abdominal pain from adhesions' },
+      { id: 'pa-nausea', name: 'Adhesions - Nausea', description: 'Nausea related to adhesions' },
+      { id: 'pa-vomiting', name: 'Adhesions - Vomiting', description: 'Vomiting from adhesion-related obstruction' },
+      { id: 'pa-colic', name: 'Adhesions - Colic/Cramping', description: 'Colicky or cramping abdominal pain' },
+      { id: 'pa-constipation', name: 'Adhesions - Constipation', description: 'Constipation from partial obstruction' },
+      { id: 'pa-diarrhea', name: 'Adhesions - Diarrhea', description: 'Diarrhea related to adhesions' },
+      { id: 'pa-distension', name: 'Adhesions - Abdominal Distension', description: 'Bloating and abdominal distension' },
+      { id: 'pa-obstruction-partial', name: 'Adhesions - Partial Obstruction', description: 'Signs of partial bowel obstruction' },
+      { id: 'pa-obstruction-complete', name: 'Adhesions - Complete Obstruction', description: 'Signs of complete bowel obstruction requiring emergency care' },
+      { id: 'pa-hospitalization', name: 'Adhesions - Hospitalization Required', description: 'Required hospitalization for obstruction management' },
+      { id: 'pa-dietary-modification', name: 'Adhesions - Dietary Modification', description: 'Medically-directed dietary changes required' },
+      { id: 'pa-tpn-required', name: 'Adhesions - TPN Required', description: 'Requires total parenteral nutrition' },
+      { id: 'pa-post-surgical', name: 'Adhesions - Post-Surgical', description: 'Adhesions developed after abdominal surgery' },
+      { id: 'pa-post-trauma', name: 'Adhesions - Post-Trauma', description: 'Adhesions developed after abdominal trauma' },
+      { id: 'pa-inflammatory', name: 'Adhesions - Inflammatory Disease Related', description: 'Adhesions from chronic cholecystitis, Crohn\'s, or infection' },
+      { id: 'pa-recurrent', name: 'Adhesions - Recurrent Episodes', description: 'Recurring symptomatic episodes' },
+      { id: 'pa-inoperable', name: 'Adhesions - Inoperable', description: 'Adhesions deemed inoperable or refractory to treatment' },
+    ],
+  },
+  // ========== PHASE 5B: DIGESTIVE SYSTEM - ESOPHAGEAL & POST-SURGICAL ==========
+  // Esophageal Stricture - DC 7203
+  {
+    id: 'esophageal-stricture',
+    name: 'Esophageal Stricture (DC 7203)',
+    symptoms: [
+      { id: 'es-dysphagia-solids', name: 'Stricture - Difficulty Swallowing Solids', description: 'Difficulty swallowing solid foods' },
+      { id: 'es-dysphagia-liquids', name: 'Stricture - Difficulty Swallowing Liquids', description: 'Difficulty swallowing liquids' },
+      { id: 'es-dysphagia-pills', name: 'Stricture - Difficulty Swallowing Pills', description: 'Difficulty swallowing medications' },
+      { id: 'es-food-impaction', name: 'Stricture - Food Impaction', description: 'Food getting stuck in esophagus' },
+      { id: 'es-regurgitation', name: 'Stricture - Regurgitation', description: 'Food coming back up after swallowing' },
+      { id: 'es-aspiration', name: 'Stricture - Aspiration', description: 'Food or liquid entering airway, causing coughing/choking' },
+      { id: 'es-weight-loss', name: 'Stricture - Weight Loss', description: 'Weight loss due to difficulty eating' },
+      { id: 'es-undernutrition', name: 'Stricture - Undernutrition', description: 'Malnutrition from inadequate food intake' },
+      { id: 'es-dilatation', name: 'Stricture - Dilatation Procedure', description: 'Required esophageal dilatation procedure' },
+      { id: 'es-dilatation-steroids', name: 'Stricture - Dilatation with Steroids', description: 'Dilatation requiring steroid injection' },
+      { id: 'es-stent', name: 'Stricture - Esophageal Stent', description: 'Required esophageal stent placement' },
+      { id: 'es-peg-tube', name: 'Stricture - PEG Tube Required', description: 'Requires percutaneous feeding tube' },
+      { id: 'es-daily-medication', name: 'Stricture - Daily Medication Required', description: 'Requires daily medication to control dysphagia' },
+      { id: 'es-recurrent', name: 'Stricture - Recurrent Stricture', description: 'Stricture returns after treatment' },
+      { id: 'es-refractory', name: 'Stricture - Refractory Stricture', description: 'Stricture not responding to dilatation (5+ sessions)' },
+    ],
+  },
+  // Esophageal Spasm/Motility Disorder - DC 7204
+  {
+    id: 'esophageal-spasm',
+    name: 'Esophageal Spasm/Motility (DC 7204)',
+    symptoms: [
+      { id: 'esp-chest-pain', name: 'Esophageal Spasm - Chest Pain', description: 'Chest pain from esophageal spasm (may mimic cardiac pain)' },
+      { id: 'esp-dysphagia', name: 'Esophageal Spasm - Difficulty Swallowing', description: 'Intermittent difficulty swallowing' },
+      { id: 'esp-food-sticking', name: 'Esophageal Spasm - Food Sticking Sensation', description: 'Sensation of food sticking in chest' },
+      { id: 'esp-regurgitation', name: 'Esophageal Spasm - Regurgitation', description: 'Food coming back up due to spasm' },
+      { id: 'esp-heartburn', name: 'Esophageal Spasm - Heartburn', description: 'Burning sensation associated with spasms' },
+      { id: 'esp-triggered-hot-cold', name: 'Esophageal Spasm - Hot/Cold Triggered', description: 'Spasms triggered by hot or cold foods/drinks' },
+      { id: 'esp-triggered-stress', name: 'Esophageal Spasm - Stress Triggered', description: 'Spasms triggered by stress or anxiety' },
+      { id: 'esp-nocturnal', name: 'Esophageal Spasm - Nocturnal Episodes', description: 'Spasms occurring at night' },
+      { id: 'esp-weight-loss', name: 'Esophageal Spasm - Weight Loss', description: 'Weight loss from eating difficulty' },
+      { id: 'esp-achalasia', name: 'Esophageal Spasm - Achalasia Symptoms', description: 'Lower esophageal sphincter not relaxing properly' },
+    ],
+  },
+  // Postgastrectomy Syndrome - DC 7308 (rates as DC 7303)
+  {
+    id: 'postgastrectomy',
+    name: 'Postgastrectomy Syndrome (DC 7308)',
+    symptoms: [
+      { id: 'pgs-dumping-early', name: 'Postgastrectomy - Early Dumping', description: 'Symptoms within 30 min of eating: cramping, diarrhea, sweating, dizziness' },
+      { id: 'pgs-dumping-late', name: 'Postgastrectomy - Late Dumping', description: 'Symptoms 1-3 hours after eating: weakness, sweating, shakiness (hypoglycemia)' },
+      { id: 'pgs-nausea', name: 'Postgastrectomy - Nausea', description: 'Nausea after eating' },
+      { id: 'pgs-vomiting', name: 'Postgastrectomy - Vomiting', description: 'Vomiting after meals' },
+      { id: 'pgs-vomiting-daily', name: 'Postgastrectomy - Daily Vomiting', description: 'Vomiting daily despite dietary modification' },
+      { id: 'pgs-diarrhea', name: 'Postgastrectomy - Diarrhea', description: 'Frequent loose or watery stools' },
+      { id: 'pgs-diarrhea-explosive', name: 'Postgastrectomy - Explosive Diarrhea', description: 'Explosive, unpredictable bowel movements' },
+      { id: 'pgs-syncope', name: 'Postgastrectomy - Syncope/Lightheadedness', description: 'Post-meal lightheadedness or fainting' },
+      { id: 'pgs-sweating', name: 'Postgastrectomy - Post-Meal Sweating', description: 'Excessive sweating after eating' },
+      { id: 'pgs-abdominal-pain', name: 'Postgastrectomy - Abdominal Pain/Discomfort', description: 'Pain or discomfort within an hour of eating' },
+      { id: 'pgs-dietary-modification', name: 'Postgastrectomy - Dietary Modification Required', description: 'Requires ongoing dietary changes' },
+      { id: 'pgs-medication', name: 'Postgastrectomy - Medication Required', description: 'Requires medication for dumping syndrome' },
+      { id: 'pgs-tpn', name: 'Postgastrectomy - TPN Required', description: 'Requires total parenteral nutrition' },
+      { id: 'pgs-tube-feeding', name: 'Postgastrectomy - Tube Feeding Required', description: 'Requires tube feeding for nutrition' },
+      { id: 'pgs-weight-loss', name: 'Postgastrectomy - Weight Loss', description: 'Significant weight loss from malabsorption' },
+    ],
+  },
+  // Intestinal Fistula - DC 7330
+  {
+    id: 'intestinal-fistula',
+    name: 'Intestinal Fistula (DC 7330)',
+    symptoms: [
+      { id: 'if-drainage-minimal', name: 'Fistula - Minimal Drainage', description: 'Small amount of fistula drainage' },
+      { id: 'if-drainage-moderate', name: 'Fistula - Moderate Drainage', description: 'Moderate drainage requiring pad changes' },
+      { id: 'if-drainage-heavy', name: 'Fistula - Heavy Drainage', description: 'Heavy drainage (3+ ostomy bags or 10+ pad changes daily)' },
+      { id: 'if-fecal-discharge', name: 'Fistula - Fecal Discharge', description: 'Fecal material draining from fistula' },
+      { id: 'if-persistent-drainage', name: 'Fistula - Persistent Drainage', description: 'Drainage persisting for extended period' },
+      { id: 'if-skin-irritation', name: 'Fistula - Skin Irritation', description: 'Skin breakdown or irritation around fistula site' },
+      { id: 'if-infection', name: 'Fistula - Infection', description: 'Signs of infection at fistula site' },
+      { id: 'if-pain', name: 'Fistula - Pain at Site', description: 'Pain at fistula location' },
+      { id: 'if-enteral-nutrition', name: 'Fistula - Enteral Nutrition Required', description: 'Requires enteral (tube) feeding support' },
+      { id: 'if-tpn', name: 'Fistula - TPN Required', description: 'Requires total parenteral nutrition' },
+      { id: 'if-low-bmi', name: 'Fistula - Low BMI (<18)', description: 'BMI below 18 due to fistula' },
+      { id: 'if-very-low-bmi', name: 'Fistula - Very Low BMI (<16)', description: 'BMI below 16 due to fistula' },
+      { id: 'if-post-surgical', name: 'Fistula - Post-Surgical', description: 'Fistula developed after surgery' },
+      { id: 'if-post-radiation', name: 'Fistula - Post-Radiation', description: 'Fistula from radiation therapy' },
+      { id: 'if-post-trauma', name: 'Fistula - Post-Trauma', description: 'Fistula from abdominal trauma' },
+    ],
+  },
 
 ];
 
@@ -2806,6 +2943,12 @@ const getParentCategory = (categoryName) => {
   if (name.includes('metatarsalgia') || name.includes('morton')) return 'foot-ankle';
   if (name.includes('hallux valgus') || name.includes('bunion')) return 'foot-ankle';
   if (name.includes('hallux rigidus')) return 'foot-ankle';
+  if (name.includes('hernia')) return 'digestive';
+  if (name.includes('peritoneal adhesions') || name.includes('adhesions')) return 'digestive';
+  if (name.includes('esophageal stricture') || name.includes('stricture')) return 'digestive';
+  if (name.includes('esophageal spasm') || name.includes('motility')) return 'digestive';
+  if (name.includes('postgastrectomy') || name.includes('dumping')) return 'digestive';
+  if (name.includes('intestinal fistula') || name.includes('fistula')) return 'digestive';
   return null; // No parent, this is a standalone category
 };
 

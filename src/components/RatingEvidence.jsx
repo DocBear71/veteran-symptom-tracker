@@ -196,6 +196,11 @@ import {
   analyzeMetatarsalgiaLogs,
   analyzeHalluxValgusLogs,
   analyzeHalluxRigidusLogs,
+  analyzeHerniaLogs,
+  analyzePeritonealAdhesionsLogs,
+  analyzeEsophagealLogs,
+  analyzePostgastrectomyLogs,
+  analyzeIntestinalFistulaLogs,
   getAllMigraineRatings,
   getAllSleepApneaRatings,
   getAllPTSDRatings,
@@ -386,6 +391,11 @@ import OsteomyelitisRatingCard from './OsteomyelitisRatingCard';
 import MultiJointArthritisRatingCard from './MultiJointArthritisRatingCard';
 import SpineConditionsRatingCard from './SpineConditionsRatingCard';
 import FootConditionsRatingCard from './FootConditionsRatingCard';
+import HerniaRatingCard from './HerniaRatingCard';
+import PeritonealAdhesionsRatingCard from './PeritonealAdhesionsRatingCard';
+import EsophagealRatingCard from './EsophagealRatingCard';
+import PostgastrectomyRatingCard from './PostgastrectomyRatingCard';
+import IntestinalFistulaRatingCard from './IntestinalFistulaRatingCard';
 
 // Storage key for sleep apnea profile
 const SLEEP_APNEA_PROFILE_KEY = 'symptomTracker_sleepApneaProfile';
@@ -1083,6 +1093,23 @@ const RatingEvidence = () => {
   const halluxRigidusAnalysis = useMemo(() => {
     return analyzeHalluxRigidusLogs(logs, { evaluationPeriodDays: evaluationDays });
   }, [logs, evaluationDays]);
+  // Phase 5A: Hernia & Structural analyses
+  const herniaAnalysis = useMemo(() => {
+    return analyzeHerniaLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  const peritonealAdhesionsAnalysis = useMemo(() => {
+    return analyzePeritonealAdhesionsLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  // Phase 5B: Esophageal & Post-Surgical analyses
+  const esophagealAnalysis = useMemo(() => {
+    return analyzeEsophagealLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  const postgastrectomyAnalysis = useMemo(() => {
+    return analyzePostgastrectomyLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  const intestinalFistulaAnalysis = useMemo(() => {
+    return analyzeIntestinalFistulaLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
 
 
 
@@ -1274,7 +1301,12 @@ const RatingEvidence = () => {
         clawFootAnalysis.hasData ||
         metatarsalgiaAnalysis.hasData ||
         halluxValgusAnalysis.hasData ||
-        halluxRigidusAnalysis.hasData
+        halluxRigidusAnalysis.hasData ||
+        herniaAnalysis.hasData ||
+        peritonealAdhesionsAnalysis.hasData ||
+        esophagealAnalysis.hasData ||
+        postgastrectomyAnalysis.hasData ||
+        intestinalFistulaAnalysis.hasData
     ;
 
     return (
@@ -2486,6 +2518,33 @@ const RatingEvidence = () => {
                 diagnosticCode="5281"
                 expanded={expandedSection === 'hallux-rigidus'}
                 onToggle={() => toggleSection('hallux-rigidus')}
+            />
+            {/* Phase 5A: Hernia & Structural */}
+            <HerniaRatingCard
+                analysis={herniaAnalysis}
+                expanded={expandedSection === 'hernia'}
+                onToggle={() => toggleSection('hernia')}
+            />
+            <PeritonealAdhesionsRatingCard
+                analysis={peritonealAdhesionsAnalysis}
+                expanded={expandedSection === 'peritoneal-adhesions'}
+                onToggle={() => toggleSection('peritoneal-adhesions')}
+            />
+            {/* Phase 5B: Esophageal & Post-Surgical */}
+            <EsophagealRatingCard
+                analysis={esophagealAnalysis}
+                expanded={expandedSection === 'esophageal'}
+                onToggle={() => toggleSection('esophageal')}
+            />
+            <PostgastrectomyRatingCard
+                analysis={postgastrectomyAnalysis}
+                expanded={expandedSection === 'postgastrectomy'}
+                onToggle={() => toggleSection('postgastrectomy')}
+            />
+            <IntestinalFistulaRatingCard
+                analysis={intestinalFistulaAnalysis}
+                expanded={expandedSection === 'intestinal-fistula'}
+                onToggle={() => toggleSection('intestinal-fistula')}
             />
 
 

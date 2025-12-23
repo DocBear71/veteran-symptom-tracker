@@ -790,6 +790,18 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
       selectedChronic?.symptomId?.startsWith('hv-') ||
       selectedChronic?.symptomId?.startsWith('hr-')
   );
+  // Phase 5A: Exclude hernia and adhesion symptoms from pain detection
+  const isHerniaOrAdhesionSymptomQL = (
+      selectedChronic?.symptomId?.startsWith('hernia-') ||
+      selectedChronic?.symptomId?.startsWith('pa-')
+  );
+  // Phase 5B: Exclude esophageal and post-surgical digestive symptoms from pain detection
+  const isDigestivePhase5BSymptomQL = (
+      selectedChronic?.symptomId?.startsWith('es-') ||
+      selectedChronic?.symptomId?.startsWith('esp-') ||
+      selectedChronic?.symptomId?.startsWith('pgs-') ||
+      selectedChronic?.symptomId?.startsWith('if-')
+  );
 
   // Determine symptom type - EXPANDED DETECTION
   const isMigraine = selectedChronic?.symptomId === 'migraine';
@@ -851,7 +863,7 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
   ].includes(selectedChronic?.symptomId);
 
   // Pain: match ANY pain-related symptom only
-  const isPainRelated = !isPeripheralNerveSymptomQL && !isEndocrineSymptomQL && !isFootConditionSymptomQL && (
+  const isPainRelated = !isPeripheralNerveSymptomQL && !isEndocrineSymptomQL && !isFootConditionSymptomQL && !isHerniaOrAdhesionSymptomQL && !isDigestivePhase5BSymptomQL && (
       selectedChronic?.symptomId?.includes('pain') ||
       selectedChronic?.symptomId?.includes('-ache') ||
       selectedChronic?.symptomId?.includes('stiff') ||

@@ -1452,6 +1452,18 @@ const EditLogModal = ({log, isOpen, onClose, onSaved}) => {
             log?.symptomId?.startsWith('hv-') ||
             log?.symptomId?.startsWith('hr-')
         );
+        // Phase 5A: Exclude hernia and adhesion symptoms from pain detection
+        const isHerniaOrAdhesionSymptomELM = (
+            log?.symptomId?.startsWith('hernia-') ||
+            log?.symptomId?.startsWith('pa-')
+        );
+        // Phase 5B: Exclude esophageal and post-surgical digestive symptoms from pain detection
+        const isDigestivePhase5BSymptomELM = (
+            log?.symptomId?.startsWith('es-') ||
+            log?.symptomId?.startsWith('esp-') ||
+            log?.symptomId?.startsWith('pgs-') ||
+            log?.symptomId?.startsWith('if-')
+        );
 
         const isMigraine = log?.symptomId === 'migraine';
 
@@ -1513,7 +1525,7 @@ const EditLogModal = ({log, isOpen, onClose, onSaved}) => {
         ].includes(log?.symptomId);
 
         // Pain: match ANY pain-related symptom only
-        const isPainRelated = !isPeripheralNerveSymptomELM && !isEndocrineSymptomELM && !isFootConditionSymptomELM && (
+        const isPainRelated = !isPeripheralNerveSymptomELM && !isEndocrineSymptomELM && !isFootConditionSymptomELM && !isHerniaOrAdhesionSymptomELM && !isDigestivePhase5BSymptomELM && (
             log?.symptomId?.includes('pain') ||
             log?.symptomId?.includes('-ache') ||
             log?.symptomId?.includes('stiff') ||
