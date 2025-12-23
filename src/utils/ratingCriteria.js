@@ -1420,6 +1420,33 @@ export const CONDITIONS = {
       'cardiac-syncope', 'cardiac-palpitations', 'cardiac-edema', 'cardiac-orthopnea',
     ],
   },
+  // Phase 2B: Vascular Conditions
+  COLD_INJURY: {
+    id: 'cold-injury',
+    name: 'Cold Injury Residuals (Frostbite)',
+    diagnosticCode: '7122',
+    cfrReference: '38 CFR 4.104',
+    symptomIds: [
+      'cold-injury-pain', 'cold-injury-numbness', 'cold-injury-cold-sensitivity',
+      'cold-injury-tingling', 'cold-injury-color-changes', 'cold-injury-tissue-loss',
+      'cold-injury-nail-abnormalities', 'cold-injury-impaired-sensation',
+      'cold-injury-hyperhidrosis', 'cold-injury-stiffness', 'cold-injury-swelling',
+      'cold-injury-xray-abnormality',
+    ],
+  },
+  PERIPHERAL_ARTERIAL_DISEASE: {
+    id: 'peripheral-arterial-disease',
+    name: 'Peripheral Arterial Disease (PAD)',
+    diagnosticCode: '7114',
+    cfrReference: '38 CFR 4.104',
+    symptomIds: [
+      'pad-claudication-mild', 'pad-claudication-moderate', 'pad-claudication-severe',
+      'pad-rest-pain', 'pad-coldness', 'pad-numbness',
+      'pad-trophic-thin-skin', 'pad-trophic-hair-loss', 'pad-trophic-nail-changes',
+      'pad-diminished-pulses', 'pad-color-changes', 'pad-ulceration',
+      'pad-slow-healing', 'pad-gangrene',
+    ],
+  },
   // Phase 10: Digestive Completion
   CIRRHOSIS: {
     id: 'cirrhosis',
@@ -13830,6 +13857,182 @@ export const HYPERTENSIVE_HEART_CRITERIA = {
   },
 
   disclaimer: 'This analysis is based on logged hypertensive heart disease symptoms. Document both your blood pressure readings AND cardiac symptoms. The key distinction is having cardiac involvement beyond hypertension alone.',
+};
+
+
+// ============================================
+// PHASE 2B: COLD INJURY RESIDUALS (DC 7122)
+// ============================================
+
+export const COLD_INJURY_CRITERIA = {
+  diagnosticCode: '7122',
+  condition: 'Cold Injury Residuals (Frostbite)',
+  cfrReference: '38 CFR 4.104, Diagnostic Code 7122',
+
+  note: 'Cold injury residuals are rated per affected body part (hand, foot, ear, nose). Each part is rated separately and combined. Amputations, peripheral neuropathy, and Raynaud\'s phenomenon are rated separately unless used to support DC 7122 rating.',
+
+  ratings: [
+    {
+      percent: 30,
+      summary: 'Pain/numbness/cold sensitivity PLUS two or more additional findings',
+      criteriaDescription: [
+        'Arthralgia or other pain, numbness, or cold sensitivity, PLUS',
+        'Two or more of the following:',
+        '- Tissue loss',
+        '- Nail abnormalities',
+        '- Color changes',
+        '- Locally impaired sensation',
+        '- Hyperhidrosis (excessive sweating)',
+        '- X-ray abnormalities (osteoporosis, subarticular punched out lesions, or osteoarthritis)',
+      ],
+      evidenceNeeded: [
+        'Documentation of pain, numbness, or cold sensitivity',
+        'Medical evidence of at least two additional findings',
+        'X-rays if bone changes present',
+        'Symptom logs with specific body part identification',
+      ],
+    },
+    {
+      percent: 20,
+      summary: 'Pain/numbness/cold sensitivity PLUS one additional finding',
+      criteriaDescription: [
+        'Arthralgia or other pain, numbness, or cold sensitivity, PLUS',
+        'One of the following:',
+        '- Tissue loss',
+        '- Nail abnormalities',
+        '- Color changes',
+        '- Locally impaired sensation',
+        '- Hyperhidrosis',
+        '- X-ray abnormalities',
+      ],
+      evidenceNeeded: [
+        'Documentation of primary symptoms',
+        'Medical evidence of one additional finding',
+        'Body part specific symptom logs',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Pain/numbness/cold sensitivity alone',
+      criteriaDescription: [
+        'Arthralgia or other pain, numbness, or cold sensitivity',
+        'Without additional objective findings',
+      ],
+      evidenceNeeded: [
+        'Symptom logs documenting pain, numbness, or cold sensitivity',
+        'History of cold injury exposure',
+      ],
+    },
+  ],
+
+  definitions: {
+    coldInjury: {
+      term: 'Cold Injury',
+      definition: 'Tissue damage from exposure to extreme cold, including frostbite and non-freezing cold injury (trench foot). Long-term effects can persist for decades.',
+    },
+    hyperhidrosis: {
+      term: 'Hyperhidrosis',
+      definition: 'Excessive sweating in the affected area, a common long-term sequela of cold injury.',
+    },
+    trophicChanges: {
+      term: 'Trophic Changes',
+      definition: 'Changes to skin, nails, and soft tissue resulting from impaired circulation and nerve damage.',
+    },
+  },
+
+  disclaimer: 'Each affected body part (hand, foot, ear, nose) is rated separately and combined. Document which specific body parts are affected. Raynaud\'s syndrome should be rated separately unless used to support this rating.',
+};
+
+// ============================================
+// PHASE 2B: PERIPHERAL ARTERIAL DISEASE (DC 7114)
+// ============================================
+
+export const PAD_CRITERIA = {
+  diagnosticCode: '7114',
+  condition: 'Peripheral Arterial Disease (Arteriosclerosis Obliterans)',
+  cfrReference: '38 CFR 4.104, Diagnostic Code 7114',
+
+  note: 'PAD is rated based on claudication distance, trophic changes, and ankle-brachial index (ABI). Each affected extremity is rated separately and combined with bilateral factor if applicable.',
+
+  ratings: [
+    {
+      percent: 100,
+      summary: 'Ischemic rest pain AND deep ulcers or ABI ≤0.4',
+      criteriaDescription: [
+        'Ischemic limb pain at rest, AND',
+        'Either deep ischemic ulcers OR ankle/brachial index (ABI) of 0.4 or less',
+      ],
+      evidenceNeeded: [
+        'Documentation of rest pain (pain without activity)',
+        'Wound care records showing ischemic ulcers, OR',
+        'ABI measurement of 0.4 or less',
+        'Vascular studies (Doppler ultrasound)',
+      ],
+    },
+    {
+      percent: 60,
+      summary: 'Claudication <25 yards AND persistent coldness or ABI ≤0.5',
+      criteriaDescription: [
+        'Claudication on walking less than 25 yards on level grade at 2 mph, AND',
+        'Either persistent coldness of the extremity OR ABI of 0.5 or less',
+      ],
+      evidenceNeeded: [
+        'Documentation of severe claudication distance',
+        'Evidence of persistent coldness OR ABI ≤0.5',
+        'Symptom logs with walking distance documented',
+      ],
+    },
+    {
+      percent: 40,
+      summary: 'Claudication 25-100 yards AND trophic changes or ABI ≤0.7',
+      criteriaDescription: [
+        'Claudication on walking between 25 and 100 yards on level grade at 2 mph, AND',
+        'Either trophic changes (thin skin, absence of hair, dystrophic nails) OR ABI of 0.7 or less',
+      ],
+      evidenceNeeded: [
+        'Documentation of moderate claudication',
+        'Photos or medical records of trophic changes, OR',
+        'ABI measurement of 0.7 or less',
+      ],
+    },
+    {
+      percent: 20,
+      summary: 'Claudication >100 yards AND diminished pulses or ABI ≤0.9',
+      criteriaDescription: [
+        'Claudication on walking more than 100 yards, AND',
+        'Either diminished peripheral pulses OR ABI of 0.9 or less',
+      ],
+      evidenceNeeded: [
+        'Documentation of claudication symptoms',
+        'Physical exam showing diminished pulses, OR',
+        'ABI of 0.9 or less',
+      ],
+    },
+  ],
+
+  definitions: {
+    claudication: {
+      term: 'Intermittent Claudication',
+      definition: 'Cramping leg pain that occurs with walking and is relieved by rest. Caused by inadequate blood flow to muscles.',
+    },
+    ABI: {
+      term: 'Ankle-Brachial Index (ABI)',
+      definition: 'Ratio of blood pressure at ankle divided by blood pressure at arm. Normal is 1.0 or greater. Lower values indicate arterial disease.',
+      ranges: [
+        'Normal: ≥1.0',
+        'Mild PAD: 0.9-0.99 (20% rating threshold)',
+        'Moderate PAD: 0.7-0.89 (40% rating threshold)',
+        'Moderate-Severe PAD: 0.5-0.69 (60% rating threshold)',
+        'Severe PAD: ≤0.4 (100% rating threshold)',
+      ],
+    },
+    trophicChanges: {
+      term: 'Trophic Changes',
+      definition: 'Skin and tissue changes from poor blood flow including thin/shiny skin, hair loss on legs/feet, and thickened/dystrophic nails.',
+    },
+  },
+
+  disclaimer: 'Each affected extremity is rated separately and combined. Document ABI measurements when available, as they provide objective evidence. Claudication distance should be documented consistently.',
 };
 
 // ============================================
@@ -28311,6 +28514,306 @@ export const analyzeHypertensiveHeartLogs = (logs, measurements = [], options = 
 };
 
 /**
+ * Analyze Cold Injury Residuals symptom logs (DC 7122)
+ * Rates each affected body part separately
+ */
+export const analyzeColdInjuryLogs = (logs, options = {}) => {
+  const { evaluationPeriodDays = 365 } = options;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const symptomIds = [
+    'cold-injury-pain', 'cold-injury-numbness', 'cold-injury-cold-sensitivity',
+    'cold-injury-tingling', 'cold-injury-color-changes', 'cold-injury-tissue-loss',
+    'cold-injury-nail-abnormalities', 'cold-injury-impaired-sensation',
+    'cold-injury-hyperhidrosis', 'cold-injury-stiffness', 'cold-injury-swelling',
+    'cold-injury-xray-abnormality'
+  ];
+
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    const symptomId = getLogSymptomId(log);
+    return logDate >= cutoffDate && symptomId && symptomIds.includes(symptomId);
+  });
+
+  if (relevantLogs.length === 0) {
+    return {
+      hasData: false,
+      condition: 'Cold Injury Residuals',
+      diagnosticCode: '7122',
+      message: 'No cold injury symptoms logged',
+      supportedRating: null,
+      ratingRationale: [],
+      gaps: ['Start logging cold injury symptoms - identify which body parts are affected'],
+      metrics: { totalLogs: 0 },
+    };
+  }
+
+  // Primary symptoms (pain, numbness, cold sensitivity)
+  const primarySymptomLogs = relevantLogs.filter(log =>
+      ['cold-injury-pain', 'cold-injury-numbness', 'cold-injury-cold-sensitivity', 'cold-injury-tingling'].includes(getLogSymptomId(log))
+  );
+
+  // Additional findings that increase rating
+  const tissueLossLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'cold-injury-tissue-loss');
+  const nailAbnormalityLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'cold-injury-nail-abnormalities');
+  const colorChangeLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'cold-injury-color-changes');
+  const impairedSensationLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'cold-injury-impaired-sensation');
+  const hyperhidrosisLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'cold-injury-hyperhidrosis');
+  const xrayAbnormalityLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'cold-injury-xray-abnormality');
+
+  // Count additional findings present
+  let additionalFindings = 0;
+  const findingsList = [];
+  if (tissueLossLogs.length > 0) { additionalFindings++; findingsList.push('tissue loss'); }
+  if (nailAbnormalityLogs.length > 0) { additionalFindings++; findingsList.push('nail abnormalities'); }
+  if (colorChangeLogs.length > 0) { additionalFindings++; findingsList.push('color changes'); }
+  if (impairedSensationLogs.length > 0) { additionalFindings++; findingsList.push('impaired sensation'); }
+  if (hyperhidrosisLogs.length > 0) { additionalFindings++; findingsList.push('hyperhidrosis'); }
+  if (xrayAbnormalityLogs.length > 0) { additionalFindings++; findingsList.push('X-ray abnormalities'); }
+
+  const hasPrimarySymptoms = primarySymptomLogs.length > 0;
+
+  let supportedRating = 0;
+  let rationale = [];
+  let evidenceGaps = [];
+
+  if (hasPrimarySymptoms) {
+    if (additionalFindings >= 2) {
+      supportedRating = 30;
+      rationale = [
+        'Primary symptoms (pain/numbness/cold sensitivity) documented',
+        `${additionalFindings} additional findings: ${findingsList.join(', ')}`,
+        'Pattern supports 30% rating per affected body part'
+      ];
+    } else if (additionalFindings === 1) {
+      supportedRating = 20;
+      rationale = [
+        'Primary symptoms documented',
+        `1 additional finding: ${findingsList.join(', ')}`,
+        'Pattern supports 20% rating per affected body part'
+      ];
+    } else {
+      supportedRating = 10;
+      rationale = [
+        'Primary symptoms (pain/numbness/cold sensitivity) documented',
+        'No additional objective findings logged',
+        'Pattern supports 10% rating per affected body part'
+      ];
+    }
+  } else if (additionalFindings > 0) {
+    supportedRating = 10;
+    rationale = [
+      `Additional findings documented: ${findingsList.join(', ')}`,
+      'Document primary symptoms (pain, numbness, cold sensitivity) for higher rating'
+    ];
+  }
+
+  // Evidence gaps
+  if (primarySymptomLogs.length === 0) {
+    evidenceGaps.push('Document primary symptoms: pain, numbness, or cold sensitivity');
+  }
+  if (additionalFindings < 2 && supportedRating < 30) {
+    evidenceGaps.push('Document additional findings (tissue loss, nail changes, color changes, impaired sensation, hyperhidrosis, X-ray abnormalities) for higher rating');
+  }
+  evidenceGaps.push('Note: Each affected body part (hand, foot, ear, nose) should be documented separately');
+
+  return {
+    hasData: true,
+    condition: 'Cold Injury Residuals',
+    diagnosticCode: '7122',
+    cfrReference: '38 CFR 4.104',
+    evaluationPeriodDays,
+    supportedRating,
+    ratingRationale: rationale,
+    gaps: evidenceGaps,
+    metrics: {
+      totalLogs: relevantLogs.length,
+      primarySymptomCount: primarySymptomLogs.length,
+      additionalFindings,
+      findingsList,
+      tissueLoss: tissueLossLogs.length > 0,
+      nailAbnormalities: nailAbnormalityLogs.length > 0,
+      colorChanges: colorChangeLogs.length > 0,
+      impairedSensation: impairedSensationLogs.length > 0,
+      hyperhidrosis: hyperhidrosisLogs.length > 0,
+      xrayAbnormalities: xrayAbnormalityLogs.length > 0,
+    },
+    criteria: COLD_INJURY_CRITERIA,
+  };
+};
+
+/**
+ * Analyze Peripheral Arterial Disease (PAD) symptom logs (DC 7114)
+ * Uses ABI measurements when available
+ */
+export const analyzePADLogs = (logs, measurements = [], options = {}) => {
+  const { evaluationPeriodDays = 365 } = options;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const symptomIds = [
+    'pad-claudication-mild', 'pad-claudication-moderate', 'pad-claudication-severe',
+    'pad-rest-pain', 'pad-coldness', 'pad-numbness',
+    'pad-trophic-thin-skin', 'pad-trophic-hair-loss', 'pad-trophic-nail-changes',
+    'pad-diminished-pulses', 'pad-color-changes', 'pad-ulceration',
+    'pad-slow-healing', 'pad-gangrene'
+  ];
+
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    const symptomId = getLogSymptomId(log);
+    return logDate >= cutoffDate && symptomId && symptomIds.includes(symptomId);
+  });
+
+  // Get ABI readings from measurements
+  const abiReadings = Array.isArray(measurements) ? measurements.filter(m =>
+      m.measurementType === 'ankle-brachial-index' && new Date(m.timestamp) >= cutoffDate
+  ) : [];
+
+  if (relevantLogs.length === 0 && abiReadings.length === 0) {
+    return {
+      hasData: false,
+      condition: 'Peripheral Arterial Disease',
+      diagnosticCode: '7114',
+      message: 'No PAD symptoms logged',
+      supportedRating: null,
+      ratingRationale: [],
+      gaps: ['Start logging PAD symptoms and record ABI measurements'],
+      metrics: { totalLogs: 0 },
+    };
+  }
+
+  // Categorize symptoms
+  const claudicationMildLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'pad-claudication-mild');
+  const claudicationModerateLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'pad-claudication-moderate');
+  const claudicationSevereLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'pad-claudication-severe');
+  const restPainLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'pad-rest-pain');
+  const coldnessLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'pad-coldness');
+  const ulcerationLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'pad-ulceration');
+  const gangreneLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'pad-gangrene');
+  const diminishedPulsesLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'pad-diminished-pulses');
+
+  // Trophic changes
+  const trophicLogs = relevantLogs.filter(log =>
+      ['pad-trophic-thin-skin', 'pad-trophic-hair-loss', 'pad-trophic-nail-changes'].includes(getLogSymptomId(log))
+  );
+  const hasTrophicChanges = trophicLogs.length > 0;
+
+  // Get lowest ABI if available
+  let lowestABI = null;
+  if (abiReadings.length > 0) {
+    lowestABI = Math.min(...abiReadings.map(m => {
+      // Calculate ABI from ankle/brachial values if not pre-calculated
+      if (m.values?.abi_calculated) return parseFloat(m.values.abi_calculated);
+      if (m.values?.ankle_systolic && m.values?.brachial_systolic) {
+        return parseFloat(m.values.ankle_systolic) / parseFloat(m.values.brachial_systolic);
+      }
+      return 99;
+    }));
+    if (lowestABI === 99) lowestABI = null;
+  }
+
+  let supportedRating = 0;
+  let rationale = [];
+  let evidenceGaps = [];
+
+  // Determine rating based on symptoms and ABI
+  const hasRestPain = restPainLogs.length > 0;
+  const hasUlceration = ulcerationLogs.length > 0 || gangreneLogs.length > 0;
+  const hasSevereClaudication = claudicationSevereLogs.length > 0;
+  const hasModerateClaudication = claudicationModerateLogs.length > 0;
+  const hasMildClaudication = claudicationMildLogs.length > 0;
+  const hasPersistentColdness = coldnessLogs.length >= 3; // Multiple episodes suggest persistent
+  const hasDiminishedPulses = diminishedPulsesLogs.length > 0;
+
+  // 100% rating criteria
+  if (hasRestPain && (hasUlceration || (lowestABI !== null && lowestABI <= 0.4))) {
+    supportedRating = 100;
+    rationale = [
+      'Ischemic rest pain documented',
+      hasUlceration ? 'Ischemic ulceration/gangrene present' : `ABI ≤0.4 (${lowestABI?.toFixed(2)})`,
+      'Pattern supports 100% rating per extremity'
+    ];
+  }
+  // 60% rating criteria
+  else if (hasSevereClaudication && (hasPersistentColdness || (lowestABI !== null && lowestABI <= 0.5))) {
+    supportedRating = 60;
+    rationale = [
+      'Severe claudication (<25 yards) documented',
+      hasPersistentColdness ? 'Persistent coldness documented' : `ABI ≤0.5 (${lowestABI?.toFixed(2)})`,
+      'Pattern supports 60% rating per extremity'
+    ];
+  }
+  // 40% rating criteria
+  else if (hasModerateClaudication && (hasTrophicChanges || (lowestABI !== null && lowestABI <= 0.7))) {
+    supportedRating = 40;
+    rationale = [
+      'Moderate claudication (25-100 yards) documented',
+      hasTrophicChanges ? 'Trophic changes present' : `ABI ≤0.7 (${lowestABI?.toFixed(2)})`,
+      'Pattern supports 40% rating per extremity'
+    ];
+  }
+  // 20% rating criteria
+  else if ((hasMildClaudication || hasModerateClaudication || hasSevereClaudication) &&
+      (hasDiminishedPulses || (lowestABI !== null && lowestABI <= 0.9))) {
+    supportedRating = 20;
+    rationale = [
+      'Claudication documented',
+      hasDiminishedPulses ? 'Diminished peripheral pulses documented' : `ABI ≤0.9 (${lowestABI?.toFixed(2)})`,
+      'Pattern supports 20% rating per extremity'
+    ];
+  }
+  // Has symptoms but doesn't meet full criteria
+  else if (relevantLogs.length > 0) {
+    supportedRating = 20;
+    rationale = [
+      'PAD symptoms documented',
+      'ABI measurement recommended to confirm rating level'
+    ];
+  }
+
+  // Evidence gaps
+  if (abiReadings.length === 0) {
+    evidenceGaps.push('No ABI measurements documented - request vascular studies');
+  }
+  if (!hasRestPain && !hasSevereClaudication && !hasModerateClaudication && !hasMildClaudication) {
+    evidenceGaps.push('Document claudication with specific walking distance');
+  }
+  if (!hasTrophicChanges && supportedRating < 40) {
+    evidenceGaps.push('Document trophic changes if present (thin skin, hair loss, nail changes)');
+  }
+
+  return {
+    hasData: true,
+    condition: 'Peripheral Arterial Disease',
+    diagnosticCode: '7114',
+    cfrReference: '38 CFR 4.104',
+    evaluationPeriodDays,
+    supportedRating,
+    ratingRationale: rationale,
+    gaps: evidenceGaps,
+    metrics: {
+      totalLogs: relevantLogs.length,
+      claudicationMild: claudicationMildLogs.length,
+      claudicationModerate: claudicationModerateLogs.length,
+      claudicationSevere: claudicationSevereLogs.length,
+      restPainCount: restPainLogs.length,
+      coldnessCount: coldnessLogs.length,
+      ulcerationCount: ulcerationLogs.length,
+      trophicChangeCount: trophicLogs.length,
+      diminishedPulsesCount: diminishedPulsesLogs.length,
+      lowestABI,
+      abiReadingsCount: abiReadings.length,
+    },
+    criteria: PAD_CRITERIA,
+  };
+};
+
+
+/**
  * Analyze SVT (Supraventricular Tachycardia) symptom logs (DC 7010)
  */
 export const analyzeSVTLogs = (logs, options = {}) => {
@@ -32824,7 +33327,13 @@ export const getPericarditisRatingCriteria = (percent) => {
 export const getPostPhlebiticRatingCriteria = (percent) => {
   return POST_PHLEBITIC_CRITERIA.ratings.find(r => r.percent === percent) || null;
 };
-
+// Phase 2B: Vascular getRatingCriteria functions
+export const getColdInjuryRatingCriteria = (percent) => {
+  return COLD_INJURY_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getPADRatingCriteria = (percent) => {
+  return PAD_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
 // Phase 10: Digestive getRatingCriteria functions
 export const getCirrhosisRatingCriteria = (percent) => {
   return CIRRHOSIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
@@ -33067,6 +33576,8 @@ export const getAllIlioinguinalNerveRatings = () => ILIOINGUINAL_NERVE_CRITERIA.
 export const getAllJacksonianEpilepsyRatings = () => EPILEPSY_JACKSONIAN_CRITERIA.ratings;
 export const getAllDiencephalicEpilepsyRatings = () => EPILEPSY_DIENCEPHALIC_CRITERIA.ratings;
 export const getAllPsychomotorEpilepsyRatings = () => EPILEPSY_PSYCHOMOTOR_CRITERIA.ratings;
+export const getColdInjuryRatings = () => COLD_INJURY_CRITERIA.ratings;
+export const getPADRatings = () => PAD_CRITERIA.ratings;
 
 
 
@@ -33193,7 +33704,8 @@ export const getIlioinguinalNerveDefinition = (term) => ILIOINGUINAL_NERVE_CRITE
 export const getJacksonianEpilepsyDefinition = (term) => EPILEPSY_JACKSONIAN_CRITERIA.definitions[term] || null;
 export const getDiencephalicEpilepsyDefinition = (term) => EPILEPSY_DIENCEPHALIC_CRITERIA.definitions[term] || null;
 export const getPsychomotorEpilepsyDefinition = (term) => EPILEPSY_PSYCHOMOTOR_CRITERIA.definitions[term] || null;
-
+export const getColdInjuryDefinition = (term) => COLD_INJURY_CRITERIA.definitions[term] || null;
+export const getPADDefinition = (term) => PAD_CRITERIA.definitions[term] || null;
 
 
 

@@ -1507,6 +1507,46 @@ export const symptomCategories = [
       { id: 'hhd-hospitalization', name: 'HHD - Hospitalization for Heart Failure' },
     ]
   },
+  // Phase 2B: Cold Injury Residuals (DC 7122)
+  {
+    id: 'cold-injury',
+    name: 'Cold Injury Residuals (Frostbite) Symptoms (DC 7122)',
+    symptoms: [
+      { id: 'cold-injury-pain', name: 'Cold Injury - Pain/Arthralgia' },
+      { id: 'cold-injury-numbness', name: 'Cold Injury - Numbness' },
+      { id: 'cold-injury-cold-sensitivity', name: 'Cold Injury - Cold Sensitivity' },
+      { id: 'cold-injury-tingling', name: 'Cold Injury - Tingling/Paresthesias' },
+      { id: 'cold-injury-color-changes', name: 'Cold Injury - Color Changes (Pallor/Cyanosis/Redness)' },
+      { id: 'cold-injury-tissue-loss', name: 'Cold Injury - Tissue Loss' },
+      { id: 'cold-injury-nail-abnormalities', name: 'Cold Injury - Nail Abnormalities' },
+      { id: 'cold-injury-impaired-sensation', name: 'Cold Injury - Locally Impaired Sensation' },
+      { id: 'cold-injury-hyperhidrosis', name: 'Cold Injury - Hyperhidrosis (Excessive Sweating)' },
+      { id: 'cold-injury-stiffness', name: 'Cold Injury - Joint Stiffness' },
+      { id: 'cold-injury-swelling', name: 'Cold Injury - Swelling' },
+      { id: 'cold-injury-xray-abnormality', name: 'Cold Injury - X-ray Abnormalities Documented' },
+    ]
+  },
+  // Phase 2B: Arteriosclerosis Obliterans / Peripheral Arterial Disease (DC 7114)
+  {
+    id: 'peripheral-arterial-disease',
+    name: 'Peripheral Arterial Disease (PAD) Symptoms (DC 7114)',
+    symptoms: [
+      { id: 'pad-claudication-mild', name: 'PAD - Claudication (Leg Pain Walking >100 yards)' },
+      { id: 'pad-claudication-moderate', name: 'PAD - Claudication (Leg Pain Walking 25-100 yards)' },
+      { id: 'pad-claudication-severe', name: 'PAD - Claudication (Leg Pain Walking <25 yards)' },
+      { id: 'pad-rest-pain', name: 'PAD - Ischemic Rest Pain (Pain at Rest)' },
+      { id: 'pad-coldness', name: 'PAD - Persistent Coldness of Extremity' },
+      { id: 'pad-numbness', name: 'PAD - Numbness/Tingling' },
+      { id: 'pad-trophic-thin-skin', name: 'PAD - Trophic Changes: Thin/Shiny Skin' },
+      { id: 'pad-trophic-hair-loss', name: 'PAD - Trophic Changes: Hair Loss on Legs/Feet' },
+      { id: 'pad-trophic-nail-changes', name: 'PAD - Trophic Changes: Dystrophic Nails' },
+      { id: 'pad-diminished-pulses', name: 'PAD - Diminished Peripheral Pulses' },
+      { id: 'pad-color-changes', name: 'PAD - Color Changes (Pallor/Dependent Rubor)' },
+      { id: 'pad-ulceration', name: 'PAD - Ischemic Ulceration' },
+      { id: 'pad-slow-healing', name: 'PAD - Slow Wound Healing' },
+      { id: 'pad-gangrene', name: 'PAD - Gangrene/Tissue Necrosis' },
+    ]
+  },
   // Phase 10: Cirrhosis (DC 7312)
   {
     id: 'cirrhosis',
@@ -2219,6 +2259,8 @@ const getParentCategory = (categoryName) => {
   if (name.includes('post-mi') || name.includes('myocardial infarction')) return 'heart-disease';
   if (name.includes('hhd') || name.includes('hypertensive heart')) return 'heart-disease';
   if (name.includes('post-phlebitic')) return 'varicose-veins';
+  if (name.includes('cold injury') || name.includes('frostbite')) return 'vascular';
+  if (name.includes('peripheral arterial') || name.includes('pad')) return 'vascular';
   if (name.includes('cirrhosis')) return 'cirrhosis';
   if (name.includes('gastritis')) return 'gastritis';
   if (name.includes('pancreatitis')) return 'pancreatitis';

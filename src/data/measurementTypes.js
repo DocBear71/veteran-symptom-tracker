@@ -2137,6 +2137,91 @@ export const MEASUREMENT_TYPES = {
     },
   },
 
+
+  // ============================================
+  // PHASE 2B: VASCULAR MEASUREMENTS
+  // ============================================
+
+  ANKLE_BRACHIAL_INDEX: {
+    id: 'ankle-brachial-index',
+    name: 'Ankle-Brachial Index (ABI)',
+    shortName: 'ABI',
+    icon: '🦶',
+    description: 'Ratio of ankle to arm blood pressure for PAD assessment',
+
+    fields: [
+      {
+        key: 'ankle_systolic',
+        label: 'Ankle Systolic BP',
+        unit: 'mmHg',
+        type: 'number',
+        min: 40,
+        max: 250,
+        step: 1,
+        required: true,
+        placeholder: '120',
+        help: 'Measured at posterior tibial or dorsalis pedis artery',
+      },
+      {
+        key: 'brachial_systolic',
+        label: 'Brachial (Arm) Systolic BP',
+        unit: 'mmHg',
+        type: 'number',
+        min: 60,
+        max: 250,
+        step: 1,
+        required: true,
+        placeholder: '120',
+        help: 'Measured at brachial artery',
+      },
+      {
+        key: 'abi_calculated',
+        label: 'Calculated ABI',
+        unit: '',
+        type: 'calculated',
+        formula: 'ankle_systolic / brachial_systolic',
+        precision: 2,
+        help: 'Auto-calculated: Ankle BP ÷ Arm BP',
+      },
+    ],
+
+    metadata: [
+      {
+        key: 'side',
+        label: 'Side Measured',
+        type: 'select',
+        options: [
+          { value: 'left', label: 'Left Leg' },
+          { value: 'right', label: 'Right Leg' },
+          { value: 'both', label: 'Both Legs' },
+        ],
+        default: 'left',
+      },
+      {
+        key: 'method',
+        label: 'Measurement Method',
+        type: 'select',
+        options: [
+          { value: 'doppler', label: 'Doppler Ultrasound' },
+          { value: 'manual', label: 'Manual/Oscillometric' },
+        ],
+        default: 'doppler',
+      },
+    ],
+
+    relatedConditions: ['peripheral-arterial-disease'],
+
+    interpretation: {
+      severe: { abi_calculated: [0, 0.4], label: 'Severe PAD (100% Rating)', color: 'red' },
+      moderate_severe: { abi_calculated: [0.4, 0.5], label: 'Moderate-Severe PAD (60% Rating)', color: 'red' },
+      moderate: { abi_calculated: [0.5, 0.7], label: 'Moderate PAD (40% Rating)', color: 'orange' },
+      mild: { abi_calculated: [0.7, 0.9], label: 'Mild PAD (20% Rating)', color: 'yellow' },
+      borderline: { abi_calculated: [0.9, 1.0], label: 'Borderline', color: 'yellow' },
+      normal: { abi_calculated: [1.0, 1.4], label: 'Normal (≥1.0)', color: 'green' },
+      calcified: { abi_calculated: [1.4, 9.9], label: 'Non-compressible (Calcified Arteries)', color: 'orange' },
+    },
+  },
+
   // ============================================
   // PHASE 10: LIVER FUNCTION - MELD SCORE
   // ============================================

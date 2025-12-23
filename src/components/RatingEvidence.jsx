@@ -128,6 +128,8 @@ import {
   analyzeCADLogs,
   analyzePostMILogs,
   analyzeHypertensiveHeartLogs,
+  analyzeColdInjuryLogs,
+  analyzePADLogs,
   analyzeSVTLogs,
   analyzeVentricularArrhythmiaLogs,
   analyzePericarditisLogs,
@@ -342,6 +344,8 @@ import SyringomyeliaRatingCard from './SyringomyeliaRatingCard';
 import MyelitisRatingCard from './MyelitisRatingCard';
 import PeripheralNerveRatingCard from './PeripheralNerveRatingCard';
 import measurements from './Measurements.jsx';
+import ColdInjuryRatingCard from './ColdInjuryRatingCard.jsx';
+import PADRatingCard from './PADRatingCard.jsx';
 
 // Storage key for sleep apnea profile
 const SLEEP_APNEA_PROFILE_KEY = 'symptomTracker_sleepApneaProfile';
@@ -821,6 +825,13 @@ const RatingEvidence = () => {
   }, [logs, measurements, evaluationDays]);
   const hypertensiveHeartAnalysis = useMemo(() => {
     return analyzeHypertensiveHeartLogs(logs, measurements, { evaluationPeriodDays: evaluationDays });
+  }, [logs, measurements, evaluationDays]);
+  // Phase 2B: Vascular Conditions
+  const coldInjuryAnalysis = useMemo(() => {
+    return analyzeColdInjuryLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  const padAnalysis = useMemo(() => {
+    return analyzePADLogs(logs, measurements, { evaluationPeriodDays: evaluationDays });
   }, [logs, measurements, evaluationDays]);
   // Phase 10: Digestive Analysis Hooks
   const cirrhosisAnalysis = useMemo(() => {
@@ -1959,6 +1970,17 @@ const RatingEvidence = () => {
                 analysis={hypertensiveHeartAnalysis}
                 expanded={expandedSection === 'hypertensive-heart'}
                 onToggle={() => toggleSection('hypertensive-heart')}
+            />
+            {/* Phase 2B: Vascular Conditions */}
+            <ColdInjuryRatingCard
+                analysis={coldInjuryAnalysis}
+                expanded={expandedSection === 'cold-injury'}
+                onToggle={() => toggleSection('cold-injury')}
+            />
+            <PADRatingCard
+                analysis={padAnalysis}
+                expanded={expandedSection === 'peripheral-arterial-disease'}
+                onToggle={() => toggleSection('peripheral-arterial-disease')}
             />
             {/* Phase 10: Digestive Rating Cards */}
             <CirrhosisRatingCard

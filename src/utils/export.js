@@ -122,6 +122,8 @@ import {
   analyzeCADLogs,
   analyzePostMILogs,
   analyzeHypertensiveHeartLogs,
+  analyzeColdInjuryLogs,
+  analyzePADLogs,
   analyzeCirrhosisLogs,
   analyzeGastritisLogs,
   analyzePancreatitisLogs,
@@ -2778,6 +2780,10 @@ const analyzeAllConditions = (logs, options = {}) => {
         'cad': analyzeCADLogs,
         'post-mi': analyzePostMILogs,
         'hypertensive-heart': analyzeHypertensiveHeartLogs,
+        // Phase 2B: Vascular Conditions
+        'cold-injury': analyzeColdInjuryLogs,
+        'peripheral-arterial-disease': analyzePADLogs,
+        // Phase 10: Digestive Stuff
         'cirrhosis': analyzeCirrhosisLogs,
         'gastritis': analyzeGastritisLogs,
         'pancreatitis': analyzePancreatitisLogs,
