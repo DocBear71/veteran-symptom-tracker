@@ -180,6 +180,22 @@ import {
   analyzeCushingsSyndromeLogs,
   analyzeDiabetesInsipidusLogs,
   analyzeHyperaldosteronismLogs,
+  analyzeGoutLogs,
+  analyzeBursitisLogs,
+  analyzeTendinitisLogs,
+  analyzeMyositisLogs,
+  analyzeOsteomyelitisLogs,
+  analyzeMultiJointArthritisLogs,
+  analyzeVertebralFractureLogs,
+  analyzeSacroiliacInjuryLogs,
+  analyzeSpinalStenosisLogs,
+  analyzeAnkylosingSpondylitisLogs,
+  analyzeSpinalFusionLogs,
+  analyzeWeakFootLogs,
+  analyzeClawFootLogs,
+  analyzeMetatarsalgiaLogs,
+  analyzeHalluxValgusLogs,
+  analyzeHalluxRigidusLogs,
   getAllMigraineRatings,
   getAllSleepApneaRatings,
   getAllPTSDRatings,
@@ -362,6 +378,14 @@ import AddisonsDiseaseRatingCard from './AddisonsDiseaseRatingCard';
 import CushingsSyndromeRatingCard from './CushingsSyndromeRatingCard';
 import DiabetesInsipidusRatingCard from './DiabetesInsipidusRatingCard';
 import HyperaldosteronismRatingCard from './HyperaldosteronismRatingCard';
+import GoutRatingCard from './GoutRatingCard';
+import BursitisRatingCard from './BursitisRatingCard';
+import TendinitisRatingCard from './TendinitisRatingCard';
+import MyositisRatingCard from './MyositisRatingCard';
+import OsteomyelitisRatingCard from './OsteomyelitisRatingCard';
+import MultiJointArthritisRatingCard from './MultiJointArthritisRatingCard';
+import SpineConditionsRatingCard from './SpineConditionsRatingCard';
+import FootConditionsRatingCard from './FootConditionsRatingCard';
 
 // Storage key for sleep apnea profile
 const SLEEP_APNEA_PROFILE_KEY = 'symptomTracker_sleepApneaProfile';
@@ -998,6 +1022,68 @@ const RatingEvidence = () => {
   const hyperaldosteronismAnalysis = useMemo(() => {
     return analyzeHyperaldosteronismLogs(logs, { days: evaluationDays });
   }, [logs, evaluationDays]);
+  // Phase 4A: Gout Analysis (DC 5017)
+  const goutAnalysis = useMemo(() => {
+    return analyzeGoutLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  // Phase 4A: Bursitis Analysis (DC 5019)
+  const bursitisAnalysis = useMemo(() => {
+    return analyzeBursitisLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  // Phase 4A: Tendinitis Analysis (DC 5024)
+  const tendinitisAnalysis = useMemo(() => {
+    return analyzeTendinitisLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  // Phase 4B: Myositis Analysis (DC 5021)
+  const myositisAnalysis = useMemo(() => {
+    return analyzeMyositisLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  // Phase 4B: Osteomyelitis Analysis (DC 5000)
+  const osteomyelitisAnalysis = useMemo(() => {
+    return analyzeOsteomyelitisLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  // Phase 4B: Multi-Joint Arthritis Analysis (DC 5002)
+  const multiJointArthritisAnalysis = useMemo(() => {
+    return analyzeMultiJointArthritisLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  // PHASE 4C: SPINE CONDITIONS ANALYSIS
+  // DC 5235: Vertebral Fracture/Dislocation
+  const vertebralFractureAnalysis = useMemo(() => {
+    return analyzeVertebralFractureLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  // DC 5236: Sacroiliac Injury and Weakness
+  const sacroiliacInjuryAnalysis = useMemo(() => {
+    return analyzeSacroiliacInjuryLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  // DC 5238: Spinal Stenosis
+  const spinalStenosisAnalysis = useMemo(() => {
+    return analyzeSpinalStenosisLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  // DC 5240: Ankylosing Spondylitis
+  const ankylosingSpondylitisAnalysis = useMemo(() => {
+    return analyzeAnkylosingSpondylitisLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  // DC 5241: Spinal Fusion
+  const spinalFusionAnalysis = useMemo(() => {
+    return analyzeSpinalFusionLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  // Phase 4D: Foot Conditions
+  const weakFootAnalysis = useMemo(() => {
+    return analyzeWeakFootLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  const clawFootAnalysis = useMemo(() => {
+    return analyzeClawFootLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  const metatarsalgiaAnalysis = useMemo(() => {
+    return analyzeMetatarsalgiaLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  const halluxValgusAnalysis = useMemo(() => {
+    return analyzeHalluxValgusLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  const halluxRigidusAnalysis = useMemo(() => {
+    return analyzeHalluxRigidusLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+
 
 
   // Toggle section expansion
@@ -1172,7 +1258,23 @@ const RatingEvidence = () => {
         addisonsDiseaseAnalysis.hasData ||
         cushingsSyndromeAnalysis.hasData ||
         diabetesInsipidusAnalysis.hasData ||
-        hyperaldosteronismAnalysis.hasData
+        hyperaldosteronismAnalysis.hasData ||
+        goutAnalysis.hasData ||
+        bursitisAnalysis.hasData ||
+        tendinitisAnalysis.hasData ||
+        myositisAnalysis.hasData ||
+        osteomyelitisAnalysis.hasData ||
+        multiJointArthritisAnalysis.hasData ||
+        vertebralFractureAnalysis.hasData ||
+        sacroiliacInjuryAnalysis.hasData ||
+        spinalStenosisAnalysis.hasData ||
+        ankylosingSpondylitisAnalysis.hasData ||
+        spinalFusionAnalysis.hasData ||
+        weakFootAnalysis.hasData ||
+        clawFootAnalysis.hasData ||
+        metatarsalgiaAnalysis.hasData ||
+        halluxValgusAnalysis.hasData ||
+        halluxRigidusAnalysis.hasData
     ;
 
     return (
@@ -2290,6 +2392,100 @@ const RatingEvidence = () => {
                 analysis={hyperaldosteronismAnalysis}
                 expanded={expandedSection === 'hyperaldosteronism'}
                 onToggle={() => toggleSection('hyperaldosteronism')}
+            />
+            {/* Phase 4A: Musculoskeletal Conditions */}
+            <GoutRatingCard
+                analysis={goutAnalysis}
+                expanded={expandedSection === 'gout'}
+                onToggle={() => toggleSection('gout')}
+            />
+            <BursitisRatingCard
+                analysis={bursitisAnalysis}
+                expanded={expandedSection === 'bursitis'}
+                onToggle={() => toggleSection('bursitis')}
+            />
+            <TendinitisRatingCard
+                analysis={tendinitisAnalysis}
+                expanded={expandedSection === 'tendinitis'}
+                onToggle={() => toggleSection('tendinitis')}
+            />
+            {/* Phase 4B: Musculoskeletal Conditions - Myositis, Osteomyelitis, Multi-Joint Arthritis */}
+            <MyositisRatingCard
+                analysis={myositisAnalysis}
+                expanded={expandedSection === 'myositis'}
+                onToggle={() => toggleSection('myositis')}
+            />
+            <OsteomyelitisRatingCard
+                analysis={osteomyelitisAnalysis}
+                expanded={expandedSection === 'osteomyelitis'}
+                onToggle={() => toggleSection('osteomyelitis')}
+            />
+            <MultiJointArthritisRatingCard
+                analysis={multiJointArthritisAnalysis}
+                expanded={expandedSection === 'multi-joint-arthritis'}
+                onToggle={() => toggleSection('multi-joint-arthritis')}
+            />
+            {/* Phase 4C: Spine Conditions */}
+            <SpineConditionsRatingCard
+                analysis={vertebralFractureAnalysis}
+                diagnosticCode="5235"
+                expanded={expandedSection === 'vertebral-fracture'}
+                onToggle={() => toggleSection('vertebral-fracture')}
+            />
+            <SpineConditionsRatingCard
+                analysis={sacroiliacInjuryAnalysis}
+                diagnosticCode="5236"
+                expanded={expandedSection === 'sacroiliac-injury'}
+                onToggle={() => toggleSection('sacroiliac-injury')}
+            />
+            <SpineConditionsRatingCard
+                analysis={spinalStenosisAnalysis}
+                diagnosticCode="5238"
+                expanded={expandedSection === 'spinal-stenosis'}
+                onToggle={() => toggleSection('spinal-stenosis')}
+            />
+            <SpineConditionsRatingCard
+                analysis={ankylosingSpondylitisAnalysis}
+                diagnosticCode="5240"
+                expanded={expandedSection === 'ankylosing-spondylitis'}
+                onToggle={() => toggleSection('ankylosing-spondylitis')}
+            />
+            <SpineConditionsRatingCard
+                analysis={spinalFusionAnalysis}
+                diagnosticCode="5241"
+                expanded={expandedSection === 'spinal-fusion'}
+                onToggle={() => toggleSection('spinal-fusion')}
+            />
+            {/* Phase 4D: Foot Conditions */}
+            <FootConditionsRatingCard
+                analysis={weakFootAnalysis}
+                diagnosticCode="5277"
+                expanded={expandedSection === 'weak-foot'}
+                onToggle={() => toggleSection('weak-foot')}
+            />
+            <FootConditionsRatingCard
+                analysis={clawFootAnalysis}
+                diagnosticCode="5278"
+                expanded={expandedSection === 'claw-foot'}
+                onToggle={() => toggleSection('claw-foot')}
+            />
+            <FootConditionsRatingCard
+                analysis={metatarsalgiaAnalysis}
+                diagnosticCode="5279"
+                expanded={expandedSection === 'metatarsalgia'}
+                onToggle={() => toggleSection('metatarsalgia')}
+            />
+            <FootConditionsRatingCard
+                analysis={halluxValgusAnalysis}
+                diagnosticCode="5280"
+                expanded={expandedSection === 'hallux-valgus'}
+                onToggle={() => toggleSection('hallux-valgus')}
+            />
+            <FootConditionsRatingCard
+                analysis={halluxRigidusAnalysis}
+                diagnosticCode="5281"
+                expanded={expandedSection === 'hallux-rigidus'}
+                onToggle={() => toggleSection('hallux-rigidus')}
             />
 
 

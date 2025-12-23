@@ -933,6 +933,75 @@ const SymptomHistory = ({ onCopyLog }) => {
                                   </div>
                               )}
 
+                              {/* ============================================ */}
+                              {/* Phase 4C: Spine Condition Details Display */}
+                              {/* ============================================ */}
+                              {log.spineData && (
+                                  <div className="bg-amber-50 dark:bg-amber-900/30 rounded-lg p-3 mb-2 text-sm">
+                                    <div className="flex items-center gap-2 mb-2">
+                                      <span className="text-amber-600 dark:text-amber-400">🦴</span>
+                                      <span className="font-semibold text-amber-800 dark:text-amber-200">Spine Condition Details</span>
+                                    </div>
+                                    <div className="flex flex-wrap gap-2 mb-2">
+                                      {/* Spine Location */}
+                                      {log.spineData.spineLocation && (
+                                          <span className="px-2 py-1 bg-amber-200 dark:bg-amber-800 text-amber-800 dark:text-amber-200 rounded-full text-xs font-medium capitalize">
+                                            📍 {log.spineData.spineLocation === 'multiple' ? 'Multiple Regions' :
+                                              log.spineData.spineLocation === 'cervical' ? 'Cervical (Neck)' :
+                                                  log.spineData.spineLocation === 'thoracic' ? 'Thoracic (Mid-Back)' :
+                                                      log.spineData.spineLocation === 'lumbar' ? 'Lumbar (Low Back)' :
+                                                          log.spineData.spineLocation === 'sacral' ? 'Sacral/SI Joint' :
+                                                              log.spineData.spineLocation}
+                                          </span>
+                                      )}
+                                      {/* Fracture Type (DC 5235) */}
+                                      {log.spineData.fractureType && (
+                                          <span className="px-2 py-1 bg-red-200 dark:bg-red-900 text-red-800 dark:text-red-200 rounded-full text-xs font-medium capitalize">
+                                            💥 {log.spineData.fractureType === 'compression' ? 'Compression Fracture' :
+                                              log.spineData.fractureType === 'burst' ? 'Burst Fracture' :
+                                                  log.spineData.fractureType === 'fracture-dislocation' ? 'Fracture-Dislocation' :
+                                                      log.spineData.fractureType}
+                                          </span>
+                                      )}
+                                      {/* Fusion Levels (DC 5241) */}
+                                      {log.spineData.fusionLevels && (
+                                          <span className="px-2 py-1 bg-purple-200 dark:bg-purple-900 text-purple-800 dark:text-purple-200 rounded-full text-xs font-medium">
+                                            🔧 Fusion: {log.spineData.fusionLevels === 'single-level' ? 'Single Level' :
+                                              log.spineData.fusionLevels === 'two-level' ? 'Two Levels' :
+                                                  log.spineData.fusionLevels === 'multi-level' ? 'Multi-Level (3+)' :
+                                                      log.spineData.fusionLevels}
+                                          </span>
+                                      )}
+                                      {/* Neurogenic Claudication (DC 5238) */}
+                                      {log.spineData.neurogenicClaudication && (
+                                          <span className="px-2 py-1 bg-blue-200 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-xs font-medium">
+                                            🚶 Neurogenic Claudication
+                                          </span>
+                                      )}
+                                      {/* Morning Stiffness Duration (DC 5240) */}
+                                      {log.spineData.morningStiffnessDuration && (
+                                          <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                                              log.spineData.morningStiffnessDuration === 'less-than-30'
+                                                  ? 'bg-green-200 dark:bg-green-900 text-green-800 dark:text-green-200'
+                                                  : 'bg-orange-200 dark:bg-orange-900 text-orange-800 dark:text-orange-200'
+                                          }`}>
+                                            🌅 AM Stiffness: {
+                                            log.spineData.morningStiffnessDuration === 'less-than-30' ? '<30 min' :
+                                                log.spineData.morningStiffnessDuration === '30-60' ? '30-60 min' :
+                                                    log.spineData.morningStiffnessDuration === '1-2-hours' ? '1-2 hours' :
+                                                        log.spineData.morningStiffnessDuration === 'more-than-2-hours' ? '>2 hours' :
+                                                            log.spineData.morningStiffnessDuration === 'all-day' ? 'All day' :
+                                                                log.spineData.morningStiffnessDuration
+                                          }
+                                            {log.spineData.morningStiffnessDuration !== 'less-than-30' && (
+                                                <span className="ml-1 text-orange-600 dark:text-orange-300" title="Inflammatory indicator">⚠️</span>
+                                            )}
+                                          </span>
+                                      )}
+                                    </div>
+                                  </div>
+                              )}
+
                               {/* Pain Details */}
                               {log.painData && (
                                   <div className="bg-rose-50 dark:bg-rose-900/30 rounded-lg p-3 mb-2 text-sm">

@@ -243,6 +243,106 @@ export const CONDITIONS = {
     cfrReference: '38 CFR 4.71a',
     symptomIds: ['arthritis-joint-pain', 'arthritis-morning-stiffness', 'arthritis-flare', 'arthritis-reduced-function', 'arthritis-swelling', 'arthritis-crepitus'],
   },
+  // ============================================
+  // PHASE 4A: GOUT (DC 5017)
+  // ============================================
+  GOUT: {
+    id: 'gout',
+    name: 'Gout',
+    diagnosticCode: '5017',
+    cfrReference: '38 CFR 4.71a',
+    symptomIds: ['gout-acute-attack', 'gout-joint-pain', 'gout-swelling', 'gout-redness', 'gout-limited-motion', 'gout-tophi', 'gout-tenderness', 'gout-functional-loss'],
+  },
+  // ============================================
+  // PHASE 4A: BURSITIS (DC 5019)
+  // ============================================
+  BURSITIS: {
+    id: 'bursitis',
+    name: 'Bursitis',
+    diagnosticCode: '5019',
+    cfrReference: '38 CFR 4.71a',
+    symptomIds: ['bursitis-pain', 'bursitis-swelling', 'bursitis-tenderness', 'bursitis-limited-motion', 'bursitis-stiffness', 'bursitis-warmth', 'bursitis-flare', 'bursitis-functional-loss'],
+  },
+  // ============================================
+  // PHASE 4A: TENDINITIS/TENOSYNOVITIS (DC 5024)
+  // ============================================
+  TENDINITIS: {
+    id: 'tendinitis',
+    name: 'Tendinitis/Tenosynovitis',
+    diagnosticCode: '5024',
+    cfrReference: '38 CFR 4.71a',
+    symptomIds: ['tendinitis-pain', 'tendinitis-swelling', 'tendinitis-tenderness', 'tendinitis-limited-motion', 'tendinitis-stiffness', 'tendinitis-crepitus', 'tendinitis-weakness', 'tendinitis-flare', 'tendinitis-functional-loss'],
+  },
+  // ============================================
+  // PHASE 4B: MYOSITIS (DC 5021)
+  // ============================================
+  MYOSITIS: {
+    id: 'myositis',
+    name: 'Myositis',
+    diagnosticCode: '5021',
+    cfrReference: '38 CFR 4.71a',
+    symptomIds: ['myositis-muscle-pain', 'myositis-weakness', 'myositis-tenderness', 'myositis-swelling', 'myositis-stiffness', 'myositis-fatigue', 'myositis-limited-motion', 'myositis-flare', 'myositis-functional-loss'],
+  },
+  // ============================================
+  // PHASE 4B: OSTEOMYELITIS (DC 5000)
+  // ============================================
+  OSTEOMYELITIS: {
+    id: 'osteomyelitis',
+    name: 'Osteomyelitis',
+    diagnosticCode: '5000',
+    cfrReference: '38 CFR 4.71a',
+    symptomIds: ['osteo-bone-pain', 'osteo-fever', 'osteo-swelling', 'osteo-redness', 'osteo-drainage', 'osteo-fatigue', 'osteo-weight-loss', 'osteo-limited-motion', 'osteo-flare', 'osteo-constitutional'],
+  },
+  // ============================================
+  // PHASE 4B: MULTI-JOINT ARTHRITIS (DC 5002)
+  // ============================================
+  MULTI_JOINT_ARTHRITIS: {
+    id: 'multi-joint-arthritis',
+    name: 'Multi-Joint Arthritis (Active Process)',
+    diagnosticCode: '5002',
+    cfrReference: '38 CFR 4.71a',
+    symptomIds: ['mja-joint-pain', 'mja-joint-swelling', 'mja-morning-stiffness', 'mja-fatigue', 'mja-weight-loss', 'mja-anemia', 'mja-fever', 'mja-flare', 'mja-incapacitating', 'mja-functional-loss', 'mja-limited-motion'],
+  },
+  // ============================================
+  // PHASE 4C: SPINE EXPANSION
+  // DC 5235, 5236, 5238, 5240, 5241
+  // All rated under General Rating Formula for Diseases and Injuries of the Spine
+  // ============================================
+  VERTEBRAL_FRACTURE: {
+    id: 'vertebral-fracture',
+    name: 'Vertebral Fracture or Dislocation',
+    diagnosticCode: '5235',
+    cfrReference: '38 CFR 4.71a',
+    symptomIds: ['vfx-pain', 'vfx-limited-flexion', 'vfx-limited-extension', 'vfx-stiffness', 'vfx-muscle-spasm', 'vfx-radicular', 'vfx-numbness', 'vfx-height-loss', 'vfx-kyphosis', 'vfx-functional-loss'],
+  },
+  SACROILIAC_INJURY: {
+    id: 'sacroiliac-injury',
+    name: 'Sacroiliac Injury and Weakness',
+    diagnosticCode: '5236',
+    cfrReference: '38 CFR 4.71a',
+    symptomIds: ['si-pain', 'si-buttock-pain', 'si-hip-pain', 'si-groin-pain', 'si-leg-pain', 'si-stiffness', 'si-instability', 'si-difficulty-sitting', 'si-difficulty-standing', 'si-difficulty-walking', 'si-limited-flexion', 'si-functional-loss'],
+  },
+  SPINAL_STENOSIS: {
+    id: 'spinal-stenosis',
+    name: 'Spinal Stenosis',
+    diagnosticCode: '5238',
+    cfrReference: '38 CFR 4.71a',
+    symptomIds: ['ss-back-pain', 'ss-leg-pain', 'ss-leg-weakness', 'ss-numbness', 'ss-walking-difficulty', 'ss-relief-sitting', 'ss-balance-problems', 'ss-limited-flexion', 'ss-limited-extension', 'ss-bladder-bowel', 'ss-functional-loss'],
+  },
+  ANKYLOSING_SPONDYLITIS: {
+    id: 'ankylosing-spondylitis',
+    name: 'Ankylosing Spondylitis',
+    diagnosticCode: '5240',
+    cfrReference: '38 CFR 4.71a',
+    symptomIds: ['as-back-pain', 'as-morning-stiffness', 'as-night-pain', 'as-limited-flexion', 'as-limited-extension', 'as-limited-lateral', 'as-chest-expansion', 'as-fatigue', 'as-peripheral-joint', 'as-enthesitis', 'as-flare', 'as-fusion', 'as-functional-loss'],
+  },
+  SPINAL_FUSION: {
+    id: 'spinal-fusion',
+    name: 'Spinal Fusion',
+    diagnosticCode: '5241',
+    cfrReference: '38 CFR 4.71a',
+    symptomIds: ['sf-pain', 'sf-adjacent-pain', 'sf-stiffness', 'sf-limited-flexion', 'sf-limited-extension', 'sf-limited-rotation', 'sf-muscle-spasm', 'sf-radicular', 'sf-numbness', 'sf-hardware-pain', 'sf-functional-loss'],
+  },
   ASTHMA: {
     id: 'asthma',
     name: 'Bronchial Asthma',
@@ -1932,6 +2032,80 @@ export const CONDITIONS = {
       'iin-groin-pain', 'iin-burning', 'iin-hypersensitivity', 'iin-pain-movement'
     ]
   },
+  // ============================================
+  // PHASE 4D: FOOT CONDITIONS
+  // ============================================
+
+  // Weak Foot - DC 5277
+  WEAK_FOOT: {
+    id: 'weak-foot',
+    name: 'Weak Foot (Bilateral)',
+    diagnosticCode: '5277',
+    cfrReference: '38 CFR 4.71a',
+    description: 'Symptomatic condition secondary to constitutional conditions, characterized by atrophy of musculature, disturbed circulation, and weakness',
+    symptomIds: [
+      'wf-muscle-atrophy', 'wf-weakness', 'wf-circulation-problems', 'wf-numbness',
+      'wf-fatigue', 'wf-instability', 'wf-balance-difficulty', 'wf-gait-changes',
+      'wf-cramping', 'wf-functional-loss'
+    ],
+  },
+
+  // Claw Foot (Pes Cavus) - DC 5278
+  CLAW_FOOT: {
+    id: 'claw-foot',
+    name: 'Claw Foot (Pes Cavus)',
+    diagnosticCode: '5278',
+    cfrReference: '38 CFR 4.71a',
+    description: 'Acquired foot deformity with high arch, hammer toes, and structural abnormalities',
+    symptomIds: [
+      'cf-high-arch', 'cf-hammer-toes', 'cf-toe-dorsiflexion', 'cf-plantar-fascia',
+      'cf-dropped-forefoot', 'cf-callosities', 'cf-metatarsal-tenderness', 'cf-varus-deformity',
+      'cf-ankle-dorsiflexion-limited', 'cf-shoe-fitting', 'cf-instability', 'cf-functional-loss'
+    ],
+  },
+
+  // Metatarsalgia (Morton's Disease) - DC 5279
+  METATARSALGIA: {
+    id: 'metatarsalgia',
+    name: "Metatarsalgia (Morton's Disease)",
+    diagnosticCode: '5279',
+    cfrReference: '38 CFR 4.71a',
+    description: 'Anterior metatarsalgia with pain in ball of foot, often including Morton neuroma',
+    symptomIds: [
+      'mt-ball-foot-pain', 'mt-numbness-toes', 'mt-burning', 'mt-shooting-pain',
+      'mt-walking-pain', 'mt-standing-pain', 'mt-pebble-feeling', 'mt-relief-rest',
+      'mt-swelling', 'mt-functional-loss'
+    ],
+  },
+
+  // Hallux Valgus (Bunion) - DC 5280
+  HALLUX_VALGUS: {
+    id: 'hallux-valgus',
+    name: 'Hallux Valgus (Bunion)',
+    diagnosticCode: '5280',
+    cfrReference: '38 CFR 4.71a',
+    description: 'Big toe angling toward other toes with bunion deformity at MTP joint',
+    symptomIds: [
+      'hv-bunion-pain', 'hv-deformity', 'hv-redness', 'hv-callus',
+      'hv-shoe-pain', 'hv-limited-motion', 'hv-progressive', 'hv-second-toe',
+      'hv-post-surgical', 'hv-functional-loss'
+    ],
+  },
+
+  // Hallux Rigidus - DC 5281
+  HALLUX_RIGIDUS: {
+    id: 'hallux-rigidus',
+    name: 'Hallux Rigidus',
+    diagnosticCode: '5281',
+    cfrReference: '38 CFR 4.71a',
+    description: 'Stiffness and limited motion of big toe joint (MTP arthritis)',
+    symptomIds: [
+      'hr-toe-stiffness', 'hr-toe-pain', 'hr-limited-motion', 'hr-bone-spur',
+      'hr-walking-pain', 'hr-swelling', 'hr-grinding', 'hr-cold-weather',
+      'hr-shoe-difficulty', 'hr-functional-loss'
+    ],
+  },
+
 
 
 };
@@ -5625,6 +5799,1182 @@ export const DEGENERATIVE_ARTHRITIS_CRITERIA = {
   },
 
   disclaimer: 'This analysis is based on logged arthritis symptoms. Degenerative arthritis is primarily rated on limitation of motion of specific joints. When ROM limitation is noncompensable, X-ray evidence can support 10-20% ratings. Always document which joints are affected.',
+};
+
+// ============================================
+// PHASE 4A: GOUT RATING CRITERIA (DC 5017)
+// Per 38 CFR 4.71a Note to DCs 5013-5024: Rated as degenerative arthritis
+// ============================================
+
+export const GOUT_CRITERIA = {
+  diagnosticCode: '5017',
+  condition: 'Gout',
+  cfrReference: '38 CFR 4.71a, Diagnostic Code 5017',
+
+  ratingNote: 'Per 38 CFR 4.71a Note to DCs 5013-5024: Gout is evaluated as degenerative arthritis, based on limitation of motion of affected parts. Gout differs from typical arthritis by having acute inflammatory attacks with periods of remission.',
+
+  ratings: [
+    {
+      percent: 20,
+      summary: 'X-ray evidence in 2+ joints with occasional incapacitating exacerbations (acute gout attacks)',
+      criteriaDescription: [
+        'Multiple joints affected by gout',
+        'X-ray evidence showing gouty changes or tophi',
+        'Occasional incapacitating exacerbations (acute gout attacks)',
+        'When limitation of motion during attacks is noncompensable',
+      ],
+      evidenceNeeded: [
+        'X-rays showing gouty changes (tophi, erosions)',
+        'Document acute gout attacks (frequency, duration, severity)',
+        'Track which joints are affected during each attack',
+        'Medical records showing elevated uric acid levels',
+        'Document flare-ups that limit work or daily activities',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'X-ray evidence in 2+ joints without incapacitating exacerbations',
+      criteriaDescription: [
+        'Multiple joints affected by gout',
+        'X-ray evidence of gouty involvement',
+        'Without incapacitating exacerbations',
+        'Controlled with medication',
+      ],
+      evidenceNeeded: [
+        'X-rays showing gouty changes',
+        'Document gout attack history',
+        'Uric acid lab values',
+        'Medication records (colchicine, allopurinol, etc.)',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Single major joint with limitation of motion and gout diagnosis',
+      criteriaDescription: [
+        'Single joint (commonly big toe, ankle, or knee) affected',
+        'Limitation of motion present but noncompensable',
+        'Confirmed gout diagnosis',
+      ],
+      evidenceNeeded: [
+        'Joint aspiration showing urate crystals (gold standard)',
+        'Elevated serum uric acid levels',
+        'Document attacks and recovery time',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'If significant ROM limitation, rate under specific joint code',
+      criteriaDescription: [
+        'When limitation of motion is compensable',
+        'Rate under the specific joint diagnostic code',
+        'E.g., ankle (5271), knee (5260-5261), etc.',
+      ],
+      evidenceNeeded: [
+        'Track symptoms under specific affected joint condition',
+      ],
+    },
+  ],
+
+  definitions: {
+    acuteGoutAttack: {
+      term: 'Acute Gout Attack',
+      definition: 'Sudden onset of severe joint pain, swelling, redness, and warmth, typically reaching peak intensity within 12-24 hours. Most commonly affects the first metatarsophalangeal joint (big toe).',
+      examples: [
+        'Big toe attack (podagra)',
+        'Ankle flare with severe swelling',
+        'Knee attack preventing walking',
+        'Wrist attack limiting hand function',
+      ],
+    },
+    tophi: {
+      term: 'Tophi',
+      definition: 'Deposits of monosodium urate crystals that form lumps under the skin, typically in chronic gout. Can cause joint damage and deformity.',
+    },
+    hyperuricemia: {
+      term: 'Hyperuricemia',
+      definition: 'Elevated uric acid levels in the blood (typically >6.8 mg/dL), which predisposes to gout attacks.',
+    },
+    incapacitatingExacerbation: {
+      term: 'Incapacitating Exacerbation',
+      definition: 'Acute gout attack severe enough to prevent normal activity, require bed rest, or seek medical treatment.',
+    },
+  },
+
+  disclaimer: 'Gout is rated under DC 5017 as degenerative arthritis per 38 CFR 4.71a. Acute attacks should be documented with date, affected joint(s), duration, and severity. Lab values (uric acid) and imaging strengthen claims.',
+};
+
+// ============================================
+// PHASE 4A: BURSITIS RATING CRITERIA (DC 5019)
+// Per 38 CFR 4.71a Note to DCs 5013-5024: Rated as degenerative arthritis
+// ============================================
+
+export const BURSITIS_CRITERIA = {
+  diagnosticCode: '5019',
+  condition: 'Bursitis',
+  cfrReference: '38 CFR 4.71a, Diagnostic Code 5019',
+
+  ratingNote: 'Per 38 CFR 4.71a Note to DCs 5013-5024: Bursitis is evaluated as degenerative arthritis, based on limitation of motion of affected parts. Common locations include shoulder (subacromial), elbow (olecranon), hip (trochanteric), knee (prepatellar, infrapatellar), and ankle.',
+
+  ratings: [
+    {
+      percent: 20,
+      summary: 'X-ray/imaging evidence in 2+ joints with occasional incapacitating exacerbations',
+      criteriaDescription: [
+        'Multiple joints affected by bursitis',
+        'Imaging evidence showing bursitis (ultrasound, MRI)',
+        'Occasional incapacitating exacerbations',
+        'When limitation of motion is noncompensable',
+      ],
+      evidenceNeeded: [
+        'Imaging (ultrasound/MRI) showing bursitis',
+        'Document flare-ups that limit work or daily activities',
+        'Track which joints/bursae are affected',
+        'Medical records showing steroid injections or aspiration',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Imaging evidence in 2+ joints without incapacitating exacerbations',
+      criteriaDescription: [
+        'Multiple joints affected by bursitis',
+        'Imaging evidence of bursitis',
+        'Without incapacitating exacerbations',
+        'Chronic but manageable symptoms',
+      ],
+      evidenceNeeded: [
+        'Imaging showing bursitis in multiple locations',
+        'Document pain patterns and triggers',
+        'Physical therapy records',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Single major joint with limitation of motion and bursitis diagnosis',
+      criteriaDescription: [
+        'Single joint affected (shoulder, hip, knee, elbow, ankle)',
+        'Limitation of motion present but noncompensable',
+        'Confirmed bursitis diagnosis',
+      ],
+      evidenceNeeded: [
+        'Physical exam findings (tenderness over bursa)',
+        'Imaging showing fluid in bursa',
+        'Document functional limitations',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'If significant ROM limitation, rate under specific joint code',
+      criteriaDescription: [
+        'When limitation of motion is compensable',
+        'Rate under the specific joint diagnostic code',
+        'E.g., shoulder (5201), hip (5251-5253), knee (5260-5261)',
+      ],
+      evidenceNeeded: [
+        'Track symptoms under specific affected joint condition',
+      ],
+    },
+  ],
+
+  definitions: {
+    bursa: {
+      term: 'Bursa',
+      definition: 'Small fluid-filled sacs that cushion bones, tendons, and muscles near joints. When inflamed, they cause pain and limit motion.',
+    },
+    commonBursitisLocations: {
+      term: 'Common Bursitis Locations',
+      definition: 'Shoulder (subacromial/subdeltoid), elbow (olecranon), hip (trochanteric, iliopsoas), knee (prepatellar, infrapatellar, pes anserine), ankle (retrocalcaneal).',
+    },
+    incapacitatingExacerbation: {
+      term: 'Incapacitating Exacerbation',
+      definition: 'Bursitis flare-up severe enough to prevent normal activity, require rest, or seek medical treatment.',
+    },
+  },
+
+  disclaimer: 'Bursitis is rated under DC 5019 as degenerative arthritis per 38 CFR 4.71a. Document which bursa/joint is affected, pain location, and functional limitations. Imaging (ultrasound/MRI) and injection records strengthen claims.',
+};
+
+// ============================================
+// PHASE 4A: TENDINITIS/TENOSYNOVITIS RATING CRITERIA (DC 5024)
+// Per 38 CFR 4.71a Note to DCs 5013-5024: Rated as degenerative arthritis
+// ============================================
+
+export const TENDINITIS_CRITERIA = {
+  diagnosticCode: '5024',
+  condition: 'Tendinitis/Tenosynovitis',
+  cfrReference: '38 CFR 4.71a, Diagnostic Code 5024',
+
+  ratingNote: 'Per 38 CFR 4.71a Note to DCs 5013-5024: Tendinitis, tenosynovitis, tendinosis, and tendinopathy are evaluated as degenerative arthritis, based on limitation of motion of affected parts. Common types include rotator cuff tendinitis, tennis elbow (lateral epicondylitis), golfer\'s elbow (medial epicondylitis), patellar tendinitis, and Achilles tendinitis.',
+
+  ratings: [
+    {
+      percent: 20,
+      summary: 'Imaging evidence in 2+ tendons/joints with occasional incapacitating exacerbations',
+      criteriaDescription: [
+        'Multiple tendons affected by tendinitis',
+        'Imaging evidence showing tendon pathology (ultrasound, MRI)',
+        'Occasional incapacitating exacerbations',
+        'When limitation of motion is noncompensable',
+      ],
+      evidenceNeeded: [
+        'Imaging (ultrasound/MRI) showing tendinitis, tendinosis, or tears',
+        'Document flare-ups that limit work or daily activities',
+        'Track which tendons are affected',
+        'Medical records showing steroid injections or other treatments',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Imaging evidence in 2+ tendons/joints without incapacitating exacerbations',
+      criteriaDescription: [
+        'Multiple tendons affected by tendinitis',
+        'Imaging evidence of tendon pathology',
+        'Without incapacitating exacerbations',
+        'Chronic but manageable symptoms',
+      ],
+      evidenceNeeded: [
+        'Imaging showing tendinitis in multiple locations',
+        'Document pain patterns and aggravating activities',
+        'Physical therapy records',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Single major tendon with limitation of motion and tendinitis diagnosis',
+      criteriaDescription: [
+        'Single tendon/joint affected (shoulder, elbow, wrist, knee, ankle)',
+        'Limitation of motion present but noncompensable',
+        'Confirmed tendinitis diagnosis',
+      ],
+      evidenceNeeded: [
+        'Physical exam findings (tenderness along tendon)',
+        'Imaging showing tendon pathology',
+        'Document functional limitations',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'If significant ROM limitation, rate under specific joint code',
+      criteriaDescription: [
+        'When limitation of motion is compensable',
+        'Rate under the specific joint diagnostic code',
+        'E.g., shoulder (5201), elbow (5206-5207), wrist (5215)',
+      ],
+      evidenceNeeded: [
+        'Track symptoms under specific affected joint condition',
+      ],
+    },
+  ],
+
+  definitions: {
+    tendinitis: {
+      term: 'Tendinitis',
+      definition: 'Inflammation of a tendon, typically from overuse. Causes pain, tenderness, and mild swelling near a joint.',
+    },
+    tenosynovitis: {
+      term: 'Tenosynovitis',
+      definition: 'Inflammation of the tendon sheath (synovium surrounding the tendon). Common in wrists and fingers (De Quervain\'s tenosynovitis).',
+    },
+    tendinosis: {
+      term: 'Tendinosis',
+      definition: 'Chronic tendon degeneration without significant inflammation. Often results from long-term overuse or aging.',
+    },
+    commonTypes: {
+      term: 'Common Types',
+      definition: 'Rotator cuff tendinitis (shoulder), lateral epicondylitis (tennis elbow), medial epicondylitis (golfer\'s elbow), patellar tendinitis (jumper\'s knee), Achilles tendinitis.',
+    },
+    incapacitatingExacerbation: {
+      term: 'Incapacitating Exacerbation',
+      definition: 'Tendinitis flare-up severe enough to prevent normal activity, require rest, or seek medical treatment.',
+    },
+  },
+
+  disclaimer: 'Tendinitis/tenosynovitis is rated under DC 5024 as degenerative arthritis per 38 CFR 4.71a. Document which tendon is affected, pain location, aggravating activities, and functional limitations. Imaging and treatment records strengthen claims.',
+};
+
+// ============================================
+// PHASE 4B: MYOSITIS RATING CRITERIA (DC 5021)
+// Per 38 CFR 4.71a Note to DCs 5013-5024: Rated as degenerative arthritis
+// ============================================
+
+export const MYOSITIS_CRITERIA = {
+  diagnosticCode: '5021',
+  condition: 'Myositis',
+  cfrReference: '38 CFR 4.71a, Diagnostic Code 5021',
+
+  ratingNote: 'Per 38 CFR 4.71a Note to DCs 5013-5024: Myositis is evaluated as degenerative arthritis, based on limitation of motion of affected parts. Myositis includes inflammatory conditions affecting skeletal muscles such as polymyositis, dermatomyositis, and inclusion body myositis.',
+
+  ratings: [
+    {
+      percent: 20,
+      summary: 'Multiple muscle groups affected with occasional incapacitating exacerbations',
+      criteriaDescription: [
+        'Multiple muscle groups affected by myositis',
+        'Documented muscle inflammation on biopsy or imaging',
+        'Occasional incapacitating exacerbations',
+        'When limitation of motion is noncompensable',
+      ],
+      evidenceNeeded: [
+        'Muscle biopsy showing inflammatory changes',
+        'MRI showing muscle inflammation/edema',
+        'Elevated muscle enzymes (CK, aldolase)',
+        'Document flare-ups that limit work or daily activities',
+        'Track which muscle groups are affected',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Multiple muscle groups affected without incapacitating exacerbations',
+      criteriaDescription: [
+        'Multiple muscle groups affected',
+        'Documented myositis diagnosis',
+        'Without incapacitating exacerbations',
+        'Chronic but manageable symptoms',
+      ],
+      evidenceNeeded: [
+        'Medical records confirming myositis diagnosis',
+        'Lab values showing muscle involvement',
+        'Document muscle pain and weakness patterns',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Single muscle group with limitation of motion',
+      criteriaDescription: [
+        'Single muscle group affected',
+        'Limitation of motion present but noncompensable',
+        'Confirmed myositis diagnosis',
+      ],
+      evidenceNeeded: [
+        'Documented diagnosis',
+        'Track functional limitations',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'If significant limitation, rate under specific joint/muscle code',
+      criteriaDescription: [
+        'When limitation of motion is compensable',
+        'Rate under the specific affected area diagnostic code',
+      ],
+      evidenceNeeded: [
+        'Track symptoms under specific affected area',
+      ],
+    },
+  ],
+
+  definitions: {
+    myositis: {
+      term: 'Myositis',
+      definition: 'Inflammation of skeletal muscles causing weakness, pain, and fatigue. Types include polymyositis (proximal muscle weakness), dermatomyositis (with skin rash), and inclusion body myositis.',
+    },
+    muscleEnzymes: {
+      term: 'Muscle Enzymes',
+      definition: 'Blood tests (CK, aldolase, AST, ALT, LDH) that indicate muscle damage when elevated.',
+    },
+    incapacitatingExacerbation: {
+      term: 'Incapacitating Exacerbation',
+      definition: 'Myositis flare-up severe enough to prevent normal activity, require rest, or seek medical treatment.',
+    },
+  },
+
+  disclaimer: 'Myositis (DC 5021) is rated as degenerative arthritis per 38 CFR 4.71a. Lab values (muscle enzymes), biopsy, and imaging strengthen claims. Document muscle groups affected and functional limitations.',
+};
+
+// ============================================
+// PHASE 4B: OSTEOMYELITIS RATING CRITERIA (DC 5000)
+// Has its own unique rating schedule
+// ============================================
+
+export const OSTEOMYELITIS_CRITERIA = {
+  diagnosticCode: '5000',
+  condition: 'Osteomyelitis',
+  cfrReference: '38 CFR 4.71a, Diagnostic Code 5000',
+
+  ratingNote: 'Osteomyelitis has its own unique rating schedule based on severity, location, and activity status. A rating will NOT be applied following cure by removal or radical resection of the affected bone.',
+
+  ratings: [
+    {
+      percent: 100,
+      summary: 'Pelvis/vertebrae, major joints, multiple sites, or long history with constitutional symptoms',
+      criteriaDescription: [
+        'Osteomyelitis of pelvis or vertebrae',
+        'Extending into major joints',
+        'Multiple localization (multiple bones affected)',
+        'Long history of intractability and debility',
+        'Anemia, amyloid liver changes, or other continuous constitutional symptoms',
+      ],
+      evidenceNeeded: [
+        'Imaging showing bone involvement (X-ray, MRI, CT, bone scan)',
+        'Lab values showing chronic infection markers',
+        'Documentation of affected bones/joints',
+        'Medical records showing long treatment history',
+        'Evidence of constitutional symptoms (anemia, liver changes)',
+      ],
+    },
+    {
+      percent: 60,
+      summary: 'Frequent episodes with constitutional symptoms',
+      criteriaDescription: [
+        'Frequent recurrent episodes of active osteomyelitis',
+        'Constitutional symptoms present (fever, fatigue, weight loss)',
+        'Requiring repeated antibiotic courses',
+      ],
+      evidenceNeeded: [
+        'Documentation of multiple infection episodes',
+        'Lab values during active infection',
+        'Antibiotic treatment records',
+        'Constitutional symptom documentation',
+      ],
+    },
+    {
+      percent: 30,
+      summary: 'Definite involucrum or sequestrum, with or without discharging sinus',
+      criteriaDescription: [
+        'Imaging showing involucrum (new bone formation around dead bone)',
+        'Imaging showing sequestrum (dead bone fragment)',
+        'May have discharging sinus or may not',
+      ],
+      evidenceNeeded: [
+        'Imaging showing involucrum or sequestrum',
+        'Surgical or medical records',
+        'Document any wound drainage',
+      ],
+    },
+    {
+      percent: 20,
+      summary: 'Discharging sinus or active infection evidence within past 5 years',
+      criteriaDescription: [
+        'Discharging sinus present',
+        'OR other evidence of active infection within the past 5 years',
+        'History of recurrent osteomyelitis required',
+      ],
+      evidenceNeeded: [
+        'Wound/sinus documentation with photos if possible',
+        'Culture results showing infection',
+        'Treatment records within past 5 years',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Inactive, following repeated episodes, no active infection in past 5 years',
+      criteriaDescription: [
+        'History of osteomyelitis with repeated episodes',
+        'Currently inactive',
+        'No evidence of active infection in past 5 years',
+        'Requires 2 or more episodes following initial infection',
+      ],
+      evidenceNeeded: [
+        'Documentation of past episodes (at least 2)',
+        'Current imaging showing inactive disease',
+        'Lab values showing no active infection',
+      ],
+    },
+  ],
+
+  definitions: {
+    involucrum: {
+      term: 'Involucrum',
+      definition: 'New bone formation that surrounds dead bone (sequestrum) in chronic osteomyelitis. Seen on imaging as a shell of new bone.',
+    },
+    sequestrum: {
+      term: 'Sequestrum',
+      definition: 'A piece of dead bone that has separated from healthy bone during osteomyelitis. Often requires surgical removal.',
+    },
+    dischargingSinus: {
+      term: 'Discharging Sinus',
+      definition: 'An abnormal channel (tract) that drains pus from the infected bone to the skin surface.',
+    },
+    constitutionalSymptoms: {
+      term: 'Constitutional Symptoms',
+      definition: 'Systemic symptoms affecting the whole body: fever, fatigue, weight loss, night sweats, anemia.',
+    },
+  },
+
+  disclaimer: 'Osteomyelitis (DC 5000) has its own rating schedule. Document infection episodes, imaging findings, and any draining wounds. A rating will NOT be applied following cure by removal or resection of affected bone.',
+};
+
+// ============================================
+// PHASE 4B: MULTI-JOINT ARTHRITIS RATING CRITERIA (DC 5002)
+// Active process rating schedule
+// ============================================
+
+export const MULTI_JOINT_ARTHRITIS_CRITERIA = {
+  diagnosticCode: '5002',
+  condition: 'Multi-Joint Arthritis (Active Process)',
+  cfrReference: '38 CFR 4.71a, Diagnostic Code 5002',
+
+  ratingNote: 'DC 5002 rates multi-joint arthritis as an ACTIVE inflammatory process (rheumatoid arthritis, psoriatic arthritis, spondyloarthropathies). For CHRONIC RESIDUALS after the active process resolves, rate under DC 5003 (degenerative arthritis). Cannot combine active process rating with residual ratings - use the higher evaluation.',
+
+  ratings: [
+    {
+      percent: 100,
+      summary: 'Constitutional manifestations with active joint involvement, totally incapacitating',
+      criteriaDescription: [
+        'Constitutional manifestations (fever, weight loss, anemia) present',
+        'Active joint involvement in multiple joints',
+        'Condition is totally incapacitating',
+        'Unable to perform daily activities or work',
+      ],
+      evidenceNeeded: [
+        'Rheumatology records showing active disease',
+        'Lab values (ESR, CRP, RF, anti-CCP) showing inflammation',
+        'Documentation of constitutional symptoms',
+        'Functional assessment showing total incapacity',
+        'Imaging showing active joint destruction',
+      ],
+    },
+    {
+      percent: 60,
+      summary: 'Weight loss AND anemia with severe health impairment, OR 4+ severely incapacitating exacerbations/year',
+      criteriaDescription: [
+        'Less than totally incapacitating but with:',
+        'Weight loss AND anemia productive of severe impairment of health',
+        'OR severely incapacitating exacerbations occurring 4 or more times per year',
+        'OR a lesser number of exacerbations over prolonged periods',
+      ],
+      evidenceNeeded: [
+        'Lab values showing anemia',
+        'Weight records showing loss',
+        'Document exacerbations requiring bed rest or unable to work',
+        'Medical visits for flare-ups',
+      ],
+    },
+    {
+      percent: 40,
+      summary: 'Definite health impairment with exam findings, OR 3+ incapacitating exacerbations/year',
+      criteriaDescription: [
+        'Symptom combinations productive of definite impairment of health',
+        'Objectively supported by examination findings',
+        'OR incapacitating exacerbations occurring 3 or more times per year',
+      ],
+      evidenceNeeded: [
+        'Examination findings documenting joint involvement',
+        'Lab markers of inflammation',
+        'Document 3+ incapacitating exacerbations per year',
+      ],
+    },
+    {
+      percent: 20,
+      summary: 'One or two exacerbations per year in a well-established diagnosis',
+      criteriaDescription: [
+        'Well-established diagnosis of inflammatory arthritis',
+        'One or two exacerbations per year',
+        'Managed with medication between flares',
+      ],
+      evidenceNeeded: [
+        'Confirmed diagnosis (rheumatoid, psoriatic, etc.)',
+        'Document exacerbation episodes',
+        'Treatment records',
+      ],
+    },
+  ],
+
+  definitions: {
+    activeProcess: {
+      term: 'Active Process',
+      definition: 'Ongoing inflammatory disease activity with elevated markers (ESR, CRP), joint swelling, warmth, and systemic symptoms. Distinguished from chronic residuals.',
+    },
+    constitutionalManifestations: {
+      term: 'Constitutional Manifestations',
+      definition: 'Systemic symptoms: fever, fatigue, weight loss, anemia, malaise that accompany active inflammatory arthritis.',
+    },
+    incapacitatingExacerbation: {
+      term: 'Incapacitating Exacerbation',
+      definition: 'Severe flare-up that prevents normal activity and requires medical treatment. Document inability to work or perform daily activities.',
+    },
+    chronicResiduals: {
+      term: 'Chronic Residuals',
+      definition: 'After the active inflammatory process resolves, any remaining joint damage (deformity, limited motion) is rated under DC 5003 as degenerative arthritis.',
+    },
+    examplesOfConditions: {
+      term: 'Conditions Rated Under DC 5002',
+      definition: 'Rheumatoid arthritis, psoriatic arthritis, spondyloarthropathies (ankylosing spondylitis, reactive arthritis), and other inflammatory multi-joint conditions.',
+    },
+  },
+
+  disclaimer: 'Multi-joint arthritis (DC 5002) rates the ACTIVE inflammatory process. For chronic residuals after inflammation resolves, rate under DC 5003. Cannot combine active process ratings with residual ratings - assign the higher evaluation.',
+};
+
+
+// ============================================
+// PHASE 4D: FOOT CONDITION RATING CRITERIA
+// ============================================
+
+// WEAK FOOT RATING CRITERIA (DC 5277)
+export const WEAK_FOOT_CRITERIA = {
+  diagnosticCode: '5277',
+  condition: 'Weak Foot (Bilateral)',
+  cfrReference: '38 CFR 4.71a, Diagnostic Code 5277',
+
+  ratingNote: 'DC 5277 rates bilateral weak foot as a symptomatic condition secondary to many constitutional conditions. The underlying condition should also be rated. Minimum rating is 10%.',
+
+  ratings: [
+    {
+      percent: 10,
+      summary: 'Symptomatic bilateral weak foot with atrophy, disturbed circulation, and weakness',
+      criteriaDescription: [
+        'Bilateral (both feet) involvement required',
+        'Symptomatic condition secondary to constitutional conditions',
+        'Characterized by atrophy of the musculature',
+        'Disturbed circulation',
+        'Weakness affecting foot function',
+      ],
+      evidenceNeeded: [
+        'Documentation of bilateral foot weakness',
+        'Evidence of muscle atrophy on examination',
+        'Circulation problems (cold feet, color changes)',
+        'Underlying condition causing weak feet',
+        'Functional limitations from weakness',
+      ],
+    },
+  ],
+
+  definitions: {
+    bilateralWeakFoot: {
+      term: 'Bilateral Weak Foot',
+      definition: 'A symptomatic condition affecting both feet, secondary to constitutional or systemic conditions, characterized by muscle atrophy, circulatory disturbance, and weakness.',
+    },
+    constitutionalConditions: {
+      term: 'Constitutional Conditions',
+      definition: 'Systemic diseases that can cause bilateral weak foot include diabetes, peripheral neuropathy, vascular disease, and neuromuscular disorders.',
+    },
+    muscleAtrophy: {
+      term: 'Muscle Atrophy',
+      definition: 'Wasting or thinning of foot muscles visible on examination or measurable by comparison with normal.',
+    },
+    disturbedCirculation: {
+      term: 'Disturbed Circulation',
+      definition: 'Circulatory problems in the feet including cold feet, color changes, delayed capillary refill, or poor wound healing.',
+    },
+  },
+
+  disclaimer: 'DC 5277 provides a minimum 10% rating for bilateral weak foot. The underlying constitutional condition causing the weak foot should be separately identified and rated if appropriate.',
+};
+
+// CLAW FOOT (PES CAVUS) RATING CRITERIA (DC 5278)
+export const CLAW_FOOT_CRITERIA = {
+  diagnosticCode: '5278',
+  condition: 'Claw Foot (Pes Cavus)',
+  cfrReference: '38 CFR 4.71a, Diagnostic Code 5278',
+
+  ratingNote: 'DC 5278 rates acquired claw foot (pes cavus) based on severity and bilateral/unilateral involvement. Higher ratings require more severe deformity with hammer toes, callosities, and varus deformity.',
+
+  ratings: [
+    {
+      percent: 50,
+      summary: 'Bilateral: Marked plantar fascia contraction, dropped forefoot, all toes hammer, very painful callosities, marked varus',
+      criteriaDescription: [
+        'BILATERAL involvement (both feet)',
+        'Marked contraction of plantar fascia',
+        'Dropped forefoot',
+        'All toes hammer toes',
+        'Very painful callosities',
+        'Marked varus deformity',
+      ],
+      evidenceNeeded: [
+        'Bilateral foot examination',
+        'Documentation of plantar fascia contraction',
+        'X-rays showing deformity',
+        'Photos of hammer toes and callosities',
+        'Pain documentation',
+      ],
+    },
+    {
+      percent: 30,
+      summary: 'Unilateral severe (as 50%), OR Bilateral: toes dorsiflexed, ankle dorsiflexion to right angle, shortened plantar fascia, marked metatarsal tenderness',
+      criteriaDescription: [
+        'UNILATERAL with: marked plantar fascia contraction, dropped forefoot, all toes hammer, very painful callosities, marked varus',
+        'OR BILATERAL with: All toes tending to dorsiflexion, limitation of dorsiflexion at ankle to right angle, shortened plantar fascia, marked tenderness under metatarsal heads',
+      ],
+      evidenceNeeded: [
+        'Examination documenting specific findings',
+        'Ankle ROM measurements',
+        'Documentation of metatarsal head tenderness',
+        'Toe position assessment',
+      ],
+    },
+    {
+      percent: 20,
+      summary: 'Unilateral: toes dorsiflexed, ankle dorsiflexion limited to right angle, shortened plantar fascia, marked metatarsal tenderness',
+      criteriaDescription: [
+        'UNILATERAL with:',
+        'All toes tending to dorsiflexion',
+        'Limitation of dorsiflexion at ankle to right angle',
+        'Shortened plantar fascia',
+        'Marked tenderness under metatarsal heads',
+      ],
+      evidenceNeeded: [
+        'Single foot examination with documented findings',
+        'Ankle ROM measurement',
+        'Plantar fascia assessment',
+        'Metatarsal tenderness documentation',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Bilateral OR Unilateral: Great toe dorsiflexed, some ankle dorsiflexion limitation, definite metatarsal tenderness',
+      criteriaDescription: [
+        'BILATERAL or UNILATERAL with:',
+        'Great toe dorsiflexed',
+        'Some limitation of dorsiflexion at ankle',
+        'Definite tenderness under metatarsal heads',
+      ],
+      evidenceNeeded: [
+        'Foot examination documenting toe position',
+        'Ankle ROM assessment',
+        'Metatarsal tenderness on exam',
+      ],
+    },
+  ],
+
+  definitions: {
+    pesCavus: {
+      term: 'Pes Cavus (Claw Foot)',
+      definition: 'A foot deformity characterized by an abnormally high arch that does not flatten with weight bearing. The arch remains rigid and elevated.',
+    },
+    hammerToes: {
+      term: 'Hammer Toes',
+      definition: 'Toes bent at the middle joint in a claw-like position, often associated with claw foot deformity.',
+    },
+    varusDeformity: {
+      term: 'Varus Deformity',
+      definition: 'Inward tilting of the heel (hindfoot varus), causing weight to shift to the outer edge of the foot.',
+    },
+    droppedForefoot: {
+      term: 'Dropped Forefoot',
+      definition: 'Forefoot positioned lower than the hindfoot due to plantar flexion of the metatarsals.',
+    },
+    callosities: {
+      term: 'Callosities',
+      definition: 'Thickened areas of skin (calluses) that form from abnormal pressure, often painful in claw foot.',
+    },
+  },
+
+  disclaimer: 'DC 5278 ratings cannot be combined with claw foot ratings under other foot codes. Congenital pes cavus without aggravation is typically not service-connected.',
+};
+
+// METATARSALGIA (MORTON'S DISEASE) RATING CRITERIA (DC 5279)
+export const METATARSALGIA_CRITERIA = {
+  diagnosticCode: '5279',
+  condition: "Metatarsalgia (Morton's Disease)",
+  cfrReference: '38 CFR 4.71a, Diagnostic Code 5279',
+
+  ratingNote: 'DC 5279 provides a single 10% rating for anterior metatarsalgia (Morton\'s disease), whether unilateral or bilateral. This is the maximum schedular rating for this condition.',
+
+  ratings: [
+    {
+      percent: 10,
+      summary: 'Anterior metatarsalgia, unilateral or bilateral',
+      criteriaDescription: [
+        'Anterior metatarsalgia (pain in ball of foot)',
+        'May include Morton neuroma',
+        'Unilateral OR bilateral (same rating)',
+        'Pain and tenderness under metatarsal heads',
+      ],
+      evidenceNeeded: [
+        'Diagnosis of metatarsalgia or Morton neuroma',
+        'Pain documentation with location',
+        'Physical examination findings',
+        'Impact on walking/standing',
+      ],
+    },
+  ],
+
+  definitions: {
+    metatarsalgia: {
+      term: 'Metatarsalgia',
+      definition: 'Pain in the ball of the foot (metatarsal region), typically worse with weight bearing, walking, or standing.',
+    },
+    mortonNeuroma: {
+      term: "Morton's Neuroma",
+      definition: 'A thickening of nerve tissue between the metatarsal heads, typically between the 3rd and 4th toes, causing sharp, burning pain and numbness.',
+    },
+    anteriorMetatarsalgia: {
+      term: 'Anterior Metatarsalgia',
+      definition: 'Pain specifically in the front (anterior) portion of the metatarsal region, at the ball of the foot.',
+    },
+  },
+
+  disclaimer: 'DC 5279 provides only a 10% rating regardless of unilateral or bilateral involvement. For higher ratings, consider if other foot codes apply or if extraschedular consideration is warranted.',
+};
+
+// HALLUX VALGUS (BUNION) RATING CRITERIA (DC 5280)
+export const HALLUX_VALGUS_CRITERIA = {
+  diagnosticCode: '5280',
+  condition: 'Hallux Valgus (Bunion)',
+  cfrReference: '38 CFR 4.71a, Diagnostic Code 5280',
+
+  ratingNote: 'DC 5280 rates unilateral hallux valgus at 10% for either: (1) operated with resection of metatarsal head, OR (2) severe, equivalent to amputation of great toe. Each foot rated separately.',
+
+  ratings: [
+    {
+      percent: 10,
+      summary: 'Unilateral: Operated with metatarsal head resection, OR severe (equivalent to great toe amputation)',
+      criteriaDescription: [
+        'UNILATERAL hallux valgus with EITHER:',
+        '1. Operated with resection of metatarsal head, OR',
+        '2. Severe, if equivalent to amputation of great toe',
+        'Rate each foot separately if bilateral',
+      ],
+      evidenceNeeded: [
+        'Surgical records if operated (bunionectomy)',
+        'X-rays showing severity of deformity',
+        'Functional assessment comparing to toe amputation',
+        'Pain and limitation documentation',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'Mild to moderate hallux valgus without surgery or severe functional loss',
+      criteriaDescription: [
+        'Hallux valgus present but not severe',
+        'No surgical resection of metatarsal head',
+        'Function not equivalent to great toe amputation',
+      ],
+      evidenceNeeded: [
+        'Diagnosis of hallux valgus',
+        'Document symptoms for potential future increase',
+      ],
+    },
+  ],
+
+  definitions: {
+    halluxValgus: {
+      term: 'Hallux Valgus',
+      definition: 'A deformity where the big toe angles toward the other toes, creating a prominent bump (bunion) at the base of the big toe.',
+    },
+    bunion: {
+      term: 'Bunion',
+      definition: 'The bony bump that forms on the joint at the base of the big toe due to hallux valgus deformity.',
+    },
+    metatarsalHeadResection: {
+      term: 'Metatarsal Head Resection',
+      definition: 'Surgical removal of part of the metatarsal head (bunionectomy) to correct hallux valgus deformity.',
+    },
+    equivalentToAmputation: {
+      term: 'Equivalent to Amputation',
+      definition: 'Severity causing functional loss comparable to if the great toe were amputated - severely limited motion and function.',
+    },
+  },
+
+  disclaimer: 'DC 5280 rates each foot separately. Bilateral hallux valgus can result in 10% for each foot if criteria are met. Post-surgical residuals may warrant higher ratings under other codes.',
+};
+
+// HALLUX RIGIDUS RATING CRITERIA (DC 5281)
+export const HALLUX_RIGIDUS_CRITERIA = {
+  diagnosticCode: '5281',
+  condition: 'Hallux Rigidus',
+  cfrReference: '38 CFR 4.71a, Diagnostic Code 5281',
+
+  ratingNote: 'DC 5281 rates unilateral hallux rigidus the same as severe hallux valgus (10%) when severe. Note: Cannot be combined with claw foot ratings.',
+
+  ratings: [
+    {
+      percent: 10,
+      summary: 'Unilateral, severe: Rate as hallux valgus, severe',
+      criteriaDescription: [
+        'UNILATERAL hallux rigidus',
+        'Severe stiffness/rigidity of big toe joint',
+        'Rate as severe hallux valgus (10%)',
+        'Note: Not to be combined with claw foot ratings',
+      ],
+      evidenceNeeded: [
+        'Diagnosis of hallux rigidus',
+        'ROM measurements of big toe (MTP joint)',
+        'X-rays showing arthritic changes',
+        'Functional limitation documentation',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'Mild to moderate hallux rigidus',
+      criteriaDescription: [
+        'Hallux rigidus present but not severe',
+        'Some limitation of big toe motion',
+        'May progress to severe over time',
+      ],
+      evidenceNeeded: [
+        'Diagnosis documentation',
+        'ROM measurements for baseline',
+        'Symptom tracking for future claim',
+      ],
+    },
+  ],
+
+  definitions: {
+    halluxRigidus: {
+      term: 'Hallux Rigidus',
+      definition: 'Stiffness and limited motion of the big toe at the MTP joint, usually due to arthritis. The toe becomes rigid and painful with movement.',
+    },
+    mtpJoint: {
+      term: 'MTP Joint',
+      definition: 'Metatarsophalangeal joint - the joint at the base of the big toe where the first metatarsal meets the proximal phalanx.',
+    },
+    boneSpur: {
+      term: 'Bone Spur (Osteophyte)',
+      definition: 'Bony projection that can form on top of the big toe joint in hallux rigidus, causing additional pain and limiting shoe wear.',
+    },
+  },
+
+  disclaimer: 'DC 5281 rates hallux rigidus as severe hallux valgus. Cannot be combined with claw foot (DC 5278) ratings. Each foot rated separately if bilateral.',
+};
+
+// ============================================
+// PHASE 4C: SPINE EXPANSION RATING CRITERIA
+// DC 5235, 5236, 5238, 5240, 5241
+// All use General Rating Formula for Diseases and Injuries of the Spine
+// ============================================
+
+// Shared General Rating Formula for Spine (DC 5235-5243)
+// This is the same formula used by existing spine conditions
+export const GENERAL_SPINE_RATING_FORMULA = {
+  ratings: [
+    {
+      percent: 100,
+      summary: 'Unfavorable ankylosis of the entire spine',
+      criteriaDescription: [
+        'Complete fusion of the entire spine in an unfavorable position',
+        'Extremely severe and disabling condition',
+        'Unable to look forward, severe postural deformity',
+      ],
+      evidenceNeeded: [
+        'Medical imaging (X-ray, CT, MRI) showing complete spinal fusion',
+        'Clinical examination documenting complete loss of spinal motion',
+        'Documentation of unfavorable position (inability to look straight ahead)',
+      ],
+    },
+    {
+      percent: 50,
+      summary: 'Unfavorable ankylosis of the entire thoracolumbar spine',
+      criteriaDescription: [
+        'Complete fusion of the thoracolumbar spine (mid and low back)',
+        'In unfavorable position',
+        'Severe limitation of mobility and function',
+      ],
+      evidenceNeeded: [
+        'Imaging showing thoracolumbar ankylosis',
+        'Clinical ROM measurements showing no motion',
+        'Documentation of significant functional impairment',
+      ],
+    },
+    {
+      percent: 40,
+      summary: 'Forward flexion 30° or less, OR favorable ankylosis of entire thoracolumbar spine',
+      criteriaDescription: [
+        'Forward flexion of thoracolumbar spine 30° or less (normal is 90°), OR',
+        'Favorable ankylosis of the entire thoracolumbar spine',
+        'Significant but somewhat functional limitation',
+      ],
+      evidenceNeeded: [
+        'ROM measurements showing forward flexion ≤30°',
+        'Goniometer readings by healthcare provider',
+        'OR imaging showing fusion in functional position',
+      ],
+    },
+    {
+      percent: 20,
+      summary: 'Forward flexion 30-60°, OR combined ROM ≤120°, OR muscle spasm causing abnormal gait/contour',
+      criteriaDescription: [
+        'Forward flexion greater than 30° but not greater than 60°, OR',
+        'Combined ROM of thoracolumbar spine not greater than 120°, OR',
+        'Muscle spasm or guarding severe enough to result in abnormal gait or abnormal spinal contour (scoliosis, reversed lordosis, abnormal kyphosis)',
+      ],
+      evidenceNeeded: [
+        'ROM measurements showing limitation',
+        'Clinical notes documenting muscle spasm or guarding',
+        'Observation of abnormal gait or spinal contour',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Forward flexion 60-85°, OR combined ROM 120-235°, OR muscle spasm without abnormal gait',
+      criteriaDescription: [
+        'Forward flexion greater than 60° but not greater than 85°, OR',
+        'Combined ROM greater than 120° but not greater than 235°, OR',
+        'Muscle spasm, guarding, or localized tenderness not resulting in abnormal gait or abnormal spinal contour, OR',
+        'Vertebral body fracture with loss of 50% or more of the height',
+      ],
+      evidenceNeeded: [
+        'ROM measurements in the specified range',
+        'Clinical examination notes',
+        'Documentation of pain and functional limitations',
+        'X-ray showing vertebral height loss if applicable',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'Forward flexion greater than 85° with minimal symptoms',
+      criteriaDescription: [
+        'Forward flexion greater than 85°',
+        'Minimal functional impact',
+        'Symptoms controlled with treatment',
+      ],
+      evidenceNeeded: [],
+    },
+  ],
+  notes: [
+    'Note 1: Evaluate any associated objective neurologic abnormalities (bowel, bladder, extremities) separately under appropriate diagnostic code.',
+    'Note 2: For VA purposes, normal forward flexion of thoracolumbar spine is 90°; extension is 30°; left and right lateral flexion are 30° each; and left and right lateral rotation are 30° each. Combined ROM is sum of these (240° normal).',
+    'Note 5: For VA purposes, unfavorable ankylosis is when the entire spine is fixed in flexion or extension. Fixation at 0° (neutral) is favorable ankylosis.',
+  ],
+};
+
+// VERTEBRAL FRACTURE OR DISLOCATION (DC 5235)
+export const VERTEBRAL_FRACTURE_CRITERIA = {
+  diagnosticCode: '5235',
+  condition: 'Vertebral Fracture or Dislocation',
+  cfrReference: '38 CFR 4.71a, Diagnostic Code 5235',
+
+  // Uses General Rating Formula for Spine
+  ratings: GENERAL_SPINE_RATING_FORMULA.ratings,
+  notes: GENERAL_SPINE_RATING_FORMULA.notes,
+
+  definitions: {
+    vertebralFracture: {
+      term: 'Vertebral Fracture',
+      definition: 'Break in one of the vertebral bones of the spine. Can be compression fracture, burst fracture, or fracture-dislocation.',
+    },
+    compressionFracture: {
+      term: 'Compression Fracture',
+      definition: 'Vertebra collapses, usually in the front, causing wedge shape. Common in osteoporosis or trauma. 50%+ height loss qualifies for minimum 10% rating.',
+    },
+    heightLoss: {
+      term: 'Vertebral Height Loss',
+      definition: 'Reduction in vertebral body height compared to normal. 50% or more height loss specifically noted in 10% criteria.',
+    },
+  },
+
+  note: 'Vertebral fracture with 50% or more height loss qualifies for minimum 10% rating even without significant ROM limitation. Any associated neurologic abnormalities (radiculopathy, bowel/bladder dysfunction) are rated separately.',
+
+  disclaimer: 'This analysis is based on logged symptoms. VA rating requires orthopedic examination with ROM measurements and imaging (X-ray, CT, MRI) showing fracture. Vertebral height loss should be documented by radiologist.',
+};
+
+// SACROILIAC INJURY AND WEAKNESS (DC 5236)
+export const SACROILIAC_INJURY_CRITERIA = {
+  diagnosticCode: '5236',
+  condition: 'Sacroiliac Injury and Weakness',
+  cfrReference: '38 CFR 4.71a, Diagnostic Code 5236',
+
+  // Uses General Rating Formula for Spine
+  ratings: GENERAL_SPINE_RATING_FORMULA.ratings,
+  notes: GENERAL_SPINE_RATING_FORMULA.notes,
+
+  definitions: {
+    sacroiliacJoint: {
+      term: 'Sacroiliac (SI) Joint',
+      definition: 'Joint connecting the sacrum (base of spine) to the ilium (pelvis). SI dysfunction causes low back, buttock, and leg pain.',
+    },
+    siDysfunction: {
+      term: 'SI Joint Dysfunction',
+      definition: 'Abnormal motion (too much or too little) in the sacroiliac joint causing pain and instability.',
+    },
+    referredPain: {
+      term: 'Referred Pain',
+      definition: 'Pain felt in areas away from the actual source. SI dysfunction commonly causes referred pain to buttock, hip, groin, and leg.',
+    },
+  },
+
+  note: 'SI joint dysfunction is rated under the General Rating Formula for Spine based on limitation of motion of the thoracolumbar spine. Document both SI-specific symptoms AND overall spinal ROM limitations.',
+
+  disclaimer: 'This analysis is based on logged symptoms. VA rating requires orthopedic examination with ROM measurements. Special SI joint provocative tests (FABER, Gaenslen, compression) support diagnosis.',
+};
+
+// SPINAL STENOSIS (DC 5238)
+export const SPINAL_STENOSIS_CRITERIA = {
+  diagnosticCode: '5238',
+  condition: 'Spinal Stenosis',
+  cfrReference: '38 CFR 4.71a, Diagnostic Code 5238',
+
+  // Uses General Rating Formula for Spine
+  ratings: GENERAL_SPINE_RATING_FORMULA.ratings,
+  notes: GENERAL_SPINE_RATING_FORMULA.notes,
+
+  definitions: {
+    spinalStenosis: {
+      term: 'Spinal Stenosis',
+      definition: 'Narrowing of the spinal canal that puts pressure on the spinal cord and nerves. Can be central (spinal cord) or foraminal (nerve roots).',
+    },
+    neurogenicClaudication: {
+      term: 'Neurogenic Claudication',
+      definition: 'Leg pain, weakness, or numbness with walking or standing that improves with sitting or bending forward. Classic symptom of lumbar spinal stenosis.',
+    },
+    shoppingCartSign: {
+      term: 'Shopping Cart Sign',
+      definition: 'Relief when leaning forward (like pushing a shopping cart) because flexion opens the spinal canal. Classic finding in spinal stenosis.',
+    },
+  },
+
+  note: 'Spinal stenosis is rated under the General Rating Formula based on ROM limitation. However, associated neurologic symptoms (leg weakness, numbness, bowel/bladder changes) should be rated separately under appropriate neurologic codes (e.g., radiculopathy).',
+
+  disclaimer: 'This analysis is based on logged symptoms. VA rating requires orthopedic examination with ROM measurements and imaging (MRI/CT) showing stenosis. Neurologic symptoms should be separately evaluated.',
+};
+
+// ANKYLOSING SPONDYLITIS (DC 5240)
+export const ANKYLOSING_SPONDYLITIS_CRITERIA = {
+  diagnosticCode: '5240',
+  condition: 'Ankylosing Spondylitis',
+  cfrReference: '38 CFR 4.71a, Diagnostic Code 5240',
+
+  // Uses General Rating Formula for Spine
+  ratings: GENERAL_SPINE_RATING_FORMULA.ratings,
+  notes: GENERAL_SPINE_RATING_FORMULA.notes,
+
+  definitions: {
+    ankylosingSpondylitis: {
+      term: 'Ankylosing Spondylitis',
+      definition: 'Chronic inflammatory disease primarily affecting the spine and sacroiliac joints. Can cause vertebrae to fuse over time (ankylosis).',
+    },
+    inflammatoryBackPain: {
+      term: 'Inflammatory Back Pain',
+      definition: 'Back pain that improves with exercise but not rest, morning stiffness >30 minutes, awakening in second half of night, and alternating buttock pain.',
+    },
+    enthesitis: {
+      term: 'Enthesitis',
+      definition: 'Inflammation where tendons and ligaments attach to bone. Common in ankylosing spondylitis at Achilles tendon, plantar fascia, and rib attachments.',
+    },
+    bambooSpine: {
+      term: 'Bamboo Spine',
+      definition: 'X-ray appearance of fused vertebrae in advanced ankylosing spondylitis, resembling bamboo.',
+    },
+  },
+
+  note: 'Ankylosing spondylitis is an inflammatory condition that can progress to spinal fusion (ankylosis). Document morning stiffness duration, night pain, and response to exercise vs rest. HLA-B27 testing and inflammatory markers (ESR, CRP) support diagnosis.',
+
+  disclaimer: 'This analysis is based on logged symptoms. VA rating requires rheumatology evaluation with ROM measurements. Lab tests (HLA-B27, inflammatory markers) and imaging showing sacroiliitis or spinal fusion strengthen claims.',
+};
+
+// SPINAL FUSION (DC 5241)
+export const SPINAL_FUSION_CRITERIA = {
+  diagnosticCode: '5241',
+  condition: 'Spinal Fusion',
+  cfrReference: '38 CFR 4.71a, Diagnostic Code 5241',
+
+  // Uses General Rating Formula for Spine
+  ratings: GENERAL_SPINE_RATING_FORMULA.ratings,
+  notes: GENERAL_SPINE_RATING_FORMULA.notes,
+
+  definitions: {
+    spinalFusion: {
+      term: 'Spinal Fusion',
+      definition: 'Surgical procedure joining two or more vertebrae to eliminate motion between them. May include hardware (rods, screws, cages).',
+    },
+    adjacentSegmentDisease: {
+      term: 'Adjacent Segment Disease',
+      definition: 'Degeneration of spinal segments above or below a fusion due to increased stress. Can cause pain and may require additional surgery.',
+    },
+    pseudoarthrosis: {
+      term: 'Pseudoarthrosis',
+      definition: 'Failed fusion where bone does not completely heal. Causes persistent pain and instability.',
+    },
+    hardwareFailure: {
+      term: 'Hardware Failure',
+      definition: 'Broken, loose, or migrated surgical hardware (rods, screws, cages) causing pain or instability.',
+    },
+  },
+
+  note: 'Spinal fusion eliminates motion at fused segments, permanently limiting ROM. Rating is based on remaining spinal motion. Document levels fused, as multi-level fusions cause greater ROM loss. Adjacent segment disease is common complication.',
+
+  disclaimer: 'This analysis is based on logged symptoms. VA rating requires orthopedic examination with ROM measurements. Surgical records documenting fusion levels and post-operative imaging showing fusion status are essential.',
 };
 
 // ============================================
@@ -20535,6 +21885,1489 @@ export const analyzeDegenerativeArthritisLogs = (logs, options = {}) => {
 };
 
 // ============================================
+// PHASE 4A: ANALYSIS FUNCTIONS - GOUT (DC 5017)
+// ============================================
+
+/**
+ * Analyzes gout symptom logs to determine supported VA rating level
+ * Rated as degenerative arthritis per 38 CFR 4.71a Note to DCs 5013-5024
+ */
+export const analyzeGoutLogs = (logs, options = {}) => {
+  const { evaluationPeriodDays = 90 } = options;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  // Filter gout symptom logs
+  const goutSymptoms = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    return logDate >= cutoffDate && CONDITIONS.GOUT.symptomIds.includes(getLogSymptomId(log));
+  });
+
+  if (goutSymptoms.length === 0) {
+    return {
+      condition: 'Gout',
+      diagnosticCode: '5017',
+      hasData: false,
+      message: 'No gout symptoms logged in the evaluation period',
+    };
+  }
+
+  // Count symptom types
+  const acuteAttackCount = goutSymptoms.filter(s => getLogSymptomId(s) === 'gout-acute-attack').length;
+  const jointPainCount = goutSymptoms.filter(s => getLogSymptomId(s) === 'gout-joint-pain').length;
+  const swellingCount = goutSymptoms.filter(s => getLogSymptomId(s) === 'gout-swelling').length;
+  const rednessCount = goutSymptoms.filter(s => getLogSymptomId(s) === 'gout-redness').length;
+  const limitedMotionCount = goutSymptoms.filter(s => getLogSymptomId(s) === 'gout-limited-motion').length;
+  const tophiCount = goutSymptoms.filter(s => getLogSymptomId(s) === 'gout-tophi').length;
+  const functionalLossCount = goutSymptoms.filter(s => getLogSymptomId(s) === 'gout-functional-loss').length;
+
+  // Calculate average severity for pain logs
+  const painLogs = goutSymptoms.filter(s =>
+      ['gout-acute-attack', 'gout-joint-pain'].includes(getLogSymptomId(s)) && s.severity
+  );
+  const avgSeverity = painLogs.length > 0
+      ? (painLogs.reduce((sum, log) => sum + log.severity, 0) / painLogs.length).toFixed(1)
+      : null;
+
+  const evidence = [];
+  const gaps = [];
+  const ratingRationale = [];
+  let supportedRating = 0;
+
+  // Build evidence
+  if (acuteAttackCount > 0) evidence.push(`${acuteAttackCount} acute gout attacks documented`);
+  if (jointPainCount > 0) evidence.push(`${jointPainCount} joint pain episodes`);
+  if (swellingCount > 0) evidence.push(`${swellingCount} swelling episodes`);
+  if (rednessCount > 0) evidence.push(`${rednessCount} redness/warmth episodes`);
+  if (limitedMotionCount > 0) evidence.push(`${limitedMotionCount} limited motion episodes`);
+  if (tophiCount > 0) evidence.push(`${tophiCount} tophi documented`);
+  if (functionalLossCount > 0) evidence.push(`${functionalLossCount} functional loss episodes`);
+
+  const totalEpisodes = goutSymptoms.length;
+  const attacksPerMonth = (acuteAttackCount / (evaluationPeriodDays / 30)).toFixed(1);
+
+  evidence.push(`${totalEpisodes} total gout episodes in ${evaluationPeriodDays} days`);
+  evidence.push(`~${attacksPerMonth} acute attacks per month`);
+
+  // Determine rating based on symptom patterns
+  // Rated as degenerative arthritis: 20% with incapacitating exacerbations, 10% without
+  if ((acuteAttackCount >= 3 && functionalLossCount >= 2) || (acuteAttackCount >= 4)) {
+    supportedRating = 20;
+    ratingRationale.push(
+        `${acuteAttackCount} acute gout attacks documented`,
+        `${functionalLossCount} episodes with functional loss`,
+        'Pattern suggests incapacitating exacerbations'
+    );
+    gaps.push('X-rays or imaging showing gouty changes required for rating');
+    gaps.push('Document if multiple joints are affected');
+    gaps.push('Lab values (uric acid levels) strengthen the claim');
+  } else if (acuteAttackCount >= 2 || totalEpisodes >= 10) {
+    supportedRating = '10-20';
+    ratingRationale.push(
+        `${acuteAttackCount} acute attacks documented`,
+        `${totalEpisodes} total gout episodes`,
+        'Supports 10-20% rating depending on imaging and functional impact'
+    );
+    gaps.push('X-rays or imaging needed for rating');
+    gaps.push('20% requires incapacitating exacerbations');
+  } else if (totalEpisodes >= 5) {
+    supportedRating = 10;
+    ratingRationale.push(
+        `${totalEpisodes} gout episodes documented`,
+        'Supports 10% with imaging evidence'
+    );
+  } else {
+    supportedRating = '0-10';
+    ratingRationale.push(
+        'Limited gout symptoms documented',
+        'Continue logging for stronger documentation'
+    );
+  }
+
+  // Documentation gaps
+  if (acuteAttackCount === 0) {
+    gaps.push('Document acute gout attacks with date and affected joint');
+  }
+  if (tophiCount === 0) {
+    gaps.push('Document any tophi (urate crystal deposits) if present');
+  }
+  if (limitedMotionCount === 0) {
+    gaps.push('Document limitation of motion during attacks');
+  }
+  gaps.push('Lab values showing elevated uric acid strengthen the claim');
+  gaps.push('X-ray or imaging evidence required for VA rating');
+  gaps.push('Document which specific joint(s) are affected');
+  gaps.push('If ROM limitation is compensable, rate under specific joint code');
+
+  return {
+    condition: 'Gout',
+    diagnosticCode: '5017',
+    hasData: true,
+    supportedRating,
+    ratingRationale,
+    evidence,
+    gaps,
+    metrics: {
+      totalLogs: totalEpisodes,
+      acuteAttacks: acuteAttackCount,
+      painDays: jointPainCount + acuteAttackCount,
+      avgPain: avgSeverity,
+      limitedROM: limitedMotionCount,
+      flareUps: acuteAttackCount,
+    },
+    criteria: GOUT_CRITERIA,
+    disclaimer: GOUT_CRITERIA.disclaimer,
+  };
+};
+
+// ============================================
+// PHASE 4A: ANALYSIS FUNCTIONS - BURSITIS (DC 5019)
+// ============================================
+
+/**
+ * Analyzes bursitis symptom logs to determine supported VA rating level
+ * Rated as degenerative arthritis per 38 CFR 4.71a Note to DCs 5013-5024
+ */
+export const analyzeBursitisLogs = (logs, options = {}) => {
+  const { evaluationPeriodDays = 90 } = options;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  // Filter bursitis symptom logs
+  const bursitisSymptoms = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    return logDate >= cutoffDate && CONDITIONS.BURSITIS.symptomIds.includes(getLogSymptomId(log));
+  });
+
+  if (bursitisSymptoms.length === 0) {
+    return {
+      condition: 'Bursitis',
+      diagnosticCode: '5019',
+      hasData: false,
+      message: 'No bursitis symptoms logged in the evaluation period',
+    };
+  }
+
+  // Count symptom types
+  const painCount = bursitisSymptoms.filter(s => getLogSymptomId(s) === 'bursitis-pain').length;
+  const swellingCount = bursitisSymptoms.filter(s => getLogSymptomId(s) === 'bursitis-swelling').length;
+  const tendernessCount = bursitisSymptoms.filter(s => getLogSymptomId(s) === 'bursitis-tenderness').length;
+  const limitedMotionCount = bursitisSymptoms.filter(s => getLogSymptomId(s) === 'bursitis-limited-motion').length;
+  const stiffnessCount = bursitisSymptoms.filter(s => getLogSymptomId(s) === 'bursitis-stiffness').length;
+  const flareCount = bursitisSymptoms.filter(s => getLogSymptomId(s) === 'bursitis-flare').length;
+  const functionalLossCount = bursitisSymptoms.filter(s => getLogSymptomId(s) === 'bursitis-functional-loss').length;
+
+  // Calculate average severity
+  const painLogs = bursitisSymptoms.filter(s =>
+      ['bursitis-pain', 'bursitis-flare'].includes(getLogSymptomId(s)) && s.severity
+  );
+  const avgSeverity = painLogs.length > 0
+      ? (painLogs.reduce((sum, log) => sum + log.severity, 0) / painLogs.length).toFixed(1)
+      : null;
+
+  const evidence = [];
+  const gaps = [];
+  const ratingRationale = [];
+  let supportedRating = 0;
+
+  // Build evidence
+  if (painCount > 0) evidence.push(`${painCount} pain episodes documented`);
+  if (swellingCount > 0) evidence.push(`${swellingCount} swelling episodes`);
+  if (tendernessCount > 0) evidence.push(`${tendernessCount} tenderness episodes`);
+  if (limitedMotionCount > 0) evidence.push(`${limitedMotionCount} limited motion episodes`);
+  if (stiffnessCount > 0) evidence.push(`${stiffnessCount} stiffness episodes`);
+  if (flareCount > 0) evidence.push(`${flareCount} flare-ups documented`);
+  if (functionalLossCount > 0) evidence.push(`${functionalLossCount} functional loss episodes`);
+
+  const totalEpisodes = bursitisSymptoms.length;
+  const flaresPerMonth = (flareCount / (evaluationPeriodDays / 30)).toFixed(1);
+
+  evidence.push(`${totalEpisodes} total bursitis episodes in ${evaluationPeriodDays} days`);
+
+  // Determine rating based on symptom patterns
+  if ((flareCount >= 3 && functionalLossCount >= 2) || (flareCount >= 4 && limitedMotionCount >= 3)) {
+    supportedRating = 20;
+    ratingRationale.push(
+        `${flareCount} flare-ups documented`,
+        `${functionalLossCount} episodes with functional loss`,
+        'Pattern suggests incapacitating exacerbations'
+    );
+    gaps.push('Imaging (ultrasound/MRI) showing bursitis required for rating');
+    gaps.push('Document if multiple bursae/joints are affected');
+  } else if (flareCount >= 2 || totalEpisodes >= 10) {
+    supportedRating = '10-20';
+    ratingRationale.push(
+        `${flareCount} flare-ups documented`,
+        `${totalEpisodes} total bursitis episodes`,
+        'Supports 10-20% rating depending on imaging and functional impact'
+    );
+    gaps.push('Imaging evidence needed for rating');
+    gaps.push('20% requires incapacitating exacerbations');
+  } else if (totalEpisodes >= 5) {
+    supportedRating = 10;
+    ratingRationale.push(
+        `${totalEpisodes} bursitis episodes documented`,
+        'Supports 10% with imaging evidence'
+    );
+  } else {
+    supportedRating = '0-10';
+    ratingRationale.push(
+        'Limited bursitis symptoms documented',
+        'Continue logging for stronger documentation'
+    );
+  }
+
+  // Documentation gaps
+  if (painCount === 0) {
+    gaps.push('Document pain episodes at affected bursa');
+  }
+  if (limitedMotionCount === 0) {
+    gaps.push('Document limitation of motion');
+  }
+  if (flareCount === 0) {
+    gaps.push('Document flare-ups that limit activities');
+  }
+  gaps.push('Imaging (ultrasound/MRI) required for VA rating');
+  gaps.push('Document which specific bursa/joint is affected');
+  gaps.push('Injection records strengthen claims');
+  gaps.push('If ROM limitation is compensable, rate under specific joint code');
+
+  return {
+    condition: 'Bursitis',
+    diagnosticCode: '5019',
+    hasData: true,
+    supportedRating,
+    ratingRationale,
+    evidence,
+    gaps,
+    metrics: {
+      totalLogs: totalEpisodes,
+      painDays: painCount,
+      avgPain: avgSeverity,
+      limitedROM: limitedMotionCount,
+      flareUps: flareCount,
+    },
+    criteria: BURSITIS_CRITERIA,
+    disclaimer: BURSITIS_CRITERIA.disclaimer,
+  };
+};
+
+// ============================================
+// PHASE 4A: ANALYSIS FUNCTIONS - TENDINITIS (DC 5024)
+// ============================================
+
+/**
+ * Analyzes tendinitis symptom logs to determine supported VA rating level
+ * Rated as degenerative arthritis per 38 CFR 4.71a Note to DCs 5013-5024
+ */
+export const analyzeTendinitisLogs = (logs, options = {}) => {
+  const { evaluationPeriodDays = 90 } = options;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  // Filter tendinitis symptom logs
+  const tendinitisSymptoms = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    return logDate >= cutoffDate && CONDITIONS.TENDINITIS.symptomIds.includes(getLogSymptomId(log));
+  });
+
+  if (tendinitisSymptoms.length === 0) {
+    return {
+      condition: 'Tendinitis/Tenosynovitis',
+      diagnosticCode: '5024',
+      hasData: false,
+      message: 'No tendinitis symptoms logged in the evaluation period',
+    };
+  }
+
+  // Count symptom types
+  const painCount = tendinitisSymptoms.filter(s => getLogSymptomId(s) === 'tendinitis-pain').length;
+  const swellingCount = tendinitisSymptoms.filter(s => getLogSymptomId(s) === 'tendinitis-swelling').length;
+  const tendernessCount = tendinitisSymptoms.filter(s => getLogSymptomId(s) === 'tendinitis-tenderness').length;
+  const limitedMotionCount = tendinitisSymptoms.filter(s => getLogSymptomId(s) === 'tendinitis-limited-motion').length;
+  const stiffnessCount = tendinitisSymptoms.filter(s => getLogSymptomId(s) === 'tendinitis-stiffness').length;
+  const crepitusCount = tendinitisSymptoms.filter(s => getLogSymptomId(s) === 'tendinitis-crepitus').length;
+  const weaknessCount = tendinitisSymptoms.filter(s => getLogSymptomId(s) === 'tendinitis-weakness').length;
+  const flareCount = tendinitisSymptoms.filter(s => getLogSymptomId(s) === 'tendinitis-flare').length;
+  const functionalLossCount = tendinitisSymptoms.filter(s => getLogSymptomId(s) === 'tendinitis-functional-loss').length;
+
+  // Calculate average severity
+  const painLogs = tendinitisSymptoms.filter(s =>
+      ['tendinitis-pain', 'tendinitis-flare'].includes(getLogSymptomId(s)) && s.severity
+  );
+  const avgSeverity = painLogs.length > 0
+      ? (painLogs.reduce((sum, log) => sum + log.severity, 0) / painLogs.length).toFixed(1)
+      : null;
+
+  const evidence = [];
+  const gaps = [];
+  const ratingRationale = [];
+  let supportedRating = 0;
+
+  // Build evidence
+  if (painCount > 0) evidence.push(`${painCount} pain episodes documented`);
+  if (swellingCount > 0) evidence.push(`${swellingCount} swelling episodes`);
+  if (tendernessCount > 0) evidence.push(`${tendernessCount} tenderness episodes`);
+  if (limitedMotionCount > 0) evidence.push(`${limitedMotionCount} limited motion episodes`);
+  if (stiffnessCount > 0) evidence.push(`${stiffnessCount} stiffness episodes`);
+  if (crepitusCount > 0) evidence.push(`${crepitusCount} crepitus/clicking episodes`);
+  if (weaknessCount > 0) evidence.push(`${weaknessCount} weakness episodes`);
+  if (flareCount > 0) evidence.push(`${flareCount} flare-ups documented`);
+  if (functionalLossCount > 0) evidence.push(`${functionalLossCount} functional loss episodes`);
+
+  const totalEpisodes = tendinitisSymptoms.length;
+
+  evidence.push(`${totalEpisodes} total tendinitis episodes in ${evaluationPeriodDays} days`);
+
+  // Determine rating based on symptom patterns
+  if ((flareCount >= 3 && functionalLossCount >= 2) || (flareCount >= 4 && limitedMotionCount >= 3)) {
+    supportedRating = 20;
+    ratingRationale.push(
+        `${flareCount} flare-ups documented`,
+        `${functionalLossCount} episodes with functional loss`,
+        'Pattern suggests incapacitating exacerbations'
+    );
+    gaps.push('Imaging (ultrasound/MRI) showing tendon pathology required for rating');
+    gaps.push('Document if multiple tendons are affected');
+  } else if (flareCount >= 2 || totalEpisodes >= 10) {
+    supportedRating = '10-20';
+    ratingRationale.push(
+        `${flareCount} flare-ups documented`,
+        `${totalEpisodes} total tendinitis episodes`,
+        'Supports 10-20% rating depending on imaging and functional impact'
+    );
+    gaps.push('Imaging evidence needed for rating');
+    gaps.push('20% requires incapacitating exacerbations');
+  } else if (totalEpisodes >= 5) {
+    supportedRating = 10;
+    ratingRationale.push(
+        `${totalEpisodes} tendinitis episodes documented`,
+        'Supports 10% with imaging evidence'
+    );
+  } else {
+    supportedRating = '0-10';
+    ratingRationale.push(
+        'Limited tendinitis symptoms documented',
+        'Continue logging for stronger documentation'
+    );
+  }
+
+  // Documentation gaps
+  if (painCount === 0) {
+    gaps.push('Document pain along affected tendon');
+  }
+  if (limitedMotionCount === 0) {
+    gaps.push('Document limitation of motion');
+  }
+  if (flareCount === 0) {
+    gaps.push('Document flare-ups that limit activities');
+  }
+  gaps.push('Imaging (ultrasound/MRI) required for VA rating');
+  gaps.push('Document which specific tendon is affected');
+  gaps.push('Common types: rotator cuff, tennis/golfer\'s elbow, Achilles, patellar');
+  gaps.push('If ROM limitation is compensable, rate under specific joint code');
+
+  return {
+    condition: 'Tendinitis/Tenosynovitis',
+    diagnosticCode: '5024',
+    hasData: true,
+    supportedRating,
+    ratingRationale,
+    evidence,
+    gaps,
+    metrics: {
+      totalLogs: totalEpisodes,
+      painDays: painCount,
+      avgPain: avgSeverity,
+      limitedROM: limitedMotionCount,
+      flareUps: flareCount,
+    },
+    criteria: TENDINITIS_CRITERIA,
+    disclaimer: TENDINITIS_CRITERIA.disclaimer,
+  };
+};
+
+// ============================================
+// PHASE 4B: ANALYSIS FUNCTIONS - MYOSITIS (DC 5021)
+// ============================================
+
+/**
+ * Analyzes myositis symptom logs to determine supported VA rating level
+ * Rated as degenerative arthritis per 38 CFR 4.71a Note to DCs 5013-5024
+ */
+export const analyzeMyositisLogs = (logs, options = {}) => {
+  const { evaluationPeriodDays = 90 } = options;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  // Filter myositis symptom logs
+  const myositisSymptoms = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    return logDate >= cutoffDate && CONDITIONS.MYOSITIS.symptomIds.includes(getLogSymptomId(log));
+  });
+
+  if (myositisSymptoms.length === 0) {
+    return {
+      condition: 'Myositis',
+      diagnosticCode: '5021',
+      hasData: false,
+      message: 'No myositis symptoms logged in the evaluation period',
+    };
+  }
+
+  // Count symptom types
+  const painCount = myositisSymptoms.filter(s => getLogSymptomId(s) === 'myositis-muscle-pain').length;
+  const weaknessCount = myositisSymptoms.filter(s => getLogSymptomId(s) === 'myositis-weakness').length;
+  const fatigueCount = myositisSymptoms.filter(s => getLogSymptomId(s) === 'myositis-fatigue').length;
+  const limitedMotionCount = myositisSymptoms.filter(s => getLogSymptomId(s) === 'myositis-limited-motion').length;
+  const flareCount = myositisSymptoms.filter(s => getLogSymptomId(s) === 'myositis-flare').length;
+  const functionalLossCount = myositisSymptoms.filter(s => getLogSymptomId(s) === 'myositis-functional-loss').length;
+
+  // Calculate average severity
+  const painLogs = myositisSymptoms.filter(s =>
+      ['myositis-muscle-pain', 'myositis-flare'].includes(getLogSymptomId(s)) && s.severity
+  );
+  const avgSeverity = painLogs.length > 0
+      ? (painLogs.reduce((sum, log) => sum + log.severity, 0) / painLogs.length).toFixed(1)
+      : null;
+
+  const evidence = [];
+  const gaps = [];
+  const ratingRationale = [];
+  let supportedRating = 0;
+
+  // Build evidence
+  if (painCount > 0) evidence.push(`${painCount} muscle pain episodes documented`);
+  if (weaknessCount > 0) evidence.push(`${weaknessCount} weakness episodes`);
+  if (fatigueCount > 0) evidence.push(`${fatigueCount} fatigue episodes`);
+  if (limitedMotionCount > 0) evidence.push(`${limitedMotionCount} limited motion episodes`);
+  if (flareCount > 0) evidence.push(`${flareCount} flare-ups documented`);
+  if (functionalLossCount > 0) evidence.push(`${functionalLossCount} functional loss episodes`);
+
+  const totalEpisodes = myositisSymptoms.length;
+
+  evidence.push(`${totalEpisodes} total myositis episodes in ${evaluationPeriodDays} days`);
+
+  // Determine rating based on symptom patterns
+  if ((flareCount >= 3 && functionalLossCount >= 2) || (flareCount >= 4 && weaknessCount >= 5)) {
+    supportedRating = 20;
+    ratingRationale.push(
+        `${flareCount} flare-ups documented`,
+        `${functionalLossCount} episodes with functional loss`,
+        'Pattern suggests incapacitating exacerbations'
+    );
+    gaps.push('Lab values (CK, aldolase) showing muscle inflammation required');
+    gaps.push('Document if multiple muscle groups are affected');
+  } else if (flareCount >= 2 || totalEpisodes >= 10) {
+    supportedRating = '10-20';
+    ratingRationale.push(
+        `${flareCount} flare-ups documented`,
+        `${totalEpisodes} total myositis episodes`,
+        'Supports 10-20% rating depending on clinical findings'
+    );
+    gaps.push('Lab values and/or muscle biopsy needed for rating');
+    gaps.push('20% requires incapacitating exacerbations');
+  } else if (totalEpisodes >= 5) {
+    supportedRating = 10;
+    ratingRationale.push(
+        `${totalEpisodes} myositis episodes documented`,
+        'Supports 10% with documented diagnosis'
+    );
+  } else {
+    supportedRating = '0-10';
+    ratingRationale.push(
+        'Limited myositis symptoms documented',
+        'Continue logging for stronger documentation'
+    );
+  }
+
+  // Documentation gaps
+  if (painCount === 0) {
+    gaps.push('Document muscle pain episodes');
+  }
+  if (weaknessCount === 0) {
+    gaps.push('Document muscle weakness - key symptom');
+  }
+  if (flareCount === 0) {
+    gaps.push('Document flare-ups that limit activities');
+  }
+  gaps.push('Lab values (CK, aldolase) showing elevated muscle enzymes strengthen claim');
+  gaps.push('Muscle biopsy or MRI showing inflammation is strong evidence');
+  gaps.push('Document which muscle groups are affected');
+
+  return {
+    condition: 'Myositis',
+    diagnosticCode: '5021',
+    hasData: true,
+    supportedRating,
+    ratingRationale,
+    evidence,
+    gaps,
+    metrics: {
+      totalLogs: totalEpisodes,
+      painDays: painCount,
+      avgPain: avgSeverity,
+      limitedROM: limitedMotionCount,
+      flareUps: flareCount,
+    },
+    criteria: MYOSITIS_CRITERIA,
+    disclaimer: MYOSITIS_CRITERIA.disclaimer,
+  };
+};
+
+// ============================================
+// PHASE 4B: ANALYSIS FUNCTIONS - OSTEOMYELITIS (DC 5000)
+// ============================================
+
+/**
+ * Analyzes osteomyelitis symptom logs to determine supported VA rating level
+ * Has its own unique rating schedule
+ */
+export const analyzeOsteomyelitisLogs = (logs, options = {}) => {
+  const { evaluationPeriodDays = 90 } = options;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  // Filter osteomyelitis symptom logs
+  const osteoSymptoms = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    return logDate >= cutoffDate && CONDITIONS.OSTEOMYELITIS.symptomIds.includes(getLogSymptomId(log));
+  });
+
+  if (osteoSymptoms.length === 0) {
+    return {
+      condition: 'Osteomyelitis',
+      diagnosticCode: '5000',
+      hasData: false,
+      message: 'No osteomyelitis symptoms logged in the evaluation period',
+    };
+  }
+
+  // Count symptom types
+  const bonePainCount = osteoSymptoms.filter(s => getLogSymptomId(s) === 'osteo-bone-pain').length;
+  const feverCount = osteoSymptoms.filter(s => getLogSymptomId(s) === 'osteo-fever').length;
+  const drainageCount = osteoSymptoms.filter(s => getLogSymptomId(s) === 'osteo-drainage').length;
+  const constitutionalCount = osteoSymptoms.filter(s => getLogSymptomId(s) === 'osteo-constitutional').length;
+  const flareCount = osteoSymptoms.filter(s => getLogSymptomId(s) === 'osteo-flare').length;
+  const weightLossCount = osteoSymptoms.filter(s => getLogSymptomId(s) === 'osteo-weight-loss').length;
+  const fatigueCount = osteoSymptoms.filter(s => getLogSymptomId(s) === 'osteo-fatigue').length;
+
+  // Calculate average severity
+  const painLogs = osteoSymptoms.filter(s =>
+      ['osteo-bone-pain', 'osteo-flare'].includes(getLogSymptomId(s)) && s.severity
+  );
+  const avgSeverity = painLogs.length > 0
+      ? (painLogs.reduce((sum, log) => sum + log.severity, 0) / painLogs.length).toFixed(1)
+      : null;
+
+  const evidence = [];
+  const gaps = [];
+  const ratingRationale = [];
+  let supportedRating = 0;
+
+  // Build evidence
+  if (bonePainCount > 0) evidence.push(`${bonePainCount} bone pain episodes documented`);
+  if (feverCount > 0) evidence.push(`${feverCount} fever episodes`);
+  if (drainageCount > 0) evidence.push(`${drainageCount} draining sinus/wound documented`);
+  if (constitutionalCount > 0) evidence.push(`${constitutionalCount} constitutional symptom episodes`);
+  if (flareCount > 0) evidence.push(`${flareCount} active infection episodes`);
+  if (weightLossCount > 0) evidence.push(`${weightLossCount} weight loss episodes`);
+  if (fatigueCount > 0) evidence.push(`${fatigueCount} fatigue episodes`);
+
+  const totalEpisodes = osteoSymptoms.length;
+
+  evidence.push(`${totalEpisodes} total osteomyelitis episodes in ${evaluationPeriodDays} days`);
+
+  // Determine rating based on symptom patterns (DC 5000 specific criteria)
+  const hasConstitutionalSymptoms = constitutionalCount > 0 || (feverCount >= 3 && (weightLossCount > 0 || fatigueCount >= 3));
+  const hasDrainingSinus = drainageCount > 0;
+  const hasFrequentEpisodes = flareCount >= 4;
+
+  if (hasConstitutionalSymptoms && hasFrequentEpisodes) {
+    supportedRating = '60-100';
+    ratingRationale.push(
+        `${flareCount} active infection episodes documented`,
+        `${constitutionalCount} constitutional symptom episodes`,
+        'Pattern suggests frequent episodes with constitutional symptoms',
+        '100% requires pelvis/vertebrae, major joints, or multiple localization'
+    );
+    gaps.push('Document which bone(s) are affected');
+    gaps.push('100% requires pelvis, vertebrae, major joint involvement, or multiple sites');
+  } else if (hasDrainingSinus) {
+    supportedRating = '20-30';
+    ratingRationale.push(
+        `${drainageCount} draining sinus/wound episodes documented`,
+        '30% requires involucrum or sequestrum on imaging',
+        '20% requires active infection evidence within past 5 years'
+    );
+    gaps.push('Imaging showing involucrum/sequestrum needed for 30%');
+  } else if (flareCount >= 2 || (feverCount >= 2 && bonePainCount >= 3)) {
+    supportedRating = '10-20';
+    ratingRationale.push(
+        `${flareCount} active infection episodes`,
+        'Supports 10-20% based on infection history',
+        '20% requires active infection evidence within past 5 years'
+    );
+    gaps.push('Document infection episodes and treatment');
+    gaps.push('Need evidence of recurrent osteomyelitis (2+ episodes after initial)');
+  } else if (totalEpisodes >= 5) {
+    supportedRating = 10;
+    ratingRationale.push(
+        'History of osteomyelitis documented',
+        '10% requires inactive disease following repeated episodes'
+    );
+  } else {
+    supportedRating = '0-10';
+    ratingRationale.push(
+        'Limited osteomyelitis symptoms documented',
+        'Continue logging for stronger documentation'
+    );
+  }
+
+  // Documentation gaps
+  if (drainageCount === 0) {
+    gaps.push('Document any draining sinuses or wounds');
+  }
+  if (constitutionalCount === 0 && feverCount === 0) {
+    gaps.push('Document constitutional symptoms (fever, fatigue, weight loss)');
+  }
+  gaps.push('Imaging (X-ray, MRI, bone scan) showing bone involvement is essential');
+  gaps.push('Lab values (WBC, ESR, CRP) during active infection strengthen claim');
+  gaps.push('Document which specific bone(s) are affected');
+  gaps.push('Antibiotic treatment records strengthen claim');
+
+  return {
+    condition: 'Osteomyelitis',
+    diagnosticCode: '5000',
+    hasData: true,
+    supportedRating,
+    ratingRationale,
+    evidence,
+    gaps,
+    metrics: {
+      totalLogs: totalEpisodes,
+      painDays: bonePainCount,
+      avgPain: avgSeverity,
+      drainingSinus: drainageCount,
+      flareUps: flareCount,
+    },
+    criteria: OSTEOMYELITIS_CRITERIA,
+    disclaimer: OSTEOMYELITIS_CRITERIA.disclaimer,
+  };
+};
+
+// ============================================
+// PHASE 4B: ANALYSIS FUNCTIONS - MULTI-JOINT ARTHRITIS (DC 5002)
+// ============================================
+
+/**
+ * Analyzes multi-joint arthritis symptom logs to determine supported VA rating level
+ * Has its own unique rating schedule for active inflammatory process
+ */
+export const analyzeMultiJointArthritisLogs = (logs, options = {}) => {
+  const { evaluationPeriodDays = 90 } = options;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  // Filter multi-joint arthritis symptom logs
+  const mjaSymptoms = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    return logDate >= cutoffDate && CONDITIONS.MULTI_JOINT_ARTHRITIS.symptomIds.includes(getLogSymptomId(log));
+  });
+
+  if (mjaSymptoms.length === 0) {
+    return {
+      condition: 'Multi-Joint Arthritis (Active Process)',
+      diagnosticCode: '5002',
+      hasData: false,
+      message: 'No multi-joint arthritis symptoms logged in the evaluation period',
+    };
+  }
+
+  // Count symptom types
+  const jointPainCount = mjaSymptoms.filter(s => getLogSymptomId(s) === 'mja-joint-pain').length;
+  const jointSwellingCount = mjaSymptoms.filter(s => getLogSymptomId(s) === 'mja-joint-swelling').length;
+  const morningStiffnessCount = mjaSymptoms.filter(s => getLogSymptomId(s) === 'mja-morning-stiffness').length;
+  const fatigueCount = mjaSymptoms.filter(s => getLogSymptomId(s) === 'mja-fatigue').length;
+  const weightLossCount = mjaSymptoms.filter(s => getLogSymptomId(s) === 'mja-weight-loss').length;
+  const anemiaCount = mjaSymptoms.filter(s => getLogSymptomId(s) === 'mja-anemia').length;
+  const feverCount = mjaSymptoms.filter(s => getLogSymptomId(s) === 'mja-fever').length;
+  const flareCount = mjaSymptoms.filter(s => getLogSymptomId(s) === 'mja-flare').length;
+  const incapacitatingCount = mjaSymptoms.filter(s => getLogSymptomId(s) === 'mja-incapacitating').length;
+  const functionalLossCount = mjaSymptoms.filter(s => getLogSymptomId(s) === 'mja-functional-loss').length;
+
+  // Calculate average severity
+  const painLogs = mjaSymptoms.filter(s =>
+      ['mja-joint-pain', 'mja-flare', 'mja-incapacitating'].includes(getLogSymptomId(s)) && s.severity
+  );
+  const avgSeverity = painLogs.length > 0
+      ? (painLogs.reduce((sum, log) => sum + log.severity, 0) / painLogs.length).toFixed(1)
+      : null;
+
+  const evidence = [];
+  const gaps = [];
+  const ratingRationale = [];
+  let supportedRating = 0;
+
+  // Build evidence
+  if (jointPainCount > 0) evidence.push(`${jointPainCount} joint pain episodes documented`);
+  if (jointSwellingCount > 0) evidence.push(`${jointSwellingCount} joint swelling episodes`);
+  if (morningStiffnessCount > 0) evidence.push(`${morningStiffnessCount} morning stiffness episodes`);
+  if (fatigueCount > 0) evidence.push(`${fatigueCount} fatigue episodes`);
+  if (weightLossCount > 0) evidence.push(`${weightLossCount} weight loss documented`);
+  if (anemiaCount > 0) evidence.push(`${anemiaCount} anemia symptom episodes`);
+  if (feverCount > 0) evidence.push(`${feverCount} fever episodes`);
+  if (flareCount > 0) evidence.push(`${flareCount} flare-ups documented`);
+  if (incapacitatingCount > 0) evidence.push(`${incapacitatingCount} incapacitating episodes`);
+  if (functionalLossCount > 0) evidence.push(`${functionalLossCount} functional loss episodes`);
+
+  const totalEpisodes = mjaSymptoms.length;
+  const totalIncapacitating = incapacitatingCount + Math.floor(flareCount * 0.5); // flares partially count
+
+  evidence.push(`${totalEpisodes} total multi-joint arthritis episodes in ${evaluationPeriodDays} days`);
+
+  // Determine rating based on DC 5002 criteria
+  const hasConstitutionalSymptoms = weightLossCount > 0 || anemiaCount > 0 || feverCount >= 2;
+  const hasWeightLossAndAnemia = weightLossCount > 0 && anemiaCount > 0;
+
+  if (hasConstitutionalSymptoms && incapacitatingCount >= 4 && functionalLossCount >= 4) {
+    supportedRating = '60-100';
+    ratingRationale.push(
+        `${incapacitatingCount} incapacitating episodes documented`,
+        'Constitutional symptoms present (weight loss, anemia, fever)',
+        '100% requires totally incapacitating disease'
+    );
+  } else if (hasWeightLossAndAnemia || incapacitatingCount >= 4) {
+    supportedRating = 60;
+    ratingRationale.push(
+        'Weight loss AND anemia documented, OR',
+        `${incapacitatingCount} incapacitating exacerbations`,
+        'Supports 60% rating'
+    );
+  } else if (incapacitatingCount >= 3 || (flareCount >= 4 && functionalLossCount >= 3)) {
+    supportedRating = 40;
+    ratingRationale.push(
+        `${incapacitatingCount} incapacitating exacerbations`,
+        `${flareCount} flare-ups with ${functionalLossCount} functional loss episodes`,
+        'Supports 40% rating'
+    );
+  } else if (flareCount >= 1 || incapacitatingCount >= 1) {
+    supportedRating = 20;
+    ratingRationale.push(
+        `${flareCount + incapacitatingCount} exacerbations documented`,
+        'Supports 20% for 1-2 exacerbations per year'
+    );
+  } else if (totalEpisodes >= 5) {
+    supportedRating = '0-20';
+    ratingRationale.push(
+        'Multi-joint arthritis symptoms documented',
+        '20% requires documented exacerbations'
+    );
+  } else {
+    supportedRating = '0-20';
+    ratingRationale.push(
+        'Limited multi-joint arthritis symptoms documented',
+        'Continue logging for stronger documentation'
+    );
+  }
+
+  // Documentation gaps
+  if (incapacitatingCount === 0) {
+    gaps.push('Document incapacitating episodes (unable to work/perform daily activities)');
+  }
+  if (weightLossCount === 0) {
+    gaps.push('Document any weight loss');
+  }
+  if (anemiaCount === 0) {
+    gaps.push('Document anemia symptoms if present (fatigue, pallor)');
+  }
+  gaps.push('Lab values (ESR, CRP, RF, anti-CCP) showing active inflammation essential');
+  gaps.push('Document which joints are affected (need 2+ joints for DC 5002)');
+  gaps.push('Rheumatology records confirming diagnosis strengthen claim');
+  gaps.push('For chronic residuals after active process resolves, rate under DC 5003');
+
+  return {
+    condition: 'Multi-Joint Arthritis (Active Process)',
+    diagnosticCode: '5002',
+    hasData: true,
+    supportedRating,
+    ratingRationale,
+    evidence,
+    gaps,
+    metrics: {
+      totalLogs: totalEpisodes,
+      painDays: jointPainCount,
+      avgPain: avgSeverity,
+      incapacitatingEpisodes: incapacitatingCount,
+      flareUps: flareCount,
+    },
+    criteria: MULTI_JOINT_ARTHRITIS_CRITERIA,
+    disclaimer: MULTI_JOINT_ARTHRITIS_CRITERIA.disclaimer,
+  };
+};
+
+// ============================================
+// PHASE 4C: ANALYSIS FUNCTIONS - SPINE EXPANSION
+// DC 5235, 5236, 5238, 5240, 5241
+// ============================================
+
+/**
+ * Helper function to calculate spine rating based on General Rating Formula
+ * Used by all spine condition analysis functions
+ */
+const calculateSpineRating = (symptoms, metrics) => {
+  const {
+    limitedFlexionCount = 0,
+    limitedExtensionCount = 0,
+    muscleSpasmsCount = 0,
+    functionalLossCount = 0,
+    totalLogs = 0,
+    avgSeverity = 0,
+  } = metrics;
+
+  let supportedRating = 0;
+  const ratingRationale = [];
+
+  // Check for severe limitation indicators (40% rating)
+  if (avgSeverity >= 8 && functionalLossCount >= 5) {
+    supportedRating = 40;
+    ratingRationale.push(`Severe symptoms (avg severity ${avgSeverity.toFixed(1)}/10) suggest significant ROM limitation`);
+    ratingRationale.push(`${functionalLossCount} functional loss episodes documented`);
+    ratingRationale.push('Pattern consistent with forward flexion ≤30° - requires clinical ROM measurement to confirm');
+  }
+  // Check for moderate-severe indicators (20% rating)
+  else if (avgSeverity >= 6 || (limitedFlexionCount >= 3 && muscleSpasmsCount >= 2)) {
+    supportedRating = 20;
+    ratingRationale.push(`Moderate-severe symptoms documented (avg severity ${avgSeverity.toFixed(1)}/10)`);
+    if (limitedFlexionCount >= 3) {
+      ratingRationale.push(`${limitedFlexionCount} episodes of limited flexion logged`);
+    }
+    if (muscleSpasmsCount >= 2) {
+      ratingRationale.push(`${muscleSpasmsCount} muscle spasm episodes - may indicate abnormal gait/contour`);
+    }
+    ratingRationale.push('Pattern suggests forward flexion 30-60° or abnormal gait - requires clinical confirmation');
+  }
+  // Check for mild-moderate indicators (10% rating)
+  else if (totalLogs >= 3 || avgSeverity >= 4) {
+    supportedRating = 10;
+    ratingRationale.push(`${totalLogs} total symptom logs over evaluation period`);
+    ratingRationale.push(`Average severity ${avgSeverity.toFixed(1)}/10`);
+    ratingRationale.push('Pattern suggests mild-moderate limitation (forward flexion 60-85°)');
+  }
+  // Minimal symptoms
+  else if (totalLogs > 0) {
+    supportedRating = 0;
+    ratingRationale.push('Minimal symptoms documented');
+    ratingRationale.push('Continue logging to establish pattern if symptoms persist');
+  }
+
+  return { supportedRating, ratingRationale };
+};
+
+/**
+ * Analyze Vertebral Fracture logs for VA rating
+ * DC 5235 - Vertebral Fracture or Dislocation
+ */
+export const analyzeVertebralFractureLogs = (logs, options = {}) => {
+  const { evaluationPeriodDays = 90 } = options;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    return logDate >= cutoffDate && CONDITIONS.VERTEBRAL_FRACTURE.symptomIds.includes(getLogSymptomId(log));
+  });
+
+  if (relevantLogs.length === 0) {
+    return {
+      hasData: false,
+      condition: 'Vertebral Fracture or Dislocation',
+      diagnosticCode: '5235',
+      cfrReference: '38 CFR 4.71a',
+      supportedRating: null,
+      ratingRationale: [],
+      gaps: [
+        'No vertebral fracture symptoms logged in evaluation period',
+        'Log pain at fracture site and severity',
+        'Document any height loss or kyphosis',
+        'Track limited motion and functional limitations',
+        'Note radiating pain or numbness if present',
+      ],
+      metrics: { totalLogs: 0 },
+      criteria: VERTEBRAL_FRACTURE_CRITERIA,
+    };
+  }
+
+  // Count symptom types
+  const painCount = relevantLogs.filter(l => getLogSymptomId(l) === 'vfx-pain').length;
+  const limitedFlexionCount = relevantLogs.filter(l => getLogSymptomId(l) === 'vfx-limited-flexion').length;
+  const limitedExtensionCount = relevantLogs.filter(l => getLogSymptomId(l) === 'vfx-limited-extension').length;
+  const muscleSpasmsCount = relevantLogs.filter(l => getLogSymptomId(l) === 'vfx-muscle-spasm').length;
+  const heightLossCount = relevantLogs.filter(l => getLogSymptomId(l) === 'vfx-height-loss').length;
+  const kyphosisCount = relevantLogs.filter(l => getLogSymptomId(l) === 'vfx-kyphosis').length;
+  const radiculopathyCount = relevantLogs.filter(l => ['vfx-radicular', 'vfx-numbness'].includes(getLogSymptomId(l))).length;
+  const functionalLossCount = relevantLogs.filter(l => getLogSymptomId(l) === 'vfx-functional-loss').length;
+
+  // Calculate average severity
+  const severities = relevantLogs.filter(l => l.severity).map(l => l.severity);
+  const avgSeverity = severities.length > 0 ? severities.reduce((a, b) => a + b, 0) / severities.length : 0;
+
+  const metrics = {
+    totalLogs: relevantLogs.length,
+    painCount,
+    limitedFlexionCount,
+    limitedExtensionCount,
+    muscleSpasmsCount,
+    heightLossCount,
+    kyphosisCount,
+    radiculopathyCount,
+    functionalLossCount,
+    avgSeverity,
+  };
+
+  // Calculate rating using shared function
+  let { supportedRating, ratingRationale } = calculateSpineRating(relevantLogs, metrics);
+
+  // Special consideration for vertebral height loss (10% minimum)
+  if (heightLossCount > 0 && supportedRating < 10) {
+    supportedRating = 10;
+    ratingRationale.push('Vertebral height loss documented - qualifies for minimum 10% if ≥50% height loss confirmed on imaging');
+  }
+
+  // Add fracture-specific rationale
+  if (kyphosisCount > 0) {
+    ratingRationale.push(`Kyphosis (hunched posture) documented ${kyphosisCount} times - indicates structural change`);
+  }
+
+  // Build evidence array
+  const evidence = [];
+  evidence.push(`${relevantLogs.length} vertebral fracture symptoms logged`);
+  if (painCount > 0) evidence.push(`${painCount} pain episodes at fracture site`);
+  if (heightLossCount > 0) evidence.push(`Height loss/compression documented`);
+  if (radiculopathyCount > 0) evidence.push(`${radiculopathyCount} neurologic symptoms - may warrant separate rating`);
+
+  // Identify gaps
+  const gaps = [];
+  if (limitedFlexionCount === 0) gaps.push('Document limited forward bending (flexion) when it occurs');
+  if (heightLossCount === 0) gaps.push('If vertebral compression exists, log height loss - qualifies for minimum 10%');
+  if (radiculopathyCount === 0 && avgSeverity >= 5) gaps.push('Document any radiating pain or numbness for potential separate neurologic rating');
+  gaps.push('Obtain current imaging (X-ray/CT) documenting fracture and any height loss');
+  gaps.push('Get ROM measurements from healthcare provider using goniometer');
+
+  return {
+    hasData: true,
+    condition: 'Vertebral Fracture or Dislocation',
+    diagnosticCode: '5235',
+    cfrReference: '38 CFR 4.71a',
+    supportedRating,
+    ratingRationale,
+    evidence,
+    gaps,
+    metrics,
+    criteria: VERTEBRAL_FRACTURE_CRITERIA,
+    disclaimer: VERTEBRAL_FRACTURE_CRITERIA.disclaimer,
+  };
+};
+
+/**
+ * Analyze Sacroiliac Injury logs for VA rating
+ * DC 5236 - Sacroiliac Injury and Weakness
+ */
+export const analyzeSacroiliacInjuryLogs = (logs, options = {}) => {
+  const { evaluationPeriodDays = 90 } = options;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    return logDate >= cutoffDate && CONDITIONS.SACROILIAC_INJURY.symptomIds.includes(getLogSymptomId(log));
+  });
+
+  if (relevantLogs.length === 0) {
+    return {
+      hasData: false,
+      condition: 'Sacroiliac Injury and Weakness',
+      diagnosticCode: '5236',
+      cfrReference: '38 CFR 4.71a',
+      supportedRating: null,
+      ratingRationale: [],
+      gaps: [
+        'No sacroiliac symptoms logged in evaluation period',
+        'Log SI joint pain location and severity',
+        'Document referred pain to buttock, hip, groin, or leg',
+        'Track difficulty with sitting, standing, or walking',
+        'Note morning stiffness duration',
+      ],
+      metrics: { totalLogs: 0 },
+      criteria: SACROILIAC_INJURY_CRITERIA,
+    };
+  }
+
+  // Count symptom types
+  const siPainCount = relevantLogs.filter(l => getLogSymptomId(l) === 'si-pain').length;
+  const buttockPainCount = relevantLogs.filter(l => getLogSymptomId(l) === 'si-buttock-pain').length;
+  const referredPainCount = relevantLogs.filter(l => ['si-hip-pain', 'si-groin-pain', 'si-leg-pain'].includes(getLogSymptomId(l))).length;
+  const stiffnessCount = relevantLogs.filter(l => getLogSymptomId(l) === 'si-stiffness').length;
+  const instabilityCount = relevantLogs.filter(l => getLogSymptomId(l) === 'si-instability').length;
+  const functionalDifficultyCount = relevantLogs.filter(l => ['si-difficulty-sitting', 'si-difficulty-standing', 'si-difficulty-walking'].includes(getLogSymptomId(l))).length;
+  const limitedFlexionCount = relevantLogs.filter(l => getLogSymptomId(l) === 'si-limited-flexion').length;
+  const functionalLossCount = relevantLogs.filter(l => getLogSymptomId(l) === 'si-functional-loss').length;
+
+  // Calculate average severity
+  const severities = relevantLogs.filter(l => l.severity).map(l => l.severity);
+  const avgSeverity = severities.length > 0 ? severities.reduce((a, b) => a + b, 0) / severities.length : 0;
+
+  const metrics = {
+    totalLogs: relevantLogs.length,
+    siPainCount,
+    buttockPainCount,
+    referredPainCount,
+    stiffnessCount,
+    instabilityCount,
+    functionalDifficultyCount,
+    limitedFlexionCount,
+    functionalLossCount,
+    avgSeverity,
+  };
+
+  // Calculate rating
+  const { supportedRating, ratingRationale } = calculateSpineRating(relevantLogs, {
+    ...metrics,
+    muscleSpasmsCount: instabilityCount, // SI instability similar to spasm in impact
+  });
+
+  // Add SI-specific rationale
+  if (referredPainCount > 0) {
+    ratingRationale.push(`${referredPainCount} referred pain episodes (hip/groin/leg) - characteristic of SI dysfunction`);
+  }
+  if (functionalDifficultyCount > 0) {
+    ratingRationale.push(`${functionalDifficultyCount} episodes of difficulty sitting/standing/walking`);
+  }
+
+  // Build evidence
+  const evidence = [];
+  evidence.push(`${relevantLogs.length} SI joint symptoms logged`);
+  if (siPainCount > 0) evidence.push(`${siPainCount} direct SI joint pain episodes`);
+  if (buttockPainCount > 0) evidence.push(`${buttockPainCount} buttock pain episodes`);
+  if (instabilityCount > 0) evidence.push(`${instabilityCount} joint instability episodes`);
+
+  // Identify gaps
+  const gaps = [];
+  if (stiffnessCount === 0) gaps.push('Document morning stiffness and duration');
+  if (limitedFlexionCount === 0) gaps.push('Log episodes of limited forward bending');
+  if (referredPainCount === 0) gaps.push('Document if pain refers to hip, groin, or leg');
+  gaps.push('SI joint provocative tests (FABER, Gaenslen) by examiner support diagnosis');
+  gaps.push('ROM measurements of thoracolumbar spine needed for rating');
+
+  return {
+    hasData: true,
+    condition: 'Sacroiliac Injury and Weakness',
+    diagnosticCode: '5236',
+    cfrReference: '38 CFR 4.71a',
+    supportedRating,
+    ratingRationale,
+    evidence,
+    gaps,
+    metrics,
+    criteria: SACROILIAC_INJURY_CRITERIA,
+    disclaimer: SACROILIAC_INJURY_CRITERIA.disclaimer,
+  };
+};
+
+/**
+ * Analyze Spinal Stenosis logs for VA rating
+ * DC 5238 - Spinal Stenosis
+ */
+export const analyzeSpinalStenosisLogs = (logs, options = {}) => {
+  const { evaluationPeriodDays = 90 } = options;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    return logDate >= cutoffDate && CONDITIONS.SPINAL_STENOSIS.symptomIds.includes(getLogSymptomId(log));
+  });
+
+  if (relevantLogs.length === 0) {
+    return {
+      hasData: false,
+      condition: 'Spinal Stenosis',
+      diagnosticCode: '5238',
+      cfrReference: '38 CFR 4.71a',
+      supportedRating: null,
+      ratingRationale: [],
+      gaps: [
+        'No spinal stenosis symptoms logged in evaluation period',
+        'Log back pain episodes and severity',
+        'Document leg pain with walking (neurogenic claudication)',
+        'Track walking distance limitations',
+        'Note if sitting or bending forward provides relief',
+      ],
+      metrics: { totalLogs: 0 },
+      criteria: SPINAL_STENOSIS_CRITERIA,
+    };
+  }
+
+  // Count symptom types
+  const backPainCount = relevantLogs.filter(l => getLogSymptomId(l) === 'ss-back-pain').length;
+  const legPainCount = relevantLogs.filter(l => getLogSymptomId(l) === 'ss-leg-pain').length;
+  const legWeaknessCount = relevantLogs.filter(l => getLogSymptomId(l) === 'ss-leg-weakness').length;
+  const numbnessCount = relevantLogs.filter(l => getLogSymptomId(l) === 'ss-numbness').length;
+  const walkingDifficultyCount = relevantLogs.filter(l => getLogSymptomId(l) === 'ss-walking-difficulty').length;
+  const reliefSittingCount = relevantLogs.filter(l => getLogSymptomId(l) === 'ss-relief-sitting').length;
+  const balanceCount = relevantLogs.filter(l => getLogSymptomId(l) === 'ss-balance-problems').length;
+  const limitedFlexionCount = relevantLogs.filter(l => getLogSymptomId(l) === 'ss-limited-flexion').length;
+  const limitedExtensionCount = relevantLogs.filter(l => getLogSymptomId(l) === 'ss-limited-extension').length;
+  const bladderBowelCount = relevantLogs.filter(l => getLogSymptomId(l) === 'ss-bladder-bowel').length;
+  const functionalLossCount = relevantLogs.filter(l => getLogSymptomId(l) === 'ss-functional-loss').length;
+
+  // Calculate average severity
+  const severities = relevantLogs.filter(l => l.severity).map(l => l.severity);
+  const avgSeverity = severities.length > 0 ? severities.reduce((a, b) => a + b, 0) / severities.length : 0;
+
+  // Neurogenic claudication indicator (leg pain + relief with sitting)
+  const neurogenicClaudicationIndicator = legPainCount > 0 && (reliefSittingCount > 0 || walkingDifficultyCount > 0);
+
+  const metrics = {
+    totalLogs: relevantLogs.length,
+    backPainCount,
+    legPainCount,
+    legWeaknessCount,
+    numbnessCount,
+    walkingDifficultyCount,
+    reliefSittingCount,
+    balanceCount,
+    limitedFlexionCount,
+    limitedExtensionCount,
+    bladderBowelCount,
+    functionalLossCount,
+    avgSeverity,
+    neurogenicClaudicationIndicator,
+  };
+
+  // Calculate rating
+  const { supportedRating, ratingRationale } = calculateSpineRating(relevantLogs, metrics);
+
+  // Add stenosis-specific rationale
+  if (neurogenicClaudicationIndicator) {
+    ratingRationale.push('Neurogenic claudication pattern documented (leg symptoms + positional relief)');
+  }
+  if (walkingDifficultyCount > 0) {
+    ratingRationale.push(`${walkingDifficultyCount} episodes of walking difficulty - significant functional impact`);
+  }
+  if (bladderBowelCount > 0) {
+    ratingRationale.push(`Bladder/bowel changes documented - may warrant separate neurologic rating`);
+  }
+
+  // Build evidence
+  const evidence = [];
+  evidence.push(`${relevantLogs.length} spinal stenosis symptoms logged`);
+  if (legPainCount > 0) evidence.push(`${legPainCount} neurogenic claudication (leg pain) episodes`);
+  if (reliefSittingCount > 0) evidence.push(`Relief with sitting/bending forward documented (classic stenosis sign)`);
+  const neurologicCount = legWeaknessCount + numbnessCount + bladderBowelCount;
+  if (neurologicCount > 0) evidence.push(`${neurologicCount} neurologic symptoms - consider separate rating`);
+
+  // Identify gaps
+  const gaps = [];
+  if (reliefSittingCount === 0 && legPainCount > 0) {
+    gaps.push('Document if sitting or bending forward relieves leg symptoms (classic stenosis finding)');
+  }
+  if (walkingDifficultyCount === 0) gaps.push('Track walking distance limitations (e.g., can only walk X blocks)');
+  if (bladderBowelCount === 0 && avgSeverity >= 6) {
+    gaps.push('Document any bladder/bowel changes - may warrant separate rating');
+  }
+  gaps.push('MRI showing spinal stenosis is essential for diagnosis');
+  gaps.push('ROM measurements needed - stenosis is rated on spine motion limitation');
+  gaps.push('Neurologic symptoms (leg weakness, numbness) may warrant separate rating under DC 8520+');
+
+  return {
+    hasData: true,
+    condition: 'Spinal Stenosis',
+    diagnosticCode: '5238',
+    cfrReference: '38 CFR 4.71a',
+    supportedRating,
+    ratingRationale,
+    evidence,
+    gaps,
+    metrics,
+    criteria: SPINAL_STENOSIS_CRITERIA,
+    disclaimer: SPINAL_STENOSIS_CRITERIA.disclaimer,
+  };
+};
+
+/**
+ * Analyze Ankylosing Spondylitis logs for VA rating
+ * DC 5240 - Ankylosing Spondylitis
+ */
+export const analyzeAnkylosingSpondylitisLogs = (logs, options = {}) => {
+  const { evaluationPeriodDays = 90 } = options;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    return logDate >= cutoffDate && CONDITIONS.ANKYLOSING_SPONDYLITIS.symptomIds.includes(getLogSymptomId(log));
+  });
+
+  if (relevantLogs.length === 0) {
+    return {
+      hasData: false,
+      condition: 'Ankylosing Spondylitis',
+      diagnosticCode: '5240',
+      cfrReference: '38 CFR 4.71a',
+      supportedRating: null,
+      ratingRationale: [],
+      gaps: [
+        'No ankylosing spondylitis symptoms logged in evaluation period',
+        'Log inflammatory back pain episodes',
+        'Document morning stiffness (especially if >30 minutes)',
+        'Track night pain and sleep interruption',
+        'Note if exercise improves symptoms (characteristic of AS)',
+      ],
+      metrics: { totalLogs: 0 },
+      criteria: ANKYLOSING_SPONDYLITIS_CRITERIA,
+    };
+  }
+
+  // Count symptom types
+  const backPainCount = relevantLogs.filter(l => getLogSymptomId(l) === 'as-back-pain').length;
+  const morningStiffnessCount = relevantLogs.filter(l => getLogSymptomId(l) === 'as-morning-stiffness').length;
+  const nightPainCount = relevantLogs.filter(l => getLogSymptomId(l) === 'as-night-pain').length;
+  const limitedFlexionCount = relevantLogs.filter(l => getLogSymptomId(l) === 'as-limited-flexion').length;
+  const limitedExtensionCount = relevantLogs.filter(l => getLogSymptomId(l) === 'as-limited-extension').length;
+  const limitedLateralCount = relevantLogs.filter(l => getLogSymptomId(l) === 'as-limited-lateral').length;
+  const chestExpansionCount = relevantLogs.filter(l => getLogSymptomId(l) === 'as-chest-expansion').length;
+  const fatigueCount = relevantLogs.filter(l => getLogSymptomId(l) === 'as-fatigue').length;
+  const peripheralJointCount = relevantLogs.filter(l => getLogSymptomId(l) === 'as-peripheral-joint').length;
+  const enthesitisCount = relevantLogs.filter(l => getLogSymptomId(l) === 'as-enthesitis').length;
+  const flareCount = relevantLogs.filter(l => getLogSymptomId(l) === 'as-flare').length;
+  const fusionCount = relevantLogs.filter(l => getLogSymptomId(l) === 'as-fusion').length;
+  const functionalLossCount = relevantLogs.filter(l => getLogSymptomId(l) === 'as-functional-loss').length;
+
+  // Calculate average severity
+  const severities = relevantLogs.filter(l => l.severity).map(l => l.severity);
+  const avgSeverity = severities.length > 0 ? severities.reduce((a, b) => a + b, 0) / severities.length : 0;
+
+  // Inflammatory back pain indicators (improves with exercise, worse at rest, morning stiffness >30min)
+  const inflammatoryIndicators = morningStiffnessCount + nightPainCount;
+
+  const metrics = {
+    totalLogs: relevantLogs.length,
+    backPainCount,
+    morningStiffnessCount,
+    nightPainCount,
+    limitedFlexionCount,
+    limitedExtensionCount,
+    limitedLateralCount,
+    chestExpansionCount,
+    fatigueCount,
+    peripheralJointCount,
+    enthesitisCount,
+    flareCount,
+    fusionCount,
+    functionalLossCount,
+    avgSeverity,
+    inflammatoryIndicators,
+  };
+
+  // Calculate rating
+  let { supportedRating, ratingRationale } = calculateSpineRating(relevantLogs, {
+    ...metrics,
+    muscleSpasmsCount: flareCount, // Flares indicate active disease
+  });
+
+  // Ankylosis/fusion documented - higher ratings
+  if (fusionCount > 0) {
+    if (supportedRating < 40) {
+      supportedRating = 40;
+      ratingRationale.push('Spinal fusion symptoms documented - minimum 40% for favorable thoracolumbar ankylosis');
+    }
+    ratingRationale.push(`${fusionCount} fusion-related symptom logs - confirm ankylosis on imaging`);
+  }
+
+  // Add AS-specific rationale
+  if (inflammatoryIndicators >= 3) {
+    ratingRationale.push(`Inflammatory back pain pattern: ${morningStiffnessCount} morning stiffness, ${nightPainCount} night pain episodes`);
+  }
+  if (chestExpansionCount > 0) {
+    ratingRationale.push('Reduced chest expansion documented - indicates thoracic involvement');
+  }
+  if (enthesitisCount > 0) {
+    ratingRationale.push(`${enthesitisCount} enthesitis episodes - characteristic AS finding`);
+  }
+
+  // Build evidence
+  const evidence = [];
+  evidence.push(`${relevantLogs.length} ankylosing spondylitis symptoms logged`);
+  if (morningStiffnessCount > 0) evidence.push(`${morningStiffnessCount} prolonged morning stiffness episodes`);
+  if (nightPainCount > 0) evidence.push(`${nightPainCount} night pain episodes (awakening from sleep)`);
+  if (flareCount > 0) evidence.push(`${flareCount} disease flares documented`);
+  if (fusionCount > 0) evidence.push('Spinal fusion symptoms reported');
+
+  // Identify gaps
+  const gaps = [];
+  if (morningStiffnessCount === 0) gaps.push('Document morning stiffness and duration (>30 min characteristic of AS)');
+  if (nightPainCount === 0) gaps.push('Log night pain/sleep interruption if occurring');
+  if (chestExpansionCount === 0) gaps.push('Track chest expansion limitation if present');
+  gaps.push('HLA-B27 test and inflammatory markers (ESR, CRP) support diagnosis');
+  gaps.push('X-ray/MRI showing sacroiliitis or spinal fusion confirms diagnosis');
+  gaps.push('ROM measurements essential - AS typically causes progressive motion loss');
+
+  return {
+    hasData: true,
+    condition: 'Ankylosing Spondylitis',
+    diagnosticCode: '5240',
+    cfrReference: '38 CFR 4.71a',
+    supportedRating,
+    ratingRationale,
+    evidence,
+    gaps,
+    metrics,
+    criteria: ANKYLOSING_SPONDYLITIS_CRITERIA,
+    disclaimer: ANKYLOSING_SPONDYLITIS_CRITERIA.disclaimer,
+  };
+};
+
+/**
+ * Analyze Spinal Fusion logs for VA rating
+ * DC 5241 - Spinal Fusion
+ */
+export const analyzeSpinalFusionLogs = (logs, options = {}) => {
+  const { evaluationPeriodDays = 90 } = options;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    return logDate >= cutoffDate && CONDITIONS.SPINAL_FUSION.symptomIds.includes(getLogSymptomId(log));
+  });
+
+  if (relevantLogs.length === 0) {
+    return {
+      hasData: false,
+      condition: 'Spinal Fusion',
+      diagnosticCode: '5241',
+      cfrReference: '38 CFR 4.71a',
+      supportedRating: null,
+      ratingRationale: [],
+      gaps: [
+        'No spinal fusion symptoms logged in evaluation period',
+        'Log pain at fusion site and severity',
+        'Document stiffness and mobility limitations',
+        'Track adjacent segment pain if present',
+        'Note any hardware-related discomfort',
+      ],
+      metrics: { totalLogs: 0 },
+      criteria: SPINAL_FUSION_CRITERIA,
+    };
+  }
+
+  // Count symptom types
+  const fusionPainCount = relevantLogs.filter(l => getLogSymptomId(l) === 'sf-pain').length;
+  const adjacentPainCount = relevantLogs.filter(l => getLogSymptomId(l) === 'sf-adjacent-pain').length;
+  const stiffnessCount = relevantLogs.filter(l => getLogSymptomId(l) === 'sf-stiffness').length;
+  const limitedFlexionCount = relevantLogs.filter(l => getLogSymptomId(l) === 'sf-limited-flexion').length;
+  const limitedExtensionCount = relevantLogs.filter(l => getLogSymptomId(l) === 'sf-limited-extension').length;
+  const limitedRotationCount = relevantLogs.filter(l => getLogSymptomId(l) === 'sf-limited-rotation').length;
+  const muscleSpasmsCount = relevantLogs.filter(l => getLogSymptomId(l) === 'sf-muscle-spasm').length;
+  const radiculopathyCount = relevantLogs.filter(l => ['sf-radicular', 'sf-numbness'].includes(getLogSymptomId(l))).length;
+  const hardwarePainCount = relevantLogs.filter(l => getLogSymptomId(l) === 'sf-hardware-pain').length;
+  const functionalLossCount = relevantLogs.filter(l => getLogSymptomId(l) === 'sf-functional-loss').length;
+
+  // Calculate average severity
+  const severities = relevantLogs.filter(l => l.severity).map(l => l.severity);
+  const avgSeverity = severities.length > 0 ? severities.reduce((a, b) => a + b, 0) / severities.length : 0;
+
+  // Total ROM limitation indicators
+  const totalRomLimitation = limitedFlexionCount + limitedExtensionCount + limitedRotationCount;
+
+  const metrics = {
+    totalLogs: relevantLogs.length,
+    fusionPainCount,
+    adjacentPainCount,
+    stiffnessCount,
+    limitedFlexionCount,
+    limitedExtensionCount,
+    limitedRotationCount,
+    muscleSpasmsCount,
+    radiculopathyCount,
+    hardwarePainCount,
+    functionalLossCount,
+    avgSeverity,
+    totalRomLimitation,
+  };
+
+  // Calculate rating - spinal fusion inherently limits ROM
+  let { supportedRating, ratingRationale } = calculateSpineRating(relevantLogs, metrics);
+
+  // Spinal fusion typically warrants at least 10% due to ROM loss
+  if (supportedRating < 10 && relevantLogs.length >= 3) {
+    supportedRating = 10;
+    ratingRationale.push('Spinal fusion inherently limits ROM - minimum 10% typically appropriate');
+  }
+
+  // Multi-segment fusion indicators
+  if (stiffnessCount >= 5 && totalRomLimitation >= 5) {
+    if (supportedRating < 20) {
+      supportedRating = 20;
+      ratingRationale.push('Significant stiffness and ROM limitation pattern suggests multi-level or extensive fusion');
+    }
+  }
+
+  // Add fusion-specific rationale
+  if (adjacentPainCount > 0) {
+    ratingRationale.push(`${adjacentPainCount} adjacent segment pain episodes - common post-fusion complication`);
+  }
+  if (hardwarePainCount > 0) {
+    ratingRationale.push(`${hardwarePainCount} hardware-related pain episodes documented`);
+  }
+
+  // Build evidence
+  const evidence = [];
+  evidence.push(`${relevantLogs.length} post-fusion symptoms logged`);
+  if (fusionPainCount > 0) evidence.push(`${fusionPainCount} pain episodes at fusion site`);
+  if (stiffnessCount > 0) evidence.push(`${stiffnessCount} stiffness episodes`);
+  if (adjacentPainCount > 0) evidence.push(`Adjacent segment disease symptoms present`);
+  if (radiculopathyCount > 0) evidence.push(`${radiculopathyCount} neurologic symptoms - may warrant separate rating`);
+
+  // Identify gaps
+  const gaps = [];
+  if (limitedFlexionCount === 0) gaps.push('Document limited forward bending (most affected by fusion)');
+  if (stiffnessCount === 0) gaps.push('Log stiffness episodes - expected with fusion');
+  if (adjacentPainCount === 0 && avgSeverity >= 5) {
+    gaps.push('Track if pain occurs above/below fusion (adjacent segment disease)');
+  }
+  gaps.push('Surgical records documenting fusion levels are essential');
+  gaps.push('Post-operative imaging showing fusion status');
+  gaps.push('ROM measurements by healthcare provider - rating based on remaining motion');
+
+  return {
+    hasData: true,
+    condition: 'Spinal Fusion',
+    diagnosticCode: '5241',
+    cfrReference: '38 CFR 4.71a',
+    supportedRating,
+    ratingRationale,
+    evidence,
+    gaps,
+    metrics,
+    criteria: SPINAL_FUSION_CRITERIA,
+    disclaimer: SPINAL_FUSION_CRITERIA.disclaimer,
+  };
+};
+
+// ============================================
 // ANALYSIS FUNCTIONS - ASTHMA
 // ============================================
 
@@ -34471,6 +37304,446 @@ export const analyzeIlioinguinalNerveLogs = (logs, options = {}) => {
   };
 };
 
+// WEAK FOOT ANALYSIS FUNCTION (DC 5277)
+export const analyzeWeakFootLogs = (logs, options = {}) => {
+  const evaluationPeriodDays = options.evaluationPeriodDays || 365;
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp || log.date);
+    return logDate >= cutoffDate && CONDITIONS.WEAK_FOOT.symptomIds.includes(getLogSymptomId(log));
+  });
+
+  if (relevantLogs.length === 0) {
+    return { hasData: false, condition: 'Weak Foot', diagnosticCode: '5277' };
+  }
+
+  const totalLogs = relevantLogs.length;
+  const avgSeverity = relevantLogs.reduce((sum, log) => sum + (log.severity || 5), 0) / totalLogs;
+
+  // Count specific symptoms
+  const atrophyCount = relevantLogs.filter(l => getLogSymptomId(l) === 'wf-muscle-atrophy').length;
+  const circulationCount = relevantLogs.filter(l => getLogSymptomId(l) === 'wf-circulation-problems').length;
+  const weaknessCount = relevantLogs.filter(l => getLogSymptomId(l) === 'wf-weakness').length;
+  const functionalLossCount = relevantLogs.filter(l => getLogSymptomId(l) === 'wf-functional-loss').length;
+
+  // Check for bilateral indicators in notes
+  const bilateralMentions = relevantLogs.filter(l =>
+      l.notes?.toLowerCase().includes('bilateral') ||
+      l.notes?.toLowerCase().includes('both feet') ||
+      l.notes?.toLowerCase().includes('both sides')
+  ).length;
+
+  // DC 5277 provides 10% for bilateral weak foot
+  let supportedRating = 10;
+  const ratingRationale = [];
+  const gaps = [];
+
+  if (bilateralMentions > 0) {
+    ratingRationale.push(`Bilateral involvement documented in ${bilateralMentions} log(s)`);
+  } else {
+    gaps.push('Document bilateral (both feet) involvement - DC 5277 requires bilateral condition');
+  }
+
+  if (atrophyCount > 0) {
+    ratingRationale.push(`Muscle atrophy documented ${atrophyCount} time(s)`);
+  } else {
+    gaps.push('Document muscle atrophy in feet');
+  }
+
+  if (circulationCount > 0) {
+    ratingRationale.push(`Circulation problems noted ${circulationCount} time(s)`);
+  } else {
+    gaps.push('Document disturbed circulation (cold feet, color changes)');
+  }
+
+  if (weaknessCount > 0) {
+    ratingRationale.push(`Foot weakness logged ${weaknessCount} time(s)`);
+  }
+
+  if (functionalLossCount > 0) {
+    ratingRationale.push(`Functional loss documented ${functionalLossCount} time(s)`);
+  }
+
+  ratingRationale.push(`${totalLogs} total symptoms logged over evaluation period`);
+  ratingRationale.push(`Average severity: ${avgSeverity.toFixed(1)}/10`);
+
+  gaps.push('Identify and document underlying constitutional condition');
+
+  return {
+    hasData: true,
+    condition: 'Weak Foot (Bilateral)',
+    diagnosticCode: '5277',
+    cfrReference: '38 CFR 4.71a',
+    supportedRating,
+    ratingRationale,
+    gaps,
+    metrics: {
+      totalLogs,
+      avgSeverity,
+      atrophyCount,
+      circulationCount,
+      weaknessCount,
+      functionalLossCount,
+      bilateralMentions,
+    },
+    criteria: WEAK_FOOT_CRITERIA,
+  };
+};
+
+// CLAW FOOT (PES CAVUS) ANALYSIS FUNCTION (DC 5278)
+export const analyzeClawFootLogs = (logs, options = {}) => {
+  const evaluationPeriodDays = options.evaluationPeriodDays || 365;
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp || log.date);
+    return logDate >= cutoffDate && CONDITIONS.CLAW_FOOT.symptomIds.includes(getLogSymptomId(log));
+  });
+
+  if (relevantLogs.length === 0) {
+    return { hasData: false, condition: 'Claw Foot (Pes Cavus)', diagnosticCode: '5278' };
+  }
+
+  const totalLogs = relevantLogs.length;
+  const avgSeverity = relevantLogs.reduce((sum, log) => sum + (log.severity || 5), 0) / totalLogs;
+
+  // Count specific symptoms
+  const hammerToesCount = relevantLogs.filter(l => getLogSymptomId(l) === 'cf-hammer-toes').length;
+  const callositiesCount = relevantLogs.filter(l => getLogSymptomId(l) === 'cf-callosities').length;
+  const varusCount = relevantLogs.filter(l => getLogSymptomId(l) === 'cf-varus-deformity').length;
+  const droppedForefootCount = relevantLogs.filter(l => getLogSymptomId(l) === 'cf-dropped-forefoot').length;
+  const ankleLimitedCount = relevantLogs.filter(l => getLogSymptomId(l) === 'cf-ankle-dorsiflexion-limited').length;
+  const metatarsalTendernessCount = relevantLogs.filter(l => getLogSymptomId(l) === 'cf-metatarsal-tenderness').length;
+  const functionalLossCount = relevantLogs.filter(l => getLogSymptomId(l) === 'cf-functional-loss').length;
+
+  // Check for bilateral
+  const bilateralMentions = relevantLogs.filter(l =>
+      l.notes?.toLowerCase().includes('bilateral') ||
+      l.notes?.toLowerCase().includes('both feet')
+  ).length;
+  const isBilateral = bilateralMentions > 0;
+
+  // Determine severity indicators
+  const hasSevereFeatures = hammerToesCount > 0 && callositiesCount > 0 && varusCount > 0 && droppedForefootCount > 0;
+  const hasModerateFeatures = ankleLimitedCount > 0 && metatarsalTendernessCount > 0;
+
+  // Determine rating
+  let supportedRating = 10; // Base rating
+  const ratingRationale = [];
+  const gaps = [];
+
+  if (hasSevereFeatures && isBilateral) {
+    supportedRating = 50;
+    ratingRationale.push('Severe bilateral claw foot with hammer toes, callosities, varus deformity, and dropped forefoot');
+  } else if (hasSevereFeatures && !isBilateral) {
+    supportedRating = 30;
+    ratingRationale.push('Severe unilateral claw foot with hammer toes, callosities, varus deformity, and dropped forefoot');
+  } else if (hasModerateFeatures && isBilateral) {
+    supportedRating = 30;
+    ratingRationale.push('Bilateral claw foot with ankle limitation and metatarsal tenderness');
+  } else if (hasModerateFeatures && !isBilateral) {
+    supportedRating = 20;
+    ratingRationale.push('Unilateral claw foot with ankle limitation and metatarsal tenderness');
+  } else if (isBilateral) {
+    supportedRating = 10;
+    ratingRationale.push('Bilateral claw foot with basic findings');
+  } else {
+    supportedRating = 10;
+    ratingRationale.push('Unilateral claw foot with basic findings');
+  }
+
+  ratingRationale.push(`${totalLogs} total symptoms logged`);
+  ratingRationale.push(`Average severity: ${avgSeverity.toFixed(1)}/10`);
+
+  if (!isBilateral) {
+    gaps.push('Document if condition affects both feet (bilateral = higher rating)');
+  }
+  if (hammerToesCount === 0) {
+    gaps.push('Document hammer toe deformity if present');
+  }
+  if (callositiesCount === 0) {
+    gaps.push('Document painful callosities if present');
+  }
+  if (varusCount === 0) {
+    gaps.push('Document varus (heel inward tilting) if present');
+  }
+
+  return {
+    hasData: true,
+    condition: 'Claw Foot (Pes Cavus)',
+    diagnosticCode: '5278',
+    cfrReference: '38 CFR 4.71a',
+    supportedRating,
+    ratingRationale,
+    gaps,
+    metrics: {
+      totalLogs,
+      avgSeverity,
+      hammerToesCount,
+      callositiesCount,
+      varusCount,
+      droppedForefootCount,
+      ankleLimitedCount,
+      metatarsalTendernessCount,
+      functionalLossCount,
+      isBilateral,
+    },
+    criteria: CLAW_FOOT_CRITERIA,
+  };
+};
+
+// METATARSALGIA ANALYSIS FUNCTION (DC 5279)
+export const analyzeMetatarsalgiaLogs = (logs, options = {}) => {
+  const evaluationPeriodDays = options.evaluationPeriodDays || 365;
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp || log.date);
+    return logDate >= cutoffDate && CONDITIONS.METATARSALGIA.symptomIds.includes(getLogSymptomId(log));
+  });
+
+  if (relevantLogs.length === 0) {
+    return { hasData: false, condition: "Metatarsalgia (Morton's Disease)", diagnosticCode: '5279' };
+  }
+
+  const totalLogs = relevantLogs.length;
+  const avgSeverity = relevantLogs.reduce((sum, log) => sum + (log.severity || 5), 0) / totalLogs;
+
+  // Count specific symptoms
+  const ballFootPainCount = relevantLogs.filter(l => getLogSymptomId(l) === 'mt-ball-foot-pain').length;
+  const numbnessCount = relevantLogs.filter(l => getLogSymptomId(l) === 'mt-numbness-toes').length;
+  const burningCount = relevantLogs.filter(l => getLogSymptomId(l) === 'mt-burning').length;
+  const shootingPainCount = relevantLogs.filter(l => getLogSymptomId(l) === 'mt-shooting-pain').length;
+  const functionalLossCount = relevantLogs.filter(l => getLogSymptomId(l) === 'mt-functional-loss').length;
+
+  // DC 5279 only provides 10% rating
+  const supportedRating = 10;
+  const ratingRationale = [];
+  const gaps = [];
+
+  ratingRationale.push('DC 5279 provides 10% rating for metatarsalgia (unilateral or bilateral)');
+  ratingRationale.push(`${totalLogs} total symptoms logged over evaluation period`);
+  ratingRationale.push(`Average severity: ${avgSeverity.toFixed(1)}/10`);
+
+  if (ballFootPainCount > 0) {
+    ratingRationale.push(`Ball of foot pain documented ${ballFootPainCount} time(s)`);
+  }
+  if (shootingPainCount > 0) {
+    ratingRationale.push(`Shooting pain (Morton neuroma indicator) logged ${shootingPainCount} time(s)`);
+  }
+
+  if (avgSeverity >= 7) {
+    gaps.push('Severe symptoms may warrant extraschedular consideration - discuss with VSO');
+  }
+  if (functionalLossCount === 0) {
+    gaps.push('Document functional limitations (walking, standing restrictions)');
+  }
+
+  return {
+    hasData: true,
+    condition: "Metatarsalgia (Morton's Disease)",
+    diagnosticCode: '5279',
+    cfrReference: '38 CFR 4.71a',
+    supportedRating,
+    ratingRationale,
+    gaps,
+    metrics: {
+      totalLogs,
+      avgSeverity,
+      ballFootPainCount,
+      numbnessCount,
+      burningCount,
+      shootingPainCount,
+      functionalLossCount,
+    },
+    criteria: METATARSALGIA_CRITERIA,
+  };
+};
+
+// HALLUX VALGUS ANALYSIS FUNCTION (DC 5280)
+export const analyzeHalluxValgusLogs = (logs, options = {}) => {
+  const evaluationPeriodDays = options.evaluationPeriodDays || 365;
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp || log.date);
+    return logDate >= cutoffDate && CONDITIONS.HALLUX_VALGUS.symptomIds.includes(getLogSymptomId(log));
+  });
+
+  if (relevantLogs.length === 0) {
+    return { hasData: false, condition: 'Hallux Valgus (Bunion)', diagnosticCode: '5280' };
+  }
+
+  const totalLogs = relevantLogs.length;
+  const avgSeverity = relevantLogs.reduce((sum, log) => sum + (log.severity || 5), 0) / totalLogs;
+
+  // Count specific symptoms
+  const bunionPainCount = relevantLogs.filter(l => getLogSymptomId(l) === 'hv-bunion-pain').length;
+  const deformityCount = relevantLogs.filter(l => getLogSymptomId(l) === 'hv-deformity').length;
+  const postSurgicalCount = relevantLogs.filter(l => getLogSymptomId(l) === 'hv-post-surgical').length;
+  const functionalLossCount = relevantLogs.filter(l => getLogSymptomId(l) === 'hv-functional-loss').length;
+  const limitedMotionCount = relevantLogs.filter(l => getLogSymptomId(l) === 'hv-limited-motion').length;
+
+  // Check for surgical history or severe functional loss
+  const hasSurgery = postSurgicalCount > 0 || relevantLogs.some(l =>
+      l.notes?.toLowerCase().includes('surgery') ||
+      l.notes?.toLowerCase().includes('bunionectomy') ||
+      l.notes?.toLowerCase().includes('resection')
+  );
+  const isSevere = avgSeverity >= 7 && (functionalLossCount > 0 || limitedMotionCount > 2);
+
+  // Determine rating
+  let supportedRating = 0;
+  const ratingRationale = [];
+  const gaps = [];
+
+  if (hasSurgery) {
+    supportedRating = 10;
+    ratingRationale.push('Operated hallux valgus with metatarsal head resection');
+  } else if (isSevere) {
+    supportedRating = 10;
+    ratingRationale.push('Severe hallux valgus equivalent to functional amputation of great toe');
+    ratingRationale.push(`High average severity: ${avgSeverity.toFixed(1)}/10`);
+  } else {
+    supportedRating = 0;
+    ratingRationale.push('Hallux valgus present but does not meet criteria for 10% rating');
+    ratingRationale.push('Requires surgery with resection OR severity equivalent to great toe amputation');
+  }
+
+  ratingRationale.push(`${totalLogs} total symptoms logged`);
+
+  if (!hasSurgery && !isSevere) {
+    gaps.push('Document surgical history if bunionectomy performed');
+    gaps.push('Document severe functional loss equivalent to great toe amputation');
+  }
+  if (functionalLossCount === 0) {
+    gaps.push('Document functional limitations from bunion');
+  }
+
+  // Check for bilateral
+  const bilateralMentions = relevantLogs.filter(l =>
+      l.notes?.toLowerCase().includes('bilateral') ||
+      l.notes?.toLowerCase().includes('both feet')
+  ).length;
+  if (bilateralMentions > 0) {
+    ratingRationale.push('Note: Each foot can be rated separately if bilateral');
+  }
+
+  return {
+    hasData: true,
+    condition: 'Hallux Valgus (Bunion)',
+    diagnosticCode: '5280',
+    cfrReference: '38 CFR 4.71a',
+    supportedRating,
+    ratingRationale,
+    gaps,
+    metrics: {
+      totalLogs,
+      avgSeverity,
+      bunionPainCount,
+      deformityCount,
+      postSurgicalCount,
+      functionalLossCount,
+      limitedMotionCount,
+      hasSurgery,
+      isSevere,
+    },
+    criteria: HALLUX_VALGUS_CRITERIA,
+  };
+};
+
+// HALLUX RIGIDUS ANALYSIS FUNCTION (DC 5281)
+export const analyzeHalluxRigidusLogs = (logs, options = {}) => {
+  const evaluationPeriodDays = options.evaluationPeriodDays || 365;
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp || log.date);
+    return logDate >= cutoffDate && CONDITIONS.HALLUX_RIGIDUS.symptomIds.includes(getLogSymptomId(log));
+  });
+
+  if (relevantLogs.length === 0) {
+    return { hasData: false, condition: 'Hallux Rigidus', diagnosticCode: '5281' };
+  }
+
+  const totalLogs = relevantLogs.length;
+  const avgSeverity = relevantLogs.reduce((sum, log) => sum + (log.severity || 5), 0) / totalLogs;
+
+  // Count specific symptoms
+  const stiffnessCount = relevantLogs.filter(l => getLogSymptomId(l) === 'hr-toe-stiffness').length;
+  const painCount = relevantLogs.filter(l => getLogSymptomId(l) === 'hr-toe-pain').length;
+  const limitedMotionCount = relevantLogs.filter(l => getLogSymptomId(l) === 'hr-limited-motion').length;
+  const boneSpurCount = relevantLogs.filter(l => getLogSymptomId(l) === 'hr-bone-spur').length;
+  const grindingCount = relevantLogs.filter(l => getLogSymptomId(l) === 'hr-grinding').length;
+  const functionalLossCount = relevantLogs.filter(l => getLogSymptomId(l) === 'hr-functional-loss').length;
+
+  // Severe hallux rigidus gets 10%
+  const isSevere = avgSeverity >= 6 || limitedMotionCount >= 2 || functionalLossCount > 0;
+
+  let supportedRating = 0;
+  const ratingRationale = [];
+  const gaps = [];
+
+  if (isSevere) {
+    supportedRating = 10;
+    ratingRationale.push('Severe hallux rigidus - rated as severe hallux valgus per DC 5281');
+    if (limitedMotionCount > 0) {
+      ratingRationale.push(`Limited big toe motion documented ${limitedMotionCount} time(s)`);
+    }
+    if (functionalLossCount > 0) {
+      ratingRationale.push(`Functional loss documented ${functionalLossCount} time(s)`);
+    }
+  } else {
+    supportedRating = 0;
+    ratingRationale.push('Hallux rigidus present but not meeting severe criteria');
+  }
+
+  ratingRationale.push(`${totalLogs} total symptoms logged`);
+  ratingRationale.push(`Average severity: ${avgSeverity.toFixed(1)}/10`);
+
+  if (stiffnessCount > 0) {
+    ratingRationale.push(`Big toe stiffness logged ${stiffnessCount} time(s)`);
+  }
+
+  if (!isSevere) {
+    gaps.push('Document severity of limited motion (requires severe for 10% rating)');
+  }
+  if (limitedMotionCount === 0) {
+    gaps.push('Document limited dorsiflexion of big toe');
+  }
+  if (boneSpurCount === 0) {
+    gaps.push('Document bone spur if present on examination/X-ray');
+  }
+
+  return {
+    hasData: true,
+    condition: 'Hallux Rigidus',
+    diagnosticCode: '5281',
+    cfrReference: '38 CFR 4.71a',
+    supportedRating,
+    ratingRationale,
+    gaps,
+    metrics: {
+      totalLogs,
+      avgSeverity,
+      stiffnessCount,
+      painCount,
+      limitedMotionCount,
+      boneSpurCount,
+      grindingCount,
+      functionalLossCount,
+      isSevere,
+    },
+    criteria: HALLUX_RIGIDUS_CRITERIA,
+  };
+};
+
 // ============================================
 // HELPER FUNCTIONS
 // ============================================
@@ -34976,7 +38249,6 @@ export const getLateralFemoralCutaneousNerveRatingCriteria = (percent) => {
 export const getIlioinguinalNerveRatingCriteria = (percent) => {
   return ILIOINGUINAL_NERVE_CRITERIA.ratings.find(r => r.percent === percent) || null;
 };
-
 export const getJacksonianEpilepsyRatingCriteria = (percent) => {
   return  EPILEPSY_JACKSONIAN_CRITERIA.ratings.find(r => r.percent === percent) || null;
 };
@@ -34986,6 +38258,59 @@ export const getDiencephalicEpilepsyRatingCriteria = (percent) => {
 export const getPsychomotorEpilepsyRatingCriteria = (percent) => {
   return  EPILEPSY_PSYCHOMOTOR_CRITERIA.ratings.find(r => r.percent === percent) || null;
 };
+export const getGoutRatingCriteria = (percent) => {
+  return GOUT_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getBursitisRatingCriteria = (percent) => {
+  return BURSITIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getTendinitisRatingCriteria = (percent) => {
+  return TENDINITIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getMyositisRatingCriteria = (percent) => {
+  return MYOSITIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getOsteomyelitisRatingCriteria = (percent) => {
+  return OSTEOMYELITIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getMultiJointArthritisRatingCriteria = (percent) => {
+  return MULTI_JOINT_ARTHRITIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+// Phase 4C: Spine Expansion getRatingCriteria functions
+export const getVertebralFractureRatingCriteria = (percent) => {
+  return VERTEBRAL_FRACTURE_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getSacroiliacInjuryRatingCriteria = (percent) => {
+  return SACROILIAC_INJURY_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getSpinalStenosisRatingCriteria = (percent) => {
+  return SPINAL_STENOSIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getAnkylosingSpondylitisRatingCriteria = (percent) => {
+  return ANKYLOSING_SPONDYLITIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getSpinalFusionRatingCriteria = (percent) => {
+  return SPINAL_FUSION_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getWeakFootRatingCriteria = (percent) => {
+  return WEAK_FOOT_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getClawFootRatingCriteria = (percent) => {
+  return CLAW_FOOT_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getMetatarsalgiaRatingCriteria = (percent) => {
+  return METATARSALGIA_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getHalluxValgusRatingCriteria = (percent) => {
+  return HALLUX_VALGUS_CRITERIA.ratings.find(r => r.percent === percent) ||
+      null;
+};
+export const getHalluxRigidusRatingCriteria = (percent) => {
+  return HALLUX_RIGIDUS_CRITERIA.ratings.find(r => r.percent === percent) ||
+      null;
+};
+
+
 
 
 export const getAllLumbosacralStrainRatings = () => LUMBOSACRAL_STRAIN_CRITERIA.ratings;
@@ -35114,6 +38439,22 @@ export const getAllAddisonsDiseaseRatings = () => ADDISONS_DISEASE_CRITERIA.rati
 export const getAllCushingsSyndromeRatings = () => CUSHINGS_SYNDROME_CRITERIA.ratings;
 export const getAllDiabetesInsipidusRatings = () => DIABETES_INSIPIDUS_CRITERIA.ratings;
 export const getAllHyperaldosteronismRatings = () => HYPERALDOSTERONISM_CRITERIA.ratings;
+export const getAllGoutRatings = () => GOUT_CRITERIA.ratings;
+export const getAllBursitisRatings = () => BURSITIS_CRITERIA.ratings;
+export const getAllTendinitisRatings = () => TENDINITIS_CRITERIA.ratings;
+export const getAllMyositisRatings = () => MYOSITIS_CRITERIA.ratings;
+export const getAllOsteomyelitisRatings = () => OSTEOMYELITIS_CRITERIA.ratings;
+export const getAllMultiJointArthritisRatings = () => MULTI_JOINT_ARTHRITIS_CRITERIA.ratings;
+export const getAllVertebralFractureRatings = () => VERTEBRAL_FRACTURE_CRITERIA.ratings;
+export const getAllSacroiliacInjuryRatings = () => SACROILIAC_INJURY_CRITERIA.ratings;
+export const getAllSpinalStenosisRatings = () => SPINAL_STENOSIS_CRITERIA.ratings;
+export const getAllAnkylosingSpondylitisRatings = () => ANKYLOSING_SPONDYLITIS_CRITERIA.ratings;
+export const getAllSpinalFusionRatings = () => SPINAL_FUSION_CRITERIA.ratings;
+export const getAllWeakFootRatings = () => WEAK_FOOT_CRITERIA.ratings;
+export const getAllClawFootRatings = () => CLAW_FOOT_CRITERIA.ratings;
+export const getAllMetatarsalgiaRatings = () => METATARSALGIA_CRITERIA.ratings;
+export const getAllHalluxValgusRatings = () => HALLUX_VALGUS_CRITERIA.ratings;
+export const getAllHalluxRigidusRatings = () => HALLUX_RIGIDUS_CRITERIA.ratings;
 
 
 
@@ -35251,6 +38592,32 @@ export const getAddisonsDiseaseDefinition = (term) => ADDISONS_DISEASE_CRITERIA.
 export const getCushingsSyndromeDefinition = (term) => CUSHINGS_SYNDROME_CRITERIA.definitions[term] || null;
 export const getDiabetesInsipidusDefinition = (term) => DIABETES_INSIPIDUS_CRITERIA.definitions[term] || null;
 export const getHyperaldosteronismDefinition = (term) => HYPERALDOSTERONISM_CRITERIA.definitions[term] || null;
+export const getGoutDefinition = (term) => GOUT_CRITERIA.definitions[term] || null;
+export const getBursitisDefinition = (term) => BURSITIS_CRITERIA.definitions[term] || null;
+export const getTendinitisDefinition = (term) => TENDINITIS_CRITERIA.definitions[term] || null;
+export const getMyositisDefinition = (term) => MYOSITIS_CRITERIA.definitions[term] || null;
+export const getOsteomyelitisDefinition = (term) => OSTEOMYELITIS_CRITERIA.definitions[term] || null;
+export const getMultiJointArthritisDefinition = (term) => MULTI_JOINT_ARTHRITIS_CRITERIA.definitions[term] || null;
+export const getVertebralFractureDefinition = (term) => VERTEBRAL_FRACTURE_CRITERIA.definitions[term] || null;
+export const getSacroiliacInjuryDefinition = (term) => SACROILIAC_INJURY_CRITERIA.definitions[term] || null;
+export const getSpinalStenosisDefinition = (term) => SPINAL_STENOSIS_CRITERIA.definitions[term] || null;
+export const getAnkylosingSpondylitisDefinition = (term) => ANKYLOSING_SPONDYLITIS_CRITERIA.definitions[term] || null;
+export const getSpinalFusionDefinition = (term) => SPINAL_FUSION_CRITERIA.definitions[term] || null;
+export const getWeakFootDefinition = (term) => WEAK_FOOT_CRITERIA.definitions[term] || null;
+export const getClawFootDefinition = (term) => CLAW_FOOT_CRITERIA.definitions[term] || null;
+export const getMetatarsalgiaDefinition = (term) => METATARSALGIA_CRITERIA.definitions[term] || null;
+export const getHalluxValgusDefinition = (term) => HALLUX_VALGUS_CRITERIA.definitions[term] || null;
+export const getHalluxRigidusDefinition = (term) => HALLUX_RIGIDUS_CRITERIA.definitions[term] || null;
+
+
+
+
+
+
+
+
+
+
 
 
 

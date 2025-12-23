@@ -594,6 +594,224 @@ export const symptomCategories = [
       { id: 'arthritis-crepitus', name: 'Arthritis - Grinding/Crepitus' },
     ]
   },
+  // ============================================
+  // PHASE 4A: GOUT (DC 5017)
+  // Rated as degenerative arthritis per 38 CFR 4.71a Note to DCs 5013-5024
+  // ============================================
+  {
+    id: 'gout',
+    name: 'Gout (DC 5017)',
+    symptoms: [
+      { id: 'gout-acute-attack', name: 'Gout - Acute Attack/Flare' },
+      { id: 'gout-joint-pain', name: 'Gout - Joint Pain' },
+      { id: 'gout-swelling', name: 'Gout - Joint Swelling/Inflammation' },
+      { id: 'gout-redness', name: 'Gout - Redness/Warmth at Joint' },
+      { id: 'gout-limited-motion', name: 'Gout - Limited Range of Motion' },
+      { id: 'gout-tophi', name: 'Gout - Tophi (Urate Deposits)' },
+      { id: 'gout-tenderness', name: 'Gout - Joint Tenderness' },
+      { id: 'gout-functional-loss', name: 'Gout - Functional Loss During Attack' },
+    ]
+  },
+  // ============================================
+  // PHASE 4A: BURSITIS (DC 5019)
+  // Rated as degenerative arthritis per 38 CFR 4.71a Note to DCs 5013-5024
+  // ============================================
+  {
+    id: 'bursitis',
+    name: 'Bursitis (DC 5019)',
+    symptoms: [
+      { id: 'bursitis-pain', name: 'Bursitis - Pain at Joint' },
+      { id: 'bursitis-swelling', name: 'Bursitis - Swelling' },
+      { id: 'bursitis-tenderness', name: 'Bursitis - Tenderness on Pressure' },
+      { id: 'bursitis-limited-motion', name: 'Bursitis - Limited Range of Motion' },
+      { id: 'bursitis-stiffness', name: 'Bursitis - Joint Stiffness' },
+      { id: 'bursitis-warmth', name: 'Bursitis - Warmth at Joint' },
+      { id: 'bursitis-flare', name: 'Bursitis - Flare-Up/Exacerbation' },
+      { id: 'bursitis-functional-loss', name: 'Bursitis - Functional Loss' },
+    ]
+  },
+  // ============================================
+  // PHASE 4A: TENDINITIS/TENOSYNOVITIS (DC 5024)
+  // Rated as degenerative arthritis per 38 CFR 4.71a Note to DCs 5013-5024
+  // ============================================
+  {
+    id: 'tendinitis',
+    name: 'Tendinitis/Tenosynovitis (DC 5024)',
+    symptoms: [
+      { id: 'tendinitis-pain', name: 'Tendinitis - Pain Along Tendon' },
+      { id: 'tendinitis-swelling', name: 'Tendinitis - Swelling' },
+      { id: 'tendinitis-tenderness', name: 'Tendinitis - Tenderness to Touch' },
+      { id: 'tendinitis-limited-motion', name: 'Tendinitis - Limited Range of Motion' },
+      { id: 'tendinitis-stiffness', name: 'Tendinitis - Stiffness' },
+      { id: 'tendinitis-crepitus', name: 'Tendinitis - Crepitus/Clicking' },
+      { id: 'tendinitis-weakness', name: 'Tendinitis - Weakness in Affected Area' },
+      { id: 'tendinitis-flare', name: 'Tendinitis - Flare-Up/Exacerbation' },
+      { id: 'tendinitis-functional-loss', name: 'Tendinitis - Functional Loss' },
+    ]
+  },
+  // ============================================
+  // PHASE 4B: MYOSITIS (DC 5021)
+  // Rated as degenerative arthritis per 38 CFR 4.71a Note to DCs 5013-5024
+  // ============================================
+  {
+    id: 'myositis',
+    name: 'Myositis (DC 5021)',
+    symptoms: [
+      { id: 'myositis-muscle-pain', name: 'Myositis - Muscle Pain' },
+      { id: 'myositis-weakness', name: 'Myositis - Muscle Weakness' },
+      { id: 'myositis-tenderness', name: 'Myositis - Muscle Tenderness' },
+      { id: 'myositis-swelling', name: 'Myositis - Muscle Swelling' },
+      { id: 'myositis-stiffness', name: 'Myositis - Stiffness' },
+      { id: 'myositis-fatigue', name: 'Myositis - Fatigue' },
+      { id: 'myositis-limited-motion', name: 'Myositis - Limited Range of Motion' },
+      { id: 'myositis-flare', name: 'Myositis - Flare-Up/Exacerbation' },
+      { id: 'myositis-functional-loss', name: 'Myositis - Functional Loss' },
+    ]
+  },
+  // ============================================
+  // PHASE 4B: OSTEOMYELITIS (DC 5000)
+  // Has its own unique rating schedule
+  // ============================================
+  {
+    id: 'osteomyelitis',
+    name: 'Osteomyelitis (DC 5000)',
+    symptoms: [
+      { id: 'osteo-bone-pain', name: 'Osteomyelitis - Bone Pain' },
+      { id: 'osteo-fever', name: 'Osteomyelitis - Fever/Chills' },
+      { id: 'osteo-swelling', name: 'Osteomyelitis - Swelling at Site' },
+      { id: 'osteo-redness', name: 'Osteomyelitis - Redness/Warmth' },
+      { id: 'osteo-drainage', name: 'Osteomyelitis - Draining Sinus/Wound' },
+      { id: 'osteo-fatigue', name: 'Osteomyelitis - Fatigue/Malaise' },
+      { id: 'osteo-weight-loss', name: 'Osteomyelitis - Weight Loss' },
+      { id: 'osteo-limited-motion', name: 'Osteomyelitis - Limited Joint Motion' },
+      { id: 'osteo-flare', name: 'Osteomyelitis - Active Infection Episode' },
+      { id: 'osteo-constitutional', name: 'Osteomyelitis - Constitutional Symptoms' },
+    ]
+  },
+  // ============================================
+  // PHASE 4B: MULTI-JOINT ARTHRITIS (DC 5002)
+  // Rheumatoid arthritis, psoriatic arthritis, spondyloarthropathies
+  // Has its own unique rating schedule for active process
+  // ============================================
+  {
+    id: 'multi-joint-arthritis',
+    name: 'Multi-Joint Arthritis (DC 5002)',
+    symptoms: [
+      { id: 'mja-joint-pain', name: 'Multi-Joint Arthritis - Joint Pain' },
+      { id: 'mja-joint-swelling', name: 'Multi-Joint Arthritis - Joint Swelling' },
+      { id: 'mja-morning-stiffness', name: 'Multi-Joint Arthritis - Morning Stiffness' },
+      { id: 'mja-fatigue', name: 'Multi-Joint Arthritis - Fatigue' },
+      { id: 'mja-weight-loss', name: 'Multi-Joint Arthritis - Weight Loss' },
+      { id: 'mja-anemia', name: 'Multi-Joint Arthritis - Anemia Symptoms' },
+      { id: 'mja-fever', name: 'Multi-Joint Arthritis - Low-Grade Fever' },
+      { id: 'mja-flare', name: 'Multi-Joint Arthritis - Flare-Up/Exacerbation' },
+      { id: 'mja-incapacitating', name: 'Multi-Joint Arthritis - Incapacitating Episode' },
+      { id: 'mja-functional-loss', name: 'Multi-Joint Arthritis - Functional Loss' },
+      { id: 'mja-limited-motion', name: 'Multi-Joint Arthritis - Limited Range of Motion' },
+    ]
+  },
+  // ============================================
+  // PHASE 4C: SPINE EXPANSION
+  // DC 5235, 5236, 5238, 5240, 5241
+  // All rated under General Rating Formula for Diseases and Injuries of the Spine
+  // ============================================
+
+  // Vertebral Fracture or Dislocation (DC 5235)
+  {
+    id: 'vertebral-fracture',
+    name: 'Vertebral Fracture/Dislocation (DC 5235)',
+    symptoms: [
+      { id: 'vfx-pain', name: 'Vertebral Fracture - Pain at Fracture Site' },
+      { id: 'vfx-limited-flexion', name: 'Vertebral Fracture - Limited Forward Flexion' },
+      { id: 'vfx-limited-extension', name: 'Vertebral Fracture - Limited Extension' },
+      { id: 'vfx-stiffness', name: 'Vertebral Fracture - Spinal Stiffness' },
+      { id: 'vfx-muscle-spasm', name: 'Vertebral Fracture - Muscle Spasm' },
+      { id: 'vfx-radicular', name: 'Vertebral Fracture - Radiating Pain' },
+      { id: 'vfx-numbness', name: 'Vertebral Fracture - Numbness/Tingling' },
+      { id: 'vfx-height-loss', name: 'Vertebral Fracture - Height Loss (Compression)' },
+      { id: 'vfx-kyphosis', name: 'Vertebral Fracture - Kyphosis (Hunched Posture)' },
+      { id: 'vfx-functional-loss', name: 'Vertebral Fracture - Functional Loss' },
+    ]
+  },
+
+  // Sacroiliac Injury and Weakness (DC 5236)
+  {
+    id: 'sacroiliac',
+    name: 'Sacroiliac Injury/Weakness (DC 5236)',
+    symptoms: [
+      { id: 'si-pain', name: 'Sacroiliac - Pain in SI Joint/Low Back' },
+      { id: 'si-buttock-pain', name: 'Sacroiliac - Buttock Pain' },
+      { id: 'si-hip-pain', name: 'Sacroiliac - Hip Pain (Referred)' },
+      { id: 'si-groin-pain', name: 'Sacroiliac - Groin Pain (Referred)' },
+      { id: 'si-leg-pain', name: 'Sacroiliac - Leg Pain (Referred)' },
+      { id: 'si-stiffness', name: 'Sacroiliac - Morning Stiffness' },
+      { id: 'si-instability', name: 'Sacroiliac - Joint Instability/Shifting' },
+      { id: 'si-difficulty-sitting', name: 'Sacroiliac - Difficulty Sitting' },
+      { id: 'si-difficulty-standing', name: 'Sacroiliac - Difficulty Standing from Seated' },
+      { id: 'si-difficulty-walking', name: 'Sacroiliac - Difficulty Walking' },
+      { id: 'si-limited-flexion', name: 'Sacroiliac - Limited Forward Flexion' },
+      { id: 'si-functional-loss', name: 'Sacroiliac - Functional Loss' },
+    ]
+  },
+
+  // Spinal Stenosis (DC 5238)
+  {
+    id: 'spinal-stenosis',
+    name: 'Spinal Stenosis (DC 5238)',
+    symptoms: [
+      { id: 'ss-back-pain', name: 'Spinal Stenosis - Back Pain' },
+      { id: 'ss-leg-pain', name: 'Spinal Stenosis - Leg Pain (Neurogenic Claudication)' },
+      { id: 'ss-leg-weakness', name: 'Spinal Stenosis - Leg Weakness' },
+      { id: 'ss-numbness', name: 'Spinal Stenosis - Numbness/Tingling' },
+      { id: 'ss-walking-difficulty', name: 'Spinal Stenosis - Difficulty Walking (Limited Distance)' },
+      { id: 'ss-relief-sitting', name: 'Spinal Stenosis - Relief with Sitting/Bending Forward' },
+      { id: 'ss-balance-problems', name: 'Spinal Stenosis - Balance Problems' },
+      { id: 'ss-limited-flexion', name: 'Spinal Stenosis - Limited Forward Flexion' },
+      { id: 'ss-limited-extension', name: 'Spinal Stenosis - Limited Extension' },
+      { id: 'ss-bladder-bowel', name: 'Spinal Stenosis - Bladder/Bowel Changes' },
+      { id: 'ss-functional-loss', name: 'Spinal Stenosis - Functional Loss' },
+    ]
+  },
+
+  // Ankylosing Spondylitis (DC 5240)
+  {
+    id: 'ankylosing-spondylitis',
+    name: 'Ankylosing Spondylitis (DC 5240)',
+    symptoms: [
+      { id: 'as-back-pain', name: 'Ankylosing Spondylitis - Inflammatory Back Pain' },
+      { id: 'as-morning-stiffness', name: 'Ankylosing Spondylitis - Morning Stiffness (>30 min)' },
+      { id: 'as-night-pain', name: 'Ankylosing Spondylitis - Night Pain/Awakening' },
+      { id: 'as-limited-flexion', name: 'Ankylosing Spondylitis - Limited Forward Flexion' },
+      { id: 'as-limited-extension', name: 'Ankylosing Spondylitis - Limited Extension' },
+      { id: 'as-limited-lateral', name: 'Ankylosing Spondylitis - Limited Lateral Flexion' },
+      { id: 'as-chest-expansion', name: 'Ankylosing Spondylitis - Reduced Chest Expansion' },
+      { id: 'as-fatigue', name: 'Ankylosing Spondylitis - Fatigue' },
+      { id: 'as-peripheral-joint', name: 'Ankylosing Spondylitis - Peripheral Joint Pain' },
+      { id: 'as-enthesitis', name: 'Ankylosing Spondylitis - Enthesitis (Tendon/Ligament Pain)' },
+      { id: 'as-flare', name: 'Ankylosing Spondylitis - Flare-Up/Exacerbation' },
+      { id: 'as-fusion', name: 'Ankylosing Spondylitis - Spinal Fusion Symptoms' },
+      { id: 'as-functional-loss', name: 'Ankylosing Spondylitis - Functional Loss' },
+    ]
+  },
+
+  // Spinal Fusion (DC 5241) - Post-surgical
+  {
+    id: 'spinal-fusion',
+    name: 'Spinal Fusion (DC 5241)',
+    symptoms: [
+      { id: 'sf-pain', name: 'Spinal Fusion - Pain at Fusion Site' },
+      { id: 'sf-adjacent-pain', name: 'Spinal Fusion - Adjacent Segment Pain' },
+      { id: 'sf-stiffness', name: 'Spinal Fusion - Stiffness/Reduced Mobility' },
+      { id: 'sf-limited-flexion', name: 'Spinal Fusion - Limited Forward Flexion' },
+      { id: 'sf-limited-extension', name: 'Spinal Fusion - Limited Extension' },
+      { id: 'sf-limited-rotation', name: 'Spinal Fusion - Limited Rotation' },
+      { id: 'sf-muscle-spasm', name: 'Spinal Fusion - Muscle Spasm' },
+      { id: 'sf-radicular', name: 'Spinal Fusion - Radiating Pain' },
+      { id: 'sf-numbness', name: 'Spinal Fusion - Numbness/Tingling' },
+      { id: 'sf-hardware-pain', name: 'Spinal Fusion - Hardware-Related Pain' },
+      { id: 'sf-functional-loss', name: 'Spinal Fusion - Functional Loss' },
+    ]
+  },
   {
     id: 'skin',
     name: 'Skin Conditions',
@@ -2368,6 +2586,102 @@ export const symptomCategories = [
     ],
   },
 
+  // ============================================
+  // PHASE 4D: FOOT CONDITIONS
+  // ============================================
+
+  // Weak Foot - DC 5277
+  {
+    id: 'weak-foot',
+    name: 'Weak Foot (DC 5277)',
+    symptoms: [
+      { id: 'wf-muscle-atrophy', name: 'Weak Foot - Muscle Atrophy', description: 'Visible wasting or thinning of foot muscles' },
+      { id: 'wf-weakness', name: 'Weak Foot - Generalized Weakness', description: 'Difficulty with foot/toe movements, pushing off while walking' },
+      { id: 'wf-circulation-problems', name: 'Weak Foot - Circulation Problems', description: 'Cold feet, color changes, delayed capillary refill' },
+      { id: 'wf-numbness', name: 'Weak Foot - Numbness/Tingling', description: 'Sensory changes in feet from disturbed circulation' },
+      { id: 'wf-fatigue', name: 'Weak Foot - Foot Fatigue', description: 'Feet tire quickly with standing or walking' },
+      { id: 'wf-instability', name: 'Weak Foot - Instability', description: 'Feeling of foot giving way or lack of control' },
+      { id: 'wf-balance-difficulty', name: 'Weak Foot - Balance Difficulty', description: 'Difficulty maintaining balance due to foot weakness' },
+      { id: 'wf-gait-changes', name: 'Weak Foot - Gait Changes', description: 'Altered walking pattern due to weakness' },
+      { id: 'wf-cramping', name: 'Weak Foot - Cramping', description: 'Frequent cramping in foot muscles' },
+      { id: 'wf-functional-loss', name: 'Weak Foot - Functional Loss', description: 'Unable to perform activities requiring foot strength' },
+    ],
+  },
+
+  // Claw Foot (Pes Cavus) - DC 5278
+  {
+    id: 'claw-foot',
+    name: 'Claw Foot/Pes Cavus (DC 5278)',
+    symptoms: [
+      { id: 'cf-high-arch', name: 'Claw Foot - High Arch', description: 'Abnormally high arch that does not flatten with weight bearing' },
+      { id: 'cf-hammer-toes', name: 'Claw Foot - Hammer Toes', description: 'Toes bent at middle joint in claw-like position' },
+      { id: 'cf-toe-dorsiflexion', name: 'Claw Foot - Toe Dorsiflexion', description: 'Great toe or all toes tending to bend upward' },
+      { id: 'cf-plantar-fascia', name: 'Claw Foot - Shortened Plantar Fascia', description: 'Tight, contracted plantar fascia contributing to high arch' },
+      { id: 'cf-dropped-forefoot', name: 'Claw Foot - Dropped Forefoot', description: 'Forefoot positioned lower than hindfoot' },
+      { id: 'cf-callosities', name: 'Claw Foot - Painful Callosities', description: 'Painful calluses from abnormal pressure distribution' },
+      { id: 'cf-metatarsal-tenderness', name: 'Claw Foot - Metatarsal Head Tenderness', description: 'Pain and tenderness under ball of foot' },
+      { id: 'cf-varus-deformity', name: 'Claw Foot - Varus Deformity', description: 'Inward tilting of heel (hindfoot varus)' },
+      { id: 'cf-ankle-dorsiflexion-limited', name: 'Claw Foot - Limited Ankle Dorsiflexion', description: 'Reduced ability to flex ankle upward' },
+      { id: 'cf-shoe-fitting', name: 'Claw Foot - Shoe Fitting Problems', description: 'Difficulty finding shoes that fit properly' },
+      { id: 'cf-instability', name: 'Claw Foot - Ankle Instability', description: 'Frequent ankle sprains or feeling of instability' },
+      { id: 'cf-functional-loss', name: 'Claw Foot - Functional Loss', description: 'Walking or standing limitations due to deformity' },
+    ],
+  },
+
+  // Metatarsalgia (Morton's Disease) - DC 5279
+  {
+    id: 'metatarsalgia',
+    name: 'Metatarsalgia/Morton\'s Disease (DC 5279)',
+    symptoms: [
+      { id: 'mt-ball-foot-pain', name: 'Metatarsalgia - Ball of Foot Pain', description: 'Sharp, aching, or burning pain in ball of foot' },
+      { id: 'mt-numbness-toes', name: 'Metatarsalgia - Toe Numbness', description: 'Numbness or tingling in toes, especially 3rd and 4th' },
+      { id: 'mt-burning', name: 'Metatarsalgia - Burning Sensation', description: 'Burning sensation in ball of foot or between toes' },
+      { id: 'mt-shooting-pain', name: 'Metatarsalgia - Shooting Pain', description: 'Sharp shooting pain into toes (Morton\'s neuroma)' },
+      { id: 'mt-walking-pain', name: 'Metatarsalgia - Pain with Walking', description: 'Pain increases with walking, especially barefoot' },
+      { id: 'mt-standing-pain', name: 'Metatarsalgia - Pain with Standing', description: 'Pain worsens with prolonged standing' },
+      { id: 'mt-pebble-feeling', name: 'Metatarsalgia - Pebble in Shoe Feeling', description: 'Sensation of walking on a pebble or marble' },
+      { id: 'mt-relief-rest', name: 'Metatarsalgia - Relief with Rest', description: 'Pain improves when sitting or removing shoes' },
+      { id: 'mt-swelling', name: 'Metatarsalgia - Forefoot Swelling', description: 'Swelling in ball of foot area' },
+      { id: 'mt-functional-loss', name: 'Metatarsalgia - Functional Loss', description: 'Unable to walk or stand for extended periods' },
+    ],
+  },
+
+  // Hallux Valgus (Bunion) - DC 5280
+  {
+    id: 'hallux-valgus',
+    name: 'Hallux Valgus/Bunion (DC 5280)',
+    symptoms: [
+      { id: 'hv-bunion-pain', name: 'Hallux Valgus - Bunion Pain', description: 'Pain at base of big toe joint (MTP joint)' },
+      { id: 'hv-deformity', name: 'Hallux Valgus - Visible Deformity', description: 'Big toe angling toward other toes, bump on side' },
+      { id: 'hv-redness', name: 'Hallux Valgus - Redness/Inflammation', description: 'Redness and swelling over bunion area' },
+      { id: 'hv-callus', name: 'Hallux Valgus - Callus Formation', description: 'Calluses where big toe and second toe overlap' },
+      { id: 'hv-shoe-pain', name: 'Hallux Valgus - Pain with Shoes', description: 'Pain worsens with enclosed or narrow shoes' },
+      { id: 'hv-limited-motion', name: 'Hallux Valgus - Limited Big Toe Motion', description: 'Reduced range of motion in big toe joint' },
+      { id: 'hv-progressive', name: 'Hallux Valgus - Progressive Worsening', description: 'Deformity or pain gradually worsening over time' },
+      { id: 'hv-second-toe', name: 'Hallux Valgus - Second Toe Problems', description: 'Second toe being pushed out of position' },
+      { id: 'hv-post-surgical', name: 'Hallux Valgus - Post-Surgical Residuals', description: 'Ongoing symptoms after bunion surgery (resection)' },
+      { id: 'hv-functional-loss', name: 'Hallux Valgus - Functional Loss', description: 'Walking limitations due to bunion severity' },
+    ],
+  },
+
+  // Hallux Rigidus - DC 5281
+  {
+    id: 'hallux-rigidus',
+    name: 'Hallux Rigidus (DC 5281)',
+    symptoms: [
+      { id: 'hr-toe-stiffness', name: 'Hallux Rigidus - Big Toe Stiffness', description: 'Stiffness in big toe joint, especially in morning' },
+      { id: 'hr-toe-pain', name: 'Hallux Rigidus - Big Toe Pain', description: 'Pain in big toe joint during activity' },
+      { id: 'hr-limited-motion', name: 'Hallux Rigidus - Limited Dorsiflexion', description: 'Cannot bend big toe upward normally' },
+      { id: 'hr-bone-spur', name: 'Hallux Rigidus - Bone Spur', description: 'Bump on top of big toe joint from bone spur' },
+      { id: 'hr-walking-pain', name: 'Hallux Rigidus - Pain with Walking', description: 'Pain when pushing off while walking' },
+      { id: 'hr-swelling', name: 'Hallux Rigidus - Joint Swelling', description: 'Swelling around big toe joint' },
+      { id: 'hr-grinding', name: 'Hallux Rigidus - Grinding Sensation', description: 'Crepitus or grinding feeling in joint' },
+      { id: 'hr-cold-weather', name: 'Hallux Rigidus - Weather Sensitivity', description: 'Pain worsens in cold or damp weather' },
+      { id: 'hr-shoe-difficulty', name: 'Hallux Rigidus - Shoe Difficulty', description: 'Difficulty wearing shoes with heels or stiff soles' },
+      { id: 'hr-functional-loss', name: 'Hallux Rigidus - Functional Loss', description: 'Significant walking limitations due to rigid toe' },
+    ],
+  },
+
 ];
 
 // Helper function to determine if a category is a "child" of another
@@ -2476,6 +2790,22 @@ const getParentCategory = (categoryName) => {
   if (name.includes('jacksonian') || name.includes('focal epilepsy')) return 'epilepsy';
   if (name.includes('diencephalic')) return 'epilepsy';
   if (name.includes('psychomotor epilepsy')) return 'epilepsy';
+  if (name.includes('gout')) return 'musculoskeletal';
+  if (name.includes('bursitis')) return 'musculoskeletal';
+  if (name.includes('tendinitis') || name.includes('tenosynovitis')) return 'musculoskeletal';
+  if (name.includes('arthritis')) return 'musculoskeletal';
+  if (name.includes('myositis')) return 'musculoskeletal';
+  if (name.includes('osteomyelitis')) return 'musculoskeletal';
+  if (name.includes('vertebral fracture')) return 'spine';
+  if (name.includes('sacroiliac')) return 'spine';
+  if (name.includes('spinal stenosis')) return 'spine';
+  if (name.includes('ankylosing spondylitis')) return 'spine';
+  if (name.includes('spinal fusion')) return 'spine';
+  if (name.includes('weak foot')) return 'foot-ankle';
+  if (name.includes('claw foot') || name.includes('pes cavus')) return 'foot-ankle';
+  if (name.includes('metatarsalgia') || name.includes('morton')) return 'foot-ankle';
+  if (name.includes('hallux valgus') || name.includes('bunion')) return 'foot-ankle';
+  if (name.includes('hallux rigidus')) return 'foot-ankle';
   return null; // No parent, this is a standalone category
 };
 

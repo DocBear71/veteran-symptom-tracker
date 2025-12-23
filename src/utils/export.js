@@ -169,6 +169,22 @@ import {
   analyzeCushingsSyndromeLogs,
   analyzeDiabetesInsipidusLogs,
   analyzeHyperaldosteronismLogs,
+  analyzeGoutLogs,
+  analyzeBursitisLogs,
+  analyzeTendinitisLogs,
+  analyzeMyositisLogs,
+  analyzeOsteomyelitisLogs,
+  analyzeMultiJointArthritisLogs,
+  analyzeVertebralFractureLogs,
+  analyzeSacroiliacInjuryLogs,
+  analyzeSpinalStenosisLogs,
+  analyzeAnkylosingSpondylitisLogs,
+  analyzeSpinalFusionLogs,
+  analyzeWeakFootLogs,
+  analyzeClawFootLogs,
+  analyzeMetatarsalgiaLogs,
+  analyzeHalluxValgusLogs,
+  analyzeHalluxRigidusLogs,
 } from './ratingCriteria';
 
 // Appointment type labels for export
@@ -329,6 +345,83 @@ export const generatePDF = (dateRange = 'all', options = { includeAppointments: 
                     notes = painInfo.join(', ') + (notes !== '-' ? ` | ${notes}` : '');
                 }
             }
+
+            // Phase 1D: Add joint/ROM details
+            if (log.jointData) {
+              const jointInfo = [];
+              if (log.jointData.joint) {
+                const jointLabel = log.jointData.joint + (log.jointData.side ? ` (${log.jointData.side})` : '');
+                jointInfo.push(jointLabel);
+              }
+              if (log.jointData.romEstimate && log.jointData.romEstimate !== 'full') {
+                const romMap = {
+                  'slightly': 'ROM: slightly limited',
+                  'moderately': 'ROM: moderately limited',
+                  'severely': 'ROM: severely limited'
+                };
+                jointInfo.push(romMap[log.jointData.romEstimate] || `ROM: ${log.jointData.romEstimate}`);
+              }
+              if (log.jointData.morningStiffness && log.jointData.morningStiffness !== 'none') {
+                jointInfo.push(`Stiffness: ${log.jointData.morningStiffness}`);
+              }
+              if (log.jointData.swelling) jointInfo.push('Swelling');
+              if (log.jointData.instability) jointInfo.push('Instability');
+              if (log.jointData.locking) jointInfo.push('Locking');
+              if (log.jointData.grinding) jointInfo.push('Grinding/Crepitus');
+
+              if (jointInfo.length > 0) {
+                notes = 'Joint: ' + jointInfo.join(', ') + (notes !== '-' ? ` | ${notes}` : '');
+              }
+            }
+
+        // Phase 4C: Add spine condition details
+        if (log.spineData) {
+          const spineInfo = [];
+          if (log.spineData.spineLocation) {
+            const locationMap = {
+              'cervical': 'Cervical (Neck)',
+              'thoracic': 'Thoracic (Mid-Back)',
+              'lumbar': 'Lumbar (Low Back)',
+              'sacral': 'Sacral/SI Joint',
+              'multiple': 'Multiple Regions'
+            };
+            spineInfo.push(locationMap[log.spineData.spineLocation] || log.spineData.spineLocation);
+          }
+          if (log.spineData.fractureType) {
+            const fractureMap = {
+              'compression': 'Compression Fx',
+              'burst': 'Burst Fx',
+              'fracture-dislocation': 'Fx-Dislocation'
+            };
+            spineInfo.push(fractureMap[log.spineData.fractureType] || log.spineData.fractureType);
+          }
+          if (log.spineData.fusionLevels) {
+            const fusionMap = {
+              'single-level': '1-Level Fusion',
+              'two-level': '2-Level Fusion',
+              'multi-level': 'Multi-Level Fusion'
+            };
+            spineInfo.push(fusionMap[log.spineData.fusionLevels] || log.spineData.fusionLevels);
+          }
+          if (log.spineData.neurogenicClaudication) {
+            spineInfo.push('NEUROGENIC CLAUDICATION');
+          }
+          if (log.spineData.morningStiffnessDuration) {
+            const stiffnessMap = {
+              'less-than-30': 'AM Stiffness <30min',
+              '30-60': 'AM Stiffness 30-60min',
+              '1-2-hours': 'AM Stiffness 1-2hrs',
+              'more-than-2-hours': 'AM Stiffness >2hrs (INFLAMMATORY)',
+              'all-day': 'AM Stiffness All Day (INFLAMMATORY)'
+            };
+            spineInfo.push(stiffnessMap[log.spineData.morningStiffnessDuration] || `AM Stiffness: ${log.spineData.morningStiffnessDuration}`);
+          }
+
+          if (spineInfo.length > 0) {
+            notes = 'Spine: ' + spineInfo.join(', ') + (notes !== '-' ? ` | ${notes}` : '');
+          }
+        }
+
 
         // Phase 1E: Add seizure details
         if (log.seizureData) {
@@ -2843,6 +2936,26 @@ const analyzeAllConditions = (logs, options = {}) => {
         'cushings-syndrome': analyzeCushingsSyndromeLogs,
         'diabetes-insipidus': analyzeDiabetesInsipidusLogs,
         'hyperaldosteronism': analyzeHyperaldosteronismLogs,
+        // Phase 4A: Musculoskeletal - Gout, Bursitis, Tendinitis
+        'gout': analyzeGoutLogs,
+        'bursitis': analyzeBursitisLogs,
+        'tendinitis': analyzeTendinitisLogs,
+        // Phase 4B: Musculoskeletal - Myositis, Osteomyelitis, Multi-Joint Arthritis
+        'myositis': analyzeMyositisLogs,
+        'osteomyelitis': analyzeOsteomyelitisLogs,
+        'multi-joint-arthritis': analyzeMultiJointArthritisLogs,
+        // Phase 4C: Spine Conditions
+        'vertebral-fracture': analyzeVertebralFractureLogs,
+        'sacroiliac-injury': analyzeSacroiliacInjuryLogs,
+        'spinal-stenosis': analyzeSpinalStenosisLogs,
+        'ankylosing-spondylitis': analyzeAnkylosingSpondylitisLogs,
+        'spinal-fusion': analyzeSpinalFusionLogs,
+        // Phase 4D: Foot Conditions
+        'weak-foot': analyzeWeakFootLogs,
+        'claw-foot': analyzeClawFootLogs,
+        'metatarsalgia': analyzeMetatarsalgiaLogs,
+        'hallux-valgus': analyzeHalluxValgusLogs,
+        'hallux-rigidus': analyzeHalluxRigidusLogs,
       };
 
     const analyses = [];
@@ -3140,6 +3253,82 @@ export const generateVAClaimPackagePDF = async (dateRange = 'all', options = {})
           }
           if (painInfo.length > 0) {
             notes = painInfo.join(', ') + (notes !== '-' ? ` | ${notes}` : '');
+          }
+        }
+
+        // Phase 1D: Add joint/ROM details
+        if (log.jointData) {
+          const jointInfo = [];
+          if (log.jointData.joint) {
+            const jointLabel = log.jointData.joint + (log.jointData.side ? ` (${log.jointData.side})` : '');
+            jointInfo.push(jointLabel);
+          }
+          if (log.jointData.romEstimate && log.jointData.romEstimate !== 'full') {
+            const romMap = {
+              'slightly': 'ROM: slightly limited',
+              'moderately': 'ROM: moderately limited',
+              'severely': 'ROM: severely limited'
+            };
+            jointInfo.push(romMap[log.jointData.romEstimate] || `ROM: ${log.jointData.romEstimate}`);
+          }
+          if (log.jointData.morningStiffness && log.jointData.morningStiffness !== 'none') {
+            jointInfo.push(`Stiffness: ${log.jointData.morningStiffness}`);
+          }
+          if (log.jointData.swelling) jointInfo.push('Swelling');
+          if (log.jointData.instability) jointInfo.push('Instability');
+          if (log.jointData.locking) jointInfo.push('Locking');
+          if (log.jointData.grinding) jointInfo.push('Grinding/Crepitus');
+
+          if (jointInfo.length > 0) {
+            notes = 'Joint: ' + jointInfo.join(', ') + (notes !== '-' ? ` | ${notes}` : '');
+          }
+        }
+
+        // Phase 4C: Add spine condition details
+        if (log.spineData) {
+          const spineInfo = [];
+          if (log.spineData.spineLocation) {
+            const locationMap = {
+              'cervical': 'Cervical (Neck)',
+              'thoracic': 'Thoracic (Mid-Back)',
+              'lumbar': 'Lumbar (Low Back)',
+              'sacral': 'Sacral/SI Joint',
+              'multiple': 'Multiple Regions'
+            };
+            spineInfo.push(locationMap[log.spineData.spineLocation] || log.spineData.spineLocation);
+          }
+          if (log.spineData.fractureType) {
+            const fractureMap = {
+              'compression': 'Compression Fx',
+              'burst': 'Burst Fx',
+              'fracture-dislocation': 'Fx-Dislocation'
+            };
+            spineInfo.push(fractureMap[log.spineData.fractureType] || log.spineData.fractureType);
+          }
+          if (log.spineData.fusionLevels) {
+            const fusionMap = {
+              'single-level': '1-Level Fusion',
+              'two-level': '2-Level Fusion',
+              'multi-level': 'Multi-Level Fusion'
+            };
+            spineInfo.push(fusionMap[log.spineData.fusionLevels] || log.spineData.fusionLevels);
+          }
+          if (log.spineData.neurogenicClaudication) {
+            spineInfo.push('NEUROGENIC CLAUDICATION');
+          }
+          if (log.spineData.morningStiffnessDuration) {
+            const stiffnessMap = {
+              'less-than-30': 'AM Stiffness <30min',
+              '30-60': 'AM Stiffness 30-60min',
+              '1-2-hours': 'AM Stiffness 1-2hrs',
+              'more-than-2-hours': 'AM Stiffness >2hrs (INFLAMMATORY)',
+              'all-day': 'AM Stiffness All Day (INFLAMMATORY)'
+            };
+            spineInfo.push(stiffnessMap[log.spineData.morningStiffnessDuration] || `AM Stiffness: ${log.spineData.morningStiffnessDuration}`);
+          }
+
+          if (spineInfo.length > 0) {
+            notes = 'Spine: ' + spineInfo.join(', ') + (notes !== '-' ? ` | ${notes}` : '');
           }
         }
 

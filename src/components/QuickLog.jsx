@@ -98,6 +98,15 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
     grinding: false,
   });
 
+  // Phase 4C: Spine condition state
+  const [spineData, setSpineData] = useState({
+    spineLocation: '',
+    fractureType: '',
+    fusionLevels: '',
+    neurogenicClaudication: false,
+    morningStiffnessDuration: '',
+  });
+
   const [seizureData, setSeizureData] = useState({
     episodeType: '',
     duration: '',
@@ -773,6 +782,14 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
     'addisons-', 'cushings-', 'di-', 'haldo-'];
   const isEndocrineSymptomQL = endocrinePrefixes.some(prefix => selectedChronic?.symptomId?.startsWith(prefix));
 
+  // Phase 4D: Exclude foot condition symptoms from pain detection
+  const isFootConditionSymptomQL = (
+      selectedChronic?.symptomId?.startsWith('wf-') ||
+      selectedChronic?.symptomId?.startsWith('cf-') ||
+      selectedChronic?.symptomId?.startsWith('mt-') ||
+      selectedChronic?.symptomId?.startsWith('hv-') ||
+      selectedChronic?.symptomId?.startsWith('hr-')
+  );
 
   // Determine symptom type - EXPANDED DETECTION
   const isMigraine = selectedChronic?.symptomId === 'migraine';
@@ -834,7 +851,7 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
   ].includes(selectedChronic?.symptomId);
 
   // Pain: match ANY pain-related symptom only
-  const isPainRelated = !isPeripheralNerveSymptomQL && !isEndocrineSymptomQL && (
+  const isPainRelated = !isPeripheralNerveSymptomQL && !isEndocrineSymptomQL && !isFootConditionSymptomQL && (
       selectedChronic?.symptomId?.includes('pain') ||
       selectedChronic?.symptomId?.includes('-ache') ||
       selectedChronic?.symptomId?.includes('stiff') ||
@@ -869,7 +886,26 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
       ['shortness-breath', 'dyspnea', 'chest-tightness', 'respiratory-distress'].includes(selectedChronic?.symptomId);
 
   // Joint: match joint-related symptoms
-  const isJointRelated = selectedChronic?.symptomId?.startsWith('shoulder-') ||
+  // Phase 4A: Added gout-, bursitis-, tendinitis- prefixes
+  // Phase 4B: Selective detection - exclude systemic symptoms
+  const isSystemicSymptomQL = selectedChronic?.symptomId?.includes('-fatigue') ||
+      selectedChronic?.symptomId?.includes('-fever') ||
+      selectedChronic?.symptomId?.includes('-weight-loss') ||
+      selectedChronic?.symptomId?.includes('-anemia') ||
+      selectedChronic?.symptomId?.includes('-constitutional') ||
+      selectedChronic?.symptomId?.includes('-malaise');
+
+  // Phase 4C: Exclude spine symptoms from joint detection
+  const isSpineSymptomQL = (
+      selectedChronic?.symptomId?.startsWith('vfx-') ||
+      selectedChronic?.symptomId?.startsWith('si-') ||
+      selectedChronic?.symptomId?.startsWith('ss-') ||
+      selectedChronic?.symptomId?.startsWith('as-') ||
+      selectedChronic?.symptomId?.startsWith('sf-')
+  );
+
+  const isJointRelated = !isSystemicSymptomQL && !isSpineSymptomQL && (
+      selectedChronic?.symptomId?.startsWith('shoulder-') ||
       selectedChronic?.symptomId?.startsWith('knee-') ||
       selectedChronic?.symptomId?.startsWith('hip-') ||
       selectedChronic?.symptomId?.startsWith('ankle-') ||
@@ -879,11 +915,34 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
       selectedChronic?.symptomId?.startsWith('finger-') ||
       selectedChronic?.symptomId?.startsWith('foot-') ||
       selectedChronic?.symptomId?.startsWith('toe-') ||
+      selectedChronic?.symptomId?.startsWith('gout-') ||
+      selectedChronic?.symptomId?.startsWith('bursitis-') ||
+      selectedChronic?.symptomId?.startsWith('tendinitis-') ||
+      selectedChronic?.symptomId?.startsWith('myositis-') ||
+      selectedChronic?.symptomId?.startsWith('osteo-') ||
+      selectedChronic?.symptomId?.startsWith('mja-') ||
       selectedChronic?.symptomId?.includes('joint') ||
       selectedChronic?.symptomId?.includes('arthritis') ||
       selectedChronic?.symptomId?.includes('bursitis') ||
       selectedChronic?.symptomId?.includes('tendinitis') ||
-      ['rom-limited', 'swelling', 'instability', 'grinding', 'locking'].includes(selectedChronic?.symptomId);
+      selectedChronic?.symptomId?.includes('gout') ||
+      ['rom-limited', 'swelling', 'instability', 'grinding', 'locking'].includes(selectedChronic?.symptomId)
+  );
+
+// Phase 4C: Spine Condition detection
+  const isSpineConditionRelated = (
+      selectedChronic?.symptomId?.startsWith('vfx-') ||
+      selectedChronic?.symptomId?.startsWith('si-') ||
+      selectedChronic?.symptomId?.startsWith('ss-') ||
+      selectedChronic?.symptomId?.startsWith('as-') ||
+      selectedChronic?.symptomId?.startsWith('sf-') ||
+      selectedChronic?.symptomId?.includes('vertebral') ||
+      selectedChronic?.symptomId?.includes('sacroiliac') ||
+      selectedChronic?.symptomId?.includes('stenosis') ||
+      selectedChronic?.symptomId?.includes('ankylosing') ||
+      selectedChronic?.symptomId?.includes('spondylitis') ||
+      selectedChronic?.symptomId?.includes('spinal-fusion')
+  );
 
   // Seizure: match seizure-related symptoms
   const isSeizureRelated = selectedChronic?.symptomId?.includes('seizure') ||
@@ -1355,6 +1414,9 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
     setJointData({
       joint: '', side: '', romEstimate: '', morningStiffness: '',
       swelling: false, instability: false, locking: false, grinding: false,
+    });
+    setSpineData({ spineLocation: '', fractureType: '', fusionLevels: '',
+      neurogenicClaudication: false, morningStiffnessDuration: '',
     });
     setSeizureData({
       episodeType: '', duration: '', lossOfConsciousness: null,
@@ -1881,6 +1943,9 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
     }
     if (isJointRelated) {
       entry.jointData = { ...jointData };
+    }
+    if (isSpineConditionRelated) {
+      entry.spineData = { ...spineData };
     }
     if (isSeizureRelated) {
       entry.seizureData = { ...seizureData };
@@ -7692,6 +7757,58 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
                             <span className="text-sm text-gray-700 dark:text-gray-300">Uses brace/splint/AFO</span>
                           </label>
                         </div>
+                      </div>
+                  )}
+
+                  {/* Phase 4C: Spine Condition compact form */}
+                  {isSpineConditionRelated && (
+                      <div className="space-y-3 p-3 bg-amber-50 dark:bg-amber-900/20 rounded-lg border border-amber-200 dark:border-amber-700">
+                        <h4 className="font-medium text-amber-800 dark:text-amber-200 text-sm flex items-center gap-2">
+                          <span>🦴</span> Spine Details
+                        </h4>
+
+                        <select
+                            value={spineData.spineLocation}
+                            onChange={(e) => setSpineData(prev => ({ ...prev, spineLocation: e.target.value }))}
+                            className="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg
+                             bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                        >
+                          <option value="">Select spine region...</option>
+                          <option value="cervical">Cervical (Neck)</option>
+                          <option value="thoracic">Thoracic (Mid-Back)</option>
+                          <option value="lumbar">Lumbar (Low Back)</option>
+                          <option value="sacral">Sacral/SI Joint</option>
+                          <option value="multiple">Multiple Regions</option>
+                        </select>
+
+                        {/* Ankylosing Spondylitis - morning stiffness */}
+                        {selectedChronic?.symptomId?.startsWith('as-') && (
+                            <select
+                                value={spineData.morningStiffnessDuration}
+                                onChange={(e) => setSpineData(prev => ({ ...prev, morningStiffnessDuration: e.target.value }))}
+                                className="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg
+                               bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                            >
+                              <option value="">Morning stiffness duration...</option>
+                              <option value="less-than-30">&lt;30 minutes</option>
+                              <option value="30-60">30-60 minutes</option>
+                              <option value="1-2-hours">1-2 hours</option>
+                              <option value="more-than-2-hours">&gt;2 hours</option>
+                            </select>
+                        )}
+
+                        {/* Spinal Stenosis - claudication checkbox */}
+                        {selectedChronic?.symptomId?.startsWith('ss-') && (
+                            <label className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
+                              <input
+                                  type="checkbox"
+                                  checked={spineData.neurogenicClaudication}
+                                  onChange={(e) => setSpineData(prev => ({ ...prev, neurogenicClaudication: e.target.checked }))}
+                                  className="w-4 h-4 text-amber-600 rounded"
+                              />
+                              Neurogenic claudication (leg pain relieved by sitting)
+                            </label>
+                        )}
                       </div>
                   )}
 

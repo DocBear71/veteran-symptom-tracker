@@ -94,6 +94,17 @@ const EditLogModal = ({log, isOpen, onClose, onSaved}) => {
   });
 
   // ============================================
+  // PHASE 4C: SPINE CONDITION-SPECIFIC FIELDS
+  // ============================================
+  const [spineData, setSpineData] = useState({
+    spineLocation: '', // cervical, thoracic, lumbar, sacral, multiple
+    fractureType: '', // compression, burst, fracture-dislocation (for DC 5235)
+    fusionLevels: '', // single-level, two-level, multi-level (for DC 5241)
+    neurogenicClaudication: false, // for DC 5238 spinal stenosis
+    morningStiffnessDuration: '', // for DC 5240 ankylosing spondylitis
+  });
+
+  // ============================================
   // PHASE 1E: SEIZURE/EPISODE CONDITION-SPECIFIC FIELDS
   // ============================================
   const [seizureData, setSeizureData] = useState({
@@ -871,6 +882,18 @@ const EditLogModal = ({log, isOpen, onClose, onSaved}) => {
                 grinding: false,
               });
             }
+            if (log.spineData) {
+              setSpineData(log.spineData);
+            } else {
+              setSpineData({
+                spineLocation: '',
+                fractureType: '',
+                fusionLevels: '',
+                neurogenicClaudication: false,
+                morningStiffnessDuration: '',
+              });
+            }
+
             // PHASE 1E: Load Seizure data
             if (log.seizureData) {
               setSeizureData(log.seizureData);
@@ -1421,6 +1444,15 @@ const EditLogModal = ({log, isOpen, onClose, onSaved}) => {
           'addisons-', 'cushings-', 'di-', 'haldo-'];
         const isEndocrineSymptomELM = endocrinePrefixes.some(prefix => log?.symptomId?.startsWith(prefix));
 
+        // Phase 4D: Exclude foot condition symptoms from pain detection
+        const isFootConditionSymptomELM = (
+            log?.symptomId?.startsWith('wf-') ||
+            log?.symptomId?.startsWith('cf-') ||
+            log?.symptomId?.startsWith('mt-') ||
+            log?.symptomId?.startsWith('hv-') ||
+            log?.symptomId?.startsWith('hr-')
+        );
+
         const isMigraine = log?.symptomId === 'migraine';
 
         // Sleep: match sleep-related symptoms only
@@ -1481,7 +1513,7 @@ const EditLogModal = ({log, isOpen, onClose, onSaved}) => {
         ].includes(log?.symptomId);
 
         // Pain: match ANY pain-related symptom only
-        const isPainRelated = !isPeripheralNerveSymptomELM && !isEndocrineSymptomELM && (
+        const isPainRelated = !isPeripheralNerveSymptomELM && !isEndocrineSymptomELM && !isFootConditionSymptomELM && (
             log?.symptomId?.includes('pain') ||
             log?.symptomId?.includes('-ache') ||
             log?.symptomId?.includes('stiff') ||
@@ -1518,23 +1550,66 @@ const EditLogModal = ({log, isOpen, onClose, onSaved}) => {
             ['shortness-breath', 'dyspnea', 'chest-tightness', 'respiratory-distress'].includes(log?.symptomId) ||
             log?.respiratoryData; // Also show if log already has respiratory data
 
-        // PHASE 1D: Joint/ROM condition detection
-        const isJointRelated = log?.symptomId?.startsWith('shoulder-') ||
-            log?.symptomId?.startsWith('knee-') ||
-            log?.symptomId?.startsWith('hip-') ||
-            log?.symptomId?.startsWith('ankle-') ||
-            log?.symptomId?.startsWith('elbow-') ||
-            log?.symptomId?.startsWith('wrist-') ||
-            log?.symptomId?.startsWith('hand-') ||
-            log?.symptomId?.startsWith('finger-') ||
-            log?.symptomId?.startsWith('foot-') ||
-            log?.symptomId?.startsWith('toe-') ||
-            log?.symptomId?.includes('joint') ||
-            log?.symptomId?.includes('arthritis') ||
-            log?.symptomId?.includes('bursitis') ||
-            log?.symptomId?.includes('tendinitis') ||
-            ['rom-limited', 'swelling', 'instability', 'grinding', 'locking'].includes(log?.symptomId) ||
-            log?.jointData; // Also show if log already has joint data
+  // PHASE 1D: Joint/ROM condition detection
+  // Phase 4A: Added gout-, bursitis-, tendinitis- prefixes
+  // Phase 4B: Selective detection - exclude systemic symptoms
+  const isSystemicSymptomELM = log?.symptomId?.includes('-fatigue') ||
+      log?.symptomId?.includes('-fever') ||
+      log?.symptomId?.includes('-weight-loss') ||
+      log?.symptomId?.includes('-anemia') ||
+      log?.symptomId?.includes('-constitutional') ||
+      log?.symptomId?.includes('-malaise');
+
+  // Phase 4C: Exclude spine symptoms from joint detection
+  const isSpineSymptomELM = (
+      log?.symptomId?.startsWith('vfx-') ||
+      log?.symptomId?.startsWith('si-') ||
+      log?.symptomId?.startsWith('ss-') ||
+      log?.symptomId?.startsWith('as-') ||
+      log?.symptomId?.startsWith('sf-')
+  );
+
+  const isJointRelated = log?.jointData || (!isSystemicSymptomELM && !isSpineSymptomELM && (
+      log?.symptomId?.startsWith('shoulder-') ||
+      log?.symptomId?.startsWith('knee-') ||
+      log?.symptomId?.startsWith('hip-') ||
+      log?.symptomId?.startsWith('ankle-') ||
+      log?.symptomId?.startsWith('elbow-') ||
+      log?.symptomId?.startsWith('wrist-') ||
+      log?.symptomId?.startsWith('hand-') ||
+      log?.symptomId?.startsWith('finger-') ||
+      log?.symptomId?.startsWith('foot-') ||
+      log?.symptomId?.startsWith('toe-') ||
+      log?.symptomId?.startsWith('gout-') ||
+      log?.symptomId?.startsWith('bursitis-') ||
+      log?.symptomId?.startsWith('tendinitis-') ||
+      log?.symptomId?.startsWith('myositis-') ||
+      log?.symptomId?.startsWith('osteo-') ||
+      log?.symptomId?.startsWith('mja-') ||
+      log?.symptomId?.includes('joint') ||
+      log?.symptomId?.includes('arthritis') ||
+      log?.symptomId?.includes('bursitis') ||
+      log?.symptomId?.includes('tendinitis') ||
+      log?.symptomId?.includes('gout') ||
+      ['rom-limited', 'swelling', 'instability', 'grinding', 'locking'].includes(log?.symptomId)
+  ));
+
+  // PHASE 4C: Spine Condition detection
+  // DC 5235 (Vertebral Fracture), 5236 (Sacroiliac), 5238 (Stenosis), 5240 (Ankylosing Spondylitis), 5241 (Spinal Fusion)
+  const isSpineConditionRelated = (
+      log?.symptomId?.startsWith('vfx-') ||      // Vertebral Fracture
+      log?.symptomId?.startsWith('si-') ||       // Sacroiliac
+      log?.symptomId?.startsWith('ss-') ||       // Spinal Stenosis
+      log?.symptomId?.startsWith('as-') ||       // Ankylosing Spondylitis
+      log?.symptomId?.startsWith('sf-') ||       // Spinal Fusion
+      log?.symptomId?.includes('vertebral') ||
+      log?.symptomId?.includes('sacroiliac') ||
+      log?.symptomId?.includes('stenosis') ||
+      log?.symptomId?.includes('ankylosing') ||
+      log?.symptomId?.includes('spondylitis') ||
+      log?.symptomId?.includes('spinal-fusion') ||
+      log?.spineData  // Also show if log already has spine data
+  );
 
   // PHASE 1E: Seizure/Episode condition detection
   const isSeizureRelated = log?.symptomId?.includes('seizure') ||
@@ -1558,7 +1633,7 @@ const EditLogModal = ({log, isOpen, onClose, onSaved}) => {
 
   const isPsychomotorEpilepsyELM = log?.symptomId?.startsWith('psych-') ||
       log?.symptomId === 'seizure-psychomotor' ||
-      log?.seizureData?.automaticState !== null ||
+      (log?.seizureData?.automaticState !== null && log?.seizureData?.automaticState !== undefined) ||
       (log?.seizureData?.automatisms && log?.seizureData?.automatisms.length > 0);
 
         // PHASE 2: Eye/Vision detection
@@ -2141,25 +2216,20 @@ const EditLogModal = ({log, isOpen, onClose, onSaved}) => {
           if (isPainRelated) updates.painData = painData;
           // PHASE 1B: Save GI data
           if (isGIRelated) updates.giData = giData;
-
           // PHASE 1C: Save Respiratory data
           if (isRespiratoryRelated) updates.respiratoryData = respiratoryData;
-
           // PHASE 1D: Save Joint data
           if (isJointRelated) updates.jointData = jointData;
-
+          // Phase 4C: Spine Data
+          if (isSpineConditionRelated) updates.spineData = spineData;
           // PHASE 1E: Save Seizure data
           if (isSeizureRelated) updates.seizureData = seizureData;
-
           // Phase 3: Save genitourinary data
           if (isGenitourinaryRelated) updates.genitourinaryData = genitourinaryData;
-
           // PHASE 2: Add eye data
           if (isEyeRelated) updates.eyeData = { ...eyeData };
-
           // Phase 4: Save gynecological data
           if (isGynecologicalRelated) updates.gynecologicalData = gynecologicalData;
-
           // Phase 5: Add Hemic/Lymphatic Data
           if (isAnemiaRelated) updates.anemiaData = { ...anemiaData };
           if (isSickleCellRelated) updates.sickleCellData = { ...sickleCellData };
@@ -2197,7 +2267,6 @@ const EditLogModal = ({log, isOpen, onClose, onSaved}) => {
             const duration = dissociativeData.durationAmount && dissociativeData.durationUnit
                 ? `${dissociativeData.durationAmount} ${dissociativeData.durationUnit.toLowerCase()}`
                 : '';
-
             updates.dissociativeData = {
               ...dissociativeData,
               duration // Keep the combined string for backward compatibility
@@ -2243,8 +2312,6 @@ const EditLogModal = ({log, isOpen, onClose, onSaved}) => {
               nerveLocation: isUpperExtremityNerveRelated ? 'upper' : 'lower',
             };
           }
-
-
 
           const result = updateSymptomLog(log.id, updates);
 
@@ -10708,6 +10775,117 @@ const EditLogModal = ({log, isOpen, onClose, onSaved}) => {
                             />
                           </div>
                         </div>
+                      </div>
+                  )}
+
+                  {/* Phase 4C: Spine Condition Form */}
+                  {isSpineConditionRelated && (
+                      <div className="space-y-4 p-4 bg-amber-50 dark:bg-amber-900/20 rounded-lg border border-amber-200 dark:border-amber-700">
+                        <h4 className="font-medium text-amber-800 dark:text-amber-200 flex items-center gap-2">
+                          <span>🦴</span> Spine Condition Details
+                        </h4>
+
+                        {/* Spine Location */}
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            Spine Region Affected
+                          </label>
+                          <select
+                              value={spineData.spineLocation}
+                              onChange={(e) => setSpineData(prev => ({ ...prev, spineLocation: e.target.value }))}
+                              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg
+                               bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                          >
+                            <option value="">Select region...</option>
+                            <option value="cervical">Cervical (Neck)</option>
+                            <option value="thoracic">Thoracic (Mid-Back)</option>
+                            <option value="lumbar">Lumbar (Low Back)</option>
+                            <option value="sacral">Sacral/SI Joint</option>
+                            <option value="multiple">Multiple Regions</option>
+                          </select>
+                        </div>
+
+                        {/* Vertebral Fracture specific */}
+                        {log?.symptomId?.startsWith('vfx-') && (
+                            <div>
+                              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                Fracture Type (if known)
+                              </label>
+                              <select
+                                  value={spineData.fractureType}
+                                  onChange={(e) => setSpineData(prev => ({ ...prev, fractureType: e.target.value }))}
+                                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg
+                                 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                              >
+                                <option value="">Select type...</option>
+                                <option value="compression">Compression Fracture</option>
+                                <option value="burst">Burst Fracture</option>
+                                <option value="fracture-dislocation">Fracture-Dislocation</option>
+                                <option value="other">Other/Unknown</option>
+                              </select>
+                            </div>
+                        )}
+
+                        {/* Spinal Fusion specific */}
+                        {log?.symptomId?.startsWith('sf-') && (
+                            <div>
+                              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                Fusion Extent
+                              </label>
+                              <select
+                                  value={spineData.fusionLevels}
+                                  onChange={(e) => setSpineData(prev => ({ ...prev, fusionLevels: e.target.value }))}
+                                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg
+                                 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                              >
+                                <option value="">Select fusion extent...</option>
+                                <option value="single-level">Single Level</option>
+                                <option value="two-level">Two Levels</option>
+                                <option value="multi-level">Three+ Levels (Multi-Level)</option>
+                              </select>
+                            </div>
+                        )}
+
+                        {/* Spinal Stenosis specific */}
+                        {log?.symptomId?.startsWith('ss-') && (
+                            <div className="flex items-center gap-2">
+                              <input
+                                  type="checkbox"
+                                  id="neurogenicClaudicationELM"
+                                  checked={spineData.neurogenicClaudication}
+                                  onChange={(e) => setSpineData(prev => ({ ...prev, neurogenicClaudication: e.target.checked }))}
+                                  className="w-4 h-4 text-amber-600 rounded focus:ring-amber-500"
+                              />
+                              <label htmlFor="neurogenicClaudicationELM" className="text-sm text-gray-700 dark:text-gray-300">
+                                Neurogenic claudication present (leg pain relieved by sitting/bending forward)
+                              </label>
+                            </div>
+                        )}
+
+                        {/* Ankylosing Spondylitis specific */}
+                        {log?.symptomId?.startsWith('as-') && (
+                            <div>
+                              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                Morning Stiffness Duration
+                              </label>
+                              <select
+                                  value={spineData.morningStiffnessDuration}
+                                  onChange={(e) => setSpineData(prev => ({ ...prev, morningStiffnessDuration: e.target.value }))}
+                                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg
+                                 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                              >
+                                <option value="">Select duration...</option>
+                                <option value="less-than-30">Less than 30 minutes</option>
+                                <option value="30-60">30-60 minutes</option>
+                                <option value="1-2-hours">1-2 hours</option>
+                                <option value="more-than-2-hours">More than 2 hours</option>
+                                <option value="all-day">All day</option>
+                              </select>
+                              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                                Morning stiffness &gt;30 minutes is characteristic of inflammatory back pain
+                              </p>
+                            </div>
+                        )}
                       </div>
                   )}
 
