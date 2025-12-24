@@ -2,6 +2,7 @@ import { useRef, useState, useEffect } from 'react';
 import { Zap, X } from 'lucide-react';
 import { getChronicSymptoms, removeChronicSymptom, saveSymptomLog, getMedications, logMedicationTaken, getSymptomLogs } from '../utils/storage';
 import { useProfile } from '../hooks/useProfile';
+import { stripDCCode } from '../data/symptoms';
 import OccurrenceTimePicker from './OccurrenceTimePicker';
 
 const QuickLog = ({ onLogSaved, onAddChronic }) => {
@@ -2294,7 +2295,7 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
                     <p className="font-medium text-gray-900 dark:text-white text-sm truncate">
                       {chronic.symptomName}
                     </p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400 mb-2">{chronic.category}</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mb-2">{stripDCCode(chronic.category)}</p>
 
                     <div className="flex items-center gap-2">
                       <div
@@ -2332,7 +2333,7 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
                       <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
                         {selectedChronic.symptomName}
                       </h2>
-                      <p className="text-sm text-gray-500 dark:text-gray-400">{selectedChronic.category}</p>
+                      <p className="text-sm text-gray-500 dark:text-gray-400">{stripDCCode(selectedChronic.category)}</p>
                     </div>
                     <button
                         onClick={handleCloseModal}

@@ -3393,6 +3393,325 @@ export const symptomCategories = [
 
 ];
 
+// ============================================
+// BODY SYSTEM DEFINITIONS
+// ============================================
+// Maps categories to their body systems for 3-level dropdown navigation
+
+export const BODY_SYSTEMS = {
+  'cardiovascular': {
+    id: 'cardiovascular',
+    name: 'Cardiovascular',
+    description: 'Heart, blood vessels, and circulation conditions',
+    color: 'rose'
+  },
+  'dental-oral': {
+    id: 'dental-oral',
+    name: 'Dental & Oral',
+    description: 'Teeth, gums, jaw, and mouth conditions',
+    color: 'amber'
+  },
+  'digestive': {
+    id: 'digestive',
+    name: 'Digestive / GI',
+    description: 'Stomach, intestines, liver, and digestive system',
+    color: 'lime'
+  },
+  'endocrine': {
+    id: 'endocrine',
+    name: 'Endocrine',
+    description: 'Hormones, thyroid, adrenal, and metabolic conditions',
+    color: 'purple'
+  },
+  'eye-vision': {
+    id: 'eye-vision',
+    name: 'Eye & Vision',
+    description: 'Eyes, vision, and ocular conditions',
+    color: 'cyan'
+  },
+  'ear-hearing': {
+    id: 'ear-hearing',
+    name: 'Ear & Hearing',
+    description: 'Ears, hearing, and balance conditions',
+    color: 'emerald'
+  },
+  'genitourinary': {
+    id: 'genitourinary',
+    name: 'Genitourinary',
+    description: 'Kidneys, bladder, and urinary system',
+    color: 'teal'
+  },
+  'gynecological': {
+    id: 'gynecological',
+    name: 'Gynecological',
+    description: 'Female reproductive system conditions',
+    color: 'pink'
+  },
+  'hemic-lymphatic': {
+    id: 'hemic-lymphatic',
+    name: 'Hemic & Lymphatic',
+    description: 'Blood disorders and lymphatic system',
+    color: 'red'
+  },
+  'infectious': {
+    id: 'infectious',
+    name: 'Infectious Diseases',
+    description: 'Viral, bacterial, and other infections',
+    color: 'yellow'
+  },
+  'mental-health': {
+    id: 'mental-health',
+    name: 'Mental Health',
+    description: 'Psychological and psychiatric conditions',
+    color: 'violet'
+  },
+  'musculoskeletal': {
+    id: 'musculoskeletal',
+    name: 'Musculoskeletal',
+    description: 'Bones, joints, muscles, and connective tissue',
+    color: 'amber'
+  },
+  'neurological': {
+    id: 'neurological',
+    name: 'Neurological',
+    description: 'Brain, nerves, and nervous system',
+    color: 'indigo'
+  },
+  'respiratory': {
+    id: 'respiratory',
+    name: 'Respiratory',
+    description: 'Lungs, airways, and breathing conditions',
+    color: 'sky'
+  },
+  'skin': {
+    id: 'skin',
+    name: 'Skin',
+    description: 'Dermatological and skin conditions',
+    color: 'orange'
+  },
+  'general': {
+    id: 'general',
+    name: 'General / Other',
+    description: 'General symptoms and miscellaneous conditions',
+    color: 'gray'
+  }
+};
+
+// Get ordered list of body systems for dropdowns
+export const getBodySystemList = () => {
+  return Object.values(BODY_SYSTEMS).sort((a, b) => a.name.localeCompare(b.name));
+};
+
+/**
+ * Maps a category to its body system
+ * @param {string} categoryName - The category name
+ * @returns {string} - Body system ID
+ */
+export const getBodySystem = (categoryName) => {
+  const name = categoryName.toLowerCase();
+
+  // Mental Health conditions
+  if (name.includes('ptsd') || name.includes('depression') || name.includes('anxiety') ||
+      name.includes('mental health') || name.includes('panic') || name.includes('bipolar') ||
+      name.includes('ocd') || name.includes('adjustment') || name.includes('social anxiety') ||
+      name.includes('somatic') || name.includes('illness anxiety') || name.includes('cyclothymic') ||
+      name.includes('depersonalization') || name.includes('derealization') ||
+      name.includes('anorexia') || name.includes('bulimia') || name.includes('binge eating') ||
+      name.includes('schizophrenia') || name.includes('schizoaffective') || name.includes('delusional') ||
+      name.includes('psychotic') || name.includes('dissociative') || name.includes('acute stress') ||
+      name.includes('personality disorder') || name.includes('insomnia') || name.includes('sleep disorder')) {
+    return 'mental-health';
+  }
+
+  // Neurological conditions
+  if (name.includes('neurological') || name.includes('epilepsy') || name.includes('seizure') ||
+      name.includes('tbi') || name.includes('migraine') || name.includes('headache') ||
+      name.includes('multiple sclerosis') || name.includes('parkinson') || name.includes('myasthenia') ||
+      name.includes('narcolepsy') || name.includes('als') || name.includes('amyotrophic') ||
+      name.includes('syringomyelia') || name.includes('myelitis') ||
+      name.includes('radicular') || name.includes('radiculopathy') || name.includes('peripheral neuropathy') ||
+      name.includes('nerve symptoms') || name.includes('nerve (') ||
+      name.includes('sciatic') || name.includes('peroneal') || name.includes('tibial') ||
+      name.includes('femoral') || name.includes('saphenous') || name.includes('obturator') ||
+      name.includes('ilio-inguinal') || name.includes('ilioinguinal') || name.includes('meralgia') ||
+      name.includes('radial nerve') || name.includes('median nerve') || name.includes('ulnar nerve') ||
+      name.includes('musculocutaneous') || name.includes('circumflex') || name.includes('axillary') ||
+      name.includes('long thoracic') || name.includes('brachial plexus') ||
+      name.includes('chronic fatigue')) {
+    return 'neurological';
+  }
+
+  // Respiratory conditions
+  if (name.includes('respiratory') || name.includes('asthma') || name.includes('copd') ||
+      name.includes('bronchitis') || name.includes('emphysema') || name.includes('rhinitis') ||
+      name.includes('sinusitis') || name.includes('bronchiectasis') || name.includes('pulmonary') ||
+      name.includes('sarcoidosis') || name.includes('sleep apnea')) {
+    return 'respiratory';
+  }
+
+  // Cardiovascular conditions
+  if (name.includes('cardiovascular') || name.includes('heart') || name.includes('cardiac') ||
+      name.includes('cardiomyopathy') || name.includes('arrhythmia') || name.includes('pericarditis') ||
+      name.includes('hypertension') || name.includes('varicose') || name.includes('phlebitic') ||
+      name.includes('coronary') || name.includes('cad') || name.includes('myocardial') ||
+      name.includes('cold injury') || name.includes('frostbite') ||
+      name.includes('peripheral arterial') || name.includes('pad') || name.includes('raynaud')) {
+    return 'cardiovascular';
+  }
+
+  // Digestive conditions
+  if (name.includes('digestive') || name.includes('ibs') || name.includes('gerd') ||
+      name.includes('ulcerative colitis') || name.includes('ibd') || name.includes('peptic ulcer') ||
+      name.includes('hemorrhoid') || name.includes('diverticulitis') || name.includes('cirrhosis') ||
+      name.includes('gastritis') || name.includes('pancreatitis') || name.includes('biliary') ||
+      name.includes('hernia') || name.includes('peritoneal adhesions') || name.includes('adhesions') ||
+      name.includes('esophageal') || name.includes('postgastrectomy') || name.includes('dumping') ||
+      name.includes('intestinal fistula') || name.includes('fistula')) {
+    return 'digestive';
+  }
+
+  // Musculoskeletal conditions
+  if (name.includes('pain') || name.includes('back') || name.includes('spine') ||
+      name.includes('shoulder') || name.includes('hip') || name.includes('knee') ||
+      name.includes('ankle') || name.includes('wrist') || name.includes('elbow') ||
+      name.includes('foot') || name.includes('fibromyalgia') || name.includes('arthritis') ||
+      name.includes('gout') || name.includes('bursitis') || name.includes('tendinitis') ||
+      name.includes('tenosynovitis') || name.includes('myositis') || name.includes('osteomyelitis') ||
+      name.includes('vertebral') || name.includes('sacroiliac') || name.includes('stenosis') ||
+      name.includes('ankylosing') || name.includes('spinal fusion') ||
+      name.includes('weak foot') || name.includes('claw foot') || name.includes('pes cavus') ||
+      name.includes('metatarsalgia') || name.includes('morton') ||
+      name.includes('hallux') || name.includes('bunion') || name.includes('plantar fasciitis')) {
+    return 'musculoskeletal';
+  }
+
+  // Endocrine conditions
+  if (name.includes('diabetes') || name.includes('thyroid') || name.includes('hypothyroid') ||
+      name.includes('hyperthyroid') || name.includes('graves') || name.includes('thyroiditis') ||
+      name.includes('parathyroid') || name.includes('addison') || name.includes('cushing') ||
+      name.includes('adrenal') || name.includes('aldosteronism') || name.includes('insipidus')) {
+    return 'endocrine';
+  }
+
+  // Skin conditions
+  if (name.includes('skin') || name.includes('eczema') || name.includes('psoriasis') ||
+      name.includes('urticaria') || name.includes('scar') || name.includes('acne') ||
+      name.includes('chloracne') || name.includes('alopecia') || name.includes('hyperhidrosis') ||
+      name.includes('lupus erythematosus') || name.includes('discoid lupus') ||
+      name.includes('bullous') || name.includes('vasculitis') && name.includes('cutaneous') ||
+      name.includes('dermatophytosis') || name.includes('skin infection')) {
+    return 'skin';
+  }
+
+  // Genitourinary conditions
+  if (name.includes('genitourinary') || name.includes('kidney') || name.includes('bladder') ||
+      name.includes('urinary') || name.includes('erectile') || name.includes('voiding') ||
+      name.includes('sphincter') || name.includes('renal') || name.includes('prostate')) {
+    return 'genitourinary';
+  }
+
+  // Gynecological conditions
+  if (name.includes('gynecological') || name.includes('endometriosis') || name.includes('pcos') ||
+      name.includes('menstrual') || name.includes('ovarian') || name.includes('uterine') ||
+      name.includes('pelvic') || name.includes('female reproductive') || name.includes('vulva') ||
+      name.includes('vaginal') || name.includes('arousal disorder')) {
+    return 'gynecological';
+  }
+
+  // Eye conditions
+  if (name.includes('eye') || name.includes('vision') || name.includes('uveitis') ||
+      name.includes('keratitis') || name.includes('conjunctivitis') || name.includes('scleritis') ||
+      name.includes('choroidopathy') || name.includes('keratopathy')) {
+    return 'eye-vision';
+  }
+
+  // Ear conditions
+  if (name.includes('ear') || name.includes('hearing') || name.includes('tinnitus') ||
+      name.includes('meniere') || name.includes('vestibular') || name.includes('vertigo') ||
+      name.includes('otitis') || name.includes('balance')) {
+    return 'ear-hearing';
+  }
+
+  // Hemic/Lymphatic conditions
+  if (name.includes('hemic') || name.includes('lymphatic') || name.includes('anemia') ||
+      name.includes('blood') || name.includes('leukemia') || name.includes('lymphoma') ||
+      name.includes('myeloma') || name.includes('thrombocytopenia') || name.includes('polycythemia') ||
+      name.includes('myelodysplastic') || name.includes('myeloproliferative') ||
+      name.includes('sickle cell') || name.includes('aplastic') || name.includes('hemolytic') ||
+      name.includes('pernicious') || name.includes('folate') || name.includes('iron deficiency') ||
+      name.includes('plasmacytoma')) {
+    return 'hemic-lymphatic';
+  }
+
+  // Infectious Disease conditions
+  if (name.includes('infectious') || name.includes('hiv') || name.includes('aids') ||
+      name.includes('hepatitis') || name.includes('lyme') || name.includes('malaria') ||
+      name.includes('brucellosis') || name.includes('campylobacter') || name.includes('q fever') ||
+      name.includes('salmonella') || name.includes('shigella') || name.includes('west nile') ||
+      name.includes('ntm') || name.includes('nontuberculous') || name.includes('post-infectious') ||
+      name.includes('gulf war')) {
+    return 'infectious';
+  }
+
+  // Dental/Oral conditions
+  if (name.includes('dental') || name.includes('oral') || name.includes('tmj') ||
+      name.includes('jaw') || name.includes('tooth') || name.includes('teeth') ||
+      name.includes('palate') || name.includes('mandible')) {
+    return 'dental-oral';
+  }
+
+  // Default to general
+  return 'general';
+};
+
+/**
+ * Strips DC codes from category/symptom names for display
+ * Keeps the DC codes in the data, just removes from display
+ * @param {string} name - The name potentially containing a DC code
+ * @returns {string} - Name without DC code
+ */
+export const stripDCCode = (name) => {
+  if (!name) return '';
+  // Remove patterns like "(DC 8912)", "(DC 7338)", "(DC 5024/5025)", etc.
+  return name.replace(/\s*\(DC\s*[\d\/]+\)\s*/gi, '').trim();
+};
+
+/**
+ * Gets categories grouped by body system
+ * @returns {Object} - Object with body system IDs as keys, arrays of categories as values
+ */
+export const getCategoriesByBodySystem = () => {
+  const grouped = {};
+
+  // Initialize all body systems
+  Object.keys(BODY_SYSTEMS).forEach(systemId => {
+    grouped[systemId] = [];
+  });
+
+  // Group categories
+  symptomCategories.forEach(category => {
+    const bodySystem = getBodySystem(category.name);
+    if (grouped[bodySystem]) {
+      grouped[bodySystem].push({
+        ...category,
+        displayName: stripDCCode(category.name)
+      });
+    } else {
+      grouped['general'].push({
+        ...category,
+        displayName: stripDCCode(category.name)
+      });
+    }
+  });
+
+  // Sort categories within each body system alphabetically
+  Object.keys(grouped).forEach(systemId => {
+    grouped[systemId].sort((a, b) => a.displayName.localeCompare(b.displayName));
+  });
+
+  return grouped;
+};
+
 // Helper function to determine if a category is a "child" of another
 const getParentCategory = (categoryName) => {
   const name = categoryName.toLowerCase();
@@ -3570,5 +3889,37 @@ export const sortedSymptomCategories = sortedCategories;
 
 // Flatten all symptoms for easy lookup
 export const allSymptoms = symptomCategories.flatMap(cat =>
-    cat.symptoms.map(sym => ({ ...sym, category: cat.name }))
+    cat.symptoms.map(sym => ({ ...sym, category: cat.name, categoryId: cat.id }))
 );
+
+// Flatten all symptoms with body system info for search
+export const allSymptomsWithBodySystem = symptomCategories.flatMap(cat => {
+  const bodySystem = getBodySystem(cat.name);
+  return cat.symptoms.map(sym => ({
+    ...sym,
+    category: cat.name,
+    categoryId: cat.id,
+    categoryDisplayName: stripDCCode(cat.name),
+    bodySystem: bodySystem,
+    bodySystemName: BODY_SYSTEMS[bodySystem]?.name || 'General'
+  }));
+});
+
+// Search symptoms by name (for fuzzy search feature)
+export const searchSymptoms = (query, limit = 20) => {
+  if (!query || query.length < 2) return [];
+
+  const searchTerm = query.toLowerCase().trim();
+
+  return allSymptomsWithBodySystem
+  .filter(sym => {
+    const symName = sym.name.toLowerCase();
+    const catName = sym.categoryDisplayName.toLowerCase();
+    return symName.includes(searchTerm) || catName.includes(searchTerm);
+  })
+  .slice(0, limit)
+  .map(sym => ({
+    ...sym,
+    matchType: sym.name.toLowerCase().includes(searchTerm) ? 'symptom' : 'category'
+  }));
+};

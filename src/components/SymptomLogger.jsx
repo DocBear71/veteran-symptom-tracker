@@ -1,15 +1,34 @@
-import { useRef, useState, useEffect } from 'react';
-import { X, ChevronDown, ChevronUp, Plus } from 'lucide-react';
-import { symptomCategories, sortedSymptomCategories } from '../data/symptoms';
+import { useRef, useState, useEffect, useMemo } from 'react';
+import { X, ChevronDown, ChevronUp, Plus, Search } from 'lucide-react';
+import {
+  symptomCategories,
+  sortedSymptomCategories,
+  BODY_SYSTEMS,
+  getBodySystemList,
+  getBodySystem,
+  stripDCCode,
+  getCategoriesByBodySystem,
+  searchSymptoms,
+  allSymptomsWithBodySystem
+} from '../data/symptoms';
 import { saveSymptomLog, getCustomSymptoms, addCustomSymptom, getMedications, logMedicationTaken } from '../utils/storage';
 import OccurrenceTimePicker from './OccurrenceTimePicker.jsx';
 import QuickLog from './QuickLog';
 import AddChronicModal from './AddChronicModal';
 
 const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
+  // Body System / Category / Symptom selection state
+  const [selectedBodySystem, setSelectedBodySystem] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedSymptom, setSelectedSymptom] = useState('');
   const [symptomName, setSymptomName] = useState('');
+
+  // Search mode state
+  const [isSearchMode, setIsSearchMode] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
+  const searchInputRef = useRef(null);
+
   const [severity, setSeverity] = useState(5);
   const [notes, setNotes] = useState('');
   const [occurredAt, setOccurredAt] = useState(new Date().toISOString());
@@ -938,6 +957,10 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
       );
       console.log('Found category info:', categoryInfo);
       if (categoryInfo) {
+        // Set body system first for 3-level dropdown
+        const bodySystem = getBodySystem(categoryInfo.name);
+        console.log('Setting body system:', bodySystem);
+        setSelectedBodySystem(bodySystem);
         // Use the category ID (not name) for the dropdown
         console.log('Setting category ID:', categoryInfo.id);
         setSelectedCategory(categoryInfo.id);
@@ -948,6 +971,10 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
             cat.name === prefillData.category
         );
         if (fallbackCategory) {
+          // Set body system first for 3-level dropdown
+          const bodySystem = getBodySystem(fallbackCategory.name);
+          console.log('Using fallback - setting body system:', bodySystem);
+          setSelectedBodySystem(bodySystem);
           console.log('Using fallback - setting category ID:', fallbackCategory.id);
           setSelectedCategory(fallbackCategory.id);
           setSelectedSymptom(prefillData.symptomId);
@@ -2773,7 +2800,8 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
   const getAllCategories = () => {
     const categories = sortedSymptomCategories.map(cat => ({
       ...cat,
-      symptoms: [...cat.symptoms]
+      symptoms: [...cat.symptoms],
+      displayName: stripDCCode(cat.name)
     }));
 
     const customByCategory = {};
@@ -2792,6 +2820,7 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
         categories.push({
           id: `custom-${categoryName.toLowerCase()}`,
           name: categoryName,
+          displayName: stripDCCode(categoryName),
           symptoms: symptoms,
         });
       }
@@ -2802,6 +2831,91 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
 
   const allCategories = getAllCategories();
 
+  // Get body systems list for dropdown
+  const bodySystemList = useMemo(() => getBodySystemList(), []);
+
+  // Get categories grouped by body system (including custom symptoms)
+  const categoriesByBodySystem = useMemo(() => {
+    const grouped = {};
+
+    // Initialize all body systems
+    Object.keys(BODY_SYSTEMS).forEach(systemId => {
+      grouped[systemId] = [];
+    });
+
+    // Group all categories (including those with custom symptoms)
+    allCategories.forEach(category => {
+      const bodySystem = getBodySystem(category.name);
+      const categoryWithDisplay = {
+        ...category,
+        displayName: stripDCCode(category.name)
+      };
+
+      if (grouped[bodySystem]) {
+        grouped[bodySystem].push(categoryWithDisplay);
+      } else {
+        grouped['general'].push(categoryWithDisplay);
+      }
+    });
+
+    // Sort categories within each body system
+    Object.keys(grouped).forEach(systemId => {
+      grouped[systemId].sort((a, b) => a.displayName.localeCompare(b.displayName));
+    });
+
+    return grouped;
+  }, [allCategories]);
+
+  // Get categories for selected body system
+  const categoriesForSelectedSystem = useMemo(() => {
+    if (!selectedBodySystem) return [];
+    if (selectedBodySystem === 'all') return allCategories.map(cat => ({
+      ...cat,
+      displayName: stripDCCode(cat.name)
+    })).sort((a, b) => a.displayName.localeCompare(b.displayName));
+    return categoriesByBodySystem[selectedBodySystem] || [];
+  }, [selectedBodySystem, categoriesByBodySystem, allCategories]);
+
+  // Handle search
+  useEffect(() => {
+    if (searchQuery.length >= 2) {
+      // Include custom symptoms in search
+      const customResults = customSymptoms
+      .filter(sym => sym.name.toLowerCase().includes(searchQuery.toLowerCase()))
+      .map(sym => ({
+        ...sym,
+        categoryDisplayName: stripDCCode(sym.category),
+        bodySystem: getBodySystem(sym.category),
+        bodySystemName: BODY_SYSTEMS[getBodySystem(sym.category)]?.name || 'General',
+        matchType: 'symptom',
+        isCustom: true
+      }));
+
+      const standardResults = searchSymptoms(searchQuery, 20);
+      setSearchResults([...customResults, ...standardResults].slice(0, 25));
+    } else {
+      setSearchResults([]);
+    }
+  }, [searchQuery, customSymptoms]);
+
+  // Handle search result selection
+  const handleSearchResultSelect = (result) => {
+    // Find the category
+    const category = allCategories.find(cat =>
+        cat.id === result.categoryId || cat.name === result.category
+    );
+
+    if (category) {
+      const bodySystem = getBodySystem(category.name);
+      setSelectedBodySystem(bodySystem);
+      setSelectedCategory(category.id);
+      setSelectedSymptom(result.id);
+      setIsSearchMode(false);
+      setSearchQuery('');
+      setSearchResults([]);
+    }
+  };
+
   // Get symptoms for the selected category
   const getSymptomsForCategory = () => {
     if (!selectedCategory) return [];
@@ -2811,10 +2925,34 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
 
   const availableSymptoms = getSymptomsForCategory();
 
+  // Handle body system change - reset category and symptom
+  const handleBodySystemChange = (systemId) => {
+    setSelectedBodySystem(systemId);
+    setSelectedCategory('');
+    setSelectedSymptom('');
+  };
+
   // Handle category change - reset symptom selection
   const handleCategoryChange = (categoryId) => {
     setSelectedCategory(categoryId);
     setSelectedSymptom('');
+    // Reset timestamp to now when selecting a new category
+    setOccurredAt(new Date().toISOString());
+  };
+
+  // Toggle between dropdown and search mode
+  const toggleSearchMode = () => {
+    setIsSearchMode(!isSearchMode);
+    if (!isSearchMode) {
+      // Entering search mode - clear selections and focus search
+      setSearchQuery('');
+      setSearchResults([]);
+      setTimeout(() => searchInputRef.current?.focus(), 100);
+    } else {
+      // Leaving search mode
+      setSearchQuery('');
+      setSearchResults([]);
+    }
   };
 
   const handleSubmit = (e) => {
@@ -3159,60 +3297,161 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
         )}
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Two-Step Symptom Selection */}
+          {/* Symptom Selection - Search or Browse */}
           <div className="space-y-4">
-            {/* Step 1: Category Selection */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                1. Select Category
-              </label>
-              <select
-                  value={selectedCategory}
-                  onChange={(e) => {
-                    if (e.target.value === 'ADD_CUSTOM') {
-                      setShowCustomForm(true);
-                      setSelectedCategory('');
-                    } else {
-                      handleCategoryChange(e.target.value);
-                    }
-                  }}
-                  className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            {/* Mode Toggle: Browse vs Search */}
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                {isSearchMode ? 'Search for a symptom' : 'Browse by body system'}
+              </span>
+              <button
+                  type="button"
+                  onClick={toggleSearchMode}
+                  className="flex items-center gap-1 text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
               >
-                <option value="">Select a category...</option>
-                {allCategories.map(category => (
-                    <option key={category.id} value={category.id}>
-                      {category.name} ({category.symptoms.length})
-                    </option>
-                ))}
-                <option value="ADD_CUSTOM">+ Add Custom Symptom</option>
-              </select>
+                {isSearchMode ? (
+                    <>
+                      <ChevronDown className="w-4 h-4" />
+                      Browse Categories
+                    </>
+                ) : (
+                    <>
+                      <Search className="w-4 h-4" />
+                      Search Symptoms
+                    </>
+                )}
+              </button>
             </div>
 
-            {/* Step 2: Symptom Selection */}
-            {selectedCategory && (
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    2. Select Symptom
-                  </label>
-                  <select
-                      value={selectedSymptom}
-                      onChange={(e) => {
-                        setSelectedSymptom(e.target.value);
-                        // Reset timestamp to now when selecting a new symptom to prevent backdating issues
-                        if (e.target.value) {
-                          setOccurredAt(new Date().toISOString());
-                        }
-                      }}
-                      className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                      required
-                  >
-                    <option value="">Select a symptom...</option>
-                    {availableSymptoms.map(symptom => (
-                        <option key={symptom.id} value={symptom.id}>
-                          {symptom.name} {symptom.isCustom ? '(custom)' : ''}
-                        </option>
-                    ))}
-                  </select>
+            {/* Search Mode */}
+            {isSearchMode ? (
+                <div className="space-y-3">
+                  <div className="relative">
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                    <input
+                        ref={searchInputRef}
+                        type="text"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        placeholder="Type to search symptoms..."
+                        className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        autoFocus
+                    />
+                  </div>
+
+                  {/* Search Results */}
+                  {searchQuery.length >= 2 && (
+                      <div className="max-h-64 overflow-y-auto border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800">
+                        {searchResults.length > 0 ? (
+                            searchResults.map((result, index) => (
+                                <button
+                                    key={`${result.id}-${index}`}
+                                    type="button"
+                                    onClick={() => handleSearchResultSelect(result)}
+                                    className="w-full px-4 py-3 text-left hover:bg-gray-50 dark:hover:bg-gray-700 border-b border-gray-100 dark:border-gray-700 last:border-b-0"
+                                >
+                                  <div className="font-medium text-gray-900 dark:text-white">
+                                    {result.name}
+                                    {result.isCustom && <span className="ml-2 text-xs text-blue-600 dark:text-blue-400">(custom)</span>}
+                                  </div>
+                                  <div className="text-sm text-gray-500 dark:text-gray-400">
+                                    {result.bodySystemName} → {result.categoryDisplayName}
+                                  </div>
+                                </button>
+                            ))
+                        ) : (
+                            <div className="px-4 py-3 text-gray-500 dark:text-gray-400 text-center">
+                              No symptoms found matching "{searchQuery}"
+                            </div>
+                        )}
+                      </div>
+                  )}
+
+                  {searchQuery.length > 0 && searchQuery.length < 2 && (
+                      <p className="text-sm text-gray-500 dark:text-gray-400">
+                        Type at least 2 characters to search...
+                      </p>
+                  )}
+                </div>
+            ) : (
+                /* Browse Mode - 3-Level Dropdowns */
+                <div className="space-y-4">
+                  {/* Step 1: Body System Selection */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      1. Select Body System
+                    </label>
+                    <select
+                        value={selectedBodySystem}
+                        onChange={(e) => handleBodySystemChange(e.target.value)}
+                        className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    >
+                      <option value="">Select a body system...</option>
+                      <option value="all">── All Systems ──</option>
+                      {bodySystemList.map(system => (
+                          <option key={system.id} value={system.id}>
+                            {system.name} ({categoriesByBodySystem[system.id]?.length || 0})
+                          </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {/* Step 2: Category Selection */}
+                  {selectedBodySystem && (
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                          2. Select Category
+                        </label>
+                        <select
+                            value={selectedCategory}
+                            onChange={(e) => {
+                              if (e.target.value === 'ADD_CUSTOM') {
+                                setShowCustomForm(true);
+                                setSelectedCategory('');
+                              } else {
+                                handleCategoryChange(e.target.value);
+                              }
+                            }}
+                            className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        >
+                          <option value="">Select a category...</option>
+                          {categoriesForSelectedSystem.map(category => (
+                              <option key={category.id} value={category.id}>
+                                {category.displayName} ({category.symptoms.length})
+                              </option>
+                          ))}
+                          <option value="ADD_CUSTOM">+ Add Custom Symptom</option>
+                        </select>
+                      </div>
+                  )}
+
+                  {/* Step 3: Symptom Selection */}
+                  {selectedCategory && (
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                          3. Select Symptom
+                        </label>
+                        <select
+                            value={selectedSymptom}
+                            onChange={(e) => {
+                              setSelectedSymptom(e.target.value);
+                              // Reset timestamp to now when selecting a new symptom
+                              if (e.target.value) {
+                                setOccurredAt(new Date().toISOString());
+                              }
+                            }}
+                            className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            required
+                        >
+                          <option value="">Select a symptom...</option>
+                          {availableSymptoms.map(symptom => (
+                              <option key={symptom.id} value={symptom.id}>
+                                {symptom.name} {symptom.isCustom ? '(custom)' : ''}
+                              </option>
+                          ))}
+                        </select>
+                      </div>
+                  )}
                 </div>
             )}
           </div>
