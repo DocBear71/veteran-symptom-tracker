@@ -190,6 +190,15 @@ import {
   analyzeEsophagealLogs,
   analyzePostgastrectomyLogs,
   analyzeIntestinalFistulaLogs,
+  analyzeAcneLogs,
+  analyzeChloracneLogs,
+  analyzeAlopeciaAreataLogs,
+  analyzeHyperhidrosisLogs,
+  analyzeDiscoidLupusLogs,
+  analyzeBullousDisordersLogs,
+  analyzeCutaneousVasculitisLogs,
+  analyzeDermatophytosisLogs,
+  analyzeSkinInfectionsLogs,
 } from './ratingCriteria';
 
 // Appointment type labels for export
@@ -2968,6 +2977,17 @@ const analyzeAllConditions = (logs, options = {}) => {
         'esophageal': analyzeEsophagealLogs,
         'postgastrectomy': analyzePostgastrectomyLogs,
         'intestinal-fistula': analyzeIntestinalFistulaLogs,
+        // Phase 6A: Skin Conditions
+        'acne': analyzeAcneLogs,
+        'chloracne': analyzeChloracneLogs,
+        'alopecia-areata': analyzeAlopeciaAreataLogs,
+        'hyperhidrosis': analyzeHyperhidrosisLogs,
+        // Phase 6B: Additional Skin Conditions
+        'discoid-lupus': analyzeDiscoidLupusLogs,
+        'bullous-disorders': analyzeBullousDisordersLogs,
+        'cutaneous-vasculitis': analyzeCutaneousVasculitisLogs,
+        'dermatophytosis': analyzeDermatophytosisLogs,
+        'skin-infections': analyzeSkinInfectionsLogs,
       };
 
     const analyses = [];

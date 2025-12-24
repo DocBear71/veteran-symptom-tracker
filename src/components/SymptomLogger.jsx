@@ -1163,6 +1163,20 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
       selectedSymptom?.startsWith('if-')
   );
 
+  // Phase 6A: Exclude skin condition symptoms from dental/oral detection
+  const isSkinConditionSymptom = (
+      selectedSymptom?.startsWith('acne-') ||
+      selectedSymptom?.startsWith('chloracne-') ||
+      selectedSymptom?.startsWith('aa-') ||
+      selectedSymptom?.startsWith('hh-') ||
+      // Phase 6B additions
+      selectedSymptom?.startsWith('dle-') ||
+      selectedSymptom?.startsWith('bullous-') ||
+      selectedSymptom?.startsWith('cv-') ||
+      selectedSymptom?.startsWith('derm-') ||
+      selectedSymptom?.startsWith('skinf-')
+  );
+
   // Determine which special form to show - EXPANDED DETECTION
   const isMigraineSelected = selectedSymptom === 'migraine';
 
@@ -1352,7 +1366,7 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
        'peripheral-vision-loss', 'diabetic-retinopathy', 'glaucoma-symptoms'].includes(selectedSymptom);
 
   // Phase 3: Genitourinary detection
-  const isGenitourinaryRelated = !isPeripheralNerveSymptom && !isEndocrineSymptom && (
+  const isGenitourinaryRelated = !isPeripheralNerveSymptom && !isEndocrineSymptom && !isSkinConditionSymptom && (
       selectedSymptom?.includes('kidney') ||
       selectedSymptom?.includes('urinary') ||
       selectedSymptom?.includes('prostate') ||
@@ -1559,7 +1573,9 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
   ].includes(selectedSymptom);
 
   // Phase 7: Dental/Oral condition detection
-  const isDentalOralRelated = selectedSymptom?.includes('jaw') ||
+  // Exclude skin conditions that have 'oral' in name (e.g., acne-oral-antibiotics, hh-oral-medication)
+  const isDentalOralRelated = !isSkinConditionSymptom && (
+      selectedSymptom?.includes('jaw') ||
       selectedSymptom?.includes('tooth') ||
       selectedSymptom?.includes('teeth') ||
       selectedSymptom?.includes('dental') ||
@@ -1584,7 +1600,8 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
         'mouth-sores', 'oral-bleeding', 'dry-mouth', 'oral-burning', 'oral-tissue-changes',
         'lip-pain', 'lip-swelling', 'lip-lesions', 'oral-mass', 'oral-growth', 'tissue-thickening',
         'oral-infection', 'oral-inflammation', 'bad-taste', 'halitosis', 'speech-difficulty',
-        'articulation-problems', 'prosthesis-pain', 'prosthesis-fit', 'prosthesis-sores'].includes(selectedSymptom);
+        'articulation-problems', 'prosthesis-pain', 'prosthesis-fit', 'prosthesis-sores'].includes(selectedSymptom)
+);
 
   // Schizophrenia Spectrum Disorders (use basic mental health logging)
   const isSchizophreniaRelated = [

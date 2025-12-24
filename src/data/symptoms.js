@@ -2818,6 +2818,244 @@ export const symptomCategories = [
       { id: 'if-post-trauma', name: 'Fistula - Post-Trauma', description: 'Fistula from abdominal trauma' },
     ],
   },
+  // ========== PHASE 6A: SKIN CONDITIONS - COMMON ==========
+  // Acne - DC 7828
+  {
+    id: 'acne',
+    name: 'Acne (DC 7828)',
+    symptoms: [
+      { id: 'acne-superficial-comedones', name: 'Acne - Comedones (Blackheads/Whiteheads)', description: 'Non-inflamed clogged pores' },
+      { id: 'acne-superficial-papules', name: 'Acne - Papules', description: 'Small raised inflamed bumps' },
+      { id: 'acne-superficial-pustules', name: 'Acne - Pustules', description: 'Pus-filled inflamed lesions' },
+      { id: 'acne-deep-nodules', name: 'Acne - Deep Nodules', description: 'Large, painful, solid lesions deep under skin' },
+      { id: 'acne-deep-cysts', name: 'Acne - Pus-Filled Cysts', description: 'Deep, pus-filled lesions that may cause scarring' },
+      { id: 'acne-face-neck-under40', name: 'Acne - Face/Neck <40% Affected', description: 'Deep acne affecting less than 40% of face and neck' },
+      { id: 'acne-face-neck-40plus', name: 'Acne - Face/Neck ≥40% Affected', description: 'Deep acne affecting 40% or more of face and neck' },
+      { id: 'acne-body-other', name: 'Acne - Body (Non-Face/Neck)', description: 'Deep acne on areas other than face and neck' },
+      { id: 'acne-scarring', name: 'Acne - Scarring Present', description: 'Permanent scarring from acne lesions' },
+      { id: 'acne-disfigurement', name: 'Acne - Disfigurement', description: 'Visible disfigurement from acne or scarring' },
+      { id: 'acne-topical-treatment', name: 'Acne - Topical Treatment', description: 'Using topical medications (creams, gels, washes)' },
+      { id: 'acne-oral-antibiotics', name: 'Acne - Oral Antibiotics', description: 'Taking oral antibiotics for acne' },
+      { id: 'acne-isotretinoin', name: 'Acne - Isotretinoin (Accutane)', description: 'Taking isotretinoin/Accutane for severe acne' },
+      { id: 'acne-hormonal-therapy', name: 'Acne - Hormonal Therapy', description: 'Using hormonal treatments for acne' },
+      { id: 'acne-flare-frequency', name: 'Acne - Frequent Flare-ups', description: 'Regular recurrence of acne breakouts' },
+    ],
+  },
+
+  // Chloracne - DC 7829 (Agent Orange Presumptive)
+  {
+    id: 'chloracne',
+    name: 'Chloracne (DC 7829)',
+    symptoms: [
+      { id: 'chloracne-comedones', name: 'Chloracne - Comedones', description: 'Blackheads/whiteheads from chemical exposure' },
+      { id: 'chloracne-papules', name: 'Chloracne - Papules', description: 'Small inflamed bumps from chemical exposure' },
+      { id: 'chloracne-pustules', name: 'Chloracne - Pustules', description: 'Pus-filled lesions from chemical exposure' },
+      { id: 'chloracne-deep-nodules', name: 'Chloracne - Deep Nodules', description: 'Large, painful nodules from dioxin/chemical exposure' },
+      { id: 'chloracne-deep-cysts', name: 'Chloracne - Pus-Filled Cysts', description: 'Deep cysts from chemical exposure' },
+      { id: 'chloracne-face-neck-under40', name: 'Chloracne - Face/Neck <40% Affected', description: 'Deep chloracne affecting less than 40% of face and neck' },
+      { id: 'chloracne-face-neck-40plus', name: 'Chloracne - Face/Neck ≥40% Affected', description: 'Deep chloracne affecting 40% or more of face and neck' },
+      { id: 'chloracne-intertriginous', name: 'Chloracne - Intertriginous Areas', description: 'Chloracne in skin folds: axilla, groin, breast folds, between digits' },
+      { id: 'chloracne-body-other', name: 'Chloracne - Body (Non-Intertriginous)', description: 'Deep chloracne on non-intertriginous body areas' },
+      { id: 'chloracne-scarring', name: 'Chloracne - Scarring Present', description: 'Permanent scarring from chloracne' },
+      { id: 'chloracne-disfigurement', name: 'Chloracne - Disfigurement', description: 'Visible disfigurement from chloracne' },
+      { id: 'chloracne-agent-orange', name: 'Chloracne - Agent Orange Exposure', description: 'History of Agent Orange or herbicide exposure' },
+      { id: 'chloracne-dioxin-exposure', name: 'Chloracne - Dioxin/Chemical Exposure', description: 'History of dioxin or other chemical exposure' },
+      { id: 'chloracne-onset-within-year', name: 'Chloracne - Onset Within 1 Year of Exposure', description: 'Chloracne appeared within one year of chemical exposure' },
+    ],
+  },
+
+  // Alopecia Areata - DC 7831
+  {
+    id: 'alopecia-areata',
+    name: 'Alopecia Areata (DC 7831)',
+    symptoms: [
+      { id: 'aa-patchy-scalp', name: 'Alopecia - Patchy Scalp Hair Loss', description: 'Round or oval patches of hair loss on scalp' },
+      { id: 'aa-complete-scalp', name: 'Alopecia - Complete Scalp Hair Loss', description: 'Total loss of scalp hair (alopecia totalis)' },
+      { id: 'aa-eyebrow-loss', name: 'Alopecia - Eyebrow Hair Loss', description: 'Partial or complete loss of eyebrow hair' },
+      { id: 'aa-eyelash-loss', name: 'Alopecia - Eyelash Hair Loss', description: 'Partial or complete loss of eyelashes' },
+      { id: 'aa-beard-loss', name: 'Alopecia - Beard/Facial Hair Loss', description: 'Patches of beard or facial hair loss' },
+      { id: 'aa-body-hair-loss', name: 'Alopecia - Body Hair Loss', description: 'Loss of hair on arms, legs, chest, or other body areas' },
+      { id: 'aa-all-body-hair', name: 'Alopecia - Loss of ALL Body Hair', description: 'Complete loss of all body hair (alopecia universalis)' },
+      { id: 'aa-nail-changes', name: 'Alopecia - Nail Changes', description: 'Pitting, ridges, or brittleness of fingernails/toenails' },
+      { id: 'aa-exclamation-hairs', name: 'Alopecia - Exclamation Point Hairs', description: 'Short broken hairs that taper at the base' },
+      { id: 'aa-regrowth', name: 'Alopecia - Hair Regrowth', description: 'Areas showing hair regrowth (may be white initially)' },
+      { id: 'aa-recurrent', name: 'Alopecia - Recurrent Episodes', description: 'Hair loss that recurs after regrowth' },
+      { id: 'aa-steroid-injections', name: 'Alopecia - Steroid Injections', description: 'Receiving corticosteroid injections for treatment' },
+      { id: 'aa-topical-treatment', name: 'Alopecia - Topical Treatment', description: 'Using topical treatments (minoxidil, steroids)' },
+      { id: 'aa-immunotherapy', name: 'Alopecia - Immunotherapy', description: 'Receiving immunotherapy treatment' },
+    ],
+  },
+
+  // Hyperhidrosis - DC 7832
+  {
+    id: 'hyperhidrosis',
+    name: 'Hyperhidrosis (DC 7832)',
+    symptoms: [
+      { id: 'hh-palmar', name: 'Hyperhidrosis - Palmar (Hands)', description: 'Excessive sweating of the palms/hands' },
+      { id: 'hh-plantar', name: 'Hyperhidrosis - Plantar (Feet)', description: 'Excessive sweating of the soles/feet' },
+      { id: 'hh-axillary', name: 'Hyperhidrosis - Axillary (Underarms)', description: 'Excessive underarm sweating' },
+      { id: 'hh-facial', name: 'Hyperhidrosis - Facial', description: 'Excessive sweating of the face' },
+      { id: 'hh-generalized', name: 'Hyperhidrosis - Generalized', description: 'Excessive sweating affecting multiple body areas' },
+      { id: 'hh-dripping-sweat', name: 'Hyperhidrosis - Dripping/Visible Sweat', description: 'Sweat visibly dripping or soaking through clothing' },
+      { id: 'hh-paper-handling', name: 'Hyperhidrosis - Cannot Handle Paper', description: 'Unable to handle paper without it becoming wet/damaged' },
+      { id: 'hh-tool-handling', name: 'Hyperhidrosis - Cannot Handle Tools', description: 'Unable to grip or handle tools due to sweating' },
+      { id: 'hh-keyboard-difficulty', name: 'Hyperhidrosis - Keyboard/Device Difficulty', description: 'Difficulty using keyboards, phones, or touchscreens' },
+      { id: 'hh-handshake-avoidance', name: 'Hyperhidrosis - Avoids Handshakes', description: 'Avoids shaking hands due to sweating' },
+      { id: 'hh-clothing-changes', name: 'Hyperhidrosis - Multiple Clothing Changes', description: 'Must change clothes multiple times daily due to sweating' },
+      { id: 'hh-skin-maceration', name: 'Hyperhidrosis - Skin Maceration', description: 'Skin breakdown or softening from constant moisture' },
+      { id: 'hh-fungal-infections', name: 'Hyperhidrosis - Secondary Infections', description: 'Fungal or bacterial infections from excessive moisture' },
+      { id: 'hh-antiperspirant', name: 'Hyperhidrosis - Clinical Antiperspirant', description: 'Using prescription-strength antiperspirants' },
+      { id: 'hh-iontophoresis', name: 'Hyperhidrosis - Iontophoresis Treatment', description: 'Receiving iontophoresis (electrical current) treatment' },
+      { id: 'hh-botox', name: 'Hyperhidrosis - Botox Injections', description: 'Receiving Botox injections for sweating' },
+      { id: 'hh-oral-medication', name: 'Hyperhidrosis - Oral Medication', description: 'Taking oral medications (anticholinergics) for sweating' },
+      { id: 'hh-surgery', name: 'Hyperhidrosis - Surgical Treatment', description: 'Had sympathectomy or other surgery for hyperhidrosis' },
+      { id: 'hh-therapy-responsive', name: 'Hyperhidrosis - Responsive to Therapy', description: 'Sweating controlled with treatment' },
+      { id: 'hh-therapy-unresponsive', name: 'Hyperhidrosis - Unresponsive to Therapy', description: 'Sweating persists despite treatment' },
+      { id: 'hh-occupational-impact', name: 'Hyperhidrosis - Occupational Impact', description: 'Sweating affects ability to perform job duties' },
+    ],
+  },
+
+  // ========== PHASE 6B: SKIN CONDITIONS - ADDITIONAL ==========
+
+  // Discoid Lupus Erythematosus (DC 7809)
+  // Uses General Rating Formula for the Skin
+  // Note: Do not combine with ratings under DC 6350 (Systemic Lupus)
+  {
+    id: 'discoid-lupus',
+    name: 'Discoid Lupus Erythematosus (DC 7809)',
+    symptoms: [
+      { id: 'dle-discoid-lesions', name: 'Discoid Lupus - Discoid Lesions', description: 'Round, scaly, coin-shaped skin lesions' },
+      { id: 'dle-erythematous-plaques', name: 'Discoid Lupus - Erythematous Plaques', description: 'Red, raised patches on skin' },
+      { id: 'dle-scarring', name: 'Discoid Lupus - Scarring', description: 'Permanent scarring from healed lesions' },
+      { id: 'dle-hyperpigmentation', name: 'Discoid Lupus - Hyperpigmentation', description: 'Darkened skin in affected areas' },
+      { id: 'dle-hypopigmentation', name: 'Discoid Lupus - Hypopigmentation', description: 'Lightened skin in affected areas' },
+      { id: 'dle-scalp-involvement', name: 'Discoid Lupus - Scalp Involvement', description: 'Lesions on scalp causing hair loss' },
+      { id: 'dle-ear-involvement', name: 'Discoid Lupus - Ear Involvement', description: 'Lesions affecting ears' },
+      { id: 'dle-face-involvement', name: 'Discoid Lupus - Face Involvement', description: 'Lesions on face (exposed area)' },
+      { id: 'dle-photosensitivity', name: 'Discoid Lupus - Photosensitivity', description: 'Sun exposure triggers or worsens lesions' },
+      { id: 'dle-follicular-plugging', name: 'Discoid Lupus - Follicular Plugging', description: 'Blocked hair follicles in lesions' },
+      { id: 'dle-under5-body', name: 'Discoid Lupus - <5% Body Affected', description: 'Less than 5% of body or exposed areas' },
+      { id: 'dle-5to20-body', name: 'Discoid Lupus - 5-20% Body Affected', description: '5-20% of body or exposed areas' },
+      { id: 'dle-20to40-body', name: 'Discoid Lupus - 20-40% Body Affected', description: '20-40% of body or exposed areas' },
+      { id: 'dle-over40-body', name: 'Discoid Lupus - >40% Body Affected', description: 'More than 40% of body or exposed areas' },
+      { id: 'dle-topical-only', name: 'Discoid Lupus - Topical Treatment Only', description: 'Only topical medications required' },
+      { id: 'dle-systemic-intermittent', name: 'Discoid Lupus - Intermittent Systemic Therapy', description: 'Systemic therapy <6 weeks in past year' },
+      { id: 'dle-systemic-6weeks', name: 'Discoid Lupus - Systemic Therapy ≥6 Weeks', description: 'Systemic therapy ≥6 weeks but not constant' },
+      { id: 'dle-systemic-constant', name: 'Discoid Lupus - Constant Systemic Therapy', description: 'Constant/near-constant systemic therapy required' },
+    ],
+  },
+
+  // Bullous Disorders (DC 7815)
+  // Includes: pemphigus vulgaris, pemphigus foliaceous, bullous pemphigoid,
+  // dermatitis herpetiformis, epidermolysis bullosa acquisita, Hailey-Hailey, porphyria cutanea tarda
+  {
+    id: 'bullous-disorders',
+    name: 'Bullous Disorders (DC 7815)',
+    symptoms: [
+      { id: 'bullous-blisters', name: 'Bullous Disorder - Blisters/Bullae', description: 'Fluid-filled blisters on skin' },
+      { id: 'bullous-erosions', name: 'Bullous Disorder - Erosions', description: 'Open sores from ruptured blisters' },
+      { id: 'bullous-crusting', name: 'Bullous Disorder - Crusting', description: 'Scabs and crusts on healing lesions' },
+      { id: 'bullous-nikolsky-sign', name: 'Bullous Disorder - Nikolsky Sign Positive', description: 'Skin separates with slight pressure' },
+      { id: 'bullous-oral-mucosal', name: 'Bullous Disorder - Oral/Mucosal Involvement', description: 'Blisters/erosions in mouth' },
+      { id: 'bullous-ocular', name: 'Bullous Disorder - Ocular Involvement', description: 'Eye involvement (rate separately)' },
+      { id: 'bullous-gi-involvement', name: 'Bullous Disorder - GI Involvement', description: 'Gastrointestinal involvement (rate separately)' },
+      { id: 'bullous-genital', name: 'Bullous Disorder - Genital Involvement', description: 'Genital mucosal involvement (rate separately)' },
+      { id: 'bullous-itching', name: 'Bullous Disorder - Itching/Pruritus', description: 'Intense itching with blisters' },
+      { id: 'bullous-burning', name: 'Bullous Disorder - Burning Sensation', description: 'Burning pain in affected areas' },
+      { id: 'bullous-scarring', name: 'Bullous Disorder - Scarring', description: 'Permanent scarring from lesions' },
+      { id: 'bullous-under5-body', name: 'Bullous Disorder - <5% Body Affected', description: 'Less than 5% of body or exposed areas' },
+      { id: 'bullous-5to20-body', name: 'Bullous Disorder - 5-20% Body Affected', description: '5-20% of body or exposed areas' },
+      { id: 'bullous-20to40-body', name: 'Bullous Disorder - 20-40% Body Affected', description: '20-40% of body or exposed areas' },
+      { id: 'bullous-over40-body', name: 'Bullous Disorder - >40% Body Affected', description: 'More than 40% of body or exposed areas' },
+      { id: 'bullous-topical-only', name: 'Bullous Disorder - Topical Treatment Only', description: 'Only topical medications required' },
+      { id: 'bullous-systemic-intermittent', name: 'Bullous Disorder - Intermittent Systemic Therapy', description: 'Systemic therapy <6 weeks in past year' },
+      { id: 'bullous-systemic-6weeks', name: 'Bullous Disorder - Systemic Therapy ≥6 Weeks', description: 'Systemic therapy ≥6 weeks but not constant' },
+      { id: 'bullous-systemic-constant', name: 'Bullous Disorder - Constant Systemic Therapy', description: 'Constant/near-constant systemic therapy required' },
+    ],
+  },
+
+  // Primary Cutaneous Vasculitis (DC 7826)
+  // Rated by vasculitic episodes and immunosuppressive therapy requirements
+  {
+    id: 'cutaneous-vasculitis',
+    name: 'Primary Cutaneous Vasculitis (DC 7826)',
+    symptoms: [
+      { id: 'cv-purpura', name: 'Cutaneous Vasculitis - Purpura', description: 'Purple/red spots from blood vessel inflammation' },
+      { id: 'cv-petechiae', name: 'Cutaneous Vasculitis - Petechiae', description: 'Small red/purple pinpoint spots' },
+      { id: 'cv-ulcers', name: 'Cutaneous Vasculitis - Skin Ulcers', description: 'Open sores from vessel damage' },
+      { id: 'cv-nodules', name: 'Cutaneous Vasculitis - Nodules', description: 'Raised bumps under skin' },
+      { id: 'cv-livedo-reticularis', name: 'Cutaneous Vasculitis - Livedo Reticularis', description: 'Mottled, net-like skin pattern' },
+      { id: 'cv-necrosis', name: 'Cutaneous Vasculitis - Skin Necrosis', description: 'Tissue death in affected areas' },
+      { id: 'cv-episode-documented', name: 'Cutaneous Vasculitis - Documented Episode', description: 'Medically documented vasculitic episode' },
+      { id: 'cv-episodes-1to3', name: 'Cutaneous Vasculitis - 1-3 Episodes/Year', description: '1-3 documented episodes in past 12 months' },
+      { id: 'cv-episodes-4plus', name: 'Cutaneous Vasculitis - 4+ Episodes/Year', description: '4+ documented episodes in past 12 months' },
+      { id: 'cv-no-systemic-med', name: 'Cutaneous Vasculitis - No Systemic Medication', description: 'Controlled without systemic therapy' },
+      { id: 'cv-continuous-systemic', name: 'Cutaneous Vasculitis - Continuous Systemic Therapy', description: 'Requires continuous systemic medication' },
+      { id: 'cv-intermittent-immuno', name: 'Cutaneous Vasculitis - Intermittent Immunosuppressive', description: 'Intermittent immunosuppressive therapy for control' },
+      { id: 'cv-refractory', name: 'Cutaneous Vasculitis - Refractory to Therapy', description: 'Persistent despite continuous immunosuppressive therapy' },
+      { id: 'cv-scarring', name: 'Cutaneous Vasculitis - Scarring', description: 'Permanent scarring from healed lesions' },
+      { id: 'cv-disfigurement', name: 'Cutaneous Vasculitis - Disfigurement', description: 'Visible disfigurement (may rate under DC 7800)' },
+    ],
+  },
+
+  // Dermatophytosis (DC 7813)
+  // Fungal infections: tinea corporis, capitis, pedis, barbae, unguium, cruris, versicolor
+  {
+    id: 'dermatophytosis',
+    name: 'Dermatophytosis (DC 7813)',
+    symptoms: [
+      { id: 'derm-tinea-corporis', name: 'Dermatophytosis - Tinea Corporis (Body Ringworm)', description: 'Ringworm on body/trunk' },
+      { id: 'derm-tinea-capitis', name: 'Dermatophytosis - Tinea Capitis (Scalp)', description: 'Ringworm on scalp' },
+      { id: 'derm-tinea-pedis', name: 'Dermatophytosis - Tinea Pedis (Athlete\'s Foot)', description: 'Fungal infection of feet' },
+      { id: 'derm-tinea-cruris', name: 'Dermatophytosis - Tinea Cruris (Jock Itch)', description: 'Fungal infection of groin area' },
+      { id: 'derm-tinea-barbae', name: 'Dermatophytosis - Tinea Barbae (Beard Area)', description: 'Fungal infection in beard area' },
+      { id: 'derm-onychomycosis', name: 'Dermatophytosis - Onychomycosis (Nail Fungus)', description: 'Fungal infection of nails' },
+      { id: 'derm-tinea-versicolor', name: 'Dermatophytosis - Tinea Versicolor', description: 'Discolored patches from yeast overgrowth' },
+      { id: 'derm-scaling', name: 'Dermatophytosis - Scaling/Flaking', description: 'Skin scaling and flaking' },
+      { id: 'derm-itching', name: 'Dermatophytosis - Itching/Pruritus', description: 'Itching in affected areas' },
+      { id: 'derm-ring-pattern', name: 'Dermatophytosis - Ring-Shaped Lesions', description: 'Classic ring-shaped rash pattern' },
+      { id: 'derm-hair-loss', name: 'Dermatophytosis - Hair Loss', description: 'Hair loss in affected areas (scalp/beard)' },
+      { id: 'derm-nail-thickening', name: 'Dermatophytosis - Nail Thickening/Discoloration', description: 'Thickened, discolored, or crumbly nails' },
+      { id: 'derm-recurrent', name: 'Dermatophytosis - Recurrent Infections', description: 'Repeated fungal infections' },
+      { id: 'derm-under5-body', name: 'Dermatophytosis - <5% Body Affected', description: 'Less than 5% of body or exposed areas' },
+      { id: 'derm-5to20-body', name: 'Dermatophytosis - 5-20% Body Affected', description: '5-20% of body or exposed areas' },
+      { id: 'derm-20to40-body', name: 'Dermatophytosis - 20-40% Body Affected', description: '20-40% of body or exposed areas' },
+      { id: 'derm-over40-body', name: 'Dermatophytosis - >40% Body Affected', description: 'More than 40% of body or exposed areas' },
+      { id: 'derm-topical-only', name: 'Dermatophytosis - Topical Treatment Only', description: 'Only topical antifungals required' },
+      { id: 'derm-systemic-intermittent', name: 'Dermatophytosis - Intermittent Systemic Therapy', description: 'Oral antifungals <6 weeks in past year' },
+      { id: 'derm-systemic-6weeks', name: 'Dermatophytosis - Systemic Therapy ≥6 Weeks', description: 'Oral antifungals ≥6 weeks but not constant' },
+      { id: 'derm-systemic-constant', name: 'Dermatophytosis - Constant Systemic Therapy', description: 'Constant/near-constant oral antifungals required' },
+    ],
+  },
+
+  // Skin Infections (DC 7820)
+  // Bacterial, fungal, viral, treponemal, parasitic - not listed elsewhere
+  {
+    id: 'skin-infections',
+    name: 'Skin Infections (DC 7820)',
+    symptoms: [
+      { id: 'skinf-bacterial', name: 'Skin Infection - Bacterial', description: 'Bacterial skin infection' },
+      { id: 'skinf-cellulitis', name: 'Skin Infection - Cellulitis', description: 'Deep skin/tissue infection with redness and swelling' },
+      { id: 'skinf-abscess', name: 'Skin Infection - Abscess/Boil', description: 'Pus-filled pocket in skin' },
+      { id: 'skinf-impetigo', name: 'Skin Infection - Impetigo', description: 'Contagious bacterial skin infection with sores' },
+      { id: 'skinf-folliculitis', name: 'Skin Infection - Folliculitis', description: 'Infected hair follicles' },
+      { id: 'skinf-viral', name: 'Skin Infection - Viral', description: 'Viral skin infection (herpes, warts, etc.)' },
+      { id: 'skinf-herpes-simplex', name: 'Skin Infection - Herpes Simplex', description: 'Recurrent herpes simplex outbreaks' },
+      { id: 'skinf-herpes-zoster', name: 'Skin Infection - Herpes Zoster (Shingles)', description: 'Shingles outbreak' },
+      { id: 'skinf-warts', name: 'Skin Infection - Warts', description: 'Viral warts on skin' },
+      { id: 'skinf-molluscum', name: 'Skin Infection - Molluscum Contagiosum', description: 'Viral skin bumps' },
+      { id: 'skinf-parasitic', name: 'Skin Infection - Parasitic', description: 'Parasitic skin infection (scabies, lice)' },
+      { id: 'skinf-recurrent', name: 'Skin Infection - Recurrent Episodes', description: 'Repeatedly occurring skin infections' },
+      { id: 'skinf-under5-body', name: 'Skin Infection - <5% Body Affected', description: 'Less than 5% of body or exposed areas' },
+      { id: 'skinf-5to20-body', name: 'Skin Infection - 5-20% Body Affected', description: '5-20% of body or exposed areas' },
+      { id: 'skinf-20to40-body', name: 'Skin Infection - 20-40% Body Affected', description: '20-40% of body or exposed areas' },
+      { id: 'skinf-over40-body', name: 'Skin Infection - >40% Body Affected', description: 'More than 40% of body or exposed areas' },
+      { id: 'skinf-topical-only', name: 'Skin Infection - Topical Treatment Only', description: 'Only topical medications required' },
+      { id: 'skinf-systemic-intermittent', name: 'Skin Infection - Intermittent Systemic Therapy', description: 'Oral/IV antibiotics <6 weeks in past year' },
+      { id: 'skinf-systemic-6weeks', name: 'Skin Infection - Systemic Therapy ≥6 Weeks', description: 'Systemic therapy ≥6 weeks but not constant' },
+      { id: 'skinf-systemic-constant', name: 'Skin Infection - Constant Systemic Therapy', description: 'Constant/near-constant systemic therapy required' },
+    ],
+  },
 
 ];
 
@@ -2949,6 +3187,15 @@ const getParentCategory = (categoryName) => {
   if (name.includes('esophageal spasm') || name.includes('motility')) return 'digestive';
   if (name.includes('postgastrectomy') || name.includes('dumping')) return 'digestive';
   if (name.includes('intestinal fistula') || name.includes('fistula')) return 'digestive';
+  if (name.includes('acne') && !name.includes('chloracne')) return 'skin';
+  if (name.includes('chloracne')) return 'skin';
+  if (name.includes('alopecia')) return 'skin';
+  if (name.includes('hyperhidrosis')) return 'skin';
+  if (name.includes('discoid lupus')) return 'skin';
+  if (name.includes('bullous')) return 'skin';
+  if (name.includes('cutaneous vasculitis')) return 'skin';
+  if (name.includes('dermatophytosis')) return 'skin';
+  if (name.includes('skin infection')) return 'skin';
   return null; // No parent, this is a standalone category
 };
 

@@ -803,6 +803,20 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
       selectedChronic?.symptomId?.startsWith('if-')
   );
 
+  // Phase 6A: Exclude skin condition symptoms from dental/oral detection
+  const isSkinConditionSymptomQL = (
+      selectedChronic?.symptomId?.startsWith('acne-') ||
+      selectedChronic?.symptomId?.startsWith('chloracne-') ||
+      selectedChronic?.symptomId?.startsWith('aa-') ||
+      selectedChronic?.symptomId?.startsWith('hh-') ||
+      // Phase 6B additions
+      selectedChronic?.symptomId?.startsWith('dle-') ||
+      selectedChronic?.symptomId?.startsWith('bullous-') ||
+      selectedChronic?.symptomId?.startsWith('cv-') ||
+      selectedChronic?.symptomId?.startsWith('derm-') ||
+      selectedChronic?.symptomId?.startsWith('skinf-')
+  );
+
   // Determine symptom type - EXPANDED DETECTION
   const isMigraine = selectedChronic?.symptomId === 'migraine';
 
@@ -987,7 +1001,7 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
         'peripheral-vision-loss', 'diabetic-retinopathy', 'glaucoma-symptoms'].includes(selectedChronic?.symptomId);
 
   // Phase 3: Genitourinary detection
-  const isGenitourinaryRelated = !isPeripheralNerveSymptomQL && !isEndocrineSymptomQL && (
+  const isGenitourinaryRelated = !isPeripheralNerveSymptomQL && !isEndocrineSymptomQL && !isSkinConditionSymptomQL && (
       selectedChronic?.symptomId?.includes('kidney') ||
       selectedChronic?.symptomId?.includes('urinary') ||
       selectedChronic?.symptomId?.includes('prostate') ||
@@ -1146,7 +1160,8 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
     'ntm-shortness-breath', 'ntm-hemoptysis', 'ntm-lymph-nodes'
   ].includes(selectedChronic?.symptomId);
   // Phase 7: Dental/Oral detection
-  const isDentalOralRelated = selectedChronic?.symptomId?.includes('jaw') ||
+  // Exclude skin conditions that have 'oral' in name (e.g., acne-oral-antibiotics, hh-oral-medication)
+  const isDentalOralRelated = !isSkinConditionSymptomQL && (
       selectedChronic?.symptomId?.includes('tooth') ||
       selectedChronic?.symptomId?.includes('teeth') ||
       selectedChronic?.symptomId?.includes('dental') ||
@@ -1158,7 +1173,8 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
       selectedChronic?.symptomId?.includes('swallowing') ||
       ['jaw-pain', 'jaw-swelling', 'jaw-stiffness', 'limited-mouth-opening',
         'tooth-loss-pain', 'missing-teeth', 'chewing-difficulty', 'swallowing-difficulty',
-        'prosthesis-pain', 'prosthesis-fit'].includes(selectedChronic?.symptomId);
+        'prosthesis-pain', 'prosthesis-fit'].includes(selectedChronic?.symptomId)
+  );
 
   // PHASE 8A: MENTAL HEALTH EXPANSION - DETECTION LOGIC
   // Somatic Symptom Disorders

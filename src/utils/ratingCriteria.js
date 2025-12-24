@@ -2197,6 +2197,146 @@ export const CONDITIONS = {
     ],
   },
 
+  // ========== PHASE 6A: SKIN CONDITIONS - COMMON ==========
+
+  ACNE: {
+    id: 'acne',
+    name: 'Acne',
+    diagnosticCode: '7828',
+    cfrReference: '38 CFR 4.118',
+    description: 'Deep and superficial acne affecting face, neck, or body',
+    symptomIds: [
+      'acne-superficial-comedones', 'acne-superficial-papules', 'acne-superficial-pustules',
+      'acne-deep-nodules', 'acne-deep-cysts', 'acne-face-neck-under40', 'acne-face-neck-40plus',
+      'acne-body-other', 'acne-scarring', 'acne-disfigurement', 'acne-topical-treatment',
+      'acne-oral-antibiotics', 'acne-isotretinoin', 'acne-hormonal-therapy', 'acne-flare-frequency'
+    ],
+  },
+
+  CHLORACNE: {
+    id: 'chloracne',
+    name: 'Chloracne',
+    diagnosticCode: '7829',
+    cfrReference: '38 CFR 4.118',
+    description: 'Acne-like skin condition caused by exposure to dioxin or Agent Orange',
+    symptomIds: [
+      'chloracne-comedones', 'chloracne-papules', 'chloracne-pustules',
+      'chloracne-deep-nodules', 'chloracne-deep-cysts', 'chloracne-face-neck-under40',
+      'chloracne-face-neck-40plus', 'chloracne-intertriginous', 'chloracne-body-other',
+      'chloracne-scarring', 'chloracne-disfigurement', 'chloracne-agent-orange',
+      'chloracne-dioxin-exposure', 'chloracne-onset-within-year'
+    ],
+  },
+
+  ALOPECIA_AREATA: {
+    id: 'alopecia-areata',
+    name: 'Alopecia Areata',
+    diagnosticCode: '7831',
+    cfrReference: '38 CFR 4.118',
+    description: 'Autoimmune hair loss condition affecting scalp, face, or body',
+    symptomIds: [
+      'aa-patchy-scalp', 'aa-complete-scalp', 'aa-eyebrow-loss', 'aa-eyelash-loss',
+      'aa-beard-loss', 'aa-body-hair-loss', 'aa-all-body-hair', 'aa-nail-changes',
+      'aa-exclamation-hairs', 'aa-regrowth', 'aa-recurrent', 'aa-steroid-injections',
+      'aa-topical-treatment', 'aa-immunotherapy'
+    ],
+  },
+
+  HYPERHIDROSIS: {
+    id: 'hyperhidrosis',
+    name: 'Hyperhidrosis',
+    diagnosticCode: '7832',
+    cfrReference: '38 CFR 4.118',
+    description: 'Excessive sweating affecting hands, feet, underarms, or generalized',
+    symptomIds: [
+      'hh-palmar', 'hh-plantar', 'hh-axillary', 'hh-facial', 'hh-generalized',
+      'hh-dripping-sweat', 'hh-paper-handling', 'hh-tool-handling', 'hh-keyboard-difficulty',
+      'hh-handshake-avoidance', 'hh-clothing-changes', 'hh-skin-maceration', 'hh-fungal-infections',
+      'hh-antiperspirant', 'hh-iontophoresis', 'hh-botox', 'hh-oral-medication', 'hh-surgery',
+      'hh-therapy-responsive', 'hh-therapy-unresponsive', 'hh-occupational-impact'
+    ],
+  },
+
+  // ========== PHASE 6B: SKIN CONDITIONS - ADDITIONAL ==========
+
+  DISCOID_LUPUS: {
+    id: 'discoid-lupus',
+    name: 'Discoid Lupus Erythematosus',
+    diagnosticCode: '7809',
+    cfrReference: '38 CFR 4.118',
+    description: 'Chronic skin condition causing discoid lesions, scarring, and photosensitivity',
+    symptomIds: [
+      'dle-discoid-lesions', 'dle-erythematous-plaques', 'dle-scarring', 'dle-hyperpigmentation',
+      'dle-hypopigmentation', 'dle-scalp-involvement', 'dle-ear-involvement', 'dle-face-involvement',
+      'dle-photosensitivity', 'dle-follicular-plugging', 'dle-under5-body', 'dle-5to20-body',
+      'dle-20to40-body', 'dle-over40-body', 'dle-topical-only', 'dle-systemic-intermittent',
+      'dle-systemic-6weeks', 'dle-systemic-constant'
+    ],
+  },
+
+  BULLOUS_DISORDERS: {
+    id: 'bullous-disorders',
+    name: 'Bullous Disorders',
+    diagnosticCode: '7815',
+    cfrReference: '38 CFR 4.118',
+    description: 'Blistering skin conditions including pemphigus, bullous pemphigoid, dermatitis herpetiformis',
+    symptomIds: [
+      'bullous-blisters', 'bullous-erosions', 'bullous-crusting', 'bullous-nikolsky-sign',
+      'bullous-oral-mucosal', 'bullous-ocular', 'bullous-gi-involvement', 'bullous-genital',
+      'bullous-itching', 'bullous-burning', 'bullous-scarring', 'bullous-under5-body',
+      'bullous-5to20-body', 'bullous-20to40-body', 'bullous-over40-body', 'bullous-topical-only',
+      'bullous-systemic-intermittent', 'bullous-systemic-6weeks', 'bullous-systemic-constant'
+    ],
+  },
+
+  CUTANEOUS_VASCULITIS: {
+    id: 'cutaneous-vasculitis',
+    name: 'Primary Cutaneous Vasculitis',
+    diagnosticCode: '7826',
+    cfrReference: '38 CFR 4.118',
+    description: 'Inflammation of blood vessels in skin causing purpura, ulcers, and tissue damage',
+    symptomIds: [
+      'cv-purpura', 'cv-petechiae', 'cv-ulcers', 'cv-nodules', 'cv-livedo-reticularis',
+      'cv-necrosis', 'cv-episode-documented', 'cv-episodes-1to3', 'cv-episodes-4plus',
+      'cv-no-systemic-med', 'cv-continuous-systemic', 'cv-intermittent-immuno',
+      'cv-refractory', 'cv-scarring', 'cv-disfigurement'
+    ],
+  },
+
+  DERMATOPHYTOSIS: {
+    id: 'dermatophytosis',
+    name: 'Dermatophytosis',
+    diagnosticCode: '7813',
+    cfrReference: '38 CFR 4.118',
+    description: 'Fungal skin infections including ringworm, athlete\'s foot, jock itch, nail fungus',
+    symptomIds: [
+      'derm-tinea-corporis', 'derm-tinea-capitis', 'derm-tinea-pedis', 'derm-tinea-cruris',
+      'derm-tinea-barbae', 'derm-onychomycosis', 'derm-tinea-versicolor', 'derm-scaling',
+      'derm-itching', 'derm-ring-pattern', 'derm-hair-loss', 'derm-nail-thickening',
+      'derm-recurrent', 'derm-under5-body', 'derm-5to20-body', 'derm-20to40-body',
+      'derm-over40-body', 'derm-topical-only', 'derm-systemic-intermittent',
+      'derm-systemic-6weeks', 'derm-systemic-constant'
+    ],
+  },
+
+  SKIN_INFECTIONS: {
+    id: 'skin-infections',
+    name: 'Skin Infections',
+    diagnosticCode: '7820',
+    cfrReference: '38 CFR 4.118',
+    description: 'Bacterial, viral, fungal, or parasitic skin infections not listed elsewhere',
+    symptomIds: [
+      'skinf-bacterial', 'skinf-cellulitis', 'skinf-abscess', 'skinf-impetigo',
+      'skinf-folliculitis', 'skinf-viral', 'skinf-herpes-simplex', 'skinf-herpes-zoster',
+      'skinf-warts', 'skinf-molluscum', 'skinf-parasitic', 'skinf-recurrent',
+      'skinf-under5-body', 'skinf-5to20-body', 'skinf-20to40-body', 'skinf-over40-body',
+      'skinf-topical-only', 'skinf-systemic-intermittent', 'skinf-systemic-6weeks',
+      'skinf-systemic-constant'
+    ],
+  },
+
+
+
 };
 // ============================================
 // MIGRAINE RATING CRITERIA (DC 8100)
@@ -16878,6 +17018,905 @@ export const INTESTINAL_FISTULA_CRITERIA = {
   ],
 
   disclaimer: 'This analysis is based on logged fistula symptoms. VA ratings require medical documentation of fistula, drainage measurements, and nutritional status.',
+};
+
+// ============================================
+// PHASE 6A: ACNE CRITERIA (DC 7828)
+// ============================================
+
+export const ACNE_CRITERIA = {
+  diagnosticCode: '7828',
+  condition: 'Acne',
+  cfrReference: '38 CFR 4.118, Diagnostic Code 7828',
+
+  note: 'Acne is rated based on depth (superficial vs deep) and extent of involvement. Deep acne involves inflamed nodules and pus-filled cysts. Alternatively may be rated as disfigurement (DC 7800) or scars (DC 7801-7805) if that provides a higher rating.',
+
+  ratings: [
+    {
+      percent: 30,
+      summary: 'Deep acne affecting 40% or more of face and neck',
+      criteriaDescription: [
+        'Deep acne (deep inflamed nodules and pus-filled cysts)',
+        'Affecting 40 percent or more of the face and neck',
+      ],
+      evidenceNeeded: [
+        'Medical documentation of deep acne with nodules/cysts',
+        'Documentation that 40%+ of face and neck is affected',
+        'Photographs during active breakouts',
+        'Dermatology treatment records',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Deep acne affecting less than 40% of face/neck, OR deep acne on body',
+      criteriaDescription: [
+        'Deep acne (deep inflamed nodules and pus-filled cysts) affecting less than 40% of the face and neck, OR',
+        'Deep acne affecting areas other than the face and neck',
+      ],
+      evidenceNeeded: [
+        'Medical documentation of deep acne',
+        'Documentation of affected areas',
+        'Photographs of lesions',
+        'Treatment records',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'Superficial acne of any extent',
+      criteriaDescription: [
+        'Superficial acne (comedones, papules, pustules) of any extent',
+        'No deep nodules or pus-filled cysts',
+      ],
+      evidenceNeeded: [
+        'Documentation of acne type',
+        'Note: Consider rating as scars if significant scarring present',
+      ],
+    },
+  ],
+
+  definitions: {
+    deepAcne: {
+      term: 'Deep Acne',
+      definition: 'Acne characterized by deep inflamed nodules and pus-filled cysts that extend into deeper skin layers.',
+    },
+    superficialAcne: {
+      term: 'Superficial Acne',
+      definition: 'Acne limited to the outer skin layers, including comedones (blackheads/whiteheads), papules, and pustules.',
+    },
+    comedones: {
+      term: 'Comedones',
+      definition: 'Non-inflamed clogged pores; blackheads (open) or whiteheads (closed).',
+    },
+    nodules: {
+      term: 'Nodules',
+      definition: 'Large, solid, painful lesions lodged deep within the skin.',
+    },
+    cysts: {
+      term: 'Cysts',
+      definition: 'Deep, pus-filled lesions that can cause scarring.',
+    },
+  },
+
+  importantNotes: [
+    'Deep acne involves nodules and cysts, not just surface-level breakouts',
+    '40% threshold applies specifically to face and neck for highest rating',
+    'Body acne (non-face/neck) with deep lesions rates at 10%',
+    'Alternative rating as disfigurement or scars may be higher',
+    'Document treatment history including topical and systemic medications',
+  ],
+
+  disclaimer: 'This analysis is based on logged acne symptoms. VA ratings require medical documentation of acne type, severity, and extent of involvement.',
+};
+
+// ============================================
+// PHASE 6A: CHLORACNE CRITERIA (DC 7829)
+// ============================================
+
+export const CHLORACNE_CRITERIA = {
+  diagnosticCode: '7829',
+  condition: 'Chloracne',
+  cfrReference: '38 CFR 4.118, Diagnostic Code 7829',
+
+  note: 'Chloracne is an Agent Orange presumptive condition. Rating criteria are similar to acne but include additional consideration for intertriginous areas. Must manifest within one year of last herbicide exposure for presumptive service connection.',
+
+  ratings: [
+    {
+      percent: 30,
+      summary: 'Deep chloracne affecting 40% or more of face and neck',
+      criteriaDescription: [
+        'Deep acne (deep inflamed nodules and pus-filled cysts)',
+        'Affecting 40 percent or more of the face and neck',
+      ],
+      evidenceNeeded: [
+        'Documentation of herbicide/dioxin exposure',
+        'Medical documentation of deep chloracne',
+        'Documentation that 40%+ of face and neck is affected',
+        'Evidence of onset within one year of exposure',
+      ],
+    },
+    {
+      percent: 20,
+      summary: 'Deep chloracne affecting intertriginous areas',
+      criteriaDescription: [
+        'Deep acne (deep inflamed nodules and pus-filled cysts)',
+        'Affecting intertriginous areas: axilla (armpit), anogenital region, skin folds of breasts, or between digits',
+      ],
+      evidenceNeeded: [
+        'Documentation of chloracne in skin fold areas',
+        'Medical records identifying intertriginous involvement',
+        'Exposure history documentation',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Deep chloracne affecting less than 40% of face/neck OR non-intertriginous body areas',
+      criteriaDescription: [
+        'Deep acne affecting less than 40% of the face and neck, OR',
+        'Deep acne affecting non-intertriginous areas of the body (other than face and neck)',
+      ],
+      evidenceNeeded: [
+        'Documentation of deep chloracne',
+        'Documentation of affected areas',
+        'Exposure history',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'Superficial chloracne of any extent',
+      criteriaDescription: [
+        'Superficial acne (comedones, papules, pustules) of any extent',
+        'No deep nodules or pus-filled cysts',
+      ],
+      evidenceNeeded: [
+        'Documentation of chloracne type',
+        'Note: Consider rating as scars or disfigurement',
+      ],
+    },
+  ],
+
+  definitions: {
+    chloracne: {
+      term: 'Chloracne',
+      definition: 'A skin condition caused by exposure to dioxins, chlorinated compounds, or herbicides (including Agent Orange). Characterized by acne-like lesions.',
+    },
+    intertriginousAreas: {
+      term: 'Intertriginous Areas',
+      definition: 'Skin fold areas where skin contacts skin: axilla (armpits), anogenital region, skin folds of breasts, or between fingers/toes.',
+    },
+    agentOrange: {
+      term: 'Agent Orange',
+      definition: 'An herbicide used during the Vietnam War containing dioxin. Exposure is presumed for veterans who served in Vietnam, Thailand, or certain other locations.',
+    },
+    presumptiveCondition: {
+      term: 'Presumptive Condition',
+      definition: 'A condition that VA presumes is related to military service based on scientific/medical evidence, reducing the burden of proof for service connection.',
+    },
+  },
+
+  importantNotes: [
+    'Chloracne is a VA presumptive condition for Agent Orange exposure',
+    'Must appear within one year of last herbicide exposure for presumptive service connection',
+    'Intertriginous area involvement (20%) is unique to chloracne, not in regular acne criteria',
+    'Document exposure history and onset timing',
+    'Alternative rating as disfigurement or scars may provide higher rating',
+  ],
+
+  disclaimer: 'This analysis is based on logged chloracne symptoms. Chloracne is an Agent Orange presumptive condition. VA ratings require medical documentation and evidence of herbicide exposure.',
+};
+
+// ============================================
+// PHASE 6A: ALOPECIA AREATA CRITERIA (DC 7831)
+// ============================================
+
+export const ALOPECIA_AREATA_CRITERIA = {
+  diagnosticCode: '7831',
+  condition: 'Alopecia Areata',
+  cfrReference: '38 CFR 4.118, Diagnostic Code 7831',
+
+  note: 'Alopecia areata is rated based on extent of hair loss. Only two rating levels exist: 10% for loss of all body hair, and 0% for hair loss limited to scalp and face.',
+
+  ratings: [
+    {
+      percent: 10,
+      summary: 'Loss of all body hair (alopecia universalis)',
+      criteriaDescription: [
+        'Loss of all body hair',
+        'Also known as alopecia universalis',
+        'Includes scalp, face, AND all other body areas',
+      ],
+      evidenceNeeded: [
+        'Medical documentation of alopecia areata diagnosis',
+        'Documentation of complete body hair loss',
+        'Dermatology records confirming extent',
+        'Photographs showing hair loss',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'Hair loss limited to scalp and face only',
+      criteriaDescription: [
+        'Hair loss limited to scalp and face',
+        'Body hair still present',
+        'Includes alopecia totalis (complete scalp loss)',
+      ],
+      evidenceNeeded: [
+        'Documentation of alopecia areata diagnosis',
+        'Note extent of hair loss for records',
+        'Consider psychological impact for separate rating',
+      ],
+    },
+  ],
+
+  definitions: {
+    alopeciaAreata: {
+      term: 'Alopecia Areata',
+      definition: 'An autoimmune condition causing patchy hair loss on the scalp, face, or body.',
+    },
+    alopeciaTotalis: {
+      term: 'Alopecia Totalis',
+      definition: 'Complete loss of all scalp hair (still rates 0% under DC 7831).',
+    },
+    alopeciaUniversalis: {
+      term: 'Alopecia Universalis',
+      definition: 'Complete loss of all body hair including scalp, face, eyebrows, eyelashes, and body hair (rates 10%).',
+    },
+    exclamationPointHairs: {
+      term: 'Exclamation Point Hairs',
+      definition: 'Short broken hairs that taper at the base, characteristic of active alopecia areata.',
+    },
+  },
+
+  importantNotes: [
+    'Only 10% rating available, and only for complete body hair loss',
+    'Scalp-only or face-only hair loss rates 0%',
+    'Alopecia totalis (complete scalp loss) still rates 0% without body hair loss',
+    'Consider secondary conditions: depression, anxiety for separate ratings',
+    'Scarring alopecia (DC 7830) has different criteria based on scalp percentage',
+  ],
+
+  disclaimer: 'This analysis is based on logged alopecia symptoms. VA ratings require medical documentation of hair loss extent and diagnosis.',
+};
+
+// ============================================
+// PHASE 6A: HYPERHIDROSIS CRITERIA (DC 7832)
+// ============================================
+
+export const HYPERHIDROSIS_CRITERIA = {
+  diagnosticCode: '7832',
+  condition: 'Hyperhidrosis',
+  cfrReference: '38 CFR 4.118, Diagnostic Code 7832',
+
+  note: 'Hyperhidrosis is rated based on functional impairment and response to therapy. The key criterion is ability to handle paper or tools. Only two rating levels exist: 30% and 0%.',
+
+  ratings: [
+    {
+      percent: 30,
+      summary: 'Unable to handle paper or tools due to moisture, unresponsive to therapy',
+      criteriaDescription: [
+        'Unable to handle paper or tools because of moisture',
+        'Condition is unresponsive to therapy',
+        'Both criteria must be met',
+      ],
+      evidenceNeeded: [
+        'Medical documentation of hyperhidrosis diagnosis',
+        'Documentation of functional impairment with paper/tools',
+        'Treatment records showing therapy attempts',
+        'Documentation that condition persists despite treatment',
+        'Occupational impact statements',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'Able to handle paper or tools after therapy',
+      criteriaDescription: [
+        'Hyperhidrosis present but controllable with therapy',
+        'Able to handle paper or tools after treatment',
+      ],
+      evidenceNeeded: [
+        'Documentation of diagnosis',
+        'Treatment records',
+        'Note: Document all functional impacts even if controlled',
+      ],
+    },
+  ],
+
+  definitions: {
+    hyperhidrosis: {
+      term: 'Hyperhidrosis',
+      definition: 'A condition characterized by excessive sweating beyond what is needed for thermoregulation.',
+    },
+    palmarHyperhidrosis: {
+      term: 'Palmar Hyperhidrosis',
+      definition: 'Excessive sweating of the palms/hands.',
+    },
+    plantarHyperhidrosis: {
+      term: 'Plantar Hyperhidrosis',
+      definition: 'Excessive sweating of the soles/feet.',
+    },
+    axillaryHyperhidrosis: {
+      term: 'Axillary Hyperhidrosis',
+      definition: 'Excessive sweating of the underarms.',
+    },
+    iontophoresis: {
+      term: 'Iontophoresis',
+      definition: 'Treatment using mild electrical current through water to temporarily block sweat glands.',
+    },
+    sympathectomy: {
+      term: 'Sympathectomy',
+      definition: 'Surgical procedure to interrupt nerve signals that trigger sweating.',
+    },
+  },
+
+  importantNotes: [
+    'Key criterion is inability to handle paper or tools due to moisture',
+    'Must be unresponsive to therapy for 30% rating',
+    'Document all treatments tried and their effectiveness',
+    'Occupational impact documentation is valuable',
+    'Secondary conditions (skin infections, maceration) may warrant separate ratings',
+    'Consider impact on daily activities and employment',
+  ],
+
+  disclaimer: 'This analysis is based on logged hyperhidrosis symptoms. VA ratings require medical documentation of diagnosis, treatment history, and functional impairment.',
+};
+
+// ============================================
+// PHASE 6B: GENERAL RATING FORMULA FOR THE SKIN
+// Used by DC 7809, 7813, 7815, 7820 (and others)
+// ============================================
+
+export const GENERAL_SKIN_FORMULA_CRITERIA = {
+  description: 'General Rating Formula for the Skin - applies to multiple skin conditions',
+  cfrReference: '38 CFR 4.118',
+
+  ratings: [
+    {
+      percent: 60,
+      summary: '>40% body/exposed areas OR constant systemic therapy',
+      criteriaDescription: [
+        'Characteristic lesions involving more than 40% of the entire body, OR',
+        'More than 40% of exposed areas affected, OR',
+        'Constant or near-constant systemic therapy required over past 12 months',
+        '(corticosteroids, phototherapy, retinoids, biologics, PUVA, immunosuppressives)',
+      ],
+      evidenceNeeded: [
+        'Medical documentation of body surface area involvement',
+        'Prescription records for systemic medications',
+        'Treatment duration documentation',
+        'Photographs of affected areas',
+      ],
+    },
+    {
+      percent: 30,
+      summary: '20-40% body/exposed areas OR systemic therapy ≥6 weeks',
+      criteriaDescription: [
+        'Characteristic lesions involving 20-40% of the entire body, OR',
+        '20-40% of exposed areas affected, OR',
+        'Systemic therapy required ≥6 weeks but not constantly over past 12 months',
+      ],
+      evidenceNeeded: [
+        'Documentation of affected body percentage',
+        'Treatment records showing systemic therapy duration',
+        'Dermatology records',
+      ],
+    },
+    {
+      percent: 10,
+      summary: '5-20% body/exposed areas OR intermittent systemic therapy <6 weeks',
+      criteriaDescription: [
+        'Characteristic lesions involving 5-20% of the entire body, OR',
+        '5-20% of exposed areas affected, OR',
+        'Intermittent systemic therapy <6 weeks over past 12 months',
+      ],
+      evidenceNeeded: [
+        'Documentation of affected areas',
+        'Treatment records',
+      ],
+    },
+    {
+      percent: 0,
+      summary: '<5% body/exposed areas with topical therapy only',
+      criteriaDescription: [
+        'Characteristic lesions involving less than 5% of entire body, OR',
+        'Less than 5% of exposed areas affected',
+        'No more than topical therapy required over past 12 months',
+      ],
+      evidenceNeeded: [
+        'Documentation of condition presence',
+        'Note: May qualify for rating under scars or disfigurement',
+      ],
+    },
+  ],
+
+  definitions: {
+    exposedAreas: {
+      term: 'Exposed Areas',
+      definition: 'Areas normally visible: head, face, neck, hands.',
+    },
+    systemicTherapy: {
+      term: 'Systemic Therapy',
+      definition: 'Medications affecting the whole body: oral/injectable corticosteroids, immunosuppressives, biologics, retinoids, phototherapy (PUVA, UVB).',
+    },
+    topicalTherapy: {
+      term: 'Topical Therapy',
+      definition: 'Medications applied directly to skin: creams, ointments, lotions.',
+    },
+    constantTherapy: {
+      term: 'Constant/Near-Constant Therapy',
+      definition: 'Continuous treatment with minimal breaks over 12-month period.',
+    },
+  },
+
+  importantNotes: [
+    'This formula applies to multiple skin DCs: 7806, 7809, 7813-7816, 7820-7822, 7824',
+    'Alternative rating as disfigurement (DC 7800) or scars (DC 7801-7805) may be higher',
+    'Document both body surface area AND treatment requirements',
+    'Exposed areas and total body are rated the same',
+  ],
+};
+
+// ============================================
+// PHASE 6B: DISCOID LUPUS ERYTHEMATOSUS (DC 7809)
+// ============================================
+
+export const DISCOID_LUPUS_CRITERIA = {
+  diagnosticCode: '7809',
+  condition: 'Discoid Lupus Erythematosus',
+  cfrReference: '38 CFR 4.118, Diagnostic Code 7809',
+
+  note: 'Discoid lupus is rated under the General Rating Formula for the Skin. Do NOT combine with ratings under DC 6350 (Systemic Lupus Erythematosus).',
+
+  ratings: [
+    {
+      percent: 60,
+      summary: '>40% body/exposed areas OR constant systemic therapy',
+      criteriaDescription: [
+        'Discoid lesions involving more than 40% of entire body or exposed areas, OR',
+        'Constant or near-constant systemic therapy (corticosteroids, antimalarials, immunosuppressives) over past 12 months',
+      ],
+      evidenceNeeded: [
+        'Dermatology documentation of lesion extent',
+        'Body surface area assessment',
+        'Prescription records for systemic medications',
+        'Photographs documenting involvement',
+      ],
+    },
+    {
+      percent: 30,
+      summary: '20-40% body/exposed areas OR systemic therapy ≥6 weeks',
+      criteriaDescription: [
+        'Discoid lesions involving 20-40% of entire body or exposed areas, OR',
+        'Systemic therapy required ≥6 weeks but not constantly over past 12 months',
+      ],
+      evidenceNeeded: [
+        'Documentation of affected percentage',
+        'Treatment duration records',
+      ],
+    },
+    {
+      percent: 10,
+      summary: '5-20% body/exposed areas OR intermittent systemic therapy',
+      criteriaDescription: [
+        'Discoid lesions involving 5-20% of entire body or exposed areas, OR',
+        'Intermittent systemic therapy <6 weeks over past 12 months',
+      ],
+      evidenceNeeded: [
+        'Documentation of lesion locations and extent',
+        'Treatment records',
+      ],
+    },
+    {
+      percent: 0,
+      summary: '<5% body/exposed areas with topical therapy only',
+      criteriaDescription: [
+        'Discoid lesions involving less than 5% of body or exposed areas',
+        'Only topical therapy required',
+      ],
+      evidenceNeeded: [
+        'Documentation of diagnosis',
+        'Consider scarring/disfigurement for separate rating',
+      ],
+    },
+  ],
+
+  definitions: {
+    discoidLupus: {
+      term: 'Discoid Lupus Erythematosus',
+      definition: 'A chronic autoimmune skin condition causing coin-shaped (discoid) lesions that can cause scarring and pigment changes.',
+    },
+    discoidLesions: {
+      term: 'Discoid Lesions',
+      definition: 'Round or oval, scaly, erythematous plaques that may lead to scarring, hyperpigmentation, or hypopigmentation.',
+    },
+    photosensitivity: {
+      term: 'Photosensitivity',
+      definition: 'Abnormal skin reaction to sunlight, common in discoid lupus.',
+    },
+    follicularPlugging: {
+      term: 'Follicular Plugging',
+      definition: 'Blockage of hair follicles with keratin, seen in discoid lupus lesions.',
+    },
+  },
+
+  importantNotes: [
+    'Do NOT combine with systemic lupus (DC 6350) ratings',
+    'Scarring from healed lesions may warrant separate rating under DC 7800-7805',
+    'Hair loss from scalp involvement may be rated under DC 7830 (scarring alopecia)',
+    'Document photosensitivity and sun protection requirements',
+    'Common treatments: hydroxychloroquine, topical steroids, immunosuppressives',
+  ],
+
+  disclaimer: 'This analysis is based on logged discoid lupus symptoms. VA ratings require dermatology documentation and assessment of body surface area involvement.',
+};
+
+// ============================================
+// PHASE 6B: BULLOUS DISORDERS (DC 7815)
+// ============================================
+
+export const BULLOUS_DISORDERS_CRITERIA = {
+  diagnosticCode: '7815',
+  condition: 'Bullous Disorders',
+  cfrReference: '38 CFR 4.118, Diagnostic Code 7815',
+
+  note: 'Includes pemphigus vulgaris, pemphigus foliaceous, bullous pemphigoid, dermatitis herpetiformis, epidermolysis bullosa acquisita, Hailey-Hailey, and porphyria cutanea tarda. Rate mucosal complications separately.',
+
+  ratings: [
+    {
+      percent: 60,
+      summary: '>40% body/exposed areas OR constant systemic therapy',
+      criteriaDescription: [
+        'Bullous lesions involving more than 40% of entire body or exposed areas, OR',
+        'Constant or near-constant systemic therapy (corticosteroids, immunosuppressives, biologics) over past 12 months',
+      ],
+      evidenceNeeded: [
+        'Dermatology documentation with biopsy confirmation',
+        'Body surface area assessment',
+        'Systemic medication records',
+        'Photographs of active disease',
+      ],
+    },
+    {
+      percent: 30,
+      summary: '20-40% body/exposed areas OR systemic therapy ≥6 weeks',
+      criteriaDescription: [
+        'Bullous lesions involving 20-40% of entire body or exposed areas, OR',
+        'Systemic therapy required ≥6 weeks but not constantly over past 12 months',
+      ],
+      evidenceNeeded: [
+        'Documentation of lesion extent',
+        'Treatment records',
+      ],
+    },
+    {
+      percent: 10,
+      summary: '5-20% body/exposed areas OR intermittent systemic therapy',
+      criteriaDescription: [
+        'Bullous lesions involving 5-20% of entire body or exposed areas, OR',
+        'Intermittent systemic therapy <6 weeks over past 12 months',
+      ],
+      evidenceNeeded: [
+        'Documentation of affected areas',
+        'Treatment records',
+      ],
+    },
+    {
+      percent: 0,
+      summary: '<5% body/exposed areas with topical therapy only',
+      criteriaDescription: [
+        'Bullous lesions involving less than 5% of body or exposed areas',
+        'Only topical therapy required',
+      ],
+      evidenceNeeded: [
+        'Documentation of diagnosis',
+      ],
+    },
+  ],
+
+  definitions: {
+    bullousDisorders: {
+      term: 'Bullous Disorders',
+      definition: 'Group of autoimmune conditions causing blistering of skin and/or mucous membranes.',
+    },
+    pemphigus: {
+      term: 'Pemphigus',
+      definition: 'Autoimmune blistering where antibodies attack connections between skin cells.',
+    },
+    bullae: {
+      term: 'Bullae',
+      definition: 'Large fluid-filled blisters greater than 5mm in diameter.',
+    },
+    nikolskySign: {
+      term: 'Nikolsky Sign',
+      definition: 'When slight rubbing causes skin to separate - indicates active pemphigus.',
+    },
+  },
+
+  importantNotes: [
+    'Rate mucosal involvement (ocular, oral, GI, respiratory, GU) SEPARATELY under appropriate DC',
+    'Biopsy typically required for definitive diagnosis',
+    'These conditions can be life-threatening and require aggressive treatment',
+    'Scarring from healed lesions may warrant additional rating',
+    'Document infection risks and hospitalizations',
+  ],
+
+  disclaimer: 'This analysis is based on logged bullous disorder symptoms. VA ratings require dermatology documentation including biopsy results. Mucosal complications are rated separately.',
+};
+
+// ============================================
+// PHASE 6B: PRIMARY CUTANEOUS VASCULITIS (DC 7826)
+// ============================================
+
+export const CUTANEOUS_VASCULITIS_CRITERIA = {
+  diagnosticCode: '7826',
+  condition: 'Primary Cutaneous Vasculitis',
+  cfrReference: '38 CFR 4.118, Diagnostic Code 7826',
+
+  note: 'Rated by frequency of documented vasculitic episodes and immunosuppressive therapy requirements. Alternative rating as disfigurement or scars may apply.',
+
+  ratings: [
+    {
+      percent: 60,
+      summary: 'Persistent episodes refractory to continuous immunosuppressive therapy',
+      criteriaDescription: [
+        'Persistent documented vasculitis episodes',
+        'Refractory to continuous immunosuppressive therapy',
+        'Disease continues despite aggressive treatment',
+      ],
+      evidenceNeeded: [
+        'Medical documentation of persistent vasculitis',
+        'Records of continuous immunosuppressive therapy',
+        'Documentation of treatment failure/refractory disease',
+        'Biopsy results confirming vasculitis',
+      ],
+    },
+    {
+      percent: 30,
+      summary: '4+ episodes/year requiring intermittent immunosuppressive therapy',
+      criteriaDescription: [
+        'Recurrent documented vasculitic episodes occurring 4+ times over past 12 months, AND',
+        'Requiring intermittent systemic immunosuppressive therapy for control',
+      ],
+      evidenceNeeded: [
+        'Documentation of at least 4 episodes in 12 months',
+        'Records of immunosuppressive therapy',
+        'Dates and descriptions of each episode',
+      ],
+    },
+    {
+      percent: 10,
+      summary: '1-3 episodes/year with immunosuppressive OR continuous systemic medication',
+      criteriaDescription: [
+        '1-3 documented vasculitic episodes over past 12 months requiring intermittent immunosuppressive therapy, OR',
+        'No recurrent episodes but requires continuous systemic medication for control',
+      ],
+      evidenceNeeded: [
+        'Documentation of episodes',
+        'Medication records',
+      ],
+    },
+  ],
+
+  definitions: {
+    cutaneousVasculitis: {
+      term: 'Primary Cutaneous Vasculitis',
+      definition: 'Inflammation of blood vessels limited to the skin, causing purpura, ulcers, and tissue damage.',
+    },
+    purpura: {
+      term: 'Purpura',
+      definition: 'Purple or red discoloration from bleeding under the skin due to vessel inflammation.',
+    },
+    livedoReticularis: {
+      term: 'Livedo Reticularis',
+      definition: 'Mottled, net-like purple discoloration of the skin from vascular changes.',
+    },
+    vasculiticEpisode: {
+      term: 'Documented Vasculitic Episode',
+      definition: 'A medically documented flare of vasculitis with clinical findings and/or biopsy confirmation.',
+    },
+  },
+
+  importantNotes: [
+    'Episodes must be medically DOCUMENTED for rating purposes',
+    'Biopsy confirmation strengthens the claim significantly',
+    'Alternative rating as disfigurement (DC 7800) or scars may be higher',
+    'Track each episode with dates, symptoms, and treatment',
+    'Systemic involvement may warrant additional ratings under other DCs',
+  ],
+
+  disclaimer: 'This analysis is based on logged vasculitis symptoms. VA ratings require medical documentation of each vasculitic episode and treatment records.',
+};
+
+// ============================================
+// PHASE 6B: DERMATOPHYTOSIS (DC 7813)
+// ============================================
+
+export const DERMATOPHYTOSIS_CRITERIA = {
+  diagnosticCode: '7813',
+  condition: 'Dermatophytosis',
+  cfrReference: '38 CFR 4.118, Diagnostic Code 7813',
+
+  note: 'Includes ringworm (tinea corporis, capitis, pedis, barbae, cruris), nail fungus (onychomycosis), and tinea versicolor. Rated under General Rating Formula for the Skin.',
+
+  ratings: [
+    {
+      percent: 60,
+      summary: '>40% body/exposed areas OR constant systemic antifungal therapy',
+      criteriaDescription: [
+        'Fungal infection involving more than 40% of entire body or exposed areas, OR',
+        'Constant or near-constant systemic antifungal therapy over past 12 months',
+      ],
+      evidenceNeeded: [
+        'Dermatology documentation of extent',
+        'Fungal culture or KOH prep results',
+        'Oral antifungal prescription records',
+        'Duration of treatment documentation',
+      ],
+    },
+    {
+      percent: 30,
+      summary: '20-40% body/exposed areas OR systemic therapy ≥6 weeks',
+      criteriaDescription: [
+        'Fungal infection involving 20-40% of entire body or exposed areas, OR',
+        'Systemic antifungal therapy ≥6 weeks but not constantly over past 12 months',
+      ],
+      evidenceNeeded: [
+        'Documentation of affected areas',
+        'Treatment records',
+      ],
+    },
+    {
+      percent: 10,
+      summary: '5-20% body/exposed areas OR intermittent systemic therapy',
+      criteriaDescription: [
+        'Fungal infection involving 5-20% of entire body or exposed areas, OR',
+        'Intermittent systemic antifungal therapy <6 weeks over past 12 months',
+      ],
+      evidenceNeeded: [
+        'Documentation of infection locations',
+        'Treatment records',
+      ],
+    },
+    {
+      percent: 0,
+      summary: '<5% body/exposed areas with topical therapy only',
+      criteriaDescription: [
+        'Fungal infection involving less than 5% of body or exposed areas',
+        'Only topical antifungals required',
+      ],
+      evidenceNeeded: [
+        'Documentation of condition',
+      ],
+    },
+  ],
+
+  definitions: {
+    dermatophytosis: {
+      term: 'Dermatophytosis',
+      definition: 'Fungal infections of skin, hair, or nails caused by dermatophyte fungi.',
+    },
+    tineaCorporis: {
+      term: 'Tinea Corporis',
+      definition: 'Ringworm of the body - circular, scaly, itchy patches.',
+    },
+    tineaPedis: {
+      term: 'Tinea Pedis',
+      definition: 'Athlete\'s foot - fungal infection between toes and on feet.',
+    },
+    onychomycosis: {
+      term: 'Onychomycosis',
+      definition: 'Fungal nail infection causing thickening, discoloration, and crumbling.',
+    },
+    tineaVersicolor: {
+      term: 'Tinea Versicolor',
+      definition: 'Yeast overgrowth causing discolored patches on skin.',
+    },
+  },
+
+  importantNotes: [
+    'Nail fungus (onychomycosis) often requires prolonged oral antifungal therapy',
+    'Recurrent infections should be documented carefully',
+    'Systemic therapy includes oral terbinafine, itraconazole, fluconazole, griseofulvin',
+    'Military service in humid environments increases risk',
+    'Document treatment failures and recurrences',
+  ],
+
+  disclaimer: 'This analysis is based on logged dermatophytosis symptoms. VA ratings require documentation of fungal infection extent and treatment requirements.',
+};
+
+// ============================================
+// PHASE 6B: SKIN INFECTIONS (DC 7820)
+// ============================================
+
+export const SKIN_INFECTIONS_CRITERIA = {
+  diagnosticCode: '7820',
+  condition: 'Skin Infections',
+  cfrReference: '38 CFR 4.118, Diagnostic Code 7820',
+
+  note: 'Covers bacterial, fungal, viral, treponemal, and parasitic skin infections not listed elsewhere. Rated under General Rating Formula for the Skin.',
+
+  ratings: [
+    {
+      percent: 60,
+      summary: '>40% body/exposed areas OR constant systemic therapy',
+      criteriaDescription: [
+        'Skin infection involving more than 40% of entire body or exposed areas, OR',
+        'Constant or near-constant systemic therapy (antibiotics, antivirals, etc.) over past 12 months',
+      ],
+      evidenceNeeded: [
+        'Medical documentation of infection extent',
+        'Culture results if available',
+        'Systemic medication records',
+        'Hospitalization records if applicable',
+      ],
+    },
+    {
+      percent: 30,
+      summary: '20-40% body/exposed areas OR systemic therapy ≥6 weeks',
+      criteriaDescription: [
+        'Skin infection involving 20-40% of entire body or exposed areas, OR',
+        'Systemic therapy ≥6 weeks but not constantly over past 12 months',
+      ],
+      evidenceNeeded: [
+        'Documentation of affected areas',
+        'Treatment duration records',
+      ],
+    },
+    {
+      percent: 10,
+      summary: '5-20% body/exposed areas OR intermittent systemic therapy',
+      criteriaDescription: [
+        'Skin infection involving 5-20% of entire body or exposed areas, OR',
+        'Intermittent systemic therapy <6 weeks over past 12 months',
+      ],
+      evidenceNeeded: [
+        'Documentation of infections',
+        'Treatment records',
+      ],
+    },
+    {
+      percent: 0,
+      summary: '<5% body/exposed areas with topical therapy only',
+      criteriaDescription: [
+        'Skin infection involving less than 5% of body or exposed areas',
+        'Only topical therapy required',
+      ],
+      evidenceNeeded: [
+        'Documentation of condition',
+      ],
+    },
+  ],
+
+  definitions: {
+    cellulitis: {
+      term: 'Cellulitis',
+      definition: 'Bacterial infection of deep skin layers causing redness, swelling, warmth, and pain.',
+    },
+    abscess: {
+      term: 'Abscess',
+      definition: 'Localized collection of pus from bacterial infection.',
+    },
+    folliculitis: {
+      term: 'Folliculitis',
+      definition: 'Infection of hair follicles causing red bumps or pustules.',
+    },
+    herpesZoster: {
+      term: 'Herpes Zoster (Shingles)',
+      definition: 'Reactivation of varicella-zoster virus causing painful blistering rash.',
+    },
+    impetigo: {
+      term: 'Impetigo',
+      definition: 'Contagious bacterial skin infection with honey-colored crusted sores.',
+    },
+  },
+
+  importantNotes: [
+    'Recurrent infections (same site or multiple sites) strengthen claims',
+    'Document each infection episode with dates and treatment',
+    'Post-herpetic neuralgia from shingles may warrant separate neurological rating',
+    'MRSA or resistant infections may require prolonged therapy',
+    'Consider underlying immune issues if infections are frequent',
+  ],
+
+  disclaimer: 'This analysis is based on logged skin infection symptoms. VA ratings require medical documentation of infection type, extent, and treatment requirements.',
 };
 
 // ============================================
@@ -35489,6 +36528,1533 @@ export const analyzeIntestinalFistulaLogs = (logs, options = {}) => {
   };
 };
 
+// ============================================
+// ANALYSIS FUNCTIONS - ACNE (DC 7828)
+// Phase 6A - Rated by depth and extent of involvement
+// ============================================
+
+/**
+ * Analyze Acne symptom logs against VA rating criteria
+ * DC 7828 - Rated based on deep vs superficial acne and extent
+ */
+export const analyzeAcneLogs = (logs, options = {}) => {
+  const evaluationPeriodDays = options.days || 365;
+  const symptomIds = CONDITIONS.ACNE.symptomIds;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    const symptomId = getLogSymptomId(log);
+    return logDate >= cutoffDate && symptomId && symptomIds.includes(symptomId);
+  });
+
+  if (relevantLogs.length === 0) {
+    return {
+      hasData: false,
+      condition: 'Acne',
+      diagnosticCode: '7828',
+      message: 'No acne symptoms logged in evaluation period',
+    };
+  }
+
+  // Categorize symptoms - Superficial types
+  const comedonesLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'acne-superficial-comedones');
+  const papulesLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'acne-superficial-papules');
+  const pustulesLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'acne-superficial-pustules');
+
+  // Categorize symptoms - Deep types
+  const nodulesLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'acne-deep-nodules');
+  const cystsLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'acne-deep-cysts');
+
+  // Location/extent
+  const faceNeckUnder40Logs = relevantLogs.filter(log => getLogSymptomId(log) === 'acne-face-neck-under40');
+  const faceNeck40PlusLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'acne-face-neck-40plus');
+  const bodyOtherLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'acne-body-other');
+
+  // Complications
+  const scarringLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'acne-scarring');
+  const disfigurementLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'acne-disfigurement');
+
+  // Treatment logs
+  const treatmentLogs = relevantLogs.filter(log =>
+      ['acne-topical-treatment', 'acne-oral-antibiotics', 'acne-isotretinoin', 'acne-hormonal-therapy'].includes(getLogSymptomId(log))
+  );
+
+  // Determine key indicators
+  const hasDeepAcne = nodulesLogs.length > 0 || cystsLogs.length > 0;
+  const hasSuperficialOnly = !hasDeepAcne && (comedonesLogs.length > 0 || papulesLogs.length > 0 || pustulesLogs.length > 0);
+  const hasFaceNeck40Plus = faceNeck40PlusLogs.length > 0;
+  const hasFaceNeckUnder40 = faceNeckUnder40Logs.length > 0;
+  const hasBodyAcne = bodyOtherLogs.length > 0;
+  const hasScarring = scarringLogs.length > 0;
+  const hasDisfigurement = disfigurementLogs.length > 0;
+
+  let supportedRating = 0;
+  let ratingRationale = [];
+  const gaps = [];
+
+  // Determine rating based on VA criteria
+  if (hasDeepAcne && hasFaceNeck40Plus) {
+    supportedRating = 30;
+    ratingRationale = [
+      'Deep acne (nodules/cysts) documented',
+      'Face and neck involvement ≥40% documented',
+    ];
+  } else if (hasDeepAcne && (hasFaceNeckUnder40 || hasBodyAcne)) {
+    supportedRating = 10;
+    ratingRationale = [
+      'Deep acne (nodules/cysts) documented',
+    ];
+    if (hasFaceNeckUnder40) {
+      ratingRationale.push('Face/neck involvement <40%');
+    }
+    if (hasBodyAcne) {
+      ratingRationale.push('Body involvement (non-face/neck) documented');
+    }
+  } else if (hasDeepAcne) {
+    // Deep acne but no extent documented
+    supportedRating = 10;
+    ratingRationale = [
+      'Deep acne (nodules/cysts) documented',
+      'Extent of involvement not specified - document face/neck percentage',
+    ];
+  } else if (hasSuperficialOnly) {
+    supportedRating = 0;
+    ratingRationale = [
+      'Superficial acne documented (comedones, papules, pustules)',
+      'No deep nodules or cysts documented',
+      'Superficial acne rates 0% regardless of extent',
+    ];
+  }
+
+  // Add scarring/disfigurement note
+  if (hasScarring || hasDisfigurement) {
+    ratingRationale.push('Scarring/disfigurement present - may qualify for alternative rating under DC 7800-7805');
+  }
+
+  // Add treatment documentation
+  if (treatmentLogs.length > 0) {
+    const treatments = [];
+    if (relevantLogs.some(log => getLogSymptomId(log) === 'acne-topical-treatment')) treatments.push('topical');
+    if (relevantLogs.some(log => getLogSymptomId(log) === 'acne-oral-antibiotics')) treatments.push('oral antibiotics');
+    if (relevantLogs.some(log => getLogSymptomId(log) === 'acne-isotretinoin')) treatments.push('isotretinoin');
+    if (relevantLogs.some(log => getLogSymptomId(log) === 'acne-hormonal-therapy')) treatments.push('hormonal therapy');
+    ratingRationale.push(`Treatment documented: ${treatments.join(', ')}`);
+  }
+
+  // Documentation gaps
+  if (!hasDeepAcne && relevantLogs.length > 0) {
+    gaps.push('Document if nodules or cysts are present (deep acne) for potential 10-30% rating');
+  }
+  if (hasDeepAcne && !hasFaceNeck40Plus && !hasFaceNeckUnder40 && !hasBodyAcne) {
+    gaps.push('Document percentage of face/neck affected for accurate rating');
+  }
+  if (!hasScarring && supportedRating > 0) {
+    gaps.push('Document any scarring - may qualify for additional rating under scar DCs');
+  }
+  if (treatmentLogs.length === 0) {
+    gaps.push('Document all treatments tried (topical, oral, isotretinoin)');
+  }
+
+  return {
+    hasData: true,
+    condition: 'Acne',
+    diagnosticCode: '7828',
+    cfrReference: '38 CFR 4.118',
+    evaluationPeriodDays,
+    supportedRating,
+    ratingRationale,
+    gaps,
+    metrics: {
+      totalLogs: relevantLogs.length,
+      comedonesLogs: comedonesLogs.length,
+      papulesLogs: papulesLogs.length,
+      pustulesLogs: pustulesLogs.length,
+      nodulesLogs: nodulesLogs.length,
+      cystsLogs: cystsLogs.length,
+      faceNeckUnder40: faceNeckUnder40Logs.length,
+      faceNeck40Plus: faceNeck40PlusLogs.length,
+      bodyOther: bodyOtherLogs.length,
+      scarringLogs: scarringLogs.length,
+      disfigurementLogs: disfigurementLogs.length,
+      treatmentLogs: treatmentLogs.length,
+      hasDeepAcne,
+      hasSuperficialOnly,
+    },
+    criteria: ACNE_CRITERIA,
+  };
+};
+
+// ============================================
+// ANALYSIS FUNCTIONS - CHLORACNE (DC 7829)
+// Phase 6A - Agent Orange presumptive condition
+// ============================================
+
+/**
+ * Analyze Chloracne symptom logs against VA rating criteria
+ * DC 7829 - Agent Orange presumptive condition, rated like acne with intertriginous consideration
+ */
+export const analyzeChloracneLogs = (logs, options = {}) => {
+  const evaluationPeriodDays = options.days || 365;
+  const symptomIds = CONDITIONS.CHLORACNE.symptomIds;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    const symptomId = getLogSymptomId(log);
+    return logDate >= cutoffDate && symptomId && symptomIds.includes(symptomId);
+  });
+
+  if (relevantLogs.length === 0) {
+    return {
+      hasData: false,
+      condition: 'Chloracne',
+      diagnosticCode: '7829',
+      message: 'No chloracne symptoms logged in evaluation period',
+    };
+  }
+
+  // Categorize symptoms - Superficial types
+  const comedonesLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'chloracne-comedones');
+  const papulesLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'chloracne-papules');
+  const pustulesLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'chloracne-pustules');
+
+  // Deep types
+  const nodulesLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'chloracne-deep-nodules');
+  const cystsLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'chloracne-deep-cysts');
+
+  // Location/extent
+  const faceNeckUnder40Logs = relevantLogs.filter(log => getLogSymptomId(log) === 'chloracne-face-neck-under40');
+  const faceNeck40PlusLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'chloracne-face-neck-40plus');
+  const intertriginousLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'chloracne-intertriginous');
+  const bodyOtherLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'chloracne-body-other');
+
+  // Complications
+  const scarringLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'chloracne-scarring');
+  const disfigurementLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'chloracne-disfigurement');
+
+  // Exposure documentation
+  const agentOrangeLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'chloracne-agent-orange');
+  const dioxinLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'chloracne-dioxin-exposure');
+  const onsetWithinYearLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'chloracne-onset-within-year');
+
+  // Determine key indicators
+  const hasDeepChloracne = nodulesLogs.length > 0 || cystsLogs.length > 0;
+  const hasSuperficialOnly = !hasDeepChloracne && (comedonesLogs.length > 0 || papulesLogs.length > 0 || pustulesLogs.length > 0);
+  const hasFaceNeck40Plus = faceNeck40PlusLogs.length > 0;
+  const hasFaceNeckUnder40 = faceNeckUnder40Logs.length > 0;
+  const hasIntertriginous = intertriginousLogs.length > 0;
+  const hasBodyOther = bodyOtherLogs.length > 0;
+  const hasScarring = scarringLogs.length > 0;
+  const hasDisfigurement = disfigurementLogs.length > 0;
+  const hasExposureDocumented = agentOrangeLogs.length > 0 || dioxinLogs.length > 0;
+  const hasOnsetDocumented = onsetWithinYearLogs.length > 0;
+
+  let supportedRating = 0;
+  let ratingRationale = [];
+  const gaps = [];
+
+  // Determine rating based on VA criteria
+  if (hasDeepChloracne && hasFaceNeck40Plus) {
+    supportedRating = 30;
+    ratingRationale = [
+      'Deep chloracne (nodules/cysts) documented',
+      'Face and neck involvement ≥40% documented',
+    ];
+  } else if (hasDeepChloracne && hasIntertriginous) {
+    supportedRating = 20;
+    ratingRationale = [
+      'Deep chloracne (nodules/cysts) documented',
+      'Intertriginous area involvement documented (axilla, anogenital, breast folds, or between digits)',
+    ];
+  } else if (hasDeepChloracne && (hasFaceNeckUnder40 || hasBodyOther)) {
+    supportedRating = 10;
+    ratingRationale = [
+      'Deep chloracne (nodules/cysts) documented',
+    ];
+    if (hasFaceNeckUnder40) {
+      ratingRationale.push('Face/neck involvement <40%');
+    }
+    if (hasBodyOther) {
+      ratingRationale.push('Non-intertriginous body involvement');
+    }
+  } else if (hasDeepChloracne) {
+    supportedRating = 10;
+    ratingRationale = [
+      'Deep chloracne (nodules/cysts) documented',
+      'Extent/location not fully documented - may qualify for higher rating',
+    ];
+  } else if (hasSuperficialOnly) {
+    supportedRating = 0;
+    ratingRationale = [
+      'Superficial chloracne documented',
+      'No deep nodules or cysts documented',
+      'Superficial chloracne rates 0%',
+    ];
+  }
+
+  // Add exposure documentation to rationale
+  if (hasExposureDocumented) {
+    if (agentOrangeLogs.length > 0) {
+      ratingRationale.push('Agent Orange exposure documented - presumptive service connection may apply');
+    } else if (dioxinLogs.length > 0) {
+      ratingRationale.push('Dioxin/chemical exposure documented');
+    }
+  }
+
+  if (hasOnsetDocumented && supportedRating > 0) {
+    ratingRationale.push('Onset within one year of exposure documented');
+  }
+
+  // Add scarring/disfigurement note
+  if (hasScarring || hasDisfigurement) {
+    ratingRationale.push('Scarring/disfigurement present - may qualify for alternative rating under DC 7800-7805');
+  }
+
+  // Documentation gaps
+  if (!hasDeepChloracne && relevantLogs.length > 0) {
+    gaps.push('Document if nodules or cysts are present (deep chloracne) for potential rating');
+  }
+  if (hasDeepChloracne && !hasFaceNeck40Plus && !hasIntertriginous && !hasFaceNeckUnder40 && !hasBodyOther) {
+    gaps.push('Document specific areas affected (face/neck %, intertriginous, or body)');
+  }
+  if (!hasExposureDocumented) {
+    gaps.push('Document herbicide/dioxin exposure history for presumptive service connection');
+  }
+  if (!hasOnsetDocumented && hasExposureDocumented) {
+    gaps.push('Document that onset was within one year of last exposure');
+  }
+  if (!hasScarring && supportedRating > 0) {
+    gaps.push('Document any scarring - may qualify for additional rating');
+  }
+
+  return {
+    hasData: true,
+    condition: 'Chloracne',
+    diagnosticCode: '7829',
+    cfrReference: '38 CFR 4.118',
+    evaluationPeriodDays,
+    supportedRating,
+    ratingRationale,
+    gaps,
+    metrics: {
+      totalLogs: relevantLogs.length,
+      comedonesLogs: comedonesLogs.length,
+      papulesLogs: papulesLogs.length,
+      pustulesLogs: pustulesLogs.length,
+      nodulesLogs: nodulesLogs.length,
+      cystsLogs: cystsLogs.length,
+      faceNeckUnder40: faceNeckUnder40Logs.length,
+      faceNeck40Plus: faceNeck40PlusLogs.length,
+      intertriginousLogs: intertriginousLogs.length,
+      bodyOther: bodyOtherLogs.length,
+      scarringLogs: scarringLogs.length,
+      disfigurementLogs: disfigurementLogs.length,
+      agentOrangeLogs: agentOrangeLogs.length,
+      dioxinLogs: dioxinLogs.length,
+      onsetWithinYearLogs: onsetWithinYearLogs.length,
+      hasDeepChloracne,
+      hasSuperficialOnly,
+      hasIntertriginous,
+    },
+    criteria: CHLORACNE_CRITERIA,
+  };
+};
+
+// ============================================
+// ANALYSIS FUNCTIONS - ALOPECIA AREATA (DC 7831)
+// Phase 6A - Rated by extent of hair loss
+// ============================================
+
+/**
+ * Analyze Alopecia Areata symptom logs against VA rating criteria
+ * DC 7831 - Rated based on extent of hair loss (all body hair = 10%, scalp/face only = 0%)
+ */
+export const analyzeAlopeciaAreataLogs = (logs, options = {}) => {
+  const evaluationPeriodDays = options.days || 365;
+  const symptomIds = CONDITIONS.ALOPECIA_AREATA.symptomIds;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    const symptomId = getLogSymptomId(log);
+    return logDate >= cutoffDate && symptomId && symptomIds.includes(symptomId);
+  });
+
+  if (relevantLogs.length === 0) {
+    return {
+      hasData: false,
+      condition: 'Alopecia Areata',
+      diagnosticCode: '7831',
+      message: 'No alopecia areata symptoms logged in evaluation period',
+    };
+  }
+
+  // Categorize symptoms - Scalp/Face
+  const patchyScalpLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'aa-patchy-scalp');
+  const completeScalpLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'aa-complete-scalp');
+  const eyebrowLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'aa-eyebrow-loss');
+  const eyelashLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'aa-eyelash-loss');
+  const beardLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'aa-beard-loss');
+
+  // Body hair loss
+  const bodyHairLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'aa-body-hair-loss');
+  const allBodyHairLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'aa-all-body-hair');
+
+  // Associated symptoms
+  const nailChangesLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'aa-nail-changes');
+  const exclamationHairsLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'aa-exclamation-hairs');
+  const regrowthLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'aa-regrowth');
+  const recurrentLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'aa-recurrent');
+
+  // Treatment
+  const treatmentLogs = relevantLogs.filter(log =>
+      ['aa-steroid-injections', 'aa-topical-treatment', 'aa-immunotherapy'].includes(getLogSymptomId(log))
+  );
+
+  // Determine key indicators
+  const hasAllBodyHairLoss = allBodyHairLogs.length > 0;
+  const hasBodyHairLoss = bodyHairLogs.length > 0;
+  const hasScalpLoss = patchyScalpLogs.length > 0 || completeScalpLogs.length > 0;
+  const hasFacialLoss = eyebrowLogs.length > 0 || eyelashLogs.length > 0 || beardLogs.length > 0;
+  const hasNailChanges = nailChangesLogs.length > 0;
+  const hasActiveDisease = exclamationHairsLogs.length > 0;
+  const hasRegrowth = regrowthLogs.length > 0;
+  const isRecurrent = recurrentLogs.length > 0;
+
+  let supportedRating = 0;
+  let ratingRationale = [];
+  const gaps = [];
+
+  // Determine rating based on VA criteria
+  // Key criterion: 10% ONLY if ALL body hair is lost (alopecia universalis)
+  if (hasAllBodyHairLoss) {
+    supportedRating = 10;
+    ratingRationale = [
+      'Loss of ALL body hair documented (alopecia universalis)',
+      'This is the maximum rating under DC 7831',
+    ];
+  } else {
+    supportedRating = 0;
+    ratingRationale = [];
+
+    if (hasScalpLoss || hasFacialLoss) {
+      ratingRationale.push('Hair loss limited to scalp and/or face');
+    }
+    if (hasBodyHairLoss && !hasAllBodyHairLoss) {
+      ratingRationale.push('Partial body hair loss documented - not complete');
+    }
+    if (hasScalpLoss && completeScalpLogs.length > 0) {
+      ratingRationale.push('Complete scalp hair loss (alopecia totalis) - still rates 0% without complete body hair loss');
+    }
+    if (ratingRationale.length === 0) {
+      ratingRationale.push('Alopecia areata documented but does not meet criteria for 10% rating');
+    }
+    ratingRationale.push('10% rating requires loss of ALL body hair (alopecia universalis)');
+  }
+
+  // Add additional relevant information
+  if (hasNailChanges) {
+    ratingRationale.push('Nail changes present - associated with more severe disease');
+  }
+  if (hasActiveDisease) {
+    ratingRationale.push('Active disease indicators present (exclamation point hairs)');
+  }
+  if (isRecurrent) {
+    ratingRationale.push('Recurrent episodes documented');
+  }
+  if (hasRegrowth) {
+    ratingRationale.push('Regrowth documented in some areas');
+  }
+
+  // Treatment documentation
+  if (treatmentLogs.length > 0) {
+    const treatments = [];
+    if (relevantLogs.some(log => getLogSymptomId(log) === 'aa-steroid-injections')) treatments.push('steroid injections');
+    if (relevantLogs.some(log => getLogSymptomId(log) === 'aa-topical-treatment')) treatments.push('topical therapy');
+    if (relevantLogs.some(log => getLogSymptomId(log) === 'aa-immunotherapy')) treatments.push('immunotherapy');
+    ratingRationale.push(`Treatment: ${treatments.join(', ')}`);
+  }
+
+  // Documentation gaps
+  if (!hasAllBodyHairLoss && (hasScalpLoss || hasFacialLoss)) {
+    gaps.push('Document if body hair (arms, legs, chest, etc.) is also lost for potential 10% rating');
+  }
+  if (!hasAllBodyHairLoss && hasBodyHairLoss) {
+    gaps.push('Document if ALL body hair is lost (including arms, legs, chest, pubic) for 10% rating');
+  }
+  if (supportedRating === 0) {
+    gaps.push('Consider documenting psychological impact for potential secondary mental health rating');
+  }
+  if (treatmentLogs.length === 0) {
+    gaps.push('Document treatment history (injections, topical, immunotherapy)');
+  }
+
+  return {
+    hasData: true,
+    condition: 'Alopecia Areata',
+    diagnosticCode: '7831',
+    cfrReference: '38 CFR 4.118',
+    evaluationPeriodDays,
+    supportedRating,
+    ratingRationale,
+    gaps,
+    metrics: {
+      totalLogs: relevantLogs.length,
+      patchyScalpLogs: patchyScalpLogs.length,
+      completeScalpLogs: completeScalpLogs.length,
+      eyebrowLogs: eyebrowLogs.length,
+      eyelashLogs: eyelashLogs.length,
+      beardLogs: beardLogs.length,
+      bodyHairLogs: bodyHairLogs.length,
+      allBodyHairLogs: allBodyHairLogs.length,
+      nailChangesLogs: nailChangesLogs.length,
+      exclamationHairsLogs: exclamationHairsLogs.length,
+      regrowthLogs: regrowthLogs.length,
+      recurrentLogs: recurrentLogs.length,
+      treatmentLogs: treatmentLogs.length,
+      hasAllBodyHairLoss,
+      hasScalpLoss,
+      hasFacialLoss,
+      hasBodyHairLoss,
+    },
+    criteria: ALOPECIA_AREATA_CRITERIA,
+  };
+};
+
+// ============================================
+// ANALYSIS FUNCTIONS - HYPERHIDROSIS (DC 7832)
+// Phase 6A - Rated by functional impairment and therapy response
+// ============================================
+
+/**
+ * Analyze Hyperhidrosis symptom logs against VA rating criteria
+ * DC 7832 - Rated based on ability to handle paper/tools and response to therapy
+ */
+export const analyzeHyperhidrosisLogs = (logs, options = {}) => {
+  const evaluationPeriodDays = options.days || 365;
+  const symptomIds = CONDITIONS.HYPERHIDROSIS.symptomIds;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    const symptomId = getLogSymptomId(log);
+    return logDate >= cutoffDate && symptomId && symptomIds.includes(symptomId);
+  });
+
+  if (relevantLogs.length === 0) {
+    return {
+      hasData: false,
+      condition: 'Hyperhidrosis',
+      diagnosticCode: '7832',
+      message: 'No hyperhidrosis symptoms logged in evaluation period',
+    };
+  }
+
+  // Categorize by location
+  const palmarLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'hh-palmar');
+  const plantarLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'hh-plantar');
+  const axillaryLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'hh-axillary');
+  const facialLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'hh-facial');
+  const generalizedLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'hh-generalized');
+
+  // Severity indicators
+  const drippingSweatLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'hh-dripping-sweat');
+
+  // Functional impairment - KEY CRITERIA
+  const paperHandlingLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'hh-paper-handling');
+  const toolHandlingLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'hh-tool-handling');
+  const keyboardLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'hh-keyboard-difficulty');
+  const handshakeLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'hh-handshake-avoidance');
+  const clothingLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'hh-clothing-changes');
+  const occupationalLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'hh-occupational-impact');
+
+  // Complications
+  const macerationLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'hh-skin-maceration');
+  const infectionLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'hh-fungal-infections');
+
+  // Treatment
+  const antiperspirantLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'hh-antiperspirant');
+  const iontophoresisLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'hh-iontophoresis');
+  const botoxLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'hh-botox');
+  const oralMedLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'hh-oral-medication');
+  const surgeryLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'hh-surgery');
+
+  // Therapy response - KEY CRITERIA
+  const therapyResponsiveLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'hh-therapy-responsive');
+  const therapyUnresponsiveLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'hh-therapy-unresponsive');
+
+  // Determine key indicators
+  const hasAnyTreatment = antiperspirantLogs.length > 0 || iontophoresisLogs.length > 0 ||
+      botoxLogs.length > 0 || oralMedLogs.length > 0 || surgeryLogs.length > 0;
+  const cannotHandlePaperTools = paperHandlingLogs.length > 0 || toolHandlingLogs.length > 0;
+  const isTherapyUnresponsive = therapyUnresponsiveLogs.length > 0;
+  const isTherapyResponsive = therapyResponsiveLogs.length > 0;
+  const hasOccupationalImpact = occupationalLogs.length > 0;
+  const hasComplications = macerationLogs.length > 0 || infectionLogs.length > 0;
+
+  // Determine affected areas
+  const affectedAreas = [];
+  if (palmarLogs.length > 0) affectedAreas.push('palms/hands');
+  if (plantarLogs.length > 0) affectedAreas.push('soles/feet');
+  if (axillaryLogs.length > 0) affectedAreas.push('underarms');
+  if (facialLogs.length > 0) affectedAreas.push('face');
+  if (generalizedLogs.length > 0) affectedAreas.push('generalized');
+
+  let supportedRating = 0;
+  let ratingRationale = [];
+  const gaps = [];
+
+  // Determine rating based on VA criteria
+  // 30% requires: (1) Unable to handle paper OR tools due to moisture AND (2) Unresponsive to therapy
+  if (cannotHandlePaperTools && isTherapyUnresponsive) {
+    supportedRating = 30;
+    ratingRationale = [
+      'Unable to handle paper or tools due to moisture documented',
+      'Condition unresponsive to therapy documented',
+      'Both criteria met for 30% rating',
+    ];
+  } else if (cannotHandlePaperTools && !isTherapyUnresponsive && !isTherapyResponsive && hasAnyTreatment) {
+    // Has functional impairment and treatment, but therapy response not documented
+    supportedRating = 0;
+    ratingRationale = [
+      'Unable to handle paper or tools documented',
+      'Treatment attempted but therapy response not documented',
+      '30% requires BOTH functional impairment AND unresponsive to therapy',
+    ];
+  } else if (cannotHandlePaperTools && isTherapyResponsive) {
+    supportedRating = 0;
+    ratingRationale = [
+      'Functional impairment documented but condition responsive to therapy',
+      '30% rating requires condition to be unresponsive to therapy',
+    ];
+  } else if (isTherapyResponsive || (hasAnyTreatment && !cannotHandlePaperTools)) {
+    supportedRating = 0;
+    ratingRationale = [
+      'Hyperhidrosis present and treatment documented',
+      'Able to handle paper or tools after therapy',
+    ];
+  } else {
+    supportedRating = 0;
+    ratingRationale = [
+      'Hyperhidrosis symptoms documented',
+      '30% rating requires inability to handle paper/tools AND unresponsive to therapy',
+    ];
+  }
+
+  // Add location information
+  if (affectedAreas.length > 0) {
+    ratingRationale.push(`Affected areas: ${affectedAreas.join(', ')}`);
+  }
+
+  // Add treatment history
+  if (hasAnyTreatment) {
+    const treatments = [];
+    if (antiperspirantLogs.length > 0) treatments.push('clinical antiperspirant');
+    if (iontophoresisLogs.length > 0) treatments.push('iontophoresis');
+    if (botoxLogs.length > 0) treatments.push('Botox');
+    if (oralMedLogs.length > 0) treatments.push('oral medication');
+    if (surgeryLogs.length > 0) treatments.push('surgery');
+    ratingRationale.push(`Treatments tried: ${treatments.join(', ')}`);
+  }
+
+  // Add occupational impact
+  if (hasOccupationalImpact) {
+    ratingRationale.push('Occupational impact documented');
+  }
+
+  // Add complications
+  if (hasComplications) {
+    const complications = [];
+    if (macerationLogs.length > 0) complications.push('skin maceration');
+    if (infectionLogs.length > 0) complications.push('secondary infections');
+    ratingRationale.push(`Complications: ${complications.join(', ')} - may warrant separate rating`);
+  }
+
+  // Documentation gaps
+  if (!cannotHandlePaperTools) {
+    gaps.push('Document if unable to handle paper or tools due to sweating (key criterion for 30%)');
+  }
+  if (cannotHandlePaperTools && !isTherapyUnresponsive && !isTherapyResponsive) {
+    gaps.push('Document whether condition responds to therapy (required for rating determination)');
+  }
+  if (!hasAnyTreatment) {
+    gaps.push('Document all treatments tried (antiperspirant, iontophoresis, Botox, oral meds, surgery)');
+  }
+  if (!hasOccupationalImpact && cannotHandlePaperTools) {
+    gaps.push('Document specific occupational impact for claim support');
+  }
+  if (infectionLogs.length > 0) {
+    gaps.push('Secondary infections documented - ensure appropriate medical treatment');
+  }
+
+  return {
+    hasData: true,
+    condition: 'Hyperhidrosis',
+    diagnosticCode: '7832',
+    cfrReference: '38 CFR 4.118',
+    evaluationPeriodDays,
+    supportedRating,
+    ratingRationale,
+    gaps,
+    metrics: {
+      totalLogs: relevantLogs.length,
+      palmarLogs: palmarLogs.length,
+      plantarLogs: plantarLogs.length,
+      axillaryLogs: axillaryLogs.length,
+      facialLogs: facialLogs.length,
+      generalizedLogs: generalizedLogs.length,
+      drippingSweatLogs: drippingSweatLogs.length,
+      paperHandlingLogs: paperHandlingLogs.length,
+      toolHandlingLogs: toolHandlingLogs.length,
+      keyboardLogs: keyboardLogs.length,
+      occupationalLogs: occupationalLogs.length,
+      macerationLogs: macerationLogs.length,
+      infectionLogs: infectionLogs.length,
+      therapyResponsiveLogs: therapyResponsiveLogs.length,
+      therapyUnresponsiveLogs: therapyUnresponsiveLogs.length,
+      treatmentLogs: hasAnyTreatment ? 1 : 0,
+      affectedAreas,
+      cannotHandlePaperTools,
+      isTherapyUnresponsive,
+      isTherapyResponsive,
+    },
+    criteria: HYPERHIDROSIS_CRITERIA,
+  };
+};
+
+// ============================================
+// ANALYSIS FUNCTIONS - GENERAL SKIN FORMULA CONDITIONS
+// Phase 6B - DC 7809, 7813, 7815, 7820
+// All use body % and systemic therapy criteria
+// ============================================
+
+/**
+ * Helper function for General Rating Formula for the Skin
+ * Used by multiple skin conditions: DC 7809, 7813, 7815, 7820
+ */
+const analyzeGeneralSkinFormula = (relevantLogs, getLogSymptomId, prefix) => {
+  // Body percentage affected
+  const under5Logs = relevantLogs.filter(log => getLogSymptomId(log) === `${prefix}-under5-body`);
+  const fiveTo20Logs = relevantLogs.filter(log => getLogSymptomId(log) === `${prefix}-5to20-body`);
+  const twentyTo40Logs = relevantLogs.filter(log => getLogSymptomId(log) === `${prefix}-20to40-body`);
+  const over40Logs = relevantLogs.filter(log => getLogSymptomId(log) === `${prefix}-over40-body`);
+
+  // Treatment level
+  const topicalOnlyLogs = relevantLogs.filter(log => getLogSymptomId(log) === `${prefix}-topical-only`);
+  const systemicIntermittentLogs = relevantLogs.filter(log => getLogSymptomId(log) === `${prefix}-systemic-intermittent`);
+  const systemic6WeeksLogs = relevantLogs.filter(log => getLogSymptomId(log) === `${prefix}-systemic-6weeks`);
+  const systemicConstantLogs = relevantLogs.filter(log => getLogSymptomId(log) === `${prefix}-systemic-constant`);
+
+  // Determine highest body percentage documented
+  let bodyPercentage = null;
+  if (over40Logs.length > 0) bodyPercentage = '>40%';
+  else if (twentyTo40Logs.length > 0) bodyPercentage = '20-40%';
+  else if (fiveTo20Logs.length > 0) bodyPercentage = '5-20%';
+  else if (under5Logs.length > 0) bodyPercentage = '<5%';
+
+  // Determine highest treatment level documented
+  let treatmentLevel = null;
+  if (systemicConstantLogs.length > 0) treatmentLevel = 'constant';
+  else if (systemic6WeeksLogs.length > 0) treatmentLevel = '6weeks';
+  else if (systemicIntermittentLogs.length > 0) treatmentLevel = 'intermittent';
+  else if (topicalOnlyLogs.length > 0) treatmentLevel = 'topical';
+
+  return {
+    bodyPercentage,
+    treatmentLevel,
+    metrics: {
+      under5Logs: under5Logs.length,
+      fiveTo20Logs: fiveTo20Logs.length,
+      twentyTo40Logs: twentyTo40Logs.length,
+      over40Logs: over40Logs.length,
+      topicalOnlyLogs: topicalOnlyLogs.length,
+      systemicIntermittentLogs: systemicIntermittentLogs.length,
+      systemic6WeeksLogs: systemic6WeeksLogs.length,
+      systemicConstantLogs: systemicConstantLogs.length,
+    },
+  };
+};
+
+/**
+ * Determine rating based on General Skin Formula
+ */
+const determineGeneralSkinRating = (bodyPercentage, treatmentLevel) => {
+  // 60%: >40% body OR constant systemic
+  if (bodyPercentage === '>40%' || treatmentLevel === 'constant') {
+    return 60;
+  }
+  // 30%: 20-40% body OR systemic ≥6 weeks
+  if (bodyPercentage === '20-40%' || treatmentLevel === '6weeks') {
+    return 30;
+  }
+  // 10%: 5-20% body OR intermittent systemic
+  if (bodyPercentage === '5-20%' || treatmentLevel === 'intermittent') {
+    return 10;
+  }
+  // 0%: <5% body with topical only
+  if (bodyPercentage === '<5%' || treatmentLevel === 'topical') {
+    return 0;
+  }
+  return null;
+};
+
+// ============================================
+// ANALYSIS FUNCTIONS - DISCOID LUPUS (DC 7809)
+// Phase 6B - Uses General Rating Formula for the Skin
+// ============================================
+
+/**
+ * Analyze Discoid Lupus Erythematosus symptom logs against VA rating criteria
+ * DC 7809 - Uses General Rating Formula for the Skin
+ */
+export const analyzeDiscoidLupusLogs = (logs, options = {}) => {
+  const evaluationPeriodDays = options.days || 365;
+  const symptomIds = CONDITIONS.DISCOID_LUPUS.symptomIds;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    const symptomId = getLogSymptomId(log);
+    return logDate >= cutoffDate && symptomId && symptomIds.includes(symptomId);
+  });
+
+  if (relevantLogs.length === 0) {
+    return {
+      hasData: false,
+      condition: 'Discoid Lupus Erythematosus',
+      diagnosticCode: '7809',
+      message: 'No discoid lupus symptoms logged in evaluation period',
+    };
+  }
+
+  // Condition-specific symptoms
+  const discoidLesionsLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'dle-discoid-lesions');
+  const erythematousPlaquesLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'dle-erythematous-plaques');
+  const scarringLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'dle-scarring');
+  const hyperpigmentationLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'dle-hyperpigmentation');
+  const hypopigmentationLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'dle-hypopigmentation');
+  const scalpLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'dle-scalp-involvement');
+  const earLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'dle-ear-involvement');
+  const faceLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'dle-face-involvement');
+  const photosensitivityLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'dle-photosensitivity');
+  const follicularPluggingLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'dle-follicular-plugging');
+
+  // Use general skin formula helper
+  const skinFormula = analyzeGeneralSkinFormula(relevantLogs, getLogSymptomId, 'dle');
+  const { bodyPercentage, treatmentLevel, metrics: formulaMetrics } = skinFormula;
+
+  let supportedRating = determineGeneralSkinRating(bodyPercentage, treatmentLevel);
+  let ratingRationale = [];
+  const gaps = [];
+
+  // Build rationale
+  if (supportedRating === 60) {
+    if (bodyPercentage === '>40%') {
+      ratingRationale.push('More than 40% of body or exposed areas affected');
+    }
+    if (treatmentLevel === 'constant') {
+      ratingRationale.push('Constant/near-constant systemic therapy required');
+    }
+  } else if (supportedRating === 30) {
+    if (bodyPercentage === '20-40%') {
+      ratingRationale.push('20-40% of body or exposed areas affected');
+    }
+    if (treatmentLevel === '6weeks') {
+      ratingRationale.push('Systemic therapy ≥6 weeks over past 12 months');
+    }
+  } else if (supportedRating === 10) {
+    if (bodyPercentage === '5-20%') {
+      ratingRationale.push('5-20% of body or exposed areas affected');
+    }
+    if (treatmentLevel === 'intermittent') {
+      ratingRationale.push('Intermittent systemic therapy <6 weeks');
+    }
+  } else if (supportedRating === 0) {
+    ratingRationale.push('Less than 5% of body affected with topical therapy only');
+  } else {
+    ratingRationale.push('Discoid lupus documented - document body % and treatment for rating');
+  }
+
+  // Add symptom details
+  if (discoidLesionsLogs.length > 0 || erythematousPlaquesLogs.length > 0) {
+    ratingRationale.push('Characteristic discoid lesions documented');
+  }
+  if (scarringLogs.length > 0) {
+    ratingRationale.push('Scarring documented - may qualify for additional rating under DC 7800-7805');
+  }
+  if (faceLogs.length > 0 || earLogs.length > 0 || scalpLogs.length > 0) {
+    const locations = [];
+    if (faceLogs.length > 0) locations.push('face');
+    if (earLogs.length > 0) locations.push('ears');
+    if (scalpLogs.length > 0) locations.push('scalp');
+    ratingRationale.push(`Exposed area involvement: ${locations.join(', ')}`);
+  }
+  if (photosensitivityLogs.length > 0) {
+    ratingRationale.push('Photosensitivity documented');
+  }
+
+  // Documentation gaps
+  if (!bodyPercentage) {
+    gaps.push('Document percentage of body/exposed areas affected (key rating criterion)');
+  }
+  if (!treatmentLevel) {
+    gaps.push('Document treatment type: topical only vs systemic therapy');
+  }
+  if (treatmentLevel && treatmentLevel !== 'topical' && treatmentLevel !== 'constant') {
+    gaps.push('Document duration of systemic therapy (<6 weeks vs ≥6 weeks vs constant)');
+  }
+  if (scarringLogs.length === 0 && (discoidLesionsLogs.length > 0 || erythematousPlaquesLogs.length > 0)) {
+    gaps.push('Document any scarring - may qualify for separate rating');
+  }
+
+  return {
+    hasData: true,
+    condition: 'Discoid Lupus Erythematosus',
+    diagnosticCode: '7809',
+    cfrReference: '38 CFR 4.118',
+    evaluationPeriodDays,
+    supportedRating,
+    ratingRationale,
+    gaps,
+    metrics: {
+      totalLogs: relevantLogs.length,
+      discoidLesionsLogs: discoidLesionsLogs.length,
+      erythematousPlaquesLogs: erythematousPlaquesLogs.length,
+      scarringLogs: scarringLogs.length,
+      hyperpigmentationLogs: hyperpigmentationLogs.length,
+      hypopigmentationLogs: hypopigmentationLogs.length,
+      scalpLogs: scalpLogs.length,
+      earLogs: earLogs.length,
+      faceLogs: faceLogs.length,
+      photosensitivityLogs: photosensitivityLogs.length,
+      follicularPluggingLogs: follicularPluggingLogs.length,
+      bodyPercentage,
+      treatmentLevel,
+      ...formulaMetrics,
+    },
+    criteria: DISCOID_LUPUS_CRITERIA,
+  };
+};
+
+// ============================================
+// ANALYSIS FUNCTIONS - BULLOUS DISORDERS (DC 7815)
+// Phase 6B - Uses General Rating Formula for the Skin
+// ============================================
+
+/**
+ * Analyze Bullous Disorders symptom logs against VA rating criteria
+ * DC 7815 - Uses General Rating Formula for the Skin
+ */
+export const analyzeBullousDisordersLogs = (logs, options = {}) => {
+  const evaluationPeriodDays = options.days || 365;
+  const symptomIds = CONDITIONS.BULLOUS_DISORDERS.symptomIds;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    const symptomId = getLogSymptomId(log);
+    return logDate >= cutoffDate && symptomId && symptomIds.includes(symptomId);
+  });
+
+  if (relevantLogs.length === 0) {
+    return {
+      hasData: false,
+      condition: 'Bullous Disorders',
+      diagnosticCode: '7815',
+      message: 'No bullous disorder symptoms logged in evaluation period',
+    };
+  }
+
+  // Condition-specific symptoms
+  const blistersLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'bullous-blisters');
+  const erosionsLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'bullous-erosions');
+  const crustingLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'bullous-crusting');
+  const nikolskyLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'bullous-nikolsky-sign');
+  const oralMucosalLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'bullous-oral-mucosal');
+  const ocularLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'bullous-ocular');
+  const giLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'bullous-gi-involvement');
+  const genitalLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'bullous-genital');
+  const itchingLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'bullous-itching');
+  const burningLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'bullous-burning');
+  const scarringLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'bullous-scarring');
+
+  // Use general skin formula helper
+  const skinFormula = analyzeGeneralSkinFormula(relevantLogs, getLogSymptomId, 'bullous');
+  const { bodyPercentage, treatmentLevel, metrics: formulaMetrics } = skinFormula;
+
+  let supportedRating = determineGeneralSkinRating(bodyPercentage, treatmentLevel);
+  let ratingRationale = [];
+  const gaps = [];
+
+  // Build rationale
+  if (supportedRating === 60) {
+    if (bodyPercentage === '>40%') {
+      ratingRationale.push('More than 40% of body or exposed areas affected');
+    }
+    if (treatmentLevel === 'constant') {
+      ratingRationale.push('Constant/near-constant systemic therapy required');
+    }
+  } else if (supportedRating === 30) {
+    if (bodyPercentage === '20-40%') {
+      ratingRationale.push('20-40% of body or exposed areas affected');
+    }
+    if (treatmentLevel === '6weeks') {
+      ratingRationale.push('Systemic therapy ≥6 weeks over past 12 months');
+    }
+  } else if (supportedRating === 10) {
+    if (bodyPercentage === '5-20%') {
+      ratingRationale.push('5-20% of body or exposed areas affected');
+    }
+    if (treatmentLevel === 'intermittent') {
+      ratingRationale.push('Intermittent systemic therapy <6 weeks');
+    }
+  } else if (supportedRating === 0) {
+    ratingRationale.push('Less than 5% of body affected with topical therapy only');
+  } else {
+    ratingRationale.push('Bullous disorder documented - document body % and treatment for rating');
+  }
+
+  // Add symptom details
+  if (blistersLogs.length > 0 || erosionsLogs.length > 0) {
+    ratingRationale.push('Characteristic blisters/erosions documented');
+  }
+  if (nikolskyLogs.length > 0) {
+    ratingRationale.push('Positive Nikolsky sign documented (indicates active pemphigus)');
+  }
+
+  // Mucosal involvement - rate separately
+  const hasMucosalInvolvement = oralMucosalLogs.length > 0 || ocularLogs.length > 0 ||
+      giLogs.length > 0 || genitalLogs.length > 0;
+  if (hasMucosalInvolvement) {
+    const mucosalAreas = [];
+    if (oralMucosalLogs.length > 0) mucosalAreas.push('oral');
+    if (ocularLogs.length > 0) mucosalAreas.push('ocular');
+    if (giLogs.length > 0) mucosalAreas.push('GI');
+    if (genitalLogs.length > 0) mucosalAreas.push('genital');
+    ratingRationale.push(`Mucosal involvement (${mucosalAreas.join(', ')}) - rate SEPARATELY under appropriate DC`);
+  }
+
+  if (scarringLogs.length > 0) {
+    ratingRationale.push('Scarring documented - may qualify for additional rating');
+  }
+
+  // Documentation gaps
+  if (!bodyPercentage) {
+    gaps.push('Document percentage of body/exposed areas affected');
+  }
+  if (!treatmentLevel) {
+    gaps.push('Document treatment type: topical only vs systemic therapy');
+  }
+  if (hasMucosalInvolvement) {
+    gaps.push('Mucosal complications should be evaluated separately - document impact on function');
+  }
+
+  return {
+    hasData: true,
+    condition: 'Bullous Disorders',
+    diagnosticCode: '7815',
+    cfrReference: '38 CFR 4.118',
+    evaluationPeriodDays,
+    supportedRating,
+    ratingRationale,
+    gaps,
+    metrics: {
+      totalLogs: relevantLogs.length,
+      blistersLogs: blistersLogs.length,
+      erosionsLogs: erosionsLogs.length,
+      crustingLogs: crustingLogs.length,
+      nikolskyLogs: nikolskyLogs.length,
+      oralMucosalLogs: oralMucosalLogs.length,
+      ocularLogs: ocularLogs.length,
+      giLogs: giLogs.length,
+      genitalLogs: genitalLogs.length,
+      itchingLogs: itchingLogs.length,
+      burningLogs: burningLogs.length,
+      scarringLogs: scarringLogs.length,
+      hasMucosalInvolvement,
+      bodyPercentage,
+      treatmentLevel,
+      ...formulaMetrics,
+    },
+    criteria: BULLOUS_DISORDERS_CRITERIA,
+  };
+};
+
+// ============================================
+// ANALYSIS FUNCTIONS - CUTANEOUS VASCULITIS (DC 7826)
+// Phase 6B - Rated by episodes and immunosuppressive therapy
+// ============================================
+
+/**
+ * Analyze Primary Cutaneous Vasculitis symptom logs against VA rating criteria
+ * DC 7826 - Rated by documented episodes and immunosuppressive requirements
+ */
+export const analyzeCutaneousVasculitisLogs = (logs, options = {}) => {
+  const evaluationPeriodDays = options.days || 365;
+  const symptomIds = CONDITIONS.CUTANEOUS_VASCULITIS.symptomIds;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    const symptomId = getLogSymptomId(log);
+    return logDate >= cutoffDate && symptomId && symptomIds.includes(symptomId);
+  });
+
+  if (relevantLogs.length === 0) {
+    return {
+      hasData: false,
+      condition: 'Primary Cutaneous Vasculitis',
+      diagnosticCode: '7826',
+      message: 'No cutaneous vasculitis symptoms logged in evaluation period',
+    };
+  }
+
+  // Symptom categorization
+  const purpuraLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'cv-purpura');
+  const petechiaeLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'cv-petechiae');
+  const ulcersLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'cv-ulcers');
+  const nodulesLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'cv-nodules');
+  const livedoLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'cv-livedo-reticularis');
+  const necrosisLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'cv-necrosis');
+  const scarringLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'cv-scarring');
+  const disfigurementLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'cv-disfigurement');
+
+  // Episode frequency
+  const episodeDocumentedLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'cv-episode-documented');
+  const episodes1to3Logs = relevantLogs.filter(log => getLogSymptomId(log) === 'cv-episodes-1to3');
+  const episodes4PlusLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'cv-episodes-4plus');
+
+  // Treatment
+  const noSystemicLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'cv-no-systemic-med');
+  const continuousSystemicLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'cv-continuous-systemic');
+  const intermittentImmunoLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'cv-intermittent-immuno');
+  const refractoryLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'cv-refractory');
+
+  // Determine episode frequency
+  let episodeFrequency = null;
+  if (episodes4PlusLogs.length > 0) episodeFrequency = '4+';
+  else if (episodes1to3Logs.length > 0) episodeFrequency = '1-3';
+  else if (episodeDocumentedLogs.length > 0) episodeFrequency = 'documented';
+
+  // Determine treatment level
+  let treatmentLevel = null;
+  const isRefractory = refractoryLogs.length > 0;
+  const hasContinuousSystemic = continuousSystemicLogs.length > 0;
+  const hasIntermittentImmuno = intermittentImmunoLogs.length > 0;
+  const hasNoSystemic = noSystemicLogs.length > 0;
+
+  if (isRefractory) treatmentLevel = 'refractory';
+  else if (hasContinuousSystemic) treatmentLevel = 'continuous';
+  else if (hasIntermittentImmuno) treatmentLevel = 'intermittent';
+  else if (hasNoSystemic) treatmentLevel = 'none';
+
+  let supportedRating = null;
+  let ratingRationale = [];
+  const gaps = [];
+
+  // Determine rating based on DC 7826 criteria
+  // 60%: Persistent episodes refractory to continuous immunosuppressive therapy
+  if (isRefractory) {
+    supportedRating = 60;
+    ratingRationale.push('Persistent vasculitis refractory to continuous immunosuppressive therapy');
+  }
+  // 30%: 4+ episodes/year requiring intermittent immunosuppressive therapy
+  else if (episodeFrequency === '4+' && hasIntermittentImmuno) {
+    supportedRating = 30;
+    ratingRationale.push('4+ documented episodes in past 12 months');
+    ratingRationale.push('Requiring intermittent immunosuppressive therapy');
+  }
+  // 10%: 1-3 episodes with intermittent immunosuppressive OR continuous systemic for control
+  else if ((episodeFrequency === '1-3' && hasIntermittentImmuno) || (hasContinuousSystemic && !isRefractory)) {
+    supportedRating = 10;
+    if (episodeFrequency === '1-3' && hasIntermittentImmuno) {
+      ratingRationale.push('1-3 documented episodes requiring intermittent immunosuppressive therapy');
+    }
+    if (hasContinuousSystemic) {
+      ratingRationale.push('Requires continuous systemic medication for control');
+    }
+  }
+  // Has symptoms but doesn't meet specific criteria
+  else if (relevantLogs.length > 0) {
+    supportedRating = 10;
+    ratingRationale.push('Cutaneous vasculitis documented');
+    ratingRationale.push('Document episode frequency and treatment for accurate rating');
+  }
+
+  // Add symptom details
+  const manifestations = [];
+  if (purpuraLogs.length > 0) manifestations.push('purpura');
+  if (petechiaeLogs.length > 0) manifestations.push('petechiae');
+  if (ulcersLogs.length > 0) manifestations.push('ulcers');
+  if (nodulesLogs.length > 0) manifestations.push('nodules');
+  if (livedoLogs.length > 0) manifestations.push('livedo reticularis');
+  if (necrosisLogs.length > 0) manifestations.push('necrosis');
+  if (manifestations.length > 0) {
+    ratingRationale.push(`Manifestations: ${manifestations.join(', ')}`);
+  }
+
+  if (scarringLogs.length > 0 || disfigurementLogs.length > 0) {
+    ratingRationale.push('Scarring/disfigurement documented - may qualify for alternative rating under DC 7800-7805');
+  }
+
+  // Documentation gaps
+  if (!episodeFrequency) {
+    gaps.push('Document frequency of vasculitic episodes (1-3/year vs 4+/year)');
+  }
+  if (!treatmentLevel) {
+    gaps.push('Document treatment: no systemic, intermittent immunosuppressive, continuous, or refractory');
+  }
+  if (episodeFrequency === '4+' && !hasIntermittentImmuno) {
+    gaps.push('Document if intermittent immunosuppressive therapy is required for 30% rating');
+  }
+
+  return {
+    hasData: true,
+    condition: 'Primary Cutaneous Vasculitis',
+    diagnosticCode: '7826',
+    cfrReference: '38 CFR 4.118',
+    evaluationPeriodDays,
+    supportedRating,
+    ratingRationale,
+    gaps,
+    metrics: {
+      totalLogs: relevantLogs.length,
+      purpuraLogs: purpuraLogs.length,
+      petechiaeLogs: petechiaeLogs.length,
+      ulcersLogs: ulcersLogs.length,
+      nodulesLogs: nodulesLogs.length,
+      livedoLogs: livedoLogs.length,
+      necrosisLogs: necrosisLogs.length,
+      scarringLogs: scarringLogs.length,
+      disfigurementLogs: disfigurementLogs.length,
+      episodeDocumentedLogs: episodeDocumentedLogs.length,
+      episodes1to3Logs: episodes1to3Logs.length,
+      episodes4PlusLogs: episodes4PlusLogs.length,
+      noSystemicLogs: noSystemicLogs.length,
+      continuousSystemicLogs: continuousSystemicLogs.length,
+      intermittentImmunoLogs: intermittentImmunoLogs.length,
+      refractoryLogs: refractoryLogs.length,
+      episodeFrequency,
+      treatmentLevel,
+      isRefractory,
+    },
+    criteria: CUTANEOUS_VASCULITIS_CRITERIA,
+  };
+};
+
+// ============================================
+// ANALYSIS FUNCTIONS - DERMATOPHYTOSIS (DC 7813)
+// Phase 6B - Uses General Rating Formula for the Skin
+// ============================================
+
+/**
+ * Analyze Dermatophytosis symptom logs against VA rating criteria
+ * DC 7813 - Uses General Rating Formula for the Skin
+ */
+export const analyzeDermatophytosisLogs = (logs, options = {}) => {
+  const evaluationPeriodDays = options.days || 365;
+  const symptomIds = CONDITIONS.DERMATOPHYTOSIS.symptomIds;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    const symptomId = getLogSymptomId(log);
+    return logDate >= cutoffDate && symptomId && symptomIds.includes(symptomId);
+  });
+
+  if (relevantLogs.length === 0) {
+    return {
+      hasData: false,
+      condition: 'Dermatophytosis',
+      diagnosticCode: '7813',
+      message: 'No dermatophytosis symptoms logged in evaluation period',
+    };
+  }
+
+  // Condition-specific symptoms - types of fungal infection
+  const tineaCorporisLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'derm-tinea-corporis');
+  const tineaCapitisLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'derm-tinea-capitis');
+  const tineaPedisLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'derm-tinea-pedis');
+  const tineaCrurisLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'derm-tinea-cruris');
+  const tineaBarbaeLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'derm-tinea-barbae');
+  const onychomycosisLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'derm-onychomycosis');
+  const tineaVersicolorLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'derm-tinea-versicolor');
+
+  // Other symptoms
+  const scalingLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'derm-scaling');
+  const itchingLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'derm-itching');
+  const ringPatternLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'derm-ring-pattern');
+  const hairLossLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'derm-hair-loss');
+  const nailThickeningLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'derm-nail-thickening');
+  const recurrentLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'derm-recurrent');
+
+  // Use general skin formula helper
+  const skinFormula = analyzeGeneralSkinFormula(relevantLogs, getLogSymptomId, 'derm');
+  const { bodyPercentage, treatmentLevel, metrics: formulaMetrics } = skinFormula;
+
+  let supportedRating = determineGeneralSkinRating(bodyPercentage, treatmentLevel);
+  let ratingRationale = [];
+  const gaps = [];
+
+  // Build rationale
+  if (supportedRating === 60) {
+    if (bodyPercentage === '>40%') {
+      ratingRationale.push('More than 40% of body or exposed areas affected');
+    }
+    if (treatmentLevel === 'constant') {
+      ratingRationale.push('Constant/near-constant systemic antifungal therapy required');
+    }
+  } else if (supportedRating === 30) {
+    if (bodyPercentage === '20-40%') {
+      ratingRationale.push('20-40% of body or exposed areas affected');
+    }
+    if (treatmentLevel === '6weeks') {
+      ratingRationale.push('Systemic antifungal therapy ≥6 weeks over past 12 months');
+    }
+  } else if (supportedRating === 10) {
+    if (bodyPercentage === '5-20%') {
+      ratingRationale.push('5-20% of body or exposed areas affected');
+    }
+    if (treatmentLevel === 'intermittent') {
+      ratingRationale.push('Intermittent systemic antifungal therapy <6 weeks');
+    }
+  } else if (supportedRating === 0) {
+    ratingRationale.push('Less than 5% of body affected with topical therapy only');
+  } else {
+    ratingRationale.push('Dermatophytosis documented - document body % and treatment for rating');
+  }
+
+  // Add infection type details
+  const infectionTypes = [];
+  if (tineaCorporisLogs.length > 0) infectionTypes.push('body ringworm');
+  if (tineaCapitisLogs.length > 0) infectionTypes.push('scalp ringworm');
+  if (tineaPedisLogs.length > 0) infectionTypes.push('athlete\'s foot');
+  if (tineaCrurisLogs.length > 0) infectionTypes.push('jock itch');
+  if (tineaBarbaeLogs.length > 0) infectionTypes.push('beard ringworm');
+  if (onychomycosisLogs.length > 0) infectionTypes.push('nail fungus');
+  if (tineaVersicolorLogs.length > 0) infectionTypes.push('tinea versicolor');
+
+  if (infectionTypes.length > 0) {
+    ratingRationale.push(`Fungal infection types: ${infectionTypes.join(', ')}`);
+  }
+
+  if (recurrentLogs.length > 0) {
+    ratingRationale.push('Recurrent infections documented');
+  }
+
+  if (onychomycosisLogs.length > 0 && treatmentLevel !== 'constant' && treatmentLevel !== '6weeks') {
+    ratingRationale.push('Note: Nail fungus typically requires prolonged oral antifungal therapy');
+  }
+
+  // Documentation gaps
+  if (!bodyPercentage) {
+    gaps.push('Document percentage of body/exposed areas affected');
+  }
+  if (!treatmentLevel) {
+    gaps.push('Document treatment type: topical only vs oral antifungals');
+  }
+  if (onychomycosisLogs.length > 0) {
+    gaps.push('Nail fungus often requires 3-6 months oral therapy - document duration');
+  }
+
+  return {
+    hasData: true,
+    condition: 'Dermatophytosis',
+    diagnosticCode: '7813',
+    cfrReference: '38 CFR 4.118',
+    evaluationPeriodDays,
+    supportedRating,
+    ratingRationale,
+    gaps,
+    metrics: {
+      totalLogs: relevantLogs.length,
+      tineaCorporisLogs: tineaCorporisLogs.length,
+      tineaCapitisLogs: tineaCapitisLogs.length,
+      tineaPedisLogs: tineaPedisLogs.length,
+      tineaCrurisLogs: tineaCrurisLogs.length,
+      tineaBarbaeLogs: tineaBarbaeLogs.length,
+      onychomycosisLogs: onychomycosisLogs.length,
+      tineaVersicolorLogs: tineaVersicolorLogs.length,
+      scalingLogs: scalingLogs.length,
+      itchingLogs: itchingLogs.length,
+      ringPatternLogs: ringPatternLogs.length,
+      hairLossLogs: hairLossLogs.length,
+      nailThickeningLogs: nailThickeningLogs.length,
+      recurrentLogs: recurrentLogs.length,
+      bodyPercentage,
+      treatmentLevel,
+      ...formulaMetrics,
+    },
+    criteria: DERMATOPHYTOSIS_CRITERIA,
+  };
+};
+
+// ============================================
+// ANALYSIS FUNCTIONS - SKIN INFECTIONS (DC 7820)
+// Phase 6B - Uses General Rating Formula for the Skin
+// ============================================
+
+/**
+ * Analyze Skin Infections symptom logs against VA rating criteria
+ * DC 7820 - Uses General Rating Formula for the Skin
+ */
+export const analyzeSkinInfectionsLogs = (logs, options = {}) => {
+  const evaluationPeriodDays = options.days || 365;
+  const symptomIds = CONDITIONS.SKIN_INFECTIONS.symptomIds;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    const symptomId = getLogSymptomId(log);
+    return logDate >= cutoffDate && symptomId && symptomIds.includes(symptomId);
+  });
+
+  if (relevantLogs.length === 0) {
+    return {
+      hasData: false,
+      condition: 'Skin Infections',
+      diagnosticCode: '7820',
+      message: 'No skin infection symptoms logged in evaluation period',
+    };
+  }
+
+  // Infection types
+  const bacterialLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'skinf-bacterial');
+  const cellulitisLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'skinf-cellulitis');
+  const abscessLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'skinf-abscess');
+  const impetigoLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'skinf-impetigo');
+  const folliculitisLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'skinf-folliculitis');
+  const viralLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'skinf-viral');
+  const herpesSimplexLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'skinf-herpes-simplex');
+  const herpesZosterLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'skinf-herpes-zoster');
+  const wartsLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'skinf-warts');
+  const molluscumLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'skinf-molluscum');
+  const parasiticLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'skinf-parasitic');
+  const recurrentLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'skinf-recurrent');
+
+  // Use general skin formula helper
+  const skinFormula = analyzeGeneralSkinFormula(relevantLogs, getLogSymptomId, 'skinf');
+  const { bodyPercentage, treatmentLevel, metrics: formulaMetrics } = skinFormula;
+
+  let supportedRating = determineGeneralSkinRating(bodyPercentage, treatmentLevel);
+  let ratingRationale = [];
+  const gaps = [];
+
+  // Build rationale
+  if (supportedRating === 60) {
+    if (bodyPercentage === '>40%') {
+      ratingRationale.push('More than 40% of body or exposed areas affected');
+    }
+    if (treatmentLevel === 'constant') {
+      ratingRationale.push('Constant/near-constant systemic therapy required');
+    }
+  } else if (supportedRating === 30) {
+    if (bodyPercentage === '20-40%') {
+      ratingRationale.push('20-40% of body or exposed areas affected');
+    }
+    if (treatmentLevel === '6weeks') {
+      ratingRationale.push('Systemic therapy ≥6 weeks over past 12 months');
+    }
+  } else if (supportedRating === 10) {
+    if (bodyPercentage === '5-20%') {
+      ratingRationale.push('5-20% of body or exposed areas affected');
+    }
+    if (treatmentLevel === 'intermittent') {
+      ratingRationale.push('Intermittent systemic therapy <6 weeks');
+    }
+  } else if (supportedRating === 0) {
+    ratingRationale.push('Less than 5% of body affected with topical therapy only');
+  } else {
+    ratingRationale.push('Skin infection documented - document body % and treatment for rating');
+  }
+
+  // Add infection type details
+  const infectionTypes = [];
+  if (bacterialLogs.length > 0) infectionTypes.push('bacterial');
+  if (cellulitisLogs.length > 0) infectionTypes.push('cellulitis');
+  if (abscessLogs.length > 0) infectionTypes.push('abscess');
+  if (impetigoLogs.length > 0) infectionTypes.push('impetigo');
+  if (folliculitisLogs.length > 0) infectionTypes.push('folliculitis');
+  if (viralLogs.length > 0) infectionTypes.push('viral');
+  if (herpesSimplexLogs.length > 0) infectionTypes.push('herpes simplex');
+  if (herpesZosterLogs.length > 0) infectionTypes.push('shingles');
+  if (wartsLogs.length > 0) infectionTypes.push('warts');
+  if (molluscumLogs.length > 0) infectionTypes.push('molluscum');
+  if (parasiticLogs.length > 0) infectionTypes.push('parasitic');
+
+  if (infectionTypes.length > 0) {
+    ratingRationale.push(`Infection types: ${infectionTypes.join(', ')}`);
+  }
+
+  if (recurrentLogs.length > 0) {
+    ratingRationale.push('Recurrent infections documented');
+  }
+
+  if (herpesZosterLogs.length > 0) {
+    ratingRationale.push('Note: Post-herpetic neuralgia from shingles may warrant separate neurological rating');
+  }
+
+  // Documentation gaps
+  if (!bodyPercentage) {
+    gaps.push('Document percentage of body/exposed areas affected');
+  }
+  if (!treatmentLevel) {
+    gaps.push('Document treatment type: topical only vs systemic antibiotics/antivirals');
+  }
+  if (recurrentLogs.length > 0) {
+    gaps.push('Document each infection episode with dates and treatment');
+  }
+
+  return {
+    hasData: true,
+    condition: 'Skin Infections',
+    diagnosticCode: '7820',
+    cfrReference: '38 CFR 4.118',
+    evaluationPeriodDays,
+    supportedRating,
+    ratingRationale,
+    gaps,
+    metrics: {
+      totalLogs: relevantLogs.length,
+      bacterialLogs: bacterialLogs.length,
+      cellulitisLogs: cellulitisLogs.length,
+      abscessLogs: abscessLogs.length,
+      impetigoLogs: impetigoLogs.length,
+      folliculitisLogs: folliculitisLogs.length,
+      viralLogs: viralLogs.length,
+      herpesSimplexLogs: herpesSimplexLogs.length,
+      herpesZosterLogs: herpesZosterLogs.length,
+      wartsLogs: wartsLogs.length,
+      molluscumLogs: molluscumLogs.length,
+      parasiticLogs: parasiticLogs.length,
+      recurrentLogs: recurrentLogs.length,
+      bodyPercentage,
+      treatmentLevel,
+      ...formulaMetrics,
+    },
+    criteria: SKIN_INFECTIONS_CRITERIA,
+  };
+};
+
 
 // ============================================
 // ANALYSIS FUNCTIONS - BRONCHIECTASIS (DC 6601)
@@ -39831,6 +42397,33 @@ export const getPostgastrectomyRatingCriteria = (percent) => {
 export const getIntestinalFistulaRatingCriteria = (percent) => {
   return INTESTINAL_FISTULA_CRITERIA.ratings.find(r => r.percent === percent) || null;
 };
+export const getAcneRating = (percent) => {
+  return ACNE_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getChloracneRating = (percent) => {
+  return CHLORACNE_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getAlopeciaAreataRating = (percent) => {
+  return ALOPECIA_AREATA_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getHyperhidrosisRating = (percent) => {
+  return HYPERHIDROSIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getDiscoidLupusRating = (percent) => {
+  return DISCOID_LUPUS_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getBullousDisordersRating = (percent) => {
+  return BULLOUS_DISORDERS_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getCutaneousVasculitisRating = (percent) => {
+  return CUTANEOUS_VASCULITIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getDermatophytosisRating = (percent) => {
+  return DERMATOPHYTOSIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getSkinInfectionsRating = (percent) => {
+  return SKIN_INFECTIONS_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
 
 
 
@@ -39982,6 +42575,16 @@ export const getAllPeritonealAdhesionsRatings = () => PERITONEAL_ADHESIONS_CRITE
 export const getAllEsophagealStrictureRatings = () => ESOPHAGEAL_STRICTURE_CRITERIA.ratings;
 export const getAllPostgastrectomyRatings = () => POSTGASTRECTOMY_CRITERIA.ratings;
 export const getAllIntestinalFistulaRatings = () => INTESTINAL_FISTULA_CRITERIA.ratings;
+export const getAllAcneRatings = () => ACNE_CRITERIA.ratings;
+export const getAllChloracneRatings = () => CHLORACNE_CRITERIA.ratings;
+export const getAllAlopeciaAreataRatings = () => ALOPECIA_AREATA_CRITERIA.ratings;
+export const getAllHyperhidrosisRatings = () => HYPERHIDROSIS_CRITERIA.ratings;
+export const getAllDiscoidLupusRatings = () => DISCOID_LUPUS_CRITERIA.ratings;
+export const getAllBullousDisordersRatings = () => BULLOUS_DISORDERS_CRITERIA.ratings;
+export const getAllCutaneousVasculitisRatings = () => CUTANEOUS_VASCULITIS_CRITERIA.ratings;
+export const getAllDermatophytosisRatings = () => DERMATOPHYTOSIS_CRITERIA.ratings;
+export const getAllSkinInfectionsRatings = () => SKIN_INFECTIONS_CRITERIA.ratings;
+export const getAllGeneralSkinFormulaRatings = () => GENERAL_SKIN_FORMULA_CRITERIA.ratings;
 
 
 
@@ -40140,6 +42743,17 @@ export const getPeritonealAdhesionsDefinition = (term) => PERITONEAL_ADHESIONS_C
 export const getEsophagealStrictureDefinition = (term) => ESOPHAGEAL_STRICTURE_CRITERIA.definitions[term] || null;
 export const getPostgastrectomyDefinition = (term) => POSTGASTRECTOMY_CRITERIA.definitions[term] || null;
 export const getIntestinalFistulaDefinition = (term) => INTESTINAL_FISTULA_CRITERIA.definitions[term] || null;
+export const getAcneDefinition = (term) => ACNE_CRITERIA.definitions[term] || null;
+export const getChloracneDefinition = (term) => CHLORACNE_CRITERIA.definitions[term] || null;
+export const getAlopeciaAreataDefinition = (term) => ALOPECIA_AREATA_CRITERIA.definitions[term] || null;
+export const getHyperhidrosisDefinition = (term) => HYPERHIDROSIS_CRITERIA.definitions[term] || null;
+export const getDiscoidLupusDefinition = (term) => DISCOID_LUPUS_CRITERIA.definitions[term] || null;
+export const getBullousDisordersDefinition = (term) => BULLOUS_DISORDERS_CRITERIA.definitions[term] || null;
+export const getCutaneousVasculitisDefinition = (term) => CUTANEOUS_VASCULITIS_CRITERIA.definitions[term] || null;
+export const getDermatophytosisDefinition = (term) => DERMATOPHYTOSIS_CRITERIA.definitions[term] || null;
+export const getSkinInfectionsDefinition = (term) => SKIN_INFECTIONS_CRITERIA.definitions[term] || null;
+export const getGeneralSkinFormulaDefinition = (term) => GENERAL_SKIN_FORMULA_CRITERIA.definitions[term] || null;
+
 
 
 

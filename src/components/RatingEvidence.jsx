@@ -201,6 +201,15 @@ import {
   analyzeEsophagealLogs,
   analyzePostgastrectomyLogs,
   analyzeIntestinalFistulaLogs,
+  analyzeAcneLogs,
+  analyzeChloracneLogs,
+  analyzeAlopeciaAreataLogs,
+  analyzeHyperhidrosisLogs,
+  analyzeDiscoidLupusLogs,
+  analyzeBullousDisordersLogs,
+  analyzeCutaneousVasculitisLogs,
+  analyzeDermatophytosisLogs,
+  analyzeSkinInfectionsLogs,
   getAllMigraineRatings,
   getAllSleepApneaRatings,
   getAllPTSDRatings,
@@ -396,6 +405,10 @@ import PeritonealAdhesionsRatingCard from './PeritonealAdhesionsRatingCard';
 import EsophagealRatingCard from './EsophagealRatingCard';
 import PostgastrectomyRatingCard from './PostgastrectomyRatingCard';
 import IntestinalFistulaRatingCard from './IntestinalFistulaRatingCard';
+import AcneChloracneRatingCard from './AcneChloracneRatingCard';
+import AlopeciaAreataRatingCard from './AlopeciaAreataRatingCard';
+import HyperhidrosisRatingCard from './HyperhidrosisRatingCard';
+import GeneralSkinRatingCard from './GeneralSkinRatingCard';
 
 // Storage key for sleep apnea profile
 const SLEEP_APNEA_PROFILE_KEY = 'symptomTracker_sleepApneaProfile';
@@ -1110,6 +1123,35 @@ const RatingEvidence = () => {
   const intestinalFistulaAnalysis = useMemo(() => {
     return analyzeIntestinalFistulaLogs(logs, { evaluationPeriodDays: evaluationDays });
   }, [logs, evaluationDays]);
+  // Phase 6A: Skin Condition Analyses
+  const acneAnalysis = useMemo(() => {
+    return analyzeAcneLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  const chloracneAnalysis = useMemo(() => {
+    return analyzeChloracneLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  const alopeciaAreataAnalysis = useMemo(() => {
+    return analyzeAlopeciaAreataLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  const hyperhidrosisAnalysis = useMemo(() => {
+    return analyzeHyperhidrosisLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  // Phase 6B: Additional Skin Condition Analyses
+  const discoidLupusAnalysis = useMemo(() => {
+    return analyzeDiscoidLupusLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  const bullousDisordersAnalysis = useMemo(() => {
+    return analyzeBullousDisordersLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  const cutaneousVasculitisAnalysis = useMemo(() => {
+    return analyzeCutaneousVasculitisLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  const dermatophytosisAnalysis = useMemo(() => {
+    return analyzeDermatophytosisLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  const skinInfectionsAnalysis = useMemo(() => {
+    return analyzeSkinInfectionsLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
 
 
 
@@ -1306,7 +1348,16 @@ const RatingEvidence = () => {
         peritonealAdhesionsAnalysis.hasData ||
         esophagealAnalysis.hasData ||
         postgastrectomyAnalysis.hasData ||
-        intestinalFistulaAnalysis.hasData
+        intestinalFistulaAnalysis.hasData ||
+        acneAnalysis.hasData ||
+        chloracneAnalysis.hasData ||
+        alopeciaAreataAnalysis.hasData ||
+        hyperhidrosisAnalysis.hasData ||
+        discoidLupusAnalysis.hasData ||
+        bullousDisordersAnalysis.hasData ||
+        cutaneousVasculitisAnalysis.hasData ||
+        dermatophytosisAnalysis.hasData ||
+        skinInfectionsAnalysis.hasData
     ;
 
     return (
@@ -2545,6 +2596,53 @@ const RatingEvidence = () => {
                 analysis={intestinalFistulaAnalysis}
                 expanded={expandedSection === 'intestinal-fistula'}
                 onToggle={() => toggleSection('intestinal-fistula')}
+            />
+            {/* ========== PHASE 6A: SKIN CONDITIONS ========== */}
+            <AcneChloracneRatingCard
+                analysis={acneAnalysis}
+                expanded={expandedSection === 'acne'}
+                onToggle={() => toggleSection('acne')}
+            />
+            <AcneChloracneRatingCard
+                analysis={chloracneAnalysis}
+                expanded={expandedSection === 'chloracne'}
+                onToggle={() => toggleSection('chloracne')}
+            />
+            <AlopeciaAreataRatingCard
+                analysis={alopeciaAreataAnalysis}
+                expanded={expandedSection === 'alopecia-areata'}
+                onToggle={() => toggleSection('alopecia-areata')}
+            />
+            <HyperhidrosisRatingCard
+                analysis={hyperhidrosisAnalysis}
+                expanded={expandedSection === 'hyperhidrosis'}
+                onToggle={() => toggleSection('hyperhidrosis')}
+            />
+            {/* ========== PHASE 6B: ADDITIONAL SKIN CONDITIONS ========== */}
+            <GeneralSkinRatingCard
+                analysis={discoidLupusAnalysis}
+                expanded={expandedSection === 'discoid-lupus'}
+                onToggle={() => toggleSection('discoid-lupus')}
+            />
+            <GeneralSkinRatingCard
+                analysis={bullousDisordersAnalysis}
+                expanded={expandedSection === 'bullous-disorders'}
+                onToggle={() => toggleSection('bullous-disorders')}
+            />
+            <GeneralSkinRatingCard
+                analysis={cutaneousVasculitisAnalysis}
+                expanded={expandedSection === 'cutaneous-vasculitis'}
+                onToggle={() => toggleSection('cutaneous-vasculitis')}
+            />
+            <GeneralSkinRatingCard
+                analysis={dermatophytosisAnalysis}
+                expanded={expandedSection === 'dermatophytosis'}
+                onToggle={() => toggleSection('dermatophytosis')}
+            />
+            <GeneralSkinRatingCard
+                analysis={skinInfectionsAnalysis}
+                expanded={expandedSection === 'skin-infections'}
+                onToggle={() => toggleSection('skin-infections')}
             />
 
 

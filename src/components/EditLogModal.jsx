@@ -1465,6 +1465,20 @@ const EditLogModal = ({log, isOpen, onClose, onSaved}) => {
             log?.symptomId?.startsWith('if-')
         );
 
+        // Phase 6A: Exclude skin condition symptoms from dental/oral detection
+        const isSkinConditionSymptomELM = (
+            log?.symptomId?.startsWith('acne-') ||
+            log?.symptomId?.startsWith('chloracne-') ||
+            log?.symptomId?.startsWith('aa-') ||
+            log?.symptomId?.startsWith('hh-') ||
+            // Phase 6B additions
+            log?.symptomId?.startsWith('dle-') ||
+            log?.symptomId?.startsWith('bullous-') ||
+            log?.symptomId?.startsWith('cv-') ||
+            log?.symptomId?.startsWith('derm-') ||
+            log?.symptomId?.startsWith('skinf-')
+        );
+
         const isMigraine = log?.symptomId === 'migraine';
 
         // Sleep: match sleep-related symptoms only
@@ -1660,7 +1674,7 @@ const EditLogModal = ({log, isOpen, onClose, onSaved}) => {
             log?.eyeData;
 
         // Phase 3: Genitourinary detection
-        const isGenitourinaryRelated = !isPeripheralNerveSymptomELM && !isEndocrineSymptomELM && (
+        const isGenitourinaryRelated = !isPeripheralNerveSymptomELM && !isEndocrineSymptomELM && !isSkinConditionSymptomELM && (
             log?.symptomId?.includes('kidney') ||
             log?.symptomId?.includes('urinary') ||
             log?.symptomId?.includes('prostate') ||
@@ -1840,7 +1854,9 @@ const EditLogModal = ({log, isOpen, onClose, onSaved}) => {
             log?.ntmData;
 
         // Phase 7: Dental/Oral detection
-        const isDentalOralRelated = log?.symptomId?.includes('jaw') ||
+        // Exclude skin conditions that have 'oral' in name (e.g., acne-oral-antibiotics, hh-oral-medication)
+        const isDentalOralRelated = !isSkinConditionSymptomELM && (
+            log?.symptomId?.includes('jaw') ||
             log?.symptomId?.includes('tooth') ||
             log?.symptomId?.includes('teeth') ||
             log?.symptomId?.includes('dental') ||
@@ -1867,7 +1883,8 @@ const EditLogModal = ({log, isOpen, onClose, onSaved}) => {
               'oral-infection', 'oral-inflammation', 'bad-taste', 'halitosis', 'speech-difficulty',
               'articulation-problems', 'prosthesis-pain', 'prosthesis-fit', 'prosthesis-sores'
             ].includes(log?.symptomId) ||
-            log?.dentalData;
+            log?.dentalData
+        );
 
 
         // PHASE 8A: MENTAL HEALTH EXPANSION - DETECTION LOGIC
