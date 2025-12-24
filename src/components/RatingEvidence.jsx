@@ -210,6 +210,14 @@ import {
   analyzeCutaneousVasculitisLogs,
   analyzeDermatophytosisLogs,
   analyzeSkinInfectionsLogs,
+  analyzeUveitis,
+  analyzeKeratitis,
+  analyzeChronicConjunctivitis,
+  analyzeScleritis,
+  analyzePeripheralVestibular,
+  analyzeChronicSuppurativeOtitisMedia,
+  analyzeChronicOtitisExterna,
+  analyzeChronicNonsuppurativeOtitisMedia,
   getAllMigraineRatings,
   getAllSleepApneaRatings,
   getAllPTSDRatings,
@@ -409,6 +417,8 @@ import AcneChloracneRatingCard from './AcneChloracneRatingCard';
 import AlopeciaAreataRatingCard from './AlopeciaAreataRatingCard';
 import HyperhidrosisRatingCard from './HyperhidrosisRatingCard';
 import GeneralSkinRatingCard from './GeneralSkinRatingCard';
+import GeneralEyeRatingCard from './GeneralEyeRatingCard';
+import EarConditionsRatingCard from './EarConditionsRatingCard';
 
 // Storage key for sleep apnea profile
 const SLEEP_APNEA_PROFILE_KEY = 'symptomTracker_sleepApneaProfile';
@@ -1152,6 +1162,32 @@ const RatingEvidence = () => {
   const skinInfectionsAnalysis = useMemo(() => {
     return analyzeSkinInfectionsLogs(logs, { evaluationPeriodDays: evaluationDays });
   }, [logs, evaluationDays]);
+  // Phase 7A: Eye Conditions Analysis
+  const uveitisAnalysis = useMemo(() => {
+    return analyzeUveitis(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  const keratitisAnalysis = useMemo(() => {
+    return analyzeKeratitis(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  const chronicConjunctivitisAnalysis = useMemo(() => {
+    return analyzeChronicConjunctivitis(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  const scleritisAnalysis = useMemo(() => {
+    return analyzeScleritis(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  // Phase 7B: Ear Conditions Analysis
+  const peripheralVestibularAnalysis = useMemo(() => {
+    return analyzePeripheralVestibular(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  const chronicSuppurativeOtitisMediaAnalysis = useMemo(() => {
+    return analyzeChronicSuppurativeOtitisMedia(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  const chronicOtitisExternaAnalysis = useMemo(() => {
+    return analyzeChronicOtitisExterna(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  const chronicNonsuppurativeOtitisMediaAnalysis = useMemo(() => {
+    return analyzeChronicNonsuppurativeOtitisMedia(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
 
 
 
@@ -1357,7 +1393,17 @@ const RatingEvidence = () => {
         bullousDisordersAnalysis.hasData ||
         cutaneousVasculitisAnalysis.hasData ||
         dermatophytosisAnalysis.hasData ||
-        skinInfectionsAnalysis.hasData
+        skinInfectionsAnalysis.hasData ||
+        dermatophytosisAnalysis.hasData ||
+        skinInfectionsAnalysis.hasData ||
+        uveitisAnalysis.hasData ||
+        keratitisAnalysis.hasData ||
+        chronicConjunctivitisAnalysis.hasData ||
+        scleritisAnalysis.hasData ||
+        peripheralVestibularAnalysis.hasData ||
+        chronicSuppurativeOtitisMediaAnalysis.hasData ||
+        chronicOtitisExternaAnalysis.hasData ||
+        chronicNonsuppurativeOtitisMediaAnalysis.hasData
     ;
 
     return (
@@ -2643,6 +2689,48 @@ const RatingEvidence = () => {
                 analysis={skinInfectionsAnalysis}
                 expanded={expandedSection === 'skin-infections'}
                 onToggle={() => toggleSection('skin-infections')}
+            />
+            {/* Phase 7A: Eye Conditions */}
+            <GeneralEyeRatingCard
+                analysis={uveitisAnalysis}
+                expanded={expandedSection === 'uveitis'}
+                onToggle={() => toggleSection('uveitis')}
+            />
+            <GeneralEyeRatingCard
+                analysis={keratitisAnalysis}
+                expanded={expandedSection === 'keratitis'}
+                onToggle={() => toggleSection('keratitis')}
+            />
+            <GeneralEyeRatingCard
+                analysis={chronicConjunctivitisAnalysis}
+                expanded={expandedSection === 'chronic-conjunctivitis'}
+                onToggle={() => toggleSection('chronic-conjunctivitis')}
+            />
+            <GeneralEyeRatingCard
+                analysis={scleritisAnalysis}
+                expanded={expandedSection === 'scleritis'}
+                onToggle={() => toggleSection('scleritis')}
+            />
+            {/* Phase 7B: Ear Conditions */}
+            <EarConditionsRatingCard
+                analysis={peripheralVestibularAnalysis}
+                expanded={expandedSection === 'peripheral-vestibular'}
+                onToggle={() => toggleSection('peripheral-vestibular')}
+            />
+            <EarConditionsRatingCard
+                analysis={chronicSuppurativeOtitisMediaAnalysis}
+                expanded={expandedSection === 'chronic-suppurative-otitis-media'}
+                onToggle={() => toggleSection('chronic-suppurative-otitis-media')}
+            />
+            <EarConditionsRatingCard
+                analysis={chronicOtitisExternaAnalysis}
+                expanded={expandedSection === 'chronic-otitis-externa'}
+                onToggle={() => toggleSection('chronic-otitis-externa')}
+            />
+            <EarConditionsRatingCard
+                analysis={chronicNonsuppurativeOtitisMediaAnalysis}
+                expanded={expandedSection === 'chronic-nonsuppurative-otitis-media'}
+                onToggle={() => toggleSection('chronic-nonsuppurative-otitis-media')}
             />
 
 

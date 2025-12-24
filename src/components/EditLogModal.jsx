@@ -1479,7 +1479,24 @@ const EditLogModal = ({log, isOpen, onClose, onSaved}) => {
             log?.symptomId?.startsWith('skinf-')
         );
 
-        const isMigraine = log?.symptomId === 'migraine';
+        // Phase 7A: Eye condition prefixes for exclusion from Pain Details form
+        const isEyeConditionSymptomELM = (
+            log?.symptomId?.startsWith('uveitis-') ||
+            log?.symptomId?.startsWith('keratitis-') ||
+            log?.symptomId?.startsWith('conj-') ||
+            log?.symptomId?.startsWith('scleritis-')
+        );
+
+        // Phase 7B: Ear condition prefixes for exclusion from Pain Details form
+        const isEarConditionSymptomELM = (
+            log?.symptomId?.startsWith('vest-') ||
+            log?.symptomId?.startsWith('csom-') ||
+            log?.symptomId?.startsWith('coe-') ||
+            log?.symptomId?.startsWith('cnsom-')
+        );
+
+
+  const isMigraine = log?.symptomId === 'migraine';
 
         // Sleep: match sleep-related symptoms only
         const isSleepRelated = !isEndocrineSymptomELM && (
@@ -1539,7 +1556,8 @@ const EditLogModal = ({log, isOpen, onClose, onSaved}) => {
         ].includes(log?.symptomId);
 
         // Pain: match ANY pain-related symptom only
-        const isPainRelated = !isPeripheralNerveSymptomELM && !isEndocrineSymptomELM && !isFootConditionSymptomELM && !isHerniaOrAdhesionSymptomELM && !isDigestivePhase5BSymptomELM && (
+        const isPainRelated = !isPeripheralNerveSymptomELM && !isEndocrineSymptomELM && !isFootConditionSymptomELM && !isHerniaOrAdhesionSymptomELM &&
+            !isDigestivePhase5BSymptomELM && !isEyeConditionSymptomELM && (
             log?.symptomId?.includes('pain') ||
             log?.symptomId?.includes('-ache') ||
             log?.symptomId?.includes('stiff') ||
@@ -1855,7 +1873,7 @@ const EditLogModal = ({log, isOpen, onClose, onSaved}) => {
 
         // Phase 7: Dental/Oral detection
         // Exclude skin conditions that have 'oral' in name (e.g., acne-oral-antibiotics, hh-oral-medication)
-        const isDentalOralRelated = !isSkinConditionSymptomELM && (
+        const isDentalOralRelated = !isSkinConditionSymptomELM && !isEyeConditionSymptomELM && !isEarConditionSymptomELM && (
             log?.symptomId?.includes('jaw') ||
             log?.symptomId?.includes('tooth') ||
             log?.symptomId?.includes('teeth') ||

@@ -3056,6 +3056,340 @@ export const symptomCategories = [
       { id: 'skinf-systemic-constant', name: 'Skin Infection - Constant Systemic Therapy', description: 'Constant/near-constant systemic therapy required' },
     ],
   },
+  // ========== PHASE 7A: EYE CONDITIONS ==========
+  // Uveitis / Choroidopathy (DC 6000)
+  // Includes: uveitis, iritis, cyclitis, choroiditis
+  // Rated under General Rating Formula for Diseases of the Eye
+  {
+    id: 'uveitis',
+    name: 'Uveitis / Choroidopathy (DC 6000)',
+    symptoms: [
+      // Core symptoms
+      { id: 'uveitis-eye-pain', name: 'Uveitis - Eye Pain', description: 'Deep, aching eye pain' },
+      { id: 'uveitis-redness', name: 'Uveitis - Eye Redness', description: 'Red or bloodshot appearance' },
+      { id: 'uveitis-light-sensitivity', name: 'Uveitis - Light Sensitivity (Photophobia)', description: 'Pain or discomfort from light' },
+      { id: 'uveitis-floaters', name: 'Uveitis - Floaters', description: 'Spots or strings floating in vision' },
+      { id: 'uveitis-blurred-vision', name: 'Uveitis - Blurred Vision', description: 'Decreased visual clarity' },
+      { id: 'uveitis-vision-changes', name: 'Uveitis - Vision Changes', description: 'Any changes in visual acuity' },
+      { id: 'uveitis-tearing', name: 'Uveitis - Excessive Tearing', description: 'Watery eyes or increased tear production' },
+      { id: 'uveitis-small-pupil', name: 'Uveitis - Small/Irregular Pupil', description: 'Pupil appears smaller or misshapen' },
+      // Location subtypes
+      { id: 'uveitis-anterior', name: 'Uveitis - Anterior (Iritis)', description: 'Inflammation of the iris/front of eye' },
+      { id: 'uveitis-intermediate', name: 'Uveitis - Intermediate (Cyclitis)', description: 'Inflammation of ciliary body/middle layer' },
+      { id: 'uveitis-posterior', name: 'Uveitis - Posterior (Choroiditis)', description: 'Inflammation of choroid/back of eye' },
+      { id: 'uveitis-panuveitis', name: 'Uveitis - Panuveitis', description: 'Inflammation affecting all uveal layers' },
+      // Laterality
+      { id: 'uveitis-unilateral', name: 'Uveitis - Unilateral (One Eye)', description: 'Affecting only one eye' },
+      { id: 'uveitis-bilateral', name: 'Uveitis - Bilateral (Both Eyes)', description: 'Affecting both eyes' },
+      // Incapacitating episodes (treatment visits)
+      { id: 'uveitis-treatment-visit', name: 'Uveitis - Treatment Visit', description: 'Clinic visit specifically for uveitis treatment' },
+      { id: 'uveitis-episodes-1to2', name: 'Uveitis - 1-2 Treatment Visits/Year', description: '1-2 incapacitating episodes in past 12 months' },
+      { id: 'uveitis-episodes-3to4', name: 'Uveitis - 3-4 Treatment Visits/Year', description: '3-4 incapacitating episodes in past 12 months' },
+      { id: 'uveitis-episodes-5to6', name: 'Uveitis - 5-6 Treatment Visits/Year', description: '5-6 incapacitating episodes in past 12 months' },
+      { id: 'uveitis-episodes-7plus', name: 'Uveitis - 7+ Treatment Visits/Year', description: '7 or more incapacitating episodes in past 12 months' },
+      // Treatments
+      { id: 'uveitis-steroid-drops', name: 'Uveitis - Steroid Eye Drops', description: 'Topical corticosteroid treatment' },
+      { id: 'uveitis-dilating-drops', name: 'Uveitis - Dilating Drops (Cycloplegics)', description: 'Drops to dilate pupil and reduce pain' },
+      { id: 'uveitis-oral-steroids', name: 'Uveitis - Oral Corticosteroids', description: 'Systemic steroid treatment' },
+      { id: 'uveitis-immunosuppressants', name: 'Uveitis - Immunosuppressive Therapy', description: 'Systemic immunosuppressants (methotrexate, etc.)' },
+      { id: 'uveitis-biologic-agents', name: 'Uveitis - Biologic Agents', description: 'TNF inhibitors or other biologics' },
+      { id: 'uveitis-intravitreal-injection', name: 'Uveitis - Intravitreal Injection', description: 'Injection of medication into eye' },
+      { id: 'uveitis-periocular-injection', name: 'Uveitis - Periocular Injection', description: 'Injection around the eye' },
+      { id: 'uveitis-laser-treatment', name: 'Uveitis - Laser Treatment', description: 'Laser photocoagulation or other laser therapy' },
+      { id: 'uveitis-surgery', name: 'Uveitis - Surgical Intervention', description: 'Vitrectomy or other eye surgery' },
+      // Complications
+      { id: 'uveitis-glaucoma', name: 'Uveitis - Secondary Glaucoma', description: 'Elevated eye pressure as complication' },
+      { id: 'uveitis-cataract', name: 'Uveitis - Cataract Development', description: 'Cataract formation from uveitis or treatment' },
+      { id: 'uveitis-macular-edema', name: 'Uveitis - Macular Edema', description: 'Swelling of the macula affecting vision' },
+      { id: 'uveitis-synechiae', name: 'Uveitis - Synechiae', description: 'Adhesions between iris and lens/cornea' },
+      { id: 'uveitis-chronic', name: 'Uveitis - Chronic/Recurrent', description: 'Ongoing or frequently recurring episodes' },
+      // Visual impairment documentation
+      { id: 'uveitis-visual-acuity-decreased', name: 'Uveitis - Decreased Visual Acuity', description: 'Documented decrease in visual acuity' },
+      { id: 'uveitis-visual-field-loss', name: 'Uveitis - Visual Field Loss', description: 'Loss of peripheral or central vision' },
+    ],
+  },
+
+  // Keratitis / Keratopathy (DC 6001)
+  // Corneal inflammation/disease
+  // Rated under General Rating Formula for Diseases of the Eye
+  {
+    id: 'keratitis',
+    name: 'Keratitis / Keratopathy (DC 6001)',
+    symptoms: [
+      // Core symptoms
+      { id: 'keratitis-eye-pain', name: 'Keratitis - Eye Pain', description: 'Pain in the affected eye' },
+      { id: 'keratitis-redness', name: 'Keratitis - Eye Redness', description: 'Red or bloodshot appearance' },
+      { id: 'keratitis-light-sensitivity', name: 'Keratitis - Light Sensitivity (Photophobia)', description: 'Pain or discomfort from light' },
+      { id: 'keratitis-tearing', name: 'Keratitis - Excessive Tearing', description: 'Watery eyes or increased tear production' },
+      { id: 'keratitis-blurred-vision', name: 'Keratitis - Blurred Vision', description: 'Decreased visual clarity' },
+      { id: 'keratitis-foreign-body', name: 'Keratitis - Foreign Body Sensation', description: 'Feeling of something in the eye' },
+      { id: 'keratitis-discharge', name: 'Keratitis - Eye Discharge', description: 'Mucus or pus discharge from eye' },
+      { id: 'keratitis-eyelid-swelling', name: 'Keratitis - Eyelid Swelling', description: 'Swelling of the eyelids' },
+      { id: 'keratitis-difficulty-opening', name: 'Keratitis - Difficulty Opening Eye', description: 'Pain or difficulty opening the eye' },
+      // Types/Causes
+      { id: 'keratitis-bacterial', name: 'Keratitis - Bacterial', description: 'Bacterial corneal infection' },
+      { id: 'keratitis-viral', name: 'Keratitis - Viral (Herpes)', description: 'Herpes simplex or zoster keratitis' },
+      { id: 'keratitis-fungal', name: 'Keratitis - Fungal', description: 'Fungal corneal infection' },
+      { id: 'keratitis-acanthamoeba', name: 'Keratitis - Acanthamoeba', description: 'Parasitic keratitis (contact lens related)' },
+      { id: 'keratitis-exposure', name: 'Keratitis - Exposure Keratopathy', description: 'Corneal damage from incomplete lid closure' },
+      { id: 'keratitis-neurotrophic', name: 'Keratitis - Neurotrophic', description: 'Corneal damage from nerve dysfunction' },
+      // Laterality
+      { id: 'keratitis-unilateral', name: 'Keratitis - Unilateral (One Eye)', description: 'Affecting only one eye' },
+      { id: 'keratitis-bilateral', name: 'Keratitis - Bilateral (Both Eyes)', description: 'Affecting both eyes' },
+      // Incapacitating episodes (treatment visits)
+      { id: 'keratitis-treatment-visit', name: 'Keratitis - Treatment Visit', description: 'Clinic visit specifically for keratitis treatment' },
+      { id: 'keratitis-episodes-1to2', name: 'Keratitis - 1-2 Treatment Visits/Year', description: '1-2 incapacitating episodes in past 12 months' },
+      { id: 'keratitis-episodes-3to4', name: 'Keratitis - 3-4 Treatment Visits/Year', description: '3-4 incapacitating episodes in past 12 months' },
+      { id: 'keratitis-episodes-5to6', name: 'Keratitis - 5-6 Treatment Visits/Year', description: '5-6 incapacitating episodes in past 12 months' },
+      { id: 'keratitis-episodes-7plus', name: 'Keratitis - 7+ Treatment Visits/Year', description: '7 or more incapacitating episodes in past 12 months' },
+      // Treatments
+      { id: 'keratitis-antibiotic-drops', name: 'Keratitis - Antibiotic Eye Drops', description: 'Topical antibiotic treatment' },
+      { id: 'keratitis-antiviral-drops', name: 'Keratitis - Antiviral Eye Drops', description: 'Topical antiviral treatment' },
+      { id: 'keratitis-antifungal-drops', name: 'Keratitis - Antifungal Eye Drops', description: 'Topical antifungal treatment' },
+      { id: 'keratitis-steroid-drops', name: 'Keratitis - Steroid Eye Drops', description: 'Topical corticosteroid treatment' },
+      { id: 'keratitis-oral-antivirals', name: 'Keratitis - Oral Antivirals', description: 'Systemic antiviral medication' },
+      { id: 'keratitis-bandage-lens', name: 'Keratitis - Bandage Contact Lens', description: 'Therapeutic contact lens for healing' },
+      { id: 'keratitis-corneal-scraping', name: 'Keratitis - Corneal Scraping/Debridement', description: 'Procedure to remove infected tissue' },
+      { id: 'keratitis-corneal-transplant', name: 'Keratitis - Corneal Transplant', description: 'Surgical corneal replacement' },
+      // Complications
+      { id: 'keratitis-corneal-ulcer', name: 'Keratitis - Corneal Ulcer', description: 'Open sore on the cornea' },
+      { id: 'keratitis-corneal-scarring', name: 'Keratitis - Corneal Scarring', description: 'Permanent corneal opacity' },
+      { id: 'keratitis-corneal-perforation', name: 'Keratitis - Corneal Perforation', description: 'Hole through the cornea (emergency)' },
+      { id: 'keratitis-chronic-recurrent', name: 'Keratitis - Chronic/Recurrent', description: 'Ongoing or frequently recurring episodes' },
+      // Visual impairment
+      { id: 'keratitis-visual-acuity-decreased', name: 'Keratitis - Decreased Visual Acuity', description: 'Documented decrease in visual acuity' },
+      { id: 'keratitis-glare-sensitivity', name: 'Keratitis - Glare Sensitivity', description: 'Increased sensitivity to glare' },
+    ],
+  },
+
+  // Chronic Conjunctivitis (DC 6018)
+  // Nontrachomatous chronic conjunctivitis
+  // Active: General Rating Formula, minimum 10%
+  // Inactive: Rate based on residuals
+  {
+    id: 'chronic-conjunctivitis',
+    name: 'Chronic Conjunctivitis (DC 6018)',
+    symptoms: [
+      // Core symptoms
+      { id: 'conj-redness', name: 'Conjunctivitis - Eye Redness', description: 'Red or pink appearance of the eye' },
+      { id: 'conj-discharge', name: 'Conjunctivitis - Eye Discharge', description: 'Mucus, pus, or watery discharge' },
+      { id: 'conj-itching', name: 'Conjunctivitis - Itching', description: 'Itchy sensation in the eyes' },
+      { id: 'conj-burning', name: 'Conjunctivitis - Burning Sensation', description: 'Burning or stinging in the eyes' },
+      { id: 'conj-gritty', name: 'Conjunctivitis - Gritty/Sandy Feeling', description: 'Foreign body sensation' },
+      { id: 'conj-tearing', name: 'Conjunctivitis - Excessive Tearing', description: 'Watery eyes' },
+      { id: 'conj-crusting', name: 'Conjunctivitis - Crusting/Mattering', description: 'Crust on eyelids, especially upon waking' },
+      { id: 'conj-swelling', name: 'Conjunctivitis - Eyelid/Conjunctival Swelling', description: 'Swollen eyelids or conjunctiva' },
+      { id: 'conj-light-sensitivity', name: 'Conjunctivitis - Light Sensitivity', description: 'Mild photophobia' },
+      { id: 'conj-blurred-vision', name: 'Conjunctivitis - Blurred Vision', description: 'Temporary blurring from discharge' },
+      // Types
+      { id: 'conj-allergic', name: 'Conjunctivitis - Allergic', description: 'Caused by allergens' },
+      { id: 'conj-bacterial', name: 'Conjunctivitis - Bacterial', description: 'Caused by bacterial infection' },
+      { id: 'conj-viral', name: 'Conjunctivitis - Viral', description: 'Caused by viral infection' },
+      { id: 'conj-giant-papillary', name: 'Conjunctivitis - Giant Papillary', description: 'Contact lens-related conjunctivitis' },
+      { id: 'conj-atopic', name: 'Conjunctivitis - Atopic', description: 'Associated with atopic dermatitis' },
+      // Status
+      { id: 'conj-active', name: 'Conjunctivitis - Active Disease', description: 'Currently experiencing active symptoms' },
+      { id: 'conj-inactive', name: 'Conjunctivitis - Inactive/Remission', description: 'Symptoms controlled or resolved' },
+      { id: 'conj-chronic', name: 'Conjunctivitis - Chronic (>4 weeks)', description: 'Persistent symptoms beyond 4 weeks' },
+      { id: 'conj-recurrent', name: 'Conjunctivitis - Recurrent Episodes', description: 'Repeated flare-ups over time' },
+      // Laterality
+      { id: 'conj-unilateral', name: 'Conjunctivitis - Unilateral (One Eye)', description: 'Affecting only one eye' },
+      { id: 'conj-bilateral', name: 'Conjunctivitis - Bilateral (Both Eyes)', description: 'Affecting both eyes' },
+      // Incapacitating episodes (treatment visits)
+      { id: 'conj-treatment-visit', name: 'Conjunctivitis - Treatment Visit', description: 'Clinic visit specifically for conjunctivitis treatment' },
+      { id: 'conj-episodes-1to2', name: 'Conjunctivitis - 1-2 Treatment Visits/Year', description: '1-2 incapacitating episodes in past 12 months' },
+      { id: 'conj-episodes-3to4', name: 'Conjunctivitis - 3-4 Treatment Visits/Year', description: '3-4 incapacitating episodes in past 12 months' },
+      { id: 'conj-episodes-5to6', name: 'Conjunctivitis - 5-6 Treatment Visits/Year', description: '5-6 incapacitating episodes in past 12 months' },
+      { id: 'conj-episodes-7plus', name: 'Conjunctivitis - 7+ Treatment Visits/Year', description: '7 or more incapacitating episodes in past 12 months' },
+      // Treatments
+      { id: 'conj-artificial-tears', name: 'Conjunctivitis - Artificial Tears', description: 'Lubricating eye drops' },
+      { id: 'conj-antihistamine-drops', name: 'Conjunctivitis - Antihistamine Drops', description: 'Topical antihistamine treatment' },
+      { id: 'conj-mast-cell-stabilizer', name: 'Conjunctivitis - Mast Cell Stabilizer Drops', description: 'Preventive allergy drops' },
+      { id: 'conj-antibiotic-drops', name: 'Conjunctivitis - Antibiotic Drops', description: 'Topical antibiotic treatment' },
+      { id: 'conj-steroid-drops', name: 'Conjunctivitis - Steroid Drops', description: 'Topical corticosteroid treatment' },
+      { id: 'conj-immunomodulator', name: 'Conjunctivitis - Immunomodulator Drops', description: 'Cyclosporine or similar drops' },
+      { id: 'conj-oral-antihistamines', name: 'Conjunctivitis - Oral Antihistamines', description: 'Systemic allergy medication' },
+      // Residuals (for inactive rating)
+      { id: 'conj-scarring', name: 'Conjunctivitis - Conjunctival Scarring', description: 'Permanent scarring of conjunctiva' },
+      { id: 'conj-symblepharon', name: 'Conjunctivitis - Symblepharon', description: 'Adhesion between eyelid and eyeball' },
+      { id: 'conj-dry-eye', name: 'Conjunctivitis - Secondary Dry Eye', description: 'Chronic dry eye from conjunctival damage' },
+      { id: 'conj-disfigurement', name: 'Conjunctivitis - Visible Disfigurement', description: 'Visible scarring or changes (may rate under DC 7800)' },
+      { id: 'conj-visual-impairment', name: 'Conjunctivitis - Visual Impairment', description: 'Permanent vision changes from complications' },
+    ],
+  },
+
+  // Scleritis (DC 6002)
+  // Inflammation of the sclera (white of eye)
+  // Rated under General Rating Formula for Diseases of the Eye
+  {
+    id: 'scleritis',
+    name: 'Scleritis (DC 6002)',
+    symptoms: [
+      // Core symptoms
+      { id: 'scleritis-deep-pain', name: 'Scleritis - Deep Boring Eye Pain', description: 'Severe, deep, boring pain in the eye' },
+      { id: 'scleritis-redness', name: 'Scleritis - Eye Redness (Violaceous)', description: 'Deep red or purple-red discoloration' },
+      { id: 'scleritis-tenderness', name: 'Scleritis - Eye Tenderness', description: 'Pain when touching the eye or with eye movement' },
+      { id: 'scleritis-pain-radiating', name: 'Scleritis - Radiating Pain', description: 'Pain spreading to face, jaw, or head' },
+      { id: 'scleritis-pain-at-night', name: 'Scleritis - Pain Worse at Night', description: 'Pain that awakens from sleep' },
+      { id: 'scleritis-light-sensitivity', name: 'Scleritis - Light Sensitivity', description: 'Photophobia' },
+      { id: 'scleritis-tearing', name: 'Scleritis - Excessive Tearing', description: 'Watery eyes' },
+      { id: 'scleritis-blurred-vision', name: 'Scleritis - Blurred Vision', description: 'Decreased visual clarity' },
+      { id: 'scleritis-vision-changes', name: 'Scleritis - Vision Changes', description: 'Any changes in visual acuity' },
+      // Types
+      { id: 'scleritis-anterior-diffuse', name: 'Scleritis - Anterior Diffuse', description: 'Widespread inflammation of front sclera' },
+      { id: 'scleritis-anterior-nodular', name: 'Scleritis - Anterior Nodular', description: 'Localized nodule on front sclera' },
+      { id: 'scleritis-necrotizing', name: 'Scleritis - Necrotizing', description: 'Most severe form with tissue destruction' },
+      { id: 'scleritis-posterior', name: 'Scleritis - Posterior', description: 'Inflammation of back portion of sclera' },
+      // Laterality
+      { id: 'scleritis-unilateral', name: 'Scleritis - Unilateral (One Eye)', description: 'Affecting only one eye' },
+      { id: 'scleritis-bilateral', name: 'Scleritis - Bilateral (Both Eyes)', description: 'Affecting both eyes' },
+      // Associated conditions
+      { id: 'scleritis-autoimmune', name: 'Scleritis - Autoimmune Associated', description: 'Associated with RA, lupus, or other autoimmune disease' },
+      { id: 'scleritis-infectious', name: 'Scleritis - Infectious', description: 'Caused by infection' },
+      // Incapacitating episodes (treatment visits)
+      { id: 'scleritis-treatment-visit', name: 'Scleritis - Treatment Visit', description: 'Clinic visit specifically for scleritis treatment' },
+      { id: 'scleritis-episodes-1to2', name: 'Scleritis - 1-2 Treatment Visits/Year', description: '1-2 incapacitating episodes in past 12 months' },
+      { id: 'scleritis-episodes-3to4', name: 'Scleritis - 3-4 Treatment Visits/Year', description: '3-4 incapacitating episodes in past 12 months' },
+      { id: 'scleritis-episodes-5to6', name: 'Scleritis - 5-6 Treatment Visits/Year', description: '5-6 incapacitating episodes in past 12 months' },
+      { id: 'scleritis-episodes-7plus', name: 'Scleritis - 7+ Treatment Visits/Year', description: '7 or more incapacitating episodes in past 12 months' },
+      // Treatments
+      { id: 'scleritis-nsaid-oral', name: 'Scleritis - Oral NSAIDs', description: 'Oral anti-inflammatory medication' },
+      { id: 'scleritis-oral-steroids', name: 'Scleritis - Oral Corticosteroids', description: 'Systemic steroid treatment' },
+      { id: 'scleritis-immunosuppressants', name: 'Scleritis - Immunosuppressive Therapy', description: 'Methotrexate, azathioprine, etc.' },
+      { id: 'scleritis-biologic-agents', name: 'Scleritis - Biologic Agents', description: 'TNF inhibitors, rituximab, etc.' },
+      { id: 'scleritis-subconjunctival-injection', name: 'Scleritis - Subconjunctival Injection', description: 'Steroid injection under conjunctiva' },
+      { id: 'scleritis-surgery', name: 'Scleritis - Surgical Intervention', description: 'Scleral patch graft or other surgery' },
+      // Complications
+      { id: 'scleritis-scleral-thinning', name: 'Scleritis - Scleral Thinning', description: 'Thinning of the sclera' },
+      { id: 'scleritis-scleromalacia', name: 'Scleritis - Scleromalacia', description: 'Severe thinning with risk of perforation' },
+      { id: 'scleritis-uveitis', name: 'Scleritis - Secondary Uveitis', description: 'Associated inflammation inside eye' },
+      { id: 'scleritis-glaucoma', name: 'Scleritis - Secondary Glaucoma', description: 'Elevated eye pressure as complication' },
+      { id: 'scleritis-cataract', name: 'Scleritis - Cataract Development', description: 'Cataract from disease or treatment' },
+      { id: 'scleritis-chronic-recurrent', name: 'Scleritis - Chronic/Recurrent', description: 'Ongoing or frequently recurring episodes' },
+      // Visual impairment
+      { id: 'scleritis-visual-acuity-decreased', name: 'Scleritis - Decreased Visual Acuity', description: 'Documented decrease in visual acuity' },
+      { id: 'scleritis-vision-loss-permanent', name: 'Scleritis - Permanent Vision Loss', description: 'Irreversible vision impairment' },
+    ],
+  },
+
+  // ============================================
+  // PHASE 7B: EAR CONDITIONS
+  // ============================================
+
+  // Peripheral Vestibular Disorders (DC 6204)
+  {
+    id: 'peripheral-vestibular',
+    name: 'Peripheral Vestibular Disorders (DC 6204)',
+    symptoms: [
+      { id: 'vest-vertigo', name: 'Vestibular - Vertigo Episode', description: 'Spinning sensation or false sense of movement' },
+      { id: 'vest-dizziness', name: 'Vestibular - Dizziness', description: 'Lightheadedness or unsteadiness' },
+      { id: 'vest-staggering', name: 'Vestibular - Staggering Gait', description: 'Unsteady walking, stumbling' },
+      { id: 'vest-imbalance', name: 'Vestibular - Balance Problems', description: 'Difficulty maintaining balance' },
+      { id: 'vest-nausea', name: 'Vestibular - Nausea/Vomiting', description: 'Nausea or vomiting with vertigo' },
+      { id: 'vest-nystagmus', name: 'Vestibular - Nystagmus', description: 'Involuntary eye movements' },
+      { id: 'vest-spatial-disorientation', name: 'Vestibular - Spatial Disorientation', description: 'Confusion about body position in space' },
+      { id: 'vest-motion-sensitivity', name: 'Vestibular - Motion Sensitivity', description: 'Symptoms triggered by head/body movement' },
+      { id: 'vest-occasional', name: 'Vestibular - Occasional Dizziness', description: 'Dizziness occurring occasionally (supports 10%)' },
+      { id: 'vest-frequent', name: 'Vestibular - Frequent Episodes', description: 'Frequent vertigo/dizziness episodes' },
+      { id: 'vest-with-staggering', name: 'Vestibular - Dizziness with Staggering', description: 'Dizziness accompanied by staggering (supports 30%)' },
+      { id: 'vest-fall-risk', name: 'Vestibular - Falls/Near Falls', description: 'Falls or near-falls due to vestibular symptoms' },
+      { id: 'vest-driving-affected', name: 'Vestibular - Driving Affected', description: 'Unable to drive safely due to symptoms' },
+      { id: 'vest-work-affected', name: 'Vestibular - Work Impacted', description: 'Work activities limited by symptoms' },
+      { id: 'vest-daily-activities', name: 'Vestibular - Daily Activities Limited', description: 'Routine activities affected' },
+      { id: 'vest-position-triggered', name: 'Vestibular - Position Change Trigger', description: 'Symptoms triggered by head position changes' },
+      { id: 'vest-standing-triggered', name: 'Vestibular - Standing Trigger', description: 'Symptoms when standing up' },
+      { id: 'vest-visual-trigger', name: 'Vestibular - Visual Motion Trigger', description: 'Symptoms triggered by visual motion' },
+      { id: 'vest-medication', name: 'Vestibular - Takes Medication', description: 'Using medication for vestibular symptoms' },
+      { id: 'vest-physical-therapy', name: 'Vestibular - Vestibular Rehabilitation', description: 'Receiving vestibular physical therapy' },
+      { id: 'vest-procedure', name: 'Vestibular - Procedure/Surgery', description: 'Had procedure for vestibular disorder' },
+    ],
+  },
+
+  // Chronic Suppurative Otitis Media (DC 6200)
+  {
+    id: 'chronic-suppurative-otitis-media',
+    name: 'Chronic Suppurative Otitis Media (DC 6200)',
+    symptoms: [
+      { id: 'csom-ear-drainage', name: 'CSOM - Ear Drainage', description: 'Discharge/drainage from ear' },
+      { id: 'csom-suppuration', name: 'CSOM - Active Suppuration', description: 'Pus draining from ear (supports 10%)' },
+      { id: 'csom-aural-polyp', name: 'CSOM - Aural Polyp Present', description: 'Polyp in ear canal (supports 10%)' },
+      { id: 'csom-ear-pain', name: 'CSOM - Ear Pain', description: 'Pain in affected ear' },
+      { id: 'csom-hearing-change', name: 'CSOM - Hearing Changes', description: 'Changes in hearing ability' },
+      { id: 'csom-ear-fullness', name: 'CSOM - Ear Fullness/Pressure', description: 'Feeling of fullness or pressure' },
+      { id: 'csom-foul-odor', name: 'CSOM - Foul Odor', description: 'Bad smell from ear drainage' },
+      { id: 'csom-tympanic-perforation', name: 'CSOM - Eardrum Perforation', description: 'Hole in eardrum documented' },
+      { id: 'csom-right-ear', name: 'CSOM - Right Ear', description: 'Right ear affected' },
+      { id: 'csom-left-ear', name: 'CSOM - Left Ear', description: 'Left ear affected' },
+      { id: 'csom-bilateral', name: 'CSOM - Both Ears', description: 'Both ears affected' },
+      { id: 'csom-labyrinthitis', name: 'CSOM - Labyrinthitis', description: 'Inner ear inflammation complication' },
+      { id: 'csom-tinnitus', name: 'CSOM - Tinnitus', description: 'Ringing in ears complication' },
+      { id: 'csom-facial-paralysis', name: 'CSOM - Facial Nerve Paralysis', description: 'Facial weakness complication' },
+      { id: 'csom-bone-loss', name: 'CSOM - Bone Loss/Erosion', description: 'Skull bone erosion complication' },
+      { id: 'csom-cholesteatoma', name: 'CSOM - Cholesteatoma', description: 'Abnormal skin growth in middle ear' },
+      { id: 'csom-mastoiditis', name: 'CSOM - Mastoiditis', description: 'Mastoid bone infection' },
+      { id: 'csom-ear-drops', name: 'CSOM - Ear Drops', description: 'Using antibiotic ear drops' },
+      { id: 'csom-oral-antibiotics', name: 'CSOM - Oral Antibiotics', description: 'Taking oral antibiotics' },
+      { id: 'csom-ear-cleaning', name: 'CSOM - Professional Ear Cleaning', description: 'Regular ear cleaning by provider' },
+      { id: 'csom-surgery', name: 'CSOM - Ear Surgery', description: 'Had surgery for chronic otitis media' },
+      { id: 'csom-tube-placement', name: 'CSOM - Ear Tube Placement', description: 'Tympanostomy tubes placed' },
+    ],
+  },
+
+  // Chronic Otitis Externa (DC 6210)
+  {
+    id: 'chronic-otitis-externa',
+    name: 'Chronic Otitis Externa (DC 6210)',
+    symptoms: [
+      { id: 'coe-swelling', name: 'Otitis Externa - Ear Canal Swelling', description: 'Swelling of ear canal (rating criteria)' },
+      { id: 'coe-dry-scaly', name: 'Otitis Externa - Dry/Scaly', description: 'Dry and scaly ear canal (rating criteria)' },
+      { id: 'coe-serous-discharge', name: 'Otitis Externa - Serous Discharge', description: 'Clear/watery discharge (rating criteria)' },
+      { id: 'coe-itching', name: 'Otitis Externa - Itching', description: 'Ear canal itching (rating criteria)' },
+      { id: 'coe-ear-pain', name: 'Otitis Externa - Ear Pain', description: 'Pain in outer ear' },
+      { id: 'coe-tenderness', name: 'Otitis Externa - Tenderness', description: 'Ear painful to touch' },
+      { id: 'coe-redness', name: 'Otitis Externa - Redness', description: 'Ear canal redness/inflammation' },
+      { id: 'coe-debris', name: 'Otitis Externa - Debris/Buildup', description: 'Debris accumulation in ear canal' },
+      { id: 'coe-right-ear', name: 'Otitis Externa - Right Ear', description: 'Right ear affected' },
+      { id: 'coe-left-ear', name: 'Otitis Externa - Left Ear', description: 'Left ear affected' },
+      { id: 'coe-bilateral', name: 'Otitis Externa - Both Ears', description: 'Both ears affected' },
+      { id: 'coe-frequent-treatment', name: 'Otitis Externa - Frequent Treatment', description: 'Requiring frequent treatment (supports 10%)' },
+      { id: 'coe-prolonged-treatment', name: 'Otitis Externa - Prolonged Treatment', description: 'Requiring prolonged treatment (supports 10%)' },
+      { id: 'coe-ear-drops', name: 'Otitis Externa - Ear Drops', description: 'Using medicated ear drops' },
+      { id: 'coe-oral-medication', name: 'Otitis Externa - Oral Medication', description: 'Taking oral antibiotics/antifungals' },
+      { id: 'coe-ear-cleaning', name: 'Otitis Externa - Professional Cleaning', description: 'Regular ear cleaning by provider' },
+      { id: 'coe-bacterial', name: 'Otitis Externa - Bacterial', description: 'Bacterial infection type' },
+      { id: 'coe-fungal', name: 'Otitis Externa - Fungal', description: 'Fungal infection type' },
+      { id: 'coe-eczematous', name: 'Otitis Externa - Eczematous', description: 'Eczema-related ear inflammation' },
+      { id: 'coe-chronic', name: 'Otitis Externa - Chronic/Recurring', description: 'Chronic or repeatedly recurring' },
+    ],
+  },
+
+  // Chronic Nonsuppurative Otitis Media (DC 6201)
+  {
+    id: 'chronic-nonsuppurative-otitis-media',
+    name: 'Chronic Nonsuppurative Otitis Media (DC 6201)',
+    symptoms: [
+      { id: 'cnsom-ear-fullness', name: 'Serous OM - Ear Fullness', description: 'Feeling of fullness or pressure in ear' },
+      { id: 'cnsom-fluid-sensation', name: 'Serous OM - Fluid Sensation', description: 'Sensation of fluid in ear' },
+      { id: 'cnsom-hearing-loss', name: 'Serous OM - Hearing Loss', description: 'Reduced hearing (rate separately)' },
+      { id: 'cnsom-muffled-hearing', name: 'Serous OM - Muffled Hearing', description: 'Sounds seem muffled or distant' },
+      { id: 'cnsom-popping-clicking', name: 'Serous OM - Popping/Clicking', description: 'Popping or clicking sounds in ear' },
+      { id: 'cnsom-ear-discomfort', name: 'Serous OM - Ear Discomfort', description: 'Discomfort without acute pain' },
+      { id: 'cnsom-balance-issues', name: 'Serous OM - Balance Issues', description: 'Mild balance problems' },
+      { id: 'cnsom-tinnitus', name: 'Serous OM - Tinnitus', description: 'Ringing in affected ear' },
+      { id: 'cnsom-right-ear', name: 'Serous OM - Right Ear', description: 'Right ear affected' },
+      { id: 'cnsom-left-ear', name: 'Serous OM - Left Ear', description: 'Left ear affected' },
+      { id: 'cnsom-bilateral', name: 'Serous OM - Both Ears', description: 'Both ears affected' },
+      { id: 'cnsom-chronic', name: 'Serous OM - Chronic Duration', description: 'Lasting more than 3 months' },
+      { id: 'cnsom-recurrent', name: 'Serous OM - Recurrent Episodes', description: 'Multiple episodes over time' },
+      { id: 'cnsom-persistent', name: 'Serous OM - Persistent Effusion', description: 'Fluid consistently present' },
+      { id: 'cnsom-decongestants', name: 'Serous OM - Decongestants', description: 'Using decongestant medications' },
+      { id: 'cnsom-antihistamines', name: 'Serous OM - Antihistamines', description: 'Using antihistamine medications' },
+      { id: 'cnsom-nasal-steroids', name: 'Serous OM - Nasal Steroids', description: 'Using nasal steroid spray' },
+      { id: 'cnsom-tubes', name: 'Serous OM - Ear Tubes', description: 'Tympanostomy tubes placed' },
+      { id: 'cnsom-monitoring', name: 'Serous OM - Regular Monitoring', description: 'Regular audiological monitoring' },
+    ],
+  },
+
 
 ];
 
@@ -3196,6 +3530,14 @@ const getParentCategory = (categoryName) => {
   if (name.includes('cutaneous vasculitis')) return 'skin';
   if (name.includes('dermatophytosis')) return 'skin';
   if (name.includes('skin infection')) return 'skin';
+  if (name.includes('uveitis') || name.includes('choroidopathy')) return 'eye';
+  if (name.includes('keratitis') || name.includes('keratopathy')) return 'eye';
+  if (name.includes('conjunctivitis')) return 'eye';
+  if (name.includes('scleritis')) return 'eye';
+  if (name.includes('vestibular')) return 'ear';
+  if (name.includes('suppurative otitis media')) return 'ear';
+  if (name.includes('otitis externa')) return 'ear';
+  if (name.includes('nonsuppurative otitis media') || name.includes('serous om')) return 'ear';
   return null; // No parent, this is a standalone category
 };
 

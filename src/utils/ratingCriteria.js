@@ -2334,8 +2334,167 @@ export const CONDITIONS = {
       'skinf-systemic-constant'
     ],
   },
+  // ============================================
+  // PHASE 7A: EYE CONDITIONS
+  // ============================================
 
+  // DC 6000: Uveitis / Choroidopathy
+  // Includes: uveitis, iritis, cyclitis, choroiditis
+  // Rated under General Rating Formula for Diseases of the Eye
+  UVEITIS: {
+    id: 'uveitis',
+    name: 'Uveitis / Choroidopathy',
+    diagnosticCode: '6000',
+    cfrReference: '38 CFR 4.79',
+    symptomIds: [
+      'uveitis-eye-pain', 'uveitis-redness', 'uveitis-light-sensitivity', 'uveitis-floaters',
+      'uveitis-blurred-vision', 'uveitis-vision-changes', 'uveitis-tearing', 'uveitis-small-pupil',
+      'uveitis-anterior', 'uveitis-intermediate', 'uveitis-posterior', 'uveitis-panuveitis',
+      'uveitis-unilateral', 'uveitis-bilateral',
+      'uveitis-treatment-visit', 'uveitis-episodes-1to2', 'uveitis-episodes-3to4',
+      'uveitis-episodes-5to6', 'uveitis-episodes-7plus',
+      'uveitis-steroid-drops', 'uveitis-dilating-drops', 'uveitis-oral-steroids',
+      'uveitis-immunosuppressants', 'uveitis-biologic-agents', 'uveitis-intravitreal-injection',
+      'uveitis-periocular-injection', 'uveitis-laser-treatment', 'uveitis-surgery',
+      'uveitis-glaucoma', 'uveitis-cataract', 'uveitis-macular-edema', 'uveitis-synechiae',
+      'uveitis-chronic', 'uveitis-visual-acuity-decreased', 'uveitis-visual-field-loss',
+    ],
+  },
 
+  // DC 6001: Keratitis / Keratopathy
+  // Corneal inflammation/disease
+  // Rated under General Rating Formula for Diseases of the Eye
+  KERATITIS: {
+    id: 'keratitis',
+    name: 'Keratitis / Keratopathy',
+    diagnosticCode: '6001',
+    cfrReference: '38 CFR 4.79',
+    symptomIds: [
+      'keratitis-eye-pain', 'keratitis-redness', 'keratitis-light-sensitivity', 'keratitis-tearing',
+      'keratitis-blurred-vision', 'keratitis-foreign-body', 'keratitis-discharge',
+      'keratitis-eyelid-swelling', 'keratitis-difficulty-opening',
+      'keratitis-bacterial', 'keratitis-viral', 'keratitis-fungal', 'keratitis-acanthamoeba',
+      'keratitis-exposure', 'keratitis-neurotrophic',
+      'keratitis-unilateral', 'keratitis-bilateral',
+      'keratitis-treatment-visit', 'keratitis-episodes-1to2', 'keratitis-episodes-3to4',
+      'keratitis-episodes-5to6', 'keratitis-episodes-7plus',
+      'keratitis-antibiotic-drops', 'keratitis-antiviral-drops', 'keratitis-antifungal-drops',
+      'keratitis-steroid-drops', 'keratitis-oral-antivirals', 'keratitis-bandage-lens',
+      'keratitis-corneal-scraping', 'keratitis-corneal-transplant',
+      'keratitis-corneal-ulcer', 'keratitis-corneal-scarring', 'keratitis-corneal-perforation',
+      'keratitis-chronic-recurrent', 'keratitis-visual-acuity-decreased', 'keratitis-glare-sensitivity',
+    ],
+  },
+
+  // DC 6018: Chronic Conjunctivitis (Nontrachomatous)
+  // Active: General Rating Formula, minimum 10%
+  // Inactive: Rate based on residuals (visual impairment, disfigurement)
+  CHRONIC_CONJUNCTIVITIS: {
+    id: 'chronic-conjunctivitis',
+    name: 'Chronic Conjunctivitis',
+    diagnosticCode: '6018',
+    cfrReference: '38 CFR 4.79',
+    symptomIds: [
+      'conj-redness', 'conj-discharge', 'conj-itching', 'conj-burning', 'conj-gritty',
+      'conj-tearing', 'conj-crusting', 'conj-swelling', 'conj-light-sensitivity', 'conj-blurred-vision',
+      'conj-allergic', 'conj-bacterial', 'conj-viral', 'conj-giant-papillary', 'conj-atopic',
+      'conj-active', 'conj-inactive', 'conj-chronic', 'conj-recurrent',
+      'conj-unilateral', 'conj-bilateral',
+      'conj-treatment-visit', 'conj-episodes-1to2', 'conj-episodes-3to4',
+      'conj-episodes-5to6', 'conj-episodes-7plus',
+      'conj-artificial-tears', 'conj-antihistamine-drops', 'conj-mast-cell-stabilizer',
+      'conj-antibiotic-drops', 'conj-steroid-drops', 'conj-immunomodulator', 'conj-oral-antihistamines',
+      'conj-scarring', 'conj-symblepharon', 'conj-dry-eye', 'conj-disfigurement', 'conj-visual-impairment',
+    ],
+  },
+
+  // DC 6002: Scleritis
+  // Inflammation of the sclera
+  // Rated under General Rating Formula for Diseases of the Eye
+  SCLERITIS: {
+    id: 'scleritis',
+    name: 'Scleritis',
+    diagnosticCode: '6002',
+    cfrReference: '38 CFR 4.79',
+    symptomIds: [
+      'scleritis-deep-pain', 'scleritis-redness', 'scleritis-tenderness', 'scleritis-pain-radiating',
+      'scleritis-pain-at-night', 'scleritis-light-sensitivity', 'scleritis-tearing',
+      'scleritis-blurred-vision', 'scleritis-vision-changes',
+      'scleritis-anterior-diffuse', 'scleritis-anterior-nodular', 'scleritis-necrotizing', 'scleritis-posterior',
+      'scleritis-unilateral', 'scleritis-bilateral',
+      'scleritis-autoimmune', 'scleritis-infectious',
+      'scleritis-treatment-visit', 'scleritis-episodes-1to2', 'scleritis-episodes-3to4',
+      'scleritis-episodes-5to6', 'scleritis-episodes-7plus',
+      'scleritis-nsaid-oral', 'scleritis-oral-steroids', 'scleritis-immunosuppressants',
+      'scleritis-biologic-agents', 'scleritis-subconjunctival-injection', 'scleritis-surgery',
+      'scleritis-scleral-thinning', 'scleritis-scleromalacia', 'scleritis-uveitis',
+      'scleritis-glaucoma', 'scleritis-cataract', 'scleritis-chronic-recurrent',
+      'scleritis-visual-acuity-decreased', 'scleritis-vision-loss-permanent',
+    ],
+  },
+
+  // ============================================
+  // PHASE 7B: EAR CONDITIONS
+  // ============================================
+
+  PERIPHERAL_VESTIBULAR: {
+    id: 'peripheral-vestibular',
+    name: 'Peripheral Vestibular Disorders',
+    diagnosticCode: '6204',
+    cfrReference: '38 CFR 4.87',
+    description: 'Peripheral vestibular disorders causing dizziness and balance problems',
+    symptomIds: [
+      'vest-vertigo', 'vest-dizziness', 'vest-staggering', 'vest-imbalance', 'vest-nausea',
+      'vest-nystagmus', 'vest-spatial-disorientation', 'vest-motion-sensitivity', 'vest-occasional',
+      'vest-frequent', 'vest-with-staggering', 'vest-fall-risk', 'vest-driving-affected',
+      'vest-work-affected', 'vest-daily-activities', 'vest-position-triggered', 'vest-standing-triggered',
+      'vest-visual-trigger', 'vest-medication', 'vest-physical-therapy', 'vest-procedure'
+    ],
+  },
+
+  CHRONIC_SUPPURATIVE_OTITIS_MEDIA: {
+    id: 'chronic-suppurative-otitis-media',
+    name: 'Chronic Suppurative Otitis Media',
+    diagnosticCode: '6200',
+    cfrReference: '38 CFR 4.87',
+    description: 'Chronic middle ear infection with drainage - includes mastoiditis and cholesteatoma',
+    symptomIds: [
+      'csom-ear-drainage', 'csom-suppuration', 'csom-aural-polyp', 'csom-ear-pain', 'csom-hearing-change',
+      'csom-ear-fullness', 'csom-foul-odor', 'csom-tympanic-perforation', 'csom-right-ear', 'csom-left-ear',
+      'csom-bilateral', 'csom-labyrinthitis', 'csom-tinnitus', 'csom-facial-paralysis', 'csom-bone-loss',
+      'csom-cholesteatoma', 'csom-mastoiditis', 'csom-ear-drops', 'csom-oral-antibiotics', 'csom-ear-cleaning',
+      'csom-surgery', 'csom-tube-placement'
+    ],
+  },
+
+  CHRONIC_OTITIS_EXTERNA: {
+    id: 'chronic-otitis-externa',
+    name: 'Chronic Otitis Externa',
+    diagnosticCode: '6210',
+    cfrReference: '38 CFR 4.87',
+    description: 'Chronic inflammation of the external ear canal',
+    symptomIds: [
+      'coe-swelling', 'coe-dry-scaly', 'coe-serous-discharge', 'coe-itching', 'coe-ear-pain',
+      'coe-tenderness', 'coe-redness', 'coe-debris', 'coe-right-ear', 'coe-left-ear', 'coe-bilateral',
+      'coe-frequent-treatment', 'coe-prolonged-treatment', 'coe-ear-drops', 'coe-oral-medication',
+      'coe-ear-cleaning', 'coe-bacterial', 'coe-fungal', 'coe-eczematous', 'coe-chronic'
+    ],
+  },
+
+  CHRONIC_NONSUPPURATIVE_OTITIS_MEDIA: {
+    id: 'chronic-nonsuppurative-otitis-media',
+    name: 'Chronic Nonsuppurative Otitis Media',
+    diagnosticCode: '6201',
+    cfrReference: '38 CFR 4.87',
+    description: 'Chronic middle ear effusion (serous otitis media) - rate hearing impairment',
+    symptomIds: [
+      'cnsom-ear-fullness', 'cnsom-fluid-sensation', 'cnsom-hearing-loss', 'cnsom-muffled-hearing',
+      'cnsom-popping-clicking', 'cnsom-ear-discomfort', 'cnsom-balance-issues', 'cnsom-tinnitus',
+      'cnsom-right-ear', 'cnsom-left-ear', 'cnsom-bilateral', 'cnsom-chronic', 'cnsom-recurrent',
+      'cnsom-persistent', 'cnsom-decongestants', 'cnsom-antihistamines', 'cnsom-nasal-steroids',
+      'cnsom-tubes', 'cnsom-monitoring'
+    ],
+  },
 
 };
 // ============================================
@@ -17917,6 +18076,743 @@ export const SKIN_INFECTIONS_CRITERIA = {
   ],
 
   disclaimer: 'This analysis is based on logged skin infection symptoms. VA ratings require medical documentation of infection type, extent, and treatment requirements.',
+};
+
+// ============================================
+// PHASE 7A: EYE CONDITIONS CRITERIA
+// ============================================
+
+// GENERAL RATING FORMULA FOR DISEASES OF THE EYE
+// Used by: DC 6000 (Uveitis), DC 6001 (Keratitis), DC 6002 (Scleritis), DC 6018 (Conjunctivitis)
+// Per 38 CFR 4.79
+export const GENERAL_EYE_FORMULA_CRITERIA = {
+  condition: 'General Rating Formula for Diseases of the Eye',
+  diagnosticCode: 'Various (6000-6091)',
+  cfrReference: '38 CFR 4.79',
+  note: 'Evaluate on the basis of either visual impairment due to the particular condition or on incapacitating episodes, whichever results in a higher evaluation. An incapacitating episode is an eye condition severe enough to require a clinic visit to a provider specifically for treatment purposes.',
+  ratings: [
+    {
+      percent: 60,
+      summary: '7+ treatment visits in past 12 months',
+      criteriaDescription: [
+        'Documented incapacitating episodes requiring 7 or more treatment visits for an eye condition during the past 12 months'
+      ],
+      evidenceNeeded: [
+        'Medical records documenting 7+ clinic visits specifically for eye condition treatment',
+        'Treatment notes showing active disease requiring intervention',
+        'Documentation of treatments received (injections, laser, surgery, systemic medications)'
+      ]
+    },
+    {
+      percent: 40,
+      summary: '5-6 treatment visits in past 12 months',
+      criteriaDescription: [
+        'Documented incapacitating episodes requiring at least 5 but less than 7 treatment visits for an eye condition during the past 12 months'
+      ],
+      evidenceNeeded: [
+        'Medical records documenting 5-6 clinic visits specifically for eye condition treatment',
+        'Treatment notes showing active disease requiring intervention',
+        'Documentation of treatments received'
+      ]
+    },
+    {
+      percent: 20,
+      summary: '3-4 treatment visits in past 12 months',
+      criteriaDescription: [
+        'Documented incapacitating episodes requiring at least 3 but less than 5 treatment visits for an eye condition during the past 12 months'
+      ],
+      evidenceNeeded: [
+        'Medical records documenting 3-4 clinic visits specifically for eye condition treatment',
+        'Treatment notes showing disease activity',
+        'Documentation of treatments received'
+      ]
+    },
+    {
+      percent: 10,
+      summary: '1-2 treatment visits in past 12 months',
+      criteriaDescription: [
+        'Documented incapacitating episodes requiring at least 1 but less than 3 treatment visits for an eye condition during the past 12 months'
+      ],
+      evidenceNeeded: [
+        'Medical records documenting 1-2 clinic visits specifically for eye condition treatment',
+        'Treatment notes',
+        'Documentation of diagnosis and treatment'
+      ]
+    },
+    {
+      percent: 0,
+      summary: 'No treatment visits required',
+      criteriaDescription: [
+        'Eye condition not requiring treatment visits in past 12 months',
+        'Or inactive condition with no residuals'
+      ],
+      evidenceNeeded: [
+        'Documentation of diagnosis',
+        'Evidence condition is controlled or resolved'
+      ]
+    }
+  ],
+  definitions: {
+    'incapacitating episode': 'An eye condition severe enough to require a clinic visit to a provider specifically for treatment purposes. This is different from routine follow-up or monitoring.',
+    'treatment visit': 'A clinic visit specifically for treatment of the eye condition, not routine monitoring. Examples include visits for medication adjustments, injections, laser treatments, or surgical interventions.',
+    'systemic immunosuppressants': 'Medications that suppress the immune system throughout the body (e.g., methotrexate, azathioprine, mycophenolate, cyclosporine)',
+    'biologic agents': 'Targeted immune therapies such as TNF inhibitors (adalimumab, infliximab) or other biologics (rituximab, tocilizumab)',
+    'intravitreal injection': 'Injection of medication directly into the vitreous cavity of the eye',
+    'periocular injection': 'Injection of medication around the eye (subconjunctival, sub-Tenon, or orbital)',
+    'laser treatment': 'Therapeutic laser procedures including photocoagulation, trabeculoplasty, or other laser interventions',
+    'visual impairment': 'If visual impairment results in a higher rating than incapacitating episodes, rate under DC 6061-6091 for visual acuity or visual field loss'
+  },
+  disclaimer: 'This analysis is for documentation purposes only. The VA makes all final rating determinations. Visual impairment from the eye condition may be rated separately under DC 6061-6091 if it results in a higher evaluation.'
+};
+
+// DC 6000: UVEITIS / CHOROIDOPATHY CRITERIA
+// Includes: uveitis, iritis, cyclitis, choroiditis
+export const UVEITIS_CRITERIA = {
+  condition: 'Uveitis / Choroidopathy',
+  diagnosticCode: '6000',
+  cfrReference: '38 CFR 4.79',
+  note: 'Choroidopathy, including uveitis, iritis, cyclitis, or choroiditis. Evaluate on the basis of either visual impairment due to the particular condition or on incapacitating episodes, whichever results in a higher evaluation.',
+  ratings: [
+    {
+      percent: 60,
+      summary: '7+ treatment visits in past 12 months',
+      criteriaDescription: [
+        'Documented incapacitating episodes requiring 7 or more treatment visits for uveitis during the past 12 months',
+        'Severe or refractory uveitis requiring frequent intervention'
+      ],
+      evidenceNeeded: [
+        'Medical records documenting 7+ clinic visits specifically for uveitis treatment',
+        'Documentation of treatments (steroid injections, immunosuppressants, biologics, surgery)',
+        'Ophthalmology notes showing disease activity and treatment response'
+      ]
+    },
+    {
+      percent: 40,
+      summary: '5-6 treatment visits in past 12 months',
+      criteriaDescription: [
+        'Documented incapacitating episodes requiring at least 5 but less than 7 treatment visits for uveitis during the past 12 months',
+        'Moderate to severe uveitis with frequent flares'
+      ],
+      evidenceNeeded: [
+        'Medical records documenting 5-6 clinic visits specifically for uveitis treatment',
+        'Treatment records showing active management',
+        'Documentation of uveitis type and location (anterior, intermediate, posterior, panuveitis)'
+      ]
+    },
+    {
+      percent: 20,
+      summary: '3-4 treatment visits in past 12 months',
+      criteriaDescription: [
+        'Documented incapacitating episodes requiring at least 3 but less than 5 treatment visits for uveitis during the past 12 months',
+        'Moderate uveitis with periodic flares'
+      ],
+      evidenceNeeded: [
+        'Medical records documenting 3-4 clinic visits specifically for uveitis treatment',
+        'Documentation of flares and treatment response',
+        'Ophthalmology examination records'
+      ]
+    },
+    {
+      percent: 10,
+      summary: '1-2 treatment visits in past 12 months',
+      criteriaDescription: [
+        'Documented incapacitating episodes requiring at least 1 but less than 3 treatment visits for uveitis during the past 12 months',
+        'Mild or well-controlled uveitis with occasional flares'
+      ],
+      evidenceNeeded: [
+        'Medical records documenting 1-2 clinic visits specifically for uveitis treatment',
+        'Documentation of diagnosis and treatment',
+        'Evidence of disease activity requiring intervention'
+      ]
+    },
+    {
+      percent: 0,
+      summary: 'No treatment visits required or inactive',
+      criteriaDescription: [
+        'Uveitis not requiring treatment visits in past 12 months',
+        'Or condition in remission without active treatment'
+      ],
+      evidenceNeeded: [
+        'Documentation of uveitis diagnosis',
+        'Evidence condition is controlled or in remission'
+      ]
+    }
+  ],
+  definitions: {
+    'uveitis': 'Inflammation of the uveal tract (iris, ciliary body, and/or choroid). Can be infectious or non-infectious (autoimmune).',
+    'anterior uveitis': 'Inflammation of the iris (iritis) and/or ciliary body (cyclitis). Most common form. Causes eye pain, redness, and light sensitivity.',
+    'intermediate uveitis': 'Inflammation primarily affecting the vitreous and peripheral retina. Also called pars planitis.',
+    'posterior uveitis': 'Inflammation of the choroid (choroiditis) and/or retina. Can cause significant vision loss.',
+    'panuveitis': 'Inflammation involving all layers of the uvea - anterior, intermediate, and posterior.',
+    'iritis': 'Inflammation of the iris, the colored part of the eye. A type of anterior uveitis.',
+    'cyclitis': 'Inflammation of the ciliary body. Often occurs with iritis as iridocyclitis.',
+    'choroiditis': 'Inflammation of the choroid, the vascular layer between retina and sclera.',
+    'synechiae': 'Adhesions between the iris and lens (posterior synechiae) or cornea (anterior synechiae) that can result from uveitis.',
+    'hypopyon': 'Accumulation of white blood cells in the anterior chamber, seen in severe anterior uveitis.',
+    'macular edema': 'Swelling of the macula (central retina) that can occur as a complication of uveitis, causing decreased central vision.',
+    'incapacitating episode': 'A uveitis flare severe enough to require a clinic visit specifically for treatment purposes.'
+  },
+  disclaimer: 'This analysis is for documentation purposes only. The VA makes all final rating determinations. Visual impairment from uveitis complications may be rated separately under DC 6061-6091 if it results in a higher evaluation.'
+};
+
+// DC 6001: KERATITIS / KERATOPATHY CRITERIA
+// Corneal inflammation and disease
+export const KERATITIS_CRITERIA = {
+  condition: 'Keratitis / Keratopathy',
+  diagnosticCode: '6001',
+  cfrReference: '38 CFR 4.79',
+  note: 'Keratopathy (corneal disease/inflammation). Evaluate on the basis of either visual impairment due to the particular condition or on incapacitating episodes, whichever results in a higher evaluation.',
+  ratings: [
+    {
+      percent: 60,
+      summary: '7+ treatment visits in past 12 months',
+      criteriaDescription: [
+        'Documented incapacitating episodes requiring 7 or more treatment visits for keratitis during the past 12 months',
+        'Severe or recurrent keratitis requiring frequent intervention'
+      ],
+      evidenceNeeded: [
+        'Medical records documenting 7+ clinic visits specifically for keratitis treatment',
+        'Documentation of treatments (antibiotics, antivirals, corneal procedures)',
+        'Ophthalmology notes showing disease activity and complications'
+      ]
+    },
+    {
+      percent: 40,
+      summary: '5-6 treatment visits in past 12 months',
+      criteriaDescription: [
+        'Documented incapacitating episodes requiring at least 5 but less than 7 treatment visits for keratitis during the past 12 months',
+        'Moderate to severe keratitis with frequent recurrences'
+      ],
+      evidenceNeeded: [
+        'Medical records documenting 5-6 clinic visits specifically for keratitis treatment',
+        'Treatment records showing active management',
+        'Documentation of keratitis type (bacterial, viral, fungal, etc.)'
+      ]
+    },
+    {
+      percent: 20,
+      summary: '3-4 treatment visits in past 12 months',
+      criteriaDescription: [
+        'Documented incapacitating episodes requiring at least 3 but less than 5 treatment visits for keratitis during the past 12 months',
+        'Moderate keratitis with periodic episodes'
+      ],
+      evidenceNeeded: [
+        'Medical records documenting 3-4 clinic visits specifically for keratitis treatment',
+        'Documentation of episodes and treatment response',
+        'Ophthalmology examination records'
+      ]
+    },
+    {
+      percent: 10,
+      summary: '1-2 treatment visits in past 12 months',
+      criteriaDescription: [
+        'Documented incapacitating episodes requiring at least 1 but less than 3 treatment visits for keratitis during the past 12 months',
+        'Mild or occasional keratitis episodes'
+      ],
+      evidenceNeeded: [
+        'Medical records documenting 1-2 clinic visits specifically for keratitis treatment',
+        'Documentation of diagnosis and treatment',
+        'Evidence of disease activity requiring intervention'
+      ]
+    },
+    {
+      percent: 0,
+      summary: 'No treatment visits required or resolved',
+      criteriaDescription: [
+        'Keratitis not requiring treatment visits in past 12 months',
+        'Or condition resolved without active disease'
+      ],
+      evidenceNeeded: [
+        'Documentation of keratitis diagnosis',
+        'Evidence condition is controlled or resolved'
+      ]
+    }
+  ],
+  definitions: {
+    'keratitis': 'Inflammation of the cornea, the clear front surface of the eye. Can be infectious or non-infectious.',
+    'keratopathy': 'Any disease or abnormality of the cornea.',
+    'bacterial keratitis': 'Corneal infection caused by bacteria. Often associated with contact lens wear. Requires aggressive antibiotic treatment.',
+    'viral keratitis': 'Corneal infection caused by viruses, most commonly herpes simplex virus (HSV) or varicella-zoster virus (VZV/shingles).',
+    'herpes simplex keratitis': 'HSV infection of the cornea. Can cause recurrent episodes and corneal scarring. Treated with antivirals.',
+    'herpes zoster ophthalmicus': 'Shingles affecting the eye, including the cornea. Can cause severe keratitis and chronic problems.',
+    'fungal keratitis': 'Corneal infection caused by fungi. Often occurs after plant/organic material injury. Difficult to treat.',
+    'acanthamoeba keratitis': 'Parasitic corneal infection associated with contact lens use and water exposure. Very painful and difficult to treat.',
+    'exposure keratopathy': 'Corneal damage due to inadequate eyelid closure (lagophthalmos), causing drying and breakdown of the corneal surface.',
+    'neurotrophic keratopathy': 'Corneal disease due to decreased corneal sensation, leading to poor healing and breakdown.',
+    'corneal ulcer': 'An open sore on the cornea, usually caused by infection. Can lead to permanent scarring and vision loss.',
+    'corneal scarring': 'Permanent opacity of the cornea that can result from keratitis, reducing vision.',
+    'corneal perforation': 'A hole through the full thickness of the cornea - a serious complication requiring emergency treatment.',
+    'incapacitating episode': 'A keratitis episode severe enough to require a clinic visit specifically for treatment purposes.'
+  },
+  disclaimer: 'This analysis is for documentation purposes only. The VA makes all final rating determinations. Visual impairment from corneal scarring may be rated separately under DC 6061-6091 if it results in a higher evaluation.'
+};
+
+// DC 6018: CHRONIC CONJUNCTIVITIS CRITERIA
+// Nontrachomatous chronic conjunctivitis
+// Active: General Rating Formula, minimum 10%
+// Inactive: Rate based on residuals
+export const CHRONIC_CONJUNCTIVITIS_CRITERIA = {
+  condition: 'Chronic Conjunctivitis',
+  diagnosticCode: '6018',
+  cfrReference: '38 CFR 4.79',
+  note: 'Chronic conjunctivitis (nontrachomatous). ACTIVE: Evaluate under the General Rating Formula for Diseases of the Eye, minimum rating 10%. INACTIVE: Evaluate based on residuals, such as visual impairment and disfigurement (DC 7800).',
+  ratings: [
+    {
+      percent: 60,
+      summary: '7+ treatment visits in past 12 months (Active)',
+      criteriaDescription: [
+        'ACTIVE conjunctivitis with documented incapacitating episodes requiring 7 or more treatment visits during the past 12 months',
+        'Severe chronic conjunctivitis requiring frequent intervention'
+      ],
+      evidenceNeeded: [
+        'Medical records documenting 7+ clinic visits specifically for conjunctivitis treatment',
+        'Documentation of active disease status',
+        'Treatment records showing ongoing management'
+      ]
+    },
+    {
+      percent: 40,
+      summary: '5-6 treatment visits in past 12 months (Active)',
+      criteriaDescription: [
+        'ACTIVE conjunctivitis with documented incapacitating episodes requiring at least 5 but less than 7 treatment visits during the past 12 months',
+        'Moderate to severe chronic conjunctivitis'
+      ],
+      evidenceNeeded: [
+        'Medical records documenting 5-6 clinic visits specifically for conjunctivitis treatment',
+        'Documentation of active disease',
+        'Treatment records'
+      ]
+    },
+    {
+      percent: 20,
+      summary: '3-4 treatment visits in past 12 months (Active)',
+      criteriaDescription: [
+        'ACTIVE conjunctivitis with documented incapacitating episodes requiring at least 3 but less than 5 treatment visits during the past 12 months',
+        'Moderate chronic conjunctivitis with periodic flares'
+      ],
+      evidenceNeeded: [
+        'Medical records documenting 3-4 clinic visits specifically for conjunctivitis treatment',
+        'Documentation of active disease episodes',
+        'Ophthalmology examination records'
+      ]
+    },
+    {
+      percent: 10,
+      summary: '1-2 treatment visits OR active disease (minimum)',
+      criteriaDescription: [
+        'ACTIVE conjunctivitis with documented incapacitating episodes requiring at least 1 but less than 3 treatment visits during the past 12 months',
+        'OR any active chronic conjunctivitis (minimum rating for active disease)',
+        'Mild chronic conjunctivitis with occasional symptoms'
+      ],
+      evidenceNeeded: [
+        'Medical records documenting active conjunctivitis',
+        'Documentation of chronic nature (symptoms >4 weeks or recurrent)',
+        'Treatment records showing ongoing management needed'
+      ]
+    },
+    {
+      percent: 0,
+      summary: 'Inactive with no residuals',
+      criteriaDescription: [
+        'INACTIVE conjunctivitis with no visual impairment or disfigurement',
+        'Condition resolved without lasting effects'
+      ],
+      evidenceNeeded: [
+        'Documentation of prior conjunctivitis diagnosis',
+        'Evidence condition is inactive/resolved',
+        'Documentation of no residual visual impairment or disfigurement'
+      ]
+    }
+  ],
+  definitions: {
+    'chronic conjunctivitis': 'Inflammation of the conjunctiva (the clear membrane covering the white of the eye and inner eyelids) lasting more than 4 weeks or recurring frequently.',
+    'active conjunctivitis': 'Conjunctivitis with current symptoms requiring treatment. Rated under the General Rating Formula with minimum 10%.',
+    'inactive conjunctivitis': 'Conjunctivitis that has resolved or is in remission. Rated based on residuals only.',
+    'allergic conjunctivitis': 'Conjunctivitis triggered by allergens (pollen, dust, pet dander). Causes itching, redness, and tearing.',
+    'bacterial conjunctivitis': 'Conjunctivitis caused by bacterial infection. Causes purulent discharge and crusting.',
+    'viral conjunctivitis': 'Conjunctivitis caused by viral infection. Highly contagious. Causes watery discharge.',
+    'giant papillary conjunctivitis': 'Conjunctivitis associated with contact lens wear. Causes large bumps under the upper eyelid.',
+    'atopic keratoconjunctivitis': 'Severe allergic conjunctivitis associated with atopic dermatitis. Can cause corneal damage.',
+    'nontrachomatous': 'Conjunctivitis NOT caused by trachoma (Chlamydia trachomatis infection). Trachomatous conjunctivitis is rated under DC 6017.',
+    'residuals': 'Lasting effects after the active disease resolves, including scarring, dry eye, or visual impairment.',
+    'symblepharon': 'Adhesion between the conjunctiva of the eyelid and the eyeball, a potential complication of severe conjunctivitis.',
+    'disfigurement': 'Visible scarring or changes to the eye/eyelids that may be rated under DC 7800.',
+    'incapacitating episode': 'A conjunctivitis flare severe enough to require a clinic visit specifically for treatment purposes.'
+  },
+  disclaimer: 'This analysis is for documentation purposes only. The VA makes all final rating determinations. INACTIVE conjunctivitis is rated based on residuals such as visual impairment (DC 6061-6091) or disfigurement (DC 7800).'
+};
+
+// DC 6002: SCLERITIS CRITERIA
+// Inflammation of the sclera
+export const SCLERITIS_CRITERIA = {
+  condition: 'Scleritis',
+  diagnosticCode: '6002',
+  cfrReference: '38 CFR 4.79',
+  note: 'Scleritis (inflammation of the sclera). Evaluate on the basis of either visual impairment due to the particular condition or on incapacitating episodes, whichever results in a higher evaluation. Scleritis is often associated with systemic autoimmune diseases.',
+  ratings: [
+    {
+      percent: 60,
+      summary: '7+ treatment visits in past 12 months',
+      criteriaDescription: [
+        'Documented incapacitating episodes requiring 7 or more treatment visits for scleritis during the past 12 months',
+        'Severe or refractory scleritis requiring frequent intervention',
+        'May include necrotizing scleritis or scleritis with systemic disease'
+      ],
+      evidenceNeeded: [
+        'Medical records documenting 7+ clinic visits specifically for scleritis treatment',
+        'Documentation of treatments (systemic steroids, immunosuppressants, biologics)',
+        'Ophthalmology and/or rheumatology notes showing disease activity'
+      ]
+    },
+    {
+      percent: 40,
+      summary: '5-6 treatment visits in past 12 months',
+      criteriaDescription: [
+        'Documented incapacitating episodes requiring at least 5 but less than 7 treatment visits for scleritis during the past 12 months',
+        'Moderate to severe scleritis with frequent flares'
+      ],
+      evidenceNeeded: [
+        'Medical records documenting 5-6 clinic visits specifically for scleritis treatment',
+        'Treatment records showing active management',
+        'Documentation of scleritis type (anterior, posterior, necrotizing)'
+      ]
+    },
+    {
+      percent: 20,
+      summary: '3-4 treatment visits in past 12 months',
+      criteriaDescription: [
+        'Documented incapacitating episodes requiring at least 3 but less than 5 treatment visits for scleritis during the past 12 months',
+        'Moderate scleritis with periodic flares'
+      ],
+      evidenceNeeded: [
+        'Medical records documenting 3-4 clinic visits specifically for scleritis treatment',
+        'Documentation of episodes and treatment response',
+        'Ophthalmology examination records'
+      ]
+    },
+    {
+      percent: 10,
+      summary: '1-2 treatment visits in past 12 months',
+      criteriaDescription: [
+        'Documented incapacitating episodes requiring at least 1 but less than 3 treatment visits for scleritis during the past 12 months',
+        'Mild scleritis or well-controlled with occasional flares'
+      ],
+      evidenceNeeded: [
+        'Medical records documenting 1-2 clinic visits specifically for scleritis treatment',
+        'Documentation of diagnosis and treatment',
+        'Evidence of disease activity requiring intervention'
+      ]
+    },
+    {
+      percent: 0,
+      summary: 'No treatment visits required or inactive',
+      criteriaDescription: [
+        'Scleritis not requiring treatment visits in past 12 months',
+        'Or condition in remission without active treatment'
+      ],
+      evidenceNeeded: [
+        'Documentation of scleritis diagnosis',
+        'Evidence condition is controlled or in remission'
+      ]
+    }
+  ],
+  definitions: {
+    'scleritis': 'Inflammation of the sclera, the white outer coat of the eye. Causes severe, deep, boring pain. More serious than episcleritis.',
+    'sclera': 'The tough, white outer layer of the eyeball that provides structure and protection.',
+    'anterior scleritis': 'Scleritis affecting the front portion of the sclera (visible part). Most common type.',
+    'diffuse anterior scleritis': 'Widespread inflammation of the anterior sclera. Most benign form.',
+    'nodular anterior scleritis': 'Localized, tender nodule(s) on the sclera.',
+    'necrotizing scleritis': 'Most severe form with tissue destruction. High risk of vision loss and perforation. Often associated with systemic disease.',
+    'posterior scleritis': 'Inflammation of the back portion of the sclera. Can cause retinal detachment, macular edema, and optic nerve swelling.',
+    'scleromalacia perforans': 'Necrotizing scleritis without inflammation, seen in severe rheumatoid arthritis. Risk of perforation.',
+    'episcleritis': 'Inflammation of the episclera (layer between conjunctiva and sclera). Less severe than scleritis, usually self-limiting.',
+    'autoimmune association': 'Scleritis is often associated with systemic autoimmune diseases including rheumatoid arthritis, granulomatosis with polyangiitis, lupus, and inflammatory bowel disease.',
+    'scleral thinning': 'Thinning of the sclera that can result from inflammation, increasing risk of perforation.',
+    'incapacitating episode': 'A scleritis episode severe enough to require a clinic visit specifically for treatment purposes.'
+  },
+  disclaimer: 'This analysis is for documentation purposes only. The VA makes all final rating determinations. Visual impairment from scleritis complications may be rated separately under DC 6061-6091 if it results in a higher evaluation. Associated systemic conditions should be rated separately.'
+};
+
+
+// ============================================
+// PHASE 7B: EAR CONDITIONS
+// ============================================
+
+export const PERIPHERAL_VESTIBULAR_CRITERIA = {
+  diagnosticCode: '6204',
+  condition: 'Peripheral Vestibular Disorders',
+  cfrReference: '38 CFR 4.87, Diagnostic Code 6204',
+
+  ratings: [
+    {
+      percent: 30,
+      summary: 'Dizziness and occasional staggering',
+      criteriaDescription: [
+        'Dizziness present',
+        'Occasional staggering gait documented',
+        'Both symptoms must be present for 30% rating',
+        'Objective findings supporting vestibular disequilibrium required',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Occasional dizziness',
+      criteriaDescription: [
+        'Occasional dizziness documented',
+        'No staggering gait',
+        'Objective findings supporting vestibular disequilibrium required',
+      ],
+    },
+  ],
+
+  definitions: {
+    peripheralVestibular: {
+      term: 'Peripheral Vestibular Disorder',
+      definition: 'Disorder of the vestibular system (inner ear balance organs or vestibular nerve) causing dizziness and balance problems.',
+    },
+    vertigo: {
+      term: 'Vertigo',
+      definition: 'False sensation of spinning or movement. Can be triggered by head position changes or occur spontaneously.',
+    },
+    dizziness: {
+      term: 'Dizziness',
+      definition: 'General term for sensations of lightheadedness, unsteadiness, or disorientation.',
+    },
+    staggering: {
+      term: 'Staggering',
+      definition: 'Unsteady gait with stumbling or weaving. Key criterion distinguishing 30% from 10% rating.',
+    },
+    vestibularDisequilibrium: {
+      term: 'Vestibular Disequilibrium',
+      definition: 'Imbalance caused by vestibular system dysfunction. Must have objective findings for compensable rating.',
+    },
+    objectiveFindings: {
+      term: 'Objective Findings',
+      definition: 'Clinical signs documented by healthcare provider (e.g., nystagmus, abnormal vestibular testing, positive Dix-Hallpike). Required for compensable rating.',
+    },
+    nystagmus: {
+      term: 'Nystagmus',
+      definition: 'Involuntary, rhythmic eye movements. Common objective finding in vestibular disorders.',
+    },
+    bppv: {
+      term: 'BPPV (Benign Paroxysmal Positional Vertigo)',
+      definition: 'Common vestibular disorder causing brief vertigo episodes triggered by head position changes.',
+    },
+    labyrinthitis: {
+      term: 'Labyrinthitis',
+      definition: 'Inflammation of the inner ear labyrinth, causing vertigo and hearing changes.',
+    },
+    vestibularNeuritis: {
+      term: 'Vestibular Neuritis',
+      definition: 'Inflammation of the vestibular nerve causing sudden severe vertigo without hearing loss.',
+    },
+  },
+
+  note: 'Objective findings supporting vestibular disequilibrium are REQUIRED for compensable rating. Rate hearing impairment and suppuration separately and combine.',
+
+  disclaimer: 'This analysis is based on logged vestibular symptoms. VA rating requires objective clinical findings documented by a healthcare provider.',
+};
+
+export const CHRONIC_SUPPURATIVE_OTITIS_MEDIA_CRITERIA = {
+  diagnosticCode: '6200',
+  condition: 'Chronic Suppurative Otitis Media',
+  cfrReference: '38 CFR 4.87, Diagnostic Code 6200',
+
+  ratings: [
+    {
+      percent: 10,
+      summary: 'During suppuration, or with aural polyps',
+      criteriaDescription: [
+        'Active suppuration (pus drainage) from ear, OR',
+        'Presence of aural polyps',
+        'Includes mastoiditis and cholesteatoma',
+        'Maximum rating under this code is 10%',
+      ],
+    },
+  ],
+
+  definitions: {
+    suppurativeOtitisMedia: {
+      term: 'Suppurative Otitis Media',
+      definition: 'Middle ear infection with pus formation and drainage, usually through a perforated eardrum.',
+    },
+    suppuration: {
+      term: 'Suppuration',
+      definition: 'Formation and discharge of pus. Key criterion for 10% rating.',
+    },
+    auralPolyp: {
+      term: 'Aural Polyp',
+      definition: 'Benign growth in the ear canal or middle ear, often from chronic inflammation. Key criterion for 10% rating.',
+    },
+    cholesteatoma: {
+      term: 'Cholesteatoma',
+      definition: 'Abnormal skin growth in the middle ear that can erode bone. Requires surgical treatment.',
+    },
+    mastoiditis: {
+      term: 'Mastoiditis',
+      definition: 'Infection of the mastoid bone behind the ear, complication of otitis media.',
+    },
+    tympanicPerforation: {
+      term: 'Tympanic Membrane Perforation',
+      definition: 'Hole in the eardrum, often from chronic infection or trauma.',
+    },
+    chronicOtitisMedia: {
+      term: 'Chronic Otitis Media',
+      definition: 'Middle ear infection lasting more than 3 months or recurring frequently.',
+    },
+  },
+
+  complications: [
+    {
+      condition: 'Hearing Impairment',
+      note: 'Evaluate separately under DC 6100 and combine',
+    },
+    {
+      condition: 'Labyrinthitis',
+      note: 'Evaluate separately and combine',
+    },
+    {
+      condition: 'Tinnitus',
+      note: 'Evaluate separately under DC 6260 and combine',
+    },
+    {
+      condition: 'Facial Nerve Paralysis',
+      note: 'Evaluate separately under appropriate neurological code',
+    },
+    {
+      condition: 'Bone Loss of Skull',
+      note: 'Evaluate separately and combine',
+    },
+  ],
+
+  note: 'Maximum rating under DC 6200 is 10%. Hearing impairment and complications (labyrinthitis, tinnitus, facial nerve paralysis, bone loss) are rated SEPARATELY and combined.',
+
+  disclaimer: 'This analysis is based on logged otitis media symptoms. VA rating requires ENT examination documenting active suppuration or polyps.',
+};
+
+export const CHRONIC_OTITIS_EXTERNA_CRITERIA = {
+  diagnosticCode: '6210',
+  condition: 'Chronic Otitis Externa',
+  cfrReference: '38 CFR 4.87, Diagnostic Code 6210',
+
+  ratings: [
+    {
+      percent: 10,
+      summary: 'Swelling, dry/scaly or serous discharge, and itching requiring frequent and prolonged treatment',
+      criteriaDescription: [
+        'Swelling of ear canal present, AND',
+        'Dry and scaly OR serous discharge present, AND',
+        'Itching present, AND',
+        'Requires frequent AND prolonged treatment',
+        'ALL criteria must be met for 10% rating',
+      ],
+    },
+  ],
+
+  definitions: {
+    otitisExterna: {
+      term: 'Otitis Externa',
+      definition: 'Inflammation of the external ear canal (outer ear infection), also known as swimmer\'s ear.',
+    },
+    chronicOtitisExterna: {
+      term: 'Chronic Otitis Externa',
+      definition: 'External ear canal inflammation lasting more than 3 months or recurring frequently.',
+    },
+    swelling: {
+      term: 'Swelling',
+      definition: 'Edema or inflammation of the ear canal skin. One of the required symptoms for rating.',
+    },
+    dryScaly: {
+      term: 'Dry and Scaly',
+      definition: 'Flaking, scaling skin in the ear canal. One of the discharge/skin criteria.',
+    },
+    serousDischarge: {
+      term: 'Serous Discharge',
+      definition: 'Clear, watery drainage from the ear canal. Alternative to dry/scaly for rating.',
+    },
+    itching: {
+      term: 'Itching',
+      definition: 'Pruritus of the ear canal. Required symptom for compensable rating.',
+    },
+    frequentTreatment: {
+      term: 'Frequent Treatment',
+      definition: 'Treatment needed on a regular, recurring basis.',
+    },
+    prolongedTreatment: {
+      term: 'Prolonged Treatment',
+      definition: 'Treatment required for extended periods, not just brief courses.',
+    },
+    bacterialOtitisExterna: {
+      term: 'Bacterial Otitis Externa',
+      definition: 'External ear infection caused by bacteria, most commonly Pseudomonas aeruginosa.',
+    },
+    fungalOtitisExterna: {
+      term: 'Fungal Otitis Externa (Otomycosis)',
+      definition: 'External ear infection caused by fungi, typically Aspergillus or Candida.',
+    },
+    eczematousOtitisExterna: {
+      term: 'Eczematous Otitis Externa',
+      definition: 'External ear inflammation related to eczema or dermatitis.',
+    },
+  },
+
+  note: 'ALL criteria must be met: swelling + (dry/scaly OR serous discharge) + itching + frequent/prolonged treatment. Maximum rating is 10%.',
+
+  disclaimer: 'This analysis is based on logged otitis externa symptoms. VA rating requires ENT documentation of examination findings and treatment frequency.',
+};
+
+export const CHRONIC_NONSUPPURATIVE_OTITIS_MEDIA_CRITERIA = {
+  diagnosticCode: '6201',
+  condition: 'Chronic Nonsuppurative Otitis Media',
+  cfrReference: '38 CFR 4.87, Diagnostic Code 6201',
+
+  ratings: [
+    {
+      percent: 'Variable',
+      summary: 'Rate hearing impairment under DC 6100',
+      criteriaDescription: [
+        'No specific rating percentage under DC 6201',
+        'Rate based on resulting hearing impairment',
+        'Use audiometric testing results',
+        'Apply DC 6100 hearing loss criteria',
+      ],
+    },
+  ],
+
+  definitions: {
+    nonsuppurativeOtitisMedia: {
+      term: 'Nonsuppurative Otitis Media',
+      definition: 'Middle ear inflammation with fluid accumulation but without pus formation or active infection.',
+    },
+    serousOtitisMedia: {
+      term: 'Serous Otitis Media (Otitis Media with Effusion)',
+      definition: 'Fluid in the middle ear without signs of acute infection. Common in adults with eustachian tube dysfunction.',
+    },
+    middleEarEffusion: {
+      term: 'Middle Ear Effusion',
+      definition: 'Accumulation of fluid in the middle ear space behind the eardrum.',
+    },
+    eustachianTubeDysfunction: {
+      term: 'Eustachian Tube Dysfunction',
+      definition: 'Impaired function of the tube connecting middle ear to throat, leading to pressure/fluid problems.',
+    },
+    conductiveHearingLoss: {
+      term: 'Conductive Hearing Loss',
+      definition: 'Hearing loss from impaired sound transmission through outer or middle ear. Common result of effusion.',
+    },
+    tympanostomyTubes: {
+      term: 'Tympanostomy Tubes',
+      definition: 'Small tubes placed through eardrum to ventilate middle ear and drain fluid.',
+    },
+    chronicEffusion: {
+      term: 'Chronic Effusion',
+      definition: 'Middle ear fluid persisting for more than 3 months.',
+    },
+  },
+
+  note: 'DC 6201 does not have its own rating percentages. Rate based on hearing impairment under DC 6100 using audiometric testing.',
+
+  disclaimer: 'This analysis tracks nonsuppurative otitis media symptoms. VA rating requires audiometric testing to determine hearing impairment level.',
 };
 
 // ============================================
@@ -38055,6 +38951,1337 @@ export const analyzeSkinInfectionsLogs = (logs, options = {}) => {
   };
 };
 
+// ============================================
+// PHASE 7A: EYE CONDITIONS ANALYSIS FUNCTIONS
+// ============================================
+
+// Helper function to count treatment visits from logged episodes
+const countEyeTreatmentVisits = (logs, prefix) => {
+  let visitCount = 0;
+
+  // Count individual treatment visit logs
+  const treatmentVisitLogs = logs.filter(log => {
+    const symptomId = getLogSymptomId(log);
+    return symptomId === `${prefix}-treatment-visit`;
+  });
+  visitCount += treatmentVisitLogs.length;
+
+  // Also check for episode range indicators and add their implied counts
+  const hasEpisodes7plus = logs.some(log => getLogSymptomId(log) === `${prefix}-episodes-7plus`);
+  const hasEpisodes5to6 = logs.some(log => getLogSymptomId(log) === `${prefix}-episodes-5to6`);
+  const hasEpisodes3to4 = logs.some(log => getLogSymptomId(log) === `${prefix}-episodes-3to4`);
+  const hasEpisodes1to2 = logs.some(log => getLogSymptomId(log) === `${prefix}-episodes-1to2`);
+
+  // Return the highest documented episode count if logged
+  if (hasEpisodes7plus) return Math.max(visitCount, 7);
+  if (hasEpisodes5to6) return Math.max(visitCount, 5);
+  if (hasEpisodes3to4) return Math.max(visitCount, 3);
+  if (hasEpisodes1to2) return Math.max(visitCount, 1);
+
+  return visitCount;
+};
+
+// Helper function to determine rating based on treatment visits
+const getEyeRatingFromVisits = (visitCount) => {
+  if (visitCount >= 7) return 60;
+  if (visitCount >= 5) return 40;
+  if (visitCount >= 3) return 20;
+  if (visitCount >= 1) return 10;
+  return 0;
+};
+
+// DC 6000: UVEITIS / CHOROIDOPATHY ANALYSIS
+export const analyzeUveitis = (logs) => {
+  const symptomIds = CONDITIONS.UVEITIS.symptomIds;
+  const conditionLogs = logs.filter(log => {
+    const symptomId = getLogSymptomId(log);
+    return symptomIds.includes(symptomId);
+  });
+
+  if (conditionLogs.length === 0) {
+    return { hasData: false };
+  }
+
+  // Calculate metrics
+  const totalLogs = conditionLogs.length;
+  const severityLogs = conditionLogs.filter(log => log.severity != null);
+  const avgSeverity = severityLogs.length > 0
+      ? severityLogs.reduce((sum, log) => sum + log.severity, 0) / severityLogs.length
+      : 0;
+
+  // Count treatment visits
+  const treatmentVisits = countEyeTreatmentVisits(conditionLogs, 'uveitis');
+
+  // Identify location/type
+  const hasAnterior = conditionLogs.some(log => getLogSymptomId(log) === 'uveitis-anterior');
+  const hasIntermediate = conditionLogs.some(log => getLogSymptomId(log) === 'uveitis-intermediate');
+  const hasPosterior = conditionLogs.some(log => getLogSymptomId(log) === 'uveitis-posterior');
+  const hasPanuveitis = conditionLogs.some(log => getLogSymptomId(log) === 'uveitis-panuveitis');
+
+  // Identify laterality
+  const isBilateral = conditionLogs.some(log => getLogSymptomId(log) === 'uveitis-bilateral');
+  const isUnilateral = conditionLogs.some(log => getLogSymptomId(log) === 'uveitis-unilateral');
+
+  // Check for advanced treatments (indicates severity)
+  const hasImmunosuppressants = conditionLogs.some(log => getLogSymptomId(log) === 'uveitis-immunosuppressants');
+  const hasBiologics = conditionLogs.some(log => getLogSymptomId(log) === 'uveitis-biologic-agents');
+  const hasIntravitreal = conditionLogs.some(log => getLogSymptomId(log) === 'uveitis-intravitreal-injection');
+  const hasPeriocular = conditionLogs.some(log => getLogSymptomId(log) === 'uveitis-periocular-injection');
+  const hasLaser = conditionLogs.some(log => getLogSymptomId(log) === 'uveitis-laser-treatment');
+  const hasSurgery = conditionLogs.some(log => getLogSymptomId(log) === 'uveitis-surgery');
+
+  // Check for complications
+  const hasGlaucoma = conditionLogs.some(log => getLogSymptomId(log) === 'uveitis-glaucoma');
+  const hasCataract = conditionLogs.some(log => getLogSymptomId(log) === 'uveitis-cataract');
+  const hasMacularEdema = conditionLogs.some(log => getLogSymptomId(log) === 'uveitis-macular-edema');
+  const hasSynechiae = conditionLogs.some(log => getLogSymptomId(log) === 'uveitis-synechiae');
+  const isChronic = conditionLogs.some(log => getLogSymptomId(log) === 'uveitis-chronic');
+  const hasVisualAcuityLoss = conditionLogs.some(log => getLogSymptomId(log) === 'uveitis-visual-acuity-decreased');
+  const hasVisualFieldLoss = conditionLogs.some(log => getLogSymptomId(log) === 'uveitis-visual-field-loss');
+
+  // Determine rating based on treatment visits
+  let supportedRating = getEyeRatingFromVisits(treatmentVisits);
+
+  // Build rationale
+  const ratingRationale = [];
+
+  if (treatmentVisits >= 7) {
+    ratingRationale.push(`Documented ${treatmentVisits} treatment visits in past 12 months, supporting 60% rating`);
+  } else if (treatmentVisits >= 5) {
+    ratingRationale.push(`Documented ${treatmentVisits} treatment visits in past 12 months, supporting 40% rating`);
+  } else if (treatmentVisits >= 3) {
+    ratingRationale.push(`Documented ${treatmentVisits} treatment visits in past 12 months, supporting 20% rating`);
+  } else if (treatmentVisits >= 1) {
+    ratingRationale.push(`Documented ${treatmentVisits} treatment visit(s) in past 12 months, supporting 10% rating`);
+  } else {
+    ratingRationale.push('No documented treatment visits - log clinic visits for eye condition treatment');
+  }
+
+  // Location information
+  const locations = [];
+  if (hasAnterior) locations.push('anterior (iritis)');
+  if (hasIntermediate) locations.push('intermediate (cyclitis)');
+  if (hasPosterior) locations.push('posterior (choroiditis)');
+  if (hasPanuveitis) locations.push('panuveitis');
+  if (locations.length > 0) {
+    ratingRationale.push(`Uveitis type: ${locations.join(', ')}`);
+  }
+
+  // Laterality
+  if (isBilateral) {
+    ratingRationale.push('Bilateral involvement documented');
+  } else if (isUnilateral) {
+    ratingRationale.push('Unilateral involvement documented');
+  }
+
+  // Advanced treatments
+  const advancedTreatments = [];
+  if (hasImmunosuppressants) advancedTreatments.push('immunosuppressants');
+  if (hasBiologics) advancedTreatments.push('biologic agents');
+  if (hasIntravitreal) advancedTreatments.push('intravitreal injections');
+  if (hasPeriocular) advancedTreatments.push('periocular injections');
+  if (hasLaser) advancedTreatments.push('laser treatment');
+  if (hasSurgery) advancedTreatments.push('surgery');
+  if (advancedTreatments.length > 0) {
+    ratingRationale.push(`Advanced treatments documented: ${advancedTreatments.join(', ')}`);
+  }
+
+  // Complications
+  const complications = [];
+  if (hasGlaucoma) complications.push('secondary glaucoma');
+  if (hasCataract) complications.push('cataract');
+  if (hasMacularEdema) complications.push('macular edema');
+  if (hasSynechiae) complications.push('synechiae');
+  if (complications.length > 0) {
+    ratingRationale.push(`Complications documented: ${complications.join(', ')} - may warrant separate rating`);
+  }
+
+  if (isChronic) {
+    ratingRationale.push('Chronic/recurrent uveitis documented');
+  }
+
+  if (hasVisualAcuityLoss || hasVisualFieldLoss) {
+    ratingRationale.push('Visual impairment documented - consider rating under DC 6061-6091 if higher');
+  }
+
+  // Build gaps
+  const gaps = [];
+  if (treatmentVisits === 0) {
+    gaps.push('Log each clinic visit for uveitis treatment as a "Treatment Visit" symptom');
+  }
+  if (treatmentVisits > 0 && treatmentVisits < 7) {
+    gaps.push(`${7 - treatmentVisits} more treatment visits would support 60% rating`);
+  }
+  if (locations.length === 0) {
+    gaps.push('Document uveitis type (anterior, intermediate, posterior, or panuveitis)');
+  }
+  if (!isBilateral && !isUnilateral) {
+    gaps.push('Document whether condition affects one eye (unilateral) or both eyes (bilateral)');
+  }
+  if (!isChronic && totalLogs > 5) {
+    gaps.push('If condition is chronic or recurrent, document this pattern');
+  }
+  if (hasGlaucoma || hasCataract || hasMacularEdema) {
+    gaps.push('Complications may be rated separately - ensure visual acuity is documented');
+  }
+  if (advancedTreatments.length === 0 && treatmentVisits > 2) {
+    gaps.push('Document specific treatments received (injections, immunosuppressants, etc.)');
+  }
+
+  return {
+    hasData: true,
+    condition: 'Uveitis / Choroidopathy',
+    diagnosticCode: '6000',
+    cfrReference: '38 CFR 4.79',
+    supportedRating,
+    ratingRationale,
+    gaps,
+    metrics: {
+      totalLogs,
+      avgSeverity,
+      treatmentVisits,
+      isBilateral,
+      isChronic,
+      hasComplications: complications.length > 0,
+      complicationCount: complications.length,
+    },
+    criteria: UVEITIS_CRITERIA,
+  };
+};
+
+// DC 6001: KERATITIS / KERATOPATHY ANALYSIS
+export const analyzeKeratitis = (logs) => {
+  const symptomIds = CONDITIONS.KERATITIS.symptomIds;
+  const conditionLogs = logs.filter(log => {
+    const symptomId = getLogSymptomId(log);
+    return symptomIds.includes(symptomId);
+  });
+
+  if (conditionLogs.length === 0) {
+    return { hasData: false };
+  }
+
+  // Calculate metrics
+  const totalLogs = conditionLogs.length;
+  const severityLogs = conditionLogs.filter(log => log.severity != null);
+  const avgSeverity = severityLogs.length > 0
+      ? severityLogs.reduce((sum, log) => sum + log.severity, 0) / severityLogs.length
+      : 0;
+
+  // Count treatment visits
+  const treatmentVisits = countEyeTreatmentVisits(conditionLogs, 'keratitis');
+
+  // Identify type/cause
+  const isBacterial = conditionLogs.some(log => getLogSymptomId(log) === 'keratitis-bacterial');
+  const isViral = conditionLogs.some(log => getLogSymptomId(log) === 'keratitis-viral');
+  const isFungal = conditionLogs.some(log => getLogSymptomId(log) === 'keratitis-fungal');
+  const isAcanthamoeba = conditionLogs.some(log => getLogSymptomId(log) === 'keratitis-acanthamoeba');
+  const isExposure = conditionLogs.some(log => getLogSymptomId(log) === 'keratitis-exposure');
+  const isNeurotrophic = conditionLogs.some(log => getLogSymptomId(log) === 'keratitis-neurotrophic');
+
+  // Identify laterality
+  const isBilateral = conditionLogs.some(log => getLogSymptomId(log) === 'keratitis-bilateral');
+  const isUnilateral = conditionLogs.some(log => getLogSymptomId(log) === 'keratitis-unilateral');
+
+  // Check for treatments
+  const hasAntibiotics = conditionLogs.some(log => getLogSymptomId(log) === 'keratitis-antibiotic-drops');
+  const hasAntivirals = conditionLogs.some(log =>
+      getLogSymptomId(log) === 'keratitis-antiviral-drops' || getLogSymptomId(log) === 'keratitis-oral-antivirals'
+  );
+  const hasAntifungals = conditionLogs.some(log => getLogSymptomId(log) === 'keratitis-antifungal-drops');
+  const hasSteroids = conditionLogs.some(log => getLogSymptomId(log) === 'keratitis-steroid-drops');
+  const hasBandageLens = conditionLogs.some(log => getLogSymptomId(log) === 'keratitis-bandage-lens');
+  const hasCornealScraping = conditionLogs.some(log => getLogSymptomId(log) === 'keratitis-corneal-scraping');
+  const hasCornealTransplant = conditionLogs.some(log => getLogSymptomId(log) === 'keratitis-corneal-transplant');
+
+  // Check for complications
+  const hasCornealUlcer = conditionLogs.some(log => getLogSymptomId(log) === 'keratitis-corneal-ulcer');
+  const hasCornealScarring = conditionLogs.some(log => getLogSymptomId(log) === 'keratitis-corneal-scarring');
+  const hasCornealPerforation = conditionLogs.some(log => getLogSymptomId(log) === 'keratitis-corneal-perforation');
+  const isChronic = conditionLogs.some(log => getLogSymptomId(log) === 'keratitis-chronic-recurrent');
+  const hasVisualAcuityLoss = conditionLogs.some(log => getLogSymptomId(log) === 'keratitis-visual-acuity-decreased');
+  const hasGlareSensitivity = conditionLogs.some(log => getLogSymptomId(log) === 'keratitis-glare-sensitivity');
+
+  // Determine rating based on treatment visits
+  let supportedRating = getEyeRatingFromVisits(treatmentVisits);
+
+  // Build rationale
+  const ratingRationale = [];
+
+  if (treatmentVisits >= 7) {
+    ratingRationale.push(`Documented ${treatmentVisits} treatment visits in past 12 months, supporting 60% rating`);
+  } else if (treatmentVisits >= 5) {
+    ratingRationale.push(`Documented ${treatmentVisits} treatment visits in past 12 months, supporting 40% rating`);
+  } else if (treatmentVisits >= 3) {
+    ratingRationale.push(`Documented ${treatmentVisits} treatment visits in past 12 months, supporting 20% rating`);
+  } else if (treatmentVisits >= 1) {
+    ratingRationale.push(`Documented ${treatmentVisits} treatment visit(s) in past 12 months, supporting 10% rating`);
+  } else {
+    ratingRationale.push('No documented treatment visits - log clinic visits for eye condition treatment');
+  }
+
+  // Type information
+  const types = [];
+  if (isBacterial) types.push('bacterial');
+  if (isViral) types.push('viral (herpes)');
+  if (isFungal) types.push('fungal');
+  if (isAcanthamoeba) types.push('acanthamoeba');
+  if (isExposure) types.push('exposure keratopathy');
+  if (isNeurotrophic) types.push('neurotrophic');
+  if (types.length > 0) {
+    ratingRationale.push(`Keratitis type: ${types.join(', ')}`);
+  }
+
+  // Laterality
+  if (isBilateral) {
+    ratingRationale.push('Bilateral involvement documented');
+  } else if (isUnilateral) {
+    ratingRationale.push('Unilateral involvement documented');
+  }
+
+  // Treatments
+  const treatments = [];
+  if (hasAntibiotics) treatments.push('antibiotic drops');
+  if (hasAntivirals) treatments.push('antiviral medication');
+  if (hasAntifungals) treatments.push('antifungal drops');
+  if (hasSteroids) treatments.push('steroid drops');
+  if (hasBandageLens) treatments.push('bandage contact lens');
+  if (hasCornealScraping) treatments.push('corneal scraping/debridement');
+  if (hasCornealTransplant) treatments.push('corneal transplant');
+  if (treatments.length > 0) {
+    ratingRationale.push(`Treatments documented: ${treatments.join(', ')}`);
+  }
+
+  // Complications
+  const complications = [];
+  if (hasCornealUlcer) complications.push('corneal ulcer');
+  if (hasCornealScarring) complications.push('corneal scarring');
+  if (hasCornealPerforation) complications.push('corneal perforation');
+  if (complications.length > 0) {
+    ratingRationale.push(`Complications documented: ${complications.join(', ')} - may affect visual acuity rating`);
+  }
+
+  if (isChronic) {
+    ratingRationale.push('Chronic/recurrent keratitis documented');
+  }
+
+  if (hasVisualAcuityLoss) {
+    ratingRationale.push('Visual impairment documented - consider rating under DC 6061-6091 if higher');
+  }
+
+  // Build gaps
+  const gaps = [];
+  if (treatmentVisits === 0) {
+    gaps.push('Log each clinic visit for keratitis treatment as a "Treatment Visit" symptom');
+  }
+  if (treatmentVisits > 0 && treatmentVisits < 7) {
+    gaps.push(`${7 - treatmentVisits} more treatment visits would support 60% rating`);
+  }
+  if (types.length === 0) {
+    gaps.push('Document keratitis type (bacterial, viral, fungal, etc.)');
+  }
+  if (!isBilateral && !isUnilateral) {
+    gaps.push('Document whether condition affects one eye (unilateral) or both eyes (bilateral)');
+  }
+  if (!isChronic && totalLogs > 5) {
+    gaps.push('If condition is chronic or recurrent, document this pattern');
+  }
+  if (hasCornealScarring && !hasVisualAcuityLoss) {
+    gaps.push('Corneal scarring present - document any visual acuity changes');
+  }
+  if (treatments.length === 0 && treatmentVisits > 0) {
+    gaps.push('Document specific treatments received (antibiotic drops, antivirals, procedures, etc.)');
+  }
+
+  return {
+    hasData: true,
+    condition: 'Keratitis / Keratopathy',
+    diagnosticCode: '6001',
+    cfrReference: '38 CFR 4.79',
+    supportedRating,
+    ratingRationale,
+    gaps,
+    metrics: {
+      totalLogs,
+      avgSeverity,
+      treatmentVisits,
+      isBilateral,
+      isChronic,
+      hasComplications: complications.length > 0,
+      complicationCount: complications.length,
+    },
+    criteria: KERATITIS_CRITERIA,
+  };
+};
+
+// DC 6018: CHRONIC CONJUNCTIVITIS ANALYSIS
+export const analyzeChronicConjunctivitis = (logs) => {
+  const symptomIds = CONDITIONS.CHRONIC_CONJUNCTIVITIS.symptomIds;
+  const conditionLogs = logs.filter(log => {
+    const symptomId = getLogSymptomId(log);
+    return symptomIds.includes(symptomId);
+  });
+
+  if (conditionLogs.length === 0) {
+    return { hasData: false };
+  }
+
+  // Calculate metrics
+  const totalLogs = conditionLogs.length;
+  const severityLogs = conditionLogs.filter(log => log.severity != null);
+  const avgSeverity = severityLogs.length > 0
+      ? severityLogs.reduce((sum, log) => sum + log.severity, 0) / severityLogs.length
+      : 0;
+
+  // Count treatment visits
+  const treatmentVisits = countEyeTreatmentVisits(conditionLogs, 'conj');
+
+  // Identify type
+  const isAllergic = conditionLogs.some(log => getLogSymptomId(log) === 'conj-allergic');
+  const isBacterial = conditionLogs.some(log => getLogSymptomId(log) === 'conj-bacterial');
+  const isViral = conditionLogs.some(log => getLogSymptomId(log) === 'conj-viral');
+  const isGiantPapillary = conditionLogs.some(log => getLogSymptomId(log) === 'conj-giant-papillary');
+  const isAtopic = conditionLogs.some(log => getLogSymptomId(log) === 'conj-atopic');
+
+  // Identify status (critical for DC 6018)
+  const isActive = conditionLogs.some(log => getLogSymptomId(log) === 'conj-active');
+  const isInactive = conditionLogs.some(log => getLogSymptomId(log) === 'conj-inactive');
+  const isChronic = conditionLogs.some(log => getLogSymptomId(log) === 'conj-chronic');
+  const isRecurrent = conditionLogs.some(log => getLogSymptomId(log) === 'conj-recurrent');
+
+  // Identify laterality
+  const isBilateral = conditionLogs.some(log => getLogSymptomId(log) === 'conj-bilateral');
+  const isUnilateral = conditionLogs.some(log => getLogSymptomId(log) === 'conj-unilateral');
+
+  // Check for treatments
+  const hasArtificialTears = conditionLogs.some(log => getLogSymptomId(log) === 'conj-artificial-tears');
+  const hasAntihistamineDrops = conditionLogs.some(log => getLogSymptomId(log) === 'conj-antihistamine-drops');
+  const hasMastCellStabilizer = conditionLogs.some(log => getLogSymptomId(log) === 'conj-mast-cell-stabilizer');
+  const hasAntibioticDrops = conditionLogs.some(log => getLogSymptomId(log) === 'conj-antibiotic-drops');
+  const hasSteroidDrops = conditionLogs.some(log => getLogSymptomId(log) === 'conj-steroid-drops');
+  const hasImmunomodulator = conditionLogs.some(log => getLogSymptomId(log) === 'conj-immunomodulator');
+  const hasOralAntihistamines = conditionLogs.some(log => getLogSymptomId(log) === 'conj-oral-antihistamines');
+
+  // Check for residuals (for inactive rating)
+  const hasScarring = conditionLogs.some(log => getLogSymptomId(log) === 'conj-scarring');
+  const hasSymblepharon = conditionLogs.some(log => getLogSymptomId(log) === 'conj-symblepharon');
+  const hasDryEye = conditionLogs.some(log => getLogSymptomId(log) === 'conj-dry-eye');
+  const hasDisfigurement = conditionLogs.some(log => getLogSymptomId(log) === 'conj-disfigurement');
+  const hasVisualImpairment = conditionLogs.some(log => getLogSymptomId(log) === 'conj-visual-impairment');
+
+  // Determine rating based on treatment visits and active/inactive status
+  let supportedRating = getEyeRatingFromVisits(treatmentVisits);
+
+  // DC 6018 special rule: Active conjunctivitis has minimum 10% rating
+  // If marked as active but no treatment visits logged, still gets minimum 10%
+  if (isActive && supportedRating < 10) {
+    supportedRating = 10;
+  }
+
+  // Build rationale
+  const ratingRationale = [];
+
+  // Active vs Inactive status
+  if (isActive) {
+    ratingRationale.push('ACTIVE chronic conjunctivitis - minimum 10% rating applies');
+    if (treatmentVisits >= 7) {
+      ratingRationale.push(`Documented ${treatmentVisits} treatment visits in past 12 months, supporting 60% rating`);
+    } else if (treatmentVisits >= 5) {
+      ratingRationale.push(`Documented ${treatmentVisits} treatment visits in past 12 months, supporting 40% rating`);
+    } else if (treatmentVisits >= 3) {
+      ratingRationale.push(`Documented ${treatmentVisits} treatment visits in past 12 months, supporting 20% rating`);
+    } else if (treatmentVisits >= 1) {
+      ratingRationale.push(`Documented ${treatmentVisits} treatment visit(s) in past 12 months, supporting 10% rating`);
+    }
+  } else if (isInactive) {
+    ratingRationale.push('INACTIVE conjunctivitis - rate based on residuals (visual impairment, disfigurement)');
+    if (hasVisualImpairment) {
+      ratingRationale.push('Visual impairment documented - rate under DC 6061-6091');
+    }
+    if (hasDisfigurement) {
+      ratingRationale.push('Disfigurement documented - may rate under DC 7800');
+    }
+    if (!hasVisualImpairment && !hasDisfigurement && !hasScarring && !hasSymblepharon) {
+      supportedRating = 0;
+      ratingRationale.push('No residuals documented - 0% rating for inactive without residuals');
+    }
+  } else {
+    // Status not specified - use treatment visits
+    if (treatmentVisits >= 1) {
+      ratingRationale.push('Active status not specified - rating based on treatment visits');
+      ratingRationale.push(`Documented ${treatmentVisits} treatment visit(s) in past 12 months`);
+    } else {
+      ratingRationale.push('Document whether conjunctivitis is active or inactive for accurate rating');
+    }
+  }
+
+  // Type information
+  const types = [];
+  if (isAllergic) types.push('allergic');
+  if (isBacterial) types.push('bacterial');
+  if (isViral) types.push('viral');
+  if (isGiantPapillary) types.push('giant papillary (contact lens)');
+  if (isAtopic) types.push('atopic');
+  if (types.length > 0) {
+    ratingRationale.push(`Conjunctivitis type: ${types.join(', ')}`);
+  }
+
+  // Chronicity
+  if (isChronic) {
+    ratingRationale.push('Chronic conjunctivitis (>4 weeks duration) documented');
+  }
+  if (isRecurrent) {
+    ratingRationale.push('Recurrent episodes documented');
+  }
+
+  // Laterality
+  if (isBilateral) {
+    ratingRationale.push('Bilateral involvement documented');
+  } else if (isUnilateral) {
+    ratingRationale.push('Unilateral involvement documented');
+  }
+
+  // Treatments
+  const treatments = [];
+  if (hasArtificialTears) treatments.push('artificial tears');
+  if (hasAntihistamineDrops) treatments.push('antihistamine drops');
+  if (hasMastCellStabilizer) treatments.push('mast cell stabilizer');
+  if (hasAntibioticDrops) treatments.push('antibiotic drops');
+  if (hasSteroidDrops) treatments.push('steroid drops');
+  if (hasImmunomodulator) treatments.push('immunomodulator (cyclosporine)');
+  if (hasOralAntihistamines) treatments.push('oral antihistamines');
+  if (treatments.length > 0) {
+    ratingRationale.push(`Treatments documented: ${treatments.join(', ')}`);
+  }
+
+  // Residuals
+  const residuals = [];
+  if (hasScarring) residuals.push('conjunctival scarring');
+  if (hasSymblepharon) residuals.push('symblepharon');
+  if (hasDryEye) residuals.push('secondary dry eye');
+  if (residuals.length > 0) {
+    ratingRationale.push(`Residuals documented: ${residuals.join(', ')}`);
+  }
+
+  // Build gaps
+  const gaps = [];
+  if (!isActive && !isInactive) {
+    gaps.push('IMPORTANT: Document whether conjunctivitis is ACTIVE or INACTIVE - this determines rating method');
+  }
+  if (treatmentVisits === 0 && isActive) {
+    gaps.push('Log each clinic visit for conjunctivitis treatment as a "Treatment Visit" symptom');
+  }
+  if (treatmentVisits > 0 && treatmentVisits < 7 && isActive) {
+    gaps.push(`${7 - treatmentVisits} more treatment visits would support 60% rating`);
+  }
+  if (!isChronic && !isRecurrent) {
+    gaps.push('Document chronic nature (>4 weeks) or recurrent pattern');
+  }
+  if (types.length === 0) {
+    gaps.push('Document conjunctivitis type (allergic, bacterial, viral, etc.)');
+  }
+  if (!isBilateral && !isUnilateral) {
+    gaps.push('Document whether condition affects one eye (unilateral) or both eyes (bilateral)');
+  }
+  if (isInactive && !hasVisualImpairment && !hasDisfigurement) {
+    gaps.push('For inactive conjunctivitis, document any residuals (visual impairment, scarring, disfigurement)');
+  }
+
+  return {
+    hasData: true,
+    condition: 'Chronic Conjunctivitis',
+    diagnosticCode: '6018',
+    cfrReference: '38 CFR 4.79',
+    supportedRating,
+    ratingRationale,
+    gaps,
+    metrics: {
+      totalLogs,
+      avgSeverity,
+      treatmentVisits,
+      isActive,
+      isInactive,
+      isBilateral,
+      isChronic: isChronic || isRecurrent,
+      hasResiduals: residuals.length > 0,
+      residualCount: residuals.length,
+    },
+    criteria: CHRONIC_CONJUNCTIVITIS_CRITERIA,
+  };
+};
+
+// DC 6002: SCLERITIS ANALYSIS
+export const analyzeScleritis = (logs) => {
+  const symptomIds = CONDITIONS.SCLERITIS.symptomIds;
+  const conditionLogs = logs.filter(log => {
+    const symptomId = getLogSymptomId(log);
+    return symptomIds.includes(symptomId);
+  });
+
+  if (conditionLogs.length === 0) {
+    return { hasData: false };
+  }
+
+  // Calculate metrics
+  const totalLogs = conditionLogs.length;
+  const severityLogs = conditionLogs.filter(log => log.severity != null);
+  const avgSeverity = severityLogs.length > 0
+      ? severityLogs.reduce((sum, log) => sum + log.severity, 0) / severityLogs.length
+      : 0;
+
+  // Count treatment visits
+  const treatmentVisits = countEyeTreatmentVisits(conditionLogs, 'scleritis');
+
+  // Identify type
+  const isDiffuse = conditionLogs.some(log => getLogSymptomId(log) === 'scleritis-anterior-diffuse');
+  const isNodular = conditionLogs.some(log => getLogSymptomId(log) === 'scleritis-anterior-nodular');
+  const isNecrotizing = conditionLogs.some(log => getLogSymptomId(log) === 'scleritis-necrotizing');
+  const isPosterior = conditionLogs.some(log => getLogSymptomId(log) === 'scleritis-posterior');
+
+  // Identify laterality
+  const isBilateral = conditionLogs.some(log => getLogSymptomId(log) === 'scleritis-bilateral');
+  const isUnilateral = conditionLogs.some(log => getLogSymptomId(log) === 'scleritis-unilateral');
+
+  // Associated conditions
+  const isAutoimmune = conditionLogs.some(log => getLogSymptomId(log) === 'scleritis-autoimmune');
+  const isInfectious = conditionLogs.some(log => getLogSymptomId(log) === 'scleritis-infectious');
+
+  // Check for treatments
+  const hasNSAIDs = conditionLogs.some(log => getLogSymptomId(log) === 'scleritis-nsaid-oral');
+  const hasOralSteroids = conditionLogs.some(log => getLogSymptomId(log) === 'scleritis-oral-steroids');
+  const hasImmunosuppressants = conditionLogs.some(log => getLogSymptomId(log) === 'scleritis-immunosuppressants');
+  const hasBiologics = conditionLogs.some(log => getLogSymptomId(log) === 'scleritis-biologic-agents');
+  const hasSubconjunctivalInjection = conditionLogs.some(log => getLogSymptomId(log) === 'scleritis-subconjunctival-injection');
+  const hasSurgery = conditionLogs.some(log => getLogSymptomId(log) === 'scleritis-surgery');
+
+  // Check for complications
+  const hasScleralThinning = conditionLogs.some(log => getLogSymptomId(log) === 'scleritis-scleral-thinning');
+  const hasScleromalacia = conditionLogs.some(log => getLogSymptomId(log) === 'scleritis-scleromalacia');
+  const hasUveitis = conditionLogs.some(log => getLogSymptomId(log) === 'scleritis-uveitis');
+  const hasGlaucoma = conditionLogs.some(log => getLogSymptomId(log) === 'scleritis-glaucoma');
+  const hasCataract = conditionLogs.some(log => getLogSymptomId(log) === 'scleritis-cataract');
+  const isChronic = conditionLogs.some(log => getLogSymptomId(log) === 'scleritis-chronic-recurrent');
+  const hasVisualAcuityLoss = conditionLogs.some(log => getLogSymptomId(log) === 'scleritis-visual-acuity-decreased');
+  const hasPermanentVisionLoss = conditionLogs.some(log => getLogSymptomId(log) === 'scleritis-vision-loss-permanent');
+
+  // Determine rating based on treatment visits
+  let supportedRating = getEyeRatingFromVisits(treatmentVisits);
+
+  // Build rationale
+  const ratingRationale = [];
+
+  if (treatmentVisits >= 7) {
+    ratingRationale.push(`Documented ${treatmentVisits} treatment visits in past 12 months, supporting 60% rating`);
+  } else if (treatmentVisits >= 5) {
+    ratingRationale.push(`Documented ${treatmentVisits} treatment visits in past 12 months, supporting 40% rating`);
+  } else if (treatmentVisits >= 3) {
+    ratingRationale.push(`Documented ${treatmentVisits} treatment visits in past 12 months, supporting 20% rating`);
+  } else if (treatmentVisits >= 1) {
+    ratingRationale.push(`Documented ${treatmentVisits} treatment visit(s) in past 12 months, supporting 10% rating`);
+  } else {
+    ratingRationale.push('No documented treatment visits - log clinic visits for eye condition treatment');
+  }
+
+  // Type information
+  const types = [];
+  if (isDiffuse) types.push('anterior diffuse');
+  if (isNodular) types.push('anterior nodular');
+  if (isNecrotizing) types.push('NECROTIZING (severe)');
+  if (isPosterior) types.push('posterior');
+  if (types.length > 0) {
+    ratingRationale.push(`Scleritis type: ${types.join(', ')}`);
+  }
+
+  // Severity indicator for necrotizing
+  if (isNecrotizing) {
+    ratingRationale.push('⚠️ Necrotizing scleritis is the most severe form - high risk of vision loss');
+  }
+
+  // Laterality
+  if (isBilateral) {
+    ratingRationale.push('Bilateral involvement documented');
+  } else if (isUnilateral) {
+    ratingRationale.push('Unilateral involvement documented');
+  }
+
+  // Associated conditions
+  if (isAutoimmune) {
+    ratingRationale.push('Associated with autoimmune disease - systemic condition may warrant separate rating');
+  }
+  if (isInfectious) {
+    ratingRationale.push('Infectious etiology documented');
+  }
+
+  // Treatments
+  const treatments = [];
+  if (hasNSAIDs) treatments.push('oral NSAIDs');
+  if (hasOralSteroids) treatments.push('oral corticosteroids');
+  if (hasImmunosuppressants) treatments.push('immunosuppressants');
+  if (hasBiologics) treatments.push('biologic agents');
+  if (hasSubconjunctivalInjection) treatments.push('subconjunctival injection');
+  if (hasSurgery) treatments.push('surgical intervention');
+  if (treatments.length > 0) {
+    ratingRationale.push(`Treatments documented: ${treatments.join(', ')}`);
+  }
+
+  // Complications
+  const complications = [];
+  if (hasScleralThinning) complications.push('scleral thinning');
+  if (hasScleromalacia) complications.push('scleromalacia');
+  if (hasUveitis) complications.push('secondary uveitis');
+  if (hasGlaucoma) complications.push('secondary glaucoma');
+  if (hasCataract) complications.push('cataract');
+  if (complications.length > 0) {
+    ratingRationale.push(`Complications documented: ${complications.join(', ')} - may warrant separate ratings`);
+  }
+
+  if (isChronic) {
+    ratingRationale.push('Chronic/recurrent scleritis documented');
+  }
+
+  if (hasVisualAcuityLoss || hasPermanentVisionLoss) {
+    ratingRationale.push('Visual impairment documented - consider rating under DC 6061-6091 if higher');
+  }
+
+  // Build gaps
+  const gaps = [];
+  if (treatmentVisits === 0) {
+    gaps.push('Log each clinic visit for scleritis treatment as a "Treatment Visit" symptom');
+  }
+  if (treatmentVisits > 0 && treatmentVisits < 7) {
+    gaps.push(`${7 - treatmentVisits} more treatment visits would support 60% rating`);
+  }
+  if (types.length === 0) {
+    gaps.push('Document scleritis type (diffuse, nodular, necrotizing, or posterior)');
+  }
+  if (!isBilateral && !isUnilateral) {
+    gaps.push('Document whether condition affects one eye (unilateral) or both eyes (bilateral)');
+  }
+  if (!isAutoimmune && !isInfectious) {
+    gaps.push('Document associated conditions (autoimmune disease, infection) if applicable');
+  }
+  if (!isChronic && totalLogs > 5) {
+    gaps.push('If condition is chronic or recurrent, document this pattern');
+  }
+  if (isNecrotizing && !hasScleralThinning && !hasScleromalacia) {
+    gaps.push('Necrotizing scleritis - document scleral thinning or scleromalacia if present');
+  }
+  if (hasUveitis) {
+    gaps.push('Secondary uveitis present - may be rated separately under DC 6000');
+  }
+  if (hasGlaucoma) {
+    gaps.push('Secondary glaucoma present - may be rated separately under DC 6012/6013');
+  }
+
+  return {
+    hasData: true,
+    condition: 'Scleritis',
+    diagnosticCode: '6002',
+    cfrReference: '38 CFR 4.79',
+    supportedRating,
+    ratingRationale,
+    gaps,
+    metrics: {
+      totalLogs,
+      avgSeverity,
+      treatmentVisits,
+      isBilateral,
+      isChronic,
+      isNecrotizing,
+      hasComplications: complications.length > 0,
+      complicationCount: complications.length,
+      hasAutoimmune: isAutoimmune,
+    },
+    criteria: SCLERITIS_CRITERIA,
+  };
+};
+
+
+// ============================================
+// PHASE 7B: EAR CONDITIONS ANALYSIS FUNCTIONS
+// ============================================
+
+/**
+ * Analyze Peripheral Vestibular Disorders symptom logs against VA rating criteria
+ * DC 6204 - 30% for dizziness with staggering, 10% for occasional dizziness
+ */
+export const analyzePeripheralVestibular = (logs, options = {}) => {
+  const evaluationPeriodDays = options.evaluationPeriodDays || 365;
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    const symptomId = log.symptomId || log.symptom;
+    return logDate >= cutoffDate && symptomId?.startsWith('vest-');
+  });
+
+  if (relevantLogs.length === 0) {
+    return {
+      hasData: false,
+      condition: 'Peripheral Vestibular Disorders',
+      diagnosticCode: '6204',
+      message: 'No vestibular symptoms logged in evaluation period',
+    };
+  }
+
+  // Key symptoms for rating
+  const hasDizziness = relevantLogs.some(log => {
+    const id = log.symptomId || log.symptom;
+    return id === 'vest-dizziness' || id === 'vest-vertigo' || id === 'vest-occasional' || id === 'vest-frequent';
+  });
+
+  const hasStaggering = relevantLogs.some(log => {
+    const id = log.symptomId || log.symptom;
+    return id === 'vest-staggering' || id === 'vest-with-staggering';
+  });
+
+  const hasOccasionalDizziness = relevantLogs.some(log => (log.symptomId || log.symptom) === 'vest-occasional');
+  const hasDizzinessWithStaggering = relevantLogs.some(log => (log.symptomId || log.symptom) === 'vest-with-staggering');
+
+  // Other symptoms
+  const hasVertigo = relevantLogs.some(log => (log.symptomId || log.symptom) === 'vest-vertigo');
+  const hasImbalance = relevantLogs.some(log => (log.symptomId || log.symptom) === 'vest-imbalance');
+  const hasNausea = relevantLogs.some(log => (log.symptomId || log.symptom) === 'vest-nausea');
+  const hasNystagmus = relevantLogs.some(log => (log.symptomId || log.symptom) === 'vest-nystagmus');
+  const hasFalls = relevantLogs.some(log => (log.symptomId || log.symptom) === 'vest-fall-risk');
+
+  // Functional impact
+  const hasDrivingAffected = relevantLogs.some(log => (log.symptomId || log.symptom) === 'vest-driving-affected');
+  const hasWorkAffected = relevantLogs.some(log => (log.symptomId || log.symptom) === 'vest-work-affected');
+  const hasDailyActivities = relevantLogs.some(log => (log.symptomId || log.symptom) === 'vest-daily-activities');
+
+  // Triggers
+  const hasPositionTrigger = relevantLogs.some(log => (log.symptomId || log.symptom) === 'vest-position-triggered');
+  const hasVisualTrigger = relevantLogs.some(log => (log.symptomId || log.symptom) === 'vest-visual-trigger');
+
+  // Treatment
+  const hasMedication = relevantLogs.some(log => (log.symptomId || log.symptom) === 'vest-medication');
+  const hasPhysicalTherapy = relevantLogs.some(log => (log.symptomId || log.symptom) === 'vest-physical-therapy');
+  const hasProcedure = relevantLogs.some(log => (log.symptomId || log.symptom) === 'vest-procedure');
+
+  // Calculate rating per DC 6204 criteria
+  let supportedRating = 0;
+  if ((hasDizziness || hasVertigo) && hasStaggering) {
+    supportedRating = 30;
+  } else if (hasDizzinessWithStaggering) {
+    supportedRating = 30;
+  } else if (hasDizziness || hasVertigo || hasOccasionalDizziness) {
+    supportedRating = 10;
+  }
+
+  // Build rationale
+  const ratingRationale = [];
+
+  if (supportedRating === 30) {
+    ratingRationale.push('Dizziness WITH occasional staggering documented (30% criteria)');
+  } else if (supportedRating === 10) {
+    ratingRationale.push('Occasional dizziness documented (10% criteria)');
+  }
+
+  // Count vertigo episodes
+  const vertigoLogs = relevantLogs.filter(log => {
+    const id = log.symptomId || log.symptom;
+    return id === 'vest-vertigo' || id === 'vest-dizziness';
+  });
+  if (vertigoLogs.length > 0) {
+    ratingRationale.push(`${vertigoLogs.length} vertigo/dizziness episodes logged`);
+  }
+
+  if (hasNystagmus) ratingRationale.push('Nystagmus documented (objective finding)');
+  if (hasFalls) ratingRationale.push('Falls or near-falls documented');
+
+  // Functional impact
+  const impacts = [];
+  if (hasDrivingAffected) impacts.push('driving');
+  if (hasWorkAffected) impacts.push('work');
+  if (hasDailyActivities) impacts.push('daily activities');
+  if (impacts.length > 0) {
+    ratingRationale.push(`Functional impact: ${impacts.join(', ')} affected`);
+  }
+
+  // Triggers
+  if (hasPositionTrigger) ratingRationale.push('Symptoms triggered by position changes (suggests BPPV)');
+
+  // Treatments
+  const treatments = [];
+  if (hasMedication) treatments.push('medication');
+  if (hasPhysicalTherapy) treatments.push('vestibular rehabilitation');
+  if (hasProcedure) treatments.push('procedure/surgery');
+  if (treatments.length > 0) {
+    ratingRationale.push(`Treatment: ${treatments.join(', ')}`);
+  }
+
+  // Gaps
+  const gaps = [];
+  if (!hasNystagmus) {
+    gaps.push('IMPORTANT: Document objective findings (nystagmus, abnormal testing) - required for compensable rating');
+  }
+  if (hasDizziness && !hasStaggering && supportedRating === 10) {
+    gaps.push('Documenting staggering gait with dizziness would support 30% rating');
+  }
+  if (!hasDizziness && !hasVertigo) {
+    gaps.push('Document dizziness or vertigo episodes');
+  }
+
+  // Calculate average severity
+  const severities = relevantLogs.filter(log => log.severity).map(log => log.severity);
+  const avgSeverity = severities.length > 0
+      ? severities.reduce((a, b) => a + b, 0) / severities.length
+      : 0;
+
+  return {
+    hasData: true,
+    condition: 'Peripheral Vestibular Disorders',
+    diagnosticCode: '6204',
+    cfrReference: '38 CFR 4.87',
+    supportedRating,
+    ratingRationale,
+    gaps,
+    metrics: {
+      totalLogs: relevantLogs.length,
+      vertigoEpisodes: vertigoLogs.length,
+      avgSeverity,
+      hasDizziness,
+      hasStaggering,
+      hasObjectiveFindings: hasNystagmus,
+      hasFalls,
+    },
+    criteria: PERIPHERAL_VESTIBULAR_CRITERIA,
+  };
+};
+
+/**
+ * Analyze Chronic Suppurative Otitis Media symptom logs against VA rating criteria
+ * DC 6200 - 10% during suppuration or with aural polyps
+ */
+export const analyzeChronicSuppurativeOtitisMedia = (logs, options = {}) => {
+  const evaluationPeriodDays = options.evaluationPeriodDays || 365;
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    const symptomId = log.symptomId || log.symptom;
+    return logDate >= cutoffDate && symptomId?.startsWith('csom-');
+  });
+
+  if (relevantLogs.length === 0) {
+    return {
+      hasData: false,
+      condition: 'Chronic Suppurative Otitis Media',
+      diagnosticCode: '6200',
+      message: 'No chronic otitis media symptoms logged in evaluation period',
+    };
+  }
+
+  // Key criteria for 10% rating
+  const hasSuppuration = relevantLogs.some(log => (log.symptomId || log.symptom) === 'csom-suppuration');
+  const hasAuralPolyp = relevantLogs.some(log => (log.symptomId || log.symptom) === 'csom-aural-polyp');
+  const hasDrainage = relevantLogs.some(log => (log.symptomId || log.symptom) === 'csom-ear-drainage');
+
+  // Other symptoms
+  const hasEarPain = relevantLogs.some(log => (log.symptomId || log.symptom) === 'csom-ear-pain');
+  const hasHearingChange = relevantLogs.some(log => (log.symptomId || log.symptom) === 'csom-hearing-change');
+  const hasTympanicPerforation = relevantLogs.some(log => (log.symptomId || log.symptom) === 'csom-tympanic-perforation');
+  const hasFoulOdor = relevantLogs.some(log => (log.symptomId || log.symptom) === 'csom-foul-odor');
+
+  // Laterality
+  const isRightEar = relevantLogs.some(log => (log.symptomId || log.symptom) === 'csom-right-ear');
+  const isLeftEar = relevantLogs.some(log => (log.symptomId || log.symptom) === 'csom-left-ear');
+  const isBilateral = relevantLogs.some(log => (log.symptomId || log.symptom) === 'csom-bilateral');
+
+  // Complications (rated separately per Note)
+  const hasLabyrinthitis = relevantLogs.some(log => (log.symptomId || log.symptom) === 'csom-labyrinthitis');
+  const hasTinnitus = relevantLogs.some(log => (log.symptomId || log.symptom) === 'csom-tinnitus');
+  const hasFacialParalysis = relevantLogs.some(log => (log.symptomId || log.symptom) === 'csom-facial-paralysis');
+  const hasBoneLoss = relevantLogs.some(log => (log.symptomId || log.symptom) === 'csom-bone-loss');
+  const hasCholesteatoma = relevantLogs.some(log => (log.symptomId || log.symptom) === 'csom-cholesteatoma');
+  const hasMastoiditis = relevantLogs.some(log => (log.symptomId || log.symptom) === 'csom-mastoiditis');
+
+  // Treatment
+  const hasEarDrops = relevantLogs.some(log => (log.symptomId || log.symptom) === 'csom-ear-drops');
+  const hasOralAntibiotics = relevantLogs.some(log => (log.symptomId || log.symptom) === 'csom-oral-antibiotics');
+  const hasEarCleaning = relevantLogs.some(log => (log.symptomId || log.symptom) === 'csom-ear-cleaning');
+  const hasSurgery = relevantLogs.some(log => (log.symptomId || log.symptom) === 'csom-surgery');
+  const hasTubePlacement = relevantLogs.some(log => (log.symptomId || log.symptom) === 'csom-tube-placement');
+
+  // Calculate rating per DC 6200 criteria - max is 10%
+  let supportedRating = 0;
+  if (hasSuppuration || hasAuralPolyp) {
+    supportedRating = 10;
+  }
+
+  // Build rationale
+  const ratingRationale = [];
+
+  if (hasSuppuration) {
+    ratingRationale.push('Active suppuration (pus drainage) documented - meets 10% criteria');
+  }
+  if (hasAuralPolyp) {
+    ratingRationale.push('Aural polyp present - meets 10% criteria');
+  }
+  if (!hasSuppuration && !hasAuralPolyp && hasDrainage) {
+    ratingRationale.push('Ear drainage documented - specify if suppurative (pus) for 10% rating');
+  }
+
+  // Laterality
+  if (isBilateral) {
+    ratingRationale.push('Bilateral ear involvement');
+  } else if (isRightEar || isLeftEar) {
+    ratingRationale.push(`${isRightEar ? 'Right' : 'Left'} ear affected`);
+  }
+
+  if (hasCholesteatoma) ratingRationale.push('Cholesteatoma present');
+  if (hasMastoiditis) ratingRationale.push('Mastoiditis present');
+  if (hasTympanicPerforation) ratingRationale.push('Tympanic membrane perforation');
+
+  // Complications - these get separate ratings
+  const complications = [];
+  if (hasHearingChange) complications.push('hearing impairment (rate separately under DC 6100)');
+  if (hasLabyrinthitis) complications.push('labyrinthitis');
+  if (hasTinnitus) complications.push('tinnitus (rate separately under DC 6260)');
+  if (hasFacialParalysis) complications.push('facial nerve paralysis');
+  if (hasBoneLoss) complications.push('bone loss');
+  if (complications.length > 0) {
+    ratingRationale.push(`Complications present: ${complications.join(', ')}`);
+  }
+
+  // Treatments
+  const treatments = [];
+  if (hasEarDrops) treatments.push('ear drops');
+  if (hasOralAntibiotics) treatments.push('oral antibiotics');
+  if (hasEarCleaning) treatments.push('professional cleaning');
+  if (hasSurgery) treatments.push('surgery');
+  if (hasTubePlacement) treatments.push('tube placement');
+  if (treatments.length > 0) {
+    ratingRationale.push(`Treatment: ${treatments.join(', ')}`);
+  }
+
+  // Gaps
+  const gaps = [];
+  if (!hasSuppuration && !hasAuralPolyp) {
+    gaps.push('Document active suppuration (pus drainage) OR aural polyps for 10% rating');
+  }
+  if (hasHearingChange) {
+    gaps.push('Hearing impairment should be evaluated separately under DC 6100 and combined');
+  }
+  if (hasTinnitus) {
+    gaps.push('Tinnitus should be evaluated separately under DC 6260 (10%) and combined');
+  }
+  if (hasLabyrinthitis || hasFacialParalysis || hasBoneLoss) {
+    gaps.push('Complications should be evaluated separately and combined');
+  }
+
+  // Calculate average severity
+  const severities = relevantLogs.filter(log => log.severity).map(log => log.severity);
+  const avgSeverity = severities.length > 0
+      ? severities.reduce((a, b) => a + b, 0) / severities.length
+      : 0;
+
+  return {
+    hasData: true,
+    condition: 'Chronic Suppurative Otitis Media',
+    diagnosticCode: '6200',
+    cfrReference: '38 CFR 4.87',
+    supportedRating,
+    ratingRationale,
+    gaps,
+    metrics: {
+      totalLogs: relevantLogs.length,
+      avgSeverity,
+      hasSuppuration,
+      hasAuralPolyp,
+      isBilateral,
+      hasComplications: complications.length > 0,
+      complicationCount: complications.length,
+    },
+    criteria: CHRONIC_SUPPURATIVE_OTITIS_MEDIA_CRITERIA,
+  };
+};
+
+/**
+ * Analyze Chronic Otitis Externa symptom logs against VA rating criteria
+ * DC 6210 - 10% for swelling + dry/scaly or discharge + itching + frequent/prolonged treatment
+ */
+export const analyzeChronicOtitisExterna = (logs, options = {}) => {
+  const evaluationPeriodDays = options.evaluationPeriodDays || 365;
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    const symptomId = log.symptomId || log.symptom;
+    return logDate >= cutoffDate && symptomId?.startsWith('coe-');
+  });
+
+  if (relevantLogs.length === 0) {
+    return {
+      hasData: false,
+      condition: 'Chronic Otitis Externa',
+      diagnosticCode: '6210',
+      message: 'No otitis externa symptoms logged in evaluation period',
+    };
+  }
+
+  // ALL criteria required for 10% rating
+  const hasSwelling = relevantLogs.some(log => (log.symptomId || log.symptom) === 'coe-swelling');
+  const hasDryScaly = relevantLogs.some(log => (log.symptomId || log.symptom) === 'coe-dry-scaly');
+  const hasSerousDischarge = relevantLogs.some(log => (log.symptomId || log.symptom) === 'coe-serous-discharge');
+  const hasItching = relevantLogs.some(log => (log.symptomId || log.symptom) === 'coe-itching');
+  const hasFrequentTreatment = relevantLogs.some(log => (log.symptomId || log.symptom) === 'coe-frequent-treatment');
+  const hasProlongedTreatment = relevantLogs.some(log => (log.symptomId || log.symptom) === 'coe-prolonged-treatment');
+
+  // Check if all criteria met
+  const hasSkinChanges = hasDryScaly || hasSerousDischarge;
+  const hasTreatmentRequirement = hasFrequentTreatment || hasProlongedTreatment;
+  const allCriteriaMet = hasSwelling && hasSkinChanges && hasItching && hasTreatmentRequirement;
+
+  // Other symptoms
+  const hasEarPain = relevantLogs.some(log => (log.symptomId || log.symptom) === 'coe-ear-pain');
+  const hasTenderness = relevantLogs.some(log => (log.symptomId || log.symptom) === 'coe-tenderness');
+  const hasRedness = relevantLogs.some(log => (log.symptomId || log.symptom) === 'coe-redness');
+  const hasDebris = relevantLogs.some(log => (log.symptomId || log.symptom) === 'coe-debris');
+  const isChronic = relevantLogs.some(log => (log.symptomId || log.symptom) === 'coe-chronic');
+
+  // Laterality
+  const isRightEar = relevantLogs.some(log => (log.symptomId || log.symptom) === 'coe-right-ear');
+  const isLeftEar = relevantLogs.some(log => (log.symptomId || log.symptom) === 'coe-left-ear');
+  const isBilateral = relevantLogs.some(log => (log.symptomId || log.symptom) === 'coe-bilateral');
+
+  // Type
+  const isBacterial = relevantLogs.some(log => (log.symptomId || log.symptom) === 'coe-bacterial');
+  const isFungal = relevantLogs.some(log => (log.symptomId || log.symptom) === 'coe-fungal');
+  const isEczematous = relevantLogs.some(log => (log.symptomId || log.symptom) === 'coe-eczematous');
+
+  // Treatment
+  const hasEarDrops = relevantLogs.some(log => (log.symptomId || log.symptom) === 'coe-ear-drops');
+  const hasOralMedication = relevantLogs.some(log => (log.symptomId || log.symptom) === 'coe-oral-medication');
+  const hasEarCleaning = relevantLogs.some(log => (log.symptomId || log.symptom) === 'coe-ear-cleaning');
+
+  // Calculate rating - ALL criteria must be met for 10%
+  let supportedRating = allCriteriaMet ? 10 : 0;
+
+  // Build rationale
+  const ratingRationale = [];
+
+  // Check each criterion
+  const criteriaStatus = [];
+  criteriaStatus.push(`Swelling: ${hasSwelling ? '✓' : '✗'}`);
+  criteriaStatus.push(`Dry/scaly OR serous discharge: ${hasSkinChanges ? '✓' : '✗'}`);
+  criteriaStatus.push(`Itching: ${hasItching ? '✓' : '✗'}`);
+  criteriaStatus.push(`Frequent/prolonged treatment: ${hasTreatmentRequirement ? '✓' : '✗'}`);
+
+  if (allCriteriaMet) {
+    ratingRationale.push('ALL criteria met for 10% rating');
+  } else {
+    ratingRationale.push('Not all criteria met - see gaps below');
+  }
+  ratingRationale.push(`Criteria status: ${criteriaStatus.join(', ')}`);
+
+  // Type
+  const types = [];
+  if (isBacterial) types.push('bacterial');
+  if (isFungal) types.push('fungal');
+  if (isEczematous) types.push('eczematous');
+  if (types.length > 0) {
+    ratingRationale.push(`Type: ${types.join(', ')}`);
+  }
+
+  // Laterality
+  if (isBilateral) {
+    ratingRationale.push('Bilateral ear involvement');
+  } else if (isRightEar || isLeftEar) {
+    ratingRationale.push(`${isRightEar ? 'Right' : 'Left'} ear affected`);
+  }
+
+  if (isChronic) ratingRationale.push('Chronic pattern documented');
+
+  // Treatments
+  const treatments = [];
+  if (hasEarDrops) treatments.push('ear drops');
+  if (hasOralMedication) treatments.push('oral medication');
+  if (hasEarCleaning) treatments.push('professional cleaning');
+  if (treatments.length > 0) {
+    ratingRationale.push(`Treatment: ${treatments.join(', ')}`);
+  }
+
+  // Gaps - show missing criteria
+  const gaps = [];
+  if (!hasSwelling) {
+    gaps.push('Document ear canal swelling');
+  }
+  if (!hasSkinChanges) {
+    gaps.push('Document dry/scaly skin OR serous discharge');
+  }
+  if (!hasItching) {
+    gaps.push('Document ear canal itching');
+  }
+  if (!hasTreatmentRequirement) {
+    gaps.push('Document that treatment is FREQUENT and PROLONGED');
+  }
+  if (!allCriteriaMet) {
+    gaps.push('ALL four criteria must be documented for 10% rating');
+  }
+
+  // Calculate average severity
+  const severities = relevantLogs.filter(log => log.severity).map(log => log.severity);
+  const avgSeverity = severities.length > 0
+      ? severities.reduce((a, b) => a + b, 0) / severities.length
+      : 0;
+
+  return {
+    hasData: true,
+    condition: 'Chronic Otitis Externa',
+    diagnosticCode: '6210',
+    cfrReference: '38 CFR 4.87',
+    supportedRating,
+    ratingRationale,
+    gaps,
+    metrics: {
+      totalLogs: relevantLogs.length,
+      avgSeverity,
+      hasSwelling,
+      hasSkinChanges,
+      hasItching,
+      hasTreatmentRequirement,
+      allCriteriaMet,
+      isBilateral,
+    },
+    criteria: CHRONIC_OTITIS_EXTERNA_CRITERIA,
+  };
+};
+
+/**
+ * Analyze Chronic Nonsuppurative Otitis Media symptom logs
+ * DC 6201 - Rate hearing impairment under DC 6100
+ */
+export const analyzeChronicNonsuppurativeOtitisMedia = (logs, options = {}) => {
+  const evaluationPeriodDays = options.evaluationPeriodDays || 365;
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    const symptomId = log.symptomId || log.symptom;
+    return logDate >= cutoffDate && symptomId?.startsWith('cnsom-');
+  });
+
+  if (relevantLogs.length === 0) {
+    return {
+      hasData: false,
+      condition: 'Chronic Nonsuppurative Otitis Media',
+      diagnosticCode: '6201',
+      message: 'No serous otitis media symptoms logged in evaluation period',
+    };
+  }
+
+  // Symptoms
+  const hasEarFullness = relevantLogs.some(log => (log.symptomId || log.symptom) === 'cnsom-ear-fullness');
+  const hasFluidSensation = relevantLogs.some(log => (log.symptomId || log.symptom) === 'cnsom-fluid-sensation');
+  const hasHearingLoss = relevantLogs.some(log => (log.symptomId || log.symptom) === 'cnsom-hearing-loss');
+  const hasMuffledHearing = relevantLogs.some(log => (log.symptomId || log.symptom) === 'cnsom-muffled-hearing');
+  const hasPopping = relevantLogs.some(log => (log.symptomId || log.symptom) === 'cnsom-popping-clicking');
+  const hasDiscomfort = relevantLogs.some(log => (log.symptomId || log.symptom) === 'cnsom-ear-discomfort');
+  const hasBalanceIssues = relevantLogs.some(log => (log.symptomId || log.symptom) === 'cnsom-balance-issues');
+  const hasTinnitus = relevantLogs.some(log => (log.symptomId || log.symptom) === 'cnsom-tinnitus');
+
+  // Laterality
+  const isRightEar = relevantLogs.some(log => (log.symptomId || log.symptom) === 'cnsom-right-ear');
+  const isLeftEar = relevantLogs.some(log => (log.symptomId || log.symptom) === 'cnsom-left-ear');
+  const isBilateral = relevantLogs.some(log => (log.symptomId || log.symptom) === 'cnsom-bilateral');
+
+  // Chronicity
+  const isChronic = relevantLogs.some(log => (log.symptomId || log.symptom) === 'cnsom-chronic');
+  const isRecurrent = relevantLogs.some(log => (log.symptomId || log.symptom) === 'cnsom-recurrent');
+  const isPersistent = relevantLogs.some(log => (log.symptomId || log.symptom) === 'cnsom-persistent');
+
+  // Treatment
+  const hasDecongestants = relevantLogs.some(log => (log.symptomId || log.symptom) === 'cnsom-decongestants');
+  const hasAntihistamines = relevantLogs.some(log => (log.symptomId || log.symptom) === 'cnsom-antihistamines');
+  const hasNasalSteroids = relevantLogs.some(log => (log.symptomId || log.symptom) === 'cnsom-nasal-steroids');
+  const hasTubes = relevantLogs.some(log => (log.symptomId || log.symptom) === 'cnsom-tubes');
+  const hasMonitoring = relevantLogs.some(log => (log.symptomId || log.symptom) === 'cnsom-monitoring');
+
+  // DC 6201 doesn't have its own rating - rate hearing impairment
+  const supportedRating = 'Variable - Rate hearing impairment';
+
+  // Build rationale
+  const ratingRationale = [];
+
+  ratingRationale.push('DC 6201 rates based on resulting hearing impairment under DC 6100');
+
+  // Symptoms
+  const symptoms = [];
+  if (hasEarFullness) symptoms.push('ear fullness');
+  if (hasFluidSensation) symptoms.push('fluid sensation');
+  if (hasHearingLoss || hasMuffledHearing) symptoms.push('hearing changes');
+  if (hasPopping) symptoms.push('popping/clicking');
+  if (hasBalanceIssues) symptoms.push('balance issues');
+  if (hasTinnitus) symptoms.push('tinnitus');
+  if (symptoms.length > 0) {
+    ratingRationale.push(`Symptoms: ${symptoms.join(', ')}`);
+  }
+
+  // Laterality
+  if (isBilateral) {
+    ratingRationale.push('Bilateral ear involvement');
+  } else if (isRightEar || isLeftEar) {
+    ratingRationale.push(`${isRightEar ? 'Right' : 'Left'} ear affected`);
+  }
+
+  if (isChronic || isRecurrent || isPersistent) {
+    ratingRationale.push('Chronic/persistent effusion documented');
+  }
+
+  // Treatments
+  const treatments = [];
+  if (hasDecongestants) treatments.push('decongestants');
+  if (hasAntihistamines) treatments.push('antihistamines');
+  if (hasNasalSteroids) treatments.push('nasal steroids');
+  if (hasTubes) treatments.push('tympanostomy tubes');
+  if (hasMonitoring) treatments.push('audiological monitoring');
+  if (treatments.length > 0) {
+    ratingRationale.push(`Treatment: ${treatments.join(', ')}`);
+  }
+
+  // Gaps
+  const gaps = [];
+  gaps.push('IMPORTANT: Rating requires audiometric testing (hearing test) - DC 6201 rates based on hearing impairment');
+  if (!hasHearingLoss && !hasMuffledHearing) {
+    gaps.push('Document any hearing changes for evaluation');
+  }
+  if (!isBilateral && !isRightEar && !isLeftEar) {
+    gaps.push('Document which ear(s) affected');
+  }
+
+  // Calculate average severity
+  const severities = relevantLogs.filter(log => log.severity).map(log => log.severity);
+  const avgSeverity = severities.length > 0
+      ? severities.reduce((a, b) => a + b, 0) / severities.length
+      : 0;
+
+  return {
+    hasData: true,
+    condition: 'Chronic Nonsuppurative Otitis Media',
+    diagnosticCode: '6201',
+    cfrReference: '38 CFR 4.87',
+    supportedRating: 0, // Display as variable, but use 0 for numeric purposes
+    supportedRatingDisplay: supportedRating,
+    ratingRationale,
+    gaps,
+    metrics: {
+      totalLogs: relevantLogs.length,
+      avgSeverity,
+      hasHearingLoss: hasHearingLoss || hasMuffledHearing,
+      hasTinnitus,
+      isBilateral,
+      isChronic: isChronic || isRecurrent || isPersistent,
+    },
+    criteria: CHRONIC_NONSUPPURATIVE_OTITIS_MEDIA_CRITERIA,
+  };
+};
+
 
 // ============================================
 // ANALYSIS FUNCTIONS - BRONCHIECTASIS (DC 6601)
@@ -42424,7 +44651,34 @@ export const getDermatophytosisRating = (percent) => {
 export const getSkinInfectionsRating = (percent) => {
   return SKIN_INFECTIONS_CRITERIA.ratings.find(r => r.percent === percent) || null;
 };
-
+export const getGeneralEyeFormulaRating = (percent) => {
+  return GENERAL_EYE_FORMULA_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getUveitisRating = (percent) => {
+  return UVEITIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getKeratitisRating = (percent) => {
+  return KERATITIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getChronicConjunctivitisRating = (percent) => {
+  return CHRONIC_CONJUNCTIVITIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getScleritisRating = (percent) => {
+  return SCLERITIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+// Phase 7B: Ear Conditions
+export const getPeripheralVestibularRating = (percent) => {
+  return PERIPHERAL_VESTIBULAR_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getChronicSuppurativeOtitisMediaRating = (percent) => {
+  return CHRONIC_SUPPURATIVE_OTITIS_MEDIA_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getChronicOtitisExternaRating = (percent) => {
+  return CHRONIC_OTITIS_EXTERNA_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getChronicNonsuppurativeOtitisMediaRating = (percent) => {
+  return CHRONIC_NONSUPPURATIVE_OTITIS_MEDIA_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
 
 
 
@@ -42585,8 +44839,15 @@ export const getAllCutaneousVasculitisRatings = () => CUTANEOUS_VASCULITIS_CRITE
 export const getAllDermatophytosisRatings = () => DERMATOPHYTOSIS_CRITERIA.ratings;
 export const getAllSkinInfectionsRatings = () => SKIN_INFECTIONS_CRITERIA.ratings;
 export const getAllGeneralSkinFormulaRatings = () => GENERAL_SKIN_FORMULA_CRITERIA.ratings;
-
-
+export const getAllGeneralEyeFormulaRatings = () => GENERAL_EYE_FORMULA_CRITERIA.ratings;
+export const getAllUveitisRatings = () => UVEITIS_CRITERIA.ratings;
+export const getAllKeratitisRatings = () => KERATITIS_CRITERIA.ratings;
+export const getAllChronicConjunctivitisRatings = () => CHRONIC_CONJUNCTIVITIS_CRITERIA.ratings;
+export const getAllScleritisRatings = () => SCLERITIS_CRITERIA.ratings;
+export const getAllPeripheralVestibularRatings = () => PERIPHERAL_VESTIBULAR_CRITERIA.ratings;
+export const getAllChronicSuppurativeOtitisMediaRatings = () => CHRONIC_SUPPURATIVE_OTITIS_MEDIA_CRITERIA.ratings;
+export const getAllChronicOtitisExternaRatings = () => CHRONIC_OTITIS_EXTERNA_CRITERIA.ratings;
+export const getAllChronicNonsuppurativeOtitisMediaRatings = () => CHRONIC_NONSUPPURATIVE_OTITIS_MEDIA_CRITERIA.ratings;
 
 
 
@@ -42753,7 +45014,15 @@ export const getCutaneousVasculitisDefinition = (term) => CUTANEOUS_VASCULITIS_C
 export const getDermatophytosisDefinition = (term) => DERMATOPHYTOSIS_CRITERIA.definitions[term] || null;
 export const getSkinInfectionsDefinition = (term) => SKIN_INFECTIONS_CRITERIA.definitions[term] || null;
 export const getGeneralSkinFormulaDefinition = (term) => GENERAL_SKIN_FORMULA_CRITERIA.definitions[term] || null;
-
+export const getGeneralEyeFormulaDefinition = (term) => GENERAL_EYE_FORMULA_CRITERIA.definitions[term] || null;
+export const getUveitisDefinition = (term) => UVEITIS_CRITERIA.definitions[term] || null;
+export const getKeratitisDefinition = (term) => KERATITIS_CRITERIA.definitions[term] || null;
+export const getChronicConjunctivitisDefinition = (term) => CHRONIC_CONJUNCTIVITIS_CRITERIA.definitions[term] || null;
+export const getScleritisDefinition = (term) => SCLERITIS_CRITERIA.definitions[term] || null;
+export const getPeripheralVestibularDefinition = (term) => PERIPHERAL_VESTIBULAR_CRITERIA.definitions[term] || null;
+export const getChronicSuppurativeOtitisMediaDefinition = (term) => CHRONIC_SUPPURATIVE_OTITIS_MEDIA_CRITERIA.definitions[term] || null;
+export const getChronicOtitisExternaDefinition = (term) => CHRONIC_OTITIS_EXTERNA_CRITERIA.definitions[term] || null;
+export const getChronicNonsuppurativeOtitisMediaDefinition = (term) => CHRONIC_NONSUPPURATIVE_OTITIS_MEDIA_CRITERIA.definitions[term] || null;
 
 
 

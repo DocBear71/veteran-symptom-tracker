@@ -817,6 +817,22 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
       selectedChronic?.symptomId?.startsWith('skinf-')
   );
 
+  // Phase 7A: Eye condition prefixes for exclusion from Pain Details form
+  const isEyeConditionSymptomQL = (
+      selectedChronic?.symptomId?.startsWith('uveitis-') ||
+      selectedChronic?.symptomId?.startsWith('keratitis-') ||
+      selectedChronic?.symptomId?.startsWith('conj-') ||
+      selectedChronic?.symptomId?.startsWith('scleritis-')
+  );
+
+  // Phase 7B: Ear condition prefixes for exclusion from Pain Details form
+  const isEarConditionSymptomQL = (
+      selectedChronic?.symptomId?.startsWith('vest-') ||
+      selectedChronic?.symptomId?.startsWith('csom-') ||
+      selectedChronic?.symptomId?.startsWith('coe-') ||
+      selectedChronic?.symptomId?.startsWith('cnsom-')
+  );
+
   // Determine symptom type - EXPANDED DETECTION
   const isMigraine = selectedChronic?.symptomId === 'migraine';
 
@@ -877,7 +893,8 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
   ].includes(selectedChronic?.symptomId);
 
   // Pain: match ANY pain-related symptom only
-  const isPainRelated = !isPeripheralNerveSymptomQL && !isEndocrineSymptomQL && !isFootConditionSymptomQL && !isHerniaOrAdhesionSymptomQL && !isDigestivePhase5BSymptomQL && (
+  const isPainRelated = !isPeripheralNerveSymptomQL && !isEndocrineSymptomQL && !isFootConditionSymptomQL && !isHerniaOrAdhesionSymptomQL &&
+      !isDigestivePhase5BSymptomQL && !isEyeConditionSymptomQL && !isEarConditionSymptomQL && (
       selectedChronic?.symptomId?.includes('pain') ||
       selectedChronic?.symptomId?.includes('-ache') ||
       selectedChronic?.symptomId?.includes('stiff') ||
@@ -1161,7 +1178,7 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
   ].includes(selectedChronic?.symptomId);
   // Phase 7: Dental/Oral detection
   // Exclude skin conditions that have 'oral' in name (e.g., acne-oral-antibiotics, hh-oral-medication)
-  const isDentalOralRelated = !isSkinConditionSymptomQL && (
+  const isDentalOralRelated = !isSkinConditionSymptomQL && !isEyeConditionSymptomQL && !isEarConditionSymptomQL && (
       selectedChronic?.symptomId?.includes('tooth') ||
       selectedChronic?.symptomId?.includes('teeth') ||
       selectedChronic?.symptomId?.includes('dental') ||

@@ -1177,6 +1177,22 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
       selectedSymptom?.startsWith('skinf-')
   );
 
+  // Phase 7A: Eye condition detection (for form exclusions)
+  const isEyeConditionSymptom = (
+      selectedSymptom?.startsWith('uveitis-') ||
+      selectedSymptom?.startsWith('keratitis-') ||
+      selectedSymptom?.startsWith('conj-') ||
+      selectedSymptom?.startsWith('scleritis-')
+  );
+
+  // Phase 7B: Ear condition prefixes for exclusion from Pain Details form
+  const isEarConditionSymptom = (
+      selectedSymptom?.startsWith('vest-') ||
+      selectedSymptom?.startsWith('csom-') ||
+      selectedSymptom?.startsWith('coe-') ||
+      selectedSymptom?.startsWith('cnsom-')
+  );
+
   // Determine which special form to show - EXPANDED DETECTION
   const isMigraineSelected = selectedSymptom === 'migraine';
 
@@ -1240,7 +1256,8 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
     'adjustment-unspecified'
   ].includes(selectedSymptom);
 
-  const isPainSelected = !isPeripheralNerveSymptom && !isEndocrineSymptom && !isFootConditionSymptom && !isHerniaOrAdhesionSymptom && !isDigestivePhase5BSymptom && (
+  const isPainSelected = !isPeripheralNerveSymptom && !isEndocrineSymptom && !isFootConditionSymptom && !isHerniaOrAdhesionSymptom &&
+      !isDigestivePhase5BSymptom &&  !isEyeConditionSymptom && !isEarConditionSymptom && (
       selectedSymptom?.includes('pain') ||
       selectedSymptom?.includes('-ache') ||
       selectedSymptom?.includes('stiff') ||
@@ -1574,7 +1591,7 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
 
   // Phase 7: Dental/Oral condition detection
   // Exclude skin conditions that have 'oral' in name (e.g., acne-oral-antibiotics, hh-oral-medication)
-  const isDentalOralRelated = !isSkinConditionSymptom && (
+  const isDentalOralRelated = !isSkinConditionSymptom && !isEyeConditionSymptom && !isEarConditionSymptom && (
       selectedSymptom?.includes('jaw') ||
       selectedSymptom?.includes('tooth') ||
       selectedSymptom?.includes('teeth') ||

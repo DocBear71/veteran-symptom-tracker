@@ -199,6 +199,14 @@ import {
   analyzeCutaneousVasculitisLogs,
   analyzeDermatophytosisLogs,
   analyzeSkinInfectionsLogs,
+  analyzeUveitis,
+  analyzeKeratitis,
+  analyzeChronicConjunctivitis,
+  analyzeScleritis,
+  analyzePeripheralVestibular,
+  analyzeChronicSuppurativeOtitisMedia,
+  analyzeChronicOtitisExterna,
+  analyzeChronicNonsuppurativeOtitisMedia,
 } from './ratingCriteria';
 
 // Appointment type labels for export
@@ -2988,6 +2996,16 @@ const analyzeAllConditions = (logs, options = {}) => {
         'cutaneous-vasculitis': analyzeCutaneousVasculitisLogs,
         'dermatophytosis': analyzeDermatophytosisLogs,
         'skin-infections': analyzeSkinInfectionsLogs,
+        // Phase 7A: Eye Conditions
+        'uveitis': analyzeUveitis,
+        'keratitis': analyzeKeratitis,
+        'chronic-conjunctivitis': analyzeChronicConjunctivitis,
+        'scleritis': analyzeScleritis,
+        // Phase 7B: Ear Conditions
+        'peripheral-vestibular': analyzePeripheralVestibular,
+        'chronic-suppurative-otitis-media': analyzeChronicSuppurativeOtitisMedia,
+        'chronic-otitis-externa': analyzeChronicOtitisExterna,
+        'chronic-nonsuppurative-otitis-media': analyzeChronicNonsuppurativeOtitisMedia,
       };
 
     const analyses = [];
