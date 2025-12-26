@@ -1,5 +1,6 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { HYPOPARATHYROIDISM_CRITERIA } from '../utils/ratingCriteria';
+import UnderstandingYourRating from './UnderstandingYourRating';
 
 /**
  * Hypoparathyroidism Rating Card - Gold Standard Version

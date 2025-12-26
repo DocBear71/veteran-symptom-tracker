@@ -1,5 +1,6 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { SALMONELLA_CRITERIA } from '../utils/ratingCriteria';
+import UnderstandingYourRating from './UnderstandingYourRating';
 
 export default function SalmonellaRatingCard({ analysis, expanded, onToggle }) {
   if (!analysis || !analysis.hasData) return null;
@@ -91,6 +92,12 @@ export default function SalmonellaRatingCard({ analysis, expanded, onToggle }) {
                     </div>
                   </div>
               )}
+
+              {/* Understanding Your Rating - Educational Content */}
+              <UnderstandingYourRating
+                  diagnosticCode="6318"
+                  currentRating={numericRating}
+              />
 
               <div>
                 <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-center">VA Rating Schedule</h4>

@@ -1,5 +1,6 @@
 import {ChevronDown, ChevronUp} from 'lucide-react';
 import {SICKLE_CELL_ANEMIA_CRITERIA} from '../utils/ratingCriteria';
+import UnderstandingYourRating from './UnderstandingYourRating';
 
 export default function SickleCellAnemiaRatingCard({
                                                      analysis,
@@ -137,6 +138,13 @@ export default function SickleCellAnemiaRatingCard({
                             className="text-sm text-gray-700 dark:text-gray-300">{item}</span>
                         </div>))}</div>
               </div>)}
+
+              {/* Understanding Your Rating - Educational Content */}
+              <UnderstandingYourRating
+                  diagnosticCode="7702"
+                  currentRating={numericRating}
+              />
+
               <div><h4
                   className="font-medium text-gray-900 dark:text-white mb-2 text-center">VA
                 Rating Schedule</h4>

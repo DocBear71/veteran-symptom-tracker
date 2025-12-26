@@ -1,5 +1,6 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { ESOPHAGEAL_STRICTURE_CRITERIA } from '../utils/ratingCriteria';
+import UnderstandingYourRating from './UnderstandingYourRating.jsx';
 
 /**
  * Esophageal Rating Card Component
@@ -196,6 +197,12 @@ export default function EsophagealRatingCard({ analysis, expanded, onToggle }) {
                     </div>
                   </div>
               )}
+
+              {/* Understanding Your Rating - Educational Content */}
+              <UnderstandingYourRating
+                  diagnosticCode="7203"
+                  currentRating={numericRating}
+              />
 
               {/* VA Rating Schedule */}
               <div>

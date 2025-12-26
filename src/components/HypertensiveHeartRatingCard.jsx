@@ -1,5 +1,6 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { HYPERTENSIVE_HEART_CRITERIA } from '../utils/ratingCriteria';
+import UnderstandingYourRating from './UnderstandingYourRating';
 
 export default function HypertensiveHeartRatingCard({ analysis, expanded, onToggle }) {
   if (!analysis || !analysis.hasData) return null;
@@ -119,6 +120,12 @@ export default function HypertensiveHeartRatingCard({ analysis, expanded, onTogg
                     </div>
                   </div>
               )}
+
+              {/* Understanding Your Rating - Educational Content */}
+              <UnderstandingYourRating
+                  diagnosticCode="7007"
+                  currentRating={numericRating}
+              />
 
               {/* VA Rating Schedule */}
               <div>

@@ -1,5 +1,6 @@
 import {ChevronDown, ChevronUp} from 'lucide-react';
 import {MYELITIS_CRITERIA} from '../utils/ratingCriteria';
+import UnderstandingYourRating from './UnderstandingYourRating';
 
 /**
  * Myelitis Rating Card Component - Gold Standard Version
@@ -111,6 +112,12 @@ export default function MyelitisRatingCard({analysis, expanded, onToggle}) {
                     </div>
                   </div>
               )}
+
+              {/* Understanding Your Rating - Educational Content */}
+              <UnderstandingYourRating
+                  diagnosticCode="8023"
+                  currentRating={numericRating}
+              />
 
               {/* VA Rating Schedule */}
               <div>

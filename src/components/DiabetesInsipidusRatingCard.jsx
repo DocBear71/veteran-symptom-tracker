@@ -1,5 +1,6 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { DIABETES_INSIPIDUS_CRITERIA } from '../utils/ratingCriteria';
+import UnderstandingYourRating from './UnderstandingYourRating';
 
 /**
  * Diabetes Insipidus Rating Card - Gold Standard Version

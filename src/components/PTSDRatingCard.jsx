@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { PTSD_CRITERIA } from '../utils/ratingCriteria';
+import UnderstandingYourRating from './UnderstandingYourRating';
 
 /**
  * PTSD Rating Card - Gold Standard Version
@@ -105,6 +106,13 @@ export default function PTSDRatingCard({ analysis, expanded, onToggle }) {
                     </div>
                   </div>
               )}
+
+              {/* Understanding Your Rating - Educational Content */}
+              <UnderstandingYourRating
+                  diagnosticCode="9411"
+                  currentRating={numericRating}
+              />
+
 
               {/* VA Rating Schedule */}
               <div>

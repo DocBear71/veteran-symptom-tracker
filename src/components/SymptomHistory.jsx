@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect, useMemo, useCallback, memo } from 'react';
 import { Calendar, Clock, Edit2, Trash2, ChevronDown, ChevronUp, Filter, History } from 'lucide-react';
 import { getSymptomLogs, deleteSymptomLog, getMedicationLogsForSymptom, getOccurrenceTime, isBackDated } from '../utils/storage';
 import { useProfile } from '../hooks/useProfile';
@@ -49,19 +49,21 @@ const SymptomHistory = ({ onCopyLog }) => {
     }
   };
 
-  const formatDate = (timestamp) => {
+  // Memoized date formatter to prevent recreation on each render
+  const formatDate = useCallback((timestamp) => {
     return new Date(timestamp).toLocaleDateString('en-US', {
       weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit',
     });
-  };
+  }, []);
 
-  const getSeverityColor = (severity) => {
+  // Memoized severity color function
+  const getSeverityColor = useCallback((severity) => {
     if (severity <= 2) return 'bg-green-100 dark:bg-green-900/50 text-green-800 dark:text-green-300';
     if (severity <= 4) return 'bg-yellow-100 dark:bg-yellow-900/50 text-yellow-800 dark:text-yellow-300';
     if (severity <= 6) return 'bg-orange-100 dark:bg-orange-900/50 text-orange-800 dark:text-orange-300';
     if (severity <= 8) return 'bg-red-100 dark:bg-red-900/50 text-red-800 dark:text-red-300';
     return 'bg-red-200 dark:bg-red-900 text-red-900 dark:text-red-200';
-  };
+  }, []);
 
   // PHASE 1A: Updated formatDuration to include all new options
   const formatDuration = (duration) => {
@@ -1625,6 +1627,69 @@ const SymptomHistory = ({ onCopyLog }) => {
                                 </span>
                                         </div>
                                     )}
+                                  </div>
+                              )}
+
+
+                              {/* Phase 8A: Somatic Symptom Data */}
+                              {log.somaticData && (
+                                  <div className="text-xs text-gray-600 dark:text-gray-400 space-y-1 flex flex-col items-start">
+                                    <div className="font-semibold text-purple-700 dark:text-purple-300">🩺 Somatic Symptoms:</div>
+                                    <div>
+                                      {[
+                                        log.somaticData.painPreoccupation && 'Pain preoccupation',
+                                        log.somaticData.excessiveHealthWorry && 'Excessive health worry',
+                                        log.somaticData.multipleSymptoms && 'Multiple symptoms',
+                                        log.somaticData.frequentDoctorVisits && 'Frequent doctor visits',
+                                        log.somaticData.functionalImpairment && 'Functional impairment',
+                                      ].filter(Boolean).join(', ') || 'No specific symptoms recorded'}
+                                    </div>
+                                  </div>
+                              )}
+
+                              {/* Phase 8A: Illness Anxiety Data */}
+                              {log.illnessAnxietyData && (
+                                  <div className="text-xs text-gray-600 dark:text-gray-400 space-y-1 flex flex-col items-start">
+                                    <div className="font-semibold text-amber-700 dark:text-amber-300">🏥 Illness Anxiety:</div>
+                                    <div>
+                                      {[
+                                        log.illnessAnxietyData.fearOfIllness && 'Fear of illness',
+                                        log.illnessAnxietyData.bodyChecking && 'Body checking',
+                                        log.illnessAnxietyData.reassuranceSeeking && 'Reassurance seeking',
+                                        log.illnessAnxietyData.appointmentAvoidance && 'Appointment avoidance',
+                                        log.illnessAnxietyData.healthDistress && 'Health distress',
+                                      ].filter(Boolean).join(', ') || 'No specific symptoms recorded'}
+                                    </div>
+                                  </div>
+                              )}
+
+                              {/* Phase 8A: Depersonalization/Derealization Data */}
+                              {log.depersonalizationData && (
+                                  <div className="text-xs text-gray-600 dark:text-gray-400 space-y-1 flex flex-col items-start">
+                                    <div className="font-semibold text-indigo-700 dark:text-indigo-300">🌀 Depersonalization/Derealization:</div>
+                                    <div>
+                                      {[
+                                        log.depersonalizationData.detachment && 'Detachment from self',
+                                        log.depersonalizationData.unreality && 'Surroundings feel unreal',
+                                        log.depersonalizationData.robotAutopilot && 'Robot/autopilot feeling',
+                                        log.depersonalizationData.distress && 'Significant distress',
+                                      ].filter(Boolean).join(', ') || 'No specific symptoms recorded'}
+                                    </div>
+                                  </div>
+                              )}
+
+                              {/* Phase 8A: Cyclothymic Data */}
+                              {log.cyclothymicData && (
+                                  <div className="text-xs text-gray-600 dark:text-gray-400 space-y-1 flex flex-col items-start">
+                                    <div className="font-semibold text-rose-700 dark:text-rose-300">🔄 Cyclothymic Episode:</div>
+                                    <div>
+                                      {[
+                                        log.cyclothymicData.hypomanic && 'Hypomanic symptoms',
+                                        log.cyclothymicData.depressive && 'Depressive symptoms',
+                                        log.cyclothymicData.moodSwings && 'Mood swings',
+                                        log.cyclothymicData.irritability && 'Irritability',
+                                      ].filter(Boolean).join(', ') || 'No specific symptoms recorded'}
+                                    </div>
                                   </div>
                               )}
 

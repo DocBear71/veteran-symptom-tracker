@@ -1,5 +1,6 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { FEMALE_REPRODUCTIVE_ORGANS_CRITERIA } from '../utils/ratingCriteria';
+import UnderstandingYourRating from './UnderstandingYourRating';
 
 /**
  * Female Reproductive Organs Rating Card Component - Gold Standard Version
@@ -85,6 +86,12 @@ export default function FemaleReproductiveOrgansRatingCard({ analysis, expanded,
                     </div>
                   </div>
               )}
+
+              {/* Understanding Your Rating - Educational Content */}
+              <UnderstandingYourRating
+                  diagnosticCode={diagnosticCode}
+                  currentRating={numericRating}
+              />
 
               <div>
                 <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-center">VA Rating Schedule</h4>

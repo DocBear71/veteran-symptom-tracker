@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { MIGRAINE_CRITERIA } from '../utils/ratingCriteria';
+import UnderstandingYourRating from './UnderstandingYourRating';
 
 /**
  * Migraine Rating Card Component - Gold Standard Version
  * DC 8100 - 38 CFR 4.124a
  */
 export default function MigraineRatingCard({ analysis, expanded, onToggle }) {
-  const [showDefinitions, setShowDefinitions] = useState(false);
 
   if (!analysis || !analysis.hasData) return null;
 
@@ -133,6 +133,12 @@ export default function MigraineRatingCard({ analysis, expanded, onToggle }) {
                   </div>
               )}
 
+              {/* Understanding Your Rating - Educational Content */}
+              <UnderstandingYourRating
+                  diagnosticCode="8100"
+                  currentRating={supportedRating}
+              />
+
               {/* VA Rating Schedule */}
               <div>
                 <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-center">
@@ -183,39 +189,6 @@ export default function MigraineRatingCard({ analysis, expanded, onToggle }) {
                     </div>
                   </div>
               )}
-
-              {/* Definitions Toggle */}
-              <div>
-                <button
-                    onClick={() => setShowDefinitions(!showDefinitions)}
-                    className="text-sm text-blue-600 dark:text-blue-400 hover:underline"
-                >
-                  {showDefinitions ? 'Hide' : 'Show'} Key Term Definitions
-                </button>
-
-                {showDefinitions && (
-                    <div className="mt-3 space-y-3">
-                      <div className="bg-gray-50 dark:bg-gray-700/30 p-3 rounded-lg">
-                        <h5 className="font-medium text-gray-900 dark:text-white text-sm">Prostrating</h5>
-                        <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
-                          A migraine that causes you to lie down and stop all activity. Renders you unable to perform normal daily activities.
-                        </p>
-                      </div>
-                      <div className="bg-gray-50 dark:bg-gray-700/30 p-3 rounded-lg">
-                        <h5 className="font-medium text-gray-900 dark:text-white text-sm">Prolonged Attack</h5>
-                        <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
-                          A prostrating migraine lasting 4 hours or more despite treatment.
-                        </p>
-                      </div>
-                      <div className="bg-gray-50 dark:bg-gray-700/30 p-3 rounded-lg">
-                        <h5 className="font-medium text-gray-900 dark:text-white text-sm">Economic Inadaptability</h5>
-                        <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
-                          Migraines severe enough to prevent you from maintaining substantially gainful employment.
-                        </p>
-                      </div>
-                    </div>
-                )}
-              </div>
 
               {/* Important Information */}
               <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-200 dark:border-blue-800">

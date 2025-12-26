@@ -1,5 +1,6 @@
 import {ChevronDown, ChevronUp} from 'lucide-react';
 import {SINUSITIS_CRITERIA} from '../utils/ratingCriteria';
+import UnderstandingYourRating from './UnderstandingYourRating';
 
 export default function SinusitisRatingCard({analysis, expanded, onToggle}) {
   if (!analysis || !analysis.hasData) return null;
@@ -131,7 +132,15 @@ export default function SinusitisRatingCard({analysis, expanded, onToggle}) {
                             className="text-blue-600 dark:text-blue-400 mt-0.5">◆</span><span
                             className="text-sm text-gray-700 dark:text-gray-300">{item}</span>
                         </div>))}</div>
-              </div>)}
+              </div>
+              )}
+
+              {/* Understanding Your Rating - Educational Content */}
+              <UnderstandingYourRating
+                  diagnosticCode={criteria.diagnosticCode || '6513'}
+                  currentRating={numericRating}
+              />
+
               <div><h4
                   className="font-medium text-gray-900 dark:text-white mb-2 text-center">VA
                 Rating Schedule</h4>

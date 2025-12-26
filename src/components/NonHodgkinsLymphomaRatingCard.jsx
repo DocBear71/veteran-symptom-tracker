@@ -1,5 +1,6 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { NON_HODGKINS_LYMPHOMA_CRITERIA } from '../utils/ratingCriteria';
+import UnderstandingYourRating from './UnderstandingYourRating';
 
 export default function NonHodgkinsLymphomaRatingCard({ analysis, expanded, onToggle }) {
   if (!analysis || !analysis.hasData) {
@@ -104,6 +105,12 @@ export default function NonHodgkinsLymphomaRatingCard({ analysis, expanded, onTo
                     </div>
                   </div>
               )}
+
+              {/* Understanding Your Rating - Educational Content */}
+              <UnderstandingYourRating
+                  diagnosticCode="7715"
+                  currentRating={numericRating}
+              />
 
               {/* VA Rating Schedule */}
               <div>

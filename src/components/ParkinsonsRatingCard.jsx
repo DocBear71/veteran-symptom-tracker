@@ -5,6 +5,7 @@
 
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { PARKINSONS_DISEASE_CRITERIA } from '../utils/ratingCriteria';
+import UnderstandingYourRating from './UnderstandingYourRating';
 
 export default function ParkinsonsRatingCard({ analysis, expanded, onToggle }) {
   if (!analysis || !analysis.hasData) return null;
@@ -123,6 +124,12 @@ export default function ParkinsonsRatingCard({ analysis, expanded, onToggle }) {
                     </div>
                   </div>
               )}
+
+              {/* Understanding Your Rating - Educational Content */}
+              <UnderstandingYourRating
+                  diagnosticCode="8004"
+                  currentRating={numericRating}
+              />
 
               {/* Section 3: VA Rating Schedule */}
               <div>

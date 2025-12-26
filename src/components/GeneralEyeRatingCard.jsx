@@ -5,6 +5,7 @@ import {
   CHRONIC_CONJUNCTIVITIS_CRITERIA,
   SCLERITIS_CRITERIA,
 } from '../utils/ratingCriteria';
+import UnderstandingYourRating from './UnderstandingYourRating.jsx';
 
 /**
  * General Eye Rating Card Component - Gold Standard Version
@@ -179,6 +180,12 @@ export default function GeneralEyeRatingCard({ analysis, expanded, onToggle }) {
                     </div>
                   </div>
               )}
+
+              {/* Understanding Your Rating - Educational Content */}
+              <UnderstandingYourRating
+                  diagnosticCode={diagnosticCode}
+                  currentRating={numericRating}
+              />
 
               {/* Section 3: VA Rating Schedule */}
               <div>

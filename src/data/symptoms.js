@@ -2702,7 +2702,7 @@ export const symptomCategories = [
       { id: 'hernia-truss-required', name: 'Hernia - Truss/Support Required', description: 'Requires wearing a truss or supportive belt' },
       { id: 'hernia-size-small', name: 'Hernia - Size <3cm', description: 'Hernia measures less than 3 cm in largest dimension' },
       { id: 'hernia-size-medium', name: 'Hernia - Size 3-15cm', description: 'Hernia measures 3 to 15 cm in largest dimension' },
-      { id: 'hernia-size-large', name: 'Hernia - Size ≥15cm', description: 'Hernia measures 15 cm or greater in largest dimension' },
+      { id: 'hernia-size-large', name: 'Hernia - Size >=15cm', description: 'Hernia measures 15 cm or greater in largest dimension' },
       { id: 'hernia-recurrent', name: 'Hernia - Recurrent', description: 'Hernia has returned after previous repair' },
       { id: 'hernia-post-surgical', name: 'Hernia - Post-Surgical/Incisional', description: 'Hernia developed at site of previous surgical incision' },
       { id: 'hernia-strangulation-risk', name: 'Hernia - Strangulation Symptoms', description: 'Severe pain, nausea, vomiting suggesting possible strangulation' },
@@ -2830,7 +2830,7 @@ export const symptomCategories = [
       { id: 'acne-deep-nodules', name: 'Acne - Deep Nodules', description: 'Large, painful, solid lesions deep under skin' },
       { id: 'acne-deep-cysts', name: 'Acne - Pus-Filled Cysts', description: 'Deep, pus-filled lesions that may cause scarring' },
       { id: 'acne-face-neck-under40', name: 'Acne - Face/Neck <40% Affected', description: 'Deep acne affecting less than 40% of face and neck' },
-      { id: 'acne-face-neck-40plus', name: 'Acne - Face/Neck ≥40% Affected', description: 'Deep acne affecting 40% or more of face and neck' },
+      { id: 'acne-face-neck-40plus', name: 'Acne - Face/Neck >=40% Affected', description: 'Deep acne affecting 40% or more of face and neck' },
       { id: 'acne-body-other', name: 'Acne - Body (Non-Face/Neck)', description: 'Deep acne on areas other than face and neck' },
       { id: 'acne-scarring', name: 'Acne - Scarring Present', description: 'Permanent scarring from acne lesions' },
       { id: 'acne-disfigurement', name: 'Acne - Disfigurement', description: 'Visible disfigurement from acne or scarring' },
@@ -2853,7 +2853,7 @@ export const symptomCategories = [
       { id: 'chloracne-deep-nodules', name: 'Chloracne - Deep Nodules', description: 'Large, painful nodules from dioxin/chemical exposure' },
       { id: 'chloracne-deep-cysts', name: 'Chloracne - Pus-Filled Cysts', description: 'Deep cysts from chemical exposure' },
       { id: 'chloracne-face-neck-under40', name: 'Chloracne - Face/Neck <40% Affected', description: 'Deep chloracne affecting less than 40% of face and neck' },
-      { id: 'chloracne-face-neck-40plus', name: 'Chloracne - Face/Neck ≥40% Affected', description: 'Deep chloracne affecting 40% or more of face and neck' },
+      { id: 'chloracne-face-neck-40plus', name: 'Chloracne - Face/Neck >=40% Affected', description: 'Deep chloracne affecting 40% or more of face and neck' },
       { id: 'chloracne-intertriginous', name: 'Chloracne - Intertriginous Areas', description: 'Chloracne in skin folds: axilla, groin, breast folds, between digits' },
       { id: 'chloracne-body-other', name: 'Chloracne - Body (Non-Intertriginous)', description: 'Deep chloracne on non-intertriginous body areas' },
       { id: 'chloracne-scarring', name: 'Chloracne - Scarring Present', description: 'Permanent scarring from chloracne' },
@@ -2940,7 +2940,7 @@ export const symptomCategories = [
       { id: 'dle-over40-body', name: 'Discoid Lupus - >40% Body Affected', description: 'More than 40% of body or exposed areas' },
       { id: 'dle-topical-only', name: 'Discoid Lupus - Topical Treatment Only', description: 'Only topical medications required' },
       { id: 'dle-systemic-intermittent', name: 'Discoid Lupus - Intermittent Systemic Therapy', description: 'Systemic therapy <6 weeks in past year' },
-      { id: 'dle-systemic-6weeks', name: 'Discoid Lupus - Systemic Therapy ≥6 Weeks', description: 'Systemic therapy ≥6 weeks but not constant' },
+      { id: 'dle-systemic-6weeks', name: 'Discoid Lupus - Systemic Therapy >=6 Weeks', description: 'Systemic therapy >=6 weeks but not constant' },
       { id: 'dle-systemic-constant', name: 'Discoid Lupus - Constant Systemic Therapy', description: 'Constant/near-constant systemic therapy required' },
     ],
   },
@@ -2969,7 +2969,7 @@ export const symptomCategories = [
       { id: 'bullous-over40-body', name: 'Bullous Disorder - >40% Body Affected', description: 'More than 40% of body or exposed areas' },
       { id: 'bullous-topical-only', name: 'Bullous Disorder - Topical Treatment Only', description: 'Only topical medications required' },
       { id: 'bullous-systemic-intermittent', name: 'Bullous Disorder - Intermittent Systemic Therapy', description: 'Systemic therapy <6 weeks in past year' },
-      { id: 'bullous-systemic-6weeks', name: 'Bullous Disorder - Systemic Therapy ≥6 Weeks', description: 'Systemic therapy ≥6 weeks but not constant' },
+      { id: 'bullous-systemic-6weeks', name: 'Bullous Disorder - Systemic Therapy >=6 Weeks', description: 'Systemic therapy >=6 weeks but not constant' },
       { id: 'bullous-systemic-constant', name: 'Bullous Disorder - Constant Systemic Therapy', description: 'Constant/near-constant systemic therapy required' },
     ],
   },
@@ -3023,7 +3023,7 @@ export const symptomCategories = [
       { id: 'derm-over40-body', name: 'Dermatophytosis - >40% Body Affected', description: 'More than 40% of body or exposed areas' },
       { id: 'derm-topical-only', name: 'Dermatophytosis - Topical Treatment Only', description: 'Only topical antifungals required' },
       { id: 'derm-systemic-intermittent', name: 'Dermatophytosis - Intermittent Systemic Therapy', description: 'Oral antifungals <6 weeks in past year' },
-      { id: 'derm-systemic-6weeks', name: 'Dermatophytosis - Systemic Therapy ≥6 Weeks', description: 'Oral antifungals ≥6 weeks but not constant' },
+      { id: 'derm-systemic-6weeks', name: 'Dermatophytosis - Systemic Therapy >=6 Weeks', description: 'Oral antifungals >=6 weeks but not constant' },
       { id: 'derm-systemic-constant', name: 'Dermatophytosis - Constant Systemic Therapy', description: 'Constant/near-constant oral antifungals required' },
     ],
   },
@@ -3052,7 +3052,7 @@ export const symptomCategories = [
       { id: 'skinf-over40-body', name: 'Skin Infection - >40% Body Affected', description: 'More than 40% of body or exposed areas' },
       { id: 'skinf-topical-only', name: 'Skin Infection - Topical Treatment Only', description: 'Only topical medications required' },
       { id: 'skinf-systemic-intermittent', name: 'Skin Infection - Intermittent Systemic Therapy', description: 'Oral/IV antibiotics <6 weeks in past year' },
-      { id: 'skinf-systemic-6weeks', name: 'Skin Infection - Systemic Therapy ≥6 Weeks', description: 'Systemic therapy ≥6 weeks but not constant' },
+      { id: 'skinf-systemic-6weeks', name: 'Skin Infection - Systemic Therapy >=6 Weeks', description: 'Systemic therapy >=6 weeks but not constant' },
       { id: 'skinf-systemic-constant', name: 'Skin Infection - Constant Systemic Therapy', description: 'Constant/near-constant systemic therapy required' },
     ],
   },
@@ -3922,4 +3922,246 @@ export const searchSymptoms = (query, limit = 20) => {
     ...sym,
     matchType: sym.name.toLowerCase().includes(searchTerm) ? 'symptom' : 'category'
   }));
+};
+
+// ============================================
+// PHASE 8C: RELATED CONDITIONS
+// ============================================
+
+/**
+ * Maps conditions to commonly associated secondary conditions
+ * Used for "You may also want to track..." suggestions
+ */
+export const RELATED_CONDITIONS = {
+  'ptsd': {
+    name: 'PTSD',
+    categoryPatterns: ['ptsd'],
+    related: [
+      { categoryId: 'depression', name: 'Major Depressive Disorder', dcCode: '9434', reason: 'Depression co-occurs in 50%+ of PTSD cases', priority: 1 },
+      { categoryId: 'anxiety', name: 'Generalized Anxiety Disorder', dcCode: '9400', reason: 'Anxiety disorders frequently accompany PTSD', priority: 1 },
+      { categoryId: 'sleep-apnea', name: 'Sleep Apnea', dcCode: '6847', reason: 'Sleep disturbances common; often diagnosed after PTSD', priority: 2 },
+      { categoryId: 'migraine', name: 'Migraines', dcCode: '8100', reason: 'Stress and hyperarousal can trigger chronic migraines', priority: 2 },
+      { categoryId: 'tinnitus', name: 'Tinnitus', dcCode: '6260', reason: 'Often co-claimed due to shared trauma exposure', priority: 2 },
+      { categoryId: 'gerd', name: 'GERD', dcCode: '7346', reason: 'Chronic stress increases acid reflux risk', priority: 3 },
+      { categoryId: 'hypertension', name: 'Hypertension', dcCode: '7101', reason: 'Chronic stress elevates blood pressure', priority: 3 },
+      { categoryId: 'ibs', name: 'Irritable Bowel Syndrome', dcCode: '7319', reason: 'Gut-brain connection affected by PTSD', priority: 3 },
+    ]
+  },
+  'depression': {
+    name: 'Depression',
+    categoryPatterns: ['depression', 'mdd', 'depressive'],
+    related: [
+      { categoryId: 'anxiety', name: 'Generalized Anxiety Disorder', dcCode: '9400', reason: 'Anxiety and depression frequently co-occur', priority: 1 },
+      { categoryId: 'insomnia', name: 'Insomnia', dcCode: '6847', reason: 'Sleep problems are a core symptom of depression', priority: 1 },
+      { categoryId: 'chronic-fatigue', name: 'Chronic Fatigue Syndrome', dcCode: '6354', reason: 'Fatigue is both symptom and comorbidity', priority: 2 },
+      { categoryId: 'migraine', name: 'Migraines', dcCode: '8100', reason: 'Depression increases migraine frequency', priority: 2 },
+      { categoryId: 'fibromyalgia', name: 'Fibromyalgia', dcCode: '5025', reason: 'Chronic pain and depression share pathways', priority: 3 },
+    ]
+  },
+  'anxiety': {
+    name: 'Anxiety Disorders',
+    categoryPatterns: ['anxiety', 'panic', 'gad'],
+    related: [
+      { categoryId: 'depression', name: 'Major Depressive Disorder', dcCode: '9434', reason: 'High comorbidity between anxiety and depression', priority: 1 },
+      { categoryId: 'insomnia', name: 'Insomnia', dcCode: '6847', reason: 'Anxiety commonly disrupts sleep', priority: 1 },
+      { categoryId: 'gerd', name: 'GERD', dcCode: '7346', reason: 'Anxiety increases stomach acid production', priority: 2 },
+      { categoryId: 'ibs', name: 'Irritable Bowel Syndrome', dcCode: '7319', reason: 'Gut-brain axis affected by chronic anxiety', priority: 2 },
+      { categoryId: 'hypertension', name: 'Hypertension', dcCode: '7101', reason: 'Chronic anxiety elevates blood pressure', priority: 3 },
+      { categoryId: 'migraine', name: 'Migraines', dcCode: '8100', reason: 'Tension and stress trigger migraines', priority: 3 },
+    ]
+  },
+  'tbi': {
+    name: 'Traumatic Brain Injury',
+    categoryPatterns: ['tbi', 'traumatic brain'],
+    related: [
+      { categoryId: 'migraine', name: 'Post-Traumatic Migraines', dcCode: '8100', reason: 'Migraines are the most common TBI residual', priority: 1 },
+      { categoryId: 'tinnitus', name: 'Tinnitus', dcCode: '6260', reason: 'Head trauma frequently causes tinnitus', priority: 1 },
+      { categoryId: 'hearing-loss', name: 'Hearing Loss', dcCode: '6100', reason: 'Blast/impact injuries damage hearing', priority: 1 },
+      { categoryId: 'ptsd', name: 'PTSD', dcCode: '9411', reason: 'Trauma causing TBI often causes PTSD', priority: 1 },
+      { categoryId: 'depression', name: 'Depression', dcCode: '9434', reason: 'TBI affects mood regulation centers', priority: 2 },
+      { categoryId: 'vertigo', name: 'Vertigo/Dizziness', dcCode: '6204', reason: 'Balance issues common after head injury', priority: 2 },
+    ]
+  },
+  'migraine': {
+    name: 'Migraines',
+    categoryPatterns: ['migraine', 'headache'],
+    related: [
+      { categoryId: 'depression', name: 'Depression', dcCode: '9434', reason: 'Chronic migraines increase depression risk 3x', priority: 1 },
+      { categoryId: 'anxiety', name: 'Anxiety', dcCode: '9400', reason: 'Migraine and anxiety share neurological pathways', priority: 2 },
+      { categoryId: 'insomnia', name: 'Insomnia', dcCode: '6847', reason: 'Sleep disruption triggers migraines', priority: 2 },
+    ]
+  },
+  'back': {
+    name: 'Back/Spine Conditions',
+    categoryPatterns: ['back', 'spine', 'lumbar', 'thoracic', 'cervical', 'neck'],
+    related: [
+      { categoryId: 'radiculopathy', name: 'Radiculopathy', dcCode: '8520', reason: 'Nerve root compression from disc/spine issues', priority: 1 },
+      { categoryId: 'peripheral-neuropathy', name: 'Peripheral Neuropathy', dcCode: '8520', reason: 'Nerve damage from chronic spine conditions', priority: 2 },
+      { categoryId: 'depression', name: 'Depression', dcCode: '9434', reason: 'Chronic pain strongly linked to depression', priority: 2 },
+      { categoryId: 'erectile-dysfunction', name: 'Erectile Dysfunction', dcCode: '7522', reason: 'Lumbar spine issues can affect nerve function', priority: 3 },
+    ]
+  },
+  'knee': {
+    name: 'Knee Conditions',
+    categoryPatterns: ['knee'],
+    related: [
+      { categoryId: 'hip', name: 'Hip Conditions', dcCode: '5252', reason: 'Compensating for knee pain affects hip alignment', priority: 1 },
+      { categoryId: 'back', name: 'Back Conditions', dcCode: '5237', reason: 'Altered gait causes spine stress', priority: 1 },
+      { categoryId: 'ankle', name: 'Ankle Conditions', dcCode: '5271', reason: 'Weight redistribution affects ankles', priority: 2 },
+      { categoryId: 'depression', name: 'Depression', dcCode: '9434', reason: 'Chronic pain and mobility limitation', priority: 2 },
+    ]
+  },
+  'sleep-apnea': {
+    name: 'Sleep Apnea',
+    categoryPatterns: ['sleep apnea', 'osa', 'cpap'],
+    related: [
+      { categoryId: 'hypertension', name: 'Hypertension', dcCode: '7101', reason: 'Sleep apnea directly causes high blood pressure', priority: 1 },
+      { categoryId: 'depression', name: 'Depression', dcCode: '9434', reason: 'Poor sleep quality affects mood', priority: 1 },
+      { categoryId: 'gerd', name: 'GERD', dcCode: '7346', reason: 'Sleep apnea increases reflux episodes', priority: 2 },
+      { categoryId: 'cardiac', name: 'Heart Disease', dcCode: '7005', reason: 'Sleep apnea strains the cardiovascular system', priority: 2 },
+    ]
+  },
+  'hypertension': {
+    name: 'Hypertension',
+    categoryPatterns: ['hypertension', 'blood pressure', 'htn'],
+    related: [
+      { categoryId: 'cardiac', name: 'Heart Disease', dcCode: '7005', reason: 'Hypertension damages heart over time', priority: 1 },
+      { categoryId: 'kidney', name: 'Chronic Kidney Disease', dcCode: '7530', reason: 'High BP damages kidneys', priority: 1 },
+      { categoryId: 'retinopathy', name: 'Hypertensive Retinopathy', dcCode: '6006', reason: 'High BP damages eye blood vessels', priority: 2 },
+      { categoryId: 'erectile-dysfunction', name: 'Erectile Dysfunction', dcCode: '7522', reason: 'Vascular damage affects ED', priority: 3 },
+    ]
+  },
+  'diabetes': {
+    name: 'Diabetes Mellitus',
+    categoryPatterns: ['diabetes', 'diabetic', 'glucose'],
+    related: [
+      { categoryId: 'peripheral-neuropathy', name: 'Diabetic Neuropathy', dcCode: '8520', reason: 'Most common diabetes complication (60-70%)', priority: 1 },
+      { categoryId: 'retinopathy', name: 'Diabetic Retinopathy', dcCode: '6006', reason: 'Diabetes damages eye blood vessels', priority: 1 },
+      { categoryId: 'nephropathy', name: 'Diabetic Nephropathy', dcCode: '7530', reason: 'Diabetes is #1 cause of kidney disease', priority: 1 },
+      { categoryId: 'erectile-dysfunction', name: 'Erectile Dysfunction', dcCode: '7522', reason: 'Vascular and nerve damage from diabetes', priority: 2 },
+      { categoryId: 'hypertension', name: 'Hypertension', dcCode: '7101', reason: 'Often co-occurs with Type 2 diabetes', priority: 2 },
+    ]
+  },
+  'gerd': {
+    name: 'GERD',
+    categoryPatterns: ['gerd', 'reflux', 'heartburn'],
+    related: [
+      { categoryId: 'asthma', name: 'Asthma', dcCode: '6602', reason: 'Reflux can trigger or worsen asthma', priority: 1 },
+      { categoryId: 'sleep-apnea', name: 'Sleep Apnea', dcCode: '6847', reason: 'GERD and apnea worsen each other', priority: 2 },
+      { categoryId: 'dental', name: 'Dental Erosion', dcCode: '9913', reason: 'Stomach acid damages tooth enamel', priority: 2 },
+    ]
+  },
+  'hearing-loss': {
+    name: 'Hearing Loss',
+    categoryPatterns: ['hearing loss', 'hearing impairment'],
+    related: [
+      { categoryId: 'tinnitus', name: 'Tinnitus', dcCode: '6260', reason: 'Almost always co-exists with hearing loss', priority: 1 },
+      { categoryId: 'vertigo', name: 'Vertigo/Meniere\'s', dcCode: '6205', reason: 'Inner ear affects both hearing and balance', priority: 2 },
+      { categoryId: 'depression', name: 'Depression', dcCode: '9434', reason: 'Hearing loss can cause social isolation', priority: 2 },
+    ]
+  },
+  'tinnitus': {
+    name: 'Tinnitus',
+    categoryPatterns: ['tinnitus'],
+    related: [
+      { categoryId: 'hearing-loss', name: 'Hearing Loss', dcCode: '6100', reason: 'Tinnitus often indicates hearing damage', priority: 1 },
+      { categoryId: 'anxiety', name: 'Anxiety', dcCode: '9400', reason: 'Constant noise causes anxiety and distress', priority: 1 },
+      { categoryId: 'depression', name: 'Depression', dcCode: '9434', reason: 'Chronic tinnitus affects quality of life', priority: 2 },
+      { categoryId: 'insomnia', name: 'Insomnia', dcCode: '6847', reason: 'Tinnitus makes it difficult to sleep', priority: 2 },
+    ]
+  },
+  'ibs': {
+    name: 'Irritable Bowel Syndrome',
+    categoryPatterns: ['ibs', 'irritable bowel'],
+    related: [
+      { categoryId: 'anxiety', name: 'Anxiety', dcCode: '9400', reason: 'Gut-brain axis connects IBS and anxiety', priority: 1 },
+      { categoryId: 'depression', name: 'Depression', dcCode: '9434', reason: 'Chronic GI issues affect mental health', priority: 1 },
+      { categoryId: 'gerd', name: 'GERD', dcCode: '7346', reason: 'GI motility issues often co-exist', priority: 2 },
+      { categoryId: 'fibromyalgia', name: 'Fibromyalgia', dcCode: '5025', reason: 'Chronic pain conditions overlap', priority: 2 },
+    ]
+  },
+  'asthma': {
+    name: 'Asthma',
+    categoryPatterns: ['asthma'],
+    related: [
+      { categoryId: 'gerd', name: 'GERD', dcCode: '7346', reason: 'Reflux can trigger asthma; asthma meds worsen reflux', priority: 1 },
+      { categoryId: 'rhinitis', name: 'Allergic Rhinitis', dcCode: '6522', reason: 'Upper and lower airway disease connected', priority: 1 },
+      { categoryId: 'sinusitis', name: 'Chronic Sinusitis', dcCode: '6510', reason: 'Sinus drainage triggers asthma', priority: 2 },
+      { categoryId: 'sleep-apnea', name: 'Sleep Apnea', dcCode: '6847', reason: 'Airway conditions often co-exist', priority: 3 },
+    ]
+  },
+  'rhinitis': {
+    name: 'Rhinitis',
+    categoryPatterns: ['rhinitis', 'allergic'],
+    related: [
+      { categoryId: 'sinusitis', name: 'Chronic Sinusitis', dcCode: '6510', reason: 'Chronic inflammation leads to sinus infections', priority: 1 },
+      { categoryId: 'asthma', name: 'Asthma', dcCode: '6602', reason: 'Allergic rhinitis often precedes asthma', priority: 1 },
+      { categoryId: 'sleep-apnea', name: 'Sleep Apnea', dcCode: '6847', reason: 'Nasal obstruction worsens apnea', priority: 2 },
+    ]
+  },
+};
+
+/**
+ * Get related conditions for a given category
+ * @param {string} categoryName - The category name
+ * @returns {Array} - Array of related condition objects
+ */
+export const getRelatedConditions = (categoryName) => {
+  if (!categoryName) return [];
+  const nameLower = categoryName.toLowerCase();
+
+  for (const [key, conditionGroup] of Object.entries(RELATED_CONDITIONS)) {
+    const matches = conditionGroup.categoryPatterns.some(pattern =>
+        nameLower.includes(pattern.toLowerCase())
+    );
+    if (matches) {
+      return conditionGroup.related;
+    }
+  }
+  return [];
+};
+
+/**
+ * Get suggested conditions based on user's chronic symptoms
+ * @param {Array} chronicSymptoms - Array of chronic symptom objects
+ * @returns {Array} - Array of suggested conditions with reasons
+ */
+export const getSuggestedConditions = (chronicSymptoms = []) => {
+  const suggestions = new Map();
+  const alreadyTracking = new Set();
+
+  // Build set of what user is already tracking
+  chronicSymptoms.forEach(sym => {
+    alreadyTracking.add(sym.category?.toLowerCase());
+    alreadyTracking.add(sym.symptomId?.toLowerCase());
+  });
+
+  // Get related conditions for each chronic symptom
+  chronicSymptoms.forEach(symptom => {
+    const related = getRelatedConditions(symptom.category);
+
+    related.forEach(condition => {
+      const isAlreadyTracking =
+          alreadyTracking.has(condition.categoryId?.toLowerCase()) ||
+          alreadyTracking.has(condition.name?.toLowerCase()) ||
+          Array.from(alreadyTracking).some(tracked =>
+              condition.name?.toLowerCase().includes(tracked) ||
+              tracked?.includes(condition.categoryId?.toLowerCase())
+          );
+
+      if (!isAlreadyTracking && condition.dcCode) {
+        const existing = suggestions.get(condition.categoryId);
+        if (!existing || condition.priority < existing.priority) {
+          suggestions.set(condition.categoryId, {
+            ...condition,
+            triggeredBy: symptom.symptomName || symptom.category,
+          });
+        }
+      }
+    });
+  });
+
+  return Array.from(suggestions.values())
+  .sort((a, b) => a.priority - b.priority)
+  .slice(0, 6);
 };

@@ -1,5 +1,6 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { TBI_RESIDUALS_CRITERIA } from '../utils/ratingCriteria';
+import UnderstandingYourRating from './UnderstandingYourRating';
 
 /**
  * TBI Residuals Rating Card Component - Gold Standard Version
@@ -96,6 +97,12 @@ export default function TBIResidualsRatingCard({ analysis, expanded, onToggle })
                     </div>
                   </div>
               )}
+
+              {/* Understanding Your Rating - Educational Content */}
+              <UnderstandingYourRating
+                  diagnosticCode="8045"
+                  currentRating={numericRating}
+              />
 
               <div>
                 <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-center">VA Rating Schedule</h4>

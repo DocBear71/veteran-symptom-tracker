@@ -39,8 +39,19 @@ export const ProfileProvider = ({ children }) => {
       }
     };
 
+    // Listen for profile switch events from ProfileManagement
+    const handleProfileChanged = (e) => {
+      console.log('Profile changed event received:', e.detail);
+      refreshProfile();
+    };
+
     window.addEventListener('storage', handleStorageChange);
-    return () => window.removeEventListener('storage', handleStorageChange);
+    window.addEventListener('profileChanged', handleProfileChanged);
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      window.removeEventListener('profileChanged', handleProfileChanged);
+    };
   }, [refreshProfile]);
 
   const value = {

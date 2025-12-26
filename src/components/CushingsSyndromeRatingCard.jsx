@@ -1,5 +1,6 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { CUSHINGS_SYNDROME_CRITERIA } from '../utils/ratingCriteria';
+import UnderstandingYourRating from './UnderstandingYourRating';
 
 /**
  * Cushing's Syndrome Rating Card - Gold Standard Version
@@ -152,6 +153,12 @@ export default function CushingsSyndromeRatingCard({ analysis, expanded, onToggl
                     </div>
                   </div>
               )}
+
+              {/* Understanding Your Rating - Educational Content */}
+              <UnderstandingYourRating
+                  diagnosticCode="7907"
+                  currentRating={numericRating}
+              />
 
               {/* VA Rating Schedule */}
               <div>

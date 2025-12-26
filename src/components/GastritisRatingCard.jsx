@@ -1,5 +1,6 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { GASTRITIS_CRITERIA } from '../utils/ratingCriteria';
+import UnderstandingYourRating from './UnderstandingYourRating';
 
 /**
  * Gastritis Rating Card Component
@@ -156,6 +157,12 @@ export default function GastritisRatingCard({ analysis, expanded, onToggle }) {
                     </div>
                   </div>
               )}
+
+              {/* Understanding Your Rating - Educational Content */}
+              <UnderstandingYourRating
+                  diagnosticCode="7307"
+                  currentRating={numericRating}
+              />
 
               {/* VA Rating Schedule */}
               <div>

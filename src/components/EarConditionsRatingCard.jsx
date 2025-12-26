@@ -12,6 +12,7 @@ import {
   CHRONIC_OTITIS_EXTERNA_CRITERIA,
   CHRONIC_NONSUPPURATIVE_OTITIS_MEDIA_CRITERIA,
 } from '../utils/ratingCriteria';
+import UnderstandingYourRating from './UnderstandingYourRating';
 
 /**
  * EarConditionsRatingCard - Displays VA rating analysis for ear conditions
@@ -253,6 +254,12 @@ const EarConditionsRatingCard = ({ analysis, expanded, onToggle }) => {
                     </div>
                   </div>
               )}
+
+              {/* Understanding Your Rating - Educational Content */}
+              <UnderstandingYourRating
+                  diagnosticCode={diagnosticCode}
+                  currentRating={typeof supportedRating === 'number' ? supportedRating : null}
+              />
 
               {/* Section 3: VA Rating Schedule */}
               <div>

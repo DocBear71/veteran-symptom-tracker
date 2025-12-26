@@ -2,6 +2,7 @@ import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import { getSymptomLogs, saveSymptomLog, getMedicationLogsForSymptom, getAppointments, getOccurrenceTime, isBackDated } from './storage';
 import { getMeasurements } from './measurements';
+import { stripDCCode } from '../data/symptoms';
 import {
     generateBPTrendChart,
     generateGlucoseTrendChart,
@@ -1464,6 +1465,70 @@ export const generatePDF = (dateRange = 'all', options = { includeAppointments: 
           }
         }
 
+
+        // Phase 8A: Somatic Symptom Disorder data extraction
+        if (log.somaticData) {
+          const somaticInfo = [];
+          const sd = log.somaticData;
+
+          if (sd.painPreoccupation) somaticInfo.push('Pain preoccupation');
+          if (sd.excessiveHealthWorry) somaticInfo.push('Excessive health worry');
+          if (sd.multipleSymptoms) somaticInfo.push('Multiple symptoms');
+          if (sd.frequentDoctorVisits) somaticInfo.push('Frequent doctor visits');
+          if (sd.functionalImpairment) somaticInfo.push('Functional impairment');
+
+          if (somaticInfo.length > 0) {
+            notes = 'Somatic: ' + somaticInfo.join(', ') + (notes !== '-' ? ` | ${notes}` : '');
+          }
+        }
+
+        // Phase 8A: Illness Anxiety data extraction
+        if (log.illnessAnxietyData) {
+          const iaInfo = [];
+          const ia = log.illnessAnxietyData;
+
+          if (ia.fearOfIllness) iaInfo.push('Fear of illness');
+          if (ia.bodyChecking) iaInfo.push('Body checking');
+          if (ia.reassuranceSeeking) iaInfo.push('Reassurance seeking');
+          if (ia.appointmentAvoidance) iaInfo.push('Appointment avoidance');
+          if (ia.healthDistress) iaInfo.push('Health distress');
+
+          if (iaInfo.length > 0) {
+            notes = 'Illness Anxiety: ' + iaInfo.join(', ') + (notes !== '-' ? ` | ${notes}` : '');
+          }
+        }
+
+        // Phase 8A: Depersonalization/Derealization data extraction
+        if (log.depersonalizationData) {
+          const dpInfo = [];
+          const dp = log.depersonalizationData;
+
+          if (dp.detachment) dpInfo.push('Detachment');
+          if (dp.unreality) dpInfo.push('Unreality');
+          if (dp.robotAutopilot) dpInfo.push('Robot/autopilot');
+          if (dp.distress) dpInfo.push('Distress');
+
+          if (dpInfo.length > 0) {
+            notes = 'Depersonalization: ' + dpInfo.join(', ') + (notes !== '-' ? ` | ${notes}` : '');
+          }
+        }
+
+        // Phase 8A: Cyclothymic data extraction
+        if (log.cyclothymicData) {
+          const cyInfo = [];
+          const cy = log.cyclothymicData;
+
+          if (cy.hypomanic) cyInfo.push('Hypomanic');
+          if (cy.depressive) cyInfo.push('Depressive');
+          if (cy.moodSwings) cyInfo.push('Mood swings');
+          if (cy.irritability) cyInfo.push('Irritability');
+
+          if (cyInfo.length > 0) {
+            notes = 'Cyclothymic: ' + cyInfo.join(', ') + (notes !== '-' ? ` | ${notes}` : '');
+          }
+        }
+
+
         // Phase 9: Cardiovascular data extraction
         if (log.cardiovascularData) {
           const cvInfo = [];
@@ -1826,7 +1891,6 @@ export const generateCSV = (dateRange = 'all', options = { includeAppointments: 
         'PTSD Symptoms', 'PTSD Trigger',
         // Pain fields
         'Pain Type', 'Pain Flare Up', 'Radiating', 'Limited ROM', 'Activities Affected',
-
         // Phase 1E: Seizure fields
         'Seizure Type', 'Seizure Duration (sec)', 'Loss of Consciousness', 'Aura Present', 'Witness Present', 'Recovery Time',
         // Phase 1D: Epilepsy Expansion fields (DC 8912, 8913, 8914)
@@ -1881,11 +1945,9 @@ export const generateCSV = (dateRange = 'all', options = { includeAppointments: 
         // Phase 8A: Mental Health Expansion
         'Somatic - Pain Preoccupation', 'Somatic - Excessive Health Worry', 'Somatic - Multiple Symptoms', 'Somatic - Frequent Doctor Visits', 'Somatic - Functional Impairment',
         'Illness Anxiety - Fear of Illness', 'Illness Anxiety - Body Checking', 'Illness Anxiety - Reassurance Seeking', 'Illness Anxiety - Appointment Avoidance',
-        'Illness Anxiety - Health Distress', 'Other Anxiety - Symptoms', 'Other Anxiety - Worry', 'Other Anxiety - Avoidance', 'Other Anxiety - Physical Symptoms',
+        'Illness Anxiety - Health Distress',
         'Depersonalization - Detachment', 'Derealization - Unreality', 'Depersonalization - Robot/Autopilot', 'Depersonalization - Distress', 'Cyclothymic - Hypomanic',
-        'Cyclothymic - Depressive', 'Cyclothymic - Mood Swings', 'Cyclothymic - Irritability', 'Anorexia - Restricted Eating', 'Anorexia - Weight Loss', 'Anorexia - Fear Weight Gain',
-        'Anorexia - Restricted Eating', 'Anorexia - Weight Loss', 'Anorexia - Fear Weight Gain', 'Anorexia - Body Image', 'Anorexia - Incapacitating Episode', 'Anorexia - Hospitalization',
-        'Bulimia - Binge Eating', 'Bulimia - Purging', 'Bulimia - Compensatory Behaviors', 'Bulimia - Body Image', 'Bulimia - Incapacitating Episode', 'Bulimia - Hospitalization',
+        'Cyclothymic - Depressive', 'Cyclothymic - Mood Swings', 'Cyclothymic - Irritability',
         // PHASE 8A EXTENDED: Mental Health Forms CSV Headers
         // Anxiety Form (22 columns)
         'Anxiety - Heart Racing', 'Anxiety - Sweating', 'Anxiety - Trembling', 'Anxiety - Shortness of Breath', 'Anxiety - Chest Tightness', 'Anxiety - Nausea', 'Anxiety - Dizziness',
@@ -1999,7 +2061,7 @@ export const generateCSV = (dateRange = 'all', options = { includeAppointments: 
             loggedDate.toLocaleTimeString(),
             isBackDated(log) ? 'Yes' : 'No',
             log.symptomName,
-            log.category,
+            stripDCCode(log.category), // Strip DC codes from category
             log.severity,
             // Universal fields
             log.isFlareUp ? 'Yes' : '',
@@ -2223,6 +2285,29 @@ export const generateCSV = (dateRange = 'all', options = { includeAppointments: 
             log.dentalData?.speakingDifficulty ? 'Yes' : '',
             log.dentalData?.painWithEating ? 'Yes' : '',
             log.dentalData?.workMissed ? 'Yes' : '',
+            // Phase 8A: Mental Health Expansion Data (31 columns - matches headers on lines 1882-1888)
+            // Somatic Symptom Disorder (5 columns)
+            log.somaticData?.painPreoccupation ? 'Yes' : '',
+            log.somaticData?.excessiveHealthWorry ? 'Yes' : '',
+            log.somaticData?.multipleSymptoms ? 'Yes' : '',
+            log.somaticData?.frequentDoctorVisits ? 'Yes' : '',
+            log.somaticData?.functionalImpairment ? 'Yes' : '',
+            // Illness Anxiety (5 columns)
+            log.illnessAnxietyData?.fearOfIllness ? 'Yes' : '',
+            log.illnessAnxietyData?.bodyChecking ? 'Yes' : '',
+            log.illnessAnxietyData?.reassuranceSeeking ? 'Yes' : '',
+            log.illnessAnxietyData?.appointmentAvoidance ? 'Yes' : '',
+            log.illnessAnxietyData?.healthDistress ? 'Yes' : '',
+            // Depersonalization/Derealization (4 columns)
+            log.depersonalizationData?.detachment ? 'Yes' : '',
+            log.depersonalizationData?.unreality ? 'Yes' : '',
+            log.depersonalizationData?.robotAutopilot ? 'Yes' : '',
+            log.depersonalizationData?.distress ? 'Yes' : '',
+            // Cyclothymic (4 columns)
+            log.cyclothymicData?.hypomanic ? 'Yes' : '',
+            log.cyclothymicData?.depressive ? 'Yes' : '',
+            log.cyclothymicData?.moodSwings ? 'Yes' : '',
+            log.cyclothymicData?.irritability ? 'Yes' : '',
             // Anxiety Form Data (22 columns)
             log.anxietyData?.heartRacing ? 'Yes' : '',
             log.anxietyData?.sweating ? 'Yes' : '',
@@ -2654,28 +2739,28 @@ const getDateRangeLabel = (range) => {
 };
 
 const generateSummary = (logs) => {
-    const summary = {};
+  const summary = {};
 
-    logs.forEach(log => {
-        if (!summary[log.symptomName]) {
-            summary[log.symptomName] = {
-                symptom: log.symptomName,
-                category: log.category,
-                count: 0,
-                totalSeverity: 0,
-                maxSeverity: 0
-            };
-        }
+  logs.forEach(log => {
+    if (!summary[log.symptomName]) {
+      summary[log.symptomName] = {
+        symptom: log.symptomName,
+        category: stripDCCode(log.category), // Strip DC codes from category
+        count: 0,
+        totalSeverity: 0,
+        maxSeverity: 0
+      };
+    }
 
-        summary[log.symptomName].count++;
-        summary[log.symptomName].totalSeverity += log.severity;
-        summary[log.symptomName].maxSeverity = Math.max(summary[log.symptomName].maxSeverity, log.severity);
-    });
+    summary[log.symptomName].count++;
+    summary[log.symptomName].totalSeverity += log.severity;
+    summary[log.symptomName].maxSeverity = Math.max(summary[log.symptomName].maxSeverity, log.severity);
+  });
 
-    return Object.values(summary).map(row => ({
-        ...row,
-        avgSeverity: row.totalSeverity / row.count
-    })).sort((a, b) => b.count - a.count);
+  return Object.values(summary).map(row => ({
+    ...row,
+    avgSeverity: row.totalSeverity / row.count
+  })).sort((a, b) => b.count - a.count);
 };
 
 const formatDuration = (duration) => {
@@ -4396,6 +4481,68 @@ export const generateVAClaimPackagePDF = async (dateRange = 'all', options = {})
 
           if (pdInfo.length > 0) {
             notes = pdInfo.join(', ') + (notes !== '-' ? ` | ${notes}` : '');
+          }
+        }
+
+        // Phase 8A: Somatic Symptom Disorder data extraction
+        if (log.somaticData) {
+          const somaticInfo = [];
+          const sd = log.somaticData;
+
+          if (sd.painPreoccupation) somaticInfo.push('Pain preoccupation');
+          if (sd.excessiveHealthWorry) somaticInfo.push('Excessive health worry');
+          if (sd.multipleSymptoms) somaticInfo.push('Multiple symptoms');
+          if (sd.frequentDoctorVisits) somaticInfo.push('Frequent doctor visits');
+          if (sd.functionalImpairment) somaticInfo.push('Functional impairment');
+
+          if (somaticInfo.length > 0) {
+            notes = 'Somatic: ' + somaticInfo.join(', ') + (notes !== '-' ? ` | ${notes}` : '');
+          }
+        }
+
+        // Phase 8A: Illness Anxiety data extraction
+        if (log.illnessAnxietyData) {
+          const iaInfo = [];
+          const ia = log.illnessAnxietyData;
+
+          if (ia.fearOfIllness) iaInfo.push('Fear of illness');
+          if (ia.bodyChecking) iaInfo.push('Body checking');
+          if (ia.reassuranceSeeking) iaInfo.push('Reassurance seeking');
+          if (ia.appointmentAvoidance) iaInfo.push('Appointment avoidance');
+          if (ia.healthDistress) iaInfo.push('Health distress');
+
+          if (iaInfo.length > 0) {
+            notes = 'Illness Anxiety: ' + iaInfo.join(', ') + (notes !== '-' ? ` | ${notes}` : '');
+          }
+        }
+
+        // Phase 8A: Depersonalization/Derealization data extraction
+        if (log.depersonalizationData) {
+          const dpInfo = [];
+          const dp = log.depersonalizationData;
+
+          if (dp.detachment) dpInfo.push('Detachment');
+          if (dp.unreality) dpInfo.push('Unreality');
+          if (dp.robotAutopilot) dpInfo.push('Robot/autopilot');
+          if (dp.distress) dpInfo.push('Distress');
+
+          if (dpInfo.length > 0) {
+            notes = 'Depersonalization: ' + dpInfo.join(', ') + (notes !== '-' ? ` | ${notes}` : '');
+          }
+        }
+
+        // Phase 8A: Cyclothymic data extraction
+        if (log.cyclothymicData) {
+          const cyInfo = [];
+          const cy = log.cyclothymicData;
+
+          if (cy.hypomanic) cyInfo.push('Hypomanic');
+          if (cy.depressive) cyInfo.push('Depressive');
+          if (cy.moodSwings) cyInfo.push('Mood swings');
+          if (cy.irritability) cyInfo.push('Irritability');
+
+          if (cyInfo.length > 0) {
+            notes = 'Cyclothymic: ' + cyInfo.join(', ') + (notes !== '-' ? ` | ${notes}` : '');
           }
         }
 

@@ -1,4 +1,5 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
+import UnderstandingYourRating from './UnderstandingYourRating.jsx';
 
 /**
  * Osteomyelitis Rating Card - DC 5000
@@ -147,6 +148,12 @@ export default function OsteomyelitisRatingCard({ analysis, expanded, onToggle }
                     </div>
                   </div>
               )}
+
+              {/* Understanding Your Rating - Educational Content */}
+              <UnderstandingYourRating
+                  diagnosticCode="5000"
+                  currentRating={numericRating}
+              />
 
               {/* VA Rating Schedule */}
               {criteria?.ratings && (

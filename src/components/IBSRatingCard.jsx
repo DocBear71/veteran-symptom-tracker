@@ -1,5 +1,6 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { IBS_CRITERIA } from '../utils/ratingCriteria';
+import UnderstandingYourRating from './UnderstandingYourRating';
 
 /**
  * IBS Rating Card Component - Gold Standard Version
@@ -125,6 +126,12 @@ export default function IBSRatingCard({ analysis, expanded, onToggle }) {
                     </div>
                   </div>
               )}
+
+              {/* Understanding Your Rating - Educational Content */}
+              <UnderstandingYourRating
+                  diagnosticCode="7319"
+                  currentRating={supportedRating}
+              />
 
               {/* VA Rating Schedule */}
               <div>

@@ -2042,7 +2042,7 @@ export const MEASUREMENT_TYPES = {
         step: 1,
         required: true,
         placeholder: '55',
-        help: 'Normal: ≥55%',
+        help: 'Normal: >=55%',
       },
     ],
 
@@ -2077,7 +2077,7 @@ export const MEASUREMENT_TYPES = {
     relatedConditions: ['cardiomyopathy', 'cad', 'post-mi', 'hypertensive-heart'],
 
     interpretation: {
-      normal: { ef_percent: [55, 99], label: 'Normal (≥55%)', color: 'green' },
+      normal: { ef_percent: [55, 99], label: 'Normal (>=55%)', color: 'green' },
       mild: { ef_percent: [40, 55], label: 'Mildly Reduced (40-54%)', color: 'yellow' },
       moderate: { ef_percent: [30, 40], label: 'Moderately Reduced (30-39%)', color: 'orange' },
       severe: { ef_percent: [0, 30], label: 'Severely Reduced (<30%)', color: 'red' },
@@ -2217,7 +2217,7 @@ export const MEASUREMENT_TYPES = {
       moderate: { abi_calculated: [0.5, 0.7], label: 'Moderate PAD (40% Rating)', color: 'orange' },
       mild: { abi_calculated: [0.7, 0.9], label: 'Mild PAD (20% Rating)', color: 'yellow' },
       borderline: { abi_calculated: [0.9, 1.0], label: 'Borderline', color: 'yellow' },
-      normal: { abi_calculated: [1.0, 1.4], label: 'Normal (≥1.0)', color: 'green' },
+      normal: { abi_calculated: [1.0, 1.4], label: 'Normal (>=1.0)', color: 'green' },
       calcified: { abi_calculated: [1.4, 9.9], label: 'Non-compressible (Calcified Arteries)', color: 'orange' },
     },
   },
@@ -2293,7 +2293,7 @@ export const MEASUREMENT_TYPES = {
     relatedConditions: ['cirrhosis'],
 
     interpretation: {
-      severe: { meld_score: [15, 99], label: 'Severe (≥15) - 100% Rating', color: 'red' },
+      severe: { meld_score: [15, 99], label: 'Severe (>=15) - 100% Rating', color: 'red' },
       moderate_severe: { meld_score: [12, 15], label: 'Moderate-Severe (12-14) - 60% Rating', color: 'orange' },
       moderate: { meld_score: [10, 12], label: 'Moderate (10-11) - 30% Rating', color: 'yellow' },
       mild: { meld_score: [7, 10], label: 'Mild (7-9) - 10% Rating', color: 'green' },
@@ -2454,7 +2454,7 @@ export const interpretMeasurement = (measurementTypeId, values, metadata = {}) =
     }
     case 'meld-score': {
       const { meld_score } = values;
-      if (meld_score >= 15) return { label: 'Severe (≥15)', color: 'red', rating: '100%' };
+      if (meld_score >= 15) return { label: 'Severe (>=15)', color: 'red', rating: '100%' };
       if (meld_score >= 12) return { label: 'Moderate-Severe (12-14)', color: 'orange', rating: '60%' };
       if (meld_score >= 10) return { label: 'Moderate (10-11)', color: 'yellow', rating: '30%' };
       if (meld_score > 6) return { label: 'Mild (7-9)', color: 'green', rating: '10%' };

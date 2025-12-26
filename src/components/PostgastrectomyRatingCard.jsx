@@ -1,5 +1,6 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { POSTGASTRECTOMY_CRITERIA } from '../utils/ratingCriteria';
+import UnderstandingYourRating from './UnderstandingYourRating';
 
 /**
  * Postgastrectomy Syndrome Rating Card Component
@@ -197,6 +198,13 @@ export default function PostgastrectomyRatingCard({ analysis, expanded, onToggle
                     </div>
                   </div>
               )}
+
+              {/* Understanding Your Rating - Educational Content */}
+              <UnderstandingYourRating
+                  diagnosticCode={criteria.diagnosticCode || '7310'}
+                  currentRating={parseInt(supportedRating) || null}
+              />
+
 
               {/* VA Rating Schedule */}
               <div>

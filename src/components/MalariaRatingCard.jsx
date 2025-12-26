@@ -1,5 +1,6 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { MALARIA_CRITERIA } from '../utils/ratingCriteria';
+import UnderstandingYourRating from './UnderstandingYourRating';
 
 /**
  * Malaria Rating Card Component - Gold Standard Version
@@ -159,6 +160,12 @@ export default function MalariaRatingCard({ analysis, expanded, onToggle }) {
                     </div>
                   </div>
               )}
+
+              {/* Understanding Your Rating - Educational Content */}
+              <UnderstandingYourRating
+                  diagnosticCode="6310"
+                  currentRating={numericRating}
+              />
 
               {/* Section 3: VA Rating Schedule */}
               <div>

@@ -576,6 +576,38 @@ const EditLogModal = ({log, isOpen, onClose, onSaved}) => {
     socialImpact: false,
   });
 
+  // Phase 8A: Mental Health Expansion - Additional State Variables
+  const [somaticSymptomData, setSomaticSymptomData] = useState({
+    painPreoccupation: false,
+    excessiveHealthWorry: false,
+    multipleSymptoms: false,
+    frequentDoctorVisits: false,
+    functionalImpairment: false,
+  });
+
+  const [illnessAnxietyData, setIllnessAnxietyData] = useState({
+    fearOfIllness: false,
+    bodyChecking: false,
+    reassuranceSeeking: false,
+    appointmentAvoidance: false,
+    healthDistress: false,
+  });
+
+  const [depersonalizationData, setDepersonalizationData] = useState({
+    detachment: false,
+    unreality: false,
+    robotAutopilot: false,
+    distress: false,
+  });
+
+  const [cyclothymicData, setCyclothymicData] = useState({
+    hypomanic: false,
+    depressive: false,
+    moodSwings: false,
+    irritability: false,
+  });
+
+
   // Phase 9: Cardiovascular data
   const [cardiovascularData, setCardiovascularData] = useState({
     activityLevel: '',
@@ -1216,6 +1248,19 @@ const EditLogModal = ({log, isOpen, onClose, onSaved}) => {
             if (log.personalityData) {
               setPersonalityData(log.personalityData);
             }
+            // Phase 8A: Mental Health Expansion - Load additional data
+            if (log.somaticData) {
+              setSomaticSymptomData(log.somaticData);
+            }
+            if (log.illnessAnxietyData) {
+              setIllnessAnxietyData(log.illnessAnxietyData);
+            }
+            if (log.depersonalizationData) {
+              setDepersonalizationData(log.depersonalizationData);
+            }
+            if (log.cyclothymicData) {
+              setCyclothymicData(log.cyclothymicData);
+            }
             // Phase 9: Load cardiovascular data
             if (log.cardiovascularData) {
               setCardiovascularData(log.cardiovascularData);
@@ -1521,11 +1566,6 @@ const EditLogModal = ({log, isOpen, onClose, onSaved}) => {
           // Social Anxiety Symptoms category
           'social-anxiety-fear', 'social-anxiety-avoidance', 'social-anxiety-performance',
           'social-anxiety-physical', 'social-anxiety-anticipatory',
-          // Illness Anxiety Disorder (Phase 8A)
-          'illness-anxiety-fear', 'illness-anxiety-body-checking', 'illness-anxiety-reassurance',
-          'illness-anxiety-avoidance', 'illness-anxiety-distress',
-          // Other Specified Anxiety (Phase 8A - if you added these)
-          'other-anxiety-symptoms', 'other-anxiety-worry', 'other-anxiety-avoidance', 'other-anxiety-physical'
         ].includes(log?.symptomId);
 
         // Depression Form
@@ -1555,9 +1595,18 @@ const EditLogModal = ({log, isOpen, onClose, onSaved}) => {
           'adjustment-unspecified'
         ].includes(log?.symptomId);
 
+        // Somatic Symptom Disorders
+        const isSomaticSymptomRelated = [
+          'somatic-pain',
+          'somatic-excessive-worry',
+          'somatic-multiple-symptoms',
+          'somatic-doctor-visits',
+          'somatic-functional-impairment',
+        ].includes(log?.symptomId)
+
         // Pain: match ANY pain-related symptom only
         const isPainRelated = !isPeripheralNerveSymptomELM && !isEndocrineSymptomELM && !isFootConditionSymptomELM && !isHerniaOrAdhesionSymptomELM &&
-            !isDigestivePhase5BSymptomELM && !isEyeConditionSymptomELM && (
+            !isDigestivePhase5BSymptomELM && !isEyeConditionSymptomELM && !isSomaticSymptomRelated && (
             log?.symptomId?.includes('pain') ||
             log?.symptomId?.includes('-ache') ||
             log?.symptomId?.includes('stiff') ||
@@ -1906,29 +1955,12 @@ const EditLogModal = ({log, isOpen, onClose, onSaved}) => {
 
 
         // PHASE 8A: MENTAL HEALTH EXPANSION - DETECTION LOGIC
-        // Somatic Symptom Disorders
-        const isSomaticSymptomRelated = [
-          'somatic-pain',
-          'somatic-excessive-worry',
-          'somatic-multiple-symptoms',
-          'somatic-doctor-visits',
-          'somatic-functional-impairment',
-        ].includes(log?.symptomId)
-
         const isIllnessAnxietyRelated = [
           'illness-anxiety-fear',
           'illness-anxiety-body-checking',
           'illness-anxiety-reassurance',
           'illness-anxiety-avoidance',
           'illness-anxiety-distress',
-        ].includes(log?.symptomId);
-
-        // Other Anxiety/Mood
-        const isOtherSpecifiedAnxietyRelated = [
-          'other-anxiety-symptoms',
-          'other-anxiety-worry',
-          'other-anxiety-avoidance',
-          'other-anxiety-physical',
         ].includes(log?.symptomId);
 
         const isDepersonalizationRelated = [
@@ -2321,6 +2353,11 @@ const EditLogModal = ({log, isOpen, onClose, onSaved}) => {
           }
           if (isAcuteStressRelated) updates.acuteStressData = { ...acuteStressData };
           if (isPersonalityDisorderRelated) updates.personalityData = { ...personalityData };
+          // Phase 8A: Mental Health Expansion - Save additional data
+          if (isSomaticSymptomRelated) updates.somaticData = { ...somaticSymptomData };
+          if (isIllnessAnxietyRelated) updates.illnessAnxietyData = { ...illnessAnxietyData };
+          if (isDepersonalizationRelated) updates.depersonalizationData = { ...depersonalizationData };
+          if (isCyclothymicRelated) updates.cyclothymicData = { ...cyclothymicData };
           // Phase 9: Save cardiovascular data
           if (isCardiovascularRelated) {
             updates.cardiovascularData = { ...cardiovascularData };
@@ -9345,6 +9382,97 @@ const EditLogModal = ({log, isOpen, onClose, onSaved}) => {
                         </label>
                       </div>
                   )}
+
+                  {/* PHASE 8A: SOMATIC SYMPTOM DISORDER FORM */}
+                  {isSomaticSymptomRelated && (
+                      <div className="space-y-3 p-3 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
+                        <h4 className="font-medium text-gray-900 dark:text-white">🩺 Somatic Symptom Tracking</h4>
+                        <div className="space-y-2">
+                          {[
+                            { key: 'painPreoccupation', label: 'Excessive thoughts about pain/symptoms' },
+                            { key: 'excessiveHealthWorry', label: 'Excessive worry about health conditions' },
+                            { key: 'multipleSymptoms', label: 'Multiple physical symptoms present' },
+                            { key: 'frequentDoctorVisits', label: 'Frequent doctor visits for symptoms' },
+                            { key: 'functionalImpairment', label: 'Symptoms interfere with daily functioning' },
+                          ].map(({ key, label }) => (
+                              <label key={key} className="flex items-center gap-2">
+                                <input type="checkbox" checked={somaticSymptomData[key]}
+                                       onChange={(e) => setSomaticSymptomData(prev => ({ ...prev, [key]: e.target.checked }))}
+                                       className="rounded" />
+                                <span className="text-sm text-gray-700 dark:text-gray-300">{label}</span>
+                              </label>
+                          ))}
+                        </div>
+                      </div>
+                  )}
+
+                  {/* PHASE 8A: ILLNESS ANXIETY DISORDER FORM */}
+                  {isIllnessAnxietyRelated && (
+                      <div className="space-y-3 p-3 bg-amber-50 dark:bg-amber-900/20 rounded-lg">
+                        <h4 className="font-medium text-gray-900 dark:text-white">🏥 Illness Anxiety Tracking</h4>
+                        <div className="space-y-2">
+                          {[
+                            { key: 'fearOfIllness', label: 'Preoccupation with having/acquiring serious illness' },
+                            { key: 'bodyChecking', label: 'Excessive body checking for signs of illness' },
+                            { key: 'reassuranceSeeking', label: 'Seeking reassurance about health from others' },
+                            { key: 'appointmentAvoidance', label: 'Avoiding medical appointments due to fear' },
+                            { key: 'healthDistress', label: 'High anxiety/distress about health status' },
+                          ].map(({ key, label }) => (
+                              <label key={key} className="flex items-center gap-2">
+                                <input type="checkbox" checked={illnessAnxietyData[key]}
+                                       onChange={(e) => setIllnessAnxietyData(prev => ({ ...prev, [key]: e.target.checked }))}
+                                       className="rounded" />
+                                <span className="text-sm text-gray-700 dark:text-gray-300">{label}</span>
+                              </label>
+                          ))}
+                        </div>
+                      </div>
+                  )}
+
+                  {/* PHASE 8A: DEPERSONALIZATION/DEREALIZATION FORM */}
+                  {isDepersonalizationRelated && (
+                      <div className="space-y-3 p-3 bg-indigo-50 dark:bg-indigo-900/20 rounded-lg">
+                        <h4 className="font-medium text-gray-900 dark:text-white">🌀 Depersonalization/Derealization</h4>
+                        <div className="space-y-2">
+                          {[
+                            { key: 'detachment', label: 'Feeling detached from yourself' },
+                            { key: 'unreality', label: 'Surroundings feel unreal' },
+                            { key: 'robotAutopilot', label: 'Feeling like a robot or on autopilot' },
+                            { key: 'distress', label: 'Significant distress from these experiences' },
+                          ].map(({ key, label }) => (
+                              <label key={key} className="flex items-center gap-2">
+                                <input type="checkbox" checked={depersonalizationData[key]}
+                                       onChange={(e) => setDepersonalizationData(prev => ({ ...prev, [key]: e.target.checked }))}
+                                       className="rounded" />
+                                <span className="text-sm text-gray-700 dark:text-gray-300">{label}</span>
+                              </label>
+                          ))}
+                        </div>
+                      </div>
+                  )}
+
+                  {/* PHASE 8A: CYCLOTHYMIC DISORDER FORM */}
+                  {isCyclothymicRelated && (
+                      <div className="space-y-3 p-3 bg-rose-50 dark:bg-rose-900/20 rounded-lg">
+                        <h4 className="font-medium text-gray-900 dark:text-white">🔄 Cyclothymic Mood Episode</h4>
+                        <div className="space-y-2">
+                          {[
+                            { key: 'hypomanic', label: 'Hypomanic symptoms (elevated mood, energy)' },
+                            { key: 'depressive', label: 'Depressive symptoms (low mood, low energy)' },
+                            { key: 'moodSwings', label: 'Mood swings between states' },
+                            { key: 'irritability', label: 'Increased irritability' },
+                          ].map(({ key, label }) => (
+                              <label key={key} className="flex items-center gap-2">
+                                <input type="checkbox" checked={cyclothymicData[key]}
+                                       onChange={(e) => setCyclothymicData(prev => ({ ...prev, [key]: e.target.checked }))}
+                                       className="rounded" />
+                                <span className="text-sm text-gray-700 dark:text-gray-300">{label}</span>
+                              </label>
+                          ))}
+                        </div>
+                      </div>
+                  )}
+
 
                   {/* Phase 9: Cardiovascular Form */}
                   {isCardiovascularRelated && (

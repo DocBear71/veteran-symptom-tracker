@@ -1,5 +1,6 @@
 import {ChevronDown, ChevronUp} from 'lucide-react';
 import {SYRINGOMYELIA_CRITERIA} from '../utils/ratingCriteria';
+import UnderstandingYourRating from './UnderstandingYourRating';
 
 /**
  * Syringomyelia Rating Card Component - Gold Standard Version
@@ -104,6 +105,12 @@ export default function SyringomyeliaRatingCard({analysis, expanded, onToggle}) 
                     </div>
                   </div>
               )}
+
+              {/* Understanding Your Rating - Educational Content */}
+              <UnderstandingYourRating
+                  diagnosticCode="8024"
+                  currentRating={numericRating}
+              />
 
               {/* VA Rating Schedule */}
               <div>

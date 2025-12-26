@@ -1,4 +1,5 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
+import UnderstandingYourRating from './UnderstandingYourRating.jsx';
 
 /**
  * Myositis Rating Card - DC 5021
@@ -147,6 +148,12 @@ export default function MyositisRatingCard({ analysis, expanded, onToggle }) {
                     </div>
                   </div>
               )}
+
+              {/* Understanding Your Rating - Educational Content */}
+              <UnderstandingYourRating
+                  diagnosticCode="5021"
+                  currentRating={numericRating}
+              />
 
               {/* VA Rating Schedule */}
               {criteria?.ratings && (

@@ -1,5 +1,6 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { INSOMNIA_CRITERIA } from '../utils/ratingCriteria';
+import UnderstandingYourRating from './UnderstandingYourRating';
 
 /**
  * Insomnia Rating Card Component - Gold Standard Version
@@ -125,6 +126,12 @@ export default function InsomniaRatingCard({ analysis, expanded, onToggle }) {
                     </div>
                   </div>
               )}
+
+              {/* Understanding Your Rating - Educational Content */}
+              <UnderstandingYourRating
+                  diagnosticCode="7199"
+                  currentRating={numericRating}
+              />
 
               {/* VA Rating Schedule */}
               <div>

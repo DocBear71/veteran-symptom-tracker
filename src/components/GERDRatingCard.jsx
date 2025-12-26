@@ -1,5 +1,6 @@
 import {ChevronDown, ChevronUp} from 'lucide-react';
 import {GERD_CRITERIA} from '../utils/ratingCriteria';
+import UnderstandingYourRating from './UnderstandingYourRating';
 
 export default function GERDRatingCard({analysis, expanded, onToggle}) {
   if (!analysis || !analysis.hasData) return null;
@@ -21,11 +22,16 @@ export default function GERDRatingCard({analysis, expanded, onToggle}) {
   // 0% gets a distinct "supported but minimal" style visible in both light/dark modes
   const getRatingRowColor = (percent, isSupported) => {
     if (!isSupported) return 'bg-gray-50 dark:bg-gray-700/30 border-gray-200 dark:border-gray-600';
-    if (percent >= 100) return 'bg-red-100 dark:bg-red-900/30 border-red-300 dark:border-red-700';
-    if (percent >= 70) return 'bg-orange-100 dark:bg-orange-900/30 border-orange-300 dark:border-orange-700';
-    if (percent >= 50) return 'bg-amber-100 dark:bg-amber-900/30 border-amber-300 dark:border-amber-700';
-    if (percent >= 30) return 'bg-yellow-100 dark:bg-yellow-900/30 border-yellow-300 dark:border-yellow-700';
-    if (percent >= 10) return 'bg-green-100 dark:bg-green-900/30 border-green-300 dark:border-green-700';
+    if (percent >=
+        100) return 'bg-red-100 dark:bg-red-900/30 border-red-300 dark:border-red-700';
+    if (percent >=
+        70) return 'bg-orange-100 dark:bg-orange-900/30 border-orange-300 dark:border-orange-700';
+    if (percent >=
+        50) return 'bg-amber-100 dark:bg-amber-900/30 border-amber-300 dark:border-amber-700';
+    if (percent >=
+        30) return 'bg-yellow-100 dark:bg-yellow-900/30 border-yellow-300 dark:border-yellow-700';
+    if (percent >=
+        10) return 'bg-green-100 dark:bg-green-900/30 border-green-300 dark:border-green-700';
     // 0-9%: Blue-gray that's visible in both light and dark modes
     return 'bg-blue-50 dark:bg-blue-900/30 border-blue-200 dark:border-blue-700';
   };
@@ -130,9 +136,18 @@ export default function GERDRatingCard({analysis, expanded, onToggle}) {
                             className="text-blue-600 dark:text-blue-400 mt-0.5">◆</span><span
                             className="text-sm text-gray-700 dark:text-gray-300">{item}</span>
                         </div>))}</div>
-              </div>)}
-              <div><h4
-                  className="font-medium text-gray-900 dark:text-white mb-2 text-center">VA
+              </div>
+              )}
+
+              {/* Understanding Your Rating - Educational Content */}
+              <UnderstandingYourRating
+                  diagnosticCode="7346"
+                  currentRating={numericRating}
+              />
+
+
+              <div>
+                <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-center">VA
                 Rating Schedule</h4>
                 <div className="space-y-2">{criteria.ratings.map(r => {
                   const s = isRatingSupported(r.percent);

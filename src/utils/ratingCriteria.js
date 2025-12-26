@@ -7151,14 +7151,14 @@ export const GENERAL_SPINE_RATING_FORMULA = {
         'Significant but somewhat functional limitation',
       ],
       evidenceNeeded: [
-        'ROM measurements showing forward flexion ≤30°',
+        'ROM measurements showing forward flexion <=30°',
         'Goniometer readings by healthcare provider',
         'OR imaging showing fusion in functional position',
       ],
     },
     {
       percent: 20,
-      summary: 'Forward flexion 30-60°, OR combined ROM ≤120°, OR muscle spasm causing abnormal gait/contour',
+      summary: 'Forward flexion 30-60°, OR combined ROM <=120°, OR muscle spasm causing abnormal gait/contour',
       criteriaDescription: [
         'Forward flexion greater than 30° but not greater than 60°, OR',
         'Combined ROM of thoracolumbar spine not greater than 120°, OR',
@@ -15324,14 +15324,14 @@ export const CARDIOMYOPATHY_CRITERIA = {
   ratings: [
     {
       percent: 100,
-      summary: 'Workload ≤3.0 METs causes heart failure symptoms',
+      summary: 'Workload <=3.0 METs causes heart failure symptoms',
       criteriaDescription: [
         'Workload of 3.0 METs or less results in heart failure symptoms',
         'Heart failure symptoms include: breathlessness, fatigue, angina, dizziness, syncope, palpitations',
         'Severely limited - symptoms with minimal activity (eating, dressing, walking slowly)',
       ],
       evidenceNeeded: [
-        'Exercise stress test showing symptoms at ≤3.0 METs',
+        'Exercise stress test showing symptoms at <=3.0 METs',
         'OR medical estimate with specific activity examples',
         'Echocardiogram or equivalent showing cardiac impairment',
         'Symptom logs documenting limitations',
@@ -15803,7 +15803,7 @@ export const CAD_CRITERIA = {
   ratings: [
     {
       percent: 100,
-      summary: 'Documented CHF OR workload ≤3.0 METs causes symptoms',
+      summary: 'Documented CHF OR workload <=3.0 METs causes symptoms',
       criteriaDescription: [
         'Chronic congestive heart failure (CHF) documented, OR',
         'Workload of 3.0 METs or less results in dyspnea, fatigue, angina, dizziness, or syncope',
@@ -15811,7 +15811,7 @@ export const CAD_CRITERIA = {
       ],
       evidenceNeeded: [
         'Medical diagnosis of CHF with treatment records',
-        'OR exercise stress test showing symptoms at ≤3.0 METs',
+        'OR exercise stress test showing symptoms at <=3.0 METs',
         'OR medical estimate with specific activity limitations',
         'Ejection fraction if available',
         'Symptom logs documenting severe limitations',
@@ -16015,7 +16015,7 @@ export const HYPERTENSIVE_HEART_CRITERIA = {
   ratings: [
     {
       percent: 100,
-      summary: 'Documented CHF OR workload ≤3.0 METs causes symptoms',
+      summary: 'Documented CHF OR workload <=3.0 METs causes symptoms',
       criteriaDescription: [
         'Chronic congestive heart failure documented, OR',
         'Workload of 3.0 METs or less results in dyspnea, fatigue, angina, dizziness, or syncope',
@@ -16200,7 +16200,7 @@ export const PAD_CRITERIA = {
   ratings: [
     {
       percent: 100,
-      summary: 'Ischemic rest pain AND deep ulcers or ABI ≤0.4',
+      summary: 'Ischemic rest pain AND deep ulcers or ABI <=0.4',
       criteriaDescription: [
         'Ischemic limb pain at rest, AND',
         'Either deep ischemic ulcers OR ankle/brachial index (ABI) of 0.4 or less',
@@ -16214,20 +16214,20 @@ export const PAD_CRITERIA = {
     },
     {
       percent: 60,
-      summary: 'Claudication <25 yards AND persistent coldness or ABI ≤0.5',
+      summary: 'Claudication <25 yards AND persistent coldness or ABI <=0.5',
       criteriaDescription: [
         'Claudication on walking less than 25 yards on level grade at 2 mph, AND',
         'Either persistent coldness of the extremity OR ABI of 0.5 or less',
       ],
       evidenceNeeded: [
         'Documentation of severe claudication distance',
-        'Evidence of persistent coldness OR ABI ≤0.5',
+        'Evidence of persistent coldness OR ABI <=0.5',
         'Symptom logs with walking distance documented',
       ],
     },
     {
       percent: 40,
-      summary: 'Claudication 25-100 yards AND trophic changes or ABI ≤0.7',
+      summary: 'Claudication 25-100 yards AND trophic changes or ABI <=0.7',
       criteriaDescription: [
         'Claudication on walking between 25 and 100 yards on level grade at 2 mph, AND',
         'Either trophic changes (thin skin, absence of hair, dystrophic nails) OR ABI of 0.7 or less',
@@ -16240,7 +16240,7 @@ export const PAD_CRITERIA = {
     },
     {
       percent: 20,
-      summary: 'Claudication >100 yards AND diminished pulses or ABI ≤0.9',
+      summary: 'Claudication >100 yards AND diminished pulses or ABI <=0.9',
       criteriaDescription: [
         'Claudication on walking more than 100 yards, AND',
         'Either diminished peripheral pulses OR ABI of 0.9 or less',
@@ -16262,11 +16262,11 @@ export const PAD_CRITERIA = {
       term: 'Ankle-Brachial Index (ABI)',
       definition: 'Ratio of blood pressure at ankle divided by blood pressure at arm. Normal is 1.0 or greater. Lower values indicate arterial disease.',
       ranges: [
-        'Normal: ≥1.0',
+        'Normal: >=1.0',
         'Mild PAD: 0.9-0.99 (20% rating threshold)',
         'Moderate PAD: 0.7-0.89 (40% rating threshold)',
         'Moderate-Severe PAD: 0.5-0.69 (60% rating threshold)',
-        'Severe PAD: ≤0.4 (100% rating threshold)',
+        'Severe PAD: <=0.4 (100% rating threshold)',
       ],
     },
     trophicChanges: {
@@ -16651,14 +16651,14 @@ export const HERNIA_CRITERIA = {
   ratings: [
     {
       percent: 100,
-      summary: 'Irreparable hernia ≥15cm for 12+ months with pain during 3+ activities',
+      summary: 'Irreparable hernia >=15cm for 12+ months with pain during 3+ activities',
       criteriaDescription: [
         'Irreparable hernia (new or recurrent) present for 12 months or more',
         'Size equal to 15 cm or greater in one dimension for 12+ months',
         'Pain when performing at least three of: (1) bending over, (2) ADLs, (3) walking, (4) climbing stairs',
       ],
       evidenceNeeded: [
-        'Medical documentation of hernia size ≥15cm',
+        'Medical documentation of hernia size >=15cm',
         'Documentation hernia is irreparable',
         'Symptom logs showing pain with 3+ activities',
         'Duration of 12+ months documented',
@@ -16666,14 +16666,14 @@ export const HERNIA_CRITERIA = {
     },
     {
       percent: 60,
-      summary: 'Irreparable hernia ≥15cm for 12+ months with pain during 2 activities',
+      summary: 'Irreparable hernia >=15cm for 12+ months with pain during 2 activities',
       criteriaDescription: [
         'Irreparable hernia (new or recurrent) present for 12 months or more',
         'Size equal to 15 cm or greater in one dimension for 12+ months',
         'Pain when performing two of: (1) bending over, (2) ADLs, (3) walking, (4) climbing stairs',
       ],
       evidenceNeeded: [
-        'Medical documentation of hernia size ≥15cm',
+        'Medical documentation of hernia size >=15cm',
         'Documentation hernia is irreparable',
         'Symptom logs showing pain with 2 activities',
         'Duration of 12+ months documented',
@@ -16903,7 +16903,7 @@ export const ESOPHAGEAL_STRICTURE_CRITERIA = {
     },
     {
       percent: 50,
-      summary: 'Refractory stricture with dysphagia, aspiration, and undernutrition OR ≥3 dilatations/year',
+      summary: 'Refractory stricture with dysphagia, aspiration, and undernutrition OR >=3 dilatations/year',
       criteriaDescription: [
         'Recurrent or refractory stricture with dysphagia, aspiration, and undernutrition, OR',
         'Requiring dilatation three or more times per 12-month period',
@@ -16916,7 +16916,7 @@ export const ESOPHAGEAL_STRICTURE_CRITERIA = {
     },
     {
       percent: 30,
-      summary: 'Recurrent stricture with dysphagia requiring ≤2 dilatations/year',
+      summary: 'Recurrent stricture with dysphagia requiring <=2 dilatations/year',
       criteriaDescription: [
         'Recurrent stricture with dysphagia',
         'Requiring dilatation two or fewer times per 12-month period',
@@ -17546,11 +17546,11 @@ export const GENERAL_SKIN_FORMULA_CRITERIA = {
     },
     {
       percent: 30,
-      summary: '20-40% body/exposed areas OR systemic therapy ≥6 weeks',
+      summary: '20-40% body/exposed areas OR systemic therapy >=6 weeks',
       criteriaDescription: [
         'Characteristic lesions involving 20-40% of the entire body, OR',
         '20-40% of exposed areas affected, OR',
-        'Systemic therapy required ≥6 weeks but not constantly over past 12 months',
+        'Systemic therapy required >=6 weeks but not constantly over past 12 months',
       ],
       evidenceNeeded: [
         'Documentation of affected body percentage',
@@ -17641,10 +17641,10 @@ export const DISCOID_LUPUS_CRITERIA = {
     },
     {
       percent: 30,
-      summary: '20-40% body/exposed areas OR systemic therapy ≥6 weeks',
+      summary: '20-40% body/exposed areas OR systemic therapy >=6 weeks',
       criteriaDescription: [
         'Discoid lesions involving 20-40% of entire body or exposed areas, OR',
-        'Systemic therapy required ≥6 weeks but not constantly over past 12 months',
+        'Systemic therapy required >=6 weeks but not constantly over past 12 months',
       ],
       evidenceNeeded: [
         'Documentation of affected percentage',
@@ -17735,10 +17735,10 @@ export const BULLOUS_DISORDERS_CRITERIA = {
     },
     {
       percent: 30,
-      summary: '20-40% body/exposed areas OR systemic therapy ≥6 weeks',
+      summary: '20-40% body/exposed areas OR systemic therapy >=6 weeks',
       criteriaDescription: [
         'Bullous lesions involving 20-40% of entire body or exposed areas, OR',
-        'Systemic therapy required ≥6 weeks but not constantly over past 12 months',
+        'Systemic therapy required >=6 weeks but not constantly over past 12 months',
       ],
       evidenceNeeded: [
         'Documentation of lesion extent',
@@ -17912,10 +17912,10 @@ export const DERMATOPHYTOSIS_CRITERIA = {
     },
     {
       percent: 30,
-      summary: '20-40% body/exposed areas OR systemic therapy ≥6 weeks',
+      summary: '20-40% body/exposed areas OR systemic therapy >=6 weeks',
       criteriaDescription: [
         'Fungal infection involving 20-40% of entire body or exposed areas, OR',
-        'Systemic antifungal therapy ≥6 weeks but not constantly over past 12 months',
+        'Systemic antifungal therapy >=6 weeks but not constantly over past 12 months',
       ],
       evidenceNeeded: [
         'Documentation of affected areas',
@@ -18009,10 +18009,10 @@ export const SKIN_INFECTIONS_CRITERIA = {
     },
     {
       percent: 30,
-      summary: '20-40% body/exposed areas OR systemic therapy ≥6 weeks',
+      summary: '20-40% body/exposed areas OR systemic therapy >=6 weeks',
       criteriaDescription: [
         'Skin infection involving 20-40% of entire body or exposed areas, OR',
-        'Systemic therapy ≥6 weeks but not constantly over past 12 months',
+        'Systemic therapy >=6 weeks but not constantly over past 12 months',
       ],
       evidenceNeeded: [
         'Documentation of affected areas',
@@ -25301,7 +25301,7 @@ const calculateSpineRating = (symptoms, metrics) => {
     supportedRating = 40;
     ratingRationale.push(`Severe symptoms (avg severity ${avgSeverity.toFixed(1)}/10) suggest significant ROM limitation`);
     ratingRationale.push(`${functionalLossCount} functional loss episodes documented`);
-    ratingRationale.push('Pattern consistent with forward flexion ≤30° - requires clinical ROM measurement to confirm');
+    ratingRationale.push('Pattern consistent with forward flexion <=30° - requires clinical ROM measurement to confirm');
   }
   // Check for moderate-severe indicators (20% rating)
   else if (avgSeverity >= 6 || (limitedFlexionCount >= 3 && muscleSpasmsCount >= 2)) {
@@ -25400,7 +25400,7 @@ export const analyzeVertebralFractureLogs = (logs, options = {}) => {
   // Special consideration for vertebral height loss (10% minimum)
   if (heightLossCount > 0 && supportedRating < 10) {
     supportedRating = 10;
-    ratingRationale.push('Vertebral height loss documented - qualifies for minimum 10% if ≥50% height loss confirmed on imaging');
+    ratingRationale.push('Vertebral height loss documented - qualifies for minimum 10% if >=50% height loss confirmed on imaging');
   }
 
   // Add fracture-specific rationale
@@ -34873,7 +34873,7 @@ export const analyzeCardiomyopathyLogs = (logs, measurements = [], options = {})
   if (lowestMets !== null) {
     if (lowestMets <= 3.0) {
       supportedRating = 100;
-      rationale = [`METs capacity ≤3.0 (${lowestMets} METs documented)`, 'Severely limited functional capacity supports 100% rating'];
+      rationale = [`METs capacity <=3.0 (${lowestMets} METs documented)`, 'Severely limited functional capacity supports 100% rating'];
     } else if (lowestMets <= 5.0) {
       supportedRating = 60;
       rationale = [`METs capacity 3.1-5.0 (${lowestMets} METs documented)`, 'Moderately limited functional capacity supports 60% rating'];
@@ -35015,7 +35015,7 @@ export const analyzeCADLogs = (logs, measurements = [], options = {}) => {
     if (lowestMets <= 3.0 || hasCHFIndicators) {
       supportedRating = 100;
       rationale = [
-        lowestMets <= 3.0 ? `METs capacity ≤3.0 (${lowestMets} METs documented)` : 'Symptoms consistent with CHF (dyspnea at rest, significant fatigue)',
+        lowestMets <= 3.0 ? `METs capacity <=3.0 (${lowestMets} METs documented)` : 'Symptoms consistent with CHF (dyspnea at rest, significant fatigue)',
         'Severely limited functional capacity supports 100% rating'
       ];
     } else if (lowestMets <= 5.0) {
@@ -35187,7 +35187,7 @@ export const analyzePostMILogs = (logs, measurements = [], options = {}) => {
   } else if (lowestMets !== null) {
     if (lowestMets <= 3.0) {
       supportedRating = 100;
-      rationale = [`METs capacity ≤3.0 (${lowestMets} METs documented)`, 'Severely limited capacity supports 100% rating'];
+      rationale = [`METs capacity <=3.0 (${lowestMets} METs documented)`, 'Severely limited capacity supports 100% rating'];
     } else if (lowestMets <= 5.0) {
       supportedRating = 60;
       rationale = [`METs capacity 3.1-5.0 (${lowestMets} METs documented)`, 'Moderate limitation supports 60% rating'];
@@ -35349,7 +35349,7 @@ export const analyzeHypertensiveHeartLogs = (logs, measurements = [], options = 
     if (lowestMets <= 3.0 || hasCHFIndicators) {
       supportedRating = 100;
       rationale = [
-        lowestMets <= 3.0 ? `METs capacity ≤3.0 (${lowestMets} METs documented)` : 'CHF symptoms documented (dyspnea at rest, orthopnea, edema)',
+        lowestMets <= 3.0 ? `METs capacity <=3.0 (${lowestMets} METs documented)` : 'CHF symptoms documented (dyspnea at rest, orthopnea, edema)',
         'Severely limited capacity supports 100% rating'
       ];
     } else if (lowestMets <= 5.0) {
@@ -35632,7 +35632,7 @@ export const analyzePADLogs = (logs, measurements = [], options = {}) => {
     supportedRating = 100;
     rationale = [
       'Ischemic rest pain documented',
-      hasUlceration ? 'Ischemic ulceration/gangrene present' : `ABI ≤0.4 (${lowestABI?.toFixed(2)})`,
+      hasUlceration ? 'Ischemic ulceration/gangrene present' : `ABI <=0.4 (${lowestABI?.toFixed(2)})`,
       'Pattern supports 100% rating per extremity'
     ];
   }
@@ -35641,7 +35641,7 @@ export const analyzePADLogs = (logs, measurements = [], options = {}) => {
     supportedRating = 60;
     rationale = [
       'Severe claudication (<25 yards) documented',
-      hasPersistentColdness ? 'Persistent coldness documented' : `ABI ≤0.5 (${lowestABI?.toFixed(2)})`,
+      hasPersistentColdness ? 'Persistent coldness documented' : `ABI <=0.5 (${lowestABI?.toFixed(2)})`,
       'Pattern supports 60% rating per extremity'
     ];
   }
@@ -35650,7 +35650,7 @@ export const analyzePADLogs = (logs, measurements = [], options = {}) => {
     supportedRating = 40;
     rationale = [
       'Moderate claudication (25-100 yards) documented',
-      hasTrophicChanges ? 'Trophic changes present' : `ABI ≤0.7 (${lowestABI?.toFixed(2)})`,
+      hasTrophicChanges ? 'Trophic changes present' : `ABI <=0.7 (${lowestABI?.toFixed(2)})`,
       'Pattern supports 40% rating per extremity'
     ];
   }
@@ -35660,7 +35660,7 @@ export const analyzePADLogs = (logs, measurements = [], options = {}) => {
     supportedRating = 20;
     rationale = [
       'Claudication documented',
-      hasDiminishedPulses ? 'Diminished peripheral pulses documented' : `ABI ≤0.9 (${lowestABI?.toFixed(2)})`,
+      hasDiminishedPulses ? 'Diminished peripheral pulses documented' : `ABI <=0.9 (${lowestABI?.toFixed(2)})`,
       'Pattern supports 20% rating per extremity'
     ];
   }
@@ -36603,7 +36603,7 @@ export const analyzeHerniaLogs = (logs, options = {}) => {
 
   // Determine hernia characteristics
   const isIrreducible = irreducibleLogs.length > 0;
-  const isLargeSize = sizeLargeLogs.length > 0; // ≥15cm
+  const isLargeSize = sizeLargeLogs.length > 0; // >=15cm
   const isMediumSize = sizeMediumLogs.length > 0; // 3-15cm
   const isSmallSize = sizeSmallLogs.length > 0 && !isMediumSize && !isLargeSize; // <3cm
 
@@ -36645,7 +36645,7 @@ export const analyzeHerniaLogs = (logs, options = {}) => {
     if (isLargeSize && painActivitiesCount >= 3) {
       supportedRating = 100;
       ratingRationale = [
-        `Hernia size ≥15cm documented`,
+        `Hernia size >=15cm documented`,
         `Pain with ${painActivitiesCount} activities: ${painActivities.join(', ')}`,
         'Irreducible/irreparable hernia documented',
         'Note: VA requires 12+ months duration - ensure medical documentation',
@@ -36653,7 +36653,7 @@ export const analyzeHerniaLogs = (logs, options = {}) => {
     } else if (isLargeSize && painActivitiesCount >= 2) {
       supportedRating = 60;
       ratingRationale = [
-        `Hernia size ≥15cm documented`,
+        `Hernia size >=15cm documented`,
         `Pain with ${painActivitiesCount} activities: ${painActivities.join(', ')}`,
         'Irreducible/irreparable hernia documented',
         'Note: VA requires 12+ months duration - ensure medical documentation',
@@ -37018,13 +37018,13 @@ export const analyzeEsophagealLogs = (logs, options = {}) => {
   } else if (dilatationCount >= 3) {
     supportedRating = 50;
     ratingRationale = [
-      `${dilatationCount} dilatation procedures documented (≥3/year criteria met)`,
+      `${dilatationCount} dilatation procedures documented (>=3/year criteria met)`,
     ];
   } else if (hasRecurrent && hasDysphagia && dilatationCount > 0 && dilatationCount <= 2) {
     supportedRating = 30;
     ratingRationale = [
       'Recurrent stricture with dysphagia',
-      `${dilatationCount} dilatation(s) documented (≤2/year)`,
+      `${dilatationCount} dilatation(s) documented (<=2/year)`,
     ];
   } else if (hasDysphagia && hasDailyMedication) {
     supportedRating = 10;
@@ -37496,7 +37496,7 @@ export const analyzeAcneLogs = (logs, options = {}) => {
     supportedRating = 30;
     ratingRationale = [
       'Deep acne (nodules/cysts) documented',
-      'Face and neck involvement ≥40% documented',
+      'Face and neck involvement >=40% documented',
     ];
   } else if (hasDeepAcne && (hasFaceNeckUnder40 || hasBodyAcne)) {
     supportedRating = 10;
@@ -37659,7 +37659,7 @@ export const analyzeChloracneLogs = (logs, options = {}) => {
     supportedRating = 30;
     ratingRationale = [
       'Deep chloracne (nodules/cysts) documented',
-      'Face and neck involvement ≥40% documented',
+      'Face and neck involvement >=40% documented',
     ];
   } else if (hasDeepChloracne && hasIntertriginous) {
     supportedRating = 20;
@@ -38188,7 +38188,7 @@ const determineGeneralSkinRating = (bodyPercentage, treatmentLevel) => {
   if (bodyPercentage === '>40%' || treatmentLevel === 'constant') {
     return 60;
   }
-  // 30%: 20-40% body OR systemic ≥6 weeks
+  // 30%: 20-40% body OR systemic >=6 weeks
   if (bodyPercentage === '20-40%' || treatmentLevel === '6weeks') {
     return 30;
   }
@@ -38267,7 +38267,7 @@ export const analyzeDiscoidLupusLogs = (logs, options = {}) => {
       ratingRationale.push('20-40% of body or exposed areas affected');
     }
     if (treatmentLevel === '6weeks') {
-      ratingRationale.push('Systemic therapy ≥6 weeks over past 12 months');
+      ratingRationale.push('Systemic therapy >=6 weeks over past 12 months');
     }
   } else if (supportedRating === 10) {
     if (bodyPercentage === '5-20%') {
@@ -38308,7 +38308,7 @@ export const analyzeDiscoidLupusLogs = (logs, options = {}) => {
     gaps.push('Document treatment type: topical only vs systemic therapy');
   }
   if (treatmentLevel && treatmentLevel !== 'topical' && treatmentLevel !== 'constant') {
-    gaps.push('Document duration of systemic therapy (<6 weeks vs ≥6 weeks vs constant)');
+    gaps.push('Document duration of systemic therapy (<6 weeks vs >=6 weeks vs constant)');
   }
   if (scarringLogs.length === 0 && (discoidLesionsLogs.length > 0 || erythematousPlaquesLogs.length > 0)) {
     gaps.push('Document any scarring - may qualify for separate rating');
@@ -38408,7 +38408,7 @@ export const analyzeBullousDisordersLogs = (logs, options = {}) => {
       ratingRationale.push('20-40% of body or exposed areas affected');
     }
     if (treatmentLevel === '6weeks') {
-      ratingRationale.push('Systemic therapy ≥6 weeks over past 12 months');
+      ratingRationale.push('Systemic therapy >=6 weeks over past 12 months');
     }
   } else if (supportedRating === 10) {
     if (bodyPercentage === '5-20%') {
@@ -38722,7 +38722,7 @@ export const analyzeDermatophytosisLogs = (logs, options = {}) => {
       ratingRationale.push('20-40% of body or exposed areas affected');
     }
     if (treatmentLevel === '6weeks') {
-      ratingRationale.push('Systemic antifungal therapy ≥6 weeks over past 12 months');
+      ratingRationale.push('Systemic antifungal therapy >=6 weeks over past 12 months');
     }
   } else if (supportedRating === 10) {
     if (bodyPercentage === '5-20%') {
@@ -38868,7 +38868,7 @@ export const analyzeSkinInfectionsLogs = (logs, options = {}) => {
       ratingRationale.push('20-40% of body or exposed areas affected');
     }
     if (treatmentLevel === '6weeks') {
-      ratingRationale.push('Systemic therapy ≥6 weeks over past 12 months');
+      ratingRationale.push('Systemic therapy >=6 weeks over past 12 months');
     }
   } else if (supportedRating === 10) {
     if (bodyPercentage === '5-20%') {

@@ -1,5 +1,6 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { FEMALE_SEXUAL_AROUSAL_DISORDER_CRITERIA } from '../utils/ratingCriteria';
+import UnderstandingYourRating from './UnderstandingYourRating';
 
 /**
  * Female Arousal Disorder Rating Card Component - Gold Standard Version

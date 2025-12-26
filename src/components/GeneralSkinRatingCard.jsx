@@ -7,6 +7,7 @@ import {
   SKIN_INFECTIONS_CRITERIA,
   GENERAL_SKIN_FORMULA_CRITERIA,
 } from '../utils/ratingCriteria';
+import UnderstandingYourRating from './UnderstandingYourRating.jsx';
 
 /**
  * General Skin Rating Card Component - Gold Standard Version
@@ -95,7 +96,7 @@ export default function GeneralSkinRatingCard({ analysis, expanded, onToggle }) 
   const formatTreatmentLevel = (level) => {
     const labels = {
       'constant': 'Constant Systemic',
-      '6weeks': 'Systemic ≥6 Weeks',
+      '6weeks': 'Systemic >=6 Weeks',
       'intermittent': 'Intermittent Systemic',
       'topical': 'Topical Only',
       'refractory': 'Refractory',
@@ -237,6 +238,12 @@ export default function GeneralSkinRatingCard({ analysis, expanded, onToggle }) 
                     </div>
                   </div>
               )}
+
+              {/* Understanding Your Rating - Educational Content */}
+              <UnderstandingYourRating
+                  diagnosticCode={diagnosticCode}
+                  currentRating={numericRating}
+              />
 
               {/* Section 3: VA Rating Schedule */}
               <div>

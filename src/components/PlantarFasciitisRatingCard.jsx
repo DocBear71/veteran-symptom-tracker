@@ -1,5 +1,6 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { PLANTAR_FASCIITIS_CRITERIA } from '../utils/ratingCriteria';
+import UnderstandingYourRating from './UnderstandingYourRating';
 
 /**
  * Plantar Fasciitis Rating Card - Gold Standard Version
@@ -132,6 +133,12 @@ export default function PlantarFasciitisRatingCard({ analysis, expanded, onToggl
                     </div>
                   </div>
               )}
+
+              {/* Understanding Your Rating - Educational Content */}
+              <UnderstandingYourRating
+                  diagnosticCode={criteria.diagnosticCode || '5276'}
+                  currentRating={numericRating}
+              />
 
               {/* VA Rating Schedule */}
               <div>

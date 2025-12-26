@@ -1,5 +1,6 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { CIRRHOSIS_CRITERIA } from '../utils/ratingCriteria';
+import UnderstandingYourRating from './UnderstandingYourRating';
 
 /**
  * Cirrhosis Rating Card Component
@@ -156,6 +157,12 @@ export default function CirrhosisRatingCard({ analysis, expanded, onToggle }) {
                     </div>
                   </div>
               )}
+
+              {/* Understanding Your Rating - Educational Content */}
+              <UnderstandingYourRating
+                  diagnosticCode="7312"
+                  currentRating={numericRating}
+              />
 
               {/* VA Rating Schedule */}
               <div>

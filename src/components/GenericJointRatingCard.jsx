@@ -1,4 +1,5 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
+import UnderstandingYourRating from './UnderstandingYourRating';
 
 /**
  * Generic Joint Rating Card - Gold Standard Version
@@ -184,6 +185,12 @@ export default function GenericJointRatingCard({
                     </div>
                   </div>
               )}
+
+              {/* Understanding Your Rating - Educational Content */}
+              <UnderstandingYourRating
+                  diagnosticCode={displayCode}
+                  currentRating={numericRating}
+              />
 
               {/* VA Rating Schedule */}
               {displayCriteria?.ratings && (

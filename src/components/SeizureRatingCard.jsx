@@ -1,5 +1,6 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { EPILEPSY_MAJOR_CRITERIA, EPILEPSY_MINOR_CRITERIA } from '../utils/ratingCriteria';
+import UnderstandingYourRating from './UnderstandingYourRating';
 
 /**
  * Seizure/Epilepsy Rating Card Component - Gold Standard Version
@@ -167,6 +168,12 @@ export default function SeizureRatingCard({ analysis, expanded, onToggle }) {
                     </div>
                   </div>
               )}
+
+              {/* Understanding Your Rating - Educational Content */}
+              <UnderstandingYourRating
+                  diagnosticCode={getDiagnosticCode()}
+                  currentRating={supportedRating}
+              />
 
               {/* VA Rating Schedule - Major Seizures (DC 8910) */}
               <div>

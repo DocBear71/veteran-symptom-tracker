@@ -1,5 +1,6 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { BRUCELLOSIS_CRITERIA } from '../utils/ratingCriteria';
+import UnderstandingYourRating from './UnderstandingYourRating';
 
 /**
  * Brucellosis Rating Card Component - Gold Standard Version
@@ -159,6 +160,12 @@ export default function BrucellosisRatingCard({ analysis, expanded, onToggle }) 
                     </div>
                   </div>
               )}
+
+              {/* Understanding Your Rating - Educational Content */}
+              <UnderstandingYourRating
+                  diagnosticCode="6311"
+                  currentRating={numericRating}
+              />
 
               {/* Section 3: VA Rating Schedule */}
               <div>

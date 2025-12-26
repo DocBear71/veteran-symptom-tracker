@@ -1,4 +1,5 @@
 import {ChevronDown, ChevronUp} from 'lucide-react';
+import UnderstandingYourRating from './UnderstandingYourRating.jsx';
 
 export default function MaxillaMalunionRatingCard({
                                                     analysis,
@@ -135,6 +136,13 @@ export default function MaxillaMalunionRatingCard({
                             className="text-sm text-gray-700 dark:text-gray-300">{item}</span>
                         </div>))}</div>
               </div>)}
+
+              {/* Understanding Your Rating - Educational Content */}
+              <UnderstandingYourRating
+                  diagnosticCode="9900"
+                  currentRating={numericRating}
+              />
+
               <div><h4
                   className="font-medium text-gray-900 dark:text-white mb-2 text-center">VA
                 Rating Schedule</h4>

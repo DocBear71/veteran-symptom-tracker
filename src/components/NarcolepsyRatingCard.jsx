@@ -1,5 +1,6 @@
 import {ChevronDown, ChevronUp} from 'lucide-react';
 import {NARCOLEPSY_CRITERIA} from '../utils/ratingCriteria';
+import UnderstandingYourRating from './UnderstandingYourRating';
 
 /**
  * Narcolepsy Rating Card Component - Gold Standard Version
@@ -104,6 +105,12 @@ export default function NarcolepsyRatingCard({analysis, expanded, onToggle}) {
                     </div>
                   </div>
               )}
+
+              {/* Understanding Your Rating - Educational Content */}
+              <UnderstandingYourRating
+                  diagnosticCode="8108"
+                  currentRating={numericRating}
+              />
 
               {/* VA Rating Schedule */}
               <div>

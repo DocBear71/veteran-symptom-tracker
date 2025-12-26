@@ -1,4 +1,5 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
+import UnderstandingYourRating from './UnderstandingYourRating.jsx';
 
 /**
  * Bursitis Rating Card - DC 5019
@@ -147,6 +148,12 @@ export default function BursitisRatingCard({ analysis, expanded, onToggle }) {
                     </div>
                   </div>
               )}
+
+              {/* Understanding Your Rating - Educational Content */}
+              <UnderstandingYourRating
+                  diagnosticCode="5019"
+                  currentRating={numericRating}
+              />
 
               {/* VA Rating Schedule */}
               {criteria?.ratings && (

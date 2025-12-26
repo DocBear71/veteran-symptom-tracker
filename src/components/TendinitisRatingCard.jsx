@@ -1,4 +1,5 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
+import UnderstandingYourRating from './UnderstandingYourRating.jsx';
 
 /**
  * Tendinitis/Tenosynovitis Rating Card - DC 5024
@@ -147,6 +148,12 @@ export default function TendinitisRatingCard({ analysis, expanded, onToggle }) {
                     </div>
                   </div>
               )}
+
+              {/* Understanding Your Rating - Educational Content */}
+              <UnderstandingYourRating
+                  diagnosticCode="5024"
+                  currentRating={numericRating}
+              />
 
               {/* VA Rating Schedule */}
               {criteria?.ratings && (

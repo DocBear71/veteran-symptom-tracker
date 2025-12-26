@@ -1,4 +1,5 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
+import UnderstandingYourRating from './UnderstandingYourRating';
 
 /**
  * Generic Rating Card - Gold Standard Version
@@ -145,6 +146,12 @@ export default function GenericRatingCard({ analysis, expanded, onToggle, icon =
                     </div>
                   </div>
               )}
+
+              {/* Understanding Your Rating - Educational Content */}
+              <UnderstandingYourRating
+                  diagnosticCode={diagnosticCode || '0000'}
+                  currentRating={typeof supportedRating === 'number' ? supportedRating : parseInt(supportedRating) || null}
+              />
 
               {/* VA Rating Schedule - Show if we found any ratings */}
               {ratings.length > 0 && (

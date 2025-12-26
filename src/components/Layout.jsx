@@ -21,6 +21,11 @@ const Layout = ({ children, currentView, onNavigate }) => {
     return () => window.removeEventListener('profileChanged', handleProfileChange);
   }, []);
 
+  // Scroll to top when view/page changes
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }, [currentView]);
+
   // Get labels based on active profile type
   const getLabels = () => {
     if (!activeProfile) {

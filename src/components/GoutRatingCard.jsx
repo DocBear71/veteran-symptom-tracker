@@ -1,4 +1,5 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
+import UnderstandingYourRating from './UnderstandingYourRating.jsx';
 
 /**
  * Gout Rating Card - DC 5017
@@ -147,6 +148,12 @@ export default function GoutRatingCard({ analysis, expanded, onToggle }) {
                     </div>
                   </div>
               )}
+
+              {/* Understanding Your Rating - Educational Content */}
+              <UnderstandingYourRating
+                  diagnosticCode="5017"
+                  currentRating={numericRating}
+              />
 
               {/* VA Rating Schedule */}
               {criteria?.ratings && (

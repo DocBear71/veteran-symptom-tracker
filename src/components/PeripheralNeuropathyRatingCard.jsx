@@ -1,5 +1,6 @@
 import {ChevronDown, ChevronUp} from 'lucide-react';
 import {PERIPHERAL_NEUROPATHY_CRITERIA} from '../utils/ratingCriteria';
+import UnderstandingYourRating from './UnderstandingYourRating';
 
 export default function PeripheralNeuropathyRatingCard({
                                                          analysis,
@@ -134,8 +135,17 @@ export default function PeripheralNeuropathyRatingCard({
                             className="text-blue-600 dark:text-blue-400 mt-0.5">◆</span><span
                             className="text-sm text-gray-700 dark:text-gray-300">{item}</span>
                         </div>))}</div>
-              </div>)}
-              <div><h4
+              </div>
+              )}
+
+              {/* Understanding Your Rating - Educational Content */}
+              <UnderstandingYourRating
+                  diagnosticCode={criteria.diagnosticCode || '8521'}
+                  currentRating={numericRating}
+              />
+
+              <div>
+                <h4
                   className="font-medium text-gray-900 dark:text-white mb-2 text-center">VA
                 Rating Schedule</h4>
                 <div className="space-y-2">{criteria.ratings.map(r => {

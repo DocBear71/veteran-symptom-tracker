@@ -1,5 +1,6 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { INTESTINAL_FISTULA_CRITERIA } from '../utils/ratingCriteria';
+import UnderstandingYourRating from './UnderstandingYourRating.jsx';
 
 /**
  * Intestinal Fistula Rating Card Component
@@ -205,6 +206,12 @@ export default function IntestinalFistulaRatingCard({ analysis, expanded, onTogg
                     </div>
                   </div>
               )}
+
+              {/* Understanding Your Rating - Educational Content */}
+              <UnderstandingYourRating
+                  diagnosticCode="7330"
+                  currentRating={numericRating}
+              />
 
               {/* VA Rating Schedule */}
               <div>

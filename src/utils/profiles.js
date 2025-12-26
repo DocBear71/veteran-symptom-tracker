@@ -89,6 +89,7 @@ export const getProfileById = (profileId) => {
 
 /**
  * Set active profile
+ * Also syncs the profile type to the global profile settings
  */
 export const setActiveProfile = (profileId) => {
   const profile = getProfileById(profileId);
@@ -99,9 +100,34 @@ export const setActiveProfile = (profileId) => {
   try {
     localStorage.setItem(ACTIVE_PROFILE_KEY, profileId);
 
+    // CRITICAL: Sync the profile type to the global profile settings
+    // This ensures useProfile hook and feature flags work correctly
+    const globalProfileKey = 'symptomTracker_profile';
+    const existingGlobalProfile = JSON.parse(localStorage.getItem(globalProfileKey) || '{}');
+    const updatedGlobalProfile = {
+      ...existingGlobalProfile,
+      type: profile.type,
+      patientName: profile.metadata?.patientName || profile.name || '',
+      updatedAt: new Date().toISOString(),
+      // Store reference to the active multi-profile
+      activeProfileId: profileId,
+      activeProfileName: profile.name,
+    };
+    localStorage.setItem(globalProfileKey, JSON.stringify(updatedGlobalProfile));
+
+    // Mark onboarding as complete for this profile type
+    // (prevents re-showing onboarding on profile switch)
+    localStorage.setItem('symptomTracker_onboardingComplete', 'true');
+
     // Trigger storage event for other tabs/components
     window.dispatchEvent(new CustomEvent('profileChanged', {
       detail: { profileId, profile }
+    }));
+
+    // Also trigger a storage event so useProfile hook can detect the change
+    window.dispatchEvent(new StorageEvent('storage', {
+      key: globalProfileKey,
+      newValue: JSON.stringify(updatedGlobalProfile),
     }));
 
     return { success: true, profile };

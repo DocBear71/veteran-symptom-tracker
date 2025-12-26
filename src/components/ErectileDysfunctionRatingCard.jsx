@@ -1,5 +1,6 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { ERECTILE_DYSFUNCTION_CRITERIA } from '../utils/ratingCriteria';
+import UnderstandingYourRating from './UnderstandingYourRating';
 
 /**
  * Erectile Dysfunction Rating Card Component - Gold Standard Version
@@ -93,6 +94,12 @@ export default function ErectileDysfunctionRatingCard({ analysis, expanded, onTo
                     </div>
                   </div>
               )}
+
+              {/* Understanding Your Rating - Educational Content */}
+              <UnderstandingYourRating
+                  diagnosticCode="7522"
+                  currentRating={numericRating}
+              />
 
               {/* VA Rating Schedule */}
               <div>

@@ -27,6 +27,7 @@ import {
   LATERAL_FEMORAL_CUTANEOUS_NERVE_CRITERIA,
   ILIOINGUINAL_NERVE_CRITERIA,
 } from '../utils/ratingCriteria';
+import UnderstandingYourRating from './UnderstandingYourRating.jsx';
 
 /**
  * Peripheral Nerve Rating Card Component - Gold Standard Version
@@ -329,6 +330,12 @@ export default function PeripheralNerveRatingCard({ nerveType, analysis, expande
                     </div>
                   </div>
               )}
+
+              {/* Understanding Your Rating - Educational Content */}
+              <UnderstandingYourRating
+                  diagnosticCode={diagnosticCode}
+                  currentRating={numericRating}
+              />
 
               {/* VA Rating Schedule */}
               <div>

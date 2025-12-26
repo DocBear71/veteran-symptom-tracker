@@ -1,5 +1,6 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { BILIARY_TRACT_CRITERIA } from '../utils/ratingCriteria';
+import UnderstandingYourRating from './UnderstandingYourRating';
 
 /**
  * Biliary Tract Disease Rating Card Component
@@ -163,6 +164,12 @@ export default function BiliaryTractRatingCard({ analysis, expanded, onToggle })
                     </div>
                   </div>
               )}
+
+              {/* Understanding Your Rating - Educational Content */}
+              <UnderstandingYourRating
+                  diagnosticCode="7314"
+                  currentRating={numericRating}
+              />
 
               {/* VA Rating Schedule */}
               <div>

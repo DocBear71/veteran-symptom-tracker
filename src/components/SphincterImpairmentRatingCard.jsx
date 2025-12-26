@@ -1,5 +1,6 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { SPHINCTER_IMPAIRMENT_CRITERIA } from '../utils/ratingCriteria';
+import UnderstandingYourRating from './UnderstandingYourRating';
 
 /**
  * Sphincter Impairment Rating Card Component - Gold Standard Version
@@ -101,6 +102,12 @@ export default function SphincterImpairmentRatingCard({ analysis, expanded, onTo
                     </div>
                   </div>
               )}
+
+              {/* Understanding Your Rating - Educational Content */}
+              <UnderstandingYourRating
+                  diagnosticCode="7332"
+                  currentRating={numericRating}
+              />
 
               {/* VA Rating Schedule */}
               <div>

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { SLEEP_APNEA_CRITERIA } from '../utils/ratingCriteria';
+import UnderstandingYourRating from './UnderstandingYourRating';
 
 /**
  * Sleep Apnea Rating Card Component - Gold Standard Version
@@ -159,6 +160,12 @@ export default function SleepApneaRatingCard({ analysis, profile, expanded, onTo
                     </div>
                   </div>
               )}
+
+              {/* Understanding Your Rating - Educational Content */}
+              <UnderstandingYourRating
+                  diagnosticCode="6847"
+                  currentRating={supportedRating}
+              />
 
               {/* VA Rating Schedule */}
               <div>

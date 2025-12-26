@@ -9,14 +9,19 @@ import {
   stripDCCode,
   getCategoriesByBodySystem,
   searchSymptoms,
-  allSymptomsWithBodySystem
+  allSymptomsWithBodySystem,
+  getRelatedConditions,
+  getSuggestedConditions
 } from '../data/symptoms';
 import { saveSymptomLog, getCustomSymptoms, addCustomSymptom, getMedications, logMedicationTaken } from '../utils/storage';
+import { getProfileType, PROFILE_TYPES } from '../utils/profile';
 import OccurrenceTimePicker from './OccurrenceTimePicker.jsx';
 import QuickLog from './QuickLog';
 import AddChronicModal from './AddChronicModal';
 
 const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
+  // Check if user is a veteran for VA-specific features
+  const isVeteran = getProfileType() === PROFILE_TYPES.VETERAN;
   // Body System / Category / Symptom selection state
   const [selectedBodySystem, setSelectedBodySystem] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
@@ -27,6 +32,9 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
   const [isSearchMode, setIsSearchMode] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
+  // Related conditions suggestions
+  const [showRelatedConditions, setShowRelatedConditions] = useState(true);
+
   const searchInputRef = useRef(null);
 
   const [severity, setSeverity] = useState(5);
@@ -723,6 +731,37 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
     socialImpact: false,
   });
 
+  // Phase 8A: Mental Health Expansion - Additional State Variables
+  const [somaticSymptomData, setSomaticSymptomData] = useState({
+    painPreoccupation: false,
+    excessiveHealthWorry: false,
+    multipleSymptoms: false,
+    frequentDoctorVisits: false,
+    functionalImpairment: false,
+  });
+
+  const [illnessAnxietyData, setIllnessAnxietyData] = useState({
+    fearOfIllness: false,
+    bodyChecking: false,
+    reassuranceSeeking: false,
+    appointmentAvoidance: false,
+    healthDistress: false,
+  });
+
+  const [depersonalizationData, setDepersonalizationData] = useState({
+    detachment: false,
+    unreality: false,
+    robotAutopilot: false,
+    distress: false,
+  });
+
+  const [cyclothymicData, setCyclothymicData] = useState({
+    hypomanic: false,
+    depressive: false,
+    moodSwings: false,
+    irritability: false,
+  });
+
   // Phase 9: Cardiovascular data
   const [cardiovascularData, setCardiovascularData] = useState({
     // General cardiac/cardiomyopathy
@@ -1246,11 +1285,6 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
     // Social Anxiety Symptoms category
     'social-anxiety-fear', 'social-anxiety-avoidance', 'social-anxiety-performance',
     'social-anxiety-physical', 'social-anxiety-anticipatory',
-    // Illness Anxiety Disorder (Phase 8A)
-    'illness-anxiety-fear', 'illness-anxiety-body-checking', 'illness-anxiety-reassurance',
-    'illness-anxiety-avoidance', 'illness-anxiety-distress',
-    // Other Specified Anxiety (Phase 8A - if you added these)
-    'other-anxiety-symptoms', 'other-anxiety-worry', 'other-anxiety-avoidance', 'other-anxiety-physical'
   ].includes(selectedSymptom);
 
   // Depression Form
@@ -1274,8 +1308,6 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
     'ocd-obsessions', 'ocd-compulsions', 'ocd-checking', 'ocd-contamination', 'ocd-time-spent'
   ].includes(selectedSymptom);
 
-
-
   // Adjustment Disorder Form
   const isAdjustmentDisorderFormRelated = [
     'adjustment-depressed-mood', 'adjustment-anxiety', 'adjustment-mixed-emotions',
@@ -1283,8 +1315,17 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
     'adjustment-unspecified'
   ].includes(selectedSymptom);
 
+  // Somatic Symptom Disorders
+  const isSomaticSymptomRelated = [
+    'somatic-pain',
+    'somatic-excessive-worry',
+    'somatic-multiple-symptoms',
+    'somatic-doctor-visits',
+    'somatic-functional-impairment',
+  ].includes(selectedSymptom);
+
   const isPainSelected = !isPeripheralNerveSymptom && !isEndocrineSymptom && !isFootConditionSymptom && !isHerniaOrAdhesionSymptom &&
-      !isDigestivePhase5BSymptom &&  !isEyeConditionSymptom && !isEarConditionSymptom && (
+      !isDigestivePhase5BSymptom &&  !isEyeConditionSymptom && !isEarConditionSymptom && !isSomaticSymptomRelated && (
       selectedSymptom?.includes('pain') ||
       selectedSymptom?.includes('-ache') ||
       selectedSymptom?.includes('stiff') ||
@@ -1582,12 +1623,12 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
     'illness-anxiety-distress',
   ].includes(selectedSymptom);
 
-  // Other Anxiety/Mood
-  const isOtherSpecifiedAnxietyRelated = [
-    'other-anxiety-symptoms',
-    'other-anxiety-worry',
-    'other-anxiety-avoidance',
-    'other-anxiety-physical',
+  // Depersonalization/Derealization
+  const isDepersonalizationRelated = [
+    'depersonalization-detachment',
+    'derealization-unreality',
+    'depersonalization-robot',
+    'depersonalization-distress',
   ].includes(selectedSymptom);
 
   const isCyclothymicRelated = [
@@ -2518,6 +2559,41 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
         socialImpact: false,
       });
     }
+    // Phase 8A: Mental Health Expansion - Reset additional state
+    if (!isSomaticSymptomRelated) {
+      setSomaticSymptomData({
+        painPreoccupation: false,
+        excessiveHealthWorry: false,
+        multipleSymptoms: false,
+        frequentDoctorVisits: false,
+        functionalImpairment: false,
+      });
+    }
+    if (!isIllnessAnxietyRelated) {
+      setIllnessAnxietyData({
+        fearOfIllness: false,
+        bodyChecking: false,
+        reassuranceSeeking: false,
+        appointmentAvoidance: false,
+        healthDistress: false,
+      });
+    }
+    if (!isDepersonalizationRelated) {
+      setDepersonalizationData({
+        detachment: false,
+        unreality: false,
+        robotAutopilot: false,
+        distress: false,
+      });
+    }
+    if (!isCyclothymicRelated) {
+      setCyclothymicData({
+        hypomanic: false,
+        depressive: false,
+        moodSwings: false,
+        irritability: false,
+      });
+    }
     // Phase 9: Reset cardiovascular data
     if (!isCardiovascularRelated) {
       setCardiovascularData({
@@ -2834,6 +2910,14 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
   // Get body systems list for dropdown
   const bodySystemList = useMemo(() => getBodySystemList(), []);
 
+  // Get related conditions based on selected category
+  const relatedConditions = useMemo(() => {
+    if (!selectedCategory) return [];
+    const category = allCategories.find(cat => cat.id === selectedCategory);
+    if (!category) return [];
+    return getRelatedConditions(category.name);
+  }, [selectedCategory, allCategories]);
+
   // Get categories grouped by body system (including custom symptoms)
   const categoriesByBodySystem = useMemo(() => {
     const grouped = {};
@@ -3093,6 +3177,19 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
     // Phase 8: Mental Health Conditions
     if (isAnorexiaRelated || isBulimiaRelated) {
       entry.eatingDisorderData = { ...eatingDisorderData };
+    }
+    // Phase 8A: Mental Health Expansion - Save condition-specific data
+    if (isSomaticSymptomRelated) {
+      entry.somaticData = { ...somaticSymptomData };
+    }
+    if (isIllnessAnxietyRelated) {
+      entry.illnessAnxietyData = { ...illnessAnxietyData };
+    }
+    if (isDepersonalizationRelated) {
+      entry.depersonalizationData = { ...depersonalizationData };
+    }
+    if (isCyclothymicRelated) {
+      entry.cyclothymicData = { ...cyclothymicData };
     }
     if (isAnxietyFormRelated) {
       entry.anxietyData = { ...anxietyData };
@@ -3528,7 +3625,9 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
                                         🔥 This is a flare-up
                                     </span>
                       <p className="text-xs text-gray-500 dark:text-gray-400">
-                        Symptom is worse than usual baseline
+                        {isVeteran
+                            ? 'Symptom is worse than usual baseline — important for VA flare-up documentation'
+                            : 'Symptom is worse than usual baseline'}
                       </p>
                     </div>
                   </label>
@@ -10425,6 +10524,132 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
               </div>
           )}
 
+          {/* PHASE 8A: SOMATIC SYMPTOM DISORDER FORM */}
+          {isSomaticSymptomRelated && (
+              <div className="space-y-3 p-3 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
+                <h4 className="font-medium text-gray-900 dark:text-white">🩺 Somatic Symptom Tracking</h4>
+                <p className="text-xs text-gray-600 dark:text-gray-400">Track physical symptoms and health-related behaviors</p>
+
+                <div className="space-y-2">
+                  {[
+                    { key: 'painPreoccupation', label: 'Excessive thoughts about pain/symptoms' },
+                    { key: 'excessiveHealthWorry', label: 'Excessive worry about health conditions' },
+                    { key: 'multipleSymptoms', label: 'Multiple physical symptoms present' },
+                    { key: 'frequentDoctorVisits', label: 'Frequent doctor visits for symptoms' },
+                    { key: 'functionalImpairment', label: 'Symptoms interfere with daily functioning' },
+                  ].map(({ key, label }) => (
+                      <label key={key} className="flex items-center gap-2">
+                        <input
+                            type="checkbox"
+                            checked={somaticSymptomData[key]}
+                            onChange={(e) => setSomaticSymptomData(prev => ({
+                              ...prev,
+                              [key]: e.target.checked
+                            }))}
+                            className="rounded"
+                        />
+                        <span className="text-sm text-gray-700 dark:text-gray-300">{label}</span>
+                      </label>
+                  ))}
+                </div>
+
+                <div className="bg-purple-100 dark:bg-purple-900/40 p-2 rounded text-xs text-gray-600 dark:text-gray-400">
+                  <strong>For VA Claims:</strong> Document persistent physical symptoms that cause significant distress.
+                </div>
+              </div>
+          )}
+
+          {/* PHASE 8A: ILLNESS ANXIETY DISORDER FORM */}
+          {isIllnessAnxietyRelated && (
+              <div className="space-y-3 p-3 bg-amber-50 dark:bg-amber-900/20 rounded-lg">
+                <h4 className="font-medium text-gray-900 dark:text-white">🏥 Illness Anxiety Tracking</h4>
+                <p className="text-xs text-gray-600 dark:text-gray-400">Track health anxiety symptoms and behaviors</p>
+
+                <div className="space-y-2">
+                  {[
+                    { key: 'fearOfIllness', label: 'Preoccupation with having/acquiring serious illness' },
+                    { key: 'bodyChecking', label: 'Excessive body checking for signs of illness' },
+                    { key: 'reassuranceSeeking', label: 'Seeking reassurance about health from others' },
+                    { key: 'appointmentAvoidance', label: 'Avoiding medical appointments due to fear' },
+                    { key: 'healthDistress', label: 'High anxiety/distress about health status' },
+                  ].map(({ key, label }) => (
+                      <label key={key} className="flex items-center gap-2">
+                        <input
+                            type="checkbox"
+                            checked={illnessAnxietyData[key]}
+                            onChange={(e) => setIllnessAnxietyData(prev => ({
+                              ...prev,
+                              [key]: e.target.checked
+                            }))}
+                            className="rounded"
+                        />
+                        <span className="text-sm text-gray-700 dark:text-gray-300">{label}</span>
+                      </label>
+                  ))}
+                </div>
+              </div>
+          )}
+
+          {/* PHASE 8A: DEPERSONALIZATION/DEREALIZATION FORM */}
+          {isDepersonalizationRelated && (
+              <div className="space-y-3 p-3 bg-indigo-50 dark:bg-indigo-900/20 rounded-lg">
+                <h4 className="font-medium text-gray-900 dark:text-white">🌀 Depersonalization/Derealization Episode</h4>
+                <p className="text-xs text-gray-600 dark:text-gray-400">Track dissociative symptoms</p>
+
+                <div className="space-y-2">
+                  {[
+                    { key: 'detachment', label: 'Feeling detached from yourself (depersonalization)' },
+                    { key: 'unreality', label: 'Surroundings feel unreal (derealization)' },
+                    { key: 'robotAutopilot', label: 'Feeling like a robot or on autopilot' },
+                    { key: 'distress', label: 'Significant distress from these experiences' },
+                  ].map(({ key, label }) => (
+                      <label key={key} className="flex items-center gap-2">
+                        <input
+                            type="checkbox"
+                            checked={depersonalizationData[key]}
+                            onChange={(e) => setDepersonalizationData(prev => ({
+                              ...prev,
+                              [key]: e.target.checked
+                            }))}
+                            className="rounded"
+                        />
+                        <span className="text-sm text-gray-700 dark:text-gray-300">{label}</span>
+                      </label>
+                  ))}
+                </div>
+              </div>
+          )}
+
+          {/* PHASE 8A: CYCLOTHYMIC DISORDER FORM */}
+          {isCyclothymicRelated && (
+              <div className="space-y-3 p-3 bg-rose-50 dark:bg-rose-900/20 rounded-lg">
+                <h4 className="font-medium text-gray-900 dark:text-white">🔄 Cyclothymic Mood Episode</h4>
+                <p className="text-xs text-gray-600 dark:text-gray-400">Track mood fluctuations</p>
+
+                <div className="space-y-2">
+                  {[
+                    { key: 'hypomanic', label: 'Hypomanic symptoms (elevated mood, energy)' },
+                    { key: 'depressive', label: 'Depressive symptoms (low mood, low energy)' },
+                    { key: 'moodSwings', label: 'Mood swings between states' },
+                    { key: 'irritability', label: 'Increased irritability' },
+                  ].map(({ key, label }) => (
+                      <label key={key} className="flex items-center gap-2">
+                        <input
+                            type="checkbox"
+                            checked={cyclothymicData[key]}
+                            onChange={(e) => setCyclothymicData(prev => ({
+                              ...prev,
+                              [key]: e.target.checked
+                            }))}
+                            className="rounded"
+                        />
+                        <span className="text-sm text-gray-700 dark:text-gray-300">{label}</span>
+                      </label>
+                  ))}
+                </div>
+              </div>
+          )}
+
           {/* Phase 9: Cardiovascular Conditions Form */}
           {isCardiovascularRelated && (
               <div className="space-y-4 p-3 bg-red-50 dark:bg-red-900/20 rounded-lg">
@@ -12490,8 +12715,8 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
               </div>
           )}
 
-                {/* Severity Slider */}
-                <div>
+          {/* Severity Slider */}
+          <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Severity Level</label>
             <div className="bg-white dark:bg-gray-800 p-4 rounded-lg border border-gray-200 dark:border-gray-700">
               <input type="range" min="0" max="10" value={severity}
@@ -12504,6 +12729,9 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
               </span>
                 <span className="text-xs text-gray-500 dark:text-gray-400">10</span>
               </div>
+              <p className="text-xs text-gray-500 dark:text-gray-400 mt-2 text-center">
+                0-3: Mild (noticeable but manageable) • 4-6: Moderate (affects daily activities) • 7-10: Severe (significantly impairs function)
+              </p>
             </div>
           </div>
 
@@ -12561,10 +12789,14 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Notes (optional)</label>
             <textarea value={notes} onChange={(e) => setNotes(e.target.value)}
-                      placeholder="What were you doing? What made it better or worse?"
+                      placeholder="What were you doing? What made it better or worse? Did it affect work, sleep, or daily tasks?"
                       rows={3}
                       className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500" />
-            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Detailed notes help build stronger claims</p>
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+              {isVeteran
+                  ? '💡 Document triggers, functional impact, and what you couldn\'t do. Specific details strengthen claims.'
+                  : '💡 Document triggers and how this affected your day.'}
+            </p>
           </div>
 
           {/* Occurrence Time Picker */}
@@ -12575,6 +12807,58 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
                 label="When did this occur?"
             />
           </div>
+
+          {/* Related Conditions Suggestions - Veterans Only */}
+          {selectedSymptom && relatedConditions.length > 0 && showRelatedConditions && getProfileType() === PROFILE_TYPES.VETERAN && (
+              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 p-4 rounded-lg border border-blue-200 dark:border-blue-800">
+                <div className="flex justify-between items-start mb-3">
+                  <div>
+                    <h3 className="font-medium text-blue-900 dark:text-blue-200 flex items-center gap-2">
+                      <span>💡</span> Related Conditions
+                    </h3>
+                    <p className="text-xs text-blue-700 dark:text-blue-300 mt-1">
+                      Veterans with this condition often also claim:
+                    </p>
+                  </div>
+                  <button
+                      type="button"
+                      onClick={() => setShowRelatedConditions(false)}
+                      className="text-blue-400 hover:text-blue-600 dark:hover:text-blue-300 text-sm"
+                  >
+                    ✕
+                  </button>
+                </div>
+
+                <div className="space-y-2">
+                  {relatedConditions.slice(0, 4).map((condition, index) => (
+                      <div
+                          key={condition.categoryId || index}
+                          className="bg-white dark:bg-gray-800 rounded-lg p-3 border border-blue-100 dark:border-gray-700"
+                      >
+                        <div className="flex justify-between items-start">
+                          <div className="flex-1">
+                            <div className="flex items-center gap-2">
+                          <span className="font-medium text-gray-900 dark:text-white text-sm">
+                            {condition.name}
+                          </span>
+                              <span className="text-xs px-1.5 py-0.5 bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 rounded">
+                            DC {condition.dcCode}
+                          </span>
+                            </div>
+                            <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+                              {condition.reason}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                  ))}
+                </div>
+
+                <p className="text-xs text-blue-600 dark:text-blue-400 mt-3 italic">
+                  💡 Tip: Consider adding related conditions to your Chronic Symptoms for easier tracking
+                </p>
+              </div>
+          )}
 
           {/* Submit Button */}
           <button type="submit" disabled={!selectedSymptom}

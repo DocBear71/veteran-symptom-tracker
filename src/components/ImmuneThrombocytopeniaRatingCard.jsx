@@ -1,5 +1,6 @@
 import {ChevronDown, ChevronUp} from 'lucide-react';
 import {IMMUNE_THROMBOCYTOPENIA_CRITERIA} from '../utils/ratingCriteria';
+import UnderstandingYourRating from './UnderstandingYourRating';
 
 export default function ImmuneThrombocytopeniaRatingCard({
                                                            analysis,
@@ -131,9 +132,20 @@ export default function ImmuneThrombocytopeniaRatingCard({
                         <div key={idx} className="flex items-start gap-2"><span
                             className="text-blue-600 dark:text-blue-400 mt-0.5">◆</span><span
                             className="text-sm text-gray-700 dark:text-gray-300">{item}</span>
-                        </div>))}</div>
-              </div>)}
-              <div><h4
+                        </div>
+                    ))}
+                </div>
+              </div>
+              )}
+
+              {/* Understanding Your Rating - Educational Content */}
+              <UnderstandingYourRating
+                  diagnosticCode="7705"
+                  currentRating={numericRating}
+              />
+
+              <div>
+                <h4
                   className="font-medium text-gray-900 dark:text-white mb-2 text-center">VA
                 Rating Schedule</h4>
                 <div className="space-y-2">{criteria.ratings.map(r => {

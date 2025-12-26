@@ -1,5 +1,6 @@
 import {ChevronDown, ChevronUp} from 'lucide-react';
 import {RHINITIS_CRITERIA} from '../utils/ratingCriteria';
+import UnderstandingYourRating from './UnderstandingYourRating';
 
 export default function RhinitisRatingCard({analysis, expanded, onToggle}) {
   if (!analysis || !analysis.hasData) return null;
@@ -126,11 +127,19 @@ export default function RhinitisRatingCard({analysis, expanded, onToggle}) {
                         <div key={idx} className="flex items-start gap-2"><span
                             className="text-blue-600 dark:text-blue-400 mt-0.5">◆</span><span
                             className="text-sm text-gray-700 dark:text-gray-300">{item}</span>
-                        </div>))}</div>
-              </div>)}
-              <div><h4
-                  className="font-medium text-gray-900 dark:text-white mb-2 text-center">VA
-                Rating Schedule</h4>
+                        </div>
+                    ))}
+                </div>
+              </div>
+              )}
+
+              {/* Understanding Your Rating - Educational Content */}
+              <UnderstandingYourRating
+                  diagnosticCode={criteria.diagnosticCode || '6522'}
+                  currentRating={numericRating}
+              />
+              <div>
+                <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-center">VA Rating Schedule</h4>
                 <div className="space-y-2">{criteria.ratings.map(r => {
                   const s = isRatingSupported(r.percent);
                   return (<div key={r.percent}

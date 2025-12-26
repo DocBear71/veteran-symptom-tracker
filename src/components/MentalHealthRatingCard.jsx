@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { MENTAL_HEALTH_SHARED_CRITERIA } from '../utils/ratingCriteria';
+import UnderstandingYourRating from './UnderstandingYourRating';
 
 /**
  * Mental Health Rating Card - Gold Standard Version
@@ -140,6 +141,13 @@ export default function MentalHealthRatingCard({
                     </div>
                   </div>
               )}
+
+              {/* Understanding Your Rating - Educational Content */}
+              <UnderstandingYourRating
+                  diagnosticCode={displayCode}
+                  currentRating={typeof supportedRating === 'number' ? supportedRating : parseInt(supportedRating, 10)}
+              />
+
 
               {/* VA Rating Schedule */}
               {ratings.length > 0 && (

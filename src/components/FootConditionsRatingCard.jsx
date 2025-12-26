@@ -6,6 +6,7 @@ import {
   HALLUX_VALGUS_CRITERIA,
   HALLUX_RIGIDUS_CRITERIA,
 } from '../utils/ratingCriteria';
+import UnderstandingYourRating from './UnderstandingYourRating.jsx';
 
 /**
  * Foot Conditions Rating Card Component - Gold Standard Version
@@ -239,6 +240,12 @@ export default function FootConditionsRatingCard({ analysis, diagnosticCode, exp
                     </div>
                   </div>
               )}
+
+              {/* Understanding Your Rating - Educational Content */}
+              <UnderstandingYourRating
+                  diagnosticCode={diagnosticCode}
+                  currentRating={numericRating}
+              />
 
               {/* Section 3: VA Rating Schedule */}
               <div>

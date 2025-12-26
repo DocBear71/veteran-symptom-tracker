@@ -1,5 +1,6 @@
 import {ChevronDown, ChevronUp} from 'lucide-react';
 import {SARCOIDOSIS_CRITERIA} from '../utils/ratingCriteria';
+import UnderstandingYourRating from './UnderstandingYourRating';
 
 /**
  * Sarcoidosis Rating Card Component - Matches AsthmaRatingCard styling
@@ -98,6 +99,13 @@ export default function SarcoidosisRatingCard({analysis, expanded, onToggle}) {
                     </div>
                   </div>
               )}
+
+              {/* Understanding Your Rating - Educational Content */}
+              <UnderstandingYourRating
+                  diagnosticCode="6846"
+                  currentRating={numericRating}
+              />
+
               <div>
                 <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-center">VA Rating Schedule</h4>
                 <div className="space-y-2">

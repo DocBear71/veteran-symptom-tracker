@@ -6,6 +6,7 @@ import {
   EPILEPSY_DIENCEPHALIC_CRITERIA,
   EPILEPSY_PSYCHOMOTOR_CRITERIA
 } from '../utils/ratingCriteria';
+import UnderstandingYourRating from './UnderstandingYourRating';
 
 /**
  * Epilepsy Expansion Rating Card Component - Gold Standard Version
@@ -206,6 +207,12 @@ export default function EpilepsyExpansionRatingCard({ analysis, expanded, onTogg
                     </div>
                   </div>
               )}
+
+              {/* Understanding Your Rating - Educational Content */}
+              <UnderstandingYourRating
+                  diagnosticCode={config.code}
+                  currentRating={numericRating}
+              />
 
               {/* Section 3: VA Rating Schedule */}
               <div>

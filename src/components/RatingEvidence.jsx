@@ -1,6 +1,8 @@
-import { useState, useEffect, useMemo } from 'react';
-import { getSymptomLogs, saveSymptomLog } from '../utils/storage';
+import { useState, useEffect, useMemo, memo } from 'react';
+import { getSymptomLogs, saveSymptomLog, getChronicSymptoms } from '../utils/storage';
 import { getMeasurements } from '../utils/measurements';
+import { getProfileType, PROFILE_TYPES } from '../utils/profile';
+import { getSuggestedConditions } from '../data/symptoms';
 import {
   analyzeMigraineLogs,
   analyzeSleepApneaLogs,
@@ -419,6 +421,7 @@ import HyperhidrosisRatingCard from './HyperhidrosisRatingCard';
 import GeneralSkinRatingCard from './GeneralSkinRatingCard';
 import GeneralEyeRatingCard from './GeneralEyeRatingCard';
 import EarConditionsRatingCard from './EarConditionsRatingCard';
+import ConditionGroup from './ConditionGroup';
 
 // Storage key for sleep apnea profile
 const SLEEP_APNEA_PROFILE_KEY = 'symptomTracker_sleepApneaProfile';
@@ -451,17 +454,29 @@ const saveSleepApneaProfile = (profile) => {
  * - Bipolar Disorder (DC 9432)
  */
 const RatingEvidence = () => {
-    const [logs, setLogs] = useState([]);
-    const [measurements, setMeasurements] = useState([]);
-    const [evaluationDays, setEvaluationDays] = useState(90);
-    const [expandedSection, setExpandedSection] = useState(null);
-    const [sleepApneaProfile, setSleepApneaProfile] = useState(getSleepApneaProfile());
-    const [showSleepApneaSetup, setShowSleepApneaSetup] = useState(false);
+  const [logs, setLogs] = useState([]);
+  const [measurements, setMeasurements] = useState([]);
+  const [evaluationDays, setEvaluationDays] = useState(90);
+  const [expandedSection, setExpandedSection] = useState(null);
+  const [sleepApneaProfile, setSleepApneaProfile] = useState(getSleepApneaProfile());
+  const [showSleepApneaSetup, setShowSleepApneaSetup] = useState(false);
+  const [chronicSymptoms, setChronicSymptoms] = useState([]);
+  const [showSuggestedConditions, setShowSuggestedConditions] = useState(true);
 
-    useEffect(() => {
-        setLogs(getSymptomLogs());
-        setMeasurements(getMeasurements());
-    }, []);
+  // Check if user is a veteran
+  const isVeteran = getProfileType() === PROFILE_TYPES.VETERAN;
+
+  useEffect(() => {
+    setLogs(getSymptomLogs());
+    setMeasurements(getMeasurements());
+    setChronicSymptoms(getChronicSymptoms());
+  }, []);
+
+  // Get suggested conditions based on what user is tracking
+  const suggestedConditions = useMemo(() => {
+    if (!isVeteran || chronicSymptoms.length === 0) return [];
+    return getSuggestedConditions(chronicSymptoms);
+  }, [chronicSymptoms, isVeteran]);
 
   // Analyze migraine logs
   const migraineAnalysis = useMemo(() => {
@@ -1203,6 +1218,369 @@ const RatingEvidence = () => {
         setShowSleepApneaSetup(false);
     };
 
+  // ============================================
+  // BODY SYSTEM CONDITION COUNTS
+  // ============================================
+  // Count conditions with data for each body system
+  const bodySystemCounts = useMemo(() => {
+    return {
+      mentalHealth: [
+        ptsdAnalysis.hasData,
+        majorDepressionAnalysis.hasData,
+        generalizedAnxietyAnalysis.hasData,
+        panicDisorderAnalysis.hasData,
+        bipolarAnalysis.hasData,
+        socialAnxietyAnalysis.hasData,
+        ocdAnalysis.hasData,
+        persistentDepressiveAnalysis.hasData,
+        adjustmentDisorderAnalysis.hasData,
+        unspecifiedAnxietyAnalysis.hasData,
+        unspecifiedDepressiveAnalysis.hasData,
+        somaticSymptomDisorderAnalysis.hasData,
+        otherSpecifiedSomaticAnalysis.hasData,
+        unspecifiedSomaticAnalysis.hasData,
+        illnessAnxietyAnalysis.hasData,
+        otherSpecifiedAnxietyAnalysis.hasData,
+        depersonalizationAnalysis.hasData,
+        cyclothymicAnalysis.hasData,
+        anorexiaNervosaAnalysis.hasData,
+        bulimiaNervosaAnalysis.hasData,
+        schizophreniaAnalysis.hasData,
+        schizoaffectiveDisorderAnalysis.hasData,
+        delusionalDisorderAnalysis.hasData,
+        psychoticDisorderNOSAnalysis.hasData,
+        briefPsychoticDisorderAnalysis.hasData,
+        bingeEatingDisorderAnalysis.hasData,
+        dissociativeIdentityDisorderAnalysis.hasData,
+        dissociativeAmnesiaAnalysis.hasData,
+        acuteStressDisorderAnalysis.hasData,
+        antisocialPersonalityDisorderAnalysis.hasData,
+        borderlinePersonalityDisorderAnalysis.hasData,
+        narcissisticPersonalityDisorderAnalysis.hasData,
+        avoidantPersonalityDisorderAnalysis.hasData,
+      ].filter(Boolean).length,
+
+      neurological: [
+        migraineAnalysis.hasData,
+        tbiAnalysis.hasData,
+        tbiResidualsAnalysis.hasData,
+        epilepsyMajorAnalysis.hasData,
+        epilepsyMinorAnalysis.hasData,
+        jacksonianEpilepsyAnalysis.hasData,
+        diencephalicEpilepsyAnalysis.hasData,
+        psychomotorEpilepsyAnalysis.hasData,
+        radiculopathyAnalysis.hasData,
+        peripheralNeuropathyAnalysis.hasData,
+        multipleSclerosisAnalysis.hasData,
+        parkinsonsAnalysis.hasData,
+        myastheniaGravisAnalysis.hasData,
+        narcolepsyAnalysis.hasData,
+        alsAnalysis.hasData,
+        syringomyeliaAnalysis.hasData,
+        myelitisAnalysis.hasData,
+        upperRadicularAnalysis.hasData,
+        middleRadicularAnalysis.hasData,
+        lowerRadicularAnalysis.hasData,
+        allRadicularAnalysis.hasData,
+        radialNerveAnalysis.hasData,
+        medianNerveAnalysis.hasData,
+        ulnarNerveAnalysis.hasData,
+        musculocutaneousNerveAnalysis.hasData,
+        circumflexNerveAnalysis.hasData,
+        longThoracicNerveAnalysis.hasData,
+        sciaticNerveAnalysis.hasData,
+        commonPeronealNerveAnalysis.hasData,
+        superficialPeronealNerveAnalysis.hasData,
+        deepPeronealNerveAnalysis.hasData,
+        tibialNerveAnalysis.hasData,
+        posteriorTibialNerveAnalysis.hasData,
+        femoralNerveAnalysis.hasData,
+        saphenousNerveAnalysis.hasData,
+        obturatorNerveAnalysis.hasData,
+        lateralFemoralCutaneousNerveAnalysis.hasData,
+        ilioinguinalNerveAnalysis.hasData,
+      ].filter(Boolean).length,
+
+      musculoskeletal: [
+        lumbosacralStrainAnalysis.hasData,
+        intervertebralDiscAnalysis.hasData,
+        kneeInstabilityAnalysis.hasData,
+        shoulderAnalysis.hasData,
+        hipAnalysis.hasData,
+        ankleAnalysis.hasData,
+        wristAnalysis.hasData,
+        elbowAnalysis.hasData,
+        degenerativeArthritisAnalysis.hasData,
+        plantarFasciitisAnalysis.hasData,
+        tmjAnalysis.hasData,
+        fibromyalgiaAnalysis.hasData,
+        goutAnalysis.hasData,
+        bursitisAnalysis.hasData,
+        tendinitisAnalysis.hasData,
+        myositisAnalysis.hasData,
+        osteomyelitisAnalysis.hasData,
+        multiJointArthritisAnalysis.hasData,
+        vertebralFractureAnalysis.hasData,
+        sacroiliacInjuryAnalysis.hasData,
+        spinalStenosisAnalysis.hasData,
+        ankylosingSpondylitisAnalysis.hasData,
+        spinalFusionAnalysis.hasData,
+        weakFootAnalysis.hasData,
+        clawFootAnalysis.hasData,
+        metatarsalgiaAnalysis.hasData,
+        halluxValgusAnalysis.hasData,
+        halluxRigidusAnalysis.hasData,
+      ].filter(Boolean).length,
+
+      respiratory: [
+        sleepApneaAnalysis.hasData,
+        asthmaAnalysis.hasData,
+        rhinitisAnalysis.hasData,
+        sinusitisAnalysis.hasData,
+        copdAnalysis.hasData,
+        chronicBronchitisAnalysis.hasData,
+        emphysemaAnalysis.hasData,
+        bronchiectasisAnalysis.hasData,
+        pulmonaryFibrosisAnalysis.hasData,
+        sarcoidosisAnalysis.hasData,
+      ].filter(Boolean).length,
+
+      cardiovascular: [
+        hypertensionAnalysis.hasData,
+        cardiomyopathyAnalysis.hasData,
+        svtAnalysis.hasData,
+        ventricularArrhythmiaAnalysis.hasData,
+        pericarditisAnalysis.hasData,
+        postPhlebiticAnalysis.hasData,
+        cadAnalysis.hasData,
+        postMIAnalysis.hasData,
+        hypertensiveHeartAnalysis.hasData,
+        coldInjuryAnalysis.hasData,
+        padAnalysis.hasData,
+        raynaudsAnalysis.hasData,
+        varicoseVeinsAnalysis.hasData,
+      ].filter(Boolean).length,
+
+      digestive: [
+        ibsAnalysis.hasData,
+        gerdAnalysis.hasData,
+        GERDComplicationsAnalysis.hasData,
+        ulcerativeColitisAnalysis.hasData,
+        pepticUlcerAnalysis.hasData,
+        hemorrhoidAnalysis.hasData,
+        diverticulitisAnalysis.hasData,
+        cirrhosisAnalysis.hasData,
+        gastritisAnalysis.hasData,
+        pancreatitisAnalysis.hasData,
+        biliaryTractAnalysis.hasData,
+        herniaAnalysis.hasData,
+        peritonealAdhesionsAnalysis.hasData,
+        esophagealAnalysis.hasData,
+        postgastrectomyAnalysis.hasData,
+        intestinalFistulaAnalysis.hasData,
+      ].filter(Boolean).length,
+
+      endocrine: [
+        diabetesAnalysis.hasData,
+        hypothyroidismAnalysis.hasData,
+        hyperthyroidismAnalysis.hasData,
+        thyroiditisAnalysis.hasData,
+        hyperparathyroidismAnalysis.hasData,
+        hypoparathyroidismAnalysis.hasData,
+        addisonsDiseaseAnalysis.hasData,
+        cushingsSyndromeAnalysis.hasData,
+        diabetesInsipidusAnalysis.hasData,
+        hyperaldosteronismAnalysis.hasData,
+      ].filter(Boolean).length,
+
+      genitourinary: [
+        kidneyStonesAnalysis.hasData,
+        chronicRenalDiseaseAnalysis.hasData,
+        voidingDysfunctionAnalysis.hasData,
+        sphincterImpairmentAnalysis.hasData,
+        erectileDysfunctionAnalysis.hasData,
+        endometriosisAnalysis.hasData,
+        femaleReproductiveOrgansAnalysis.hasData,
+        pelvicProlapseAnalysis.hasData,
+        femaleArousalDisorderAnalysis.hasData,
+      ].filter(Boolean).length,
+
+      skin: [
+        eczemaAnalysis.hasData,
+        psoriasisAnalysis.hasData,
+        scarsAnalysis.hasData,
+        chronicUrticariaAnalysis.hasData,
+        acneAnalysis.hasData,
+        chloracneAnalysis.hasData,
+        alopeciaAreataAnalysis.hasData,
+        hyperhidrosisAnalysis.hasData,
+        discoidLupusAnalysis.hasData,
+        bullousDisordersAnalysis.hasData,
+        cutaneousVasculitisAnalysis.hasData,
+        dermatophytosisAnalysis.hasData,
+        skinInfectionsAnalysis.hasData,
+      ].filter(Boolean).length,
+
+      eyeEar: [
+        visionAnalysis.hasData,
+        hearingLossAnalysis.hasData,
+        tinnitusAnalysis.hasData,
+        menieresAnalysis.hasData,
+        uveitisAnalysis.hasData,
+        keratitisAnalysis.hasData,
+        chronicConjunctivitisAnalysis.hasData,
+        scleritisAnalysis.hasData,
+        peripheralVestibularAnalysis.hasData,
+        chronicSuppurativeOtitisMediaAnalysis.hasData,
+        chronicOtitisExternaAnalysis.hasData,
+        chronicNonsuppurativeOtitisMediaAnalysis.hasData,
+      ].filter(Boolean).length,
+
+      hemicLymphatic: [
+        ironDeficiencyAnemiaAnalysis.hasData,
+        folateDeficiencyAnemiaAnalysis.hasData,
+        perniciousAnemiaAnalysis.hasData,
+        hemolyticAnemiaAnalysis.hasData,
+        sickleCellAnemiaAnalysis.hasData,
+        aplasticAnemiaAnalysis.hasData,
+        polycythemiaVeraAnalysis.hasData,
+        immuneThrombocytopeniaAnalysis.hasData,
+        leukemiaAnalysis.hasData,
+        hodgkinsLymphomaAnalysis.hasData,
+        multipleMyelomaAnalysis.hasData,
+        nonHodgkinsLymphomaAnalysis.hasData,
+        myeloproliferative7718Analysis.hasData,
+        chronicMyelogenousLeukemiaAnalysis.hasData,
+        solitaryPlasmacytomaAnalysis.hasData,
+        myelodysplasticSyndromesAnalysis.hasData,
+      ].filter(Boolean).length,
+
+      infectious: [
+        hivAnalysis.hasData,
+        hepatitisBAnalysis.hasData,
+        hepatitisCAnalysis.hasData,
+        lymeDiseaseAnalysis.hasData,
+        malariaAnalysis.hasData,
+        brucellosisAnalysis.hasData,
+        campylobacterAnalysis.hasData,
+        qFeverAnalysis.hasData,
+        salmonellaAnalysis.hasData,
+        shigellaAnalysis.hasData,
+        westNileAnalysis.hasData,
+        ntmAnalysis.hasData,
+      ].filter(Boolean).length,
+
+      dental: [
+        toothLossAnalysis.hasData,
+        mandibleNonunionAnalysis.hasData,
+        malignantOralNeoplasmAnalysis.hasData,
+        benignOralNeoplasmAnalysis.hasData,
+      ].filter(Boolean).length,
+
+      other: [
+        chronicFatigueAnalysis.hasData,
+        insomniaAnalysis.hasData,
+      ].filter(Boolean).length,
+    };
+  }, [
+    // Mental Health
+    ptsdAnalysis.hasData, majorDepressionAnalysis.hasData, generalizedAnxietyAnalysis.hasData,
+    panicDisorderAnalysis.hasData, bipolarAnalysis.hasData, socialAnxietyAnalysis.hasData,
+    ocdAnalysis.hasData, persistentDepressiveAnalysis.hasData, adjustmentDisorderAnalysis.hasData,
+    unspecifiedAnxietyAnalysis.hasData, unspecifiedDepressiveAnalysis.hasData,
+    somaticSymptomDisorderAnalysis.hasData, otherSpecifiedSomaticAnalysis.hasData,
+    unspecifiedSomaticAnalysis.hasData, illnessAnxietyAnalysis.hasData,
+    otherSpecifiedAnxietyAnalysis.hasData, depersonalizationAnalysis.hasData,
+    cyclothymicAnalysis.hasData, anorexiaNervosaAnalysis.hasData, bulimiaNervosaAnalysis.hasData,
+    schizophreniaAnalysis.hasData, schizoaffectiveDisorderAnalysis.hasData,
+    delusionalDisorderAnalysis.hasData, psychoticDisorderNOSAnalysis.hasData,
+    briefPsychoticDisorderAnalysis.hasData, bingeEatingDisorderAnalysis.hasData,
+    dissociativeIdentityDisorderAnalysis.hasData, dissociativeAmnesiaAnalysis.hasData,
+    acuteStressDisorderAnalysis.hasData, antisocialPersonalityDisorderAnalysis.hasData,
+    borderlinePersonalityDisorderAnalysis.hasData, narcissisticPersonalityDisorderAnalysis.hasData,
+    avoidantPersonalityDisorderAnalysis.hasData,
+    // Neurological
+    migraineAnalysis.hasData, tbiAnalysis.hasData, tbiResidualsAnalysis.hasData,
+    epilepsyMajorAnalysis.hasData, epilepsyMinorAnalysis.hasData, jacksonianEpilepsyAnalysis.hasData,
+    diencephalicEpilepsyAnalysis.hasData, psychomotorEpilepsyAnalysis.hasData,
+    radiculopathyAnalysis.hasData, peripheralNeuropathyAnalysis.hasData,
+    multipleSclerosisAnalysis.hasData, parkinsonsAnalysis.hasData, myastheniaGravisAnalysis.hasData,
+    narcolepsyAnalysis.hasData, alsAnalysis.hasData, syringomyeliaAnalysis.hasData,
+    myelitisAnalysis.hasData, upperRadicularAnalysis.hasData, middleRadicularAnalysis.hasData,
+    lowerRadicularAnalysis.hasData, allRadicularAnalysis.hasData, radialNerveAnalysis.hasData,
+    medianNerveAnalysis.hasData, ulnarNerveAnalysis.hasData, musculocutaneousNerveAnalysis.hasData,
+    circumflexNerveAnalysis.hasData, longThoracicNerveAnalysis.hasData, sciaticNerveAnalysis.hasData,
+    commonPeronealNerveAnalysis.hasData, superficialPeronealNerveAnalysis.hasData,
+    deepPeronealNerveAnalysis.hasData, tibialNerveAnalysis.hasData, posteriorTibialNerveAnalysis.hasData,
+    femoralNerveAnalysis.hasData, saphenousNerveAnalysis.hasData, obturatorNerveAnalysis.hasData,
+    lateralFemoralCutaneousNerveAnalysis.hasData, ilioinguinalNerveAnalysis.hasData,
+    // Musculoskeletal
+    lumbosacralStrainAnalysis.hasData, intervertebralDiscAnalysis.hasData, kneeInstabilityAnalysis.hasData,
+    shoulderAnalysis.hasData, hipAnalysis.hasData, ankleAnalysis.hasData, wristAnalysis.hasData,
+    elbowAnalysis.hasData, degenerativeArthritisAnalysis.hasData, plantarFasciitisAnalysis.hasData,
+    tmjAnalysis.hasData, fibromyalgiaAnalysis.hasData, goutAnalysis.hasData, bursitisAnalysis.hasData,
+    tendinitisAnalysis.hasData, myositisAnalysis.hasData, osteomyelitisAnalysis.hasData,
+    multiJointArthritisAnalysis.hasData, vertebralFractureAnalysis.hasData, sacroiliacInjuryAnalysis.hasData,
+    spinalStenosisAnalysis.hasData, ankylosingSpondylitisAnalysis.hasData, spinalFusionAnalysis.hasData,
+    weakFootAnalysis.hasData, clawFootAnalysis.hasData, metatarsalgiaAnalysis.hasData,
+    halluxValgusAnalysis.hasData, halluxRigidusAnalysis.hasData,
+    // Respiratory
+    sleepApneaAnalysis.hasData, asthmaAnalysis.hasData, rhinitisAnalysis.hasData,
+    sinusitisAnalysis.hasData, copdAnalysis.hasData, chronicBronchitisAnalysis.hasData,
+    emphysemaAnalysis.hasData, bronchiectasisAnalysis.hasData, pulmonaryFibrosisAnalysis.hasData,
+    sarcoidosisAnalysis.hasData,
+    // Cardiovascular
+    hypertensionAnalysis.hasData, cardiomyopathyAnalysis.hasData, svtAnalysis.hasData,
+    ventricularArrhythmiaAnalysis.hasData, pericarditisAnalysis.hasData, postPhlebiticAnalysis.hasData,
+    cadAnalysis.hasData, postMIAnalysis.hasData, hypertensiveHeartAnalysis.hasData,
+    coldInjuryAnalysis.hasData, padAnalysis.hasData, raynaudsAnalysis.hasData, varicoseVeinsAnalysis.hasData,
+    // Digestive
+    ibsAnalysis.hasData, gerdAnalysis.hasData, GERDComplicationsAnalysis.hasData,
+    ulcerativeColitisAnalysis.hasData, pepticUlcerAnalysis.hasData, hemorrhoidAnalysis.hasData,
+    diverticulitisAnalysis.hasData, cirrhosisAnalysis.hasData, gastritisAnalysis.hasData,
+    pancreatitisAnalysis.hasData, biliaryTractAnalysis.hasData, herniaAnalysis.hasData,
+    peritonealAdhesionsAnalysis.hasData, esophagealAnalysis.hasData, postgastrectomyAnalysis.hasData,
+    intestinalFistulaAnalysis.hasData,
+    // Endocrine
+    diabetesAnalysis.hasData, hypothyroidismAnalysis.hasData, hyperthyroidismAnalysis.hasData,
+    thyroiditisAnalysis.hasData, hyperparathyroidismAnalysis.hasData, hypoparathyroidismAnalysis.hasData,
+    addisonsDiseaseAnalysis.hasData, cushingsSyndromeAnalysis.hasData, diabetesInsipidusAnalysis.hasData,
+    hyperaldosteronismAnalysis.hasData,
+    // Genitourinary
+    kidneyStonesAnalysis.hasData, chronicRenalDiseaseAnalysis.hasData, voidingDysfunctionAnalysis.hasData,
+    sphincterImpairmentAnalysis.hasData, erectileDysfunctionAnalysis.hasData, endometriosisAnalysis.hasData,
+    femaleReproductiveOrgansAnalysis.hasData, pelvicProlapseAnalysis.hasData, femaleArousalDisorderAnalysis.hasData,
+    // Skin
+    eczemaAnalysis.hasData, psoriasisAnalysis.hasData, scarsAnalysis.hasData, chronicUrticariaAnalysis.hasData,
+    acneAnalysis.hasData, chloracneAnalysis.hasData, alopeciaAreataAnalysis.hasData, hyperhidrosisAnalysis.hasData,
+    discoidLupusAnalysis.hasData, bullousDisordersAnalysis.hasData, cutaneousVasculitisAnalysis.hasData,
+    dermatophytosisAnalysis.hasData, skinInfectionsAnalysis.hasData,
+    // Eye/Ear
+    visionAnalysis.hasData, hearingLossAnalysis.hasData, tinnitusAnalysis.hasData, menieresAnalysis.hasData,
+    uveitisAnalysis.hasData, keratitisAnalysis.hasData, chronicConjunctivitisAnalysis.hasData,
+    scleritisAnalysis.hasData, peripheralVestibularAnalysis.hasData, chronicSuppurativeOtitisMediaAnalysis.hasData,
+    chronicOtitisExternaAnalysis.hasData, chronicNonsuppurativeOtitisMediaAnalysis.hasData,
+    // Hemic/Lymphatic
+    ironDeficiencyAnemiaAnalysis.hasData, folateDeficiencyAnemiaAnalysis.hasData, perniciousAnemiaAnalysis.hasData,
+    hemolyticAnemiaAnalysis.hasData, sickleCellAnemiaAnalysis.hasData, aplasticAnemiaAnalysis.hasData,
+    polycythemiaVeraAnalysis.hasData, immuneThrombocytopeniaAnalysis.hasData, leukemiaAnalysis.hasData,
+    hodgkinsLymphomaAnalysis.hasData, multipleMyelomaAnalysis.hasData, nonHodgkinsLymphomaAnalysis.hasData,
+    myeloproliferative7718Analysis.hasData, chronicMyelogenousLeukemiaAnalysis.hasData,
+    solitaryPlasmacytomaAnalysis.hasData, myelodysplasticSyndromesAnalysis.hasData,
+    // Infectious
+    hivAnalysis.hasData, hepatitisBAnalysis.hasData, hepatitisCAnalysis.hasData, lymeDiseaseAnalysis.hasData,
+    malariaAnalysis.hasData, brucellosisAnalysis.hasData, campylobacterAnalysis.hasData, qFeverAnalysis.hasData,
+    salmonellaAnalysis.hasData, shigellaAnalysis.hasData, westNileAnalysis.hasData, ntmAnalysis.hasData,
+    // Dental
+    toothLossAnalysis.hasData, mandibleNonunionAnalysis.hasData, malignantOralNeoplasmAnalysis.hasData,
+    benignOralNeoplasmAnalysis.hasData,
+    // Other
+    chronicFatigueAnalysis.hasData, insomniaAnalysis.hasData,
+  ]);
+
+  // Total conditions with data
+  const totalConditionsWithData = Object.values(bodySystemCounts).reduce((a, b) => a + b, 0);
+
     const hasAnyData = migraineAnalysis.hasData ||
         sleepApneaAnalysis.hasData ||
         ptsdAnalysis.hasData ||
@@ -1442,362 +1820,113 @@ const RatingEvidence = () => {
                 </div>
             </div>
 
-            {/* Disclaimer */}
-            <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-3">
-                <p className="text-xs text-amber-800 dark:text-amber-300">
-                    <strong>Important:</strong> This analysis is for documentation guidance only.
-                    The VA makes all final rating determinations based on the complete evidence of record,
-                    including medical examinations and service records.
+          {/* Disclaimer */}
+          <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-3">
+            <p className="text-xs text-amber-800 dark:text-amber-300">
+              <strong>Important:</strong> This analysis is for documentation guidance only.
+              The VA makes all final rating determinations based on the complete evidence of record,
+              including medical examinations and service records.
+            </p>
+          </div>
+
+          {/* Suggested Related Conditions - Veterans Only */}
+          {isVeteran && suggestedConditions.length > 0 && showSuggestedConditions && (
+              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-lg border border-blue-200 dark:border-blue-800 p-4">
+                <div className="flex justify-between items-start mb-3">
+                  <div>
+                    <h3 className="font-medium text-blue-900 dark:text-blue-200 flex items-center gap-2">
+                      <span>💡</span> Conditions You May Want to Track
+                    </h3>
+                    <p className="text-xs text-blue-700 dark:text-blue-300 mt-1">
+                      Based on your tracked conditions, veterans commonly also claim:
+                    </p>
+                  </div>
+                  <button
+                      onClick={() => setShowSuggestedConditions(false)}
+                      className="text-blue-400 hover:text-blue-600 dark:hover:text-blue-300 text-sm"
+                  >
+                    ✕
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                  {suggestedConditions.map((condition, index) => (
+                      <div
+                          key={condition.categoryId || index}
+                          className="bg-white dark:bg-gray-800 rounded-lg p-3 border border-blue-100 dark:border-gray-700"
+                      >
+                        <div className="flex items-center gap-2 mb-1">
+                                    <span className="font-medium text-gray-900 dark:text-white text-sm">
+                                        {condition.name}
+                                    </span>
+                          <span className="text-xs px-1.5 py-0.5 bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 rounded">
+                                        DC {condition.dcCode}
+                                    </span>
+                        </div>
+                        <p className="text-xs text-gray-600 dark:text-gray-400">
+                          {condition.reason}
+                        </p>
+                        <p className="text-xs text-blue-600 dark:text-blue-400 mt-1 italic">
+                          Related to: {condition.triggeredBy}
+                        </p>
+                      </div>
+                  ))}
+                </div>
+
+                <p className="text-xs text-blue-600 dark:text-blue-400 mt-3">
+                  💡 Add these to your Chronic Symptoms on the Log tab to start tracking
                 </p>
-            </div>
-            {/* Migraine Analysis Card */}
-            <MigraineRatingCard
-                analysis={migraineAnalysis}
-                expanded={expandedSection === 'migraine'}
-                onToggle={() => toggleSection('migraine')}
-            />
-            {/* Sleep Apnea Analysis Card */}
-            <SleepApneaRatingCard
-                analysis={sleepApneaAnalysis}
-                profile={sleepApneaProfile}
-                expanded={expandedSection === 'sleep-apnea'}
-                onToggle={() => toggleSection('sleep-apnea')}
-                onSetupClick={() => setShowSleepApneaSetup(true)}
-            />
-            {/* PTSD Analysis Card */}
-            <PTSDRatingCard
-                analysis={ptsdAnalysis}
-                expanded={expandedSection === 'ptsd'}
-                onToggle={() => toggleSection('ptsd')}
-            />
-            {/* Major Depression Analysis Card */}
-            <MentalHealthRatingCard
-                analysis={majorDepressionAnalysis}
-                expanded={expandedSection === 'major-depression'}
-                onToggle={() => toggleSection('major-depression')}
-                icon="😔"
-                getAllRatings={getAllMajorDepressionRatings}
-                getDefinition={getMajorDepressionDefinition}
-            />
-            {/* Generalized Anxiety Analysis Card */}
-            <MentalHealthRatingCard
-                analysis={generalizedAnxietyAnalysis}
-                expanded={expandedSection === 'generalized-anxiety'}
-                onToggle={() => toggleSection('generalized-anxiety')}
-                icon="😰"
-                getAllRatings={getAllGeneralizedAnxietyRatings}
-                getDefinition={getGeneralizedAnxietyDefinition}
-            />
-            {/* Panic Disorder Analysis Card */}
-            <MentalHealthRatingCard
-                analysis={panicDisorderAnalysis}
-                expanded={expandedSection === 'panic-disorder'}
-                onToggle={() => toggleSection('panic-disorder')}
-                icon="😱"
-                getAllRatings={getAllPanicDisorderRatings}
-                getDefinition={getPanicDisorderDefinition}
-            />
-            {/* Bipolar Analysis Card */}
-            <MentalHealthRatingCard
-                analysis={bipolarAnalysis}
-                expanded={expandedSection === 'bipolar'}
-                onToggle={() => toggleSection('bipolar')}
-                icon="🎭"
-                getAllRatings={getAllBipolarRatings}
-                getDefinition={getBipolarDefinition}
-            />
-            {/* Phase 3: Additional Mental Health Conditions */}
-            {/* Social Anxiety Analysis Card */}
-            <MentalHealthRatingCard
-                analysis={socialAnxietyAnalysis}
-                expanded={expandedSection === 'social-anxiety'}
-                onToggle={() => toggleSection('social-anxiety')}
-                icon="👥"
-                getAllRatings={getAllSocialAnxietyRatings}
-                getDefinition={getSocialAnxietyDefinition}
-            />
-            {/* OCD Analysis Card */}
-            <MentalHealthRatingCard
-                analysis={ocdAnalysis}
-                expanded={expandedSection === 'ocd'}
-                onToggle={() => toggleSection('ocd')}
-                icon="🔄"
-                getAllRatings={getAllOCDRatings}
-                getDefinition={getOCDDefinition}
-            />
-            {/* Persistent Depressive Disorder (Dysthymia) Analysis Card */}
-            <MentalHealthRatingCard
-                analysis={persistentDepressiveAnalysis}
-                expanded={expandedSection === 'persistent-depressive'}
-                onToggle={() => toggleSection('persistent-depressive')}
-                icon="😶"
-                getAllRatings={getAllPersistentDepressiveRatings}
-                getDefinition={getPersistentDepressiveDefinition}
-            />
-            {/* Adjustment Disorder Analysis Card */}
-            <MentalHealthRatingCard
-                analysis={adjustmentDisorderAnalysis}
-                expanded={expandedSection === 'adjustment-disorder'}
-                onToggle={() => toggleSection('adjustment-disorder')}
-                icon="⚖️"
-                getAllRatings={getAllAdjustmentDisorderRatings}
-                getDefinition={getAdjustmentDisorderDefinition}
-            />
-            {/* Unspecified Anxiety Analysis Card */}
-            <MentalHealthRatingCard
-                analysis={unspecifiedAnxietyAnalysis}
-                expanded={expandedSection === 'unspecified-anxiety'}
-                onToggle={() => toggleSection('unspecified-anxiety')}
-                icon="😟"
-                getAllRatings={getAllUnspecifiedAnxietyRatings}
-                getDefinition={getUnspecifiedAnxietyDefinition}
-            />
-            {/* Unspecified Depressive Analysis Card */}
-            <MentalHealthRatingCard
-                analysis={unspecifiedDepressiveAnalysis}
-                expanded={expandedSection === 'unspecified-depressive'}
-                onToggle={() => toggleSection('unspecified-depressive')}
-                icon="😞"
-                getAllRatings={getAllUnspecifiedDepressiveRatings}
-                getDefinition={getUnspecifiedDepressiveDefinition}
-            />
-            {/* PHASE 8A: MENTAL HEALTH EXPANSION - RATING CARDS */}
-            {/* Somatic Symptom Disorder Analysis Card */}
-            <MentalHealthRatingCard
-                analysis={somaticSymptomDisorderAnalysis}
-                expanded={expandedSection === 'somatic-symptom-disorder'}
-                onToggle={() => toggleSection('somatic-symptom-disorder')}
-                icon="🏥"
-                getAllRatings={getAllSomaticSymptomDisorderRatings}
-                getDefinition={getSomaticSymptomDisorderDefinition}
-            />
-            {/* Other Specified Somatic Symptom Disorder Analysis Card */}
-            <MentalHealthRatingCard
-                analysis={otherSpecifiedSomaticAnalysis}
-                expanded={expandedSection === 'other-specified-somatic'}
-                onToggle={() => toggleSection('other-specified-somatic')}
-                icon="🏥"
-                getAllRatings={getAllOtherSpecifiedSomaticRatings}
-                getDefinition={getOtherSpecifiedSomaticDefinition}
-            />
-            {/* Unspecified Somatic Symptom Disorder Analysis Card */}
-            <MentalHealthRatingCard
-                analysis={unspecifiedSomaticAnalysis}
-                expanded={expandedSection === 'unspecified-somatic'}
-                onToggle={() => toggleSection('unspecified-somatic')}
-                icon="🏥"
-                getAllRatings={getAllUnspecifiedSomaticRatings}
-                getDefinition={getUnspecifiedSomaticDefinition}
-            />
-            {/* Illness Anxiety Disorder Analysis Card */}
-            <MentalHealthRatingCard
-                analysis={illnessAnxietyAnalysis}
-                expanded={expandedSection === 'illness-anxiety'}
-                onToggle={() => toggleSection('illness-anxiety')}
-                icon="😰"
-                getAllRatings={getAllIllnessAnxietyRatings}
-                getDefinition={getIllnessAnxietyDefinition}
-            />
-            {/* Other Specified Anxiety Disorder Analysis Card */}
-            <MentalHealthRatingCard
-                analysis={otherSpecifiedAnxietyAnalysis}
-                expanded={expandedSection === 'other-specified-anxiety'}
-                onToggle={() => toggleSection('other-specified-anxiety')}
-                icon="😟"
-                getAllRatings={getAllOtherSpecifiedAnxietyRatings}
-                getDefinition={getOtherSpecifiedAnxietyDefinition}
-            />
-            {/* Depersonalization/Derealization Disorder Analysis Card */}
-            <MentalHealthRatingCard
-                analysis={depersonalizationAnalysis}
-                expanded={expandedSection === 'depersonalization-derealization'}
-                onToggle={() => toggleSection('depersonalization-derealization')}
-                icon="👤"
-                getAllRatings={getAllDepersonalizationRatings}
-                getDefinition={getDepersonalizationDefinition}
-            />
-            {/* Cyclothymic Disorder Analysis Card */}
-            <MentalHealthRatingCard
-                analysis={cyclothymicAnalysis}
-                expanded={expandedSection === 'cyclothymic'}
-                onToggle={() => toggleSection('cyclothymic')}
-                icon="🌓"
-                getAllRatings={getAllCyclothymicRatings}
-                getDefinition={getCyclothymicDefinition}
-            />
-            {/* Anorexia Nervosa Analysis Card */}
-            <MentalHealthRatingCard
-                analysis={anorexiaNervosaAnalysis}
-                expanded={expandedSection === 'anorexia-nervosa'}
-                onToggle={() => toggleSection('anorexia-nervosa')}
-                icon="🍽️"
-                getAllRatings={getAllAnorexiaNervosaRatings}
-                getDefinition={getAnorexiaNervosaDefinition}
-            />
-            {/* Bulimia Nervosa Analysis Card */}
-            <MentalHealthRatingCard
-                analysis={bulimiaNervosaAnalysis}
-                expanded={expandedSection === 'bulimia-nervosa'}
-                onToggle={() => toggleSection('bulimia-nervosa')}
-                icon="🍽️"
-                getAllBulimiaNervosaRatings={getAllBulimiaNervosaRatings}
-                getDefinition={getBulimiaNervosaDefinition}
-            />
-            {/* Lumbosacral Strain Analysis Card */}
+              </div>
+          )}
+
+          {/* ============================================ */}
+          {/* GROUPED RATING CARDS BY BODY SYSTEM */}
+          {/* ============================================ */}
+
+          {/* Summary of conditions with data */}
+          {totalConditionsWithData > 0 && (
+              <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="font-medium text-gray-900 dark:text-white">
+                      Conditions with Logged Data
+                    </h3>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                      {totalConditionsWithData} condition{totalConditionsWithData !== 1 ? 's' : ''} across {Object.values(bodySystemCounts).filter(c => c > 0).length} body systems
+                    </p>
+                  </div>
+                  <div className="text-3xl font-bold text-blue-600 dark:text-blue-400">
+                    {totalConditionsWithData}
+                  </div>
+                </div>
+              </div>
+          )}
+
+          {/* ========== MUSCULOSKELETAL ========== */}
+          <ConditionGroup
+              title="Musculoskeletal"
+              icon="🦴"
+              conditionCount={bodySystemCounts.musculoskeletal}
+              accentColor="amber"
+              defaultExpanded={false}
+          >
             <GenericRatingCard
                 analysis={lumbosacralStrainAnalysis}
                 expanded={expandedSection === 'lumbosacral-strain'}
                 onToggle={() => toggleSection('lumbosacral-strain')}
                 icon="🦴"
             />
-            {/* Intervertebral Disc Analysis Card */}
             <GenericRatingCard
                 analysis={intervertebralDiscAnalysis}
                 expanded={expandedSection === 'intervertebral-disc'}
                 onToggle={() => toggleSection('intervertebral-disc')}
                 icon="💿"
             />
-            {/* Knee Instability Analysis Card */}
             <GenericRatingCard
                 analysis={kneeInstabilityAnalysis}
                 expanded={expandedSection === 'knee-instability'}
                 onToggle={() => toggleSection('knee-instability')}
                 icon="🦵"
-            />
-            {/* TBI Analysis Card */}
-            <GenericRatingCard
-                analysis={tbiAnalysis}
-                expanded={expandedSection === 'tbi'}
-                onToggle={() => toggleSection('tbi')}
-                icon="🧠"
-            />
-            <TBIResidualsRatingCard
-                analysis={tbiResidualsAnalysis}
-                expanded={expandedSection === 'tbiResiduals'}
-                onToggle={() => toggleSection('tbiResiduals')}
-            />
-            {/* Hypertension Analysis Card */}
-            <HypertensionRatingCard
-                analysis={hypertensionAnalysis}
-                expanded={expandedSection === 'hypertension'}
-                onToggle={() => toggleSection('hypertension')}
-            />
-            {/* Diabetes Analysis Card */}
-            <DiabetesRatingCard
-                analysis={diabetesAnalysis}
-                expanded={expandedSection === 'diabetes'}
-                onToggle={() => toggleSection('diabetes')}
-            />
-            {/* IBS Analysis Card */}
-            <IBSRatingCard
-                analysis={ibsAnalysis}
-                expanded={expandedSection === 'ibs'}
-                onToggle={() => toggleSection('ibs')}
-            />
-            {/* GERD Analysis Card */}
-            <GERDRatingCard
-                analysis={gerdAnalysis}
-                expanded={expandedSection === 'gerd'}
-                onToggle={() => toggleSection('gerd')}
-            />
-            <GERDComplicationsRatingCard
-                analysis={gerdAnalysis}
-                expanded={expandedSection === 'gerdComplications'}
-                onToggle={() => toggleSection('gerdComplications')}
-            />
-            <GenericRatingCard
-                analysis={ulcerativeColitisAnalysis}
-                expanded={expandedSection === 'ulcerativeColitis'}
-                onToggle={() => toggleSection('ulcerativeColitis')}
-                icon="🩸"
-            />
-            <GenericRatingCard
-                analysis={pepticUlcerAnalysis}
-                expanded={expandedSection === 'pepticUlcer'}
-                onToggle={() => toggleSection('pepticUlcer')}
-                icon="🔥"
-            />
-            <GenericRatingCard
-                analysis={hemorrhoidAnalysis}
-                expanded={expandedSection === 'hemorrhoids'}
-                onToggle={() => toggleSection('hemorrhoids')}
-                icon="🩹"
-            />
-            <GenericRatingCard
-                analysis={diverticulitisAnalysis}
-                expanded={expandedSection === 'diverticulitis'}
-                onToggle={() => toggleSection('diverticulitis')}
-                icon="🫃"
-            />
-            <GenericRatingCard
-                analysis={hypothyroidismAnalysis}
-                expanded={expandedSection === 'hypothyroidism'}
-                onToggle={() => toggleSection('hypothyroidism')}
-                icon="🦋"
-            />
-            <GenericRatingCard
-                analysis={raynaudsAnalysis}
-                expanded={expandedSection === 'raynauds'}
-                onToggle={() => toggleSection('raynauds')}
-                icon="🥶"
-            />
-            <GenericRatingCard
-                analysis={varicoseVeinsAnalysis}
-                expanded={expandedSection === 'varicoseVeins'}
-                onToggle={() => toggleSection('varicoseVeins')}
-                icon="🦵"
-            />
-            <GenericRatingCard
-                analysis={chronicUrticariaAnalysis}
-                expanded={expandedSection === 'chronicUrticaria'}
-                onToggle={() => toggleSection('chronicUrticaria')}
-                icon="🔴"
-            />
-            {/* Radiculopathy Analysis Card */}
-            <RadiculopathyRatingCard
-                analysis={radiculopathyAnalysis}
-                expanded={expandedSection === 'radiculopathy'}
-                onToggle={() => toggleSection('radiculopathy')}
-            />
-            <ChronicFatigueRatingCard
-                analysis={chronicFatigueAnalysis}
-                expanded={expandedSection === 'chronic-fatigue'}
-                onToggle={() => toggleSection('chronic-fatigue')}
-            />
-            <PeripheralNeuropathyRatingCard
-                analysis={peripheralNeuropathyAnalysis}
-                expanded={expandedSection === 'peripheral-neuropathy'}
-                onToggle={() => toggleSection('peripheral-neuropathy')}
-            />
-            <MenieresRatingCard
-                analysis={menieresAnalysis}
-                expanded={expandedSection === 'menieres'}
-                onToggle={() => toggleSection('menieres')}
-            />
-            <RhinitisRatingCard
-                analysis={rhinitisAnalysis}
-                expanded={expandedSection === 'rhinitis'}
-                onToggle={() => toggleSection('rhinitis')}
-            />
-            <TMJRatingCard
-                analysis={tmjAnalysis}
-                expanded={expandedSection === 'tmj'}
-                onToggle={() => toggleSection('tmj')}
-            />
-            <PlantarFasciitisRatingCard
-                analysis={plantarFasciitisAnalysis}
-                expanded={expandedSection === 'plantar-fasciitis'}
-                onToggle={() => toggleSection('plantar-fasciitis')}
-            />
-            <InsomniaRatingCard
-                analysis={insomniaAnalysis}
-                expanded={expandedSection === 'insomnia'}
-                onToggle={() => toggleSection('insomnia')}
-            />
-            <SinusitisRatingCard
-                analysis={sinusitisAnalysis}
-                expanded={expandedSection === 'sinusitis'}
-                onToggle={() => toggleSection('sinusitis')}
             />
             <ShoulderRatingCard
                 analysis={shoulderAnalysis}
@@ -1833,85 +1962,499 @@ const RatingEvidence = () => {
                 onToggle={() => toggleSection('degenerativeArthritis')}
                 icon="🦴"
             />
-            <AsthmaRatingCard
-                  analysis={asthmaAnalysis}
-                  expanded={expandedSection === 'asthma'}
-                  onToggle={() => toggleSection('asthma')}
-              />
-            <EczemaRatingCard
-                analysis={eczemaAnalysis}
-                expanded={expandedSection === 'eczema'}
-                onToggle={() => toggleSection('eczema')}
+            <PlantarFasciitisRatingCard
+                analysis={plantarFasciitisAnalysis}
+                expanded={expandedSection === 'plantar-fasciitis'}
+                onToggle={() => toggleSection('plantar-fasciitis')}
             />
-            <HearingLossRatingCard
-                analysis={hearingLossAnalysis}
-                expanded={expandedSection === 'hearingLoss'}
-                onToggle={() => toggleSection('hearingLoss')}
+            <TMJRatingCard
+                analysis={tmjAnalysis}
+                expanded={expandedSection === 'tmj'}
+                onToggle={() => toggleSection('tmj')}
             />
-            <PsoriasisRatingCard
-                analysis={psoriasisAnalysis}
-                expanded={expandedSection === 'psoriasis'}
-                onToggle={() => toggleSection('psoriasis')}
-            />
-            <ScarsRatingCard
-                analysis={scarsAnalysis}
-                expanded={expandedSection === 'scarsAnalysis'}
-                onToggle={() => toggleSection('scarsAnalysis')}
-            />
-            {/* Tinnitus Analysis Card */}
-            <GenericRatingCard
-                analysis={tinnitusAnalysis}
-                expanded={expandedSection === 'tinnitus'}
-                onToggle={() => toggleSection('tinnitus')}
-                icon="👂"
-            />
-            {/* Fibromyalgia Analysis Card */}
             <GenericRatingCard
                 analysis={fibromyalgiaAnalysis}
                 expanded={expandedSection === 'fibromyalgia'}
                 onToggle={() => toggleSection('fibromyalgia')}
                 icon="💪"
             />
-            {/* Phase 1E: Epilepsy - Major Seizures */}
-            <SeizureRatingCard
-                analysis={epilepsyMajorAnalysis}
-                expanded={expandedSection === 'epilepsyMajor'}
-                onToggle={() => toggleSection('epilepsyMajor')}
+            <GoutRatingCard
+                analysis={goutAnalysis}
+                expanded={expandedSection === 'gout'}
+                onToggle={() => toggleSection('gout')}
             />
-            {/* Phase 1E: Epilepsy - Minor Seizures */}
-            <SeizureRatingCard
-                analysis={epilepsyMinorAnalysis}
-                expanded={expandedSection === 'epilepsyMinor'}
-                onToggle={() => toggleSection('epilepsyMinor')}
+            <BursitisRatingCard
+                analysis={bursitisAnalysis}
+                expanded={expandedSection === 'bursitis'}
+                onToggle={() => toggleSection('bursitis')}
             />
-            {/* Phase 1D: Jacksonian/Focal Epilepsy (DC 8912) */}
-            <EpilepsyExpansionRatingCard
-                analysis={jacksonianEpilepsyAnalysis}
-                expanded={expandedSection === 'epilepsyJacksonian'}
-                onToggle={() => toggleSection('epilepsyJacksonian')}
-                epilepsyType="jacksonian"
+            <TendinitisRatingCard
+                analysis={tendinitisAnalysis}
+                expanded={expandedSection === 'tendinitis'}
+                onToggle={() => toggleSection('tendinitis')}
             />
-            {/* Phase 1D: Diencephalic Epilepsy (DC 8913) */}
-            <EpilepsyExpansionRatingCard
-                analysis={diencephalicEpilepsyAnalysis}
-                expanded={expandedSection === 'epilepsyDiencephalic'}
-                onToggle={() => toggleSection('epilepsyDiencephalic')}
-                epilepsyType="diencephalic"
+            <MyositisRatingCard
+                analysis={myositisAnalysis}
+                expanded={expandedSection === 'myositis'}
+                onToggle={() => toggleSection('myositis')}
             />
-            {/* Phase 1D: Psychomotor Epilepsy (DC 8914) */}
-            <EpilepsyExpansionRatingCard
-                analysis={psychomotorEpilepsyAnalysis}
-                expanded={expandedSection === 'epilepsyPsychomotor'}
-                onToggle={() => toggleSection('epilepsyPsychomotor')}
-                epilepsyType="psychomotor"
+            <OsteomyelitisRatingCard
+                analysis={osteomyelitisAnalysis}
+                expanded={expandedSection === 'osteomyelitis'}
+                onToggle={() => toggleSection('osteomyelitis')}
             />
-            {/* Phase 2: Eye & Vision Conditions */}
+            <MultiJointArthritisRatingCard
+                analysis={multiJointArthritisAnalysis}
+                expanded={expandedSection === 'multi-joint-arthritis'}
+                onToggle={() => toggleSection('multi-joint-arthritis')}
+            />
+            {/* Spine Conditions */}
+            <SpineConditionsRatingCard
+                analysis={vertebralFractureAnalysis}
+                diagnosticCode="5235"
+                expanded={expandedSection === 'vertebral-fracture'}
+                onToggle={() => toggleSection('vertebral-fracture')}
+            />
+            <SpineConditionsRatingCard
+                analysis={sacroiliacInjuryAnalysis}
+                diagnosticCode="5236"
+                expanded={expandedSection === 'sacroiliac-injury'}
+                onToggle={() => toggleSection('sacroiliac-injury')}
+            />
+            <SpineConditionsRatingCard
+                analysis={spinalStenosisAnalysis}
+                diagnosticCode="5238"
+                expanded={expandedSection === 'spinal-stenosis'}
+                onToggle={() => toggleSection('spinal-stenosis')}
+            />
+            <SpineConditionsRatingCard
+                analysis={ankylosingSpondylitisAnalysis}
+                diagnosticCode="5240"
+                expanded={expandedSection === 'ankylosing-spondylitis'}
+                onToggle={() => toggleSection('ankylosing-spondylitis')}
+            />
+            <SpineConditionsRatingCard
+                analysis={spinalFusionAnalysis}
+                diagnosticCode="5241"
+                expanded={expandedSection === 'spinal-fusion'}
+                onToggle={() => toggleSection('spinal-fusion')}
+            />
+            {/* Foot Conditions */}
+            <FootConditionsRatingCard
+                analysis={weakFootAnalysis}
+                diagnosticCode="5277"
+                expanded={expandedSection === 'weak-foot'}
+                onToggle={() => toggleSection('weak-foot')}
+            />
+            <FootConditionsRatingCard
+                analysis={clawFootAnalysis}
+                diagnosticCode="5278"
+                expanded={expandedSection === 'claw-foot'}
+                onToggle={() => toggleSection('claw-foot')}
+            />
+            <FootConditionsRatingCard
+                analysis={metatarsalgiaAnalysis}
+                diagnosticCode="5279"
+                expanded={expandedSection === 'metatarsalgia'}
+                onToggle={() => toggleSection('metatarsalgia')}
+            />
+            <FootConditionsRatingCard
+                analysis={halluxValgusAnalysis}
+                diagnosticCode="5280"
+                expanded={expandedSection === 'hallux-valgus'}
+                onToggle={() => toggleSection('hallux-valgus')}
+            />
+            <FootConditionsRatingCard
+                analysis={halluxRigidusAnalysis}
+                diagnosticCode="5281"
+                expanded={expandedSection === 'hallux-rigidus'}
+                onToggle={() => toggleSection('hallux-rigidus')}
+            />
+          </ConditionGroup>
+
+          {/* ========== RESPIRATORY ========== */}
+          <ConditionGroup
+              title="Respiratory"
+              icon="🫁"
+              conditionCount={bodySystemCounts.respiratory}
+              accentColor="cyan"
+              defaultExpanded={false}
+          >
+            <SleepApneaRatingCard
+                analysis={sleepApneaAnalysis}
+                profile={sleepApneaProfile}
+                expanded={expandedSection === 'sleep-apnea'}
+                onToggle={() => toggleSection('sleep-apnea')}
+                onSetupClick={() => setShowSleepApneaSetup(true)}
+            />
+            <AsthmaRatingCard
+                analysis={asthmaAnalysis}
+                expanded={expandedSection === 'asthma'}
+                onToggle={() => toggleSection('asthma')}
+            />
+            <RhinitisRatingCard
+                analysis={rhinitisAnalysis}
+                expanded={expandedSection === 'rhinitis'}
+                onToggle={() => toggleSection('rhinitis')}
+            />
+            <SinusitisRatingCard
+                analysis={sinusitisAnalysis}
+                expanded={expandedSection === 'sinusitis'}
+                onToggle={() => toggleSection('sinusitis')}
+            />
+            <COPDRatingCard
+                analysis={copdAnalysis}
+                expanded={expandedSection === 'copd'}
+                onToggle={() => toggleSection('copd')}
+            />
+            <ChronicBronchitisRatingCard
+                analysis={chronicBronchitisAnalysis}
+                expanded={expandedSection === 'chronic-bronchitis'}
+                onToggle={() => toggleSection('chronic-bronchitis')}
+            />
+            <EmphysemaRatingCard
+                analysis={emphysemaAnalysis}
+                expanded={expandedSection === 'emphysema'}
+                onToggle={() => toggleSection('emphysema')}
+            />
+            <BronchiectasisRatingCard
+                analysis={bronchiectasisAnalysis}
+                expanded={expandedSection === 'bronchiectasis'}
+                onToggle={() => toggleSection('bronchiectasis')}
+            />
+            <PulmonaryFibrosisRatingCard
+                analysis={pulmonaryFibrosisAnalysis}
+                expanded={expandedSection === 'pulmonary-fibrosis'}
+                onToggle={() => toggleSection('pulmonary-fibrosis')}
+            />
+            <SarcoidosisRatingCard
+                analysis={sarcoidosisAnalysis}
+                expanded={expandedSection === 'sarcoidosis'}
+                onToggle={() => toggleSection('sarcoidosis')}
+            />
+          </ConditionGroup>
+
+
+          {/* ========== EYE & EAR ========== */}
+          <ConditionGroup
+              title="Eye & Ear"
+              icon="👁️"
+              conditionCount={bodySystemCounts.eyeEar}
+              accentColor="blue"
+              defaultExpanded={false}
+          >
             <EyeVisionRatingCard
                 logs={logs}
                 expanded={expandedSection === 'vision'}
                 onToggle={() => toggleSection('vision')}
             />
-            {/* Phase 3: Genitourinary Conditions */}
+            <HearingLossRatingCard
+                analysis={hearingLossAnalysis}
+                expanded={expandedSection === 'hearingLoss'}
+                onToggle={() => toggleSection('hearingLoss')}
+            />
+            <GenericRatingCard
+                analysis={tinnitusAnalysis}
+                expanded={expandedSection === 'tinnitus'}
+                onToggle={() => toggleSection('tinnitus')}
+                icon="👂"
+            />
+            <MenieresRatingCard
+                analysis={menieresAnalysis}
+                expanded={expandedSection === 'menieres'}
+                onToggle={() => toggleSection('menieres')}
+            />
+            <GeneralEyeRatingCard
+                analysis={uveitisAnalysis}
+                expanded={expandedSection === 'uveitis'}
+                onToggle={() => toggleSection('uveitis')}
+            />
+            <GeneralEyeRatingCard
+                analysis={keratitisAnalysis}
+                expanded={expandedSection === 'keratitis'}
+                onToggle={() => toggleSection('keratitis')}
+            />
+            <GeneralEyeRatingCard
+                analysis={chronicConjunctivitisAnalysis}
+                expanded={expandedSection === 'chronic-conjunctivitis'}
+                onToggle={() => toggleSection('chronic-conjunctivitis')}
+            />
+            <GeneralEyeRatingCard
+                analysis={scleritisAnalysis}
+                expanded={expandedSection === 'scleritis'}
+                onToggle={() => toggleSection('scleritis')}
+            />
+            <EarConditionsRatingCard
+                analysis={peripheralVestibularAnalysis}
+                expanded={expandedSection === 'peripheral-vestibular'}
+                onToggle={() => toggleSection('peripheral-vestibular')}
+            />
+            <EarConditionsRatingCard
+                analysis={chronicSuppurativeOtitisMediaAnalysis}
+                expanded={expandedSection === 'chronic-suppurative-otitis-media'}
+                onToggle={() => toggleSection('chronic-suppurative-otitis-media')}
+            />
+            <EarConditionsRatingCard
+                analysis={chronicOtitisExternaAnalysis}
+                expanded={expandedSection === 'chronic-otitis-externa'}
+                onToggle={() => toggleSection('chronic-otitis-externa')}
+            />
+            <EarConditionsRatingCard
+                analysis={chronicNonsuppurativeOtitisMediaAnalysis}
+                expanded={expandedSection === 'chronic-nonsuppurative-otitis-media'}
+                onToggle={() => toggleSection('chronic-nonsuppurative-otitis-media')}
+            />
+          </ConditionGroup>
+
+          {/* ========== INFECTIOUS DISEASES ========== */}
+          <ConditionGroup
+              title="Infectious Diseases"
+              icon="🦠"
+              conditionCount={bodySystemCounts.infectious}
+              accentColor="green"
+              defaultExpanded={false}
+          >
+            <HIVRatingCard
+                analysis={hivAnalysis}
+                expanded={expandedSection === 'hiv-aids'}
+                onToggle={() => toggleSection('hiv-aids')}
+            />
+            <HepatitisCRatingCard
+                analysis={hepatitisCAnalysis}
+                expanded={expandedSection === 'hepatitis-c'}
+                onToggle={() => toggleSection('hepatitis-c')}
+            />
+            <HepatitisBRatingCard
+                analysis={hepatitisBAnalysis}
+                expanded={expandedSection === 'hepatitis-b'}
+                onToggle={() => toggleSection('hepatitis-b')}
+            />
+            <LymeDiseaseRatingCard
+                analysis={lymeDiseaseAnalysis}
+                expanded={expandedSection === 'lyme-disease'}
+                onToggle={() => toggleSection('lyme-disease')}
+            />
+            <MalariaRatingCard
+                analysis={malariaAnalysis}
+                expanded={expandedSection === 'malaria'}
+                onToggle={() => toggleSection('malaria')}
+            />
+            <BrucellosisRatingCard
+                analysis={brucellosisAnalysis}
+                expanded={expandedSection === 'brucellosis'}
+                onToggle={() => toggleSection('brucellosis')}
+            />
+            <CampylobacterRatingCard
+                analysis={campylobacterAnalysis}
+                expanded={expandedSection === 'campylobacter'}
+                onToggle={() => toggleSection('campylobacter')}
+            />
+            <QFeverRatingCard
+                analysis={qFeverAnalysis}
+                expanded={expandedSection === 'q-fever'}
+                onToggle={() => toggleSection('q-fever')}
+            />
+            <SalmonellaRatingCard
+                analysis={salmonellaAnalysis}
+                expanded={expandedSection === 'salmonella'}
+                onToggle={() => toggleSection('salmonella')}
+            />
+            <ShigellaRatingCard
+                analysis={shigellaAnalysis}
+                expanded={expandedSection === 'shigella'}
+                onToggle={() => toggleSection('shigella')}
+            />
+            <WestNileRatingCard
+                analysis={westNileAnalysis}
+                expanded={expandedSection === 'westNile'}
+                onToggle={() => toggleSection('westNile')}
+            />
+            <NTMRatingCard
+                analysis={ntmAnalysis}
+                expanded={expandedSection === 'ntm'}
+                onToggle={() => toggleSection('ntm')}
+            />
+          </ConditionGroup>
+
+          {/* ========== CARDIOVASCULAR ========== */}
+          <ConditionGroup
+              title="Cardiovascular"
+              icon="❤️"
+              conditionCount={bodySystemCounts.cardiovascular}
+              accentColor="red"
+              defaultExpanded={false}
+          >
+            <HypertensionRatingCard
+                analysis={hypertensionAnalysis}
+                expanded={expandedSection === 'hypertension'}
+                onToggle={() => toggleSection('hypertension')}
+            />
+            <CardiomyopathyRatingCard
+                analysis={cardiomyopathyAnalysis}
+                expanded={expandedSection === 'cardiomyopathy'}
+                onToggle={() => toggleSection('cardiomyopathy')}
+            />
+            <ArrhythmiaRatingCard
+                analysis={svtAnalysis}
+                expanded={expandedSection === 'svt'}
+                onToggle={() => toggleSection('svt')}
+            />
+            <ArrhythmiaRatingCard
+                analysis={ventricularArrhythmiaAnalysis}
+                expanded={expandedSection === 'ventricular-arrhythmia'}
+                onToggle={() => toggleSection('ventricular-arrhythmia')}
+            />
+            <PericarditisRatingCard
+                analysis={pericarditisAnalysis}
+                expanded={expandedSection === 'pericarditis'}
+                onToggle={() => toggleSection('pericarditis')}
+            />
+            <PostPhlebiticRatingCard
+                analysis={postPhlebiticAnalysis}
+                expanded={expandedSection === 'post-phlebitic'}
+                onToggle={() => toggleSection('post-phlebitic')}
+            />
+            <CADRatingCard
+                analysis={cadAnalysis}
+                expanded={expandedSection === 'cad'}
+                onToggle={() => toggleSection('cad')}
+            />
+            <PostMIRatingCard
+                analysis={postMIAnalysis}
+                expanded={expandedSection === 'post-mi'}
+                onToggle={() => toggleSection('post-mi')}
+            />
+            <HypertensiveHeartRatingCard
+                analysis={hypertensiveHeartAnalysis}
+                expanded={expandedSection === 'hypertensive-heart'}
+                onToggle={() => toggleSection('hypertensive-heart')}
+            />
+            <ColdInjuryRatingCard
+                analysis={coldInjuryAnalysis}
+                expanded={expandedSection === 'cold-injury'}
+                onToggle={() => toggleSection('cold-injury')}
+            />
+            <PADRatingCard
+                analysis={padAnalysis}
+                expanded={expandedSection === 'peripheral-arterial-disease'}
+                onToggle={() => toggleSection('peripheral-arterial-disease')}
+            />
+            <GenericRatingCard
+                analysis={raynaudsAnalysis}
+                expanded={expandedSection === 'raynauds'}
+                onToggle={() => toggleSection('raynauds')}
+                icon="🥶"
+            />
+            <GenericRatingCard
+                analysis={varicoseVeinsAnalysis}
+                expanded={expandedSection === 'varicoseVeins'}
+                onToggle={() => toggleSection('varicoseVeins')}
+                icon="🦵"
+            />
+          </ConditionGroup>
+
+          {/* ========== DIGESTIVE ========== */}
+          <ConditionGroup
+              title="Digestive"
+              icon="🫃"
+              conditionCount={bodySystemCounts.digestive}
+              accentColor="lime"
+              defaultExpanded={false}
+          >
+            <IBSRatingCard
+                analysis={ibsAnalysis}
+                expanded={expandedSection === 'ibs'}
+                onToggle={() => toggleSection('ibs')}
+            />
+            <GERDRatingCard
+                analysis={gerdAnalysis}
+                expanded={expandedSection === 'gerd'}
+                onToggle={() => toggleSection('gerd')}
+            />
+            <GERDComplicationsRatingCard
+                analysis={gerdAnalysis}
+                expanded={expandedSection === 'gerdComplications'}
+                onToggle={() => toggleSection('gerdComplications')}
+            />
+            <GenericRatingCard
+                analysis={ulcerativeColitisAnalysis}
+                expanded={expandedSection === 'ulcerativeColitis'}
+                onToggle={() => toggleSection('ulcerativeColitis')}
+                icon="🩸"
+            />
+            <GenericRatingCard
+                analysis={pepticUlcerAnalysis}
+                expanded={expandedSection === 'pepticUlcer'}
+                onToggle={() => toggleSection('pepticUlcer')}
+                icon="🔥"
+            />
+            <GenericRatingCard
+                analysis={hemorrhoidAnalysis}
+                expanded={expandedSection === 'hemorrhoids'}
+                onToggle={() => toggleSection('hemorrhoids')}
+                icon="🩹"
+            />
+            <GenericRatingCard
+                analysis={diverticulitisAnalysis}
+                expanded={expandedSection === 'diverticulitis'}
+                onToggle={() => toggleSection('diverticulitis')}
+                icon="🫃"
+            />
+            <CirrhosisRatingCard
+                analysis={cirrhosisAnalysis}
+                expanded={expandedSection === 'cirrhosis'}
+                onToggle={() => toggleSection('cirrhosis')}
+            />
+            <GastritisRatingCard
+                analysis={gastritisAnalysis}
+                expanded={expandedSection === 'gastritis'}
+                onToggle={() => toggleSection('gastritis')}
+            />
+            <PancreatitisRatingCard
+                analysis={pancreatitisAnalysis}
+                expanded={expandedSection === 'pancreatitis'}
+                onToggle={() => toggleSection('pancreatitis')}
+            />
+            <BiliaryTractRatingCard
+                analysis={biliaryTractAnalysis}
+                expanded={expandedSection === 'biliary-tract'}
+                onToggle={() => toggleSection('biliary-tract')}
+            />
+            <HerniaRatingCard
+                analysis={herniaAnalysis}
+                expanded={expandedSection === 'hernia'}
+                onToggle={() => toggleSection('hernia')}
+            />
+            <PeritonealAdhesionsRatingCard
+                analysis={peritonealAdhesionsAnalysis}
+                expanded={expandedSection === 'peritoneal-adhesions'}
+                onToggle={() => toggleSection('peritoneal-adhesions')}
+            />
+            <EsophagealRatingCard
+                analysis={esophagealAnalysis}
+                expanded={expandedSection === 'esophageal'}
+                onToggle={() => toggleSection('esophageal')}
+            />
+            <PostgastrectomyRatingCard
+                analysis={postgastrectomyAnalysis}
+                expanded={expandedSection === 'postgastrectomy'}
+                onToggle={() => toggleSection('postgastrectomy')}
+            />
+            <IntestinalFistulaRatingCard
+                analysis={intestinalFistulaAnalysis}
+                expanded={expandedSection === 'intestinal-fistula'}
+                onToggle={() => toggleSection('intestinal-fistula')}
+            />
+          </ConditionGroup>
+
+          {/* ========== GENITOURINARY ========== */}
+          <ConditionGroup
+              title="Genitourinary"
+              icon="🫘"
+              conditionCount={bodySystemCounts.genitourinary}
+              accentColor="orange"
+              defaultExpanded={false}
+          >
             <KidneyStonesRatingCard
                 analysis={kidneyStonesAnalysis}
                 expanded={expandedSection === 'kidney-stones'}
@@ -1952,7 +2495,6 @@ const RatingEvidence = () => {
                 expanded={expandedSection === 'erectile-dysfunction'}
                 onToggle={() => toggleSection('erectile-dysfunction')}
             />
-            {/* Phase 4: Gynecological Rating Cards */}
             <EndometriosisRatingCard
                 analysis={endometriosisAnalysis}
                 expanded={expandedSection === 'endometriosis'}
@@ -1973,7 +2515,17 @@ const RatingEvidence = () => {
                 expanded={expandedSection === 'female-arousal-disorder'}
                 onToggle={() => toggleSection('female-arousal-disorder')}
             />
-            {/* Phase 5: Hemic/Lymphatic Rating Cards */}
+          </ConditionGroup>
+
+
+          {/* ========== HEMIC & LYMPHATIC ========== */}
+          <ConditionGroup
+              title="Hemic & Lymphatic"
+              icon="🩸"
+              conditionCount={bodySystemCounts.hemicLymphatic}
+              accentColor="rose"
+              defaultExpanded={false}
+          >
             <IronDeficiencyAnemiaRatingCard
                 analysis={ironDeficiencyAnemiaAnalysis}
                 expanded={expandedSection === 'iron-deficiency-anemia'}
@@ -2054,267 +2606,208 @@ const RatingEvidence = () => {
                 expanded={expandedSection === 'myelodysplastic-syndromes'}
                 onToggle={() => toggleSection('myelodysplastic-syndromes')}
             />
-            {/* Phase 7: Dental/Oral Rating Cards */}
-            <ToothLossRatingCard
-                analysis={toothLossAnalysis}
-                expanded={expandedSection === 'tooth-loss'}
-                onToggle={() => toggleSection('tooth-loss')}
+          </ConditionGroup>
+
+          {/* ========== SKIN ========== */}
+          <ConditionGroup
+              title="Skin"
+              icon="🧴"
+              conditionCount={bodySystemCounts.skin}
+              accentColor="pink"
+              defaultExpanded={false}
+          >
+            <EczemaRatingCard
+                analysis={eczemaAnalysis}
+                expanded={expandedSection === 'eczema'}
+                onToggle={() => toggleSection('eczema')}
             />
-            <MandibleNonunionRatingCard
-                analysis={mandibleNonunionAnalysis}
-                expanded={expandedSection === 'mandible-nonunion'}
-                onToggle={() => toggleSection('mandible-nonunion')}
+            <PsoriasisRatingCard
+                analysis={psoriasisAnalysis}
+                expanded={expandedSection === 'psoriasis'}
+                onToggle={() => toggleSection('psoriasis')}
             />
-            <MaxillaMalunionRatingCard
-                analysis={mandibleNonunionAnalysis}
-                expanded={expandedSection === 'maxilla-malunion'}
-                onToggle={() => toggleSection('maxilla-malunion')}
+            <ScarsRatingCard
+                analysis={scarsAnalysis}
+                expanded={expandedSection === 'scarsAnalysis'}
+                onToggle={() => toggleSection('scarsAnalysis')}
             />
-            <MalignantOralNeoplasmRatingCard
-                analysis={malignantOralNeoplasmAnalysis}
-                expanded={expandedSection === 'malignant-oral-neoplasm'}
-                onToggle={() => toggleSection('malignant-oral-neoplasm')}
+            <GenericRatingCard
+                analysis={chronicUrticariaAnalysis}
+                expanded={expandedSection === 'chronicUrticaria'}
+                onToggle={() => toggleSection('chronicUrticaria')}
+                icon="🔴"
             />
-            <BenignOralNeoplasmRatingCard
-                analysis={benignOralNeoplasmAnalysis}
-                expanded={expandedSection === 'benign-oral-neoplasm'}
-                onToggle={() => toggleSection('benign-oral-neoplasm')}
+            <AcneChloracneRatingCard
+                analysis={acneAnalysis}
+                expanded={expandedSection === 'acne'}
+                onToggle={() => toggleSection('acne')}
             />
-            <HIVRatingCard
-                analysis={hivAnalysis}
-                expanded={expandedSection === 'hiv-aids'}
-                onToggle={() => toggleSection('hiv-aids')}
+            <AcneChloracneRatingCard
+                analysis={chloracneAnalysis}
+                expanded={expandedSection === 'chloracne'}
+                onToggle={() => toggleSection('chloracne')}
             />
-            <HepatitisCRatingCard
-                analysis={hepatitisCAnalysis}
-                expanded={expandedSection === 'hepatitis-c'}
-                onToggle={() => toggleSection('hepatitis-c')}
+            <AlopeciaAreataRatingCard
+                analysis={alopeciaAreataAnalysis}
+                expanded={expandedSection === 'alopecia-areata'}
+                onToggle={() => toggleSection('alopecia-areata')}
             />
-            <HepatitisBRatingCard
-                analysis={hepatitisBAnalysis}
-                expanded={expandedSection === 'hepatitis-b'}
-                onToggle={() => toggleSection('hepatitis-b')}
+            <HyperhidrosisRatingCard
+                analysis={hyperhidrosisAnalysis}
+                expanded={expandedSection === 'hyperhidrosis'}
+                onToggle={() => toggleSection('hyperhidrosis')}
             />
-            <LymeDiseaseRatingCard
-                analysis={lymeDiseaseAnalysis}
-                expanded={expandedSection === 'lyme-disease'}
-                onToggle={() => toggleSection('lyme-disease')}
+            <GeneralSkinRatingCard
+                analysis={discoidLupusAnalysis}
+                expanded={expandedSection === 'discoid-lupus'}
+                onToggle={() => toggleSection('discoid-lupus')}
             />
-            {/* Malaria Rating Card */}
-            <MalariaRatingCard
-                analysis={malariaAnalysis}
-                expanded={expandedSection === 'malaria'}
-                onToggle={() => toggleSection('malaria')}
+            <GeneralSkinRatingCard
+                analysis={bullousDisordersAnalysis}
+                expanded={expandedSection === 'bullous-disorders'}
+                onToggle={() => toggleSection('bullous-disorders')}
             />
-            {/* Brucellosis Rating Card */}
-            <BrucellosisRatingCard
-                analysis={brucellosisAnalysis}
-                expanded={expandedSection === 'brucellosis'}
-                onToggle={() => toggleSection('brucellosis')}
+            <GeneralSkinRatingCard
+                analysis={cutaneousVasculitisAnalysis}
+                expanded={expandedSection === 'cutaneous-vasculitis'}
+                onToggle={() => toggleSection('cutaneous-vasculitis')}
             />
-            {/* Campylobacter Rating Card */}
-            <CampylobacterRatingCard
-                analysis={campylobacterAnalysis}
-                expanded={expandedSection === 'campylobacter'}
-                onToggle={() => toggleSection('campylobacter')}
+            <GeneralSkinRatingCard
+                analysis={dermatophytosisAnalysis}
+                expanded={expandedSection === 'dermatophytosis'}
+                onToggle={() => toggleSection('dermatophytosis')}
             />
-            {/* Q Fever Rating Card */}
-            <QFeverRatingCard
-                analysis={qFeverAnalysis}
-                expanded={expandedSection === 'q-fever'}
-                onToggle={() => toggleSection('q-fever')}
+            <GeneralSkinRatingCard
+                analysis={skinInfectionsAnalysis}
+                expanded={expandedSection === 'skin-infections'}
+                onToggle={() => toggleSection('skin-infections')}
             />
-            <SalmonellaRatingCard
-                analysis={salmonellaAnalysis}
-                expanded={expandedSection === 'salmonella'}
-                onToggle={() => toggleSection('salmonella')}
+          </ConditionGroup>
+
+          {/* ========== ENDOCRINE ========== */}
+          <ConditionGroup
+              title="Endocrine"
+              icon="🦋"
+              conditionCount={bodySystemCounts.endocrine}
+              accentColor="teal"
+              defaultExpanded={false}
+          >
+            <DiabetesRatingCard
+                analysis={diabetesAnalysis}
+                expanded={expandedSection === 'diabetes'}
+                onToggle={() => toggleSection('diabetes')}
             />
-            <ShigellaRatingCard
-                analysis={shigellaAnalysis}
-                expanded={expandedSection === 'shigella'}
-                onToggle={() => toggleSection('shigella')}
+            <GenericRatingCard
+                analysis={hypothyroidismAnalysis}
+                expanded={expandedSection === 'hypothyroidism'}
+                onToggle={() => toggleSection('hypothyroidism')}
+                icon="🦋"
             />
-            <WestNileRatingCard
-                analysis={westNileAnalysis}
-                expanded={expandedSection === 'westNile'}
-                onToggle={() => toggleSection('westNile')}
+            <HyperthyroidismRatingCard
+                analysis={hyperthyroidismAnalysis}
+                expanded={expandedSection === 'hyperthyroidism'}
+                onToggle={() => toggleSection('hyperthyroidism')}
             />
-            <NTMRatingCard
-                analysis={ntmAnalysis}
-                expanded={expandedSection === 'ntm'}
-                onToggle={() => toggleSection('ntm')}
+            <ThyroiditisRatingCard
+                analysis={thyroiditisAnalysis}
+                expanded={expandedSection === 'thyroiditis'}
+                onToggle={() => toggleSection('thyroiditis')}
             />
-            {/* Phase 8B: Additional Mental Health Conditions */}
-            <Phase8BMentalHealthRatingCard
-                analysis={schizophreniaAnalysis}
-                expanded={expandedSection === 'schizophrenia'}
-                onToggle={() => toggleSection('schizophrenia')}
+            <HyperparathyroidismRatingCard
+                analysis={hyperparathyroidismAnalysis}
+                expanded={expandedSection === 'hyperparathyroidism'}
+                onToggle={() => toggleSection('hyperparathyroidism')}
             />
-            <Phase8BMentalHealthRatingCard
-                analysis={schizoaffectiveDisorderAnalysis}
-                expanded={expandedSection === 'schizoaffective-disorder'}
-                onToggle={() => toggleSection('schizoaffective-disorder')}
+            <HypoparathyroidismRatingCard
+                analysis={hypoparathyroidismAnalysis}
+                expanded={expandedSection === 'hypoparathyroidism'}
+                onToggle={() => toggleSection('hypoparathyroidism')}
             />
-            <Phase8BMentalHealthRatingCard
-                analysis={delusionalDisorderAnalysis}
-                expanded={expandedSection === 'delusional-disorder'}
-                onToggle={() => toggleSection('delusional-disorder')}
+            <AddisonsDiseaseRatingCard
+                analysis={addisonsDiseaseAnalysis}
+                expanded={expandedSection === 'addisons-disease'}
+                onToggle={() => toggleSection('addisons-disease')}
             />
-            <Phase8BMentalHealthRatingCard
-                analysis={psychoticDisorderNOSAnalysis}
-                expanded={expandedSection === 'psychotic-disorder-nos'}
-                onToggle={() => toggleSection('psychotic-disorder-nos')}
+            <CushingsSyndromeRatingCard
+                analysis={cushingsSyndromeAnalysis}
+                expanded={expandedSection === 'cushings-syndrome'}
+                onToggle={() => toggleSection('cushings-syndrome')}
             />
-            <Phase8BMentalHealthRatingCard
-                analysis={briefPsychoticDisorderAnalysis}
-                expanded={expandedSection === 'brief-psychotic-disorder'}
-                onToggle={() => toggleSection('brief-psychotic-disorder')}
+            <DiabetesInsipidusRatingCard
+                analysis={diabetesInsipidusAnalysis}
+                expanded={expandedSection === 'diabetes-insipidus'}
+                onToggle={() => toggleSection('diabetes-insipidus')}
             />
-            <Phase8BMentalHealthRatingCard
-                analysis={bingeEatingDisorderAnalysis}
-                expanded={expandedSection === 'binge-eating-disorder'}
-                onToggle={() => toggleSection('binge-eating-disorder')}
+            <HyperaldosteronismRatingCard
+                analysis={hyperaldosteronismAnalysis}
+                expanded={expandedSection === 'hyperaldosteronism'}
+                onToggle={() => toggleSection('hyperaldosteronism')}
             />
-            <Phase8BMentalHealthRatingCard
-                analysis={dissociativeIdentityDisorderAnalysis}
-                expanded={expandedSection === 'dissociative-identity-disorder'}
-                onToggle={() => toggleSection('dissociative-identity-disorder')}
+          </ConditionGroup>
+
+
+          {/* ========== NEUROLOGICAL ========== */}
+          <ConditionGroup
+              title="Neurological"
+              icon="⚡"
+              conditionCount={bodySystemCounts.neurological}
+              accentColor="indigo"
+              defaultExpanded={false}
+          >
+            <MigraineRatingCard
+                analysis={migraineAnalysis}
+                expanded={expandedSection === 'migraine'}
+                onToggle={() => toggleSection('migraine')}
             />
-            <Phase8BMentalHealthRatingCard
-                analysis={dissociativeAmnesiaAnalysis}
-                expanded={expandedSection === 'dissociative-amnesia'}
-                onToggle={() => toggleSection('dissociative-amnesia')}
+            <GenericRatingCard
+                analysis={tbiAnalysis}
+                expanded={expandedSection === 'tbi'}
+                onToggle={() => toggleSection('tbi')}
+                icon="🧠"
             />
-            <Phase8BMentalHealthRatingCard
-                analysis={acuteStressDisorderAnalysis}
-                expanded={expandedSection === 'acute-stress-disorder'}
-                onToggle={() => toggleSection('acute-stress-disorder')}
+            <TBIResidualsRatingCard
+                analysis={tbiResidualsAnalysis}
+                expanded={expandedSection === 'tbiResiduals'}
+                onToggle={() => toggleSection('tbiResiduals')}
             />
-            <Phase8BMentalHealthRatingCard
-                analysis={antisocialPersonalityDisorderAnalysis}
-                expanded={expandedSection === 'antisocial-personality-disorder'}
-                onToggle={() => toggleSection('antisocial-personality-disorder')}
+            <SeizureRatingCard
+                analysis={epilepsyMajorAnalysis}
+                expanded={expandedSection === 'epilepsyMajor'}
+                onToggle={() => toggleSection('epilepsyMajor')}
             />
-            <Phase8BMentalHealthRatingCard
-                analysis={borderlinePersonalityDisorderAnalysis}
-                expanded={expandedSection === 'borderline-personality-disorder'}
-                onToggle={() => toggleSection('borderline-personality-disorder')}
+            <SeizureRatingCard
+                analysis={epilepsyMinorAnalysis}
+                expanded={expandedSection === 'epilepsyMinor'}
+                onToggle={() => toggleSection('epilepsyMinor')}
             />
-            <Phase8BMentalHealthRatingCard
-                analysis={narcissisticPersonalityDisorderAnalysis}
-                expanded={expandedSection === 'narcissistic-personality-disorder'}
-                onToggle={() => toggleSection('narcissistic-personality-disorder')}
+            <EpilepsyExpansionRatingCard
+                analysis={jacksonianEpilepsyAnalysis}
+                expanded={expandedSection === 'epilepsyJacksonian'}
+                onToggle={() => toggleSection('epilepsyJacksonian')}
+                epilepsyType="jacksonian"
             />
-            <Phase8BMentalHealthRatingCard
-                analysis={avoidantPersonalityDisorderAnalysis}
-                expanded={expandedSection === 'avoidant-personality-disorder'}
-                onToggle={() => toggleSection('avoidant-personality-disorder')}
+            <EpilepsyExpansionRatingCard
+                analysis={diencephalicEpilepsyAnalysis}
+                expanded={expandedSection === 'epilepsyDiencephalic'}
+                onToggle={() => toggleSection('epilepsyDiencephalic')}
+                epilepsyType="diencephalic"
             />
-            {/* Phase 9: Cardiovascular Rating Cards */}
-            <CardiomyopathyRatingCard
-                analysis={cardiomyopathyAnalysis}
-                expanded={expandedSection === 'cardiomyopathy'}
-                onToggle={() => toggleSection('cardiomyopathy')}
+            <EpilepsyExpansionRatingCard
+                analysis={psychomotorEpilepsyAnalysis}
+                expanded={expandedSection === 'epilepsyPsychomotor'}
+                onToggle={() => toggleSection('epilepsyPsychomotor')}
+                epilepsyType="psychomotor"
             />
-            <ArrhythmiaRatingCard
-                analysis={svtAnalysis}
-                expanded={expandedSection === 'svt'}
-                onToggle={() => toggleSection('svt')}
+            <RadiculopathyRatingCard
+                analysis={radiculopathyAnalysis}
+                expanded={expandedSection === 'radiculopathy'}
+                onToggle={() => toggleSection('radiculopathy')}
             />
-            <ArrhythmiaRatingCard
-                analysis={ventricularArrhythmiaAnalysis}
-                expanded={expandedSection === 'ventricular-arrhythmia'}
-                onToggle={() => toggleSection('ventricular-arrhythmia')}
+            <PeripheralNeuropathyRatingCard
+                analysis={peripheralNeuropathyAnalysis}
+                expanded={expandedSection === 'peripheral-neuropathy'}
+                onToggle={() => toggleSection('peripheral-neuropathy')}
             />
-            <PericarditisRatingCard
-                analysis={pericarditisAnalysis}
-                expanded={expandedSection === 'pericarditis'}
-                onToggle={() => toggleSection('pericarditis')}
-            />
-            <PostPhlebiticRatingCard
-                analysis={postPhlebiticAnalysis}
-                expanded={expandedSection === 'post-phlebitic'}
-                onToggle={() => toggleSection('post-phlebitic')}
-            />
-            {/* Phase 2A: Major Cardiac Conditions */}
-            <CADRatingCard
-                analysis={cadAnalysis}
-                expanded={expandedSection === 'cad'}
-                onToggle={() => toggleSection('cad')}
-            />
-            <PostMIRatingCard
-                analysis={postMIAnalysis}
-                expanded={expandedSection === 'post-mi'}
-                onToggle={() => toggleSection('post-mi')}
-            />
-            <HypertensiveHeartRatingCard
-                analysis={hypertensiveHeartAnalysis}
-                expanded={expandedSection === 'hypertensive-heart'}
-                onToggle={() => toggleSection('hypertensive-heart')}
-            />
-            {/* Phase 2B: Vascular Conditions */}
-            <ColdInjuryRatingCard
-                analysis={coldInjuryAnalysis}
-                expanded={expandedSection === 'cold-injury'}
-                onToggle={() => toggleSection('cold-injury')}
-            />
-            <PADRatingCard
-                analysis={padAnalysis}
-                expanded={expandedSection === 'peripheral-arterial-disease'}
-                onToggle={() => toggleSection('peripheral-arterial-disease')}
-            />
-            {/* Phase 10: Digestive Rating Cards */}
-            <CirrhosisRatingCard
-                analysis={cirrhosisAnalysis}
-                expanded={expandedSection === 'cirrhosis'}
-                onToggle={() => toggleSection('cirrhosis')}
-            />
-            <GastritisRatingCard
-                analysis={gastritisAnalysis}
-                expanded={expandedSection === 'gastritis'}
-                onToggle={() => toggleSection('gastritis')}
-            />
-            <PancreatitisRatingCard
-                analysis={pancreatitisAnalysis}
-                expanded={expandedSection === 'pancreatitis'}
-                onToggle={() => toggleSection('pancreatitis')}
-            />
-            <BiliaryTractRatingCard
-                analysis={biliaryTractAnalysis}
-                expanded={expandedSection === 'biliary-tract'}
-                onToggle={() => toggleSection('biliary-tract')}
-            />
-            <COPDRatingCard
-                analysis={copdAnalysis}
-                expanded={expandedSection === 'copd'}
-                onToggle={() => toggleSection('copd')}
-            />
-            <ChronicBronchitisRatingCard
-                analysis={chronicBronchitisAnalysis}
-                expanded={expandedSection === 'chronic-bronchitis'}
-                onToggle={() => toggleSection('chronic-bronchitis')}
-            />
-            <EmphysemaRatingCard
-                analysis={emphysemaAnalysis}
-                expanded={expandedSection === 'emphysema'}
-                onToggle={() => toggleSection('emphysema')}
-            />
-            <BronchiectasisRatingCard
-                analysis={bronchiectasisAnalysis}
-                expanded={expandedSection === 'bronchiectasis'}
-                onToggle={() => toggleSection('bronchiectasis')}
-            />
-            <PulmonaryFibrosisRatingCard
-                analysis={pulmonaryFibrosisAnalysis}
-                expanded={expandedSection === 'pulmonary-fibrosis'}
-                onToggle={() => toggleSection('pulmonary-fibrosis')}
-            />
-            <SarcoidosisRatingCard
-                analysis={sarcoidosisAnalysis}
-                expanded={expandedSection === 'sarcoidosis'}
-                onToggle={() => toggleSection('sarcoidosis')}
-            />
-            {/* Phase 1A: Neurological Conditions */}
             <MSRatingCard
                 analysis={multipleSclerosisAnalysis}
                 expanded={expandedSection === 'multiple-sclerosis'}
@@ -2330,7 +2823,6 @@ const RatingEvidence = () => {
                 expanded={expandedSection === 'myasthenia-gravis'}
                 onToggle={() => toggleSection('myasthenia-gravis')}
             />
-            {/* Phase 1B: Additional Neurological Rating Cards */}
             <NarcolepsyRatingCard
                 analysis={narcolepsyAnalysis}
                 expanded={expandedSection === 'narcolepsy'}
@@ -2351,8 +2843,7 @@ const RatingEvidence = () => {
                 expanded={expandedSection === 'myelitis'}
                 onToggle={() => toggleSection('myelitis')}
             />
-            {/* PHASE 1C: PERIPHERAL NERVE RATING CARDS */}
-            {/* Upper Extremity Nerves */}
+            {/* Peripheral Nerves - Upper Extremity */}
             <PeripheralNerveRatingCard
                 nerveType="upper-radicular"
                 analysis={upperRadicularAnalysis}
@@ -2413,7 +2904,7 @@ const RatingEvidence = () => {
                 expanded={expandedSection === 'long-thoracic-nerve'}
                 onToggle={() => toggleSection('long-thoracic-nerve')}
             />
-            {/* Lower Extremity Nerves */}
+            {/* Peripheral Nerves - Lower Extremity */}
             <PeripheralNerveRatingCard
                 nerveType="sciatic"
                 analysis={sciaticNerveAnalysis}
@@ -2480,259 +2971,294 @@ const RatingEvidence = () => {
                 expanded={expandedSection === 'ilioinguinal-nerve'}
                 onToggle={() => toggleSection('ilioinguinal-nerve')}
             />
-            {/* Phase 3A: Endocrine - Thyroid & Parathyroid Rating Cards */}
-            <HyperthyroidismRatingCard
-                analysis={hyperthyroidismAnalysis}
-                expanded={expandedSection === 'hyperthyroidism'}
-                onToggle={() => toggleSection('hyperthyroidism')}
-            />
-            <ThyroiditisRatingCard
-                analysis={thyroiditisAnalysis}
-                expanded={expandedSection === 'thyroiditis'}
-                onToggle={() => toggleSection('thyroiditis')}
-            />
-            <HyperparathyroidismRatingCard
-                analysis={hyperparathyroidismAnalysis}
-                expanded={expandedSection === 'hyperparathyroidism'}
-                onToggle={() => toggleSection('hyperparathyroidism')}
-            />
-            <HypoparathyroidismRatingCard
-                analysis={hypoparathyroidismAnalysis}
-                expanded={expandedSection === 'hypoparathyroidism'}
-                onToggle={() => toggleSection('hypoparathyroidism')}
-            />
-            {/* Phase 3B: Adrenal & Pituitary Rating Cards */}
-            <AddisonsDiseaseRatingCard
-                analysis={addisonsDiseaseAnalysis}
-                expanded={expandedSection === 'addisons-disease'}
-                onToggle={() => toggleSection('addisons-disease')}
-            />
-            <CushingsSyndromeRatingCard
-                analysis={cushingsSyndromeAnalysis}
-                expanded={expandedSection === 'cushings-syndrome'}
-                onToggle={() => toggleSection('cushings-syndrome')}
-            />
-            <DiabetesInsipidusRatingCard
-                analysis={diabetesInsipidusAnalysis}
-                expanded={expandedSection === 'diabetes-insipidus'}
-                onToggle={() => toggleSection('diabetes-insipidus')}
-            />
-            <HyperaldosteronismRatingCard
-                analysis={hyperaldosteronismAnalysis}
-                expanded={expandedSection === 'hyperaldosteronism'}
-                onToggle={() => toggleSection('hyperaldosteronism')}
-            />
-            {/* Phase 4A: Musculoskeletal Conditions */}
-            <GoutRatingCard
-                analysis={goutAnalysis}
-                expanded={expandedSection === 'gout'}
-                onToggle={() => toggleSection('gout')}
-            />
-            <BursitisRatingCard
-                analysis={bursitisAnalysis}
-                expanded={expandedSection === 'bursitis'}
-                onToggle={() => toggleSection('bursitis')}
-            />
-            <TendinitisRatingCard
-                analysis={tendinitisAnalysis}
-                expanded={expandedSection === 'tendinitis'}
-                onToggle={() => toggleSection('tendinitis')}
-            />
-            {/* Phase 4B: Musculoskeletal Conditions - Myositis, Osteomyelitis, Multi-Joint Arthritis */}
-            <MyositisRatingCard
-                analysis={myositisAnalysis}
-                expanded={expandedSection === 'myositis'}
-                onToggle={() => toggleSection('myositis')}
-            />
-            <OsteomyelitisRatingCard
-                analysis={osteomyelitisAnalysis}
-                expanded={expandedSection === 'osteomyelitis'}
-                onToggle={() => toggleSection('osteomyelitis')}
-            />
-            <MultiJointArthritisRatingCard
-                analysis={multiJointArthritisAnalysis}
-                expanded={expandedSection === 'multi-joint-arthritis'}
-                onToggle={() => toggleSection('multi-joint-arthritis')}
-            />
-            {/* Phase 4C: Spine Conditions */}
-            <SpineConditionsRatingCard
-                analysis={vertebralFractureAnalysis}
-                diagnosticCode="5235"
-                expanded={expandedSection === 'vertebral-fracture'}
-                onToggle={() => toggleSection('vertebral-fracture')}
-            />
-            <SpineConditionsRatingCard
-                analysis={sacroiliacInjuryAnalysis}
-                diagnosticCode="5236"
-                expanded={expandedSection === 'sacroiliac-injury'}
-                onToggle={() => toggleSection('sacroiliac-injury')}
-            />
-            <SpineConditionsRatingCard
-                analysis={spinalStenosisAnalysis}
-                diagnosticCode="5238"
-                expanded={expandedSection === 'spinal-stenosis'}
-                onToggle={() => toggleSection('spinal-stenosis')}
-            />
-            <SpineConditionsRatingCard
-                analysis={ankylosingSpondylitisAnalysis}
-                diagnosticCode="5240"
-                expanded={expandedSection === 'ankylosing-spondylitis'}
-                onToggle={() => toggleSection('ankylosing-spondylitis')}
-            />
-            <SpineConditionsRatingCard
-                analysis={spinalFusionAnalysis}
-                diagnosticCode="5241"
-                expanded={expandedSection === 'spinal-fusion'}
-                onToggle={() => toggleSection('spinal-fusion')}
-            />
-            {/* Phase 4D: Foot Conditions */}
-            <FootConditionsRatingCard
-                analysis={weakFootAnalysis}
-                diagnosticCode="5277"
-                expanded={expandedSection === 'weak-foot'}
-                onToggle={() => toggleSection('weak-foot')}
-            />
-            <FootConditionsRatingCard
-                analysis={clawFootAnalysis}
-                diagnosticCode="5278"
-                expanded={expandedSection === 'claw-foot'}
-                onToggle={() => toggleSection('claw-foot')}
-            />
-            <FootConditionsRatingCard
-                analysis={metatarsalgiaAnalysis}
-                diagnosticCode="5279"
-                expanded={expandedSection === 'metatarsalgia'}
-                onToggle={() => toggleSection('metatarsalgia')}
-            />
-            <FootConditionsRatingCard
-                analysis={halluxValgusAnalysis}
-                diagnosticCode="5280"
-                expanded={expandedSection === 'hallux-valgus'}
-                onToggle={() => toggleSection('hallux-valgus')}
-            />
-            <FootConditionsRatingCard
-                analysis={halluxRigidusAnalysis}
-                diagnosticCode="5281"
-                expanded={expandedSection === 'hallux-rigidus'}
-                onToggle={() => toggleSection('hallux-rigidus')}
-            />
-            {/* Phase 5A: Hernia & Structural */}
-            <HerniaRatingCard
-                analysis={herniaAnalysis}
-                expanded={expandedSection === 'hernia'}
-                onToggle={() => toggleSection('hernia')}
-            />
-            <PeritonealAdhesionsRatingCard
-                analysis={peritonealAdhesionsAnalysis}
-                expanded={expandedSection === 'peritoneal-adhesions'}
-                onToggle={() => toggleSection('peritoneal-adhesions')}
-            />
-            {/* Phase 5B: Esophageal & Post-Surgical */}
-            <EsophagealRatingCard
-                analysis={esophagealAnalysis}
-                expanded={expandedSection === 'esophageal'}
-                onToggle={() => toggleSection('esophageal')}
-            />
-            <PostgastrectomyRatingCard
-                analysis={postgastrectomyAnalysis}
-                expanded={expandedSection === 'postgastrectomy'}
-                onToggle={() => toggleSection('postgastrectomy')}
-            />
-            <IntestinalFistulaRatingCard
-                analysis={intestinalFistulaAnalysis}
-                expanded={expandedSection === 'intestinal-fistula'}
-                onToggle={() => toggleSection('intestinal-fistula')}
-            />
-            {/* ========== PHASE 6A: SKIN CONDITIONS ========== */}
-            <AcneChloracneRatingCard
-                analysis={acneAnalysis}
-                expanded={expandedSection === 'acne'}
-                onToggle={() => toggleSection('acne')}
-            />
-            <AcneChloracneRatingCard
-                analysis={chloracneAnalysis}
-                expanded={expandedSection === 'chloracne'}
-                onToggle={() => toggleSection('chloracne')}
-            />
-            <AlopeciaAreataRatingCard
-                analysis={alopeciaAreataAnalysis}
-                expanded={expandedSection === 'alopecia-areata'}
-                onToggle={() => toggleSection('alopecia-areata')}
-            />
-            <HyperhidrosisRatingCard
-                analysis={hyperhidrosisAnalysis}
-                expanded={expandedSection === 'hyperhidrosis'}
-                onToggle={() => toggleSection('hyperhidrosis')}
-            />
-            {/* ========== PHASE 6B: ADDITIONAL SKIN CONDITIONS ========== */}
-            <GeneralSkinRatingCard
-                analysis={discoidLupusAnalysis}
-                expanded={expandedSection === 'discoid-lupus'}
-                onToggle={() => toggleSection('discoid-lupus')}
-            />
-            <GeneralSkinRatingCard
-                analysis={bullousDisordersAnalysis}
-                expanded={expandedSection === 'bullous-disorders'}
-                onToggle={() => toggleSection('bullous-disorders')}
-            />
-            <GeneralSkinRatingCard
-                analysis={cutaneousVasculitisAnalysis}
-                expanded={expandedSection === 'cutaneous-vasculitis'}
-                onToggle={() => toggleSection('cutaneous-vasculitis')}
-            />
-            <GeneralSkinRatingCard
-                analysis={dermatophytosisAnalysis}
-                expanded={expandedSection === 'dermatophytosis'}
-                onToggle={() => toggleSection('dermatophytosis')}
-            />
-            <GeneralSkinRatingCard
-                analysis={skinInfectionsAnalysis}
-                expanded={expandedSection === 'skin-infections'}
-                onToggle={() => toggleSection('skin-infections')}
-            />
-            {/* Phase 7A: Eye Conditions */}
-            <GeneralEyeRatingCard
-                analysis={uveitisAnalysis}
-                expanded={expandedSection === 'uveitis'}
-                onToggle={() => toggleSection('uveitis')}
-            />
-            <GeneralEyeRatingCard
-                analysis={keratitisAnalysis}
-                expanded={expandedSection === 'keratitis'}
-                onToggle={() => toggleSection('keratitis')}
-            />
-            <GeneralEyeRatingCard
-                analysis={chronicConjunctivitisAnalysis}
-                expanded={expandedSection === 'chronic-conjunctivitis'}
-                onToggle={() => toggleSection('chronic-conjunctivitis')}
-            />
-            <GeneralEyeRatingCard
-                analysis={scleritisAnalysis}
-                expanded={expandedSection === 'scleritis'}
-                onToggle={() => toggleSection('scleritis')}
-            />
-            {/* Phase 7B: Ear Conditions */}
-            <EarConditionsRatingCard
-                analysis={peripheralVestibularAnalysis}
-                expanded={expandedSection === 'peripheral-vestibular'}
-                onToggle={() => toggleSection('peripheral-vestibular')}
-            />
-            <EarConditionsRatingCard
-                analysis={chronicSuppurativeOtitisMediaAnalysis}
-                expanded={expandedSection === 'chronic-suppurative-otitis-media'}
-                onToggle={() => toggleSection('chronic-suppurative-otitis-media')}
-            />
-            <EarConditionsRatingCard
-                analysis={chronicOtitisExternaAnalysis}
-                expanded={expandedSection === 'chronic-otitis-externa'}
-                onToggle={() => toggleSection('chronic-otitis-externa')}
-            />
-            <EarConditionsRatingCard
-                analysis={chronicNonsuppurativeOtitisMediaAnalysis}
-                expanded={expandedSection === 'chronic-nonsuppurative-otitis-media'}
-                onToggle={() => toggleSection('chronic-nonsuppurative-otitis-media')}
-            />
+          </ConditionGroup>
 
+          {/* ========== MENTAL HEALTH ========== */}
+          <ConditionGroup
+              title="Mental Health"
+              icon="🧠"
+              conditionCount={bodySystemCounts.mentalHealth}
+              accentColor="purple"
+              defaultExpanded={false}
+          >
+            <PTSDRatingCard
+                analysis={ptsdAnalysis}
+                expanded={expandedSection === 'ptsd'}
+                onToggle={() => toggleSection('ptsd')}
+            />
+            <MentalHealthRatingCard
+                analysis={majorDepressionAnalysis}
+                expanded={expandedSection === 'major-depression'}
+                onToggle={() => toggleSection('major-depression')}
+                icon="😔"
+                getAllRatings={getAllMajorDepressionRatings}
+                getDefinition={getMajorDepressionDefinition}
+            />
+            <MentalHealthRatingCard
+                analysis={generalizedAnxietyAnalysis}
+                expanded={expandedSection === 'generalized-anxiety'}
+                onToggle={() => toggleSection('generalized-anxiety')}
+                icon="😰"
+                getAllRatings={getAllGeneralizedAnxietyRatings}
+                getDefinition={getGeneralizedAnxietyDefinition}
+            />
+            <MentalHealthRatingCard
+                analysis={panicDisorderAnalysis}
+                expanded={expandedSection === 'panic-disorder'}
+                onToggle={() => toggleSection('panic-disorder')}
+                icon="😱"
+                getAllRatings={getAllPanicDisorderRatings}
+                getDefinition={getPanicDisorderDefinition}
+            />
+            <MentalHealthRatingCard
+                analysis={bipolarAnalysis}
+                expanded={expandedSection === 'bipolar'}
+                onToggle={() => toggleSection('bipolar')}
+                icon="🎭"
+                getAllRatings={getAllBipolarRatings}
+                getDefinition={getBipolarDefinition}
+            />
+            <MentalHealthRatingCard
+                analysis={socialAnxietyAnalysis}
+                expanded={expandedSection === 'social-anxiety'}
+                onToggle={() => toggleSection('social-anxiety')}
+                icon="👥"
+                getAllRatings={getAllSocialAnxietyRatings}
+                getDefinition={getSocialAnxietyDefinition}
+            />
+            <MentalHealthRatingCard
+                analysis={ocdAnalysis}
+                expanded={expandedSection === 'ocd'}
+                onToggle={() => toggleSection('ocd')}
+                icon="🔄"
+                getAllRatings={getAllOCDRatings}
+                getDefinition={getOCDDefinition}
+            />
+            <MentalHealthRatingCard
+                analysis={persistentDepressiveAnalysis}
+                expanded={expandedSection === 'persistent-depressive'}
+                onToggle={() => toggleSection('persistent-depressive')}
+                icon="😶"
+                getAllRatings={getAllPersistentDepressiveRatings}
+                getDefinition={getPersistentDepressiveDefinition}
+            />
+            <MentalHealthRatingCard
+                analysis={adjustmentDisorderAnalysis}
+                expanded={expandedSection === 'adjustment-disorder'}
+                onToggle={() => toggleSection('adjustment-disorder')}
+                icon="⚖️"
+                getAllRatings={getAllAdjustmentDisorderRatings}
+                getDefinition={getAdjustmentDisorderDefinition}
+            />
+            <MentalHealthRatingCard
+                analysis={unspecifiedAnxietyAnalysis}
+                expanded={expandedSection === 'unspecified-anxiety'}
+                onToggle={() => toggleSection('unspecified-anxiety')}
+                icon="😟"
+                getAllRatings={getAllUnspecifiedAnxietyRatings}
+                getDefinition={getUnspecifiedAnxietyDefinition}
+            />
+            <MentalHealthRatingCard
+                analysis={unspecifiedDepressiveAnalysis}
+                expanded={expandedSection === 'unspecified-depressive'}
+                onToggle={() => toggleSection('unspecified-depressive')}
+                icon="😞"
+                getAllRatings={getAllUnspecifiedDepressiveRatings}
+                getDefinition={getUnspecifiedDepressiveDefinition}
+            />
+            <MentalHealthRatingCard
+                analysis={somaticSymptomDisorderAnalysis}
+                expanded={expandedSection === 'somatic-symptom-disorder'}
+                onToggle={() => toggleSection('somatic-symptom-disorder')}
+                icon="🏥"
+                getAllRatings={getAllSomaticSymptomDisorderRatings}
+                getDefinition={getSomaticSymptomDisorderDefinition}
+            />
+            <MentalHealthRatingCard
+                analysis={otherSpecifiedSomaticAnalysis}
+                expanded={expandedSection === 'other-specified-somatic'}
+                onToggle={() => toggleSection('other-specified-somatic')}
+                icon="🏥"
+                getAllRatings={getAllOtherSpecifiedSomaticRatings}
+                getDefinition={getOtherSpecifiedSomaticDefinition}
+            />
+            <MentalHealthRatingCard
+                analysis={unspecifiedSomaticAnalysis}
+                expanded={expandedSection === 'unspecified-somatic'}
+                onToggle={() => toggleSection('unspecified-somatic')}
+                icon="🏥"
+                getAllRatings={getAllUnspecifiedSomaticRatings}
+                getDefinition={getUnspecifiedSomaticDefinition}
+            />
+            <MentalHealthRatingCard
+                analysis={illnessAnxietyAnalysis}
+                expanded={expandedSection === 'illness-anxiety'}
+                onToggle={() => toggleSection('illness-anxiety')}
+                icon="😰"
+                getAllRatings={getAllIllnessAnxietyRatings}
+                getDefinition={getIllnessAnxietyDefinition}
+            />
+            <MentalHealthRatingCard
+                analysis={otherSpecifiedAnxietyAnalysis}
+                expanded={expandedSection === 'other-specified-anxiety'}
+                onToggle={() => toggleSection('other-specified-anxiety')}
+                icon="😟"
+                getAllRatings={getAllOtherSpecifiedAnxietyRatings}
+                getDefinition={getOtherSpecifiedAnxietyDefinition}
+            />
+            <MentalHealthRatingCard
+                analysis={depersonalizationAnalysis}
+                expanded={expandedSection === 'depersonalization-derealization'}
+                onToggle={() => toggleSection('depersonalization-derealization')}
+                icon="👤"
+                getAllRatings={getAllDepersonalizationRatings}
+                getDefinition={getDepersonalizationDefinition}
+            />
+            <MentalHealthRatingCard
+                analysis={cyclothymicAnalysis}
+                expanded={expandedSection === 'cyclothymic'}
+                onToggle={() => toggleSection('cyclothymic')}
+                icon="🌓"
+                getAllRatings={getAllCyclothymicRatings}
+                getDefinition={getCyclothymicDefinition}
+            />
+            <MentalHealthRatingCard
+                analysis={anorexiaNervosaAnalysis}
+                expanded={expandedSection === 'anorexia-nervosa'}
+                onToggle={() => toggleSection('anorexia-nervosa')}
+                icon="🍽️"
+                getAllRatings={getAllAnorexiaNervosaRatings}
+                getDefinition={getAnorexiaNervosaDefinition}
+            />
+            <MentalHealthRatingCard
+                analysis={bulimiaNervosaAnalysis}
+                expanded={expandedSection === 'bulimia-nervosa'}
+                onToggle={() => toggleSection('bulimia-nervosa')}
+                icon="🍽️"
+                getAllBulimiaNervosaRatings={getAllBulimiaNervosaRatings}
+                getDefinition={getBulimiaNervosaDefinition}
+            />
+            <Phase8BMentalHealthRatingCard
+                analysis={schizophreniaAnalysis}
+                expanded={expandedSection === 'schizophrenia'}
+                onToggle={() => toggleSection('schizophrenia')}
+            />
+            <Phase8BMentalHealthRatingCard
+                analysis={schizoaffectiveDisorderAnalysis}
+                expanded={expandedSection === 'schizoaffective-disorder'}
+                onToggle={() => toggleSection('schizoaffective-disorder')}
+            />
+            <Phase8BMentalHealthRatingCard
+                analysis={delusionalDisorderAnalysis}
+                expanded={expandedSection === 'delusional-disorder'}
+                onToggle={() => toggleSection('delusional-disorder')}
+            />
+            <Phase8BMentalHealthRatingCard
+                analysis={psychoticDisorderNOSAnalysis}
+                expanded={expandedSection === 'psychotic-disorder-nos'}
+                onToggle={() => toggleSection('psychotic-disorder-nos')}
+            />
+            <Phase8BMentalHealthRatingCard
+                analysis={briefPsychoticDisorderAnalysis}
+                expanded={expandedSection === 'brief-psychotic-disorder'}
+                onToggle={() => toggleSection('brief-psychotic-disorder')}
+            />
+            <Phase8BMentalHealthRatingCard
+                analysis={bingeEatingDisorderAnalysis}
+                expanded={expandedSection === 'binge-eating-disorder'}
+                onToggle={() => toggleSection('binge-eating-disorder')}
+            />
+            <Phase8BMentalHealthRatingCard
+                analysis={dissociativeIdentityDisorderAnalysis}
+                expanded={expandedSection === 'dissociative-identity-disorder'}
+                onToggle={() => toggleSection('dissociative-identity-disorder')}
+            />
+            <Phase8BMentalHealthRatingCard
+                analysis={dissociativeAmnesiaAnalysis}
+                expanded={expandedSection === 'dissociative-amnesia'}
+                onToggle={() => toggleSection('dissociative-amnesia')}
+            />
+            <Phase8BMentalHealthRatingCard
+                analysis={acuteStressDisorderAnalysis}
+                expanded={expandedSection === 'acute-stress-disorder'}
+                onToggle={() => toggleSection('acute-stress-disorder')}
+            />
+            <Phase8BMentalHealthRatingCard
+                analysis={antisocialPersonalityDisorderAnalysis}
+                expanded={expandedSection === 'antisocial-personality-disorder'}
+                onToggle={() => toggleSection('antisocial-personality-disorder')}
+            />
+            <Phase8BMentalHealthRatingCard
+                analysis={borderlinePersonalityDisorderAnalysis}
+                expanded={expandedSection === 'borderline-personality-disorder'}
+                onToggle={() => toggleSection('borderline-personality-disorder')}
+            />
+            <Phase8BMentalHealthRatingCard
+                analysis={narcissisticPersonalityDisorderAnalysis}
+                expanded={expandedSection === 'narcissistic-personality-disorder'}
+                onToggle={() => toggleSection('narcissistic-personality-disorder')}
+            />
+            <Phase8BMentalHealthRatingCard
+                analysis={avoidantPersonalityDisorderAnalysis}
+                expanded={expandedSection === 'avoidant-personality-disorder'}
+                onToggle={() => toggleSection('avoidant-personality-disorder')}
+            />
+          </ConditionGroup>
+
+          {/* ========== DENTAL & ORAL ========== */}
+          <ConditionGroup
+              title="Dental & Oral"
+              icon="🦷"
+              conditionCount={bodySystemCounts.dental}
+              accentColor="yellow"
+              defaultExpanded={false}
+          >
+            <ToothLossRatingCard
+                analysis={toothLossAnalysis}
+                expanded={expandedSection === 'tooth-loss'}
+                onToggle={() => toggleSection('tooth-loss')}
+            />
+            <MandibleNonunionRatingCard
+                analysis={mandibleNonunionAnalysis}
+                expanded={expandedSection === 'mandible-nonunion'}
+                onToggle={() => toggleSection('mandible-nonunion')}
+            />
+            <MaxillaMalunionRatingCard
+                analysis={mandibleNonunionAnalysis}
+                expanded={expandedSection === 'maxilla-malunion'}
+                onToggle={() => toggleSection('maxilla-malunion')}
+            />
+            <MalignantOralNeoplasmRatingCard
+                analysis={malignantOralNeoplasmAnalysis}
+                expanded={expandedSection === 'malignant-oral-neoplasm'}
+                onToggle={() => toggleSection('malignant-oral-neoplasm')}
+            />
+            <BenignOralNeoplasmRatingCard
+                analysis={benignOralNeoplasmAnalysis}
+                expanded={expandedSection === 'benign-oral-neoplasm'}
+                onToggle={() => toggleSection('benign-oral-neoplasm')}
+            />
+          </ConditionGroup>
+
+          {/* ========== OTHER CONDITIONS ========== */}
+          <ConditionGroup
+              title="Other Conditions"
+              icon="📋"
+              conditionCount={bodySystemCounts.other}
+              accentColor="blue"
+              defaultExpanded={false}
+          >
+            <ChronicFatigueRatingCard
+                analysis={chronicFatigueAnalysis}
+                expanded={expandedSection === 'chronic-fatigue'}
+                onToggle={() => toggleSection('chronic-fatigue')}
+            />
+            <InsomniaRatingCard
+                analysis={insomniaAnalysis}
+                expanded={expandedSection === 'insomnia'}
+                onToggle={() => toggleSection('insomnia')}
+            />
+          </ConditionGroup>
 
           {/* Sleep Apnea Setup Modal */}
             {showSleepApneaSetup && (
@@ -2932,8 +3458,9 @@ const SleepApneaSetupModal = ({ currentProfile, onSave, onClose }) => {
 
 /**
  * Stat Box Component
+ * Memoized to prevent unnecessary re-renders in rating cards
  */
-const StatBox = ({ label, value, subtext, highlight = false, muted = false }) => (
+const StatBox = memo(({ label, value, subtext, highlight = false, muted = false }) => (
     <div className={`p-3 rounded-lg border ${
         highlight
             ? 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800'
@@ -2941,31 +3468,33 @@ const StatBox = ({ label, value, subtext, highlight = false, muted = false }) =>
                 ? 'bg-gray-50 dark:bg-gray-700/30 border-gray-200 dark:border-gray-600'
                 : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700'
     }`}>
-        <div className={`text-2xl font-bold ${
-            muted ? 'text-gray-400 dark:text-gray-500' : 'text-gray-900 dark:text-white'
-        }`}>
-            {value}
-        </div>
-        <div className={`text-xs ${
-            muted ? 'text-gray-400 dark:text-gray-500' : 'text-gray-600 dark:text-gray-400'
-        }`}>
-            {label}
-        </div>
-        {subtext && (
-            <div className={`text-xs mt-1 ${
-                muted ? 'text-gray-400 dark:text-gray-500' : 'text-gray-500 dark:text-gray-500'
-            }`}>
-                {subtext}
-            </div>
-        )}
+      <div className={`text-2xl font-bold ${
+          muted ? 'text-gray-400 dark:text-gray-500' : 'text-gray-900 dark:text-white'
+      }`}>
+        {value}
+      </div>
+      <div className={`text-xs ${
+          muted ? 'text-gray-400 dark:text-gray-500' : 'text-gray-600 dark:text-gray-400'
+      }`}>
+        {label}
+      </div>
+      {subtext && (
+          <div className={`text-xs mt-1 ${
+              muted ? 'text-gray-400 dark:text-gray-500' : 'text-gray-500 dark:text-gray-500'
+          }`}>
+            {subtext}
+          </div>
+      )}
     </div>
-);
+));
+StatBox.displayName = 'StatBox';
 
 /**
  * Rating Row Component
+ * Memoized to prevent unnecessary re-renders when displaying rating criteria
  */
-const RatingRow = ({ rating, isSupported }) => {
-    const colorClass = getRatingColorClass(rating.percent);
+const RatingRow = memo(({ rating, isSupported }) => {
+  const colorClass = getRatingColorClass(rating.percent);
 
   return (
       <div className={`p-2 rounded-lg border flex items-center gap-3 ${
@@ -2988,13 +3517,15 @@ const RatingRow = ({ rating, isSupported }) => {
         )}
       </div>
   );
-};
+});
+RatingRow.displayName = 'RatingRow';
 
 /**
  * Definition Box Component
+ * Memoized to prevent unnecessary re-renders when displaying definitions
  */
-const DefinitionBox = ({ definition }) => {
-    if (!definition) return null;
+const DefinitionBox = memo(({ definition }) => {
+  if (!definition) return null;
 
   return (
       <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-3">
@@ -3018,6 +3549,7 @@ const DefinitionBox = ({ definition }) => {
         )}
       </div>
   );
-};
+});
+DefinitionBox.displayName = 'DefinitionBox';
 
 export default RatingEvidence;

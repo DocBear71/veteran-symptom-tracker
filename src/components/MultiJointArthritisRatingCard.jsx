@@ -1,4 +1,5 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
+import UnderstandingYourRating from './UnderstandingYourRating';
 
 /**
  * Multi-Joint Arthritis Rating Card - DC 5002
@@ -148,6 +149,12 @@ export default function MultiJointArthritisRatingCard({ analysis, expanded, onTo
                     </div>
                   </div>
               )}
+
+              {/* Understanding Your Rating - Educational Content */}
+              <UnderstandingYourRating
+                  diagnosticCode="5002"
+                  currentRating={numericRating}
+              />
 
               {/* VA Rating Schedule */}
               {criteria?.ratings && (

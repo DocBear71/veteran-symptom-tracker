@@ -6,6 +6,7 @@ import {
   ANKYLOSING_SPONDYLITIS_CRITERIA,
   SPINAL_FUSION_CRITERIA,
 } from '../utils/ratingCriteria';
+import UnderstandingYourRating from './UnderstandingYourRating';
 
 /**
  * Spine Conditions Rating Card Component - Gold Standard Version
@@ -239,6 +240,12 @@ export default function SpineConditionsRatingCard({ analysis, diagnosticCode, ex
                     </div>
                   </div>
               )}
+
+              {/* Understanding Your Rating - Educational Content */}
+              <UnderstandingYourRating
+                  diagnosticCode={diagnosticCode}
+                  currentRating={numericRating}
+              />
 
               {/* Section 3: VA Rating Schedule */}
               <div>

@@ -1,5 +1,6 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { PERITONEAL_ADHESIONS_CRITERIA } from '../utils/ratingCriteria';
+import UnderstandingYourRating from './UnderstandingYourRating.jsx';
 
 /**
  * Peritoneal Adhesions Rating Card Component
@@ -237,6 +238,12 @@ export default function PeritonealAdhesionsRatingCard({ analysis, expanded, onTo
                     </div>
                   </div>
               )}
+
+              {/* Understanding Your Rating - Educational Content */}
+              <UnderstandingYourRating
+                  diagnosticCode="7301"
+                  currentRating={numericRating}
+              />
 
               {/* VA Rating Schedule */}
               <div>

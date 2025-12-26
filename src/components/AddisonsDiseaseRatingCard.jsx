@@ -1,5 +1,6 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { ADDISONS_DISEASE_CRITERIA } from '../utils/ratingCriteria';
+import UnderstandingYourRating from './UnderstandingYourRating';
 
 /**
  * Addison's Disease Rating Card - Gold Standard Version
@@ -123,6 +124,12 @@ export default function AddisonsDiseaseRatingCard({ analysis, expanded, onToggle
                     </div>
                   </div>
               )}
+
+              {/* Understanding Your Rating - Educational Content */}
+              <UnderstandingYourRating
+                  diagnosticCode="7911"
+                  currentRating={numericRating}
+              />
 
               {/* VA Rating Schedule */}
               <div>

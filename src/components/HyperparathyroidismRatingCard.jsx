@@ -1,5 +1,6 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { HYPERPARATHYROIDISM_CRITERIA } from '../utils/ratingCriteria';
+import UnderstandingYourRating from './UnderstandingYourRating';
 
 /**
  * Hyperparathyroidism Rating Card - Gold Standard Version
@@ -133,6 +134,12 @@ export default function HyperparathyroidismRatingCard({ analysis, expanded, onTo
                     </div>
                   </div>
               )}
+
+              {/* Understanding Your Rating - Educational Content */}
+              <UnderstandingYourRating
+                  diagnosticCode="7900"
+                  currentRating={numericRating}
+              />
 
               {/* VA Rating Schedule */}
               <div>

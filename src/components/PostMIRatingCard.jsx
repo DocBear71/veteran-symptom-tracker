@@ -1,5 +1,6 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { POST_MI_CRITERIA } from '../utils/ratingCriteria';
+import UnderstandingYourRating from './UnderstandingYourRating';
 
 export default function PostMIRatingCard({ analysis, expanded, onToggle }) {
   if (!analysis || !analysis.hasData) return null;

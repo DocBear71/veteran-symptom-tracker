@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import {
   LineChart,
   Line,
@@ -56,7 +56,7 @@ const ChartContainer = ({ children, height = 256 }) => {
   return (
       <div ref={containerRef} style={{ width: '100%', height, minWidth: 0 }}>
         {dimensions.width > 0 ? (
-            <ResponsiveContainer width="100%" height="100%">
+            <ResponsiveContainer width={dimensions.width} height={dimensions.height}>
               {children}
             </ResponsiveContainer>
         ) : (
@@ -113,11 +113,15 @@ const Trends = () => {
     setAvailableSymptoms(symptoms);
   };
 
-  const filteredLogs = selectedSymptom === 'all'
-      ? logs
-      : logs.filter(log => log.symptomName === selectedSymptom);
+  // Memoize filtered logs to prevent recalculation on every render
+  const filteredLogs = useMemo(() => {
+    return selectedSymptom === 'all'
+        ? logs
+        : logs.filter(log => log.symptomName === selectedSymptom);
+  }, [logs, selectedSymptom]);
 
-  const getSeverityOverTimeData = () => {
+  // Memoize severity over time calculation - expensive for large datasets
+  const severityData = useMemo(() => {
     if (filteredLogs.length === 0) return [];
 
     const byDate = {};
@@ -141,9 +145,10 @@ const Trends = () => {
       maxSeverity: day.maxSeverity,
       entries: day.count,
     }));
-  };
+  }, [filteredLogs]);
 
-  const getSymptomFrequencyData = () => {
+  // Memoize frequency data calculation
+  const frequencyData = useMemo(() => {
     const frequency = {};
     logs.forEach(log => {
       if (!frequency[log.symptomName]) {
@@ -160,9 +165,10 @@ const Trends = () => {
     }))
     .sort((a, b) => b.count - a.count)
     .slice(0, 10);
-  };
+  }, [logs]);
 
-  const getMigraineData = () => {
+  // Memoize migraine-specific data
+  const migraineData = useMemo(() => {
     const migraineLogs = logs.filter(log => log.migraineData);
     if (migraineLogs.length === 0) return null;
 
@@ -182,19 +188,19 @@ const Trends = () => {
       prostratingPercent: Math.round((prostrating / migraineLogs.length) * 100),
       durations,
     };
-  };
+  }, [logs]);
 
-  const severityData = getSeverityOverTimeData();
-  const frequencyData = getSymptomFrequencyData();
-  const migraineData = getMigraineData();
-
-  const totalEntries = filteredLogs.length;
-  const avgSeverity = totalEntries > 0
-      ? Math.round((filteredLogs.reduce((sum, log) => sum + log.severity, 0) / totalEntries) * 10) / 10
-      : 0;
-  const maxSeverity = totalEntries > 0
-      ? Math.max(...filteredLogs.map(log => log.severity))
-      : 0;
+  // Memoize summary statistics
+  const { totalEntries, avgSeverity, maxSeverity } = useMemo(() => {
+    const total = filteredLogs.length;
+    const avg = total > 0
+        ? Math.round((filteredLogs.reduce((sum, log) => sum + log.severity, 0) / total) * 10) / 10
+        : 0;
+    const max = total > 0
+        ? Math.max(...filteredLogs.map(log => log.severity))
+        : 0;
+    return { totalEntries: total, avgSeverity: avg, maxSeverity: max };
+  }, [filteredLogs]);
 
   return (
       <div className="space-y-4 pb-20">

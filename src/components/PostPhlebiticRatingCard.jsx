@@ -1,5 +1,6 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { POST_PHLEBITIC_CRITERIA } from '../utils/ratingCriteria';
+import UnderstandingYourRating from './UnderstandingYourRating';
 
 export default function PostPhlebiticRatingCard({ analysis, expanded, onToggle }) {
   if (!analysis || !analysis.hasData) return null;
@@ -130,6 +131,12 @@ export default function PostPhlebiticRatingCard({ analysis, expanded, onToggle }
                     </div>
                   </div>
               )}
+
+              {/* Understanding Your Rating - Educational Content */}
+              <UnderstandingYourRating
+                  diagnosticCode="7121"
+                  currentRating={numericRating}
+              />
 
               {/* VA Rating Schedule */}
               <div>

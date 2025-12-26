@@ -1,5 +1,6 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { VOIDING_DYSFUNCTION_CRITERIA } from '../utils/ratingCriteria';
+import UnderstandingYourRating from './UnderstandingYourRating';
 
 /**
  * Voiding Dysfunction Rating Card Component - Gold Standard Version
@@ -124,6 +125,15 @@ export default function VoidingDysfunctionRatingCard({
                     </div>
                   </div>
               )}
+
+
+
+              {/* Understanding Your Rating - Educational Content */}
+              <UnderstandingYourRating
+                  diagnosticCode={diagnosticCode}
+                  currentRating={numericRating}
+              />
+
 
               {/* VA Rating Schedule - Incontinence */}
               <div>

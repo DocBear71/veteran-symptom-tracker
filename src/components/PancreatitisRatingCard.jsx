@@ -1,5 +1,6 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { PANCREATITIS_CRITERIA } from '../utils/ratingCriteria';
+import UnderstandingYourRating from './UnderstandingYourRating';
 
 /**
  * Pancreatitis Rating Card Component
@@ -156,6 +157,12 @@ export default function PancreatitisRatingCard({ analysis, expanded, onToggle })
                     </div>
                   </div>
               )}
+
+              {/* Understanding Your Rating - Educational Content */}
+              <UnderstandingYourRating
+                  diagnosticCode="7347"
+                  currentRating={numericRating}
+              />
 
               {/* VA Rating Schedule */}
               <div>

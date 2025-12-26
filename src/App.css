@@ -18,6 +18,65 @@
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
 
+/* Body System Group Color Overrides for Rating Cards */
+/* This overrides the border-l-4 color on cards within each group */
+
+.group-musculoskeletal > div > div > .border-l-4 {
+    border-left-color: rgb(245, 158, 11) !important; /* amber-500 */
+}
+
+.group-respiratory > div > div > .border-l-4 {
+    border-left-color: rgb(6, 182, 212) !important; /* cyan-500 */
+}
+
+.group-eye-ear > div > div > .border-l-4 {
+    border-left-color: rgb(59, 130, 246) !important; /* blue-500 */
+}
+
+.group-infectious > div > div > .border-l-4 {
+    border-left-color: rgb(34, 197, 94) !important; /* green-500 */
+}
+
+.group-cardiovascular > div > div > .border-l-4 {
+    border-left-color: rgb(239, 68, 68) !important; /* red-500 */
+}
+
+.group-digestive > div > div > .border-l-4 {
+    border-left-color: rgb(132, 204, 22) !important; /* lime-500 */
+}
+
+.group-genitourinary > div > div > .border-l-4 {
+    border-left-color: rgb(249, 115, 22) !important; /* orange-500 */
+}
+
+.group-hemic > div > div > .border-l-4 {
+    border-left-color: rgb(244, 63, 94) !important; /* rose-500 */
+}
+
+.group-skin > div > div > .border-l-4 {
+    border-left-color: rgb(236, 72, 153) !important; /* pink-500 */
+}
+
+.group-endocrine > div > div > .border-l-4 {
+    border-left-color: rgb(20, 184, 166) !important; /* teal-500 */
+}
+
+.group-neurological > div > div > .border-l-4 {
+    border-left-color: rgb(99, 102, 241) !important; /* indigo-500 */
+}
+
+.group-mental-health > div > div > .border-l-4 {
+    border-left-color: rgb(168, 85, 247) !important; /* purple-500 */
+}
+
+.group-dental > div > div > .border-l-4 {
+    border-left-color: rgb(234, 179, 8) !important; /* yellow-500 */
+}
+
+.group-other > div > div > .border-l-4 {
+    border-left-color: rgb(59, 130, 246) !important; /* blue-500 */
+}
+
 @keyframes logo-spin {
   from {
     transform: rotate(0deg);

@@ -1,5 +1,6 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { HERNIA_CRITERIA } from '../utils/ratingCriteria';
+import UnderstandingYourRating from './UnderstandingYourRating.jsx';
 
 /**
  * Hernia Rating Card Component
@@ -118,7 +119,7 @@ export default function HerniaRatingCard({ analysis, expanded, onToggle }) {
                             metrics?.sizeMediumLogs > 0 ? 'text-amber-600 dark:text-amber-400' :
                                 metrics?.sizeSmallLogs > 0 ? 'text-green-600 dark:text-green-400' : 'text-gray-400'
                     }`}>
-                      {metrics?.sizeLargeLogs > 0 ? '≥15cm' :
+                      {metrics?.sizeLargeLogs > 0 ? '>=15cm' :
                           metrics?.sizeMediumLogs > 0 ? '3-15cm' :
                               metrics?.sizeSmallLogs > 0 ? '<3cm' : 'N/A'}
                     </div>
@@ -182,6 +183,12 @@ export default function HerniaRatingCard({ analysis, expanded, onToggle }) {
                     </div>
                   </div>
               )}
+
+              {/* Understanding Your Rating - Educational Content */}
+              <UnderstandingYourRating
+                  diagnosticCode="7338"
+                  currentRating={numericRating}
+              />
 
               {/* VA Rating Schedule */}
               <div>

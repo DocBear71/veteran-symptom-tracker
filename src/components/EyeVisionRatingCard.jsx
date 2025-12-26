@@ -1,4 +1,5 @@
 import {ChevronDown, ChevronUp} from 'lucide-react';
+import UnderstandingYourRating from './UnderstandingYourRating.jsx';
 
 export default function GenericJointRatingCard({
                                                  analysis,
@@ -131,6 +132,13 @@ export default function GenericJointRatingCard({
                             className="text-sm text-gray-700 dark:text-gray-300">{item}</span>
                         </div>))}</div>
               </div>)}
+
+              {/* Understanding Your Rating - Educational Content */}
+              <UnderstandingYourRating
+                  diagnosticCode="6066"
+                  currentRating={numericRating}
+              />
+
               {criteria?.ratings && (<div><h4
                   className="font-medium text-gray-900 dark:text-white mb-2 text-center">VA
                 Rating Schedule</h4>

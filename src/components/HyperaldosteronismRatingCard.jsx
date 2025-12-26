@@ -1,5 +1,6 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { HYPERALDOSTERONISM_CRITERIA } from '../utils/ratingCriteria';
+import UnderstandingYourRating from './UnderstandingYourRating';
 
 /**
  * Hyperaldosteronism Rating Card - Gold Standard Version
@@ -119,6 +120,12 @@ export default function HyperaldosteronismRatingCard({ analysis, expanded, onTog
                     </div>
                   </div>
               )}
+
+              {/* Understanding Your Rating - Educational Content */}
+              <UnderstandingYourRating
+                  diagnosticCode="7917"
+                  currentRating={typeof supportedRating === 'number' ? supportedRating : null}
+              />
 
               {/* VA Rating Schedule */}
               <div>

@@ -1,5 +1,6 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { THYROIDITIS_CRITERIA } from '../utils/ratingCriteria';
+import UnderstandingYourRating from './UnderstandingYourRating.jsx';
 
 /**
  * Thyroiditis Rating Card - Gold Standard Version
@@ -128,6 +129,12 @@ export default function ThyroiditisRatingCard({ analysis, expanded, onToggle }) 
                     </div>
                   </div>
               )}
+
+              {/* Understanding Your Rating - Educational Content */}
+              <UnderstandingYourRating
+                  diagnosticCode="7904"
+                  currentRating={numericRating}
+              />
 
               {/* VA Rating Schedule */}
               <div>

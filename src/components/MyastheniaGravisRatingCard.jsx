@@ -5,6 +5,7 @@
 
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { MYASTHENIA_GRAVIS_CRITERIA } from '../utils/ratingCriteria';
+import UnderstandingYourRating from './UnderstandingYourRating';
 
 export default function MyastheniaGravisRatingCard({ analysis, expanded, onToggle }) {
   if (!analysis || !analysis.hasData) return null;
@@ -149,6 +150,12 @@ export default function MyastheniaGravisRatingCard({ analysis, expanded, onToggl
                     </div>
                   </div>
               )}
+
+              {/* Understanding Your Rating - Educational Content */}
+              <UnderstandingYourRating
+                  diagnosticCode="8025"
+                  currentRating={numericRating}
+              />
 
               {/* Section 3: VA Rating Schedule */}
               <div>
