@@ -1,5 +1,5 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
-import { COLD_INJURY_CRITERIA } from '../utils/ratingCriteria';
+import { COLD_INJURY_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 
 export default function ColdInjuryRatingCard({ analysis, expanded, onToggle }) {
@@ -25,13 +25,6 @@ export default function ColdInjuryRatingCard({ analysis, expanded, onToggle }) {
     return false;
   };
 
-  const getRatingRowColor = (percent, isSupported) => {
-    if (!isSupported) return 'bg-gray-50 dark:bg-gray-700/30 border-gray-200 dark:border-gray-600';
-    if (percent >= 30) return 'bg-orange-100 dark:bg-orange-900/30 border-orange-300 dark:border-orange-700';
-    if (percent >= 20) return 'bg-yellow-100 dark:bg-yellow-900/30 border-yellow-300 dark:border-yellow-700';
-    return 'bg-green-100 dark:bg-green-900/30 border-green-300 dark:border-green-700';
-  };
-
   return (
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden border-l-4 border-cyan-500">
         <button onClick={onToggle} className="w-full px-6 py-4 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
@@ -44,7 +37,8 @@ export default function ColdInjuryRatingCard({ analysis, expanded, onToggle }) {
           </div>
           <div className="flex items-center gap-4">
             <div className="text-right">
-              <div className="text-2xl font-bold text-cyan-600 dark:text-cyan-400">{supportedRating !== null ? `${supportedRating}%` : 'N/A'}</div>
+              <div className={`text-2xl font-bold ${getRatingTextColor(supportedRating)}`}>
+                {supportedRating !== null ? `${supportedRating}%` : 'N/A'}</div>
               <div className="text-xs text-gray-500 dark:text-gray-400">Per Body Part</div>
             </div>
             {expanded ? <ChevronUp className="w-5 h-5 text-gray-400" /> : <ChevronDown className="w-5 h-5 text-gray-400" />}
@@ -140,7 +134,7 @@ export default function ColdInjuryRatingCard({ analysis, expanded, onToggle }) {
               {/* Understanding Your Rating - Educational Content */}
               <UnderstandingYourRating
                   diagnosticCode="7122"
-                  currentRating={numericRating}
+                  currentRating={supportedRating}
               />
 
               {/* VA Rating Schedule */}

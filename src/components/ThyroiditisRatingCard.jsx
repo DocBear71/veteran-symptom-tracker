@@ -1,5 +1,5 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
-import { THYROIDITIS_CRITERIA } from '../utils/ratingCriteria';
+import { THYROIDITIS_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating.jsx';
 
 /**
@@ -23,12 +23,6 @@ export default function ThyroiditisRatingCard({ analysis, expanded, onToggle }) 
       return ratingPercent === parseInt(supportedRating, 10);
     }
     return false;
-  };
-
-  const getRatingRowColor = (percent, isSupported) => {
-    if (!isSupported) return 'bg-gray-50 dark:bg-gray-700/30 border-gray-200 dark:border-gray-600';
-    if (percent >= 30) return 'bg-yellow-100 dark:bg-yellow-900/30 border-yellow-300 dark:border-yellow-700';
-    return 'bg-blue-50 dark:bg-blue-900/30 border-blue-200 dark:border-blue-700';
   };
 
   // Determine phase display
@@ -60,7 +54,7 @@ export default function ThyroiditisRatingCard({ analysis, expanded, onToggle }) 
           </div>
           <div className="flex items-center gap-4">
             <div className="text-right">
-              <div className="text-2xl font-bold text-orange-600 dark:text-orange-400">
+              <div className={`text-2xl font-bold ${getRatingTextColor(supportedRating)}`}>
                 {supportedRating !== null && supportedRating !== undefined ? `${supportedRating}%` : 'N/A'}
               </div>
               <div className="text-xs text-gray-500 dark:text-gray-400">Supported Rating</div>
@@ -133,7 +127,7 @@ export default function ThyroiditisRatingCard({ analysis, expanded, onToggle }) 
               {/* Understanding Your Rating - Educational Content */}
               <UnderstandingYourRating
                   diagnosticCode="7904"
-                  currentRating={numericRating}
+                  currentRating={supportedRating}
               />
 
               {/* VA Rating Schedule */}

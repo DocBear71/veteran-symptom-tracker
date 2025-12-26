@@ -10,7 +10,7 @@ import {
   PERIPHERAL_VESTIBULAR_CRITERIA,
   CHRONIC_SUPPURATIVE_OTITIS_MEDIA_CRITERIA,
   CHRONIC_OTITIS_EXTERNA_CRITERIA,
-  CHRONIC_NONSUPPURATIVE_OTITIS_MEDIA_CRITERIA,
+  CHRONIC_NONSUPPURATIVE_OTITIS_MEDIA_CRITERIA, getRatingRowColor, getRatingTextColor,
 } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 
@@ -126,17 +126,6 @@ const EarConditionsRatingCard = ({ analysis, expanded, onToggle }) => {
     }
   };
 
-  // Standardized rating row color function (from Gold Standard)
-  const getRatingRowColor = (percent, isSupported) => {
-    if (!isSupported) {
-      return 'bg-gray-50 dark:bg-gray-700/30 border-gray-200 dark:border-gray-600';
-    }
-    // Cyan theme for ear conditions
-    if (percent >= 30) return 'bg-cyan-100 dark:bg-cyan-900/40 border-cyan-500';
-    if (percent >= 10) return 'bg-cyan-50 dark:bg-cyan-900/20 border-cyan-400';
-    return 'bg-gray-100 dark:bg-gray-700/50 border-gray-400';
-  };
-
   // Check if a rating level is supported
   const isRatingSupported = (ratingPercent) => {
     if (supportedRating === null || supportedRating === undefined) return false;
@@ -170,7 +159,7 @@ const EarConditionsRatingCard = ({ analysis, expanded, onToggle }) => {
           </div>
           <div className="flex items-center gap-4">
             <div className="text-right">
-              <div className="text-2xl font-bold text-cyan-600 dark:text-cyan-400">
+              <div className={`text-2xl font-bold ${getRatingTextColor(supportedRating)}`}>
                 {displayRating}
               </div>
               <div className="text-xs text-gray-500 dark:text-gray-400">

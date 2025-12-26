@@ -1,5 +1,5 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
-import { ACNE_CRITERIA, CHLORACNE_CRITERIA } from '../utils/ratingCriteria';
+import { ACNE_CRITERIA, CHLORACNE_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating.jsx';
 
 /**
@@ -34,15 +34,6 @@ export default function AcneChloracneRatingCard({ analysis, expanded, onToggle }
     return false;
   };
 
-  // Standardized color scheme - Skin conditions use orange
-  const getRatingRowColor = (percent, isSupported) => {
-    if (!isSupported) return 'bg-gray-50 dark:bg-gray-700/30 border-gray-200 dark:border-gray-600';
-    if (percent >= 30) return 'bg-yellow-100 dark:bg-yellow-900/30 border-yellow-300 dark:border-yellow-700';
-    if (percent >= 20) return 'bg-lime-100 dark:bg-lime-900/30 border-lime-300 dark:border-lime-700';
-    if (percent >= 10) return 'bg-green-100 dark:bg-green-900/30 border-green-300 dark:border-green-700';
-    return 'bg-blue-50 dark:bg-blue-900/30 border-blue-200 dark:border-blue-700';
-  };
-
   const totalLogs = metrics?.totalLogs || 0;
   const hasDeepAcne = isChloracne ? metrics?.hasDeepChloracne : metrics?.hasDeepAcne;
   const hasSuperficialOnly = metrics?.hasSuperficialOnly || false;
@@ -67,7 +58,7 @@ export default function AcneChloracneRatingCard({ analysis, expanded, onToggle }
           </div>
           <div className="flex items-center gap-4">
             <div className="text-right">
-              <div className="text-2xl font-bold text-orange-600 dark:text-orange-400">
+              <div className={`text-2xl font-bold ${getRatingTextColor(supportedRating)}`}>
                 {supportedRating !== null && supportedRating !== undefined ? `${supportedRating}%` : 'N/A'}
               </div>
               <div className="text-xs text-gray-500 dark:text-gray-400">
@@ -204,7 +195,7 @@ export default function AcneChloracneRatingCard({ analysis, expanded, onToggle }
               {/* Understanding Your Rating - Educational Content */}
               <UnderstandingYourRating
                   diagnosticCode="7829"
-                  currentRating={numericRating}
+                  currentRating={supportedRating}
               />
 
               {/* Section 3: VA Rating Schedule */}

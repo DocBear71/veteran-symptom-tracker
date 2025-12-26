@@ -25,7 +25,7 @@ import {
   SAPHENOUS_NERVE_CRITERIA,
   OBTURATOR_NERVE_CRITERIA,
   LATERAL_FEMORAL_CUTANEOUS_NERVE_CRITERIA,
-  ILIOINGUINAL_NERVE_CRITERIA,
+  ILIOINGUINAL_NERVE_CRITERIA, getRatingRowColor, getRatingTextColor,
 } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating.jsx';
 
@@ -217,17 +217,6 @@ export default function PeripheralNerveRatingCard({ nerveType, analysis, expande
   const numericRating = normalizeRating(supportedRating);
   const isRatingSupported = (p) => numericRating === p;
 
-  // Standardized color scheme
-  const getRatingRowColor = (percent, isSupported) => {
-    if (!isSupported) return 'bg-gray-50 dark:bg-gray-700/30 border-gray-200 dark:border-gray-600';
-    if (percent >= 100) return 'bg-red-100 dark:bg-red-900/30 border-red-300 dark:border-red-700';
-    if (percent >= 70) return 'bg-orange-100 dark:bg-orange-900/30 border-orange-300 dark:border-orange-700';
-    if (percent >= 50) return 'bg-amber-100 dark:bg-amber-900/30 border-amber-300 dark:border-amber-700';
-    if (percent >= 30) return 'bg-yellow-100 dark:bg-yellow-900/30 border-yellow-300 dark:border-yellow-700';
-    if (percent >= 10) return 'bg-green-100 dark:bg-green-900/30 border-green-300 dark:border-green-700';
-    return 'bg-blue-50 dark:bg-blue-900/30 border-blue-200 dark:border-blue-700';
-  };
-
   // Border color based on extremity
   const borderColor = isUpperExtremity ? 'border-purple-500' : 'border-indigo-500';
   const accentColor = isUpperExtremity ? 'purple' : 'indigo';
@@ -247,7 +236,7 @@ export default function PeripheralNerveRatingCard({ nerveType, analysis, expande
           </div>
           <div className="flex items-center gap-4">
             <div className="text-right">
-              <div className={`text-2xl font-bold text-${accentColor}-600 dark:text-${accentColor}-400`}>
+              <div className={`text-2xl font-bold ${getRatingTextColor(supportedRating)}`}>
                 {supportedRating !== null ? `${supportedRating}%` : 'N/A'}
               </div>
               <div className="text-xs text-gray-500 dark:text-gray-400">Supported Rating</div>

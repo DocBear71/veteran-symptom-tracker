@@ -1,5 +1,5 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
-import { CUSHINGS_SYNDROME_CRITERIA } from '../utils/ratingCriteria';
+import { CUSHINGS_SYNDROME_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 
 /**
@@ -25,13 +25,6 @@ export default function CushingsSyndromeRatingCard({ analysis, expanded, onToggl
     return false;
   };
 
-  const getRatingRowColor = (percent, isSupported) => {
-    if (!isSupported) return 'bg-gray-50 dark:bg-gray-700/30 border-gray-200 dark:border-gray-600';
-    if (percent >= 100) return 'bg-red-100 dark:bg-red-900/30 border-red-300 dark:border-red-700';
-    if (percent >= 60) return 'bg-orange-100 dark:bg-orange-900/30 border-orange-300 dark:border-orange-700';
-    return 'bg-yellow-100 dark:bg-yellow-900/30 border-yellow-300 dark:border-yellow-700';
-  };
-
   return (
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden border-l-4 border-orange-500">
         <button
@@ -47,7 +40,7 @@ export default function CushingsSyndromeRatingCard({ analysis, expanded, onToggl
           </div>
           <div className="flex items-center gap-4">
             <div className="text-right">
-              <div className="text-2xl font-bold text-orange-600 dark:text-orange-400">
+              <div className={`text-2xl font-bold ${getRatingTextColor(supportedRating)}`}>
                 {supportedRating !== null && supportedRating !== undefined ? `${supportedRating}%` : 'N/A'}
               </div>
               <div className="text-xs text-gray-500 dark:text-gray-400">Supported Rating</div>
@@ -157,7 +150,7 @@ export default function CushingsSyndromeRatingCard({ analysis, expanded, onToggl
               {/* Understanding Your Rating - Educational Content */}
               <UnderstandingYourRating
                   diagnosticCode="7907"
-                  currentRating={numericRating}
+                  currentRating={supportedRating}
               />
 
               {/* VA Rating Schedule */}

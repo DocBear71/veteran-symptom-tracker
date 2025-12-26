@@ -1,22 +1,58 @@
-import { useState, memo } from 'react';
+import { memo, useRef, useEffect  } from 'react';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 
 /**
  * ConditionGroup Component
  * Collapsible section for grouping rating cards by body system
+ * Now controlled by parent for accordion behavior
  */
 const ConditionGroup = memo(({
                                title,
                                icon,
                                children,
                                conditionCount = 0,
-                               defaultExpanded = true,
-                               accentColor = 'blue'
+                               accentColor = 'blue',
+                               isExpanded = false,
+                               onToggle,
+                               groupId
                              }) => {
-  const [isExpanded, setIsExpanded] = useState(defaultExpanded);
-
   // Don't render if no conditions have data
   if (conditionCount === 0) return null;
+
+  // Ref for scrolling into view when expanded
+  const groupRef = useRef(null);
+
+  // Scroll into view when this group becomes expanded
+  useEffect(() => {
+    if (isExpanded && groupRef.current) {
+      // Small delay to allow the DOM to update after previous group closes
+      setTimeout(() => {
+        groupRef.current.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }, 100);
+    }
+  }, [isExpanded]);
+
+  // Map accent colors to group class names for CSS targeting
+  const groupClassMap = {
+    amber: 'group-musculoskeletal',
+    cyan: 'group-respiratory',
+    blue: 'group-eye-ear',
+    green: 'group-infectious',
+    red: 'group-cardiovascular',
+    lime: 'group-digestive',
+    orange: 'group-genitourinary',
+    rose: 'group-hemic',
+    pink: 'group-skin',
+    teal: 'group-endocrine',
+    indigo: 'group-neurological',
+    purple: 'group-mental-health',
+    yellow: 'group-dental',
+  };
+
+  const groupClass = groupClassMap[accentColor] || 'group-other';
 
   const colorClasses = {
     blue: 'border-blue-500 bg-blue-50 dark:bg-blue-900/20',
@@ -50,30 +86,11 @@ const ConditionGroup = memo(({
     yellow: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
   };
 
-  // Map accent colors to group class names
-  const groupClassMap = {
-    amber: 'group-musculoskeletal',
-    cyan: 'group-respiratory',
-    blue: 'group-eye-ear',
-    green: 'group-infectious',
-    red: 'group-cardiovascular',
-    lime: 'group-digestive',
-    orange: 'group-genitourinary',
-    rose: 'group-hemic',
-    pink: 'group-skin',
-    teal: 'group-endocrine',
-    indigo: 'group-neurological',
-    purple: 'group-mental-health',
-    yellow: 'group-dental',
-  };
-
-  const groupClass = groupClassMap[accentColor] || 'group-other';
-
   return (
-      <div className={`mb-4 ${groupClass}`}>
+      <div ref={groupRef} className={`mb-4 ${groupClass}`}>
         {/* Group Header */}
         <button
-            onClick={() => setIsExpanded(!isExpanded)}
+            onClick={() => onToggle(groupId)}
             className={`w-full flex items-center justify-between p-3 rounded-lg border-l-4 ${colorClasses[accentColor]} 
                    hover:opacity-90 transition-all duration-200`}
         >

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { ChevronDown, ChevronUp } from 'lucide-react';
-import { MIGRAINE_CRITERIA } from '../utils/ratingCriteria';
+import { MIGRAINE_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 
 /**
@@ -15,19 +15,6 @@ export default function MigraineRatingCard({ analysis, expanded, onToggle }) {
   const criteria = MIGRAINE_CRITERIA;
 
   const isRatingSupported = (percent) => supportedRating === percent;
-
-  // Standardized color scheme across all rating cards
-  // 0% gets a distinct "supported but minimal" style visible in both light/dark modes
-  const getRatingRowColor = (percent, isSupported) => {
-    if (!isSupported) return 'bg-gray-50 dark:bg-gray-700/30 border-gray-200 dark:border-gray-600';
-    if (percent >= 100) return 'bg-red-100 dark:bg-red-900/30 border-red-300 dark:border-red-700';
-    if (percent >= 70) return 'bg-orange-100 dark:bg-orange-900/30 border-orange-300 dark:border-orange-700';
-    if (percent >= 50) return 'bg-amber-100 dark:bg-amber-900/30 border-amber-300 dark:border-amber-700';
-    if (percent >= 30) return 'bg-yellow-100 dark:bg-yellow-900/30 border-yellow-300 dark:border-yellow-700';
-    if (percent >= 10) return 'bg-green-100 dark:bg-green-900/30 border-green-300 dark:border-green-700';
-    // 0-9%: Blue-gray that's visible in both light and dark modes
-    return 'bg-blue-50 dark:bg-blue-900/30 border-blue-200 dark:border-blue-700';
-  };
 
   // Extract metrics from either new format or legacy format
   const totalMigraines = metrics?.totalMigraines || evidence?.totalMigraines || 0;
@@ -54,7 +41,7 @@ export default function MigraineRatingCard({ analysis, expanded, onToggle }) {
           </div>
           <div className="flex items-center gap-4">
             <div className="text-right">
-              <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">
+              <div className={`text-2xl font-bold ${getRatingTextColor(supportedRating)}`}>
                 {supportedRating !== null ? `${supportedRating}%` : 'N/A'}
               </div>
               <div className="text-xs text-gray-500 dark:text-gray-400">Supported Rating</div>

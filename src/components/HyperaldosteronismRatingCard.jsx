@@ -1,5 +1,5 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
-import { HYPERALDOSTERONISM_CRITERIA } from '../utils/ratingCriteria';
+import { HYPERALDOSTERONISM_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 
 /**
@@ -23,12 +23,6 @@ export default function HyperaldosteronismRatingCard({ analysis, expanded, onTog
       return ratingPercent === parseInt(supportedRating, 10);
     }
     return false;
-  };
-
-  const getRatingRowColor = (percent, isSupported) => {
-    if (!isSupported) return 'bg-gray-50 dark:bg-gray-700/30 border-gray-200 dark:border-gray-600';
-    if (percent >= 100) return 'bg-red-100 dark:bg-red-900/30 border-red-300 dark:border-red-700';
-    return 'bg-blue-50 dark:bg-blue-900/30 border-blue-200 dark:border-blue-700';
   };
 
   return (

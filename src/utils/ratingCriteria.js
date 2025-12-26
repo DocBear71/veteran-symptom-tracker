@@ -31,7 +31,6 @@ const getLogSymptomId = (log) => {
 // ============================================
 // CONDITION DEFINITIONS
 // ============================================
-
 export const CONDITIONS = {
   MIGRAINE: {
     id: 'migraine',
@@ -2500,7 +2499,6 @@ export const CONDITIONS = {
 // ============================================
 // MIGRAINE RATING CRITERIA (DC 8100)
 // ============================================
-
 export const MIGRAINE_CRITERIA = {
   diagnosticCode: '8100',
   condition: 'Migraine',
@@ -2619,7 +2617,6 @@ export const MIGRAINE_CRITERIA = {
 // ============================================
 // SLEEP APNEA RATING CRITERIA (DC 6847)
 // ============================================
-
 export const SLEEP_APNEA_CRITERIA = {
   diagnosticCode: '6847',
   condition: 'Sleep Apnea Syndromes (Obstructive, Central, Mixed)',
@@ -2747,7 +2744,6 @@ export const SLEEP_APNEA_CRITERIA = {
 // ============================================
 // All mental health conditions (DC 9201-9440) use the same General Rating Formula
 // This shared criteria is referenced by PTSD, Depression, Anxiety, Bipolar, etc.
-
 export const MENTAL_HEALTH_SHARED_CRITERIA = {
   ratingFormula: 'General Rating Formula for Mental Disorders',
   cfrReference: '38 CFR 4.130',
@@ -2896,7 +2892,6 @@ export const MENTAL_HEALTH_SHARED_CRITERIA = {
 // ============================================
 // PTSD is rated using the General Rating Formula for Mental Disorders
 // Focus is on occupational and social impairment, not just symptom frequency
-
 export const PTSD_CRITERIA = {
   diagnosticCode: '9411',
   condition: 'Posttraumatic Stress Disorder',
@@ -3007,7 +3002,6 @@ function getPTSDGaps(percent) {
 // ============================================
 // MAJOR DEPRESSIVE DISORDER CRITERIA (DC 9434)
 // ============================================
-
 export const MAJOR_DEPRESSION_CRITERIA = {
   diagnosticCode: '9434',
   condition: 'Major Depressive Disorder',
@@ -3022,7 +3016,6 @@ export const MAJOR_DEPRESSION_CRITERIA = {
 // ============================================
 // GENERALIZED ANXIETY DISORDER CRITERIA (DC 9400)
 // ============================================
-
 export const GENERALIZED_ANXIETY_CRITERIA = {
   diagnosticCode: '9400',
   condition: 'Generalized Anxiety Disorder',
@@ -3037,7 +3030,6 @@ export const GENERALIZED_ANXIETY_CRITERIA = {
 // ============================================
 // PANIC DISORDER CRITERIA (DC 9412)
 // ============================================
-
 export const PANIC_DISORDER_CRITERIA = {
   diagnosticCode: '9412',
   condition: 'Panic Disorder and/or Agoraphobia',
@@ -3062,7 +3054,6 @@ export const PANIC_DISORDER_CRITERIA = {
 // ============================================
 // BIPOLAR DISORDER CRITERIA (DC 9432)
 // ============================================
-
 export const BIPOLAR_CRITERIA = {
   diagnosticCode: '9432',
   condition: 'Bipolar Disorder',
@@ -3087,7 +3078,6 @@ export const BIPOLAR_CRITERIA = {
 // ============================================
 // SOCIAL ANXIETY DISORDER CRITERIA (DC 9403)
 // ============================================
-
 export const SOCIAL_ANXIETY_CRITERIA = {
     diagnosticCode: '9403',
     condition: 'Social Anxiety Disorder',
@@ -3112,7 +3102,6 @@ export const SOCIAL_ANXIETY_CRITERIA = {
 // ============================================
 // OBSESSIVE-COMPULSIVE DISORDER CRITERIA (DC 9404)
 // ============================================
-
 export const OCD_CRITERIA = {
     diagnosticCode: '9404',
     condition: 'Obsessive-Compulsive Disorder',
@@ -3145,7 +3134,6 @@ export const OCD_CRITERIA = {
 // ============================================
 // PERSISTENT DEPRESSIVE DISORDER (DYSTHYMIA) CRITERIA (DC 9433)
 // ============================================
-
 export const PERSISTENT_DEPRESSIVE_CRITERIA = {
     diagnosticCode: '9433',
     condition: 'Persistent Depressive Disorder (Dysthymia)',
@@ -3170,7 +3158,6 @@ export const PERSISTENT_DEPRESSIVE_CRITERIA = {
 // ============================================
 // CHRONIC ADJUSTMENT DISORDER CRITERIA (DC 9440)
 // ============================================
-
 export const ADJUSTMENT_DISORDER_CRITERIA = {
     diagnosticCode: '9440',
     condition: 'Chronic Adjustment Disorder',
@@ -3199,7 +3186,6 @@ export const ADJUSTMENT_DISORDER_CRITERIA = {
 // ============================================
 // UNSPECIFIED ANXIETY DISORDER CRITERIA (DC 9413)
 // ============================================
-
 export const UNSPECIFIED_ANXIETY_CRITERIA = {
     diagnosticCode: '9413',
     condition: 'Unspecified Anxiety Disorder',
@@ -3218,7 +3204,6 @@ export const UNSPECIFIED_ANXIETY_CRITERIA = {
 // ============================================
 // UNSPECIFIED DEPRESSIVE DISORDER CRITERIA (DC 9435)
 // ============================================
-
 export const UNSPECIFIED_DEPRESSIVE_CRITERIA = {
     diagnosticCode: '9435',
     condition: 'Unspecified Depressive Disorder',
@@ -3237,7 +3222,6 @@ export const UNSPECIFIED_DEPRESSIVE_CRITERIA = {
 // ============================================
 // LUMBOSACRAL STRAIN / LOW BACK PAIN (DC 5237)
 // ============================================
-
 export const LUMBOSACRAL_STRAIN_CRITERIA = {
   diagnosticCode: '5237',
   condition: 'Lumbosacral Strain (Low Back Pain)',
@@ -3344,7 +3328,6 @@ export const LUMBOSACRAL_STRAIN_CRITERIA = {
 // ============================================
 // INTERVERTEBRAL DISC SYNDROME (DC 5243)
 // ============================================
-
 export const INTERVERTEBRAL_DISC_CRITERIA = {
   diagnosticCode: '5243',
   condition: 'Intervertebral Disc Syndrome',
@@ -3428,7 +3411,6 @@ export const INTERVERTEBRAL_DISC_CRITERIA = {
 // ============================================
 // KNEE INSTABILITY (DC 5257)
 // ============================================
-
 export const KNEE_INSTABILITY_CRITERIA = {
   diagnosticCode: '5257',
   condition: 'Knee, Other Impairment (Instability)',
@@ -3502,7 +3484,6 @@ export const KNEE_INSTABILITY_CRITERIA = {
 // ============================================
 // TRAUMATIC BRAIN INJURY (DC 8045)
 // ============================================
-
 export const TBI_CRITERIA = {
   diagnosticCode: '8045',
   condition: 'Residuals of Traumatic Brain Injury (TBI)',
@@ -3610,7 +3591,6 @@ export const TBI_CRITERIA = {
 // ============================================
 // HYPERTENSION (DC 7101)
 // ============================================
-
 export const HYPERTENSION_CRITERIA = {
   diagnosticCode: '7101',
   condition: 'Hypertensive Vascular Disease (Hypertension)',
@@ -3704,7 +3684,6 @@ export const HYPERTENSION_CRITERIA = {
     },
   },
 };
-
 export const DIABETES_CRITERIA = {
   diagnosticCode: '7913',
   condition: 'Diabetes Mellitus',
@@ -3930,7 +3909,6 @@ export const DIABETES_CRITERIA = {
 
   disclaimer: 'This analysis is based on logged glucose and HbA1c measurements. VA diabetes ratings consider insulin requirement, dietary restrictions, activity limitations, hospitalizations, and complications. A formal VA rating requires C&P examination and complete medical records review. Continue regular endocrinology care and glucose monitoring.',
 };
-
 export const IBS_CRITERIA = {
   diagnosticCode: '7319',
   condition: 'Irritable Bowel Syndrome',
@@ -4029,7 +4007,6 @@ export const IBS_CRITERIA = {
 // ============================================
 // GERD RATING CRITERIA (DC 7346)
 // ============================================
-
 export const GERD_CRITERIA = {
   diagnosticCode: '7346',
   condition: 'Gastroesophageal Reflux Disease (GERD)',
@@ -4178,7 +4155,6 @@ export const GERD_CRITERIA = {
 // ============================================
 // RADICULOPATHY RATING CRITERIA (DC 8520)
 // ============================================
-
 export const RADICULOPATHY_CRITERIA = {
   diagnosticCode: '8520',
   condition: 'Radiculopathy',
@@ -4321,7 +4297,6 @@ export const RADICULOPATHY_CRITERIA = {
 // ============================================
 // CHRONIC FATIGUE SYNDROME RATING CRITERIA (DC 6354)
 // ============================================
-
 export const CHRONIC_FATIGUE_CRITERIA = {
   diagnosticCode: '6354',
   condition: 'Chronic Fatigue Syndrome',
@@ -4485,7 +4460,6 @@ export const CHRONIC_FATIGUE_CRITERIA = {
 // ============================================
 // PERIPHERAL NEUROPATHY RATING CRITERIA (DC 8999)
 // ============================================
-
 export const PERIPHERAL_NEUROPATHY_CRITERIA = {
   diagnosticCode: '8999',
   condition: 'Peripheral Neuropathy',
@@ -4623,7 +4597,6 @@ export const PERIPHERAL_NEUROPATHY_CRITERIA = {
 // ============================================
 // MENIERE'S DISEASE RATING CRITERIA (DC 6205)
 // ============================================
-
 export const MENIERES_CRITERIA = {
   diagnosticCode: '6205',
   condition: "Meniere's Disease",
@@ -4752,7 +4725,6 @@ export const MENIERES_CRITERIA = {
 // ============================================
 // RHINITIS RATING CRITERIA (DC 6522)
 // ============================================
-
 export const RHINITIS_CRITERIA = {
   diagnosticCode: '6522',
   condition: 'Rhinitis (Allergic or Vasomotor)',
@@ -4844,7 +4816,6 @@ export const RHINITIS_CRITERIA = {
 
   disclaimer: 'This analysis is based on logged rhinitis symptoms. 30% rating requires ENT documentation of nasal polyps. Continue ENT care and document chronic symptoms.',
 };
-
 export const TMJ_CRITERIA = {
   diagnosticCode: '9905',
   condition: 'Temporomandibular Joint (TMJ) Disorder',
@@ -4960,7 +4931,6 @@ export const TMJ_CRITERIA = {
 // ============================================
 // PLANTAR FASCIITIS RATING CRITERIA (DC 5276)
 // ============================================
-
 export const PLANTAR_FASCIITIS_CRITERIA = {
   diagnosticCode: '5276',
   condition: 'Plantar Fasciitis',
@@ -5075,7 +5045,6 @@ export const PLANTAR_FASCIITIS_CRITERIA = {
 // ============================================
 // INSOMNIA RATING CRITERIA (DC 8108)
 // ============================================
-
 export const INSOMNIA_CRITERIA = {
   diagnosticCode: '8108',
   condition: 'Insomnia (Sleep Disorder)',
@@ -5211,7 +5180,6 @@ export const INSOMNIA_CRITERIA = {
 // ============================================
 // SINUSITIS RATING CRITERIA (DC 6510)
 // ============================================
-
 export const SINUSITIS_CRITERIA = {
   diagnosticCode: '6510',
   condition: 'Chronic Sinusitis',
@@ -5328,7 +5296,6 @@ export const SINUSITIS_CRITERIA = {
 // ============================================
 // SHOULDER CONDITIONS RATING CRITERIA (DC 5201-5203)
 // ============================================
-
 export const SHOULDER_CRITERIA = {
   diagnosticCode: '5201-5203',
   condition: 'Shoulder Conditions',
@@ -5458,7 +5425,6 @@ export const SHOULDER_CRITERIA = {
 // ============================================
 // HIP CONDITIONS RATING CRITERIA (DC 5252-5255)
 // ============================================
-
 export const HIP_CRITERIA = {
   diagnosticCode: '5252-5255',
   condition: 'Hip Conditions',
@@ -5619,7 +5585,6 @@ export const HIP_CRITERIA = {
 // ============================================
 // ANKLE CONDITIONS RATING CRITERIA (DC 5270-5271)
 // ============================================
-
 export const ANKLE_CRITERIA = {
   diagnosticCode: '5270-5271',
   condition: 'Ankle Conditions',
@@ -5744,7 +5709,6 @@ export const ANKLE_CRITERIA = {
 // ============================================
 // WRIST CONDITIONS RATING CRITERIA (DC 5214-5215)
 // ============================================
-
 export const WRIST_CRITERIA = {
   diagnosticCode: '5214-5215',
   condition: 'Wrist Conditions',
@@ -5875,7 +5839,6 @@ export const WRIST_CRITERIA = {
 // ============================================
 // ELBOW CONDITIONS RATING CRITERIA (DC 5205-5207)
 // ============================================
-
 export const ELBOW_CRITERIA = {
   diagnosticCode: '5205-5207',
   condition: 'Elbow Conditions',
@@ -6066,7 +6029,6 @@ export const ELBOW_CRITERIA = {
 // ============================================
 // DEGENERATIVE ARTHRITIS RATING CRITERIA (DC 5003)
 // ============================================
-
 export const DEGENERATIVE_ARTHRITIS_CRITERIA = {
   diagnosticCode: '5003',
   condition: 'Degenerative Arthritis (Osteoarthritis)',
@@ -6190,7 +6152,6 @@ export const DEGENERATIVE_ARTHRITIS_CRITERIA = {
 // PHASE 4A: GOUT RATING CRITERIA (DC 5017)
 // Per 38 CFR 4.71a Note to DCs 5013-5024: Rated as degenerative arthritis
 // ============================================
-
 export const GOUT_CRITERIA = {
   diagnosticCode: '5017',
   condition: 'Gout',
@@ -6292,7 +6253,6 @@ export const GOUT_CRITERIA = {
 // PHASE 4A: BURSITIS RATING CRITERIA (DC 5019)
 // Per 38 CFR 4.71a Note to DCs 5013-5024: Rated as degenerative arthritis
 // ============================================
-
 export const BURSITIS_CRITERIA = {
   diagnosticCode: '5019',
   condition: 'Bursitis',
@@ -6382,7 +6342,6 @@ export const BURSITIS_CRITERIA = {
 // PHASE 4A: TENDINITIS/TENOSYNOVITIS RATING CRITERIA (DC 5024)
 // Per 38 CFR 4.71a Note to DCs 5013-5024: Rated as degenerative arthritis
 // ============================================
-
 export const TENDINITIS_CRITERIA = {
   diagnosticCode: '5024',
   condition: 'Tendinitis/Tenosynovitis',
@@ -6480,7 +6439,6 @@ export const TENDINITIS_CRITERIA = {
 // PHASE 4B: MYOSITIS RATING CRITERIA (DC 5021)
 // Per 38 CFR 4.71a Note to DCs 5013-5024: Rated as degenerative arthritis
 // ============================================
-
 export const MYOSITIS_CRITERIA = {
   diagnosticCode: '5021',
   condition: 'Myositis',
@@ -6569,7 +6527,6 @@ export const MYOSITIS_CRITERIA = {
 // PHASE 4B: OSTEOMYELITIS RATING CRITERIA (DC 5000)
 // Has its own unique rating schedule
 // ============================================
-
 export const OSTEOMYELITIS_CRITERIA = {
   diagnosticCode: '5000',
   condition: 'Osteomyelitis',
@@ -6682,7 +6639,6 @@ export const OSTEOMYELITIS_CRITERIA = {
 // PHASE 4B: MULTI-JOINT ARTHRITIS RATING CRITERIA (DC 5002)
 // Active process rating schedule
 // ============================================
-
 export const MULTI_JOINT_ARTHRITIS_CRITERIA = {
   diagnosticCode: '5002',
   condition: 'Multi-Joint Arthritis (Active Process)',
@@ -7365,7 +7321,6 @@ export const SPINAL_FUSION_CRITERIA = {
 // ============================================
 // ASTHMA RATING CRITERIA (DC 6602)
 // ============================================
-
 export const ASTHMA_CRITERIA = {
   diagnosticCode: '6602',
   condition: 'Bronchial Asthma',
@@ -7517,7 +7472,6 @@ export const ASTHMA_CRITERIA = {
 
   note: 'In the absence of clinical findings of asthma at time of examination, a verified history of asthmatic attacks must be of record.',
 };
-
 export const COPD_CRITERIA = {
   diagnosticCode: '6604',
   condition: 'Chronic Obstructive Pulmonary Disease',
@@ -7678,7 +7632,6 @@ export const COPD_CRITERIA = {
 
   disclaimer: 'This analysis is based on logged symptoms and available measurements. VA rating requires pulmonary function testing (spirometry and DLCO). Ratings cannot be combined with other respiratory conditions under DC 6600-6847.',
 };
-
 export const CHRONIC_BRONCHITIS_CRITERIA = {
   diagnosticCode: '6600',
   condition: 'Chronic Bronchitis',
@@ -7825,7 +7778,6 @@ export const CHRONIC_BRONCHITIS_CRITERIA = {
 
   disclaimer: 'This analysis is based on logged symptoms and available measurements. VA rating requires pulmonary function testing. Ratings cannot be combined with other respiratory conditions under DC 6600-6847.',
 };
-
 export const EMPHYSEMA_CRITERIA = {
   diagnosticCode: '6603',
   condition: 'Pulmonary Emphysema',
@@ -7978,7 +7930,6 @@ export const EMPHYSEMA_CRITERIA = {
 // BRONCHIECTASIS RATING CRITERIA (DC 6601)
 // Phase 11 - Rated by incapacitating episodes OR as chronic bronchitis (DC 6600)
 // ============================================
-
 export const BRONCHIECTASIS_CRITERIA = {
   diagnosticCode: '6601',
   condition: 'Bronchiectasis',
@@ -8133,7 +8084,6 @@ export const BRONCHIECTASIS_CRITERIA = {
 // PULMONARY FIBROSIS / INTERSTITIAL LUNG DISEASE RATING CRITERIA (DC 6825)
 // Phase 11 - Uses General Rating Formula for Interstitial Lung Disease (FVC/DLCO based)
 // ============================================
-
 export const PULMONARY_FIBROSIS_CRITERIA = {
   diagnosticCode: '6825',
   condition: 'Pulmonary Fibrosis (Diffuse Interstitial Fibrosis)',
@@ -8294,7 +8244,6 @@ export const PULMONARY_FIBROSIS_CRITERIA = {
 // SARCOIDOSIS RATING CRITERIA (DC 6846)
 // Phase 11 - Has specific rating criteria OR rate as chronic bronchitis (DC 6600)
 // ============================================
-
 export const SARCOIDOSIS_CRITERIA = {
   diagnosticCode: '6846',
   condition: 'Sarcoidosis',
@@ -8451,7 +8400,6 @@ export const SARCOIDOSIS_CRITERIA = {
 // ============================================
 // RATING CRITERIA - HEARING LOSS
 // ============================================
-
 export const HEARING_LOSS_CRITERIA = {
   description: 'Hearing loss rated based on pure-tone audiometry',
   levels: [
@@ -8495,7 +8443,6 @@ export const HEARING_LOSS_CRITERIA = {
 // ============================================
 // RATING CRITERIA - SCARS
 // ============================================
-
 export const SCARS_CRITERIA = {
   description: 'Scars rated based on location, size, and characteristics',
   levels: [
@@ -8543,7 +8490,6 @@ export const SCARS_CRITERIA = {
 // ============================================
 // RATING CRITERIA - PSORIASIS
 // ============================================
-
 export const PSORIASIS_CRITERIA = {
   description: 'Psoriasis rated based on extent of body coverage and characteristics',
   levels: [
@@ -8584,7 +8530,6 @@ export const PSORIASIS_CRITERIA = {
 // ============================================
 // RATING CRITERIA - ECZEMA/DERMATITIS
 // ============================================
-
 export const ECZEMA_CRITERIA = {
   description: 'Eczema/dermatitis rated based on extent and characteristics',
   levels: [
@@ -8623,7 +8568,6 @@ export const ECZEMA_CRITERIA = {
 // ============================================
 // RATING CRITERIA - TBI RESIDUALS
 // ============================================
-
 export const TBI_RESIDUALS_CRITERIA = {
   description: 'Residual effects of TBI rated based on cognitive, emotional, and physical symptoms',
   levels: [
@@ -8678,7 +8622,6 @@ export const TBI_RESIDUALS_CRITERIA = {
 // ============================================
 // RATING CRITERIA - GERD COMPLICATIONS
 // ============================================
-
 export const GERD_COMPLICATIONS_CRITERIA = {
   description: 'GERD with complications rated based on severity and treatment required',
   levels: [
@@ -8721,7 +8664,6 @@ export const GERD_COMPLICATIONS_CRITERIA = {
 // ============================================
 // PHASE 6 CRITERIA OBJECTS - GI CONDITIONS
 // ============================================
-
 export const ULCERATIVE_COLITIS_CRITERIA = {
   diagnosticCode: '7323/7326',
   condition: 'Ulcerative Colitis / Inflammatory Bowel Disease',
@@ -8835,7 +8777,6 @@ export const ULCERATIVE_COLITIS_CRITERIA = {
 
   disclaimer: 'This analysis is based on logged IBD symptoms. VA rating requires diagnosis confirmed by endoscopy or radiologic studies. Continue gastroenterology care and maintain detailed symptom diary.',
 };
-
 export const PEPTIC_ULCER_CRITERIA = {
   diagnosticCode: '7304',
   condition: 'Peptic Ulcer Disease',
@@ -8958,7 +8899,6 @@ export const PEPTIC_ULCER_CRITERIA = {
 
   disclaimer: 'This analysis is based on logged peptic ulcer symptoms. VA rating requires documentation by endoscopy or diagnostic imaging. Continue GI care and maintain detailed symptom diary.',
 };
-
 export const HEMORRHOID_CRITERIA = {
   diagnosticCode: '7336',
   condition: 'Hemorrhoids',
@@ -9026,7 +8966,6 @@ export const HEMORRHOID_CRITERIA = {
 
   disclaimer: 'This analysis is based on logged hemorrhoid symptoms. Document bleeding frequency, thrombosis episodes, and prolapse status for VA claims.',
 };
-
 export const DIVERTICULITIS_CRITERIA = {
   diagnosticCode: '7327',
   condition: 'Diverticulitis',
@@ -9117,7 +9056,6 @@ export const DIVERTICULITIS_CRITERIA = {
 // ============================================
 // PHASE 7 CRITERIA OBJECTS - COMMON CONDITIONS
 // ============================================
-
 export const HYPOTHYROIDISM_CRITERIA = {
   diagnosticCode: '7903',
   condition: 'Hypothyroidism',
@@ -9596,7 +9534,6 @@ export const HYPERALDOSTERONISM_CRITERIA = {
   },
   disclaimer: 'This analysis is for documentation purposes only. VA ratings require official medical evaluation and C&P examination.',
 };
-
 export const RAYNAUDS_CRITERIA = {
   diagnosticCode: '7117',
   condition: "Raynaud's Syndrome",
@@ -9709,7 +9646,6 @@ export const RAYNAUDS_CRITERIA = {
 
   disclaimer: 'This analysis is based on logged Raynaud\'s symptoms. Attack frequency is the key rating factor. Document each attack with date, duration, triggers, and affected digits.',
 };
-
 export const VARICOSE_VEINS_CRITERIA = {
   diagnosticCode: '7120/7121',
   condition: 'Varicose Veins',
@@ -9843,7 +9779,6 @@ export const VARICOSE_VEINS_CRITERIA = {
 
   disclaimer: 'This analysis is based on logged varicose vein symptoms. Document symptoms for each affected leg separately. Key factors are edema persistence, skin changes, and ulceration.',
 };
-
 export const CHRONIC_URTICARIA_CRITERIA = {
   diagnosticCode: '7825',
   condition: 'Chronic Urticaria',
@@ -9928,7 +9863,6 @@ export const CHRONIC_URTICARIA_CRITERIA = {
 // ============================================
 // Grand Mal (Generalized Tonic-Clonic) Seizures
 // Rated based on frequency of major seizures over time
-
 export const EPILEPSY_MAJOR_CRITERIA = {
   diagnosticCode: '8910',
   condition: 'Epilepsy, Grand Mal (Major Seizures)',
@@ -10051,7 +9985,6 @@ export const EPILEPSY_MAJOR_CRITERIA = {
 // ============================================
 // Petit Mal (Absence) and Other Minor Seizures
 // Rated based on frequency of minor seizures
-
 export const EPILEPSY_MINOR_CRITERIA = {
   diagnosticCode: '8911',
   condition: 'Epilepsy, Petit Mal (Minor Seizures)',
@@ -10369,7 +10302,6 @@ export const EPILEPSY_PSYCHOMOTOR_CRITERIA = {
 // ============================================
 // TINNITUS (DC 6260)
 // ============================================
-
 export const TINNITUS_CRITERIA = {
   diagnosticCode: '6260',
   condition: 'Tinnitus, Recurrent',
@@ -10427,7 +10359,6 @@ export const TINNITUS_CRITERIA = {
 // ============================================
 // FIBROMYALGIA (DC 5025)
 // ============================================
-
 export const FIBROMYALGIA_CRITERIA = {
   diagnosticCode: '5025',
   condition: 'Fibromyalgia (Fibrositis, Primary Fibromyalgia Syndrome)',
@@ -10518,7 +10449,6 @@ export const FIBROMYALGIA_CRITERIA = {
 // ============================================
 // PHASE 2: VISION LOSS CRITERIA (DC 6061-6079)
 // ============================================
-
 export const VISION_LOSS_CRITERIA = {
   condition: 'Vision Loss',
   diagnosticCode: '6061-6079',
@@ -10637,7 +10567,6 @@ export const VISION_LOSS_CRITERIA = {
 // ============================================
 // PHASE 2: GLAUCOMA CRITERIA (DC 6067)
 // ============================================
-
 export const GLAUCOMA_CRITERIA = {
   condition: 'Glaucoma',
   diagnosticCode: '6067',
@@ -10704,7 +10633,6 @@ export const GLAUCOMA_CRITERIA = {
 // ============================================
 // PHASE 2: DIABETIC RETINOPATHY CRITERIA (DC 6066)
 // ============================================
-
 export const DIABETIC_RETINOPATHY_CRITERIA = {
   condition: 'Diabetic Retinopathy',
   diagnosticCode: '6066',
@@ -10745,7 +10673,6 @@ export const DIABETIC_RETINOPATHY_CRITERIA = {
 // ============================================
 // PHASE 2: MACULAR DEGENERATION CRITERIA (DC 6062)
 // ============================================
-
 export const MACULAR_DEGENERATION_CRITERIA = {
   condition: 'Macular Degeneration',
   diagnosticCode: '6062',
@@ -12283,7 +12210,6 @@ export const POLYCYTHEMIA_VERA_CRITERIA = {
 // ============================================
 // PHASE 4: GYNECOLOGICAL CONDITIONS (DC 7610-7632)
 // ============================================
-
 export const ENDOMETRIOSIS_CRITERIA = {
   diagnosticCode: '7629',
   condition: 'Endometriosis',
@@ -12355,7 +12281,6 @@ export const ENDOMETRIOSIS_CRITERIA = {
 
   disclaimer: 'Endometriosis must be confirmed by laparoscopy for VA purposes. Ratings are based on symptom control, not extent of disease. Even extensive endometriosis may rate lower if well-controlled by treatment. Bowel/bladder involvement is key for 50% rating. Document all symptoms including pain severity, bleeding patterns, and interference with daily activities.',
 };
-
 export const FEMALE_REPRODUCTIVE_ORGANS_CRITERIA = {
   diagnosticCode: '7610-7615',
   condition: 'Disease, Injury, or Adhesions of Female Reproductive Organs',
@@ -12424,7 +12349,6 @@ export const FEMALE_REPRODUCTIVE_ORGANS_CRITERIA = {
 
   disclaimer: 'This general rating formula applies to multiple diagnostic codes (7610-7615). The key distinction is whether symptoms require continuous treatment and whether that treatment effectively controls symptoms. For ovarian disease (DC 7615), includes conditions like PCOS, ovarian cysts, and dysmenorrhea affecting the menstrual cycle.',
 };
-
 export const PELVIC_PROLAPSE_CRITERIA = {
   diagnosticCode: '7621',
   condition: 'Complete or Incomplete Pelvic Organ Prolapse',
@@ -12467,7 +12391,6 @@ export const PELVIC_PROLAPSE_CRITERIA = {
 
   disclaimer: 'Pelvic organ prolapse is rated at a flat 10% regardless of severity or type. Multiple types of prolapse (e.g., both cystocele and rectocele) are still rated as a single 10% disability. However, secondary conditions resulting from prolapse (such as urinary incontinence or bowel dysfunction) may be separately ratable under different diagnostic codes.',
 };
-
 export const FEMALE_SEXUAL_AROUSAL_DISORDER_CRITERIA = {
   diagnosticCode: '7632',
   condition: 'Female Sexual Arousal Disorder (FSAD)',
@@ -12566,7 +12489,6 @@ export const IRON_DEFICIENCY_ANEMIA_CRITERIA = {
 // ============================================
 // PHASE 6: INFECTIOUS DISEASES - HIV/AIDS (DC 6351)
 // ============================================
-
 export const HIV_AIDS_CRITERIA = {
   diagnosticCode: '6351',
   condition: 'HIV-Related Illness',
@@ -12719,7 +12641,6 @@ export const HIV_AIDS_CRITERIA = {
 // ============================================
 // PHASE 6: INFECTIOUS DISEASES - HEPATITIS C (DC 7354)
 // ============================================
-
 export const HEPATITIS_C_CRITERIA = {
   diagnosticCode: '7354',
   condition: 'Hepatitis C',
@@ -12861,7 +12782,6 @@ export const HEPATITIS_C_CRITERIA = {
 // ============================================
 // PHASE 6: INFECTIOUS DISEASES - HEPATITIS B (DC 7314)
 // ============================================
-
 export const HEPATITIS_B_CRITERIA = {
   diagnosticCode: '7314',
   condition: 'Hepatitis B',
@@ -13003,7 +12923,6 @@ export const HEPATITIS_B_CRITERIA = {
 // ============================================
 // PHASE 6: INFECTIOUS DISEASES - LYME DISEASE (DC 6319)
 // ============================================
-
 export const LYME_DISEASE_CRITERIA = {
   diagnosticCode: '6319',
   condition: 'Lyme Disease',
@@ -13084,7 +13003,6 @@ export const LYME_DISEASE_CRITERIA = {
 // ============================================
 // PHASE 6: INFECTIOUS DISEASES - MALARIA (DC 6304)
 // ============================================
-
 export const MALARIA_CRITERIA = {
   diagnosticCode: '6304',
   condition: 'Malaria',
@@ -13225,7 +13143,6 @@ export const MALARIA_CRITERIA = {
 // ============================================
 // PHASE 6: INFECTIOUS DISEASES - BRUCELLOSIS (DC 6316)
 // ============================================
-
 export const BRUCELLOSIS_CRITERIA = {
   diagnosticCode: '6316',
   condition: 'Brucellosis',
@@ -13363,7 +13280,6 @@ export const BRUCELLOSIS_CRITERIA = {
 // ============================================
 // PHASE 6: INFECTIOUS DISEASES - CAMPYLOBACTER JEJUNI (DC 6330)
 // ============================================
-
 export const CAMPYLOBACTER_CRITERIA = {
   diagnosticCode: '6330',
   condition: 'Campylobacter jejuni Infection',
@@ -13498,7 +13414,6 @@ export const CAMPYLOBACTER_CRITERIA = {
 // ============================================
 // PHASE 6: INFECTIOUS DISEASES - Q FEVER (DC 6331)
 // ============================================
-
 export const Q_FEVER_CRITERIA = {
   diagnosticCode: '6331',
   condition: 'Q Fever',
@@ -13636,7 +13551,6 @@ export const Q_FEVER_CRITERIA = {
 // ============================================
 // PHASE 6: INFECTIOUS DISEASES - SALMONELLA (DC 6333)
 // ============================================
-
 export const SALMONELLA_CRITERIA = {
   diagnosticCode: '6333',
   condition: 'Nontyphoid Salmonella Infection',
@@ -13760,7 +13674,6 @@ export const SALMONELLA_CRITERIA = {
 // ============================================
 // PHASE 6: INFECTIOUS DISEASES - SHIGELLA (DC 6334)
 // ============================================
-
 export const SHIGELLA_CRITERIA = {
   diagnosticCode: '6334',
   condition: 'Shigella Infection',
@@ -13880,7 +13793,6 @@ export const SHIGELLA_CRITERIA = {
 // ============================================
 // PHASE 6: INFECTIOUS DISEASES - WEST NILE VIRUS (DC 6335)
 // ============================================
-
 export const WEST_NILE_CRITERIA = {
   diagnosticCode: '6335',
   condition: 'West Nile Virus',
@@ -14007,7 +13919,6 @@ export const WEST_NILE_CRITERIA = {
 // ============================================
 // PHASE 6: INFECTIOUS DISEASES - NTM (DC 6312)
 // ============================================
-
 export const NTM_CRITERIA = {
   diagnosticCode: '6312',
   condition: 'Nontuberculous Mycobacterium Infection',
@@ -14614,7 +14525,6 @@ export const BENIGN_ORAL_NEOPLASM_CRITERIA = {
 // ============================================
 // SOMATIC SYMPTOM DISORDER CRITERIA (DC 9421)
 // ============================================
-
 export const SOMATIC_SYMPTOM_DISORDER_CRITERIA = {
   diagnosticCode: '9421',
   condition: 'Somatic Symptom Disorder',
@@ -14644,7 +14554,6 @@ export const SOMATIC_SYMPTOM_DISORDER_CRITERIA = {
 // ============================================
 // OTHER SPECIFIED SOMATIC SYMPTOM DISORDER CRITERIA (DC 9422)
 // ============================================
-
 export const OTHER_SPECIFIED_SOMATIC_CRITERIA = {
   diagnosticCode: '9422',
   condition: 'Other Specified Somatic Symptom and Related Disorder',
@@ -14663,7 +14572,6 @@ export const OTHER_SPECIFIED_SOMATIC_CRITERIA = {
 // ============================================
 // UNSPECIFIED SOMATIC SYMPTOM DISORDER CRITERIA (DC 9423)
 // ============================================
-
 export const UNSPECIFIED_SOMATIC_CRITERIA = {
   diagnosticCode: '9423',
   condition: 'Unspecified Somatic Symptom and Related Disorder',
@@ -14682,7 +14590,6 @@ export const UNSPECIFIED_SOMATIC_CRITERIA = {
 // ============================================
 // ILLNESS ANXIETY DISORDER CRITERIA (DC 9425)
 // ============================================
-
 export const ILLNESS_ANXIETY_CRITERIA = {
   diagnosticCode: '9425',
   condition: 'Illness Anxiety Disorder',
@@ -14716,7 +14623,6 @@ export const ILLNESS_ANXIETY_CRITERIA = {
 // ============================================
 // OTHER SPECIFIED ANXIETY DISORDER CRITERIA (DC 9410)
 // ============================================
-
 export const OTHER_SPECIFIED_ANXIETY_CRITERIA = {
   diagnosticCode: '9410',
   condition: 'Other Specified Anxiety Disorder',
@@ -14735,7 +14641,6 @@ export const OTHER_SPECIFIED_ANXIETY_CRITERIA = {
 // ============================================
 // DEPERSONALIZATION/DEREALIZATION DISORDER CRITERIA (DC 9417)
 // ============================================
-
 export const DEPERSONALIZATION_DEREALIZATION_CRITERIA = {
   diagnosticCode: '9417',
   condition: 'Depersonalization/Derealization Disorder',
@@ -14770,7 +14675,6 @@ export const DEPERSONALIZATION_DEREALIZATION_CRITERIA = {
 // ============================================
 // CYCLOTHYMIC DISORDER CRITERIA (DC 9431)
 // ============================================
-
 export const CYCLOTHYMIC_CRITERIA = {
   diagnosticCode: '9431',
   condition: 'Cyclothymic Disorder',
@@ -14807,7 +14711,6 @@ export const CYCLOTHYMIC_CRITERIA = {
 // ============================================
 // ANOREXIA NERVOSA CRITERIA (DC 9520)
 // ============================================
-
 export const ANOREXIA_NERVOSA_CRITERIA = {
   diagnosticCode: '9520',
   condition: 'Anorexia Nervosa',
@@ -14896,7 +14799,6 @@ export const ANOREXIA_NERVOSA_CRITERIA = {
 // ============================================
 // BULIMIA NERVOSA CRITERIA (DC 9521)
 // ============================================
-
 export const BULIMIA_NERVOSA_CRITERIA = {
   diagnosticCode: '9521',
   condition: 'Bulimia Nervosa',
@@ -15792,7 +15694,6 @@ export const POST_PHLEBITIC_CRITERIA = {
 // ============================================
 // PHASE 2A: CORONARY ARTERY DISEASE (DC 7005)
 // ============================================
-
 export const CAD_CRITERIA = {
   diagnosticCode: '7005',
   condition: 'Coronary Artery Disease (Arteriosclerotic Heart Disease)',
@@ -15904,7 +15805,6 @@ export const CAD_CRITERIA = {
 // ============================================
 // PHASE 2A: MYOCARDIAL INFARCTION (DC 7006)
 // ============================================
-
 export const POST_MI_CRITERIA = {
   diagnosticCode: '7006',
   condition: 'Myocardial Infarction (Heart Attack)',
@@ -16004,7 +15904,6 @@ export const POST_MI_CRITERIA = {
 // ============================================
 // PHASE 2A: HYPERTENSIVE HEART DISEASE (DC 7007)
 // ============================================
-
 export const HYPERTENSIVE_HEART_CRITERIA = {
   diagnosticCode: '7007',
   condition: 'Hypertensive Heart Disease',
@@ -16106,7 +16005,6 @@ export const HYPERTENSIVE_HEART_CRITERIA = {
 // ============================================
 // PHASE 2B: COLD INJURY RESIDUALS (DC 7122)
 // ============================================
-
 export const COLD_INJURY_CRITERIA = {
   diagnosticCode: '7122',
   condition: 'Cold Injury Residuals (Frostbite)',
@@ -16189,7 +16087,6 @@ export const COLD_INJURY_CRITERIA = {
 // ============================================
 // PHASE 2B: PERIPHERAL ARTERIAL DISEASE (DC 7114)
 // ============================================
-
 export const PAD_CRITERIA = {
   diagnosticCode: '7114',
   condition: 'Peripheral Arterial Disease (Arteriosclerosis Obliterans)',
@@ -16281,7 +16178,6 @@ export const PAD_CRITERIA = {
 // ============================================
 // PHASE 10: CIRRHOSIS (DC 7312)
 // ============================================
-
 export const CIRRHOSIS_CRITERIA = {
   diagnosticCode: '7312',
   condition: 'Cirrhosis of the Liver',
@@ -16396,7 +16292,6 @@ export const CIRRHOSIS_CRITERIA = {
 // ============================================
 // PHASE 10: GASTRITIS (DC 7307) - Rates as DC 7304
 // ============================================
-
 export const GASTRITIS_CRITERIA = {
   diagnosticCode: '7307',
   condition: 'Gastritis, Chronic',
@@ -16482,7 +16377,6 @@ export const GASTRITIS_CRITERIA = {
 // ============================================
 // PHASE 10: CHRONIC PANCREATITIS (DC 7347)
 // ============================================
-
 export const PANCREATITIS_CRITERIA = {
   diagnosticCode: '7347',
   condition: 'Pancreatitis, Chronic',
@@ -16567,7 +16461,6 @@ export const PANCREATITIS_CRITERIA = {
 // ============================================
 // PHASE 10: CHRONIC BILIARY TRACT DISEASE (DC 7314)
 // ============================================
-
 export const BILIARY_TRACT_CRITERIA = {
   diagnosticCode: '7314',
   condition: 'Chronic Biliary Tract Disease',
@@ -16640,7 +16533,6 @@ export const BILIARY_TRACT_CRITERIA = {
 // ============================================
 // PHASE 5A: HERNIA (DC 7338)
 // ============================================
-
 export const HERNIA_CRITERIA = {
   diagnosticCode: '7338',
   condition: 'Hernia',
@@ -16767,7 +16659,6 @@ export const HERNIA_CRITERIA = {
 // ============================================
 // PHASE 5A: PERITONEAL ADHESIONS (DC 7301)
 // ============================================
-
 export const PERITONEAL_ADHESIONS_CRITERIA = {
   diagnosticCode: '7301',
   condition: 'Peritoneal Adhesions',
@@ -16878,7 +16769,6 @@ export const PERITONEAL_ADHESIONS_CRITERIA = {
 // ============================================
 // PHASE 5B: ESOPHAGEAL STRICTURE (DC 7203)
 // ============================================
-
 export const ESOPHAGEAL_STRICTURE_CRITERIA = {
   diagnosticCode: '7203',
   condition: 'Esophageal Stricture',
@@ -16988,7 +16878,6 @@ export const ESOPHAGEAL_STRICTURE_CRITERIA = {
 // PHASE 5B: POSTGASTRECTOMY SYNDROME (DC 7308)
 // Rated as Chronic Complications of Upper GI Surgery (DC 7303)
 // ============================================
-
 export const POSTGASTRECTOMY_CRITERIA = {
   diagnosticCode: '7308',
   condition: 'Postgastrectomy Syndrome',
@@ -17097,7 +16986,6 @@ export const POSTGASTRECTOMY_CRITERIA = {
 // ============================================
 // PHASE 5B: INTESTINAL FISTULA (DC 7330)
 // ============================================
-
 export const INTESTINAL_FISTULA_CRITERIA = {
   diagnosticCode: '7330',
   condition: 'Intestinal Fistula',
@@ -17182,7 +17070,6 @@ export const INTESTINAL_FISTULA_CRITERIA = {
 // ============================================
 // PHASE 6A: ACNE CRITERIA (DC 7828)
 // ============================================
-
 export const ACNE_CRITERIA = {
   diagnosticCode: '7828',
   condition: 'Acne',
@@ -17270,7 +17157,6 @@ export const ACNE_CRITERIA = {
 // ============================================
 // PHASE 6A: CHLORACNE CRITERIA (DC 7829)
 // ============================================
-
 export const CHLORACNE_CRITERIA = {
   diagnosticCode: '7829',
   condition: 'Chloracne',
@@ -17366,7 +17252,6 @@ export const CHLORACNE_CRITERIA = {
 // ============================================
 // PHASE 6A: ALOPECIA AREATA CRITERIA (DC 7831)
 // ============================================
-
 export const ALOPECIA_AREATA_CRITERIA = {
   diagnosticCode: '7831',
   condition: 'Alopecia Areata',
@@ -17439,7 +17324,6 @@ export const ALOPECIA_AREATA_CRITERIA = {
 // ============================================
 // PHASE 6A: HYPERHIDROSIS CRITERIA (DC 7832)
 // ============================================
-
 export const HYPERHIDROSIS_CRITERIA = {
   diagnosticCode: '7832',
   condition: 'Hyperhidrosis',
@@ -17522,7 +17406,6 @@ export const HYPERHIDROSIS_CRITERIA = {
 // PHASE 6B: GENERAL RATING FORMULA FOR THE SKIN
 // Used by DC 7809, 7813, 7815, 7820 (and others)
 // ============================================
-
 export const GENERAL_SKIN_FORMULA_CRITERIA = {
   description: 'General Rating Formula for the Skin - applies to multiple skin conditions',
   cfrReference: '38 CFR 4.118',
@@ -17616,7 +17499,6 @@ export const GENERAL_SKIN_FORMULA_CRITERIA = {
 // ============================================
 // PHASE 6B: DISCOID LUPUS ERYTHEMATOSUS (DC 7809)
 // ============================================
-
 export const DISCOID_LUPUS_CRITERIA = {
   diagnosticCode: '7809',
   condition: 'Discoid Lupus Erythematosus',
@@ -17710,7 +17592,6 @@ export const DISCOID_LUPUS_CRITERIA = {
 // ============================================
 // PHASE 6B: BULLOUS DISORDERS (DC 7815)
 // ============================================
-
 export const BULLOUS_DISORDERS_CRITERIA = {
   diagnosticCode: '7815',
   condition: 'Bullous Disorders',
@@ -17803,7 +17684,6 @@ export const BULLOUS_DISORDERS_CRITERIA = {
 // ============================================
 // PHASE 6B: PRIMARY CUTANEOUS VASCULITIS (DC 7826)
 // ============================================
-
 export const CUTANEOUS_VASCULITIS_CRITERIA = {
   diagnosticCode: '7826',
   condition: 'Primary Cutaneous Vasculitis',
@@ -17887,7 +17767,6 @@ export const CUTANEOUS_VASCULITIS_CRITERIA = {
 // ============================================
 // PHASE 6B: DERMATOPHYTOSIS (DC 7813)
 // ============================================
-
 export const DERMATOPHYTOSIS_CRITERIA = {
   diagnosticCode: '7813',
   condition: 'Dermatophytosis',
@@ -17984,7 +17863,6 @@ export const DERMATOPHYTOSIS_CRITERIA = {
 // ============================================
 // PHASE 6B: SKIN INFECTIONS (DC 7820)
 // ============================================
-
 export const SKIN_INFECTIONS_CRITERIA = {
   diagnosticCode: '7820',
   condition: 'Skin Infections',
@@ -18537,7 +18415,6 @@ export const SCLERITIS_CRITERIA = {
 // ============================================
 // PHASE 7B: EAR CONDITIONS
 // ============================================
-
 export const PERIPHERAL_VESTIBULAR_CRITERIA = {
   diagnosticCode: '6204',
   condition: 'Peripheral Vestibular Disorders',
@@ -18612,7 +18489,6 @@ export const PERIPHERAL_VESTIBULAR_CRITERIA = {
 
   disclaimer: 'This analysis is based on logged vestibular symptoms. VA rating requires objective clinical findings documented by a healthcare provider.',
 };
-
 export const CHRONIC_SUPPURATIVE_OTITIS_MEDIA_CRITERIA = {
   diagnosticCode: '6200',
   condition: 'Chronic Suppurative Otitis Media',
@@ -18689,7 +18565,6 @@ export const CHRONIC_SUPPURATIVE_OTITIS_MEDIA_CRITERIA = {
 
   disclaimer: 'This analysis is based on logged otitis media symptoms. VA rating requires ENT examination documenting active suppuration or polyps.',
 };
-
 export const CHRONIC_OTITIS_EXTERNA_CRITERIA = {
   diagnosticCode: '6210',
   condition: 'Chronic Otitis Externa',
@@ -18760,7 +18635,6 @@ export const CHRONIC_OTITIS_EXTERNA_CRITERIA = {
 
   disclaimer: 'This analysis is based on logged otitis externa symptoms. VA rating requires ENT documentation of examination findings and treatment frequency.',
 };
-
 export const CHRONIC_NONSUPPURATIVE_OTITIS_MEDIA_CRITERIA = {
   diagnosticCode: '6201',
   condition: 'Chronic Nonsuppurative Otitis Media',
@@ -18818,7 +18692,6 @@ export const CHRONIC_NONSUPPURATIVE_OTITIS_MEDIA_CRITERIA = {
 // ============================================
 // PHASE 1A: MULTIPLE SCLEROSIS CRITERIA (DC 8018)
 // ============================================
-
 export const MULTIPLE_SCLEROSIS_CRITERIA = {
   diagnosticCode: '8018',
   condition: 'Multiple Sclerosis',
@@ -18947,7 +18820,6 @@ export const MULTIPLE_SCLEROSIS_CRITERIA = {
 // ============================================
 // PHASE 1A: PARKINSON\'S DISEASE CRITERIA (DC 8004)
 // ============================================
-
 export const PARKINSONS_DISEASE_CRITERIA = {
   diagnosticCode: '8004',
   condition: "Parkinson's Disease",
@@ -19109,7 +18981,6 @@ export const PARKINSONS_DISEASE_CRITERIA = {
 // ============================================
 // PHASE 1A: MYASTHENIA GRAVIS CRITERIA (DC 8025)
 // ============================================
-
 export const MYASTHENIA_GRAVIS_CRITERIA = {
   diagnosticCode: '8025',
   condition: 'Myasthenia Gravis',
@@ -26613,7 +26484,6 @@ export const analyzeHearingLossLogs = (logs, options = {}) => {
 // ============================================
 // ANALYSIS FUNCTIONS - SCARS
 // ============================================
-
 export const analyzeScarsLogs = (logs, options = {}) => {
   const {
     evaluationPeriodDays = 90,
@@ -26679,7 +26549,6 @@ export const analyzeScarsLogs = (logs, options = {}) => {
 // ============================================
 // ANALYSIS FUNCTIONS - PSORIASIS
 // ============================================
-
 export const analyzePsoriasisLogs = (logs, options = {}) => {
   const {
     evaluationPeriodDays = 90,
@@ -26756,7 +26625,6 @@ export const analyzePsoriasisLogs = (logs, options = {}) => {
 // ============================================
 // ANALYSIS FUNCTIONS - ECZEMA
 // ============================================
-
 export const analyzeEczemaLogs = (logs, options = {}) => {
   const {
     evaluationPeriodDays = 90,
@@ -26833,7 +26701,6 @@ export const analyzeEczemaLogs = (logs, options = {}) => {
 // ============================================
 // ANALYSIS FUNCTIONS - TBI RESIDUALS
 // ============================================
-
 export const analyzeTBIResidualsLogs = (logs, options = {}) => {
   const {
     evaluationPeriodDays = 90,
@@ -26922,7 +26789,6 @@ export const analyzeTBIResidualsLogs = (logs, options = {}) => {
 // ============================================
 // ANALYSIS FUNCTIONS - GERD COMPLICATIONS
 // ============================================
-
 export const analyzeGERDComplicationsLogs = (logs, options = {}) => {
   const {
     evaluationPeriodDays = 90,
@@ -29417,7 +29283,6 @@ export function analyzePsychomotorEpilepsyLogs(logs, options = {}) {
 // ============================================
 // PHASE 2: VISION LOSS ANALYSIS FUNCTION
 // ============================================
-
 export const analyzeVisionLogs = (logs) => {
   const visionLogs = logs.filter(log =>
       log.eyeData ||
@@ -30041,7 +29906,6 @@ export const analyzeErectileDysfunctionLogs = (logs) => {
     criteriaReference: ERECTILE_DYSFUNCTION_CRITERIA,
   };
 };
-
 export const analyzeIronDeficiencyAnemiaLogs = (logs, options = {}) => {
   if (!logs || logs.length === 0) {
     return {
@@ -30125,7 +29989,6 @@ export const analyzeIronDeficiencyAnemiaLogs = (logs, options = {}) => {
     criteriaReference: IRON_DEFICIENCY_ANEMIA_CRITERIA
   };
 };
-
 export const analyzeFolateDeficiencyAnemiaLogs = (logs, options = {}) => {
   const anemiaLogs = logs.filter(log => log.anemiaData?.type === 'folate-deficiency');
 
@@ -30172,7 +30035,6 @@ export const analyzeFolateDeficiencyAnemiaLogs = (logs, options = {}) => {
     criteriaReference: FOLATE_DEFICIENCY_ANEMIA_CRITERIA
   };
 };
-
 export const analyzePerniciousAnemiaLogs = (logs, options = {}) => {
   const b12Logs = logs.filter(log =>
       log.anemiaData?.type === 'b12-deficiency' ||
@@ -30255,7 +30117,6 @@ export const analyzePerniciousAnemiaLogs = (logs, options = {}) => {
     criteriaReference: PERNICIOUS_ANEMIA_CRITERIA
   };
 };
-
 export const analyzeHemolyticAnemiaLogs = (logs, options = {}) => {
   const hemolyticLogs = logs.filter(log => log.anemiaData?.type === 'hemolytic');
 
@@ -30319,7 +30180,6 @@ export const analyzeHemolyticAnemiaLogs = (logs, options = {}) => {
     criteriaReference: HEMOLYTIC_ANEMIA_CRITERIA
   };
 };
-
 export const analyzeSickleCellAnemiaLogs = (logs, options = {}) => {
   const sickleLogs = logs.filter(log =>
       log.anemiaData?.type === 'sickle-cell' ||
@@ -30399,7 +30259,6 @@ export const analyzeSickleCellAnemiaLogs = (logs, options = {}) => {
     criteriaReference: SICKLE_CELL_ANEMIA_CRITERIA
   };
 };
-
 export const analyzeAplasticAnemiaLogs = (logs, options = {}) => {
   const aplasticLogs = logs.filter(log => log.anemiaData?.type === 'aplastic');
 
@@ -30470,7 +30329,6 @@ export const analyzeAplasticAnemiaLogs = (logs, options = {}) => {
     criteriaReference: APLASTIC_ANEMIA_CRITERIA
   };
 };
-
 export const analyzePolycythemiaVeraLogs = (logs, options = {}) => {
   const polyLogs = logs.filter(log =>
       log.polycythemiaData?.diagnosis === 'polycythemia-vera' ||
@@ -30549,7 +30407,6 @@ export const analyzePolycythemiaVeraLogs = (logs, options = {}) => {
     criteriaReference: POLYCYTHEMIA_VERA_CRITERIA
   };
 };
-
 export const analyzeImmuneThrombocytopeniaLogs = (logs, options = {}) => {
   const itpLogs = logs.filter(log =>
       log.bleedingDisorderData?.disorder_type === 'thrombocytopenia' ||
@@ -30905,7 +30762,6 @@ export const analyzeNonHodgkinsLymphomaLogs = (logs, options = {}) => {
     criteriaReference: NON_HODGKINS_LYMPHOMA_CRITERIA
   };
 };
-
 export const analyzeMyeloproliferative7718Logs = (logs, options = {}) => {
   const mpnLogs = logs.filter(log =>
       ['essential-thrombocythemia', 'primary-myelofibrosis'].includes(log.polycythemiaData?.diagnosis)
@@ -30978,7 +30834,6 @@ export const analyzeMyeloproliferative7718Logs = (logs, options = {}) => {
     criteriaReference: MYELOPROLIFERATIVE_7718_CRITERIA
   };
 };
-
 export const analyzeChronicMyelogenousLeukemiaLogs = (logs, options = {}) => {
   const cmlLogs = logs.filter(log => log.lymphomaLeukemiaData?.diagnosis === 'cml');
 
@@ -31040,7 +30895,6 @@ export const analyzeChronicMyelogenousLeukemiaLogs = (logs, options = {}) => {
     criteriaReference: CHRONIC_MYELOGENOUS_LEUKEMIA_CRITERIA
   };
 };
-
 export const analyzeSolitaryPlasmacytomaLogs = (logs, options = {}) => {
   const plasmacytomaLogs = logs.filter(log =>
       log.lymphomaLeukemiaData?.diagnosis === 'plasmacytoma'
@@ -31092,7 +30946,6 @@ export const analyzeSolitaryPlasmacytomaLogs = (logs, options = {}) => {
     criteriaReference: SOLITARY_PLASMACYTOMA_CRITERIA
   };
 };
-
 export const analyzeMyelodysplasticSyndromesLogs = (logs, options = {}) => {
   const mdsLogs = logs.filter(log => log.lymphomaLeukemiaData?.diagnosis === 'mds');
 
@@ -44047,114 +43900,90 @@ export const analyzeHalluxRigidusLogs = (logs, options = {}) => {
 // ============================================
 // HELPER FUNCTIONS
 // ============================================
-
-export const getMigraineRatingCriteria = (percent) => {
-  return MIGRAINE_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-
-export const getSleepApneaRatingCriteria = (percent) => {
-  return SLEEP_APNEA_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-
-export const getAllMigraineRatings = () => {
-  return MIGRAINE_CRITERIA.ratings;
-};
-
-export const getAllSleepApneaRatings = () => {
-  return SLEEP_APNEA_CRITERIA.ratings;
-};
-
-export const getMigraineDefinition = (term) => {
-  return MIGRAINE_CRITERIA.definitions[term] || null;
-};
-
-export const getSleepApneaDefinition = (term) => {
-  return SLEEP_APNEA_CRITERIA.definitions[term] || null;
-};
-
-export const getPTSDRatingCriteria = (percent) => {
-  return PTSD_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-
-export const getAllPTSDRatings = () => {
-  return PTSD_CRITERIA.ratings;
-};
-
-export const getPTSDDefinition = (term) => {
-  return PTSD_CRITERIA.definitions[term] || null;
-};
-
-export const getMajorDepressionRatingCriteria = (percent) => {
-  return MAJOR_DEPRESSION_CRITERIA.ratings.find(r => r.percent === percent) ||
-      null;
-};
-
-export const getAllMajorDepressionRatings = () => {
-  return MAJOR_DEPRESSION_CRITERIA.ratings;
-};
-
-export const getMajorDepressionDefinition = (term) => {
-  return MAJOR_DEPRESSION_CRITERIA.definitions[term] || null;
-};
-
-export const getGeneralizedAnxietyRatingCriteria = (percent) => {
-  return GENERALIZED_ANXIETY_CRITERIA.ratings.find(
-      r => r.percent === percent) || null;
-};
-
-export const getAllGeneralizedAnxietyRatings = () => {
-  return GENERALIZED_ANXIETY_CRITERIA.ratings;
-};
-
-export const getGeneralizedAnxietyDefinition = (term) => {
-  return GENERALIZED_ANXIETY_CRITERIA.definitions[term] || null;
-};
-
-export const getPanicDisorderRatingCriteria = (percent) => {
-  return PANIC_DISORDER_CRITERIA.ratings.find(r => r.percent === percent) ||
-      null;
-};
-
-export const getAllPanicDisorderRatings = () => {
-  return PANIC_DISORDER_CRITERIA.ratings;
-};
-
-export const getPanicDisorderDefinition = (term) => {
-  return PANIC_DISORDER_CRITERIA.definitions[term] || null;
-};
-
-export const getBipolarRatingCriteria = (percent) => {
-  return BIPOLAR_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-
-export const getAllBipolarRatings = () => {
-  return BIPOLAR_CRITERIA.ratings;
-};
-
-export const getBipolarDefinition = (term) => {
-  return BIPOLAR_CRITERIA.definitions[term] || null;
-};
-
 export const formatRating = (percent) => {
   if (percent === null) return 'N/A';
   return `${percent}%`;
 };
-
+/**
+ * Get badge/pill color classes for rating percentage
+ * Granular 10% increments matching the heat map color scheme
+ * Used for rating badges in card headers and summaries
+ */
 export const getRatingColorClass = (percent) => {
-  switch (percent) {
-    case 100:
-      return 'bg-purple-100 text-purple-800 border-purple-300 dark:bg-purple-900/30 dark:text-purple-300 dark:border-purple-700';
-    case 50:
-      return 'bg-red-100 text-red-800 border-red-300 dark:bg-red-900/30 dark:text-red-300 dark:border-red-700';
-    case 30:
-      return 'bg-orange-100 text-orange-800 border-orange-300 dark:bg-orange-900/30 dark:text-orange-300 dark:border-orange-700';
-    case 10:
-      return 'bg-yellow-100 text-yellow-800 border-yellow-300 dark:bg-yellow-900/30 dark:text-yellow-300 dark:border-yellow-700';
-    case 0:
-      return 'bg-gray-100 text-gray-800 border-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600';
-    default:
-      return 'bg-gray-100 text-gray-600 border-gray-300 dark:bg-gray-700 dark:text-gray-400 dark:border-gray-600';
+  if (percent === null || percent === undefined) {
+    return 'bg-gray-100 text-gray-600 border-gray-300 dark:bg-gray-700 dark:text-gray-400 dark:border-gray-600';
   }
+  if (percent >= 100) return 'bg-red-100 text-red-800 border-red-300 dark:bg-red-900/30 dark:text-red-300 dark:border-red-700';
+  if (percent >= 90) return 'bg-rose-100 text-rose-800 border-rose-300 dark:bg-rose-900/30 dark:text-rose-300 dark:border-rose-700';
+  if (percent >= 80) return 'bg-orange-100 text-orange-800 border-orange-300 dark:bg-orange-900/30 dark:text-orange-300 dark:border-orange-700';
+  if (percent >= 70) return 'bg-amber-100 text-amber-800 border-amber-300 dark:bg-amber-900/30 dark:text-amber-300 dark:border-amber-700';
+  if (percent >= 60) return 'bg-yellow-100 text-yellow-800 border-yellow-300 dark:bg-yellow-900/30 dark:text-yellow-300 dark:border-yellow-700';
+  if (percent >= 50) return 'bg-lime-100 text-lime-800 border-lime-300 dark:bg-lime-900/30 dark:text-lime-300 dark:border-lime-700';
+  if (percent >= 40) return 'bg-green-100 text-green-800 border-green-300 dark:bg-green-900/30 dark:text-green-300 dark:border-green-700';
+  if (percent >= 30) return 'bg-teal-100 text-teal-800 border-teal-300 dark:bg-teal-900/30 dark:text-teal-300 dark:border-teal-700';
+  if (percent >= 20) return 'bg-cyan-100 text-cyan-800 border-cyan-300 dark:bg-cyan-900/30 dark:text-cyan-300 dark:border-cyan-700';
+  if (percent >= 10) return 'bg-blue-100 text-blue-800 border-blue-300 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-700';
+  // 0%: Service-connected, non-compensable
+  return 'bg-slate-100 text-slate-800 border-slate-300 dark:bg-slate-900/30 dark:text-slate-300 dark:border-slate-700';
+};
+
+/**
+ * Get background/border color classes for rating rows (inside expanded cards)
+ * Granular 10% increments matching the heat map color scheme
+ * Handles both numeric ratings (50) and range strings ("10-30")
+ */
+export const getRatingRowColor = (rating, isSupported) => {
+  if (!isSupported) return 'bg-gray-50 dark:bg-gray-700/30 border-gray-200 dark:border-gray-600';
+
+  // Normalize rating - handle strings like "10-30" by taking the first number
+  let percent = rating;
+  if (typeof rating === 'string') {
+    const match = rating.match(/(\d+)/);
+    percent = match ? parseInt(match[1], 10) : null;
+  }
+
+  if (percent === null) return 'bg-gray-50 dark:bg-gray-700/30 border-gray-200 dark:border-gray-600';
+  if (percent >= 100) return 'bg-red-100 dark:bg-red-900/30 border-red-300 dark:border-red-700';
+  if (percent >= 90) return 'bg-rose-100 dark:bg-rose-900/30 border-rose-300 dark:border-rose-700';
+  if (percent >= 80) return 'bg-orange-100 dark:bg-orange-900/30 border-orange-300 dark:border-orange-700';
+  if (percent >= 70) return 'bg-amber-100 dark:bg-amber-900/30 border-amber-300 dark:border-amber-700';
+  if (percent >= 60) return 'bg-yellow-100 dark:bg-yellow-900/30 border-yellow-300 dark:border-yellow-700';
+  if (percent >= 50) return 'bg-lime-100 dark:bg-lime-900/30 border-lime-300 dark:border-lime-700';
+  if (percent >= 40) return 'bg-green-100 dark:bg-green-900/30 border-green-300 dark:border-green-700';
+  if (percent >= 30) return 'bg-teal-100 dark:bg-teal-900/30 border-teal-300 dark:border-teal-700';
+  if (percent >= 20) return 'bg-cyan-100 dark:bg-cyan-900/30 border-cyan-300 dark:border-cyan-700';
+  if (percent >= 10) return 'bg-blue-100 dark:bg-blue-900/30 border-blue-300 dark:border-blue-700';
+  return 'bg-slate-100 dark:bg-slate-900/30 border-slate-300 dark:border-slate-700';
+};
+
+/**
+ * Get text color for rating percentage display (collapsed card headers)
+ * Matches the row color scheme for visual consistency
+ * Handles both numeric ratings (50) and range strings ("10-30")
+ */
+export const getRatingTextColor = (rating) => {
+  if (rating === null || rating === undefined) return 'text-gray-500 dark:text-gray-400';
+
+  // Normalize rating - handle strings like "10-30" by taking the first number
+  let percent = rating;
+  if (typeof rating === 'string') {
+    // Handle range ratings like "10-30" - use the lower bound for color
+    const match = rating.match(/(\d+)/);
+    percent = match ? parseInt(match[1], 10) : null;
+  }
+
+  if (percent === null) return 'text-gray-500 dark:text-gray-400';
+  if (percent >= 100) return 'text-red-600 dark:text-red-400';
+  if (percent >= 90) return 'text-rose-600 dark:text-rose-400';
+  if (percent >= 80) return 'text-orange-600 dark:text-orange-400';
+  if (percent >= 70) return 'text-amber-600 dark:text-amber-400';
+  if (percent >= 60) return 'text-yellow-600 dark:text-yellow-400';
+  if (percent >= 50) return 'text-lime-600 dark:text-lime-400';
+  if (percent >= 40) return 'text-green-600 dark:text-green-400';
+  if (percent >= 30) return 'text-teal-600 dark:text-teal-400';
+  if (percent >= 20) return 'text-cyan-600 dark:text-cyan-400';
+  if (percent >= 10) return 'text-blue-600 dark:text-blue-400';
+  return 'text-slate-600 dark:text-slate-400';
 };
 
 export const getEvaluationPeriod = (days = 90) => {
@@ -44169,7 +43998,72 @@ export const getEvaluationPeriod = (days = 90) => {
     months: (days / 30).toFixed(1),
   };
 };
-
+export const getMigraineRatingCriteria = (percent) => {
+  return MIGRAINE_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getSleepApneaRatingCriteria = (percent) => {
+  return SLEEP_APNEA_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getAllMigraineRatings = () => {
+  return MIGRAINE_CRITERIA.ratings;
+};
+export const getAllSleepApneaRatings = () => {
+  return SLEEP_APNEA_CRITERIA.ratings;
+};
+export const getMigraineDefinition = (term) => {
+  return MIGRAINE_CRITERIA.definitions[term] || null;
+};
+export const getSleepApneaDefinition = (term) => {
+  return SLEEP_APNEA_CRITERIA.definitions[term] || null;
+};
+export const getPTSDRatingCriteria = (percent) => {
+  return PTSD_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getAllPTSDRatings = () => {
+  return PTSD_CRITERIA.ratings;
+};
+export const getPTSDDefinition = (term) => {
+  return PTSD_CRITERIA.definitions[term] || null;
+};
+export const getMajorDepressionRatingCriteria = (percent) => {
+  return MAJOR_DEPRESSION_CRITERIA.ratings.find(r => r.percent === percent) ||
+      null;
+};
+export const getAllMajorDepressionRatings = () => {
+  return MAJOR_DEPRESSION_CRITERIA.ratings;
+};
+export const getMajorDepressionDefinition = (term) => {
+  return MAJOR_DEPRESSION_CRITERIA.definitions[term] || null;
+};
+export const getGeneralizedAnxietyRatingCriteria = (percent) => {
+  return GENERALIZED_ANXIETY_CRITERIA.ratings.find(
+      r => r.percent === percent) || null;
+};
+export const getAllGeneralizedAnxietyRatings = () => {
+  return GENERALIZED_ANXIETY_CRITERIA.ratings;
+};
+export const getGeneralizedAnxietyDefinition = (term) => {
+  return GENERALIZED_ANXIETY_CRITERIA.definitions[term] || null;
+};
+export const getPanicDisorderRatingCriteria = (percent) => {
+  return PANIC_DISORDER_CRITERIA.ratings.find(r => r.percent === percent) ||
+      null;
+};
+export const getAllPanicDisorderRatings = () => {
+  return PANIC_DISORDER_CRITERIA.ratings;
+};
+export const getPanicDisorderDefinition = (term) => {
+  return PANIC_DISORDER_CRITERIA.definitions[term] || null;
+};
+export const getBipolarRatingCriteria = (percent) => {
+  return BIPOLAR_CRITERIA.ratings.find(r => r.percent === percent) || null;
+};
+export const getAllBipolarRatings = () => {
+  return BIPOLAR_CRITERIA.ratings;
+};
+export const getBipolarDefinition = (term) => {
+  return BIPOLAR_CRITERIA.definitions[term] || null;
+};
 // Helper functions for new conditions
 export const getLumbosacralStrainRatingCriteria = (percent) => {
   return LUMBOSACRAL_STRAIN_CRITERIA.ratings.find(r => r.percent === percent) || null;
@@ -44679,9 +44573,6 @@ export const getChronicOtitisExternaRating = (percent) => {
 export const getChronicNonsuppurativeOtitisMediaRating = (percent) => {
   return CHRONIC_NONSUPPURATIVE_OTITIS_MEDIA_CRITERIA.ratings.find(r => r.percent === percent) || null;
 };
-
-
-
 export const getAllLumbosacralStrainRatings = () => LUMBOSACRAL_STRAIN_CRITERIA.ratings;
 export const getAllIntervertebralDiscRatings = () => INTERVERTEBRAL_DISC_CRITERIA.ratingsIncapacitatingEpisodes;
 export const getAllKneeInstabilityRatings = () => KNEE_INSTABILITY_CRITERIA.ratings;
@@ -44848,8 +44739,6 @@ export const getAllPeripheralVestibularRatings = () => PERIPHERAL_VESTIBULAR_CRI
 export const getAllChronicSuppurativeOtitisMediaRatings = () => CHRONIC_SUPPURATIVE_OTITIS_MEDIA_CRITERIA.ratings;
 export const getAllChronicOtitisExternaRatings = () => CHRONIC_OTITIS_EXTERNA_CRITERIA.ratings;
 export const getAllChronicNonsuppurativeOtitisMediaRatings = () => CHRONIC_NONSUPPURATIVE_OTITIS_MEDIA_CRITERIA.ratings;
-
-
 
 export const getEpilepsyMajorDefinition = (term) => EPILEPSY_MAJOR_CRITERIA.definitions[term] || null;
 export const getEpilepsyMinorDefinition = (term) => EPILEPSY_MINOR_CRITERIA.definitions[term] || null;
@@ -45023,21 +44912,3 @@ export const getPeripheralVestibularDefinition = (term) => PERIPHERAL_VESTIBULAR
 export const getChronicSuppurativeOtitisMediaDefinition = (term) => CHRONIC_SUPPURATIVE_OTITIS_MEDIA_CRITERIA.definitions[term] || null;
 export const getChronicOtitisExternaDefinition = (term) => CHRONIC_OTITIS_EXTERNA_CRITERIA.definitions[term] || null;
 export const getChronicNonsuppurativeOtitisMediaDefinition = (term) => CHRONIC_NONSUPPURATIVE_OTITIS_MEDIA_CRITERIA.definitions[term] || null;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

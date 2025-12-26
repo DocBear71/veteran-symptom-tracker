@@ -458,6 +458,7 @@ const RatingEvidence = () => {
   const [measurements, setMeasurements] = useState([]);
   const [evaluationDays, setEvaluationDays] = useState(90);
   const [expandedSection, setExpandedSection] = useState(null);
+  const [expandedGroup, setExpandedGroup] = useState('musculoskeletal');
   const [sleepApneaProfile, setSleepApneaProfile] = useState(getSleepApneaProfile());
   const [showSleepApneaSetup, setShowSleepApneaSetup] = useState(false);
   const [chronicSymptoms, setChronicSymptoms] = useState([]);
@@ -465,6 +466,10 @@ const RatingEvidence = () => {
 
   // Check if user is a veteran
   const isVeteran = getProfileType() === PROFILE_TYPES.VETERAN;
+
+  const toggleGroup = (groupId) => {
+    setExpandedGroup(prev => prev === groupId ? null : groupId);
+  };
 
   useEffect(() => {
     setLogs(getSymptomLogs());
@@ -1908,7 +1913,9 @@ const RatingEvidence = () => {
               icon="🦴"
               conditionCount={bodySystemCounts.musculoskeletal}
               accentColor="amber"
-              defaultExpanded={false}
+              groupId="musculoskeletal"
+              isExpanded={expandedGroup === 'musculoskeletal'}
+              onToggle={toggleGroup}
           >
             <GenericRatingCard
                 analysis={lumbosacralStrainAnalysis}
@@ -2078,9 +2085,12 @@ const RatingEvidence = () => {
               icon="🫁"
               conditionCount={bodySystemCounts.respiratory}
               accentColor="cyan"
-              defaultExpanded={false}
+              groupId="respiratory"
+              isExpanded={expandedGroup === 'respiratory'}
+              onToggle={toggleGroup}
           >
-            <SleepApneaRatingCard
+
+          <SleepApneaRatingCard
                 analysis={sleepApneaAnalysis}
                 profile={sleepApneaProfile}
                 expanded={expandedSection === 'sleep-apnea'}
@@ -2141,7 +2151,9 @@ const RatingEvidence = () => {
               icon="👁️"
               conditionCount={bodySystemCounts.eyeEar}
               accentColor="blue"
-              defaultExpanded={false}
+              groupId="eyeEar"
+              isExpanded={expandedGroup === 'eyeEar'}
+              onToggle={toggleGroup}
           >
             <EyeVisionRatingCard
                 logs={logs}
@@ -2212,7 +2224,9 @@ const RatingEvidence = () => {
               icon="🦠"
               conditionCount={bodySystemCounts.infectious}
               accentColor="green"
-              defaultExpanded={false}
+              groupId="infectious"
+              isExpanded={expandedGroup === 'infectious'}
+              onToggle={toggleGroup}
           >
             <HIVRatingCard
                 analysis={hivAnalysis}
@@ -2282,7 +2296,9 @@ const RatingEvidence = () => {
               icon="❤️"
               conditionCount={bodySystemCounts.cardiovascular}
               accentColor="red"
-              defaultExpanded={false}
+              groupId="cardiovascular"
+              isExpanded={expandedGroup === 'cardiovascular'}
+              onToggle={toggleGroup}
           >
             <HypertensionRatingCard
                 analysis={hypertensionAnalysis}
@@ -2359,7 +2375,9 @@ const RatingEvidence = () => {
               icon="🫃"
               conditionCount={bodySystemCounts.digestive}
               accentColor="lime"
-              defaultExpanded={false}
+              groupId="digestive"
+              isExpanded={expandedGroup === 'digestive'}
+              onToggle={toggleGroup}
           >
             <IBSRatingCard
                 analysis={ibsAnalysis}
@@ -2453,7 +2471,9 @@ const RatingEvidence = () => {
               icon="🫘"
               conditionCount={bodySystemCounts.genitourinary}
               accentColor="orange"
-              defaultExpanded={false}
+              groupId="genitourinary"
+              isExpanded={expandedGroup === 'genitourinary'}
+              onToggle={toggleGroup}
           >
             <KidneyStonesRatingCard
                 analysis={kidneyStonesAnalysis}
@@ -2524,7 +2544,9 @@ const RatingEvidence = () => {
               icon="🩸"
               conditionCount={bodySystemCounts.hemicLymphatic}
               accentColor="rose"
-              defaultExpanded={false}
+              groupId="hemicLymphatic"
+              isExpanded={expandedGroup === 'hemicLymphatic'}
+              onToggle={toggleGroup}
           >
             <IronDeficiencyAnemiaRatingCard
                 analysis={ironDeficiencyAnemiaAnalysis}
@@ -2614,7 +2636,9 @@ const RatingEvidence = () => {
               icon="🧴"
               conditionCount={bodySystemCounts.skin}
               accentColor="pink"
-              defaultExpanded={false}
+              groupId="skin"
+              isExpanded={expandedGroup === 'skin'}
+              onToggle={toggleGroup}
           >
             <EczemaRatingCard
                 analysis={eczemaAnalysis}
@@ -2690,7 +2714,9 @@ const RatingEvidence = () => {
               icon="🦋"
               conditionCount={bodySystemCounts.endocrine}
               accentColor="teal"
-              defaultExpanded={false}
+              groupId="endocrine"
+              isExpanded={expandedGroup === 'endocrine'}
+              onToggle={toggleGroup}
           >
             <DiabetesRatingCard
                 analysis={diabetesAnalysis}
@@ -2752,7 +2778,9 @@ const RatingEvidence = () => {
               icon="⚡"
               conditionCount={bodySystemCounts.neurological}
               accentColor="indigo"
-              defaultExpanded={false}
+              groupId="neurological"
+              isExpanded={expandedGroup === 'neurological'}
+              onToggle={toggleGroup}
           >
             <MigraineRatingCard
                 analysis={migraineAnalysis}
@@ -2979,7 +3007,9 @@ const RatingEvidence = () => {
               icon="🧠"
               conditionCount={bodySystemCounts.mentalHealth}
               accentColor="purple"
-              defaultExpanded={false}
+              groupId="mentalHealth"
+              isExpanded={expandedGroup === 'mentalHealth'}
+              onToggle={toggleGroup}
           >
             <PTSDRatingCard
                 analysis={ptsdAnalysis}
@@ -3211,7 +3241,9 @@ const RatingEvidence = () => {
               icon="🦷"
               conditionCount={bodySystemCounts.dental}
               accentColor="yellow"
-              defaultExpanded={false}
+              groupId="dental"
+              isExpanded={expandedGroup === 'dental'}
+              onToggle={toggleGroup}
           >
             <ToothLossRatingCard
                 analysis={toothLossAnalysis}
@@ -3246,7 +3278,9 @@ const RatingEvidence = () => {
               icon="📋"
               conditionCount={bodySystemCounts.other}
               accentColor="blue"
-              defaultExpanded={false}
+              groupId="other"
+              isExpanded={expandedGroup === 'other'}
+              onToggle={toggleGroup}
           >
             <ChronicFatigueRatingCard
                 analysis={chronicFatigueAnalysis}

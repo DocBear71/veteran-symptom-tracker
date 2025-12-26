@@ -1,5 +1,5 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
-import { PAD_CRITERIA } from '../utils/ratingCriteria';
+import { PAD_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating.jsx';
 
 export default function PADRatingCard({ analysis, expanded, onToggle }) {
@@ -23,14 +23,6 @@ export default function PADRatingCard({ analysis, expanded, onToggle }) {
       return ratingPercent === parseInt(supportedRating, 10);
     }
     return false;
-  };
-
-  const getRatingRowColor = (percent, isSupported) => {
-    if (!isSupported) return 'bg-gray-50 dark:bg-gray-700/30 border-gray-200 dark:border-gray-600';
-    if (percent >= 100) return 'bg-red-100 dark:bg-red-900/30 border-red-300 dark:border-red-700';
-    if (percent >= 60) return 'bg-orange-100 dark:bg-orange-900/30 border-orange-300 dark:border-orange-700';
-    if (percent >= 40) return 'bg-amber-100 dark:bg-amber-900/30 border-amber-300 dark:border-amber-700';
-    return 'bg-yellow-100 dark:bg-yellow-900/30 border-yellow-300 dark:border-yellow-700';
   };
 
   // Format ABI display
@@ -70,7 +62,8 @@ export default function PADRatingCard({ analysis, expanded, onToggle }) {
           </div>
           <div className="flex items-center gap-4">
             <div className="text-right">
-              <div className="text-2xl font-bold text-rose-600 dark:text-rose-400">{supportedRating !== null ? `${supportedRating}%` : 'N/A'}</div>
+              <div className={`text-2xl font-bold ${getRatingTextColor(supportedRating)}`}>
+                {supportedRating !== null ? `${supportedRating}%` : 'N/A'}</div>
               <div className="text-xs text-gray-500 dark:text-gray-400">Per Extremity</div>
             </div>
             {expanded ? <ChevronUp className="w-5 h-5 text-gray-400" /> : <ChevronDown className="w-5 h-5 text-gray-400" />}
@@ -178,7 +171,7 @@ export default function PADRatingCard({ analysis, expanded, onToggle }) {
               {/* Understanding Your Rating - Educational Content */}
               <UnderstandingYourRating
                   diagnosticCode="7114"
-                  currentRating={numericRating}
+                  currentRating={supportedRating}
               />
 
               {/* VA Rating Schedule */}
