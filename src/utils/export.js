@@ -1848,7 +1848,7 @@ export const generatePDF = (dateRange = 'all', options = { includeAppointments: 
         doc.setFontSize(8);
         doc.setTextColor(150);
         doc.text(`Page ${i} of ${pageCount}`, pageWidth - 25, doc.internal.pageSize.height - 10);
-        doc.text('Universal Symptom Tracker', 14, doc.internal.pageSize.height - 10);
+        doc.text('Doc Bear\'s Symptom Vault', 14, doc.internal.pageSize.height - 10);
     }
 
     // Save
