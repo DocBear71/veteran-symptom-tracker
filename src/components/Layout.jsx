@@ -1,8 +1,12 @@
+// file: src/components/Layout.jsx v2 - Main layout wrapper with header, navigation, and footer
+// Updated to include Footer component on all pages
+
 import { useProfile } from '../hooks/useProfile';
 import { getActiveProfile, getColorById } from '../utils/profiles';
 import { useEffect, useState } from 'react';
+import Footer from './legal/Footer';
 
-// Main layout wrapper with header and navigation
+// Main layout wrapper with header, navigation, and footer
 const Layout = ({ children, currentView, onNavigate }) => {
   const { features } = useProfile();
   const [activeProfile, setActiveProfile] = useState(null);
@@ -27,13 +31,17 @@ const Layout = ({ children, currentView, onNavigate }) => {
   }, [currentView]);
 
   // Get labels based on active profile type
+  // Now also checks for isVeteranCaregiver flag
   const getLabels = () => {
     if (!activeProfile) {
       return {
-        appTitle: 'Symptom Tracker',
+        appTitle: "Doc Bear's Symptom Vault",
         appSubtitle: 'Loading...',
       };
     }
+
+    // Check if this is a caregiver caring for a veteran
+    const isVeteranCaregiver = activeProfile.metadata?.isVeteranCaregiver === true;
 
     switch (activeProfile.type) {
       case 'veteran':
@@ -43,17 +51,23 @@ const Layout = ({ children, currentView, onNavigate }) => {
         };
       case 'general':
         return {
-          appTitle: 'Symptom Tracker',
+          appTitle: "Doc Bear's Symptom Vault",
           appSubtitle: 'Track your daily symptoms',
         };
       case 'caregiver':
+        if (isVeteranCaregiver) {
+          return {
+            appTitle: `${activeProfile.name}'s VA Tracker`,
+            appSubtitle: `Tracking VA symptoms for ${activeProfile.name}`,
+          };
+        }
         return {
           appTitle: `${activeProfile.name}'s Symptom Tracker`,
           appSubtitle: `Tracking symptoms for ${activeProfile.name}`,
         };
       default:
         return {
-          appTitle: 'Symptom Tracker',
+          appTitle: "Doc Bear's Symptom Vault",
           appSubtitle: 'Track your symptoms',
         };
     }
@@ -62,8 +76,12 @@ const Layout = ({ children, currentView, onNavigate }) => {
   const labels = getLabels();
   const profileColor = activeProfile ? getColorById(activeProfile.color) : null;
 
+  // Check if caregiver is caring for a veteran (for potential visual indicator)
+  const isVeteranCaregiver = activeProfile?.type === 'caregiver' &&
+      activeProfile?.metadata?.isVeteranCaregiver === true;
+
   return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
         {/* Header */}
         <header className="bg-blue-900 dark:bg-gray-800 text-white shadow-lg">
           <div className="max-w-lg mx-auto px-4 py-4">
@@ -71,21 +89,28 @@ const Layout = ({ children, currentView, onNavigate }) => {
               <h1 className="text-xl font-bold">{labels.appTitle}</h1>
               {activeProfile && profileColor && (
                   <span className={`px-2 py-1 rounded-full text-xs font-medium ${profileColor.class} flex items-center gap-1`}>
-                  {activeProfile.name}
-                </span>
+                {/* Show veteran badge for veteran caregivers */}
+                    {isVeteranCaregiver && <span>🎖️</span>}
+                    {activeProfile.name}
+              </span>
               )}
             </div>
             <p className="text-blue-200 dark:text-gray-400 text-sm">{labels.appSubtitle}</p>
           </div>
         </header>
 
-        {/* Main Content */}
-        <main className="max-w-lg mx-auto px-4 py-6 pb-24">
+        {/* Main Content - flex-1 to push footer down */}
+        <main className="max-w-lg mx-auto px-4 py-6 pb-24 flex-1 w-full">
           {children}
         </main>
 
-        {/* Bottom Navigation */}
-        <nav className="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 shadow-lg">
+        {/* Footer - Above bottom navigation */}
+        <div className="pb-20">
+          <Footer />
+        </div>
+
+        {/* Bottom Navigation - Fixed at bottom */}
+        <nav className="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 shadow-lg z-40">
           <div className="max-w-lg mx-auto flex">
             <NavButton
                 icon="➕"

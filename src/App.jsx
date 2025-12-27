@@ -11,6 +11,7 @@ import Trends from './components/Trends';
 import ExportData from './components/ExportData';
 import Settings from './components/Settings';
 import OnboardingModal from './components/OnboardingModal';
+import ThankYou from './components/legal/ThankYou.jsx';
 
 // Profile system
 import { ProfileProvider, useProfile } from './hooks/useProfile.jsx';
@@ -18,9 +19,32 @@ import { ProfileProvider, useProfile } from './hooks/useProfile.jsx';
 // Multi-profile migration
 import { initializeMultiProfile } from './utils/profileMigration';
 
+/**
+ * Get initial view based on URL path
+ * This allows direct linking to pages like /thank-you
+ */
+const getInitialViewFromURL = () => {
+  const path = window.location.pathname;
+
+  // Map URL paths to view names
+  const pathToView = {
+    '/thank-you': 'thank-you',
+    '/history': 'history',
+    '/meds': 'meds',
+    '/medications': 'meds',
+    '/trends': 'trends',
+    '/measurements': 'measurements',
+    '/settings': 'settings',
+    '/export': 'export',
+  };
+
+  return pathToView[path] || 'log';
+};
+
 // Inner app component that uses profile context
 const AppContent = () => {
-  const [currentView, setCurrentView] = useState('log');
+  // Initialize view from URL path (for direct links like /thank-you)
+  const [currentView, setCurrentView] = useState(getInitialViewFromURL());
   const { shouldShowOnboarding, refreshProfile } = useProfile();
   const [showOnboarding, setShowOnboarding] = useState(shouldShowOnboarding);
 
@@ -43,6 +67,38 @@ const AppContent = () => {
     initialize();
   }, []);
 
+  // Handle browser back/forward buttons
+  useEffect(() => {
+    const handlePopState = () => {
+      setCurrentView(getInitialViewFromURL());
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
+  // Update URL when view changes (optional - enables shareable links)
+  const handleNavigate = (view) => {
+    setCurrentView(view);
+
+    // Update URL without page reload
+    const viewToPath = {
+      'log': '/',
+      'history': '/history',
+      'meds': '/meds',
+      'trends': '/trends',
+      'measurements': '/measurements',
+      'settings': '/settings',
+      'export': '/export',
+      'thank-you': '/thank-you',
+    };
+
+    const newPath = viewToPath[view] || '/';
+    if (window.location.pathname !== newPath) {
+      window.history.pushState({}, '', newPath);
+    }
+  };
+
   // Handle onboarding completion
   const handleOnboardingComplete = () => {
     setShowOnboarding(false);
@@ -52,7 +108,7 @@ const AppContent = () => {
   // Phase 1H - Handle copying a log entry to pre-fill logger
   const handleCopyLog = (log) => {
     setPrefillData(log);
-    setCurrentView('log'); // Switch to logger view
+    handleNavigate('log'); // Switch to logger view
   };
 
   // Render the current view
@@ -71,7 +127,9 @@ const AppContent = () => {
       case 'export':
         return <ExportData />;
       case 'settings':
-        return <Settings onNavigate={setCurrentView} />;
+        return <Settings onNavigate={handleNavigate} />;
+      case 'thank-you':
+        return <ThankYou />;
       default:
         return <SymptomLogger />;
     }
@@ -85,7 +143,7 @@ const AppContent = () => {
         )}
 
         {/* Main App */}
-        <Layout currentView={currentView} onNavigate={setCurrentView}>
+        <Layout currentView={currentView} onNavigate={handleNavigate}>
           {renderView()}
         </Layout>
       </>

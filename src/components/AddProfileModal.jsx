@@ -1,3 +1,6 @@
+// file: src/components/AddProfileModal.jsx v2 - Profile creation wizard
+// Updated to support caregivers caring for veterans with veteran feature access
+
 import { useState } from 'react';
 import { createProfile, PROFILE_COLORS, getColorById } from '../utils/profiles';
 import { PROFILE_OPTIONS } from '../utils/profile';
@@ -6,16 +9,22 @@ import { PROFILE_OPTIONS } from '../utils/profile';
  * AddProfileModal - Wizard for creating new profiles
  *
  * Supports both quick-add (name + type) and full wizard (with onboarding-like flow)
+ * Now includes option for caregivers to indicate they're caring for a veteran
  */
 const AddProfileModal = ({ onClose, onProfileCreated, quickMode = false }) => {
   const [step, setStep] = useState(quickMode ? 'quick' : 'type');
   const [profileType, setProfileType] = useState(null);
   const [profileName, setProfileName] = useState('');
   const [profileColor, setProfileColor] = useState('blue');
+  const [isVeteranCaregiver, setIsVeteranCaregiver] = useState(false);
   const [error, setError] = useState('');
 
   const handleSelectType = (type) => {
     setProfileType(type);
+    // Reset veteran caregiver flag when changing type
+    if (type !== 'caregiver') {
+      setIsVeteranCaregiver(false);
+    }
     setError('');
     if (!quickMode) {
       setStep('details');
@@ -37,7 +46,9 @@ const AddProfileModal = ({ onClose, onProfileCreated, quickMode = false }) => {
       name: profileName.trim(),
       type: profileType,
       color: profileColor,
-      metadata: {},
+      metadata: {
+        isVeteranCaregiver: profileType === 'caregiver' ? isVeteranCaregiver : false,
+      },
     });
 
     if (result.success) {
@@ -52,7 +63,7 @@ const AddProfileModal = ({ onClose, onProfileCreated, quickMode = false }) => {
   if (quickMode || step === 'quick') {
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white dark:bg-gray-800 rounded-xl max-w-md w-full p-6">
+          <div className="bg-white dark:bg-gray-800 rounded-xl max-w-md w-full p-6 max-h-[90vh] overflow-y-auto">
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
               Add New Profile
             </h2>
@@ -83,7 +94,12 @@ const AddProfileModal = ({ onClose, onProfileCreated, quickMode = false }) => {
                 {PROFILE_OPTIONS.map((option) => (
                     <button
                         key={option.type}
-                        onClick={() => setProfileType(option.type)}
+                        onClick={() => {
+                          setProfileType(option.type);
+                          if (option.type !== 'caregiver') {
+                            setIsVeteranCaregiver(false);
+                          }
+                        }}
                         className={`p-3 rounded-lg border-2 text-center transition-all ${
                             profileType === option.type
                                 ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
@@ -98,6 +114,31 @@ const AddProfileModal = ({ onClose, onProfileCreated, quickMode = false }) => {
                 ))}
               </div>
             </div>
+
+            {/* Veteran Caregiver Option - Only show when caregiver is selected */}
+            {profileType === 'caregiver' && (
+                <div className="mb-4 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
+                  <label className="flex items-start gap-3 cursor-pointer">
+                    <input
+                        type="checkbox"
+                        checked={isVeteranCaregiver}
+                        onChange={(e) => setIsVeteranCaregiver(e.target.checked)}
+                        className="mt-1 w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                    />
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-lg">🎖️</span>
+                        <span className="font-medium text-gray-900 dark:text-white">
+                          Caring for a Veteran
+                        </span>
+                      </div>
+                      <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                        Enable VA rating criteria, claims documentation features, and veteran-specific terminology.
+                      </p>
+                    </div>
+                  </label>
+                </div>
+            )}
 
             {/* Color */}
             <div className="mb-6">
@@ -190,13 +231,13 @@ const AddProfileModal = ({ onClose, onProfileCreated, quickMode = false }) => {
     );
   }
 
-  // Step: Details (name and color)
+  // Step: Details (name, veteran caregiver option, and color)
   if (step === 'details') {
     const selectedOption = PROFILE_OPTIONS.find(o => o.type === profileType);
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white dark:bg-gray-800 rounded-xl max-w-md w-full p-6">
+          <div className="bg-white dark:bg-gray-800 rounded-xl max-w-md w-full p-6 max-h-[90vh] overflow-y-auto">
             <div className="flex items-center gap-3 mb-6">
               <span className="text-3xl">{selectedOption?.icon}</span>
               <div>
@@ -225,6 +266,31 @@ const AddProfileModal = ({ onClose, onProfileCreated, quickMode = false }) => {
                   autoFocus
               />
             </div>
+
+            {/* Veteran Caregiver Option - Only show for caregiver type */}
+            {profileType === 'caregiver' && (
+                <div className="mb-4 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
+                  <label className="flex items-start gap-3 cursor-pointer">
+                    <input
+                        type="checkbox"
+                        checked={isVeteranCaregiver}
+                        onChange={(e) => setIsVeteranCaregiver(e.target.checked)}
+                        className="mt-1 w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                    />
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-lg">🎖️</span>
+                        <span className="font-medium text-gray-900 dark:text-white">
+                          Caring for a Veteran
+                        </span>
+                      </div>
+                      <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                        Enable VA rating criteria, claims documentation features, and veteran-specific terminology for tracking symptoms related to VA disability claims.
+                      </p>
+                    </div>
+                  </label>
+                </div>
+            )}
 
             {/* Color */}
             <div className="mb-6">
@@ -255,7 +321,10 @@ const AddProfileModal = ({ onClose, onProfileCreated, quickMode = false }) => {
             {/* Buttons */}
             <div className="flex gap-3">
               <button
-                  onClick={() => setStep('type')}
+                  onClick={() => {
+                    setStep('type');
+                    setIsVeteranCaregiver(false);
+                  }}
                   className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg
                        text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
               >
