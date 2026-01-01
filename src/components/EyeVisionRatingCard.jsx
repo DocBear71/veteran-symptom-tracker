@@ -1,6 +1,7 @@
 import {ChevronDown, ChevronUp} from 'lucide-react';
 import UnderstandingYourRating from './UnderstandingYourRating.jsx';
 import {getRatingRowColor, getRatingTextColor,} from '../utils/ratingCriteria.js';
+import ServiceConnectedBanner from './ServiceConnectedBanner';
 
 export default function GenericJointRatingCard({
                                                  analysis,

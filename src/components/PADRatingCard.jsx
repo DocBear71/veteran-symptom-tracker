@@ -1,6 +1,8 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { PAD_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
-import UnderstandingYourRating from './UnderstandingYourRating.jsx';
+import UnderstandingYourRating from './UnderstandingYourRating';
+import ServiceConnectedBanner from './ServiceConnectedBanner';
+
 
 export default function PADRatingCard({ analysis, expanded, onToggle }) {
   if (!analysis || !analysis.hasData) return null;
@@ -72,7 +74,13 @@ export default function PADRatingCard({ analysis, expanded, onToggle }) {
 
         {expanded && (
             <div className="px-6 pb-6 space-y-6">
-              <div className="border-t border-gray-200 dark:border-gray-700" />
+              <div className="border-t border-gray-200dark:border-gray-700" />
+
+              {/* Service-Connected Status Banner */}
+              <ServiceConnectedBanner
+                  conditionKey="pad"
+                  currentAnalysis={analysis}
+              />
 
               {/* Evidence Summary */}
               <div>

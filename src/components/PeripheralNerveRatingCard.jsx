@@ -27,9 +27,11 @@ import {
   LATERAL_FEMORAL_CUTANEOUS_NERVE_CRITERIA,
   ILIOINGUINAL_NERVE_CRITERIA, getRatingRowColor, getRatingTextColor,
 } from '../utils/ratingCriteria';
-import UnderstandingYourRating from './UnderstandingYourRating.jsx';
+import UnderstandingYourRating from './UnderstandingYourRating';
+import ServiceConnectedBanner from './ServiceConnectedBanner';
 
 /**
+
  * Peripheral Nerve Rating Card Component - Gold Standard Version
  * Handles all 21 peripheral nerve conditions (DC 8510-8530, 8610-8630, 8710-8730)
  * 38 CFR 4.124a
@@ -247,7 +249,13 @@ export default function PeripheralNerveRatingCard({ nerveType, analysis, expande
 
         {expanded && (
             <div className="px-6 pb-6 space-y-6">
-              <div className="border-t border-gray-200 dark:border-gray-700" />
+              <div className="border-t border-gray-200dark:border-gray-700" />
+
+              {/* Service-Connected Status Banner */}
+              <ServiceConnectedBanner
+                  conditionKey="peripheralNerve"
+                  currentAnalysis={analysis}
+              />
 
               {/* Evidence Summary */}
               <div>

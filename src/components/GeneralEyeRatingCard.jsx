@@ -5,9 +5,11 @@ import {
   CHRONIC_CONJUNCTIVITIS_CRITERIA,
   SCLERITIS_CRITERIA, getRatingRowColor, getRatingTextColor,
 } from '../utils/ratingCriteria';
-import UnderstandingYourRating from './UnderstandingYourRating.jsx';
+import UnderstandingYourRating from './UnderstandingYourRating';
+import ServiceConnectedBanner from './ServiceConnectedBanner';
 
 /**
+
  * General Eye Rating Card Component - Gold Standard Version
  * Supports: DC 6000 (Uveitis), DC 6001 (Keratitis), DC 6002 (Scleritis), DC 6018 (Chronic Conjunctivitis)
  * All use the General Rating Formula for Diseases of the Eye
@@ -85,7 +87,13 @@ export default function GeneralEyeRatingCard({ analysis, expanded, onToggle }) {
         {/* === EXPANDED CONTENT === */}
         {expanded && (
             <div className="px-6 pb-6 space-y-6">
-              <div className="border-t border-gray-200 dark:border-gray-700" />
+              <div className="border-t border-gray-200dark:border-gray-700" />
+
+              {/* Service-Connected Status Banner */}
+              <ServiceConnectedBanner
+                  conditionKey="generalEye"
+                  currentAnalysis={analysis}
+              />
 
               {/* Section 1: Evidence Summary (4-box grid) */}
               <div>

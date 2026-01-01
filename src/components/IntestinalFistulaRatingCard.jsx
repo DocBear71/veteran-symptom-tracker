@@ -1,8 +1,10 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { INTESTINAL_FISTULA_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
-import UnderstandingYourRating from './UnderstandingYourRating.jsx';
+import UnderstandingYourRating from './UnderstandingYourRating';
+import ServiceConnectedBanner from './ServiceConnectedBanner';
 
 /**
+
  * Intestinal Fistula Rating Card Component
  * DC 7330 - 38 CFR 4.114
  * Rated by TPN needs, drainage amount, BMI, and duration
@@ -69,7 +71,13 @@ export default function IntestinalFistulaRatingCard({ analysis, expanded, onTogg
         {/* Expanded Content */}
         {expanded && (
             <div className="px-6 pb-6 space-y-6">
-              <div className="border-t border-gray-200 dark:border-gray-700" />
+              <div className="border-t border-gray-200dark:border-gray-700" />
+
+              {/* Service-Connected Status Banner */}
+              <ServiceConnectedBanner
+                  conditionKey="intestinalFistula"
+                  currentAnalysis={analysis}
+              />
 
               {/* Evidence Summary - 4 Box Grid */}
               <div>

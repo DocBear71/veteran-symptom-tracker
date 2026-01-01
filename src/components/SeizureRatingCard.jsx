@@ -1,6 +1,7 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { EPILEPSY_MAJOR_CRITERIA, EPILEPSY_MINOR_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
+import ServiceConnectedBanner from './ServiceConnectedBanner';
 
 /**
  * Seizure/Epilepsy Rating Card Component - Gold Standard Version
@@ -73,7 +74,13 @@ export default function SeizureRatingCard({ analysis, expanded, onToggle }) {
         {/* Expanded Content */}
         {expanded && (
             <div className="px-6 pb-6 space-y-6">
-              <div className="border-t border-gray-200 dark:border-gray-700" />
+              <div className="border-t border-gray-200dark:border-gray-700" />
+
+              {/* Service-Connected Status Banner */}
+              <ServiceConnectedBanner
+                  conditionKey="seizure"
+                  currentAnalysis={analysis}
+              />
 
               {/* Evidence Summary - 4 Box Grid */}
               <div>

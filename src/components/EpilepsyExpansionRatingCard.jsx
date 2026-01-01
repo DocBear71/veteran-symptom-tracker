@@ -9,6 +9,7 @@ import {
   getRatingTextColor,
 } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
+import ServiceConnectedBanner from './ServiceConnectedBanner';
 
 /**
  * Epilepsy Expansion Rating Card Component - Gold Standard Version
@@ -112,7 +113,13 @@ export default function EpilepsyExpansionRatingCard({ analysis, expanded, onTogg
         {/* === EXPANDED CONTENT === */}
         {expanded && (
             <div className="px-6 pb-6 space-y-6">
-              <div className="border-t border-gray-200 dark:border-gray-700" />
+              <div className="border-t border-gray-200dark:border-gray-700" />
+
+              {/* Service-Connected Status Banner */}
+              <ServiceConnectedBanner
+                  conditionKey="epilepsy"
+                  currentAnalysis={analysis}
+              />
 
               {/* Section 1: Evidence Summary (4-box grid) */}
               <div>

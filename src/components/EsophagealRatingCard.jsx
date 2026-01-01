@@ -1,8 +1,10 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { ESOPHAGEAL_STRICTURE_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
-import UnderstandingYourRating from './UnderstandingYourRating.jsx';
+import UnderstandingYourRating from './UnderstandingYourRating';
+import ServiceConnectedBanner from './ServiceConnectedBanner';
 
 /**
+
  * Esophageal Rating Card Component
  * DC 7203 - Esophageal Stricture
  * DC 7204 - Esophageal Spasm/Motility Disorders (rated as DC 7203)
@@ -62,7 +64,13 @@ export default function EsophagealRatingCard({ analysis, expanded, onToggle }) {
         {/* Expanded Content */}
         {expanded && (
             <div className="px-6 pb-6 space-y-6">
-              <div className="border-t border-gray-200 dark:border-gray-700" />
+              <div className="border-t border-gray-200dark:border-gray-700" />
+
+              {/* Service-Connected Status Banner */}
+              <ServiceConnectedBanner
+                  conditionKey="esophageal"
+                  currentAnalysis={analysis}
+              />
 
               {/* Evidence Summary - 4 Box Grid */}
               <div>

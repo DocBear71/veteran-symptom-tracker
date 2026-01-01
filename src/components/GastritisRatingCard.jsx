@@ -1,6 +1,7 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { GASTRITIS_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
+import ServiceConnectedBanner from './ServiceConnectedBanner';
 
 /**
  * Gastritis Rating Card Component
@@ -51,7 +52,13 @@ export default function GastritisRatingCard({ analysis, expanded, onToggle }) {
         {/* Expanded Content */}
         {expanded && (
             <div className="px-6 pb-6 space-y-6">
-              <div className="border-t border-gray-200 dark:border-gray-700" />
+              <div className="border-t border-gray-200dark:border-gray-700" />
+
+              {/* Service-Connected Status Banner */}
+              <ServiceConnectedBanner
+                  conditionKey="gastritis"
+                  currentAnalysis={analysis}
+              />
 
               {/* Evidence Summary - 4 Box Grid */}
               <div>

@@ -1,6 +1,7 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { BRUCELLOSIS_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
+import ServiceConnectedBanner from './ServiceConnectedBanner';
 
 /**
  * Brucellosis Rating Card Component - Gold Standard Version
@@ -70,6 +71,12 @@ export default function BrucellosisRatingCard({ analysis, expanded, onToggle }) 
         {expanded && (
             <div className="px-6 pb-6 space-y-6">
               <div className="border-t border-gray-200 dark:border-gray-700" />
+
+              {/* Service-Connected Status Banner */}
+              <ServiceConnectedBanner
+                  conditionKey="brucellosis"
+                  currentAnalysis={analysis}
+              />
 
               {/* Section 1: Evidence Summary (4-box grid) */}
               <div>

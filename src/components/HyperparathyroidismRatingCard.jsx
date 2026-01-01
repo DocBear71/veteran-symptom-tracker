@@ -1,6 +1,7 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { HYPERPARATHYROIDISM_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
+import ServiceConnectedBanner from './ServiceConnectedBanner';
 
 /**
  * Hyperparathyroidism Rating Card - Gold Standard Version
@@ -57,7 +58,13 @@ export default function HyperparathyroidismRatingCard({ analysis, expanded, onTo
 
         {expanded && (
             <div className="px-6 pb-6 space-y-6">
-              <div className="border-t border-gray-200 dark:border-gray-700" />
+              <div className="border-t border-gray-200dark:border-gray-700" />
+
+              {/* Service-Connected Status Banner */}
+              <ServiceConnectedBanner
+                  conditionKey="hyperparathyroidism"
+                  currentAnalysis={analysis}
+              />
 
               {/* Evidence Summary */}
               <div>

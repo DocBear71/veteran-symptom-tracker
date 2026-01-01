@@ -1,6 +1,7 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { ECZEMA_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
+import ServiceConnectedBanner from './ServiceConnectedBanner';
 
 /**
  * Eczema/Dermatitis Rating Card Component - Gold Standard Version
@@ -67,6 +68,12 @@ export default function EczemaRatingCard({ analysis, expanded, onToggle }) {
         {expanded && (
             <div className="px-6 pb-6 space-y-6">
               <div className="border-t border-gray-200 dark:border-gray-700" />
+
+              {/* Service-Connected Status Banner */}
+              <ServiceConnectedBanner
+                  conditionKey="eczema"
+                  currentAnalysis={analysis}
+              />
 
               {/* Section 1: Evidence Summary (4-box grid) */}
               <div>

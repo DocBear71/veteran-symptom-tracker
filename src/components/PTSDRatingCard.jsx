@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { PTSD_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
+import ServiceConnectedBanner from './ServiceConnectedBanner';
 
 /**
  * PTSD Rating Card - Gold Standard Version
@@ -55,6 +56,13 @@ export default function PTSDRatingCard({ analysis, expanded, onToggle }) {
         {expanded && (
             <div className="px-6 pb-6 space-y-6">
               <div className="border-t border-gray-200 dark:border-gray-700" />
+
+              {/* Service-Connected Status Banner */}
+              <ServiceConnectedBanner
+                  conditionKey="ptsd"
+                  currentAnalysis={analysis}
+              />
+
 
               {/* Evidence Summary - 4 Box Grid */}
               <div>

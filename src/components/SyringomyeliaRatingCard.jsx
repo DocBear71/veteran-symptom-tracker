@@ -1,6 +1,7 @@
 import {ChevronDown, ChevronUp} from 'lucide-react';
 import {SYRINGOMYELIA_CRITERIA, getRatingRowColor, getRatingTextColor} from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
+import ServiceConnectedBanner from './ServiceConnectedBanner';
 
 /**
  * Syringomyelia Rating Card Component - Gold Standard Version

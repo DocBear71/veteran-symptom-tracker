@@ -1,6 +1,7 @@
 import {ChevronDown, ChevronUp} from 'lucide-react';
 import {POLYCYTHEMIA_VERA_CRITERIA, getRatingRowColor, getRatingTextColor} from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
+import ServiceConnectedBanner from './ServiceConnectedBanner';
 
 export default function PolycythemiaVeraRatingCard({
                                                      analysis,

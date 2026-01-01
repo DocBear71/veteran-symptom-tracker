@@ -1,6 +1,7 @@
 import {ChevronDown, ChevronUp} from 'lucide-react';
 import {TMJ_CRITERIA, TMJ_DISORDER_CRITERIA, getRatingRowColor, getRatingTextColor} from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
+import ServiceConnectedBanner from './ServiceConnectedBanner';
 
 export default function TMJRatingCard({analysis, expanded, onToggle}) {
   if (!analysis || !analysis.hasData) return null;

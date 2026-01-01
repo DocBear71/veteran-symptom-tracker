@@ -1,8 +1,10 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { HYPERHIDROSIS_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
-import UnderstandingYourRating from './UnderstandingYourRating.jsx';
+import UnderstandingYourRating from './UnderstandingYourRating';
+import ServiceConnectedBanner from './ServiceConnectedBanner';
 
 /**
+
  * Hyperhidrosis Rating Card Component - Gold Standard Version
  * Displays VA rating analysis for Hyperhidrosis (DC 7832)
  * Based on 38 CFR 4.118
@@ -74,7 +76,13 @@ export default function HyperhidrosisRatingCard({ analysis, expanded, onToggle }
         {/* === EXPANDED CONTENT === */}
         {expanded && (
             <div className="px-6 pb-6 space-y-6">
-              <div className="border-t border-gray-200 dark:border-gray-700" />
+              <div className="border-t border-gray-200dark:border-gray-700" />
+
+              {/* Service-Connected Status Banner */}
+              <ServiceConnectedBanner
+                  conditionKey="hyperhidrosis"
+                  currentAnalysis={analysis}
+              />
 
               {/* Section 1: Evidence Summary (4-box grid) */}
               <div>

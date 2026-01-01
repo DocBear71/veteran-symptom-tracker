@@ -7,9 +7,11 @@ import {
   SKIN_INFECTIONS_CRITERIA,
   GENERAL_SKIN_FORMULA_CRITERIA, getRatingRowColor, getRatingTextColor,
 } from '../utils/ratingCriteria';
-import UnderstandingYourRating from './UnderstandingYourRating.jsx';
+import UnderstandingYourRating from './UnderstandingYourRating';
+import ServiceConnectedBanner from './ServiceConnectedBanner';
 
 /**
+
  * General Skin Rating Card Component - Gold Standard Version
  * Reusable card for skin conditions rated under General Rating Formula for the Skin
  *
@@ -138,7 +140,13 @@ export default function GeneralSkinRatingCard({ analysis, expanded, onToggle }) 
         {/* === EXPANDED CONTENT === */}
         {expanded && (
             <div className="px-6 pb-6 space-y-6">
-              <div className="border-t border-gray-200 dark:border-gray-700" />
+              <div className="border-t border-gray-200dark:border-gray-700" />
+
+              {/* Service-Connected Status Banner */}
+              <ServiceConnectedBanner
+                  conditionKey="generalSkin"
+                  currentAnalysis={analysis}
+              />
 
               {/* Section 1: Evidence Summary */}
               <div>

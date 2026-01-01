@@ -1,6 +1,7 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { CUSHINGS_SYNDROME_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
+import ServiceConnectedBanner from './ServiceConnectedBanner';
 
 /**
  * Cushing's Syndrome Rating Card - Gold Standard Version
@@ -52,6 +53,12 @@ export default function CushingsSyndromeRatingCard({ analysis, expanded, onToggl
         {expanded && (
             <div className="px-6 pb-6 space-y-6">
               <div className="border-t border-gray-200 dark:border-gray-700" />
+
+              {/* Service-Connected Status Banner */}
+              <ServiceConnectedBanner
+                  conditionKey="cushingsSyndrome"
+                  currentAnalysis={analysis}
+              />
 
               {/* Evidence Summary */}
               <div>

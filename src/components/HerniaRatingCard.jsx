@@ -1,8 +1,10 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { HERNIA_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
-import UnderstandingYourRating from './UnderstandingYourRating.jsx';
+import UnderstandingYourRating from './UnderstandingYourRating';
+import ServiceConnectedBanner from './ServiceConnectedBanner';
 
 /**
+
  * Hernia Rating Card Component
  * DC 7338 - 38 CFR 4.114
  * Covers inguinal, femoral, umbilical, ventral, incisional, and other hernias (not hiatal)
@@ -52,7 +54,13 @@ export default function HerniaRatingCard({ analysis, expanded, onToggle }) {
         {/* Expanded Content */}
         {expanded && (
             <div className="px-6 pb-6 space-y-6">
-              <div className="border-t border-gray-200 dark:border-gray-700" />
+              <div className="border-t border-gray-200dark:border-gray-700" />
+
+              {/* Service-Connected Status Banner */}
+              <ServiceConnectedBanner
+                  conditionKey="hernia"
+                  currentAnalysis={analysis}
+              />
 
               {/* Evidence Summary - 4 Box Grid */}
               <div>

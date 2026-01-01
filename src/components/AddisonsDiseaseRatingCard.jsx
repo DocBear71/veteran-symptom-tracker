@@ -1,6 +1,7 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { ADDISONS_DISEASE_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
+import ServiceConnectedBanner from './ServiceConnectedBanner';
 
 /**
  * Addison's Disease Rating Card - Gold Standard Version
@@ -52,6 +53,12 @@ export default function AddisonsDiseaseRatingCard({ analysis, expanded, onToggle
         {expanded && (
             <div className="px-6 pb-6 space-y-6">
               <div className="border-t border-gray-200 dark:border-gray-700" />
+
+              {/* Service-Connected Status Banner */}
+              <ServiceConnectedBanner
+                  conditionKey="addisons"
+                  currentAnalysis={analysis}
+              />
 
               {/* Evidence Summary */}
               <div>

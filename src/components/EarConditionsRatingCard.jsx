@@ -13,6 +13,7 @@ import {
   CHRONIC_NONSUPPURATIVE_OTITIS_MEDIA_CRITERIA, getRatingRowColor, getRatingTextColor,
 } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
+import ServiceConnectedBanner from './ServiceConnectedBanner';
 
 /**
  * EarConditionsRatingCard - Displays VA rating analysis for ear conditions
@@ -177,7 +178,13 @@ const EarConditionsRatingCard = ({ analysis, expanded, onToggle }) => {
         {/* === EXPANDED CONTENT === */}
         {expanded && (
             <div className="px-6 pb-6 space-y-6">
-              <div className="border-t border-gray-200 dark:border-gray-700" />
+              <div className="border-t border-gray-200dark:border-gray-700" />
+
+              {/* Service-Connected Status Banner */}
+              <ServiceConnectedBanner
+                  conditionKey="ear"
+                  currentAnalysis={analysis}
+              />
 
               {/* Section 1: Evidence Summary (4-box grid) */}
               <div>
