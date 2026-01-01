@@ -147,24 +147,33 @@ const ServiceConnectedConditions = () => {
         )}
 
         {/* Show calculation breakdown (optional) */}
-        <details className="mt-3 text-sm">
-          <summary className="cursor-pointer text-blue-600 dark:text-blue-400 hover:underline">
-            Show calculation details
-          </summary>
-          <div className="mt-3 space-y-2 bg-white dark:bg-gray-800 rounded p-3">
-            <p className="font-semibold">VA Combined Rating Calculation:</p>
-            {calculateCombinedRatingDetailed(conditions).breakdown.map((step) => (
-                <div key={step.step} className="text-xs text-gray-600 dark:text-gray-400">
-                  Step {step.step}: {step.conditionName} ({step.rating}%) →
-                  {step.remainingEfficiency.toFixed(1)}% efficiency remaining
-                </div>
-            ))}
-            <div className="pt-2 border-t border-gray-200 dark:border-gray-700 font-semibold">
-              Final: {calculateCombinedRating(conditions.map(c => c.currentRating))}%
-              (rounded from {calculateCombinedRatingDetailed(conditions).totalDisability.toFixed(1)}%)
-            </div>
-          </div>
-        </details>
+        {conditions.length > 0 && (
+            <details className="mt-3 text-sm">
+              <summary className="cursor-pointer text-blue-600 dark:text-blue-400 hover:underline">
+                Show calculation details
+              </summary>
+              <div className="mt-3 space-y-2 bg-white dark:bg-gray-800 rounded p-3">
+                <p className="font-semibold">VA Combined Rating Calculation:</p>
+                {(() => {
+                  const detailed = calculateCombinedRatingDetailed(conditions);
+                  return (
+                      <>
+                        {detailed.breakdown?.map((step) => (
+                            <div key={step.step} className="text-xs text-gray-600 dark:text-gray-400">
+                              Step {step.step}: {step.conditionName} ({step.rating}%) →
+                              {step.remainingEfficiency?.toFixed(1) || '0.0'}% efficiency remaining
+                            </div>
+                        ))}
+                        <div className="pt-2 border-t border-gray-200 dark:border-gray-700 font-semibold">
+                          Final: {calculateCombinedRating(conditions.map(c => c.currentRating))}%
+                          (rounded from {detailed.totalDisability?.toFixed(1) || '0.0'}%)
+                        </div>
+                      </>
+                  );
+                })()}
+              </div>
+            </details>
+        )}
 
         {/* Conditions List */}
         {conditions.length === 0 ? (
