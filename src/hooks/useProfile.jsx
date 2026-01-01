@@ -97,20 +97,20 @@ export const ProfileProvider = ({ children }) => {
    * 1. Veteran profiles
    * 2. Caregiver profiles where isVeteranCaregiver is true
    */
-  const hasVeteranFeatures = profile.type === PROFILE_TYPES.VETERAN || isVeteranCaregiver;
+  const hasVeteranFeatures = profile?.type === PROFILE_TYPES.VETERAN || isVeteranCaregiver;
 
   const value = {
     profile,
-    profileType: profile.type,
+    profileType: profile?.type || null,
     labels,
     features,
     refreshProfile,
     shouldShowOnboarding,
 
     // Convenience booleans
-    isVeteran: profile.type === PROFILE_TYPES.VETERAN,
-    isGeneral: profile.type === PROFILE_TYPES.GENERAL,
-    isCaregiver: profile.type === PROFILE_TYPES.CAREGIVER,
+    isVeteran: profile?.type === PROFILE_TYPES.VETERAN,
+    isGeneral: profile?.type === PROFILE_TYPES.GENERAL,
+    isCaregiver: profile?.type === PROFILE_TYPES.CAREGIVER,
     hasProfile: hasProfile(),
 
     // NEW: Veteran caregiver support
