@@ -2,6 +2,13 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
+import { checkAndMigrateStorage, createDailyBackup } from './utils/storageVersion'
+
+// CRITICAL: Protect data BEFORE anything else runs
+console.log('🛡️ Checking storage version and creating backups...');
+checkAndMigrateStorage();
+createDailyBackup();
+console.log('✅ Storage protection initialized');
 
 // Apply saved theme BEFORE React renders to prevent flash
 const savedTheme = localStorage.getItem('symptomTracker_theme') || 'system';

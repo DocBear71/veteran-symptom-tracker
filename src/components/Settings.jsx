@@ -18,6 +18,52 @@ import ProfileManagement from './ProfileManagement';
 import ServiceConnectedConditions from './ServiceConnectedConditions';
 import useProfile from '../hooks/useProfile.jsx';
 
+/**
+ * Display backup history
+ */
+const BackupHistoryDisplay = () => {
+  const [history, setHistory] = useState([]);
+
+  useEffect(() => {
+    const { getBackupHistory } = require('../utils/storageVersion');
+    setHistory(getBackupHistory());
+  }, []);
+
+  if (history.length === 0) {
+    return (
+        <div className="bg-gray-50 dark:bg-gray-700/30 rounded-lg p-4 text-center">
+          <p className="text-sm text-gray-600 dark:text-gray-400">
+            No automatic backups yet. Your first backup will be created within 24 hours.
+          </p>
+        </div>
+    );
+  }
+
+  return (
+      <div className="bg-gray-50 dark:bg-gray-700/30 rounded-lg p-3 space-y-2 max-h-48 overflow-y-auto">
+        {history.slice().reverse().map((backup, idx) => (
+            <div
+                key={idx}
+                className="flex items-center justify-between text-sm bg-white dark:bg-gray-800 rounded p-2"
+            >
+              <div className="flex items-center gap-2">
+                <span>📅</span>
+                <span className="font-medium text-gray-900 dark:text-white">
+              {backup.date}
+            </span>
+                <span className="text-gray-600 dark:text-gray-400">
+              at {new Date(backup.timestamp).toLocaleTimeString()}
+            </span>
+              </div>
+              <span className="text-xs text-gray-500 dark:text-gray-400 font-mono">
+            {(backup.dataSize / 1024).toFixed(1)} KB
+          </span>
+            </div>
+        ))}
+      </div>
+  );
+};
+
 
 const Settings = ({ onNavigate }) => {  // ← ADD onNavigate prop
   // Theme state (no context needed)
@@ -359,6 +405,73 @@ const Settings = ({ onNavigate }) => {  // ← ADD onNavigate prop
                 )}
               </div>
           )}
+        </div>
+
+        {/* Emergency Data Recovery */}
+        <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
+          <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+            <span>🚨</span>
+            <span>Emergency Data Recovery</span>
+          </h2>
+
+          <div className="space-y-4">
+            {/* Show backup history */}
+            <div>
+              <h3 className="font-medium text-gray-900 dark:text-white mb-2">
+                Recent Automatic Backups
+              </h3>
+              <BackupHistoryDisplay />
+            </div>
+
+            {/* Action buttons */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <button
+                  onClick={() => {
+                    if (confirm('⚠️ Restore data from most recent automatic backup?\n\nThis will overwrite your current data with the last backup.\n\nClick OK to continue.')) {
+                      const { restoreFromEmergencyBackup } = require('../utils/storageVersion');
+                      const success = restoreFromEmergencyBackup();
+                      if (success) {
+                        alert('✅ Data restored successfully!\n\nThe page will now refresh.');
+                        window.location.reload();
+                      } else {
+                        alert('❌ No backup found to restore from.\n\nBackups are created automatically each day.');
+                      }
+                    }
+                  }}
+                  className="px-4 py-3 bg-orange-600 hover:bg-orange-700 text-white rounded-lg font-semibold transition-colors flex items-center justify-center gap-2"
+              >
+                <span>🔄</span>
+                <span>Restore from Latest Backup</span>
+              </button>
+
+              <button
+                  onClick={() => {
+                    const { createEmergencyBackup } = require('../utils/storageVersion');
+                    createEmergencyBackup();
+                    alert('✅ Manual backup created successfully!\n\nYour data has been backed up.');
+                  }}
+                  className="px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition-colors flex items-center justify-center gap-2"
+              >
+                <span>💾</span>
+                <span>Create Manual Backup Now</span>
+              </button>
+            </div>
+          </div>
+
+          <div className="mt-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+            <div className="flex gap-3">
+              <span className="text-xl">ℹ️</span>
+              <div>
+                <h4 className="font-semibold text-blue-900 dark:text-blue-200 mb-1">
+                  Automatic Protection
+                </h4>
+                <p className="text-sm text-blue-800 dark:text-blue-300">
+                  Your data is automatically backed up every day. We keep the last 7 days of backups
+                  for emergency recovery. Manual backups are stored immediately.
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Export Data Section - NEW */}

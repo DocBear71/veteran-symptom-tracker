@@ -54,6 +54,11 @@ const AppContent = () => {
   // Run multi-profile migration and cleanup on first load
   useEffect(() => {
     const initialize = async () => {
+      // Create backup BEFORE migration (extra safety)
+      const { createEmergencyBackup } = await import('./utils/storageVersion');
+      createEmergencyBackup();
+      console.log('🛡️ Pre-migration backup created');
+
       const result = initializeMultiProfile();
       if (result.migrated) {
         console.log('Multi-profile migration completed');
