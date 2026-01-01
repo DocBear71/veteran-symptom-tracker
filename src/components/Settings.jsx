@@ -222,7 +222,7 @@ const Settings = ({ onNavigate }) => {  // ← ADD onNavigate prop
         <ProfileManagement />
 
         {/* Service-Connected Conditions (Veteran profiles only) */}
-        {currentProfile?.type === 'veteran' && (
+        {currentProfile && currentProfile.type === 'veteran' && (
             <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
               <ServiceConnectedConditions />
             </div>

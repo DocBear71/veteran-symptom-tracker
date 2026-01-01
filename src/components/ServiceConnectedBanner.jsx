@@ -9,7 +9,12 @@ import { useProfile } from '../hooks/useProfile';
 const ServiceConnectedBanner = ({ conditionKey, currentAnalysis }) => {
   const { profile } = useProfile();
 
-  if (!profile || profile.type !== 'veteran') {
+  // Safety checks
+  if (!profile || !profile.id) {
+    return null;
+  }
+
+  if (profile.type !== 'veteran') {
     return null;
   }
 

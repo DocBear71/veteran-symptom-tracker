@@ -12,6 +12,11 @@ const ServiceConnectedConditions = () => {
   const [showAddModal, setShowAddModal] = useState(false);
   const [editingCondition, setEditingCondition] = useState(null);
 
+  // Safety check - don't render if no profile
+  if (!profile || !profile.id) {
+    return null;
+  }
+
   if (!currentProfile) {
     return (
         <div className="text-center py-8">
@@ -96,9 +101,9 @@ const ServiceConnectedConditions = () => {
         </div>
 
         {/* Info Banner for Veteran Profiles */}
-        {currentProfile?.type === 'veteran' && (
+        {currentProfile && currentProfile.type === 'veteran' && (
             <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800
-                        rounded-lg p-4">
+                rounded-lg p-4">
               <div className="flex gap-3">
                 <span className="text-2xl">ℹ️</span>
                 <div className="flex-1">
