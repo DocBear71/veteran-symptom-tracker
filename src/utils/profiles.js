@@ -326,3 +326,140 @@ export const getProfileStats = (profileId) => {
     return { logs: 0, medications: 0, appointments: 0 };
   }
 };
+
+// =============================================================================
+// SERVICE-CONNECTED CONDITIONS MANAGEMENT
+// =============================================================================
+
+/**
+ * Add a service-connected condition to a profile
+ * @param {string} profileId - Profile ID
+ * @param {object} condition - Condition object
+ * @returns {object} Result with success status and updated profile
+ */
+export const addServiceConnectedCondition = (profileId, condition) => {
+  const profiles = getProfiles();
+  const profile = profiles.find(p => p.id === profileId);
+
+  if (!profile) {
+    return { success: false, message: 'Profile not found' };
+  }
+
+  // Ensure serviceConnectedConditions array exists
+  if (!profile.serviceConnectedConditions) {
+    profile.serviceConnectedConditions = [];
+  }
+
+  // Create condition with ID and timestamp
+  const newCondition = {
+    id: crypto.randomUUID(),
+    conditionKey: condition.conditionKey,
+    conditionName: condition.conditionName,
+    currentRating: condition.currentRating,
+    effectiveDate: condition.effectiveDate,
+    trackingGoal: condition.trackingGoal || 'maintain',
+    notes: condition.notes || '',
+    addedAt: new Date().toISOString(),
+  };
+
+  profile.serviceConnectedConditions.push(newCondition);
+  profile.updatedAt = new Date().toISOString();
+
+  const result = saveProfiles(profiles);
+
+  if (result.success) {
+    return { success: true, profile, condition: newCondition };
+  }
+  return result;
+};
+
+/**
+ * Update a service-connected condition
+ * @param {string} profileId - Profile ID
+ * @param {string} conditionId - Condition ID
+ * @param {object} updates - Updated fields
+ * @returns {object} Result with success status
+ */
+export const updateServiceConnectedCondition = (profileId, conditionId, updates) => {
+  const profiles = getProfiles();
+  const profile = profiles.find(p => p.id === profileId);
+
+  if (!profile) {
+    return { success: false, message: 'Profile not found' };
+  }
+
+  const condition = profile.serviceConnectedConditions?.find(c => c.id === conditionId);
+
+  if (!condition) {
+    return { success: false, message: 'Condition not found' };
+  }
+
+  // Update allowed fields
+  Object.keys(updates).forEach(key => {
+    if (['currentRating', 'effectiveDate', 'trackingGoal', 'notes'].includes(key)) {
+      condition[key] = updates[key];
+    }
+  });
+
+  profile.updatedAt = new Date().toISOString();
+
+  const result = saveProfiles(profiles);
+
+  if (result.success) {
+    return { success: true, profile, condition };
+  }
+  return result;
+};
+
+/**
+ * Remove a service-connected condition
+ * @param {string} profileId - Profile ID
+ * @param {string} conditionId - Condition ID
+ * @returns {object} Result with success status
+ */
+export const removeServiceConnectedCondition = (profileId, conditionId) => {
+  const profiles = getProfiles();
+  const profile = profiles.find(p => p.id === profileId);
+
+  if (!profile) {
+    return { success: false, message: 'Profile not found' };
+  }
+
+  if (!profile.serviceConnectedConditions) {
+    return { success: true, profile }; // Nothing to remove
+  }
+
+  profile.serviceConnectedConditions = profile.serviceConnectedConditions.filter(
+      c => c.id !== conditionId
+  );
+
+  profile.updatedAt = new Date().toISOString();
+
+  const result = saveProfiles(profiles);
+
+  if (result.success) {
+    return { success: true, profile };
+  }
+  return result;
+};
+
+/**
+ * Get all service-connected conditions for a profile
+ * @param {string} profileId - Profile ID
+ * @returns {array} Array of service-connected conditions
+ */
+export const getServiceConnectedConditions = (profileId) => {
+  const profile = getProfileById(profileId);
+  return profile?.serviceConnectedConditions || [];
+};
+
+/**
+ * Check if a condition is service-connected for a profile
+ * @param {string} profileId - Profile ID
+ * @param {string} conditionKey - Condition key to check
+ * @returns {object|null} Service-connected condition object or null
+ */
+export const getServiceConnectedCondition = (profileId, conditionKey) => {
+  const conditions = getServiceConnectedConditions(profileId);
+  return conditions.find(c => c.conditionKey === conditionKey) || null;
+};

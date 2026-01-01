@@ -15,6 +15,8 @@ import {
   resetOnboarding,
 } from '../utils/storage';
 import ProfileManagement from './ProfileManagement';
+import ServiceConnectedConditions from './ServiceConnectedConditions';
+import useProfile from '../hooks/useProfile.jsx';
 
 
 const Settings = ({ onNavigate }) => {  // ← ADD onNavigate prop
@@ -22,6 +24,7 @@ const Settings = ({ onNavigate }) => {  // ← ADD onNavigate prop
   const [theme, setTheme] = useState(() => {
     return localStorage.getItem('symptomTracker_theme') || 'system';
   });
+  const { profile: currentProfile } = useProfile();
 
   const [permissionStatus, setPermissionStatus] = useState('default');
   const [reminderSettings, setReminderSettings] = useState(getReminderSettings());
@@ -217,6 +220,13 @@ const Settings = ({ onNavigate }) => {  // ← ADD onNavigate prop
 
         {/* Profile Management */}
         <ProfileManagement />
+
+        {/* Service-Connected Conditions (Veteran profiles only) */}
+        {currentProfile?.type === 'veteran' && (
+            <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
+              <ServiceConnectedConditions />
+            </div>
+        )}
 
         {/* Theme Settings */}
         <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">

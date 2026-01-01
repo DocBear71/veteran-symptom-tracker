@@ -51,14 +51,15 @@ const getModifiedFeatureFlags = () => {
 };
 
 export const ProfileProvider = ({ children }) => {
-  const [profile, setProfile] = useState(getProfile());
+  const [profile, setProfile] = useState(getActiveProfile());
   const [labels, setLabels] = useState(getLabels());
   const [features, setFeatures] = useState(getModifiedFeatureFlags());
   const [isVeteranCaregiver, setIsVeteranCaregiver] = useState(getIsVeteranCaregiver());
 
   // Refresh profile state (call after profile changes)
   const refreshProfile = useCallback(() => {
-    setProfile(getProfile());
+    const activeProfile = getActiveProfile();
+    setProfile(activeProfile);
     setLabels(getLabels());
     setFeatures(getModifiedFeatureFlags());
     setIsVeteranCaregiver(getIsVeteranCaregiver());
@@ -135,17 +136,18 @@ export const useProfile = () => {
   if (!context) {
     // Return defaults if used outside provider (shouldn't happen in normal use)
     console.warn('useProfile used outside ProfileProvider');
+    const fallbackProfile = getActiveProfile();
     return {
-      profile: getProfile(),
-      profileType: getProfileType(),
+      profile: fallbackProfile,
+      profileType: fallbackProfile?.type || getProfileType(),
       labels: getLabels(),
       features: getModifiedFeatureFlags(),
       refreshProfile: () => {},
       shouldShowOnboarding: !isOnboardingComplete(),
-      isVeteran: false,
-      isGeneral: false,
-      isCaregiver: false,
-      hasProfile: false,
+      isVeteran: fallbackProfile?.type === PROFILE_TYPES.VETERAN,
+      isGeneral: fallbackProfile?.type === PROFILE_TYPES.GENERAL,
+      isCaregiver: fallbackProfile?.type === PROFILE_TYPES.CAREGIVER,
+      hasProfile: hasProfile(),
       isVeteranCaregiver: false,
       hasVeteranFeatures: false,
     };

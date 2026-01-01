@@ -184,3 +184,32 @@ export const initializeMultiProfile = () => {
         : 'Multi-profile already initialized',
   };
 };
+
+/**
+ * Migrate profiles to add serviceConnectedConditions array
+ * Run this once to add the field to all existing profiles
+ */
+export const migrateServiceConnectedConditions = () => {
+  const profiles = getProfiles();
+
+  let migrated = 0;
+
+  profiles.forEach(profile => {
+    if (!profile.serviceConnectedConditions) {
+      profile.serviceConnectedConditions = [];
+      migrated++;
+    }
+  });
+
+  if (migrated > 0) {
+    localStorage.setItem('symptomTracker_profiles', JSON.stringify(profiles));
+    console.log(`✅ Migrated ${migrated} profiles to include serviceConnectedConditions`);
+  }
+
+  return { migrated };
+};
+
+// Auto-run migration on import (safe - just adds empty array if missing)
+if (typeof window !== 'undefined') {
+  migrateServiceConnectedConditions();
+}
