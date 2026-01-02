@@ -205,60 +205,73 @@ const ServiceConnectedConditions = () => {
               {conditions.map((condition) => (
                   <div
                       key={condition.id}
-                      className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200
-                         dark:border-gray-700 p-6 hover:shadow-md transition-shadow"
+                      className="bg-gray-50 dark:bg-gray-700/30 rounded-lg border border-gray-200 dark:border-gray-700 p-4"
                   >
-                    <div className="flex items-start justify-between mb-4">
+                    {/* Header with condition name and rating */}
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-3">
                       <div className="flex-1">
-                        <div className="flex items-center gap-3 mb-2">
-                          <h3 className="text-xl font-bold text-gray-900 dark:text-white">
-                            {condition.conditionName}
-                          </h3>
-                          <span className={`px-3 py-1 rounded-full text-sm font-semibold ${
-                              getRatingBadgeColor(condition.currentRating)
-                          }`}>
-                      {condition.currentRating}%
-                    </span>
+                        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-1">
+                          {condition.conditionName}
+                        </h3>
+                        <div className="flex items-center gap-3 flex-wrap">
+          <span className="inline-flex items-center px-3 py-1 rounded-lg bg-blue-100 dark:bg-blue-900/30 text-2xl font-bold text-blue-600 dark:text-blue-400">
+            {condition.currentRating}%
+          </span>
+                          <span className="text-sm text-gray-600 dark:text-gray-400">
+            <span className="font-medium">Effective:</span>{' '}
+                            {new Date(condition.effectiveDate).toLocaleDateString('en-US', {
+                              month: '2-digit',
+                              day: '2-digit',
+                              year: 'numeric'
+                            })}
+          </span>
                         </div>
-
-                        <div className="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
-                    <span>
-                      <strong>Effective:</strong>{' '}
-                      {new Date(condition.effectiveDate).toLocaleDateString()}
-                    </span>
-                          <span className="flex items-center gap-1">
-                      <span>{getTrackingGoalIcon(condition.trackingGoal)}</span>
-                      <strong>{getTrackingGoalLabel(condition.trackingGoal)}</strong>
-                    </span>
-                        </div>
-
-                        {condition.notes && (
-                            <p className="mt-3 text-sm text-gray-700 dark:text-gray-300
-                                  bg-gray-50 dark:bg-gray-900/50 p-3 rounded">
-                              {condition.notes}
-                            </p>
-                        )}
                       </div>
 
-                      <div className="flex gap-2 ml-4">
+                      {/* Action buttons - stack on mobile */}
+                      <div className="flex gap-2 sm:flex-shrink-0">
                         <button
                             onClick={() => handleEdit(condition)}
-                            className="px-3 py-1.5 text-sm bg-gray-100 dark:bg-gray-700
-                               text-gray-700 dark:text-gray-300 rounded hover:bg-gray-200
-                               dark:hover:bg-gray-600 transition-colors"
+                            className="flex-1 sm:flex-none px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg font-semibold transition-colors text-sm"
                         >
                           Edit
                         </button>
                         <button
                             onClick={() => handleRemove(condition.id)}
-                            className="px-3 py-1.5 text-sm bg-red-100 dark:bg-red-900/30
-                               text-red-700 dark:text-red-300 rounded hover:bg-red-200
-                               dark:hover:bg-red-900/50 transition-colors"
+                            className="flex-1 sm:flex-none px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-semibold transition-colors text-sm"
                         >
                           Remove
                         </button>
                       </div>
                     </div>
+
+                    {/* Tracking Goal */}
+                    <div className="mb-3">
+                      <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600">
+        <span className="text-lg">
+          {condition.trackingGoal === 'increase' && '↑'}
+          {condition.trackingGoal === 'reeval' && '🔄'}
+          {condition.trackingGoal === 'maintain' && '✓'}
+        </span>
+                        <span className="text-sm font-medium text-gray-900 dark:text-white">
+          {condition.trackingGoal === 'increase' && 'Seeking Increase'}
+                          {condition.trackingGoal === 'reeval' && 'Pending Re-evaluation'}
+                          {condition.trackingGoal === 'maintain' && 'Maintaining Rating'}
+        </span>
+                      </div>
+                    </div>
+
+                    {/* Notes */}
+                    {condition.notes && (
+                        <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-600 p-3">
+                          <p className="text-xs text-gray-600 dark:text-gray-400 font-medium mb-1">
+                            Notes:
+                          </p>
+                          <p className="text-sm text-gray-900 dark:text-white">
+                            {condition.notes}
+                          </p>
+                        </div>
+                    )}
                   </div>
               ))}
             </div>

@@ -38,8 +38,7 @@ const ALL_CONDITIONS = [
 ].sort((a, b) => a.name.localeCompare(b.name));
 
 const AddServiceConnectedModal = ({ condition, onClose }) => {
-  const { profile, refreshProfile } = useProfile();
-  const currentProfile = profile;
+  const { profile: currentProfile, refreshProfile } = useProfile();
   const [formData, setFormData] = useState({
     conditionKey: condition?.conditionKey || '',
     conditionName: condition?.conditionName || '',
@@ -70,17 +69,28 @@ const AddServiceConnectedModal = ({ condition, onClose }) => {
     console.log('🔵 Current profile ID:', currentProfile?.id);
 
     try {
+      let result;
       if (isEditing) {
         console.log('🔵 Updating existing condition:', condition.id);
-        updateServiceConnectedCondition(currentProfile.id, condition.id, formData);
+        result = updateServiceConnectedCondition(currentProfile.id, condition.id, formData);
       } else {
         console.log('🔵 Adding new condition');
-        const result = addServiceConnectedCondition(currentProfile.id, formData);
-        console.log('🔵 Add result:', result);
+        result = addServiceConnectedCondition(currentProfile.id, formData);
+      }
+
+      console.log('🔵 Save result:', result);
+
+      if (!result || !result.success) {
+        throw new Error(result?.message || 'Failed to save condition');
       }
 
       console.log('🔵 Calling refreshProfile');
-      refreshProfile();
+      if (typeof refreshProfile === 'function') {
+        refreshProfile();
+      } else {
+        console.warn('⚠️ refreshProfile is not a function, reloading page instead');
+        window.location.reload();
+      }
 
       console.log('🔵 Closing modal');
       onClose();
