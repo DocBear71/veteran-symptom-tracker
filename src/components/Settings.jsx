@@ -18,6 +18,8 @@ import ProfileManagement from './ProfileManagement';
 import ServiceConnectedConditions from './ServiceConnectedConditions';
 import useProfile from '../hooks/useProfile.jsx';
 import { getBackupHistory } from '../utils/storageVersion';
+import { restoreFromEmergencyBackup } from '../utils/storageVersion';
+import { createEmergencyBackup } from '../utils/storageVersion';
 
 /**
  * Display backup history
@@ -428,7 +430,6 @@ const Settings = ({ onNavigate }) => {  // ← ADD onNavigate prop
               <button
                   onClick={() => {
                     if (confirm('⚠️ Restore data from most recent automatic backup?\n\nThis will overwrite your current data with the last backup.\n\nClick OK to continue.')) {
-                      const { restoreFromEmergencyBackup } = require('../utils/storageVersion');
                       const success = restoreFromEmergencyBackup();
                       if (success) {
                         alert('✅ Data restored successfully!\n\nThe page will now refresh.');
@@ -446,7 +447,6 @@ const Settings = ({ onNavigate }) => {  // ← ADD onNavigate prop
 
               <button
                   onClick={() => {
-                    const { createEmergencyBackup } = require('../utils/storageVersion');
                     createEmergencyBackup();
                     alert('✅ Manual backup created successfully!\n\nYour data has been backed up.');
                   }}

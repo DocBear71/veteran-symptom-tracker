@@ -6,6 +6,7 @@
  */
 
 import { getActiveProfileId } from './profiles';
+import { getMeasurements } from './measurements';
 
 /**
  * Get profile-namespaced storage key
@@ -491,8 +492,7 @@ export const getDataStats = (profileId = null) => {
   // Get measurements count
   let measurements = 0;
   try {
-    const measurementsModule = require('./measurements');
-    const allMeasurements = measurementsModule.getMeasurements({ profileId });
+    const allMeasurements = getMeasurements({ profileId });
     measurements = allMeasurements ? allMeasurements.length : 0;
   } catch (error) {
     // Measurements module might not be available
