@@ -17,6 +17,7 @@ import {
 import ProfileManagement from './ProfileManagement';
 import ServiceConnectedConditions from './ServiceConnectedConditions';
 import useProfile from '../hooks/useProfile.jsx';
+import { getBackupHistory } from '../utils/storageVersion';
 
 /**
  * Display backup history
@@ -25,7 +26,6 @@ const BackupHistoryDisplay = () => {
   const [history, setHistory] = useState([]);
 
   useEffect(() => {
-    const { getBackupHistory } = require('../utils/storageVersion');
     setHistory(getBackupHistory());
   }, []);
 
