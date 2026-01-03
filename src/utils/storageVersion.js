@@ -44,20 +44,63 @@ export const createEmergencyBackup = () => {
     data: {}
   };
 
-  // Backup all symptomTracker data
+  // SELECTIVE BACKUP - Only critical data to avoid quota issues
+  const criticalKeys = [
+    'symptomTracker_logs',
+    'symptomTracker_profiles',
+    'symptomTracker_chronicSymptoms',
+    'symptomTracker_serviceConnected',
+    'symptomTracker_schemaVersion',
+    'symptomTracker_activeProfileId',
+  ];
+
+  // Backup critical data (including profile-specific keys)
   for (let i = 0; i < localStorage.length; i++) {
     const key = localStorage.key(i);
-    if (key && key.startsWith('symptomTracker_')) {
+    if (!key) continue;
+
+    // Include if it's in the critical keys list
+    if (criticalKeys.includes(key)) {
+      backup.data[key] = localStorage.getItem(key);
+      continue;
+    }
+
+    // Include profile-specific critical data
+    if (key.match(/symptomTracker_(logs|chronicSymptoms|serviceConnected)_[a-f0-9-]+$/)) {
       backup.data[key] = localStorage.getItem(key);
     }
   }
 
-  // Store in localStorage AND sessionStorage
   const backupString = JSON.stringify(backup);
-  localStorage.setItem(BACKUP_KEY, backupString);
-  sessionStorage.setItem(BACKUP_KEY, backupString);
+  const backupSizeMB = (backupString.length / 1024 / 1024).toFixed(2);
 
-  console.log('Emergency backup created:', new Date().toISOString());
+  try {
+    // Try localStorage with quota handling
+    try {
+      localStorage.setItem(BACKUP_KEY, backupString);
+      console.log(`✅ Emergency backup saved to localStorage (${backupSizeMB} MB)`, new Date().toISOString());
+    } catch (quotaError) {
+      console.warn(`⚠️ localStorage quota exceeded (${backupSizeMB} MB) - using sessionStorage only`);
+      // Remove old backup to free space
+      try {
+        localStorage.removeItem(BACKUP_KEY);
+      } catch (e) {
+        // Ignore cleanup errors
+      }
+    }
+
+    // Always try sessionStorage as fallback
+    try {
+      sessionStorage.setItem(BACKUP_KEY, backupString);
+      console.log('✅ Emergency backup also saved to sessionStorage');
+    } catch (sessionError) {
+      console.warn('⚠️ sessionStorage quota exceeded');
+    }
+
+  } catch (error) {
+    console.error('❌ Failed to create emergency backup:', error);
+  }
+
   return backup;
 };
 
@@ -106,23 +149,28 @@ export const createDailyBackup = () => {
   }
 
   const backup = createEmergencyBackup();
-  localStorage.setItem(LAST_BACKUP_KEY, now.toISOString());
 
-  // Store last 7 days of backups
-  const backupHistory = JSON.parse(localStorage.getItem('symptomTracker_backupHistory') || '[]');
-  backupHistory.push({
-    date: today,
-    timestamp: now.toISOString(),
-    dataSize: JSON.stringify(backup).length
-  });
+  try {
+    localStorage.setItem(LAST_BACKUP_KEY, now.toISOString());
 
-  // Keep only last 7 backups
-  if (backupHistory.length > 7) {
-    backupHistory.shift();
+    // Store last 7 days of backups (metadata only, not full backups)
+    const backupHistory = JSON.parse(localStorage.getItem('symptomTracker_backupHistory') || '[]');
+    backupHistory.push({
+      date: today,
+      timestamp: now.toISOString(),
+      dataSize: JSON.stringify(backup).length
+    });
+
+    // Keep only last 7 backups
+    if (backupHistory.length > 7) {
+      backupHistory.shift();
+    }
+
+    localStorage.setItem('symptomTracker_backupHistory', JSON.stringify(backupHistory));
+    console.log('Daily backup created');
+  } catch (error) {
+    console.error('Failed to save daily backup metadata:', error);
   }
-
-  localStorage.setItem('symptomTracker_backupHistory', JSON.stringify(backupHistory));
-  console.log('Daily backup created');
 };
 
 /**

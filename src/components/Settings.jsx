@@ -237,15 +237,26 @@ const Settings = ({ onNavigate }) => {  // ← ADD onNavigate prop
       return;
     }
 
-    // Clear all localStorage keys for this app
-    localStorage.removeItem('symptomTracker_logs');
-    localStorage.removeItem('symptomTracker_customSymptoms');
-    localStorage.removeItem('symptomTracker_chronicSymptoms');
-    localStorage.removeItem('symptomTracker_favorites');
-    localStorage.removeItem('symptomTracker_reminderSettings');
-    localStorage.removeItem('symptomTracker_medications');
-    localStorage.removeItem('symptomTracker_medicationLogs');
-    localStorage.removeItem('symptomTracker_appointments');
+    // Clear ALL localStorage keys for this app (including backups)
+    const keysToRemove = [];
+
+    // Collect all symptomTracker keys
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key && key.startsWith('symptomTracker_')) {
+        keysToRemove.push(key);
+      }
+    }
+
+    // Remove all keys
+    keysToRemove.forEach(key => {
+      localStorage.removeItem(key);
+    });
+
+    // Also clear sessionStorage backups
+    sessionStorage.clear();
+
+    console.log(`Deleted ${keysToRemove.length} items from localStorage`);
 
     // Reload page to reset app state
     window.location.reload();

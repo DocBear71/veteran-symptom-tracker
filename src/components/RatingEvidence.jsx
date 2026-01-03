@@ -43,6 +43,8 @@ import {
   analyzeShoulderLogs,
   analyzeHipLogs,
   analyzeAnkleLogs,
+  analyzeAnkleAchillesLogs,
+  analyzeHipThighLogs,
   analyzeWristLogs,
   analyzeElbowLogs,
   analyzeDegenerativeArthritisLogs,
@@ -422,6 +424,8 @@ import GeneralSkinRatingCard from './GeneralSkinRatingCard';
 import GeneralEyeRatingCard from './GeneralEyeRatingCard';
 import EarConditionsRatingCard from './EarConditionsRatingCard';
 import ConditionGroup from './ConditionGroup';
+import AnkleAchillesRatingCard from './AnkleAchillesRatingCard';
+import HipThighRatingCard from './HipThighRatingCard';
 
 // Storage key for sleep apnea profile
 const SLEEP_APNEA_PROFILE_KEY = 'symptomTracker_sleepApneaProfile';
@@ -607,6 +611,12 @@ const RatingEvidence = () => {
     }, [logs, evaluationDays]);
     const ankleAnalysis = useMemo(() => {
         return analyzeAnkleLogs(logs, { evaluationPeriodDays: evaluationDays });
+    }, [logs, evaluationDays]);
+    const hipThighAnalysis = useMemo(() => {
+      return analyzeHipThighLogs(logs, { evaluationPeriodDays: evaluationDays });
+    }, [logs, evaluationDays]);
+    const ankleAchillesAnalysis = useMemo(() => {
+      return analyzeAnkleAchillesLogs(logs, { evaluationPeriodDays: evaluationDays });
     }, [logs, evaluationDays]);
     const wristAnalysis = useMemo(() => {
         return analyzeWristLogs(logs, { evaluationPeriodDays: evaluationDays });
@@ -1313,6 +1323,8 @@ const RatingEvidence = () => {
         shoulderAnalysis.hasData,
         hipAnalysis.hasData,
         ankleAnalysis.hasData,
+        ankleAchillesAnalysis.hasData,
+        hipThighAnalysis.hasData,
         wristAnalysis.hasData,
         elbowAnalysis.hasData,
         degenerativeArthritisAnalysis.hasData,
@@ -1613,6 +1625,8 @@ const RatingEvidence = () => {
         shoulderAnalysis.hasData ||
         hipAnalysis.hasData ||
         ankleAnalysis.hasData ||
+        ankleAchillesAnalysis.hasData ||
+        hipThighAnalysis.hasData ||
         wristAnalysis.hasData ||
         elbowAnalysis.hasData ||
         degenerativeArthritisAnalysis.hasData ||
@@ -1945,6 +1959,12 @@ const RatingEvidence = () => {
                 expanded={expandedSection === 'hip'}
                 onToggle={() => toggleSection('hip')}
             />
+            {/* Hip/Thigh Rating Card */}
+            <HipThighRatingCard
+                analysis={hipThighAnalysis}
+                expanded={expandedSection === 'hipThigh'}
+                onToggle={() => toggleSection('hipThigh')}
+            />
             <GenericJointRatingCard
                 analysis={ankleAnalysis}
                 expanded={expandedSection === 'ankle'}
@@ -2077,6 +2097,13 @@ const RatingEvidence = () => {
                 expanded={expandedSection === 'hallux-rigidus'}
                 onToggle={() => toggleSection('hallux-rigidus')}
             />
+            {/* Ankle/Achilles Rating Card */}
+            <AnkleAchillesRatingCard
+                analysis={ankleAchillesAnalysis}
+                expanded={expandedSection === 'ankleAchilles'}
+                onToggle={() => toggleSection('ankleAchilles')}
+            />
+
           </ConditionGroup>
 
           {/* ========== RESPIRATORY ========== */}

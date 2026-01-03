@@ -38,6 +38,8 @@ import {
   analyzeShoulderLogs,
   analyzeHipLogs,
   analyzeAnkleLogs,
+  analyzeAnkleAchillesLogs,
+  analyzeHipThighLogs,
   analyzeWristLogs,
   analyzeElbowLogs,
   analyzeDegenerativeArthritisLogs,

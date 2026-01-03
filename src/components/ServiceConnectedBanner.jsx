@@ -4,9 +4,9 @@ import { useProfile } from '../hooks/useProfile';
 
 /**
  * Banner showing service-connected status on rating cards
- * Displays current rating, effective date, and whether increase is supported
+ * Only displays when there's an exact match between the rating card and a service-connected condition
  */
-const ServiceConnectedBanner = ({ conditionKey, currentAnalysis }) => {
+const ServiceConnectedBanner = ({ conditionKey, conditionName, currentAnalysis }) => {
   const { profile } = useProfile();
 
   // Safety checks
@@ -18,14 +18,37 @@ const ServiceConnectedBanner = ({ conditionKey, currentAnalysis }) => {
     return null;
   }
 
-  const scCondition = getServiceConnectedCondition(profile.id, conditionKey);
+  if (!profile.serviceConnectedConditions || profile.serviceConnectedConditions.length === 0) {
+    return null;
+  }
 
+  // Try to find matching service-connected condition
+  // Match by conditionKey first, then by conditionName if provided
+  let scCondition = null;
+
+  if (conditionKey && conditionKey !== 'custom') {
+    // Exact key match (for predefined conditions)
+    scCondition = profile.serviceConnectedConditions.find(c => c.conditionKey === conditionKey);
+  } else if (conditionName) {
+    // Fuzzy name match (for custom conditions)
+    // Only match if names are very similar (at least 80% of words match)
+    scCondition = profile.serviceConnectedConditions.find(c => {
+      const cardWords = conditionName.toLowerCase().split(/\s+/);
+      const scWords = c.conditionName.toLowerCase().split(/\s+/);
+      const matchingWords = cardWords.filter(word =>
+          scWords.some(scWord => scWord.includes(word) || word.includes(scWord))
+      );
+      return matchingWords.length >= cardWords.length * 0.8;
+    });
+  }
+
+  // Don't show banner if no match found
   if (!scCondition) {
-    return null; // Not service-connected
+    return null;
   }
 
   // Determine if increase is supported
-  const supportsIncrease = currentAnalysis?.rating > scCondition.currentRating;
+  const supportsIncrease = currentAnalysis?.supportedRating > scCondition.currentRating;
 
   return (
       <div className="mb-6 bg-blue-50 dark:bg-blue-900/20 border-2 border-blue-200 dark:border-blue-700 rounded-lg p-4">
@@ -78,7 +101,7 @@ const ServiceConnectedBanner = ({ conditionKey, currentAnalysis }) => {
                     </svg>
                     <div className="text-sm">
                       <p className="font-semibold text-green-800 dark:text-green-300">
-                        Current symptoms support {currentAnalysis.rating}% rating
+                        Current symptoms support {currentAnalysis.supportedRating}% rating
                       </p>
                       <p className="text-green-700 dark:text-green-400 mt-1">
                         Your documented symptoms meet the criteria for a higher rating than your current {scCondition.currentRating}%.

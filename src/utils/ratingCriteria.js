@@ -5583,6 +5583,339 @@ export const HIP_CRITERIA = {
 };
 
 // ============================================
+// ANKLE AND ACHILLES TENDON CONDITIONS
+// DC 5270-5274 - 38 CFR 4.71a
+// ============================================
+
+export const ANKLE_ACHILLES_CRITERIA = {
+  diagnosticCode: '5270-5274',
+  condition: 'Ankle Joint, Tarsal Joint, Talus and Heel Bones, Achilles Tendon',
+  cfrReference: '38 CFR 4.71a (Musculoskeletal System)',
+
+  ratings: [
+    {
+      percent: 40,
+      summary: 'Ankle frozen in place and cannot be moved, OR frozen in dorsiflexion >40°, plantar flexion >10°, or inversion/eversion',
+      criteria: {
+        ankleAnkylosis: true,
+        dorsiflexionDegrees: [41, 90],
+        plantarFlexionDegrees: [11, 90],
+      },
+      criteriaDescription: [
+        'Ankle joint is frozen in place and cannot be moved (ankylosis), OR',
+        'Frozen in dorsiflexion more than 40°, OR',
+        'Frozen in plantar flexion more than 10°, OR',
+        'Frozen in inversion, eversion, or outward rotation',
+      ],
+      evidenceNeeded: [
+        'Range of motion measurements by healthcare provider',
+        'Documentation of ankylosis (frozen joint)',
+        'X-ray or imaging showing joint fusion or severe limitation',
+      ],
+    },
+    {
+      percent: 30,
+      summary: 'Frozen in plantar flexion 30-40° OR dorsiflexion 0-10°',
+      criteria: {
+        plantarFlexionDegrees: [30, 40],
+        dorsiflexionDegrees: [0, 10],
+      },
+      criteriaDescription: [
+        'Frozen in plantar flexion between 30° and 40°, OR',
+        'Frozen in dorsiflexion between 0° and 10°',
+      ],
+      evidenceNeeded: [
+        'Goniometer measurements of ankle ROM',
+        'Medical documentation of frozen position',
+      ],
+    },
+    {
+      percent: 20,
+      summary: 'Frozen in plantar flexion <30°, OR limited motion (0-20° dorsiflexion AND 0-30° plantar flexion), OR dorsiflexion <5° or plantar flexion <10°',
+      criteria: {
+        plantarFlexionDegrees: [0, 29],
+        limitedMotion: true,
+        dorsiflexionLess5: true,
+        plantarFlexionLess10: true,
+      },
+      criteriaDescription: [
+        'Frozen in plantar flexion less than 30°, OR',
+        'Limited motion: 0° to 20° dorsiflexion AND 0° to 30° plantar flexion, OR',
+        'Dorsiflexion less than 5° or plantar flexion less than 10°',
+        'Tarsal joint frozen in poor weight-bearing position (walking difficult)',
+      ],
+      evidenceNeeded: [
+        'Range of motion measurements',
+        'Documentation of functional limitations',
+        'Statement about impact on walking/weight-bearing',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Dorsiflexion <15° or plantar flexion <30°, OR can straighten to 10°',
+      criteria: {
+        dorsiflexionDegrees: [0, 14],
+        plantarFlexionDegrees: [0, 29],
+        straightenTo10: true,
+      },
+      criteriaDescription: [
+        'Dorsiflexion less than 15° or plantar flexion less than 30°, OR',
+        'Can straighten to 10°',
+        'Tarsal joint frozen in good weight-bearing position (walking still easy)',
+      ],
+      evidenceNeeded: [
+        'ROM measurements',
+        'Functional assessment',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'Can straighten to 5° or minimal limitation with minimal impact on function',
+      criteria: {
+        straightenTo5: true,
+      },
+      criteriaDescription: [
+        'Can straighten to 5°',
+        'Some limitation but minimal impact on function',
+      ],
+      evidenceNeeded: [],
+    },
+  ],
+
+  definitions: {
+    dorsiflexion: {
+      term: 'Dorsiflexion',
+      definition: 'Upward movement of the foot (toes pointing toward shin). Normal range is approximately 20°.',
+      examples: [
+        'Standing and pulling your toes up toward your knee',
+      ],
+    },
+    plantarFlexion: {
+      term: 'Plantar Flexion',
+      definition: 'Downward movement of the foot (pointing toes). Normal range is approximately 50°.',
+      examples: [
+        'Standing on your tiptoes or pushing a car pedal',
+      ],
+    },
+    ankylosis: {
+      term: 'Ankylosis',
+      definition: 'Abnormal stiffening and immobility of a joint due to fusion of the bones. The joint is "frozen" in place.',
+      examples: [
+        'Complete inability to move the ankle joint in any direction',
+      ],
+    },
+    goniometer: {
+      term: 'Goniometer',
+      definition: 'Medical device used to measure the range of motion of a joint in degrees. Essential for accurate VA rating.',
+      examples: [
+        'Healthcare provider uses this tool during C&P exam to measure exact ankle ROM',
+      ],
+    },
+  },
+
+  note: 'Ankle conditions require precise range of motion measurements. Use a goniometer if possible or have measurements taken by a healthcare provider. Document pain levels during weight-bearing activities and any use of assistive devices (ankle braces, crutches, cane).',
+
+  disclaimer: 'Based on 38 CFR 4.71a, Diagnostic Codes 5270-5274 (Ankle Joint, Tarsal Joint, Talus and Heel Bones). For documentation purposes only. The VA makes all final rating determinations.',
+};
+
+// ============================================
+// HIP AND THIGH CONDITIONS
+// §4.71a Musculoskeletal System - 38 CFR Part 4
+// ============================================
+
+export const HIP_THIGH_CRITERIA = {
+  diagnosticCode: '5250-5255',
+  condition: 'Hip and Thigh (Limitation of Motion, Ankylosis, Muscle Injury)',
+  cfrReference: '38 CFR Part 4, §4.71a (Musculoskeletal System)',
+
+  ratings: [
+    {
+      percent: 90,
+      summary: 'Hip frozen so foot cannot reach ground, crutches required',
+      criteria: {
+        hipAnkylosis: true,
+        footCannotReachGround: true,
+        crutchesRequired: true,
+      },
+      criteriaDescription: [
+        'Hip is frozen in place',
+        'Foot cannot reach the ground',
+        'Crutches must be used and are prescribed',
+      ],
+      evidenceNeeded: [
+        'Medical documentation of hip ankylosis',
+        'Statement that foot cannot reach ground when standing',
+        'Prescription for crutches or documentation of required use',
+      ],
+    },
+    {
+      percent: 80,
+      summary: 'Hip bone completely broken through causing loose/erratic leg motion, OR hip moves too far (unstable/easily dislocated)',
+      criteria: {
+        femurCompleteFracture: true,
+        errlegmotion: true,
+        hipInstability: true,
+        hipDislocation: true,
+      },
+      criteriaDescription: [
+        'Either hip bone (femur or femoral neck) is completely broken through',
+        'Causes loose or erratic leg motion, OR',
+        'Hip moves significantly too far in any direction',
+        'Hip is unstable or can be easily dislocated',
+      ],
+      evidenceNeeded: [
+        'X-rays showing complete fracture or nonunion',
+        'Documentation of abnormal hip motion',
+        'Medical records of hip instability or recurrent dislocation',
+      ],
+    },
+    {
+      percent: 70,
+      summary: 'Hip frozen at >40° but foot can reach ground, crutches not required',
+      criteria: {
+        hipAnkylosis: true,
+        flexionDegrees: [41, 90],
+        footCanReachGround: true,
+      },
+      criteriaDescription: [
+        'Hip frozen at more than 40° flexion',
+        'Foot can reach the ground',
+        'Crutches are not required',
+      ],
+      evidenceNeeded: [
+        'ROM measurements showing hip frozen >40°',
+        'Functional assessment showing independent ambulation',
+      ],
+    },
+    {
+      percent: 60,
+      summary: 'Hip frozen in favorable position (20-40° flexion) with small amount of abduction/adduction, OR hip bone broken but leg motion not loose',
+      criteria: {
+        hipAnkylosis: true,
+        flexionDegrees: [20, 40],
+        favorablePosition: true,
+        femurFracture: true,
+        stableWithSupport: true,
+      },
+      criteriaDescription: [
+        'Frozen in "favorable" position (20°-40° flexion)',
+        'Small amount of abduction or adduction possible',
+        'This is the best position for frozen hip to support weight, OR',
+        'Either bone broken through but leg motion is not loose',
+        'Leg can support weight with prescription support and false joint',
+      ],
+      evidenceNeeded: [
+        'ROM measurements',
+        'X-rays showing fracture with stable pseudoarthrosis',
+        'Documentation of assistive devices used',
+      ],
+    },
+    {
+      percent: 40,
+      summary: 'Cannot move leg more than 10° (flexion)',
+      criteria: {
+        hipFlexionDegrees: [0, 10],
+      },
+      criteriaDescription: [
+        'Cannot move the leg more than 10° in flexion (forward)',
+      ],
+      evidenceNeeded: [
+        'Goniometer measurements of hip flexion',
+        'Medical documentation of severe limitation',
+      ],
+    },
+    {
+      percent: 30,
+      summary: 'Cannot raise leg more than 20°',
+      criteria: {
+        hipFlexionDegrees: [0, 20],
+      },
+      criteriaDescription: [
+        'Cannot raise the leg more than 20°',
+      ],
+      evidenceNeeded: [
+        'Hip flexion ROM measurements',
+      ],
+    },
+    {
+      percent: 20,
+      summary: 'Cannot raise leg >30°, OR cannot swing leg out (abduction) >10°',
+      criteria: {
+        hipFlexionDegrees: [0, 30],
+        hipAbductionDegrees: [0, 10],
+      },
+      criteriaDescription: [
+        'Cannot raise the leg more than 30°, OR',
+        'The hip cannot swing the leg out to the side (abduction) more than 10°',
+      ],
+      evidenceNeeded: [
+        'Hip flexion and abduction ROM measurements',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Cannot raise leg >45°, OR cannot move leg inward (adduction), OR cannot rotate leg outward >15°',
+      criteria: {
+        hipFlexionDegrees: [0, 45],
+        hipAdduction: false,
+        hipExternalRotationDegrees: [0, 15],
+      },
+      criteriaDescription: [
+        'Cannot raise the leg more than 45°, OR',
+        'Cannot move the leg inward across the other leg (adduction), OR',
+        'Cannot rotate the leg outward (free point of the sides) more than 15°',
+      ],
+      evidenceNeeded: [
+        'Comprehensive hip ROM measurements (flexion, adduction, rotation)',
+      ],
+    },
+  ],
+
+  definitions: {
+    hipFlexion: {
+      term: 'Hip Flexion',
+      definition: 'Forward movement of the thigh toward the chest. Normal range is approximately 120°.',
+      examples: [
+        'Raising your knee toward your chest while standing',
+        'Climbing stairs',
+      ],
+    },
+    hipAbduction: {
+      term: 'Hip Abduction',
+      definition: 'Moving the leg away from the midline of the body (outward). Normal range is approximately 45°.',
+      examples: [
+        'Spreading your legs apart while standing',
+      ],
+    },
+    hipAdduction: {
+      term: 'Hip Adduction',
+      definition: 'Moving the leg toward and across the midline of the body (inward). Normal range is approximately 30°.',
+      examples: [
+        'Crossing your legs while sitting or standing',
+      ],
+    },
+    hipRotation: {
+      term: 'Hip Rotation (Internal/External)',
+      definition: 'Rotating the leg inward or outward. Normal internal rotation is ~45°, external rotation is ~45°.',
+      examples: [
+        'Turning your toes inward (internal) or outward (external) while lying down',
+      ],
+    },
+    ankylosis: {
+      term: 'Ankylosis',
+      definition: 'Abnormal stiffening and immobility of a joint due to fusion of the bones. The joint is "frozen" in position.',
+      examples: [
+        'Complete inability to move the hip joint',
+      ],
+    },
+  },
+
+  note: 'Hip conditions can be rated THREE times if the hip is limited in flexion, extension AND abduction. Include flare-ups in your claim with date, duration, and other symptoms. Document interference with work, social activities including family, and quality of life. Track impact on daily activities (stairs, walking distance, sitting, standing).',
+
+  disclaimer: 'Based on 38 CFR Part 4, §4.71a Musculoskeletal System. For documentation purposes only. The VA makes all final rating determinations.',
+};
+
+// ============================================
 // ANKLE CONDITIONS RATING CRITERIA (DC 5270-5271)
 // ============================================
 export const ANKLE_CRITERIA = {
@@ -24722,6 +25055,278 @@ export const analyzeTendinitisLogs = (logs, options = {}) => {
     disclaimer: TENDINITIS_CRITERIA.disclaimer,
   };
 };
+
+// ============================================
+// ANKLE/ACHILLES TENDON ANALYSIS
+// ============================================
+
+export function analyzeAnkleAchillesLogs(logs, profileId) {
+  if (!logs || logs.length === 0) {
+    return { hasData: false };
+  }
+
+  // Filter logs for ankle/achilles symptoms
+  const relevantLogs = logs.filter(log => {
+    if (log.profileId && log.profileId !== profileId) return false;
+
+    const symptomId = getLogSymptomId(log);
+    return symptomId && (
+        symptomId.includes('ankle') ||
+        symptomId.includes('achilles') ||
+        symptomId.includes('foot-pain') ||
+        symptomId.includes('heel-pain')
+    );
+  });
+
+  if (relevantLogs.length === 0) {
+    return { hasData: false };
+  }
+
+  // Calculate metrics
+  const totalLogs = relevantLogs.length;
+
+  // Count pain episodes
+  const painDays = relevantLogs.filter(log => {
+    const symptomId = getLogSymptomId(log);
+    return symptomId && symptomId.includes('pain');
+  }).length;
+
+  // Count limited ROM episodes
+  const limitedROM = relevantLogs.filter(log => {
+    const notes = (log.notes || '').toLowerCase();
+    return notes.includes('stiff') ||
+        notes.includes('limited') ||
+        notes.includes('cannot move') ||
+        notes.includes('frozen') ||
+        notes.includes('rom');
+  }).length;
+
+  // Count flare-ups
+  const flareUps = relevantLogs.filter(log => {
+    const notes = (log.notes || '').toLowerCase();
+    return notes.includes('flare') ||
+        notes.includes('swell') ||
+        notes.includes('inflammation');
+  }).length;
+
+  // Calculate average severity
+  const logsWithSeverity = relevantLogs.filter(log => log.severity && log.severity > 0);
+  const avgSeverity = logsWithSeverity.length > 0
+      ? logsWithSeverity.reduce((sum, log) => sum + log.severity, 0) / logsWithSeverity.length
+      : 0;
+
+  // Determine supported rating
+  let supportedRating = 0;
+  const rationale = [];
+  const evidenceGaps = [];
+
+  // Check for ankylosis/frozen ankle (40%)
+  const hasAnkylosis = relevantLogs.some(log => {
+    const notes = (log.notes || '').toLowerCase();
+    return notes.includes('frozen') ||
+        notes.includes('ankylosis') ||
+        notes.includes('cannot move');
+  });
+
+  if (hasAnkylosis) {
+    supportedRating = 40;
+    rationale.push('Documentation shows ankle is frozen or cannot be moved (ankylosis)');
+  }
+  // Severe limitation (30%)
+  else if (limitedROM >= totalLogs * 0.6) {
+    supportedRating = 30;
+    rationale.push('Frequent severe limitation of motion documented (60%+ of logs)');
+  }
+  // Moderate limitation (20%)
+  else if (limitedROM >= totalLogs * 0.4 || flareUps >= 3) {
+    supportedRating = 20;
+    rationale.push('Regular limitation of motion or significant flare-ups documented');
+  }
+  // Mild limitation (10%)
+  else if (limitedROM > 0 || avgSeverity >= 5) {
+    supportedRating = 10;
+    rationale.push('Some limitation of motion and/or moderate pain levels documented');
+  }
+
+  // Evidence gaps
+  if (totalLogs < 10) {
+    evidenceGaps.push('Consider documenting more symptom occurrences (at least 10 entries recommended)');
+  }
+
+  const hasRomMeasurements = relevantLogs.some(log => {
+    const notes = (log.notes || '').toLowerCase();
+    return notes.includes('degrees') || notes.includes('°') || notes.includes('rom');
+  });
+
+  if (!hasRomMeasurements) {
+    evidenceGaps.push('Measure and document range of motion in degrees (use goniometer if available)');
+  }
+
+  const hasAssistiveDevice = relevantLogs.some(log => {
+    const notes = (log.notes || '').toLowerCase();
+    return notes.includes('brace') || notes.includes('crutch') || notes.includes('cane');
+  });
+
+  if (!hasAssistiveDevice && supportedRating >= 20) {
+    evidenceGaps.push('Document any use of ankle braces, crutches, or other assistive devices');
+  }
+
+  return {
+    hasData: true,
+    condition: 'Ankle / Achilles Tendon',
+    diagnosticCode: '5270-5274',
+    cfrReference: '38 CFR 4.71a (Musculoskeletal)',
+    supportedRating,
+    rationale,
+    evidenceGaps,
+    metrics: {
+      totalLogs,
+      avgSeverity: Number(avgSeverity.toFixed(1)),
+      painDays,
+      limitedROM,
+      flareUps,
+    },
+    criteria: ANKLE_ACHILLES_CRITERIA,
+  };
+}
+
+// ============================================
+// HIP/THIGH ANALYSIS
+// ============================================
+
+export function analyzeHipThighLogs(logs, profileId) {
+  if (!logs || logs.length === 0) {
+    return { hasData: false };
+  }
+
+  // Filter logs for hip/thigh symptoms
+  const relevantLogs = logs.filter(log => {
+    if (log.profileId && log.profileId !== profileId) return false;
+
+    const symptomId = getLogSymptomId(log);
+    return symptomId && (
+        symptomId.includes('hip') ||
+        symptomId.includes('thigh') ||
+        symptomId.includes('groin') ||
+        symptomId.includes('trochanteric')
+    );
+  });
+
+  if (relevantLogs.length === 0) {
+    return { hasData: false };
+  }
+
+  // Calculate metrics
+  const totalLogs = relevantLogs.length;
+
+  // Count pain episodes
+  const painDays = relevantLogs.filter(log => {
+    const symptomId = getLogSymptomId(log);
+    return symptomId && symptomId.includes('pain');
+  }).length;
+
+  // Count limited ROM episodes
+  const limitedROM = relevantLogs.filter(log => {
+    const notes = (log.notes || '').toLowerCase();
+    return notes.includes('stiff') ||
+        notes.includes('limited') ||
+        notes.includes('cannot') ||
+        notes.includes('difficult') ||
+        notes.includes('rom');
+  }).length;
+
+  // Count assistive device usage
+  const assistiveDevice = relevantLogs.filter(log => {
+    const notes = (log.notes || '').toLowerCase();
+    return notes.includes('crutch') ||
+        notes.includes('cane') ||
+        notes.includes('walker');
+  }).length;
+
+  // Calculate average severity
+  const logsWithSeverity = relevantLogs.filter(log => log.severity && log.severity > 0);
+  const avgSeverity = logsWithSeverity.length > 0
+      ? logsWithSeverity.reduce((sum, log) => sum + log.severity, 0) / logsWithSeverity.length
+      : 0;
+
+  // Determine supported rating
+  let supportedRating = 0;
+  const rationale = [];
+  const evidenceGaps = [];
+
+  // Check for ankylosis/severe limitation requiring assistive devices (70-90%)
+  const requiresCrutches = assistiveDevice >= totalLogs * 0.6;
+  if (requiresCrutches) {
+    supportedRating = 70;
+    rationale.push('Frequent use of assistive devices documented (crutches/cane required)');
+  }
+  // Ankylosis (60%)
+  else if (relevantLogs.some(log => (log.notes || '').toLowerCase().includes('frozen'))) {
+    supportedRating = 60;
+    rationale.push('Documentation shows hip is frozen in position (ankylosis)');
+  }
+  // Severe limitation (40%)
+  else if (limitedROM >= totalLogs * 0.7) {
+    supportedRating = 40;
+    rationale.push('Severe limitation of motion documented (70%+ of logs)');
+  }
+  // Moderate limitation (30%)
+  else if (limitedROM >= totalLogs * 0.5) {
+    supportedRating = 30;
+    rationale.push('Moderate limitation of motion documented (50%+ of logs)');
+  }
+  // Regular limitation (20%)
+  else if (limitedROM >= totalLogs * 0.3 || avgSeverity >= 6) {
+    supportedRating = 20;
+    rationale.push('Regular limitation of motion or significant pain documented');
+  }
+  // Mild limitation (10%)
+  else if (limitedROM > 0 || avgSeverity >= 4) {
+    supportedRating = 10;
+    rationale.push('Some limitation of motion and/or moderate pain levels documented');
+  }
+
+  // Evidence gaps
+  if (totalLogs < 10) {
+    evidenceGaps.push('Consider documenting more symptom occurrences (at least 10 entries recommended)');
+  }
+
+  const hasRomMeasurements = relevantLogs.some(log => {
+    const notes = (log.notes || '').toLowerCase();
+    return notes.includes('degrees') || notes.includes('°') || notes.includes('flexion') || notes.includes('abduction');
+  });
+
+  if (!hasRomMeasurements) {
+    evidenceGaps.push('Measure and document range of motion in degrees (flexion, extension, abduction, adduction, rotation)');
+  }
+
+  const hasFunctionalImpact = relevantLogs.some(log => {
+    const notes = (log.notes || '').toLowerCase();
+    return notes.includes('stairs') || notes.includes('walking') || notes.includes('sitting') || notes.includes('standing');
+  });
+
+  if (!hasFunctionalImpact) {
+    evidenceGaps.push('Document impact on daily activities (stairs, walking distance, sitting, standing)');
+  }
+
+  return {
+    hasData: true,
+    condition: 'Hip and Thigh',
+    diagnosticCode: '5250-5255',
+    cfrReference: '38 CFR Part 4, §4.71a',
+    supportedRating,
+    rationale,
+    evidenceGaps,
+    metrics: {
+      totalLogs,
+      avgSeverity: Number(avgSeverity.toFixed(1)),
+      painDays,
+      limitedROM,
+      assistiveDevice,
+    },
+    criteria: HIP_THIGH_CRITERIA,
+  };
+}
 
 // ============================================
 // PHASE 4B: ANALYSIS FUNCTIONS - MYOSITIS (DC 5021)
@@ -44004,67 +44609,24 @@ export const getMigraineRatingCriteria = (percent) => {
 export const getSleepApneaRatingCriteria = (percent) => {
   return SLEEP_APNEA_CRITERIA.ratings.find(r => r.percent === percent) || null;
 };
-export const getAllMigraineRatings = () => {
-  return MIGRAINE_CRITERIA.ratings;
-};
-export const getAllSleepApneaRatings = () => {
-  return SLEEP_APNEA_CRITERIA.ratings;
-};
-export const getMigraineDefinition = (term) => {
-  return MIGRAINE_CRITERIA.definitions[term] || null;
-};
-export const getSleepApneaDefinition = (term) => {
-  return SLEEP_APNEA_CRITERIA.definitions[term] || null;
-};
 export const getPTSDRatingCriteria = (percent) => {
   return PTSD_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getAllPTSDRatings = () => {
-  return PTSD_CRITERIA.ratings;
-};
-export const getPTSDDefinition = (term) => {
-  return PTSD_CRITERIA.definitions[term] || null;
 };
 export const getMajorDepressionRatingCriteria = (percent) => {
   return MAJOR_DEPRESSION_CRITERIA.ratings.find(r => r.percent === percent) ||
       null;
 };
-export const getAllMajorDepressionRatings = () => {
-  return MAJOR_DEPRESSION_CRITERIA.ratings;
-};
-export const getMajorDepressionDefinition = (term) => {
-  return MAJOR_DEPRESSION_CRITERIA.definitions[term] || null;
-};
 export const getGeneralizedAnxietyRatingCriteria = (percent) => {
   return GENERALIZED_ANXIETY_CRITERIA.ratings.find(
       r => r.percent === percent) || null;
-};
-export const getAllGeneralizedAnxietyRatings = () => {
-  return GENERALIZED_ANXIETY_CRITERIA.ratings;
-};
-export const getGeneralizedAnxietyDefinition = (term) => {
-  return GENERALIZED_ANXIETY_CRITERIA.definitions[term] || null;
 };
 export const getPanicDisorderRatingCriteria = (percent) => {
   return PANIC_DISORDER_CRITERIA.ratings.find(r => r.percent === percent) ||
       null;
 };
-export const getAllPanicDisorderRatings = () => {
-  return PANIC_DISORDER_CRITERIA.ratings;
-};
-export const getPanicDisorderDefinition = (term) => {
-  return PANIC_DISORDER_CRITERIA.definitions[term] || null;
-};
 export const getBipolarRatingCriteria = (percent) => {
   return BIPOLAR_CRITERIA.ratings.find(r => r.percent === percent) || null;
 };
-export const getAllBipolarRatings = () => {
-  return BIPOLAR_CRITERIA.ratings;
-};
-export const getBipolarDefinition = (term) => {
-  return BIPOLAR_CRITERIA.definitions[term] || null;
-};
-// Helper functions for new conditions
 export const getLumbosacralStrainRatingCriteria = (percent) => {
   return LUMBOSACRAL_STRAIN_CRITERIA.ratings.find(r => r.percent === percent) || null;
 };
@@ -44076,6 +44638,12 @@ export const getIntervertebralDiscRatingCriteria = (percent) => {
 export const getKneeInstabilityRatingCriteria = (percent) => {
   return KNEE_INSTABILITY_CRITERIA.ratings.find(r => r.percent === percent) || null;
 };
+export const getAnkleAchillesRatingCriteria = (percent) => {
+  return ANKLE_ACHILLES_CRITERIA.ratings.find(r => r.percent === percent) || null;
+}
+export const getHipThighRatingCriteria = (percent) => {
+  return HIP_THIGH_CRITERIA.ratings.find(r => r.percent === percent) || null;
+}
 export const getTBIRatingCriteria = (percent) => {
   return TBI_CRITERIA.ratings.find(r => r.percent === percent) || null;
 };
@@ -44573,9 +45141,22 @@ export const getChronicOtitisExternaRating = (percent) => {
 export const getChronicNonsuppurativeOtitisMediaRating = (percent) => {
   return CHRONIC_NONSUPPURATIVE_OTITIS_MEDIA_CRITERIA.ratings.find(r => r.percent === percent) || null;
 };
+
+
+
+
+export const getAllMigraineRatings = () => MIGRAINE_CRITERIA.ratings;
+export const getAllSleepApneaRatings = () => SLEEP_APNEA_CRITERIA.ratings;
+export const getAllPTSDRatings = () => PTSD_CRITERIA.ratings;
+export const getAllMajorDepressionRatings = () => MAJOR_DEPRESSION_CRITERIA.ratings;
+export const getAllGeneralizedAnxietyRatings = () => GENERALIZED_ANXIETY_CRITERIA.ratings;
+export const getAllPanicDisorderRatings = () => PANIC_DISORDER_CRITERIA.ratings;
+export const getAllBipolarRatings = () => BIPOLAR_CRITERIA.ratings;
 export const getAllLumbosacralStrainRatings = () => LUMBOSACRAL_STRAIN_CRITERIA.ratings;
 export const getAllIntervertebralDiscRatings = () => INTERVERTEBRAL_DISC_CRITERIA.ratingsIncapacitatingEpisodes;
 export const getAllKneeInstabilityRatings = () => KNEE_INSTABILITY_CRITERIA.ratings;
+export const getAllAnkleAchillesRatings = () => ANKLE_ACHILLES_CRITERIA.ratings;
+export const getAllHipThighRatings = () => HIP_THIGH_CRITERIA.ratings;
 export const getAllTBIRatings = () => TBI_CRITERIA.ratings;
 export const getAllHypertensionRatings = () => HYPERTENSION_CRITERIA.ratings;
 export const getAllTinnitusRatings = () => TINNITUS_CRITERIA.ratings;
@@ -44740,11 +45321,22 @@ export const getAllChronicSuppurativeOtitisMediaRatings = () => CHRONIC_SUPPURAT
 export const getAllChronicOtitisExternaRatings = () => CHRONIC_OTITIS_EXTERNA_CRITERIA.ratings;
 export const getAllChronicNonsuppurativeOtitisMediaRatings = () => CHRONIC_NONSUPPURATIVE_OTITIS_MEDIA_CRITERIA.ratings;
 
+
+
+export const getMigraineDefinition = (term) => MIGRAINE_CRITERIA.definitions[term] || null;
+export const getSleepApneaDefinition = (term) => SLEEP_APNEA_CRITERIA.definitions[term] || null;
+export const getPTSDDefinition = (term) => PTSD_CRITERIA.definitions[term] || null;
+export const getMajorDepressionDefinition = (term) => MAJOR_DEPRESSION_CRITERIA.definitions[term] || null;
+export const getGeneralizedAnxietyDefinition = (term) => GENERALIZED_ANXIETY_CRITERIA.definitions[term] || null;
+export const getPanicDisorderDefinition = (term) => PANIC_DISORDER_CRITERIA.definitions[term] || null;
+export const getBipolarDefinition = (term) => BIPOLAR_CRITERIA.definitions[term] || null;
 export const getEpilepsyMajorDefinition = (term) => EPILEPSY_MAJOR_CRITERIA.definitions[term] || null;
 export const getEpilepsyMinorDefinition = (term) => EPILEPSY_MINOR_CRITERIA.definitions[term] || null;
 export const getLumbosacralStrainDefinition = (term) => LUMBOSACRAL_STRAIN_CRITERIA.definitions[term] || null;
 export const getIntervertebralDiscDefinition = (term) => INTERVERTEBRAL_DISC_CRITERIA.definitions[term] || null;
 export const getKneeInstabilityDefinition = (term) => KNEE_INSTABILITY_CRITERIA.definitions[term] || null;
+export const getAnkleAchillesDefinition = (term) => ANKLE_ACHILLES_CRITERIA.definitions[term] || null;
+export const getHipThighDefinition = (term) => HIP_THIGH_CRITERIA.definitions[term] || null;
 export const getTBIDefinition = (term) => TBI_CRITERIA.definitions[term] || null;
 export const getHypertensionDefinition = (term) => HYPERTENSION_CRITERIA.definitions[term] || null;
 export const getTinnitusDefinition = (term) => TINNITUS_CRITERIA.definitions[term] || null;

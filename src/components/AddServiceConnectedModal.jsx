@@ -7,35 +7,37 @@ import {
 
 // List of all trackable conditions in the app
 const ALL_CONDITIONS = [
-  { key: 'ptsd', name: 'PTSD' },
-  { key: 'depression', name: 'Depression' },
+  { key: 'ankleAchilles', name: 'Ankle/Achilles Tendon Condition' },
   { key: 'anxiety', name: 'Anxiety' },
-  { key: 'bipolar', name: 'Bipolar Disorder' },
-  { key: 'migraine', name: 'Migraine Headaches' },
-  { key: 'tbi', name: 'Traumatic Brain Injury (TBI)' },
-  { key: 'sleepApnea', name: 'Sleep Apnea' },
   { key: 'asthma', name: 'Asthma' },
+  { key: 'back', name: 'Back/Spine Condition' },
+  { key: 'bipolar', name: 'Bipolar Disorder' },
   { key: 'copd', name: 'COPD' },
-  { key: 'hypertension', name: 'Hypertension' },
+  { key: 'depression', name: 'Depression' },
   { key: 'diabetes', name: 'Diabetes' },
-  { key: 'hearingLoss', name: 'Hearing Loss' },
-  { key: 'tinnitus', name: 'Tinnitus' },
+  { key: 'eczema', name: 'Eczema' },
   { key: 'gerd', name: 'GERD' },
+  { key: 'hearingLoss', name: 'Hearing Loss' },
+  { key: 'hip', name: 'Hip Condition' },
+  { key: 'hipThigh', name: 'Hip/Thigh Condition' },
+  { key: 'hypertension', name: 'Hypertension' },
   { key: 'ibs', name: 'Irritable Bowel Syndrome (IBS)' },
   { key: 'knee', name: 'Knee Condition' },
-  { key: 'back', name: 'Back/Spine Condition' },
-  { key: 'shoulder', name: 'Shoulder Condition' },
-  { key: 'hip', name: 'Hip Condition' },
-  { key: 'radiculopathy', name: 'Radiculopathy' },
-  { key: 'peripheralNeuropathy', name: 'Peripheral Neuropathy' },
-  { key: 'sinusitis', name: 'Sinusitis' },
-  { key: 'rhinitis', name: 'Rhinitis' },
-  { key: 'eczema', name: 'Eczema' },
-  { key: 'psoriasis', name: 'Psoriasis' },
-  { key: 'scars', name: 'Scars' },
+  { key: 'migraine', name: 'Migraine Headaches' },
   { key: 'mentalHealth', name: 'Other Mental Health Condition' },
-  { key: 'generic', name: 'Other Condition' }
-].sort((a, b) => a.name.localeCompare(b.name));
+  { key: 'peripheralNeuropathy', name: 'Peripheral Neuropathy' },
+  { key: 'psoriasis', name: 'Psoriasis' },
+  { key: 'ptsd', name: 'PTSD' },
+  { key: 'radiculopathy', name: 'Radiculopathy' },
+  { key: 'rhinitis', name: 'Rhinitis' },
+  { key: 'scars', name: 'Scars' },
+  { key: 'shoulder', name: 'Shoulder Condition' },
+  { key: 'sinusitis', name: 'Sinusitis' },
+  { key: 'sleepApnea', name: 'Sleep Apnea' },
+  { key: 'tbi', name: 'Traumatic Brain Injury (TBI)' },
+  { key: 'tinnitus', name: 'Tinnitus' },
+  { key: 'custom', name: '✏️ Enter Custom Condition Name' },
+]; // No .sort() needed - already alphabetized
 
 const AddServiceConnectedModal = ({ condition, onClose }) => {
   const { profile: currentProfile, refreshProfile } = useProfile();
@@ -47,6 +49,10 @@ const AddServiceConnectedModal = ({ condition, onClose }) => {
     trackingGoal: condition?.trackingGoal || 'maintain',
     notes: condition?.notes || '',
   });
+
+  const [isCustomCondition, setIsCustomCondition] = useState(
+      condition?.conditionKey === 'custom' || false
+  );
 
   const isEditing = !!condition;
 
@@ -60,8 +66,13 @@ const AddServiceConnectedModal = ({ condition, onClose }) => {
       return;
     }
 
-    if (!formData.conditionKey || !formData.conditionName) {
-      alert('Please select a condition');
+    if (!formData.conditionKey) {
+      alert('Please select a condition type');
+      return;
+    }
+
+    if (!formData.conditionName || formData.conditionName.trim() === '') {
+      alert('Please enter a condition name');
       return;
     }
 
@@ -104,11 +115,21 @@ const AddServiceConnectedModal = ({ condition, onClose }) => {
     const selectedKey = e.target.value;
     const selectedCondition = ALL_CONDITIONS.find(c => c.key === selectedKey);
 
-    setFormData({
-      ...formData,
-      conditionKey: selectedKey,
-      conditionName: selectedCondition?.name || '',
-    });
+    if (selectedKey === 'custom') {
+      setIsCustomCondition(true);
+      setFormData({
+        ...formData,
+        conditionKey: 'custom',
+        conditionName: '', // Clear name so user can enter custom
+      });
+    } else {
+      setIsCustomCondition(false);
+      setFormData({
+        ...formData,
+        conditionKey: selectedKey,
+        conditionName: selectedCondition?.name || '',
+      });
+    }
   };
 
   const RATING_OPTIONS = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
@@ -159,6 +180,29 @@ const AddServiceConnectedModal = ({ condition, onClose }) => {
                   </p>
               )}
             </div>
+
+            {/* Custom Condition Name Input (shows when "Custom" is selected) */}
+            {isCustomCondition && (
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                    Custom Condition Name *
+                  </label>
+                  <input
+                      type="text"
+                      value={formData.conditionName}
+                      onChange={(e) => setFormData({ ...formData, conditionName: e.target.value })}
+                      placeholder="e.g., Right Achilles Tendonitis, Left Hip Trochanteric Pain"
+                      required
+                      disabled={isEditing}
+                      className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600
+             rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white
+             disabled:opacity-50 disabled:cursor-not-allowed"
+                  />
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                    Enter the exact condition name from your VA rating decision letter
+                  </p>
+                </div>
+            )}
 
             {/* Current Rating */}
             <div>

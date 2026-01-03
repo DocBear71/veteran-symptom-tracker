@@ -16,8 +16,7 @@ const ConditionGroup = memo(({
                                onToggle,
                                groupId
                              }) => {
-  // Don't render if no conditions have data
-  if (conditionCount === 0) return null;
+
 
   // Ref for scrolling into view when expanded
   const groupRef = useRef(null);
@@ -34,6 +33,9 @@ const ConditionGroup = memo(({
       }, 100);
     }
   }, [isExpanded]);
+
+  // Don't render if no conditions have data
+  if (conditionCount === 0) return null;
 
   // Map accent colors to group class names for CSS targeting
   const groupClassMap = {

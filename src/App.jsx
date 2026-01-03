@@ -51,13 +51,30 @@ const AppContent = () => {
   // Phase 1H - Copy last entry prefill data
   const [prefillData, setPrefillData] = useState(null);
 
-  // Run multi-profile migration and cleanup on first load
+  /// Run multi-profile migration and cleanup on first load
   useEffect(() => {
     const initialize = async () => {
-      // Create backup BEFORE migration (extra safety)
-      const { createEmergencyBackup } = await import('./utils/storageVersion');
-      createEmergencyBackup();
-      console.log('🛡️ Pre-migration backup created');
+      // Import backup utilities
+      const { createEmergencyBackup, createDailyBackup } = await import('./utils/storageVersion');
+
+      // Check if user has any data before creating backup
+      const hasData = localStorage.getItem('symptomTracker_logs') ||
+          localStorage.getItem('symptomTracker_profiles') ||
+          Object.keys(localStorage).some(key =>
+              key.startsWith('symptomTracker_logs_') ||
+              key.startsWith('symptomTracker_profiles')
+          );
+
+      // Only create emergency backup if data exists
+      if (hasData) {
+        createEmergencyBackup();
+        console.log('🛡️ Pre-migration backup created');
+
+        // Also check if daily backup is needed
+        createDailyBackup();
+      } else {
+        console.log('ℹ️ No data found - skipping backup creation');
+      }
 
       const result = initializeMultiProfile();
       if (result.migrated) {

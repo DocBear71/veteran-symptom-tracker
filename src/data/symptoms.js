@@ -536,6 +536,19 @@ export const symptomCategories = [
     ]
   },
   {
+    id: 'thigh',
+    name: 'Thigh Symptoms',
+    symptoms: [
+      { id: 'thigh-pain', name: 'Thigh - Pain' },
+      { id: 'thigh-muscle-weakness', name: 'Thigh - Muscle Weakness' },
+      { id: 'thigh-stiffness', name: 'Thigh - Stiffness' },
+      { id: 'thigh-numbness', name: 'Thigh - Numbness/Tingling' },
+      { id: 'thigh-swelling', name: 'Thigh - Swelling' },
+      { id: 'groin-pain', name: 'Thigh - Groin Pain' },
+      { id: 'trochanteric-pain', name: 'Thigh - Trochanteric Pain (Hip Bursa)' },
+    ]
+  },
+  {
     id: 'knee',
     name: 'Knee Symptoms',
     symptoms: [
@@ -556,6 +569,19 @@ export const symptomCategories = [
       { id: 'ankle-instability', name: 'Ankle - Instability/Giving Way' },
       { id: 'ankle-swelling', name: 'Ankle - Swelling' },
       { id: 'ankle-weakness', name: 'Ankle - Weakness' },
+    ]
+  },
+  {
+    id: 'achilles',
+    name: 'Achilles Tendon Symptoms',
+    symptoms: [
+      { id: 'achilles-pain', name: 'Achilles - Pain' },
+      { id: 'achilles-stiffness', name: 'Achilles - Stiffness (Morning/After Rest)' },
+      { id: 'achilles-swelling', name: 'Achilles - Swelling' },
+      { id: 'achilles-tenderness', name: 'Achilles - Tenderness to Touch' },
+      { id: 'achilles-limited-rom', name: 'Achilles - Limited Range of Motion' },
+      { id: 'achilles-weakness', name: 'Achilles - Weakness (Push-Off Difficulty)' },
+      { id: 'achilles-crepitus', name: 'Achilles - Crepitus/Crackling' },
     ]
   },
   {
