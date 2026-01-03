@@ -95,16 +95,19 @@ const AddServiceConnectedModal = ({ condition, onClose }) => {
         throw new Error(result?.message || 'Failed to save condition');
       }
 
-      console.log('🔵 Calling refreshProfile');
+      console.log('✅ Condition saved successfully');
+
+      // Trigger profile refresh BEFORE closing modal
       if (typeof refreshProfile === 'function') {
+        console.log('🔵 Calling refreshProfile');
         refreshProfile();
       } else {
-        console.warn('⚠️ refreshProfile is not a function, reloading page instead');
-        window.location.reload();
+        console.warn('⚠️ refreshProfile is not a function');
       }
 
-      console.log('🔵 Closing modal');
+      // Close modal - this should not trigger any additional refresh
       onClose();
+
     } catch (error) {
       console.error('❌ Error saving condition:', error);
       alert('Failed to save condition. Please try again.');

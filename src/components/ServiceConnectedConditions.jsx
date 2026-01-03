@@ -8,7 +8,7 @@ import AddServiceConnectedModal from './AddServiceConnectedModal';
 import { calculateCombinedRating, calculateCombinedRatingDetailed, getRatingColor } from '../utils/vaRatingCalculator';
 
 const ServiceConnectedConditions = () => {
-  const { profile } = useProfile();
+  const { profile, refreshProfile } = useProfile();
   const currentProfile = profile;
   const [showAddModal, setShowAddModal] = useState(false);
   const [editingCondition, setEditingCondition] = useState(null);

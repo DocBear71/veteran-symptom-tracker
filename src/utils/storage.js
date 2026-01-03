@@ -5,7 +5,7 @@
  * All data is namespaced by active profile ID.
  */
 
-import { getActiveProfileId } from './profiles';
+import { getActiveProfileId, getServiceConnectedConditions } from './profiles';
 import { getMeasurements } from './measurements';
 
 /**
@@ -557,6 +557,7 @@ export const exportAllData = (profileId = null) => {
     medications: getMedications(activeId),
     medicationLogs: getMedicationLogs(activeId),
     appointments: getAppointments(activeId),
+    serviceConnected: activeId ? getServiceConnectedConditions(activeId) : [], // ← ADD THIS LINE
     reminderSettings: getReminderSettings(activeId),
     profile: null,
     onboardingComplete: localStorage.getItem('symptomTracker_onboardingComplete') === 'true',
@@ -663,6 +664,12 @@ export const importAllData = (jsonData, options = { merge: false }, profileId = 
       if (data.appointments) {
         const key = getProfileKey('symptomTracker_appointments', activeId);
         localStorage.setItem(key, JSON.stringify(data.appointments));
+      }
+
+      // ← ADD THIS SECTION
+      if (data.serviceConnected) {
+        const key = getProfileKey('symptomTracker_serviceConnected', activeId);
+        localStorage.setItem(key, JSON.stringify(data.serviceConnected));
       }
 
       if (data.reminderSettings) {
