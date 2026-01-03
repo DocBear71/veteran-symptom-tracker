@@ -218,6 +218,14 @@ const Settings = ({ onNavigate }) => {  // ← ADD onNavigate prop
     if (result.success) {
       showMessage(result.message, 'success');
       setDataStats(getDataStats());
+
+      // Trigger profile refresh to update ServiceConnectedConditions
+      window.dispatchEvent(new Event('profileChanged'));
+
+      // Force page reload after a short delay to ensure everything refreshes
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
     } else {
       showMessage(result.message, 'error');
     }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { useProfile } from '../hooks/useProfile';
 import {
   getServiceConnectedConditions,
@@ -26,7 +26,14 @@ const ServiceConnectedConditions = () => {
     );
   }
 
-  const conditions = getServiceConnectedConditions(currentProfile.id);
+  const [conditions, setConditions] = useState([]);
+
+  useEffect(() => {
+    if (currentProfile && currentProfile.id) {
+      const loadedConditions = getServiceConnectedConditions(currentProfile.id);
+      setConditions(loadedConditions);
+    }
+  }, [currentProfile, currentProfile?.id]);
 
   const handleRemove = (conditionId) => {
     if (window.confirm('Remove this service-connected condition from your profile?')) {

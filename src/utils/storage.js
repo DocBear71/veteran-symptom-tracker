@@ -5,7 +5,7 @@
  * All data is namespaced by active profile ID.
  */
 
-import { getActiveProfileId, getServiceConnectedConditions } from './profiles';
+import { getActiveProfileId, getServiceConnectedConditions, getProfileById, updateProfile } from './profiles';
 import { getMeasurements } from './measurements';
 
 /**
@@ -600,6 +600,7 @@ export const importAllData = (jsonData, options = { merge: false }, profileId = 
       const existingLogs = getSymptomLogs(activeId);
       const existingCustomSymptoms = getCustomSymptoms(activeId);
       const existingChronicSymptoms = getChronicSymptoms(activeId);
+      const existingServiceConnected = getServiceConnectedConditions(activeId);
 
       const existingLogIds = new Set(existingLogs.map(log => log.id));
       const newLogs = data.symptomLogs.filter(log => !existingLogIds.has(log.id));
@@ -617,6 +618,13 @@ export const importAllData = (jsonData, options = { merge: false }, profileId = 
       );
       const mergedChronic = [...existingChronicSymptoms, ...newChronic];
 
+      // Merge service-connected conditions
+      const existingServiceConnectedIds = new Set(existingServiceConnected.map(sc => sc.id));
+      const newServiceConnected = (data.serviceConnected || []).filter(
+          sc => !existingServiceConnectedIds.has(sc.id)
+      );
+      const mergedServiceConnected = [...existingServiceConnected, ...newServiceConnected];
+
       const logsKey = getProfileKey('symptomTracker_logs', activeId);
       const symptomsKey = getProfileKey('symptomTracker_customSymptoms', activeId);
       const chronicKey = getProfileKey('symptomTracker_favorites', activeId);
@@ -625,6 +633,16 @@ export const importAllData = (jsonData, options = { merge: false }, profileId = 
       localStorage.setItem(symptomsKey, JSON.stringify(mergedSymptoms));
       localStorage.setItem(chronicKey, JSON.stringify(mergedChronic));
 
+      // Update service-connected conditions in the profile object
+      if (mergedServiceConnected.length > 0) {
+        const profile = getProfileById(activeId);
+        if (profile) {
+          updateProfile(activeId, {
+            serviceConnectedConditions: mergedServiceConnected
+          });
+        }
+      }
+
       return {
         success: true,
         message: `Merged ${newLogs.length} new log entries`,
@@ -632,6 +650,7 @@ export const importAllData = (jsonData, options = { merge: false }, profileId = 
           logsAdded: newLogs.length,
           symptomsAdded: newSymptoms.length,
           chronicAdded: newChronic.length,
+          serviceConnectedAdded: newServiceConnected.length,
         },
       };
     } else {
@@ -666,10 +685,14 @@ export const importAllData = (jsonData, options = { merge: false }, profileId = 
         localStorage.setItem(key, JSON.stringify(data.appointments));
       }
 
-      // ← ADD THIS SECTION
-      if (data.serviceConnected) {
-        const key = getProfileKey('symptomTracker_serviceConnected', activeId);
-        localStorage.setItem(key, JSON.stringify(data.serviceConnected));
+      if (data.serviceConnected && data.serviceConnected.length > 0) {
+        // Service-connected conditions are stored IN the profile object, not as separate storage
+        const profile = getProfileById(activeId);
+        if (profile) {
+          updateProfile(activeId, {
+            serviceConnectedConditions: data.serviceConnected
+          });
+        }
       }
 
       if (data.reminderSettings) {
