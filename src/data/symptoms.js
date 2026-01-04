@@ -121,6 +121,23 @@ export const symptomCategories = [
       { id: 'bipolar-mixed', name: 'Mixed Episode' },
     ]
   },
+  // Dementia / Neurocognitive Disorder (DC 9326)
+  {
+    id: 'dementia',
+    name: 'Dementia / Neurocognitive Disorder (DC 9326)',
+    symptoms: [
+      { id: 'dementia-memory-loss', name: 'Memory Loss', description: 'Forgetting recent events, names, appointments' },
+      { id: 'dementia-disorientation', name: 'Disorientation', description: 'Confusion about time, place, or person' },
+      { id: 'dementia-communication', name: 'Communication Difficulty', description: 'Word-finding problems, following conversations' },
+      { id: 'dementia-judgment', name: 'Impaired Judgment', description: 'Poor decision-making, unsafe choices' },
+      { id: 'dementia-adl-difficulty', name: 'ADL Difficulty', description: 'Trouble with daily activities (dressing, hygiene, eating)' },
+      { id: 'dementia-personality-change', name: 'Personality Changes', description: 'Mood swings, agitation, apathy' },
+      { id: 'dementia-wandering', name: 'Wandering/Getting Lost', description: 'Getting lost in familiar places' },
+      { id: 'dementia-delusions', name: 'Delusions/Hallucinations', description: 'False beliefs or seeing things not there' },
+      { id: 'dementia-agitation', name: 'Agitation/Aggression', description: 'Restlessness, verbal or physical aggression' },
+      { id: 'dementia-supervision-needed', name: 'Supervision Required', description: 'Needs constant supervision for safety' },
+    ],
+  },
   {
     id: 'neurological',
     name: 'Neurological',
@@ -340,6 +357,66 @@ export const symptomCategories = [
       { id: 'nose-reconstruction', name: 'Reconstruction Surgery', description: 'Had or needs reconstructive surgery' },
       { id: 'nose-trauma-related', name: 'Trauma-Related Loss', description: 'Loss due to injury/trauma' },
       { id: 'nose-surgical-removal', name: 'Surgical Removal', description: 'Loss due to medical procedure' },
+    ],
+  },
+  // Chronic Laryngitis (DC 6516)
+  {
+    id: 'chronic-laryngitis',
+    name: 'Chronic Laryngitis (DC 6516)',
+    symptoms: [
+      { id: 'laryngitis-hoarseness', name: 'Chronic Hoarseness', description: 'Persistent hoarse voice' },
+      { id: 'laryngitis-inflammation', name: 'Vocal Cord Inflammation', description: 'Documented inflammation of cords' },
+      { id: 'laryngitis-nodules', name: 'Vocal Cord Nodules/Polyps', description: 'Thickening, nodules, or polyps on cords' },
+      { id: 'laryngitis-premalignant', name: 'Pre-malignant Changes', description: 'Biopsy showing pre-malignant changes' },
+      { id: 'laryngitis-voice-fatigue', name: 'Voice Fatigue', description: 'Voice tires easily with use' },
+      { id: 'laryngitis-pain-speaking', name: 'Pain While Speaking', description: 'Throat pain with voice use' },
+      { id: 'laryngitis-throat-clearing', name: 'Constant Throat Clearing', description: 'Need to frequently clear throat' },
+      { id: 'laryngitis-reflux-related', name: 'Reflux-Related Symptoms', description: 'Laryngitis from GERD/LPR' },
+    ],
+  },
+  // Aphonia - Complete Voice Loss (DC 6519)
+  {
+    id: 'aphonia',
+    name: 'Aphonia - Voice Loss (DC 6519)',
+    symptoms: [
+      { id: 'aphonia-complete', name: 'Complete Voice Loss', description: 'Cannot produce any voice' },
+      { id: 'aphonia-whisper-only', name: 'Whisper Only', description: 'Can only speak in whisper' },
+      { id: 'aphonia-intermittent', name: 'Intermittent Voice Loss', description: 'Voice comes and goes' },
+      { id: 'aphonia-communication-impaired', name: 'Communication Impaired', description: 'Cannot communicate by speech' },
+      { id: 'aphonia-aac-device', name: 'AAC Device Required', description: 'Uses augmentative communication device' },
+      { id: 'aphonia-vocal-cord-paralysis', name: 'Vocal Cord Paralysis', description: 'Paralyzed vocal cord(s)' },
+      { id: 'aphonia-post-laryngectomy', name: 'Post-Laryngectomy', description: 'Voice loss after larynx removal' },
+      { id: 'aphonia-speech-therapy', name: 'Speech Therapy Required', description: 'Ongoing speech therapy' },
+    ],
+  },
+  // Laryngeal Stenosis (DC 6520)
+  {
+    id: 'laryngeal-stenosis',
+    name: 'Laryngeal Stenosis (DC 6520)',
+    symptoms: [
+      { id: 'stenosis-breathing-difficulty', name: 'Breathing Difficulty', description: 'Airway obstruction symptoms' },
+      { id: 'stenosis-stridor', name: 'Stridor', description: 'Noisy breathing from narrowed airway' },
+      { id: 'stenosis-tracheostomy', name: 'Tracheostomy Required', description: 'Permanent breathing tube' },
+      { id: 'stenosis-dilation-required', name: 'Dilation Required', description: 'Needs airway dilation procedures' },
+      { id: 'stenosis-exercise-intolerance', name: 'Exercise Intolerance', description: 'Cannot exercise due to airway' },
+      { id: 'stenosis-post-intubation', name: 'Post-Intubation Injury', description: 'Stenosis from intubation' },
+      { id: 'stenosis-pft-abnormal', name: 'Abnormal PFT Results', description: 'Pulmonary function test showing obstruction' },
+      { id: 'stenosis-voice-changes', name: 'Voice Changes', description: 'Hoarseness from stenosis' },
+    ],
+  },
+  // Pharynx Injuries (DC 6521)
+  {
+    id: 'pharynx-injury',
+    name: 'Pharynx Injuries (DC 6521)',
+    symptoms: [
+      { id: 'pharynx-stricture', name: 'Pharyngeal Stricture', description: 'Narrowing of pharynx' },
+      { id: 'pharynx-obstruction', name: 'Pharyngeal Obstruction', description: 'Blockage in pharynx/nasopharynx' },
+      { id: 'pharynx-soft-palate-absent', name: 'Soft Palate Absent', description: 'Missing soft palate from trauma/surgery' },
+      { id: 'pharynx-soft-palate-paralysis', name: 'Soft Palate Paralysis', description: 'Paralysis affecting swallowing/speech' },
+      { id: 'pharynx-nasal-regurgitation', name: 'Nasal Regurgitation', description: 'Food/liquid comes out nose' },
+      { id: 'pharynx-dysphagia', name: 'Swallowing Difficulty', description: 'Difficulty swallowing from pharynx injury' },
+      { id: 'pharynx-speech-impairment', name: 'Speech Impairment', description: 'Speech affected by pharynx injury' },
+      { id: 'pharynx-aspiration-risk', name: 'Aspiration Risk', description: 'Risk of food/liquid entering airway' },
     ],
   },
   {
@@ -4106,7 +4183,8 @@ export const getBodySystem = (categoryName) => {
       name.includes('anorexia') || name.includes('bulimia') || name.includes('binge eating') ||
       name.includes('schizophrenia') || name.includes('schizoaffective') || name.includes('delusional') ||
       name.includes('psychotic') || name.includes('dissociative') || name.includes('acute stress') ||
-      name.includes('personality disorder') || name.includes('insomnia') || name.includes('sleep disorder')) {
+      name.includes('personality disorder') || name.includes('insomnia') || name.includes('sleep disorder') ||
+      name.includes('dementia') || name.includes('neurocognitive') || name.includes('cognitive disorder')) {
     return 'mental-health';
   }
 
@@ -4134,7 +4212,9 @@ export const getBodySystem = (categoryName) => {
       name.includes('sinusitis') || name.includes('bronchiectasis') || name.includes('pulmonary') ||
       name.includes('sarcoidosis') || name.includes('fibrosis') || name.includes('sleep apnea') ||
       name.includes('deviated septum') || name.includes('nasal septum') || name.includes('nose loss') ||
-      name.includes('septum') || name.includes('nasal obstruction')) {
+      name.includes('septum') || name.includes('nasal obstruction') ||
+      name.includes('laryngitis') || name.includes('aphonia') || name.includes('laryngeal') ||
+      name.includes('stenosis') || name.includes('pharynx') || name.includes('voice loss')) {
     return 'respiratory';
   }
 
@@ -4463,6 +4543,11 @@ const getParentCategory = (categoryName) => {
   // Nasal/Nose conditions (DC 6502, 6504) - under respiratory
   if (name.includes('deviated septum') || name.includes('nasal septum')) return 'respiratory';
   if (name.includes('nose loss') || name.includes('nose disfigurement')) return 'respiratory';
+  // Larynx/Pharynx conditions (DC 6516, 6519, 6520, 6521) - under respiratory
+  if (name.includes('laryngitis') || name.includes('chronic laryngitis')) return 'respiratory';
+  if (name.includes('aphonia') || name.includes('voice loss')) return 'respiratory';
+  if (name.includes('laryngeal stenosis') || name.includes('stenosis of larynx')) return 'respiratory';
+  if (name.includes('pharynx') || name.includes('pharyngeal')) return 'respiratory';
   // Systemic Lupus (DC 6350) - Immune system, NOT skin
   if (name.includes('systemic lupus') || name.includes('sle')) return 'systemic-lupus';
   // Tuberculosis conditions

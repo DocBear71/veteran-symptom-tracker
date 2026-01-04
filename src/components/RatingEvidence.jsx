@@ -42,6 +42,11 @@ import {
   analyzeSinusitisLogs,
   analyzeDeviatedSeptumLogs,
   analyzeNoseLossLogs,
+  analyzeChronicLaryngitisLogs,
+  analyzeAphoniaLogs,
+  analyzeLaryngealStenosisLogs,
+  analyzePharynxInjuryLogs,
+  analyzeDementiaLogs,
   analyzeShoulderLogs,
   analyzeHipLogs,
   analyzeAnkleLogs,
@@ -530,6 +535,10 @@ const RatingEvidence = () => {
     const bipolarAnalysis = useMemo(() => {
         return analyzeBipolarLogs(logs, { evaluationPeriodDays: evaluationDays });
     }, [logs, evaluationDays]);
+    // Analyze Dementia logs
+    const dementiaAnalysis = useMemo(() => {
+      return analyzeDementiaLogs(logs, { evaluationPeriodDays: evaluationDays });
+    }, [logs, evaluationDays]);
     // Analyze Social Anxiety logs
     const socialAnxietyAnalysis = useMemo(() => {
         return analyzeSocialAnxietyLogs(logs, { evaluationPeriodDays: evaluationDays });
@@ -619,6 +628,18 @@ const RatingEvidence = () => {
     }, [logs, evaluationDays]);
     const noseLossAnalysis = useMemo(() => {
       return analyzeNoseLossLogs(logs, { evaluationPeriodDays: evaluationDays });
+    }, [logs, evaluationDays]);
+    const chronicLaryngitisAnalysis = useMemo(() => {
+      return analyzeChronicLaryngitisLogs(logs, { evaluationPeriodDays: evaluationDays });
+    }, [logs, evaluationDays]);
+    const aphoniaAnalysis = useMemo(() => {
+      return analyzeAphoniaLogs(logs, { evaluationPeriodDays: evaluationDays });
+    }, [logs, evaluationDays]);
+    const laryngealStenosisAnalysis = useMemo(() => {
+      return analyzeLaryngealStenosisLogs(logs, { evaluationPeriodDays: evaluationDays });
+    }, [logs, evaluationDays]);
+    const pharynxInjuryAnalysis = useMemo(() => {
+      return analyzePharynxInjuryLogs(logs, { evaluationPeriodDays: evaluationDays });
     }, [logs, evaluationDays]);
     const shoulderAnalysis = useMemo(() => {
         return analyzeShoulderLogs(logs, { evaluationPeriodDays: evaluationDays });
@@ -1354,6 +1375,7 @@ const RatingEvidence = () => {
         borderlinePersonalityDisorderAnalysis.hasData,
         narcissisticPersonalityDisorderAnalysis.hasData,
         avoidantPersonalityDisorderAnalysis.hasData,
+        dementiaAnalysis.hasData,
       ].filter(Boolean).length,
 
       neurological: [
@@ -1437,6 +1459,10 @@ const RatingEvidence = () => {
         sinusitisAnalysis.hasData,
         deviatedSeptumAnalysis.hasData,
         noseLossAnalysis.hasData,
+        chronicLaryngitisAnalysis.hasData,
+        aphoniaAnalysis.hasData,
+        laryngealStenosisAnalysis.hasData,
+        pharynxInjuryAnalysis.hasData,
         copdAnalysis.hasData,
         chronicBronchitisAnalysis.hasData,
         emphysemaAnalysis.hasData,
@@ -1601,7 +1627,7 @@ const RatingEvidence = () => {
     dissociativeIdentityDisorderAnalysis.hasData, dissociativeAmnesiaAnalysis.hasData,
     acuteStressDisorderAnalysis.hasData, antisocialPersonalityDisorderAnalysis.hasData,
     borderlinePersonalityDisorderAnalysis.hasData, narcissisticPersonalityDisorderAnalysis.hasData,
-    avoidantPersonalityDisorderAnalysis.hasData,
+    avoidantPersonalityDisorderAnalysis.hasData, dementiaAnalysis.hasData,
     // Neurological
     migraineAnalysis.hasData, tbiAnalysis.hasData, tbiResidualsAnalysis.hasData,
     epilepsyMajorAnalysis.hasData, epilepsyMinorAnalysis.hasData, jacksonianEpilepsyAnalysis.hasData,
@@ -1630,6 +1656,7 @@ const RatingEvidence = () => {
     // Respiratory
     sleepApneaAnalysis.hasData, asthmaAnalysis.hasData, rhinitisAnalysis.hasData,
     sinusitisAnalysis.hasData, deviatedSeptumAnalysis.hasData, noseLossAnalysis.hasData,
+    chronicLaryngitisAnalysis.hasData, aphoniaAnalysis.hasData, laryngealStenosisAnalysis.hasData, pharynxInjuryAnalysis.hasData,
     copdAnalysis.hasData, chronicBronchitisAnalysis.hasData,
     emphysemaAnalysis.hasData, bronchiectasisAnalysis.hasData, pulmonaryFibrosisAnalysis.hasData,
     sarcoidosisAnalysis.hasData,
@@ -1713,6 +1740,10 @@ const RatingEvidence = () => {
         sinusitisAnalysis.hasData ||
         deviatedSeptumAnalysis.hasData ||
         noseLossAnalysis.hasData ||
+        chronicLaryngitisAnalysis.hasData ||
+        aphoniaAnalysis.hasData ||
+        laryngealStenosisAnalysis.hasData ||
+        pharynxInjuryAnalysis.hasData ||
         shoulderAnalysis.hasData ||
         hipAnalysis.hasData ||
         ankleAnalysis.hasData ||
@@ -1802,6 +1833,7 @@ const RatingEvidence = () => {
         borderlinePersonalityDisorderAnalysis.hasData ||
         narcissisticPersonalityDisorderAnalysis.hasData ||
         avoidantPersonalityDisorderAnalysis.hasData ||
+        dementiaAnalysis.hasData ||
         cardiomyopathyAnalysis.hasData ||
         svtAnalysis.hasData ||
         ventricularArrhythmiaAnalysis.hasData ||
@@ -2275,6 +2307,30 @@ const RatingEvidence = () => {
                 expanded={expandedSection === 'nose-loss'}
                 onToggle={() => toggleSection('nose-loss')}
                 icon="👃"
+            />
+            <GenericRatingCard
+                analysis={chronicLaryngitisAnalysis}
+                expanded={expandedSection === 'chronic-laryngitis'}
+                onToggle={() => toggleSection('chronic-laryngitis')}
+                icon="🗣️"
+            />
+            <GenericRatingCard
+                analysis={aphoniaAnalysis}
+                expanded={expandedSection === 'aphonia'}
+                onToggle={() => toggleSection('aphonia')}
+                icon="🔇"
+            />
+            <GenericRatingCard
+                analysis={laryngealStenosisAnalysis}
+                expanded={expandedSection === 'laryngeal-stenosis'}
+                onToggle={() => toggleSection('laryngeal-stenosis')}
+                icon="🫁"
+            />
+            <GenericRatingCard
+                analysis={pharynxInjuryAnalysis}
+                expanded={expandedSection === 'pharynx-injury'}
+                onToggle={() => toggleSection('pharynx-injury')}
+                icon="🩺"
             />
           </ConditionGroup>
 
@@ -3388,6 +3444,12 @@ const RatingEvidence = () => {
                 analysis={avoidantPersonalityDisorderAnalysis}
                 expanded={expandedSection === 'avoidant-personality-disorder'}
                 onToggle={() => toggleSection('avoidant-personality-disorder')}
+            />
+            <Phase8BMentalHealthRatingCard
+                analysis={dementiaAnalysis}
+                expanded={expandedSection === 'dementia'}
+                onToggle={() => toggleSection('dementia')}
+                icon="🧠"
             />
           </ConditionGroup>
 

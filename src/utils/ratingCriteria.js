@@ -2603,6 +2603,73 @@ export const CONDITIONS = {
     bodySystem: 'respiratory',
   },
 
+  CHRONIC_LARYNGITIS: {
+    id: 'chronic-laryngitis',
+    name: 'Chronic Laryngitis',
+    diagnosticCode: '6516',
+    cfrReference: '38 CFR 4.97',
+    symptomIds: [
+      'laryngitis-hoarseness', 'laryngitis-inflammation', 'laryngitis-nodules',
+      'laryngitis-premalignant', 'laryngitis-voice-fatigue', 'laryngitis-pain-speaking',
+      'laryngitis-throat-clearing', 'laryngitis-reflux-related',
+    ],
+    bodySystem: 'respiratory',
+  },
+
+  APHONIA: {
+    id: 'aphonia',
+    name: 'Aphonia (Voice Loss)',
+    diagnosticCode: '6519',
+    cfrReference: '38 CFR 4.97',
+    symptomIds: [
+      'aphonia-complete', 'aphonia-whisper-only', 'aphonia-intermittent',
+      'aphonia-communication-impaired', 'aphonia-aac-device', 'aphonia-vocal-cord-paralysis',
+      'aphonia-post-laryngectomy', 'aphonia-speech-therapy',
+    ],
+    bodySystem: 'respiratory',
+  },
+
+  LARYNGEAL_STENOSIS: {
+    id: 'laryngeal-stenosis',
+    name: 'Laryngeal Stenosis',
+    diagnosticCode: '6520',
+    cfrReference: '38 CFR 4.97',
+    symptomIds: [
+      'stenosis-breathing-difficulty', 'stenosis-stridor', 'stenosis-tracheostomy',
+      'stenosis-dilation-required', 'stenosis-exercise-intolerance', 'stenosis-post-intubation',
+      'stenosis-pft-abnormal', 'stenosis-voice-changes',
+    ],
+    bodySystem: 'respiratory',
+  },
+
+  PHARYNX_INJURY: {
+    id: 'pharynx-injury',
+    name: 'Pharynx Injuries',
+    diagnosticCode: '6521',
+    cfrReference: '38 CFR 4.97',
+    symptomIds: [
+      'pharynx-stricture', 'pharynx-obstruction', 'pharynx-soft-palate-absent',
+      'pharynx-soft-palate-paralysis', 'pharynx-nasal-regurgitation', 'pharynx-dysphagia',
+      'pharynx-speech-impairment', 'pharynx-aspiration-risk',
+    ],
+    bodySystem: 'respiratory',
+  },
+
+  DEMENTIA: {
+    id: 'dementia',
+    name: 'Dementia / Neurocognitive Disorder',
+    diagnosticCode: '9326',
+    cfrReference: '38 CFR 4.130',
+    symptomIds: [
+      'dementia-memory-loss', 'dementia-disorientation', 'dementia-communication',
+      'dementia-judgment', 'dementia-adl-difficulty', 'dementia-personality-change',
+      'dementia-wandering', 'dementia-delusions', 'dementia-agitation',
+      'dementia-supervision-needed',
+    ],
+    bodySystem: 'mental-health',
+  },
+
+
   TUBERCULOSIS_INACTIVE: {
     id: 'tuberculosis-inactive',
     name: 'Tuberculosis, Pulmonary, Inactive',
@@ -6336,11 +6403,403 @@ export const DEVIATED_SEPTUM_CRITERIA = {
     'Track frequency of sinus infections if applicable',
   ],
 
-  disclaimer: 'This analysis is based on 38 CFR 4.97, DC 6502. Deviated septum ratings require documented TRAUMATIC origin and objective measurement of obstruction. For documentation purposes only - the VA makes all final rating determinations.',
+  disclaimer: 'This analysis is based on 38 CFR 4.97, DC 6504. Nose loss may also be rated under DC 7800 for disfigurement - evaluate under whichever provides higher rating. For documentation purposes only - the VA makes all final rating determinations.',
 };
 
 // ============================================
-// NOSE LOSS/DISFIGUREMENT RATING CRITERIA (DC 6504)
+// CHRONIC LARYNGITIS RATING CRITERIA (DC 6516)
+// ============================================
+export const CHRONIC_LARYNGITIS_CRITERIA = {
+  diagnosticCode: '6516',
+  condition: 'Chronic Laryngitis',
+  cfrReference: '38 CFR 4.97, Diagnostic Code 6516',
+
+  ratingNote: 'Incomplete aphonia (partial voice loss) is also rated under this code. Complete voice loss is rated under DC 6519.',
+
+  ratings: [
+    {
+      percent: 30,
+      summary: 'Hoarseness with structural changes to vocal cords',
+      criteria: {
+        structuralChanges: true,
+      },
+      criteriaDescription: [
+        'Hoarseness present AND',
+        'Thickening or nodules of cords, OR',
+        'Polyps on vocal cords, OR',
+        'Submucous infiltration, OR',
+        'Pre-malignant changes on biopsy',
+      ],
+      evidenceNeeded: [
+        'Laryngoscopy report documenting structural changes',
+        'Biopsy results if pre-malignant changes suspected',
+        'ENT evaluation describing vocal cord condition',
+        'Symptom log documenting chronic hoarseness',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Hoarseness with inflammation only',
+      criteria: {
+        inflammationOnly: true,
+      },
+      criteriaDescription: [
+        'Hoarseness present AND',
+        'Inflammation of cords or mucous membrane',
+        'No structural changes (nodules, polyps, etc.)',
+      ],
+      evidenceNeeded: [
+        'Laryngoscopy showing vocal cord inflammation',
+        'ENT evaluation documenting chronic laryngitis',
+        'Symptom log of persistent hoarseness',
+        'Treatment records (voice rest, therapy, medications)',
+      ],
+    },
+  ],
+
+  definitions: {
+    hoarseness: {
+      term: 'Hoarseness',
+      definition: 'Abnormal voice quality - rough, breathy, strained, or weak voice caused by vocal cord dysfunction.',
+    },
+    vocalCordNodules: {
+      term: 'Vocal Cord Nodules',
+      definition: 'Callous-like growths on the vocal cords from vocal abuse or overuse. Also called singer\'s nodes.',
+    },
+    polyps: {
+      term: 'Vocal Cord Polyps',
+      definition: 'Soft, blister-like growths on the vocal cords, often from a single traumatic event.',
+    },
+    submucousInfiltration: {
+      term: 'Submucous Infiltration',
+      definition: 'Thickening of tissue beneath the mucous membrane of the vocal cords.',
+    },
+  },
+
+  secondaryConditions: {
+    description: 'Chronic laryngitis may be secondary to or associated with other conditions.',
+    commonPrimaries: [
+      { condition: 'GERD/LPR', diagnosticCode: '7346', relationship: 'Acid reflux damages vocal cords' },
+      { condition: 'Chronic Sinusitis', diagnosticCode: '6510-6514', relationship: 'Post-nasal drip irritates larynx' },
+      { condition: 'Sleep Apnea', diagnosticCode: '6847', relationship: 'CPAP use can cause laryngeal irritation' },
+    ],
+  },
+
+  documentationTips: [
+    'Obtain laryngoscopy report from ENT documenting vocal cord condition',
+    'Track hoarseness episodes - frequency, duration, triggers',
+    'Document impact on communication and work',
+    'Note voice fatigue patterns throughout the day',
+    'Record all treatments tried (voice therapy, medications)',
+    'Get biopsy if structural changes suspected',
+    'Document any underlying causes (GERD, allergies)',
+  ],
+
+  disclaimer: 'This analysis is based on 38 CFR 4.97, DC 6516. Rating requires documented laryngoscopy findings. Incomplete aphonia is also rated under this code. For documentation purposes only - the VA makes all final rating determinations.',
+};
+
+// ============================================
+// APHONIA RATING CRITERIA (DC 6519)
+// ============================================
+export const APHONIA_CRITERIA = {
+  diagnosticCode: '6519',
+  condition: 'Complete Organic Aphonia',
+  cfrReference: '38 CFR 4.97, Diagnostic Code 6519',
+
+  smcNote: 'Complete inability to communicate by speech (100% rating) requires review for Special Monthly Compensation (SMC) under § 3.350.',
+
+  ratingNote: 'Incomplete aphonia (can still produce some voice) is rated as chronic laryngitis (DC 6516), not under this code.',
+
+  ratings: [
+    {
+      percent: 100,
+      summary: 'Constant inability to communicate by speech',
+      criteria: {
+        completeInability: true,
+      },
+      criteriaDescription: [
+        'Complete loss of ability to communicate by speech',
+        'Cannot produce any voice or whisper',
+        'Constant - not intermittent',
+        'Requires SMC review',
+      ],
+      evidenceNeeded: [
+        'ENT/Speech pathology evaluation documenting complete voice loss',
+        'Laryngoscopy documenting cause of aphonia',
+        'Documentation of communication methods used (AAC devices, writing)',
+        'Evidence condition is constant, not intermittent',
+        'Application for Special Monthly Compensation',
+      ],
+    },
+    {
+      percent: 60,
+      summary: 'Constant inability to speak above a whisper',
+      criteria: {
+        whisperOnly: true,
+      },
+      criteriaDescription: [
+        'Cannot produce voice louder than a whisper',
+        'Can whisper but cannot phonate normally',
+        'Condition is constant, not intermittent',
+      ],
+      evidenceNeeded: [
+        'ENT evaluation documenting whisper-only voice production',
+        'Laryngoscopy showing cause of voice impairment',
+        'Speech pathology assessment',
+        'Symptom log showing constant nature of condition',
+      ],
+    },
+  ],
+
+  definitions: {
+    aphonia: {
+      term: 'Aphonia',
+      definition: 'Complete loss of voice - inability to produce sound from the vocal cords.',
+    },
+    organicAphonia: {
+      term: 'Organic Aphonia',
+      definition: 'Voice loss due to physical damage or disease of the vocal apparatus, as opposed to functional (psychological) aphonia.',
+    },
+    aacDevice: {
+      term: 'AAC Device',
+      definition: 'Augmentative and Alternative Communication device - technology used to communicate when speech is impaired or absent.',
+    },
+    laryngectomy: {
+      term: 'Laryngectomy',
+      definition: 'Surgical removal of the larynx (voice box), resulting in permanent aphonia. Total laryngectomy is rated 100% under DC 6518.',
+    },
+  },
+
+  secondaryConditions: {
+    description: 'Aphonia significantly impacts quality of life and may lead to secondary conditions.',
+    commonSecondaries: [
+      { condition: 'Depression', diagnosticCode: '9434', relationship: 'Loss of voice causes significant psychological impact' },
+      { condition: 'Anxiety', diagnosticCode: '9400', relationship: 'Communication difficulties cause anxiety' },
+    ],
+  },
+
+  documentationTips: [
+    'Obtain comprehensive ENT evaluation documenting cause',
+    'Get speech pathology assessment of voice function',
+    'Document laryngoscopy findings showing anatomical cause',
+    'Track daily communication challenges',
+    'Note employment impact - many jobs require voice',
+    'Document all communication methods used',
+    'If complete loss, apply for SMC review',
+    'Note if AAC device is prescribed',
+  ],
+
+  disclaimer: 'This analysis is based on 38 CFR 4.97, DC 6519. Complete inability to communicate by speech requires SMC review. Incomplete aphonia should be rated as chronic laryngitis (DC 6516). For documentation purposes only - the VA makes all final rating determinations.',
+};
+
+// ============================================
+// LARYNGEAL STENOSIS RATING CRITERIA (DC 6520)
+// ============================================
+export const LARYNGEAL_STENOSIS_CRITERIA = {
+  diagnosticCode: '6520',
+  condition: 'Stenosis of Larynx',
+  cfrReference: '38 CFR 4.97, Diagnostic Code 6520',
+
+  ratingNote: 'Ratings require FEV-1 with Flow-Volume Loop compatible with upper airway obstruction. May alternatively be rated as aphonia (DC 6519) if more favorable.',
+
+  ratings: [
+    {
+      percent: 100,
+      summary: 'FEV-1 <40% with upper airway obstruction pattern, OR permanent tracheostomy',
+      criteria: {
+        severeStenosis: true,
+        OR: true,
+        tracheostomy: true,
+      },
+      criteriaDescription: [
+        'FEV-1 less than 40% predicted AND',
+        'Flow-Volume Loop compatible with upper airway obstruction',
+        'OR permanent tracheostomy required',
+      ],
+      evidenceNeeded: [
+        'Pulmonary function tests showing FEV-1 <40%',
+        'Flow-Volume Loop interpretation showing upper airway obstruction pattern',
+        'OR documentation of permanent tracheostomy',
+        'Laryngoscopy documenting stenosis',
+      ],
+    },
+    {
+      percent: 60,
+      summary: 'FEV-1 40-55% with upper airway obstruction pattern',
+      criteria: {
+        moderateSevereStenosis: true,
+      },
+      criteriaDescription: [
+        'FEV-1 of 40-55% predicted AND',
+        'Flow-Volume Loop compatible with upper airway obstruction',
+      ],
+      evidenceNeeded: [
+        'Pulmonary function tests showing FEV-1 40-55%',
+        'Flow-Volume Loop showing upper airway obstruction',
+        'Laryngoscopy documenting stenosis degree',
+      ],
+    },
+    {
+      percent: 30,
+      summary: 'FEV-1 56-70% with upper airway obstruction pattern',
+      criteria: {
+        moderateStenosis: true,
+      },
+      criteriaDescription: [
+        'FEV-1 of 56-70% predicted AND',
+        'Flow-Volume Loop compatible with upper airway obstruction',
+      ],
+      evidenceNeeded: [
+        'Pulmonary function tests showing FEV-1 56-70%',
+        'Flow-Volume Loop showing upper airway obstruction',
+        'ENT documentation of stenosis',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'FEV-1 71-80% with upper airway obstruction pattern',
+      criteria: {
+        mildStenosis: true,
+      },
+      criteriaDescription: [
+        'FEV-1 of 71-80% predicted AND',
+        'Flow-Volume Loop compatible with upper airway obstruction',
+      ],
+      evidenceNeeded: [
+        'Pulmonary function tests showing FEV-1 71-80%',
+        'Flow-Volume Loop interpretation',
+        'Documentation of laryngeal narrowing',
+      ],
+    },
+  ],
+
+  definitions: {
+    laryngealStenosis: {
+      term: 'Laryngeal Stenosis',
+      definition: 'Narrowing of the larynx (voice box) that restricts airflow. Can occur at various levels - supraglottic, glottic, or subglottic.',
+    },
+    subglotticStenosis: {
+      term: 'Subglottic Stenosis',
+      definition: 'Narrowing below the vocal cords, often caused by intubation injury or autoimmune conditions.',
+    },
+    flowVolumeLoop: {
+      term: 'Flow-Volume Loop',
+      definition: 'A pulmonary function test graph that shows characteristic patterns for upper vs lower airway obstruction.',
+    },
+    tracheostomy: {
+      term: 'Tracheostomy',
+      definition: 'Surgical opening in the neck into the trachea to bypass upper airway obstruction.',
+    },
+    stridor: {
+      term: 'Stridor',
+      definition: 'High-pitched, noisy breathing caused by turbulent airflow through a narrowed airway.',
+    },
+  },
+
+  secondaryConditions: {
+    description: 'Laryngeal stenosis often results from other conditions or causes secondary issues.',
+    commonCauses: [
+      { condition: 'Post-Intubation Injury', relationship: 'Prolonged intubation is the most common cause' },
+      { condition: 'Trauma', relationship: 'Direct laryngeal trauma can cause stenosis' },
+      { condition: 'Autoimmune Disease', relationship: 'Wegener\'s granulomatosis and other conditions' },
+    ],
+  },
+
+  documentationTips: [
+    'Obtain pulmonary function tests with Flow-Volume Loop',
+    'Ensure PFT interpretation specifically addresses upper airway obstruction pattern',
+    'Get laryngoscopy documenting stenosis location and degree',
+    'Track breathing symptoms - stridor, exercise intolerance',
+    'Document any dilation procedures performed',
+    'Note tracheostomy status if applicable',
+    'Record cause of stenosis (intubation, trauma, etc.)',
+    'Consider alternative rating under DC 6519 if voice impaired',
+  ],
+
+  disclaimer: 'This analysis is based on 38 CFR 4.97, DC 6520. Requires PFT with Flow-Volume Loop showing upper airway obstruction pattern. May be rated as aphonia (DC 6519) if more favorable. For documentation purposes only - the VA makes all final rating determinations.',
+};
+
+// ============================================
+// PHARYNX INJURIES RATING CRITERIA (DC 6521)
+// ============================================
+export const PHARYNX_INJURY_CRITERIA = {
+  diagnosticCode: '6521',
+  condition: 'Pharynx Injuries',
+  cfrReference: '38 CFR 4.97, Diagnostic Code 6521',
+
+  ratings: [
+    {
+      percent: 50,
+      summary: 'Stricture/obstruction, absent soft palate, or paralysis with swallowing/speech impairment',
+      criteria: {
+        significantInjury: true,
+      },
+      criteriaDescription: [
+        'Stricture or obstruction of pharynx or nasopharynx, OR',
+        'Absence of soft palate secondary to trauma, chemical burn, or granulomatous disease, OR',
+        'Paralysis of soft palate with swallowing difficulty (nasal regurgitation) AND speech impairment',
+      ],
+      evidenceNeeded: [
+        'ENT evaluation documenting pharyngeal stricture/obstruction',
+        'OR documentation of soft palate absence and cause',
+        'OR neurological evaluation showing soft palate paralysis',
+        'Modified barium swallow study if swallowing affected',
+        'Speech pathology evaluation if speech impaired',
+        'Documentation of nasal regurgitation if present',
+      ],
+    },
+  ],
+
+  definitions: {
+    pharynx: {
+      term: 'Pharynx',
+      definition: 'The throat - the muscular tube connecting the nose and mouth to the esophagus and larynx.',
+    },
+    nasopharynx: {
+      term: 'Nasopharynx',
+      definition: 'The upper part of the pharynx behind the nose.',
+    },
+    softPalate: {
+      term: 'Soft Palate',
+      definition: 'The muscular back part of the roof of the mouth that moves during swallowing and speech to prevent nasal regurgitation.',
+    },
+    nasalRegurgitation: {
+      term: 'Nasal Regurgitation',
+      definition: 'Food or liquid coming out through the nose during swallowing due to soft palate dysfunction.',
+    },
+    dysphagia: {
+      term: 'Dysphagia',
+      definition: 'Difficulty swallowing - a common symptom of pharyngeal injury.',
+    },
+  },
+
+  secondaryConditions: {
+    description: 'Pharynx injuries often occur secondary to neurological conditions or trauma.',
+    commonPrimaries: [
+      { condition: 'ALS', diagnosticCode: '8017', relationship: 'Bulbar symptoms cause pharyngeal dysfunction' },
+      { condition: 'Multiple Sclerosis', diagnosticCode: '8018', relationship: 'Can cause soft palate paralysis' },
+      { condition: 'Stroke', diagnosticCode: '8007-8009', relationship: 'Can cause pharyngeal paralysis' },
+      { condition: 'TBI', diagnosticCode: '8045', relationship: 'Cranial nerve injury affects swallowing' },
+    ],
+  },
+
+  documentationTips: [
+    'Obtain ENT evaluation documenting pharyngeal condition',
+    'Get modified barium swallow study for swallowing difficulties',
+    'Document nasal regurgitation episodes',
+    'Obtain speech pathology assessment',
+    'Note aspiration risk and any pneumonia history',
+    'Document cause of injury (trauma, surgery, disease)',
+    'Track weight changes if nutrition affected',
+    'Note any dietary modifications required',
+  ],
+
+  disclaimer: 'This analysis is based on 38 CFR 4.97, DC 6521. Requires documentation of pharyngeal stricture/obstruction, soft palate absence, or paralysis with both swallowing and speech impairment. For documentation purposes only - the VA makes all final rating determinations.',
+};
+
+
+// ============================================
+// SHOULDER CONDITIONS RATING CRITERIA (DC 5201-5203)
 // ============================================
 export const NOSE_LOSS_CRITERIA = {
   diagnosticCode: '6504',
@@ -17099,6 +17558,84 @@ export const AVOIDANT_PERSONALITY_DISORDER_CRITERIA = {
     'Relationship difficulties due to fear of rejection',
     'Document missed opportunities and social avoidance patterns',
   ],
+};
+
+// ============================================
+// DEMENTIA / NEUROCOGNITIVE DISORDER (DC 9326)
+// ============================================
+export const DEMENTIA_CRITERIA = {
+  diagnosticCode: '9326',
+  condition: 'Dementia / Neurocognitive Disorder',
+  cfrReference: '38 CFR 4.130, Diagnostic Code 9326',
+  usesSharedCriteria: true,
+  sharedCriteria: MENTAL_HEALTH_SHARED_CRITERIA,
+
+  ratingNote: 'DC 9326 covers major or mild neurocognitive disorder due to another medical condition (e.g., Parkinson\'s, stroke, TBI) or substance/medication-induced neurocognitive disorder. Uses the General Rating Formula for Mental Disorders.',
+
+  ratings: MENTAL_HEALTH_SHARED_CRITERIA.ratings,
+
+  definitions: {
+    ...MENTAL_HEALTH_SHARED_CRITERIA.definitions,
+    neurocognitiveDisorder: {
+      term: 'Neurocognitive Disorder',
+      definition: 'DSM-5 term for conditions causing cognitive decline. "Major" indicates significant impairment affecting independence; "Mild" indicates modest decline not affecting independence.',
+    },
+    dementia: {
+      term: 'Dementia',
+      definition: 'Syndrome of progressive cognitive decline affecting memory, thinking, behavior, and ability to perform everyday activities. Multiple causes including Alzheimer\'s, vascular disease, Parkinson\'s, TBI.',
+    },
+    activitiesOfDailyLiving: {
+      term: 'Activities of Daily Living (ADLs)',
+      definition: 'Basic self-care tasks: bathing, dressing, eating, toileting, transferring, and continence. Difficulty with ADLs indicates significant impairment.',
+    },
+    instrumentalADLs: {
+      term: 'Instrumental ADLs (IADLs)',
+      definition: 'Complex daily activities: managing finances, medications, transportation, shopping, housework, using phone/technology. Often affected earlier than basic ADLs.',
+    },
+    sundowning: {
+      term: 'Sundowning',
+      definition: 'Pattern of increased confusion, agitation, or behavioral symptoms in late afternoon/evening, common in dementia.',
+    },
+  },
+
+  secondaryConditions: {
+    description: 'Dementia is often secondary to other service-connected conditions. The primary condition establishes the nexus.',
+    commonPrimaries: [
+      { condition: 'Parkinson\'s Disease', diagnosticCode: '8004', relationship: 'Parkinson\'s dementia occurs in up to 80% of patients over time' },
+      { condition: 'Traumatic Brain Injury', diagnosticCode: '8045', relationship: 'TBI increases dementia risk; may be rated under DC 9304 instead' },
+      { condition: 'ALS', diagnosticCode: '8017', relationship: 'ALS-FTD (frontotemporal dementia) occurs in subset of ALS patients' },
+      { condition: 'Multiple Sclerosis', diagnosticCode: '8018', relationship: 'MS cognitive impairment can progress to dementia' },
+      { condition: 'Stroke', diagnosticCode: '8007-8009', relationship: 'Vascular dementia from stroke damage' },
+      { condition: 'PTSD', diagnosticCode: '9411', relationship: 'Chronic PTSD associated with increased dementia risk' },
+      { condition: 'Diabetes', diagnosticCode: '7913', relationship: 'Diabetes increases vascular dementia risk' },
+      { condition: 'Hypertension', diagnosticCode: '7101', relationship: 'Chronic hypertension increases vascular dementia risk' },
+    ],
+  },
+
+  documentationTips: [
+    'Document cognitive decline progression over time',
+    'Track memory lapses, confusion episodes, and disorientation',
+    'Note difficulty with daily activities (paying bills, medication management)',
+    'Record personality or behavioral changes',
+    'Document safety concerns (wandering, leaving stove on)',
+    'Note supervision requirements',
+    'Obtain neuropsychological testing for objective measures',
+    'Document impact on social relationships',
+    'Track incidents requiring caregiver intervention',
+    'If secondary to another condition, document the relationship',
+  ],
+
+  importantNotes: [
+    ...MENTAL_HEALTH_SHARED_CRITERIA.importantNotes,
+    'Dementia due to TBI may be rated under DC 9304 instead of 9326',
+    'If dementia is secondary to service-connected condition, nexus must be established',
+    'Consider Aid & Attendance (SMC-L) if unable to perform ADLs',
+    'Consider Housebound status (SMC-S) if substantially confined',
+    'Multiple mental health conditions are typically rated together, not separately',
+    'Caregiver statements are valuable evidence of functional impairment',
+  ],
+
+  disclaimer: 'This analysis is based on 38 CFR 4.130, DC 9326, using the General Rating Formula for Mental Disorders. Rating depends on level of occupational and social impairment, not just symptom presence. Dementia secondary to service-connected conditions requires nexus documentation. For documentation purposes only - the VA makes all final rating determinations.',
 };
 
 // ============================================
@@ -29666,6 +30203,367 @@ export const analyzeNoseLossLogs = (logs, options = {}) => {
 };
 
 /**
+ * Analyze Chronic Laryngitis logs for VA rating
+ * DC 6516 - Chronic Laryngitis
+ */
+export const analyzeChronicLaryngitisLogs = (logs, options = {}) => {
+  const { evaluationPeriodDays = 90 } = options;
+
+  const laryngitisSymptoms = logs.filter(log => {
+    const symptomId = log.symptomId || log.symptom;
+    return symptomId && symptomId.includes('laryngitis') &&
+        isWithinEvaluationPeriod(log.timestamp, evaluationPeriodDays);
+  });
+
+  if (laryngitisSymptoms.length === 0) {
+    return {
+      condition: 'Chronic Laryngitis',
+      diagnosticCode: '6516',
+      hasData: false,
+      supportedRating: null,
+      ratingRationale: [],
+      evidence: [],
+      gaps: [
+        'No chronic laryngitis symptoms logged',
+        'Document hoarseness episodes',
+        'Track voice fatigue and throat symptoms',
+        'Note laryngoscopy findings if available',
+      ],
+      criteria: CHRONIC_LARYNGITIS_CRITERIA,
+      disclaimer: CHRONIC_LARYNGITIS_CRITERIA.disclaimer,
+    };
+  }
+
+  const evidence = [];
+  const gaps = [];
+  let supportedRating = 0;
+  const ratingRationale = [];
+
+  // Count symptoms by type
+  const hoarseness = laryngitisSymptoms.filter(s => (s.symptomId || s.symptom) === 'laryngitis-hoarseness').length;
+  const inflammation = laryngitisSymptoms.filter(s => (s.symptomId || s.symptom) === 'laryngitis-inflammation').length;
+  const nodules = laryngitisSymptoms.filter(s => (s.symptomId || s.symptom) === 'laryngitis-nodules').length;
+  const premalignant = laryngitisSymptoms.filter(s => (s.symptomId || s.symptom) === 'laryngitis-premalignant').length;
+
+  evidence.push(`${laryngitisSymptoms.length} laryngitis symptoms logged over ${evaluationPeriodDays} days`);
+
+  // Rating determination
+  if (nodules > 0 || premalignant > 0) {
+    supportedRating = 30;
+    if (nodules > 0) {
+      ratingRationale.push('Vocal cord nodules/polyps/thickening documented');
+      evidence.push(`${nodules} entries noting vocal cord structural changes`);
+    }
+    if (premalignant > 0) {
+      ratingRationale.push('Pre-malignant changes documented');
+      evidence.push('Biopsy showing pre-malignant changes');
+    }
+  } else if (hoarseness > 0 || inflammation > 0) {
+    supportedRating = 10;
+    if (hoarseness > 0) {
+      ratingRationale.push('Chronic hoarseness documented');
+      evidence.push(`${hoarseness} hoarseness episodes logged`);
+    }
+    if (inflammation > 0) {
+      ratingRationale.push('Vocal cord inflammation documented');
+      evidence.push(`${inflammation} inflammation entries`);
+    }
+  }
+
+  // Documentation gaps
+  gaps.push('Obtain laryngoscopy report documenting vocal cord condition');
+  gaps.push('Get ENT evaluation for official diagnosis');
+
+  if (supportedRating < 30) {
+    gaps.push('For 30% rating: document structural changes (nodules, polyps, thickening, or pre-malignant changes)');
+  }
+
+  return {
+    condition: 'Chronic Laryngitis',
+    diagnosticCode: '6516',
+    hasData: true,
+    supportedRating,
+    ratingRationale,
+    evidence,
+    gaps,
+    criteria: CHRONIC_LARYNGITIS_CRITERIA,
+    disclaimer: CHRONIC_LARYNGITIS_CRITERIA.disclaimer,
+  };
+};
+
+/**
+ * Analyze Aphonia logs for VA rating
+ * DC 6519 - Complete Organic Aphonia
+ */
+export const analyzeAphoniaLogs = (logs, options = {}) => {
+  const { evaluationPeriodDays = 90 } = options;
+
+  const aphoniaSymptoms = logs.filter(log => {
+    const symptomId = log.symptomId || log.symptom;
+    return symptomId && symptomId.includes('aphonia') &&
+        isWithinEvaluationPeriod(log.timestamp, evaluationPeriodDays);
+  });
+
+  if (aphoniaSymptoms.length === 0) {
+    return {
+      condition: 'Aphonia (Voice Loss)',
+      diagnosticCode: '6519',
+      hasData: false,
+      supportedRating: null,
+      ratingRationale: [],
+      evidence: [],
+      gaps: [
+        'No aphonia symptoms logged',
+        'Document voice loss episodes',
+        'Note if whisper-only or complete loss',
+        'Track communication difficulties',
+      ],
+      criteria: APHONIA_CRITERIA,
+      disclaimer: APHONIA_CRITERIA.disclaimer,
+    };
+  }
+
+  const evidence = [];
+  const gaps = [];
+  let supportedRating = 0;
+  const ratingRationale = [];
+
+  // Count symptoms by type
+  const completeVoiceLoss = aphoniaSymptoms.filter(s => (s.symptomId || s.symptom) === 'aphonia-complete').length;
+  const whisperOnly = aphoniaSymptoms.filter(s => (s.symptomId || s.symptom) === 'aphonia-whisper-only').length;
+  const communicationImpaired = aphoniaSymptoms.filter(s => (s.symptomId || s.symptom) === 'aphonia-communication-impaired').length;
+  const aacDevice = aphoniaSymptoms.filter(s => (s.symptomId || s.symptom) === 'aphonia-aac-device').length;
+  const intermittent = aphoniaSymptoms.filter(s => (s.symptomId || s.symptom) === 'aphonia-intermittent').length;
+
+  evidence.push(`${aphoniaSymptoms.length} aphonia symptoms logged over ${evaluationPeriodDays} days`);
+
+  // Rating determination
+  if (completeVoiceLoss > 0 || communicationImpaired > 0) {
+    supportedRating = 100;
+    ratingRationale.push('Complete inability to communicate by speech documented');
+    if (completeVoiceLoss > 0) evidence.push(`${completeVoiceLoss} complete voice loss entries`);
+    if (communicationImpaired > 0) evidence.push('Communication by speech impaired');
+    ratingRationale.push('Requires SMC review for complete voice loss');
+  } else if (whisperOnly > 0) {
+    supportedRating = 60;
+    ratingRationale.push('Constant inability to speak above whisper documented');
+    evidence.push(`${whisperOnly} whisper-only voice entries`);
+  } else if (intermittent > 0) {
+    supportedRating = 10;
+    ratingRationale.push('Intermittent voice loss documented - rated as chronic laryngitis (DC 6516)');
+    evidence.push('Note: Incomplete aphonia is rated under DC 6516');
+    gaps.push('Intermittent/incomplete aphonia should be evaluated under DC 6516 (Chronic Laryngitis)');
+  }
+
+  if (aacDevice > 0) {
+    evidence.push('AAC device required for communication');
+    ratingRationale.push('Use of augmentative communication device supports severity');
+  }
+
+  // Documentation gaps
+  gaps.push('Obtain ENT evaluation documenting cause of voice loss');
+  gaps.push('Get speech pathology assessment');
+
+  if (supportedRating === 100) {
+    gaps.push('Apply for Special Monthly Compensation (SMC) review');
+  }
+
+  return {
+    condition: 'Aphonia (Voice Loss)',
+    diagnosticCode: '6519',
+    hasData: true,
+    supportedRating,
+    ratingRationale,
+    evidence,
+    gaps,
+    criteria: APHONIA_CRITERIA,
+    disclaimer: APHONIA_CRITERIA.disclaimer,
+  };
+};
+
+/**
+ * Analyze Laryngeal Stenosis logs for VA rating
+ * DC 6520 - Stenosis of Larynx
+ */
+export const analyzeLaryngealStenosisLogs = (logs, options = {}) => {
+  const { evaluationPeriodDays = 90 } = options;
+
+  const stenosisSymptoms = logs.filter(log => {
+    const symptomId = log.symptomId || log.symptom;
+    return symptomId && symptomId.includes('stenosis') &&
+        isWithinEvaluationPeriod(log.timestamp, evaluationPeriodDays);
+  });
+
+  if (stenosisSymptoms.length === 0) {
+    return {
+      condition: 'Laryngeal Stenosis',
+      diagnosticCode: '6520',
+      hasData: false,
+      supportedRating: null,
+      ratingRationale: [],
+      evidence: [],
+      gaps: [
+        'No laryngeal stenosis symptoms logged',
+        'Document breathing difficulties',
+        'Track stridor or noisy breathing',
+        'Note tracheostomy status if applicable',
+      ],
+      criteria: LARYNGEAL_STENOSIS_CRITERIA,
+      disclaimer: LARYNGEAL_STENOSIS_CRITERIA.disclaimer,
+    };
+  }
+
+  const evidence = [];
+  const gaps = [];
+  let supportedRating = 0;
+  const ratingRationale = [];
+
+  // Count symptoms by type
+  const tracheostomy = stenosisSymptoms.filter(s => (s.symptomId || s.symptom) === 'stenosis-tracheostomy').length;
+  const breathingDifficulty = stenosisSymptoms.filter(s => (s.symptomId || s.symptom) === 'stenosis-breathing-difficulty').length;
+  const stridor = stenosisSymptoms.filter(s => (s.symptomId || s.symptom) === 'stenosis-stridor').length;
+  const pftAbnormal = stenosisSymptoms.filter(s => (s.symptomId || s.symptom) === 'stenosis-pft-abnormal').length;
+  const dilationRequired = stenosisSymptoms.filter(s => (s.symptomId || s.symptom) === 'stenosis-dilation-required').length;
+
+  evidence.push(`${stenosisSymptoms.length} laryngeal stenosis symptoms logged over ${evaluationPeriodDays} days`);
+
+  // Rating determination - based on severity indicators
+  if (tracheostomy > 0) {
+    supportedRating = 100;
+    ratingRationale.push('Permanent tracheostomy documented');
+    evidence.push('Tracheostomy required - qualifies for 100% rating');
+  } else if (pftAbnormal > 0 || dilationRequired > 0) {
+    // Without actual FEV-1 values, we note symptoms suggest rating
+    supportedRating = 30; // Conservative estimate without PFT data
+    ratingRationale.push('Abnormal PFT or dilation requirement suggests significant stenosis');
+    if (pftAbnormal > 0) evidence.push('Abnormal pulmonary function documented');
+    if (dilationRequired > 0) evidence.push('Airway dilation procedures required');
+    gaps.push('Obtain PFT with Flow-Volume Loop to determine specific rating level');
+  } else if (breathingDifficulty > 0 || stridor > 0) {
+    supportedRating = 10;
+    ratingRationale.push('Breathing symptoms documented');
+    if (breathingDifficulty > 0) evidence.push(`${breathingDifficulty} breathing difficulty entries`);
+    if (stridor > 0) evidence.push(`${stridor} stridor/noisy breathing entries`);
+  }
+
+  // Documentation gaps - PFT is critical for this condition
+  gaps.push('CRITICAL: Obtain pulmonary function test with Flow-Volume Loop');
+  gaps.push('PFT must show upper airway obstruction pattern for rating');
+  gaps.push('Get laryngoscopy documenting stenosis degree');
+
+  if (supportedRating < 100 && tracheostomy === 0) {
+    gaps.push('Rating depends on FEV-1 percentage: <40%=100%, 40-55%=60%, 56-70%=30%, 71-80%=10%');
+  }
+
+  return {
+    condition: 'Laryngeal Stenosis',
+    diagnosticCode: '6520',
+    hasData: true,
+    supportedRating,
+    ratingRationale,
+    evidence,
+    gaps,
+    criteria: LARYNGEAL_STENOSIS_CRITERIA,
+    disclaimer: LARYNGEAL_STENOSIS_CRITERIA.disclaimer,
+  };
+};
+
+/**
+ * Analyze Pharynx Injury logs for VA rating
+ * DC 6521 - Pharynx Injuries
+ */
+export const analyzePharynxInjuryLogs = (logs, options = {}) => {
+  const { evaluationPeriodDays = 90 } = options;
+
+  const pharynxSymptoms = logs.filter(log => {
+    const symptomId = log.symptomId || log.symptom;
+    return symptomId && symptomId.includes('pharynx') &&
+        isWithinEvaluationPeriod(log.timestamp, evaluationPeriodDays);
+  });
+
+  if (pharynxSymptoms.length === 0) {
+    return {
+      condition: 'Pharynx Injuries',
+      diagnosticCode: '6521',
+      hasData: false,
+      supportedRating: null,
+      ratingRationale: [],
+      evidence: [],
+      gaps: [
+        'No pharynx injury symptoms logged',
+        'Document swallowing difficulties',
+        'Track nasal regurgitation episodes',
+        'Note speech impairment if present',
+      ],
+      criteria: PHARYNX_INJURY_CRITERIA,
+      disclaimer: PHARYNX_INJURY_CRITERIA.disclaimer,
+    };
+  }
+
+  const evidence = [];
+  const gaps = [];
+  let supportedRating = 0;
+  const ratingRationale = [];
+
+  // Count symptoms by type
+  const stricture = pharynxSymptoms.filter(s => (s.symptomId || s.symptom) === 'pharynx-stricture').length;
+  const obstruction = pharynxSymptoms.filter(s => (s.symptomId || s.symptom) === 'pharynx-obstruction').length;
+  const softPalateAbsent = pharynxSymptoms.filter(s => (s.symptomId || s.symptom) === 'pharynx-soft-palate-absent').length;
+  const softPalateParalysis = pharynxSymptoms.filter(s => (s.symptomId || s.symptom) === 'pharynx-soft-palate-paralysis').length;
+  const nasalRegurgitation = pharynxSymptoms.filter(s => (s.symptomId || s.symptom) === 'pharynx-nasal-regurgitation').length;
+  const dysphagia = pharynxSymptoms.filter(s => (s.symptomId || s.symptom) === 'pharynx-dysphagia').length;
+  const speechImpairment = pharynxSymptoms.filter(s => (s.symptomId || s.symptom) === 'pharynx-speech-impairment').length;
+
+  evidence.push(`${pharynxSymptoms.length} pharynx injury symptoms logged over ${evaluationPeriodDays} days`);
+
+  // Rating determination - 50% is the only rating for DC 6521
+  if (stricture > 0 || obstruction > 0) {
+    supportedRating = 50;
+    ratingRationale.push('Pharyngeal stricture or obstruction documented');
+    if (stricture > 0) evidence.push(`${stricture} stricture entries`);
+    if (obstruction > 0) evidence.push(`${obstruction} obstruction entries`);
+  } else if (softPalateAbsent > 0) {
+    supportedRating = 50;
+    ratingRationale.push('Absence of soft palate documented');
+    evidence.push('Soft palate absent from trauma/surgery/disease');
+  } else if (softPalateParalysis > 0 && (nasalRegurgitation > 0 || dysphagia > 0) && speechImpairment > 0) {
+    supportedRating = 50;
+    ratingRationale.push('Soft palate paralysis with swallowing difficulty AND speech impairment');
+    evidence.push('Paralysis with both swallowing and speech affected');
+    if (nasalRegurgitation > 0) evidence.push(`${nasalRegurgitation} nasal regurgitation episodes`);
+  } else if (softPalateParalysis > 0 || dysphagia > 0 || speechImpairment > 0) {
+    // Some symptoms but not meeting full criteria
+    supportedRating = 0;
+    ratingRationale.push('Symptoms documented but may not meet full DC 6521 criteria');
+    if (softPalateParalysis > 0) evidence.push('Soft palate paralysis present');
+    if (dysphagia > 0) evidence.push(`${dysphagia} swallowing difficulty entries`);
+    if (speechImpairment > 0) evidence.push(`${speechImpairment} speech impairment entries`);
+    gaps.push('For 50% rating with paralysis: must document BOTH swallowing difficulty AND speech impairment');
+  }
+
+  // Documentation gaps
+  gaps.push('Obtain ENT evaluation documenting pharyngeal condition');
+  gaps.push('Get modified barium swallow study if swallowing affected');
+  gaps.push('Obtain speech pathology evaluation if speech impaired');
+
+  if (nasalRegurgitation > 0) {
+    evidence.push(`${nasalRegurgitation} nasal regurgitation episodes`);
+  }
+
+  return {
+    condition: 'Pharynx Injuries',
+    diagnosticCode: '6521',
+    hasData: true,
+    supportedRating,
+    ratingRationale,
+    evidence,
+    gaps,
+    criteria: PHARYNX_INJURY_CRITERIA,
+    disclaimer: PHARYNX_INJURY_CRITERIA.disclaimer,
+  };
+};
+
+/**
  * Analyze Shoulder logs for VA rating
  * DC 5201-5203 - Shoulder Conditions
  */
@@ -41137,6 +42035,122 @@ export const analyzeAvoidantPersonalityDisorderLogs = (logs, options = {}) => {
       AVOIDANT_PERSONALITY_DISORDER_CRITERIA,
       options,
   );
+};
+
+/**
+ * Analyze Dementia / Neurocognitive Disorder logs (DC 9326)
+ * Uses General Rating Formula for Mental Disorders
+ */
+export const analyzeDementiaLogs = (logs, options = {}) => {
+  const { evaluationPeriodDays = 90 } = options;
+
+  const dementiaSymptoms = logs.filter(log => {
+    const symptomId = log.symptomId || log.symptom;
+    return symptomId && symptomId.includes('dementia') &&
+        isWithinEvaluationPeriod(log.timestamp, evaluationPeriodDays);
+  });
+
+  if (dementiaSymptoms.length === 0) {
+    return {
+      condition: 'Dementia / Neurocognitive Disorder',
+      diagnosticCode: '9326',
+      hasData: false,
+      supportedRating: null,
+      ratingRationale: [],
+      evidence: [],
+      gaps: [
+        'No dementia/neurocognitive symptoms logged',
+        'Document memory loss episodes',
+        'Track confusion and disorientation',
+        'Note difficulty with daily activities',
+        'Record personality or behavioral changes',
+      ],
+      criteria: DEMENTIA_CRITERIA,
+      disclaimer: DEMENTIA_CRITERIA.disclaimer,
+    };
+  }
+
+  const evidence = [];
+  const gaps = [];
+  let supportedRating = 0;
+  const ratingRationale = [];
+
+  // Count symptoms by type
+  const memoryLoss = dementiaSymptoms.filter(s => (s.symptomId || s.symptom) === 'dementia-memory-loss').length;
+  const disorientation = dementiaSymptoms.filter(s => (s.symptomId || s.symptom) === 'dementia-disorientation').length;
+  const communication = dementiaSymptoms.filter(s => (s.symptomId || s.symptom) === 'dementia-communication').length;
+  const judgment = dementiaSymptoms.filter(s => (s.symptomId || s.symptom) === 'dementia-judgment').length;
+  const adlDifficulty = dementiaSymptoms.filter(s => (s.symptomId || s.symptom) === 'dementia-adl-difficulty').length;
+  const personalityChange = dementiaSymptoms.filter(s => (s.symptomId || s.symptom) === 'dementia-personality-change').length;
+  const wandering = dementiaSymptoms.filter(s => (s.symptomId || s.symptom) === 'dementia-wandering').length;
+  const delusions = dementiaSymptoms.filter(s => (s.symptomId || s.symptom) === 'dementia-delusions').length;
+  const agitation = dementiaSymptoms.filter(s => (s.symptomId || s.symptom) === 'dementia-agitation').length;
+  const supervisionNeeded = dementiaSymptoms.filter(s => (s.symptomId || s.symptom) === 'dementia-supervision-needed').length;
+
+  evidence.push(`${dementiaSymptoms.length} dementia symptoms logged over ${evaluationPeriodDays} days`);
+
+  // Calculate severity indicators
+  const severeIndicators = delusions + supervisionNeeded + wandering;
+  const moderateIndicators = disorientation + adlDifficulty + judgment + agitation;
+  const mildIndicators = memoryLoss + communication + personalityChange;
+
+  // Rating determination based on General Rating Formula for Mental Disorders
+  if (supervisionNeeded > 0 && adlDifficulty > 0 && (disorientation > 0 || delusions > 0)) {
+    supportedRating = 100;
+    ratingRationale.push('Total occupational and social impairment');
+    ratingRationale.push('Unable to perform activities of daily living independently');
+    if (supervisionNeeded > 0) evidence.push(`${supervisionNeeded} entries requiring supervision`);
+    if (disorientation > 0) evidence.push(`${disorientation} disorientation episodes`);
+    if (delusions > 0) evidence.push(`${delusions} delusion/hallucination episodes`);
+    gaps.push('Consider Aid & Attendance (SMC-L) application');
+  } else if (severeIndicators > 0 || (moderateIndicators >= 3 && adlDifficulty > 0)) {
+    supportedRating = 70;
+    ratingRationale.push('Deficiencies in most areas (work, family, judgment, thinking, mood)');
+    if (wandering > 0) evidence.push(`${wandering} wandering/getting lost episodes`);
+    if (agitation > 0) evidence.push(`${agitation} agitation/aggression episodes`);
+    if (judgment > 0) evidence.push(`${judgment} impaired judgment entries`);
+  } else if (moderateIndicators >= 2 || (mildIndicators >= 3 && moderateIndicators >= 1)) {
+    supportedRating = 50;
+    ratingRationale.push('Reduced reliability and productivity');
+    ratingRationale.push('Difficulty in establishing and maintaining effective relationships');
+    if (memoryLoss > 0) evidence.push(`${memoryLoss} memory loss episodes`);
+    if (communication > 0) evidence.push(`${communication} communication difficulty entries`);
+  } else if (mildIndicators >= 2) {
+    supportedRating = 30;
+    ratingRationale.push('Occasional decrease in work efficiency');
+    ratingRationale.push('Mild memory loss and cognitive symptoms');
+    if (memoryLoss > 0) evidence.push(`${memoryLoss} memory loss episodes`);
+    if (personalityChange > 0) evidence.push(`${personalityChange} personality change entries`);
+  } else if (dementiaSymptoms.length > 0) {
+    supportedRating = 10;
+    ratingRationale.push('Mild or transient symptoms documented');
+    evidence.push('Cognitive symptoms present but mild');
+  }
+
+  // Documentation gaps
+  gaps.push('Obtain neuropsychological testing for objective cognitive measures');
+  gaps.push('Document impact on daily activities and independence');
+  gaps.push('Track safety concerns and supervision requirements');
+
+  if (supportedRating >= 70) {
+    gaps.push('Document caregiver burden and assistance requirements');
+    gaps.push('Consider evaluation for Aid & Attendance or Housebound SMC');
+  }
+
+  // Note if appears secondary
+  gaps.push('If secondary to another condition (Parkinson\'s, TBI, stroke), document nexus relationship');
+
+  return {
+    condition: 'Dementia / Neurocognitive Disorder',
+    diagnosticCode: '9326',
+    hasData: true,
+    supportedRating,
+    ratingRationale,
+    evidence,
+    gaps,
+    criteria: DEMENTIA_CRITERIA,
+    disclaimer: DEMENTIA_CRITERIA.disclaimer,
+  };
 };
 
 // ============================================
@@ -53573,8 +54587,6 @@ export const analyzeUrethralStrictureLogs = (logs, options = {}) => {
   };
 };
 
-
-
 // ============================================
 // HELPER FUNCTIONS
 // ============================================
@@ -53761,12 +54773,10 @@ export const getVoidingDysfunctionFrequencyRating = (percent) => VOIDING_DYSFUNC
 export const getVoidingDysfunctionObstructionRating = (percent) => VOIDING_DYSFUNCTION_CRITERIA.ratingsObstruction.find(r => r.percent === percent) || null;
 export const getSphincterImpairmentRatingCriteria = (percent) => SPHINCTER_IMPAIRMENT_CRITERIA.ratings.find(r => r.percent === percent) || null;
 export const getErectileDysfunctionRatingCriteria = (percent) => ERECTILE_DYSFUNCTION_CRITERIA.ratings.find(r => r.percent === percent) || null;
-// Phase 4: Gynecological Helper Functions
 export const getEndometriosisRatingCriteria = (percent) => ENDOMETRIOSIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
 export const getFemaleReproductiveOrgansRatingCriteria = (percent) => FEMALE_REPRODUCTIVE_ORGANS_CRITERIA.ratings.find(r => r.percent === percent) || null;
 export const getPelvicProlapseRatingCriteria = (percent) => PELVIC_PROLAPSE_CRITERIA.ratings.find(r => r.percent === percent) || null;
 export const getFemaleArousalDisorderRatingCriteria = (percent) => FEMALE_SEXUAL_AROUSAL_DISORDER_CRITERIA.ratings.find(r => r.percent === percent) || null;
-// Phase 5: Hemic/Lymphatic Helper Functions
 export const getIronDeficiencyAnemiaRatingCriteria = (percent) => IRON_DEFICIENCY_ANEMIA_CRITERIA.ratings.find(r => r.percent === percent) || null;
 export const getFolateDeficiencyAnemiaRatingCriteria = (percent) => FOLATE_DEFICIENCY_ANEMIA_CRITERIA.ratings.find(r => r.percent === percent) || null;
 export const getPerniciousAnemiaRatingCriteria = (percent) => PERNICIOUS_ANEMIA_CRITERIA.ratings.find(r => r.percent === percent) || null;
@@ -53783,7 +54793,6 @@ export const getMyeloproliferative7718RatingCriteria = (percent) => MYELOPROLIFE
 export const getChronicMyelogenousLeukemiaRatingCriteria = (percent) => CHRONIC_MYELOGENOUS_LEUKEMIA_CRITERIA.ratings.find(r => r.percent === percent) || null;
 export const getSolitaryPlasmacytomaRatingCriteria = (percent) => SOLITARY_PLASMACYTOMA_CRITERIA.ratings.find(r => r.percent === percent) || null;
 export const getMyelodysplasticSyndromesRatingCriteria = (percent) => MYELODYSPLASTIC_SYNDROMES_CRITERIA.ratings.find(r => r.percent === percent) || null;
-// Phase 7: Dental/Oral Helper Functions
 export const getTMJDisorderRatingCriteria = (percent) => TMJ_DISORDER_CRITERIA.ratings.find(r => r.percent === percent) || null;
 export const getToothLossRatingCriteria = (percent) => TOOTH_LOSS_CRITERIA.ratings.find(r => r.percent === percent) || null;
 export const getMandibleNonunionRatingCriteria = (percent) => MANDIBLE_NONUNION_CRITERIA.ratings.find(r => r.percent === percent) || null;
@@ -53801,7 +54810,6 @@ export const getSalmonellaRatingCriteria = (percent) => SALMONELLA_CRITERIA.rati
 export const getShigellaRatingCriteria = (percent) => SHIGELLA_CRITERIA.ratings.find(r => r.percent === percent) || null;
 export const getWestNileRatingCriteria = (percent) => WEST_NILE_CRITERIA.ratings.find(r => r.percent === percent) || null;
 export const getNTMRatingCriteria = (percent) => NTM_CRITERIA.ratings.find(r => r.percent === percent) || null;
-// Phase 8B: Additional Mental Health getRatingCriteria helpers
 export const getSchizophreniaRatingCriteria = (percent) => SCHIZOPHRENIA_CRITERIA.ratings.find(r => r.percent === percent) || null;
 export const getSchizoaffectiveDisorderRatingCriteria = (percent) => SCHIZOAFFECTIVE_DISORDER_CRITERIA.ratings.find(r => r.percent === percent) || null;
 export const getDelusionalDisorderRatingCriteria = (percent) => DELUSIONAL_DISORDER_CRITERIA.ratings.find(r => r.percent === percent) || null;
@@ -53815,46 +54823,35 @@ export const getAntisocialPersonalityDisorderRatingCriteria = (percent) => ANTIS
 export const getBorderlinePersonalityDisorderRatingCriteria = (percent) => BORDERLINE_PERSONALITY_DISORDER_CRITERIA.ratings.find(r => r.percent === percent) || null;
 export const getNarcissisticPersonalityDisorderRatingCriteria = (percent) => NARCISSISTIC_PERSONALITY_DISORDER_CRITERIA.ratings.find(r => r.percent === percent) || null;
 export const getAvoidantPersonalityDisorderRatingCriteria = (percent) => AVOIDANT_PERSONALITY_DISORDER_CRITERIA.ratings.find(r => r.percent === percent) || null;
-// Phase 9: Cardiovascular getRatingCriteria functions
 export const getCardiomyopathyRatingCriteria = (percent) => CARDIOMYOPATHY_CRITERIA.ratings.find(r => r.percent === percent) || null;
 export const getSVTRatingCriteria = (percent) => SVT_CRITERIA.ratings.find(r => r.percent === percent) || null;
 export const getVentricularArrhythmiaRatingCriteria = (percent) => VENTRICULAR_ARRHYTHMIA_CRITERIA.ratings.find(r => r.percent === percent) || null;
 export const getPericarditisRatingCriteria = (percent) => PERICARDITIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
 export const getPostPhlebiticRatingCriteria = (percent) => POST_PHLEBITIC_CRITERIA.ratings.find(r => r.percent === percent) || null;
-// Phase 2B: Vascular getRatingCriteria functions
 export const getColdInjuryRatingCriteria = (percent) => COLD_INJURY_CRITERIA.ratings.find(r => r.percent === percent) || null;
 export const getPADRatingCriteria = (percent) => PAD_CRITERIA.ratings.find(r => r.percent === percent) || null;
 export const getHyperthyroidismRatingCriteria = (percent) => HYPERTHYROIDISM_CRITERIA.ratings.find(r => r.percent === percent) || null;
 export const getThyroiditisRatingCriteria = (percent) => THYROIDITIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
 export const getHyperparathyroidismRatingCriteria = (percent) => HYPERPARATHYROIDISM_CRITERIA.ratings.find(r => r.percent === percent) || null;
 export const getHypoparathyroidismRatingCriteria = (percent) => HYPOPARATHYROIDISM_CRITERIA.ratings.find(r => r.percent === percent) || null;
-// Phase 3B: Adrenal & Pituitary Helper Functions
 export const getAddisonsDiseaseRatingCriteria = (percent) => ADDISONS_DISEASE_CRITERIA.ratings.find(r => r.percent === percent) || null;
 export const getCushingsSyndromeRatingCriteria = (percent) => CUSHINGS_SYNDROME_CRITERIA.ratings.find(r => r.percent === percent) || null;
 export const getDiabetesInsipidusRatingCriteria = (percent) => DIABETES_INSIPIDUS_CRITERIA.ratings.find(r => r.percent === percent) || null;
 export const getHyperaldosteronismRatingCriteria = (percent) => HYPERALDOSTERONISM_CRITERIA.ratings.find(r => r.percent === percent) || null;
-// Phase 10: Digestive getRatingCriteria functions
 export const getCirrhosisRatingCriteria = (percent) => CIRRHOSIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
 export const getGastritisRatingCriteria = (percent) => GASTRITIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
 export const getPancreatitisRatingCriteria = (percent) => PANCREATITIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
 export const getBiliaryTractRatingCriteria = (percent) => BILIARY_TRACT_CRITERIA.ratings.find(r => r.percent === percent) || null;
-// Phase 11: Respiratory getRatingCriteria functions
 export const getBronchiectasisRatingCriteria = (percent) => BRONCHIECTASIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
 export const getPulmonaryFibrosisRatingCriteria = (percent) => PULMONARY_FIBROSIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
 export const getSarcoidosisRatingCriteria = (percent) => SARCOIDOSIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
 export const getMultipleSclerosisRatingCriteria = (percent) => MULTIPLE_SCLEROSIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
 export const getParkinsonsRatingCriteria = (percent) => PARKINSONS_DISEASE_CRITERIA.ratings.find(r => r.percent === percent) || null;
 export const getMyastheniaGravisRatingCriteria = (percent) => MYASTHENIA_GRAVIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
-// Narcolepsy helpers
 export const getNarcolepsyRatingCriteria = (percent) => NARCOLEPSY_CRITERIA.ratings.find(r => r.percent === percent) || null;
-// ALS helpers
 export const getALSRatingCriteria = (percent) => ALS_CRITERIA.ratings.find(r => r.percent === percent) || null;
-// Syringomyelia helpers
 export const getSyringomyeliaRatingCriteria = (percent) => SYRINGOMYELIA_CRITERIA.ratings.find(r => r.percent === percent) || null;
-// Myelitis helpers
 export const getMyelitisRatingCriteria = (percent) => MYELITIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
-// PHASE 1C: PERIPHERAL NERVE getRatingCriteria HELPERS
-// Upper Extremity Nerves
 export const getUpperRadicularGroupRatingCriteria = (percent) => UPPER_RADICULAR_GROUP_CRITERIA.ratings.find(r => r.percent === percent) || null;
 export const getMiddleRadicularGroupRatingCriteria = (percent) => MIDDLE_RADICULAR_GROUP_CRITERIA.ratings.find(r => r.percent === percent) || null;
 export const getLowerRadicularGroupRatingCriteria = (percent) => LOWER_RADICULAR_GROUP_CRITERIA.ratings.find(r => r.percent === percent) || null;
@@ -53865,7 +54862,6 @@ export const getUlnarNerveRatingCriteria = (percent) => ULNAR_NERVE_CRITERIA.rat
 export const getMusculocutaneousNerveRatingCriteria = (percent) => MUSCULOCUTANEOUS_NERVE_CRITERIA.ratings.find(r => r.percent === percent) || null;
 export const getCircumflexNerveRatingCriteria = (percent) => CIRCUMFLEX_NERVE_CRITERIA.ratings.find(r => r.percent === percent) || null;
 export const getLongThoracicNerveRatingCriteria = (percent) => LONG_THORACIC_NERVE_CRITERIA.ratings.find(r => r.percent === percent) || null;
-// Lower Extremity Nerves
 export const getSciaticNerveRatingCriteria = (percent) => SCIATIC_NERVE_CRITERIA.ratings.find(r => r.percent === percent) || null;
 export const getCommonPeronealNerveRatingCriteria = (percent) => COMMON_PERONEAL_NERVE_CRITERIA.ratings.find(r => r.percent === percent) || null;
 export const getSuperficialPeronealNerveRatingCriteria = (percent) => SUPERFICIAL_PERONEAL_NERVE_CRITERIA.ratings.find(r => r.percent === percent) || null;
@@ -53886,7 +54882,6 @@ export const getTendinitisRatingCriteria = (percent) => TENDINITIS_CRITERIA.rati
 export const getMyositisRatingCriteria = (percent) => MYOSITIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
 export const getOsteomyelitisRatingCriteria = (percent) => OSTEOMYELITIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
 export const getMultiJointArthritisRatingCriteria = (percent) => MULTI_JOINT_ARTHRITIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
-// Phase 4C: Spine Expansion getRatingCriteria functions
 export const getVertebralFractureRatingCriteria = (percent) => VERTEBRAL_FRACTURE_CRITERIA.ratings.find(r => r.percent === percent) || null;
 export const getSacroiliacInjuryRatingCriteria = (percent) => SACROILIAC_INJURY_CRITERIA.ratings.find(r => r.percent === percent) || null;
 export const getSpinalStenosisRatingCriteria = (percent) => SPINAL_STENOSIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
@@ -53897,10 +54892,8 @@ export const getClawFootRatingCriteria = (percent) => CLAW_FOOT_CRITERIA.ratings
 export const getMetatarsalgiaRatingCriteria = (percent) => METATARSALGIA_CRITERIA.ratings.find(r => r.percent === percent) || null;
 export const getHalluxValgusRatingCriteria = (percent) => HALLUX_VALGUS_CRITERIA.ratings.find(r => r.percent === percent) || null;
 export const getHalluxRigidusRatingCriteria = (percent) => HALLUX_RIGIDUS_CRITERIA.ratings.find(r => r.percent === percent) || null;
-// Phase 5A: Hernia & Structural getRatingCriteria functions
 export const getHerniaRatingCriteria = (percent) => HERNIA_CRITERIA.ratings.find(r => r.percent === percent) || null;
 export const getPeritonealAdhesionsRatingCriteria = (percent) => PERITONEAL_ADHESIONS_CRITERIA.ratings.find(r => r.percent === percent) || null;
-// Phase 5B: Esophageal & Post-Surgical getRatingCriteria functions
 export const getEsophagealStrictureRatingCriteria = (percent) => ESOPHAGEAL_STRICTURE_CRITERIA.ratings.find(r => r.percent === percent) || null;
 export const getPostgastrectomyRatingCriteria = (percent) => POSTGASTRECTOMY_CRITERIA.ratings.find(r => r.percent === percent) || null;
 export const getIntestinalFistulaRatingCriteria = (percent) => INTESTINAL_FISTULA_CRITERIA.ratings.find(r => r.percent === percent) || null;
@@ -53918,7 +54911,6 @@ export const getUveitisRating = (percent) => UVEITIS_CRITERIA.ratings.find(r => 
 export const getKeratitisRating = (percent) => KERATITIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
 export const getChronicConjunctivitisRating = (percent) => CHRONIC_CONJUNCTIVITIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
 export const getScleritisRating = (percent) => SCLERITIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
-// Phase 7B: Ear Conditions
 export const getPeripheralVestibularRating = (percent) => PERIPHERAL_VESTIBULAR_CRITERIA.ratings.find(r => r.percent === percent) || null;
 export const getChronicSuppurativeOtitisMediaRating = (percent) => CHRONIC_SUPPURATIVE_OTITIS_MEDIA_CRITERIA.ratings.find(r => r.percent === percent) || null;
 export const getChronicOtitisExternaRating = (percent) => CHRONIC_OTITIS_EXTERNA_CRITERIA.ratings.find(r => r.percent === percent) || null;
@@ -53938,26 +54930,29 @@ export const getPruritusAniRating = (percent) => PRURITUS_ANI_CRITERIA.ratings.f
 export const getAvitaminosisRating = (percent) => AVITAMINOSIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
 export const getBeriberiRating = (percent) => BERIBERI_CRITERIA.ratings.find(r => r.percent === percent) || null;
 export const getPellagraRating = (percent) => PELLAGRA_CRITERIA.ratings.find(r => r.percent === percent) || null;
-// Gynecological Conditions (DC 7610-7615)
 export const getVulvaClitorisDiseaseRating = (percent) => VULVA_CLITORIS_DISEASE_CRITERIA.ratings.find(r => r.percent === percent) || null;
 export const getVaginaDiseaseRating = (percent) => VAGINA_DISEASE_CRITERIA.ratings.find(r => r.percent === percent) || null;
 export const getCervixDiseaseRating = (percent) => CERVIX_DISEASE_CRITERIA.ratings.find(r => r.percent === percent) || null;
 export const getUterusDiseaseRating = (percent) => UTERUS_DISEASE_CRITERIA.ratings.find(r => r.percent === percent) || null;
 export const getFallopianTubePIDRating = (percent) => FALLOPIAN_TUBE_PID_CRITERIA.ratings.find(r => r.percent === percent) || null;
 export const getOvaryDiseaseRating = (percent) => OVARY_DISEASE_CRITERIA.ratings.find(r => r.percent === percent) || null;
-// Urological Conditions
 export const getChronicCystitisRating = (percent) => CHRONIC_CYSTITIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
 export const getNeurogenicBladderRating = (percent) => NEUROGENIC_BLADDER_CRITERIA.ratings.find(r => r.percent === percent) || null;
 export const getProstateConditionsRating = (percent) => PROSTATE_CONDITIONS_CRITERIA.ratings.find(r => r.percent === percent) || null;
 export const getUrethralStrictureRating = (percent) => URETHRAL_STRICTURE_CRITERIA.ratings.find(r => r.percent === percent) || null;
-// Dental/Oral Conditions
 export const getMandibleMalunionRating = (percent) => MANDIBLE_MALUNION_CRITERIA.ratings.find(r => r.percent === percent) || null;
 export const getMaxillaMalunionRating = (percent) => MAXILLA_MALUNION_CRITERIA.ratings.find(r => r.percent === percent) || null;
 export const getMaxillaMandibleBoneDiseaseRating = (percent) => MAXILLA_MANDIBLE_BONE_DISEASE_CRITERIA.ratings.find(r => r.percent === percent) || null;
-// Other Conditions
 export const getEsophagealSpasmRating = (percent) => ESOPHAGEAL_SPASM_CRITERIA.ratings.find(r => r.percent === percent) || null;
 export const getEssentialThrombocythemiaRating = (percent) => ESSENTIAL_THROMBOCYTHEMIA_CRITERIA.ratings.find(r => r.percent === percent) || null;
 export const getEyeConditionsRating = (percent) => EYE_CONDITIONS_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getChronicLaryngitisRatingCriteria = (percent) => CHRONIC_LARYNGITIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getAphoniaRatingCriteria = (percent) => APHONIA_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getLaryngealStenosisRatingCriteria = (percent) => LARYNGEAL_STENOSIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getPharynxInjuryRatingCriteria = (percent) => PHARYNX_INJURY_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getDementiaRatingCriteria = (percent) => DEMENTIA_CRITERIA.ratings.find(r => r.percent === percent) || null;
+
+
 
 
 
@@ -54151,26 +55146,29 @@ export const getAllPruritusAniRatings = () => PRURITUS_ANI_CRITERIA.ratings;
 export const getAllAvitaminosisRatings = () => AVITAMINOSIS_CRITERIA.ratings;
 export const getAllBeriberiRatings = () => BERIBERI_CRITERIA.ratings;
 export const getAllPellagraRatings = () => PELLAGRA_CRITERIA.ratings;
-// Gynecological Conditions (DC 7610-7615)
 export const getAllVulvaClitorisDiseaseRatings = () => VULVA_CLITORIS_DISEASE_CRITERIA.ratings;
 export const getAllVaginaDiseaseRatings = () => VAGINA_DISEASE_CRITERIA.ratings;
 export const getAllCervixDiseaseRatings = () => CERVIX_DISEASE_CRITERIA.ratings;
 export const getAllUterusDiseaseRatings = () => UTERUS_DISEASE_CRITERIA.ratings;
 export const getAllFallopianTubePIDRatings = () => FALLOPIAN_TUBE_PID_CRITERIA.ratings;
 export const getAllOvaryDiseaseRatings = () => OVARY_DISEASE_CRITERIA.ratings;
-// Urological Conditions
 export const getAllChronicCystitisRatings = () => CHRONIC_CYSTITIS_CRITERIA.ratings;
 export const getAllNeurogenicBladderRatings = () => NEUROGENIC_BLADDER_CRITERIA.ratings;
 export const getAllProstateConditionsRatings = () => PROSTATE_CONDITIONS_CRITERIA.ratings;
 export const getAllUrethralStrictureRatings = () => URETHRAL_STRICTURE_CRITERIA.ratings;
-// Dental/Oral Conditions
 export const getAllMandibleMalunionRatings = () => MANDIBLE_MALUNION_CRITERIA.ratings;
 export const getAllMaxillaMalunionRatings = () => MAXILLA_MALUNION_CRITERIA.ratings;
 export const getAllMaxillaMandibleBoneDiseaseRatings = () => MAXILLA_MANDIBLE_BONE_DISEASE_CRITERIA.ratings;
-// Other Conditions
 export const getAllEsophagealSpasmRatings = () => ESOPHAGEAL_SPASM_CRITERIA.ratings;
 export const getAllEssentialThrombocythemiaRatings = () => ESSENTIAL_THROMBOCYTHEMIA_CRITERIA.ratings;
 export const getAllEyeConditionsRatings = () => EYE_CONDITIONS_CRITERIA.ratings;
+export const getAllChronicLaryngitisRatings = () => CHRONIC_LARYNGITIS_CRITERIA.ratings;
+export const getAllAphoniaRatings = () => APHONIA_CRITERIA.ratings;
+export const getAllLaryngealStenosisRatings = () => LARYNGEAL_STENOSIS_CRITERIA.ratings;
+export const getAllPharynxInjuryRatings = () => PHARYNX_INJURY_CRITERIA.ratings;
+export const getAllDementiaRatings = () => DEMENTIA_CRITERIA.ratings;
+
+
 
 
 export const getMigraineDefinition = (term) => MIGRAINE_CRITERIA.definitions[term] || null;
@@ -54369,23 +55367,26 @@ export const getPruritusAniDefinition = (term) => PRURITUS_ANI_CRITERIA.definiti
 export const getAvitaminosisDefinition = (term) => AVITAMINOSIS_CRITERIA.definitions?.[term] || null;
 export const getBeriberiDefinition = (term) => BERIBERI_CRITERIA.definitions?.[term] || null;
 export const getPellagraDefinition = (term) => PELLAGRA_CRITERIA.definitions?.[term] || null;
-// Gynecological Conditions (DC 7610-7615)
 export const getVulvaClitorisDiseaseDefinition = (term) => VULVA_CLITORIS_DISEASE_CRITERIA.definitions?.[term] || null;
 export const getVaginaDiseaseDefinition = (term) => VAGINA_DISEASE_CRITERIA.definitions?.[term] || null;
 export const getCervixDiseaseDefinition = (term) => CERVIX_DISEASE_CRITERIA.definitions?.[term] || null;
 export const getUterusDiseaseDefinition = (term) => UTERUS_DISEASE_CRITERIA.definitions?.[term] || null;
 export const getFallopianTubePIDDefinition = (term) => FALLOPIAN_TUBE_PID_CRITERIA.definitions?.[term] || null;
 export const getOvaryDiseaseDefinition = (term) => OVARY_DISEASE_CRITERIA.definitions?.[term] || null;
-// Urological Conditions
 export const getChronicCystitisDefinition = (term) => CHRONIC_CYSTITIS_CRITERIA.definitions?.[term] || null;
 export const getNeurogenicBladderDefinition = (term) => NEUROGENIC_BLADDER_CRITERIA.definitions?.[term] || null;
 export const getProstateConditionsDefinition = (term) => PROSTATE_CONDITIONS_CRITERIA.definitions?.[term] || null;
 export const getUrethralStrictureDefinition = (term) => URETHRAL_STRICTURE_CRITERIA.definitions?.[term] || null;
-// Dental/Oral Conditions
 export const getMandibleMalunionDefinition = (term) => MANDIBLE_MALUNION_CRITERIA.definitions?.[term] || null;
 export const getMaxillaMalunionDefinition = (term) => MAXILLA_MALUNION_CRITERIA.definitions?.[term] || null;
 export const getMaxillaMandibleBoneDiseaseDefinition = (term) => MAXILLA_MANDIBLE_BONE_DISEASE_CRITERIA.definitions?.[term] || null;
-// Other Conditions
 export const getEsophagealSpasmDefinition = (term) => ESOPHAGEAL_SPASM_CRITERIA.definitions?.[term] || null;
 export const getEssentialThrombocythemiaDefinition = (term) => ESSENTIAL_THROMBOCYTHEMIA_CRITERIA.definitions?.[term] || null;
 export const getEyeConditionsDefinition = (term) => EYE_CONDITIONS_CRITERIA.definitions?.[term] || null;
+export const getChronicLaryngitisDefinition = (term) => CHRONIC_LARYNGITIS_CRITERIA.definitions?.[term] || null;
+export const getAphoniaDefinition = (term) => APHONIA_CRITERIA.definitions?.[term] || null;
+export const getLaryngealStenosisDefinition = (term) => LARYNGEAL_STENOSIS_CRITERIA.definitions?.[term] || null;
+export const getPharynxInjuryDefinition = (term) => PHARYNX_INJURY_CRITERIA.definitions?.[term] || null;
+export const getDementiaDefinition = (term) => DEMENTIA_CRITERIA.definitions?.[term] || null;
+
+
