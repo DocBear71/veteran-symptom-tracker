@@ -376,16 +376,6 @@ export const symptomCategories = [
     ]
   },
   {
-    id: 'hemorrhoids',
-    name: 'Hemorrhoid Symptoms',
-    symptoms: [
-      { id: 'hemorrhoid-bleeding', name: 'Hemorrhoids - Bleeding' },
-      { id: 'hemorrhoid-prolapse', name: 'Hemorrhoids - Prolapse' },
-      { id: 'hemorrhoid-thrombosis', name: 'Hemorrhoids - Thrombosis Episode' },
-      { id: 'hemorrhoid-pain', name: 'Hemorrhoids - Pain' },
-    ]
-  },
-  {
     id: 'diverticulitis',
     name: 'Diverticulitis Symptoms',
     symptoms: [
@@ -3415,6 +3405,512 @@ export const symptomCategories = [
       { id: 'cnsom-monitoring', name: 'Serous OM - Regular Monitoring', description: 'Regular audiological monitoring' },
     ],
   },
+// ============================================
+  // LOSS OF SMELL - Anosmia (DC 6275)
+  // ============================================
+  {
+    id: 'loss-of-smell',
+    name: 'Loss of Smell - Anosmia (DC 6275)',
+    symptoms: [
+      // Complete/Partial Loss
+      { id: 'smell-complete-loss', name: 'Complete Loss of Smell (Anosmia)', description: 'Total inability to smell any odors' },
+      { id: 'smell-partial-loss', name: 'Partial Loss of Smell (Hyposmia)', description: 'Reduced ability to smell' },
+      { id: 'smell-reduced', name: 'Reduced Smell Sensitivity', description: 'Decreased sensitivity to odors' },
+      { id: 'smell-fluctuating', name: 'Fluctuating Smell Ability', description: 'Smell ability varies day to day' },
+
+      // Distortion
+      { id: 'smell-distorted', name: 'Distorted Smell (Parosmia)', description: 'Familiar odors smell different/wrong' },
+      { id: 'smell-phantom', name: 'Phantom Smells (Phantosmia)', description: 'Smelling odors that are not present' },
+
+      // Safety Concerns
+      { id: 'smell-safety-concern', name: 'General Safety Concern', description: 'Unable to detect dangerous odors' },
+      { id: 'smell-gas-detection', name: 'Cannot Detect Gas Leaks', description: 'Unable to smell natural gas/propane' },
+      { id: 'smell-smoke-detection', name: 'Cannot Detect Smoke/Fire', description: 'Unable to smell smoke or burning' },
+      { id: 'smell-food-spoilage', name: 'Cannot Detect Spoiled Food', description: 'Unable to smell rotten/spoiled food' },
+
+      // Impact
+      { id: 'smell-food-taste-affected', name: 'Food Taste Affected', description: 'Taste of food affected by smell loss' },
+      { id: 'smell-quality-of-life', name: 'Quality of Life Impact', description: 'Daily life negatively affected' },
+
+      // Cause/Timeline
+      { id: 'smell-post-viral', name: 'Post-Viral Onset', description: 'Started after viral infection' },
+      { id: 'smell-post-tbi', name: 'Post-TBI Onset', description: 'Started after traumatic brain injury' },
+      { id: 'smell-post-covid', name: 'Post-COVID Onset', description: 'Started after COVID-19 infection' },
+      { id: 'smell-chronic', name: 'Chronic/Persistent (6+ months)', description: 'Lasting more than 6 months' },
+
+      // Medical
+      { id: 'smell-testing-performed', name: 'Formal Smell Testing Done', description: 'UPSIT or equivalent testing completed' },
+      { id: 'smell-treatment-attempted', name: 'Treatment Attempted', description: 'Tried treatment without success' },
+      { id: 'smell-no-improvement', name: 'No Improvement Despite Treatment', description: 'Condition not improving' },
+    ],
+  },
+
+  // ============================================
+  // LOSS OF TASTE - Ageusia (DC 6276)
+  // ============================================
+  {
+    id: 'loss-of-taste',
+    name: 'Loss of Taste - Ageusia (DC 6276)',
+    symptoms: [
+      // Complete/Partial Loss
+      { id: 'taste-complete-loss', name: 'Complete Loss of Taste (Ageusia)', description: 'Total inability to taste' },
+      { id: 'taste-partial-loss', name: 'Partial Loss of Taste (Hypogeusia)', description: 'Reduced ability to taste' },
+      { id: 'taste-reduced', name: 'Reduced Taste Sensitivity', description: 'Decreased sensitivity to tastes' },
+      { id: 'taste-fluctuating', name: 'Fluctuating Taste Ability', description: 'Taste ability varies day to day' },
+
+      // Distortion
+      { id: 'taste-distorted', name: 'Distorted Taste (Dysgeusia)', description: 'Foods taste different than expected' },
+      { id: 'taste-phantom', name: 'Phantom Tastes', description: 'Tasting things that are not present' },
+      { id: 'taste-metallic', name: 'Metallic Taste', description: 'Persistent metallic taste in mouth' },
+
+      // Specific Taste Loss
+      { id: 'taste-sweet-loss', name: 'Cannot Taste Sweet', description: 'Loss of sweet taste perception' },
+      { id: 'taste-salty-loss', name: 'Cannot Taste Salty', description: 'Loss of salty taste perception' },
+      { id: 'taste-sour-loss', name: 'Cannot Taste Sour', description: 'Loss of sour taste perception' },
+      { id: 'taste-bitter-loss', name: 'Cannot Taste Bitter', description: 'Loss of bitter taste perception' },
+      { id: 'taste-umami-loss', name: 'Cannot Taste Umami/Savory', description: 'Loss of umami taste perception' },
+
+      // Impact
+      { id: 'taste-quality-of-life', name: 'Quality of Life Impact', description: 'Daily life negatively affected' },
+      { id: 'taste-appetite-affected', name: 'Appetite Affected', description: 'Reduced appetite due to taste loss' },
+      { id: 'taste-weight-change', name: 'Weight Change Due to Taste Loss', description: 'Weight loss/gain from eating changes' },
+
+      // Cause/Timeline
+      { id: 'taste-post-viral', name: 'Post-Viral Onset', description: 'Started after viral infection' },
+      { id: 'taste-post-covid', name: 'Post-COVID Onset', description: 'Started after COVID-19 infection' },
+      { id: 'taste-medication-related', name: 'Medication-Related', description: 'Associated with medication use' },
+      { id: 'taste-chronic', name: 'Chronic/Persistent (6+ months)', description: 'Lasting more than 6 months' },
+
+      // Medical
+      { id: 'taste-testing-performed', name: 'Formal Taste Testing Done', description: 'Gustatory testing completed' },
+      { id: 'taste-treatment-attempted', name: 'Treatment Attempted', description: 'Tried treatment without success' },
+      { id: 'taste-no-improvement', name: 'No Improvement Despite Treatment', description: 'Condition not improving' },
+    ],
+  },
+
+  {
+    id: 'systemic-lupus',
+    name: 'Systemic Lupus Erythematosus - SLE (DC 6350)',
+    symptoms: [
+      // Flare/Exacerbation tracking
+      { id: 'sle-flare-acute', name: 'Acute Flare (Severe)', description: 'Severe exacerbation requiring urgent treatment/hospitalization' },
+      { id: 'sle-flare-moderate', name: 'Moderate Flare', description: 'Significant symptom worsening requiring treatment change' },
+      { id: 'sle-flare-mild', name: 'Mild Flare', description: 'Minor symptom increase, managed with current treatment' },
+
+      // Constitutional symptoms
+      { id: 'sle-fatigue-severe', name: 'Severe Fatigue', description: 'Exhaustion limiting daily activities' },
+      { id: 'sle-fatigue-moderate', name: 'Moderate Fatigue', description: 'Significant tiredness affecting function' },
+      { id: 'sle-fever', name: 'Fever', description: 'Low-grade or high fever during flare' },
+      { id: 'sle-weight-loss', name: 'Unintentional Weight Loss', description: 'Weight loss without trying' },
+      { id: 'sle-malaise', name: 'General Malaise', description: 'Overall feeling of being unwell' },
+
+      // Skin manifestations
+      { id: 'sle-malar-rash', name: 'Malar (Butterfly) Rash', description: 'Facial rash across cheeks and nose bridge' },
+      { id: 'sle-discoid-rash', name: 'Discoid Rash', description: 'Raised, scaly, coin-shaped lesions' },
+      { id: 'sle-photosensitivity', name: 'Photosensitivity Reaction', description: 'Skin reaction to sunlight exposure' },
+      { id: 'sle-oral-ulcers', name: 'Oral/Nasal Ulcers', description: 'Mouth or nose sores' },
+      { id: 'sle-skin-lesions', name: 'Other Skin Lesions', description: 'Other lupus-related skin changes' },
+      { id: 'sle-hair-loss', name: 'Hair Loss (Alopecia)', description: 'Lupus-related hair loss' },
+
+      // Joint symptoms
+      { id: 'sle-joint-pain', name: 'Joint Pain (Arthralgia)', description: 'Pain in joints without swelling' },
+      { id: 'sle-joint-swelling', name: 'Joint Swelling', description: 'Visible joint swelling' },
+      { id: 'sle-arthritis', name: 'Arthritis Episode', description: 'Inflamed, painful, swollen joints' },
+
+      // Kidney involvement
+      { id: 'sle-kidney-involvement', name: 'Kidney Symptoms', description: 'Signs of lupus nephritis' },
+      { id: 'sle-proteinuria', name: 'Proteinuria (Protein in Urine)', description: 'Lab-confirmed protein in urine' },
+      { id: 'sle-hematuria', name: 'Hematuria (Blood in Urine)', description: 'Blood in urine' },
+      { id: 'sle-edema', name: 'Edema/Swelling', description: 'Swelling in legs, ankles, or face' },
+
+      // Cardiopulmonary
+      { id: 'sle-chest-pain-pleurisy', name: 'Pleuritic Chest Pain', description: 'Sharp chest pain worse with breathing' },
+      { id: 'sle-pericarditis', name: 'Pericarditis Symptoms', description: 'Chest pain from heart lining inflammation' },
+      { id: 'sle-shortness-breath', name: 'Shortness of Breath', description: 'Difficulty breathing' },
+
+      // Neurological
+      { id: 'sle-neurological', name: 'Neurological Symptoms', description: 'Headaches, confusion, numbness' },
+      { id: 'sle-seizures', name: 'Seizure Episode', description: 'Lupus-related seizure' },
+      { id: 'sle-psychosis', name: 'Psychosis/Hallucinations', description: 'Lupus-related psychosis' },
+      { id: 'sle-cognitive', name: 'Cognitive Dysfunction (Lupus Fog)', description: 'Memory problems, difficulty concentrating' },
+      { id: 'sle-headache-severe', name: 'Severe Headache', description: 'Lupus-related severe headaches' },
+
+      // Hematologic
+      { id: 'sle-anemia', name: 'Anemia Symptoms', description: 'Fatigue, pallor from low blood counts' },
+      { id: 'sle-low-platelets', name: 'Low Platelets (Thrombocytopenia)', description: 'Easy bruising, bleeding' },
+      { id: 'sle-low-white-cells', name: 'Low White Cells (Leukopenia)', description: 'Increased infection risk' },
+      { id: 'sle-bruising', name: 'Easy Bruising', description: 'Bruising easily from low platelets' },
+
+      // Other symptoms
+      { id: 'sle-raynauds', name: 'Raynaud\'s Episode', description: 'Fingers/toes turning white/blue with cold' },
+      { id: 'sle-dry-eyes', name: 'Dry Eyes (Sicca)', description: 'Dry, gritty eyes' },
+      { id: 'sle-dry-mouth', name: 'Dry Mouth', description: 'Decreased saliva' },
+
+      // Treatment/Healthcare utilization
+      { id: 'sle-hospitalization', name: 'Hospitalization Required', description: 'Required hospital admission for SLE' },
+      { id: 'sle-immunosuppressant', name: 'On Immunosuppressant Therapy', description: 'Taking immunosuppressive medication' },
+      { id: 'sle-steroid-use', name: 'Steroid Burst/Increase', description: 'Required increased steroid dose' },
+      { id: 'sle-er-visit', name: 'ER Visit for SLE', description: 'Emergency room visit for lupus' },
+    ],
+  },
+
+  // Tuberculosis - Active Pulmonary (DC 6730)
+  {
+    id: 'tuberculosis-active',
+    name: 'Tuberculosis - Active Pulmonary (DC 6730)',
+    symptoms: [
+      // Diagnostic confirmation
+      { id: 'tb-active-confirmed', name: 'Active TB Confirmed', description: 'Diagnosis of active pulmonary TB' },
+      { id: 'tb-culture-positive', name: 'Culture Positive', description: 'Positive sputum culture for M. tuberculosis' },
+      { id: 'tb-smear-positive', name: 'AFB Smear Positive', description: 'Positive acid-fast bacilli smear' },
+
+      // Respiratory symptoms
+      { id: 'tb-cough-productive', name: 'Productive Cough', description: 'Cough with sputum production' },
+      { id: 'tb-cough-blood', name: 'Coughing Blood', description: 'Blood in sputum (hemoptysis)' },
+      { id: 'tb-hemoptysis', name: 'Hemoptysis (Significant)', description: 'Significant coughing up of blood' },
+      { id: 'tb-chest-pain', name: 'Chest Pain', description: 'TB-related chest pain' },
+      { id: 'tb-shortness-breath', name: 'Shortness of Breath', description: 'Difficulty breathing' },
+
+      // Constitutional symptoms
+      { id: 'tb-fever', name: 'Fever', description: 'Low-grade or high fever' },
+      { id: 'tb-night-sweats', name: 'Night Sweats', description: 'Drenching night sweats' },
+      { id: 'tb-weight-loss', name: 'Weight Loss', description: 'Unintentional weight loss' },
+      { id: 'tb-fatigue', name: 'Fatigue/Weakness', description: 'Severe fatigue and weakness' },
+      { id: 'tb-weakness', name: 'General Weakness', description: 'Overall body weakness' },
+
+      // Imaging findings
+      { id: 'tb-cavity-formation', name: 'Cavity Formation', description: 'Cavities visible on chest imaging' },
+      { id: 'tb-infiltrate', name: 'Pulmonary Infiltrate', description: 'Infiltrates on chest X-ray/CT' },
+      { id: 'tb-pleural-effusion', name: 'Pleural Effusion', description: 'Fluid around lungs' },
+
+      // Treatment
+      { id: 'tb-treatment-active', name: 'On Active TB Treatment', description: 'Currently receiving anti-TB medications' },
+      { id: 'tb-hospitalization', name: 'Hospitalization for TB', description: 'Required hospitalization' },
+      { id: 'tb-isolation', name: 'Isolation Required', description: 'Required respiratory isolation' },
+
+      // Medications
+      { id: 'tb-medication-rifampin', name: 'On Rifampin', description: 'Taking rifampin/rifampicin' },
+      { id: 'tb-medication-isoniazid', name: 'On Isoniazid (INH)', description: 'Taking isoniazid' },
+      { id: 'tb-medication-pyrazinamide', name: 'On Pyrazinamide', description: 'Taking pyrazinamide' },
+      { id: 'tb-medication-ethambutol', name: 'On Ethambutol', description: 'Taking ethambutol' },
+
+      // Drug resistance
+      { id: 'tb-drug-resistant', name: 'Drug-Resistant TB', description: 'TB resistant to one or more medications' },
+      { id: 'tb-mdr', name: 'MDR-TB (Multi-Drug Resistant)', description: 'Resistant to isoniazid and rifampin' },
+      { id: 'tb-xdr', name: 'XDR-TB (Extensively Drug Resistant)', description: 'Extensive drug resistance' },
+
+      // Disease course
+      { id: 'tb-reactivation', name: 'TB Reactivation', description: 'Reactivation of previous TB' },
+      { id: 'tb-progression', name: 'Disease Progression', description: 'Worsening of TB on imaging/clinically' },
+    ],
+  },
+
+  // Tuberculosis - Inactive/Residuals (DC 6731)
+  {
+    id: 'tuberculosis-inactive',
+    name: 'Tuberculosis - Inactive/Residuals (DC 6731)',
+    symptoms: [
+      // Inactive status
+      { id: 'tb-inactive-confirmed', name: 'Inactive TB Confirmed', description: 'TB declared inactive by physician' },
+      { id: 'tb-culture-negative', name: 'Culture Negative', description: 'Negative sputum cultures' },
+      { id: 'tb-treatment-completed', name: 'TB Treatment Completed', description: 'Completed full treatment course' },
+
+      // Residual structural changes
+      { id: 'tb-residual-scarring', name: 'Pulmonary Scarring', description: 'Scarring visible on imaging' },
+      { id: 'tb-residual-fibrosis', name: 'Pulmonary Fibrosis', description: 'Lung fibrosis from TB' },
+      { id: 'tb-residual-calcification', name: 'Calcified Lesions', description: 'Calcified granulomas on imaging' },
+
+      // Residual symptoms
+      { id: 'tb-residual-dyspnea', name: 'Residual Shortness of Breath', description: 'Ongoing breathing difficulty' },
+      { id: 'tb-residual-cough', name: 'Residual Chronic Cough', description: 'Persistent cough after TB' },
+      { id: 'tb-residual-decreased-capacity', name: 'Decreased Exercise Capacity', description: 'Reduced physical capacity' },
+
+      // Pulmonary function
+      { id: 'tb-pulmonary-function-reduced', name: 'Reduced Pulmonary Function', description: 'Abnormal PFTs' },
+      { id: 'tb-emphysema', name: 'Post-TB Emphysema', description: 'Emphysema from TB damage' },
+      { id: 'tb-bronchiectasis', name: 'Post-TB Bronchiectasis', description: 'Bronchiectasis from TB damage' },
+
+      // Surgical history
+      { id: 'tb-thoracoplasty-history', name: 'History of Thoracoplasty', description: 'Previous thoracoplasty for TB' },
+      { id: 'tb-lobectomy-history', name: 'History of Lobectomy', description: 'Previous lung lobe removal for TB' },
+      { id: 'tb-pneumonectomy-history', name: 'History of Pneumonectomy', description: 'Previous lung removal for TB' },
+
+      // Monitoring
+      { id: 'tb-latent-infection', name: 'Latent TB Infection', description: 'Positive TB test without active disease' },
+      { id: 'tb-monitoring', name: 'Ongoing TB Monitoring', description: 'Regular monitoring for reactivation' },
+    ],
+  },
+
+  // Tuberculosis - Miliary/Disseminated (DC 6311)
+  {
+    id: 'tuberculosis-miliary',
+    name: 'Tuberculosis - Miliary/Disseminated (DC 6311)',
+    symptoms: [
+      // Diagnosis
+      { id: 'tb-miliary-confirmed', name: 'Miliary TB Confirmed', description: 'Diagnosis of disseminated TB' },
+      { id: 'tb-disseminated', name: 'Disseminated TB', description: 'TB spread throughout body' },
+
+      // Multi-organ involvement
+      { id: 'tb-multi-organ', name: 'Multiple Organ Involvement', description: 'TB affecting multiple organs' },
+      { id: 'tb-meningitis', name: 'TB Meningitis', description: 'TB infection of brain/spinal cord membranes' },
+      { id: 'tb-bone-joint', name: 'Bone/Joint TB', description: 'Skeletal tuberculosis' },
+      { id: 'tb-kidney', name: 'Kidney TB', description: 'Renal tuberculosis' },
+      { id: 'tb-liver', name: 'Liver Involvement', description: 'Hepatic tuberculosis' },
+      { id: 'tb-spleen', name: 'Spleen Involvement', description: 'Splenic tuberculosis' },
+      { id: 'tb-lymph-nodes', name: 'Lymph Node TB', description: 'TB lymphadenitis' },
+      { id: 'tb-skin-lesions', name: 'Skin TB Lesions', description: 'Cutaneous tuberculosis' },
+      { id: 'tb-eye-involvement', name: 'Eye Involvement', description: 'Ocular tuberculosis' },
+
+      // Severity indicators
+      { id: 'tb-severe-systemic', name: 'Severe Systemic Illness', description: 'Critically ill from TB' },
+      { id: 'tb-sepsis-like', name: 'Sepsis-Like Presentation', description: 'Sepsis-like symptoms from TB' },
+    ],
+  },
+
+  // Sphincter Control (DC 7332)
+  {
+    id: 'sphincter-control',
+    name: 'Sphincter Control Impairment (DC 7332)',
+    symptoms: [
+      // Incontinence severity
+      { id: 'sphincter-complete-loss', name: 'Complete Loss of Control', description: 'No ability to control bowel' },
+      { id: 'sphincter-frequent-loss', name: 'Frequent Loss of Control', description: 'Multiple episodes per day' },
+      { id: 'sphincter-occasional-loss', name: 'Occasional Loss of Control', description: 'Episodes weekly or monthly' },
+      { id: 'sphincter-rare-loss', name: 'Rare Loss of Control', description: 'Episodes every few months' },
+
+      // Type of incontinence
+      { id: 'sphincter-incontinence-solids', name: 'Incontinence to Solids', description: 'Loss of solid stool' },
+      { id: 'sphincter-incontinence-liquids', name: 'Incontinence to Liquids', description: 'Loss of liquid stool' },
+      { id: 'sphincter-incontinence-gas', name: 'Gas Incontinence', description: 'Unable to control gas' },
+
+      // Frequency tracking
+      { id: 'sphincter-daily-episodes', name: 'Daily Episodes (2+/day)', description: '2 or more episodes per day' },
+      { id: 'sphincter-weekly-episodes', name: 'Weekly Episodes (2+/week)', description: '2 or more episodes per week' },
+      { id: 'sphincter-monthly-episodes', name: 'Monthly Episodes (2+/month)', description: '2 or more episodes per month' },
+
+      // Management
+      { id: 'sphincter-pad-use-daily', name: 'Pad Changed 2+/Day', description: 'Need to change pad multiple times daily' },
+      { id: 'sphincter-pad-use-weekly', name: 'Pad Worn 2+/Week', description: 'Need to wear pad multiple times weekly' },
+      { id: 'sphincter-pad-use-monthly', name: 'Pad Worn 2+/Month', description: 'Need to wear pad multiple times monthly' },
+      { id: 'sphincter-bowel-program', name: 'On Bowel Program', description: 'Following physician-prescribed bowel program' },
+      { id: 'sphincter-digital-stimulation', name: 'Requires Digital Stimulation', description: 'Need digital stimulation for bowel movements' },
+      { id: 'sphincter-medication', name: 'On Bowel Medication', description: 'Taking medications beyond laxatives' },
+      { id: 'sphincter-special-diet', name: 'On Special Diet', description: 'Following special diet for bowel control' },
+      { id: 'sphincter-surgery-needed', name: 'Surgery Recommended', description: 'Surgical intervention recommended' },
+
+      // Retention symptoms
+      { id: 'sphincter-retention', name: 'Fecal Retention', description: 'Unable to expel stool' },
+      { id: 'sphincter-constipation-severe', name: 'Severe Constipation', description: 'Severe difficulty passing stool' },
+
+      // Impact
+      { id: 'sphincter-social-limitation', name: 'Social Limitation', description: 'Avoiding social situations due to bowel issues' },
+      { id: 'sphincter-work-limitation', name: 'Work Limitation', description: 'Work affected by bowel issues' },
+      { id: 'sphincter-hygiene-issues', name: 'Hygiene Issues', description: 'Difficulty maintaining hygiene' },
+    ],
+  },
+
+  // Rectal Stricture (DC 7333)
+  {
+    id: 'rectal-stricture',
+    name: 'Rectal Stricture (DC 7333)',
+    symptoms: [
+      { id: 'stricture-complete-obstruction', name: 'Complete Obstruction', description: 'Cannot expel solid feces' },
+      { id: 'stricture-severe', name: 'Severe Stricture (50%+ reduction)', description: 'Lumen reduced by 50% or more' },
+      { id: 'stricture-moderate', name: 'Moderate Stricture (<50% reduction)', description: 'Lumen reduced less than 50%' },
+      { id: 'stricture-mild', name: 'Mild Stricture', description: 'Minor narrowing' },
+      { id: 'stricture-pain-defecation', name: 'Pain During Defecation', description: 'Pain when passing stool' },
+      { id: 'stricture-straining', name: 'Straining Required', description: 'Must strain to pass stool' },
+      { id: 'stricture-incomplete-evacuation', name: 'Incomplete Evacuation', description: 'Feeling of incomplete emptying' },
+      { id: 'stricture-dietary-management', name: 'Dietary Management', description: 'Managing with diet modifications' },
+      { id: 'stricture-dilation-needed', name: 'Dilation Needed', description: 'Requires periodic dilation procedures' },
+      { id: 'dyssynergia', name: 'Dyssynergic Defecation', description: 'Pelvic floor muscles don\'t relax properly' },
+      { id: 'anismus', name: 'Anismus (Functional Constipation)', description: 'Paradoxical sphincter contraction' },
+      { id: 'pelvic-floor-dysfunction', name: 'Pelvic Floor Dysfunction', description: 'Pelvic floor muscle issues' },
+    ],
+  },
+
+  // Rectal Prolapse (DC 7334)
+  {
+    id: 'rectal-prolapse',
+    name: 'Rectal Prolapse (DC 7334)',
+    symptoms: [
+      { id: 'prolapse-persistent-irreducible', name: 'Persistent Irreducible Prolapse', description: 'Prolapse cannot be pushed back in' },
+      { id: 'prolapse-manual-reduction-needed', name: 'Manual Reduction Needed', description: 'Must push prolapse back in manually' },
+      { id: 'prolapse-spontaneous-reduction', name: 'Spontaneous Reduction', description: 'Prolapse goes back in on its own' },
+      { id: 'prolapse-with-bowel-movement', name: 'Prolapse with Bowel Movements', description: 'Occurs during bowel movements' },
+      { id: 'prolapse-with-exertion', name: 'Prolapse with Exertion', description: 'Occurs with physical exertion' },
+      { id: 'prolapse-at-rest', name: 'Prolapse at Rest', description: 'Occurs without exertion or bowel movement' },
+      { id: 'prolapse-pain', name: 'Prolapse-Related Pain', description: 'Pain from prolapse' },
+      { id: 'prolapse-bleeding', name: 'Prolapse-Related Bleeding', description: 'Bleeding from prolapse' },
+      { id: 'prolapse-mucus-discharge', name: 'Mucus Discharge', description: 'Mucus discharge from prolapse' },
+      { id: 'prolapse-surgery-history', name: 'Prolapse Surgery History', description: 'Had surgical repair' },
+      { id: 'prolapse-not-repairable', name: 'Not Surgically Repairable', description: 'Surgeon says not repairable' },
+    ],
+  },
+
+  // Anal Fistula (DC 7335)
+  {
+    id: 'anal-fistula',
+    name: 'Anal Fistula (DC 7335)',
+    symptoms: [
+      { id: 'fistula-multiple-constant', name: 'Multiple Constant Fistulas (>2)', description: 'More than 2 constant fistulas' },
+      { id: 'fistula-one-two', name: 'One or Two Fistulas', description: '1-2 fistulas present' },
+      { id: 'fistula-single', name: 'Single Fistula', description: 'One fistula present' },
+      { id: 'fistula-abscess', name: 'With Abscess', description: 'Fistula with abscess formation' },
+      { id: 'fistula-drainage', name: 'With Drainage', description: 'Fistula with ongoing drainage' },
+      { id: 'fistula-pain', name: 'Fistula Pain', description: 'Pain from fistula' },
+      { id: 'fistula-refractory', name: 'Refractory to Treatment', description: 'Not responding to treatment' },
+      { id: 'fistula-surgery-history', name: 'Fistula Surgery History', description: 'Had surgical repair' },
+      { id: 'fistula-recurrent', name: 'Recurrent Fistula', description: 'Fistula returned after treatment' },
+    ],
+  },
+
+  // Hemorrhoids (DC 7336)
+  {
+    id: 'hemorrhoids',
+    name: 'Hemorrhoids (DC 7336)',
+    symptoms: [
+      { id: 'hemorrhoid-persistent-bleeding', name: 'Persistent Bleeding', description: 'Ongoing bleeding from hemorrhoids' },
+      { id: 'hemorrhoid-anemia', name: 'Hemorrhoid-Related Anemia', description: 'Anemia from chronic bleeding' },
+      { id: 'hemorrhoid-prolapsed', name: 'Prolapsed Hemorrhoids', description: 'Hemorrhoids protruding from anus' },
+      { id: 'hemorrhoid-thrombosed', name: 'Thrombosed Hemorrhoid', description: 'Hemorrhoid with blood clot' },
+      { id: 'hemorrhoid-pain', name: 'Hemorrhoid Pain', description: 'Pain from hemorrhoids' },
+      { id: 'hemorrhoid-itching', name: 'Hemorrhoid Itching', description: 'Itching from hemorrhoids' },
+      { id: 'hemorrhoid-internal', name: 'Internal Hemorrhoids', description: 'Hemorrhoids inside rectum' },
+      { id: 'hemorrhoid-external', name: 'External Hemorrhoids', description: 'Hemorrhoids under skin around anus' },
+    ],
+  },
+
+  // Pruritus Ani (DC 7337)
+  {
+    id: 'pruritus-ani',
+    name: 'Pruritus Ani (DC 7337)',
+    symptoms: [
+      { id: 'pruritus-ani-bleeding', name: 'Anal Itching with Bleeding', description: 'Bleeding from scratching' },
+      { id: 'pruritus-ani-excoriation', name: 'Anal Itching with Excoriation', description: 'Skin breakdown from scratching' },
+      { id: 'pruritus-ani-itching', name: 'Anal Itching (No Complications)', description: 'Itching without bleeding or excoriation' },
+    ],
+  },
+
+  // Avitaminosis (DC 6313)
+  {
+    id: 'avitaminosis',
+    name: 'Avitaminosis (Vitamin Deficiency) - DC 6313',
+    symptoms: [
+      // GI symptoms
+      { id: 'avitaminosis-stomatitis', name: 'Stomatitis (Mouth Inflammation)', description: 'Sores, redness, pain in mouth' },
+      { id: 'avitaminosis-diarrhea', name: 'Diarrhea', description: 'Loose, watery stools' },
+      { id: 'avitaminosis-achlorhydria', name: 'Achlorhydria', description: 'Lack of stomach acid' },
+      { id: 'avitaminosis-appetite-loss', name: 'Decreased Appetite', description: 'Loss of appetite' },
+      { id: 'avitaminosis-abdominal-discomfort', name: 'Abdominal Discomfort', description: 'Stomach pain or discomfort' },
+      { id: 'avitaminosis-nausea', name: 'Nausea', description: 'Feeling of sickness' },
+      // Dermatologic
+      { id: 'avitaminosis-dermatitis-moist', name: 'Moist Dermatitis', description: 'Wet, weeping skin inflammation' },
+      { id: 'avitaminosis-dermatitis-symmetrical', name: 'Symmetrical Dermatitis', description: 'Skin inflammation on both sides of body' },
+      { id: 'avitaminosis-dermatitis-dry', name: 'Dry Skin/Dermatitis', description: 'Dry, scaly skin' },
+      { id: 'avitaminosis-skin-lesions', name: 'Skin Lesions', description: 'Sores or abnormal patches on skin' },
+      { id: 'avitaminosis-hair-changes', name: 'Hair Changes', description: 'Hair loss or texture changes' },
+      { id: 'avitaminosis-nail-changes', name: 'Nail Changes', description: 'Brittle or abnormal nails' },
+      // Mental/Neurological
+      { id: 'avitaminosis-mental-changes', name: 'Marked Mental Changes', description: 'Significant cognitive/behavioral changes' },
+      { id: 'avitaminosis-irritability', name: 'Irritability', description: 'Easily annoyed or agitated' },
+      { id: 'avitaminosis-concentration-difficulty', name: 'Concentration Difficulty', description: 'Unable to focus' },
+      { id: 'avitaminosis-confusion', name: 'Confusion', description: 'Disorientation, difficulty thinking clearly' },
+      { id: 'avitaminosis-depression', name: 'Depression', description: 'Depressed mood' },
+      { id: 'avitaminosis-memory-problems', name: 'Memory Problems', description: 'Difficulty remembering' },
+      // Constitutional
+      { id: 'avitaminosis-weakness', name: 'Weakness', description: 'Lack of strength' },
+      { id: 'avitaminosis-fatigue', name: 'Fatigue', description: 'Persistent tiredness' },
+      { id: 'avitaminosis-weight-loss', name: 'Weight Loss', description: 'Unintentional weight loss' },
+      { id: 'avitaminosis-exhaustion', name: 'Exhaustion', description: 'Extreme tiredness' },
+      { id: 'avitaminosis-cachexia', name: 'Cachexia (Severe Wasting)', description: 'Severe weight loss and muscle wasting' },
+      { id: 'avitaminosis-impaired-vigor', name: 'Impaired Bodily Vigor', description: 'Reduced physical strength and energy' },
+      { id: 'avitaminosis-malnutrition', name: 'Malnutrition', description: 'Poor nutritional status' },
+      { id: 'avitaminosis-inability-retain-nourishment', name: 'Inability to Retain Nourishment', description: 'Cannot keep food/nutrients down' },
+    ],
+  },
+
+  // Beriberi (DC 6314)
+  {
+    id: 'beriberi',
+    name: 'Beriberi (Thiamine/B1 Deficiency) - DC 6314',
+    symptoms: [
+      // Cardiac (Wet Beriberi)
+      { id: 'beriberi-chf', name: 'Congestive Heart Failure', description: 'Heart cannot pump effectively' },
+      { id: 'beriberi-cardiomegaly', name: 'Cardiomegaly (Enlarged Heart)', description: 'Heart is enlarged' },
+      { id: 'beriberi-anasarca', name: 'Anasarca (Generalized Edema)', description: 'Severe swelling throughout body' },
+      { id: 'beriberi-edema', name: 'Edema (Swelling)', description: 'Fluid retention, swollen legs/ankles' },
+      { id: 'beriberi-dyspnea', name: 'Shortness of Breath', description: 'Difficulty breathing' },
+      { id: 'beriberi-tachycardia', name: 'Rapid Heart Rate', description: 'Heart beating too fast' },
+      { id: 'beriberi-palpitations', name: 'Palpitations', description: 'Awareness of heartbeat' },
+      // Neurological (Dry Beriberi)
+      { id: 'beriberi-neuropathy', name: 'Peripheral Neuropathy', description: 'Nerve damage in hands/feet' },
+      { id: 'beriberi-footdrop', name: 'Footdrop', description: 'Cannot lift front of foot' },
+      { id: 'beriberi-muscle-atrophy-thigh', name: 'Thigh Muscle Atrophy', description: 'Wasting of thigh muscles' },
+      { id: 'beriberi-muscle-atrophy-calf', name: 'Calf Muscle Atrophy', description: 'Wasting of calf muscles' },
+      { id: 'beriberi-absent-knee-jerk', name: 'Absent Knee Jerk Reflex', description: 'No reflex when knee tapped' },
+      { id: 'beriberi-absent-ankle-jerk', name: 'Absent Ankle Jerk Reflex', description: 'No reflex when ankle tapped' },
+      { id: 'beriberi-sensation-loss', name: 'Loss of Sensation', description: 'Numbness, cannot feel touch' },
+      { id: 'beriberi-burning-feet', name: 'Burning Feet', description: 'Burning sensation in feet' },
+      { id: 'beriberi-leg-heaviness', name: 'Leg Heaviness', description: 'Legs feel heavy' },
+      { id: 'beriberi-leg-stiffness', name: 'Leg Stiffness', description: 'Legs feel stiff' },
+      // Wernicke-Korsakoff
+      { id: 'beriberi-wernicke-korsakoff', name: 'Wernicke-Korsakoff Syndrome', description: 'Brain damage from severe deficiency' },
+      { id: 'beriberi-confusion', name: 'Confusion', description: 'Disorientation, cannot think clearly' },
+      { id: 'beriberi-ataxia', name: 'Ataxia (Unsteady Gait)', description: 'Difficulty walking, uncoordinated' },
+      { id: 'beriberi-eye-movement-abnormal', name: 'Abnormal Eye Movements', description: 'Nystagmus, gaze palsies' },
+      { id: 'beriberi-memory-loss', name: 'Memory Loss', description: 'Cannot form new memories' },
+      // General
+      { id: 'beriberi-weakness', name: 'Weakness', description: 'Lack of strength' },
+      { id: 'beriberi-fatigue', name: 'Fatigue', description: 'Persistent tiredness' },
+      { id: 'beriberi-anorexia', name: 'Anorexia (Loss of Appetite)', description: 'No desire to eat' },
+      { id: 'beriberi-dizziness', name: 'Dizziness', description: 'Feeling lightheaded' },
+      { id: 'beriberi-headache', name: 'Headache', description: 'Head pain' },
+      { id: 'beriberi-sleep-disturbance', name: 'Sleep Disturbance', description: 'Difficulty sleeping' },
+    ],
+  },
+
+  // Pellagra (DC 6315)
+  {
+    id: 'pellagra',
+    name: 'Pellagra (Niacin/B3 Deficiency) - DC 6315',
+    symptoms: [
+      // Dermatologic (the "D" for Dermatitis)
+      { id: 'pellagra-dermatitis-moist', name: 'Moist Dermatitis', description: 'Wet, weeping skin inflammation' },
+      { id: 'pellagra-dermatitis-symmetrical', name: 'Symmetrical Dermatitis', description: 'Skin inflammation on both sides' },
+      { id: 'pellagra-dermatitis-photosensitive', name: 'Photosensitive Dermatitis', description: 'Skin inflammation from sun exposure' },
+      { id: 'pellagra-casal-necklace', name: "Casal's Necklace", description: 'Classic ring of dermatitis around neck' },
+      { id: 'pellagra-skin-thickening', name: 'Skin Thickening', description: 'Thickened, rough skin' },
+      { id: 'pellagra-skin-scaling', name: 'Skin Scaling', description: 'Flaky, peeling skin' },
+      // GI (the "D" for Diarrhea)
+      { id: 'pellagra-stomatitis', name: 'Stomatitis', description: 'Mouth inflammation and sores' },
+      { id: 'pellagra-glossitis', name: 'Glossitis (Red Tongue)', description: 'Swollen, smooth, red tongue' },
+      { id: 'pellagra-diarrhea', name: 'Diarrhea', description: 'Loose, watery stools' },
+      { id: 'pellagra-achlorhydria', name: 'Achlorhydria', description: 'Lack of stomach acid' },
+      { id: 'pellagra-nausea', name: 'Nausea', description: 'Feeling of sickness' },
+      { id: 'pellagra-vomiting', name: 'Vomiting', description: 'Throwing up' },
+      { id: 'pellagra-abdominal-discomfort', name: 'Abdominal Discomfort', description: 'Stomach pain' },
+      // Mental (the "D" for Dementia)
+      { id: 'pellagra-mental-changes', name: 'Mental Changes', description: 'Cognitive or behavioral changes' },
+      { id: 'pellagra-dementia', name: 'Dementia', description: 'Severe cognitive decline' },
+      { id: 'pellagra-confusion', name: 'Confusion', description: 'Disorientation' },
+      { id: 'pellagra-depression', name: 'Depression', description: 'Depressed mood' },
+      { id: 'pellagra-irritability', name: 'Irritability', description: 'Easily annoyed' },
+      { id: 'pellagra-concentration-difficulty', name: 'Concentration Difficulty', description: 'Cannot focus' },
+      { id: 'pellagra-memory-problems', name: 'Memory Problems', description: 'Difficulty remembering' },
+      { id: 'pellagra-psychosis', name: 'Psychosis', description: 'Loss of contact with reality' },
+      // Constitutional
+      { id: 'pellagra-weakness', name: 'Weakness', description: 'Lack of strength' },
+      { id: 'pellagra-fatigue', name: 'Fatigue', description: 'Persistent tiredness' },
+      { id: 'pellagra-weight-loss', name: 'Weight Loss', description: 'Unintentional weight loss' },
+      { id: 'pellagra-appetite-loss', name: 'Appetite Loss', description: 'No desire to eat' },
+      { id: 'pellagra-exhaustion', name: 'Exhaustion', description: 'Extreme tiredness' },
+      { id: 'pellagra-cachexia', name: 'Cachexia', description: 'Severe wasting' },
+      { id: 'pellagra-impaired-vigor', name: 'Impaired Bodily Vigor', description: 'Reduced strength and energy' },
+      { id: 'pellagra-inability-retain-nourishment', name: 'Cannot Retain Nourishment', description: 'Cannot keep food down' },
+    ],
+  },
+
 
 
 ];
@@ -3484,6 +3980,12 @@ export const BODY_SYSTEMS = {
     name: 'Infectious Diseases',
     description: 'Viral, bacterial, and other infections',
     color: 'yellow'
+  },
+  'immune': {
+    id: 'immune',
+    name: 'Immune & Autoimmune',
+    description: 'Immune system disorders and autoimmune conditions',
+    color: 'fuchsia'
   },
   'mental-health': {
     id: 'mental-health',
@@ -3592,7 +4094,11 @@ export const getBodySystem = (categoryName) => {
       name.includes('gastritis') || name.includes('pancreatitis') || name.includes('biliary') ||
       name.includes('hernia') || name.includes('peritoneal adhesions') || name.includes('adhesions') ||
       name.includes('esophageal') || name.includes('postgastrectomy') || name.includes('dumping') ||
-      name.includes('intestinal fistula') || name.includes('fistula')) {
+      name.includes('intestinal fistula') || name.includes('fistula') ||
+      name.includes('sphincter control') || name.includes('rectal stricture') ||
+      name.includes('rectal prolapse') || name.includes('anal fistula') ||
+      name.includes('pruritus ani') || name.includes('avitaminosis') ||
+      name.includes('beriberi') || name.includes('pellagra')) {
     return 'digestive';
   }
 
@@ -3651,10 +4157,11 @@ export const getBodySystem = (categoryName) => {
     return 'eye-vision';
   }
 
-  // Ear conditions
+  // Ear conditions (including smell/taste per 38 CFR 4.87a)
   if (name.includes('ear') || name.includes('hearing') || name.includes('tinnitus') ||
       name.includes('meniere') || name.includes('vestibular') || name.includes('vertigo') ||
-      name.includes('otitis') || name.includes('balance')) {
+      name.includes('otitis') || name.includes('balance') ||
+      name.includes('smell') || name.includes('taste') || name.includes('anosmia') || name.includes('ageusia')) {
     return 'ear-hearing';
   }
 
@@ -3675,8 +4182,13 @@ export const getBodySystem = (categoryName) => {
       name.includes('brucellosis') || name.includes('campylobacter') || name.includes('q fever') ||
       name.includes('salmonella') || name.includes('shigella') || name.includes('west nile') ||
       name.includes('ntm') || name.includes('nontuberculous') || name.includes('post-infectious') ||
-      name.includes('gulf war')) {
+      name.includes('gulf war') || name.includes('tuberculosis') || name.includes('tb ')) {
     return 'infectious';
+  }
+
+  // Immune/Autoimmune conditions (Systemic Lupus goes here, NOT skin)
+  if (name.includes('systemic lupus') || name.includes('sle') || name.includes('autoimmune')) {
+    return 'immune';
   }
 
   // Dental/Oral conditions
@@ -3883,6 +4395,26 @@ const getParentCategory = (categoryName) => {
   if (name.includes('suppurative otitis media')) return 'ear';
   if (name.includes('otitis externa')) return 'ear';
   if (name.includes('nonsuppurative otitis media') || name.includes('serous om')) return 'ear';
+  // Loss of smell/taste - per 38 CFR 4.87a, rated under ear/hearing system
+  if (name.includes('loss of smell') || name.includes('anosmia')) return 'ear';
+  if (name.includes('loss of taste') || name.includes('ageusia')) return 'ear';
+  // Systemic Lupus (DC 6350) - Immune system, NOT skin
+  if (name.includes('systemic lupus') || name.includes('sle')) return 'systemic-lupus';
+  // Tuberculosis conditions
+  if (name.includes('tuberculosis') && name.includes('active')) return 'tuberculosis';
+  if (name.includes('tuberculosis') && name.includes('inactive')) return 'tuberculosis';
+  if (name.includes('tuberculosis') && name.includes('miliary')) return 'tuberculosis';
+  // Rectum/Anus conditions (DC 7332-7337)
+  if (name.includes('sphincter control')) return 'rectum-anus';
+  if (name.includes('rectal stricture')) return 'rectum-anus';
+  if (name.includes('rectal prolapse')) return 'rectum-anus';
+  if (name.includes('anal fistula')) return 'rectum-anus';
+  if (name.includes('hemorrhoids') && !name.includes('symptom')) return 'rectum-anus';
+  if (name.includes('pruritus ani')) return 'rectum-anus';
+  // Nutritional Deficiencies (DC 6313-6315)
+  if (name.includes('avitaminosis')) return 'nutritional-deficiency';
+  if (name.includes('beriberi')) return 'nutritional-deficiency';
+  if (name.includes('pellagra')) return 'nutritional-deficiency';
   return null; // No parent, this is a standalone category
 };
 

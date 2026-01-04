@@ -507,14 +507,7 @@ export const CONDITIONS = {
     symptomIds: [ 'ulcer-abdominal-pain', 'ulcer-nausea', 'ulcer-vomiting', 'ulcer-hematemesis', 'ulcer-melena', 'ulcer-hospitalization',
     ],
   },
-  HEMORRHOIDS: {
-    id: 'hemorrhoids',
-    name: 'Hemorrhoids',
-    diagnosticCode: '7336',
-    cfrReference: '38 CFR 4.114',
-    symptomIds: [ 'hemorrhoid-bleeding', 'hemorrhoid-prolapse', 'hemorrhoid-thrombosis', 'hemorrhoid-pain',
-    ],
-  },
+
   DIVERTICULITIS: {
     id: 'diverticulitis',
     name: 'Diverticulitis',
@@ -2495,6 +2488,270 @@ export const CONDITIONS = {
     ],
   },
 
+  // ============================================
+  // LOSS OF SMELL (DC 6275) - Anosmia
+  // ============================================
+  LOSS_OF_SMELL: {
+    id: 'loss-of-smell',
+    name: 'Loss of Smell (Anosmia)',
+    diagnosticCode: '6275',
+    cfrReference: '38 CFR 4.87a',
+    description: 'Complete loss of sense of smell - commonly associated with TBI, COVID-19, nasal conditions, or neurological disorders',
+    symptomIds: [
+      'smell-complete-loss', 'smell-partial-loss', 'smell-distorted', 'smell-phantom',
+      'smell-reduced', 'smell-fluctuating', 'smell-food-taste-affected', 'smell-safety-concern',
+      'smell-gas-detection', 'smell-smoke-detection', 'smell-food-spoilage', 'smell-quality-of-life',
+      'smell-post-viral', 'smell-post-tbi', 'smell-post-covid', 'smell-chronic',
+      'smell-testing-performed', 'smell-treatment-attempted', 'smell-no-improvement'
+    ],
+  },
+
+  // ============================================
+  // LOSS OF TASTE (DC 6276) - Ageusia
+  // ============================================
+  LOSS_OF_TASTE: {
+    id: 'loss-of-taste',
+    name: 'Loss of Taste (Ageusia)',
+    diagnosticCode: '6276',
+    cfrReference: '38 CFR 4.87a',
+    description: 'Complete loss of sense of taste - commonly associated with COVID-19, medication side effects, nerve damage, or neurological disorders',
+    symptomIds: [
+      'taste-complete-loss', 'taste-partial-loss', 'taste-distorted', 'taste-phantom',
+      'taste-reduced', 'taste-fluctuating', 'taste-metallic', 'taste-sweet-loss',
+      'taste-salty-loss', 'taste-sour-loss', 'taste-bitter-loss', 'taste-umami-loss',
+      'taste-quality-of-life', 'taste-appetite-affected', 'taste-weight-change',
+      'taste-post-viral', 'taste-post-covid', 'taste-chronic', 'taste-medication-related',
+      'taste-testing-performed', 'taste-treatment-attempted', 'taste-no-improvement'
+    ],
+  },
+
+  SYSTEMIC_LUPUS: {
+    name: 'Systemic Lupus Erythematosus',
+    diagnosticCode: '6350',
+    cfrReference: '38 CFR 4.88b',
+    symptomIds: [
+      // Core SLE symptoms
+      'sle-flare-acute', 'sle-flare-moderate', 'sle-flare-mild',
+      'sle-fatigue-severe', 'sle-fatigue-moderate',
+      'sle-fever', 'sle-weight-loss', 'sle-malaise',
+      // Skin manifestations
+      'sle-malar-rash', 'sle-discoid-rash', 'sle-photosensitivity',
+      'sle-oral-ulcers', 'sle-skin-lesions', 'sle-hair-loss',
+      // Joint involvement
+      'sle-joint-pain', 'sle-joint-swelling', 'sle-arthritis',
+      // Organ involvement
+      'sle-kidney-involvement', 'sle-proteinuria', 'sle-hematuria',
+      'sle-chest-pain-pleurisy', 'sle-pericarditis', 'sle-shortness-breath',
+      'sle-neurological', 'sle-seizures', 'sle-psychosis', 'sle-cognitive',
+      // Hematologic
+      'sle-anemia', 'sle-low-platelets', 'sle-low-white-cells',
+      // Other
+      'sle-raynauds', 'sle-dry-eyes', 'sle-dry-mouth',
+      'sle-hospitalization', 'sle-immunosuppressant', 'sle-steroid-use',
+    ],
+    bodySystem: 'immune',
+  },
+
+  TUBERCULOSIS_ACTIVE: {
+    name: 'Tuberculosis, Pulmonary, Active',
+    diagnosticCode: '6730',
+    cfrReference: '38 CFR 4.97',
+    symptomIds: [
+      'tb-active-confirmed', 'tb-culture-positive', 'tb-smear-positive',
+      'tb-cough-productive', 'tb-cough-blood', 'tb-hemoptysis',
+      'tb-fever', 'tb-night-sweats', 'tb-weight-loss', 'tb-fatigue',
+      'tb-chest-pain', 'tb-shortness-breath', 'tb-weakness',
+      'tb-cavity-formation', 'tb-infiltrate', 'tb-pleural-effusion',
+      'tb-treatment-active', 'tb-hospitalization', 'tb-isolation',
+      'tb-medication-rifampin', 'tb-medication-isoniazid', 'tb-medication-pyrazinamide', 'tb-medication-ethambutol',
+      'tb-drug-resistant', 'tb-mdr', 'tb-xdr',
+      'tb-reactivation', 'tb-progression',
+    ],
+    bodySystem: 'respiratory',
+  },
+
+  TUBERCULOSIS_INACTIVE: {
+    name: 'Tuberculosis, Pulmonary, Inactive',
+    diagnosticCode: '6731',
+    cfrReference: '38 CFR 4.97',
+    symptomIds: [
+      'tb-inactive-confirmed', 'tb-culture-negative', 'tb-treatment-completed',
+      'tb-residual-scarring', 'tb-residual-fibrosis', 'tb-residual-calcification',
+      'tb-residual-dyspnea', 'tb-residual-cough', 'tb-residual-decreased-capacity',
+      'tb-pulmonary-function-reduced', 'tb-emphysema', 'tb-bronchiectasis',
+      'tb-thoracoplasty-history', 'tb-lobectomy-history', 'tb-pneumonectomy-history',
+      'tb-latent-infection', 'tb-monitoring',
+    ],
+    bodySystem: 'respiratory',
+  },
+
+  TUBERCULOSIS_MILIARY: {
+    name: 'Tuberculosis, Miliary (Disseminated)',
+    diagnosticCode: '6311',
+    cfrReference: '38 CFR 4.88b',
+    symptomIds: [
+      'tb-miliary-confirmed', 'tb-disseminated',
+      'tb-multi-organ', 'tb-meningitis', 'tb-bone-joint', 'tb-kidney', 'tb-liver', 'tb-spleen',
+      'tb-lymph-nodes', 'tb-skin-lesions', 'tb-eye-involvement',
+      'tb-severe-systemic', 'tb-sepsis-like',
+    ],
+    bodySystem: 'infectious',
+  },
+
+  SPHINCTER_CONTROL: {
+    name: 'Rectum and Anus, Impairment of Sphincter Control',
+    diagnosticCode: '7332',
+    cfrReference: '38 CFR 4.114',
+    symptomIds: [
+      // Incontinence levels
+      'sphincter-complete-loss', 'sphincter-frequent-loss', 'sphincter-occasional-loss', 'sphincter-rare-loss',
+      'sphincter-incontinence-solids', 'sphincter-incontinence-liquids', 'sphincter-incontinence-gas',
+      // Frequency
+      'sphincter-daily-episodes', 'sphincter-weekly-episodes', 'sphincter-monthly-episodes',
+      // Management
+      'sphincter-pad-use-daily', 'sphincter-pad-use-weekly', 'sphincter-pad-use-monthly',
+      'sphincter-bowel-program', 'sphincter-digital-stimulation', 'sphincter-medication',
+      'sphincter-special-diet', 'sphincter-surgery-needed',
+      // Retention
+      'sphincter-retention', 'sphincter-constipation-severe',
+      // Impact
+      'sphincter-social-limitation', 'sphincter-work-limitation', 'sphincter-hygiene-issues',
+    ],
+    bodySystem: 'digestive',
+  },
+
+  RECTAL_STRICTURE: {
+    name: 'Rectum and Anus, Stricture',
+    diagnosticCode: '7333',
+    cfrReference: '38 CFR 4.114',
+    symptomIds: [
+      'stricture-complete-obstruction', 'stricture-severe', 'stricture-moderate', 'stricture-mild',
+      'stricture-pain-defecation', 'stricture-straining', 'stricture-incomplete-evacuation',
+      'stricture-dietary-management', 'stricture-dilation-needed',
+      'dyssynergia', 'anismus', 'pelvic-floor-dysfunction',
+    ],
+    bodySystem: 'digestive',
+  },
+
+  RECTAL_PROLAPSE: {
+    name: 'Rectum, Prolapse',
+    diagnosticCode: '7334',
+    cfrReference: '38 CFR 4.114',
+    symptomIds: [
+      'prolapse-persistent-irreducible', 'prolapse-manual-reduction-needed', 'prolapse-spontaneous-reduction',
+      'prolapse-with-bowel-movement', 'prolapse-with-exertion', 'prolapse-at-rest',
+      'prolapse-pain', 'prolapse-bleeding', 'prolapse-mucus-discharge',
+      'prolapse-surgery-history', 'prolapse-not-repairable',
+    ],
+    bodySystem: 'digestive',
+  },
+
+  ANAL_FISTULA: {
+    name: 'Fistula in Ano (Anorectal Fistula/Abscess)',
+    diagnosticCode: '7335',
+    cfrReference: '38 CFR 4.114',
+    symptomIds: [
+      'fistula-multiple-constant', 'fistula-one-two', 'fistula-single',
+      'fistula-abscess', 'fistula-drainage', 'fistula-pain',
+      'fistula-refractory', 'fistula-surgery-history', 'fistula-recurrent',
+    ],
+    bodySystem: 'digestive',
+  },
+
+  HEMORRHOIDS: {
+    id: 'hemorrhoids',
+    name: 'Hemorrhoids, External or Internal',
+    diagnosticCode: '7336',
+    cfrReference: '38 CFR 4.114',
+    symptomIds: [
+      'hemorrhoid-persistent-bleeding', 'hemorrhoid-anemia', 'hemorrhoid-prolapsed',
+      'hemorrhoid-thrombosed', 'hemorrhoid-pain', 'hemorrhoid-itching',
+      'hemorrhoid-bleeding', 'hemorrhoid-prolapse', 'hemorrhoid-thrombosis',
+      'hemorrhoid-internal', 'hemorrhoid-external',
+    ],
+    bodySystem: 'digestive',
+  },
+
+  PRURITUS_ANI: {
+    name: 'Pruritus Ani (Anal Itching)',
+    diagnosticCode: '7337',
+    cfrReference: '38 CFR 4.114',
+    symptomIds: [
+      'pruritus-ani-bleeding', 'pruritus-ani-excoriation', 'pruritus-ani-itching',
+    ],
+    bodySystem: 'digestive',
+  },
+
+  AVITAMINOSIS: {
+    name: 'Avitaminosis (Vitamin Deficiency)',
+    diagnosticCode: '6313',
+    cfrReference: '38 CFR 4.88b',
+    symptomIds: [
+      // GI symptoms
+      'avitaminosis-stomatitis', 'avitaminosis-diarrhea', 'avitaminosis-achlorhydria',
+      'avitaminosis-appetite-loss', 'avitaminosis-abdominal-discomfort', 'avitaminosis-nausea',
+      // Dermatologic
+      'avitaminosis-dermatitis-moist', 'avitaminosis-dermatitis-symmetrical', 'avitaminosis-dermatitis-dry',
+      'avitaminosis-skin-lesions', 'avitaminosis-hair-changes', 'avitaminosis-nail-changes',
+      // Neurological/Mental
+      'avitaminosis-mental-changes', 'avitaminosis-irritability', 'avitaminosis-concentration-difficulty',
+      'avitaminosis-confusion', 'avitaminosis-depression', 'avitaminosis-memory-problems',
+      // Constitutional
+      'avitaminosis-weakness', 'avitaminosis-fatigue', 'avitaminosis-weight-loss',
+      'avitaminosis-exhaustion', 'avitaminosis-cachexia', 'avitaminosis-impaired-vigor',
+      // Nutritional status
+      'avitaminosis-malnutrition', 'avitaminosis-inability-retain-nourishment',
+    ],
+    bodySystem: 'infectious', // Rated under 4.88b
+  },
+
+  BERIBERI: {
+    name: 'Beriberi (Thiamine/B1 Deficiency)',
+    diagnosticCode: '6314',
+    cfrReference: '38 CFR 4.88b',
+    symptomIds: [
+      // Cardiac (Wet Beriberi)
+      'beriberi-chf', 'beriberi-cardiomegaly', 'beriberi-anasarca', 'beriberi-edema',
+      'beriberi-dyspnea', 'beriberi-tachycardia', 'beriberi-palpitations',
+      // Neurological (Dry Beriberi)
+      'beriberi-neuropathy', 'beriberi-footdrop', 'beriberi-muscle-atrophy-thigh',
+      'beriberi-muscle-atrophy-calf', 'beriberi-absent-knee-jerk', 'beriberi-absent-ankle-jerk',
+      'beriberi-sensation-loss', 'beriberi-burning-feet', 'beriberi-leg-heaviness',
+      'beriberi-leg-stiffness',
+      // Wernicke-Korsakoff
+      'beriberi-wernicke-korsakoff', 'beriberi-confusion', 'beriberi-ataxia',
+      'beriberi-eye-movement-abnormal', 'beriberi-memory-loss',
+      // General
+      'beriberi-weakness', 'beriberi-fatigue', 'beriberi-anorexia', 'beriberi-dizziness',
+      'beriberi-headache', 'beriberi-sleep-disturbance',
+    ],
+    bodySystem: 'infectious',
+  },
+
+  PELLAGRA: {
+    name: 'Pellagra (Niacin/B3 Deficiency)',
+    diagnosticCode: '6315',
+    cfrReference: '38 CFR 4.88b',
+    symptomIds: [
+      // Classic "4 Ds": Dermatitis, Diarrhea, Dementia, Death
+      // Dermatologic
+      'pellagra-dermatitis-moist', 'pellagra-dermatitis-symmetrical', 'pellagra-dermatitis-photosensitive',
+      'pellagra-casal-necklace', 'pellagra-skin-thickening', 'pellagra-skin-scaling',
+      // GI
+      'pellagra-stomatitis', 'pellagra-glossitis', 'pellagra-diarrhea', 'pellagra-achlorhydria',
+      'pellagra-nausea', 'pellagra-vomiting', 'pellagra-abdominal-discomfort',
+      // Mental
+      'pellagra-mental-changes', 'pellagra-dementia', 'pellagra-confusion',
+      'pellagra-depression', 'pellagra-irritability', 'pellagra-concentration-difficulty',
+      'pellagra-memory-problems', 'pellagra-psychosis',
+      // Constitutional
+      'pellagra-weakness', 'pellagra-fatigue', 'pellagra-weight-loss', 'pellagra-appetite-loss',
+      'pellagra-exhaustion', 'pellagra-cachexia', 'pellagra-impaired-vigor',
+      'pellagra-inability-retain-nourishment',
+    ],
+    bodySystem: 'infectious',
+  },
+
 };
 // ============================================
 // MIGRAINE RATING CRITERIA (DC 8100)
@@ -2737,6 +2994,114 @@ export const SLEEP_APNEA_CRITERIA = {
       definition: 'An overnight test that records brain activity, eye movements, heart rate, blood pressure, oxygen levels, and breathing patterns to diagnose sleep disorders.',
     },
   },
+
+  secondaryConditions: {
+    description: 'Sleep apnea can cause or aggravate numerous secondary conditions due to chronic oxygen deprivation and sleep disruption.',
+
+    categories: {
+      cardiovascular: {
+        name: 'Cardiovascular Secondaries',
+        conditions: [
+          {
+            manifestation: 'Hypertension',
+            suggestedDCs: ['7101'],
+            dcDescriptions: ['Hypertensive vascular disease'],
+            nexusStrength: 'strong',
+            notes: 'Sleep apnea is a well-established cause of hypertension. Very strong medical connection.',
+            documentationTips: ['Blood pressure logs', 'Note improvement with CPAP use', 'Cardiology records'],
+          },
+          {
+            manifestation: 'Coronary Artery Disease',
+            suggestedDCs: ['7005'],
+            dcDescriptions: ['Arteriosclerotic heart disease'],
+            nexusStrength: 'strong',
+            notes: 'Chronic hypoxia from sleep apnea accelerates atherosclerosis.',
+            documentationTips: ['Cardiac workup', 'Document severity of apnea', 'Medical literature'],
+          },
+          {
+            manifestation: 'Atrial Fibrillation',
+            suggestedDCs: ['7010'],
+            dcDescriptions: ['Supraventricular arrhythmias'],
+            nexusStrength: 'strong',
+            notes: 'Sleep apnea significantly increases AFib risk.',
+            documentationTips: ['EKG/Holter monitor results', 'Cardiology records'],
+          },
+          {
+            manifestation: 'Heart Failure',
+            suggestedDCs: ['7007'],
+            dcDescriptions: ['Hypertensive heart disease'],
+            nexusStrength: 'moderate',
+            notes: 'Chronic strain from apnea can contribute to heart failure.',
+            documentationTips: ['Echocardiogram', 'Document LVEF', 'Cardiology evaluation'],
+          },
+        ],
+      },
+
+      mentalHealth: {
+        name: 'Mental Health Secondaries',
+        conditions: [
+          {
+            manifestation: 'Depression',
+            suggestedDCs: ['9434'],
+            dcDescriptions: ['Major depressive disorder'],
+            nexusStrength: 'strong',
+            notes: 'Chronic fatigue and poor sleep quality commonly cause depression.',
+            documentationTips: ['Mental health records', 'Document fatigue impact', 'PHQ-9 scores'],
+          },
+          {
+            manifestation: 'Cognitive Impairment',
+            suggestedDCs: ['8045', '9326'],
+            dcDescriptions: ['TBI residuals', 'Dementia'],
+            nexusStrength: 'moderate',
+            notes: 'Chronic hypoxia can cause cognitive changes. Document memory/concentration issues.',
+            documentationTips: ['Neuropsychological testing', 'Document cognitive symptoms', 'Brain imaging if performed'],
+          },
+        ],
+      },
+
+      metabolic: {
+        name: 'Metabolic Conditions',
+        conditions: [
+          {
+            manifestation: 'Type 2 Diabetes',
+            suggestedDCs: ['7913'],
+            dcDescriptions: ['Diabetes mellitus'],
+            nexusStrength: 'moderate',
+            notes: 'Sleep apnea affects insulin resistance and glucose metabolism.',
+            documentationTips: ['HbA1c trend', 'Document onset relative to apnea diagnosis', 'Endocrinology records'],
+          },
+        ],
+      },
+    },
+
+    canBeSecondaryTo: [
+      {
+        primaryDC: '9411',
+        primaryCondition: 'PTSD',
+        nexusStrength: 'moderate',
+        notes: 'PTSD medications and weight gain can cause/worsen sleep apnea',
+      },
+      {
+        primaryDC: '5237',
+        primaryCondition: 'Cervical Strain',
+        nexusStrength: 'moderate',
+        notes: 'Neck conditions can affect airway',
+      },
+      {
+        primaryDC: '7913',
+        primaryCondition: 'Diabetes Mellitus',
+        nexusStrength: 'moderate',
+        notes: 'Obesity/metabolic syndrome link',
+      },
+    ],
+
+    importantNotes: [
+      'Sleep apnea is rated based on treatment requirements (CPAP use)',
+      'Document compliance with CPAP therapy',
+      'Secondary conditions can significantly increase overall rating',
+      'Get sleep study results and compliance data',
+    ],
+  },
 };
 
 // ============================================
@@ -2914,6 +3279,147 @@ export const PTSD_CRITERIA = {
       definition: 'A discrete period of intense fear or discomfort with physical symptoms such as rapid heartbeat, sweating, trembling, shortness of breath, chest pain, nausea, dizziness, or fear of losing control.',
     },
   },
+
+  secondaryConditions: {
+    description: 'PTSD commonly causes or aggravates other conditions. Mental health secondary conditions require nexus showing the condition developed or worsened due to PTSD symptoms.',
+
+    categories: {
+      mentalHealth: {
+        name: 'Mental Health Secondaries',
+        conditions: [
+          {
+            manifestation: 'Major Depressive Disorder',
+            suggestedDCs: ['9434'],
+            dcDescriptions: ['Major depressive disorder'],
+            nexusStrength: 'strong',
+            notes: 'Depression commonly co-occurs with PTSD. May be rated separately or together.',
+            documentationTips: ['Mental health records showing both diagnoses', 'PHQ-9 scores', 'Document functional impairment from each'],
+          },
+          {
+            manifestation: 'Generalized Anxiety Disorder',
+            suggestedDCs: ['9400'],
+            dcDescriptions: ['Generalized anxiety disorder'],
+            nexusStrength: 'strong',
+            notes: 'Anxiety often develops secondary to PTSD hypervigilance.',
+            documentationTips: ['GAD-7 scores', 'Treatment records', 'Document how PTSD symptoms trigger anxiety'],
+          },
+          {
+            manifestation: 'Panic Disorder',
+            suggestedDCs: ['9412'],
+            dcDescriptions: ['Panic disorder'],
+            nexusStrength: 'moderate',
+            notes: 'Panic attacks may develop from PTSD triggers.',
+            documentationTips: ['Document panic attack frequency', 'Identify PTSD-related triggers', 'Treatment records'],
+          },
+          {
+            manifestation: 'Substance Use Disorder',
+            suggestedDCs: ['9400'],
+            dcDescriptions: ['Rate based on residuals after treatment'],
+            nexusStrength: 'moderate',
+            notes: 'Self-medication for PTSD symptoms. Document treatment and any residual conditions.',
+            documentationTips: ['Treatment records', 'Document onset relative to PTSD', 'Any residual conditions from substance use'],
+          },
+        ],
+      },
+
+      sleep: {
+        name: 'Sleep Disorders',
+        conditions: [
+          {
+            manifestation: 'Insomnia',
+            suggestedDCs: ['9400'],
+            dcDescriptions: ['Rate under mental health formula or sleep study if applicable'],
+            nexusStrength: 'strong',
+            notes: 'Sleep disturbance is a core PTSD symptom but can be rated separately if severe.',
+            documentationTips: ['Sleep study if performed', 'Document sleep patterns', 'Treatment records'],
+          },
+          {
+            manifestation: 'Sleep Apnea',
+            suggestedDCs: ['6847'],
+            dcDescriptions: ['Sleep apnea syndromes'],
+            nexusStrength: 'moderate',
+            notes: 'Studies show PTSD increases sleep apnea risk. Document weight changes, sleep study.',
+            documentationTips: ['Sleep study showing OSA', 'Document weight gain from PTSD medications', 'Medical literature supporting connection'],
+          },
+        ],
+      },
+
+      cardiovascular: {
+        name: 'Cardiovascular Conditions',
+        conditions: [
+          {
+            manifestation: 'Hypertension',
+            suggestedDCs: ['7101'],
+            dcDescriptions: ['Hypertensive vascular disease'],
+            nexusStrength: 'moderate',
+            notes: 'Chronic stress from PTSD can contribute to hypertension.',
+            documentationTips: ['Blood pressure logs', 'Document stress response patterns', 'Cardiology evaluation'],
+          },
+          {
+            manifestation: 'Coronary Artery Disease',
+            suggestedDCs: ['7005'],
+            dcDescriptions: ['Arteriosclerotic heart disease'],
+            nexusStrength: 'moderate',
+            notes: 'Research shows PTSD increases cardiac disease risk.',
+            documentationTips: ['Cardiac workup', 'Medical literature', 'Timeline documentation'],
+          },
+        ],
+      },
+
+      gastrointestinal: {
+        name: 'Gastrointestinal Conditions',
+        conditions: [
+          {
+            manifestation: 'Irritable Bowel Syndrome (IBS)',
+            suggestedDCs: ['7319'],
+            dcDescriptions: ['Irritable colon syndrome'],
+            nexusStrength: 'strong',
+            notes: 'Strong gut-brain connection. IBS commonly secondary to PTSD.',
+            documentationTips: ['GI specialist records', 'Document symptom onset relative to PTSD', 'Food diary'],
+          },
+          {
+            manifestation: 'GERD',
+            suggestedDCs: ['7346'],
+            dcDescriptions: ['Hiatal hernia'],
+            nexusStrength: 'moderate',
+            notes: 'Stress-related GI symptoms common with PTSD.',
+            documentationTips: ['GI evaluation', 'Endoscopy if performed', 'Medication records'],
+          },
+        ],
+      },
+
+      musculoskeletal: {
+        name: 'Musculoskeletal Conditions',
+        conditions: [
+          {
+            manifestation: 'Chronic Pain Syndrome',
+            suggestedDCs: ['5025', '5237'],
+            dcDescriptions: ['Fibromyalgia', 'Lumbosacral strain'],
+            nexusStrength: 'moderate',
+            notes: 'Central sensitization from chronic PTSD can cause widespread pain.',
+            documentationTips: ['Pain specialist evaluation', 'Document pain patterns', 'Tender point examination'],
+          },
+          {
+            manifestation: 'Tension Headaches/Migraines',
+            suggestedDCs: ['8100'],
+            dcDescriptions: ['Migraine'],
+            nexusStrength: 'moderate',
+            notes: 'Stress and tension from PTSD can cause or worsen headaches.',
+            documentationTips: ['Headache diary', 'Neurology evaluation', 'Document stress triggers'],
+          },
+        ],
+      },
+    },
+
+    importantNotes: [
+      'Mental health conditions are often rated together under one rating - discuss with VSO',
+      'Some conditions may not get separate rating due to pyramiding rules',
+      'Document how PTSD specifically causes or worsens each secondary condition',
+      'Get treating mental health provider to write nexus letter',
+      'Keep detailed symptom logs showing connections between conditions',
+    ],
+  },
+
 
   importantNotes: MENTAL_HEALTH_SHARED_CRITERIA.importantNotes,
 };
@@ -3683,6 +4189,98 @@ export const HYPERTENSION_CRITERIA = {
       definition: 'Ongoing daily medication to control blood pressure. Missing doses typically results in elevated readings.',
     },
   },
+
+  secondaryConditions: {
+    description: 'Hypertension causes damage to blood vessels and organs over time, leading to numerous secondary conditions.',
+
+    categories: {
+      cardiovascular: {
+        name: 'Cardiovascular Secondaries',
+        conditions: [
+          {
+            manifestation: 'Hypertensive Heart Disease',
+            suggestedDCs: ['7007'],
+            dcDescriptions: ['Hypertensive heart disease'],
+            nexusStrength: 'strong',
+            notes: 'Direct consequence of uncontrolled hypertension. Document cardiac changes.',
+            documentationTips: ['Echocardiogram showing LVH', 'Document EF if reduced', 'Cardiology records'],
+          },
+          {
+            manifestation: 'Coronary Artery Disease',
+            suggestedDCs: ['7005'],
+            dcDescriptions: ['Arteriosclerotic heart disease'],
+            nexusStrength: 'strong',
+            notes: 'Hypertension accelerates atherosclerosis.',
+            documentationTips: ['Stress test', 'Cardiac catheterization if done', 'Document chest pain symptoms'],
+          },
+          {
+            manifestation: 'Stroke/CVA Residuals',
+            suggestedDCs: ['8008'],
+            dcDescriptions: ['Cerebral thrombosis'],
+            nexusStrength: 'strong',
+            notes: 'Hypertension is leading cause of stroke. Rate residuals separately.',
+            documentationTips: ['Brain imaging', 'Document all residual deficits', 'Neurology records'],
+          },
+        ],
+      },
+
+      renal: {
+        name: 'Kidney Secondaries',
+        conditions: [
+          {
+            manifestation: 'Chronic Kidney Disease',
+            suggestedDCs: ['7530'],
+            dcDescriptions: ['Chronic renal disease'],
+            nexusStrength: 'strong',
+            notes: 'Hypertension is second leading cause of kidney disease.',
+            documentationTips: ['Track GFR over time', 'Document proteinuria', 'Nephrology records'],
+          },
+        ],
+      },
+
+      eyes: {
+        name: 'Eye Secondaries',
+        conditions: [
+          {
+            manifestation: 'Hypertensive Retinopathy',
+            suggestedDCs: ['6006'],
+            dcDescriptions: ['Retinopathy'],
+            nexusStrength: 'strong',
+            notes: 'Fundoscopic exam shows retinal changes from hypertension.',
+            documentationTips: ['Dilated eye exam', 'Document retinal changes', 'Ophthalmology records'],
+          },
+        ],
+      },
+    },
+
+    canBeSecondaryTo: [
+      {
+        primaryDC: '6847',
+        primaryCondition: 'Sleep Apnea',
+        nexusStrength: 'strong',
+        notes: 'Very well-established medical connection',
+      },
+      {
+        primaryDC: '9411',
+        primaryCondition: 'PTSD',
+        nexusStrength: 'moderate',
+        notes: 'Chronic stress contributes to hypertension',
+      },
+      {
+        primaryDC: '7913',
+        primaryCondition: 'Diabetes Mellitus',
+        nexusStrength: 'strong',
+        notes: 'Commonly co-occur; each can worsen the other',
+      },
+    ],
+
+    importantNotes: [
+      'Hypertension ratings are based on diastolic and systolic readings',
+      'Track blood pressure consistently - home readings count',
+      'Document medication requirements and side effects',
+      'Secondary conditions from hypertension can significantly increase overall rating',
+    ],
+  },
 };
 export const DIABETES_CRITERIA = {
   diagnosticCode: '7913',
@@ -3905,6 +4503,216 @@ export const DIABETES_CRITERIA = {
         'Minimal glucose variability',
       ],
     },
+  },
+
+  secondaryConditions: {
+    description: 'Diabetes Mellitus commonly causes complications that can be rated as separate secondary service-connected conditions. Each secondary condition requires medical documentation showing it is "at least as likely as not" caused or aggravated by diabetes.',
+
+    categories: {
+      kidneys: {
+        name: 'Kidney Complications',
+        conditions: [
+          {
+            manifestation: 'Diabetic Nephropathy',
+            suggestedDCs: ['7541'],
+            dcDescriptions: ['Renal involvement in diabetes mellitus'],
+            nexusStrength: 'strong',
+            notes: 'Very common complication. Document proteinuria, elevated creatinine, GFR decline.',
+            documentationTips: ['Request urinalysis showing protein', 'Track GFR over time', 'Get nephrology consult'],
+          },
+        ],
+      },
+
+      nerves: {
+        name: 'Nerve Damage (Neuropathy)',
+        conditions: [
+          {
+            manifestation: 'Peripheral Neuropathy - Lower Extremities',
+            suggestedDCs: ['8520', '8521'],
+            dcDescriptions: ['Sciatic nerve paralysis', 'External popliteal (common peroneal) nerve'],
+            nexusStrength: 'strong',
+            notes: 'Most common complication. Document numbness, tingling, burning in feet/legs.',
+            documentationTips: ['EMG/nerve conduction study', 'Monofilament testing results', 'Document symptom progression'],
+          },
+          {
+            manifestation: 'Peripheral Neuropathy - Upper Extremities',
+            suggestedDCs: ['8515', '8516'],
+            dcDescriptions: ['Median nerve paralysis', 'Ulnar nerve paralysis'],
+            nexusStrength: 'strong',
+            notes: 'Document hand numbness, weakness, carpal tunnel symptoms.',
+            documentationTips: ['EMG/nerve conduction study', 'Document grip strength changes'],
+          },
+        ],
+      },
+
+      eyes: {
+        name: 'Eye Complications',
+        conditions: [
+          {
+            manifestation: 'Diabetic Retinopathy',
+            suggestedDCs: ['6006'],
+            dcDescriptions: ['Retinopathy'],
+            nexusStrength: 'strong',
+            notes: 'Regular eye exams essential. Document any laser treatment or injections.',
+            documentationTips: ['Annual dilated eye exams', 'Retinal photography', 'Document vision changes'],
+          },
+          {
+            manifestation: 'Cataracts',
+            suggestedDCs: ['6027'],
+            dcDescriptions: ['Cataract, any type'],
+            nexusStrength: 'moderate',
+            notes: 'Diabetics develop cataracts earlier. Document surgical history if applicable.',
+            documentationTips: ['Ophthalmology records', 'Document onset age vs normal population'],
+          },
+          {
+            manifestation: 'Glaucoma',
+            suggestedDCs: ['6012', '6013'],
+            dcDescriptions: ['Open-angle glaucoma', 'Angle-closure glaucoma'],
+            nexusStrength: 'moderate',
+            notes: 'Diabetes increases glaucoma risk. Document intraocular pressure readings.',
+            documentationTips: ['Visual field testing', 'Optic nerve imaging', 'IOP measurements'],
+          },
+        ],
+      },
+
+      cardiovascular: {
+        name: 'Cardiovascular Complications',
+        conditions: [
+          {
+            manifestation: 'Coronary Artery Disease (CAD)',
+            suggestedDCs: ['7005'],
+            dcDescriptions: ['Arteriosclerotic heart disease (CAD)'],
+            nexusStrength: 'strong',
+            notes: 'Diabetes significantly accelerates atherosclerosis. Document cardiac workup.',
+            documentationTips: ['Stress test results', 'Cardiac catheterization', 'Echocardiogram'],
+          },
+          {
+            manifestation: 'Myocardial Infarction (Heart Attack)',
+            suggestedDCs: ['7006'],
+            dcDescriptions: ['Myocardial infarction'],
+            nexusStrength: 'strong',
+            notes: 'Post-MI ratings depend on METs capacity and ejection fraction.',
+            documentationTips: ['Hospital records from MI', 'Follow-up echocardiogram', 'Exercise capacity documentation'],
+          },
+          {
+            manifestation: 'Hypertension',
+            suggestedDCs: ['7101'],
+            dcDescriptions: ['Hypertensive vascular disease'],
+            nexusStrength: 'strong',
+            notes: 'Very commonly co-occurs with diabetes. Document blood pressure readings.',
+            documentationTips: ['Home BP log', 'Medication history', '24-hour ambulatory BP monitoring'],
+          },
+          {
+            manifestation: 'Atherosclerosis/Peripheral Arterial Disease',
+            suggestedDCs: ['7114'],
+            dcDescriptions: ['Arteriosclerosis obliterans'],
+            nexusStrength: 'strong',
+            notes: 'Document claudication symptoms, ABI testing, vascular imaging.',
+            documentationTips: ['Ankle-brachial index (ABI)', 'Arterial Doppler studies', 'Document walking limitations'],
+          },
+          {
+            manifestation: 'Stroke/CVA Residuals',
+            suggestedDCs: ['8008'],
+            dcDescriptions: ['Cerebral thrombosis'],
+            nexusStrength: 'strong',
+            notes: 'Diabetes increases stroke risk 2-4x. Rate residuals under appropriate codes.',
+            documentationTips: ['Brain imaging', 'Neurology evaluation', 'Document all residual deficits'],
+          },
+        ],
+      },
+
+      skin: {
+        name: 'Skin Complications',
+        conditions: [
+          {
+            manifestation: 'Bacterial Skin Infections (Recurring)',
+            suggestedDCs: ['7820'],
+            dcDescriptions: ['Infections of the skin not listed elsewhere'],
+            nexusStrength: 'moderate',
+            notes: 'Diabetics prone to skin infections. Document frequency and treatment.',
+            documentationTips: ['Wound care records', 'Antibiotic prescriptions', 'Photo documentation'],
+          },
+          {
+            manifestation: 'Fungal Skin Infections',
+            suggestedDCs: ['7813'],
+            dcDescriptions: ['Dermatophytosis'],
+            nexusStrength: 'moderate',
+            notes: 'Increased susceptibility to fungal infections, especially feet.',
+            documentationTips: ['Podiatry records', 'Treatment history', 'Culture results if available'],
+          },
+          {
+            manifestation: 'Diabetic Dermopathy',
+            suggestedDCs: ['7806'],
+            dcDescriptions: ['Dermatitis or eczema'],
+            nexusStrength: 'moderate',
+            notes: 'Shin spots, skin changes specific to diabetes.',
+            documentationTips: ['Dermatology evaluation', 'Photo documentation', 'Biopsy if performed'],
+          },
+        ],
+      },
+
+      mentalHealth: {
+        name: 'Mental Health Complications',
+        conditions: [
+          {
+            manifestation: 'Depression',
+            suggestedDCs: ['9434'],
+            dcDescriptions: ['Major depressive disorder'],
+            nexusStrength: 'strong',
+            notes: 'Depression is 2-3x more common in diabetics. Document mental health treatment.',
+            documentationTips: ['Mental health treatment records', 'PHQ-9 scores over time', 'Medication history'],
+          },
+          {
+            manifestation: 'Anxiety',
+            suggestedDCs: ['9400'],
+            dcDescriptions: ['Generalized anxiety disorder'],
+            nexusStrength: 'moderate',
+            notes: 'Chronic disease management burden can cause anxiety.',
+            documentationTips: ['Mental health records', 'GAD-7 scores', 'Document functional impairment'],
+          },
+        ],
+      },
+
+      genitourinary: {
+        name: 'Genitourinary Complications',
+        conditions: [
+          {
+            manifestation: 'Erectile Dysfunction',
+            suggestedDCs: ['7522'],
+            dcDescriptions: ['Penis, deformity, with loss of erectile power'],
+            nexusStrength: 'strong',
+            smcConsideration: true,
+            smcNote: 'May qualify for SMC-K (loss of use of creative organ)',
+            notes: 'Very common in diabetic men. Document onset and treatment attempts.',
+            documentationTips: ['Urology evaluation', 'Treatment history (medications, devices)', 'Document onset timing'],
+          },
+          {
+            manifestation: 'Neurogenic Bladder',
+            suggestedDCs: ['7542'],
+            dcDescriptions: ['Neurogenic bladder'],
+            nexusStrength: 'moderate',
+            notes: 'Autonomic neuropathy can affect bladder function.',
+            documentationTips: ['Urodynamic studies', 'Post-void residual measurements', 'Urology records'],
+          },
+        ],
+      },
+    },
+
+    importantNotes: [
+      'Each complication should be claimed as a SEPARATE secondary condition',
+      'VA may combine some conditions under pyramiding rules - but claim them all',
+      'Document timeline showing diabetes diagnosis PRECEDED the complication',
+      'Get medical opinion stating complication is "at least as likely as not" due to diabetes',
+      'Complications can also be aggravated by diabetes even if not directly caused',
+    ],
+
+    documentationStrategy: [
+      'Maintain glucose log showing chronic condition',
+      'Get HbA1c tested every 3 months',
+      'Annual comprehensive diabetic exam (eyes, feet, kidneys)',
+      'Request written nexus opinion from treating physician',
+      'Keep records of all specialist referrals',
+    ],
   },
 
   disclaimer: 'This analysis is based on logged glucose and HbA1c measurements. VA diabetes ratings consider insulin requirement, dietary restrictions, activity limitations, hospitalizations, and complications. A formal VA rating requires C&P examination and complete medical records review. Continue regular endocrinology care and glucose monitoring.',
@@ -4589,6 +5397,70 @@ export const PERIPHERAL_NEUROPATHY_CRITERIA = {
         'Balance problems',
       ],
     },
+  },
+
+  secondaryConditions: {
+    description: 'Peripheral neuropathy can lead to secondary conditions due to loss of sensation and chronic pain.',
+
+    categories: {
+      musculoskeletal: {
+        name: 'Musculoskeletal Secondaries',
+        conditions: [
+          {
+            manifestation: 'Foot Deformities/Injuries',
+            suggestedDCs: ['5284'],
+            dcDescriptions: ['Foot injuries, other'],
+            nexusStrength: 'moderate',
+            notes: 'Loss of sensation leads to unnoticed injuries and deformities.',
+            documentationTips: ['Podiatry records', 'Document any foot ulcers or injuries', 'X-rays if applicable'],
+          },
+          {
+            manifestation: 'Gait Instability/Falls',
+            suggestedDCs: ['6204'],
+            dcDescriptions: ['Peripheral vestibular disorders'],
+            nexusStrength: 'moderate',
+            notes: 'Proprioception loss affects balance. Document falls.',
+            documentationTips: ['Fall history', 'Physical therapy evaluation', 'Balance testing'],
+          },
+        ],
+      },
+
+      mentalHealth: {
+        name: 'Mental Health Secondaries',
+        conditions: [
+          {
+            manifestation: 'Depression from Chronic Pain',
+            suggestedDCs: ['9434'],
+            dcDescriptions: ['Major depressive disorder'],
+            nexusStrength: 'strong',
+            notes: 'Chronic neuropathic pain commonly causes depression.',
+            documentationTips: ['Mental health records', 'Document pain impact on mood', 'PHQ-9 scores'],
+          },
+        ],
+      },
+    },
+
+    canBeSecondaryTo: [
+      {
+        primaryDC: '7913',
+        primaryCondition: 'Diabetes Mellitus',
+        nexusStrength: 'strong',
+        notes: 'Most common cause of peripheral neuropathy',
+      },
+      {
+        primaryDC: '6354',
+        primaryCondition: 'Chronic Fatigue Syndrome / Gulf War Illness',
+        nexusStrength: 'moderate',
+        notes: 'Toxic exposures can cause neuropathy',
+      },
+    ],
+
+    importantNotes: [
+      'Each extremity rated separately (bilateral factor may apply)',
+      'EMG/nerve conduction studies provide objective evidence',
+      'Document functional limitations in detail',
+      'Track progression of symptoms over time',
+    ],
   },
 
   disclaimer: 'This analysis is based on logged neuropathy symptoms. Higher ratings require clinical documentation including EMG/nerve conduction studies and sensory/motor testing. Common causes include diabetes, Agent Orange exposure, and various medications.',
@@ -10687,6 +11559,76 @@ export const TINNITUS_CRITERIA = {
       definition: 'A single rating percentage that does not vary based on severity. For tinnitus, all cases of recurrent tinnitus receive 10%, whether mild or severe.',
     },
   },
+
+  secondaryConditions: {
+    description: 'Tinnitus (ringing in the ears) is commonly associated with mental health conditions due to the chronic distress it causes. Per Fountain v. McDonald (2015), tinnitus is an organic disease of the nervous system.',
+
+    categories: {
+      mentalHealth: {
+        name: 'Mental Health Secondaries',
+        conditions: [
+          {
+            manifestation: 'Depression',
+            suggestedDCs: ['9434'],
+            dcDescriptions: ['Major depressive disorder'],
+            nexusStrength: 'strong',
+            notes: 'Chronic tinnitus commonly leads to depression. Well-documented in medical literature.',
+            documentationTips: ['Mental health treatment records', 'Document how tinnitus affects mood', 'PHQ-9 scores'],
+          },
+          {
+            manifestation: 'Anxiety',
+            suggestedDCs: ['9400'],
+            dcDescriptions: ['Generalized anxiety disorder'],
+            nexusStrength: 'strong',
+            notes: 'Tinnitus causes significant anxiety in many sufferers.',
+            documentationTips: ['Document anxiety related to tinnitus', 'GAD-7 scores', 'Treatment records'],
+          },
+          {
+            manifestation: 'Insomnia/Sleep Disturbance',
+            suggestedDCs: ['6847', '9400'],
+            dcDescriptions: ['Sleep apnea syndromes', 'Or rate under mental health'],
+            nexusStrength: 'strong',
+            notes: 'Tinnitus frequently disrupts sleep. Document sleep patterns.',
+            documentationTips: ['Sleep diary', 'Document difficulty falling asleep due to tinnitus', 'Sleep study if performed'],
+          },
+        ],
+      },
+
+      chronicPain: {
+        name: 'Associated Pain Conditions',
+        conditions: [
+          {
+            manifestation: 'Headaches/Migraines',
+            suggestedDCs: ['8100'],
+            dcDescriptions: ['Migraine'],
+            nexusStrength: 'moderate',
+            notes: 'Some veterans experience headaches associated with tinnitus.',
+            documentationTips: ['Headache diary', 'Document co-occurrence with tinnitus episodes'],
+          },
+        ],
+      },
+    },
+
+    caseLawReferences: [
+      {
+        case: 'Fountain v. McDonald',
+        citation: '13-0540 (2015)',
+        holding: 'Tinnitus is an organic disease of the nervous system, presumptively service-connected within one year of discharge',
+      },
+      {
+        case: 'Jandreau v. Nicholson',
+        citation: '492 F.3d 1372 (Fed. Cir. 2007)',
+        holding: 'Veteran is competent to self-diagnose tinnitus as it is observable through the senses',
+      },
+    ],
+
+    importantNotes: [
+      'Tinnitus itself is capped at 10% under DC 6260',
+      'Secondary mental health conditions can significantly increase overall rating',
+      'Document the specific impact tinnitus has on daily functioning',
+      'Get audiologist and mental health provider statements',
+    ],
+  },
 };
 
 // ============================================
@@ -10776,6 +11718,84 @@ export const FIBROMYALGIA_CRITERIA = {
       term: 'Episodic',
       definition: 'Symptoms that come and go in flares or exacerbations. May have periods of relative calm followed by periods of increased symptoms.',
     },
+  },
+
+  secondaryConditions: {
+    description: 'Fibromyalgia commonly causes or co-occurs with several mental health and pain conditions.',
+
+    categories: {
+      mentalHealth: {
+        name: 'Mental Health Secondaries',
+        conditions: [
+          {
+            manifestation: 'Depression',
+            suggestedDCs: ['9434'],
+            dcDescriptions: ['Major depressive disorder'],
+            nexusStrength: 'strong',
+            notes: 'Chronic pain from fibromyalgia frequently causes depression.',
+            documentationTips: ['Mental health records', 'Document pain-depression cycle', 'PHQ-9 scores'],
+          },
+          {
+            manifestation: 'Anxiety',
+            suggestedDCs: ['9400'],
+            dcDescriptions: ['Generalized anxiety disorder'],
+            nexusStrength: 'strong',
+            notes: 'Chronic unpredictable symptoms cause significant anxiety.',
+            documentationTips: ['Document anxiety about symptoms', 'GAD-7 scores', 'Treatment records'],
+          },
+        ],
+      },
+
+      neurological: {
+        name: 'Neurological Secondaries',
+        conditions: [
+          {
+            manifestation: 'Migraines/Chronic Headaches',
+            suggestedDCs: ['8100'],
+            dcDescriptions: ['Migraine'],
+            nexusStrength: 'strong',
+            notes: 'Central sensitization causes both conditions. Document headache frequency.',
+            documentationTips: ['Headache diary', 'Document prostrating episodes', 'Neurology records'],
+          },
+        ],
+      },
+
+      gastrointestinal: {
+        name: 'GI Secondaries',
+        conditions: [
+          {
+            manifestation: 'Irritable Bowel Syndrome',
+            suggestedDCs: ['7319'],
+            dcDescriptions: ['Irritable colon syndrome'],
+            nexusStrength: 'strong',
+            notes: 'IBS commonly co-occurs with fibromyalgia (central sensitization).',
+            documentationTips: ['GI records', 'Document symptom patterns', 'Dietary modifications'],
+          },
+        ],
+      },
+    },
+
+    canBeSecondaryTo: [
+      {
+        primaryDC: '9411',
+        primaryCondition: 'PTSD',
+        nexusStrength: 'strong',
+        notes: 'Stress-related central sensitization well documented',
+      },
+      {
+        primaryDC: '5237',
+        primaryCondition: 'Chronic Low Back Pain',
+        nexusStrength: 'moderate',
+        notes: 'Chronic pain conditions can lead to fibromyalgia',
+      },
+    ],
+
+    importantNotes: [
+      'Fibromyalgia is rated 10%, 20%, or 40% based on symptoms requiring continuous medication',
+      'Secondary mental health conditions can be rated separately',
+      'Document widespread pain and specific tender points',
+      'Keep detailed symptom and flare-up logs',
+    ],
   },
 };
 
@@ -19147,6 +20167,254 @@ export const MULTIPLE_SCLEROSIS_CRITERIA = {
     },
   },
 
+  secondaryConditions: {
+    description: "Multiple Sclerosis (DC 8018) has a minimum rating of 30%. MS causes widespread neurological dysfunction affecting multiple body systems. Each manifestation can be rated separately as a secondary condition, often resulting in substantial combined ratings.",
+
+    minimumRating: 30,
+
+    categories: {
+      speech: {
+        name: 'Speech & Swallowing',
+        conditions: [
+          {
+            manifestation: 'Speech Difficulties / Hoarseness',
+            suggestedDCs: ['6519', '6516'],
+            dcDescriptions: ['Complete organic Aphonia (constant inability to speak above a whisper)', 'Chronic Laryngitis'],
+            nexusStrength: 'strong',
+            notes: 'Select the DC that provides the most advantageous rating.',
+            documentationTips: ['Speech pathology evaluation', 'Document voice changes', 'Laryngoscopy results if performed'],
+          },
+          {
+            manifestation: 'Paralysis of Soft Palate with Swallowing Difficulty',
+            suggestedDCs: ['6521'],
+            dcDescriptions: ['Pharynx injuries'],
+            nexusStrength: 'strong',
+            notes: 'Document swallowing difficulty and speech impairment together.',
+            documentationTips: ['Modified barium swallow study', 'ENT evaluation', 'Document aspiration risk'],
+          },
+          {
+            manifestation: 'Swallowing Difficulties (Dysphagia)',
+            suggestedDCs: ['7203'],
+            dcDescriptions: ['Stricture of the Esophagus'],
+            nexusStrength: 'strong',
+            notes: 'Document diet modifications and weight changes.',
+            documentationTips: ['Swallow study results', 'Dietary log', 'Weight tracking'],
+          },
+        ],
+      },
+
+      respiratory: {
+        name: 'Respiratory Conditions',
+        conditions: [
+          {
+            manifestation: 'Respiratory Conditions',
+            suggestedDCs: ['6600-6847'],
+            dcDescriptions: ['Various respiratory system codes based on symptoms'],
+            nexusStrength: 'moderate',
+            notes: 'Based on symptoms shown, select the most advantageous respiratory system rating.',
+            documentationTips: ['Pulmonary function tests', 'Document breathing difficulties', 'Oxygen requirements if any'],
+          },
+        ],
+      },
+
+      sleep: {
+        name: 'Sleep Disorders',
+        conditions: [
+          {
+            manifestation: 'Sleep Disturbances',
+            suggestedDCs: ['6847', '9410'],
+            dcDescriptions: ['Sleep Apnea if manifested as respiratory disability', 'Insomnia'],
+            nexusStrength: 'strong',
+            notes: 'If another mental disorder diagnosis is present along with insomnia, evaluate insomnia along with the other mental disorder diagnoses.',
+            documentationTips: ['Sleep study', 'Document sleep patterns', 'Fatigue assessment'],
+          },
+        ],
+      },
+
+      bowelBladder: {
+        name: 'Bowel & Bladder Dysfunction',
+        conditions: [
+          {
+            manifestation: 'Loss of Sphincter Control (with or without leakage)',
+            suggestedDCs: ['7332'],
+            dcDescriptions: ['Rectum and anus, impairment of sphincter control'],
+            nexusStrength: 'strong',
+            notes: 'Very common in MS. Document frequency and severity of incontinence.',
+            documentationTips: ['Bowel/bladder diary', 'Document pad usage', 'GI/Urology evaluation'],
+          },
+          {
+            manifestation: 'Chronic Constipation',
+            suggestedDCs: ['7319'],
+            dcDescriptions: ['Irritable colon syndrome, IBS, spastic colitis, mucous colitis'],
+            nexusStrength: 'strong',
+            notes: 'Neurogenic bowel dysfunction common in MS.',
+            documentationTips: ['Bowel diary', 'Medication log', 'Document interventions needed'],
+          },
+          {
+            manifestation: 'Voiding Dysfunction',
+            suggestedDCs: ['7542'],
+            dcDescriptions: ['Neurogenic bladder - for leakage, frequency, or obstructed voiding'],
+            nexusStrength: 'strong',
+            notes: 'Only a single evaluation is warranted even if more than one dysfunction/symptom type is present. May be presented as symptoms only, versus an official diagnosis.',
+            documentationTips: ['Urodynamic studies', 'Voiding diary', 'Post-void residual measurements'],
+          },
+          {
+            manifestation: 'Recurrent Urinary Tract Infections',
+            suggestedDCs: ['7527'],
+            dcDescriptions: ['Voiding dysfunction or urinary tract infection'],
+            nexusStrength: 'strong',
+            notes: 'Common due to bladder dysfunction. Document frequency and treatment.',
+            documentationTips: ['UTI history', 'Urine cultures', 'Prophylactic treatment records'],
+          },
+        ],
+      },
+
+      sexual: {
+        name: 'Sexual Dysfunction',
+        conditions: [
+          {
+            manifestation: 'Erectile Dysfunction',
+            suggestedDCs: ['7522'],
+            dcDescriptions: ['Erectile Dysfunction (Male)'],
+            nexusStrength: 'strong',
+            smcConsideration: true,
+            smcNote: 'When associated to Multiple Sclerosis (MS) diagnosis, grant SMC-K',
+            notes: 'Very common in MS. SMC-K is granted when secondary to MS.',
+            documentationTips: ['Urology evaluation', 'Document onset relative to MS', 'Treatment records'],
+          },
+        ],
+      },
+
+      visual: {
+        name: 'Visual Disturbances',
+        conditions: [
+          {
+            manifestation: 'Diplopia (Double Vision)',
+            suggestedDCs: ['6090'],
+            dcDescriptions: ['Diplopia or internuclear ophthalmoplegia'],
+            nexusStrength: 'strong',
+            notes: 'For visual impairment, a single evaluation is warranted either under the general rating formula OR based on visual impairment criteria (visual acuity, visual field, and impairment of muscle function).',
+            documentationTips: ['Ophthalmology evaluation', 'Visual field testing', 'Document impact on daily activities'],
+          },
+          {
+            manifestation: 'Decreased Visual Acuity / Blurring',
+            suggestedDCs: ['6066'],
+            dcDescriptions: ['Decreased visual acuity or blurring of vision'],
+            nexusStrength: 'strong',
+            notes: 'Optic neuritis is common in MS. Document visual acuity measurements.',
+            documentationTips: ['Visual acuity testing', 'OCT imaging', 'Document vision changes over time'],
+          },
+          {
+            manifestation: 'Visual Scotoma (Blind Spots)',
+            suggestedDCs: ['6081'],
+            dcDescriptions: ['Visual scotoma'],
+            nexusStrength: 'strong',
+            notes: 'Document visual field defects.',
+            documentationTips: ['Visual field testing', 'Humphrey visual field results'],
+          },
+          {
+            manifestation: 'Nystagmus',
+            suggestedDCs: ['6016'],
+            dcDescriptions: ['Nystagmus'],
+            nexusStrength: 'strong',
+            notes: 'Document type and severity of nystagmus.',
+            documentationTips: ['Neuro-ophthalmology evaluation', 'Document functional impact'],
+          },
+          {
+            manifestation: 'Optic Neuritis',
+            suggestedDCs: ['6026'],
+            dcDescriptions: ['Optic neuritis'],
+            nexusStrength: 'strong',
+            notes: 'Often an early symptom of MS. Document history and visual outcomes.',
+            documentationTips: ['MRI results', 'Visual evoked potentials', 'Treatment history'],
+          },
+        ],
+      },
+
+      upperExtremity: {
+        name: 'Upper Extremity Impairment',
+        conditions: [
+          {
+            manifestation: 'Upper Extremity Impairment',
+            suggestedDCs: ['8514', '5125', '5109'],
+            dcDescriptions: ['Radial nerve - impairment without loss of use (LOU)', 'LOU of one hand', 'LOU of both hands'],
+            nexusStrength: 'strong',
+            smcConsideration: true,
+            smcNote: 'LOU qualifies for SMC-K (one hand) or higher SMC (both hands)',
+            notes: 'Synthesize findings of neurologic exam (gait strength, deep tendon reflexes, sensation, muscle atrophy/weakness) and remaining effective function to assess level of impairment for upper extremity, including whether loss of use is present.',
+            documentationTips: ['Comprehensive neurological exam', 'Grip strength testing', 'Fine motor assessment', 'Document ADL limitations'],
+          },
+        ],
+      },
+
+      lowerExtremity: {
+        name: 'Lower Extremity Impairment',
+        conditions: [
+          {
+            manifestation: 'Lower Extremity Impairment',
+            suggestedDCs: ['8520', '5167', '5110'],
+            dcDescriptions: ['Sciatic nerve - impairment without LOU', 'LOU of one foot', 'LOU of both feet'],
+            nexusStrength: 'strong',
+            smcConsideration: true,
+            smcNote: 'LOU qualifies for SMC-K (one foot) or higher SMC (both feet)',
+            notes: 'Same approach as upper extremity - assess neurologic findings and effective function.',
+            documentationTips: ['Gait analysis', 'Balance testing', 'Document mobility aids', 'Fall risk assessment'],
+          },
+        ],
+      },
+
+      mentalHealth: {
+        name: 'Mental Health & Cognitive',
+        conditions: [
+          {
+            manifestation: 'Depression',
+            suggestedDCs: ['9434'],
+            dcDescriptions: ['Major depressive disorder'],
+            nexusStrength: 'strong',
+            notes: 'Rated as mental health. See NOTE about combining mental health ratings.',
+            documentationTips: ['Mental health treatment records', 'PHQ-9/BDI scores', 'Document functional impact'],
+          },
+          {
+            manifestation: 'Cognitive Impairment / Dementia',
+            suggestedDCs: ['9326'],
+            dcDescriptions: ['Dementia due to other neurologic or general medical conditions'],
+            nexusStrength: 'strong',
+            notes: 'MS cognitive impairment is well-documented. Rated as mental health.',
+            documentationTips: ['Neuropsychological testing', 'Cognitive screening scores', 'Document decline over time'],
+          },
+        ],
+      },
+    },
+
+    importantNotes: [
+      'Multiple Sclerosis has a MINIMUM rating of 30%',
+      'Each secondary manifestation can be rated SEPARATELY',
+      'If another mental disorder diagnosis is present, evaluate along with other mental disorder diagnoses',
+      'Visual impairment uses single evaluation - choose most advantageous method',
+      'Voiding dysfunction gets single evaluation even with multiple symptom types',
+      'SMC-K is granted for ED when secondary to MS',
+      'Consider SMC for loss of use of extremities',
+    ],
+
+    smcConsiderations: [
+      'SMC-K automatic for ED secondary to MS (DC 7522)',
+      'SMC-K for loss of use of one hand (DC 5125)',
+      'SMC-K for loss of use of one foot (DC 5167)',
+      'Higher SMC levels for multiple losses of use',
+    ],
+
+    documentationStrategy: [
+      'Regular neurology follow-ups with MRI',
+      'Document relapses and recovery patterns',
+      'Comprehensive neurological exams',
+      'Visual function testing',
+      'Bladder/bowel function assessment',
+      'Neuropsychological evaluation for cognitive changes',
+      'Physical/occupational therapy evaluations',
+    ],
+  },
+
+
   disclaimer: 'MS has a minimum rating of 30% when ascertainable residuals are present. Additional ratings may be assigned for specific residuals (vision, bladder, bowel, extremity weakness, etc.) under their respective diagnostic codes. The combined rating uses VA combined ratings table. This analysis tracks symptoms to document residuals and their functional impact.',
 };
 
@@ -19306,6 +20574,236 @@ export const PARKINSONS_DISEASE_CRITERIA = {
         'Diphasic dyskinesia (beginning/end of dose)',
       ],
     },
+  },
+
+  secondaryConditions: {
+    description: "Parkinson's Disease (DC 8004) has a minimum rating of 30%. The condition causes numerous secondary complications that can be rated separately, significantly increasing the combined rating. Each manifestation below can potentially be service-connected secondary to Parkinson's.",
+
+    minimumRating: 30,
+
+    categories: {
+      posture: {
+        name: 'Posture & Balance',
+        conditions: [
+          {
+            manifestation: 'Stooped Posture',
+            suggestedDCs: ['8211'],
+            dcDescriptions: ['Diseases of the Cranial Nerves (11th - Spinal Accessory)'],
+            nexusStrength: 'strong',
+            notes: 'Separate evaluations warranted for left and right side involvement. Bilateral factor does NOT apply to cranial nerves.',
+            documentationTips: ['Document degree of postural change', 'Photograph posture changes over time', 'Physical therapy evaluation'],
+          },
+          {
+            manifestation: 'Balance Impairment',
+            suggestedDCs: ['6204'],
+            dcDescriptions: ['Peripheral vestibular disorders'],
+            nexusStrength: 'strong',
+            notes: 'Use when balance impairment is present WITHOUT lower extremity impairment. Otherwise, consider as part of extremity evaluation.',
+            documentationTips: ['Balance testing results', 'Fall history documentation', 'Vestibular function testing'],
+          },
+        ],
+      },
+
+      movement: {
+        name: 'Movement Disorders',
+        conditions: [
+          {
+            manifestation: 'Bradykinesia / Slowed Motion',
+            suggestedDCs: ['8514', '8520'],
+            dcDescriptions: ['Radial nerve (upper)', 'Sciatic nerve (lower)'],
+            nexusStrength: 'strong',
+            notes: 'Consider as part of extremity evaluations. Document specific functional limitations.',
+            documentationTips: ['Timed movement tests', 'Document activities affected', 'Video documentation of movement'],
+          },
+          {
+            manifestation: 'Loss of Automatic Movements (Face Masking, Drooling)',
+            suggestedDCs: ['8207'],
+            dcDescriptions: ['Diseases of the Cranial Nerves (7th - Facial)'],
+            nexusStrength: 'strong',
+            notes: 'Separate evaluations warranted for left and right side involvement. Bilateral factor does NOT apply.',
+            documentationTips: ['Neurology evaluation', 'Document facial expression changes', 'Sialorrhea (drooling) frequency'],
+          },
+        ],
+      },
+
+      speech: {
+        name: 'Speech & Swallowing',
+        conditions: [
+          {
+            manifestation: 'Speech Changes (Dysarthria)',
+            suggestedDCs: ['8210', '6516', '6519'],
+            dcDescriptions: ['Cranial Nerves (10th - Vagus) bilaterally', 'Chronic Laryngitis', 'Complete organic Aphonia'],
+            nexusStrength: 'strong',
+            notes: 'Any of these three DCs can be used. Assign whichever results in the highest evaluation. Cranial nerves are rated bilaterally.',
+            documentationTips: ['Speech pathology evaluation', 'Document intelligibility changes', 'Voice recordings over time'],
+          },
+          {
+            manifestation: 'Difficulty Chewing/Swallowing (Dysphagia)',
+            suggestedDCs: ['7203', '8205'],
+            dcDescriptions: ['Stricture of the esophagus', 'Diseases of the Cranial Nerves (5th - Trigeminal)'],
+            nexusStrength: 'strong',
+            notes: 'Document modified barium swallow study results if performed.',
+            documentationTips: ['Swallow study results', 'Document diet modifications', 'Weight changes from swallowing difficulty'],
+          },
+        ],
+      },
+
+      upperExtremity: {
+        name: 'Upper Extremity Impairment',
+        conditions: [
+          {
+            manifestation: 'Upper Extremity - Tremors, Rigidity, Bradykinesia',
+            suggestedDCs: ['8514', '5125', '5109'],
+            dcDescriptions: ['Radial nerve - impairment without loss of use', 'Loss of use (LOU) of one hand', 'Loss of use of both hands'],
+            nexusStrength: 'strong',
+            smcConsideration: true,
+            smcNote: 'Loss of use is defined in 38 CFR 3.350(a)(2). LOU of one hand qualifies for SMC-K; LOU of both hands qualifies for higher SMC.',
+            notes: 'Rate each extremity separately. Determine if there is actual loss of use vs impairment without LOU.',
+            documentationTips: ['Neurological exam documenting strength, reflexes, sensation', 'Functional capacity evaluation', 'Document grip strength', 'ADL limitations'],
+          },
+        ],
+      },
+
+      lowerExtremity: {
+        name: 'Lower Extremity Impairment',
+        conditions: [
+          {
+            manifestation: 'Lower Extremity - Tremors, Rigidity, Bradykinesia',
+            suggestedDCs: ['8520', '5167', '5110'],
+            dcDescriptions: ['Sciatic nerve - impairment without loss of use', 'Loss of use (LOU) of one foot', 'Loss of use of both feet'],
+            nexusStrength: 'strong',
+            smcConsideration: true,
+            smcNote: 'Loss of use is defined in 38 CFR 3.350(a)(2). LOU of one foot qualifies for SMC-K; LOU of both feet qualifies for higher SMC.',
+            notes: 'Rate each extremity separately. Document gait analysis and mobility limitations.',
+            documentationTips: ['Gait analysis', 'Document assistive device use', 'Fall frequency', 'Distance limitations'],
+          },
+        ],
+      },
+
+      mentalHealth: {
+        name: 'Mental Health & Cognitive',
+        conditions: [
+          {
+            manifestation: 'Depression',
+            suggestedDCs: ['9434'],
+            dcDescriptions: ['Major depressive disorder'],
+            nexusStrength: 'strong',
+            notes: 'Rated as mental health. If another mental disorder diagnosis is present, evaluate along with other mental disorder diagnoses using the General Rating Formula.',
+            documentationTips: ['Mental health treatment records', 'PHQ-9 scores', 'Document functional impairment'],
+          },
+          {
+            manifestation: 'Cognitive Impairment / Dementia',
+            suggestedDCs: ['9326'],
+            dcDescriptions: ['Dementia due to other neurologic or general medical conditions'],
+            nexusStrength: 'strong',
+            notes: 'Rated as mental health. Parkinson\'s dementia is well-documented. See NOTE about combining mental health ratings.',
+            documentationTips: ['Neuropsychological testing', 'MMSE/MoCA scores over time', 'Document cognitive decline progression'],
+          },
+        ],
+      },
+
+      sensory: {
+        name: 'Sensory Loss',
+        conditions: [
+          {
+            manifestation: 'Complete Loss of Sense of Smell (Anosmia)',
+            suggestedDCs: ['6275'],
+            dcDescriptions: ['Complete loss of smell'],
+            nexusStrength: 'strong',
+            notes: 'Loss of smell often precedes motor symptoms in Parkinson\'s. Rate at 10% for complete loss.',
+            documentationTips: ['UPSIT smell testing', 'Document onset relative to Parkinson\'s diagnosis', 'Safety concerns from smell loss'],
+          },
+        ],
+      },
+
+      sleep: {
+        name: 'Sleep Disorders',
+        conditions: [
+          {
+            manifestation: 'Sleep Disturbance',
+            suggestedDCs: ['6847', '9410'],
+            dcDescriptions: ['Sleep Apnea if manifested as respiratory disability', 'Insomnia'],
+            nexusStrength: 'strong',
+            notes: 'Insomnia is rated as mental health. REM sleep behavior disorder is common in Parkinson\'s.',
+            documentationTips: ['Sleep study if applicable', 'Document sleep patterns', 'REM behavior disorder documentation'],
+          },
+        ],
+      },
+
+      autonomic: {
+        name: 'Autonomic Dysfunction',
+        conditions: [
+          {
+            manifestation: 'Urinary Problems (Neurogenic Bladder)',
+            suggestedDCs: ['7542'],
+            dcDescriptions: ['Neurogenic bladder'],
+            nexusStrength: 'strong',
+            notes: 'Autonomic dysfunction is common in Parkinson\'s. Document voiding dysfunction symptoms.',
+            documentationTips: ['Urodynamic studies', 'Voiding diary', 'Document incontinence episodes'],
+          },
+          {
+            manifestation: 'Constipation (Chronic)',
+            suggestedDCs: ['7319'],
+            dcDescriptions: ['Irritable colon syndrome, IBS, spastic colitis, mucous colitis'],
+            nexusStrength: 'strong',
+            notes: 'GI autonomic dysfunction very common. Document bowel habits and treatments.',
+            documentationTips: ['Bowel movement log', 'Medication history', 'GI specialist evaluation'],
+          },
+        ],
+      },
+
+      sexual: {
+        name: 'Sexual Dysfunction',
+        conditions: [
+          {
+            manifestation: 'Erectile Dysfunction (Male)',
+            suggestedDCs: ['7522'],
+            dcDescriptions: ['Penis, deformity, with loss of erectile power'],
+            nexusStrength: 'strong',
+            smcConsideration: true,
+            smcNote: 'Qualifies for SMC-K (loss of use of creative organ)',
+            notes: 'Very common in Parkinson\'s due to autonomic dysfunction.',
+            documentationTips: ['Urology evaluation', 'Document onset and treatment', 'SHIM questionnaire'],
+          },
+          {
+            manifestation: 'Female Sexual Arousal Disorder',
+            suggestedDCs: ['7632'],
+            dcDescriptions: ['Female sexual arousal disorder (FSAD)'],
+            nexusStrength: 'strong',
+            smcConsideration: true,
+            smcNote: 'May qualify for SMC-K',
+            notes: 'Document impact on sexual function.',
+            documentationTips: ['Gynecology evaluation', 'Document symptoms and impact'],
+          },
+        ],
+      },
+    },
+
+    importantNotes: [
+      'Parkinson\'s Disease has a MINIMUM rating of 30%',
+      'Each secondary manifestation can be rated SEPARATELY',
+      'Bilateral factor does NOT apply to cranial nerves',
+      'Loss of use (LOU) is defined in 38 CFR 3.350(a)(2)',
+      'If another mental disorder diagnosis is present, evaluate along with other mental disorder diagnoses',
+      'Consider the need for Special Monthly Compensation (SMC) for loss of use',
+      'Document progression of symptoms over time',
+    ],
+
+    smcConsiderations: [
+      'SMC-K for loss of use of one hand (DC 5125)',
+      'SMC-K for loss of use of one foot (DC 5167)',
+      'SMC-K for erectile dysfunction / loss of creative organ (DC 7522)',
+      'Higher SMC levels for loss of use of both hands or both feet',
+    ],
+
+    documentationStrategy: [
+      'Regular neurology follow-ups documenting progression',
+      'Functional capacity evaluations',
+      'Mental health evaluations for depression/cognitive decline',
+      'Autonomic function testing',
+      'Speech and swallow evaluations',
+      'Document all assistive devices used',
+    ],
   },
 
   disclaimer: "Parkinson's disease has a minimum rating of 30% when ascertainable residuals are present. Additional ratings may be assigned for specific residuals under their respective diagnostic codes and combined using VA combined ratings table. This analysis tracks both motor and non-motor symptoms to document disease progression and functional impact.",
@@ -19600,6 +21098,219 @@ export const ALS_CRITERIA = {
       definition: 'Measure of respiratory muscle strength. FVC <50% indicates significant respiratory compromise in ALS.',
     },
   },
+
+  secondaryConditions: {
+    description: "Amyotrophic Lateral Sclerosis / ALS (DC 8017) has a minimum rating of 100%. Despite the maximum schedular rating, secondary conditions are still important for Special Monthly Compensation (SMC) eligibility, which provides additional compensation beyond the 100% rate.",
+
+    minimumRating: 100,
+
+    categories: {
+      speech: {
+        name: 'Speech & Swallowing',
+        conditions: [
+          {
+            manifestation: 'Speech Difficulties / Hoarseness',
+            suggestedDCs: ['6519', '6516', '8210'],
+            dcDescriptions: ['Complete organic Aphonia', 'Chronic Laryngitis', 'Cranial Nerves (10th - Vagus) - two evaluations for left and right'],
+            nexusStrength: 'strong',
+            notes: 'Select evaluation criteria that provides the most advantageous evaluation.',
+            documentationTips: ['Speech pathology evaluation', 'Document communication methods', 'AAC device documentation'],
+          },
+          {
+            manifestation: 'Paralysis of Soft Palate with Swallowing Difficulty',
+            suggestedDCs: ['6521'],
+            dcDescriptions: ['Pharynx'],
+            nexusStrength: 'strong',
+            notes: 'Document bulbar symptoms progression.',
+            documentationTips: ['Swallow study', 'Document aspiration risk', 'Feeding tube documentation if applicable'],
+          },
+          {
+            manifestation: 'Swallowing Difficulties (Dysphagia)',
+            suggestedDCs: ['7203'],
+            dcDescriptions: ['Stricture of the Esophagus'],
+            nexusStrength: 'strong',
+            notes: 'Critical for nutrition and aspiration risk. Document all interventions.',
+            documentationTips: ['Modified barium swallow', 'Diet modifications', 'PEG tube if placed'],
+          },
+        ],
+      },
+
+      respiratory: {
+        name: 'Respiratory Conditions',
+        conditions: [
+          {
+            manifestation: 'Respiratory Conditions (including tracheostomy)',
+            suggestedDCs: ['6520'],
+            dcDescriptions: ['Stenosis of Larynx including residuals of laryngeal trauma - unilateral or bilateral'],
+            nexusStrength: 'strong',
+            notes: 'If present, PFT results should be of record. Respiratory failure is a major concern in ALS.',
+            documentationTips: ['Pulmonary function tests', 'Document BiPAP/ventilator use', 'Tracheostomy records if applicable'],
+          },
+          {
+            manifestation: 'Sleep Apnea or Sleep Apnea-like Condition',
+            suggestedDCs: ['6847'],
+            dcDescriptions: ['Sleep Apnea if manifested as a respiratory disability'],
+            nexusStrength: 'strong',
+            notes: 'Respiratory muscle weakness causes sleep-disordered breathing.',
+            documentationTips: ['Sleep study', 'Document CPAP/BiPAP requirements', 'Oxygen saturation monitoring'],
+          },
+        ],
+      },
+
+      bowelBladder: {
+        name: 'Bowel & Bladder Dysfunction',
+        conditions: [
+          {
+            manifestation: 'Loss of Sphincter Control (with or without leakage)',
+            suggestedDCs: ['7332'],
+            dcDescriptions: ['Rectum and anus, impairment of sphincter control'],
+            nexusStrength: 'strong',
+            notes: 'Document incontinence frequency and severity.',
+            documentationTips: ['Bowel diary', 'Document management needs', 'Caregiver assistance required'],
+          },
+          {
+            manifestation: 'Chronic Constipation',
+            suggestedDCs: ['7319'],
+            dcDescriptions: ['Irritable colon syndrome, IBS, spastic colitis, mucous colitis'],
+            nexusStrength: 'strong',
+            notes: 'Autonomic dysfunction and immobility contribute to constipation.',
+            documentationTips: ['Bowel management program', 'Medication log'],
+          },
+          {
+            manifestation: 'Voiding Dysfunction',
+            suggestedDCs: ['7542'],
+            dcDescriptions: ['Neurogenic bladder - for leakage, frequency, or obstructed voiding'],
+            nexusStrength: 'strong',
+            notes: 'Only a single evaluation is warranted even if more than one dysfunction/symptom type is present.',
+            documentationTips: ['Urodynamics if performed', 'Catheter documentation', 'Incontinence supplies needed'],
+          },
+          {
+            manifestation: 'Recurrent Urinary Tract Infections',
+            suggestedDCs: ['7527'],
+            dcDescriptions: ['Voiding dysfunction or urinary tract infection'],
+            nexusStrength: 'strong',
+            notes: 'Common with bladder dysfunction and catheter use.',
+            documentationTips: ['UTI history', 'Culture results', 'Treatment records'],
+          },
+        ],
+      },
+
+      sexual: {
+        name: 'Sexual Dysfunction',
+        conditions: [
+          {
+            manifestation: 'Erectile Dysfunction (Male)',
+            suggestedDCs: ['7522'],
+            dcDescriptions: ['Erectile Dysfunction (Male)'],
+            nexusStrength: 'strong',
+            smcConsideration: true,
+            smcNote: 'When associated to ALS diagnosis, grant SMC-K',
+            notes: 'SMC-K is automatic for ED secondary to ALS.',
+            documentationTips: ['Document onset relative to ALS', 'Urology evaluation'],
+          },
+          {
+            manifestation: 'Female Sexual Arousal Disorder',
+            suggestedDCs: ['7632'],
+            dcDescriptions: ['Female sexual arousal disorder (FSAD)'],
+            nexusStrength: 'strong',
+            smcConsideration: true,
+            smcNote: 'When associated to ALS diagnosis, grant SMC-K',
+            notes: 'SMC-K is automatic for FSAD secondary to ALS.',
+            documentationTips: ['Document symptoms and impact', 'Gynecology evaluation if applicable'],
+          },
+        ],
+      },
+
+      upperExtremity: {
+        name: 'Upper Extremity Impairment',
+        conditions: [
+          {
+            manifestation: 'Upper Extremity Impairment',
+            suggestedDCs: ['8514', '5125', '5109'],
+            dcDescriptions: ['Radial nerve - impairment without loss of use (LOU)', 'LOU of one hand', 'LOU of both hands'],
+            nexusStrength: 'strong',
+            smcConsideration: true,
+            smcNote: 'LOU qualifies for SMC-K (one hand) or higher SMC (both hands). Critical for SMC calculations.',
+            notes: 'Synthesize findings of neurologic exam (gait strength, deep tendon reflexes, sensation, muscle atrophy/weakness) and remaining effective function to assess level of impairment, including whether loss of use is present.',
+            documentationTips: ['Serial neurological exams', 'Document progression', 'EMG findings', 'Functional capacity evaluation'],
+          },
+        ],
+      },
+
+      lowerExtremity: {
+        name: 'Lower Extremity Impairment',
+        conditions: [
+          {
+            manifestation: 'Lower Extremity Impairment',
+            suggestedDCs: ['8520', '5167', '5110'],
+            dcDescriptions: ['Sciatic nerve - impairment without LOU', 'LOU of one foot', 'LOU of both feet'],
+            nexusStrength: 'strong',
+            smcConsideration: true,
+            smcNote: 'LOU qualifies for SMC-K (one foot) or higher SMC (both feet). Critical for SMC calculations.',
+            notes: 'Same comprehensive assessment as upper extremity.',
+            documentationTips: ['Gait analysis', 'Document wheelchair/mobility aid use', 'Fall history', 'Progressive weakness documentation'],
+          },
+        ],
+      },
+
+      mentalHealth: {
+        name: 'Mental Health & Cognitive',
+        conditions: [
+          {
+            manifestation: 'Depression',
+            suggestedDCs: ['9434'],
+            dcDescriptions: ['Major depressive disorder'],
+            nexusStrength: 'strong',
+            notes: 'Rated as mental health. If other mental disorder diagnoses are present, evaluate along with them.',
+            documentationTips: ['Mental health treatment records', 'Document adjustment to diagnosis', 'PHQ-9 scores'],
+          },
+          {
+            manifestation: 'Cognitive Impairment / Dementia',
+            suggestedDCs: ['9326'],
+            dcDescriptions: ['Dementia due to other neurologic or general medical conditions'],
+            nexusStrength: 'strong',
+            notes: 'ALS-FTD (frontotemporal dementia) occurs in a subset of ALS patients.',
+            documentationTips: ['Neuropsychological testing', 'Document cognitive/behavioral changes', 'Caregiver reports'],
+          },
+        ],
+      },
+    },
+
+    importantNotes: [
+      'ALS has a MINIMUM rating of 100%',
+      'Secondary conditions are CRITICAL for Special Monthly Compensation (SMC)',
+      'SMC provides additional compensation BEYOND the 100% schedular rating',
+      'SMC-K is AUTOMATIC for ED/FSAD when secondary to ALS',
+      'If other mental disorder diagnoses are present, evaluate along with other mental disorder diagnoses',
+      'Consider the need for Special Monthly Compensation at ALL levels',
+      'Document all functional losses carefully for SMC determination',
+      'ALS qualifies for presumptive service connection after 90+ days active duty',
+    ],
+
+    smcConsiderations: [
+      'SMC-K automatic for ED (DC 7522) secondary to ALS',
+      'SMC-K automatic for FSAD (DC 7632) secondary to ALS',
+      'SMC-K for loss of use of one hand (DC 5125)',
+      'SMC-K for loss of use of one foot (DC 5167)',
+      'SMC-L for loss of use of both feet, one hand and one foot, or blindness',
+      'SMC-R/S for Aid and Attendance or Housebound',
+      'Multiple SMC-K awards can combine for higher SMC levels',
+    ],
+
+    documentationStrategy: [
+      'Regular ALS clinic evaluations (every 3 months typically)',
+      'Document ALSFRS-R scores over time',
+      'Pulmonary function tests at each visit',
+      'Comprehensive neurological exams documenting progression',
+      'Document all assistive devices and durable medical equipment',
+      'Respiratory support documentation (BiPAP, ventilator)',
+      'Feeding support documentation (PEG tube)',
+      'Document caregiver assistance needs for SMC-R/S consideration',
+    ],
+
+    presumptiveNote: 'ALS is presumptively service-connected for any veteran with 90+ days of continuous active duty. No specific in-service event required.',
+  },
+
 
   disclaimer: 'This analysis is for documentation purposes only. ALS is presumptively service-connected for veterans. VA rating decisions require neurological examination and EMG/nerve conduction studies.',
 };
@@ -20730,6 +22441,2059 @@ export const ILIOINGUINAL_NERVE_CRITERIA = {
     },
   },
   disclaimer: 'This analysis is for documentation purposes only. Ilio-inguinal nerve ratings require sensory examination.',
+};
+
+// ============================================
+// LOSS OF SMELL RATING CRITERIA (DC 6275)
+// ============================================
+export const LOSS_OF_SMELL_CRITERIA = {
+  diagnosticCode: '6275',
+  condition: 'Loss of Sense of Smell (Anosmia)',
+  cfrReference: '38 CFR 4.87a, Diagnostic Code 6275',
+
+  ratingNote: 'A rating can only be given for the loss of the sense of smell if there is a definite, diagnosed physical or mental cause. Most medical conditions that cause loss of smell are temporary (common cold, hay fever). Permanent loss is rare and typically caused by nasal obstructions (tumors, polyps), diseases of the nasal lining, loss of the tongue, or damage to the brain or nerves (strokes, brain diseases, traumatic brain injuries).',
+
+  ratings: [
+    {
+      percent: 10,
+      summary: 'Complete loss of sense of smell',
+      criteriaDescription: [
+        'Complete loss of sense of smell (anosmia)',
+        'Definite diagnosed physical or mental cause',
+        'Permanent condition documented by medical professional',
+      ],
+      evidenceNeeded: [
+        'Medical diagnosis confirming complete anosmia',
+        'Documentation of underlying cause (TBI, COVID-19, nasal condition, etc.)',
+        'Smell testing results (UPSIT, Sniffin\' Sticks, or similar)',
+        'Treatment records showing condition is permanent or chronic',
+        'Statement describing functional impact on daily life',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'Partial loss or temporary condition',
+      criteriaDescription: [
+        'Partial loss of smell (hyposmia)',
+        'Temporary condition expected to resolve',
+        'No definite diagnosed cause',
+      ],
+      evidenceNeeded: [
+        'Document any smell impairment even if partial',
+        'Track changes over time',
+        'Note any safety concerns (inability to smell gas, smoke, spoiled food)',
+      ],
+    },
+  ],
+
+  definitions: {
+    'anosmia': {
+      term: 'Anosmia',
+      definition: 'Complete loss of the sense of smell. Can be caused by nasal obstruction, damage to olfactory nerves, or brain injury.',
+    },
+    'hyposmia': {
+      term: 'Hyposmia',
+      definition: 'Partial loss or reduced sense of smell. May be temporary or permanent depending on the cause.',
+    },
+    'parosmia': {
+      term: 'Parosmia',
+      definition: 'Distorted sense of smell where familiar odors smell different or unpleasant. Common after viral infections.',
+    },
+    'phantosmia': {
+      term: 'Phantosmia',
+      definition: 'Smelling odors that are not present (olfactory hallucinations). Can indicate neurological issues.',
+    },
+    'upsit': {
+      term: 'UPSIT',
+      definition: 'University of Pennsylvania Smell Identification Test - a standardized 40-item scratch-and-sniff test used to diagnose and quantify smell disorders.',
+    },
+  },
+
+  secondaryConditions: {
+    description: 'Loss of smell is often secondary to other service-connected conditions. Document the primary condition relationship.',
+    commonPrimaries: [
+      { condition: 'Traumatic Brain Injury (TBI)', diagnosticCode: '8045', relationship: 'Direct damage to olfactory nerves or brain regions' },
+      { condition: 'Chronic Sinusitis', diagnosticCode: '6510-6514', relationship: 'Nasal inflammation blocking olfactory receptors' },
+      { condition: 'Deviated Septum', diagnosticCode: '6502', relationship: 'Structural obstruction affecting airflow to olfactory area' },
+      { condition: 'COVID-19 (Long Haul)', diagnosticCode: '6354', relationship: 'Post-viral olfactory dysfunction' },
+      { condition: 'Parkinson\'s Disease', diagnosticCode: '8004', relationship: 'Early neurological symptom of PD' },
+    ],
+  },
+
+  documentationTips: [
+    'Request formal smell testing (UPSIT or equivalent) from ENT or neurologist',
+    'Document specific examples of smell-related safety concerns (gas leaks, smoke, spoiled food)',
+    'Keep a log noting any fluctuations or changes in smell ability',
+    'Obtain buddy/lay statements describing observed functional limitations',
+    'If post-COVID, document timeline from infection to persistent symptoms',
+  ],
+
+  disclaimer: 'This analysis is based on 38 CFR 4.87a, DC 6275. Loss of smell ratings require documented diagnosis of complete anosmia with definite physical or mental cause. For documentation purposes only - the VA makes all final rating determinations.',
+};
+
+// ============================================
+// LOSS OF TASTE RATING CRITERIA (DC 6276)
+// ============================================
+export const LOSS_OF_TASTE_CRITERIA = {
+  diagnosticCode: '6276',
+  condition: 'Loss of Sense of Taste (Ageusia)',
+  cfrReference: '38 CFR 4.87a, Diagnostic Code 6276',
+
+  ratingNote: 'A rating can only be given for the loss of the sense of taste if there is a definite, diagnosed physical or mental cause. Taste and smell are closely related - both the tongue and salivary glands participate in tasting, but the salivary glands are stimulated by the sense of smell. Without smell, the sense of taste is diminished. Mental disorders may cause changes in perception rather than complete loss.',
+
+  ratings: [
+    {
+      percent: 10,
+      summary: 'Complete loss of sense of taste',
+      criteriaDescription: [
+        'Complete loss of sense of taste (ageusia)',
+        'Definite diagnosed physical or mental cause',
+        'Permanent condition documented by medical professional',
+      ],
+      evidenceNeeded: [
+        'Medical diagnosis confirming complete ageusia',
+        'Documentation of underlying cause',
+        'Taste testing results (electrogustometry or chemical taste testing)',
+        'Treatment records showing condition is permanent or chronic',
+        'Statement describing functional impact on daily life and nutrition',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'Partial loss or temporary condition',
+      criteriaDescription: [
+        'Partial loss of taste (hypogeusia)',
+        'Temporary condition expected to resolve',
+        'No definite diagnosed cause',
+      ],
+      evidenceNeeded: [
+        'Document any taste impairment even if partial',
+        'Track changes over time',
+        'Note any nutritional or appetite impacts',
+      ],
+    },
+  ],
+
+  definitions: {
+    'ageusia': {
+      term: 'Ageusia',
+      definition: 'Complete loss of the sense of taste. Can be caused by nerve damage, medication side effects, or neurological conditions.',
+    },
+    'hypogeusia': {
+      term: 'Hypogeusia',
+      definition: 'Partial loss or reduced sense of taste. May affect one or more of the five basic tastes.',
+    },
+    'dysgeusia': {
+      term: 'Dysgeusia',
+      definition: 'Distorted sense of taste where foods taste different than expected. Common side effect of certain medications and chemotherapy.',
+    },
+    'basic tastes': {
+      term: 'Basic Tastes',
+      definition: 'The five primary taste sensations: sweet, salty, sour, bitter, and umami (savory). Complete ageusia affects all five.',
+    },
+    'gustatory nerve': {
+      term: 'Gustatory Nerves',
+      definition: 'The facial nerve (CN VII), glossopharyngeal nerve (CN IX), and vagus nerve (CN X) carry taste information from the tongue to the brain.',
+    },
+  },
+
+  secondaryConditions: {
+    description: 'Loss of taste is often secondary to other conditions or medications. The relationship to smell loss is particularly important.',
+    commonPrimaries: [
+      { condition: 'Loss of Smell (Anosmia)', diagnosticCode: '6275', relationship: 'Smell contributes significantly to flavor perception' },
+      { condition: 'Traumatic Brain Injury (TBI)', diagnosticCode: '8045', relationship: 'Damage to gustatory pathways or processing areas' },
+      { condition: 'Bell\'s Palsy / Facial Nerve', diagnosticCode: '8207', relationship: 'Facial nerve carries taste from anterior tongue' },
+      { condition: 'COVID-19 (Long Haul)', diagnosticCode: '6354', relationship: 'Post-viral gustatory dysfunction' },
+      { condition: 'Diabetes Mellitus', diagnosticCode: '7913', relationship: 'Neuropathy affecting gustatory nerves' },
+    ],
+  },
+
+  importantNote: 'Most medical conditions causing permanent loss of taste or smell would also cause other disabilities. These should be rated separately. The 10% rating for taste or smell loss can be combined with ratings for the underlying condition.',
+
+  documentationTips: [
+    'Request formal taste testing from ENT or neurologist',
+    'Document which specific tastes are affected (sweet, salty, sour, bitter, umami)',
+    'Note any weight changes or nutritional impacts due to appetite loss',
+    'If also experiencing smell loss, document both conditions separately',
+    'Keep food diary noting inability to taste specific foods',
+    'Obtain buddy/lay statements describing observed eating habit changes',
+  ],
+
+  disclaimer: 'This analysis is based on 38 CFR 4.87a, DC 6276. Loss of taste ratings require documented diagnosis of complete ageusia with definite physical or mental cause. For documentation purposes only - the VA makes all final rating determinations.',
+};
+
+export const SYSTEMIC_LUPUS_CRITERIA = {
+  diagnosticCode: '6350',
+  condition: 'Systemic Lupus Erythematosus (SLE)',
+  cfrReference: '38 CFR 4.88b, Diagnostic Code 6350',
+
+  note: 'Evaluate this condition either by combining the evaluations for residuals under the appropriate body systems, OR by evaluating under DC 6350, whichever method results in a higher evaluation. Do NOT combine with ratings under DC 7809 (Discoid Lupus Erythematosus).',
+
+  ratings: [
+    {
+      percent: 100,
+      summary: 'Acute, with frequent exacerbations, producing severe impairment of health',
+      criteria: {
+        acuteDisease: true,
+        frequentExacerbations: true,
+        severeHealthImpairment: true,
+      },
+      criteriaDescription: [
+        'Active, acute disease process',
+        'Frequent exacerbations (flares) occurring regularly',
+        'Severe impairment of overall health',
+        'May include major organ involvement (kidneys, heart, lungs, CNS)',
+        'Significant functional limitations',
+      ],
+      evidenceNeeded: [
+        'Rheumatology records documenting frequent flares',
+        'Hospitalization records for SLE complications',
+        'Lab work showing active disease (complement levels, anti-dsDNA)',
+        'Documentation of major organ involvement',
+        'Functional capacity assessment',
+        'Medication records showing aggressive treatment',
+      ],
+    },
+    {
+      percent: 60,
+      summary: 'Exacerbations lasting a week or more, 2 or 3 times per year',
+      criteria: {
+        exacerbationsPerYear: '2-3',
+        exacerbationDuration: '>=1 week',
+      },
+      criteriaDescription: [
+        'Exacerbations (flares) occurring 2 to 3 times per year',
+        'Each exacerbation lasts at least one week',
+        'Flares cause significant symptoms requiring treatment adjustment',
+        'May require increased medication or temporary steroid bursts',
+      ],
+      evidenceNeeded: [
+        'Documentation of 2-3 flares per year',
+        'Records showing each flare lasted >=1 week',
+        'Treatment records during flares',
+        'Lab work during active flares vs remission',
+        'Symptom diary documenting flare duration',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Exacerbations once or twice a year or symptomatic during the past 2 years',
+      criteria: {
+        exacerbationsPerYear: '1-2',
+        orSymptomaticPast2Years: true,
+      },
+      criteriaDescription: [
+        'Option 1: Exacerbations (flares) once or twice per year, OR',
+        'Option 2: Symptomatic (any symptoms) during the past 2 years',
+        'Generally controlled with medication',
+        'Mild to moderate impact on daily activities',
+      ],
+      evidenceNeeded: [
+        'Documentation of SLE diagnosis',
+        'Records of 1-2 flares per year OR ongoing symptoms',
+        'Treatment records (hydroxychloroquine, low-dose steroids)',
+        'Lab monitoring results',
+      ],
+    },
+  ],
+
+  definitions: {
+    exacerbation: {
+      term: 'Exacerbation (Flare)',
+      definition: 'A period of increased disease activity with worsening symptoms. SLE flares can affect any organ system and typically require increased treatment.',
+      examples: [
+        'New or worsening rash',
+        'Increased joint pain and swelling',
+        'Fever and fatigue',
+        'New organ involvement',
+        'Abnormal lab values (low complement, high anti-dsDNA)',
+      ],
+    },
+    severeHealthImpairment: {
+      term: 'Severe Impairment of Health',
+      definition: 'Disease activity causing significant impact on overall health and function, often with major organ involvement or frequent hospitalizations.',
+      examples: [
+        'Lupus nephritis (kidney involvement)',
+        'Neuropsychiatric lupus',
+        'Severe cytopenias requiring treatment',
+        'Pleuritis or pericarditis',
+        'Frequent hospitalizations',
+      ],
+    },
+    organInvolvement: {
+      term: 'Major Organ Involvement',
+      definition: 'SLE affecting vital organs beyond skin and joints.',
+      examples: [
+        'Kidneys (lupus nephritis) - proteinuria, hematuria, elevated creatinine',
+        'Heart (pericarditis, myocarditis, endocarditis)',
+        'Lungs (pleuritis, pneumonitis, pulmonary hypertension)',
+        'Brain/CNS (seizures, psychosis, cognitive dysfunction)',
+        'Blood (hemolytic anemia, thrombocytopenia, leukopenia)',
+      ],
+    },
+    malarRash: {
+      term: 'Malar (Butterfly) Rash',
+      definition: 'Characteristic facial rash across the cheeks and bridge of nose, sparing the nasolabial folds. A hallmark sign of SLE.',
+    },
+    photosensitivity: {
+      term: 'Photosensitivity',
+      definition: 'Abnormal skin reaction to sunlight, causing rash or triggering flares. Common in SLE patients.',
+    },
+    lupusNephritis: {
+      term: 'Lupus Nephritis',
+      definition: 'Kidney inflammation caused by SLE. Can lead to kidney failure if untreated. Classified by WHO Class I-VI.',
+    },
+    antinuclearAntibody: {
+      term: 'ANA (Antinuclear Antibody)',
+      definition: 'Blood test positive in ~95% of SLE patients. Used for diagnosis but not disease activity.',
+    },
+    antiDsDNA: {
+      term: 'Anti-dsDNA Antibody',
+      definition: 'Antibody specific to SLE, often correlates with disease activity, especially kidney involvement.',
+    },
+    complement: {
+      term: 'Complement Levels (C3, C4)',
+      definition: 'Blood proteins that decrease during active SLE. Low complement often indicates active disease.',
+    },
+  },
+
+  importantNotes: [
+    'SLE can be rated under DC 6350 OR by combining ratings for affected body systems - use whichever method gives the HIGHER rating',
+    'Do NOT combine with Discoid Lupus (DC 7809) ratings',
+    'Major organ involvement may warrant separate ratings: kidneys (7500s), heart (7000s), lungs (6600s), neurological (8000s)',
+    'Lupus nephritis alone can result in high ratings under renal codes',
+    'Document flare frequency, duration, and severity carefully',
+    'Maintain lab records showing disease activity (ANA, anti-dsDNA, complement)',
+    'SLE is a presumptive condition if manifested within 1 year of discharge at 10%+',
+  ],
+
+  presumptiveInfo: {
+    oneYearPresumptive: true,
+    description: 'Lupus erythematosus is presumptively service-connected if manifested to a compensable degree within one year of discharge.',
+  },
+
+  secondaryConditions: {
+    description: 'SLE is a systemic autoimmune disease that can affect virtually any organ system. Each affected organ system may be rated separately if it results in a higher combined rating than DC 6350 alone.',
+
+    categories: {
+      renal: {
+        name: 'Kidney Complications',
+        conditions: [
+          {
+            manifestation: 'Lupus Nephritis',
+            suggestedDCs: ['7541', '7530'],
+            dcDescriptions: ['Renal involvement in systemic disease', 'Chronic renal disease'],
+            nexusStrength: 'strong',
+            notes: 'Lupus nephritis is common and can lead to kidney failure. Document proteinuria, GFR, creatinine.',
+            documentationTips: ['Kidney biopsy results if done', '24-hour urine protein', 'GFR tracking', 'Nephrology records'],
+          },
+        ],
+      },
+      cardiovascular: {
+        name: 'Cardiovascular Complications',
+        conditions: [
+          {
+            manifestation: 'Pericarditis',
+            suggestedDCs: ['7002'],
+            dcDescriptions: ['Pericarditis'],
+            nexusStrength: 'strong',
+            notes: 'Inflammation of the heart lining. Document chest pain and echocardiogram findings.',
+            documentationTips: ['Echocardiogram', 'EKG changes', 'Cardiology evaluation'],
+          },
+          {
+            manifestation: 'Coronary Artery Disease (Accelerated)',
+            suggestedDCs: ['7005'],
+            dcDescriptions: ['Arteriosclerotic heart disease'],
+            nexusStrength: 'moderate',
+            notes: 'SLE accelerates atherosclerosis. Document cardiac workup.',
+            documentationTips: ['Stress test', 'Cardiac catheterization if done', 'Cardiac imaging'],
+          },
+          {
+            manifestation: 'Raynaud\'s Phenomenon',
+            suggestedDCs: ['7117'],
+            dcDescriptions: ['Raynaud\'s syndrome'],
+            nexusStrength: 'strong',
+            notes: 'Common in SLE. Document frequency and severity of attacks.',
+            documentationTips: ['Photo documentation', 'Attack frequency log', 'Document digital ulcers if present'],
+          },
+        ],
+      },
+      respiratory: {
+        name: 'Respiratory Complications',
+        conditions: [
+          {
+            manifestation: 'Pleuritis (Pleurisy)',
+            suggestedDCs: ['6845'],
+            dcDescriptions: ['Chronic pleural effusion or fibrosis'],
+            nexusStrength: 'strong',
+            notes: 'Inflammation of lung lining causing chest pain. Document imaging.',
+            documentationTips: ['Chest X-ray', 'CT scan', 'Document pleuritic chest pain'],
+          },
+          {
+            manifestation: 'Pulmonary Hypertension',
+            suggestedDCs: ['6846'],
+            dcDescriptions: ['Pulmonary arterial hypertension'],
+            nexusStrength: 'moderate',
+            notes: 'Serious complication. Document right heart catheterization if done.',
+            documentationTips: ['Echocardiogram', 'Right heart cath', 'PFTs'],
+          },
+        ],
+      },
+      neurological: {
+        name: 'Neurological Complications',
+        conditions: [
+          {
+            manifestation: 'Neuropsychiatric Lupus (Seizures, Psychosis)',
+            suggestedDCs: ['8911', '9210'],
+            dcDescriptions: ['Epilepsy/seizures', 'Psychotic disorder'],
+            nexusStrength: 'strong',
+            notes: 'CNS involvement is serious. Document neurology evaluation.',
+            documentationTips: ['Neurology records', 'MRI brain', 'EEG if seizures', 'Psychiatry evaluation'],
+          },
+          {
+            manifestation: 'Cognitive Dysfunction ("Lupus Fog")',
+            suggestedDCs: ['9326', '8045'],
+            dcDescriptions: ['Dementia', 'TBI residuals'],
+            nexusStrength: 'moderate',
+            notes: 'Common symptom. Document neuropsychological testing.',
+            documentationTips: ['Neuropsych testing', 'Document cognitive complaints', 'Impact on work/daily activities'],
+          },
+          {
+            manifestation: 'Peripheral Neuropathy',
+            suggestedDCs: ['8520'],
+            dcDescriptions: ['Sciatic nerve / peripheral neuropathy'],
+            nexusStrength: 'moderate',
+            notes: 'Document EMG/nerve conduction studies.',
+            documentationTips: ['EMG results', 'Document numbness/tingling', 'Neurology evaluation'],
+          },
+        ],
+      },
+      hematologic: {
+        name: 'Blood Disorders',
+        conditions: [
+          {
+            manifestation: 'Hemolytic Anemia',
+            suggestedDCs: ['7714'],
+            dcDescriptions: ['Hemolytic anemia'],
+            nexusStrength: 'strong',
+            notes: 'Autoimmune destruction of red blood cells. Document hemoglobin and Coombs test.',
+            documentationTips: ['CBC with reticulocyte count', 'Coombs test', 'Haptoglobin, LDH'],
+          },
+          {
+            manifestation: 'Thrombocytopenia (Low Platelets)',
+            suggestedDCs: ['7705'],
+            dcDescriptions: ['Thrombocytopenia'],
+            nexusStrength: 'strong',
+            notes: 'Increased bleeding risk. Document platelet counts.',
+            documentationTips: ['Serial platelet counts', 'Bleeding episodes', 'Treatment records'],
+          },
+          {
+            manifestation: 'Leukopenia (Low White Blood Cells)',
+            suggestedDCs: ['7700'],
+            dcDescriptions: ['Agranulocytosis'],
+            nexusStrength: 'strong',
+            notes: 'Increased infection risk. Document WBC counts.',
+            documentationTips: ['CBC with differential', 'Infection history'],
+          },
+        ],
+      },
+      musculoskeletal: {
+        name: 'Musculoskeletal Complications',
+        conditions: [
+          {
+            manifestation: 'Lupus Arthritis',
+            suggestedDCs: ['5002'],
+            dcDescriptions: ['Rheumatoid arthritis (analogous)'],
+            nexusStrength: 'strong',
+            notes: 'Non-erosive arthritis affecting multiple joints.',
+            documentationTips: ['Joint examination', 'X-rays', 'Document joint involvement'],
+          },
+          {
+            manifestation: 'Avascular Necrosis (from steroid use)',
+            suggestedDCs: ['5250-5255'],
+            dcDescriptions: ['Hip/joint codes'],
+            nexusStrength: 'moderate',
+            notes: 'Bone death from long-term steroid use. Common in hips.',
+            documentationTips: ['MRI of affected joint', 'Document steroid history', 'Orthopedic evaluation'],
+          },
+        ],
+      },
+      mentalHealth: {
+        name: 'Mental Health',
+        conditions: [
+          {
+            manifestation: 'Depression',
+            suggestedDCs: ['9434'],
+            dcDescriptions: ['Major depressive disorder'],
+            nexusStrength: 'strong',
+            notes: 'Very common in chronic illness. Document mental health treatment.',
+            documentationTips: ['Mental health records', 'PHQ-9 scores', 'Medication records'],
+          },
+          {
+            manifestation: 'Anxiety',
+            suggestedDCs: ['9400'],
+            dcDescriptions: ['Generalized anxiety disorder'],
+            nexusStrength: 'strong',
+            notes: 'Common due to chronic unpredictable disease.',
+            documentationTips: ['GAD-7 scores', 'Treatment records'],
+          },
+        ],
+      },
+      dermatologic: {
+        name: 'Skin Manifestations',
+        conditions: [
+          {
+            manifestation: 'Skin Lesions / Rashes (Not Discoid)',
+            suggestedDCs: ['7806'],
+            dcDescriptions: ['Dermatitis or eczema (general skin formula)'],
+            nexusStrength: 'strong',
+            notes: 'Rate under general skin formula if not discoid type. Do NOT combine with DC 6350.',
+            documentationTips: ['Document body surface area', 'Treatment records', 'Photo documentation'],
+          },
+          {
+            manifestation: 'Alopecia (Hair Loss)',
+            suggestedDCs: ['7831'],
+            dcDescriptions: ['Alopecia areata'],
+            nexusStrength: 'moderate',
+            notes: 'Common during flares. Document extent.',
+            documentationTips: ['Photo documentation', 'Document scalp involvement percentage'],
+          },
+        ],
+      },
+    },
+
+    importantNotes: [
+      'Calculate ratings BOTH ways: DC 6350 alone vs. combining all affected systems',
+      'Use whichever method gives the HIGHER total rating',
+      'Do NOT combine DC 6350 with DC 7809 (Discoid Lupus)',
+      'Each affected organ system should be documented separately',
+      'Maintain lab records showing disease activity',
+      'Document all medications and side effects (especially steroids)',
+    ],
+
+    documentationStrategy: [
+      'Regular rheumatology follow-ups',
+      'Lab monitoring: CBC, CMP, urinalysis, ANA, anti-dsDNA, complement levels',
+      'Document EVERY flare with dates, symptoms, and duration',
+      'Keep detailed medication records including steroid doses',
+      'Specialist evaluations for each affected organ system',
+      'Functional capacity documentation',
+    ],
+  },
+
+  disclaimer: 'This analysis is based on logged SLE symptoms. VA ratings require rheumatology documentation, lab work, and assessment of organ involvement. Consider calculating combined rating for affected body systems vs. DC 6350 alone.',
+};
+
+// -----------------------------------------
+// ACTIVE PULMONARY TUBERCULOSIS (DC 6730)
+// -----------------------------------------
+export const TUBERCULOSIS_ACTIVE_CRITERIA = {
+  diagnosticCode: '6730',
+  condition: 'Tuberculosis, Pulmonary, Chronic, Active',
+  cfrReference: '38 CFR 4.97, Diagnostic Code 6730',
+
+  note: 'Active pulmonary tuberculosis is rated 100% while active. After becoming inactive, rating changes to DC 6731 and is based on residuals. A mandatory VA examination is required when TB becomes inactive.',
+
+  ratings: [
+    {
+      percent: 100,
+      summary: 'Active pulmonary tuberculosis',
+      criteria: {
+        activeDisease: true,
+        culturePositive: true,
+      },
+      criteriaDescription: [
+        'Active pulmonary tuberculosis confirmed by culture, smear, or clinical findings',
+        'On active anti-tuberculosis treatment',
+        'Rating continues until disease becomes inactive',
+      ],
+      evidenceNeeded: [
+        'Positive sputum culture for Mycobacterium tuberculosis',
+        'Positive AFB smear',
+        'Chest X-ray showing active disease (infiltrates, cavities)',
+        'Documentation of anti-TB medication regimen',
+        'Infectious disease or pulmonology records',
+      ],
+    },
+  ],
+
+  permanentlyTotallyDisabling: {
+    description: 'Active pulmonary TB is considered permanently and totally disabling for non-service-connected pension purposes in the following circumstances:',
+    conditions: [
+      'Associated with active tuberculosis involving other than the respiratory system',
+      'With severe associated symptoms or with extensive cavity formation',
+      'Reactivated cases, generally',
+      'With advancement of lesions on successive examinations or while under treatment',
+      'Without retrogression of lesions or other evidence of material improvement at the end of 6 months hospitalization',
+      'Without change of diagnosis from "active" at the end of 12 months hospitalization',
+    ],
+  },
+
+  definitions: {
+    activeTB: {
+      term: 'Active Tuberculosis',
+      definition: 'TB disease where Mycobacterium tuberculosis bacteria are actively multiplying and causing symptoms. Confirmed by positive cultures or clinical evidence.',
+    },
+    culturePositive: {
+      term: 'Culture Positive',
+      definition: 'Laboratory confirmation of M. tuberculosis growth from sputum or other specimen. Gold standard for TB diagnosis.',
+    },
+    afbSmear: {
+      term: 'AFB Smear',
+      definition: 'Acid-fast bacilli smear - microscopic examination for TB bacteria. Faster but less sensitive than culture.',
+    },
+    cavitaryDisease: {
+      term: 'Cavitary Disease',
+      definition: 'TB that has formed cavities (holes) in the lungs. Indicates more advanced disease and higher infectivity.',
+    },
+    multiDrugResistant: {
+      term: 'MDR-TB (Multi-Drug Resistant)',
+      definition: 'TB resistant to at least isoniazid and rifampin, the two most potent first-line drugs. Requires longer, more complex treatment.',
+    },
+    xdrTB: {
+      term: 'XDR-TB (Extensively Drug Resistant)',
+      definition: 'MDR-TB plus resistance to fluoroquinolones and at least one injectable second-line drug. Very difficult to treat.',
+    },
+  },
+
+  treatmentInfo: {
+    standardRegimen: 'RIPE: Rifampin, Isoniazid, Pyrazinamide, Ethambutol',
+    duration: 'Typically 6-9 months for drug-susceptible TB; 18-24+ months for MDR-TB',
+    monitoring: 'Monthly sputum cultures until negative; chest X-rays; liver function tests',
+  },
+
+  importantNotes: [
+    'Active TB is ALWAYS rated 100% while disease is active',
+    '100% rating is NOT subject to requirement of precedent hospital treatment',
+    'Rating may be reduced to 50% for failure to submit to examination or follow treatment',
+    'Mandatory VA examination required when active TB becomes inactive',
+    'TB is a 3-year presumptive condition (manifested within 3 years of discharge)',
+    'Document all medications, cultures, and imaging',
+  ],
+
+  presumptiveInfo: {
+    threeYearPresumptive: true,
+    description: 'Tuberculosis is presumptively service-connected if manifested to a compensable degree within 3 years of discharge.',
+  },
+
+  disclaimer: 'This analysis is based on logged TB symptoms. Active TB rating requires confirmation of active disease by culture, smear, or clinical findings. VA ratings require infectious disease documentation.',
+};
+
+
+// -----------------------------------------
+// INACTIVE PULMONARY TUBERCULOSIS (DC 6731)
+// -----------------------------------------
+export const TUBERCULOSIS_INACTIVE_CRITERIA = {
+  diagnosticCode: '6731',
+  condition: 'Tuberculosis, Pulmonary, Chronic, Inactive',
+  cfrReference: '38 CFR 4.97, Diagnostic Code 6731',
+
+  note: 'Inactive pulmonary TB is rated based on residuals. Rate residuals as interstitial lung disease, restrictive lung disease, or when obstructive lung disease is the major residual, as chronic bronchitis (DC 6600). Rate thoracoplasty as removal of ribs under DC 5297.',
+
+  ratings: [
+    {
+      percent: 100,
+      summary: 'Residuals with FEV-1 <40% predicted or severe impairment',
+      criteria: {
+        fev1: '<40%',
+        severeResiduals: true,
+      },
+      criteriaDescription: [
+        'FEV-1 less than 40% of predicted, OR',
+        'FEV-1/FVC less than 40%, OR',
+        'DLCO (SB) less than 40% predicted, OR',
+        'Maximum exercise capacity less than 15 ml/kg/min oxygen consumption, OR',
+        'Cor pulmonale (right heart failure), OR',
+        'Pulmonary hypertension, OR',
+        'Requires outpatient oxygen therapy',
+      ],
+      evidenceNeeded: [
+        'Pulmonary function tests (PFTs)',
+        'DLCO measurement',
+        'Echocardiogram if pulmonary hypertension suspected',
+        'Documentation of oxygen requirements',
+      ],
+    },
+    {
+      percent: 60,
+      summary: 'Residuals with FEV-1 40-55% predicted',
+      criteria: {
+        fev1: '40-55%',
+      },
+      criteriaDescription: [
+        'FEV-1 of 40-55% of predicted, OR',
+        'FEV-1/FVC of 40-55%, OR',
+        'DLCO (SB) of 40-55% predicted, OR',
+        'Maximum oxygen consumption of 15-20 ml/kg/min',
+      ],
+      evidenceNeeded: [
+        'Pulmonary function tests',
+        'DLCO measurement',
+        'Exercise capacity testing if applicable',
+      ],
+    },
+    {
+      percent: 30,
+      summary: 'Residuals with FEV-1 56-70% predicted',
+      criteria: {
+        fev1: '56-70%',
+      },
+      criteriaDescription: [
+        'FEV-1 of 56-70% of predicted, OR',
+        'FEV-1/FVC of 56-70%, OR',
+        'DLCO (SB) of 56-65% predicted',
+      ],
+      evidenceNeeded: [
+        'Pulmonary function tests',
+        'DLCO measurement',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Residuals with FEV-1 71-80% predicted',
+      criteria: {
+        fev1: '71-80%',
+      },
+      criteriaDescription: [
+        'FEV-1 of 71-80% of predicted, OR',
+        'FEV-1/FVC of 71-80%, OR',
+        'DLCO (SB) of 66-80% predicted',
+      ],
+      evidenceNeeded: [
+        'Pulmonary function tests',
+        'DLCO measurement',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'Inactive TB with minimal or no residuals',
+      criteria: {
+        minimalResiduals: true,
+        fev1: '>80%',
+      },
+      criteriaDescription: [
+        'FEV-1 greater than 80% of predicted',
+        'No significant pulmonary impairment',
+        'Healed lesions on imaging',
+      ],
+      evidenceNeeded: [
+        'Documentation of inactive status',
+        'Pulmonary function tests showing minimal impairment',
+        'Chest imaging showing healed/stable lesions',
+      ],
+    },
+  ],
+
+  definitions: {
+    inactiveTB: {
+      term: 'Inactive Tuberculosis',
+      definition: 'TB that is no longer active - negative cultures, stable imaging, completed treatment. May have residual lung damage.',
+    },
+    fev1: {
+      term: 'FEV-1 (Forced Expiratory Volume in 1 second)',
+      definition: 'The amount of air that can be forcibly exhaled in one second. Key measure of lung function.',
+    },
+    fvc: {
+      term: 'FVC (Forced Vital Capacity)',
+      definition: 'The total amount of air that can be forcibly exhaled after taking a deep breath.',
+    },
+    dlco: {
+      term: 'DLCO (Diffusing Capacity)',
+      definition: 'Measures how well oxygen passes from lungs into blood. Indicates gas exchange ability.',
+    },
+    pulmonaryFibrosis: {
+      term: 'Pulmonary Fibrosis',
+      definition: 'Scarring of lung tissue, a common residual of TB. Causes restrictive lung disease.',
+    },
+    thoracoplasty: {
+      term: 'Thoracoplasty',
+      definition: 'Surgical removal of ribs to collapse the lung, historically used for TB treatment. Rate as removal of ribs (DC 5297).',
+    },
+  },
+
+  residualConditions: [
+    { condition: 'Pulmonary Fibrosis/Scarring', rateAs: 'Interstitial lung disease (DC 6825-6833)' },
+    { condition: 'Restrictive Lung Disease', rateAs: 'Restrictive lung codes (DC 6840-6845)' },
+    { condition: 'Obstructive Lung Disease', rateAs: 'Chronic bronchitis (DC 6600)' },
+    { condition: 'Thoracoplasty', rateAs: 'Removal of ribs (DC 5297)' },
+    { condition: 'Bronchiectasis', rateAs: 'DC 6601' },
+    { condition: 'Emphysema', rateAs: 'DC 6603' },
+  ],
+
+  importantNotes: [
+    'Rating based on RESIDUALS - primarily pulmonary function tests',
+    'Rate as interstitial, restrictive, or obstructive lung disease based on predominant residual',
+    'Thoracoplasty rated separately as rib removal (DC 5297)',
+    'Mandatory VA exam required when active TB becomes inactive',
+    'Document all PFT results including FEV-1, FVC, FEV-1/FVC ratio, and DLCO',
+    'May qualify for separate ratings for different residual conditions',
+  ],
+
+  disclaimer: 'This analysis is based on logged symptoms. Inactive TB rating requires pulmonary function testing to determine residual impairment. Rate residuals under the most appropriate respiratory code.',
+};
+
+
+// -----------------------------------------
+// MILIARY (DISSEMINATED) TUBERCULOSIS (DC 6311)
+// -----------------------------------------
+export const TUBERCULOSIS_MILIARY_CRITERIA = {
+  diagnosticCode: '6311',
+  condition: 'Tuberculosis, Miliary (Disseminated)',
+  cfrReference: '38 CFR 4.88b, Diagnostic Code 6311',
+
+  note: 'Miliary TB is disseminated tuberculosis affecting multiple organ systems. Rate 100% while active. When inactive, rate residuals under the appropriate body system codes.',
+
+  ratings: [
+    {
+      percent: 100,
+      summary: 'Active miliary (disseminated) tuberculosis',
+      criteria: {
+        activeDisease: true,
+        disseminated: true,
+      },
+      criteriaDescription: [
+        'Active disseminated (miliary) tuberculosis',
+        'TB spread throughout body via bloodstream',
+        'Multiple organ involvement',
+        'Confirmed by culture, histopathology, or diagnostic laboratory testing',
+      ],
+      evidenceNeeded: [
+        'Positive cultures from multiple sites',
+        'Chest X-ray showing miliary pattern (millet seed appearance)',
+        'CT imaging showing disseminated disease',
+        'Biopsy results if available',
+        'Documentation of organ systems involved',
+      ],
+    },
+    {
+      percent: 'Rate residuals',
+      summary: 'Inactive miliary TB - rate residuals under appropriate body systems',
+      criteria: {
+        inactiveDisease: true,
+      },
+      criteriaDescription: [
+        'When miliary TB becomes inactive, rate all residuals under appropriate body system codes',
+        'May include: respiratory, CNS, musculoskeletal, ocular, GI, GU, and skin residuals',
+      ],
+      evidenceNeeded: [
+        'Documentation of inactive status',
+        'Assessment of each affected organ system',
+        'Specialist evaluations as needed',
+      ],
+    },
+  ],
+
+  definitions: {
+    miliaryTB: {
+      term: 'Miliary Tuberculosis',
+      definition: 'Disseminated TB where bacteria spread via bloodstream to multiple organs. Named for millet seed-like appearance on chest X-ray.',
+    },
+    disseminated: {
+      term: 'Disseminated Disease',
+      definition: 'TB that has spread beyond the lungs to multiple organ systems throughout the body.',
+    },
+  },
+
+  possibleOrganInvolvement: [
+    { organ: 'CNS/Meninges', description: 'TB meningitis - severe complication', suggestedDC: '8019 (Meningitis)' },
+    { organ: 'Bones/Joints', description: 'Skeletal TB, Pott\'s disease (spine)', suggestedDC: '5001 (TB of bones/joints)' },
+    { organ: 'Kidneys', description: 'Renal TB', suggestedDC: '7505 (TB kidney)' },
+    { organ: 'Lymph Nodes', description: 'TB lymphadenitis', suggestedDC: '7710 (TB adenitis)' },
+    { organ: 'Skin', description: 'Cutaneous TB, lupus vulgaris', suggestedDC: '7811 (Tuberculosis luposa)' },
+    { organ: 'Eyes', description: 'Ocular TB, uveitis', suggestedDC: '6010 (TB eye)' },
+    { organ: 'GI Tract', description: 'Intestinal TB, peritonitis', suggestedDC: 'Appropriate GI code' },
+    { organ: 'Liver/Spleen', description: 'Hepatic/splenic involvement', suggestedDC: 'Appropriate code' },
+  ],
+
+  importantNotes: [
+    'Miliary TB is ALWAYS rated 100% while active',
+    'Life-threatening condition requiring aggressive treatment',
+    'When inactive, rate EACH affected organ system separately',
+    'Combined rating for residuals may exceed single code rating',
+    'Confirm recurrence by culture, histopathology, or other diagnostic testing',
+    'TB meningitis residuals may include cognitive impairment, seizures, hearing loss',
+  ],
+
+  disclaimer: 'This analysis is based on logged symptoms. Miliary TB is a serious disseminated infection requiring specialist care. Rate residuals of each affected organ system when disease becomes inactive.',
+};
+
+// -----------------------------------------
+// DC 7332: SPHINCTER CONTROL (UPDATED CRITERIA)
+// -----------------------------------------
+export const SPHINCTER_CONTROL_CRITERIA = {
+  diagnosticCode: '7332',
+  condition: 'Rectum and Anus, Impairment of Sphincter Control',
+  cfrReference: '38 CFR 4.114, Diagnostic Code 7332',
+
+  note: 'Complete or partial loss of sphincter control refers to the inability to retain or expel stool at an appropriate time and place. Rating considers both incontinence AND retention symptoms.',
+
+  ratings: [
+    {
+      percent: 100,
+      summary: 'Complete loss - not responsive to bowel program OR daily incontinence requiring pad changes 2+/day',
+      criteria: {
+        completeLoss: true,
+        notResponsiveToBowelProgram: true,
+        orDailyIncontinence: true,
+      },
+      criteriaDescription: [
+        'Complete loss of sphincter control with incontinence or retention that is NOT responsive to physician-prescribed bowel program, AND requires either:',
+        '- Surgery, OR',
+        '- Digital stimulation, medication (beyond laxatives), AND special diet',
+        'OR: Incontinence to solids and/or liquids 2+ times per DAY, requiring changing a pad 2+ times per DAY',
+      ],
+      evidenceNeeded: [
+        'Documentation of complete sphincter control loss',
+        'Records showing bowel program failure',
+        'Daily incontinence diary',
+        'Pad usage log (2+ changes daily)',
+        'Medication and dietary modification records',
+        'Colorectal surgery evaluation',
+      ],
+    },
+    {
+      percent: 60,
+      summary: 'Complete/partial loss - partially responsive to bowel program OR weekly incontinence with pad use',
+      criteria: {
+        partiallyResponsive: true,
+        orWeeklyIncontinence: true,
+      },
+      criteriaDescription: [
+        'Complete or partial loss of sphincter control with incontinence or retention that is PARTIALLY responsive to physician-prescribed bowel program, AND requires either:',
+        '- Surgery, OR',
+        '- Digital stimulation, medication (beyond laxatives), AND special diet',
+        'OR: Incontinence to solids and/or liquids 2+ times per WEEK, requiring wearing a pad 2+ times per WEEK',
+      ],
+      evidenceNeeded: [
+        'Documentation of partial sphincter control',
+        'Bowel program records showing partial response',
+        'Weekly incontinence diary',
+        'Pad usage documentation',
+        'Treatment records',
+      ],
+    },
+    {
+      percent: 30,
+      summary: 'Complete/partial loss - fully responsive to bowel program OR monthly incontinence with pad use',
+      criteria: {
+        fullyResponsive: true,
+        requiresDigitalStimMedDiet: true,
+        orMonthlyIncontinence: true,
+      },
+      criteriaDescription: [
+        'Complete or partial loss of sphincter control with incontinence or retention that is FULLY responsive to physician-prescribed bowel program, AND requires:',
+        '- Digital stimulation, medication (beyond laxatives), AND special diet',
+        'OR: Incontinence to solids and/or liquids 2+ times per MONTH, requiring wearing a pad 2+ times per MONTH',
+      ],
+      evidenceNeeded: [
+        'Bowel program documentation',
+        'Medication records',
+        'Diet modification records',
+        'Monthly incontinence log',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Fully responsive to bowel program (med OR diet) OR incontinence at least once every 6 months',
+      criteria: {
+        fullyResponsive: true,
+        requiresMedOrDiet: true,
+        orRareIncontinence: true,
+      },
+      criteriaDescription: [
+        'Complete or partial loss of sphincter control that is FULLY responsive to physician-prescribed bowel program, AND requires:',
+        '- Medication (beyond laxatives) OR special diet',
+        'OR: Incontinence to solids and/or liquids at least once every 6 months, requiring wearing a pad at least once every 6 months',
+      ],
+      evidenceNeeded: [
+        'Bowel program records',
+        'Medication or diet documentation',
+        'Incontinence episodes documented',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'History of sphincter control loss, currently asymptomatic',
+      criteria: {
+        historyOnly: true,
+        currentlyAsymptomatic: true,
+      },
+      criteriaDescription: [
+        'History of loss of sphincter control',
+        'Currently asymptomatic (no current symptoms)',
+      ],
+      evidenceNeeded: [
+        'Medical history documentation',
+        'Current evaluation showing no symptoms',
+      ],
+    },
+  ],
+
+  definitions: {
+    sphincterControl: {
+      term: 'Sphincter Control',
+      definition: 'The ability to retain or expel stool at an appropriate time and place. Loss can result in either incontinence (inability to hold) or retention (inability to expel).',
+    },
+    bowelProgram: {
+      term: 'Physician-Prescribed Bowel Program',
+      definition: 'A structured regimen prescribed by a doctor that may include scheduled toileting, digital stimulation, medications, and dietary modifications.',
+    },
+    digitalStimulation: {
+      term: 'Digital Stimulation',
+      definition: 'Manual stimulation of the rectum to trigger bowel movements, often used in neurogenic bowel dysfunction.',
+    },
+    incontinenceToSolids: {
+      term: 'Incontinence to Solids',
+      definition: 'Involuntary loss of solid stool (formed feces).',
+    },
+    incontinenceToLiquids: {
+      term: 'Incontinence to Liquids',
+      definition: 'Involuntary loss of liquid stool or diarrhea.',
+    },
+    fecalRetention: {
+      term: 'Fecal Retention',
+      definition: 'Inability to expel stool despite the urge, leading to constipation and impaction.',
+    },
+  },
+
+  causesOfSphincterImpairment: [
+    'Spinal cord injury',
+    'Multiple sclerosis',
+    'Diabetic neuropathy',
+    'Surgical damage (hemorrhoidectomy, prostatectomy, etc.)',
+    'Childbirth injury',
+    'Rectal cancer treatment',
+    'Inflammatory bowel disease',
+    'Radiation therapy',
+    'Stroke',
+    'Parkinson\'s disease',
+  ],
+
+  importantNotes: [
+    '"Beyond laxative use" means medications specifically for bowel control, not just OTC laxatives',
+    'Both incontinence AND retention are covered under this code',
+    'Rating is based on FREQUENCY of episodes AND management requirements',
+    'Document pad usage with dates and frequency',
+    'Bowel program must be physician-prescribed for rating purposes',
+    'Can be secondary to spinal cord injury, MS, diabetes, or surgical complications',
+  ],
+
+  disclaimer: 'This analysis is based on logged sphincter control symptoms. VA ratings require documentation of incontinence frequency, bowel program compliance, and treatment requirements.',
+};
+
+
+// -----------------------------------------
+// DC 7333: RECTAL STRICTURE
+// -----------------------------------------
+export const RECTAL_STRICTURE_CRITERIA = {
+  diagnosticCode: '7333',
+  condition: 'Rectum and Anus, Stricture',
+  cfrReference: '38 CFR 4.114, Diagnostic Code 7333',
+
+  note: 'Conditions rated under this code include dyssynergic defecation (levator ani) and anismus (functional constipation). Evaluate an ostomy as Intestine, large, resection (DC 7329).',
+
+  ratings: [
+    {
+      percent: 100,
+      summary: 'Inability to open anus with inability to expel solid feces',
+      criteria: {
+        completeObstruction: true,
+        cannotExpelSolidFeces: true,
+      },
+      criteriaDescription: [
+        'Complete inability to open the anus',
+        'Unable to expel solid feces',
+        'May require colostomy or manual disimpaction',
+      ],
+      evidenceNeeded: [
+        'Colorectal surgery evaluation',
+        'Documentation of complete obstruction',
+        'Imaging studies if performed',
+        'Colostomy records if applicable',
+      ],
+    },
+    {
+      percent: 60,
+      summary: 'Lumen reduction 50%+ with pain and straining during defecation',
+      criteria: {
+        lumenReduction: '>=50%',
+        painDuringDefecation: true,
+        strainingDuringDefecation: true,
+      },
+      criteriaDescription: [
+        'Reduction of the rectal/anal lumen by 50% or more',
+        'Pain during defecation',
+        'Straining during defecation',
+      ],
+      evidenceNeeded: [
+        'Endoscopy/imaging documenting stricture severity',
+        'Pain documentation',
+        'Defecation difficulty records',
+      ],
+    },
+    {
+      percent: 30,
+      summary: 'Lumen reduction <50% with straining during defecation',
+      criteria: {
+        lumenReduction: '<50%',
+        strainingDuringDefecation: true,
+      },
+      criteriaDescription: [
+        'Reduction of the rectal/anal lumen by less than 50%',
+        'Straining during defecation required',
+      ],
+      evidenceNeeded: [
+        'Documentation of stricture',
+        'Straining symptoms documented',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Luminal narrowing with or without straining, managed by dietary intervention',
+      criteria: {
+        luminalNarrowing: true,
+        dietaryManagement: true,
+      },
+      criteriaDescription: [
+        'Luminal narrowing present',
+        'With or without straining',
+        'Managed by dietary intervention (high fiber, stool softeners)',
+      ],
+      evidenceNeeded: [
+        'Documentation of narrowing',
+        'Dietary modification records',
+      ],
+    },
+  ],
+
+  definitions: {
+    stricture: {
+      term: 'Rectal/Anal Stricture',
+      definition: 'Abnormal narrowing of the rectum or anal canal that impedes the passage of stool.',
+    },
+    dyssynergicDefecation: {
+      term: 'Dyssynergic Defecation (Levator Ani Syndrome)',
+      definition: 'A functional disorder where the pelvic floor muscles do not relax properly during defecation, causing difficulty expelling stool despite the urge.',
+    },
+    anismus: {
+      term: 'Anismus (Functional Constipation)',
+      definition: 'Paradoxical contraction or failure to relax the puborectalis and external anal sphincter during attempted defecation.',
+    },
+    lumenReduction: {
+      term: 'Lumen Reduction',
+      definition: 'Percentage decrease in the open diameter of the rectal/anal canal compared to normal.',
+    },
+  },
+
+  importantNotes: [
+    'Dyssynergic defecation and anismus are specifically included under this code',
+    'If patient has ostomy, rate under DC 7329 (Large intestine resection)',
+    'Strictures may result from surgery, radiation, inflammatory disease, or trauma',
+    'Document lumen reduction percentage if measured',
+    'Biofeedback therapy for pelvic floor dysfunction should be documented',
+  ],
+
+  disclaimer: 'This analysis is based on logged rectal stricture symptoms. VA ratings require documentation of stricture severity and functional impact.',
+};
+
+
+// -----------------------------------------
+// DC 7334: RECTAL PROLAPSE
+// -----------------------------------------
+export const RECTAL_PROLAPSE_CRITERIA = {
+  diagnosticCode: '7334',
+  condition: 'Rectum, Prolapse',
+  cfrReference: '38 CFR 4.114, Diagnostic Code 7334',
+
+  note: 'For repairable prolapse, continue 100% rating for 2 months post-repair, then evaluate residuals. Where sphincter control impairment is predominant, rate under DC 7332.',
+
+  ratings: [
+    {
+      percent: 100,
+      summary: 'Persistent irreducible prolapse (repairable or not)',
+      criteria: {
+        persistentProlapse: true,
+        irreducible: true,
+      },
+      criteriaDescription: [
+        'Persistent prolapse that cannot be pushed back in (irreducible)',
+        'Prolapse remains outside the body',
+        'May be repairable or unrepairable surgically',
+      ],
+      evidenceNeeded: [
+        'Colorectal surgery evaluation',
+        'Documentation of persistent irreducible prolapse',
+        'Surgical assessment of repairability',
+      ],
+    },
+    {
+      percent: 50,
+      summary: 'Manually reducible, not repairable, occurs at times OTHER than bowel movements/exertion',
+      criteria: {
+        manuallyReducible: true,
+        notRepairable: true,
+        occursSpontaneously: true,
+      },
+      criteriaDescription: [
+        'Prolapse that can be manually pushed back in',
+        'NOT surgically repairable',
+        'Occurs at times OTHER than bowel movements, exertion, or Valsalva maneuver',
+        'May occur spontaneously while standing, walking, etc.',
+      ],
+      evidenceNeeded: [
+        'Documentation of prolapse occurring at rest or with minimal activity',
+        'Surgical evaluation confirming not repairable',
+        'Frequency and circumstances of prolapse',
+      ],
+    },
+    {
+      percent: 30,
+      summary: 'Manually reducible, not repairable, occurs ONLY with bowel movements/exertion/Valsalva',
+      criteria: {
+        manuallyReducible: true,
+        notRepairable: true,
+        occursWithExertion: true,
+      },
+      criteriaDescription: [
+        'Prolapse that can be manually pushed back in',
+        'NOT surgically repairable',
+        'Occurs ONLY after bowel movements, exertion, or while performing Valsalva maneuver',
+      ],
+      evidenceNeeded: [
+        'Documentation of triggering events',
+        'Surgical evaluation confirming not repairable',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Spontaneously reducible prolapse, not repairable',
+      criteria: {
+        spontaneouslyReducible: true,
+        notRepairable: true,
+      },
+      criteriaDescription: [
+        'Prolapse that reduces on its own (spontaneously)',
+        'NOT surgically repairable',
+        'Does not require manual reduction',
+      ],
+      evidenceNeeded: [
+        'Documentation of prolapse episodes',
+        'Confirmation that it self-reduces',
+        'Surgical evaluation',
+      ],
+    },
+  ],
+
+  definitions: {
+    prolapse: {
+      term: 'Rectal Prolapse',
+      definition: 'Protrusion of the rectum through the anus, where the rectal wall slides out of place.',
+    },
+    irreducible: {
+      term: 'Irreducible Prolapse',
+      definition: 'Prolapse that cannot be pushed back into the body, remaining outside.',
+    },
+    manuallyReducible: {
+      term: 'Manually Reducible',
+      definition: 'Prolapse that can be pushed back inside with gentle manual pressure.',
+    },
+    spontaneouslyReducible: {
+      term: 'Spontaneously Reducible',
+      definition: 'Prolapse that returns inside on its own without manual intervention.',
+    },
+    valsalvaManeuver: {
+      term: 'Valsalva Maneuver',
+      definition: 'Bearing down as if having a bowel movement, which increases intra-abdominal pressure.',
+    },
+  },
+
+  importantNotes: [
+    'After surgical repair, 100% continues for 2 months, then reassess residuals',
+    'If sphincter control impairment is the main issue, rate under DC 7332 instead',
+    '"Repairable" refers to surgical repairability, not whether repair was attempted',
+    'Document WHEN prolapse occurs (spontaneous vs. with exertion)',
+    'Full-thickness prolapse is more severe than mucosal prolapse',
+  ],
+
+  disclaimer: 'This analysis is based on logged rectal prolapse symptoms. VA ratings require colorectal surgery evaluation to determine repairability.',
+};
+
+
+// -----------------------------------------
+// DC 7335: ANAL FISTULA
+// -----------------------------------------
+export const ANAL_FISTULA_CRITERIA = {
+  diagnosticCode: '7335',
+  condition: 'Fistula in Ano (Anorectal Fistula and Abscess)',
+  cfrReference: '38 CFR 4.114, Diagnostic Code 7335',
+
+  note: 'Rating based on number of fistulas, presence of abscesses, drainage, pain, and response to treatment.',
+
+  ratings: [
+    {
+      percent: 60,
+      summary: 'More than 2 constant/near-constant fistulas with abscesses, drainage, pain - refractory to treatment',
+      criteria: {
+        fistulasCount: '>2',
+        constantOrNearConstant: true,
+        withAbscesses: true,
+        withDrainage: true,
+        withPain: true,
+        refractoryToTreatment: true,
+      },
+      criteriaDescription: [
+        'More than two fistulas that are constant or near-constant',
+        'Associated abscesses',
+        'Ongoing drainage',
+        'Associated pain',
+        'Refractory (not responding) to medical and surgical treatment',
+      ],
+      evidenceNeeded: [
+        'Documentation of multiple fistulas',
+        'Treatment failure records',
+        'Surgical history',
+        'Ongoing symptoms despite treatment',
+      ],
+    },
+    {
+      percent: 40,
+      summary: 'One or two simultaneous fistulas with abscess, drainage, and pain',
+      criteria: {
+        fistulasCount: '1-2',
+        simultaneous: true,
+        withAbscess: true,
+        withDrainage: true,
+        withPain: true,
+      },
+      criteriaDescription: [
+        'One or two fistulas present at the same time',
+        'Associated abscess(es)',
+        'Drainage present',
+        'Pain present',
+      ],
+      evidenceNeeded: [
+        'Fistula documentation',
+        'Abscess records',
+        'Drainage documentation',
+        'Pain records',
+      ],
+    },
+    {
+      percent: 20,
+      summary: 'Two or more simultaneous fistulas with drainage and pain, but without abscesses',
+      criteria: {
+        fistulasCount: '>=2',
+        simultaneous: true,
+        withDrainage: true,
+        withPain: true,
+        withoutAbscesses: true,
+      },
+      criteriaDescription: [
+        'Two or more fistulas present simultaneously',
+        'Drainage present',
+        'Pain present',
+        'No abscesses',
+      ],
+      evidenceNeeded: [
+        'Documentation of multiple fistulas',
+        'Drainage and pain records',
+        'No abscess confirmation',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'One fistula with drainage and pain, but without abscess',
+      criteria: {
+        fistulasCount: '1',
+        withDrainage: true,
+        withPain: true,
+        withoutAbscess: true,
+      },
+      criteriaDescription: [
+        'Single fistula',
+        'With drainage',
+        'With pain',
+        'No abscess',
+      ],
+      evidenceNeeded: [
+        'Fistula documentation',
+        'Drainage and pain records',
+      ],
+    },
+  ],
+
+  definitions: {
+    fistulaInAno: {
+      term: 'Fistula in Ano',
+      definition: 'An abnormal tunnel connecting the anal canal or rectum to the skin near the anus.',
+    },
+    anorectalAbscess: {
+      term: 'Anorectal Abscess',
+      definition: 'A collection of pus in the tissue around the anus or rectum, often preceding fistula formation.',
+    },
+    refractoryToTreatment: {
+      term: 'Refractory to Treatment',
+      definition: 'Not responding to standard medical and surgical treatments; treatment-resistant.',
+    },
+  },
+
+  importantNotes: [
+    'Fistulas commonly develop from anorectal abscesses',
+    'May be associated with Crohn\'s disease',
+    'Document number of fistulas present simultaneously',
+    'Document treatment history and response',
+    'Recurrent fistulas should be documented with dates',
+  ],
+
+  disclaimer: 'This analysis is based on logged fistula symptoms. VA ratings require documentation of fistula count, associated symptoms, and treatment response.',
+};
+
+
+// -----------------------------------------
+// DC 7336: HEMORRHOIDS
+// -----------------------------------------
+export const HEMORRHOIDS_CRITERIA = {
+  diagnosticCode: '7336',
+  condition: 'Hemorrhoids, External or Internal',
+  cfrReference: '38 CFR 4.114, Diagnostic Code 7336',
+
+  note: 'Rating based on bleeding, anemia, prolapse, and thrombosis frequency.',
+
+  ratings: [
+    {
+      percent: 20,
+      summary: 'Persistent bleeding with anemia OR continuously prolapsed with 3+ thrombosis episodes/year',
+      criteria: {
+        persistentBleeding: true,
+        withAnemia: true,
+        orContinuouslyProlapsed: true,
+        thrombosisEpisodes: '>=3/year',
+      },
+      criteriaDescription: [
+        'Internal or external hemorrhoids with persistent bleeding AND anemia, OR',
+        'Continuously prolapsed internal hemorrhoids with 3+ episodes per year of thrombosis',
+      ],
+      evidenceNeeded: [
+        'Documentation of persistent bleeding',
+        'Lab work showing anemia (hemoglobin/hematocrit)',
+        'Thrombosis episode records with dates',
+        'Colonoscopy/examination reports',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Prolapsed internal with ≤2 thrombosis/year OR external with 3+ thrombosis/year',
+      criteria: {
+        prolapsedInternal: true,
+        thrombosisEpisodes: '<=2/year',
+        orExternalWith3Plus: true,
+      },
+      criteriaDescription: [
+        'Prolapsed internal hemorrhoids with 2 or fewer episodes per year of thrombosis, OR',
+        'External hemorrhoids with 3+ episodes per year of thrombosis',
+      ],
+      evidenceNeeded: [
+        'Documentation of prolapse',
+        'Thrombosis episode records with dates',
+        'Medical examination reports',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'Mild or moderate hemorrhoids without significant complications',
+      criteriaDescription: [
+        'Hemorrhoids without persistent bleeding, anemia, or frequent thrombosis',
+        'Non-prolapsing or minimal symptoms',
+      ],
+      evidenceNeeded: [
+        'Medical documentation of hemorrhoids',
+      ],
+    },
+  ],
+
+  definitions: {
+    internalHemorrhoids: {
+      term: 'Internal Hemorrhoids',
+      definition: 'Hemorrhoids inside the rectum that may prolapse (protrude) through the anus.',
+    },
+    externalHemorrhoids: {
+      term: 'External Hemorrhoids',
+      definition: 'Hemorrhoids under the skin around the anus.',
+    },
+    prolapsedHemorrhoids: {
+      term: 'Prolapsed Hemorrhoids',
+      definition: 'Internal hemorrhoids that have fallen through the anal opening.',
+    },
+    thrombosdHemorrhoids: {
+      term: 'Thrombosed Hemorrhoids',
+      definition: 'Hemorrhoids with blood clots, causing severe pain and swelling.',
+    },
+    hemorrhoidAnemia: {
+      term: 'Hemorrhoid-Related Anemia',
+      definition: 'Low red blood cell count due to chronic blood loss from hemorrhoids.',
+    },
+  },
+
+  importantNotes: [
+    'Document EACH thrombosis episode with dates',
+    'Get lab work to confirm anemia if persistent bleeding',
+    'Prolapse must be documented by medical examination',
+    'Track bleeding frequency and amount',
+    '"Continuously prolapsed" means always protruding',
+  ],
+
+  disclaimer: 'This analysis is based on logged hemorrhoid symptoms. VA ratings require documentation of bleeding, anemia, and thrombosis frequency.',
+};
+
+
+// -----------------------------------------
+// DC 7337: PRURITUS ANI
+// -----------------------------------------
+export const PRURITUS_ANI_CRITERIA = {
+  diagnosticCode: '7337',
+  condition: 'Pruritus Ani (Anal Itching)',
+  cfrReference: '38 CFR 4.114, Diagnostic Code 7337',
+
+  note: 'Simple rating based on presence of bleeding or excoriation.',
+
+  ratings: [
+    {
+      percent: 10,
+      summary: 'With bleeding or excoriation',
+      criteria: {
+        withBleeding: true,
+        orWithExcoriation: true,
+      },
+      criteriaDescription: [
+        'Anal itching with bleeding from scratching, OR',
+        'Anal itching with excoriation (skin breakdown/raw areas)',
+      ],
+      evidenceNeeded: [
+        'Documentation of bleeding from scratching',
+        'Examination showing excoriation',
+        'Treatment records',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'Without bleeding or excoriation',
+      criteriaDescription: [
+        'Anal itching without skin breakdown',
+        'No bleeding from scratching',
+      ],
+      evidenceNeeded: [
+        'Medical documentation of condition',
+      ],
+    },
+  ],
+
+  definitions: {
+    pruritusAni: {
+      term: 'Pruritus Ani',
+      definition: 'Chronic itching of the skin around the anus.',
+    },
+    excoriation: {
+      term: 'Excoriation',
+      definition: 'Raw, abraded, or scratched skin from chronic itching.',
+    },
+  },
+
+  importantNotes: [
+    'Simple two-level rating: 10% with bleeding/excoriation, 0% without',
+    'Document skin condition on examination',
+    'May be secondary to other conditions (hemorrhoids, fistula, skin conditions)',
+  ],
+
+  disclaimer: 'This analysis is based on logged pruritus ani symptoms. VA ratings require examination documenting bleeding or excoriation.',
+};
+
+// -----------------------------------------
+// DC 6313: AVITAMINOSIS (General Vitamin Deficiency)
+// -----------------------------------------
+export const AVITAMINOSIS_CRITERIA = {
+  diagnosticCode: '6313',
+  condition: 'Avitaminosis (Vitamin Deficiency)',
+  cfrReference: '38 CFR 4.88b, Diagnostic Code 6313',
+
+  note: 'Avitaminosis covers vitamin A, B, C, or D deficiencies. Ocular manifestations (e.g., night blindness) are also rated here. Rate Vitamin E deficiency under neuropathy codes. Rate Vitamin K deficiency under clotting disorders (e.g., DC 7705).',
+
+  ratings: [
+    {
+      percent: 100,
+      summary: 'Marked mental changes, moist dermatitis, inability to retain adequate nourishment, exhaustion, and cachexia',
+      criteria: {
+        markedMentalChanges: true,
+        moistDermatitis: true,
+        inabilityRetainNourishment: true,
+        exhaustion: true,
+        cachexia: true,
+      },
+      criteriaDescription: [
+        'Marked mental changes (confusion, dementia, psychosis)',
+        'Moist dermatitis',
+        'Inability to retain adequate nourishment',
+        'Exhaustion',
+        'Cachexia (severe wasting)',
+        'ALL symptoms must be present',
+      ],
+      evidenceNeeded: [
+        'Psychiatric or neurological evaluation documenting mental changes',
+        'Dermatology evaluation documenting moist dermatitis',
+        'Documentation of inability to maintain nutrition',
+        'Weight records showing significant wasting',
+        'Lab work showing vitamin deficiency levels',
+      ],
+    },
+    {
+      percent: 60,
+      summary: 'All of stomatitis + diarrhea + dermatitis PLUS mental symptoms AND impaired bodily vigor',
+      criteria: {
+        stomatitis: true,
+        diarrhea: true,
+        symmetricalDermatitis: true,
+        mentalSymptoms: true,
+        impairedBodilyVigor: true,
+      },
+      criteriaDescription: [
+        'All of the following:',
+        '- Stomatitis (mouth inflammation)',
+        '- Diarrhea',
+        '- Symmetrical dermatitis',
+        'PLUS mental symptoms',
+        'PLUS impaired bodily vigor (weakness, fatigue)',
+      ],
+      evidenceNeeded: [
+        'Documentation of stomatitis',
+        'Diarrhea frequency logs',
+        'Dermatitis documentation with distribution',
+        'Mental health symptoms documented',
+        'Functional impairment documentation',
+      ],
+    },
+    {
+      percent: 40,
+      summary: 'With stomatitis, diarrhea, AND symmetrical dermatitis',
+      criteria: {
+        stomatitis: true,
+        diarrhea: true,
+        symmetricalDermatitis: true,
+      },
+      criteriaDescription: [
+        'All three of the following:',
+        '- Stomatitis (mouth inflammation)',
+        '- Diarrhea',
+        '- Symmetrical dermatitis',
+      ],
+      evidenceNeeded: [
+        'Documentation of stomatitis',
+        'Diarrhea logs',
+        'Dermatitis documentation showing symmetrical distribution',
+      ],
+    },
+    {
+      percent: 20,
+      summary: 'With stomatitis, OR achlorhydria, OR diarrhea',
+      criteria: {
+        stomatitisOrAchlorhydriaOrDiarrhea: true,
+      },
+      criteriaDescription: [
+        'Any ONE of the following:',
+        '- Stomatitis (mouth inflammation)',
+        '- Achlorhydria (lack of stomach acid)',
+        '- Diarrhea',
+      ],
+      evidenceNeeded: [
+        'Documentation of any one of the listed symptoms',
+        'GI evaluation for achlorhydria if applicable',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Confirmed diagnosis with nonspecific symptoms',
+      criteria: {
+        confirmedDiagnosis: true,
+        nonspecificSymptoms: true,
+      },
+      criteriaDescription: [
+        'Confirmed diagnosis of vitamin deficiency',
+        'With nonspecific symptoms such as:',
+        '- Decreased appetite',
+        '- Weight loss',
+        '- Abdominal discomfort',
+        '- Weakness',
+        '- Inability to concentrate',
+        '- Irritability',
+      ],
+      evidenceNeeded: [
+        'Lab work confirming vitamin deficiency',
+        'Documented symptoms',
+      ],
+    },
+  ],
+
+  definitions: {
+    avitaminosis: {
+      term: 'Avitaminosis',
+      definition: 'A condition caused by vitamin deficiency. Can affect multiple body systems depending on which vitamin is deficient.',
+    },
+    stomatitis: {
+      term: 'Stomatitis',
+      definition: 'Inflammation of the mouth and lips, often with sores, redness, and pain.',
+    },
+    achlorhydria: {
+      term: 'Achlorhydria',
+      definition: 'Absence or severe reduction of hydrochloric acid in gastric secretions, affecting digestion.',
+    },
+    cachexia: {
+      term: 'Cachexia',
+      definition: 'Severe weight loss and muscle wasting, often with weakness and loss of appetite. A sign of severe illness.',
+    },
+    symmetricalDermatitis: {
+      term: 'Symmetrical Dermatitis',
+      definition: 'Skin inflammation that appears in matching locations on both sides of the body (e.g., both hands, both forearms).',
+    },
+  },
+
+  vitaminDeficiencyTypes: {
+    vitaminA: {
+      name: 'Vitamin A Deficiency',
+      symptoms: ['Night blindness', 'Dry eyes', 'Skin changes', 'Immune dysfunction'],
+      note: 'Ocular manifestations rated under DC 6313. Keratitis/keratomalacia rated under DC 6001.',
+    },
+    vitaminB: {
+      name: 'Vitamin B Complex Deficiencies',
+      symptoms: ['Neurological symptoms', 'Anemia', 'Skin changes', 'Fatigue'],
+      note: 'B1 (Thiamine) deficiency is Beriberi (DC 6314). B3 (Niacin) deficiency is Pellagra (DC 6315). B12 deficiency rated under DC 7722.',
+    },
+    vitaminC: {
+      name: 'Vitamin C Deficiency (Scurvy)',
+      symptoms: ['Bleeding gums', 'Easy bruising', 'Slow wound healing', 'Fatigue', 'Joint pain'],
+      note: 'Rated under DC 6313.',
+    },
+    vitaminD: {
+      name: 'Vitamin D Deficiency',
+      symptoms: ['Bone pain', 'Muscle weakness', 'Fatigue', 'Depression'],
+      note: 'Rated under DC 6313.',
+    },
+  },
+
+  importantNotes: [
+    'This code covers vitamins A, B, C, and D deficiencies',
+    'Vitamin E deficiency is rated under peripheral neuropathy codes',
+    'Vitamin K deficiency is rated under clotting disorder codes (DC 7705)',
+    'B12 deficiency/pernicious anemia has its own code (DC 7722)',
+    'Document lab values showing vitamin deficiency',
+    'May be secondary to malabsorption, bariatric surgery, or other GI conditions',
+  ],
+
+  disclaimer: 'This analysis is based on logged avitaminosis symptoms. VA ratings require confirmed laboratory diagnosis and documentation of symptom severity.',
+};
+
+
+// -----------------------------------------
+// DC 6314: BERIBERI (Thiamine/B1 Deficiency)
+// -----------------------------------------
+export const BERIBERI_CRITERIA = {
+  diagnosticCode: '6314',
+  condition: 'Beriberi (Thiamine/B1 Deficiency)',
+  cfrReference: '38 CFR 4.88b, Diagnostic Code 6314',
+
+  note: 'Rate as active disease. Thereafter, rate residuals under the appropriate body system (cardiac for wet beriberi, neurological for dry beriberi).',
+
+  ratings: [
+    {
+      percent: 100,
+      summary: 'Active disease with CHF, anasarca, or Wernicke-Korsakoff syndrome',
+      criteria: {
+        activeDisease: true,
+        chfOrAnasarcaOrWernickeKorsakoff: true,
+      },
+      criteriaDescription: [
+        'Active beriberi with any of:',
+        '- Congestive heart failure (wet beriberi)',
+        '- Anasarca (severe generalized edema)',
+        '- Wernicke-Korsakoff syndrome (neurological emergency)',
+      ],
+      evidenceNeeded: [
+        'Cardiology evaluation for CHF',
+        'Documentation of generalized edema',
+        'Neurology evaluation for Wernicke-Korsakoff',
+        'Lab work showing thiamine deficiency',
+        'Hospitalization records if applicable',
+      ],
+    },
+    {
+      percent: 60,
+      summary: 'Active disease with cardiomegaly OR peripheral neuropathy with footdrop or muscle atrophy',
+      criteria: {
+        activeDisease: true,
+        cardiomegalyOrSevereNeuropathy: true,
+      },
+      criteriaDescription: [
+        'Active beriberi with:',
+        '- Cardiomegaly (enlarged heart), OR',
+        '- Peripheral neuropathy with footdrop, OR',
+        '- Peripheral neuropathy with atrophy of thigh or calf muscles',
+      ],
+      evidenceNeeded: [
+        'Imaging showing cardiomegaly',
+        'Neurology evaluation documenting footdrop',
+        'Physical exam documenting muscle atrophy',
+        'EMG/nerve conduction studies if performed',
+      ],
+    },
+    {
+      percent: 30,
+      summary: 'Active disease with neuropathy (absent reflexes, sensation loss) OR general symptoms',
+      criteria: {
+        activeDisease: true,
+        moderateNeuropathyOrGeneralSymptoms: true,
+      },
+      criteriaDescription: [
+        'Active beriberi with:',
+        '- Peripheral neuropathy with absent knee or ankle jerks AND loss of sensation, OR',
+        '- Symptoms such as:',
+        '  • Weakness',
+        '  • Fatigue',
+        '  • Anorexia',
+        '  • Dizziness',
+        '  • Heaviness and stiffness of legs',
+        '  • Headache',
+        '  • Sleep disturbance',
+      ],
+      evidenceNeeded: [
+        'Neurological exam showing absent reflexes',
+        'Sensory testing documentation',
+        'Symptom logs',
+        'Lab work confirming thiamine deficiency',
+      ],
+    },
+  ],
+
+  definitions: {
+    beriberi: {
+      term: 'Beriberi',
+      definition: 'Disease caused by thiamine (vitamin B1) deficiency. Affects the cardiovascular system (wet beriberi) and/or nervous system (dry beriberi).',
+    },
+    wetBeriberi: {
+      term: 'Wet Beriberi',
+      definition: 'Form affecting the cardiovascular system, causing heart failure, edema, and fluid retention.',
+    },
+    dryBeriberi: {
+      term: 'Dry Beriberi',
+      definition: 'Form affecting the nervous system, causing peripheral neuropathy, weakness, and muscle wasting.',
+    },
+    wernickeKorsakoff: {
+      term: 'Wernicke-Korsakoff Syndrome',
+      definition: 'Severe thiamine deficiency affecting the brain. Wernicke encephalopathy (acute): confusion, ataxia, eye movement abnormalities. Korsakoff psychosis (chronic): severe memory impairment, confabulation.',
+    },
+    anasarca: {
+      term: 'Anasarca',
+      definition: 'Severe generalized edema (swelling) throughout the body due to fluid retention.',
+    },
+    footdrop: {
+      term: 'Footdrop',
+      definition: 'Inability to lift the front part of the foot due to nerve or muscle damage, causing dragging while walking.',
+    },
+  },
+
+  causesOfThiamineDeficiency: [
+    'Chronic alcoholism (most common in developed countries)',
+    'Malnutrition',
+    'Bariatric surgery',
+    'Chronic dialysis',
+    'HIV/AIDS',
+    'Malabsorption syndromes',
+    'Hyperemesis gravidarum',
+    'Prolonged IV nutrition without thiamine',
+  ],
+
+  importantNotes: [
+    'After resolution of active disease, rate residuals under appropriate body system',
+    'Cardiac residuals rated under cardiovascular codes',
+    'Neuropathy residuals rated under peripheral nerve codes',
+    'Wernicke-Korsakoff may have permanent cognitive effects',
+    'Document thiamine levels before treatment starts',
+    'Common in veterans with alcohol use disorder',
+  ],
+
+  disclaimer: 'This analysis is based on logged beriberi symptoms. VA ratings require confirmed thiamine deficiency and documentation of cardiac or neurological involvement.',
+};
+
+
+// -----------------------------------------
+// DC 6315: PELLAGRA (Niacin/B3 Deficiency)
+// -----------------------------------------
+export const PELLAGRA_CRITERIA = {
+  diagnosticCode: '6315',
+  condition: 'Pellagra (Niacin/B3 Deficiency)',
+  cfrReference: '38 CFR 4.88b, Diagnostic Code 6315',
+
+  note: 'Pellagra is characterized by the "4 Ds": Dermatitis, Diarrhea, Dementia, and (if untreated) Death. The rating schedule mirrors that of Avitaminosis (DC 6313).',
+
+  ratings: [
+    {
+      percent: 100,
+      summary: 'Marked mental changes, moist dermatitis, inability to retain adequate nourishment, exhaustion, and cachexia',
+      criteria: {
+        markedMentalChanges: true,
+        moistDermatitis: true,
+        inabilityRetainNourishment: true,
+        exhaustion: true,
+        cachexia: true,
+      },
+      criteriaDescription: [
+        'Marked mental changes (dementia, psychosis, confusion)',
+        'Moist dermatitis',
+        'Inability to retain adequate nourishment',
+        'Exhaustion',
+        'Cachexia (severe wasting)',
+        'ALL symptoms must be present',
+      ],
+      evidenceNeeded: [
+        'Psychiatric or neurological evaluation documenting dementia/mental changes',
+        'Dermatology evaluation documenting moist dermatitis',
+        'Documentation of inability to maintain nutrition',
+        'Weight records showing significant wasting',
+        'Lab work showing niacin deficiency',
+      ],
+    },
+    {
+      percent: 60,
+      summary: 'All of stomatitis + diarrhea + dermatitis PLUS mental symptoms AND impaired bodily vigor',
+      criteria: {
+        stomatitis: true,
+        diarrhea: true,
+        symmetricalDermatitis: true,
+        mentalSymptoms: true,
+        impairedBodilyVigor: true,
+      },
+      criteriaDescription: [
+        'All of the following:',
+        '- Stomatitis (mouth inflammation)',
+        '- Diarrhea',
+        '- Symmetrical dermatitis',
+        'PLUS mental symptoms (irritability, depression, confusion)',
+        'PLUS impaired bodily vigor (weakness, fatigue)',
+      ],
+      evidenceNeeded: [
+        'Documentation of stomatitis',
+        'Diarrhea frequency logs',
+        'Dermatitis documentation with distribution',
+        'Mental health symptoms documented',
+        'Functional impairment documentation',
+      ],
+    },
+    {
+      percent: 40,
+      summary: 'With stomatitis, diarrhea, AND symmetrical dermatitis',
+      criteria: {
+        stomatitis: true,
+        diarrhea: true,
+        symmetricalDermatitis: true,
+      },
+      criteriaDescription: [
+        'All three of the following:',
+        '- Stomatitis (mouth inflammation)',
+        '- Diarrhea',
+        '- Symmetrical dermatitis',
+      ],
+      evidenceNeeded: [
+        'Documentation of stomatitis',
+        'Diarrhea logs',
+        'Dermatitis documentation showing symmetrical distribution',
+      ],
+    },
+    {
+      percent: 20,
+      summary: 'With stomatitis, OR achlorhydria, OR diarrhea',
+      criteria: {
+        stomatitisOrAchlorhydriaOrDiarrhea: true,
+      },
+      criteriaDescription: [
+        'Any ONE of the following:',
+        '- Stomatitis (mouth inflammation)',
+        '- Achlorhydria (lack of stomach acid)',
+        '- Diarrhea',
+      ],
+      evidenceNeeded: [
+        'Documentation of any one of the listed symptoms',
+        'GI evaluation for achlorhydria if applicable',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Confirmed diagnosis with nonspecific symptoms',
+      criteria: {
+        confirmedDiagnosis: true,
+        nonspecificSymptoms: true,
+      },
+      criteriaDescription: [
+        'Confirmed diagnosis of pellagra',
+        'With nonspecific symptoms such as:',
+        '- Decreased appetite',
+        '- Weight loss',
+        '- Abdominal discomfort',
+        '- Weakness',
+        '- Inability to concentrate',
+        '- Irritability',
+      ],
+      evidenceNeeded: [
+        'Lab work confirming niacin deficiency',
+        'Documented symptoms',
+      ],
+    },
+  ],
+
+  definitions: {
+    pellagra: {
+      term: 'Pellagra',
+      definition: 'Disease caused by niacin (vitamin B3) deficiency. Characterized by the "4 Ds": Dermatitis, Diarrhea, Dementia, and Death (if untreated).',
+    },
+    casalNecklace: {
+      term: 'Casal Necklace',
+      definition: 'Classic pellagra skin finding: a ring of scaly, pigmented skin around the neck, resembling a necklace. Pathognomonic (definitive) for pellagra.',
+    },
+    glossitis: {
+      term: 'Glossitis',
+      definition: 'Inflammation of the tongue, causing swelling, redness, and a smooth appearance. Common in pellagra.',
+    },
+    photosensitiveDermatitis: {
+      term: 'Photosensitive Dermatitis',
+      definition: 'Skin inflammation that occurs or worsens with sun exposure. In pellagra, affects sun-exposed areas (face, neck, hands, arms).',
+    },
+    stomatitis: {
+      term: 'Stomatitis',
+      definition: 'Inflammation of the mouth and lips, often with sores, redness, and pain.',
+    },
+    cachexia: {
+      term: 'Cachexia',
+      definition: 'Severe weight loss and muscle wasting, often with weakness and loss of appetite.',
+    },
+  },
+
+  causesOfNiacinDeficiency: [
+    'Chronic alcoholism',
+    'Malnutrition/inadequate diet',
+    'Anorexia nervosa',
+    'Malabsorption syndromes (Crohn\'s, celiac)',
+    'Carcinoid syndrome (tryptophan diverted from niacin synthesis)',
+    'Hartnup disease (genetic disorder)',
+    'Isoniazid therapy (TB medication)',
+    'Prolonged diarrhea',
+  ],
+
+  importantNotes: [
+    'Pellagra rating schedule is identical to Avitaminosis (DC 6313)',
+    'Classic presentation: Dermatitis + Diarrhea + Dementia',
+    'Casal necklace is pathognomonic (diagnostic) for pellagra',
+    'Photosensitive dermatitis is key feature - document sun-exposed areas',
+    'Mental changes can range from irritability to frank dementia',
+    'Common in veterans with alcohol use disorder',
+    'May occur secondary to carcinoid syndrome',
+  ],
+
+  disclaimer: 'This analysis is based on logged pellagra symptoms. VA ratings require confirmed niacin deficiency and documentation of the classic triad.',
 };
 
 // ============================================
@@ -27673,82 +31437,7 @@ export const analyzePepticUlcerLogs = (logs, options = {}) => {
   };
 };
 
-/**
- * Analyze Hemorrhoid symptom logs
- */
-export const analyzeHemorrhoidLogs = (logs, options = {}) => {
-  const { evaluationPeriodDays = 365 } = options;
 
-  const cutoffDate = new Date();
-  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
-
-  const symptomIds = ['hemorrhoid-bleeding', 'hemorrhoid-prolapse', 'hemorrhoid-thrombosis', 'hemorrhoid-pain'];
-
-  const relevantLogs = logs.filter(log => {
-    const logDate = new Date(log.timestamp);
-    const symptomId = getLogSymptomId(log);
-    return logDate >= cutoffDate && symptomId && symptomIds.includes(symptomId);
-  });
-
-  if (relevantLogs.length === 0) {
-    return {
-      hasData: false,
-      message: 'No hemorrhoid logs found',
-      supportedRating: null,
-      evidence: [],
-      gaps: ['Start logging hemorrhoid symptoms including bleeding, prolapse, and thrombosis episodes'],
-    };
-  }
-
-  const bleedingLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'hemorrhoid-bleeding');
-  const prolapseLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'hemorrhoid-prolapse');
-  const thrombosisLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'hemorrhoid-thrombosis');
-
-  const evidence = [];
-  if (bleedingLogs.length > 0) evidence.push(`${bleedingLogs.length} bleeding episodes logged`);
-  if (prolapseLogs.length > 0) evidence.push(`${prolapseLogs.length} prolapse episodes logged`);
-  if (thrombosisLogs.length > 0) evidence.push(`${thrombosisLogs.length} thrombosis episodes logged`);
-
-  let supportedRating = 0;
-  let ratingRationale = [];
-  let gaps = [];
-
-  // Check for 20% criteria: persistent bleeding with anemia OR 3+ thrombosis/year
-  if (bleedingLogs.length >= 30 || thrombosisLogs.length >= 3) {
-    supportedRating = 20;
-    ratingRationale = [];
-    if (bleedingLogs.length >= 30) {
-      ratingRationale.push('Frequent/persistent bleeding documented');
-      gaps.push('Get lab work to document anemia if present');
-    }
-    if (thrombosisLogs.length >= 3) {
-      ratingRationale.push(`${thrombosisLogs.length} thrombosis episodes (3+ required for 20%)`);
-    }
-  } else if (thrombosisLogs.length >= 1 || prolapseLogs.length >= 1) {
-    supportedRating = 10;
-    ratingRationale = [
-      'Thrombosis or prolapse episodes documented',
-      'Pattern supports 10% rating',
-    ];
-  }
-
-  if (thrombosisLogs.length === 0) {
-    gaps.push('Document any thrombosis (blood clot) episodes - these significantly affect rating');
-  }
-
-  return {
-    hasData: true,
-    condition: 'Hemorrhoids',
-    diagnosticCode: '7336',
-    evaluationPeriodDays,
-    supportedRating: supportedRating.toString(),
-    ratingRationale,
-    evidence,
-    gaps,
-    criteria: HEMORRHOID_CRITERIA,
-    disclaimer: HEMORRHOID_CRITERIA.disclaimer,
-  };
-};
 
 /**
  * Analyze Diverticulitis symptom logs
@@ -38608,14 +42297,14 @@ const analyzeGeneralSkinFormula = (relevantLogs, getLogSymptomId, prefix) => {
   const systemic6WeeksLogs = relevantLogs.filter(log => getLogSymptomId(log) === `${prefix}-systemic-6weeks`);
   const systemicConstantLogs = relevantLogs.filter(log => getLogSymptomId(log) === `${prefix}-systemic-constant`);
 
-  // Determine highest body percentage documented
+  // Determine the highest body percentage documented
   let bodyPercentage = null;
   if (over40Logs.length > 0) bodyPercentage = '>40%';
   else if (twentyTo40Logs.length > 0) bodyPercentage = '20-40%';
   else if (fiveTo20Logs.length > 0) bodyPercentage = '5-20%';
   else if (under5Logs.length > 0) bodyPercentage = '<5%';
 
-  // Determine highest treatment level documented
+  // Determine the highest treatment level documented
   let treatmentLevel = null;
   if (systemicConstantLogs.length > 0) treatmentLevel = 'constant';
   else if (systemic6WeeksLogs.length > 0) treatmentLevel = '6weeks';
@@ -44503,12 +48192,1374 @@ export const analyzeHalluxRigidusLogs = (logs, options = {}) => {
 };
 
 // ============================================
+// ANALYSIS FUNCTIONS - LOSS OF SMELL (DC 6275)
+// ============================================
+
+/**
+ * Analyzes loss of smell (anosmia) logs to determine supported rating level
+ * DC 6275 - Complete loss of sense of smell = 10%
+ */
+export const analyzeLossOfSmellLogs = (logs, options = {}) => {
+  const evaluationPeriodDays = options.evaluationPeriodDays || 365;
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp || log.date);
+    const symptomId = getLogSymptomId(log);
+    return logDate >= cutoffDate && CONDITIONS.LOSS_OF_SMELL.symptomIds.includes(symptomId);
+  });
+
+  if (relevantLogs.length === 0) {
+    return {
+      hasData: false,
+      condition: 'Loss of Smell (Anosmia)',
+      diagnosticCode: '6275',
+      message: 'No smell-related logs found in the evaluation period',
+      supportedRating: null,
+      rationale: [],
+      evidenceGaps: ['Start logging smell-related symptoms to build your evidence'],
+    };
+  }
+
+  const totalLogs = relevantLogs.length;
+  const avgSeverity = relevantLogs.reduce((sum, log) => sum + (log.severity || 5), 0) / totalLogs;
+
+  // Count specific symptoms
+  const completeLossCount = relevantLogs.filter(l => getLogSymptomId(l) === 'smell-complete-loss').length;
+  const partialLossCount = relevantLogs.filter(l => getLogSymptomId(l) === 'smell-partial-loss').length;
+  const distortedCount = relevantLogs.filter(l => getLogSymptomId(l) === 'smell-distorted').length;
+  const phantomCount = relevantLogs.filter(l => getLogSymptomId(l) === 'smell-phantom').length;
+  const safetyCount = relevantLogs.filter(l =>
+      ['smell-gas-detection', 'smell-smoke-detection', 'smell-food-spoilage', 'smell-safety-concern'].includes(getLogSymptomId(l))
+  ).length;
+  const chronicCount = relevantLogs.filter(l => getLogSymptomId(l) === 'smell-chronic').length;
+  const testingCount = relevantLogs.filter(l => getLogSymptomId(l) === 'smell-testing-performed').length;
+  const noImprovementCount = relevantLogs.filter(l => getLogSymptomId(l) === 'smell-no-improvement').length;
+
+  // Check for underlying causes
+  const postCovidCount = relevantLogs.filter(l => getLogSymptomId(l) === 'smell-post-covid').length;
+  const postTbiCount = relevantLogs.filter(l => getLogSymptomId(l) === 'smell-post-tbi').length;
+  const postViralCount = relevantLogs.filter(l => getLogSymptomId(l) === 'smell-post-viral').length;
+
+  // Determine if complete loss is documented
+  const hasCompleteLoss = completeLossCount > 0;
+  const hasChronicCondition = chronicCount > 0 || noImprovementCount > 0;
+  const hasDiagnosedCause = postCovidCount > 0 || postTbiCount > 0 || postViralCount > 0;
+  const hasDocumentedTesting = testingCount > 0;
+
+  let supportedRating = 0;
+  const rationale = [];
+  const evidenceGaps = [];
+
+  // 10% - Complete loss with diagnosed cause
+  if (hasCompleteLoss && hasChronicCondition) {
+    supportedRating = 10;
+    rationale.push('Complete loss of smell (anosmia) documented');
+    rationale.push('Chronic/permanent condition documented');
+
+    if (hasDiagnosedCause) {
+      if (postCovidCount > 0) rationale.push('Post-COVID anosmia documented');
+      if (postTbiCount > 0) rationale.push('Post-TBI anosmia documented');
+      if (postViralCount > 0) rationale.push('Post-viral anosmia documented');
+    }
+  } else if (hasCompleteLoss) {
+    supportedRating = 10;
+    rationale.push('Complete loss of smell documented');
+    rationale.push('Note: Ensure permanence is documented for rating confirmation');
+  } else if (partialLossCount > 0 || distortedCount > 0) {
+    supportedRating = 0;
+    rationale.push('Partial loss or distorted smell documented');
+    rationale.push('Complete loss required for 10% rating');
+  }
+
+  // Add context
+  rationale.push(`${totalLogs} total smell-related symptoms logged over evaluation period`);
+  if (avgSeverity >= 7) {
+    rationale.push(`Average severity ${avgSeverity.toFixed(1)}/10 indicates significant impairment`);
+  }
+  if (safetyCount > 0) {
+    rationale.push(`${safetyCount} safety-related concerns documented (gas, smoke, spoiled food detection)`);
+  }
+
+  // Identify gaps
+  if (!hasCompleteLoss && partialLossCount > 0) {
+    evidenceGaps.push('Document whether loss is complete (anosmia) vs partial (hyposmia)');
+  }
+  if (!hasDocumentedTesting) {
+    evidenceGaps.push('Request formal smell testing (UPSIT or equivalent) from ENT/neurologist');
+  }
+  if (!hasDiagnosedCause) {
+    evidenceGaps.push('Document underlying cause (TBI, COVID-19, sinusitis, etc.)');
+  }
+  if (!hasChronicCondition && hasCompleteLoss) {
+    evidenceGaps.push('Document that condition is chronic/permanent for rating confirmation');
+  }
+  if (safetyCount === 0) {
+    evidenceGaps.push('Document specific safety impacts (inability to smell gas leaks, smoke, spoiled food)');
+  }
+
+  return {
+    hasData: true,
+    condition: 'Loss of Smell (Anosmia)',
+    diagnosticCode: '6275',
+    cfrReference: '38 CFR 4.87a',
+    supportedRating,
+    rationale,
+    evidenceGaps,
+    metrics: {
+      totalLogs,
+      avgSeverity,
+      completeLossCount,
+      partialLossCount,
+      distortedCount,
+      phantomCount,
+      safetyCount,
+      chronicCount,
+      testingCount,
+      noImprovementCount,
+      postCovidCount,
+      postTbiCount,
+      postViralCount,
+      hasCompleteLoss,
+      hasChronicCondition,
+      hasDiagnosedCause,
+    },
+    criteria: LOSS_OF_SMELL_CRITERIA,
+  };
+};
+
+// ============================================
+// ANALYSIS FUNCTIONS - LOSS OF TASTE (DC 6276)
+// ============================================
+
+/**
+ * Analyzes loss of taste (ageusia) logs to determine supported rating level
+ * DC 6276 - Complete loss of sense of taste = 10%
+ */
+export const analyzeLossOfTasteLogs = (logs, options = {}) => {
+  const evaluationPeriodDays = options.evaluationPeriodDays || 365;
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp || log.date);
+    const symptomId = getLogSymptomId(log);
+    return logDate >= cutoffDate && CONDITIONS.LOSS_OF_TASTE.symptomIds.includes(symptomId);
+  });
+
+  if (relevantLogs.length === 0) {
+    return {
+      hasData: false,
+      condition: 'Loss of Taste (Ageusia)',
+      diagnosticCode: '6276',
+      message: 'No taste-related logs found in the evaluation period',
+      supportedRating: null,
+      rationale: [],
+      evidenceGaps: ['Start logging taste-related symptoms to build your evidence'],
+    };
+  }
+
+  const totalLogs = relevantLogs.length;
+  const avgSeverity = relevantLogs.reduce((sum, log) => sum + (log.severity || 5), 0) / totalLogs;
+
+  // Count specific symptoms
+  const completeLossCount = relevantLogs.filter(l => getLogSymptomId(l) === 'taste-complete-loss').length;
+  const partialLossCount = relevantLogs.filter(l => getLogSymptomId(l) === 'taste-partial-loss').length;
+  const distortedCount = relevantLogs.filter(l => getLogSymptomId(l) === 'taste-distorted').length;
+  const metallicCount = relevantLogs.filter(l => getLogSymptomId(l) === 'taste-metallic').length;
+  const phantomCount = relevantLogs.filter(l => getLogSymptomId(l) === 'taste-phantom').length;
+
+  // Individual taste losses
+  const sweetLossCount = relevantLogs.filter(l => getLogSymptomId(l) === 'taste-sweet-loss').length;
+  const saltyLossCount = relevantLogs.filter(l => getLogSymptomId(l) === 'taste-salty-loss').length;
+  const sourLossCount = relevantLogs.filter(l => getLogSymptomId(l) === 'taste-sour-loss').length;
+  const bitterLossCount = relevantLogs.filter(l => getLogSymptomId(l) === 'taste-bitter-loss').length;
+  const umamiLossCount = relevantLogs.filter(l => getLogSymptomId(l) === 'taste-umami-loss').length;
+
+  // Functional impacts
+  const appetiteCount = relevantLogs.filter(l => getLogSymptomId(l) === 'taste-appetite-affected').length;
+  const weightChangeCount = relevantLogs.filter(l => getLogSymptomId(l) === 'taste-weight-change').length;
+  const qualityOfLifeCount = relevantLogs.filter(l => getLogSymptomId(l) === 'taste-quality-of-life').length;
+
+  // Chronicity
+  const chronicCount = relevantLogs.filter(l => getLogSymptomId(l) === 'taste-chronic').length;
+  const testingCount = relevantLogs.filter(l => getLogSymptomId(l) === 'taste-testing-performed').length;
+  const noImprovementCount = relevantLogs.filter(l => getLogSymptomId(l) === 'taste-no-improvement').length;
+
+  // Causes
+  const postCovidCount = relevantLogs.filter(l => getLogSymptomId(l) === 'taste-post-covid').length;
+  const postViralCount = relevantLogs.filter(l => getLogSymptomId(l) === 'taste-post-viral').length;
+  const medicationCount = relevantLogs.filter(l => getLogSymptomId(l) === 'taste-medication-related').length;
+
+  // Count all basic tastes affected
+  const tastesAffected = [sweetLossCount, saltyLossCount, sourLossCount, bitterLossCount, umamiLossCount].filter(c => c > 0).length;
+
+  // Determine if complete loss is documented
+  const hasCompleteLoss = completeLossCount > 0 || tastesAffected >= 4;
+  const hasChronicCondition = chronicCount > 0 || noImprovementCount > 0;
+  const hasDiagnosedCause = postCovidCount > 0 || postViralCount > 0 || medicationCount > 0;
+  const hasDocumentedTesting = testingCount > 0;
+  const hasFunctionalImpact = appetiteCount > 0 || weightChangeCount > 0 || qualityOfLifeCount > 0;
+
+  let supportedRating = 0;
+  const rationale = [];
+  const evidenceGaps = [];
+
+  // 10% - Complete loss with diagnosed cause
+  if (hasCompleteLoss && hasChronicCondition) {
+    supportedRating = 10;
+    rationale.push('Complete loss of taste (ageusia) documented');
+    rationale.push('Chronic/permanent condition documented');
+
+    if (hasDiagnosedCause) {
+      if (postCovidCount > 0) rationale.push('Post-COVID ageusia documented');
+      if (postViralCount > 0) rationale.push('Post-viral ageusia documented');
+      if (medicationCount > 0) rationale.push('Medication-related ageusia documented');
+    }
+  } else if (hasCompleteLoss) {
+    supportedRating = 10;
+    rationale.push('Complete loss of taste documented');
+    rationale.push('Note: Ensure permanence is documented for rating confirmation');
+  } else if (tastesAffected >= 3) {
+    supportedRating = 0;
+    rationale.push(`Loss of ${tastesAffected} of 5 basic tastes documented - approaching complete loss`);
+    rationale.push('Complete loss required for 10% rating');
+  } else if (partialLossCount > 0 || distortedCount > 0) {
+    supportedRating = 0;
+    rationale.push('Partial loss or distorted taste documented');
+    rationale.push('Complete loss required for 10% rating');
+  }
+
+  // Add context
+  rationale.push(`${totalLogs} total taste-related symptoms logged over evaluation period`);
+  if (avgSeverity >= 7) {
+    rationale.push(`Average severity ${avgSeverity.toFixed(1)}/10 indicates significant impairment`);
+  }
+  if (hasFunctionalImpact) {
+    rationale.push('Functional impact documented (appetite, weight, quality of life)');
+  }
+  if (tastesAffected > 0) {
+    rationale.push(`${tastesAffected} of 5 basic tastes affected (sweet, salty, sour, bitter, umami)`);
+  }
+
+  // Identify gaps
+  if (!hasCompleteLoss && partialLossCount > 0) {
+    evidenceGaps.push('Document whether loss is complete (ageusia) vs partial (hypogeusia)');
+  }
+  if (!hasDocumentedTesting) {
+    evidenceGaps.push('Request formal taste testing from ENT/neurologist');
+  }
+  if (!hasDiagnosedCause) {
+    evidenceGaps.push('Document underlying cause (COVID-19, medication, nerve damage, etc.)');
+  }
+  if (!hasChronicCondition && hasCompleteLoss) {
+    evidenceGaps.push('Document that condition is chronic/permanent for rating confirmation');
+  }
+  if (!hasFunctionalImpact) {
+    evidenceGaps.push('Document functional impacts: appetite changes, weight loss, reduced quality of life');
+  }
+  if (tastesAffected < 5 && tastesAffected > 0) {
+    evidenceGaps.push('Document which specific tastes are affected (sweet, salty, sour, bitter, umami)');
+  }
+
+  return {
+    hasData: true,
+    condition: 'Loss of Taste (Ageusia)',
+    diagnosticCode: '6276',
+    cfrReference: '38 CFR 4.87a',
+    supportedRating,
+    rationale,
+    evidenceGaps,
+    metrics: {
+      totalLogs,
+      avgSeverity,
+      completeLossCount,
+      partialLossCount,
+      distortedCount,
+      metallicCount,
+      phantomCount,
+      tastesAffected,
+      sweetLossCount,
+      saltyLossCount,
+      sourLossCount,
+      bitterLossCount,
+      umamiLossCount,
+      appetiteCount,
+      weightChangeCount,
+      qualityOfLifeCount,
+      chronicCount,
+      testingCount,
+      noImprovementCount,
+      postCovidCount,
+      postViralCount,
+      medicationCount,
+      hasCompleteLoss,
+      hasChronicCondition,
+      hasDiagnosedCause,
+      hasFunctionalImpact,
+    },
+    criteria: LOSS_OF_TASTE_CRITERIA,
+  };
+};
+
+/**
+ * Analyze Systemic Lupus Erythematosus (SLE) symptom logs against VA rating criteria
+ * DC 6350 - 38 CFR 4.88b
+ */
+export const analyzeSystemicLupusLogs = (logs, options = {}) => {
+  const evaluationPeriodDays = options.evaluationPeriodDays || 365;
+  const symptomIds = CONDITIONS.SYSTEMIC_LUPUS.symptomIds;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  // Two-year lookback for 10% rating criteria
+  const twoYearCutoff = new Date();
+  twoYearCutoff.setDate(twoYearCutoff.getDate() - 730);
+
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp || log.occurredAt);
+    const symptomId = log.symptomId || log.symptom;
+    return logDate >= cutoffDate && symptomId && symptomIds.includes(symptomId);
+  });
+
+  const twoYearLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp || log.occurredAt);
+    const symptomId = log.symptomId || log.symptom;
+    return logDate >= twoYearCutoff && symptomId && symptomIds.includes(symptomId);
+  });
+
+  if (relevantLogs.length === 0 && twoYearLogs.length === 0) {
+    return {
+      hasData: false,
+      condition: 'Systemic Lupus Erythematosus (SLE)',
+      diagnosticCode: '6350',
+      cfrReference: '38 CFR 4.88b',
+      message: 'No SLE symptoms logged in evaluation period',
+      criteria: SYSTEMIC_LUPUS_CRITERIA,
+    };
+  }
+
+  // Categorize logs
+  const acuteFlares = relevantLogs.filter(log => log.symptomId === 'sle-flare-acute');
+  const moderateFlares = relevantLogs.filter(log => log.symptomId === 'sle-flare-moderate');
+  const mildFlares = relevantLogs.filter(log => log.symptomId === 'sle-flare-mild');
+  const allFlares = [...acuteFlares, ...moderateFlares, ...mildFlares];
+
+  // Severe symptoms
+  const hospitalizations = relevantLogs.filter(log => log.symptomId === 'sle-hospitalization');
+  const erVisits = relevantLogs.filter(log => log.symptomId === 'sle-er-visit');
+  const seizures = relevantLogs.filter(log => log.symptomId === 'sle-seizures');
+  const psychosis = relevantLogs.filter(log => log.symptomId === 'sle-psychosis');
+
+  // Organ involvement
+  const kidneySymptoms = relevantLogs.filter(log =>
+      ['sle-kidney-involvement', 'sle-proteinuria', 'sle-hematuria', 'sle-edema'].includes(log.symptomId)
+  );
+  const cardiopulmonary = relevantLogs.filter(log =>
+      ['sle-chest-pain-pleurisy', 'sle-pericarditis', 'sle-shortness-breath'].includes(log.symptomId)
+  );
+  const neurological = relevantLogs.filter(log =>
+      ['sle-neurological', 'sle-seizures', 'sle-psychosis', 'sle-cognitive', 'sle-headache-severe'].includes(log.symptomId)
+  );
+  const hematologic = relevantLogs.filter(log =>
+      ['sle-anemia', 'sle-low-platelets', 'sle-low-white-cells', 'sle-bruising'].includes(log.symptomId)
+  );
+
+  // Constitutional symptoms
+  const fatigue = relevantLogs.filter(log =>
+      ['sle-fatigue-severe', 'sle-fatigue-moderate'].includes(log.symptomId)
+  );
+  const severeFatigue = relevantLogs.filter(log => log.symptomId === 'sle-fatigue-severe');
+
+  // Skin manifestations
+  const skinSymptoms = relevantLogs.filter(log =>
+      ['sle-malar-rash', 'sle-discoid-rash', 'sle-photosensitivity', 'sle-oral-ulcers', 'sle-skin-lesions', 'sle-hair-loss'].includes(log.symptomId)
+  );
+
+  // Joint symptoms
+  const jointSymptoms = relevantLogs.filter(log =>
+      ['sle-joint-pain', 'sle-joint-swelling', 'sle-arthritis'].includes(log.symptomId)
+  );
+
+  // Treatment intensity
+  const steroidBursts = relevantLogs.filter(log => log.symptomId === 'sle-steroid-use');
+  const immunosuppressants = relevantLogs.filter(log => log.symptomId === 'sle-immunosuppressant');
+
+  // Calculate average severity
+  const avgSeverity = relevantLogs.length > 0
+      ? relevantLogs.reduce((sum, log) => sum + (log.severity || 5), 0) / relevantLogs.length
+      : 0;
+
+  // Determine flare characteristics
+  // Group flares by approximate time to identify distinct episodes
+  const flareEpisodes = identifyFlareEpisodes(allFlares);
+  const weekLongFlares = flareEpisodes.filter(ep => ep.durationDays >= 7);
+
+  // Determine rating
+  let supportedRating = 0;
+  let rationale = [];
+  let evidenceGaps = [];
+
+  // 100% criteria: Acute with frequent exacerbations, severe health impairment
+  const hasFrequentSevereFlares = acuteFlares.length >= 4 || (acuteFlares.length >= 2 && hospitalizations.length >= 2);
+  const hasMajorOrganInvolvement = kidneySymptoms.length >= 3 || neurological.length >= 3 || cardiopulmonary.length >= 3;
+  const hasSevereHealthImpairment = hospitalizations.length >= 2 || (acuteFlares.length >= 3 && severeFatigue.length >= 5);
+
+  if (hasFrequentSevereFlares && hasSevereHealthImpairment) {
+    supportedRating = 100;
+    rationale.push('Frequent severe exacerbations documented');
+    if (hospitalizations.length > 0) {
+      rationale.push(`${hospitalizations.length} hospitalization(s) for SLE`);
+    }
+    if (hasMajorOrganInvolvement) {
+      rationale.push('Major organ involvement documented');
+    }
+    rationale.push('Severe impairment of overall health indicated');
+  }
+  // 60% criteria: Exacerbations lasting >=1 week, 2-3 times per year
+  else if (weekLongFlares.length >= 2 || (allFlares.length >= 2 && steroidBursts.length >= 2)) {
+    supportedRating = 60;
+    rationale.push(`${weekLongFlares.length >= 2 ? weekLongFlares.length : allFlares.length} significant flare episodes documented`);
+    if (weekLongFlares.length >= 2) {
+      rationale.push('Flares lasting a week or more documented');
+    }
+    if (steroidBursts.length > 0) {
+      rationale.push(`${steroidBursts.length} steroid burst(s) required`);
+    }
+    rationale.push('Meets criteria for 2-3 exacerbations per year');
+  }
+  // 10% criteria: 1-2 exacerbations per year OR symptomatic in past 2 years
+  else if (allFlares.length >= 1 || twoYearLogs.length > 0) {
+    supportedRating = 10;
+    if (allFlares.length >= 1) {
+      rationale.push(`${allFlares.length} flare(s) documented in past year`);
+    } else {
+      rationale.push('Symptomatic during the past 2 years');
+    }
+    rationale.push('SLE diagnosis with ongoing symptoms/periodic flares');
+  }
+
+  // Add symptom details to rationale
+  if (kidneySymptoms.length > 0) {
+    rationale.push(`Kidney involvement documented (${kidneySymptoms.length} entries) - consider separate rating`);
+  }
+  if (neurological.length > 0) {
+    rationale.push(`Neurological symptoms documented (${neurological.length} entries)`);
+  }
+  if (skinSymptoms.length > 0) {
+    rationale.push(`Skin manifestations documented (${skinSymptoms.length} entries)`);
+  }
+  if (jointSymptoms.length > 0) {
+    rationale.push(`Joint involvement documented (${jointSymptoms.length} entries)`);
+  }
+
+  // Evidence gaps
+  if (allFlares.length === 0) {
+    evidenceGaps.push('Log flare episodes with start dates and duration to establish exacerbation pattern');
+  }
+  if (weekLongFlares.length < 2 && supportedRating < 60) {
+    evidenceGaps.push('Document flare duration (>=1 week flares support 60% rating)');
+  }
+  if (hospitalizations.length === 0 && erVisits.length === 0 && supportedRating < 100) {
+    evidenceGaps.push('Document any hospitalizations or ER visits for SLE');
+  }
+  if (kidneySymptoms.length === 0) {
+    evidenceGaps.push('If you have kidney involvement, document proteinuria/hematuria for potential separate rating');
+  }
+  if (immunosuppressants.length === 0) {
+    evidenceGaps.push('Document immunosuppressive therapy if prescribed');
+  }
+  evidenceGaps.push('Consider calculating combined rating for all affected body systems vs. DC 6350 alone');
+
+  return {
+    hasData: true,
+    condition: 'Systemic Lupus Erythematosus (SLE)',
+    diagnosticCode: '6350',
+    cfrReference: '38 CFR 4.88b',
+    supportedRating,
+    rationale,
+    evidenceGaps,
+    metrics: {
+      totalLogs: relevantLogs.length,
+      avgSeverity: parseFloat(avgSeverity.toFixed(1)),
+      flareCount: allFlares.length,
+      acuteFlares: acuteFlares.length,
+      moderateFlares: moderateFlares.length,
+      weekLongFlares: weekLongFlares.length,
+      hospitalizations: hospitalizations.length,
+      kidneySymptoms: kidneySymptoms.length,
+      neurologicalSymptoms: neurological.length,
+      cardiopulmonarySymptoms: cardiopulmonary.length,
+      skinSymptoms: skinSymptoms.length,
+      jointSymptoms: jointSymptoms.length,
+      steroidBursts: steroidBursts.length,
+      twoYearSymptomCount: twoYearLogs.length,
+    },
+    criteria: SYSTEMIC_LUPUS_CRITERIA,
+  };
+};
+
+/**
+ * Analyze Tuberculosis symptom logs against VA rating criteria
+ * Handles Active (DC 6730), Inactive (DC 6731), and Miliary (DC 6311)
+ */
+export const analyzeTuberculosisLogs = (logs, options = {}) => {
+  const evaluationPeriodDays = options.evaluationPeriodDays || 365;
+
+  // Combine all TB symptom IDs
+  const activeSymptomIds = CONDITIONS.TUBERCULOSIS_ACTIVE.symptomIds;
+  const inactiveSymptomIds = CONDITIONS.TUBERCULOSIS_INACTIVE.symptomIds;
+  const miliarySymptomIds = CONDITIONS.TUBERCULOSIS_MILIARY.symptomIds;
+  const allTBSymptomIds = [...new Set([...activeSymptomIds, ...inactiveSymptomIds, ...miliarySymptomIds])];
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp || log.occurredAt);
+    const symptomId = log.symptomId || log.symptom;
+    return logDate >= cutoffDate && symptomId && allTBSymptomIds.includes(symptomId);
+  });
+
+  if (relevantLogs.length === 0) {
+    return {
+      hasData: false,
+      condition: 'Tuberculosis',
+      diagnosticCode: '6730/6731/6311',
+      cfrReference: '38 CFR 4.97/4.88b',
+      message: 'No tuberculosis symptoms logged in evaluation period',
+      criteria: TUBERCULOSIS_ACTIVE_CRITERIA,
+    };
+  }
+
+  // Categorize logs by TB type
+  const activeTBLogs = relevantLogs.filter(log => activeSymptomIds.includes(log.symptomId));
+  const inactiveTBLogs = relevantLogs.filter(log => inactiveSymptomIds.includes(log.symptomId));
+  const miliaryTBLogs = relevantLogs.filter(log => miliarySymptomIds.includes(log.symptomId));
+
+  // Check for active disease indicators
+  const activeConfirmed = relevantLogs.some(log => log.symptomId === 'tb-active-confirmed');
+  const culturePositive = relevantLogs.some(log => log.symptomId === 'tb-culture-positive');
+  const smearPositive = relevantLogs.some(log => log.symptomId === 'tb-smear-positive');
+  const onActiveTreatment = relevantLogs.some(log => log.symptomId === 'tb-treatment-active');
+  const miliaryConfirmed = relevantLogs.some(log => log.symptomId === 'tb-miliary-confirmed');
+  const disseminated = relevantLogs.some(log => log.symptomId === 'tb-disseminated');
+
+  // Check for inactive status
+  const inactiveConfirmed = relevantLogs.some(log => log.symptomId === 'tb-inactive-confirmed');
+  const treatmentCompleted = relevantLogs.some(log => log.symptomId === 'tb-treatment-completed');
+  const cultureNegative = relevantLogs.some(log => log.symptomId === 'tb-culture-negative');
+
+  // Constitutional symptoms
+  const feverLogs = relevantLogs.filter(log => log.symptomId === 'tb-fever');
+  const nightSweatsLogs = relevantLogs.filter(log => log.symptomId === 'tb-night-sweats');
+  const weightLossLogs = relevantLogs.filter(log => log.symptomId === 'tb-weight-loss');
+  const fatigueLogs = relevantLogs.filter(log => ['tb-fatigue', 'tb-weakness'].includes(log.symptomId));
+
+  // Respiratory symptoms
+  const coughLogs = relevantLogs.filter(log => ['tb-cough-productive', 'tb-cough-blood', 'tb-hemoptysis'].includes(log.symptomId));
+  const hemoptysisLogs = relevantLogs.filter(log => ['tb-cough-blood', 'tb-hemoptysis'].includes(log.symptomId));
+
+  // Severe indicators
+  const cavityLogs = relevantLogs.filter(log => log.symptomId === 'tb-cavity-formation');
+  const hospitalizationLogs = relevantLogs.filter(log => log.symptomId === 'tb-hospitalization');
+  const drugResistantLogs = relevantLogs.filter(log => ['tb-drug-resistant', 'tb-mdr', 'tb-xdr'].includes(log.symptomId));
+
+  // Residual symptoms
+  const residualLogs = relevantLogs.filter(log =>
+      ['tb-residual-scarring', 'tb-residual-fibrosis', 'tb-residual-dyspnea',
+        'tb-residual-cough', 'tb-residual-decreased-capacity', 'tb-pulmonary-function-reduced',
+        'tb-emphysema', 'tb-bronchiectasis'].includes(log.symptomId)
+  );
+  const surgicalHistoryLogs = relevantLogs.filter(log =>
+      ['tb-thoracoplasty-history', 'tb-lobectomy-history', 'tb-pneumonectomy-history'].includes(log.symptomId)
+  );
+
+  // Determine disease status and rating
+  let supportedRating = 0;
+  let rationale = [];
+  let evidenceGaps = [];
+  let diagnosticCode = '6731'; // Default to inactive
+  let criteria = TUBERCULOSIS_INACTIVE_CRITERIA;
+
+  // Check for MILIARY TB (highest priority - most severe)
+  if (miliaryConfirmed || disseminated || miliaryTBLogs.length >= 3) {
+    supportedRating = 100;
+    diagnosticCode = '6311';
+    criteria = TUBERCULOSIS_MILIARY_CRITERIA;
+    rationale.push('Miliary (disseminated) tuberculosis documented');
+    if (miliaryConfirmed) rationale.push('Miliary TB diagnosis confirmed');
+    if (disseminated) rationale.push('Disseminated disease documented');
+
+    // Check for organ involvement
+    const organInvolvement = [];
+    if (relevantLogs.some(log => log.symptomId === 'tb-meningitis')) organInvolvement.push('CNS/meningitis');
+    if (relevantLogs.some(log => log.symptomId === 'tb-bone-joint')) organInvolvement.push('bone/joint');
+    if (relevantLogs.some(log => log.symptomId === 'tb-kidney')) organInvolvement.push('kidney');
+    if (relevantLogs.some(log => log.symptomId === 'tb-lymph-nodes')) organInvolvement.push('lymph nodes');
+    if (relevantLogs.some(log => log.symptomId === 'tb-eye-involvement')) organInvolvement.push('eyes');
+
+    if (organInvolvement.length > 0) {
+      rationale.push(`Organ involvement: ${organInvolvement.join(', ')}`);
+    }
+    rationale.push('Miliary TB rated 100% while active');
+  }
+  // Check for ACTIVE PULMONARY TB
+  else if (activeConfirmed || culturePositive || smearPositive || (onActiveTreatment && !inactiveConfirmed)) {
+    supportedRating = 100;
+    diagnosticCode = '6730';
+    criteria = TUBERCULOSIS_ACTIVE_CRITERIA;
+    rationale.push('Active pulmonary tuberculosis documented');
+
+    if (culturePositive) rationale.push('Culture-positive TB confirmed');
+    if (smearPositive) rationale.push('AFB smear positive');
+    if (onActiveTreatment) rationale.push('On active anti-TB treatment');
+    if (cavityLogs.length > 0) rationale.push('Cavitary disease documented - indicates advanced TB');
+    if (drugResistantLogs.length > 0) rationale.push('Drug-resistant TB documented - requires extended treatment');
+    if (hospitalizationLogs.length > 0) rationale.push(`${hospitalizationLogs.length} hospitalization(s) for TB`);
+
+    rationale.push('Active pulmonary TB rated 100% while active');
+  }
+  // INACTIVE TB - rate based on residuals
+  else if (inactiveConfirmed || treatmentCompleted || cultureNegative || residualLogs.length > 0) {
+    diagnosticCode = '6731';
+    criteria = TUBERCULOSIS_INACTIVE_CRITERIA;
+
+    if (inactiveConfirmed) rationale.push('TB declared inactive');
+    if (treatmentCompleted) rationale.push('TB treatment completed');
+    if (cultureNegative) rationale.push('Sputum cultures negative');
+
+    // Rate based on residuals - need PFT data
+    if (residualLogs.length > 0) {
+      rationale.push(`Residual symptoms documented: ${residualLogs.length} entries`);
+
+      const hasScarring = residualLogs.some(log => log.symptomId === 'tb-residual-scarring');
+      const hasFibrosis = residualLogs.some(log => log.symptomId === 'tb-residual-fibrosis');
+      const hasDyspnea = residualLogs.some(log => log.symptomId === 'tb-residual-dyspnea');
+      const hasReducedPFT = residualLogs.some(log => log.symptomId === 'tb-pulmonary-function-reduced');
+      const hasEmphysema = residualLogs.some(log => log.symptomId === 'tb-emphysema');
+      const hasBronchiectasis = residualLogs.some(log => log.symptomId === 'tb-bronchiectasis');
+
+      if (hasScarring) rationale.push('Pulmonary scarring documented');
+      if (hasFibrosis) rationale.push('Pulmonary fibrosis documented');
+      if (hasEmphysema) rationale.push('Post-TB emphysema documented');
+      if (hasBronchiectasis) rationale.push('Post-TB bronchiectasis documented');
+
+      // Estimate rating based on symptom severity (actual rating requires PFTs)
+      if (hasEmphysema || hasBronchiectasis || (hasFibrosis && hasDyspnea)) {
+        supportedRating = 30; // Moderate residuals - needs PFT confirmation
+        rationale.push('Moderate residuals suggest 30%+ rating - PFTs required for exact rating');
+      } else if (hasScarring || hasDyspnea || hasReducedPFT) {
+        supportedRating = 10; // Mild residuals - needs PFT confirmation
+        rationale.push('Residual changes documented - PFTs required for exact rating');
+      } else {
+        supportedRating = 0;
+        rationale.push('Minimal residuals documented');
+      }
+    }
+
+    if (surgicalHistoryLogs.length > 0) {
+      rationale.push('Surgical history for TB - may warrant separate rating (DC 5297 for rib removal)');
+    }
+
+    evidenceGaps.push('Pulmonary function tests (PFTs) required to determine exact residual rating');
+    evidenceGaps.push('Document FEV-1, FVC, FEV-1/FVC ratio, and DLCO');
+  }
+  // Some TB symptoms but status unclear
+  else {
+    supportedRating = 0;
+    rationale.push('TB-related symptoms logged but disease status unclear');
+    evidenceGaps.push('Document whether TB is active or inactive');
+    evidenceGaps.push('If active: obtain culture or smear results');
+    evidenceGaps.push('If inactive: document treatment completion and obtain PFTs');
+  }
+
+  // Add common documentation gaps
+  if (coughLogs.length > 0 || fatigueLogs.length > 0) {
+    if (feverLogs.length === 0 && nightSweatsLogs.length === 0) {
+      evidenceGaps.push('Document constitutional symptoms (fever, night sweats) if present');
+    }
+  }
+
+  if (diagnosticCode === '6731' && residualLogs.length === 0) {
+    evidenceGaps.push('Document any residual symptoms (dyspnea, cough, decreased capacity)');
+  }
+
+  // Calculate metrics
+  const avgSeverity = relevantLogs.length > 0
+      ? relevantLogs.reduce((sum, log) => sum + (log.severity || 5), 0) / relevantLogs.length
+      : 0;
+
+  return {
+    hasData: true,
+    condition: diagnosticCode === '6311' ? 'Tuberculosis, Miliary' :
+        diagnosticCode === '6730' ? 'Tuberculosis, Pulmonary, Active' :
+            'Tuberculosis, Pulmonary, Inactive',
+    diagnosticCode,
+    cfrReference: diagnosticCode === '6311' ? '38 CFR 4.88b' : '38 CFR 4.97',
+    supportedRating,
+    rationale,
+    evidenceGaps,
+    metrics: {
+      totalLogs: relevantLogs.length,
+      avgSeverity: parseFloat(avgSeverity.toFixed(1)),
+      activeTBLogs: activeTBLogs.length,
+      inactiveTBLogs: inactiveTBLogs.length,
+      miliaryTBLogs: miliaryTBLogs.length,
+      constitutionalSymptoms: feverLogs.length + nightSweatsLogs.length + weightLossLogs.length,
+      respiratorySymptoms: coughLogs.length,
+      hemoptysisLogs: hemoptysisLogs.length,
+      residualLogs: residualLogs.length,
+      hospitalizations: hospitalizationLogs.length,
+      hasCavitaryDisease: cavityLogs.length > 0,
+      hasDrugResistance: drugResistantLogs.length > 0,
+    },
+    criteria,
+    diseaseStatus: diagnosticCode === '6730' ? 'active' :
+        diagnosticCode === '6311' ? 'miliary-active' : 'inactive',
+  };
+};
+
+/**
+ * Analyze Sphincter Control symptoms against VA rating criteria
+ * DC 7332 - Uses UPDATED criteria from recent CFR changes
+ */
+export const analyzeSphincterControlLogs = (logs, options = {}) => {
+  const evaluationPeriodDays = options.evaluationPeriodDays || 365;
+  const symptomIds = [
+    'sphincter-complete-loss', 'sphincter-frequent-loss', 'sphincter-occasional-loss', 'sphincter-rare-loss',
+    'sphincter-incontinence-solids', 'sphincter-incontinence-liquids', 'sphincter-incontinence-gas',
+    'sphincter-daily-episodes', 'sphincter-weekly-episodes', 'sphincter-monthly-episodes',
+    'sphincter-pad-use-daily', 'sphincter-pad-use-weekly', 'sphincter-pad-use-monthly',
+    'sphincter-bowel-program', 'sphincter-digital-stimulation', 'sphincter-medication',
+    'sphincter-special-diet', 'sphincter-surgery-needed',
+    'sphincter-retention', 'sphincter-constipation-severe',
+    'sphincter-social-limitation', 'sphincter-work-limitation', 'sphincter-hygiene-issues',
+  ];
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp || log.occurredAt);
+    const symptomId = log.symptomId || log.symptom;
+    return logDate >= cutoffDate && symptomId && symptomIds.includes(symptomId);
+  });
+
+  if (relevantLogs.length === 0) {
+    return {
+      hasData: false,
+      condition: 'Sphincter Control Impairment',
+      diagnosticCode: '7332',
+      message: 'No sphincter control symptoms logged',
+      criteria: SPHINCTER_CONTROL_CRITERIA,
+    };
+  }
+
+  // Categorize symptoms
+  const completeLoss = relevantLogs.some(log => log.symptomId === 'sphincter-complete-loss');
+  const frequentLoss = relevantLogs.some(log => log.symptomId === 'sphincter-frequent-loss');
+  const occasionalLoss = relevantLogs.some(log => log.symptomId === 'sphincter-occasional-loss');
+
+  const dailyEpisodes = relevantLogs.filter(log => log.symptomId === 'sphincter-daily-episodes');
+  const weeklyEpisodes = relevantLogs.filter(log => log.symptomId === 'sphincter-weekly-episodes');
+  const monthlyEpisodes = relevantLogs.filter(log => log.symptomId === 'sphincter-monthly-episodes');
+
+  const padDaily = relevantLogs.some(log => log.symptomId === 'sphincter-pad-use-daily');
+  const padWeekly = relevantLogs.some(log => log.symptomId === 'sphincter-pad-use-weekly');
+  const padMonthly = relevantLogs.some(log => log.symptomId === 'sphincter-pad-use-monthly');
+
+  const onBowelProgram = relevantLogs.some(log => log.symptomId === 'sphincter-bowel-program');
+  const digitalStim = relevantLogs.some(log => log.symptomId === 'sphincter-digital-stimulation');
+  const medication = relevantLogs.some(log => log.symptomId === 'sphincter-medication');
+  const specialDiet = relevantLogs.some(log => log.symptomId === 'sphincter-special-diet');
+  const surgeryNeeded = relevantLogs.some(log => log.symptomId === 'sphincter-surgery-needed');
+
+  let supportedRating = 0;
+  let rationale = [];
+  let evidenceGaps = [];
+
+  // 100%: Daily episodes with daily pad changes OR complete loss not responsive to bowel program
+  if ((dailyEpisodes.length > 0 && padDaily) || (completeLoss && !onBowelProgram)) {
+    supportedRating = 100;
+    if (dailyEpisodes.length > 0 && padDaily) {
+      rationale.push('Daily incontinence episodes requiring pad changes 2+ times per day');
+    }
+    if (completeLoss) {
+      rationale.push('Complete loss of sphincter control documented');
+      if (!onBowelProgram) rationale.push('Not responsive to bowel program');
+    }
+    if (surgeryNeeded) rationale.push('Surgical intervention recommended');
+  }
+  // 60%: Weekly episodes OR partially responsive to bowel program
+  else if (weeklyEpisodes.length > 0 || (frequentLoss && padWeekly)) {
+    supportedRating = 60;
+    if (weeklyEpisodes.length > 0) {
+      rationale.push('Incontinence episodes 2+ times per week');
+    }
+    if (padWeekly) rationale.push('Pad use required 2+ times per week');
+    if (onBowelProgram) rationale.push('On physician-prescribed bowel program');
+  }
+  // 30%: Monthly episodes OR fully responsive with digital stim + med + diet
+  else if (monthlyEpisodes.length > 0 || (onBowelProgram && digitalStim && medication && specialDiet)) {
+    supportedRating = 30;
+    if (monthlyEpisodes.length > 0) {
+      rationale.push('Incontinence episodes 2+ times per month');
+    }
+    if (padMonthly) rationale.push('Pad use required 2+ times per month');
+    if (digitalStim && medication && specialDiet) {
+      rationale.push('Requires digital stimulation, medication, AND special diet');
+    }
+  }
+  // 10%: Rare episodes OR fully responsive with med OR diet
+  else if (occasionalLoss || medication || specialDiet) {
+    supportedRating = 10;
+    if (occasionalLoss) rationale.push('Occasional sphincter control issues');
+    if (medication) rationale.push('Requires medication for bowel control');
+    if (specialDiet) rationale.push('Requires special diet for bowel control');
+  }
+
+  // Evidence gaps
+  if (!onBowelProgram && supportedRating > 0) {
+    evidenceGaps.push('Document physician-prescribed bowel program if following one');
+  }
+  if (dailyEpisodes.length === 0 && weeklyEpisodes.length === 0 && monthlyEpisodes.length === 0) {
+    evidenceGaps.push('Log incontinence episodes with frequency (daily/weekly/monthly)');
+  }
+  if (!padDaily && !padWeekly && !padMonthly) {
+    evidenceGaps.push('Document pad usage frequency if applicable');
+  }
+
+  return {
+    hasData: true,
+    condition: 'Sphincter Control Impairment',
+    diagnosticCode: '7332',
+    cfrReference: '38 CFR 4.114',
+    supportedRating,
+    rationale,
+    evidenceGaps,
+    metrics: {
+      totalLogs: relevantLogs.length,
+      dailyEpisodes: dailyEpisodes.length,
+      weeklyEpisodes: weeklyEpisodes.length,
+      monthlyEpisodes: monthlyEpisodes.length,
+      onBowelProgram,
+      requiresDigitalStim: digitalStim,
+      requiresMedication: medication,
+      requiresSpecialDiet: specialDiet,
+    },
+    criteria: SPHINCTER_CONTROL_CRITERIA,
+  };
+};
+
+/**
+ * Analyze Hemorrhoids symptoms against VA rating criteria
+ * DC 7336
+ */
+export const analyzeHemorrhoidLogs = (logs, options = {}) => {
+  const evaluationPeriodDays = options.evaluationPeriodDays || 365;
+  const symptomIds = [
+    'hemorrhoid-persistent-bleeding', 'hemorrhoid-anemia', 'hemorrhoid-prolapsed',
+    'hemorrhoid-thrombosed', 'hemorrhoid-pain', 'hemorrhoid-itching',
+    'hemorrhoid-bleeding', 'hemorrhoid-prolapse', 'hemorrhoid-thrombosis',
+    'hemorrhoid-internal', 'hemorrhoid-external',
+  ];
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp || log.occurredAt);
+    const symptomId = log.symptomId || log.symptom;
+    return logDate >= cutoffDate && symptomId && symptomIds.includes(symptomId);
+  });
+
+  if (relevantLogs.length === 0) {
+    return {
+      hasData: false,
+      condition: 'Hemorrhoids',
+      diagnosticCode: '7336',
+      message: 'No hemorrhoid symptoms logged',
+      criteria: HEMORRHOIDS_CRITERIA,
+    };
+  }
+
+  const persistentBleeding = relevantLogs.filter(log => log.symptomId === 'hemorrhoid-persistent-bleeding');
+  const anemiaLogs = relevantLogs.filter(log => log.symptomId === 'hemorrhoid-anemia');
+  const prolapsedLogs = relevantLogs.filter(log => log.symptomId === 'hemorrhoid-prolapsed');
+  const thrombosedLogs = relevantLogs.filter(log => log.symptomId === 'hemorrhoid-thrombosed');
+
+  let supportedRating = 0;
+  let rationale = [];
+  let evidenceGaps = [];
+
+  // 20%: Persistent bleeding with anemia OR continuously prolapsed with 3+ thrombosis/year
+  if ((persistentBleeding.length >= 3 && anemiaLogs.length > 0) || thrombosedLogs.length >= 3) {
+    supportedRating = 20;
+    if (persistentBleeding.length >= 3 && anemiaLogs.length > 0) {
+      rationale.push('Persistent bleeding documented with anemia');
+    }
+    if (thrombosedLogs.length >= 3) {
+      rationale.push(`${thrombosedLogs.length} thrombosis episodes documented (3+ supports 20%)`);
+    }
+    if (prolapsedLogs.length > 0) {
+      rationale.push('Prolapsed hemorrhoids documented');
+    }
+  }
+  // 10%: Prolapsed with <=2 thrombosis OR external with 3+ thrombosis
+  else if ((prolapsedLogs.length > 0 && thrombosedLogs.length <= 2) || thrombosedLogs.length >= 3) {
+    supportedRating = 10;
+    if (prolapsedLogs.length > 0) {
+      rationale.push('Prolapsed hemorrhoids documented');
+    }
+    if (thrombosedLogs.length > 0) {
+      rationale.push(`${thrombosedLogs.length} thrombosis episode(s) documented`);
+    }
+  }
+  // 0%: Mild symptoms
+  else if (relevantLogs.length > 0) {
+    supportedRating = 0;
+    rationale.push('Hemorrhoid symptoms documented but below compensable threshold');
+  }
+
+  // Evidence gaps
+  if (persistentBleeding.length > 0 && anemiaLogs.length === 0) {
+    evidenceGaps.push('Get lab work to document anemia if bleeding is persistent');
+  }
+  if (thrombosedLogs.length > 0 && thrombosedLogs.length < 3) {
+    evidenceGaps.push('Document all thrombosis episodes with dates (3+ per year supports higher rating)');
+  }
+
+  return {
+    hasData: true,
+    condition: 'Hemorrhoids',
+    diagnosticCode: '7336',
+    cfrReference: '38 CFR 4.114',
+    supportedRating,
+    rationale,
+    evidenceGaps,
+    metrics: {
+      totalLogs: relevantLogs.length,
+      bleedingLogs: persistentBleeding.length,
+      anemiaDocumented: anemiaLogs.length > 0,
+      prolapsedLogs: prolapsedLogs.length,
+      thrombosisEpisodes: thrombosedLogs.length,
+    },
+    criteria: HEMORRHOIDS_CRITERIA,
+  };
+};
+
+/**
+ * Analyze Avitaminosis symptoms against VA rating criteria
+ * DC 6313
+ */
+export const analyzeAvitaminosisLogs = (logs, options = {}) => {
+  const evaluationPeriodDays = options.evaluationPeriodDays || 365;
+  const symptomPrefix = 'avitaminosis-';
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp || log.occurredAt);
+    const symptomId = log.symptomId || log.symptom;
+    return logDate >= cutoffDate && symptomId && symptomId.startsWith(symptomPrefix);
+  });
+
+  if (relevantLogs.length === 0) {
+    return {
+      hasData: false,
+      condition: 'Avitaminosis',
+      diagnosticCode: '6313',
+      message: 'No avitaminosis symptoms logged',
+      criteria: AVITAMINOSIS_CRITERIA,
+    };
+  }
+
+  // Check for symptoms
+  const hasStomatitis = relevantLogs.some(log => log.symptomId === 'avitaminosis-stomatitis');
+  const hasDiarrhea = relevantLogs.some(log => log.symptomId === 'avitaminosis-diarrhea');
+  const hasAchlorhydria = relevantLogs.some(log => log.symptomId === 'avitaminosis-achlorhydria');
+  const hasSymmetricalDermatitis = relevantLogs.some(log => log.symptomId === 'avitaminosis-dermatitis-symmetrical');
+  const hasMoistDermatitis = relevantLogs.some(log => log.symptomId === 'avitaminosis-dermatitis-moist');
+  const hasMentalChanges = relevantLogs.some(log =>
+      ['avitaminosis-mental-changes', 'avitaminosis-confusion', 'avitaminosis-depression',
+        'avitaminosis-memory-problems', 'avitaminosis-irritability', 'avitaminosis-concentration-difficulty'].includes(log.symptomId)
+  );
+  const hasExhaustion = relevantLogs.some(log => log.symptomId === 'avitaminosis-exhaustion');
+  const hasCachexia = relevantLogs.some(log => log.symptomId === 'avitaminosis-cachexia');
+  const hasInabilityRetain = relevantLogs.some(log => log.symptomId === 'avitaminosis-inability-retain-nourishment');
+  const hasImpairedVigor = relevantLogs.some(log =>
+      ['avitaminosis-impaired-vigor', 'avitaminosis-weakness', 'avitaminosis-fatigue'].includes(log.symptomId)
+  );
+  const hasNonspecific = relevantLogs.some(log =>
+      ['avitaminosis-appetite-loss', 'avitaminosis-weight-loss', 'avitaminosis-abdominal-discomfort',
+        'avitaminosis-weakness', 'avitaminosis-concentration-difficulty', 'avitaminosis-irritability'].includes(log.symptomId)
+  );
+
+  let supportedRating = 0;
+  let rationale = [];
+  let evidenceGaps = [];
+
+  // 100%: All severe symptoms
+  if (hasMentalChanges && hasMoistDermatitis && hasInabilityRetain && hasExhaustion && hasCachexia) {
+    supportedRating = 100;
+    rationale.push('Marked mental changes documented');
+    rationale.push('Moist dermatitis documented');
+    rationale.push('Inability to retain adequate nourishment');
+    rationale.push('Exhaustion documented');
+    rationale.push('Cachexia (severe wasting) documented');
+  }
+  // 60%: Stomatitis + diarrhea + dermatitis + mental + impaired vigor
+  else if (hasStomatitis && hasDiarrhea && hasSymmetricalDermatitis && hasMentalChanges && hasImpairedVigor) {
+    supportedRating = 60;
+    rationale.push('Stomatitis, diarrhea, and symmetrical dermatitis present');
+    rationale.push('Mental symptoms documented');
+    rationale.push('Impaired bodily vigor documented');
+  }
+  // 40%: Stomatitis + diarrhea + dermatitis
+  else if (hasStomatitis && hasDiarrhea && hasSymmetricalDermatitis) {
+    supportedRating = 40;
+    rationale.push('Stomatitis documented');
+    rationale.push('Diarrhea documented');
+    rationale.push('Symmetrical dermatitis documented');
+    if (!hasMentalChanges) evidenceGaps.push('Document mental symptoms if present for higher rating');
+  }
+  // 20%: Stomatitis OR achlorhydria OR diarrhea
+  else if (hasStomatitis || hasAchlorhydria || hasDiarrhea) {
+    supportedRating = 20;
+    if (hasStomatitis) rationale.push('Stomatitis documented');
+    if (hasAchlorhydria) rationale.push('Achlorhydria documented');
+    if (hasDiarrhea) rationale.push('Diarrhea documented');
+    evidenceGaps.push('Document all three (stomatitis, diarrhea, dermatitis) for 40% rating');
+  }
+  // 10%: Nonspecific symptoms
+  else if (hasNonspecific) {
+    supportedRating = 10;
+    rationale.push('Nonspecific vitamin deficiency symptoms present');
+    evidenceGaps.push('Document specific symptoms (stomatitis, diarrhea, achlorhydria) for higher rating');
+  }
+
+  // General evidence gaps
+  if (!hasMoistDermatitis && !hasSymmetricalDermatitis) {
+    evidenceGaps.push('Document dermatitis type and distribution');
+  }
+
+  return {
+    hasData: true,
+    condition: 'Avitaminosis',
+    diagnosticCode: '6313',
+    cfrReference: '38 CFR 4.88b',
+    supportedRating,
+    rationale,
+    evidenceGaps,
+    metrics: {
+      totalLogs: relevantLogs.length,
+      hasStomatitis,
+      hasDiarrhea,
+      hasDermatitis: hasSymmetricalDermatitis || hasMoistDermatitis,
+      hasMentalChanges,
+      hasCachexia,
+    },
+    criteria: AVITAMINOSIS_CRITERIA,
+  };
+};
+
+/**
+ * Analyze Beriberi symptoms against VA rating criteria
+ * DC 6314
+ */
+export const analyzeBeriberiLogs = (logs, options = {}) => {
+  const evaluationPeriodDays = options.evaluationPeriodDays || 365;
+  const symptomPrefix = 'beriberi-';
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp || log.occurredAt);
+    const symptomId = log.symptomId || log.symptom;
+    return logDate >= cutoffDate && symptomId && symptomId.startsWith(symptomPrefix);
+  });
+
+  if (relevantLogs.length === 0) {
+    return {
+      hasData: false,
+      condition: 'Beriberi',
+      diagnosticCode: '6314',
+      message: 'No beriberi symptoms logged',
+      criteria: BERIBERI_CRITERIA,
+    };
+  }
+
+  // 100% criteria
+  const hasCHF = relevantLogs.some(log => log.symptomId === 'beriberi-chf');
+  const hasAnasarca = relevantLogs.some(log => log.symptomId === 'beriberi-anasarca');
+  const hasWernickeKorsakoff = relevantLogs.some(log => log.symptomId === 'beriberi-wernicke-korsakoff');
+
+  // 60% criteria
+  const hasCardiomegaly = relevantLogs.some(log => log.symptomId === 'beriberi-cardiomegaly');
+  const hasFootdrop = relevantLogs.some(log => log.symptomId === 'beriberi-footdrop');
+  const hasThighAtrophy = relevantLogs.some(log => log.symptomId === 'beriberi-muscle-atrophy-thigh');
+  const hasCalfAtrophy = relevantLogs.some(log => log.symptomId === 'beriberi-muscle-atrophy-calf');
+
+  // 30% criteria
+  const hasAbsentKneeJerk = relevantLogs.some(log => log.symptomId === 'beriberi-absent-knee-jerk');
+  const hasAbsentAnkleJerk = relevantLogs.some(log => log.symptomId === 'beriberi-absent-ankle-jerk');
+  const hasSensationLoss = relevantLogs.some(log => log.symptomId === 'beriberi-sensation-loss');
+  const hasGeneralSymptoms = relevantLogs.some(log =>
+      ['beriberi-weakness', 'beriberi-fatigue', 'beriberi-anorexia', 'beriberi-dizziness',
+        'beriberi-leg-heaviness', 'beriberi-leg-stiffness', 'beriberi-headache', 'beriberi-sleep-disturbance'].includes(log.symptomId)
+  );
+  const hasNeuropathy = relevantLogs.some(log => log.symptomId === 'beriberi-neuropathy');
+
+  let supportedRating = 0;
+  let rationale = [];
+  let evidenceGaps = [];
+
+  // 100%: CHF, anasarca, or Wernicke-Korsakoff
+  if (hasCHF || hasAnasarca || hasWernickeKorsakoff) {
+    supportedRating = 100;
+    if (hasCHF) rationale.push('Congestive heart failure documented (wet beriberi)');
+    if (hasAnasarca) rationale.push('Anasarca (severe generalized edema) documented');
+    if (hasWernickeKorsakoff) rationale.push('Wernicke-Korsakoff syndrome documented');
+  }
+  // 60%: Cardiomegaly OR footdrop OR muscle atrophy
+  else if (hasCardiomegaly || hasFootdrop || hasThighAtrophy || hasCalfAtrophy) {
+    supportedRating = 60;
+    if (hasCardiomegaly) rationale.push('Cardiomegaly documented');
+    if (hasFootdrop) rationale.push('Footdrop documented');
+    if (hasThighAtrophy) rationale.push('Thigh muscle atrophy documented');
+    if (hasCalfAtrophy) rationale.push('Calf muscle atrophy documented');
+  }
+  // 30%: Absent reflexes with sensation loss OR general symptoms
+  else if ((hasAbsentKneeJerk || hasAbsentAnkleJerk) && hasSensationLoss) {
+    supportedRating = 30;
+    rationale.push('Absent reflexes with loss of sensation documented');
+    if (hasNeuropathy) rationale.push('Peripheral neuropathy documented');
+  }
+  else if (hasGeneralSymptoms || hasNeuropathy) {
+    supportedRating = 30;
+    rationale.push('General beriberi symptoms documented');
+    if (hasNeuropathy) rationale.push('Peripheral neuropathy documented');
+    evidenceGaps.push('Document reflex testing and sensation examination');
+  }
+
+  // Evidence gaps
+  if (supportedRating < 60 && !hasFootdrop && !hasThighAtrophy && !hasCalfAtrophy) {
+    evidenceGaps.push('Document footdrop or muscle atrophy if present for higher rating');
+  }
+  if (supportedRating < 100 && !hasCHF && !hasWernickeKorsakoff) {
+    evidenceGaps.push('Document cardiac involvement or Wernicke-Korsakoff if present');
+  }
+
+  return {
+    hasData: true,
+    condition: 'Beriberi',
+    diagnosticCode: '6314',
+    cfrReference: '38 CFR 4.88b',
+    supportedRating,
+    rationale,
+    evidenceGaps,
+    metrics: {
+      totalLogs: relevantLogs.length,
+      wetBeriberi: hasCHF || hasCardiomegaly || hasAnasarca,
+      dryBeriberi: hasNeuropathy || hasFootdrop || hasThighAtrophy || hasCalfAtrophy,
+      wernickeKorsakoff: hasWernickeKorsakoff,
+      hasCardiacInvolvement: hasCHF || hasCardiomegaly,
+      hasNeurologicalInvolvement: hasNeuropathy || hasFootdrop || hasSensationLoss,
+    },
+    criteria: BERIBERI_CRITERIA,
+  };
+};
+
+/**
+ * Analyze Pellagra symptoms against VA rating criteria
+ * DC 6315 - identical criteria to Avitaminosis
+ */
+export const analyzePellagraLogs = (logs, options = {}) => {
+  const evaluationPeriodDays = options.evaluationPeriodDays || 365;
+  const symptomPrefix = 'pellagra-';
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  const relevantLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp || log.occurredAt);
+    const symptomId = log.symptomId || log.symptom;
+    return logDate >= cutoffDate && symptomId && symptomId.startsWith(symptomPrefix);
+  });
+
+  if (relevantLogs.length === 0) {
+    return {
+      hasData: false,
+      condition: 'Pellagra',
+      diagnosticCode: '6315',
+      message: 'No pellagra symptoms logged',
+      criteria: PELLAGRA_CRITERIA,
+    };
+  }
+
+  // Check for symptoms
+  const hasStomatitis = relevantLogs.some(log => log.symptomId === 'pellagra-stomatitis');
+  const hasDiarrhea = relevantLogs.some(log => log.symptomId === 'pellagra-diarrhea');
+  const hasAchlorhydria = relevantLogs.some(log => log.symptomId === 'pellagra-achlorhydria');
+  const hasSymmetricalDermatitis = relevantLogs.some(log => log.symptomId === 'pellagra-dermatitis-symmetrical');
+  const hasMoistDermatitis = relevantLogs.some(log => log.symptomId === 'pellagra-dermatitis-moist');
+  const hasPhotosensitive = relevantLogs.some(log => log.symptomId === 'pellagra-dermatitis-photosensitive');
+  const hasCasalNecklace = relevantLogs.some(log => log.symptomId === 'pellagra-casal-necklace');
+  const hasMentalChanges = relevantLogs.some(log =>
+      ['pellagra-mental-changes', 'pellagra-dementia', 'pellagra-confusion',
+        'pellagra-depression', 'pellagra-psychosis', 'pellagra-irritability',
+        'pellagra-memory-problems'].includes(log.symptomId)
+  );
+  const hasExhaustion = relevantLogs.some(log => log.symptomId === 'pellagra-exhaustion');
+  const hasCachexia = relevantLogs.some(log => log.symptomId === 'pellagra-cachexia');
+  const hasInabilityRetain = relevantLogs.some(log => log.symptomId === 'pellagra-inability-retain-nourishment');
+  const hasImpairedVigor = relevantLogs.some(log =>
+      ['pellagra-impaired-vigor', 'pellagra-weakness', 'pellagra-fatigue'].includes(log.symptomId)
+  );
+  const hasNonspecific = relevantLogs.some(log =>
+      ['pellagra-appetite-loss', 'pellagra-weight-loss', 'pellagra-abdominal-discomfort',
+        'pellagra-weakness', 'pellagra-concentration-difficulty', 'pellagra-irritability'].includes(log.symptomId)
+  );
+
+  // Any dermatitis counts
+  const hasDermatitis = hasSymmetricalDermatitis || hasMoistDermatitis || hasPhotosensitive || hasCasalNecklace;
+
+  let supportedRating = 0;
+  let rationale = [];
+  let evidenceGaps = [];
+
+  // 100%: All severe symptoms
+  if (hasMentalChanges && hasMoistDermatitis && hasInabilityRetain && hasExhaustion && hasCachexia) {
+    supportedRating = 100;
+    rationale.push('Marked mental changes documented (dementia)');
+    rationale.push('Moist dermatitis documented');
+    rationale.push('Inability to retain adequate nourishment');
+    rationale.push('Exhaustion documented');
+    rationale.push('Cachexia (severe wasting) documented');
+  }
+  // 60%: Stomatitis + diarrhea + dermatitis + mental + impaired vigor
+  else if (hasStomatitis && hasDiarrhea && hasDermatitis && hasMentalChanges && hasImpairedVigor) {
+    supportedRating = 60;
+    rationale.push('Classic pellagra triad present (dermatitis, diarrhea, +stomatitis)');
+    rationale.push('Mental symptoms documented');
+    rationale.push('Impaired bodily vigor documented');
+  }
+  // 40%: Stomatitis + diarrhea + dermatitis
+  else if (hasStomatitis && hasDiarrhea && hasDermatitis) {
+    supportedRating = 40;
+    rationale.push('Stomatitis documented');
+    rationale.push('Diarrhea documented');
+    rationale.push('Dermatitis documented');
+    if (hasCasalNecklace) rationale.push('Casal\'s necklace present (pathognomonic)');
+    if (!hasMentalChanges) evidenceGaps.push('Document mental symptoms if present for higher rating');
+  }
+  // 20%: Stomatitis OR achlorhydria OR diarrhea
+  else if (hasStomatitis || hasAchlorhydria || hasDiarrhea) {
+    supportedRating = 20;
+    if (hasStomatitis) rationale.push('Stomatitis documented');
+    if (hasAchlorhydria) rationale.push('Achlorhydria documented');
+    if (hasDiarrhea) rationale.push('Diarrhea documented');
+    evidenceGaps.push('Document complete triad (stomatitis, diarrhea, dermatitis) for 40% rating');
+  }
+  // 10%: Nonspecific symptoms
+  else if (hasNonspecific || hasDermatitis) {
+    supportedRating = 10;
+    rationale.push('Pellagra symptoms present');
+    if (hasPhotosensitive) rationale.push('Photosensitive dermatitis documented');
+    evidenceGaps.push('Document specific symptoms (stomatitis, diarrhea) for higher rating');
+  }
+
+  // Special note for Casal's necklace
+  if (hasCasalNecklace) {
+    rationale.push('Casal\'s necklace is pathognomonic (diagnostic) for pellagra');
+  }
+
+  return {
+    hasData: true,
+    condition: 'Pellagra',
+    diagnosticCode: '6315',
+    cfrReference: '38 CFR 4.88b',
+    supportedRating,
+    rationale,
+    evidenceGaps,
+    metrics: {
+      totalLogs: relevantLogs.length,
+      hasStomatitis,
+      hasDiarrhea,
+      hasDermatitis,
+      hasCasalNecklace,
+      hasMentalChanges,
+      hasCachexia,
+      classicTriad: hasDermatitis && hasDiarrhea && hasMentalChanges,
+    },
+    criteria: PELLAGRA_CRITERIA,
+  };
+};
+
+
+
+// ============================================
 // HELPER FUNCTIONS
 // ============================================
 export const formatRating = (percent) => {
   if (percent === null) return 'N/A';
   return `${percent}%`;
 };
+
+/**
+ * Helper function to identify distinct flare episodes
+ * Groups logs within 14 days as same episode
+ */
+const identifyFlareEpisodes = (flareLogs) => {
+  if (flareLogs.length === 0) return [];
+
+  // Sort by date
+  const sorted = [...flareLogs].sort((a, b) =>
+      new Date(a.timestamp || a.occurredAt) - new Date(b.timestamp || b.occurredAt)
+  );
+
+  const episodes = [];
+  let currentEpisode = {
+    startDate: new Date(sorted[0].timestamp || sorted[0].occurredAt),
+    endDate: new Date(sorted[0].timestamp || sorted[0].occurredAt),
+    logs: [sorted[0]],
+    maxSeverity: sorted[0].severity || 5,
+  };
+
+  for (let i = 1; i < sorted.length; i++) {
+    const logDate = new Date(sorted[i].timestamp || sorted[i].occurredAt);
+    const daysSinceLastLog = (logDate - currentEpisode.endDate) / (1000 * 60 * 60 * 24);
+
+    if (daysSinceLastLog <= 14) {
+      // Same episode
+      currentEpisode.endDate = logDate;
+      currentEpisode.logs.push(sorted[i]);
+      currentEpisode.maxSeverity = Math.max(currentEpisode.maxSeverity, sorted[i].severity || 5);
+    } else {
+      // New episode
+      currentEpisode.durationDays = Math.ceil((currentEpisode.endDate - currentEpisode.startDate) / (1000 * 60 * 60 * 24)) + 1;
+      episodes.push(currentEpisode);
+      currentEpisode = {
+        startDate: logDate,
+        endDate: logDate,
+        logs: [sorted[i]],
+        maxSeverity: sorted[i].severity || 5,
+      };
+    }
+  }
+
+  // Don't forget the last episode
+  currentEpisode.durationDays = Math.ceil((currentEpisode.endDate - currentEpisode.startDate) / (1000 * 60 * 60 * 24)) + 1;
+  episodes.push(currentEpisode);
+
+  return episodes;
+};
+
 /**
  * Get badge/pill color classes for rating percentage
  * Granular 10% increments matching the heat map color scheme
@@ -44603,545 +49654,216 @@ export const getEvaluationPeriod = (days = 90) => {
     months: (days / 30).toFixed(1),
   };
 };
-export const getMigraineRatingCriteria = (percent) => {
-  return MIGRAINE_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getSleepApneaRatingCriteria = (percent) => {
-  return SLEEP_APNEA_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getPTSDRatingCriteria = (percent) => {
-  return PTSD_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getMajorDepressionRatingCriteria = (percent) => {
-  return MAJOR_DEPRESSION_CRITERIA.ratings.find(r => r.percent === percent) ||
-      null;
-};
-export const getGeneralizedAnxietyRatingCriteria = (percent) => {
-  return GENERALIZED_ANXIETY_CRITERIA.ratings.find(
-      r => r.percent === percent) || null;
-};
-export const getPanicDisorderRatingCriteria = (percent) => {
-  return PANIC_DISORDER_CRITERIA.ratings.find(r => r.percent === percent) ||
-      null;
-};
-export const getBipolarRatingCriteria = (percent) => {
-  return BIPOLAR_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getLumbosacralStrainRatingCriteria = (percent) => {
-  return LUMBOSACRAL_STRAIN_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
+export const getMigraineRatingCriteria = (percent) => MIGRAINE_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getSleepApneaRatingCriteria = (percent) => SLEEP_APNEA_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getPTSDRatingCriteria = (percent) => PTSD_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getMajorDepressionRatingCriteria = (percent) => MAJOR_DEPRESSION_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getGeneralizedAnxietyRatingCriteria = (percent) => GENERALIZED_ANXIETY_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getPanicDisorderRatingCriteria = (percent) => PANIC_DISORDER_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getBipolarRatingCriteria = (percent) => BIPOLAR_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getLumbosacralStrainRatingCriteria = (percent) => LUMBOSACRAL_STRAIN_CRITERIA.ratings.find(r => r.percent === percent) || null;
 export const getIntervertebralDiscRatingCriteria = (percent) => {
   const incapEpisodes = INTERVERTEBRAL_DISC_CRITERIA.ratingsIncapacitatingEpisodes.find(r => r.percent === percent);
   if (incapEpisodes) return incapEpisodes;
   return INTERVERTEBRAL_DISC_CRITERIA.ratingsGeneralFormula.find(r => r.percent === percent) || null;
 };
-export const getKneeInstabilityRatingCriteria = (percent) => {
-  return KNEE_INSTABILITY_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getAnkleAchillesRatingCriteria = (percent) => {
-  return ANKLE_ACHILLES_CRITERIA.ratings.find(r => r.percent === percent) || null;
-}
-export const getHipThighRatingCriteria = (percent) => {
-  return HIP_THIGH_CRITERIA.ratings.find(r => r.percent === percent) || null;
-}
-export const getTBIRatingCriteria = (percent) => {
-  return TBI_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getHypertensionRatingCriteria = (percent) => {
-  return HYPERTENSION_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getTinnitusRatingCriteria = (percent) => {
-  return TINNITUS_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getFibromyalgiaRatingCriteria = (percent) => {
-  return FIBROMYALGIA_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getSocialAnxietyRatingCriteria = (percent) => {
-    return SOCIAL_ANXIETY_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getOCDRatingCriteria = (percent) => {
-    return OCD_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getPersistentDepressiveRatingCriteria = (percent) => {
-    return PERSISTENT_DEPRESSIVE_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getAdjustmentDisorderRatingCriteria = (percent) => {
-    return ADJUSTMENT_DISORDER_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getUnspecifiedAnxietyRatingCriteria = (percent) => {
-    return UNSPECIFIED_ANXIETY_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getUnspecifiedDepressiveRatingCriteria = (percent) => {
-    return UNSPECIFIED_DEPRESSIVE_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getKidneyStonesRatingCriteria = (percent) => {
-  return KIDNEY_STONES_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getChronicRenalDiseaseRatingCriteria = (percent) => {
-  return CHRONIC_RENAL_DISEASE_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getVoidingDysfunctionIncontinenceRating = (percent) => {
-  return VOIDING_DYSFUNCTION_CRITERIA.ratingsIncontinence.find(r => r.percent === percent) || null;
-};
-export const getVoidingDysfunctionFrequencyRating = (percent) => {
-  return VOIDING_DYSFUNCTION_CRITERIA.ratingsFrequency.find(r => r.percent === percent) || null;
-};
-export const getVoidingDysfunctionObstructionRating = (percent) => {
-  return VOIDING_DYSFUNCTION_CRITERIA.ratingsObstruction.find(r => r.percent === percent) || null;
-};
-export const getSphincterImpairmentRatingCriteria = (percent) => {
-  return SPHINCTER_IMPAIRMENT_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getErectileDysfunctionRatingCriteria = (percent) => {
-  return ERECTILE_DYSFUNCTION_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
+export const getKneeInstabilityRatingCriteria = (percent) => KNEE_INSTABILITY_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getAnkleAchillesRatingCriteria = (percent) => ANKLE_ACHILLES_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getHipThighRatingCriteria = (percent) => HIP_THIGH_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getTBIRatingCriteria = (percent) => TBI_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getHypertensionRatingCriteria = (percent) => HYPERTENSION_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getTinnitusRatingCriteria = (percent) => TINNITUS_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getFibromyalgiaRatingCriteria = (percent) => FIBROMYALGIA_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getSocialAnxietyRatingCriteria = (percent) => SOCIAL_ANXIETY_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getOCDRatingCriteria = (percent) => OCD_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getPersistentDepressiveRatingCriteria = (percent) => PERSISTENT_DEPRESSIVE_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getAdjustmentDisorderRatingCriteria = (percent) => ADJUSTMENT_DISORDER_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getUnspecifiedAnxietyRatingCriteria = (percent) => UNSPECIFIED_ANXIETY_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getUnspecifiedDepressiveRatingCriteria = (percent) => UNSPECIFIED_DEPRESSIVE_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getKidneyStonesRatingCriteria = (percent) => KIDNEY_STONES_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getChronicRenalDiseaseRatingCriteria = (percent) => CHRONIC_RENAL_DISEASE_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getVoidingDysfunctionIncontinenceRating = (percent) => VOIDING_DYSFUNCTION_CRITERIA.ratingsIncontinence.find(r => r.percent === percent) || null;
+export const getVoidingDysfunctionFrequencyRating = (percent) => VOIDING_DYSFUNCTION_CRITERIA.ratingsFrequency.find(r => r.percent === percent) || null;
+export const getVoidingDysfunctionObstructionRating = (percent) => VOIDING_DYSFUNCTION_CRITERIA.ratingsObstruction.find(r => r.percent === percent) || null;
+export const getSphincterImpairmentRatingCriteria = (percent) => SPHINCTER_IMPAIRMENT_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getErectileDysfunctionRatingCriteria = (percent) => ERECTILE_DYSFUNCTION_CRITERIA.ratings.find(r => r.percent === percent) || null;
 // Phase 4: Gynecological Helper Functions
-export const getEndometriosisRatingCriteria = (percent) => {
-  return ENDOMETRIOSIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getFemaleReproductiveOrgansRatingCriteria = (percent) => {
-  return FEMALE_REPRODUCTIVE_ORGANS_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getPelvicProlapseRatingCriteria = (percent) => {
-  return PELVIC_PROLAPSE_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getFemaleArousalDisorderRatingCriteria = (percent) => {
-  return FEMALE_SEXUAL_AROUSAL_DISORDER_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
+export const getEndometriosisRatingCriteria = (percent) => ENDOMETRIOSIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getFemaleReproductiveOrgansRatingCriteria = (percent) => FEMALE_REPRODUCTIVE_ORGANS_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getPelvicProlapseRatingCriteria = (percent) => PELVIC_PROLAPSE_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getFemaleArousalDisorderRatingCriteria = (percent) => FEMALE_SEXUAL_AROUSAL_DISORDER_CRITERIA.ratings.find(r => r.percent === percent) || null;
 // Phase 5: Hemic/Lymphatic Helper Functions
-export const getIronDeficiencyAnemiaRatingCriteria = (percent) => {
-  return IRON_DEFICIENCY_ANEMIA_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getFolateDeficiencyAnemiaRatingCriteria = (percent) => {
-  return FOLATE_DEFICIENCY_ANEMIA_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getPerniciousAnemiaRatingCriteria = (percent) => {
-  return PERNICIOUS_ANEMIA_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getHemolyticAnemiaRatingCriteria = (percent) => {
-  return HEMOLYTIC_ANEMIA_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getSickleCellAnemiaRatingCriteria = (percent) => {
-  return SICKLE_CELL_ANEMIA_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getAplasticAnemiaRatingCriteria = (percent) => {
-  return APLASTIC_ANEMIA_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getPolycythemiaVeraRatingCriteria = (percent) => {
-  return POLYCYTHEMIA_VERA_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getImmuneThrombocytopeniaRatingCriteria = (percent) => {
-  return IMMUNE_THROMBOCYTOPENIA_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getLeukemiaRatingCriteria = (percent) => {
-  return LEUKEMIA_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getHodgkinsLymphomaRatingCriteria = (percent) => {
-  return HODGKINS_LYMPHOMA_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getMultipleMyelomaRatingCriteria = (percent) => {
-  return MULTIPLE_MYELOMA_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getNonHodgkinsLymphomaRatingCriteria = (percent) => {
-  return NON_HODGKINS_LYMPHOMA_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getMyeloproliferative7718RatingCriteria = (percent) => {
-  return MYELOPROLIFERATIVE_7718_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getChronicMyelogenousLeukemiaRatingCriteria = (percent) => {
-  return CHRONIC_MYELOGENOUS_LEUKEMIA_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getSolitaryPlasmacytomaRatingCriteria = (percent) => {
-  return SOLITARY_PLASMACYTOMA_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getMyelodysplasticSyndromesRatingCriteria = (percent) => {
-  return MYELODYSPLASTIC_SYNDROMES_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
+export const getIronDeficiencyAnemiaRatingCriteria = (percent) => IRON_DEFICIENCY_ANEMIA_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getFolateDeficiencyAnemiaRatingCriteria = (percent) => FOLATE_DEFICIENCY_ANEMIA_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getPerniciousAnemiaRatingCriteria = (percent) => PERNICIOUS_ANEMIA_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getHemolyticAnemiaRatingCriteria = (percent) => HEMOLYTIC_ANEMIA_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getSickleCellAnemiaRatingCriteria = (percent) => SICKLE_CELL_ANEMIA_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getAplasticAnemiaRatingCriteria = (percent) => APLASTIC_ANEMIA_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getPolycythemiaVeraRatingCriteria = (percent) => POLYCYTHEMIA_VERA_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getImmuneThrombocytopeniaRatingCriteria = (percent) => IMMUNE_THROMBOCYTOPENIA_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getLeukemiaRatingCriteria = (percent) => LEUKEMIA_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getHodgkinsLymphomaRatingCriteria = (percent) => HODGKINS_LYMPHOMA_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getMultipleMyelomaRatingCriteria = (percent) => MULTIPLE_MYELOMA_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getNonHodgkinsLymphomaRatingCriteria = (percent) => NON_HODGKINS_LYMPHOMA_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getMyeloproliferative7718RatingCriteria = (percent) => MYELOPROLIFERATIVE_7718_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getChronicMyelogenousLeukemiaRatingCriteria = (percent) => CHRONIC_MYELOGENOUS_LEUKEMIA_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getSolitaryPlasmacytomaRatingCriteria = (percent) => SOLITARY_PLASMACYTOMA_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getMyelodysplasticSyndromesRatingCriteria = (percent) => MYELODYSPLASTIC_SYNDROMES_CRITERIA.ratings.find(r => r.percent === percent) || null;
 // Phase 7: Dental/Oral Helper Functions
-export const getTMJDisorderRatingCriteria = (percent) => {
-  return TMJ_DISORDER_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getToothLossRatingCriteria = (percent) => {
-  return TOOTH_LOSS_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getMandibleNonunionRatingCriteria = (percent) => {
-  return MANDIBLE_NONUNION_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getMalignantOralNeoplasmRatingCriteria = (percent) => {
-  return MALIGNANT_ORAL_NEOPLASM_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getBenignOralNeoplasmRatingCriteria = (percent) => {
-  return BENIGN_ORAL_NEOPLASM_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getHIVAIDSRatingCriteria = (percent) => {
-  return HIV_AIDS_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getHepatitisCRatingCriteria = (percent) => {
-  return HEPATITIS_C_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getHepatitisBRatingCriteria = (percent) => {
-  return HEPATITIS_B_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getLymeDiseaseRatingCriteria = (percent) => {
-  return LYME_DISEASE_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getMalariaRatingCriteria = (percent) => {
-  return MALARIA_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getBrucellosisRatingCriteria = (percent) => {
-  return BRUCELLOSIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getCampylobacterRatingCriteria = (percent) => {
-  return CAMPYLOBACTER_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getQFeverRatingCriteria = (percent) => {
-  return Q_FEVER_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getSalmonellaRatingCriteria = (percent) => {
-  return SALMONELLA_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getShigellaRatingCriteria = (percent) => {
-  return SHIGELLA_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getWestNileRatingCriteria = (percent) => {
-  return WEST_NILE_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getNTMRatingCriteria = (percent) => {
-  return NTM_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
+export const getTMJDisorderRatingCriteria = (percent) => TMJ_DISORDER_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getToothLossRatingCriteria = (percent) => TOOTH_LOSS_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getMandibleNonunionRatingCriteria = (percent) => MANDIBLE_NONUNION_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getMalignantOralNeoplasmRatingCriteria = (percent) => MALIGNANT_ORAL_NEOPLASM_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getBenignOralNeoplasmRatingCriteria = (percent) => BENIGN_ORAL_NEOPLASM_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getHIVAIDSRatingCriteria = (percent) => HIV_AIDS_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getHepatitisCRatingCriteria = (percent) => HEPATITIS_C_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getHepatitisBRatingCriteria = (percent) => HEPATITIS_B_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getLymeDiseaseRatingCriteria = (percent) => LYME_DISEASE_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getMalariaRatingCriteria = (percent) => MALARIA_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getBrucellosisRatingCriteria = (percent) => BRUCELLOSIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getCampylobacterRatingCriteria = (percent) => CAMPYLOBACTER_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getQFeverRatingCriteria = (percent) => Q_FEVER_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getSalmonellaRatingCriteria = (percent) => SALMONELLA_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getShigellaRatingCriteria = (percent) => SHIGELLA_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getWestNileRatingCriteria = (percent) => WEST_NILE_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getNTMRatingCriteria = (percent) => NTM_CRITERIA.ratings.find(r => r.percent === percent) || null;
 // Phase 8B: Additional Mental Health getRatingCriteria helpers
-export const getSchizophreniaRatingCriteria = (percent) => {
-  return SCHIZOPHRENIA_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getSchizoaffectiveDisorderRatingCriteria = (percent) => {
-  return SCHIZOAFFECTIVE_DISORDER_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getDelusionalDisorderRatingCriteria = (percent) => {
-  return DELUSIONAL_DISORDER_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getPsychoticDisorderNOSRatingCriteria = (percent) => {
-  return PSYCHOTIC_DISORDER_NOS_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getBriefPsychoticDisorderRatingCriteria = (percent) => {
-  return BRIEF_PSYCHOTIC_DISORDER_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getBingeEatingDisorderRatingCriteria = (percent) => {
-  return BINGE_EATING_DISORDER_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getDissociativeIdentityDisorderRatingCriteria = (percent) => {
-  return DISSOCIATIVE_IDENTITY_DISORDER_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getDissociativeAmnesiaRatingCriteria = (percent) => {
-  return DISSOCIATIVE_AMNESIA_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getAcuteStressDisorderRatingCriteria = (percent) => {
-  return ACUTE_STRESS_DISORDER_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getAntisocialPersonalityDisorderRatingCriteria = (percent) => {
-  return ANTISOCIAL_PERSONALITY_DISORDER_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getBorderlinePersonalityDisorderRatingCriteria = (percent) => {
-  return BORDERLINE_PERSONALITY_DISORDER_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getNarcissisticPersonalityDisorderRatingCriteria = (percent) => {
-  return NARCISSISTIC_PERSONALITY_DISORDER_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getAvoidantPersonalityDisorderRatingCriteria = (percent) => {
-  return AVOIDANT_PERSONALITY_DISORDER_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
+export const getSchizophreniaRatingCriteria = (percent) => SCHIZOPHRENIA_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getSchizoaffectiveDisorderRatingCriteria = (percent) => SCHIZOAFFECTIVE_DISORDER_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getDelusionalDisorderRatingCriteria = (percent) => DELUSIONAL_DISORDER_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getPsychoticDisorderNOSRatingCriteria = (percent) => PSYCHOTIC_DISORDER_NOS_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getBriefPsychoticDisorderRatingCriteria = (percent) => BRIEF_PSYCHOTIC_DISORDER_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getBingeEatingDisorderRatingCriteria = (percent) => BINGE_EATING_DISORDER_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getDissociativeIdentityDisorderRatingCriteria = (percent) => DISSOCIATIVE_IDENTITY_DISORDER_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getDissociativeAmnesiaRatingCriteria = (percent) => DISSOCIATIVE_AMNESIA_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getAcuteStressDisorderRatingCriteria = (percent) => ACUTE_STRESS_DISORDER_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getAntisocialPersonalityDisorderRatingCriteria = (percent) => ANTISOCIAL_PERSONALITY_DISORDER_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getBorderlinePersonalityDisorderRatingCriteria = (percent) => BORDERLINE_PERSONALITY_DISORDER_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getNarcissisticPersonalityDisorderRatingCriteria = (percent) => NARCISSISTIC_PERSONALITY_DISORDER_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getAvoidantPersonalityDisorderRatingCriteria = (percent) => AVOIDANT_PERSONALITY_DISORDER_CRITERIA.ratings.find(r => r.percent === percent) || null;
 // Phase 9: Cardiovascular getRatingCriteria functions
-export const getCardiomyopathyRatingCriteria = (percent) => {
-  return CARDIOMYOPATHY_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getSVTRatingCriteria = (percent) => {
-  return SVT_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getVentricularArrhythmiaRatingCriteria = (percent) => {
-  return VENTRICULAR_ARRHYTHMIA_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getPericarditisRatingCriteria = (percent) => {
-  return PERICARDITIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getPostPhlebiticRatingCriteria = (percent) => {
-  return POST_PHLEBITIC_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
+export const getCardiomyopathyRatingCriteria = (percent) => CARDIOMYOPATHY_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getSVTRatingCriteria = (percent) => SVT_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getVentricularArrhythmiaRatingCriteria = (percent) => VENTRICULAR_ARRHYTHMIA_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getPericarditisRatingCriteria = (percent) => PERICARDITIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getPostPhlebiticRatingCriteria = (percent) => POST_PHLEBITIC_CRITERIA.ratings.find(r => r.percent === percent) || null;
 // Phase 2B: Vascular getRatingCriteria functions
-export const getColdInjuryRatingCriteria = (percent) => {
-  return COLD_INJURY_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getPADRatingCriteria = (percent) => {
-  return PAD_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getHyperthyroidismRatingCriteria = (percent) => {
-  return HYPERTHYROIDISM_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getThyroiditisRatingCriteria = (percent) => {
-  return THYROIDITIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getHyperparathyroidismRatingCriteria = (percent) => {
-  return HYPERPARATHYROIDISM_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getHypoparathyroidismRatingCriteria = (percent) => {
-  return HYPOPARATHYROIDISM_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
+export const getColdInjuryRatingCriteria = (percent) => COLD_INJURY_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getPADRatingCriteria = (percent) => PAD_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getHyperthyroidismRatingCriteria = (percent) => HYPERTHYROIDISM_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getThyroiditisRatingCriteria = (percent) => THYROIDITIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getHyperparathyroidismRatingCriteria = (percent) => HYPERPARATHYROIDISM_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getHypoparathyroidismRatingCriteria = (percent) => HYPOPARATHYROIDISM_CRITERIA.ratings.find(r => r.percent === percent) || null;
 // Phase 3B: Adrenal & Pituitary Helper Functions
-export const getAddisonsDiseaseRatingCriteria = (percent) => {
-  return ADDISONS_DISEASE_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getCushingsSyndromeRatingCriteria = (percent) => {
-  return CUSHINGS_SYNDROME_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getDiabetesInsipidusRatingCriteria = (percent) => {
-  return DIABETES_INSIPIDUS_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getHyperaldosteronismRatingCriteria = (percent) => {
-  return HYPERALDOSTERONISM_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
+export const getAddisonsDiseaseRatingCriteria = (percent) => ADDISONS_DISEASE_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getCushingsSyndromeRatingCriteria = (percent) => CUSHINGS_SYNDROME_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getDiabetesInsipidusRatingCriteria = (percent) => DIABETES_INSIPIDUS_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getHyperaldosteronismRatingCriteria = (percent) => HYPERALDOSTERONISM_CRITERIA.ratings.find(r => r.percent === percent) || null;
 // Phase 10: Digestive getRatingCriteria functions
-export const getCirrhosisRatingCriteria = (percent) => {
-  return CIRRHOSIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getGastritisRatingCriteria = (percent) => {
-  return GASTRITIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getPancreatitisRatingCriteria = (percent) => {
-  return PANCREATITIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getBiliaryTractRatingCriteria = (percent) => {
-  return BILIARY_TRACT_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
+export const getCirrhosisRatingCriteria = (percent) => CIRRHOSIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getGastritisRatingCriteria = (percent) => GASTRITIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getPancreatitisRatingCriteria = (percent) => PANCREATITIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getBiliaryTractRatingCriteria = (percent) => BILIARY_TRACT_CRITERIA.ratings.find(r => r.percent === percent) || null;
 // Phase 11: Respiratory getRatingCriteria functions
-export const getBronchiectasisRatingCriteria = (percent) => {
-  return BRONCHIECTASIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getPulmonaryFibrosisRatingCriteria = (percent) => {
-  return PULMONARY_FIBROSIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getSarcoidosisRatingCriteria = (percent) => {
-  return SARCOIDOSIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getMultipleSclerosisRatingCriteria = (percent) => {
-  return MULTIPLE_SCLEROSIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
-}
-export const getParkinsonsRatingCriteria = (percent) => {
-  return PARKINSONS_DISEASE_CRITERIA.ratings.find(r => r.percent === percent) || null;
-}
-export const getMyastheniaGravisRatingCriteria = (percent) => {
-  return MYASTHENIA_GRAVIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
-}
+export const getBronchiectasisRatingCriteria = (percent) => BRONCHIECTASIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getPulmonaryFibrosisRatingCriteria = (percent) => PULMONARY_FIBROSIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getSarcoidosisRatingCriteria = (percent) => SARCOIDOSIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getMultipleSclerosisRatingCriteria = (percent) => MULTIPLE_SCLEROSIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getParkinsonsRatingCriteria = (percent) => PARKINSONS_DISEASE_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getMyastheniaGravisRatingCriteria = (percent) => MYASTHENIA_GRAVIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
 // Narcolepsy helpers
-export const getNarcolepsyRatingCriteria = (percent) => {
-  return NARCOLEPSY_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
+export const getNarcolepsyRatingCriteria = (percent) => NARCOLEPSY_CRITERIA.ratings.find(r => r.percent === percent) || null;
 // ALS helpers
-export const getALSRatingCriteria = (percent) => {
-  return ALS_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
+export const getALSRatingCriteria = (percent) => ALS_CRITERIA.ratings.find(r => r.percent === percent) || null;
 // Syringomyelia helpers
-export const getSyringomyeliaRatingCriteria = (percent) => {
-  return SYRINGOMYELIA_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
+export const getSyringomyeliaRatingCriteria = (percent) => SYRINGOMYELIA_CRITERIA.ratings.find(r => r.percent === percent) || null;
 // Myelitis helpers
-export const getMyelitisRatingCriteria = (percent) => {
-  return MYELITIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
+export const getMyelitisRatingCriteria = (percent) => MYELITIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
 // PHASE 1C: PERIPHERAL NERVE getRatingCriteria HELPERS
 // Upper Extremity Nerves
-export const getUpperRadicularGroupRatingCriteria = (percent) => {
-  return UPPER_RADICULAR_GROUP_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getMiddleRadicularGroupRatingCriteria = (percent) => {
-  return MIDDLE_RADICULAR_GROUP_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getLowerRadicularGroupRatingCriteria = (percent) => {
-  return LOWER_RADICULAR_GROUP_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getAllRadicularGroupsRatingCriteria = (percent) => {
-  return ALL_RADICULAR_GROUPS_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getRadialNerveRatingCriteria = (percent) => {
-  return RADIAL_NERVE_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getMedianNerveRatingCriteria = (percent) => {
-  return MEDIAN_NERVE_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getUlnarNerveRatingCriteria = (percent) => {
-  return ULNAR_NERVE_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getMusculocutaneousNerveRatingCriteria = (percent) => {
-  return MUSCULOCUTANEOUS_NERVE_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getCircumflexNerveRatingCriteria = (percent) => {
-  return CIRCUMFLEX_NERVE_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getLongThoracicNerveRatingCriteria = (percent) => {
-  return LONG_THORACIC_NERVE_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
+export const getUpperRadicularGroupRatingCriteria = (percent) => UPPER_RADICULAR_GROUP_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getMiddleRadicularGroupRatingCriteria = (percent) => MIDDLE_RADICULAR_GROUP_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getLowerRadicularGroupRatingCriteria = (percent) => LOWER_RADICULAR_GROUP_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getAllRadicularGroupsRatingCriteria = (percent) => ALL_RADICULAR_GROUPS_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getRadialNerveRatingCriteria = (percent) => RADIAL_NERVE_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getMedianNerveRatingCriteria = (percent) => MEDIAN_NERVE_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getUlnarNerveRatingCriteria = (percent) => ULNAR_NERVE_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getMusculocutaneousNerveRatingCriteria = (percent) => MUSCULOCUTANEOUS_NERVE_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getCircumflexNerveRatingCriteria = (percent) => CIRCUMFLEX_NERVE_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getLongThoracicNerveRatingCriteria = (percent) => LONG_THORACIC_NERVE_CRITERIA.ratings.find(r => r.percent === percent) || null;
 // Lower Extremity Nerves
-export const getSciaticNerveRatingCriteria = (percent) => {
-  return SCIATIC_NERVE_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getCommonPeronealNerveRatingCriteria = (percent) => {
-  return COMMON_PERONEAL_NERVE_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getSuperficialPeronealNerveRatingCriteria = (percent) => {
-  return SUPERFICIAL_PERONEAL_NERVE_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getDeepPeronealNerveRatingCriteria = (percent) => {
-  return DEEP_PERONEAL_NERVE_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getTibialNerveRatingCriteria = (percent) => {
-  return TIBIAL_NERVE_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getPosteriorTibialNerveRatingCriteria = (percent) => {
-  return POSTERIOR_TIBIAL_NERVE_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getFemoralNerveRatingCriteria = (percent) => {
-  return FEMORAL_NERVE_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getSaphenousNerveRatingCriteria = (percent) => {
-  return SAPHENOUS_NERVE_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getObturatorNerveRatingCriteria = (percent) => {
-  return OBTURATOR_NERVE_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getLateralFemoralCutaneousNerveRatingCriteria = (percent) => {
-  return LATERAL_FEMORAL_CUTANEOUS_NERVE_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getIlioinguinalNerveRatingCriteria = (percent) => {
-  return ILIOINGUINAL_NERVE_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getJacksonianEpilepsyRatingCriteria = (percent) => {
-  return  EPILEPSY_JACKSONIAN_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getDiencephalicEpilepsyRatingCriteria = (percent) => {
-  return  EPILEPSY_DIENCEPHALIC_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getPsychomotorEpilepsyRatingCriteria = (percent) => {
-  return  EPILEPSY_PSYCHOMOTOR_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getGoutRatingCriteria = (percent) => {
-  return GOUT_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getBursitisRatingCriteria = (percent) => {
-  return BURSITIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getTendinitisRatingCriteria = (percent) => {
-  return TENDINITIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getMyositisRatingCriteria = (percent) => {
-  return MYOSITIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getOsteomyelitisRatingCriteria = (percent) => {
-  return OSTEOMYELITIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getMultiJointArthritisRatingCriteria = (percent) => {
-  return MULTI_JOINT_ARTHRITIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
+export const getSciaticNerveRatingCriteria = (percent) => SCIATIC_NERVE_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getCommonPeronealNerveRatingCriteria = (percent) => COMMON_PERONEAL_NERVE_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getSuperficialPeronealNerveRatingCriteria = (percent) => SUPERFICIAL_PERONEAL_NERVE_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getDeepPeronealNerveRatingCriteria = (percent) => DEEP_PERONEAL_NERVE_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getTibialNerveRatingCriteria = (percent) => TIBIAL_NERVE_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getPosteriorTibialNerveRatingCriteria = (percent) => POSTERIOR_TIBIAL_NERVE_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getFemoralNerveRatingCriteria = (percent) => FEMORAL_NERVE_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getSaphenousNerveRatingCriteria = (percent) => SAPHENOUS_NERVE_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getObturatorNerveRatingCriteria = (percent) => OBTURATOR_NERVE_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getLateralFemoralCutaneousNerveRatingCriteria = (percent) => LATERAL_FEMORAL_CUTANEOUS_NERVE_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getIlioinguinalNerveRatingCriteria = (percent) => ILIOINGUINAL_NERVE_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getJacksonianEpilepsyRatingCriteria = (percent) => EPILEPSY_JACKSONIAN_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getDiencephalicEpilepsyRatingCriteria = (percent) => EPILEPSY_DIENCEPHALIC_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getPsychomotorEpilepsyRatingCriteria = (percent) => EPILEPSY_PSYCHOMOTOR_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getGoutRatingCriteria = (percent) => GOUT_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getBursitisRatingCriteria = (percent) => BURSITIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getTendinitisRatingCriteria = (percent) => TENDINITIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getMyositisRatingCriteria = (percent) => MYOSITIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getOsteomyelitisRatingCriteria = (percent) => OSTEOMYELITIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getMultiJointArthritisRatingCriteria = (percent) => MULTI_JOINT_ARTHRITIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
 // Phase 4C: Spine Expansion getRatingCriteria functions
-export const getVertebralFractureRatingCriteria = (percent) => {
-  return VERTEBRAL_FRACTURE_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getSacroiliacInjuryRatingCriteria = (percent) => {
-  return SACROILIAC_INJURY_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getSpinalStenosisRatingCriteria = (percent) => {
-  return SPINAL_STENOSIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getAnkylosingSpondylitisRatingCriteria = (percent) => {
-  return ANKYLOSING_SPONDYLITIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getSpinalFusionRatingCriteria = (percent) => {
-  return SPINAL_FUSION_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getWeakFootRatingCriteria = (percent) => {
-  return WEAK_FOOT_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getClawFootRatingCriteria = (percent) => {
-  return CLAW_FOOT_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getMetatarsalgiaRatingCriteria = (percent) => {
-  return METATARSALGIA_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getHalluxValgusRatingCriteria = (percent) => {
-  return HALLUX_VALGUS_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getHalluxRigidusRatingCriteria = (percent) => {
-  return HALLUX_RIGIDUS_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
+export const getVertebralFractureRatingCriteria = (percent) => VERTEBRAL_FRACTURE_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getSacroiliacInjuryRatingCriteria = (percent) => SACROILIAC_INJURY_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getSpinalStenosisRatingCriteria = (percent) => SPINAL_STENOSIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getAnkylosingSpondylitisRatingCriteria = (percent) => ANKYLOSING_SPONDYLITIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getSpinalFusionRatingCriteria = (percent) => SPINAL_FUSION_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getWeakFootRatingCriteria = (percent) => WEAK_FOOT_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getClawFootRatingCriteria = (percent) => CLAW_FOOT_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getMetatarsalgiaRatingCriteria = (percent) => METATARSALGIA_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getHalluxValgusRatingCriteria = (percent) => HALLUX_VALGUS_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getHalluxRigidusRatingCriteria = (percent) => HALLUX_RIGIDUS_CRITERIA.ratings.find(r => r.percent === percent) || null;
 // Phase 5A: Hernia & Structural getRatingCriteria functions
-export const getHerniaRatingCriteria = (percent) => {
-  return HERNIA_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getPeritonealAdhesionsRatingCriteria = (percent) => {
-  return PERITONEAL_ADHESIONS_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
+export const getHerniaRatingCriteria = (percent) => HERNIA_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getPeritonealAdhesionsRatingCriteria = (percent) => PERITONEAL_ADHESIONS_CRITERIA.ratings.find(r => r.percent === percent) || null;
 // Phase 5B: Esophageal & Post-Surgical getRatingCriteria functions
-export const getEsophagealStrictureRatingCriteria = (percent) => {
-  return ESOPHAGEAL_STRICTURE_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getPostgastrectomyRatingCriteria = (percent) => {
-  return POSTGASTRECTOMY_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getIntestinalFistulaRatingCriteria = (percent) => {
-  return INTESTINAL_FISTULA_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getAcneRating = (percent) => {
-  return ACNE_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getChloracneRating = (percent) => {
-  return CHLORACNE_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getAlopeciaAreataRating = (percent) => {
-  return ALOPECIA_AREATA_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getHyperhidrosisRating = (percent) => {
-  return HYPERHIDROSIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getDiscoidLupusRating = (percent) => {
-  return DISCOID_LUPUS_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getBullousDisordersRating = (percent) => {
-  return BULLOUS_DISORDERS_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getCutaneousVasculitisRating = (percent) => {
-  return CUTANEOUS_VASCULITIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getDermatophytosisRating = (percent) => {
-  return DERMATOPHYTOSIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getSkinInfectionsRating = (percent) => {
-  return SKIN_INFECTIONS_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getGeneralEyeFormulaRating = (percent) => {
-  return GENERAL_EYE_FORMULA_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getUveitisRating = (percent) => {
-  return UVEITIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getKeratitisRating = (percent) => {
-  return KERATITIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getChronicConjunctivitisRating = (percent) => {
-  return CHRONIC_CONJUNCTIVITIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getScleritisRating = (percent) => {
-  return SCLERITIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
+export const getEsophagealStrictureRatingCriteria = (percent) => ESOPHAGEAL_STRICTURE_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getPostgastrectomyRatingCriteria = (percent) => POSTGASTRECTOMY_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getIntestinalFistulaRatingCriteria = (percent) => INTESTINAL_FISTULA_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getAcneRating = (percent) => ACNE_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getChloracneRating = (percent) => CHLORACNE_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getAlopeciaAreataRating = (percent) => ALOPECIA_AREATA_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getHyperhidrosisRating = (percent) => HYPERHIDROSIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getDiscoidLupusRating = (percent) => DISCOID_LUPUS_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getBullousDisordersRating = (percent) => BULLOUS_DISORDERS_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getCutaneousVasculitisRating = (percent) => CUTANEOUS_VASCULITIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getDermatophytosisRating = (percent) => DERMATOPHYTOSIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getSkinInfectionsRating = (percent) => SKIN_INFECTIONS_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getGeneralEyeFormulaRating = (percent) => GENERAL_EYE_FORMULA_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getUveitisRating = (percent) => UVEITIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getKeratitisRating = (percent) => KERATITIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getChronicConjunctivitisRating = (percent) => CHRONIC_CONJUNCTIVITIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getScleritisRating = (percent) => SCLERITIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
 // Phase 7B: Ear Conditions
-export const getPeripheralVestibularRating = (percent) => {
-  return PERIPHERAL_VESTIBULAR_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getChronicSuppurativeOtitisMediaRating = (percent) => {
-  return CHRONIC_SUPPURATIVE_OTITIS_MEDIA_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getChronicOtitisExternaRating = (percent) => {
-  return CHRONIC_OTITIS_EXTERNA_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-export const getChronicNonsuppurativeOtitisMediaRating = (percent) => {
-  return CHRONIC_NONSUPPURATIVE_OTITIS_MEDIA_CRITERIA.ratings.find(r => r.percent === percent) || null;
-};
-
+export const getPeripheralVestibularRating = (percent) => PERIPHERAL_VESTIBULAR_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getChronicSuppurativeOtitisMediaRating = (percent) => CHRONIC_SUPPURATIVE_OTITIS_MEDIA_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getChronicOtitisExternaRating = (percent) => CHRONIC_OTITIS_EXTERNA_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getChronicNonsuppurativeOtitisMediaRating = (percent) => CHRONIC_NONSUPPURATIVE_OTITIS_MEDIA_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getLossOfSmellRating = (percent) => LOSS_OF_SMELL_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getLossOfTasteRating = (percent) => LOSS_OF_TASTE_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getSystemicLupusRating = (percent) => SYSTEMIC_LUPUS_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getTuberculosisActiveRating = (percent) => TUBERCULOSIS_ACTIVE_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getTuberculosisInactiveRating = (percent) => TUBERCULOSIS_INACTIVE_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getTuberculosisMilitaryRating = (percent) => TUBERCULOSIS_MILIARY_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getSphincterControlRating = (percent) => SPHINCTER_CONTROL_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getRectalStrictureRating = (percent) => RECTAL_STRICTURE_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getRectalProlapseRating = (percent) => RECTAL_PROLAPSE_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getAnalFistulaRating = (percent) => ANAL_FISTULA_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getHemorrhoidsRating = (percent) => HEMORRHOIDS_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getPruritusAniRating = (percent) => PRURITUS_ANI_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getAvitaminosisRating = (percent) => AVITAMINOSIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getBeriberiRating = (percent) => BERIBERI_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getPellagraRating = (percent) => PELLAGRA_CRITERIA.ratings.find(r => r.percent === percent) || null;
 
 
 
@@ -45320,6 +50042,21 @@ export const getAllPeripheralVestibularRatings = () => PERIPHERAL_VESTIBULAR_CRI
 export const getAllChronicSuppurativeOtitisMediaRatings = () => CHRONIC_SUPPURATIVE_OTITIS_MEDIA_CRITERIA.ratings;
 export const getAllChronicOtitisExternaRatings = () => CHRONIC_OTITIS_EXTERNA_CRITERIA.ratings;
 export const getAllChronicNonsuppurativeOtitisMediaRatings = () => CHRONIC_NONSUPPURATIVE_OTITIS_MEDIA_CRITERIA.ratings;
+export const getAllLossOfSmellRatings = () => LOSS_OF_SMELL_CRITERIA.ratings;
+export const getAllLossOfTasteRatings = () => LOSS_OF_TASTE_CRITERIA.ratings;
+export const getAllSystemicLupusRatings = () => SYSTEMIC_LUPUS_CRITERIA.ratings;
+export const getAllTuberculosisActiveRatings = () => TUBERCULOSIS_ACTIVE_CRITERIA.ratings;
+export const getAllTuberculosisInactiveRatings = () => TUBERCULOSIS_INACTIVE_CRITERIA.ratings;
+export const getAllTuberculosisMilitaryRatings = () => TUBERCULOSIS_MILIARY_CRITERIA.ratings;
+export const getAllSphincterControlRatings = () => SPHINCTER_CONTROL_CRITERIA.ratings;
+export const getAllRectalStrictureRatings = () => RECTAL_STRICTURE_CRITERIA.ratings;
+export const getAllRectalProlapseRatings = () => RECTAL_PROLAPSE_CRITERIA.ratings;
+export const getAllAnalFistulaRatings = () => ANAL_FISTULA_CRITERIA.ratings;
+export const getAllHemorrhoidsRatings = () => HEMORRHOIDS_CRITERIA.ratings;
+export const getAllPruritusAniRatings = () => PRURITUS_ANI_CRITERIA.ratings;
+export const getAllAvitaminosisRatings = () => AVITAMINOSIS_CRITERIA.ratings;
+export const getAllBeriberiRatings = () => BERIBERI_CRITERIA.ratings;
+export const getAllPellagraRatings = () => PELLAGRA_CRITERIA.ratings;
 
 
 
@@ -45504,3 +50241,18 @@ export const getPeripheralVestibularDefinition = (term) => PERIPHERAL_VESTIBULAR
 export const getChronicSuppurativeOtitisMediaDefinition = (term) => CHRONIC_SUPPURATIVE_OTITIS_MEDIA_CRITERIA.definitions[term] || null;
 export const getChronicOtitisExternaDefinition = (term) => CHRONIC_OTITIS_EXTERNA_CRITERIA.definitions[term] || null;
 export const getChronicNonsuppurativeOtitisMediaDefinition = (term) => CHRONIC_NONSUPPURATIVE_OTITIS_MEDIA_CRITERIA.definitions[term] || null;
+export const getLossOfSmellDefinition = (term) => LOSS_OF_SMELL_CRITERIA.definitions?.[term] || null;
+export const getLossOfTasteDefinition = (term) => LOSS_OF_TASTE_CRITERIA.definitions?.[term] || null;
+export const getSystemicLupusDefinition = (term) => SYSTEMIC_LUPUS_CRITERIA.definitions?.[term] || null;
+export const getTuberculosisActiveDefinition = (term) => TUBERCULOSIS_ACTIVE_CRITERIA.definitions?.[term] || null;
+export const getTuberculosisInactiveDefinition = (term) => TUBERCULOSIS_INACTIVE_CRITERIA.definitions?.[term] || null;
+export const getTuberculosisMilitaryDefinition = (term) => TUBERCULOSIS_MILIARY_CRITERIA.definitions?.[term] || null;
+export const getSphincterControlDefinition = (term) => SPHINCTER_CONTROL_CRITERIA.definitions?.[term] || null;
+export const getRectalStrictureDefinition = (term) => RECTAL_STRICTURE_CRITERIA.definitions?.[term] || null;
+export const getRectalProlapseDefinition = (term) => RECTAL_PROLAPSE_CRITERIA.definitions?.[term] || null;
+export const getAnalFistulaDefinition = (term) => ANAL_FISTULA_CRITERIA.definitions?.[term] || null;
+export const getHemorrhoidsDefinition = (term) => HEMORRHOIDS_CRITERIA.definitions?.[term] || null;
+export const getPruritusAniDefinition = (term) => PRURITUS_ANI_CRITERIA.definitions?.[term] || null;
+export const getAvitaminosisDefinition = (term) => AVITAMINOSIS_CRITERIA.definitions?.[term] || null;
+export const getBeriberiDefinition = (term) => BERIBERI_CRITERIA.definitions?.[term] || null;
+export const getPellagraDefinition = (term) => PELLAGRA_CRITERIA.definitions?.[term] || null;

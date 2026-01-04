@@ -65,6 +65,8 @@ import {
   analyzeDiencephalicEpilepsyLogs,
   analyzePsychomotorEpilepsyLogs,
   analyzeVisionLogs,
+  analyzeLossOfSmellLogs,
+  analyzeLossOfTasteLogs,
   analyzeKidneyStonesLogs,
   analyzeChronicRenalDiseaseLogs,
   analyzeVoidingDysfunctionLogs,
@@ -322,6 +324,8 @@ import ScarsRatingCard from './ScarsRatingCard.jsx';
 import TBIResidualsRatingCard from './TBIResidualsRatingCard.jsx';
 import GenericJointRatingCard from './GenericJointRatingCard';
 import EyeVisionRatingCard from './EyeVisionRatingCard';
+import LossOfSmellRatingCard from './LossOfSmellRatingCard';
+import LossOfTasteRatingCard from './LossOfTasteRatingCard';
 import KidneyStonesRatingCard from './KidneyStoneRatingCard';
 import ChronicRenalDiseaseRatingCard from './ChronicRenalDiseaseRatingCard';
 import ChronicCystitisRatingCard from './ChronicCystitisRatingCard';
@@ -426,6 +430,9 @@ import EarConditionsRatingCard from './EarConditionsRatingCard';
 import ConditionGroup from './ConditionGroup';
 import AnkleAchillesRatingCard from './AnkleAchillesRatingCard';
 import HipThighRatingCard from './HipThighRatingCard';
+import SecondaryConditionsSummary from './SecondaryConditionsSummary';
+
+
 
 // Storage key for sleep apnea profile
 const SLEEP_APNEA_PROFILE_KEY = 'symptomTracker_sleepApneaProfile';
@@ -671,6 +678,13 @@ const RatingEvidence = () => {
     }, [logs, evaluationDays]);
     const hearingLossAnalysis = useMemo(() => {
         return analyzeHearingLossLogs(logs, { evaluationPeriodDays: evaluationDays });
+    }, [logs, evaluationDays]);
+    const lossOfSmellAnalysis = useMemo(() => {
+      return analyzeLossOfSmellLogs(logs, { evaluationPeriodDays: evaluationDays });
+    }, [logs, evaluationDays]);
+
+    const lossOfTasteAnalysis = useMemo(() => {
+      return analyzeLossOfTasteLogs(logs, { evaluationPeriodDays: evaluationDays });
     }, [logs, evaluationDays]);
     // Analyze Tinnitus logs
     const tinnitusAnalysis = useMemo(() => {
@@ -1220,6 +1234,58 @@ const RatingEvidence = () => {
   }, [logs, evaluationDays]);
 
 
+  const activeConditions = useMemo(() => {
+    const conditions = [];
+    if (diabetesAnalysis?.hasData) conditions.push('diabetes');
+    if (ptsdAnalysis?.hasData) conditions.push('ptsd');
+    if (tinnitusAnalysis?.hasData) conditions.push('tinnitus');
+    if (sleepApneaAnalysis?.hasData) conditions.push('sleepApnea');
+    if (fibromyalgiaAnalysis?.hasData) conditions.push('fibromyalgia');
+    if (hypertensionAnalysis?.hasData) conditions.push('hypertension');
+    if (peripheralNeuropathyAnalysis?.hasData) conditions.push('peripheralNeuropathy');
+    // Add more conditions that have secondary condition mappings
+    if (migraineAnalysis?.hasData) conditions.push('migraine');
+    if (lumbosacralStrainAnalysis?.hasData) conditions.push('lumbosacralStrain');
+    if (kneeInstabilityAnalysis?.hasData) conditions.push('kneeInstability');
+    if (shoulderAnalysis?.hasData) conditions.push('shoulder');
+    if (hipAnalysis?.hasData) conditions.push('hip');
+    if (ankleAnalysis?.hasData) conditions.push('ankle');
+    if (gerdAnalysis?.hasData) conditions.push('gerd');
+    if (ibsAnalysis?.hasData) conditions.push('ibs');
+    if (asthmaAnalysis?.hasData) conditions.push('asthma');
+    if (majorDepressionAnalysis?.hasData) conditions.push('majorDepression');
+    if (generalizedAnxietyAnalysis?.hasData) conditions.push('generalizedAnxiety');
+    if (radiculopathyAnalysis?.hasData) conditions.push('radiculopathy');
+    if (multipleSclerosisAnalysis?.hasData) conditions.push('multipleSclerosis');
+    if (parkinsonsAnalysis?.hasData) conditions.push('parkinsons');
+    if (alsAnalysis?.hasData) conditions.push('als');
+    return conditions;
+  }, [
+    diabetesAnalysis?.hasData,
+    ptsdAnalysis?.hasData,
+    tinnitusAnalysis?.hasData,
+    sleepApneaAnalysis?.hasData,
+    fibromyalgiaAnalysis?.hasData,
+    hypertensionAnalysis?.hasData,
+    peripheralNeuropathyAnalysis?.hasData,
+    migraineAnalysis?.hasData,
+    lumbosacralStrainAnalysis?.hasData,
+    kneeInstabilityAnalysis?.hasData,
+    shoulderAnalysis?.hasData,
+    hipAnalysis?.hasData,
+    ankleAnalysis?.hasData,
+    gerdAnalysis?.hasData,
+    ibsAnalysis?.hasData,
+    asthmaAnalysis?.hasData,
+    majorDepressionAnalysis?.hasData,
+    generalizedAnxietyAnalysis?.hasData,
+    radiculopathyAnalysis?.hasData,
+    multipleSclerosisAnalysis?.hasData,
+    parkinsonsAnalysis?.hasData,
+    alsAnalysis?.hasData,
+  ]);
+
+
 
   // Toggle section expansion
     const toggleSection = (section) => {
@@ -1498,6 +1564,7 @@ const RatingEvidence = () => {
         chronicFatigueAnalysis.hasData,
         insomniaAnalysis.hasData,
       ].filter(Boolean).length,
+      secondary: activeConditions.length,
     };
   }, [
     // Mental Health
@@ -1642,6 +1709,8 @@ const RatingEvidence = () => {
         varicoseVeinsAnalysis.hasData ||
         chronicUrticariaAnalysis.hasData ||
         hearingLossAnalysis.hasData ||
+        lossOfSmellAnalysis.hasData ||
+        lossOfTasteAnalysis.hasData ||
         psoriasisAnalysis.hasData ||
         scarsAnalysis.hasData ||
         tbiResidualsAnalysis.hasData ||
@@ -2242,6 +2311,16 @@ const RatingEvidence = () => {
                 analysis={chronicNonsuppurativeOtitisMediaAnalysis}
                 expanded={expandedSection === 'chronic-nonsuppurative-otitis-media'}
                 onToggle={() => toggleSection('chronic-nonsuppurative-otitis-media')}
+            />
+            <LossOfSmellRatingCard
+                analysis={lossOfSmellAnalysis}
+                expanded={expandedSection === 'loss-of-smell'}
+                onToggle={() => toggleSection('loss-of-smell')}
+            />
+            <LossOfTasteRatingCard
+                analysis={lossOfTasteAnalysis}
+                expanded={expandedSection === 'loss-of-taste'}
+                onToggle={() => toggleSection('loss-of-taste')}
             />
           </ConditionGroup>
 
@@ -3320,6 +3399,24 @@ const RatingEvidence = () => {
                 onToggle={() => toggleSection('insomnia')}
             />
           </ConditionGroup>
+
+          {/* ========== SECONDARY CONDITIONS ========== */}
+          {activeConditions.length > 0 && (
+              <ConditionGroup
+                  title="Secondary Conditions Guide"
+                  icon="🔗"
+                  conditionCount={activeConditions.length}
+                  accentColor="purple"
+                  groupId="secondary"
+                  isExpanded={expandedGroup === 'secondary'}
+                  onToggle={toggleGroup}
+              >
+                <SecondaryConditionsSummary
+                    activeConditions={activeConditions}
+                    compact={false}
+                />
+              </ConditionGroup>
+          )}
 
           {/* Sleep Apnea Setup Modal */}
             {showSleepApneaSetup && (
