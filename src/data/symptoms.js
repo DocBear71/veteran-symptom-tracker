@@ -312,6 +312,36 @@ export const symptomCategories = [
       { id: 'sinusitis-drainage', name: 'Sinusitis - Post-Nasal Drainage' },
     ]
   },
+  // Deviated Nasal Septum (DC 6502)
+  {
+    id: 'deviated-septum',
+    name: 'Deviated Nasal Septum (DC 6502)',
+    symptoms: [
+      { id: 'septum-obstruction-bilateral', name: 'Bilateral Nasal Obstruction', description: '50%+ obstruction both sides' },
+      { id: 'septum-obstruction-complete', name: 'Complete Unilateral Obstruction', description: '100% blockage one side' },
+      { id: 'septum-breathing-difficulty', name: 'Nasal Breathing Difficulty', description: 'Difficulty breathing through nose' },
+      { id: 'septum-congestion', name: 'Chronic Nasal Congestion', description: 'Persistent stuffiness' },
+      { id: 'septum-snoring', name: 'Snoring/Sleep Disruption', description: 'Snoring or sleep breathing issues' },
+      { id: 'septum-nosebleeds', name: 'Frequent Nosebleeds', description: 'Recurrent epistaxis' },
+      { id: 'septum-headaches', name: 'Sinus Headaches', description: 'Headaches from obstruction' },
+      { id: 'septum-post-surgical', name: 'Post-Septoplasty Symptoms', description: 'Ongoing symptoms after surgery' },
+    ],
+  },
+  // Nose Loss/Disfigurement (DC 6504)
+  {
+    id: 'nose-loss',
+    name: 'Nose Loss/Disfigurement (DC 6504)',
+    symptoms: [
+      { id: 'nose-loss-both-passages', name: 'Loss Exposing Both Passages', description: 'Tissue loss exposing both nasal passages' },
+      { id: 'nose-loss-partial-ala', name: 'Partial Ala Loss', description: 'Loss of part of nasal ala (wing)' },
+      { id: 'nose-obvious-disfigurement', name: 'Obvious Disfigurement', description: 'Visible nasal deformity' },
+      { id: 'nose-breathing-impairment', name: 'Breathing Impairment', description: 'Breathing difficulty from loss' },
+      { id: 'nose-prosthesis-use', name: 'Prosthesis Required', description: 'Using nasal prosthesis' },
+      { id: 'nose-reconstruction', name: 'Reconstruction Surgery', description: 'Had or needs reconstructive surgery' },
+      { id: 'nose-trauma-related', name: 'Trauma-Related Loss', description: 'Loss due to injury/trauma' },
+      { id: 'nose-surgical-removal', name: 'Surgical Removal', description: 'Loss due to medical procedure' },
+    ],
+  },
   {
     id: 'digestive',
     name: 'Digestive',
@@ -924,6 +954,35 @@ export const symptomCategories = [
       { id: 'bowel-urgency', name: 'Bowel Urgency' },
       { id: 'bowel-frequency', name: 'Bowel Frequency (Diarrhea)' },
     ]
+  },
+  // Penis Conditions (DC 7520-7521)
+  {
+    id: 'penis-conditions',
+    name: 'Penis Conditions (DC 7520-7521)',
+    symptoms: [
+      { id: 'penis-removal-half', name: 'Penis Removal - Half or More', description: 'Surgical removal of 50%+ of penis (DC 7520)' },
+      { id: 'penis-removal-glans', name: 'Penis Removal - Glans Only', description: 'Surgical removal of glans penis (DC 7521)' },
+      { id: 'penis-deformity', name: 'Penile Deformity', description: 'Scarring or deformity from trauma/disease' },
+      { id: 'penis-trauma', name: 'Penile Trauma History', description: 'History of penile injury' },
+      { id: 'penis-surgery', name: 'Penile Surgery History', description: 'History of penile surgical procedures' },
+      { id: 'penis-prosthesis', name: 'Penile Prosthesis', description: 'Use of penile implant/prosthesis' },
+      { id: 'penis-functional-loss', name: 'Functional Loss Documentation', description: 'Documentation of functional impairment' },
+    ],
+  },
+  // Testis Conditions (DC 7523-7524)
+  {
+    id: 'testis-conditions',
+    name: 'Testis Conditions (DC 7523-7524)',
+    symptoms: [
+      { id: 'testis-atrophy-both', name: 'Testis Atrophy - Both', description: 'Complete atrophy of both testes (DC 7523)' },
+      { id: 'testis-atrophy-one', name: 'Testis Atrophy - One', description: 'Complete atrophy of one testis (DC 7523)' },
+      { id: 'testis-removal-both', name: 'Testis Removal - Both', description: 'Surgical removal of both testes (DC 7524)' },
+      { id: 'testis-removal-one', name: 'Testis Removal - One', description: 'Surgical removal of one testis (DC 7524)' },
+      { id: 'testis-pain', name: 'Testicular Pain', description: 'Ongoing testicular pain' },
+      { id: 'testis-hormone-therapy', name: 'Hormone Replacement Therapy', description: 'Testosterone replacement due to testicular loss' },
+      { id: 'testis-trauma', name: 'Testicular Trauma History', description: 'History of testicular injury' },
+      { id: 'testis-cancer-treatment', name: 'Cancer Treatment Related', description: 'Loss due to cancer treatment' },
+    ],
   },
   // Phase 2: Eye & Vision Conditions
   {
@@ -4073,7 +4132,9 @@ export const getBodySystem = (categoryName) => {
   if (name.includes('respiratory') || name.includes('asthma') || name.includes('copd') ||
       name.includes('bronchitis') || name.includes('emphysema') || name.includes('rhinitis') ||
       name.includes('sinusitis') || name.includes('bronchiectasis') || name.includes('pulmonary') ||
-      name.includes('sarcoidosis') || name.includes('sleep apnea')) {
+      name.includes('sarcoidosis') || name.includes('fibrosis') || name.includes('sleep apnea') ||
+      name.includes('deviated septum') || name.includes('nasal septum') || name.includes('nose loss') ||
+      name.includes('septum') || name.includes('nasal obstruction')) {
     return 'respiratory';
   }
 
@@ -4138,6 +4199,7 @@ export const getBodySystem = (categoryName) => {
   // Genitourinary conditions
   if (name.includes('genitourinary') || name.includes('kidney') || name.includes('bladder') ||
       name.includes('urinary') || name.includes('erectile') || name.includes('voiding') ||
+      name.includes('penis') || name.includes('testis') || name.includes('testicular') ||
       name.includes('sphincter') || name.includes('renal') || name.includes('prostate')) {
     return 'genitourinary';
   }
@@ -4398,6 +4460,9 @@ const getParentCategory = (categoryName) => {
   // Loss of smell/taste - per 38 CFR 4.87a, rated under ear/hearing system
   if (name.includes('loss of smell') || name.includes('anosmia')) return 'ear';
   if (name.includes('loss of taste') || name.includes('ageusia')) return 'ear';
+  // Nasal/Nose conditions (DC 6502, 6504) - under respiratory
+  if (name.includes('deviated septum') || name.includes('nasal septum')) return 'respiratory';
+  if (name.includes('nose loss') || name.includes('nose disfigurement')) return 'respiratory';
   // Systemic Lupus (DC 6350) - Immune system, NOT skin
   if (name.includes('systemic lupus') || name.includes('sle')) return 'systemic-lupus';
   // Tuberculosis conditions
@@ -4415,6 +4480,9 @@ const getParentCategory = (categoryName) => {
   if (name.includes('avitaminosis')) return 'nutritional-deficiency';
   if (name.includes('beriberi')) return 'nutritional-deficiency';
   if (name.includes('pellagra')) return 'nutritional-deficiency';
+  // Penis/Testis conditions (DC 7520-7524) - under genitourinary
+  if (name.includes('penis')) return 'genitourinary';
+  if (name.includes('testis')) return 'genitourinary';
   return null; // No parent, this is a standalone category
 };
 

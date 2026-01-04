@@ -575,6 +575,7 @@ export const CONDITIONS = {
 
   // Addison's Disease (Adrenocortical Insufficiency) - DC 7911
   ADDISONS_DISEASE: {
+    id: 'addisons-disease',
     name: "Addison's Disease",
     code: 'ADDISONS_DISEASE',
     diagnosticCode: '7911',
@@ -591,6 +592,7 @@ export const CONDITIONS = {
 
   // Cushing's Syndrome - DC 7907
   CUSHINGS_SYNDROME: {
+    id: 'cushings-syndrome',
     name: "Cushing's Syndrome",
     code: 'CUSHINGS_SYNDROME',
     diagnosticCode: '7907',
@@ -608,6 +610,7 @@ export const CONDITIONS = {
 
   // Diabetes Insipidus - DC 7909
   DIABETES_INSIPIDUS: {
+    id: 'diabetes-insipidus',
     name: 'Diabetes Insipidus',
     code: 'DIABETES_INSIPIDUS',
     diagnosticCode: '7909',
@@ -622,6 +625,7 @@ export const CONDITIONS = {
 
   // Hyperaldosteronism (Conn's Syndrome) - DC 7917
   HYPERALDOSTERONISM: {
+    id: 'hyperaldosteronism',
     name: 'Hyperaldosteronism',
     code: 'HYPERALDOSTERONISM',
     diagnosticCode: '7917',
@@ -1332,7 +1336,10 @@ export const CONDITIONS = {
   },
   // Phase 8A: Somatic Symptom Disorders
   SOMATIC_SYMPTOM_DISORDER: {
+    id: 'somatic-symptom-disorder',
     name: 'Somatic Symptom Disorder',
+    diagnosticCode: '9422',
+    cfrReference: '38 CFR 4.130',
     symptomIds: [
       'somatic-pain',
       'somatic-excessive-worry',
@@ -1342,7 +1349,10 @@ export const CONDITIONS = {
     ],
   },
   OTHER_SPECIFIED_SOMATIC: {
+    id: 'other-specified-somatic',
     name: 'Other Specified Somatic Symptom Disorder',
+    diagnosticCode: '9422',
+    cfrReference: '38 CFR 4.130',
     symptomIds: [
       'somatic-pain',
       'somatic-excessive-worry',
@@ -1352,7 +1362,10 @@ export const CONDITIONS = {
     ],
   },
   UNSPECIFIED_SOMATIC: {
+    id: 'unspecified-somatic',
     name: 'Unspecified Somatic Symptom Disorder',
+    diagnosticCode: '9422',
+    cfrReference: '38 CFR 4.130',
     symptomIds: [
       'somatic-pain',
       'somatic-excessive-worry',
@@ -1362,7 +1375,10 @@ export const CONDITIONS = {
     ],
   },
   ILLNESS_ANXIETY: {
+    id: 'illness-anxiety',
     name: 'Illness Anxiety Disorder',
+    diagnosticCode: '9421',
+    cfrReference: '38 CFR 4.130',
     symptomIds: [
       'illness-anxiety-fear',
       'illness-anxiety-body-checking',
@@ -1373,7 +1389,10 @@ export const CONDITIONS = {
   },
   // Phase 8A: Other Anxiety/Mood
   OTHER_SPECIFIED_ANXIETY: {
+    id: 'other-specified-anxiety',
     name: 'Other Specified Anxiety Disorder',
+    diagnosticCode: '9413',
+    cfrReference: '38 CFR 4.130',
     symptomIds: [
       'anxiety',
       'gad-worry',
@@ -1382,7 +1401,10 @@ export const CONDITIONS = {
     ],
   },
   DEPERSONALIZATION_DEREALIZATION: {
+    id: 'depersonalization',
     name: 'Depersonalization/Derealization Disorder',
+    diagnosticCode: '9416',
+    cfrReference: '38 CFR 4.130',
     symptomIds: [
       'depersonalization-detachment',
       'derealization-unreality',
@@ -1391,7 +1413,10 @@ export const CONDITIONS = {
     ],
   },
   CYCLOTHYMIC: {
+    id: 'cyclothymic',
     name: 'Cyclothymic Disorder',
+    diagnosticCode: '9431',
+    cfrReference: '38 CFR 4.130',
     symptomIds: [
       'cyclothymic-hypomanic',
       'cyclothymic-depressive',
@@ -1401,7 +1426,10 @@ export const CONDITIONS = {
   },
   // Phase 8A: Eating Disorders
   ANOREXIA_NERVOSA: {
+    id: 'anorexia-nervosa',
     name: 'Anorexia Nervosa',
+    diagnosticCode: '9520',
+    cfrReference: '38 CFR 4.130',
     symptomIds: [
       'anorexia-restricted-eating',
       'anorexia-weight-loss',
@@ -1412,7 +1440,10 @@ export const CONDITIONS = {
     ],
   },
   BULIMIA_NERVOSA: {
+    id: 'bulimia-nervosa',
     name: 'Bulimia Nervosa',
+    diagnosticCode: '9521',
+    cfrReference: '38 CFR 4.130',
     symptomIds: [
       'bulimia-binge-eating',
       'bulimia-purging',
@@ -2526,6 +2557,7 @@ export const CONDITIONS = {
   },
 
   SYSTEMIC_LUPUS: {
+    id: 'systemic-lupus',
     name: 'Systemic Lupus Erythematosus',
     diagnosticCode: '6350',
     cfrReference: '38 CFR 4.88b',
@@ -2553,6 +2585,7 @@ export const CONDITIONS = {
   },
 
   TUBERCULOSIS_ACTIVE: {
+    id: 'tuberculosis-active',
     name: 'Tuberculosis, Pulmonary, Active',
     diagnosticCode: '6730',
     cfrReference: '38 CFR 4.97',
@@ -2571,6 +2604,7 @@ export const CONDITIONS = {
   },
 
   TUBERCULOSIS_INACTIVE: {
+    id: 'tuberculosis-inactive',
     name: 'Tuberculosis, Pulmonary, Inactive',
     diagnosticCode: '6731',
     cfrReference: '38 CFR 4.97',
@@ -2586,6 +2620,7 @@ export const CONDITIONS = {
   },
 
   TUBERCULOSIS_MILIARY: {
+    id: 'tuberculosis-miliary',
     name: 'Tuberculosis, Miliary (Disseminated)',
     diagnosticCode: '6311',
     cfrReference: '38 CFR 4.88b',
@@ -2599,6 +2634,7 @@ export const CONDITIONS = {
   },
 
   SPHINCTER_CONTROL: {
+    id: 'sphincter-control',
     name: 'Rectum and Anus, Impairment of Sphincter Control',
     diagnosticCode: '7332',
     cfrReference: '38 CFR 4.114',
@@ -2621,6 +2657,7 @@ export const CONDITIONS = {
   },
 
   RECTAL_STRICTURE: {
+    id: 'rectal-stricture',
     name: 'Rectum and Anus, Stricture',
     diagnosticCode: '7333',
     cfrReference: '38 CFR 4.114',
@@ -2634,6 +2671,7 @@ export const CONDITIONS = {
   },
 
   RECTAL_PROLAPSE: {
+    id: 'rectal-prolapse',
     name: 'Rectum, Prolapse',
     diagnosticCode: '7334',
     cfrReference: '38 CFR 4.114',
@@ -2647,6 +2685,7 @@ export const CONDITIONS = {
   },
 
   ANAL_FISTULA: {
+    id: 'anal-fistula',
     name: 'Fistula in Ano (Anorectal Fistula/Abscess)',
     diagnosticCode: '7335',
     cfrReference: '38 CFR 4.114',
@@ -2673,6 +2712,7 @@ export const CONDITIONS = {
   },
 
   PRURITUS_ANI: {
+    id: 'pruritus-ani',
     name: 'Pruritus Ani (Anal Itching)',
     diagnosticCode: '7337',
     cfrReference: '38 CFR 4.114',
@@ -2683,6 +2723,7 @@ export const CONDITIONS = {
   },
 
   AVITAMINOSIS: {
+    id: 'avitaminosis',
     name: 'Avitaminosis (Vitamin Deficiency)',
     diagnosticCode: '6313',
     cfrReference: '38 CFR 4.88b',
@@ -2706,6 +2747,7 @@ export const CONDITIONS = {
   },
 
   BERIBERI: {
+    id: 'beriberi',
     name: 'Beriberi (Thiamine/B1 Deficiency)',
     diagnosticCode: '6314',
     cfrReference: '38 CFR 4.88b',
@@ -2729,6 +2771,7 @@ export const CONDITIONS = {
   },
 
   PELLAGRA: {
+    id: 'pellagra',
     name: 'Pellagra (Niacin/B3 Deficiency)',
     diagnosticCode: '6315',
     cfrReference: '38 CFR 4.88b',
@@ -2750,6 +2793,35 @@ export const CONDITIONS = {
       'pellagra-inability-retain-nourishment',
     ],
     bodySystem: 'infectious',
+  },
+
+  // ============================================
+// RESPIRATORY - NASAL CONDITIONS
+// ============================================
+  DEVIATED_SEPTUM: {
+    id: 'deviated-septum',
+    name: 'Deviated Nasal Septum',
+    diagnosticCode: '6502',
+    cfrReference: '38 CFR 4.97',
+    symptomIds: [
+      'septum-obstruction-bilateral', 'septum-obstruction-complete', 'septum-breathing-difficulty',
+      'septum-congestion', 'septum-snoring', 'septum-nosebleeds', 'septum-facial-pain',
+      'septum-headaches', 'septum-post-nasal-drip', 'septum-dry-mouth',
+      'septum-sleep-disturbance', 'septum-post-surgical',
+    ],
+    bodySystem: 'respiratory',
+  },
+
+  NOSE_LOSS: {
+    id: 'nose-loss',
+    name: 'Nose Loss or Disfigurement',
+    diagnosticCode: '6504',
+    cfrReference: '38 CFR 4.97',
+    symptomIds: [
+      'nose-loss-total', 'nose-loss-partial-bilateral', 'nose-loss-partial-unilateral',
+      'nose-loss-breathing-difficulty', 'nose-loss-prosthesis', 'nose-loss-functional-loss',
+    ],
+    bodySystem: 'respiratory',
   },
 
 };
@@ -6162,6 +6234,211 @@ export const SINUSITIS_CRITERIA = {
   },
 
   disclaimer: 'This analysis is based on logged sinusitis symptoms. VA rating requires ENT evaluation and documentation of incapacitating episodes requiring prolonged antibiotics. CT imaging strengthens claim.',
+};
+
+// ============================================
+// DEVIATED NASAL SEPTUM RATING CRITERIA (DC 6502)
+// ============================================
+export const DEVIATED_SEPTUM_CRITERIA = {
+  diagnosticCode: '6502',
+  condition: 'Deviated Nasal Septum',
+  cfrReference: '38 CFR 4.97, Diagnostic Code 6502',
+
+  ratingNote: 'Ratings for deviated septum apply only to traumatic deviations. Congenital or developmental deviations without service-connected trauma are not ratable.',
+
+  ratings: [
+    {
+      percent: 10,
+      summary: '50% obstruction both sides OR complete obstruction one side',
+      criteria: {
+        traumatic: true,
+        significantObstruction: true,
+      },
+      criteriaDescription: [
+        'Traumatic deviation (service-connected)',
+        '50% or greater obstruction of nasal passage on BOTH sides',
+        'OR complete (100%) obstruction on ONE side',
+      ],
+      evidenceNeeded: [
+        'Documentation of traumatic origin (injury, accident, surgery complication)',
+        'ENT examination documenting degree of obstruction',
+        'CT scan or nasal endoscopy showing deviation',
+        'Symptom log: breathing difficulty, congestion, sleep disruption',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'Traumatic deviation without significant obstruction',
+      criteria: {
+        traumatic: true,
+        minimalObstruction: true,
+      },
+      criteriaDescription: [
+        'Traumatic deviation present',
+        'Less than 50% obstruction bilaterally',
+        'No complete obstruction on either side',
+      ],
+      evidenceNeeded: [
+        'Documentation of traumatic origin',
+        'ENT exam showing minimal functional impact',
+      ],
+    },
+  ],
+
+  definitions: {
+    traumaticDeviation: {
+      term: 'Traumatic Deviation',
+      definition: 'A deviated septum caused by injury, accident, or surgical complication during military service. Congenital or developmental deviations are not service-connectable unless aggravated by service.',
+      examples: [
+        'Nasal fracture from combat or training',
+        'Sports injury during service',
+        'Motor vehicle accident',
+        'Surgical complication from service-connected procedure',
+      ],
+    },
+    nasalObstruction: {
+      term: 'Nasal Obstruction',
+      definition: 'Blockage of the nasal airway measured as percentage of passage blocked. Typically assessed by ENT examination or nasal endoscopy.',
+      examples: [
+        '50% bilateral = half of each passage blocked',
+        '100% unilateral = one side completely blocked',
+        'Measured during physical examination',
+      ],
+    },
+    septoplasty: {
+      term: 'Septoplasty',
+      definition: 'Surgical procedure to straighten the nasal septum. Post-surgical symptoms may still be ratable if obstruction persists.',
+      examples: [
+        'Surgical correction of deviated septum',
+        'May require additional rating if symptoms persist after surgery',
+      ],
+    },
+  },
+
+  secondaryConditions: {
+    description: 'Deviated septum can lead to or be associated with other conditions.',
+    commonSecondaries: [
+      { condition: 'Chronic Sinusitis', diagnosticCode: '6510-6514', relationship: 'Obstruction leads to poor sinus drainage and chronic infections' },
+      { condition: 'Sleep Apnea', diagnosticCode: '6847', relationship: 'Nasal obstruction contributes to sleep-disordered breathing' },
+      { condition: 'Chronic Rhinitis', diagnosticCode: '6522', relationship: 'Obstruction causes chronic nasal inflammation' },
+      { condition: 'Loss of Smell', diagnosticCode: '6275', relationship: 'Obstruction blocks airflow to olfactory receptors' },
+    ],
+  },
+
+  documentationTips: [
+    'Document the traumatic event that caused the deviation',
+    'Obtain ENT examination with documented obstruction percentage',
+    'Request CT scan or nasal endoscopy for objective evidence',
+    'Track breathing difficulties and which side is affected',
+    'Log sleep disruption, snoring, and mouth breathing',
+    'Document any associated headaches or facial pressure',
+    'Note if septoplasty was performed and results',
+    'Track frequency of sinus infections if applicable',
+  ],
+
+  disclaimer: 'This analysis is based on 38 CFR 4.97, DC 6502. Deviated septum ratings require documented TRAUMATIC origin and objective measurement of obstruction. For documentation purposes only - the VA makes all final rating determinations.',
+};
+
+// ============================================
+// NOSE LOSS/DISFIGUREMENT RATING CRITERIA (DC 6504)
+// ============================================
+export const NOSE_LOSS_CRITERIA = {
+  diagnosticCode: '6504',
+  condition: 'Nose Loss or Disfigurement',
+  cfrReference: '38 CFR 4.97, Diagnostic Code 6504',
+
+  ratingNote: 'May also be rated under DC 7800 (Scars/Disfigurement) if that provides a higher rating. Evaluate under the criteria that results in the higher rating but do not combine ratings.',
+
+  ratings: [
+    {
+      percent: 30,
+      summary: 'Loss of part of nose exposing both nasal passages',
+      criteria: {
+        bothPassagesExposed: true,
+      },
+      criteriaDescription: [
+        'Significant tissue loss',
+        'Both nasal passages are exposed/visible',
+        'Major structural damage to nose',
+      ],
+      evidenceNeeded: [
+        'Medical documentation of extent of loss',
+        'Photographs showing disfigurement',
+        'ENT or plastic surgery evaluation',
+        'Documentation of cause (trauma, surgery, disease)',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Loss of part of one ala OR other obvious disfigurement',
+      criteria: {
+        partialLoss: true,
+        OR: true,
+        obviousDisfigurement: true,
+      },
+      criteriaDescription: [
+        'Partial loss of nasal ala (wing of nose)',
+        'OR other obvious visible disfigurement',
+        'Noticeable but not exposing both passages',
+      ],
+      evidenceNeeded: [
+        'Medical documentation of loss/disfigurement',
+        'Photographs showing visible changes',
+        'Documentation of functional impact',
+        'Cause documentation (trauma, surgery, cancer treatment)',
+      ],
+    },
+  ],
+
+  definitions: {
+    nasalAla: {
+      term: 'Nasal Ala',
+      definition: 'The wing-like outer portion of the nose on each side, formed by cartilage and skin. Loss of part of the ala creates visible disfigurement.',
+      examples: [
+        'Lateral portions of the nostrils',
+        'The curved, outer parts of the nose',
+        'Visible on frontal and profile view',
+      ],
+    },
+    obviousDisfigurement: {
+      term: 'Obvious Disfigurement',
+      definition: 'Visible alteration to the normal appearance of the nose that is readily noticeable to others.',
+      examples: [
+        'Asymmetry from tissue loss',
+        'Scarring affecting nose contour',
+        'Collapsed nasal structure',
+        'Post-surgical changes',
+      ],
+    },
+    nasalProsthesis: {
+      term: 'Nasal Prosthesis',
+      definition: 'An artificial nose or nasal component used to restore appearance after tissue loss.',
+      examples: [
+        'Silicone prosthetic nose',
+        'Adhesive-attached prosthesis',
+        'Implant-supported prosthesis',
+      ],
+    },
+  },
+
+  alternativeRating: {
+    diagnosticCode: '7800',
+    condition: 'Scars - Disfigurement of Head, Face, or Neck',
+    note: 'If disfigurement meets criteria under DC 7800, veteran should be evaluated under both and receive the higher rating. DC 7800 ratings range from 10% to 80% based on disfigurement characteristics.',
+  },
+
+  documentationTips: [
+    'Obtain photographs from multiple angles (front, profile, three-quarter)',
+    'Document the cause of tissue loss (trauma, cancer, surgery)',
+    'Get ENT or plastic surgery evaluation documenting extent',
+    'Note any breathing impairment from structural loss',
+    'Document if prosthesis is used and its effectiveness',
+    'Track any reconstructive surgeries performed or planned',
+    'Note psychological impact of disfigurement',
+    'Request evaluation under DC 7800 if scarring is significant',
+  ],
+
+  disclaimer: 'This analysis is based on 38 CFR 4.97, DC 6504. Nose loss may also be rated under DC 7800 for disfigurement - evaluate under whichever provides higher rating. For documentation purposes only - the VA makes all final rating determinations.',
 };
 
 
@@ -12519,6 +12796,266 @@ export const ERECTILE_DYSFUNCTION_CRITERIA = {
 
   disclaimer: 'While rated at 0%, service connection for ED is important for: (1) potential SMC eligibility in specific circumstances, (2) establishing nexus to other service-connected conditions, (3) potential for increased rating if additional conditions develop. ED may be secondary to diabetes, hypertension, PTSD, medications, or other service-connected conditions.',
 };
+
+// =================================================================
+// PENIS REMOVAL CONDITIONS (DC 7520-7521)
+// =================================================================
+export const PENIS_CONDITIONS_CRITERIA = {
+  diagnosticCode: '7520-7521',
+  condition: 'Penis Removal/Loss Conditions',
+  cfrReference: '38 CFR 4.115b, Diagnostic Codes 7520-7521',
+
+  smcNote: 'All penis removal conditions require review for Special Monthly Compensation (SMC) under § 3.350 for loss of creative organ.',
+
+  ratings: [
+    {
+      percent: 30,
+      diagnosticCode: '7520',
+      summary: 'Penis, removal of half or more',
+      criteria: {
+        removalHalfOrMore: true,
+      },
+      criteriaDescription: [
+        'Surgical or traumatic removal of 50% or more of the penis',
+        'Documented by medical records',
+        'Requires SMC review for loss of creative organ',
+      ],
+      evidenceNeeded: [
+        'Surgical/operative reports documenting extent of removal',
+        'Medical records describing the condition',
+        'Documentation of cause (trauma, cancer treatment, etc.)',
+        'Urology evaluation',
+        'SMC application for loss of creative organ',
+      ],
+    },
+    {
+      percent: 20,
+      diagnosticCode: '7521',
+      summary: 'Penis, removal of glans',
+      criteria: {
+        removalGlans: true,
+      },
+      criteriaDescription: [
+        'Surgical or traumatic removal of the glans penis only',
+        'Less than half of penis removed',
+        'Requires SMC review for loss of creative organ',
+      ],
+      evidenceNeeded: [
+        'Surgical/operative reports documenting glans removal',
+        'Medical records describing extent of loss',
+        'Documentation of cause',
+        'Urology evaluation',
+        'SMC application for loss of creative organ',
+      ],
+    },
+    {
+      percent: 0,
+      diagnosticCode: '7522',
+      summary: 'Penile deformity with erectile dysfunction (see DC 7522)',
+      criteria: {
+        deformityOnly: true,
+      },
+      criteriaDescription: [
+        'Disease or traumatic injury resulting in scarring or deformity',
+        'Rated under DC 7522 at 0%',
+        'Still qualifies for SMC review',
+      ],
+      evidenceNeeded: [
+        'Medical documentation of deformity',
+        'Urology evaluation',
+        'Photographs if appropriate',
+      ],
+    },
+  ],
+
+  definitions: {
+    glans: {
+      term: 'Glans Penis',
+      definition: 'The head or tip of the penis, which is removed in a partial penectomy.',
+    },
+    penectomy: {
+      term: 'Penectomy',
+      definition: 'Surgical removal of all or part of the penis, typically performed for penile cancer or severe trauma.',
+    },
+    smcK: {
+      term: 'SMC-K (Loss of Creative Organ)',
+      definition: 'Special Monthly Compensation paid in addition to regular compensation for anatomical loss or loss of use of a creative organ (penis or testes).',
+    },
+  },
+
+  secondaryConditions: {
+    description: 'Penis removal may result in or be associated with other conditions.',
+    commonSecondaries: [
+      { condition: 'Erectile Dysfunction', diagnosticCode: '7522', relationship: 'Direct result of anatomical loss' },
+      { condition: 'Depression/Adjustment Disorder', diagnosticCode: '9440', relationship: 'Psychological impact of loss' },
+      { condition: 'Urinary Dysfunction', diagnosticCode: '7512-7518', relationship: 'May affect urinary function' },
+    ],
+  },
+
+  documentationTips: [
+    'Obtain complete surgical/operative reports',
+    'Document the cause of loss (cancer, trauma, infection, etc.)',
+    'Get urology evaluation documenting extent of loss',
+    'Apply for SMC-K for loss of creative organ',
+    'Document any secondary psychological impact',
+    'Note any urinary dysfunction if present',
+  ],
+
+  disclaimer: 'Penis removal conditions are rated based on extent of tissue loss per 38 CFR 4.115b. All cases require review for Special Monthly Compensation (SMC-K) for loss of creative organ. For documentation purposes only - the VA makes all final rating determinations.',
+};
+
+// =================================================================
+// TESTIS CONDITIONS (DC 7523-7524)
+// =================================================================
+export const TESTIS_CONDITIONS_CRITERIA = {
+  diagnosticCode: '7523-7524',
+  condition: 'Testis Atrophy/Removal Conditions',
+  cfrReference: '38 CFR 4.115b, Diagnostic Codes 7523-7524',
+
+  smcNote: 'All testis loss conditions require review for Special Monthly Compensation (SMC) under § 3.350 for loss of creative organ.',
+
+  importantNote: 'Undescended or congenitally undeveloped testis is NOT a ratable disability. Only service-connected loss qualifies.',
+
+  ratings: [
+    {
+      percent: 30,
+      diagnosticCode: '7524',
+      summary: 'Testis, removal - Both',
+      criteria: {
+        removalBoth: true,
+      },
+      criteriaDescription: [
+        'Surgical removal of both testes (bilateral orchiectomy)',
+        'Service-connected cause required',
+        'Requires SMC review for loss of creative organ',
+      ],
+      evidenceNeeded: [
+        'Surgical/operative reports for bilateral orchiectomy',
+        'Documentation of service-connected cause',
+        'Urology or oncology records',
+        'SMC application for loss of creative organ',
+        'Hormone replacement therapy records if applicable',
+      ],
+    },
+    {
+      percent: 30,
+      diagnosticCode: '7524-special',
+      summary: 'Testis, removal - One (with other testis absent/nonfunctioning)',
+      criteria: {
+        removalOneSpecial: true,
+      },
+      criteriaDescription: [
+        'Service-connected removal of ONE testis',
+        'AND other testis absent or nonfunctioning (unrelated to service)',
+        'Results in complete loss of testicular function',
+        'Special provision per DC 7524 Note',
+      ],
+      evidenceNeeded: [
+        'Surgical report for service-connected testis removal',
+        'Medical documentation of other testis status',
+        'Evidence other testis condition is unrelated to service',
+        'SMC application',
+      ],
+    },
+    {
+      percent: 20,
+      diagnosticCode: '7523',
+      summary: 'Testis, atrophy complete - Both',
+      criteria: {
+        atrophyBoth: true,
+      },
+      criteriaDescription: [
+        'Complete atrophy of both testes',
+        'Documented loss of testicular function',
+        'Service-connected cause required',
+      ],
+      evidenceNeeded: [
+        'Urology evaluation documenting bilateral atrophy',
+        'Hormone level testing (testosterone, FSH, LH)',
+        'Documentation of cause (trauma, infection, etc.)',
+        'SMC application for loss of creative organ',
+      ],
+    },
+    {
+      percent: 0,
+      diagnosticCode: '7524',
+      summary: 'Testis, removal - One (other testis normal)',
+      criteria: {
+        removalOne: true,
+      },
+      criteriaDescription: [
+        'Surgical removal of one testis (unilateral orchiectomy)',
+        'Other testis remains functional',
+        'Still qualifies for SMC-K review',
+      ],
+      evidenceNeeded: [
+        'Surgical report for unilateral orchiectomy',
+        'Documentation of service-connected cause',
+        'SMC application for loss of creative organ',
+      ],
+    },
+    {
+      percent: 0,
+      diagnosticCode: '7523',
+      summary: 'Testis, atrophy complete - One',
+      criteria: {
+        atrophyOne: true,
+      },
+      criteriaDescription: [
+        'Complete atrophy of one testis',
+        'Other testis remains functional',
+        'Still qualifies for SMC-K review',
+      ],
+      evidenceNeeded: [
+        'Urology evaluation documenting unilateral atrophy',
+        'Documentation of cause',
+        'SMC application',
+      ],
+    },
+  ],
+
+  definitions: {
+    orchiectomy: {
+      term: 'Orchiectomy',
+      definition: 'Surgical removal of one or both testicles. May be performed for testicular cancer, severe trauma, or other conditions.',
+    },
+    testisAtrophy: {
+      term: 'Testicular Atrophy',
+      definition: 'Shrinkage and loss of function of testicular tissue. Can result from trauma, infection, torsion, or other causes.',
+    },
+    smcK: {
+      term: 'SMC-K (Loss of Creative Organ)',
+      definition: 'Special Monthly Compensation paid in addition to regular compensation for anatomical loss or loss of use of a creative organ.',
+    },
+    bilateralOrchiectomy: {
+      term: 'Bilateral Orchiectomy',
+      definition: 'Removal of both testicles, resulting in surgical castration and requiring hormone replacement therapy.',
+    },
+  },
+
+  secondaryConditions: {
+    description: 'Testicular loss may result in or require treatment for associated conditions.',
+    commonSecondaries: [
+      { condition: 'Hypogonadism', diagnosticCode: '7903', relationship: 'Hormone deficiency from testicular loss' },
+      { condition: 'Erectile Dysfunction', diagnosticCode: '7522', relationship: 'May result from hormone changes' },
+      { condition: 'Depression/Adjustment Disorder', diagnosticCode: '9440', relationship: 'Psychological impact' },
+      { condition: 'Osteoporosis', diagnosticCode: '5013', relationship: 'Long-term effect of testosterone deficiency' },
+    ],
+  },
+
+  documentationTips: [
+    'Obtain complete surgical/operative reports',
+    'Document service-connected cause (cancer, trauma, infection)',
+    'Get hormone level testing (testosterone, FSH, LH)',
+    'Apply for SMC-K for loss of creative organ',
+    'Document hormone replacement therapy if prescribed',
+    'Note any secondary psychological impact',
+    'Track bone density if long-term testosterone deficiency',
+  ],
+
+  disclaimer: 'Testis conditions are rated based on 38 CFR 4.115b. Undescended or congenitally undeveloped testis is NOT ratable. All cases require review for SMC-K. For documentation purposes only - the VA makes all final rating determinations.',
+};
+
 
 // =================================================================
 // IMMUNE THROMBOCYTOPENIA (DC 7705)
@@ -24497,6 +25034,1240 @@ export const PELLAGRA_CRITERIA = {
 };
 
 // ============================================
+// MISSING CRITERIA OBJECTS - PHASE COMPLETION
+// Added to synchronize CONDITIONS with CRITERIA
+// ============================================
+
+// ============================================
+// VULVA/CLITORIS DISEASE CRITERIA (DC 7610)
+// Uses General Rating Formula for DC 7610-7615
+// ============================================
+export const VULVA_CLITORIS_DISEASE_CRITERIA = {
+  diagnosticCode: '7610',
+  condition: 'Vulva or Clitoris Disease/Injury',
+  cfrReference: '38 CFR 4.116, Diagnostic Code 7610',
+
+  note: 'Uses General Rating Formula for Disease, Injury, or Adhesions of Female Reproductive Organs (DC 7610-7615).',
+
+  ratings: [
+    {
+      percent: 30,
+      summary: 'Symptoms not controlled by continuous treatment',
+      criteriaDescription: [
+        'Ongoing symptoms despite treatment',
+        'Symptoms interfere with daily activities',
+        'Treatment does not provide adequate control',
+      ],
+      evidenceNeeded: [
+        'Medical diagnosis of vulvar/clitoral condition',
+        'Documentation of persistent symptoms despite treatment',
+        'Treatment records showing failed or inadequate symptom control',
+        'Gynecology records documenting severity',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Symptoms that require continuous treatment',
+      criteriaDescription: [
+        'Symptoms require ongoing treatment for control',
+        'Treatment is effective in controlling symptoms',
+        'Discontinuation of treatment results in symptom recurrence',
+      ],
+      evidenceNeeded: [
+        'Medical diagnosis of condition',
+        'Documentation of continuous treatment',
+        'Records showing symptoms are controlled with treatment',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'Symptoms that do not require continuous treatment',
+      criteriaDescription: [
+        'Symptoms are mild or intermittent',
+        'No continuous treatment needed',
+      ],
+      evidenceNeeded: [
+        'Medical diagnosis of condition',
+      ],
+    },
+  ],
+
+  definitions: {
+    vulvovaginitis: {
+      term: 'Vulvovaginitis',
+      definition: 'Inflammation of the vulva and vagina, often causing itching, discharge, and irritation.',
+    },
+    vulvodynia: {
+      term: 'Vulvodynia',
+      definition: 'Chronic vulvar pain without an identifiable cause, lasting 3+ months.',
+    },
+  },
+
+  disclaimer: 'This condition uses the General Rating Formula for DC 7610-7615. Rate based on whether symptoms require continuous treatment and treatment effectiveness.',
+};
+
+// ============================================
+// VAGINA DISEASE CRITERIA (DC 7611)
+// Uses General Rating Formula for DC 7610-7615
+// ============================================
+export const VAGINA_DISEASE_CRITERIA = {
+  diagnosticCode: '7611',
+  condition: 'Vagina Disease/Injury',
+  cfrReference: '38 CFR 4.116, Diagnostic Code 7611',
+
+  note: 'Uses General Rating Formula for Disease, Injury, or Adhesions of Female Reproductive Organs (DC 7610-7615).',
+
+  ratings: [
+    {
+      percent: 30,
+      summary: 'Symptoms not controlled by continuous treatment',
+      criteriaDescription: [
+        'Ongoing symptoms despite treatment',
+        'Symptoms interfere with daily activities',
+        'Treatment does not provide adequate control',
+      ],
+      evidenceNeeded: [
+        'Medical diagnosis of vaginal condition',
+        'Documentation of persistent symptoms despite treatment',
+        'Treatment records showing failed or inadequate symptom control',
+        'Gynecology records documenting severity',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Symptoms that require continuous treatment',
+      criteriaDescription: [
+        'Symptoms require ongoing treatment for control',
+        'Treatment is effective in controlling symptoms',
+      ],
+      evidenceNeeded: [
+        'Medical diagnosis of condition',
+        'Documentation of continuous treatment',
+        'Records showing symptoms are controlled with treatment',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'Symptoms that do not require continuous treatment',
+      criteriaDescription: [
+        'Symptoms are mild or intermittent',
+        'No continuous treatment needed',
+      ],
+      evidenceNeeded: [
+        'Medical diagnosis of condition',
+      ],
+    },
+  ],
+
+  definitions: {
+    vaginitis: {
+      term: 'Vaginitis',
+      definition: 'Inflammation of the vagina that can result in discharge, itching and pain.',
+    },
+    vaginalAtrophy: {
+      term: 'Vaginal Atrophy',
+      definition: 'Thinning, drying and inflammation of vaginal walls due to decreased estrogen.',
+    },
+  },
+
+  disclaimer: 'This condition uses the General Rating Formula for DC 7610-7615.',
+};
+
+// ============================================
+// CERVIX DISEASE CRITERIA (DC 7612)
+// Uses General Rating Formula for DC 7610-7615
+// ============================================
+export const CERVIX_DISEASE_CRITERIA = {
+  diagnosticCode: '7612',
+  condition: 'Cervix Disease/Injury',
+  cfrReference: '38 CFR 4.116, Diagnostic Code 7612',
+
+  note: 'Uses General Rating Formula for Disease, Injury, or Adhesions of Female Reproductive Organs (DC 7610-7615).',
+
+  ratings: [
+    {
+      percent: 30,
+      summary: 'Symptoms not controlled by continuous treatment',
+      criteriaDescription: [
+        'Ongoing symptoms despite treatment',
+        'Symptoms interfere with daily activities',
+        'Treatment does not provide adequate control',
+      ],
+      evidenceNeeded: [
+        'Medical diagnosis of cervical condition',
+        'Documentation of persistent symptoms despite treatment',
+        'Treatment records showing failed or inadequate symptom control',
+        'Gynecology records documenting severity',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Symptoms that require continuous treatment',
+      criteriaDescription: [
+        'Symptoms require ongoing treatment for control',
+        'Treatment is effective in controlling symptoms',
+      ],
+      evidenceNeeded: [
+        'Medical diagnosis of condition',
+        'Documentation of continuous treatment',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'Symptoms that do not require continuous treatment',
+      criteriaDescription: [
+        'Symptoms are mild or intermittent',
+        'No continuous treatment needed',
+      ],
+      evidenceNeeded: [
+        'Medical diagnosis of condition',
+      ],
+    },
+  ],
+
+  definitions: {
+    cervicitis: {
+      term: 'Cervicitis',
+      definition: 'Inflammation of the cervix, often causing discharge, pain, or bleeding.',
+    },
+    cervicalEctropion: {
+      term: 'Cervical Ectropion',
+      definition: 'Condition where cells from inside the cervical canal extend to the outer surface.',
+    },
+  },
+
+  disclaimer: 'This condition uses the General Rating Formula for DC 7610-7615.',
+};
+
+// ============================================
+// UTERUS DISEASE CRITERIA (DC 7613)
+// Uses General Rating Formula for DC 7610-7615
+// ============================================
+export const UTERUS_DISEASE_CRITERIA = {
+  diagnosticCode: '7613',
+  condition: 'Uterus Disease/Injury/Adhesions',
+  cfrReference: '38 CFR 4.116, Diagnostic Code 7613',
+
+  note: 'Uses General Rating Formula for Disease, Injury, or Adhesions of Female Reproductive Organs (DC 7610-7615).',
+
+  ratings: [
+    {
+      percent: 30,
+      summary: 'Symptoms not controlled by continuous treatment',
+      criteriaDescription: [
+        'Ongoing symptoms despite treatment',
+        'Symptoms interfere with daily activities',
+        'Treatment does not provide adequate control',
+      ],
+      evidenceNeeded: [
+        'Medical diagnosis of uterine condition',
+        'Documentation of persistent symptoms despite treatment',
+        'Gynecology records documenting severity',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Symptoms that require continuous treatment',
+      criteriaDescription: [
+        'Symptoms require ongoing treatment for control',
+        'Treatment is effective in controlling symptoms',
+      ],
+      evidenceNeeded: [
+        'Medical diagnosis of condition',
+        'Documentation of continuous treatment',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'Symptoms that do not require continuous treatment',
+      criteriaDescription: [
+        'Symptoms are mild or intermittent',
+        'No continuous treatment needed',
+      ],
+      evidenceNeeded: [
+        'Medical diagnosis of condition',
+      ],
+    },
+  ],
+
+  definitions: {
+    uterineAdhesions: {
+      term: 'Uterine Adhesions (Asherman Syndrome)',
+      definition: 'Scar tissue within the uterine cavity, often following surgery or infection.',
+    },
+    uterineFibroids: {
+      term: 'Uterine Fibroids',
+      definition: 'Non-cancerous growths in the uterus that can cause pain, heavy bleeding, and pressure symptoms.',
+    },
+  },
+
+  disclaimer: 'This condition uses the General Rating Formula for DC 7610-7615.',
+};
+
+// ============================================
+// FALLOPIAN TUBE/PID CRITERIA (DC 7614)
+// Uses General Rating Formula for DC 7610-7615
+// ============================================
+export const FALLOPIAN_TUBE_PID_CRITERIA = {
+  diagnosticCode: '7614',
+  condition: 'Fallopian Tube Disease/Pelvic Inflammatory Disease',
+  cfrReference: '38 CFR 4.116, Diagnostic Code 7614',
+
+  note: 'Uses General Rating Formula for Disease, Injury, or Adhesions of Female Reproductive Organs (DC 7610-7615). Includes PID residuals.',
+
+  ratings: [
+    {
+      percent: 30,
+      summary: 'Symptoms not controlled by continuous treatment',
+      criteriaDescription: [
+        'Ongoing symptoms despite treatment',
+        'Chronic pelvic pain from PID residuals',
+        'Treatment does not provide adequate control',
+      ],
+      evidenceNeeded: [
+        'Medical diagnosis of fallopian tube disease or PID',
+        'Documentation of persistent symptoms despite treatment',
+        'Gynecology records documenting severity',
+        'Evidence of chronic pelvic pain',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Symptoms that require continuous treatment',
+      criteriaDescription: [
+        'Symptoms require ongoing treatment for control',
+        'Treatment is effective in controlling symptoms',
+      ],
+      evidenceNeeded: [
+        'Medical diagnosis of condition',
+        'Documentation of continuous treatment',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'Symptoms that do not require continuous treatment',
+      criteriaDescription: [
+        'Symptoms are mild or intermittent',
+        'No continuous treatment needed',
+      ],
+      evidenceNeeded: [
+        'Medical diagnosis of condition',
+      ],
+    },
+  ],
+
+  definitions: {
+    PID: {
+      term: 'Pelvic Inflammatory Disease (PID)',
+      definition: 'Infection of the female reproductive organs, usually caused by STIs. Can cause chronic pelvic pain and scarring.',
+    },
+    hydrosalpinx: {
+      term: 'Hydrosalpinx',
+      definition: 'Blocked fallopian tube filled with fluid, often from previous infection or surgery.',
+    },
+  },
+
+  disclaimer: 'This condition uses the General Rating Formula for DC 7610-7615.',
+};
+
+// ============================================
+// OVARY DISEASE CRITERIA (DC 7615)
+// Uses General Rating Formula for DC 7610-7615
+// ============================================
+export const OVARY_DISEASE_CRITERIA = {
+  diagnosticCode: '7615',
+  condition: 'Ovary Disease (includes PCOS, Dysmenorrhea)',
+  cfrReference: '38 CFR 4.116, Diagnostic Code 7615',
+
+  note: 'Uses General Rating Formula for DC 7610-7615. Includes ovarian cysts, PCOS, and ovarian dysfunction affecting menstrual cycle.',
+
+  ratings: [
+    {
+      percent: 30,
+      summary: 'Symptoms not controlled by continuous treatment',
+      criteriaDescription: [
+        'Ongoing symptoms despite treatment',
+        'Symptoms interfere with daily activities',
+        'Treatment does not provide adequate control',
+        'May include severe dysmenorrhea, PCOS symptoms, or chronic ovarian pain',
+      ],
+      evidenceNeeded: [
+        'Medical diagnosis of ovarian condition',
+        'Documentation of persistent symptoms despite treatment',
+        'Gynecology/endocrinology records',
+        'For PCOS: hormone levels, imaging',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Symptoms that require continuous treatment',
+      criteriaDescription: [
+        'Symptoms require ongoing treatment for control',
+        'Treatment is effective in controlling symptoms',
+        'May include hormonal therapy for PCOS, birth control for cycle regulation',
+      ],
+      evidenceNeeded: [
+        'Medical diagnosis of condition',
+        'Documentation of continuous treatment',
+        'Prescription records',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'Symptoms that do not require continuous treatment',
+      criteriaDescription: [
+        'Symptoms are mild or intermittent',
+        'No continuous treatment needed',
+      ],
+      evidenceNeeded: [
+        'Medical diagnosis of condition',
+      ],
+    },
+  ],
+
+  definitions: {
+    PCOS: {
+      term: 'Polycystic Ovary Syndrome (PCOS)',
+      definition: 'Hormonal disorder causing enlarged ovaries with small cysts, irregular periods, excess androgen, and often metabolic issues.',
+    },
+    dysmenorrhea: {
+      term: 'Dysmenorrhea',
+      definition: 'Painful menstruation severe enough to interfere with daily activities.',
+    },
+    ovarianCyst: {
+      term: 'Ovarian Cyst',
+      definition: 'Fluid-filled sac on or within an ovary. Can cause pain, bloating, or pressure.',
+    },
+  },
+
+  disclaimer: 'This condition uses the General Rating Formula for DC 7610-7615. PCOS and dysmenorrhea affecting menstrual cycle are rated under DC 7615.',
+};
+
+// ============================================
+// CHRONIC CYSTITIS CRITERIA (DC 7512)
+// Uses Voiding Dysfunction Rating Formula
+// ============================================
+export const CHRONIC_CYSTITIS_CRITERIA = {
+  diagnosticCode: '7512',
+  condition: 'Chronic Cystitis (Bladder Infection/Inflammation)',
+  cfrReference: '38 CFR 4.115a, Diagnostic Code 7512',
+
+  note: 'Chronic cystitis is rated as voiding dysfunction. Rate under the highest applicable category: urinary frequency, incontinence, or recurrent UTIs.',
+
+  ratings: [
+    {
+      percent: 60,
+      summary: 'Requiring appliance or absorbent materials changed more than 4 times per day',
+      criteriaDescription: [
+        'Severe urinary incontinence from cystitis',
+        'Requires protective garments changed >4 times daily',
+        'May require urinary appliance',
+      ],
+      evidenceNeeded: [
+        'Diagnosis of chronic cystitis',
+        'Documentation of incontinence frequency',
+        'Prescription for incontinence supplies',
+        'Urinalysis and urine cultures',
+      ],
+    },
+    {
+      percent: 40,
+      summary: 'Daytime voiding interval less than 1 hour, OR absorbent materials 2-4 times/day',
+      criteriaDescription: [
+        'Severe urinary frequency (voiding more than hourly), OR',
+        'Moderate incontinence (2-4 pad changes daily), OR',
+        'Awakening 5+ times per night to void',
+      ],
+      evidenceNeeded: [
+        'Voiding diary showing frequency patterns',
+        'Documentation of recurrent infections',
+        'Treatment records',
+      ],
+    },
+    {
+      percent: 20,
+      summary: 'Daytime voiding interval 1-2 hours, OR absorbent materials <2 times/day',
+      criteriaDescription: [
+        'Moderate urinary frequency (every 1-2 hours), OR',
+        'Mild incontinence (1-2 pad changes daily), OR',
+        'Awakening 3-4 times per night to void',
+      ],
+      evidenceNeeded: [
+        'Documentation of symptoms',
+        'Treatment records',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Daytime voiding interval 2-3 hours, OR awakening 2 times per night',
+      criteriaDescription: [
+        'Mild urinary frequency (every 2-3 hours), OR',
+        'Awakening twice nightly',
+      ],
+      evidenceNeeded: [
+        'Documentation of voiding patterns',
+      ],
+    },
+  ],
+
+  definitions: {
+    cystitis: {
+      term: 'Cystitis',
+      definition: 'Inflammation of the bladder, usually caused by bacterial infection (UTI).',
+    },
+    interstitialCystitis: {
+      term: 'Interstitial Cystitis',
+      definition: 'Chronic bladder condition causing bladder pressure, pain, and urinary urgency without infection.',
+    },
+  },
+
+  disclaimer: 'Rate as voiding dysfunction under the highest applicable category. Recurrent UTIs should be documented with culture results.',
+};
+
+// ============================================
+// NEUROGENIC BLADDER CRITERIA (DC 7542)
+// Uses Voiding Dysfunction Rating Formula
+// ============================================
+export const NEUROGENIC_BLADDER_CRITERIA = {
+  diagnosticCode: '7542',
+  condition: 'Neurogenic Bladder',
+  cfrReference: '38 CFR 4.115a, Diagnostic Code 7542',
+
+  note: 'Neurogenic bladder is rated as voiding dysfunction. Rate under the highest applicable category: incontinence, frequency, or obstruction/retention.',
+
+  ratings: [
+    {
+      percent: 60,
+      summary: 'Requiring appliance or absorbent materials changed more than 4 times per day',
+      criteriaDescription: [
+        'Severe urinary incontinence',
+        'Requires protective garments changed >4 times daily',
+        'May require urinary appliance or collection device',
+      ],
+      evidenceNeeded: [
+        'Diagnosis of neurogenic bladder',
+        'Urodynamic studies',
+        'Documentation of incontinence frequency',
+        'Neurological evaluation',
+      ],
+    },
+    {
+      percent: 40,
+      summary: 'Daytime voiding <1 hour OR absorbent materials 2-4 times/day',
+      criteriaDescription: [
+        'Severe urinary frequency, OR',
+        'Moderate incontinence (2-4 pad changes daily), OR',
+        'Awakening 5+ times per night',
+      ],
+      evidenceNeeded: [
+        'Voiding diary',
+        'Urodynamic studies',
+        'Treatment records',
+      ],
+    },
+    {
+      percent: 30,
+      summary: 'Urinary retention requiring catheterization',
+      criteriaDescription: [
+        'Unable to empty bladder naturally',
+        'Requires intermittent self-catheterization, OR',
+        'Indwelling catheter (Foley or suprapubic)',
+      ],
+      evidenceNeeded: [
+        'Catheterization records',
+        'Post-void residual measurements',
+        'Urology records',
+      ],
+    },
+    {
+      percent: 20,
+      summary: 'Daytime voiding interval 1-2 hours, OR absorbent materials <2 times/day',
+      criteriaDescription: [
+        'Moderate urinary frequency, OR',
+        'Mild incontinence, OR',
+        'Awakening 3-4 times per night',
+      ],
+      evidenceNeeded: [
+        'Documentation of symptoms',
+        'Treatment records',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Daytime voiding interval 2-3 hours, OR marked obstructive symptoms',
+      criteriaDescription: [
+        'Mild urinary frequency, OR',
+        'Awakening twice nightly, OR',
+        'Marked obstructive voiding symptoms with complications',
+      ],
+      evidenceNeeded: [
+        'Documentation of voiding patterns',
+        'Uroflowmetry if applicable',
+      ],
+    },
+  ],
+
+  definitions: {
+    neurogenicBladder: {
+      term: 'Neurogenic Bladder',
+      definition: 'Bladder dysfunction caused by nerve damage from conditions like spinal cord injury, MS, diabetes, or TBI.',
+    },
+    detrusorOveractivity: {
+      term: 'Detrusor Overactivity',
+      definition: 'Involuntary bladder muscle contractions causing urgency and incontinence.',
+    },
+    detrusorUnderactivity: {
+      term: 'Detrusor Underactivity',
+      definition: 'Weak bladder muscle contractions causing incomplete emptying and retention.',
+    },
+  },
+
+  disclaimer: 'Rate as voiding dysfunction. Document underlying neurological condition. Urodynamic studies are key evidence.',
+};
+
+// ============================================
+// PROSTATE CONDITIONS CRITERIA (DC 7527)
+// Uses Voiding Dysfunction Rating Formula
+// ============================================
+export const PROSTATE_CONDITIONS_CRITERIA = {
+  diagnosticCode: '7527',
+  condition: 'Prostate Conditions (BPH, Prostatitis)',
+  cfrReference: '38 CFR 4.115b, Diagnostic Code 7527',
+
+  note: 'Prostate gland injuries, infections, and hypertrophy are rated as voiding dysfunction OR UTI, whichever is predominant.',
+
+  ratings: [
+    {
+      percent: 60,
+      summary: 'Severe incontinence requiring appliance/absorbent materials >4 times/day',
+      criteriaDescription: [
+        'Severe urinary incontinence from prostate condition',
+        'Requires protective garments changed >4 times daily',
+      ],
+      evidenceNeeded: [
+        'Diagnosis of prostate condition (BPH, prostatitis)',
+        'Documentation of incontinence frequency',
+        'Urology records',
+        'PSA levels if applicable',
+      ],
+    },
+    {
+      percent: 40,
+      summary: 'Daytime voiding <1 hour OR absorbent materials 2-4 times/day OR 5+ nocturia',
+      criteriaDescription: [
+        'Severe urinary frequency (voiding more than hourly), OR',
+        'Moderate incontinence, OR',
+        'Severe nocturia (5+ times per night)',
+      ],
+      evidenceNeeded: [
+        'Voiding diary',
+        'Uroflowmetry',
+        'Post-void residual measurements',
+      ],
+    },
+    {
+      percent: 30,
+      summary: 'Urinary retention requiring catheterization',
+      criteriaDescription: [
+        'Urinary retention from prostatic obstruction',
+        'Requires intermittent or continuous catheterization',
+      ],
+      evidenceNeeded: [
+        'Catheterization records',
+        'Post-void residual >150cc',
+        'Urology evaluation',
+      ],
+    },
+    {
+      percent: 20,
+      summary: 'Daytime voiding 1-2 hours OR absorbent materials <2 times/day OR 3-4 nocturia',
+      criteriaDescription: [
+        'Moderate urinary frequency, OR',
+        'Mild incontinence, OR',
+        'Moderate nocturia (3-4 times nightly)',
+      ],
+      evidenceNeeded: [
+        'Documentation of symptoms',
+        'Treatment records',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Daytime voiding 2-3 hours OR 2 nocturia OR marked obstructive symptoms',
+      criteriaDescription: [
+        'Mild frequency or nocturia, OR',
+        'Marked obstructive voiding symptoms (hesitancy, weak stream)',
+      ],
+      evidenceNeeded: [
+        'Documentation of voiding patterns',
+        'Uroflowmetry showing decreased flow',
+      ],
+    },
+  ],
+
+  definitions: {
+    BPH: {
+      term: 'Benign Prostatic Hyperplasia (BPH)',
+      definition: 'Non-cancerous enlargement of the prostate causing urinary symptoms.',
+    },
+    prostatitis: {
+      term: 'Prostatitis',
+      definition: 'Inflammation of the prostate, can be acute (bacterial) or chronic.',
+    },
+    LUTS: {
+      term: 'Lower Urinary Tract Symptoms (LUTS)',
+      definition: 'Collective term for urinary symptoms including frequency, urgency, weak stream, and nocturia.',
+    },
+  },
+
+  disclaimer: 'Rate as voiding dysfunction (frequency, incontinence, or obstruction). Post-prostatectomy residuals use same criteria.',
+};
+
+// ============================================
+// URETHRAL STRICTURE CRITERIA (DC 7518)
+// Uses Voiding Dysfunction Rating Formula
+// ============================================
+export const URETHRAL_STRICTURE_CRITERIA = {
+  diagnosticCode: '7518',
+  condition: 'Urethral Stricture',
+  cfrReference: '38 CFR 4.115b, Diagnostic Code 7518',
+
+  note: 'Urethral stricture is rated as voiding dysfunction, specifically under obstructed voiding criteria.',
+
+  ratings: [
+    {
+      percent: 30,
+      summary: 'Urinary retention requiring intermittent or continuous catheterization',
+      criteriaDescription: [
+        'Severe stricture causing retention',
+        'Requires self-catheterization or indwelling catheter',
+      ],
+      evidenceNeeded: [
+        'Diagnosis of urethral stricture',
+        'Catheterization records',
+        'Cystoscopy or imaging confirming stricture',
+        'Post-void residual measurements',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Marked obstructive symptoms with post-void residual >150cc or frequent dilations',
+      criteriaDescription: [
+        'Hesitancy, weak stream, incomplete emptying, AND',
+        'Post-void residual >150cc, OR',
+        'Markedly decreased flow rate (<10cc/sec), OR',
+        'Recurrent UTIs from obstruction, OR',
+        'Stricture requiring dilation every 2-3 months',
+      ],
+      evidenceNeeded: [
+        'Uroflowmetry results',
+        'Post-void residual measurements',
+        'Dilation procedure records',
+        'UTI treatment records',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'Obstructive symptoms requiring dilation 1-2 times per year',
+      criteriaDescription: [
+        'Mild stricture',
+        'Occasional dilation needed (1-2 times yearly)',
+      ],
+      evidenceNeeded: [
+        'Dilation procedure records',
+      ],
+    },
+  ],
+
+  definitions: {
+    urethralStricture: {
+      term: 'Urethral Stricture',
+      definition: 'Narrowing of the urethra from scar tissue, causing obstructed urination.',
+    },
+    dilation: {
+      term: 'Urethral Dilation',
+      definition: 'Procedure to widen a narrowed urethra using progressively larger instruments.',
+    },
+  },
+
+  disclaimer: 'Rate under obstructed voiding criteria. Document dilation frequency and post-void residuals.',
+};
+
+// ============================================
+// MANDIBLE MALUNION CRITERIA (DC 9904)
+// ============================================
+export const MANDIBLE_MALUNION_CRITERIA = {
+  diagnosticCode: '9904',
+  condition: 'Mandible Malunion',
+  cfrReference: '38 CFR 4.150, Diagnostic Code 9904',
+
+  note: 'Malunion of mandible is rated based on degree of displacement and functional impairment. Different from nonunion (DC 9903).',
+
+  ratings: [
+    {
+      percent: 20,
+      summary: 'Severe displacement causing marked functional impairment',
+      criteriaDescription: [
+        'Severe malunion with marked displacement',
+        'Significant bite problems (malocclusion)',
+        'Severe impairment of mastication',
+        'May have facial asymmetry',
+      ],
+      evidenceNeeded: [
+        'X-rays or CT showing malunion with displacement',
+        'Dental examination documenting malocclusion',
+        'Documentation of chewing difficulty',
+        'Measurements of jaw opening',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Moderate displacement causing functional impairment',
+      criteriaDescription: [
+        'Moderate malunion',
+        'Some bite problems',
+        'Moderate impairment of jaw function',
+      ],
+      evidenceNeeded: [
+        'Imaging showing malunion',
+        'Documentation of functional limitations',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'Slight displacement with minimal impairment',
+      criteriaDescription: [
+        'Minimal displacement',
+        'No significant functional impact',
+      ],
+      evidenceNeeded: [
+        'Imaging confirming malunion',
+      ],
+    },
+  ],
+
+  definitions: {
+    malunion: {
+      term: 'Malunion',
+      definition: 'A fracture that has healed in an incorrect position, resulting in deformity or functional limitation.',
+    },
+    malocclusion: {
+      term: 'Malocclusion',
+      definition: 'Misalignment of teeth/bite caused by jaw position abnormality.',
+    },
+  },
+
+  disclaimer: 'Rate based on severity of displacement and functional impairment. Combine with TMJ rating if both conditions exist.',
+};
+
+// ============================================
+// MAXILLA MALUNION CRITERIA (DC 9916)
+// ============================================
+export const MAXILLA_MALUNION_CRITERIA = {
+  diagnosticCode: '9916',
+  condition: 'Maxilla Malunion or Nonunion',
+  cfrReference: '38 CFR 4.150, Diagnostic Code 9916',
+
+  note: 'Maxilla (upper jaw) malunion or nonunion. Can affect breathing, vision, and eating.',
+
+  ratings: [
+    {
+      percent: 30,
+      summary: 'Nonunion or severe malunion with marked functional impairment',
+      criteriaDescription: [
+        'Nonunion (fracture not healed) or severe malunion',
+        'Marked displacement',
+        'Severe mastication impairment',
+        'May affect sinus function or facial symmetry',
+      ],
+      evidenceNeeded: [
+        'CT scan showing nonunion or severe malunion',
+        'Oral surgery/maxillofacial evaluation',
+        'Documentation of functional impairment',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Moderate malunion with some functional impairment',
+      criteriaDescription: [
+        'Moderate malunion',
+        'Some bite problems',
+        'Moderate functional impact',
+      ],
+      evidenceNeeded: [
+        'Imaging showing malunion',
+        'Documentation of limitations',
+      ],
+    },
+  ],
+
+  definitions: {
+    maxilla: {
+      term: 'Maxilla',
+      definition: 'The upper jaw bone that holds upper teeth and forms floor of nasal cavity and orbits.',
+    },
+    nonunion: {
+      term: 'Nonunion',
+      definition: 'A fracture that has failed to heal, with bone ends remaining separate.',
+    },
+  },
+
+  disclaimer: 'Maxilla malunion can affect breathing, vision, and eating. Document all functional impacts.',
+};
+
+// ============================================
+// MAXILLA/MANDIBLE BONE DISEASE CRITERIA (DC 9900)
+// Rated as Osteomyelitis (DC 5000)
+// ============================================
+export const MAXILLA_MANDIBLE_BONE_DISEASE_CRITERIA = {
+  diagnosticCode: '9900',
+  condition: 'Maxilla or Mandible Osteomyelitis/Osteonecrosis',
+  cfrReference: '38 CFR 4.150 (rates as DC 5000)',
+
+  note: 'Chronic osteomyelitis of the jaw is rated under DC 5000 (Osteomyelitis) criteria.',
+
+  ratings: [
+    {
+      percent: 60,
+      summary: 'Definite involucrum or sequestrum with repeated flare-ups',
+      criteriaDescription: [
+        'Chronic osteomyelitis with bone death (sequestrum)',
+        'New bone formation around dead bone (involucrum)',
+        'Repeated episodes of infection/drainage',
+      ],
+      evidenceNeeded: [
+        'CT or MRI showing bone involvement',
+        'Surgical records showing debridement',
+        'Documentation of flare-ups',
+        'Culture results',
+      ],
+    },
+    {
+      percent: 30,
+      summary: 'Definite involucrum or sequestrum with occasional drainage',
+      criteriaDescription: [
+        'Chronic osteomyelitis with bone changes',
+        'Occasional drainage or fistula',
+        'Periodic antibiotic treatment needed',
+      ],
+      evidenceNeeded: [
+        'Imaging showing osteomyelitis',
+        'Documentation of drainage episodes',
+        'Treatment records',
+      ],
+    },
+    {
+      percent: 20,
+      summary: 'With discharging sinus or other evidence of active infection',
+      criteriaDescription: [
+        'Active infection with drainage',
+        'Discharging sinus tract',
+        'Requires ongoing treatment',
+      ],
+      evidenceNeeded: [
+        'Documentation of active infection',
+        'Imaging studies',
+        'Treatment records',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Inactive following repeated episodes without evidence of active infection',
+      criteriaDescription: [
+        'History of osteomyelitis, now inactive',
+        'No current drainage or active infection',
+        'Residual bone changes on imaging',
+      ],
+      evidenceNeeded: [
+        'History of prior active disease',
+        'Current imaging showing resolution',
+        'Documentation of inactive status',
+      ],
+    },
+  ],
+
+  definitions: {
+    osteomyelitis: {
+      term: 'Osteomyelitis',
+      definition: 'Infection of bone, usually bacterial, causing inflammation and bone destruction.',
+    },
+    sequestrum: {
+      term: 'Sequestrum',
+      definition: 'Dead piece of bone that has separated from healthy bone during osteomyelitis.',
+    },
+    involucrum: {
+      term: 'Involucrum',
+      definition: 'New bone formation that surrounds dead bone (sequestrum) during chronic osteomyelitis.',
+    },
+    osteonecrosis: {
+      term: 'Osteonecrosis',
+      definition: 'Death of bone tissue from lack of blood supply. In jaw, often associated with bisphosphonate use or radiation.',
+    },
+  },
+
+  disclaimer: 'Jaw osteomyelitis is rated using the general osteomyelitis criteria under DC 5000.',
+};
+
+// ============================================
+// ESOPHAGEAL SPASM CRITERIA (DC 7204)
+// Uses Esophagus/Hiatal Hernia Rating Formula
+// ============================================
+export const ESOPHAGEAL_SPASM_CRITERIA = {
+  diagnosticCode: '7204',
+  condition: 'Esophageal Spasm (Diffuse Esophageal Spasm)',
+  cfrReference: '38 CFR 4.114, Diagnostic Code 7204',
+
+  note: 'Esophageal spasm is rated under the criteria for esophageal stricture/spasm based on dysphagia severity and nutritional impact.',
+
+  ratings: [
+    {
+      percent: 80,
+      summary: 'Only liquids permitted, marked impairment of general health',
+      criteriaDescription: [
+        'Severe dysphagia - only liquids can be swallowed',
+        'Marked impairment of general health',
+        'Significant weight loss',
+      ],
+      evidenceNeeded: [
+        'Diagnosis of esophageal spasm (manometry)',
+        'Documentation of liquid-only diet',
+        'Weight records showing significant loss',
+        'Nutritional status evaluation',
+      ],
+    },
+    {
+      percent: 50,
+      summary: 'Severe dysphagia allowing only liquids, moderate impairment of health',
+      criteriaDescription: [
+        'Can only swallow liquids',
+        'Moderate impairment of general health',
+      ],
+      evidenceNeeded: [
+        'Esophageal manometry',
+        'Dietary restrictions documented',
+        'Weight and health records',
+      ],
+    },
+    {
+      percent: 30,
+      summary: 'Moderate dysphagia with impaired nutrition',
+      criteriaDescription: [
+        'Difficulty swallowing solids',
+        'Some impairment of nutrition',
+        'Requires modified diet',
+      ],
+      evidenceNeeded: [
+        'Diagnosis of esophageal spasm',
+        'Dietary modification records',
+        'Nutritional assessment',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Mild symptoms, no significant nutritional impairment',
+      criteriaDescription: [
+        'Intermittent dysphagia',
+        'Chest pain with swallowing',
+        'No significant weight loss',
+      ],
+      evidenceNeeded: [
+        'Diagnosis of esophageal spasm',
+        'Symptom documentation',
+      ],
+    },
+  ],
+
+  definitions: {
+    esophagealSpasm: {
+      term: 'Diffuse Esophageal Spasm',
+      definition: 'Uncoordinated contractions of the esophagus causing dysphagia and chest pain.',
+    },
+    dysphagia: {
+      term: 'Dysphagia',
+      definition: 'Difficulty swallowing food or liquids.',
+    },
+    nutcrackerEsophagus: {
+      term: 'Nutcracker Esophagus',
+      definition: 'High-pressure esophageal contractions causing severe chest pain.',
+    },
+    manometry: {
+      term: 'Esophageal Manometry',
+      definition: 'Test measuring pressure and coordination of esophageal muscle contractions.',
+    },
+  },
+
+  disclaimer: 'Esophageal spasm diagnosis requires manometry. Rate based on dysphagia severity and nutritional impact.',
+};
+
+// ============================================
+// ESSENTIAL THROMBOCYTHEMIA CRITERIA (DC 7718)
+// ============================================
+export const ESSENTIAL_THROMBOCYTHEMIA_CRITERIA = {
+  diagnosticCode: '7718',
+  condition: 'Essential Thrombocythemia / Primary Myelofibrosis',
+  cfrReference: '38 CFR 4.117, Diagnostic Code 7718',
+
+  note: 'Rated based on clinical manifestations and treatment requirements.',
+
+  ratings: [
+    {
+      percent: 100,
+      summary: 'Requiring bone marrow transplant, OR blast phase',
+      criteriaDescription: [
+        'Disease requiring bone marrow/stem cell transplant, OR',
+        'Blast phase transformation, OR',
+        'Severe complications requiring continuous treatment',
+      ],
+      evidenceNeeded: [
+        'Hematology/oncology records',
+        'Bone marrow biopsy results',
+        'Transplant records if applicable',
+      ],
+    },
+    {
+      percent: 70,
+      summary: 'Requiring continuous myelosuppressive therapy with complications',
+      criteriaDescription: [
+        'Continuous cytoreductive therapy (hydroxyurea, anagrelide)',
+        'With significant complications (bleeding, thrombosis)',
+        'Splenomegaly causing symptoms',
+      ],
+      evidenceNeeded: [
+        'Treatment records showing continuous therapy',
+        'Documentation of complications',
+        'Lab work showing platelet counts',
+      ],
+    },
+    {
+      percent: 30,
+      summary: 'Requiring continuous medication for symptom control',
+      criteriaDescription: [
+        'Requires ongoing medication',
+        'Platelet counts controlled with treatment',
+        'Minimal complications',
+      ],
+      evidenceNeeded: [
+        'Prescription records',
+        'Lab work showing platelet trends',
+        'Hematology follow-up records',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'Asymptomatic, observation only',
+      criteriaDescription: [
+        'No treatment required',
+        'Observation with periodic monitoring',
+      ],
+      evidenceNeeded: [
+        'Diagnosis confirmation',
+        'Lab work showing stable counts',
+      ],
+    },
+  ],
+
+  definitions: {
+    essentialThrombocythemia: {
+      term: 'Essential Thrombocythemia (ET)',
+      definition: 'Myeloproliferative neoplasm causing overproduction of platelets, increasing risk of blood clots and bleeding.',
+    },
+    myelofibrosis: {
+      term: 'Primary Myelofibrosis',
+      definition: 'Bone marrow disorder causing scarring, anemia, splenomegaly, and fatigue.',
+    },
+    cytoreductiveTherapy: {
+      term: 'Cytoreductive Therapy',
+      definition: 'Treatment to reduce blood cell counts, such as hydroxyurea or anagrelide.',
+    },
+  },
+
+  disclaimer: 'Rate based on treatment requirements and complications. Transformation to acute leukemia is rated separately.',
+};
+
+// ============================================
+// EYE CONDITIONS (GENERAL) CRITERIA
+// Uses General Rating Formula for Diseases of the Eye
+// ============================================
+export const EYE_CONDITIONS_CRITERIA = {
+  diagnosticCode: 'Various',
+  condition: 'Eye Conditions (General)',
+  cfrReference: '38 CFR 4.75-4.84',
+
+  note: 'General eye conditions are rated based on visual impairment (acuity, field loss) or under the General Rating Formula for Diseases of the Eye if incapacitating episodes occur.',
+
+  ratings: [
+    {
+      percent: 60,
+      summary: 'Incapacitating episodes totaling at least 6 weeks during past 12 months',
+      criteriaDescription: [
+        'Incapacitating episodes (requiring prescribed bed rest) totaling 6+ weeks in past year',
+        'Active pathology with significant visual symptoms',
+      ],
+      evidenceNeeded: [
+        'Medical diagnosis of eye condition',
+        'Documentation of incapacitating episodes with dates',
+        'Physician-prescribed bed rest orders',
+        'Visual acuity and field testing',
+      ],
+    },
+    {
+      percent: 40,
+      summary: 'Incapacitating episodes totaling at least 4 weeks but less than 6 weeks',
+      criteriaDescription: [
+        'Incapacitating episodes totaling 4-6 weeks in past year',
+      ],
+      evidenceNeeded: [
+        'Documentation of incapacitating episodes',
+        'Treatment records',
+      ],
+    },
+    {
+      percent: 20,
+      summary: 'Incapacitating episodes totaling at least 2 weeks but less than 4 weeks',
+      criteriaDescription: [
+        'Incapacitating episodes totaling 2-4 weeks in past year',
+      ],
+      evidenceNeeded: [
+        'Documentation of incapacitating episodes',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Incapacitating episodes totaling at least 1 week but less than 2 weeks',
+      criteriaDescription: [
+        'Incapacitating episodes totaling 1-2 weeks in past year',
+      ],
+      evidenceNeeded: [
+        'Documentation of episodes',
+      ],
+    },
+  ],
+
+  definitions: {
+    incapacitatingEpisode: {
+      term: 'Incapacitating Episode (Eye)',
+      definition: 'A period of acute symptoms severe enough to require prescribed bed rest and treatment by a physician.',
+    },
+    visualAcuity: {
+      term: 'Visual Acuity',
+      definition: 'Sharpness of vision, measured on a standardized chart (e.g., 20/20).',
+    },
+    visualField: {
+      term: 'Visual Field',
+      definition: 'The total area in which objects can be seen in peripheral vision while focusing on a central point.',
+    },
+  },
+
+  disclaimer: 'Most eye conditions are rated based on visual impairment (acuity, field loss) rather than incapacitating episodes. See specific DC for your condition.',
+};
+
+// ============================================
+// PERIPHERAL ARTERIAL DISEASE CRITERIA
+// Alias for PAD_CRITERIA (naming consistency)
+// ============================================
+export const PERIPHERAL_ARTERIAL_DISEASE_CRITERIA = PAD_CRITERIA;
+
+// ============================================
 // ANALYSIS FUNCTIONS - MIGRAINE
 // ============================================
 
@@ -27643,6 +29414,254 @@ export const analyzeSinusitisLogs = (logs, options = {}) => {
     gaps,
     criteria: SINUSITIS_CRITERIA,
     disclaimer: SINUSITIS_CRITERIA.disclaimer,
+  };
+};
+
+/**
+ * Analyze Deviated Septum logs for VA rating
+ * DC 6502 - Deviated Nasal Septum
+ */
+export const analyzeDeviatedSeptumLogs = (logs, options = {}) => {
+  const { evaluationPeriodDays = 90 } = options;
+
+  // Filter for deviated septum symptoms
+  const septumSymptoms = logs.filter(log => {
+    const symptomId = log.symptomId || log.symptom;
+    return symptomId && (
+        symptomId.includes('septum') ||
+        symptomId.includes('deviated')
+    ) && isWithinEvaluationPeriod(log.timestamp, evaluationPeriodDays);
+  });
+
+  if (septumSymptoms.length === 0) {
+    return {
+      condition: 'Deviated Nasal Septum',
+      diagnosticCode: '6502',
+      hasData: false,
+      supportedRating: null,
+      ratingRationale: [],
+      evidence: [],
+      gaps: [
+        'No deviated septum symptoms logged',
+        'Document nasal obstruction severity',
+        'Track breathing difficulties',
+        'Note which side(s) affected',
+        'Document traumatic origin if applicable',
+      ],
+      criteria: DEVIATED_SEPTUM_CRITERIA,
+      disclaimer: DEVIATED_SEPTUM_CRITERIA.disclaimer,
+    };
+  }
+
+  const evidence = [];
+  const gaps = [];
+  let supportedRating = 0;
+  const ratingRationale = [];
+
+  // Count symptoms by type
+  const bilateralObstruction = septumSymptoms.filter(s => {
+    const id = s.symptomId || s.symptom;
+    return id === 'septum-obstruction-bilateral';
+  }).length;
+
+  const completeObstruction = septumSymptoms.filter(s => {
+    const id = s.symptomId || s.symptom;
+    return id === 'septum-obstruction-complete';
+  }).length;
+
+  const breathingDifficulty = septumSymptoms.filter(s => {
+    const id = s.symptomId || s.symptom;
+    return id === 'septum-breathing-difficulty';
+  }).length;
+
+  const congestion = septumSymptoms.filter(s => {
+    const id = s.symptomId || s.symptom;
+    return id === 'septum-congestion';
+  }).length;
+
+  const snoring = septumSymptoms.filter(s => {
+    const id = s.symptomId || s.symptom;
+    return id === 'septum-snoring';
+  }).length;
+
+  evidence.push(`${septumSymptoms.length} deviated septum symptoms logged over ${evaluationPeriodDays} days`);
+
+  // Rating determination based on obstruction documentation
+  if (bilateralObstruction > 0 || completeObstruction > 0) {
+    supportedRating = 10;
+    ratingRationale.push('Significant nasal obstruction documented');
+
+    if (bilateralObstruction > 0) {
+      evidence.push(`${bilateralObstruction} bilateral obstruction episodes (50%+ both sides)`);
+      ratingRationale.push('Bilateral 50%+ obstruction supports 10% rating');
+    }
+
+    if (completeObstruction > 0) {
+      evidence.push(`${completeObstruction} complete unilateral obstruction episodes`);
+      ratingRationale.push('Complete obstruction one side supports 10% rating');
+    }
+  }
+
+  // Document other symptoms
+  if (breathingDifficulty > 0) {
+    evidence.push(`${breathingDifficulty} breathing difficulty episodes`);
+  }
+  if (congestion > 0) {
+    evidence.push(`${congestion} chronic congestion episodes`);
+  }
+  if (snoring > 0) {
+    evidence.push(`${snoring} snoring/sleep disruption episodes`);
+  }
+
+  // If no obstruction documented but other symptoms present
+  if (supportedRating === 0 && septumSymptoms.length > 0) {
+    ratingRationale.push('Symptoms documented but obstruction degree not established');
+    gaps.push('Document specific obstruction percentage (50%+ bilateral or complete unilateral for 10%)');
+  }
+
+  // Documentation gaps
+  gaps.push('Obtain ENT evaluation documenting obstruction percentage');
+  gaps.push('Request CT scan or nasal endoscopy for objective evidence');
+  gaps.push('Document traumatic origin (required for VA rating)');
+  gaps.push('Note if septoplasty performed and results');
+
+  if (bilateralObstruction === 0 && completeObstruction === 0) {
+    gaps.push('Log bilateral obstruction (50%+ both sides) or complete unilateral obstruction');
+  }
+
+  return {
+    condition: 'Deviated Nasal Septum',
+    diagnosticCode: '6502',
+    hasData: true,
+    supportedRating,
+    ratingRationale,
+    evidence,
+    gaps,
+    criteria: DEVIATED_SEPTUM_CRITERIA,
+    disclaimer: DEVIATED_SEPTUM_CRITERIA.disclaimer,
+  };
+};
+
+/**
+ * Analyze Nose Loss logs for VA rating
+ * DC 6504 - Nose Loss/Disfigurement
+ */
+export const analyzeNoseLossLogs = (logs, options = {}) => {
+  const { evaluationPeriodDays = 365 } = options; // Use longer period for structural conditions
+
+  // Filter for nose loss symptoms
+  const noseLossSymptoms = logs.filter(log => {
+    const symptomId = log.symptomId || log.symptom;
+    return symptomId && (
+        symptomId.includes('nose-loss') ||
+        symptomId.includes('nose-obvious') ||
+        symptomId.includes('nose-breathing') ||
+        symptomId.includes('nose-prosthesis') ||
+        symptomId.includes('nose-reconstruction') ||
+        symptomId.includes('nose-trauma') ||
+        symptomId.includes('nose-surgical')
+    ) && isWithinEvaluationPeriod(log.timestamp, evaluationPeriodDays);
+  });
+
+  if (noseLossSymptoms.length === 0) {
+    return {
+      condition: 'Nose Loss/Disfigurement',
+      diagnosticCode: '6504',
+      hasData: false,
+      supportedRating: null,
+      ratingRationale: [],
+      evidence: [],
+      gaps: [
+        'No nose loss/disfigurement symptoms logged',
+        'Document extent of tissue loss',
+        'Note visible disfigurement',
+        'Track breathing impairment if applicable',
+        'Document cause (trauma, surgery, disease)',
+      ],
+      criteria: NOSE_LOSS_CRITERIA,
+      disclaimer: NOSE_LOSS_CRITERIA.disclaimer,
+    };
+  }
+
+  const evidence = [];
+  const gaps = [];
+  let supportedRating = 0;
+  const ratingRationale = [];
+
+  // Count symptoms by type
+  const bothPassagesExposed = noseLossSymptoms.filter(s => {
+    const id = s.symptomId || s.symptom;
+    return id === 'nose-loss-both-passages';
+  }).length;
+
+  const partialAlaLoss = noseLossSymptoms.filter(s => {
+    const id = s.symptomId || s.symptom;
+    return id === 'nose-loss-partial-ala';
+  }).length;
+
+  const obviousDisfigurement = noseLossSymptoms.filter(s => {
+    const id = s.symptomId || s.symptom;
+    return id === 'nose-obvious-disfigurement';
+  }).length;
+
+  const breathingImpairment = noseLossSymptoms.filter(s => {
+    const id = s.symptomId || s.symptom;
+    return id === 'nose-breathing-impairment';
+  }).length;
+
+  const prosthesisUse = noseLossSymptoms.filter(s => {
+    const id = s.symptomId || s.symptom;
+    return id === 'nose-prosthesis-use';
+  }).length;
+
+  evidence.push(`${noseLossSymptoms.length} nose loss/disfigurement entries logged`);
+
+  // Rating determination
+  if (bothPassagesExposed > 0) {
+    supportedRating = 30;
+    ratingRationale.push('Loss exposing both nasal passages documented');
+    evidence.push('Significant tissue loss with both passages exposed');
+  } else if (partialAlaLoss > 0 || obviousDisfigurement > 0) {
+    supportedRating = 10;
+    if (partialAlaLoss > 0) {
+      ratingRationale.push('Partial ala loss documented');
+      evidence.push('Loss of part of nasal ala');
+    }
+    if (obviousDisfigurement > 0) {
+      ratingRationale.push('Obvious disfigurement documented');
+      evidence.push('Visible nasal disfigurement present');
+    }
+  }
+
+  // Document additional symptoms
+  if (breathingImpairment > 0) {
+    evidence.push(`${breathingImpairment} breathing impairment entries`);
+  }
+  if (prosthesisUse > 0) {
+    evidence.push('Nasal prosthesis required');
+    ratingRationale.push('Prosthesis use indicates significant loss');
+  }
+
+  // Documentation gaps
+  gaps.push('Obtain photographs from multiple angles for documentation');
+  gaps.push('Get ENT or plastic surgery evaluation documenting extent');
+  gaps.push('Document cause of tissue loss (trauma, surgery, disease)');
+  gaps.push('Consider evaluation under DC 7800 (scars) if applicable');
+
+  if (supportedRating < 30) {
+    gaps.push('For 30% rating: document loss exposing BOTH nasal passages');
+  }
+
+  return {
+    condition: 'Nose Loss/Disfigurement',
+    diagnosticCode: '6504',
+    hasData: true,
+    supportedRating,
+    ratingRationale,
+    evidence,
+    gaps,
+    criteria: NOSE_LOSS_CRITERIA,
+    disclaimer: NOSE_LOSS_CRITERIA.disclaimer,
   };
 };
 
@@ -34200,6 +36219,188 @@ export const analyzeErectileDysfunctionLogs = (logs) => {
     criteriaReference: ERECTILE_DYSFUNCTION_CRITERIA,
   };
 };
+
+/**
+ * Analyze Penis Conditions logs for VA rating
+ * DC 7520-7521 - Penis Removal/Loss
+ */
+export const analyzePenisConditionsLogs = (logs, options = {}) => {
+  const { evaluationPeriodDays = 365 } = options;
+
+  // Filter for penis condition symptoms
+  const penisSymptoms = logs.filter(log => {
+    const symptomId = log.symptomId || log.symptom;
+    return symptomId && symptomId.includes('penis');
+  });
+
+  if (penisSymptoms.length === 0) {
+    return {
+      condition: 'Penis Conditions',
+      diagnosticCode: '7520-7521',
+      hasData: false,
+      supportedRating: null,
+      ratingRationale: [],
+      evidence: [],
+      gaps: [
+        'No penis condition symptoms logged',
+        'Document extent of tissue loss if applicable',
+        'Note surgical history',
+        'Track functional impact',
+      ],
+      criteria: PENIS_CONDITIONS_CRITERIA,
+      disclaimer: PENIS_CONDITIONS_CRITERIA.disclaimer,
+    };
+  }
+
+  const evidence = [];
+  const gaps = [];
+  let supportedRating = 0;
+  const ratingRationale = [];
+
+  // Count symptoms by type
+  const removalHalf = penisSymptoms.filter(s => (s.symptomId || s.symptom) === 'penis-removal-half').length;
+  const removalGlans = penisSymptoms.filter(s => (s.symptomId || s.symptom) === 'penis-removal-glans').length;
+  const deformity = penisSymptoms.filter(s => (s.symptomId || s.symptom) === 'penis-deformity').length;
+  const prosthesis = penisSymptoms.filter(s => (s.symptomId || s.symptom) === 'penis-prosthesis').length;
+
+  evidence.push(`${penisSymptoms.length} penis condition entries logged`);
+
+  // Rating determination - fixed ratings based on extent of loss
+  if (removalHalf > 0) {
+    supportedRating = 30;
+    ratingRationale.push('Removal of half or more of penis documented (DC 7520)');
+    evidence.push('Qualifies for 30% rating under DC 7520');
+    ratingRationale.push('Requires SMC-K review for loss of creative organ');
+  } else if (removalGlans > 0) {
+    supportedRating = 20;
+    ratingRationale.push('Removal of glans penis documented (DC 7521)');
+    evidence.push('Qualifies for 20% rating under DC 7521');
+    ratingRationale.push('Requires SMC-K review for loss of creative organ');
+  } else if (deformity > 0) {
+    supportedRating = 0;
+    ratingRationale.push('Penile deformity documented - rated under DC 7522 at 0%');
+    evidence.push('Deformity present but rated at 0% per DC 7522');
+    ratingRationale.push('Still qualifies for SMC-K review');
+  }
+
+  if (prosthesis > 0) {
+    evidence.push('Penile prosthesis documented');
+  }
+
+  // Documentation gaps
+  gaps.push('Obtain surgical/operative reports documenting extent of loss');
+  gaps.push('Apply for Special Monthly Compensation (SMC-K) for loss of creative organ');
+  gaps.push('Document any secondary psychological impact');
+  gaps.push('Get urology evaluation confirming condition');
+
+  return {
+    condition: 'Penis Conditions',
+    diagnosticCode: '7520-7521',
+    hasData: true,
+    supportedRating,
+    ratingRationale,
+    evidence,
+    gaps,
+    criteria: PENIS_CONDITIONS_CRITERIA,
+    disclaimer: PENIS_CONDITIONS_CRITERIA.disclaimer,
+  };
+};
+
+/**
+ * Analyze Testis Conditions logs for VA rating
+ * DC 7523-7524 - Testis Atrophy/Removal
+ */
+export const analyzeTestisConditionsLogs = (logs, options = {}) => {
+  const { evaluationPeriodDays = 365 } = options;
+
+  // Filter for testis condition symptoms
+  const testisSymptoms = logs.filter(log => {
+    const symptomId = log.symptomId || log.symptom;
+    return symptomId && symptomId.includes('testis');
+  });
+
+  if (testisSymptoms.length === 0) {
+    return {
+      condition: 'Testis Conditions',
+      diagnosticCode: '7523-7524',
+      hasData: false,
+      supportedRating: null,
+      ratingRationale: [],
+      evidence: [],
+      gaps: [
+        'No testis condition symptoms logged',
+        'Document extent of loss or atrophy',
+        'Note if one or both testes affected',
+        'Track hormone therapy if applicable',
+      ],
+      criteria: TESTIS_CONDITIONS_CRITERIA,
+      disclaimer: TESTIS_CONDITIONS_CRITERIA.disclaimer,
+    };
+  }
+
+  const evidence = [];
+  const gaps = [];
+  let supportedRating = 0;
+  const ratingRationale = [];
+
+  // Count symptoms by type
+  const atrophyBoth = testisSymptoms.filter(s => (s.symptomId || s.symptom) === 'testis-atrophy-both').length;
+  const atrophyOne = testisSymptoms.filter(s => (s.symptomId || s.symptom) === 'testis-atrophy-one').length;
+  const removalBoth = testisSymptoms.filter(s => (s.symptomId || s.symptom) === 'testis-removal-both').length;
+  const removalOne = testisSymptoms.filter(s => (s.symptomId || s.symptom) === 'testis-removal-one').length;
+  const hormoneTherapy = testisSymptoms.filter(s => (s.symptomId || s.symptom) === 'testis-hormone-therapy').length;
+
+  evidence.push(`${testisSymptoms.length} testis condition entries logged`);
+
+  // Rating determination - based on bilateral vs unilateral and removal vs atrophy
+  if (removalBoth > 0) {
+    supportedRating = 30;
+    ratingRationale.push('Removal of both testes documented (DC 7524)');
+    evidence.push('Qualifies for 30% rating under DC 7524');
+    ratingRationale.push('Requires SMC-K review for loss of creative organ');
+  } else if (atrophyBoth > 0) {
+    supportedRating = 20;
+    ratingRationale.push('Complete atrophy of both testes documented (DC 7523)');
+    evidence.push('Qualifies for 20% rating under DC 7523');
+    ratingRationale.push('Requires SMC-K review for loss of creative organ');
+  } else if (removalOne > 0 || atrophyOne > 0) {
+    supportedRating = 0;
+    if (removalOne > 0) {
+      ratingRationale.push('Removal of one testis documented (DC 7524)');
+      evidence.push('Unilateral removal rated at 0% per DC 7524');
+    }
+    if (atrophyOne > 0) {
+      ratingRationale.push('Complete atrophy of one testis documented (DC 7523)');
+      evidence.push('Unilateral atrophy rated at 0% per DC 7523');
+    }
+    ratingRationale.push('Still qualifies for SMC-K review');
+    gaps.push('Note: If other testis is also absent/nonfunctioning (unrelated to service), may qualify for 30% under special provision');
+  }
+
+  if (hormoneTherapy > 0) {
+    evidence.push('Hormone replacement therapy documented');
+    ratingRationale.push('Testosterone replacement indicates significant loss of function');
+  }
+
+  // Documentation gaps
+  gaps.push('Obtain surgical/operative reports or urology evaluation');
+  gaps.push('Apply for Special Monthly Compensation (SMC-K) for loss of creative organ');
+  gaps.push('Document hormone levels and replacement therapy if applicable');
+  gaps.push('Note cause of loss (service-connected trauma, cancer, etc.)');
+
+  return {
+    condition: 'Testis Conditions',
+    diagnosticCode: '7523-7524',
+    hasData: true,
+    supportedRating,
+    ratingRationale,
+    evidence,
+    gaps,
+    criteria: TESTIS_CONDITIONS_CRITERIA,
+    disclaimer: TESTIS_CONDITIONS_CRITERIA.disclaimer,
+  };
+};
+
 export const analyzeIronDeficiencyAnemiaLogs = (logs, options = {}) => {
   if (!logs || logs.length === 0) {
     return {
@@ -49501,6 +51702,1877 @@ export const analyzePellagraLogs = (logs, options = {}) => {
   };
 };
 
+// ============================================
+// GYNECOLOGICAL CONDITION ANALYSIS FUNCTIONS
+// ============================================
+
+/**
+ * Analyzes Vulva/Clitoris Disease logs (DC 7610)
+ * Uses General Rating Formula for DC 7610-7615
+ */
+export const analyzeVulvaClitorisDiseaseLogs = (logs, options = {}) => {
+  const symptomIds = [
+    'vulvovaginitis', 'vaginal-irritation'
+  ];
+
+  const validLogs = logs.filter(log => {
+    const symptomId = log.symptomId || log.symptom;
+    return symptomIds.includes(symptomId);
+  });
+
+  if (validLogs.length === 0) {
+    return {
+      condition: 'Vulva or Clitoris Disease/Injury',
+      diagnosticCode: '7610',
+      supportedRating: 0,
+      rationale: 'No relevant symptoms logged.',
+      evidenceStrength: 'none',
+      recommendations: ['Log symptoms when they occur to build evidence.'],
+    };
+  }
+
+  // Check for treatment-related notes
+  const hasContinuousTreatment = validLogs.some(log =>
+      log.notes?.toLowerCase().includes('treatment') ||
+      log.notes?.toLowerCase().includes('medication') ||
+      log.notes?.toLowerCase().includes('prescription')
+  );
+
+  const hasUncontrolledSymptoms = validLogs.some(log =>
+      log.notes?.toLowerCase().includes('not controlled') ||
+      log.notes?.toLowerCase().includes('despite treatment') ||
+      log.notes?.toLowerCase().includes('failed') ||
+      log.severity === 'severe'
+  );
+
+  let supportedRating = 0;
+  let rationale = '';
+
+  if (hasUncontrolledSymptoms && hasContinuousTreatment) {
+    supportedRating = 30;
+    rationale = 'Evidence suggests symptoms not controlled by continuous treatment.';
+  } else if (hasContinuousTreatment) {
+    supportedRating = 10;
+    rationale = 'Evidence suggests symptoms require continuous treatment.';
+  } else {
+    supportedRating = 0;
+    rationale = 'Symptoms do not appear to require continuous treatment.';
+  }
+
+  return {
+    condition: 'Vulva or Clitoris Disease/Injury',
+    diagnosticCode: '7610',
+    supportedRating,
+    rationale,
+    totalLogs: validLogs.length,
+    evidenceStrength: validLogs.length >= 10 ? 'strong' : validLogs.length >= 5 ? 'moderate' : 'developing',
+    criteriaReference: VULVA_CLITORIS_DISEASE_CRITERIA,
+    recommendations: [
+      'Document all treatment attempts and their effectiveness',
+      'Note when symptoms interfere with daily activities',
+      'Keep records of all gynecology visits',
+    ],
+  };
+};
+
+/**
+ * Analyzes Vagina Disease logs (DC 7611)
+ * Uses General Rating Formula for DC 7610-7615
+ */
+export const analyzeVaginaDiseaseLogs = (logs, options = {}) => {
+  const symptomIds = [
+    'vaginal-irritation', 'abnormal-discharge'
+  ];
+
+  const validLogs = logs.filter(log => {
+    const symptomId = log.symptomId || log.symptom;
+    return symptomIds.includes(symptomId);
+  });
+
+  if (validLogs.length === 0) {
+    return {
+      condition: 'Vagina Disease/Injury',
+      diagnosticCode: '7611',
+      supportedRating: 0,
+      rationale: 'No relevant symptoms logged.',
+      evidenceStrength: 'none',
+      recommendations: ['Log symptoms when they occur to build evidence.'],
+    };
+  }
+
+  const hasContinuousTreatment = validLogs.some(log =>
+      log.notes?.toLowerCase().includes('treatment') ||
+      log.notes?.toLowerCase().includes('medication')
+  );
+
+  const hasUncontrolledSymptoms = validLogs.some(log =>
+      log.notes?.toLowerCase().includes('not controlled') ||
+      log.notes?.toLowerCase().includes('despite treatment') ||
+      log.severity === 'severe'
+  );
+
+  let supportedRating = 0;
+  let rationale = '';
+
+  if (hasUncontrolledSymptoms && hasContinuousTreatment) {
+    supportedRating = 30;
+    rationale = 'Evidence suggests symptoms not controlled by continuous treatment.';
+  } else if (hasContinuousTreatment) {
+    supportedRating = 10;
+    rationale = 'Evidence suggests symptoms require continuous treatment.';
+  } else {
+    supportedRating = 0;
+    rationale = 'Symptoms do not appear to require continuous treatment.';
+  }
+
+  return {
+    condition: 'Vagina Disease/Injury',
+    diagnosticCode: '7611',
+    supportedRating,
+    rationale,
+    totalLogs: validLogs.length,
+    evidenceStrength: validLogs.length >= 10 ? 'strong' : validLogs.length >= 5 ? 'moderate' : 'developing',
+    criteriaReference: VAGINA_DISEASE_CRITERIA,
+    recommendations: [
+      'Document all treatment attempts and their effectiveness',
+      'Note frequency and severity of symptoms',
+      'Keep records of all gynecology visits',
+    ],
+  };
+};
+
+/**
+ * Analyzes Cervix Disease logs (DC 7612)
+ * Uses General Rating Formula for DC 7610-7615
+ */
+export const analyzeCervixDiseaseLogs = (logs, options = {}) => {
+  const symptomIds = [
+    'cervicitis', 'abnormal-discharge'
+  ];
+
+  const validLogs = logs.filter(log => {
+    const symptomId = log.symptomId || log.symptom;
+    return symptomIds.includes(symptomId);
+  });
+
+  if (validLogs.length === 0) {
+    return {
+      condition: 'Cervix Disease/Injury',
+      diagnosticCode: '7612',
+      supportedRating: 0,
+      rationale: 'No relevant symptoms logged.',
+      evidenceStrength: 'none',
+      recommendations: ['Log symptoms when they occur to build evidence.'],
+    };
+  }
+
+  const hasContinuousTreatment = validLogs.some(log =>
+      log.notes?.toLowerCase().includes('treatment') ||
+      log.notes?.toLowerCase().includes('medication')
+  );
+
+  const hasUncontrolledSymptoms = validLogs.some(log =>
+      log.notes?.toLowerCase().includes('not controlled') ||
+      log.notes?.toLowerCase().includes('despite treatment') ||
+      log.severity === 'severe'
+  );
+
+  let supportedRating = 0;
+  let rationale = '';
+
+  if (hasUncontrolledSymptoms && hasContinuousTreatment) {
+    supportedRating = 30;
+    rationale = 'Evidence suggests symptoms not controlled by continuous treatment.';
+  } else if (hasContinuousTreatment) {
+    supportedRating = 10;
+    rationale = 'Evidence suggests symptoms require continuous treatment.';
+  } else {
+    supportedRating = 0;
+    rationale = 'Symptoms do not appear to require continuous treatment.';
+  }
+
+  return {
+    condition: 'Cervix Disease/Injury',
+    diagnosticCode: '7612',
+    supportedRating,
+    rationale,
+    totalLogs: validLogs.length,
+    evidenceStrength: validLogs.length >= 10 ? 'strong' : validLogs.length >= 5 ? 'moderate' : 'developing',
+    criteriaReference: CERVIX_DISEASE_CRITERIA,
+    recommendations: [
+      'Document all treatment attempts and their effectiveness',
+      'Keep records of Pap smears and gynecology visits',
+    ],
+  };
+};
+
+/**
+ * Analyzes Uterus Disease logs (DC 7613)
+ * Uses General Rating Formula for DC 7610-7615
+ */
+export const analyzeUterusDiseaseLogs = (logs, options = {}) => {
+  const symptomIds = [
+    'uterine-cramping', 'chronic-pelvic-pain', 'lower-abdominal-pain'
+  ];
+
+  const validLogs = logs.filter(log => {
+    const symptomId = log.symptomId || log.symptom;
+    return symptomIds.includes(symptomId);
+  });
+
+  if (validLogs.length === 0) {
+    return {
+      condition: 'Uterus Disease/Injury/Adhesions',
+      diagnosticCode: '7613',
+      supportedRating: 0,
+      rationale: 'No relevant symptoms logged.',
+      evidenceStrength: 'none',
+      recommendations: ['Log symptoms when they occur to build evidence.'],
+    };
+  }
+
+  const hasContinuousTreatment = validLogs.some(log =>
+      log.notes?.toLowerCase().includes('treatment') ||
+      log.notes?.toLowerCase().includes('medication')
+  );
+
+  const hasUncontrolledSymptoms = validLogs.some(log =>
+      log.notes?.toLowerCase().includes('not controlled') ||
+      log.notes?.toLowerCase().includes('despite treatment') ||
+      log.severity === 'severe'
+  );
+
+  let supportedRating = 0;
+  let rationale = '';
+
+  if (hasUncontrolledSymptoms && hasContinuousTreatment) {
+    supportedRating = 30;
+    rationale = 'Evidence suggests symptoms not controlled by continuous treatment.';
+  } else if (hasContinuousTreatment) {
+    supportedRating = 10;
+    rationale = 'Evidence suggests symptoms require continuous treatment.';
+  } else {
+    supportedRating = 0;
+    rationale = 'Symptoms do not appear to require continuous treatment.';
+  }
+
+  return {
+    condition: 'Uterus Disease/Injury/Adhesions',
+    diagnosticCode: '7613',
+    supportedRating,
+    rationale,
+    totalLogs: validLogs.length,
+    evidenceStrength: validLogs.length >= 10 ? 'strong' : validLogs.length >= 5 ? 'moderate' : 'developing',
+    criteriaReference: UTERUS_DISEASE_CRITERIA,
+    recommendations: [
+      'Document all treatment attempts and their effectiveness',
+      'Note impact on daily activities',
+      'Keep records of imaging studies (ultrasound, MRI)',
+    ],
+  };
+};
+
+/**
+ * Analyzes Fallopian Tube/PID logs (DC 7614)
+ * Uses General Rating Formula for DC 7610-7615
+ */
+export const analyzeFallopianTubePIDLogs = (logs, options = {}) => {
+  const symptomIds = [
+    'pid-symptoms', 'abnormal-discharge', 'chronic-pelvic-pain', 'lower-abdominal-pain'
+  ];
+
+  const validLogs = logs.filter(log => {
+    const symptomId = log.symptomId || log.symptom;
+    return symptomIds.includes(symptomId);
+  });
+
+  if (validLogs.length === 0) {
+    return {
+      condition: 'Fallopian Tube Disease/PID',
+      diagnosticCode: '7614',
+      supportedRating: 0,
+      rationale: 'No relevant symptoms logged.',
+      evidenceStrength: 'none',
+      recommendations: ['Log symptoms when they occur to build evidence.'],
+    };
+  }
+
+  const hasContinuousTreatment = validLogs.some(log =>
+      log.notes?.toLowerCase().includes('treatment') ||
+      log.notes?.toLowerCase().includes('antibiotic') ||
+      log.notes?.toLowerCase().includes('medication')
+  );
+
+  const hasUncontrolledSymptoms = validLogs.some(log =>
+      log.notes?.toLowerCase().includes('not controlled') ||
+      log.notes?.toLowerCase().includes('chronic') ||
+      log.notes?.toLowerCase().includes('despite treatment') ||
+      log.severity === 'severe'
+  );
+
+  let supportedRating = 0;
+  let rationale = '';
+
+  if (hasUncontrolledSymptoms && hasContinuousTreatment) {
+    supportedRating = 30;
+    rationale = 'Evidence suggests chronic symptoms not controlled by continuous treatment.';
+  } else if (hasContinuousTreatment) {
+    supportedRating = 10;
+    rationale = 'Evidence suggests symptoms require continuous treatment.';
+  } else {
+    supportedRating = 0;
+    rationale = 'Symptoms do not appear to require continuous treatment.';
+  }
+
+  return {
+    condition: 'Fallopian Tube Disease/PID',
+    diagnosticCode: '7614',
+    supportedRating,
+    rationale,
+    totalLogs: validLogs.length,
+    evidenceStrength: validLogs.length >= 10 ? 'strong' : validLogs.length >= 5 ? 'moderate' : 'developing',
+    criteriaReference: FALLOPIAN_TUBE_PID_CRITERIA,
+    recommendations: [
+      'Document all PID episodes and treatments',
+      'Note chronic pelvic pain frequency and severity',
+      'Keep records of all gynecology visits and imaging',
+    ],
+  };
+};
+
+/**
+ * Analyzes Ovary Disease logs (DC 7615)
+ * Uses General Rating Formula for DC 7610-7615
+ */
+export const analyzeOvaryDiseaseLogs = (logs, options = {}) => {
+  const symptomIds = [
+    'ovarian-cysts', 'polycystic-ovaries', 'ovulation-pain', 'anovulation',
+    'painful-periods', 'heavy-menstrual-bleeding', 'irregular-periods',
+    'absent-periods', 'hirsutism', 'hormonal-acne', 'pcos-weight-changes'
+  ];
+
+  const validLogs = logs.filter(log => {
+    const symptomId = log.symptomId || log.symptom;
+    return symptomIds.includes(symptomId);
+  });
+
+  if (validLogs.length === 0) {
+    return {
+      condition: 'Ovary Disease (includes PCOS, Dysmenorrhea)',
+      diagnosticCode: '7615',
+      supportedRating: 0,
+      rationale: 'No relevant symptoms logged.',
+      evidenceStrength: 'none',
+      recommendations: ['Log symptoms when they occur to build evidence.'],
+    };
+  }
+
+  const hasContinuousTreatment = validLogs.some(log =>
+      log.notes?.toLowerCase().includes('treatment') ||
+      log.notes?.toLowerCase().includes('birth control') ||
+      log.notes?.toLowerCase().includes('metformin') ||
+      log.notes?.toLowerCase().includes('hormone') ||
+      log.notes?.toLowerCase().includes('medication')
+  );
+
+  const hasUncontrolledSymptoms = validLogs.some(log =>
+      log.notes?.toLowerCase().includes('not controlled') ||
+      log.notes?.toLowerCase().includes('despite treatment') ||
+      log.severity === 'severe'
+  );
+
+  let supportedRating = 0;
+  let rationale = '';
+
+  if (hasUncontrolledSymptoms && hasContinuousTreatment) {
+    supportedRating = 30;
+    rationale = 'Evidence suggests symptoms not controlled by continuous treatment.';
+  } else if (hasContinuousTreatment) {
+    supportedRating = 10;
+    rationale = 'Evidence suggests symptoms require continuous treatment.';
+  } else {
+    supportedRating = 0;
+    rationale = 'Symptoms do not appear to require continuous treatment.';
+  }
+
+  return {
+    condition: 'Ovary Disease (includes PCOS, Dysmenorrhea)',
+    diagnosticCode: '7615',
+    supportedRating,
+    rationale,
+    totalLogs: validLogs.length,
+    evidenceStrength: validLogs.length >= 10 ? 'strong' : validLogs.length >= 5 ? 'moderate' : 'developing',
+    criteriaReference: OVARY_DISEASE_CRITERIA,
+    recommendations: [
+      'Document menstrual cycle patterns',
+      'Track PCOS symptoms (if applicable)',
+      'Note all hormonal treatments and effectiveness',
+      'Keep records of ultrasounds and hormone levels',
+    ],
+  };
+};
+
+// ============================================
+// DIGESTIVE/RECTAL CONDITION ANALYSIS FUNCTIONS
+// ============================================
+
+/**
+ * Analyzes Esophageal Spasm logs (DC 7204)
+ */
+export const analyzeEsophagealSpasmLogs = (logs, options = {}) => {
+  const symptomIds = [
+    'dysphagia', 'chest-pain-swallowing', 'esophageal-spasm',
+    'difficulty-swallowing', 'food-sticking'
+  ];
+
+  const validLogs = logs.filter(log => {
+    const symptomId = log.symptomId || log.symptom;
+    return symptomIds.includes(symptomId) ||
+        log.notes?.toLowerCase().includes('esophag') ||
+        log.notes?.toLowerCase().includes('swallow');
+  });
+
+  if (validLogs.length === 0) {
+    return {
+      condition: 'Esophageal Spasm',
+      diagnosticCode: '7204',
+      supportedRating: 0,
+      rationale: 'No relevant symptoms logged.',
+      evidenceStrength: 'none',
+      recommendations: ['Log symptoms when they occur to build evidence.'],
+    };
+  }
+
+  // Check for severity indicators
+  const liquidOnlyDiet = validLogs.some(log =>
+      log.notes?.toLowerCase().includes('liquid only') ||
+      log.notes?.toLowerCase().includes('liquids only') ||
+      log.notes?.toLowerCase().includes('cannot eat solid')
+  );
+
+  const severeHealthImpact = validLogs.some(log =>
+      log.notes?.toLowerCase().includes('weight loss') ||
+      log.notes?.toLowerCase().includes('malnutrition') ||
+      log.notes?.toLowerCase().includes('marked impairment')
+  );
+
+  const moderateDysphagia = validLogs.some(log =>
+      log.severity === 'severe' ||
+      log.notes?.toLowerCase().includes('modified diet') ||
+      log.notes?.toLowerCase().includes('soft food')
+  );
+
+  let supportedRating = 0;
+  let rationale = '';
+
+  if (liquidOnlyDiet && severeHealthImpact) {
+    supportedRating = 80;
+    rationale = 'Evidence suggests liquid-only diet with marked health impairment.';
+  } else if (liquidOnlyDiet) {
+    supportedRating = 50;
+    rationale = 'Evidence suggests severe dysphagia allowing only liquids.';
+  } else if (moderateDysphagia) {
+    supportedRating = 30;
+    rationale = 'Evidence suggests moderate dysphagia with dietary modifications.';
+  } else if (validLogs.length > 0) {
+    supportedRating = 10;
+    rationale = 'Evidence suggests mild/intermittent symptoms.';
+  }
+
+  return {
+    condition: 'Esophageal Spasm',
+    diagnosticCode: '7204',
+    supportedRating,
+    rationale,
+    totalLogs: validLogs.length,
+    evidenceStrength: validLogs.length >= 10 ? 'strong' : validLogs.length >= 5 ? 'moderate' : 'developing',
+    criteriaReference: ESOPHAGEAL_SPASM_CRITERIA,
+    recommendations: [
+      'Document dysphagia episodes with severity',
+      'Track dietary restrictions (liquid vs soft vs regular)',
+      'Record weight changes',
+      'Get esophageal manometry results',
+    ],
+  };
+};
+
+/**
+ * Analyzes Rectal Prolapse logs (DC 7334)
+ */
+export const analyzeRectalProlapseLogs = (logs, options = {}) => {
+  const symptomIds = [
+    'rectal-prolapse', 'rectal-protrusion', 'bowel-protrusion'
+  ];
+
+  const validLogs = logs.filter(log => {
+    const symptomId = log.symptomId || log.symptom;
+    return symptomIds.includes(symptomId) ||
+        log.notes?.toLowerCase().includes('prolapse') ||
+        log.notes?.toLowerCase().includes('protrusion');
+  });
+
+  if (validLogs.length === 0) {
+    return {
+      condition: 'Rectal Prolapse',
+      diagnosticCode: '7334',
+      supportedRating: 0,
+      rationale: 'No relevant symptoms logged.',
+      evidenceStrength: 'none',
+      recommendations: ['Log symptoms when they occur to build evidence.'],
+    };
+  }
+
+  // Check severity
+  const severeConstantProlapse = validLogs.some(log =>
+      log.notes?.toLowerCase().includes('constant') ||
+      log.notes?.toLowerCase().includes('persistent') ||
+      log.notes?.toLowerCase().includes('cannot reduce')
+  );
+
+  const moderateProlapse = validLogs.some(log =>
+      log.notes?.toLowerCase().includes('frequent') ||
+      log.severity === 'severe' ||
+      log.severity === 'moderate'
+  );
+
+  let supportedRating = 0;
+  let rationale = '';
+
+  if (severeConstantProlapse) {
+    supportedRating = 50;
+    rationale = 'Evidence suggests severe, persistent prolapse.';
+  } else if (moderateProlapse) {
+    supportedRating = 30;
+    rationale = 'Evidence suggests moderate prolapse requiring frequent reduction.';
+  } else if (validLogs.length > 0) {
+    supportedRating = 10;
+    rationale = 'Evidence suggests mild/occasional prolapse.';
+  }
+
+  return {
+    condition: 'Rectal Prolapse',
+    diagnosticCode: '7334',
+    supportedRating,
+    rationale,
+    totalLogs: validLogs.length,
+    evidenceStrength: validLogs.length >= 10 ? 'strong' : validLogs.length >= 5 ? 'moderate' : 'developing',
+    criteriaReference: RECTAL_PROLAPSE_CRITERIA,
+    recommendations: [
+      'Document frequency of prolapse episodes',
+      'Note whether manual reduction is required',
+      'Track any fecal incontinence (may be rated separately)',
+      'Get colorectal surgery evaluation',
+    ],
+  };
+};
+
+/**
+ * Analyzes Rectal Stricture logs (DC 7333)
+ */
+export const analyzeRectalStrictureLogs = (logs, options = {}) => {
+  const symptomIds = [
+    'rectal-stricture', 'anal-stricture', 'bowel-obstruction',
+    'difficulty-defecating', 'narrow-stool'
+  ];
+
+  const validLogs = logs.filter(log => {
+    const symptomId = log.symptomId || log.symptom;
+    return symptomIds.includes(symptomId) ||
+        log.notes?.toLowerCase().includes('stricture') ||
+        log.notes?.toLowerCase().includes('narrowing');
+  });
+
+  if (validLogs.length === 0) {
+    return {
+      condition: 'Rectal Stricture',
+      diagnosticCode: '7333',
+      supportedRating: 0,
+      rationale: 'No relevant symptoms logged.',
+      evidenceStrength: 'none',
+      recommendations: ['Log symptoms when they occur to build evidence.'],
+    };
+  }
+
+  // Check for colostomy requirement
+  const requiresColostomy = validLogs.some(log =>
+      log.notes?.toLowerCase().includes('colostomy') ||
+      log.notes?.toLowerCase().includes('ostomy')
+  );
+
+  const greatReduction = validLogs.some(log =>
+      log.notes?.toLowerCase().includes('great reduction') ||
+      log.notes?.toLowerCase().includes('severe narrowing') ||
+      log.notes?.toLowerCase().includes('marked reduction')
+  );
+
+  const moderateReduction = validLogs.some(log =>
+      log.notes?.toLowerCase().includes('moderate') ||
+      log.severity === 'moderate' ||
+      log.severity === 'severe'
+  );
+
+  let supportedRating = 0;
+  let rationale = '';
+
+  if (requiresColostomy) {
+    supportedRating = 100;
+    rationale = 'Stricture requiring colostomy.';
+  } else if (greatReduction) {
+    supportedRating = 50;
+    rationale = 'Evidence suggests great reduction of lumen.';
+  } else if (moderateReduction) {
+    supportedRating = 30;
+    rationale = 'Evidence suggests moderate reduction of lumen.';
+  } else if (validLogs.length > 0) {
+    supportedRating = 10;
+    rationale = 'Evidence suggests mild stricture.';
+  }
+
+  return {
+    condition: 'Rectal Stricture',
+    diagnosticCode: '7333',
+    supportedRating,
+    rationale,
+    totalLogs: validLogs.length,
+    evidenceStrength: validLogs.length >= 10 ? 'strong' : validLogs.length >= 5 ? 'moderate' : 'developing',
+    criteriaReference: RECTAL_STRICTURE_CRITERIA,
+    recommendations: [
+      'Document bowel movement difficulty',
+      'Get colonoscopy/imaging showing stricture',
+      'Track any dilation procedures',
+      'Note impact on daily activities',
+    ],
+  };
+};
+
+/**
+ * Analyzes Anal Fistula logs (DC 7335)
+ */
+export const analyzeAnalFistulaLogs = (logs, options = {}) => {
+  const symptomIds = [
+    'anal-fistula', 'perianal-fistula', 'fistula-drainage',
+    'perianal-abscess', 'anal-abscess'
+  ];
+
+  const validLogs = logs.filter(log => {
+    const symptomId = log.symptomId || log.symptom;
+    return symptomIds.includes(symptomId) ||
+        log.notes?.toLowerCase().includes('fistula') ||
+        log.notes?.toLowerCase().includes('abscess');
+  });
+
+  if (validLogs.length === 0) {
+    return {
+      condition: 'Anal Fistula',
+      diagnosticCode: '7335',
+      supportedRating: 0,
+      rationale: 'No relevant symptoms logged.',
+      evidenceStrength: 'none',
+      recommendations: ['Log symptoms when they occur to build evidence.'],
+    };
+  }
+
+  // Check for constant drainage
+  const constantDrainage = validLogs.some(log =>
+      log.notes?.toLowerCase().includes('constant') ||
+      log.notes?.toLowerCase().includes('continuous') ||
+      log.notes?.toLowerCase().includes('persistent drainage')
+  );
+
+  const frequentDrainage = validLogs.some(log =>
+      log.notes?.toLowerCase().includes('frequent') ||
+      log.severity === 'severe' ||
+      log.severity === 'moderate'
+  );
+
+  let supportedRating = 0;
+  let rationale = '';
+
+  if (constantDrainage) {
+    supportedRating = 30;
+    rationale = 'Evidence suggests constant or frequently recurring fistula with drainage.';
+  } else if (frequentDrainage) {
+    supportedRating = 10;
+    rationale = 'Evidence suggests occasional fistula symptoms.';
+  } else if (validLogs.length > 0) {
+    supportedRating = 0;
+    rationale = 'Healed or minimal symptoms documented.';
+  }
+
+  return {
+    condition: 'Anal Fistula',
+    diagnosticCode: '7335',
+    supportedRating,
+    rationale,
+    totalLogs: validLogs.length,
+    evidenceStrength: validLogs.length >= 10 ? 'strong' : validLogs.length >= 5 ? 'moderate' : 'developing',
+    criteriaReference: ANAL_FISTULA_CRITERIA,
+    recommendations: [
+      'Document drainage frequency and amount',
+      'Track any surgical repairs',
+      'Note recurrence after treatment',
+      'Get colorectal surgery evaluation',
+    ],
+  };
+};
+
+/**
+ * Analyzes Pruritus Ani logs (DC 7337)
+ */
+export const analyzePruritusAniLogs = (logs, options = {}) => {
+  const symptomIds = [
+    'pruritus-ani', 'anal-itching', 'perianal-itching', 'rectal-itching'
+  ];
+
+  const validLogs = logs.filter(log => {
+    const symptomId = log.symptomId || log.symptom;
+    return symptomIds.includes(symptomId) ||
+        log.notes?.toLowerCase().includes('anal itch') ||
+        log.notes?.toLowerCase().includes('rectal itch');
+  });
+
+  if (validLogs.length === 0) {
+    return {
+      condition: 'Pruritus Ani',
+      diagnosticCode: '7337',
+      supportedRating: 0,
+      rationale: 'No relevant symptoms logged.',
+      evidenceStrength: 'none',
+      recommendations: ['Log symptoms when they occur to build evidence.'],
+    };
+  }
+
+  // Check severity - max rating is 10%
+  const persistentSymptoms = validLogs.length >= 5 || validLogs.some(log =>
+      log.notes?.toLowerCase().includes('persistent') ||
+      log.notes?.toLowerCase().includes('constant') ||
+      log.severity === 'severe' ||
+      log.severity === 'moderate'
+  );
+
+  let supportedRating = 0;
+  let rationale = '';
+
+  if (persistentSymptoms) {
+    supportedRating = 10;
+    rationale = 'Evidence suggests persistent pruritus ani symptoms.';
+  } else {
+    supportedRating = 0;
+    rationale = 'Mild or infrequent symptoms documented.';
+  }
+
+  return {
+    condition: 'Pruritus Ani',
+    diagnosticCode: '7337',
+    supportedRating,
+    rationale,
+    totalLogs: validLogs.length,
+    evidenceStrength: validLogs.length >= 10 ? 'strong' : validLogs.length >= 5 ? 'moderate' : 'developing',
+    criteriaReference: PRURITUS_ANI_CRITERIA,
+    recommendations: [
+      'Document frequency and severity of itching',
+      'Note any treatments used',
+      'Track impact on sleep and daily activities',
+    ],
+    note: 'Maximum rating for pruritus ani is 10%.',
+  };
+};
+
+/**
+ * Analyzes Chronic Cystitis logs (DC 7512)
+ */
+export const analyzeChronicCystitisLogs = (logs, options = {}) => {
+  const symptomIds = [
+    'urinary-frequency', 'urinary-urgency', 'dysuria', 'bladder-pain',
+    'urinary-incontinence', 'nocturia', 'recurrent-uti'
+  ];
+
+  const validLogs = logs.filter(log => {
+    const symptomId = log.symptomId || log.symptom;
+    return symptomIds.includes(symptomId) ||
+        log.notes?.toLowerCase().includes('cystitis') ||
+        log.notes?.toLowerCase().includes('bladder') ||
+        log.notes?.toLowerCase().includes('uti');
+  });
+
+  if (validLogs.length === 0) {
+    return {
+      condition: 'Chronic Cystitis',
+      diagnosticCode: '7512',
+      supportedRating: 0,
+      rationale: 'No relevant symptoms logged.',
+      evidenceStrength: 'none',
+      recommendations: ['Log symptoms when they occur to build evidence.'],
+    };
+  }
+
+  // Evaluate voiding dysfunction criteria
+  const severeIncontinence = validLogs.some(log =>
+      log.notes?.toLowerCase().includes('pad') &&
+      (log.notes?.toLowerCase().includes('4') || log.notes?.toLowerCase().includes('five') ||
+          log.notes?.toLowerCase().includes('5') || log.notes?.toLowerCase().includes('more than 4'))
+  );
+
+  const moderateIncontinence = validLogs.some(log =>
+      log.notes?.toLowerCase().includes('pad') &&
+      (log.notes?.toLowerCase().includes('2') || log.notes?.toLowerCase().includes('3') ||
+          log.notes?.toLowerCase().includes('4'))
+  );
+
+  const severeFrequency = validLogs.some(log =>
+      log.notes?.toLowerCase().includes('hourly') ||
+      log.notes?.toLowerCase().includes('every hour') ||
+      log.notes?.toLowerCase().includes('less than 1 hour') ||
+      log.notes?.toLowerCase().includes('5 times') ||
+      log.notes?.toLowerCase().includes('nocturia 5')
+  );
+
+  const moderateFrequency = validLogs.some(log =>
+      log.notes?.toLowerCase().includes('every 1-2 hour') ||
+      log.notes?.toLowerCase().includes('3-4 times') ||
+      log.notes?.toLowerCase().includes('nocturia 3') ||
+      log.notes?.toLowerCase().includes('nocturia 4')
+  );
+
+  let supportedRating = 0;
+  let rationale = '';
+
+  if (severeIncontinence) {
+    supportedRating = 60;
+    rationale = 'Evidence suggests severe incontinence requiring frequent pad changes (>4/day).';
+  } else if (severeFrequency || moderateIncontinence) {
+    supportedRating = 40;
+    rationale = 'Evidence suggests severe urinary frequency or moderate incontinence.';
+  } else if (moderateFrequency) {
+    supportedRating = 20;
+    rationale = 'Evidence suggests moderate urinary frequency or mild incontinence.';
+  } else if (validLogs.length > 0) {
+    supportedRating = 10;
+    rationale = 'Evidence suggests mild urinary symptoms.';
+  }
+
+  return {
+    condition: 'Chronic Cystitis',
+    diagnosticCode: '7512',
+    supportedRating,
+    rationale,
+    totalLogs: validLogs.length,
+    evidenceStrength: validLogs.length >= 10 ? 'strong' : validLogs.length >= 5 ? 'moderate' : 'developing',
+    criteriaReference: CHRONIC_CYSTITIS_CRITERIA,
+    recommendations: [
+      'Keep a voiding diary (frequency, volume)',
+      'Document pad/absorbent usage if applicable',
+      'Track UTI episodes with culture results',
+      'Note nocturia frequency',
+    ],
+  };
+};
+
+// ============================================
+// EYE/VISION CONDITION ANALYSIS FUNCTIONS
+// ============================================
+
+/**
+ * Analyzes general Eye Conditions logs
+ * Uses General Rating Formula for Diseases of the Eye (incapacitating episodes)
+ */
+export const analyzeEyeConditionsLogs = (logs, options = {}) => {
+  const symptomIds = [
+    'eye-pain', 'vision-changes', 'blurred-vision', 'eye-inflammation',
+    'photophobia', 'eye-redness', 'eye-discharge', 'double-vision'
+  ];
+
+  const validLogs = logs.filter(log => {
+    const symptomId = log.symptomId || log.symptom;
+    return symptomIds.includes(symptomId) ||
+        log.notes?.toLowerCase().includes('eye') ||
+        log.notes?.toLowerCase().includes('vision');
+  });
+
+  if (validLogs.length === 0) {
+    return {
+      condition: 'Eye Conditions (General)',
+      diagnosticCode: 'Various',
+      supportedRating: 0,
+      rationale: 'No relevant symptoms logged.',
+      evidenceStrength: 'none',
+      recommendations: ['Log symptoms when they occur to build evidence.'],
+    };
+  }
+
+  // Count incapacitating episodes (bed rest required)
+  const incapacitatingLogs = validLogs.filter(log =>
+      log.notes?.toLowerCase().includes('bed rest') ||
+      log.notes?.toLowerCase().includes('incapacitat') ||
+      log.notes?.toLowerCase().includes('unable to work') ||
+      log.notes?.toLowerCase().includes('missed work') ||
+      log.severity === 'severe'
+  );
+
+  // Estimate weeks of incapacitation (rough calculation)
+  const incapacitatingDays = incapacitatingLogs.length; // Assume each log = 1 day
+  const incapacitatingWeeks = incapacitatingDays / 7;
+
+  let supportedRating = 0;
+  let rationale = '';
+
+  if (incapacitatingWeeks >= 6) {
+    supportedRating = 60;
+    rationale = `Evidence suggests approximately ${Math.round(incapacitatingWeeks)} weeks of incapacitating episodes in evaluation period.`;
+  } else if (incapacitatingWeeks >= 4) {
+    supportedRating = 40;
+    rationale = `Evidence suggests approximately ${Math.round(incapacitatingWeeks)} weeks of incapacitating episodes.`;
+  } else if (incapacitatingWeeks >= 2) {
+    supportedRating = 20;
+    rationale = `Evidence suggests approximately ${Math.round(incapacitatingWeeks)} weeks of incapacitating episodes.`;
+  } else if (incapacitatingWeeks >= 1) {
+    supportedRating = 10;
+    rationale = `Evidence suggests approximately ${Math.round(incapacitatingWeeks)} weeks of incapacitating episodes.`;
+  } else {
+    supportedRating = 0;
+    rationale = 'Insufficient incapacitating episodes documented for compensable rating under general formula.';
+  }
+
+  return {
+    condition: 'Eye Conditions (General)',
+    diagnosticCode: 'Various',
+    supportedRating,
+    rationale,
+    totalLogs: validLogs.length,
+    incapacitatingLogs: incapacitatingLogs.length,
+    estimatedIncapacitatingWeeks: Math.round(incapacitatingWeeks * 10) / 10,
+    evidenceStrength: validLogs.length >= 10 ? 'strong' : validLogs.length >= 5 ? 'moderate' : 'developing',
+    criteriaReference: EYE_CONDITIONS_CRITERIA,
+    recommendations: [
+      'Document incapacitating episodes with physician-prescribed bed rest',
+      'Get visual acuity testing (may qualify for higher rating)',
+      'Get visual field testing if applicable',
+      'Most eye conditions are rated on visual impairment, not incapacitating episodes',
+    ],
+    note: 'Most eye conditions are rated based on visual acuity or field loss. See specific diagnostic code for your condition.',
+  };
+};
+
+/**
+ * Analyzes Peripheral Arterial Disease (PAD) logs (DC 7114)
+ */
+export const analyzePeripheralArterialDiseaseLogs = (logs, options = {}) => {
+  const symptomIds = [
+    'claudication', 'leg-pain-walking', 'calf-pain', 'leg-cramping',
+    'cold-extremities', 'numbness-legs', 'leg-weakness', 'rest-pain',
+    'leg-ulcer', 'non-healing-wound'
+  ];
+
+  const validLogs = logs.filter(log => {
+    const symptomId = log.symptomId || log.symptom;
+    return symptomIds.includes(symptomId) ||
+        log.notes?.toLowerCase().includes('claudication') ||
+        log.notes?.toLowerCase().includes('pad') ||
+        log.notes?.toLowerCase().includes('peripheral arterial') ||
+        log.notes?.toLowerCase().includes('abi');
+  });
+
+  if (validLogs.length === 0) {
+    return {
+      condition: 'Peripheral Arterial Disease',
+      diagnosticCode: '7114',
+      supportedRating: 0,
+      rationale: 'No relevant symptoms logged.',
+      evidenceStrength: 'none',
+      recommendations: ['Log symptoms when they occur to build evidence.'],
+    };
+  }
+
+  // Check for severity indicators
+  const restPain = validLogs.some(log =>
+      log.notes?.toLowerCase().includes('rest pain') ||
+      log.notes?.toLowerCase().includes('pain at rest')
+  );
+
+  const ulcers = validLogs.some(log =>
+      log.notes?.toLowerCase().includes('ulcer') ||
+      log.notes?.toLowerCase().includes('non-healing') ||
+      log.notes?.toLowerCase().includes('gangrene')
+  );
+
+  const severeABI = validLogs.some(log =>
+      log.notes?.toLowerCase().includes('abi 0.4') ||
+      log.notes?.toLowerCase().includes('abi 0.3') ||
+      log.notes?.toLowerCase().includes('abi of 0.4')
+  );
+
+  const claudicationUnder25 = validLogs.some(log =>
+      log.notes?.toLowerCase().includes('less than 25') ||
+      log.notes?.toLowerCase().includes('under 25 yard') ||
+      log.notes?.toLowerCase().includes('<25')
+  );
+
+  const claudication25to100 = validLogs.some(log =>
+      log.notes?.toLowerCase().includes('25 to 100') ||
+      log.notes?.toLowerCase().includes('25-100') ||
+      log.notes?.toLowerCase().includes('50 yard') ||
+      log.notes?.toLowerCase().includes('75 yard')
+  );
+
+  const trophicChanges = validLogs.some(log =>
+      log.notes?.toLowerCase().includes('trophic') ||
+      log.notes?.toLowerCase().includes('hair loss') ||
+      log.notes?.toLowerCase().includes('shiny skin') ||
+      log.notes?.toLowerCase().includes('nail changes')
+  );
+
+  let supportedRating = 0;
+  let rationale = '';
+
+  if ((restPain && ulcers) || (restPain && severeABI)) {
+    supportedRating = 100;
+    rationale = 'Evidence suggests ischemic rest pain with deep ulcers or ABI ≤0.4.';
+  } else if (claudicationUnder25 || (restPain && !ulcers)) {
+    supportedRating = 60;
+    rationale = 'Evidence suggests severe claudication (<25 yards) or persistent coldness.';
+  } else if (claudication25to100 || trophicChanges) {
+    supportedRating = 40;
+    rationale = 'Evidence suggests moderate claudication (25-100 yards) with trophic changes.';
+  } else if (validLogs.length >= 3) {
+    supportedRating = 20;
+    rationale = 'Evidence suggests claudication >100 yards with diminished pulses.';
+  }
+
+  return {
+    condition: 'Peripheral Arterial Disease',
+    diagnosticCode: '7114',
+    supportedRating,
+    rationale,
+    totalLogs: validLogs.length,
+    evidenceStrength: validLogs.length >= 10 ? 'strong' : validLogs.length >= 5 ? 'moderate' : 'developing',
+    criteriaReference: PAD_CRITERIA,
+    recommendations: [
+      'Document claudication distance precisely (yards walked before pain)',
+      'Get ABI (ankle-brachial index) measurements',
+      'Photograph any trophic changes or ulcers',
+      'Note which extremities are affected (each rated separately)',
+      'Get vascular surgery evaluation',
+    ],
+    note: 'Each affected extremity is rated separately and combined with bilateral factor if applicable.',
+  };
+};
+
+// ============================================
+// DENTAL/ORAL CONDITION ANALYSIS FUNCTIONS
+// ============================================
+
+/**
+ * Analyzes Mandible Malunion logs (DC 9904)
+ */
+export const analyzeMandibleMalunionLogs = (logs, options = {}) => {
+  const symptomIds = [
+    'jaw-pain', 'jaw-misalignment', 'bite-problems', 'chewing-difficulty',
+    'jaw-clicking', 'facial-asymmetry', 'malocclusion'
+  ];
+
+  const validLogs = logs.filter(log => {
+    const symptomId = log.symptomId || log.symptom;
+    return symptomIds.includes(symptomId) ||
+        log.notes?.toLowerCase().includes('mandible') ||
+        log.notes?.toLowerCase().includes('jaw') ||
+        log.notes?.toLowerCase().includes('malunion') ||
+        log.notes?.toLowerCase().includes('bite');
+  });
+
+  if (validLogs.length === 0) {
+    return {
+      condition: 'Mandible Malunion',
+      diagnosticCode: '9904',
+      supportedRating: 0,
+      rationale: 'No relevant symptoms logged.',
+      evidenceStrength: 'none',
+      recommendations: ['Log symptoms when they occur to build evidence.'],
+    };
+  }
+
+  // Check for severity indicators
+  const severeDisplacement = validLogs.some(log =>
+      log.notes?.toLowerCase().includes('severe') ||
+      log.notes?.toLowerCase().includes('marked') ||
+      log.notes?.toLowerCase().includes('significant displacement') ||
+      log.notes?.toLowerCase().includes('cannot chew') ||
+      log.severity === 'severe'
+  );
+
+  const moderateDisplacement = validLogs.some(log =>
+      log.notes?.toLowerCase().includes('moderate') ||
+      log.notes?.toLowerCase().includes('some difficulty') ||
+      log.severity === 'moderate'
+  );
+
+  const functionalImpairment = validLogs.some(log =>
+      log.notes?.toLowerCase().includes('chewing') ||
+      log.notes?.toLowerCase().includes('eating') ||
+      log.notes?.toLowerCase().includes('speaking') ||
+      log.notes?.toLowerCase().includes('functional')
+  );
+
+  let supportedRating = 0;
+  let rationale = '';
+
+  if (severeDisplacement && functionalImpairment) {
+    supportedRating = 20;
+    rationale = 'Evidence suggests severe displacement with marked functional impairment.';
+  } else if (moderateDisplacement || functionalImpairment) {
+    supportedRating = 10;
+    rationale = 'Evidence suggests moderate displacement with some functional impairment.';
+  } else {
+    supportedRating = 0;
+    rationale = 'Minimal displacement documented or insufficient functional impact.';
+  }
+
+  return {
+    condition: 'Mandible Malunion',
+    diagnosticCode: '9904',
+    supportedRating,
+    rationale,
+    totalLogs: validLogs.length,
+    evidenceStrength: validLogs.length >= 10 ? 'strong' : validLogs.length >= 5 ? 'moderate' : 'developing',
+    criteriaReference: MANDIBLE_MALUNION_CRITERIA,
+    recommendations: [
+      'Get X-rays or CT scan showing malunion',
+      'Document chewing difficulty with specific foods',
+      'Note any bite problems or malocclusion',
+      'Get dental/oral surgery evaluation',
+      'Measure jaw opening limitation (mm)',
+    ],
+  };
+};
+
+/**
+ * Analyzes Maxilla Malunion logs (DC 9916)
+ */
+export const analyzeMaxillaMalunionLogs = (logs, options = {}) => {
+  const symptomIds = [
+    'jaw-pain', 'facial-pain', 'bite-problems', 'chewing-difficulty',
+    'sinus-problems', 'facial-asymmetry', 'nasal-obstruction'
+  ];
+
+  const validLogs = logs.filter(log => {
+    const symptomId = log.symptomId || log.symptom;
+    return symptomIds.includes(symptomId) ||
+        log.notes?.toLowerCase().includes('maxilla') ||
+        log.notes?.toLowerCase().includes('upper jaw') ||
+        log.notes?.toLowerCase().includes('malunion') ||
+        log.notes?.toLowerCase().includes('midface');
+  });
+
+  if (validLogs.length === 0) {
+    return {
+      condition: 'Maxilla Malunion',
+      diagnosticCode: '9916',
+      supportedRating: 0,
+      rationale: 'No relevant symptoms logged.',
+      evidenceStrength: 'none',
+      recommendations: ['Log symptoms when they occur to build evidence.'],
+    };
+  }
+
+  // Check for severity indicators
+  const severeOrNonunion = validLogs.some(log =>
+      log.notes?.toLowerCase().includes('nonunion') ||
+      log.notes?.toLowerCase().includes('severe') ||
+      log.notes?.toLowerCase().includes('marked') ||
+      log.notes?.toLowerCase().includes('not healed') ||
+      log.severity === 'severe'
+  );
+
+  const moderateDisplacement = validLogs.some(log =>
+      log.notes?.toLowerCase().includes('moderate') ||
+      log.notes?.toLowerCase().includes('some difficulty') ||
+      log.severity === 'moderate'
+  );
+
+  const functionalImpairment = validLogs.some(log =>
+      log.notes?.toLowerCase().includes('chewing') ||
+      log.notes?.toLowerCase().includes('breathing') ||
+      log.notes?.toLowerCase().includes('sinus') ||
+      log.notes?.toLowerCase().includes('functional')
+  );
+
+  let supportedRating = 0;
+  let rationale = '';
+
+  if (severeOrNonunion && functionalImpairment) {
+    supportedRating = 30;
+    rationale = 'Evidence suggests nonunion or severe malunion with marked functional impairment.';
+  } else if (moderateDisplacement || functionalImpairment) {
+    supportedRating = 10;
+    rationale = 'Evidence suggests moderate malunion with some functional impairment.';
+  } else {
+    supportedRating = 0;
+    rationale = 'Minimal displacement documented or insufficient functional impact.';
+  }
+
+  return {
+    condition: 'Maxilla Malunion',
+    diagnosticCode: '9916',
+    supportedRating,
+    rationale,
+    totalLogs: validLogs.length,
+    evidenceStrength: validLogs.length >= 10 ? 'strong' : validLogs.length >= 5 ? 'moderate' : 'developing',
+    criteriaReference: MAXILLA_MALUNION_CRITERIA,
+    recommendations: [
+      'Get CT scan showing malunion or nonunion',
+      'Document chewing difficulty',
+      'Note any breathing or sinus issues',
+      'Get oral/maxillofacial surgery evaluation',
+      'Document facial asymmetry with photos',
+    ],
+  };
+};
+
+/**
+ * Analyzes Maxilla/Mandible Bone Disease (Osteomyelitis) logs (DC 9900)
+ */
+export const analyzeMaxillaMandibleBoneDiseaseLogs = (logs, options = {}) => {
+  const symptomIds = [
+    'jaw-pain', 'jaw-swelling', 'jaw-drainage', 'tooth-loosening',
+    'jaw-numbness', 'fistula', 'bone-exposed'
+  ];
+
+  const validLogs = logs.filter(log => {
+    const symptomId = log.symptomId || log.symptom;
+    return symptomIds.includes(symptomId) ||
+        log.notes?.toLowerCase().includes('osteomyelitis') ||
+        log.notes?.toLowerCase().includes('osteonecrosis') ||
+        log.notes?.toLowerCase().includes('bone infection') ||
+        log.notes?.toLowerCase().includes('jaw infection') ||
+        log.notes?.toLowerCase().includes('sequestrum');
+  });
+
+  if (validLogs.length === 0) {
+    return {
+      condition: 'Maxilla/Mandible Osteomyelitis',
+      diagnosticCode: '9900',
+      supportedRating: 0,
+      rationale: 'No relevant symptoms logged.',
+      evidenceStrength: 'none',
+      recommendations: ['Log symptoms when they occur to build evidence.'],
+    };
+  }
+
+  // Check for severity indicators
+  const hasSequestrum = validLogs.some(log =>
+      log.notes?.toLowerCase().includes('sequestrum') ||
+      log.notes?.toLowerCase().includes('dead bone') ||
+      log.notes?.toLowerCase().includes('involucrum')
+  );
+
+  const repeatedFlareups = validLogs.filter(log =>
+      log.notes?.toLowerCase().includes('flare') ||
+      log.notes?.toLowerCase().includes('recur') ||
+      log.notes?.toLowerCase().includes('episode')
+  ).length >= 3;
+
+  const hasDrainage = validLogs.some(log =>
+      log.notes?.toLowerCase().includes('drainage') ||
+      log.notes?.toLowerCase().includes('draining') ||
+      log.notes?.toLowerCase().includes('pus') ||
+      log.notes?.toLowerCase().includes('fistula') ||
+      log.notes?.toLowerCase().includes('sinus tract')
+  );
+
+  const activeInfection = validLogs.some(log =>
+      log.notes?.toLowerCase().includes('active') ||
+      log.notes?.toLowerCase().includes('infected') ||
+      log.notes?.toLowerCase().includes('antibiotic')
+  );
+
+  const inactiveNow = validLogs.some(log =>
+      log.notes?.toLowerCase().includes('inactive') ||
+      log.notes?.toLowerCase().includes('resolved') ||
+      log.notes?.toLowerCase().includes('healed')
+  );
+
+  let supportedRating = 0;
+  let rationale = '';
+
+  if (hasSequestrum && repeatedFlareups) {
+    supportedRating = 60;
+    rationale = 'Evidence suggests definite sequestrum/involucrum with repeated flare-ups.';
+  } else if (hasSequestrum && hasDrainage) {
+    supportedRating = 30;
+    rationale = 'Evidence suggests sequestrum/involucrum with occasional drainage.';
+  } else if (hasDrainage || activeInfection) {
+    supportedRating = 20;
+    rationale = 'Evidence suggests active infection with discharging sinus or drainage.';
+  } else if (inactiveNow && validLogs.length >= 3) {
+    supportedRating = 10;
+    rationale = 'Evidence suggests inactive osteomyelitis following repeated episodes.';
+  } else {
+    supportedRating = 0;
+    rationale = 'Insufficient evidence of chronic osteomyelitis.';
+  }
+
+  return {
+    condition: 'Maxilla/Mandible Osteomyelitis',
+    diagnosticCode: '9900',
+    supportedRating,
+    rationale,
+    totalLogs: validLogs.length,
+    evidenceStrength: validLogs.length >= 10 ? 'strong' : validLogs.length >= 5 ? 'moderate' : 'developing',
+    criteriaReference: MAXILLA_MANDIBLE_BONE_DISEASE_CRITERIA,
+    recommendations: [
+      'Get CT or MRI showing bone involvement',
+      'Document all drainage episodes',
+      'Keep records of surgical debridements',
+      'Note antibiotic treatments and duration',
+      'Get culture results if available',
+      'Document any sequestrum removal surgeries',
+    ],
+  };
+};
+
+/**
+ * Analyzes Essential Thrombocythemia logs (DC 7718)
+ */
+export const analyzeEssentialThrombocythemiaLogs = (logs, options = {}) => {
+  const symptomIds = [
+    'fatigue', 'headache', 'dizziness', 'vision-changes',
+    'bleeding', 'bruising', 'blood-clot', 'splenomegaly',
+    'numbness-tingling', 'erythromelalgia'
+  ];
+
+  const validLogs = logs.filter(log => {
+    const symptomId = log.symptomId || log.symptom;
+    return symptomIds.includes(symptomId) ||
+        log.notes?.toLowerCase().includes('thrombocythemia') ||
+        log.notes?.toLowerCase().includes('platelet') ||
+        log.notes?.toLowerCase().includes('myeloproliferative') ||
+        log.notes?.toLowerCase().includes('hydroxyurea') ||
+        log.notes?.toLowerCase().includes('anagrelide');
+  });
+
+  if (validLogs.length === 0) {
+    return {
+      condition: 'Essential Thrombocythemia',
+      diagnosticCode: '7718',
+      supportedRating: 0,
+      rationale: 'No relevant symptoms logged.',
+      evidenceStrength: 'none',
+      recommendations: ['Log symptoms when they occur to build evidence.'],
+    };
+  }
+
+  // Check for severity indicators
+  const requiresTransplant = validLogs.some(log =>
+      log.notes?.toLowerCase().includes('transplant') ||
+      log.notes?.toLowerCase().includes('blast phase') ||
+      log.notes?.toLowerCase().includes('transformation')
+  );
+
+  const onContinuousTherapy = validLogs.some(log =>
+      log.notes?.toLowerCase().includes('hydroxyurea') ||
+      log.notes?.toLowerCase().includes('anagrelide') ||
+      log.notes?.toLowerCase().includes('interferon') ||
+      log.notes?.toLowerCase().includes('cytoreductive')
+  );
+
+  const hasComplications = validLogs.some(log =>
+      log.notes?.toLowerCase().includes('clot') ||
+      log.notes?.toLowerCase().includes('thrombosis') ||
+      log.notes?.toLowerCase().includes('bleeding') ||
+      log.notes?.toLowerCase().includes('hemorrhage') ||
+      log.notes?.toLowerCase().includes('splenomegaly')
+  );
+
+  const onMedication = validLogs.some(log =>
+      log.notes?.toLowerCase().includes('medication') ||
+      log.notes?.toLowerCase().includes('aspirin') ||
+      log.notes?.toLowerCase().includes('treatment')
+  );
+
+  let supportedRating = 0;
+  let rationale = '';
+
+  if (requiresTransplant) {
+    supportedRating = 100;
+    rationale = 'Evidence suggests bone marrow transplant required or blast phase transformation.';
+  } else if (onContinuousTherapy && hasComplications) {
+    supportedRating = 70;
+    rationale = 'Evidence suggests continuous myelosuppressive therapy with complications.';
+  } else if (onContinuousTherapy || onMedication) {
+    supportedRating = 30;
+    rationale = 'Evidence suggests continuous medication required for symptom control.';
+  } else {
+    supportedRating = 0;
+    rationale = 'Asymptomatic or observation only documented.';
+  }
+
+  return {
+    condition: 'Essential Thrombocythemia',
+    diagnosticCode: '7718',
+    supportedRating,
+    rationale,
+    totalLogs: validLogs.length,
+    evidenceStrength: validLogs.length >= 10 ? 'strong' : validLogs.length >= 5 ? 'moderate' : 'developing',
+    criteriaReference: ESSENTIAL_THROMBOCYTHEMIA_CRITERIA,
+    recommendations: [
+      'Document platelet counts over time',
+      'Keep records of all medications and dosages',
+      'Note any thrombotic or bleeding events',
+      'Document splenomegaly if present',
+      'Get bone marrow biopsy results',
+      'Keep hematology/oncology visit records',
+    ],
+  };
+};
+
+// ============================================
+// INFECTIOUS DISEASE ANALYSIS FUNCTIONS
+// ============================================
+
+/**
+ * Analyzes Active Tuberculosis logs (DC 6730)
+ */
+export const analyzeActiveTuberculosisLogs = (logs, options = {}) => {
+  const symptomIds = [
+    'cough', 'hemoptysis', 'night-sweats', 'fever', 'weight-loss',
+    'fatigue', 'chest-pain', 'shortness-of-breath'
+  ];
+
+  const validLogs = logs.filter(log => {
+    const symptomId = log.symptomId || log.symptom;
+    return symptomIds.includes(symptomId) ||
+        log.notes?.toLowerCase().includes('tuberculosis') ||
+        log.notes?.toLowerCase().includes('tb ') ||
+        log.notes?.toLowerCase().includes('mycobacterium');
+  });
+
+  if (validLogs.length === 0) {
+    return {
+      condition: 'Tuberculosis, Active',
+      diagnosticCode: '6730',
+      supportedRating: 0,
+      rationale: 'No relevant symptoms logged.',
+      evidenceStrength: 'none',
+      recommendations: ['Log symptoms when they occur to build evidence.'],
+    };
+  }
+
+  // Check for active disease indicators
+  const isActive = validLogs.some(log =>
+      log.notes?.toLowerCase().includes('active') ||
+      log.notes?.toLowerCase().includes('treatment') ||
+      log.notes?.toLowerCase().includes('medication') ||
+      log.notes?.toLowerCase().includes('isoniazid') ||
+      log.notes?.toLowerCase().includes('rifampin')
+  );
+
+  const advancedLesions = validLogs.some(log =>
+      log.notes?.toLowerCase().includes('advanced') ||
+      log.notes?.toLowerCase().includes('cavitary') ||
+      log.notes?.toLowerCase().includes('extensive')
+  );
+
+  const miliary = validLogs.some(log =>
+      log.notes?.toLowerCase().includes('miliary') ||
+      log.notes?.toLowerCase().includes('disseminated')
+  );
+
+  let supportedRating = 0;
+  let rationale = '';
+
+  if (isActive) {
+    supportedRating = 100;
+    rationale = 'Active pulmonary tuberculosis is rated 100% during active disease.';
+    if (advancedLesions) {
+      rationale += ' Advanced lesions documented.';
+    }
+    if (miliary) {
+      rationale += ' Miliary/disseminated TB documented - see DC 6724.';
+    }
+  } else {
+    supportedRating = 0;
+    rationale = 'No evidence of active TB. Rate residuals under appropriate DC after treatment.';
+  }
+
+  return {
+    condition: 'Tuberculosis, Active',
+    diagnosticCode: '6730',
+    supportedRating,
+    rationale,
+    totalLogs: validLogs.length,
+    evidenceStrength: validLogs.length >= 10 ? 'strong' : validLogs.length >= 5 ? 'moderate' : 'developing',
+    criteriaReference: TUBERCULOSIS_ACTIVE_CRITERIA,
+    recommendations: [
+      'Document all TB treatment medications',
+      'Keep sputum culture results',
+      'Get chest X-rays showing disease progression/resolution',
+      'Note any extrapulmonary involvement',
+      'After treatment, document any residual lung impairment',
+    ],
+    note: 'Active TB is rated 100%. After becoming inactive, rate residuals (usually under respiratory codes).',
+  };
+};
+
+/**
+ * Analyzes Inactive Tuberculosis logs (DC 6731)
+ */
+export const analyzeInactiveTuberculosisLogs = (logs, options = {}) => {
+  const symptomIds = [
+    'cough', 'shortness-of-breath', 'fatigue', 'chest-pain',
+    'reduced-lung-function', 'scarring'
+  ];
+
+  const validLogs = logs.filter(log => {
+    const symptomId = log.symptomId || log.symptom;
+    return symptomIds.includes(symptomId) ||
+        log.notes?.toLowerCase().includes('tuberculosis') ||
+        log.notes?.toLowerCase().includes('tb ') ||
+        log.notes?.toLowerCase().includes('inactive') ||
+        log.notes?.toLowerCase().includes('residual');
+  });
+
+  if (validLogs.length === 0) {
+    return {
+      condition: 'Tuberculosis, Inactive',
+      diagnosticCode: '6731',
+      supportedRating: 0,
+      rationale: 'No relevant symptoms logged.',
+      evidenceStrength: 'none',
+      recommendations: ['Log symptoms when they occur to build evidence.'],
+    };
+  }
+
+  // Check time since active disease
+  const recentlyInactive = validLogs.some(log =>
+      log.notes?.toLowerCase().includes('recently inactive') ||
+      log.notes?.toLowerCase().includes('just completed treatment')
+  );
+
+  const hasResiduals = validLogs.some(log =>
+      log.notes?.toLowerCase().includes('residual') ||
+      log.notes?.toLowerCase().includes('scarring') ||
+      log.notes?.toLowerCase().includes('fibrosis') ||
+      log.notes?.toLowerCase().includes('reduced lung')
+  );
+
+  const advancedLesions = validLogs.some(log =>
+      log.notes?.toLowerCase().includes('advanced') ||
+      log.notes?.toLowerCase().includes('far advanced') ||
+      log.notes?.toLowerCase().includes('extensive')
+  );
+
+  const moderatelyAdvanced = validLogs.some(log =>
+      log.notes?.toLowerCase().includes('moderately advanced')
+  );
+
+  let supportedRating = 0;
+  let rationale = '';
+
+  // Inactive TB has graduated ratings based on lesion advancement and time
+  if (advancedLesions) {
+    supportedRating = 100;
+    rationale = 'Far advanced lesions - 100% for 2 years after date of inactivity, then evaluate residuals.';
+  } else if (moderatelyAdvanced) {
+    supportedRating = 50;
+    rationale = 'Moderately advanced lesions - 50% for 4 years after inactivity, then evaluate residuals.';
+  } else if (recentlyInactive) {
+    supportedRating = 30;
+    rationale = 'Recently inactive minimal TB - 30% for 2 years, then evaluate residuals.';
+  } else if (hasResiduals) {
+    supportedRating = 0;
+    rationale = 'Inactive TB with residuals - rate residuals under appropriate respiratory DC (6600, 6604, etc.).';
+  } else {
+    supportedRating = 0;
+    rationale = 'Inactive TB without significant residuals documented.';
+  }
+
+  return {
+    condition: 'Tuberculosis, Inactive',
+    diagnosticCode: '6731',
+    supportedRating,
+    rationale,
+    totalLogs: validLogs.length,
+    evidenceStrength: validLogs.length >= 10 ? 'strong' : validLogs.length >= 5 ? 'moderate' : 'developing',
+    criteriaReference: TUBERCULOSIS_INACTIVE_CRITERIA,
+    recommendations: [
+      'Document date TB became inactive',
+      'Get PFTs to evaluate residual lung impairment',
+      'Keep chest X-rays showing lesion status',
+      'Document any ongoing symptoms',
+      'After graduated rating period, get C&P exam for residuals',
+    ],
+    note: 'Inactive TB has time-limited ratings. After the specified period, rate any residual impairment.',
+  };
+};
+
+// ============================================
+// UROLOGICAL CONDITION ANALYSIS FUNCTIONS
+// ============================================
+
+/**
+ * Analyzes Neurogenic Bladder logs (DC 7542)
+ */
+export const analyzeNeurogenicBladderLogs = (logs, options = {}) => {
+  const symptomIds = [
+    'urinary-frequency', 'urinary-urgency', 'urinary-incontinence',
+    'urinary-retention', 'nocturia', 'catheterization', 'bladder-spasms'
+  ];
+
+  const validLogs = logs.filter(log => {
+    const symptomId = log.symptomId || log.symptom;
+    return symptomIds.includes(symptomId) ||
+        log.notes?.toLowerCase().includes('neurogenic') ||
+        log.notes?.toLowerCase().includes('bladder') ||
+        log.notes?.toLowerCase().includes('catheter');
+  });
+
+  if (validLogs.length === 0) {
+    return {
+      condition: 'Neurogenic Bladder',
+      diagnosticCode: '7542',
+      supportedRating: 0,
+      rationale: 'No relevant symptoms logged.',
+      evidenceStrength: 'none',
+      recommendations: ['Log symptoms when they occur to build evidence.'],
+    };
+  }
+
+  // Check for catheterization
+  const requiresCatheter = validLogs.some(log =>
+      log.notes?.toLowerCase().includes('catheter') ||
+      log.notes?.toLowerCase().includes('self-cath') ||
+      log.notes?.toLowerCase().includes('foley') ||
+      log.notes?.toLowerCase().includes('suprapubic')
+  );
+
+  // Check for severe incontinence
+  const severeIncontinence = validLogs.some(log =>
+      log.notes?.toLowerCase().includes('pad') &&
+      (log.notes?.toLowerCase().includes('>4') || log.notes?.toLowerCase().includes('more than 4') ||
+          log.notes?.toLowerCase().includes('5') || log.notes?.toLowerCase().includes('6'))
+  );
+
+  const moderateIncontinence = validLogs.some(log =>
+      log.notes?.toLowerCase().includes('pad') &&
+      (log.notes?.toLowerCase().includes('2') || log.notes?.toLowerCase().includes('3') ||
+          log.notes?.toLowerCase().includes('4'))
+  );
+
+  // Check for frequency
+  const severeFrequency = validLogs.some(log =>
+      log.notes?.toLowerCase().includes('hourly') ||
+      log.notes?.toLowerCase().includes('every hour') ||
+      log.notes?.toLowerCase().includes('nocturia 5') ||
+      log.notes?.toLowerCase().includes('5 times')
+  );
+
+  let supportedRating = 0;
+  let rationale = '';
+
+  if (severeIncontinence) {
+    supportedRating = 60;
+    rationale = 'Evidence suggests severe incontinence requiring frequent pad changes (>4/day).';
+  } else if (severeFrequency || moderateIncontinence) {
+    supportedRating = 40;
+    rationale = 'Evidence suggests severe frequency or moderate incontinence.';
+  } else if (requiresCatheter) {
+    supportedRating = 30;
+    rationale = 'Evidence suggests urinary retention requiring catheterization.';
+  } else if (validLogs.length >= 5) {
+    supportedRating = 20;
+    rationale = 'Evidence suggests moderate voiding dysfunction.';
+  } else {
+    supportedRating = 10;
+    rationale = 'Evidence suggests mild voiding dysfunction.';
+  }
+
+  return {
+    condition: 'Neurogenic Bladder',
+    diagnosticCode: '7542',
+    supportedRating,
+    rationale,
+    totalLogs: validLogs.length,
+    evidenceStrength: validLogs.length >= 10 ? 'strong' : validLogs.length >= 5 ? 'moderate' : 'developing',
+    criteriaReference: NEUROGENIC_BLADDER_CRITERIA,
+    recommendations: [
+      'Keep a voiding diary (frequency, volume, accidents)',
+      'Document pad/absorbent usage per day',
+      'Note catheterization frequency if applicable',
+      'Get urodynamic study results',
+      'Document underlying neurological condition',
+    ],
+  };
+};
+
+/**
+ * Analyzes Prostate Conditions logs (DC 7527)
+ */
+export const analyzeProstateConditionsLogs = (logs, options = {}) => {
+  const symptomIds = [
+    'urinary-frequency', 'urinary-urgency', 'weak-stream', 'hesitancy',
+    'nocturia', 'incomplete-emptying', 'urinary-retention', 'dysuria'
+  ];
+
+  const validLogs = logs.filter(log => {
+    const symptomId = log.symptomId || log.symptom;
+    return symptomIds.includes(symptomId) ||
+        log.notes?.toLowerCase().includes('prostate') ||
+        log.notes?.toLowerCase().includes('bph') ||
+        log.notes?.toLowerCase().includes('prostatitis');
+  });
+
+  if (validLogs.length === 0) {
+    return {
+      condition: 'Prostate Conditions',
+      diagnosticCode: '7527',
+      supportedRating: 0,
+      rationale: 'No relevant symptoms logged.',
+      evidenceStrength: 'none',
+      recommendations: ['Log symptoms when they occur to build evidence.'],
+    };
+  }
+
+  // Check for catheterization requirement
+  const requiresCatheter = validLogs.some(log =>
+      log.notes?.toLowerCase().includes('catheter') ||
+      log.notes?.toLowerCase().includes('retention')
+  );
+
+  // Check for severe symptoms
+  const severeFrequency = validLogs.some(log =>
+      log.notes?.toLowerCase().includes('hourly') ||
+      log.notes?.toLowerCase().includes('nocturia 5') ||
+      log.notes?.toLowerCase().includes('>4 times')
+  );
+
+  const moderateFrequency = validLogs.some(log =>
+      log.notes?.toLowerCase().includes('nocturia 3') ||
+      log.notes?.toLowerCase().includes('nocturia 4') ||
+      log.notes?.toLowerCase().includes('every 1-2')
+  );
+
+  const obstructiveSymptoms = validLogs.some(log =>
+      log.notes?.toLowerCase().includes('weak stream') ||
+      log.notes?.toLowerCase().includes('hesitancy') ||
+      log.notes?.toLowerCase().includes('straining')
+  );
+
+  let supportedRating = 0;
+  let rationale = '';
+
+  if (severeFrequency) {
+    supportedRating = 40;
+    rationale = 'Evidence suggests severe urinary frequency or nocturia (5+/night).';
+  } else if (requiresCatheter) {
+    supportedRating = 30;
+    rationale = 'Evidence suggests urinary retention requiring catheterization.';
+  } else if (moderateFrequency) {
+    supportedRating = 20;
+    rationale = 'Evidence suggests moderate frequency (voiding every 1-2 hours or nocturia 3-4).';
+  } else if (obstructiveSymptoms || validLogs.length >= 5) {
+    supportedRating = 10;
+    rationale = 'Evidence suggests obstructive voiding symptoms or mild frequency.';
+  }
+
+  return {
+    condition: 'Prostate Conditions',
+    diagnosticCode: '7527',
+    supportedRating,
+    rationale,
+    totalLogs: validLogs.length,
+    evidenceStrength: validLogs.length >= 10 ? 'strong' : validLogs.length >= 5 ? 'moderate' : 'developing',
+    criteriaReference: PROSTATE_CONDITIONS_CRITERIA,
+    recommendations: [
+      'Keep a voiding diary with frequency and volume',
+      'Document nocturia (times awakened to void)',
+      'Get uroflowmetry and post-void residual measurements',
+      'Note PSA levels and prostate exam findings',
+      'Document any catheterization requirements',
+    ],
+  };
+};
+
+/**
+ * Analyzes Urethral Stricture logs (DC 7518)
+ */
+export const analyzeUrethralStrictureLogs = (logs, options = {}) => {
+  const symptomIds = [
+    'weak-stream', 'hesitancy', 'straining', 'incomplete-emptying',
+    'urinary-retention', 'dysuria', 'uti-recurrent'
+  ];
+
+  const validLogs = logs.filter(log => {
+    const symptomId = log.symptomId || log.symptom;
+    return symptomIds.includes(symptomId) ||
+        log.notes?.toLowerCase().includes('stricture') ||
+        log.notes?.toLowerCase().includes('dilation') ||
+        log.notes?.toLowerCase().includes('urethra');
+  });
+
+  if (validLogs.length === 0) {
+    return {
+      condition: 'Urethral Stricture',
+      diagnosticCode: '7518',
+      supportedRating: 0,
+      rationale: 'No relevant symptoms logged.',
+      evidenceStrength: 'none',
+      recommendations: ['Log symptoms when they occur to build evidence.'],
+    };
+  }
+
+  // Check for catheterization
+  const requiresCatheter = validLogs.some(log =>
+      log.notes?.toLowerCase().includes('catheter') ||
+      log.notes?.toLowerCase().includes('retention')
+  );
+
+  // Check for dilation frequency
+  const frequentDilations = validLogs.filter(log =>
+      log.notes?.toLowerCase().includes('dilation')
+  ).length >= 4; // Every 2-3 months = 4-6/year
+
+  const occasionalDilations = validLogs.some(log =>
+      log.notes?.toLowerCase().includes('dilation')
+  );
+
+  // Check for complications
+  const hasComplications = validLogs.some(log =>
+      log.notes?.toLowerCase().includes('uti') ||
+      log.notes?.toLowerCase().includes('infection') ||
+      log.notes?.toLowerCase().includes('residual >150')
+  );
+
+  let supportedRating = 0;
+  let rationale = '';
+
+  if (requiresCatheter) {
+    supportedRating = 30;
+    rationale = 'Evidence suggests urinary retention requiring catheterization.';
+  } else if (frequentDilations || hasComplications) {
+    supportedRating = 10;
+    rationale = 'Evidence suggests marked obstructive symptoms requiring frequent dilations or with complications.';
+  } else if (occasionalDilations) {
+    supportedRating = 0;
+    rationale = 'Occasional dilations (1-2/year) documented - 0% rating.';
+  }
+
+  return {
+    condition: 'Urethral Stricture',
+    diagnosticCode: '7518',
+    supportedRating,
+    rationale,
+    totalLogs: validLogs.length,
+    evidenceStrength: validLogs.length >= 10 ? 'strong' : validLogs.length >= 5 ? 'moderate' : 'developing',
+    criteriaReference: URETHRAL_STRICTURE_CRITERIA,
+    recommendations: [
+      'Document all dilation procedures with dates',
+      'Get post-void residual measurements',
+      'Keep uroflowmetry results',
+      'Document any UTIs related to obstruction',
+      'Note catheterization if required',
+    ],
+  };
+};
+
 
 
 // ============================================
@@ -49654,6 +53726,8 @@ export const getEvaluationPeriod = (days = 90) => {
     months: (days / 30).toFixed(1),
   };
 };
+
+
 export const getMigraineRatingCriteria = (percent) => MIGRAINE_CRITERIA.ratings.find(r => r.percent === percent) || null;
 export const getSleepApneaRatingCriteria = (percent) => SLEEP_APNEA_CRITERIA.ratings.find(r => r.percent === percent) || null;
 export const getPTSDRatingCriteria = (percent) => PTSD_CRITERIA.ratings.find(r => r.percent === percent) || null;
@@ -49864,6 +53938,26 @@ export const getPruritusAniRating = (percent) => PRURITUS_ANI_CRITERIA.ratings.f
 export const getAvitaminosisRating = (percent) => AVITAMINOSIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
 export const getBeriberiRating = (percent) => BERIBERI_CRITERIA.ratings.find(r => r.percent === percent) || null;
 export const getPellagraRating = (percent) => PELLAGRA_CRITERIA.ratings.find(r => r.percent === percent) || null;
+// Gynecological Conditions (DC 7610-7615)
+export const getVulvaClitorisDiseaseRating = (percent) => VULVA_CLITORIS_DISEASE_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getVaginaDiseaseRating = (percent) => VAGINA_DISEASE_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getCervixDiseaseRating = (percent) => CERVIX_DISEASE_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getUterusDiseaseRating = (percent) => UTERUS_DISEASE_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getFallopianTubePIDRating = (percent) => FALLOPIAN_TUBE_PID_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getOvaryDiseaseRating = (percent) => OVARY_DISEASE_CRITERIA.ratings.find(r => r.percent === percent) || null;
+// Urological Conditions
+export const getChronicCystitisRating = (percent) => CHRONIC_CYSTITIS_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getNeurogenicBladderRating = (percent) => NEUROGENIC_BLADDER_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getProstateConditionsRating = (percent) => PROSTATE_CONDITIONS_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getUrethralStrictureRating = (percent) => URETHRAL_STRICTURE_CRITERIA.ratings.find(r => r.percent === percent) || null;
+// Dental/Oral Conditions
+export const getMandibleMalunionRating = (percent) => MANDIBLE_MALUNION_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getMaxillaMalunionRating = (percent) => MAXILLA_MALUNION_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getMaxillaMandibleBoneDiseaseRating = (percent) => MAXILLA_MANDIBLE_BONE_DISEASE_CRITERIA.ratings.find(r => r.percent === percent) || null;
+// Other Conditions
+export const getEsophagealSpasmRating = (percent) => ESOPHAGEAL_SPASM_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getEssentialThrombocythemiaRating = (percent) => ESSENTIAL_THROMBOCYTHEMIA_CRITERIA.ratings.find(r => r.percent === percent) || null;
+export const getEyeConditionsRating = (percent) => EYE_CONDITIONS_CRITERIA.ratings.find(r => r.percent === percent) || null;
 
 
 
@@ -50057,7 +54151,26 @@ export const getAllPruritusAniRatings = () => PRURITUS_ANI_CRITERIA.ratings;
 export const getAllAvitaminosisRatings = () => AVITAMINOSIS_CRITERIA.ratings;
 export const getAllBeriberiRatings = () => BERIBERI_CRITERIA.ratings;
 export const getAllPellagraRatings = () => PELLAGRA_CRITERIA.ratings;
-
+// Gynecological Conditions (DC 7610-7615)
+export const getAllVulvaClitorisDiseaseRatings = () => VULVA_CLITORIS_DISEASE_CRITERIA.ratings;
+export const getAllVaginaDiseaseRatings = () => VAGINA_DISEASE_CRITERIA.ratings;
+export const getAllCervixDiseaseRatings = () => CERVIX_DISEASE_CRITERIA.ratings;
+export const getAllUterusDiseaseRatings = () => UTERUS_DISEASE_CRITERIA.ratings;
+export const getAllFallopianTubePIDRatings = () => FALLOPIAN_TUBE_PID_CRITERIA.ratings;
+export const getAllOvaryDiseaseRatings = () => OVARY_DISEASE_CRITERIA.ratings;
+// Urological Conditions
+export const getAllChronicCystitisRatings = () => CHRONIC_CYSTITIS_CRITERIA.ratings;
+export const getAllNeurogenicBladderRatings = () => NEUROGENIC_BLADDER_CRITERIA.ratings;
+export const getAllProstateConditionsRatings = () => PROSTATE_CONDITIONS_CRITERIA.ratings;
+export const getAllUrethralStrictureRatings = () => URETHRAL_STRICTURE_CRITERIA.ratings;
+// Dental/Oral Conditions
+export const getAllMandibleMalunionRatings = () => MANDIBLE_MALUNION_CRITERIA.ratings;
+export const getAllMaxillaMalunionRatings = () => MAXILLA_MALUNION_CRITERIA.ratings;
+export const getAllMaxillaMandibleBoneDiseaseRatings = () => MAXILLA_MANDIBLE_BONE_DISEASE_CRITERIA.ratings;
+// Other Conditions
+export const getAllEsophagealSpasmRatings = () => ESOPHAGEAL_SPASM_CRITERIA.ratings;
+export const getAllEssentialThrombocythemiaRatings = () => ESSENTIAL_THROMBOCYTHEMIA_CRITERIA.ratings;
+export const getAllEyeConditionsRatings = () => EYE_CONDITIONS_CRITERIA.ratings;
 
 
 export const getMigraineDefinition = (term) => MIGRAINE_CRITERIA.definitions[term] || null;
@@ -50256,3 +54369,23 @@ export const getPruritusAniDefinition = (term) => PRURITUS_ANI_CRITERIA.definiti
 export const getAvitaminosisDefinition = (term) => AVITAMINOSIS_CRITERIA.definitions?.[term] || null;
 export const getBeriberiDefinition = (term) => BERIBERI_CRITERIA.definitions?.[term] || null;
 export const getPellagraDefinition = (term) => PELLAGRA_CRITERIA.definitions?.[term] || null;
+// Gynecological Conditions (DC 7610-7615)
+export const getVulvaClitorisDiseaseDefinition = (term) => VULVA_CLITORIS_DISEASE_CRITERIA.definitions?.[term] || null;
+export const getVaginaDiseaseDefinition = (term) => VAGINA_DISEASE_CRITERIA.definitions?.[term] || null;
+export const getCervixDiseaseDefinition = (term) => CERVIX_DISEASE_CRITERIA.definitions?.[term] || null;
+export const getUterusDiseaseDefinition = (term) => UTERUS_DISEASE_CRITERIA.definitions?.[term] || null;
+export const getFallopianTubePIDDefinition = (term) => FALLOPIAN_TUBE_PID_CRITERIA.definitions?.[term] || null;
+export const getOvaryDiseaseDefinition = (term) => OVARY_DISEASE_CRITERIA.definitions?.[term] || null;
+// Urological Conditions
+export const getChronicCystitisDefinition = (term) => CHRONIC_CYSTITIS_CRITERIA.definitions?.[term] || null;
+export const getNeurogenicBladderDefinition = (term) => NEUROGENIC_BLADDER_CRITERIA.definitions?.[term] || null;
+export const getProstateConditionsDefinition = (term) => PROSTATE_CONDITIONS_CRITERIA.definitions?.[term] || null;
+export const getUrethralStrictureDefinition = (term) => URETHRAL_STRICTURE_CRITERIA.definitions?.[term] || null;
+// Dental/Oral Conditions
+export const getMandibleMalunionDefinition = (term) => MANDIBLE_MALUNION_CRITERIA.definitions?.[term] || null;
+export const getMaxillaMalunionDefinition = (term) => MAXILLA_MALUNION_CRITERIA.definitions?.[term] || null;
+export const getMaxillaMandibleBoneDiseaseDefinition = (term) => MAXILLA_MANDIBLE_BONE_DISEASE_CRITERIA.definitions?.[term] || null;
+// Other Conditions
+export const getEsophagealSpasmDefinition = (term) => ESOPHAGEAL_SPASM_CRITERIA.definitions?.[term] || null;
+export const getEssentialThrombocythemiaDefinition = (term) => ESSENTIAL_THROMBOCYTHEMIA_CRITERIA.definitions?.[term] || null;
+export const getEyeConditionsDefinition = (term) => EYE_CONDITIONS_CRITERIA.definitions?.[term] || null;

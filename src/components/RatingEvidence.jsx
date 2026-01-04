@@ -40,6 +40,8 @@ import {
   analyzePlantarFasciitisLogs,
   analyzeInsomniaLogs,
   analyzeSinusitisLogs,
+  analyzeDeviatedSeptumLogs,
+  analyzeNoseLossLogs,
   analyzeShoulderLogs,
   analyzeHipLogs,
   analyzeAnkleLogs,
@@ -72,6 +74,8 @@ import {
   analyzeVoidingDysfunctionLogs,
   analyzeSphincterImpairmentLogs,
   analyzeErectileDysfunctionLogs,
+  analyzePenisConditionsLogs,
+  analyzeTestisConditionsLogs,
   analyzeEndometriosisLogs,
   analyzeFemaleReproductiveOrgansLogs,
   analyzePelvicProlapseLogs,
@@ -610,6 +614,12 @@ const RatingEvidence = () => {
     const sinusitisAnalysis = useMemo(() => {
         return analyzeSinusitisLogs(logs, { evaluationPeriodDays: evaluationDays });
     }, [logs, evaluationDays]);
+    const deviatedSeptumAnalysis = useMemo(() => {
+      return analyzeDeviatedSeptumLogs(logs, { evaluationPeriodDays: evaluationDays });
+    }, [logs, evaluationDays]);
+    const noseLossAnalysis = useMemo(() => {
+      return analyzeNoseLossLogs(logs, { evaluationPeriodDays: evaluationDays });
+    }, [logs, evaluationDays]);
     const shoulderAnalysis = useMemo(() => {
         return analyzeShoulderLogs(logs, { evaluationPeriodDays: evaluationDays });
     }, [logs, evaluationDays]);
@@ -682,7 +692,6 @@ const RatingEvidence = () => {
     const lossOfSmellAnalysis = useMemo(() => {
       return analyzeLossOfSmellLogs(logs, { evaluationPeriodDays: evaluationDays });
     }, [logs, evaluationDays]);
-
     const lossOfTasteAnalysis = useMemo(() => {
       return analyzeLossOfTasteLogs(logs, { evaluationPeriodDays: evaluationDays });
     }, [logs, evaluationDays]);
@@ -732,7 +741,13 @@ const RatingEvidence = () => {
         return analyzeSphincterImpairmentLogs(logs);
     }, [logs]);
     const erectileDysfunctionAnalysis = useMemo(() => {
-        return analyzeErectileDysfunctionLogs(logs);
+      return analyzeErectileDysfunctionLogs(logs);
+    }, [logs]);
+    const penisConditionsAnalysis = useMemo(() => {
+      return analyzePenisConditionsLogs(logs);
+    }, [logs]);
+    const testisConditionsAnalysis = useMemo(() => {
+      return analyzeTestisConditionsLogs(logs);
     }, [logs]);
     // Phase 4: Gynecological Analysis Hooks
     const endometriosisAnalysis = useMemo(() => {
@@ -1420,6 +1435,8 @@ const RatingEvidence = () => {
         asthmaAnalysis.hasData,
         rhinitisAnalysis.hasData,
         sinusitisAnalysis.hasData,
+        deviatedSeptumAnalysis.hasData,
+        noseLossAnalysis.hasData,
         copdAnalysis.hasData,
         chronicBronchitisAnalysis.hasData,
         emphysemaAnalysis.hasData,
@@ -1482,6 +1499,8 @@ const RatingEvidence = () => {
         voidingDysfunctionAnalysis.hasData,
         sphincterImpairmentAnalysis.hasData,
         erectileDysfunctionAnalysis.hasData,
+        penisConditionsAnalysis.hasData,
+        testisConditionsAnalysis.hasData,
         endometriosisAnalysis.hasData,
         femaleReproductiveOrgansAnalysis.hasData,
         pelvicProlapseAnalysis.hasData,
@@ -1610,7 +1629,8 @@ const RatingEvidence = () => {
     halluxValgusAnalysis.hasData, halluxRigidusAnalysis.hasData,
     // Respiratory
     sleepApneaAnalysis.hasData, asthmaAnalysis.hasData, rhinitisAnalysis.hasData,
-    sinusitisAnalysis.hasData, copdAnalysis.hasData, chronicBronchitisAnalysis.hasData,
+    sinusitisAnalysis.hasData, deviatedSeptumAnalysis.hasData, noseLossAnalysis.hasData,
+    copdAnalysis.hasData, chronicBronchitisAnalysis.hasData,
     emphysemaAnalysis.hasData, bronchiectasisAnalysis.hasData, pulmonaryFibrosisAnalysis.hasData,
     sarcoidosisAnalysis.hasData,
     // Cardiovascular
@@ -1632,7 +1652,9 @@ const RatingEvidence = () => {
     hyperaldosteronismAnalysis.hasData,
     // Genitourinary
     kidneyStonesAnalysis.hasData, chronicRenalDiseaseAnalysis.hasData, voidingDysfunctionAnalysis.hasData,
-    sphincterImpairmentAnalysis.hasData, erectileDysfunctionAnalysis.hasData, endometriosisAnalysis.hasData,
+    sphincterImpairmentAnalysis.hasData, erectileDysfunctionAnalysis.hasData,
+    penisConditionsAnalysis.hasData, testisConditionsAnalysis.hasData,
+    endometriosisAnalysis.hasData,
     femaleReproductiveOrgansAnalysis.hasData, pelvicProlapseAnalysis.hasData, femaleArousalDisorderAnalysis.hasData,
     // Skin
     eczemaAnalysis.hasData, psoriasisAnalysis.hasData, scarsAnalysis.hasData, chronicUrticariaAnalysis.hasData,
@@ -1689,6 +1711,8 @@ const RatingEvidence = () => {
         plantarFasciitisAnalysis.hasData ||
         insomniaAnalysis.hasData ||
         sinusitisAnalysis.hasData ||
+        deviatedSeptumAnalysis.hasData ||
+        noseLossAnalysis.hasData ||
         shoulderAnalysis.hasData ||
         hipAnalysis.hasData ||
         ankleAnalysis.hasData ||
@@ -1727,6 +1751,8 @@ const RatingEvidence = () => {
         voidingDysfunctionAnalysis.hasData ||
         sphincterImpairmentAnalysis.hasData ||
         erectileDysfunctionAnalysis.hasData ||
+        penisConditionsAnalysis.hasData ||
+        testisConditionsAnalysis.hasData ||
         endometriosisAnalysis.hasData ||
         femaleReproductiveOrgansAnalysis.hasData ||
         pelvicProlapseAnalysis.hasData ||
@@ -2238,6 +2264,18 @@ const RatingEvidence = () => {
                 expanded={expandedSection === 'sarcoidosis'}
                 onToggle={() => toggleSection('sarcoidosis')}
             />
+            <GenericRatingCard
+                analysis={deviatedSeptumAnalysis}
+                expanded={expandedSection === 'deviated-septum'}
+                onToggle={() => toggleSection('deviated-septum')}
+                icon="👃"
+            />
+            <GenericRatingCard
+                analysis={noseLossAnalysis}
+                expanded={expandedSection === 'nose-loss'}
+                onToggle={() => toggleSection('nose-loss')}
+                icon="👃"
+            />
           </ConditionGroup>
 
 
@@ -2620,6 +2658,18 @@ const RatingEvidence = () => {
                 analysis={erectileDysfunctionAnalysis}
                 expanded={expandedSection === 'erectile-dysfunction'}
                 onToggle={() => toggleSection('erectile-dysfunction')}
+            />
+            <GenericRatingCard
+                analysis={penisConditionsAnalysis}
+                expanded={expandedSection === 'penis-conditions'}
+                onToggle={() => toggleSection('penis-conditions')}
+                icon="🩺"
+            />
+            <GenericRatingCard
+                analysis={testisConditionsAnalysis}
+                expanded={expandedSection === 'testis-conditions'}
+                onToggle={() => toggleSection('testis-conditions')}
+                icon="🩺"
             />
             <EndometriosisRatingCard
                 analysis={endometriosisAnalysis}
