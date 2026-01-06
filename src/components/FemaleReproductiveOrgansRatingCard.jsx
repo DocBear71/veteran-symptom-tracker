@@ -2,6 +2,7 @@ import { ChevronDown, ChevronUp } from 'lucide-react';
 import { FEMALE_REPRODUCTIVE_ORGANS_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
+import SMCAlertBanner from './SMCAlertBanner';
 
 /**
  * Female Reproductive Organs Rating Card Component - Gold Standard Version
@@ -45,6 +46,9 @@ export default function FemaleReproductiveOrgansRatingCard({ analysis, expanded,
                   conditionKey="femaleReproductiveOrgans"
                   currentAnalysis={analysis}
               />
+
+              {/* SMC-K Alert Banner */}
+              <SMCAlertBanner analysis={analysis} />
 
               <div>
                 <h4 className="font-medium text-gray-900 dark:text-white mb-3 text-center">Evidence Summary</h4>

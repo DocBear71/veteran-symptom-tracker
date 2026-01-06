@@ -2,6 +2,7 @@ import { ChevronDown, ChevronUp } from 'lucide-react';
 import { getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
+import SMCAlertBanner from './SMCAlertBanner';
 
 /**
  * Generic Rating Card - Gold Standard Version
@@ -103,6 +104,20 @@ export default function GenericRatingCard({ analysis, expanded, onToggle, icon =
                   conditionKey="generic"
                   currentAnalysis={analysis}
               />
+
+              {/* SMC Eligibility Alert */}
+              {analysis?.smcEligible && analysis?.smcData && (
+                  <SMCAlertBanner
+                      smcLevel={analysis.smcData.level}
+                      category={analysis.smcData.category}
+                      conditionName={analysis.condition}
+                      diagnosticCode={analysis.diagnosticCode}
+                      autoGrant={analysis.smcData.autoGrant}
+                      note={analysis.smcData.note}
+                      currentRating={analysis.supportedRating}
+                      requiredRating={analysis.smcData.requiredRating}
+                  />
+              )}
 
               {/* Evidence Summary - 4 Box Grid */}
               <div>

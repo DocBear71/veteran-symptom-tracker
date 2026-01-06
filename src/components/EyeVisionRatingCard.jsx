@@ -1,190 +1,360 @@
-import {ChevronDown, ChevronUp} from 'lucide-react';
-import UnderstandingYourRating from './UnderstandingYourRating.jsx';
-import {getRatingRowColor, getRatingTextColor,} from '../utils/ratingCriteria.js';
+import {
+  VISION_LOSS_CRITERIA,
+  GLAUCOMA_CRITERIA,
+  getRatingRowColor,
+  getRatingTextColor,
+} from '../utils/ratingCriteria';
+import { ChevronDown, ChevronUp } from 'lucide-react';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
+import SMCAlertBanner from './SMCAlertBanner';
 
-export default function GenericJointRatingCard({
-                                                 analysis,
-                                                 expanded,
-                                                 onToggle,
-                                                 jointName = 'Joint',
-                                                 diagnosticCode = '5000',
-                                                 criteria,
-                                               }) {
+const EyeVisionRatingCard = ({ analysis, expanded, onToggle }) => {
+
   if (!analysis || !analysis.hasData) return null;
-  const {supportedRating, rationale, evidenceGaps, metrics} = analysis;
 
-  // Normalize rating for comparison (handles string vs number)
-  const normalizeRating = (rating) => {
-    if (rating === null || rating === undefined) return null;
-    if (typeof rating === 'number') return rating;
-    if (typeof rating === 'string') return parseInt(rating, 10);
-    return null;
+  const {
+    acuityTrends,
+    mostAffectedActivities,
+    fieldDefects,
+    evidenceGaps,
+    ratingGuidance,
+  } = analysis;
+
+  // Visual acuity color coding
+  const getAcuityColor = (acuity) => {
+    const severityMap = {
+      '20/20': 'text-green-600 dark:text-green-400',
+      '20/25': 'text-green-600 dark:text-green-400',
+      '20/30': 'text-yellow-600 dark:text-yellow-400',
+      '20/40': 'text-yellow-600 dark:text-yellow-400',
+      '20/50': 'text-orange-600 dark:text-orange-400',
+      '20/70': 'text-orange-600 dark:text-orange-400',
+      '20/100': 'text-red-600 dark:text-red-400',
+      '20/200': 'text-red-600 dark:text-red-400',
+      'CF': 'text-red-700 dark:text-red-500',
+      'HM': 'text-red-700 dark:text-red-500',
+      'LP': 'text-red-800 dark:text-red-600',
+      'NLP': 'text-red-900 dark:text-red-700',
+    };
+    return severityMap[acuity] || 'text-gray-600 dark:text-gray-400';
   };
-
-  const numericRating = normalizeRating(supportedRating);
-  const isRatingSupported = (p) => numericRating === p;
 
   return (
       <div
-          className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden border-l-4 border-blue-500">
-        <button onClick={onToggle}
-                className="w-full px-6 py-4 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
-          <div className="flex items-center gap-3"><span
-              className="text-2xl">🦴</span>
-            <div className="text-left"><h3
-                className="font-semibold text-lg text-gray-900 dark:text-white">{jointName} Condition</h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400">DC {diagnosticCode} -
-                38 CFR 4.71a</p></div>
+          className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+        {/* Collapsible Header */}
+        <button
+            onClick={onToggle}
+            className="w-full p-6 flex items-start gap-3 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
+        >
+          <div className="text-3xl">👁️</div>
+          <div className="flex-1 text-left">
+            <h3 className="font-semibold text-gray-900 dark:text-white mb-1">
+              Eye & Vision Conditions
+            </h3>
+            <p className="text-sm text-gray-600 dark:text-gray-400">
+              DC 6061-6079 (Vision Loss), DC 6067 (Glaucoma), DC 6066 (Diabetic
+              Retinopathy)
+            </p>
           </div>
-          <div className="flex items-center gap-4">
-            <div className="text-right">
-              <div className={`text-2xl font-bold ${getRatingTextColor(supportedRating)}`}>
-                {supportedRating !== null ? `${supportedRating}%` : 'N/A'}
+          <div className="text-right flex items-center gap-4">
+            <div>
+              <div className="text-sm text-gray-500 dark:text-gray-400">Total
+                Logs
               </div>
               <div
-                  className="text-xs text-gray-500 dark:text-gray-400">Supported
-                Rating
-              </div>
+                  className="text-2xl font-bold text-cyan-600 dark:text-cyan-400">{analysis.totalLogs}</div>
             </div>
-            {expanded ?
-                <ChevronUp className="w-5 h-5 text-gray-400"/> :
-                <ChevronDown className="w-5 h-5 text-gray-400"/>}</div>
+            {expanded ? (
+                <ChevronUp className="w-5 h-5 text-gray-400" />
+            ) : (
+                <ChevronDown className="w-5 h-5 text-gray-400" />
+            )}
+          </div>
         </button>
-        {expanded && (
-            <div className="px-6 pb-6 space-y-6">
-              <div className="border-t border-gray-200 dark:border-gray-700"/>
-              <div><h4
-                  className="font-medium text-gray-900 dark:text-white mb-3 text-center">Evidence
-                Summary</h4>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                  <div
-                      className="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg text-center">
-                    <div
-                        className="text-2xl font-bold text-blue-600 dark:text-blue-400">{metrics?.totalLogs ||
-                        0}</div>
-                    <div
-                        className="text-xs text-blue-700 dark:text-blue-300">Total
-                      Logs
-                    </div>
-                  </div>
-                  <div
-                      className={`p-3 rounded-lg text-center ${metrics?.painDays >
-                      0 ?
-                          'bg-red-50 dark:bg-red-900/20' :
-                          'bg-gray-50 dark:bg-gray-700/30'}`}>
-                    <div
-                        className={`text-2xl font-bold ${metrics?.painDays > 0 ?
-                            'text-red-600 dark:text-red-400' :
-                            'text-gray-400'}`}>{metrics?.painDays || 0}</div>
-                    <div
-                        className="text-xs text-gray-600 dark:text-gray-400">Pain
-                      Days
-                    </div>
-                  </div>
-                  <div
-                      className={`p-3 rounded-lg text-center ${metrics?.avgPain ?
-                          'bg-purple-50 dark:bg-purple-900/20' :
-                          'bg-gray-50 dark:bg-gray-700/30'}`}>
-                    <div className={`text-xl font-bold ${metrics?.avgPain ?
-                        'text-purple-600 dark:text-purple-400' :
-                        'text-gray-400'}`}>{metrics?.avgPain || '—'}/10
-                    </div>
-                    <div
-                        className="text-xs text-gray-600 dark:text-gray-400">Avg
-                      Pain
-                    </div>
-                  </div>
-                  <div
-                      className={`p-3 rounded-lg text-center ${metrics?.flareUps >
-                      0 ?
-                          'bg-orange-50 dark:bg-orange-900/20' :
-                          'bg-gray-50 dark:bg-gray-700/30'}`}>
-                    <div
-                        className={`text-2xl font-bold ${metrics?.flareUps > 0 ?
-                            'text-orange-600 dark:text-orange-400' :
-                            'text-gray-400'}`}>{metrics?.flareUps || 0}</div>
-                    <div
-                        className="text-xs text-gray-600 dark:text-gray-400">Flare-Ups
-                    </div>
-                  </div>
-                </div>
-              </div>
-              {rationale?.length > 0 && (<div><h4
-                  className="font-medium text-gray-900 dark:text-white mb-2 text-center">Analysis
-                Rationale</h4>
-                <div
-                    className="bg-gray-50 dark:bg-gray-700/30 rounded-lg p-3 space-y-2">{rationale.map(
-                    (item, idx) => (
-                        <div key={idx} className="flex items-start gap-2"><span
-                            className="text-blue-600 dark:text-blue-400 mt-0.5">◆</span><span
-                            className="text-sm text-gray-700 dark:text-gray-300">{item}</span>
-                        </div>))}</div>
-              </div>)}
 
-              {/* Understanding Your Rating - Educational Content */}
-              <UnderstandingYourRating
-                  diagnosticCode="6066"
-                  currentRating={supportedRating}
+        {/* Expandable Content */}
+        {expanded && (
+            <div className="px-6 pb-6 space-y-6 border-t border-gray-200 dark:border-gray-700">
+
+              {/* Service-Connected Status Banner */}
+              <ServiceConnectedBanner
+                  conditionKey="eyeVision"
+                  currentAnalysis={analysis}
               />
 
-              {criteria?.ratings && (<div><h4
-                  className="font-medium text-gray-900 dark:text-white mb-2 text-center">VA
-                Rating Schedule</h4>
-                <div className="space-y-2">{criteria.ratings.map(r => {
-                  const s = isRatingSupported(r.percent);
-                  return (<div key={r.percent}
-                               className={`p-3 rounded-lg border ${s ?
-                                   'border-2' :
-                                   ''} ${getRatingRowColor(r.percent, s)}`}>
-                    <div className="flex items-center gap-3">
-                      <div className={`w-14 text-center font-bold ${s ?
-                          'text-gray-900 dark:text-white' :
-                          'text-gray-500 dark:text-gray-400'}`}>{r.percent}%
-                      </div>
-                      <div className={`flex-1 text-sm ${s ?
-                          'text-gray-900 dark:text-white' :
-                          'text-gray-500 dark:text-gray-400'}`}>{r.summary}</div>
-                      {s && <span
-                          className="text-green-600 dark:text-green-400">✓</span>}
+              {/* SMC-K Alert Banner */}
+              <SMCAlertBanner analysis={analysis} />
+
+              {/* Visual Acuity Summary */}
+              {(acuityTrends.worstLeft || acuityTrends.worstRight) && (
+                  <div
+                      className="bg-cyan-50 dark:bg-cyan-900/30 rounded-lg p-4 border border-cyan-200 dark:border-cyan-800">
+                    <h4 className="font-medium text-cyan-900 dark:text-cyan-200 mb-3">Visual
+                      Acuity (Worst Logged)</h4>
+                    <div className="grid grid-cols-2 gap-4">
+                      {acuityTrends.worstLeft && (
+                          <div>
+                            <div
+                                className="text-xs text-gray-600 dark:text-gray-400 mb-1">Left
+                              Eye
+                            </div>
+                            <div
+                                className={`text-2xl font-bold ${getAcuityColor(
+                                    acuityTrends.worstLeft.acuity)}`}>
+                              {acuityTrends.worstLeft.acuity}
+                            </div>
+                            <div
+                                className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                              {new Date(
+                                  acuityTrends.worstLeft.date).toLocaleDateString()}
+                            </div>
+                          </div>
+                      )}
+                      {acuityTrends.worstRight && (
+                          <div>
+                            <div
+                                className="text-xs text-gray-600 dark:text-gray-400 mb-1">Right
+                              Eye
+                            </div>
+                            <div
+                                className={`text-2xl font-bold ${getAcuityColor(
+                                    acuityTrends.worstRight.acuity)}`}>
+                              {acuityTrends.worstRight.acuity}
+                            </div>
+                            <div
+                                className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                              {new Date(
+                                  acuityTrends.worstRight.date).toLocaleDateString()}
+                            </div>
+                          </div>
+                      )}
                     </div>
-                  </div>);
-                })}</div>
-              </div>)}
-              {evidenceGaps?.length > 0 && (<div><h4
-                  className="font-medium text-gray-900 dark:text-white mb-2 text-center">Documentation
-                Gaps</h4>
-                <div
-                    className="bg-amber-50 dark:bg-amber-900/20 rounded-lg p-3 space-y-2">{evidenceGaps.map(
-                    (gap, idx) => (
-                        <div key={idx} className="flex items-start gap-2"><span
-                            className="text-amber-600 dark:text-amber-400 mt-0.5">⚠</span><span
-                            className="text-sm text-gray-700 dark:text-gray-300">{gap}</span>
-                        </div>))}</div>
-              </div>)}
+                    {acuityTrends.betterEye && (
+                        <div
+                            className="mt-3 pt-3 border-t border-cyan-300 dark:border-cyan-700">
+                          <p className="text-sm text-cyan-800 dark:text-cyan-300">
+                            <strong>Better
+                              Eye:</strong> {acuityTrends.betterEye === 'left' ?
+                              'Left' :
+                              'Right'}
+                            {' '}({acuityTrends.betterEye === 'left' ?
+                              acuityTrends.worstLeft.acuity :
+                              acuityTrends.worstRight.acuity})
+                          </p>
+                          <p className="text-xs text-cyan-700 dark:text-cyan-400 mt-1">
+                            VA ratings are based on visual acuity in the better
+                            eye
+                          </p>
+                        </div>
+                    )}
+                  </div>
+              )}
+
+              {/* Rating Guidance */}
               <div
-                  className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-200 dark:border-blue-800">
-                <h4 className="font-semibold text-blue-900 dark:text-blue-200 mb-2 flex items-center gap-2">
-                  <span>ℹ️</span>Important Information</h4>
-                <ul className="space-y-1">
-                  <li className="text-sm text-blue-800 dark:text-blue-300 flex items-start gap-2">
-                    <span className="text-blue-500 mt-0.5">•</span><span>Document range of motion limitations</span>
+                  className="bg-blue-50 dark:bg-blue-900/30 rounded-lg p-4 border border-blue-200 dark:border-blue-800">
+                <h4 className="font-medium text-blue-900 dark:text-blue-200 mb-2 flex items-center gap-2">
+                  <span>📊</span>
+                  Rating Guidance
+                </h4>
+                <p className="text-sm text-blue-800 dark:text-blue-300">
+                  {ratingGuidance}
+                </p>
+              </div>
+
+              {/* Field of Vision Defects */}
+              {fieldDefects.length > 0 && (
+                  <div>
+                    <h4 className="font-medium text-gray-900 dark:text-white mb-2">Field
+                      of Vision Defects</h4>
+                    <div className="space-y-1">
+                      {fieldDefects.map(({field, count}) => (
+                          <div key={field}
+                               className="flex items-center justify-between text-sm">
+                      <span
+                          className="text-gray-700 dark:text-gray-300 capitalize">
+                        {field.replace('-', ' ')}
+                      </span>
+                            <span className="text-gray-500 dark:text-gray-400">
+                        {count} log{count !== 1 ? 's' : ''}
+                      </span>
+                          </div>
+                      ))}
+                    </div>
+                    <p className="text-xs text-orange-600 dark:text-orange-400 mt-2">
+                      ⚠️ Field defects require formal visual field testing
+                      (perimetry) for VA claims
+                    </p>
+                  </div>
+              )}
+
+              {/* Impact on Activities */}
+              {mostAffectedActivities.length > 0 && (
+                  <div>
+                    <h4 className="font-medium text-gray-900 dark:text-white mb-2">Most
+                      Affected Activities</h4>
+                    <div className="space-y-2">
+                      {mostAffectedActivities.map(({activity, count}) => (
+                          <div key={activity}
+                               className="flex items-center gap-2">
+                            <div
+                                className="flex-1 bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                              <div
+                                  className="bg-cyan-600 dark:bg-cyan-500 h-2 rounded-full"
+                                  style={{
+                                    width: `${(count / analysis.totalLogs) *
+                                    100}%`,
+                                  }}
+                              ></div>
+                            </div>
+                            <span
+                                className="text-sm text-gray-700 dark:text-gray-300 w-32 capitalize">
+                        {activity.replace('-', ' ')}
+                      </span>
+                            <span
+                                className="text-sm text-gray-500 dark:text-gray-400 w-8 text-right">
+                        {count}
+                      </span>
+                          </div>
+                      ))}
+                    </div>
+                  </div>
+              )}
+
+              {/* Evidence Gaps */}
+              {evidenceGaps.length > 0 && (
+                  <div
+                      className="bg-yellow-50 dark:bg-yellow-900/30 rounded-lg p-4 border border-yellow-200 dark:border-yellow-800">
+                    <h4 className="font-medium text-yellow-900 dark:text-yellow-200 mb-2 flex items-center gap-2">
+                      <span>⚠️</span>
+                      Evidence Needed for VA Claim
+                    </h4>
+                    <ul className="space-y-1">
+                      {evidenceGaps.map((gap, index) => (
+                          <li key={index}
+                              className="text-sm text-yellow-800 dark:text-yellow-300 flex items-start gap-2">
+                            <span
+                                className="text-yellow-600 dark:text-yellow-400 mt-0.5">•</span>
+                            <span>{gap}</span>
+                          </li>
+                      ))}
+                    </ul>
+                  </div>
+              )}
+
+              {/* VA Rating Schedule Reference */}
+              <div
+                  className="border-t border-gray-200 dark:border-gray-700 pt-4">
+                <details className="text-sm">
+                  <summary
+                      className="font-medium text-gray-900 dark:text-white cursor-pointer hover:text-cyan-600 dark:hover:text-cyan-400">
+                    View VA Rating Schedule for Vision Loss
+                  </summary>
+                  <div className="mt-3 space-y-3">
+                    {VISION_LOSS_CRITERIA.ratings.map((rating) => (
+                        <div key={rating.percent}
+                             className="bg-gray-50 dark:bg-gray-900/50 rounded p-3 border border-gray-200 dark:border-gray-700">
+                          <div
+                              className="flex items-start justify-between mb-2">
+                            <span
+                                className="font-semibold text-cyan-600 dark:text-cyan-400">{rating.percent}%</span>
+                            <span
+                                className="text-xs text-gray-500 dark:text-gray-400">DC 6061-6079</span>
+                          </div>
+                          <p className="text-sm font-medium text-gray-800 dark:text-gray-200 mb-2">
+                            {rating.summary}
+                          </p>
+                          <ul className="space-y-1">
+                            {rating.criteriaDescription.map((criteria, idx) => (
+                                <li key={idx}
+                                    className="text-xs text-gray-600 dark:text-gray-400 flex items-start gap-2">
+                                  <span
+                                      className="text-gray-400 dark:text-gray-500">•</span>
+                                  <span>{criteria}</span>
+                                </li>
+                            ))}
+                          </ul>
+                        </div>
+                    ))}
+                  </div>
+                </details>
+              </div>
+
+              {/* Glaucoma Reference */}
+              <div
+                  className="border-t border-gray-200 dark:border-gray-700 pt-4">
+                <details className="text-sm">
+                  <summary
+                      className="font-medium text-gray-900 dark:text-white cursor-pointer hover:text-cyan-600 dark:hover:text-cyan-400">
+                    View VA Rating Schedule for Glaucoma
+                  </summary>
+                  <div className="mt-3 space-y-3">
+                    {GLAUCOMA_CRITERIA.ratings.map((rating, idx) => (
+                        <div key={idx}
+                             className="bg-gray-50 dark:bg-gray-900/50 rounded p-3 border border-gray-200 dark:border-gray-700">
+                          <div
+                              className="flex items-start justify-between mb-2">
+                      <span
+                          className="font-semibold text-cyan-600 dark:text-cyan-400">
+                        {rating.percent === 'variable' ?
+                            'Variable' :
+                            `${rating.percent}%`}
+                      </span>
+                            <span
+                                className="text-xs text-gray-500 dark:text-gray-400">DC 6067</span>
+                          </div>
+                          <p className="text-sm font-medium text-gray-800 dark:text-gray-200 mb-2">
+                            {rating.summary}
+                          </p>
+                          <ul className="space-y-1">
+                            {rating.criteriaDescription.map((criteria, idx) => (
+                                <li key={idx}
+                                    className="text-xs text-gray-600 dark:text-gray-400 flex items-start gap-2">
+                                  <span
+                                      className="text-gray-400 dark:text-gray-500">•</span>
+                                  <span>{criteria}</span>
+                                </li>
+                            ))}
+                          </ul>
+                        </div>
+                    ))}
+                  </div>
+                </details>
+              </div>
+
+              {/* Important Notes */}
+              <div
+                  className="bg-gray-50 dark:bg-gray-900/50 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
+                <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-sm">Important
+                  Notes</h4>
+                <ul className="space-y-1 text-xs text-gray-600 dark:text-gray-400">
+                  <li className="flex items-start gap-2">
+                    <span>•</span>
+                    <span>Vision loss ratings are based on <strong>visual acuity in the better eye</strong></span>
                   </li>
-                  <li className="text-sm text-blue-800 dark:text-blue-300 flex items-start gap-2">
-                    <span className="text-blue-500 mt-0.5">•</span><span>Track pain on motion and flare-ups</span>
+                  <li className="flex items-start gap-2">
+                    <span>•</span>
+                    <span>Visual acuity must be measured with <strong>best correction</strong> (glasses/contacts)</span>
                   </li>
-                  <li className="text-sm text-blue-800 dark:text-blue-300 flex items-start gap-2">
-                    <span className="text-blue-500 mt-0.5">•</span><span>Note functional impairment during flares</span>
+                  <li className="flex items-start gap-2">
+                    <span>•</span>
+                    <span>Field of vision defects may increase the rating or be rated separately</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span>•</span>
+                    <span>Glaucoma with bilateral involvement is rated under vision loss criteria</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span>•</span>
+                    <span>Your symptom logs support your claim but <strong>do not replace</strong> formal ophthalmology exams</span>
                   </li>
                 </ul>
-              </div>
-              <div
-                  className="bg-gray-100 dark:bg-gray-700/50 rounded-lg p-3 text-xs text-gray-600 dark:text-gray-400">
-                <strong>Important:</strong> Based on 38 CFR 4.71a -
-                Musculoskeletal System. For documentation purposes only.
               </div>
             </div>
         )}
       </div>
   );
-}
+};
+
+export default EyeVisionRatingCard;

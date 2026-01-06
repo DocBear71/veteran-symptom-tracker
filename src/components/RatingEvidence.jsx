@@ -3,6 +3,7 @@ import { getSymptomLogs, saveSymptomLog, getChronicSymptoms } from '../utils/sto
 import { getMeasurements } from '../utils/measurements';
 import { getProfileType, PROFILE_TYPES } from '../utils/profile';
 import { getSuggestedConditions } from '../data/symptoms';
+import SMCCalculator from './SMCCalculator';
 import {
   analyzeMigraineLogs,
   analyzeSleepApneaLogs,
@@ -233,6 +234,8 @@ import {
   analyzeChronicSuppurativeOtitisMedia,
   analyzeChronicOtitisExterna,
   analyzeChronicNonsuppurativeOtitisMedia,
+  analyzeAmputationLogs,
+  analyzeADLLogs,
   getAllMigraineRatings,
   getAllSleepApneaRatings,
   getAllPTSDRatings,
@@ -440,6 +443,7 @@ import ConditionGroup from './ConditionGroup';
 import AnkleAchillesRatingCard from './AnkleAchillesRatingCard';
 import HipThighRatingCard from './HipThighRatingCard';
 import SecondaryConditionsSummary from './SecondaryConditionsSummary';
+import ADLRatingCard from './ADLRatingCard';
 
 
 
@@ -483,6 +487,7 @@ const RatingEvidence = () => {
   const [showSleepApneaSetup, setShowSleepApneaSetup] = useState(false);
   const [chronicSymptoms, setChronicSymptoms] = useState([]);
   const [showSuggestedConditions, setShowSuggestedConditions] = useState(true);
+  const [smcExpanded, setSmcExpanded] = useState(false);
 
   // Check if user is a veteran
   const isVeteran = getProfileType() === PROFILE_TYPES.VETERAN;
@@ -1268,6 +1273,12 @@ const RatingEvidence = () => {
   const chronicNonsuppurativeOtitisMediaAnalysis = useMemo(() => {
     return analyzeChronicNonsuppurativeOtitisMedia(logs, { evaluationPeriodDays: evaluationDays });
   }, [logs, evaluationDays]);
+  const amputationAnalysis = useMemo(() => {
+    return analyzeAmputationLogs(logs);
+  }, [logs]);
+  const adlAnalysis = useMemo(() => {
+    return analyzeADLLogs(logs);
+  }, [logs]);
 
 
   const activeConditions = useMemo(() => {
@@ -1295,6 +1306,7 @@ const RatingEvidence = () => {
     if (multipleSclerosisAnalysis?.hasData) conditions.push('multipleSclerosis');
     if (parkinsonsAnalysis?.hasData) conditions.push('parkinsons');
     if (alsAnalysis?.hasData) conditions.push('als');
+    if (adlAnalysis?.hasData) conditions.push('adl');
     return conditions;
   }, [
     diabetesAnalysis?.hasData,
@@ -1319,6 +1331,7 @@ const RatingEvidence = () => {
     multipleSclerosisAnalysis?.hasData,
     parkinsonsAnalysis?.hasData,
     alsAnalysis?.hasData,
+    adlAnalysis?.hasData,
   ]);
 
 
@@ -1608,6 +1621,7 @@ const RatingEvidence = () => {
       other: [
         chronicFatigueAnalysis.hasData,
         insomniaAnalysis.hasData,
+        adlAnalysis.hasData,
       ].filter(Boolean).length,
       secondary: activeConditions.length,
     };
@@ -1708,7 +1722,7 @@ const RatingEvidence = () => {
     toothLossAnalysis.hasData, mandibleNonunionAnalysis.hasData, malignantOralNeoplasmAnalysis.hasData,
     benignOralNeoplasmAnalysis.hasData,
     // Other
-    chronicFatigueAnalysis.hasData, insomniaAnalysis.hasData,
+    chronicFatigueAnalysis.hasData, insomniaAnalysis.hasData, adlAnalysis.hasData,
   ]);
 
   // Total conditions with data
@@ -1927,7 +1941,8 @@ const RatingEvidence = () => {
         peripheralVestibularAnalysis.hasData ||
         chronicSuppurativeOtitisMediaAnalysis.hasData ||
         chronicOtitisExternaAnalysis.hasData ||
-        chronicNonsuppurativeOtitisMediaAnalysis.hasData
+        chronicNonsuppurativeOtitisMediaAnalysis.hasData ||
+        adlAnalysis.hasData
     ;
 
     return (
@@ -2046,6 +2061,37 @@ const RatingEvidence = () => {
                   </div>
                 </div>
               </div>
+          )}
+
+          {/* ========== SPECIAL MONTHLY COMPENSATION ========== */}
+          <SMCCalculator
+              expanded={smcExpanded}
+              onToggle={() => setSmcExpanded(!smcExpanded)}
+              penisAnalysis={penisConditionsAnalysis}
+              testisAnalysis={testisConditionsAnalysis}
+              edAnalysis={erectileDysfunctionAnalysis}
+              aphoniaAnalysis={aphoniaAnalysis}
+              hearingAnalysis={hearingLossAnalysis}
+              femaleReproductiveAnalysis={femaleReproductiveOrgansAnalysis}
+              visionAnalysis={visionAnalysis}
+              amputationAnalysis={amputationAnalysis}  // ADD THIS
+          />
+
+          <div className="h-4" />
+
+          {/* Functional Status & Aid Section */}
+          {adlAnalysis?.hasData && (
+              <ConditionGroup
+                  title="Functional Status & Aid"
+                  icon="🏠"
+                  description="Activities of Daily Living - Aid & Attendance Eligibility"
+              >
+                <ADLRatingCard
+                    analysis={adlAnalysis}
+                    expanded={expandedSection === 'adl'}
+                    onToggle={() => toggleSection('adl')}
+                />
+              </ConditionGroup>
           )}
 
           {/* ========== MUSCULOSKELETAL ========== */}
@@ -2243,7 +2289,6 @@ const RatingEvidence = () => {
               isExpanded={expandedGroup === 'respiratory'}
               onToggle={toggleGroup}
           >
-
           <SleepApneaRatingCard
                 analysis={sleepApneaAnalysis}
                 profile={sleepApneaProfile}
@@ -2349,6 +2394,11 @@ const RatingEvidence = () => {
                 logs={logs}
                 expanded={expandedSection === 'vision'}
                 onToggle={() => toggleSection('vision')}
+            />
+            <EyeVisionRatingCard
+                analysis={visionAnalysis}
+                expanded={expandedSection === 'eyeVision'}
+                onToggle={() => toggleSection('eyeVision')}
             />
             <HearingLossRatingCard
                 analysis={hearingLossAnalysis}

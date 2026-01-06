@@ -2,6 +2,7 @@ import { ChevronDown, ChevronUp } from 'lucide-react';
 import { ERECTILE_DYSFUNCTION_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
+import SMCAlertBanner from './SMCAlertBanner';
 
 /**
  * Erectile Dysfunction Rating Card Component - Gold Standard Version
@@ -57,21 +58,35 @@ export default function ErectileDysfunctionRatingCard({ analysis, expanded, onTo
                   currentAnalysis={analysis}
               />
 
+              {/* SMC-K Eligibility Alert */}
+              <SMCAlertBanner
+                  smcLevel="K"
+                  category="CREATIVE_ORGAN"
+                  conditionName="Erectile Dysfunction"
+                  diagnosticCode="7522"
+                  autoGrant={false}
+                  note="ED may qualify for SMC-K when secondary to a service-connected condition (diabetes, MS, ALS, prostate cancer treatment, spinal cord injury, PTSD medications, etc.). Requires established nexus."
+              />
+
               {/* Evidence Summary */}
               <div>
                 <h4 className="font-medium text-gray-900 dark:text-white mb-3 text-center">Evidence Summary</h4>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                   <div className="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg text-center">
-                    <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">{metrics?.totalLogs || 0}</div>
+                    <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">{metrics?.totalLogs || analysis?.totalLogs || 0}</div>
                     <div className="text-xs text-blue-700 dark:text-blue-300">Total Logs</div>
                   </div>
                   <div className={`p-3 rounded-lg text-center ${metrics?.mostCommonSeverity ? 'bg-purple-50 dark:bg-purple-900/20' : 'bg-gray-50 dark:bg-gray-700/30'}`}>
                     <div className={`text-lg font-bold capitalize ${metrics?.mostCommonSeverity ? 'text-purple-600 dark:text-purple-400' : 'text-gray-400'}`}>{metrics?.mostCommonSeverity || '—'}</div>
                     <div className="text-xs text-gray-600 dark:text-gray-400">Severity</div>
                   </div>
-                  <div className="bg-green-50 dark:bg-green-900/20 p-3 rounded-lg text-center col-span-2">
-                    <div className="text-lg font-bold text-green-600 dark:text-green-400">SMC Eligible</div>
-                    <div className="text-xs text-green-700 dark:text-green-300">Special Monthly Compensation</div>
+                  <div className="bg-teal-50 dark:bg-teal-900/20 p-3 rounded-lg text-center">
+                    <div className="text-2xl font-bold text-teal-600 dark:text-teal-400">0%</div>
+                    <div className="text-xs text-teal-700 dark:text-teal-300">VA Rating</div>
+                  </div>
+                  <div className="bg-amber-50 dark:bg-amber-900/20 p-3 rounded-lg text-center">
+                    <div className="text-lg font-bold text-amber-600 dark:text-amber-400">SMC-K</div>
+                    <div className="text-xs text-amber-700 dark:text-amber-300">See Alert Above</div>
                   </div>
                 </div>
               </div>

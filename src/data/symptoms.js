@@ -124,7 +124,7 @@ export const symptomCategories = [
   // Dementia / Neurocognitive Disorder (DC 9326)
   {
     id: 'dementia',
-    name: 'Dementia / Neurocognitive Disorder (DC 9326)',
+    name: 'Dementia / Neurocognitive Disorder',
     symptoms: [
       { id: 'dementia-memory-loss', name: 'Memory Loss', description: 'Forgetting recent events, names, appointments' },
       { id: 'dementia-disorientation', name: 'Disorientation', description: 'Confusion about time, place, or person' },
@@ -162,7 +162,7 @@ export const symptomCategories = [
 // Jacksonian/Focal Epilepsy (DC 8912)
   {
     id: 'jacksonian-epilepsy',
-    name: 'Jacksonian/Focal Epilepsy (DC 8912) Symptoms',
+    name: 'Jacksonian/Focal Epilepsy Symptoms',
     symptoms: [
       { id: 'jack-focal-motor', name: 'Jacksonian - Focal Motor Seizure' },
       { id: 'jack-focal-sensory', name: 'Jacksonian - Focal Sensory Seizure' },
@@ -179,7 +179,7 @@ export const symptomCategories = [
 // Diencephalic Epilepsy (DC 8913)
   {
     id: 'diencephalic-epilepsy',
-    name: 'Diencephalic Epilepsy (DC 8913) Symptoms',
+    name: 'Diencephalic Epilepsy Symptoms',
     symptoms: [
       { id: 'dien-autonomic-seizure', name: 'Diencephalic - Autonomic Seizure' },
       { id: 'dien-flushing', name: 'Diencephalic - Sudden Flushing' },
@@ -197,7 +197,7 @@ export const symptomCategories = [
 // Psychomotor Epilepsy (DC 8914)
   {
     id: 'psychomotor-epilepsy',
-    name: 'Psychomotor Epilepsy (DC 8914) Symptoms',
+    name: 'Psychomotor Epilepsy Symptoms',
     symptoms: [
       // Major-type symptoms (automatic states, convulsions with LOC)
       { id: 'psych-automatic-state', name: 'Psychomotor - Automatic State/Automatism' },
@@ -332,7 +332,7 @@ export const symptomCategories = [
   // Deviated Nasal Septum (DC 6502)
   {
     id: 'deviated-septum',
-    name: 'Deviated Nasal Septum (DC 6502)',
+    name: 'Deviated Nasal Septum',
     symptoms: [
       { id: 'septum-obstruction-bilateral', name: 'Bilateral Nasal Obstruction', description: '50%+ obstruction both sides' },
       { id: 'septum-obstruction-complete', name: 'Complete Unilateral Obstruction', description: '100% blockage one side' },
@@ -347,7 +347,7 @@ export const symptomCategories = [
   // Nose Loss/Disfigurement (DC 6504)
   {
     id: 'nose-loss',
-    name: 'Nose Loss/Disfigurement (DC 6504)',
+    name: 'Nose Loss/Disfigurement',
     symptoms: [
       { id: 'nose-loss-both-passages', name: 'Loss Exposing Both Passages', description: 'Tissue loss exposing both nasal passages' },
       { id: 'nose-loss-partial-ala', name: 'Partial Ala Loss', description: 'Loss of part of nasal ala (wing)' },
@@ -362,7 +362,7 @@ export const symptomCategories = [
   // Chronic Laryngitis (DC 6516)
   {
     id: 'chronic-laryngitis',
-    name: 'Chronic Laryngitis (DC 6516)',
+    name: 'Chronic Laryngitis',
     symptoms: [
       { id: 'laryngitis-hoarseness', name: 'Chronic Hoarseness', description: 'Persistent hoarse voice' },
       { id: 'laryngitis-inflammation', name: 'Vocal Cord Inflammation', description: 'Documented inflammation of cords' },
@@ -377,7 +377,7 @@ export const symptomCategories = [
   // Aphonia - Complete Voice Loss (DC 6519)
   {
     id: 'aphonia',
-    name: 'Aphonia - Voice Loss (DC 6519)',
+    name: 'Aphonia - Voice Loss',
     symptoms: [
       { id: 'aphonia-complete', name: 'Complete Voice Loss', description: 'Cannot produce any voice' },
       { id: 'aphonia-whisper-only', name: 'Whisper Only', description: 'Can only speak in whisper' },
@@ -392,7 +392,7 @@ export const symptomCategories = [
   // Laryngeal Stenosis (DC 6520)
   {
     id: 'laryngeal-stenosis',
-    name: 'Laryngeal Stenosis (DC 6520)',
+    name: 'Laryngeal Stenosis',
     symptoms: [
       { id: 'stenosis-breathing-difficulty', name: 'Breathing Difficulty', description: 'Airway obstruction symptoms' },
       { id: 'stenosis-stridor', name: 'Stridor', description: 'Noisy breathing from narrowed airway' },
@@ -407,7 +407,7 @@ export const symptomCategories = [
   // Pharynx Injuries (DC 6521)
   {
     id: 'pharynx-injury',
-    name: 'Pharynx Injuries (DC 6521)',
+    name: 'Pharynx Injuries',
     symptoms: [
       { id: 'pharynx-stricture', name: 'Pharyngeal Stricture', description: 'Narrowing of pharynx' },
       { id: 'pharynx-obstruction', name: 'Pharyngeal Obstruction', description: 'Blockage in pharynx/nasopharynx' },
@@ -723,7 +723,7 @@ export const symptomCategories = [
   // ============================================
   {
     id: 'gout',
-    name: 'Gout (DC 5017)',
+    name: 'Gout',
     symptoms: [
       { id: 'gout-acute-attack', name: 'Gout - Acute Attack/Flare' },
       { id: 'gout-joint-pain', name: 'Gout - Joint Pain' },
@@ -741,7 +741,7 @@ export const symptomCategories = [
   // ============================================
   {
     id: 'bursitis',
-    name: 'Bursitis (DC 5019)',
+    name: 'Bursitis',
     symptoms: [
       { id: 'bursitis-pain', name: 'Bursitis - Pain at Joint' },
       { id: 'bursitis-swelling', name: 'Bursitis - Swelling' },
@@ -759,7 +759,7 @@ export const symptomCategories = [
   // ============================================
   {
     id: 'tendinitis',
-    name: 'Tendinitis/Tenosynovitis (DC 5024)',
+    name: 'Tendinitis/Tenosynovitis',
     symptoms: [
       { id: 'tendinitis-pain', name: 'Tendinitis - Pain Along Tendon' },
       { id: 'tendinitis-swelling', name: 'Tendinitis - Swelling' },
@@ -778,7 +778,7 @@ export const symptomCategories = [
   // ============================================
   {
     id: 'myositis',
-    name: 'Myositis (DC 5021)',
+    name: 'Myositis',
     symptoms: [
       { id: 'myositis-muscle-pain', name: 'Myositis - Muscle Pain' },
       { id: 'myositis-weakness', name: 'Myositis - Muscle Weakness' },
@@ -797,7 +797,7 @@ export const symptomCategories = [
   // ============================================
   {
     id: 'osteomyelitis',
-    name: 'Osteomyelitis (DC 5000)',
+    name: 'Osteomyelitis',
     symptoms: [
       { id: 'osteo-bone-pain', name: 'Osteomyelitis - Bone Pain' },
       { id: 'osteo-fever', name: 'Osteomyelitis - Fever/Chills' },
@@ -818,7 +818,7 @@ export const symptomCategories = [
   // ============================================
   {
     id: 'multi-joint-arthritis',
-    name: 'Multi-Joint Arthritis (DC 5002)',
+    name: 'Multi-Joint Arthritis',
     symptoms: [
       { id: 'mja-joint-pain', name: 'Multi-Joint Arthritis - Joint Pain' },
       { id: 'mja-joint-swelling', name: 'Multi-Joint Arthritis - Joint Swelling' },
@@ -842,7 +842,7 @@ export const symptomCategories = [
   // Vertebral Fracture or Dislocation (DC 5235)
   {
     id: 'vertebral-fracture',
-    name: 'Vertebral Fracture/Dislocation (DC 5235)',
+    name: 'Vertebral Fracture/Dislocation',
     symptoms: [
       { id: 'vfx-pain', name: 'Vertebral Fracture - Pain at Fracture Site' },
       { id: 'vfx-limited-flexion', name: 'Vertebral Fracture - Limited Forward Flexion' },
@@ -860,7 +860,7 @@ export const symptomCategories = [
   // Sacroiliac Injury and Weakness (DC 5236)
   {
     id: 'sacroiliac',
-    name: 'Sacroiliac Injury/Weakness (DC 5236)',
+    name: 'Sacroiliac Injury/Weakness',
     symptoms: [
       { id: 'si-pain', name: 'Sacroiliac - Pain in SI Joint/Low Back' },
       { id: 'si-buttock-pain', name: 'Sacroiliac - Buttock Pain' },
@@ -880,7 +880,7 @@ export const symptomCategories = [
   // Spinal Stenosis (DC 5238)
   {
     id: 'spinal-stenosis',
-    name: 'Spinal Stenosis (DC 5238)',
+    name: 'Spinal Stenosis',
     symptoms: [
       { id: 'ss-back-pain', name: 'Spinal Stenosis - Back Pain' },
       { id: 'ss-leg-pain', name: 'Spinal Stenosis - Leg Pain (Neurogenic Claudication)' },
@@ -899,7 +899,7 @@ export const symptomCategories = [
   // Ankylosing Spondylitis (DC 5240)
   {
     id: 'ankylosing-spondylitis',
-    name: 'Ankylosing Spondylitis (DC 5240)',
+    name: 'Ankylosing Spondylitis',
     symptoms: [
       { id: 'as-back-pain', name: 'Ankylosing Spondylitis - Inflammatory Back Pain' },
       { id: 'as-morning-stiffness', name: 'Ankylosing Spondylitis - Morning Stiffness (>30 min)' },
@@ -920,7 +920,7 @@ export const symptomCategories = [
   // Spinal Fusion (DC 5241) - Post-surgical
   {
     id: 'spinal-fusion',
-    name: 'Spinal Fusion (DC 5241)',
+    name: 'Spinal Fusion',
     symptoms: [
       { id: 'sf-pain', name: 'Spinal Fusion - Pain at Fusion Site' },
       { id: 'sf-adjacent-pain', name: 'Spinal Fusion - Adjacent Segment Pain' },
@@ -1035,7 +1035,7 @@ export const symptomCategories = [
   // Penis Conditions (DC 7520-7521)
   {
     id: 'penis-conditions',
-    name: 'Penis Conditions (DC 7520-7521)',
+    name: 'Penis Conditions',
     symptoms: [
       { id: 'penis-removal-half', name: 'Penis Removal - Half or More', description: 'Surgical removal of 50%+ of penis (DC 7520)' },
       { id: 'penis-removal-glans', name: 'Penis Removal - Glans Only', description: 'Surgical removal of glans penis (DC 7521)' },
@@ -1049,7 +1049,7 @@ export const symptomCategories = [
   // Testis Conditions (DC 7523-7524)
   {
     id: 'testis-conditions',
-    name: 'Testis Conditions (DC 7523-7524)',
+    name: 'Testis Conditions',
     symptoms: [
       { id: 'testis-atrophy-both', name: 'Testis Atrophy - Both', description: 'Complete atrophy of both testes (DC 7523)' },
       { id: 'testis-atrophy-one', name: 'Testis Atrophy - One', description: 'Complete atrophy of one testis (DC 7523)' },
@@ -1079,6 +1079,12 @@ export const symptomCategories = [
       { id: 'night-blindness', name: 'Night Blindness' },
       { id: 'dry-eyes', name: 'Dry Eyes' },
       { id: 'eye-strain', name: 'Eye Strain/Fatigue' },
+      // Severe Vision Loss / Anatomical Loss (SMC-K qualifying)
+      { id: 'blindness-one-eye', name: 'Blindness in One Eye (No Light Perception)' },
+      { id: 'blindness-both-eyes', name: 'Blindness in Both Eyes' },
+      { id: 'eye-enucleation', name: 'Eye Enucleation (Eye Removed)' },
+      { id: 'eye-prosthetic', name: 'Prosthetic Eye' },
+      { id: 'light-perception-only', name: 'Light Perception Only' },
     ]
   },
   // Phase 4: Gynecological Conditions
@@ -1133,6 +1139,15 @@ export const symptomCategories = [
       { id: 'breast-pain', name: 'Breast Pain/Tenderness' },
       { id: 'nipple-discharge', name: 'Nipple Discharge' },
       { id: 'uterine-cramping', name: 'Uterine Cramping' },
+      // Surgical/Anatomical Loss (SMC-K qualifying)
+      { id: 'hysterectomy-total', name: 'Total Hysterectomy (Uterus Removed)' },
+      { id: 'hysterectomy-partial', name: 'Partial Hysterectomy' },
+      { id: 'oophorectomy-bilateral', name: 'Bilateral Oophorectomy (Both Ovaries Removed)' },
+      { id: 'oophorectomy-unilateral', name: 'Unilateral Oophorectomy (One Ovary Removed)' },
+      { id: 'salpingo-oophorectomy', name: 'Salpingo-Oophorectomy (Ovary + Fallopian Tube Removed)' },
+      { id: 'cervix-removal', name: 'Cervix Removal' },
+      { id: 'breast-tissue-loss', name: 'Breast Tissue Loss (25% or more)' },
+      { id: 'mastectomy', name: 'Mastectomy' },
     ]
   },
   // Phase 5: Hemic/Lymphatic Conditions
@@ -1753,7 +1768,7 @@ export const symptomCategories = [
   },
   {
     id: 'cardiomyopathy',
-    name: 'Cardiomyopathy Symptoms (DC 7020)',
+    name: 'Cardiomyopathy Symptoms',
     symptoms: [
       { id: 'cardiomyopathy-breathlessness', name: 'Cardiomyopathy - Breathlessness' },
       { id: 'cardiomyopathy-fatigue', name: 'Cardiomyopathy - Fatigue' },
@@ -1767,7 +1782,7 @@ export const symptomCategories = [
   },
   {
     id: 'arrhythmia',
-    name: 'Arrhythmia Symptoms (DC 7010/7011)',
+    name: 'Arrhythmia Symptoms',
     symptoms: [
       // Supraventricular Tachycardia (SVT) - DC 7010
       { id: 'svt-episode', name: 'SVT - Episode (Rapid Heartbeat)' },
@@ -1792,7 +1807,7 @@ export const symptomCategories = [
   },
   {
     id: 'pericarditis',
-    name: 'Pericarditis Symptoms (DC 7002)',
+    name: 'Pericarditis Symptoms',
     symptoms: [
       { id: 'pericarditis-chest-pain', name: 'Pericarditis - Sharp Chest Pain' },
       { id: 'pericarditis-pain-breathing', name: 'Pericarditis - Pain Worse with Breathing' },
@@ -1806,7 +1821,7 @@ export const symptomCategories = [
   },
   {
     id: 'post-phlebitic',
-    name: 'Post-Phlebitic Syndrome (DC 7121)',
+    name: 'Post-Phlebitic Syndrome',
     symptoms: [
       { id: 'post-phlebitic-edema', name: 'Post-Phlebitic - Leg Swelling/Edema' },
       { id: 'post-phlebitic-pain', name: 'Post-Phlebitic - Leg Pain' },
@@ -1821,7 +1836,7 @@ export const symptomCategories = [
   // Phase 2A: Coronary Artery Disease (DC 7005)
   {
     id: 'cad',
-    name: 'Coronary Artery Disease (CAD) Symptoms (DC 7005)',
+    name: 'Coronary Artery Disease (CAD) Symptoms',
     symptoms: [
       { id: 'cad-angina-stable', name: 'CAD - Stable Angina (Predictable Chest Pain)' },
       { id: 'cad-angina-unstable', name: 'CAD - Unstable Angina (Unpredictable/Worsening)' },
@@ -1841,7 +1856,7 @@ export const symptomCategories = [
   // Phase 2A: Myocardial Infarction Residuals (DC 7006)
   {
     id: 'post-mi',
-    name: 'Post-Myocardial Infarction Symptoms (DC 7006)',
+    name: 'Post-Myocardial Infarction Symptoms',
     symptoms: [
       { id: 'post-mi-chest-pain', name: 'Post-MI - Chest Pain/Discomfort' },
       { id: 'post-mi-dyspnea-exertion', name: 'Post-MI - Shortness of Breath with Exertion' },
@@ -1860,7 +1875,7 @@ export const symptomCategories = [
   // Phase 2A: Hypertensive Heart Disease (DC 7007)
   {
     id: 'hypertensive-heart',
-    name: 'Hypertensive Heart Disease Symptoms (DC 7007)',
+    name: 'Hypertensive Heart Disease Symptoms',
     symptoms: [
       { id: 'hhd-dyspnea-exertion', name: 'HHD - Shortness of Breath with Exertion' },
       { id: 'hhd-dyspnea-rest', name: 'HHD - Shortness of Breath at Rest' },
@@ -1880,7 +1895,7 @@ export const symptomCategories = [
   // Phase 2B: Cold Injury Residuals (DC 7122)
   {
     id: 'cold-injury',
-    name: 'Cold Injury Residuals (Frostbite) Symptoms (DC 7122)',
+    name: 'Cold Injury Residuals (Frostbite) Symptoms',
     symptoms: [
       { id: 'cold-injury-pain', name: 'Cold Injury - Pain/Arthralgia' },
       { id: 'cold-injury-numbness', name: 'Cold Injury - Numbness' },
@@ -1899,7 +1914,7 @@ export const symptomCategories = [
   // Phase 2B: Arteriosclerosis Obliterans / Peripheral Arterial Disease (DC 7114)
   {
     id: 'peripheral-arterial-disease',
-    name: 'Peripheral Arterial Disease (PAD) Symptoms (DC 7114)',
+    name: 'Peripheral Arterial Disease (PAD) Symptoms',
     symptoms: [
       { id: 'pad-claudication-mild', name: 'PAD - Claudication (Leg Pain Walking >100 yards)' },
       { id: 'pad-claudication-moderate', name: 'PAD - Claudication (Leg Pain Walking 25-100 yards)' },
@@ -2719,6 +2734,34 @@ export const symptomCategories = [
     ],
   },
 
+  // Diabetes Mellitus - DC 7913
+  {
+    id: 'diabetes-mellitus',
+    name: 'Diabetes Mellitus Symptoms',
+    symptoms: [
+      { id: 'dm-hypoglycemia-episode', name: 'Hypoglycemic Episode', description: 'Low blood sugar episode requiring intervention (shakiness, confusion, sweating)' },
+      { id: 'dm-hyperglycemia-episode', name: 'Hyperglycemic Episode', description: 'High blood sugar episode requiring intervention' },
+      { id: 'dm-ketoacidosis', name: 'Diabetic Ketoacidosis (DKA)', description: 'Severe complication requiring emergency treatment' },
+      { id: 'dm-insulin-reaction', name: 'Insulin Reaction', description: 'Adverse reaction to insulin requiring assistance' },
+      { id: 'dm-hospitalization', name: 'Diabetes-Related Hospitalization', description: 'Hospital admission for diabetes management or complications' },
+      { id: 'dm-er-visit', name: 'Diabetes-Related ER Visit', description: 'Emergency room visit for diabetes complications' },
+      { id: 'dm-doctor-visit', name: 'Diabetes Management Doctor Visit', description: 'Medical visit specifically for diabetes regulation' },
+      { id: 'dm-activity-regulation', name: 'Activity Regulation Required', description: 'Must regulate/avoid activities due to blood sugar concerns' },
+      { id: 'dm-diet-restricted', name: 'Restricted Diet Required', description: 'Following restricted diet for diabetes management' },
+      { id: 'dm-insulin-daily', name: 'Daily Insulin Use', description: 'Requires daily insulin injections' },
+      { id: 'dm-insulin-multiple', name: 'Multiple Daily Insulin Injections', description: 'Requires more than one insulin injection per day' },
+      { id: 'dm-oral-medication', name: 'Oral Diabetes Medication', description: 'Requires oral hypoglycemic agents' },
+      { id: 'dm-weight-loss-progressive', name: 'Progressive Weight Loss', description: 'Unintended weight loss attributed to diabetes' },
+      { id: 'dm-strength-loss', name: 'Progressive Loss of Strength', description: 'Declining strength attributed to diabetes' },
+      { id: 'dm-fatigue', name: 'Diabetes-Related Fatigue', description: 'Persistent fatigue from blood sugar fluctuations' },
+      { id: 'dm-blurred-vision', name: 'Blurred Vision (Blood Sugar)', description: 'Vision changes due to blood sugar level fluctuations' },
+      { id: 'dm-slow-healing', name: 'Slow Wound Healing', description: 'Wounds or infections healing slower than normal' },
+      { id: 'dm-frequent-urination', name: 'Frequent Urination (Polyuria)', description: 'Increased urination frequency due to high blood sugar' },
+      { id: 'dm-excessive-thirst', name: 'Excessive Thirst (Polydipsia)', description: 'Increased thirst due to high blood sugar' },
+      { id: 'dm-numbness-tingling', name: 'Numbness/Tingling Extremities', description: 'Early signs of diabetic peripheral neuropathy' },
+    ],
+  },
+
 // Hyperaldosteronism (Conn's Syndrome) - DC 7917
   {
     id: 'hyperaldosteronism',
@@ -2745,7 +2788,7 @@ export const symptomCategories = [
   // Weak Foot - DC 5277
   {
     id: 'weak-foot',
-    name: 'Weak Foot (DC 5277)',
+    name: 'Weak Foot',
     symptoms: [
       { id: 'wf-muscle-atrophy', name: 'Weak Foot - Muscle Atrophy', description: 'Visible wasting or thinning of foot muscles' },
       { id: 'wf-weakness', name: 'Weak Foot - Generalized Weakness', description: 'Difficulty with foot/toe movements, pushing off while walking' },
@@ -2763,7 +2806,7 @@ export const symptomCategories = [
   // Claw Foot (Pes Cavus) - DC 5278
   {
     id: 'claw-foot',
-    name: 'Claw Foot/Pes Cavus (DC 5278)',
+    name: 'Claw Foot/Pes Cavus',
     symptoms: [
       { id: 'cf-high-arch', name: 'Claw Foot - High Arch', description: 'Abnormally high arch that does not flatten with weight bearing' },
       { id: 'cf-hammer-toes', name: 'Claw Foot - Hammer Toes', description: 'Toes bent at middle joint in claw-like position' },
@@ -2783,7 +2826,7 @@ export const symptomCategories = [
   // Metatarsalgia (Morton's Disease) - DC 5279
   {
     id: 'metatarsalgia',
-    name: 'Metatarsalgia/Morton\'s Disease (DC 5279)',
+    name: 'Metatarsalgia/Morton\'s Disease',
     symptoms: [
       { id: 'mt-ball-foot-pain', name: 'Metatarsalgia - Ball of Foot Pain', description: 'Sharp, aching, or burning pain in ball of foot' },
       { id: 'mt-numbness-toes', name: 'Metatarsalgia - Toe Numbness', description: 'Numbness or tingling in toes, especially 3rd and 4th' },
@@ -2801,7 +2844,7 @@ export const symptomCategories = [
   // Hallux Valgus (Bunion) - DC 5280
   {
     id: 'hallux-valgus',
-    name: 'Hallux Valgus/Bunion (DC 5280)',
+    name: 'Hallux Valgus/Bunion',
     symptoms: [
       { id: 'hv-bunion-pain', name: 'Hallux Valgus - Bunion Pain', description: 'Pain at base of big toe joint (MTP joint)' },
       { id: 'hv-deformity', name: 'Hallux Valgus - Visible Deformity', description: 'Big toe angling toward other toes, bump on side' },
@@ -2819,7 +2862,7 @@ export const symptomCategories = [
   // Hallux Rigidus - DC 5281
   {
     id: 'hallux-rigidus',
-    name: 'Hallux Rigidus (DC 5281)',
+    name: 'Hallux Rigidus',
     symptoms: [
       { id: 'hr-toe-stiffness', name: 'Hallux Rigidus - Big Toe Stiffness', description: 'Stiffness in big toe joint, especially in morning' },
       { id: 'hr-toe-pain', name: 'Hallux Rigidus - Big Toe Pain', description: 'Pain in big toe joint during activity' },
@@ -2838,7 +2881,7 @@ export const symptomCategories = [
   // Hernia (Inguinal, Ventral, Femoral, Umbilical, Incisional) - DC 7338
   {
     id: 'hernia',
-    name: 'Hernia (DC 7338)',
+    name: 'Hernia',
     symptoms: [
       { id: 'hernia-groin-bulge', name: 'Hernia - Groin Bulge', description: 'Visible or palpable bulge in groin area (inguinal hernia)' },
       { id: 'hernia-abdominal-bulge', name: 'Hernia - Abdominal Bulge', description: 'Visible or palpable bulge in abdominal wall (ventral/incisional hernia)' },
@@ -2865,7 +2908,7 @@ export const symptomCategories = [
   // Peritoneal Adhesions - DC 7301
   {
     id: 'peritoneal-adhesions',
-    name: 'Peritoneal Adhesions (DC 7301)',
+    name: 'Peritoneal Adhesions',
     symptoms: [
       { id: 'pa-abdominal-pain', name: 'Adhesions - Abdominal Pain', description: 'Abdominal pain from adhesions' },
       { id: 'pa-nausea', name: 'Adhesions - Nausea', description: 'Nausea related to adhesions' },
@@ -2890,7 +2933,7 @@ export const symptomCategories = [
   // Esophageal Stricture - DC 7203
   {
     id: 'esophageal-stricture',
-    name: 'Esophageal Stricture (DC 7203)',
+    name: 'Esophageal Stricture',
     symptoms: [
       { id: 'es-dysphagia-solids', name: 'Stricture - Difficulty Swallowing Solids', description: 'Difficulty swallowing solid foods' },
       { id: 'es-dysphagia-liquids', name: 'Stricture - Difficulty Swallowing Liquids', description: 'Difficulty swallowing liquids' },
@@ -2912,7 +2955,7 @@ export const symptomCategories = [
   // Esophageal Spasm/Motility Disorder - DC 7204
   {
     id: 'esophageal-spasm',
-    name: 'Esophageal Spasm/Motility (DC 7204)',
+    name: 'Esophageal Spasm/Motility',
     symptoms: [
       { id: 'esp-chest-pain', name: 'Esophageal Spasm - Chest Pain', description: 'Chest pain from esophageal spasm (may mimic cardiac pain)' },
       { id: 'esp-dysphagia', name: 'Esophageal Spasm - Difficulty Swallowing', description: 'Intermittent difficulty swallowing' },
@@ -2929,7 +2972,7 @@ export const symptomCategories = [
   // Postgastrectomy Syndrome - DC 7308 (rates as DC 7303)
   {
     id: 'postgastrectomy',
-    name: 'Postgastrectomy Syndrome (DC 7308)',
+    name: 'Postgastrectomy Syndrome',
     symptoms: [
       { id: 'pgs-dumping-early', name: 'Postgastrectomy - Early Dumping', description: 'Symptoms within 30 min of eating: cramping, diarrhea, sweating, dizziness' },
       { id: 'pgs-dumping-late', name: 'Postgastrectomy - Late Dumping', description: 'Symptoms 1-3 hours after eating: weakness, sweating, shakiness (hypoglycemia)' },
@@ -2951,7 +2994,7 @@ export const symptomCategories = [
   // Intestinal Fistula - DC 7330
   {
     id: 'intestinal-fistula',
-    name: 'Intestinal Fistula (DC 7330)',
+    name: 'Intestinal Fistula',
     symptoms: [
       { id: 'if-drainage-minimal', name: 'Fistula - Minimal Drainage', description: 'Small amount of fistula drainage' },
       { id: 'if-drainage-moderate', name: 'Fistula - Moderate Drainage', description: 'Moderate drainage requiring pad changes' },
@@ -2974,7 +3017,7 @@ export const symptomCategories = [
   // Acne - DC 7828
   {
     id: 'acne',
-    name: 'Acne (DC 7828)',
+    name: 'Acne',
     symptoms: [
       { id: 'acne-superficial-comedones', name: 'Acne - Comedones (Blackheads/Whiteheads)', description: 'Non-inflamed clogged pores' },
       { id: 'acne-superficial-papules', name: 'Acne - Papules', description: 'Small raised inflamed bumps' },
@@ -2997,7 +3040,7 @@ export const symptomCategories = [
   // Chloracne - DC 7829 (Agent Orange Presumptive)
   {
     id: 'chloracne',
-    name: 'Chloracne (DC 7829)',
+    name: 'Chloracne',
     symptoms: [
       { id: 'chloracne-comedones', name: 'Chloracne - Comedones', description: 'Blackheads/whiteheads from chemical exposure' },
       { id: 'chloracne-papules', name: 'Chloracne - Papules', description: 'Small inflamed bumps from chemical exposure' },
@@ -3019,7 +3062,7 @@ export const symptomCategories = [
   // Alopecia Areata - DC 7831
   {
     id: 'alopecia-areata',
-    name: 'Alopecia Areata (DC 7831)',
+    name: 'Alopecia Areata',
     symptoms: [
       { id: 'aa-patchy-scalp', name: 'Alopecia - Patchy Scalp Hair Loss', description: 'Round or oval patches of hair loss on scalp' },
       { id: 'aa-complete-scalp', name: 'Alopecia - Complete Scalp Hair Loss', description: 'Total loss of scalp hair (alopecia totalis)' },
@@ -3041,7 +3084,7 @@ export const symptomCategories = [
   // Hyperhidrosis - DC 7832
   {
     id: 'hyperhidrosis',
-    name: 'Hyperhidrosis (DC 7832)',
+    name: 'Hyperhidrosis',
     symptoms: [
       { id: 'hh-palmar', name: 'Hyperhidrosis - Palmar (Hands)', description: 'Excessive sweating of the palms/hands' },
       { id: 'hh-plantar', name: 'Hyperhidrosis - Plantar (Feet)', description: 'Excessive sweating of the soles/feet' },
@@ -3074,7 +3117,7 @@ export const symptomCategories = [
   // Note: Do not combine with ratings under DC 6350 (Systemic Lupus)
   {
     id: 'discoid-lupus',
-    name: 'Discoid Lupus Erythematosus (DC 7809)',
+    name: 'Discoid Lupus Erythematosus',
     symptoms: [
       { id: 'dle-discoid-lesions', name: 'Discoid Lupus - Discoid Lesions', description: 'Round, scaly, coin-shaped skin lesions' },
       { id: 'dle-erythematous-plaques', name: 'Discoid Lupus - Erythematous Plaques', description: 'Red, raised patches on skin' },
@@ -3102,7 +3145,7 @@ export const symptomCategories = [
   // dermatitis herpetiformis, epidermolysis bullosa acquisita, Hailey-Hailey, porphyria cutanea tarda
   {
     id: 'bullous-disorders',
-    name: 'Bullous Disorders (DC 7815)',
+    name: 'Bullous Disorders',
     symptoms: [
       { id: 'bullous-blisters', name: 'Bullous Disorder - Blisters/Bullae', description: 'Fluid-filled blisters on skin' },
       { id: 'bullous-erosions', name: 'Bullous Disorder - Erosions', description: 'Open sores from ruptured blisters' },
@@ -3130,7 +3173,7 @@ export const symptomCategories = [
   // Rated by vasculitic episodes and immunosuppressive therapy requirements
   {
     id: 'cutaneous-vasculitis',
-    name: 'Primary Cutaneous Vasculitis (DC 7826)',
+    name: 'Primary Cutaneous Vasculitis',
     symptoms: [
       { id: 'cv-purpura', name: 'Cutaneous Vasculitis - Purpura', description: 'Purple/red spots from blood vessel inflammation' },
       { id: 'cv-petechiae', name: 'Cutaneous Vasculitis - Petechiae', description: 'Small red/purple pinpoint spots' },
@@ -3154,7 +3197,7 @@ export const symptomCategories = [
   // Fungal infections: tinea corporis, capitis, pedis, barbae, unguium, cruris, versicolor
   {
     id: 'dermatophytosis',
-    name: 'Dermatophytosis (DC 7813)',
+    name: 'Dermatophytosis',
     symptoms: [
       { id: 'derm-tinea-corporis', name: 'Dermatophytosis - Tinea Corporis (Body Ringworm)', description: 'Ringworm on body/trunk' },
       { id: 'derm-tinea-capitis', name: 'Dermatophytosis - Tinea Capitis (Scalp)', description: 'Ringworm on scalp' },
@@ -3184,7 +3227,7 @@ export const symptomCategories = [
   // Bacterial, fungal, viral, treponemal, parasitic - not listed elsewhere
   {
     id: 'skin-infections',
-    name: 'Skin Infections (DC 7820)',
+    name: 'Skin Infections',
     symptoms: [
       { id: 'skinf-bacterial', name: 'Skin Infection - Bacterial', description: 'Bacterial skin infection' },
       { id: 'skinf-cellulitis', name: 'Skin Infection - Cellulitis', description: 'Deep skin/tissue infection with redness and swelling' },
@@ -3214,7 +3257,7 @@ export const symptomCategories = [
   // Rated under General Rating Formula for Diseases of the Eye
   {
     id: 'uveitis',
-    name: 'Uveitis / Choroidopathy (DC 6000)',
+    name: 'Uveitis / Choroidopathy',
     symptoms: [
       // Core symptoms
       { id: 'uveitis-eye-pain', name: 'Uveitis - Eye Pain', description: 'Deep, aching eye pain' },
@@ -3266,7 +3309,7 @@ export const symptomCategories = [
   // Rated under General Rating Formula for Diseases of the Eye
   {
     id: 'keratitis',
-    name: 'Keratitis / Keratopathy (DC 6001)',
+    name: 'Keratitis / Keratopathy',
     symptoms: [
       // Core symptoms
       { id: 'keratitis-eye-pain', name: 'Keratitis - Eye Pain', description: 'Pain in the affected eye' },
@@ -3320,7 +3363,7 @@ export const symptomCategories = [
   // Inactive: Rate based on residuals
   {
     id: 'chronic-conjunctivitis',
-    name: 'Chronic Conjunctivitis (DC 6018)',
+    name: 'Chronic Conjunctivitis',
     symptoms: [
       // Core symptoms
       { id: 'conj-redness', name: 'Conjunctivitis - Eye Redness', description: 'Red or pink appearance of the eye' },
@@ -3375,7 +3418,7 @@ export const symptomCategories = [
   // Rated under General Rating Formula for Diseases of the Eye
   {
     id: 'scleritis',
-    name: 'Scleritis (DC 6002)',
+    name: 'Scleritis',
     symptoms: [
       // Core symptoms
       { id: 'scleritis-deep-pain', name: 'Scleritis - Deep Boring Eye Pain', description: 'Severe, deep, boring pain in the eye' },
@@ -3431,7 +3474,7 @@ export const symptomCategories = [
   // Peripheral Vestibular Disorders (DC 6204)
   {
     id: 'peripheral-vestibular',
-    name: 'Peripheral Vestibular Disorders (DC 6204)',
+    name: 'Peripheral Vestibular Disorders',
     symptoms: [
       { id: 'vest-vertigo', name: 'Vestibular - Vertigo Episode', description: 'Spinning sensation or false sense of movement' },
       { id: 'vest-dizziness', name: 'Vestibular - Dizziness', description: 'Lightheadedness or unsteadiness' },
@@ -3460,7 +3503,7 @@ export const symptomCategories = [
   // Chronic Suppurative Otitis Media (DC 6200)
   {
     id: 'chronic-suppurative-otitis-media',
-    name: 'Chronic Suppurative Otitis Media (DC 6200)',
+    name: 'Chronic Suppurative Otitis Media',
     symptoms: [
       { id: 'csom-ear-drainage', name: 'CSOM - Ear Drainage', description: 'Discharge/drainage from ear' },
       { id: 'csom-suppuration', name: 'CSOM - Active Suppuration', description: 'Pus draining from ear (supports 10%)' },
@@ -3490,7 +3533,7 @@ export const symptomCategories = [
   // Chronic Otitis Externa (DC 6210)
   {
     id: 'chronic-otitis-externa',
-    name: 'Chronic Otitis Externa (DC 6210)',
+    name: 'Chronic Otitis Externa',
     symptoms: [
       { id: 'coe-swelling', name: 'Otitis Externa - Ear Canal Swelling', description: 'Swelling of ear canal (rating criteria)' },
       { id: 'coe-dry-scaly', name: 'Otitis Externa - Dry/Scaly', description: 'Dry and scaly ear canal (rating criteria)' },
@@ -3518,7 +3561,7 @@ export const symptomCategories = [
   // Chronic Nonsuppurative Otitis Media (DC 6201)
   {
     id: 'chronic-nonsuppurative-otitis-media',
-    name: 'Chronic Nonsuppurative Otitis Media (DC 6201)',
+    name: 'Chronic Nonsuppurative Otitis Media',
     symptoms: [
       { id: 'cnsom-ear-fullness', name: 'Serous OM - Ear Fullness', description: 'Feeling of fullness or pressure in ear' },
       { id: 'cnsom-fluid-sensation', name: 'Serous OM - Fluid Sensation', description: 'Sensation of fluid in ear' },
@@ -3546,7 +3589,7 @@ export const symptomCategories = [
   // ============================================
   {
     id: 'loss-of-smell',
-    name: 'Loss of Smell - Anosmia (DC 6275)',
+    name: 'Loss of Smell - Anosmia',
     symptoms: [
       // Complete/Partial Loss
       { id: 'smell-complete-loss', name: 'Complete Loss of Smell (Anosmia)', description: 'Total inability to smell any odors' },
@@ -3586,7 +3629,7 @@ export const symptomCategories = [
   // ============================================
   {
     id: 'loss-of-taste',
-    name: 'Loss of Taste - Ageusia (DC 6276)',
+    name: 'Loss of Taste - Ageusia',
     symptoms: [
       // Complete/Partial Loss
       { id: 'taste-complete-loss', name: 'Complete Loss of Taste (Ageusia)', description: 'Total inability to taste' },
@@ -3626,7 +3669,7 @@ export const symptomCategories = [
 
   {
     id: 'systemic-lupus',
-    name: 'Systemic Lupus Erythematosus - SLE (DC 6350)',
+    name: 'Systemic Lupus Erythematosus - SLE',
     symptoms: [
       // Flare/Exacerbation tracking
       { id: 'sle-flare-acute', name: 'Acute Flare (Severe)', description: 'Severe exacerbation requiring urgent treatment/hospitalization' },
@@ -3693,7 +3736,7 @@ export const symptomCategories = [
   // Tuberculosis - Active Pulmonary (DC 6730)
   {
     id: 'tuberculosis-active',
-    name: 'Tuberculosis - Active Pulmonary (DC 6730)',
+    name: 'Tuberculosis - Active Pulmonary',
     symptoms: [
       // Diagnostic confirmation
       { id: 'tb-active-confirmed', name: 'Active TB Confirmed', description: 'Diagnosis of active pulmonary TB' },
@@ -3744,7 +3787,7 @@ export const symptomCategories = [
   // Tuberculosis - Inactive/Residuals (DC 6731)
   {
     id: 'tuberculosis-inactive',
-    name: 'Tuberculosis - Inactive/Residuals (DC 6731)',
+    name: 'Tuberculosis - Inactive/Residuals',
     symptoms: [
       // Inactive status
       { id: 'tb-inactive-confirmed', name: 'Inactive TB Confirmed', description: 'TB declared inactive by physician' },
@@ -3780,7 +3823,7 @@ export const symptomCategories = [
   // Tuberculosis - Miliary/Disseminated (DC 6311)
   {
     id: 'tuberculosis-miliary',
-    name: 'Tuberculosis - Miliary/Disseminated (DC 6311)',
+    name: 'Tuberculosis - Miliary/Disseminated',
     symptoms: [
       // Diagnosis
       { id: 'tb-miliary-confirmed', name: 'Miliary TB Confirmed', description: 'Diagnosis of disseminated TB' },
@@ -3806,7 +3849,7 @@ export const symptomCategories = [
   // Sphincter Control (DC 7332)
   {
     id: 'sphincter-control',
-    name: 'Sphincter Control Impairment (DC 7332)',
+    name: 'Sphincter Control Impairment',
     symptoms: [
       // Incontinence severity
       { id: 'sphincter-complete-loss', name: 'Complete Loss of Control', description: 'No ability to control bowel' },
@@ -3848,7 +3891,7 @@ export const symptomCategories = [
   // Rectal Stricture (DC 7333)
   {
     id: 'rectal-stricture',
-    name: 'Rectal Stricture (DC 7333)',
+    name: 'Rectal Stricture',
     symptoms: [
       { id: 'stricture-complete-obstruction', name: 'Complete Obstruction', description: 'Cannot expel solid feces' },
       { id: 'stricture-severe', name: 'Severe Stricture (50%+ reduction)', description: 'Lumen reduced by 50% or more' },
@@ -3868,7 +3911,7 @@ export const symptomCategories = [
   // Rectal Prolapse (DC 7334)
   {
     id: 'rectal-prolapse',
-    name: 'Rectal Prolapse (DC 7334)',
+    name: 'Rectal Prolapse',
     symptoms: [
       { id: 'prolapse-persistent-irreducible', name: 'Persistent Irreducible Prolapse', description: 'Prolapse cannot be pushed back in' },
       { id: 'prolapse-manual-reduction-needed', name: 'Manual Reduction Needed', description: 'Must push prolapse back in manually' },
@@ -3887,7 +3930,7 @@ export const symptomCategories = [
   // Anal Fistula (DC 7335)
   {
     id: 'anal-fistula',
-    name: 'Anal Fistula (DC 7335)',
+    name: 'Anal Fistula',
     symptoms: [
       { id: 'fistula-multiple-constant', name: 'Multiple Constant Fistulas (>2)', description: 'More than 2 constant fistulas' },
       { id: 'fistula-one-two', name: 'One or Two Fistulas', description: '1-2 fistulas present' },
@@ -3904,7 +3947,7 @@ export const symptomCategories = [
   // Hemorrhoids (DC 7336)
   {
     id: 'hemorrhoids',
-    name: 'Hemorrhoids (DC 7336)',
+    name: 'Hemorrhoids',
     symptoms: [
       { id: 'hemorrhoid-persistent-bleeding', name: 'Persistent Bleeding', description: 'Ongoing bleeding from hemorrhoids' },
       { id: 'hemorrhoid-anemia', name: 'Hemorrhoid-Related Anemia', description: 'Anemia from chronic bleeding' },
@@ -3920,7 +3963,7 @@ export const symptomCategories = [
   // Pruritus Ani (DC 7337)
   {
     id: 'pruritus-ani',
-    name: 'Pruritus Ani (DC 7337)',
+    name: 'Pruritus Ani',
     symptoms: [
       { id: 'pruritus-ani-bleeding', name: 'Anal Itching with Bleeding', description: 'Bleeding from scratching' },
       { id: 'pruritus-ani-excoriation', name: 'Anal Itching with Excoriation', description: 'Skin breakdown from scratching' },
@@ -3931,7 +3974,7 @@ export const symptomCategories = [
   // Avitaminosis (DC 6313)
   {
     id: 'avitaminosis',
-    name: 'Avitaminosis (Vitamin Deficiency) - DC 6313',
+    name: 'Avitaminosis (Vitamin Deficiency)',
     symptoms: [
       // GI symptoms
       { id: 'avitaminosis-stomatitis', name: 'Stomatitis (Mouth Inflammation)', description: 'Sores, redness, pain in mouth' },
@@ -3969,7 +4012,7 @@ export const symptomCategories = [
   // Beriberi (DC 6314)
   {
     id: 'beriberi',
-    name: 'Beriberi (Thiamine/B1 Deficiency) - DC 6314',
+    name: 'Beriberi (Thiamine/B1 Deficiency)',
     symptoms: [
       // Cardiac (Wet Beriberi)
       { id: 'beriberi-chf', name: 'Congestive Heart Failure', description: 'Heart cannot pump effectively' },
@@ -4009,7 +4052,7 @@ export const symptomCategories = [
   // Pellagra (DC 6315)
   {
     id: 'pellagra',
-    name: 'Pellagra (Niacin/B3 Deficiency) - DC 6315',
+    name: 'Pellagra (Niacin/B3 Deficiency)',
     symptoms: [
       // Dermatologic (the "D" for Dermatitis)
       { id: 'pellagra-dermatitis-moist', name: 'Moist Dermatitis', description: 'Wet, weeping skin inflammation' },
@@ -4044,6 +4087,181 @@ export const symptomCategories = [
       { id: 'pellagra-cachexia', name: 'Cachexia', description: 'Severe wasting' },
       { id: 'pellagra-impaired-vigor', name: 'Impaired Bodily Vigor', description: 'Reduced strength and energy' },
       { id: 'pellagra-inability-retain-nourishment', name: 'Cannot Retain Nourishment', description: 'Cannot keep food down' },
+    ],
+  },
+
+  // ============================================
+  // FUNCTIONAL STATUS / ACTIVITIES OF DAILY LIVING (ADL)
+  // ============================================
+  // Per 38 CFR § 3.352(a) - Criteria for Aid & Attendance
+  {
+    id: 'adl-dressing',
+    name: 'ADL - Dressing & Undressing',
+    symptoms: [
+      { id: 'adl-dress-unable', name: 'Unable to dress/undress without assistance' },
+      { id: 'adl-dress-partial', name: 'Needs partial help with dressing' },
+      { id: 'adl-dress-buttons', name: 'Cannot fasten buttons/zippers/ties' },
+      { id: 'adl-dress-shoes', name: 'Cannot put on shoes/socks' },
+      { id: 'adl-dress-time', name: 'Dressing takes excessive time (>30 min)' },
+    ],
+  },
+  {
+    id: 'adl-hygiene',
+    name: 'ADL - Personal Hygiene',
+    symptoms: [
+      { id: 'adl-hygiene-bath-unable', name: 'Unable to bathe/shower without assistance' },
+      { id: 'adl-hygiene-bath-partial', name: 'Needs partial help with bathing' },
+      { id: 'adl-hygiene-grooming', name: 'Cannot brush teeth/comb hair independently' },
+      { id: 'adl-hygiene-shave', name: 'Cannot shave/apply makeup independently' },
+      { id: 'adl-hygiene-cleanliness', name: 'Difficulty maintaining personal cleanliness' },
+    ],
+  },
+  {
+    id: 'adl-feeding',
+    name: 'ADL - Feeding & Eating',
+    symptoms: [
+      { id: 'adl-feed-unable', name: 'Unable to feed self without assistance' },
+      { id: 'adl-feed-partial', name: 'Needs partial help with feeding' },
+      { id: 'adl-feed-utensils', name: 'Cannot use utensils due to weakness/coordination' },
+      { id: 'adl-feed-cutting', name: 'Cannot cut own food' },
+      { id: 'adl-feed-prepare', name: 'Cannot prepare simple meals' },
+      { id: 'adl-feed-swallow', name: 'Swallowing difficulties affecting eating' },
+    ],
+  },
+  {
+    id: 'adl-toileting',
+    name: 'ADL - Toileting & Continence',
+    symptoms: [
+      { id: 'adl-toilet-unable', name: 'Unable to use toilet without assistance' },
+      { id: 'adl-toilet-partial', name: 'Needs partial help with toileting' },
+      { id: 'adl-toilet-clothing', name: 'Cannot manage clothing for toileting' },
+      { id: 'adl-toilet-hygiene', name: 'Cannot perform toilet hygiene independently' },
+      { id: 'adl-bowel-incontinent', name: 'Bowel incontinence' },
+      { id: 'adl-bladder-incontinent', name: 'Bladder incontinence' },
+      { id: 'adl-catheter-care', name: 'Requires catheter care assistance' },
+    ],
+  },
+  {
+    id: 'adl-mobility',
+    name: 'ADL - Mobility & Transfers',
+    symptoms: [
+      { id: 'adl-mobility-bed', name: 'Unable to get in/out of bed without assistance' },
+      { id: 'adl-mobility-chair', name: 'Unable to transfer to/from chair' },
+      { id: 'adl-mobility-walk', name: 'Unable to walk without assistance' },
+      { id: 'adl-mobility-stairs', name: 'Cannot navigate stairs' },
+      { id: 'adl-mobility-wheelchair', name: 'Wheelchair-dependent' },
+      { id: 'adl-mobility-bedridden', name: 'Bedridden/confined to bed' },
+      { id: 'adl-mobility-fall-risk', name: 'High fall risk requiring supervision' },
+    ],
+  },
+  {
+    id: 'adl-prosthetics',
+    name: 'ADL - Prosthetics & Orthotics',
+    symptoms: [
+      { id: 'adl-prosthetic-adjust', name: 'Needs frequent prosthetic adjustment assistance' },
+      { id: 'adl-prosthetic-donning', name: 'Cannot don/doff prosthetic independently' },
+      { id: 'adl-orthotic-adjust', name: 'Needs help with orthopedic brace/device' },
+      { id: 'adl-prosthetic-maintenance', name: 'Cannot maintain prosthetic device' },
+    ],
+  },
+  {
+    id: 'adl-safety',
+    name: 'ADL - Safety & Protection',
+    symptoms: [
+      { id: 'adl-safety-alone', name: 'Cannot be left alone safely' },
+      { id: 'adl-safety-supervision', name: 'Requires constant supervision' },
+      { id: 'adl-safety-wander', name: 'Wandering risk (dementia/cognitive)' },
+      { id: 'adl-safety-medication', name: 'Cannot manage medications safely' },
+      { id: 'adl-safety-emergency', name: 'Cannot respond appropriately to emergencies' },
+      { id: 'adl-safety-judgment', name: 'Impaired judgment affecting safety' },
+      { id: 'adl-safety-fire', name: 'Fire/stove safety concerns' },
+    ],
+  },
+  {
+    id: 'adl-cognitive',
+    name: 'ADL - Cognitive Function',
+    symptoms: [
+      { id: 'adl-cognitive-memory', name: 'Memory impairment affecting daily tasks' },
+      { id: 'adl-cognitive-orientation', name: 'Disorientation to time/place/person' },
+      { id: 'adl-cognitive-decisions', name: 'Cannot make routine daily decisions' },
+      { id: 'adl-cognitive-finances', name: 'Cannot manage finances/bills' },
+      { id: 'adl-cognitive-appointments', name: 'Cannot remember/manage appointments' },
+      { id: 'adl-cognitive-instructions', name: 'Cannot follow multi-step instructions' },
+    ],
+  },
+  {
+    id: 'adl-overall',
+    name: 'ADL - Overall Functional Status',
+    symptoms: [
+      { id: 'adl-overall-total-depend', name: 'Total dependence on caregiver' },
+      { id: 'adl-overall-severe-limit', name: 'Severe limitations in most ADLs' },
+      { id: 'adl-overall-moderate-limit', name: 'Moderate limitations in several ADLs' },
+      { id: 'adl-overall-mild-limit', name: 'Mild limitations in some ADLs' },
+      { id: 'adl-overall-housebound', name: 'Substantially confined to home' },
+      { id: 'adl-overall-nursing-level', name: 'Requires nursing home level of care' },
+      { id: 'adl-overall-hospitalization-risk', name: 'Would require hospitalization without in-home care' },
+    ],
+  },
+  // ============================================
+  // AMPUTATION / EXTREMITY LOSS (SMC-K Qualifying)
+  // ============================================
+  // Per 38 CFR § 3.350(a) - Loss of use criteria
+  {
+    id: 'amputation-extremity',
+    name: 'Amputation / Extremity Loss',
+    symptoms: [
+      // Upper Extremity - Hand
+      { id: 'amputation-hand-right', name: 'Amputation - Right Hand' },
+      { id: 'amputation-hand-left', name: 'Amputation - Left Hand' },
+      { id: 'amputation-hand-bilateral', name: 'Amputation - Both Hands' },
+      { id: 'loss-of-use-hand-right', name: 'Loss of Use - Right Hand' },
+      { id: 'loss-of-use-hand-left', name: 'Loss of Use - Left Hand' },
+      { id: 'loss-of-use-hand-bilateral', name: 'Loss of Use - Both Hands' },
+      // Upper Extremity - Fingers
+      { id: 'amputation-fingers-right', name: 'Amputation - Right Hand Fingers' },
+      { id: 'amputation-fingers-left', name: 'Amputation - Left Hand Fingers' },
+      { id: 'amputation-thumb-right', name: 'Amputation - Right Thumb' },
+      { id: 'amputation-thumb-left', name: 'Amputation - Left Thumb' },
+      // Upper Extremity - Arm
+      { id: 'amputation-arm-below-elbow-right', name: 'Amputation - Right Arm Below Elbow' },
+      { id: 'amputation-arm-below-elbow-left', name: 'Amputation - Left Arm Below Elbow' },
+      { id: 'amputation-arm-above-elbow-right', name: 'Amputation - Right Arm Above Elbow' },
+      { id: 'amputation-arm-above-elbow-left', name: 'Amputation - Left Arm Above Elbow' },
+      { id: 'loss-of-use-arm-right', name: 'Loss of Use - Right Arm' },
+      { id: 'loss-of-use-arm-left', name: 'Loss of Use - Left Arm' },
+      // Lower Extremity - Foot
+      { id: 'amputation-foot-right', name: 'Amputation - Right Foot' },
+      { id: 'amputation-foot-left', name: 'Amputation - Left Foot' },
+      { id: 'amputation-foot-bilateral', name: 'Amputation - Both Feet' },
+      { id: 'loss-of-use-foot-right', name: 'Loss of Use - Right Foot' },
+      { id: 'loss-of-use-foot-left', name: 'Loss of Use - Left Foot' },
+      { id: 'loss-of-use-foot-bilateral', name: 'Loss of Use - Both Feet' },
+      // Lower Extremity - Toes
+      { id: 'amputation-toes-right', name: 'Amputation - Right Foot Toes' },
+      { id: 'amputation-toes-left', name: 'Amputation - Left Foot Toes' },
+      { id: 'amputation-great-toe-right', name: 'Amputation - Right Great Toe' },
+      { id: 'amputation-great-toe-left', name: 'Amputation - Left Great Toe' },
+      // Lower Extremity - Leg
+      { id: 'amputation-leg-below-knee-right', name: 'Amputation - Right Leg Below Knee' },
+      { id: 'amputation-leg-below-knee-left', name: 'Amputation - Left Leg Below Knee' },
+      { id: 'amputation-leg-above-knee-right', name: 'Amputation - Right Leg Above Knee' },
+      { id: 'amputation-leg-above-knee-left', name: 'Amputation - Left Leg Above Knee' },
+      { id: 'loss-of-use-leg-right', name: 'Loss of Use - Right Leg' },
+      { id: 'loss-of-use-leg-left', name: 'Loss of Use - Left Leg' },
+      // Prosthetics
+      { id: 'prosthetic-hand-right', name: 'Prosthetic - Right Hand' },
+      { id: 'prosthetic-hand-left', name: 'Prosthetic - Left Hand' },
+      { id: 'prosthetic-arm-right', name: 'Prosthetic - Right Arm' },
+      { id: 'prosthetic-arm-left', name: 'Prosthetic - Left Arm' },
+      { id: 'prosthetic-foot-right', name: 'Prosthetic - Right Foot' },
+      { id: 'prosthetic-foot-left', name: 'Prosthetic - Left Foot' },
+      { id: 'prosthetic-leg-right', name: 'Prosthetic - Right Leg' },
+      { id: 'prosthetic-leg-left', name: 'Prosthetic - Left Leg' },
+      // Functional Limitations
+      { id: 'extremity-phantom-pain', name: 'Phantom Limb Pain' },
+      { id: 'extremity-residual-limb-pain', name: 'Residual Limb Pain' },
+      { id: 'extremity-prosthetic-issues', name: 'Prosthetic Fit/Function Issues' },
+      { id: 'extremity-mobility-limitation', name: 'Mobility Limitation from Amputation' },
     ],
   },
 
@@ -4152,6 +4370,12 @@ export const BODY_SYSTEMS = {
     name: 'Skin',
     description: 'Dermatological and skin conditions',
     color: 'orange'
+  },
+  'functional-status': {
+    id: 'functional-status',
+    name: 'Functional Status / ADL',
+    description: 'Activities of Daily Living and functional limitations for Aid & Attendance',
+    color: 'amber'
   },
   'general': {
     id: 'general',
@@ -4338,6 +4562,20 @@ export const getBodySystem = (categoryName) => {
       name.includes('jaw') || name.includes('tooth') || name.includes('teeth') ||
       name.includes('palate') || name.includes('mandible')) {
     return 'dental-oral';
+  }
+
+  // Functional Status / ADL conditions
+  if (name.includes('adl') || name.includes('activities of daily living') ||
+      name.includes('functional status') || name.includes('aid & attendance') ||
+      name.includes('aid and attendance')) {
+    return 'functional-status';
+  }
+
+  // Amputation / Extremity Loss
+  if (name.includes('amputation') || name.includes('loss of use') ||
+      name.includes('prosthetic') || name.includes('phantom') ||
+      name.includes('residual limb')) {
+    return 'musculoskeletal';
   }
 
   // Default to general

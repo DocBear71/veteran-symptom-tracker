@@ -121,7 +121,16 @@ export const CONDITIONS = {
     name: 'Diabetes Mellitus',
     diagnosticCode: '7913',
     cfrReference: '38 CFR 4.119',
-    symptomIds: ['fatigue', 'dizziness', 'weakness', 'frequent-urination', 'excessive-thirst'],
+    symptomIds: [
+      'dm-hypoglycemia-episode', 'dm-hyperglycemia-episode', 'dm-ketoacidosis',
+      'dm-insulin-reaction', 'dm-hospitalization', 'dm-er-visit', 'dm-doctor-visit',
+      'dm-activity-regulation', 'dm-diet-restricted', 'dm-insulin-daily',
+      'dm-insulin-multiple', 'dm-oral-medication', 'dm-weight-loss-progressive',
+      'dm-strength-loss', 'dm-fatigue', 'dm-blurred-vision', 'dm-slow-healing',
+      'dm-frequent-urination', 'dm-excessive-thirst', 'dm-numbness-tingling',
+      // Legacy IDs for backward compatibility
+      'fatigue', 'dizziness', 'weakness', 'frequent-urination', 'excessive-thirst',
+    ],
   },
   IBS: {
     id: 'ibs',
@@ -26804,6 +26813,35 @@ export const EYE_CONDITIONS_CRITERIA = {
 // ============================================
 export const PERIPHERAL_ARTERIAL_DISEASE_CRITERIA = PAD_CRITERIA;
 
+/**
+ * Amputation Rating Criteria
+ * Based on 38 CFR 4.71a - DC 5120-5173
+ */
+export const AMPUTATION_CRITERIA = {
+  condition: 'Amputation / Loss of Extremity',
+  cfrReference: '38 CFR 4.71a',
+  diagnosticCodes: 'DC 5120-5173',
+  ratings: [
+    // Upper Extremity - Major (dominant)
+    { percent: 90, summary: 'Loss of arm at shoulder (major)', dc: '5120' },
+    { percent: 80, summary: 'Loss of arm above elbow (major)', dc: '5121' },
+    { percent: 70, summary: 'Loss of arm below elbow (major)', dc: '5124' },
+    { percent: 70, summary: 'Loss of hand (major)', dc: '5125' },
+    // Upper Extremity - Minor (non-dominant)
+    { percent: 80, summary: 'Loss of arm at shoulder (minor)', dc: '5120' },
+    { percent: 70, summary: 'Loss of arm above elbow (minor)', dc: '5121' },
+    { percent: 60, summary: 'Loss of arm below elbow (minor)', dc: '5124' },
+    { percent: 60, summary: 'Loss of hand (minor)', dc: '5125' },
+    // Lower Extremity
+    { percent: 90, summary: 'Loss of thigh at hip', dc: '5160' },
+    { percent: 80, summary: 'Loss of thigh above knee', dc: '5161' },
+    { percent: 60, summary: 'Loss of leg below knee', dc: '5165' },
+    { percent: 40, summary: 'Loss of foot', dc: '5167' },
+  ],
+  smcNote: 'Loss of use of hand or foot qualifies for SMC-K ($139.87/month). Multiple losses may qualify for higher SMC levels.',
+};
+
+
 // ============================================
 // ANALYSIS FUNCTIONS - MIGRAINE
 // ============================================
@@ -30304,6 +30342,11 @@ export const analyzeAphoniaLogs = (logs, options = {}) => {
         isWithinEvaluationPeriod(log.timestamp, evaluationPeriodDays);
   });
 
+  const evidence = [];
+  const gaps = [];
+  let supportedRating = 0;
+  const ratingRationale = [];
+
   if (aphoniaSymptoms.length === 0) {
     return {
       condition: 'Aphonia (Voice Loss)',
@@ -30320,13 +30363,18 @@ export const analyzeAphoniaLogs = (logs, options = {}) => {
       ],
       criteria: APHONIA_CRITERIA,
       disclaimer: APHONIA_CRITERIA.disclaimer,
+      // SMC Eligibility Data - only at 100% rating
+      smcEligible: supportedRating === 100,
+      smcData: supportedRating === 100 ? {
+        level: 'K',
+        category: 'APHONIA',
+        autoGrant: true,
+        requiredRating: 100,
+        note: 'Complete organic aphonia (constant inability to speak above a whisper) at 100% qualifies for SMC-K.',
+      } : null,
     };
   }
 
-  const evidence = [];
-  const gaps = [];
-  let supportedRating = 0;
-  const ratingRationale = [];
 
   // Count symptoms by type
   const completeVoiceLoss = aphoniaSymptoms.filter(s => (s.symptomId || s.symptom) === 'aphonia-complete').length;
@@ -36652,6 +36700,29 @@ export const analyzeVisionLogs = (logs) => {
     else if (betterEyeAcuity === 'CF' || betterEyeAcuity === 'HM' || betterEyeAcuity === 'LP' || betterEyeAcuity === 'NLP') supportedRating = 100;
   }
 
+
+  // Check for SMC-K qualifying blindness
+  const hasBlindnessOneEye = visionLogs.some(log =>
+      log.symptomId?.includes('blindness-one-eye') ||
+      log.symptomId?.includes('eye-enucleation') ||
+      log.symptomId?.includes('eye-prosthetic') ||
+      log.eyeData?.anatomicalLoss
+  );
+
+  const hasBlindnessBothEyes = visionLogs.some(log =>
+      log.symptomId?.includes('blindness-both-eyes')
+  );
+
+  // Check for NLP (No Light Perception) in acuity data
+  const hasNLPOneEye = (acuityTrends.worstLeft?.acuity === 'NLP' && acuityTrends.worstRight?.acuity !== 'NLP') ||
+      (acuityTrends.worstRight?.acuity === 'NLP' && acuityTrends.worstLeft?.acuity !== 'NLP');
+
+  const smcKEligible = hasBlindnessOneEye || hasNLPOneEye;
+
+  if (smcKEligible) {
+    gaps.push('⭐ SMC-K eligible: Blindness in one eye documented');
+  }
+
   return {
     hasData: true,
     condition: 'Eye & Vision Conditions',
@@ -36667,8 +36738,18 @@ export const analyzeVisionLogs = (logs) => {
     fieldDefects: Object.entries(fieldDefects)
     .map(([field, count]) => ({ field, count })),
     gaps: gaps,
+    rationale: gaps,
+    evidenceGaps: gaps,
     ratingGuidance,
-    criteria: VISION_LOSS_CRITERIA
+    criteria: VISION_LOSS_CRITERIA,
+    // SMC-K Eligibility
+    smcEligible: smcKEligible,
+    smcData: smcKEligible ? {
+      level: 'K',
+      category: 'BLINDNESS_ONE_EYE',
+      autoGrant: true,
+      note: 'Blindness in one eye (anatomical loss or no light perception) qualifies for SMC-K under 38 CFR § 3.350(a).',
+    } : null,
   };
 };
 // ============================================
@@ -37115,6 +37196,14 @@ export const analyzeErectileDysfunctionLogs = (logs) => {
       severityCounts,
     },
     criteriaReference: ERECTILE_DYSFUNCTION_CRITERIA,
+    // SMC Eligibility Data - requires nexus to service-connected condition
+    smcEligible: true,
+    smcData: {
+      level: 'K',
+      category: 'CREATIVE_ORGAN',
+      autoGrant: false,
+      note: 'ED may qualify for SMC-K when secondary to a service-connected condition (diabetes, MS, ALS, prostate cancer treatment, etc.). Requires established nexus.',
+    },
   };
 };
 
@@ -37147,6 +37236,14 @@ export const analyzePenisConditionsLogs = (logs, options = {}) => {
       ],
       criteria: PENIS_CONDITIONS_CRITERIA,
       disclaimer: PENIS_CONDITIONS_CRITERIA.disclaimer,
+      // SMC Eligibility Data
+      smcEligible: true,
+      smcData: {
+        level: 'K',
+        category: 'CREATIVE_ORGAN',
+        autoGrant: true,
+        note: 'All penis removal conditions require SMC-K review under 38 CFR § 3.350(a) for loss of creative organ.',
+      },
     };
   }
 
@@ -37201,6 +37298,15 @@ export const analyzePenisConditionsLogs = (logs, options = {}) => {
     gaps,
     criteria: PENIS_CONDITIONS_CRITERIA,
     disclaimer: PENIS_CONDITIONS_CRITERIA.disclaimer,
+    // SMC Eligibility Data
+    smcEligible: true,
+    smcData: {
+      level: 'K',
+      category: 'CREATIVE_ORGAN',
+      autoGrant: true,
+      note: 'All testis loss/atrophy conditions require SMC-K review under 38 CFR § 3.350(a) for loss of creative organ.',
+    },
+
   };
 };
 
@@ -37296,6 +37402,14 @@ export const analyzeTestisConditionsLogs = (logs, options = {}) => {
     gaps,
     criteria: TESTIS_CONDITIONS_CRITERIA,
     disclaimer: TESTIS_CONDITIONS_CRITERIA.disclaimer,
+    // SMC Eligibility Data
+    smcEligible: true,
+    smcData: {
+      level: 'K',
+      category: 'CREATIVE_ORGAN',
+      autoGrant: true,
+      note: 'All testis loss/atrophy conditions require SMC-K review under 38 CFR § 3.350(a) for loss of creative organ.',
+    },
   };
 };
 
@@ -38624,14 +38738,40 @@ export const analyzeFemaleReproductiveOrgansLogs = (logs) => {
     evidenceGaps.push('PID: Document acute episodes, treatment, and any chronic sequelae');
   }
 
-  return {
-      condition: 'Diseases of Female Reproductive Organs',
-      diagnosticCode: '7610-7629',
+  // Check for SMC-K qualifying anatomical losses
+  const hasHysterectomy = gyneLogs.some(log =>
+      log.symptomId?.includes('hysterectomy') ||
+      log.gynecologicalData?.hysterectomy
+  );
+  const hasOophorectomy = gyneLogs.some(log =>
+      log.symptomId?.includes('oophorectomy') ||
+      log.symptomId?.includes('salpingo-oophorectomy') ||
+      log.gynecologicalData?.oophorectomy
+  );
+  const hasCervixRemoval = gyneLogs.some(log =>
+      log.symptomId?.includes('cervix-removal') ||
+      log.gynecologicalData?.cervixRemoval
+  );
 
+  // SMC-K eligibility for loss of creative organ
+  const smcKEligible = hasHysterectomy || hasOophorectomy || hasCervixRemoval;
+
+  if (smcKEligible) {
+    rationale.push('⭐ SMC-K eligible: Loss of creative organ documented');
+    if (hasHysterectomy) rationale.push('Hysterectomy (uterus removal) qualifies for SMC-K under 38 CFR § 3.350(a)');
+    if (hasOophorectomy) rationale.push('Oophorectomy (ovary removal) qualifies for SMC-K under 38 CFR § 3.350(a)');
+    if (hasCervixRemoval) rationale.push('Cervix removal qualifies for SMC-K under 38 CFR § 3.350(a)');
+  }
+
+  return {
+    condition: 'Diseases of Female Reproductive Organs',
+    diagnosticCode: '7610-7629',
     hasData: true,
     totalLogs: gyneLogs.length,
     supportedRating,
+    rationale,
     ratingRationale: rationale,
+    evidenceGaps,
     gaps: evidenceGaps,
     metrics: {
       requiresContinuousTreatment,
@@ -38642,8 +38782,19 @@ export const analyzeFemaleReproductiveOrgansLogs = (logs) => {
       hasIrregularCycles,
       hasHeavyBleeding,
       hasSevereDysmenorrhea,
+      hasHysterectomy,
+      hasOophorectomy,
+      hasCervixRemoval,
     },
     criteriaReference: FEMALE_REPRODUCTIVE_ORGANS_CRITERIA,
+    // SMC-K Eligibility
+    smcEligible: smcKEligible,
+    smcData: smcKEligible ? {
+      level: 'K',
+      category: 'CREATIVE_ORGAN',
+      autoGrant: true,
+      note: 'Loss of uterus, ovary, or cervix qualifies for SMC-K under 38 CFR § 3.350(a) for loss of creative organ.',
+    } : null,
   };
 };
 
@@ -54584,6 +54735,298 @@ export const analyzeUrethralStrictureLogs = (logs, options = {}) => {
       'Document any UTIs related to obstruction',
       'Note catheterization if required',
     ],
+  };
+};
+
+/**
+ * Analyze Amputation / Extremity Loss logs
+ * DC 5120-5173 - Amputations
+ * Per 38 CFR § 3.350(a) for SMC-K eligibility
+ */
+export const analyzeAmputationLogs = (logs) => {
+  const amputationLogs = logs.filter(log => {
+    const symptomId = log.symptomId || '';
+    return symptomId.includes('amputation') ||
+        symptomId.includes('loss-of-use') ||
+        symptomId.includes('prosthetic-hand') ||
+        symptomId.includes('prosthetic-arm') ||
+        symptomId.includes('prosthetic-foot') ||
+        symptomId.includes('prosthetic-leg');
+  });
+
+  if (amputationLogs.length === 0) {
+    return {
+      hasData: false,
+      message: 'No amputation or extremity loss symptoms logged'
+    };
+  }
+
+  // Detect specific losses
+  const losses = {
+    // Hands
+    rightHand: amputationLogs.some(l =>
+        l.symptomId?.includes('hand-right') ||
+        l.symptomId?.includes('prosthetic-hand-right')
+    ),
+    leftHand: amputationLogs.some(l =>
+        l.symptomId?.includes('hand-left') ||
+        l.symptomId?.includes('prosthetic-hand-left')
+    ),
+    // Feet
+    rightFoot: amputationLogs.some(l =>
+        l.symptomId?.includes('foot-right') ||
+        l.symptomId?.includes('prosthetic-foot-right')
+    ),
+    leftFoot: amputationLogs.some(l =>
+        l.symptomId?.includes('foot-left') ||
+        l.symptomId?.includes('prosthetic-foot-left')
+    ),
+    // Arms
+    rightArm: amputationLogs.some(l =>
+        l.symptomId?.includes('arm') && l.symptomId?.includes('right')
+    ),
+    leftArm: amputationLogs.some(l =>
+        l.symptomId?.includes('arm') && l.symptomId?.includes('left')
+    ),
+    // Legs
+    rightLeg: amputationLogs.some(l =>
+        l.symptomId?.includes('leg') && l.symptomId?.includes('right')
+    ),
+    leftLeg: amputationLogs.some(l =>
+        l.symptomId?.includes('leg') && l.symptomId?.includes('left')
+    ),
+  };
+
+  // Count SMC-K qualifying losses (hands and feet)
+  let smcKAwards = 0;
+  const smcKQualifying = [];
+
+  if (losses.rightHand) {
+    smcKAwards++;
+    smcKQualifying.push('Right Hand');
+  }
+  if (losses.leftHand) {
+    smcKAwards++;
+    smcKQualifying.push('Left Hand');
+  }
+  if (losses.rightFoot) {
+    smcKAwards++;
+    smcKQualifying.push('Right Foot');
+  }
+  if (losses.leftFoot) {
+    smcKAwards++;
+    smcKQualifying.push('Left Foot');
+  }
+
+  // Build rationale
+  const rationale = [];
+  const evidenceGaps = [];
+
+  if (smcKQualifying.length > 0) {
+    rationale.push(`⭐ SMC-K eligible: Loss of ${smcKQualifying.join(', ')} documented`);
+    rationale.push(`Qualifies for ${Math.min(smcKAwards, 3)} SMC-K award(s) under 38 CFR § 3.350(a)`);
+  }
+
+  // Check for higher SMC levels
+  const hasBilateralHands = losses.rightHand && losses.leftHand;
+  const hasBilateralFeet = losses.rightFoot && losses.leftFoot;
+  const hasArmLoss = losses.rightArm || losses.leftArm;
+  const hasLegLoss = losses.rightLeg || losses.leftLeg;
+
+  if (hasBilateralHands || hasBilateralFeet) {
+    rationale.push('⭐ May qualify for SMC-L or higher due to bilateral loss');
+  }
+  if (hasArmLoss) {
+    rationale.push('Arm amputation documented - may affect SMC level');
+  }
+  if (hasLegLoss) {
+    rationale.push('Leg amputation documented - may affect SMC level');
+  }
+
+  // Determine supported rating (simplified - actual rating depends on specifics)
+  let supportedRating = 0;
+  if (hasArmLoss || hasLegLoss) {
+    supportedRating = 60; // Minimum for major amputation
+  } else if (losses.rightHand || losses.leftHand) {
+    supportedRating = 60; // Loss of hand
+  } else if (losses.rightFoot || losses.leftFoot) {
+    supportedRating = 40; // Loss of foot
+  }
+
+  // Evidence gaps
+  evidenceGaps.push('Obtain VA examination documenting amputation level');
+  evidenceGaps.push('Document prosthetic usage and functional limitations');
+  evidenceGaps.push('For loss of use claims: Document remaining function vs. amputation stump');
+
+  const smcKEligible = smcKAwards > 0;
+
+  return {
+    condition: 'Amputation / Extremity Loss',
+    diagnosticCode: 'DC 5120-5173',
+    hasData: true,
+    totalLogs: amputationLogs.length,
+    supportedRating,
+    rationale,
+    evidenceGaps,
+    metrics: {
+      totalLogs: amputationLogs.length,
+      losses,
+      smcKAwards: Math.min(smcKAwards, 3),
+      smcKQualifying,
+      hasBilateralHands,
+      hasBilateralFeet,
+    },
+    criteriaReference: AMPUTATION_CRITERIA,
+    // SMC-K Eligibility
+    smcEligible: smcKEligible,
+    smcData: smcKEligible ? {
+      level: 'K',
+      category: 'EXTREMITY_LOSS',
+      awards: Math.min(smcKAwards, 3),
+      autoGrant: true,
+      qualifying: smcKQualifying,
+      note: `Loss of use of ${smcKQualifying.join(', ')} qualifies for ${Math.min(smcKAwards, 3)} SMC-K award(s) under 38 CFR § 3.350(a).`,
+    } : null,
+  };
+};
+
+/**
+ * Analyze ADL (Activities of Daily Living) logs for Aid & Attendance eligibility
+ * Based on 38 CFR § 3.352(a)
+ */
+export const analyzeADLLogs = (logs) => {
+  const adlLogs = logs.filter(log => {
+    const symptomId = log.symptomId || '';
+    return symptomId.startsWith('adl-');
+  });
+
+  if (adlLogs.length === 0) {
+    return {
+      hasData: false,
+      message: 'No ADL limitations logged. Track daily living difficulties to assess A&A eligibility.',
+    };
+  }
+
+  // Analyze each ADL factor
+  const factors = {
+    dressing: adlLogs.some(l =>
+        l.symptomId?.includes('dress') || l.symptomId?.includes('undress')
+    ),
+    hygiene: adlLogs.some(l =>
+        l.symptomId?.includes('hygiene') || l.symptomId?.includes('bath') ||
+        l.symptomId?.includes('groom') || l.symptomId?.includes('shave')
+    ),
+    feeding: adlLogs.some(l =>
+        l.symptomId?.includes('feed') || l.symptomId?.includes('eating') ||
+        l.symptomId?.includes('utensil') || l.symptomId?.includes('swallow')
+    ),
+    toileting: adlLogs.some(l =>
+        l.symptomId?.includes('toilet') || l.symptomId?.includes('bowel') ||
+        l.symptomId?.includes('bladder') || l.symptomId?.includes('catheter') ||
+        l.symptomId?.includes('incontinen')
+    ),
+    mobility: adlLogs.some(l =>
+        l.symptomId?.includes('mobility') || l.symptomId?.includes('bed') ||
+        l.symptomId?.includes('wheelchair') || l.symptomId?.includes('walk') ||
+        l.symptomId?.includes('transfer') || l.symptomId?.includes('chair')
+    ),
+    safety: adlLogs.some(l =>
+        l.symptomId?.includes('safety') || l.symptomId?.includes('supervision') ||
+        l.symptomId?.includes('alone') || l.symptomId?.includes('wander') ||
+        l.symptomId?.includes('emergency') || l.symptomId?.includes('fire')
+    ),
+    cognitive: adlLogs.some(l =>
+        l.symptomId?.includes('cognitive') || l.symptomId?.includes('memory') ||
+        l.symptomId?.includes('orientation') || l.symptomId?.includes('decision') ||
+        l.symptomId?.includes('instruction')
+    ),
+  };
+
+  const factorsAffected = Object.values(factors).filter(Boolean).length;
+
+  // Check for severe indicators
+  const hasBedridden = adlLogs.some(l => l.symptomId?.includes('bedridden'));
+  const hasTotalDependence = adlLogs.some(l => l.symptomId?.includes('total-depend'));
+  const hasNursingLevel = adlLogs.some(l => l.symptomId?.includes('nursing-level'));
+  const hasHousebound = adlLogs.some(l => l.symptomId?.includes('housebound'));
+  const hasSevereLimit = adlLogs.some(l => l.symptomId?.includes('severe-limit'));
+
+  // Determine potential SMC level
+  let potentialSMC = null;
+
+  if (hasNursingLevel || (hasTotalDependence && factors.safety)) {
+    potentialSMC = 'R'; // Higher A&A - nursing home level care
+  } else if (factorsAffected >= 3 || hasBedridden || hasTotalDependence || hasSevereLimit) {
+    potentialSMC = 'L'; // Basic A&A
+  } else if (hasHousebound) {
+    potentialSMC = 'S'; // Housebound
+  }
+
+  // Build rationale
+  const rationale = [];
+
+  if (factorsAffected > 0) {
+    rationale.push(`${factorsAffected} of 7 ADL factors documented with limitations`);
+  }
+
+  Object.entries(factors).forEach(([key, value]) => {
+    if (value) {
+      const factorNames = {
+        dressing: 'Dressing/Undressing',
+        hygiene: 'Personal Hygiene',
+        feeding: 'Feeding/Eating',
+        toileting: 'Toileting/Continence',
+        mobility: 'Mobility/Transfers',
+        safety: 'Safety/Protection',
+        cognitive: 'Cognitive Function',
+      };
+      rationale.push(`${factorNames[key]} limitations documented`);
+    }
+  });
+
+  if (hasBedridden) rationale.push('Bedridden status documented - supports higher SMC level');
+  if (hasTotalDependence) rationale.push('Total dependence on caregiver documented');
+  if (hasNursingLevel) rationale.push('Nursing home level care need documented - supports SMC-R');
+  if (hasHousebound) rationale.push('Housebound status documented - supports SMC-S');
+
+  // Evidence gaps
+  const evidenceGaps = [];
+
+  if (factorsAffected < 3) {
+    evidenceGaps.push('Document at least 3 ADL factors for stronger A&A claim');
+  }
+
+  if (!factors.safety && !factors.cognitive) {
+    evidenceGaps.push('Document safety concerns or cognitive limitations if applicable');
+  }
+
+  evidenceGaps.push('Obtain VA Form 21-2680 examination from physician');
+  evidenceGaps.push('Get buddy statements from family/caregivers documenting assistance provided');
+
+  if (!hasBedridden && !hasTotalDependence) {
+    evidenceGaps.push('Document frequency of assistance needed (daily, multiple times daily, etc.)');
+  }
+
+  return {
+    condition: 'Activities of Daily Living',
+    diagnosticCode: 'A&A',
+    hasData: true,
+    totalLogs: adlLogs.length,
+    supportedLevel: potentialSMC,
+    factorsAffected,
+    factors,
+    hasBedridden,
+    hasTotalDependence,
+    hasNursingLevel,
+    hasHousebound,
+    potentialSMC,
+    rationale,
+    evidenceGaps,
+    metrics: {
+      totalLogs: adlLogs.length,
+      factorsAffected,
+      severeIndicators: [hasBedridden, hasTotalDependence, hasNursingLevel, hasHousebound].filter(Boolean).length,
+    },
   };
 };
 
