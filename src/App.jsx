@@ -12,6 +12,9 @@ import ExportData from './components/ExportData';
 import Settings from './components/Settings';
 import OnboardingModal from './components/OnboardingModal';
 import ThankYou from './components/legal/ThankYou.jsx';
+import SecondaryConditionsGuide from './components/SecondaryConditionsGuide';
+import PresumptiveConditionsGuide from './components/PresumptiveConditionsGuide';
+import MOSNoiseExposureLookup from './components/MOSNoiseExposureLookup';
 
 // Profile system
 import { ProfileProvider, useProfile } from './hooks/useProfile.jsx';
@@ -36,6 +39,9 @@ const getInitialViewFromURL = () => {
     '/measurements': 'measurements',
     '/settings': 'settings',
     '/export': 'export',
+    '/secondary-conditions': 'secondary-conditions',
+    '/presumptive-conditions': 'presumptive-conditions',
+    '/mos-noise-exposure': 'mos-noise-exposure',
   };
 
   return pathToView[path] || 'log';
@@ -113,6 +119,9 @@ const AppContent = () => {
       'settings': '/settings',
       'export': '/export',
       'thank-you': '/thank-you',
+      'secondary-conditions': '/secondary-conditions',
+      'presumptive-conditions': '/presumptive-conditions',
+      'mos-noise-exposure': '/mos-noise-exposure',
     };
 
     const newPath = viewToPath[view] || '/';
@@ -152,6 +161,12 @@ const AppContent = () => {
         return <Settings onNavigate={handleNavigate} />;
       case 'thank-you':
         return <ThankYou />;
+      case 'secondary-conditions':
+        return <SecondaryConditionsGuide onNavigateToSymptom={(symptom) => handleNavigate('log')} />;
+      case 'presumptive-conditions':
+        return <PresumptiveConditionsGuide />;
+      case 'mos-noise-exposure':
+        return <MOSNoiseExposureLookup />;
       default:
         return <SymptomLogger />;
     }

@@ -7,6 +7,7 @@ import {
 
 // List of all trackable conditions in the app
 const ALL_CONDITIONS = [
+  { key: 'amputation', name: 'Amputation / Extremity Loss' },
   { key: 'ankleAchilles', name: 'Ankle/Achilles Tendon Condition' },
   { key: 'anxiety', name: 'Anxiety' },
   { key: 'asthma', name: 'Asthma' },

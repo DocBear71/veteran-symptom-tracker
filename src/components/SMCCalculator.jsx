@@ -48,6 +48,51 @@ const SMCCalculator = ({
     return null;
   }
 
+  /**
+   * Merge SMC-K results from both Service-Connected conditions and logged symptoms
+   * Combines eligible conditions from both sources, avoiding duplicates
+   */
+  const mergeSMCKResults = (fromSC, fromLogs) => {
+    const combinedConditions = [];
+    const seenCategories = new Set();
+    let totalAwards = 0;
+
+    // Add conditions from Service-Connected analysis
+    if (fromSC?.eligibleConditions) {
+      fromSC.eligibleConditions.forEach(cond => {
+        if (!seenCategories.has(cond.category)) {
+          combinedConditions.push(cond);
+          seenCategories.add(cond.category);
+          totalAwards += cond.awards || 1;
+        }
+      });
+    }
+
+    // Add conditions from Logs/Props analysis (avoid duplicates)
+    if (fromLogs?.eligibleConditions) {
+      fromLogs.eligibleConditions.forEach(cond => {
+        if (!seenCategories.has(cond.category)) {
+          combinedConditions.push(cond);
+          seenCategories.add(cond.category);
+          totalAwards += cond.awards || 1;
+        }
+      });
+    }
+
+    const cappedAwards = Math.min(totalAwards, 3);
+    const monthlyAmount = cappedAwards * SMC_RATES_2026.K.rate;
+
+    return {
+      eligible: combinedConditions.length > 0,
+      eligibleConditions: combinedConditions,
+      totalAwards: totalAwards,
+      cappedAwards: cappedAwards,
+      monthlyAmount: monthlyAmount,
+      rate: SMC_RATES_2026.K.rate,
+      maxAwards: 3,
+    };
+  };
+
   useEffect(() => {
     const analyzeEligibility = () => {
       setIsLoading(true);
@@ -55,11 +100,6 @@ const SMCCalculator = ({
       try {
         // Get service-connected conditions
         const scConditions = getServiceConnectedConditions(profile.id) || [];
-
-        // DEBUG: Log what we're getting
-        console.log('🔍 SMC Calculator - Profile ID:', profile.id);
-        console.log('🔍 SMC Calculator - SC Conditions loaded:', scConditions.length);
-        console.log('🔍 SMC Calculator - Conditions data:', JSON.stringify(scConditions, null, 2));
 
         // Get all symptom logs for ADL analysis
         const allLogs = getSymptomLogs() || [];
@@ -74,11 +114,8 @@ const SMCCalculator = ({
         const smcKFromSC = analyzeSMCKEligibility(scConditions);
         const smcKFromLogs = analyzeSMCKFromProps();
 
-        // Merge results - use whichever found eligibility
-        const smcKResults = smcKFromLogs.eligible ? smcKFromLogs : smcKFromSC;
-
-        // DEBUG: Log SMC-K results
-        console.log('🔍 SMC Calculator - SMC-K Results:', JSON.stringify(smcKResults, null, 2));
+        // Merge results - combine both sources
+        const smcKResults = mergeSMCKResults(smcKFromSC, smcKFromLogs);
 
         // Perform SMC-S analysis (100% + 60% rule)
         const smcSResults = analyzeSMCSEligibility(scConditions);
@@ -412,13 +449,6 @@ const SMCCalculator = ({
   const analyzeSMCKFromProps = () => {
     const eligibleConditions = [];
     let totalKAwards = 0;
-
-    console.log('🔍 SMC-K checking passed props:', {
-      penis: penisAnalysis?.smcEligible,
-      testis: testisAnalysis?.smcEligible,
-      ed: edAnalysis?.smcEligible,
-      aphonia: aphoniaAnalysis?.smcEligible,
-    });
 
     // Check Penis Conditions (from prop)
     if (penisAnalysis?.smcEligible && penisAnalysis?.smcData) {

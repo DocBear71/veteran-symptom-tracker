@@ -444,6 +444,7 @@ import AnkleAchillesRatingCard from './AnkleAchillesRatingCard';
 import HipThighRatingCard from './HipThighRatingCard';
 import SecondaryConditionsSummary from './SecondaryConditionsSummary';
 import ADLRatingCard from './ADLRatingCard';
+import AmputationRatingCard from './AmputationRatingCard';
 
 
 
@@ -1463,6 +1464,7 @@ const RatingEvidence = () => {
         metatarsalgiaAnalysis.hasData,
         halluxValgusAnalysis.hasData,
         halluxRigidusAnalysis.hasData,
+        amputationAnalysis?.hasData,
       ].filter(Boolean).length,
 
       respiratory: [
@@ -1667,6 +1669,7 @@ const RatingEvidence = () => {
     spinalStenosisAnalysis.hasData, ankylosingSpondylitisAnalysis.hasData, spinalFusionAnalysis.hasData,
     weakFootAnalysis.hasData, clawFootAnalysis.hasData, metatarsalgiaAnalysis.hasData,
     halluxValgusAnalysis.hasData, halluxRigidusAnalysis.hasData,
+    amputationAnalysis.hasData,
     // Respiratory
     sleepApneaAnalysis.hasData, asthmaAnalysis.hasData, rhinitisAnalysis.hasData,
     sinusitisAnalysis.hasData, deviatedSeptumAnalysis.hasData, noseLossAnalysis.hasData,
@@ -1762,6 +1765,7 @@ const RatingEvidence = () => {
         hipAnalysis.hasData ||
         ankleAnalysis.hasData ||
         ankleAchillesAnalysis.hasData ||
+        amputationAnalysis.hasData ||
         hipThighAnalysis.hasData ||
         wristAnalysis.hasData ||
         elbowAnalysis.hasData ||
@@ -2276,7 +2280,12 @@ const RatingEvidence = () => {
                 expanded={expandedSection === 'ankleAchilles'}
                 onToggle={() => toggleSection('ankleAchilles')}
             />
-
+            {/* Amputation / Extremity Loss Rating Card */}
+            <AmputationRatingCard
+                analysis={amputationAnalysis}
+                expanded={expandedSection === 'amputation'}
+                onToggle={() => toggleSection('amputation')}
+            />
           </ConditionGroup>
 
           {/* ========== RESPIRATORY ========== */}

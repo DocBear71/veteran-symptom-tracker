@@ -274,27 +274,6 @@ const Settings = ({ onNavigate }) => {  // ← ADD onNavigate prop
       <div className="space-y-4 text-left">
         <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Settings</h2>
 
-        {/* Message Banner */}
-        {message && (
-            <div className={`p-3 rounded-lg ${
-                messageType === 'success' ? 'bg-green-50 dark:bg-green-900/30 text-green-800 dark:text-green-200 border border-green-200 dark:border-green-800' :
-                    messageType === 'error' ? 'bg-red-50 dark:bg-red-900/30 text-red-800 dark:text-red-200 border border-red-200 dark:border-red-800' :
-                        'bg-blue-50 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200 border border-blue-200 dark:border-blue-800'
-            }`}>
-              {message}
-            </div>
-        )}
-
-        {/* Profile Management */}
-        <ProfileManagement />
-
-        {/* Service-Connected Conditions (Veteran profiles only) */}
-        {currentProfile && currentProfile.type === 'veteran' && (
-            <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
-              <ServiceConnectedConditions />
-            </div>
-        )}
-
         {/* Theme Settings */}
         <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
           <h3 className="font-medium text-gray-900 dark:text-white mb-3">Appearance</h3>
@@ -331,6 +310,111 @@ const Settings = ({ onNavigate }) => {  // ← ADD onNavigate prop
             >
               💻 System
             </button>
+          </div>
+        </div>
+
+        {/* Message Banner */}
+        {message && (
+            <div className={`p-3 rounded-lg ${
+                messageType === 'success' ? 'bg-green-50 dark:bg-green-900/30 text-green-800 dark:text-green-200 border border-green-200 dark:border-green-800' :
+                    messageType === 'error' ? 'bg-red-50 dark:bg-red-900/30 text-red-800 dark:text-red-200 border border-red-200 dark:border-red-800' :
+                        'bg-blue-50 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200 border border-blue-200 dark:border-blue-800'
+            }`}>
+              {message}
+            </div>
+        )}
+
+        {/* Profile Management */}
+        <ProfileManagement />
+
+        {/* Service-Connected Conditions (Veteran profiles only) - Collapsible */}
+        {currentProfile && currentProfile.type === 'veteran' && (
+            <details className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden group">
+              <summary className="px-4 py-3 cursor-pointer flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors list-none">
+                <div className="flex items-center gap-2">
+                  <span className="text-xl">🎖️</span>
+                  <div>
+                    <h3 className="font-medium text-gray-900 dark:text-white">My Service-Connected Conditions</h3>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">Track VA disability ratings and monitor for increases</p>
+                  </div>
+                </div>
+                <span className="text-gray-400 dark:text-gray-500 transition-transform group-open:rotate-180">
+                  ▼
+                </span>
+              </summary>
+              <div className="px-4 pb-4 border-t border-gray-200 dark:border-gray-700">
+                <ServiceConnectedConditions />
+              </div>
+            </details>
+        )}
+        {/* Secondary Conditions Guide (Veteran profiles only) */}
+        {currentProfile && (currentProfile.type === 'veteran' ||
+            (currentProfile.type === 'caregiver' && currentProfile.metadata?.isVeteranCaregiver)) && (
+            <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
+              <h3 className="font-medium text-gray-900 dark:text-white mb-2 flex items-center gap-2">
+                <span>🔗</span>
+                Secondary Conditions Guide
+              </h3>
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+                Discover potential secondary service-connected conditions based on your primary disabilities.
+                Includes nexus strength indicators and documentation tips.
+              </p>
+              <button
+                  onClick={() => onNavigate && onNavigate('secondary-conditions')}
+                  className="w-full py-3 px-4 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-lg flex items-center justify-center gap-2 transition-colors"
+              >
+                <span>📋</span> View Secondary Conditions Guide
+              </button>
+              <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
+                Learn which conditions may be claimed as secondary to your service-connected disabilities
+              </p>
+            </div>
+        )}
+        {/* Presumptive Conditions Guide - Veteran only */}
+        {currentProfile && (currentProfile.type === 'veteran' ||
+            (currentProfile.type === 'caregiver' && currentProfile.metadata?.isVeteranCaregiver)) && (
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+              <div className="flex items-start gap-4">
+                <span className="text-3xl">🎖️</span>
+                <div className="flex-1">
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                    Presumptive Conditions Guide
+                  </h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                    Conditions the VA presumes are service-connected based on your service era (Vietnam, Gulf War, Camp Lejeune, etc.)
+                  </p>
+                  <button
+                      onClick={() => onNavigate && onNavigate('presumptive-conditions')}
+                      className="mt-3 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white
+                   rounded-lg font-medium transition-colors inline-flex items-center gap-2"
+                  >
+                    <span>View Guide</span>
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+        )}
+
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+          <div className="flex items-start gap-4">
+            <span className="text-3xl">🔊</span>
+            <div className="flex-1">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                MOS Noise Exposure Lookup
+              </h3>
+              <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                Check if your MOS has presumptive noise exposure for hearing loss/tinnitus claims
+              </p>
+              <button
+                  onClick={() => onNavigate && onNavigate('mos-noise-exposure')}
+                  className="mt-3 px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white rounded-lg text-sm font-medium transition-colors"
+              >
+                Look Up Your MOS
+              </button>
+            </div>
           </div>
         </div>
 
