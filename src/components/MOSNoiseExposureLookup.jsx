@@ -49,16 +49,16 @@ const ARMY_ENLISTED = [
   { code: '13P', title: 'MLRS Operational Fire Direction Specialist', exposure: 'HIGH' },
   { code: '13R', title: 'Field Artillery Firefinder Radar Operator', exposure: 'HIGH' },
   { code: '13S', title: 'Field Artillery Surveyor', exposure: 'HIGH' },
-  { code: '13T', title: 'Field Artillery Surveyor/Meteorological Crewmember', exposure: 'HIGH' },
+  { code: '13T', title: 'Field Artillery Surveyor/ Meteorological Crewmember', exposure: 'HIGH' },
   { code: '13W', title: 'Field Artillery Meteorological Crewmember', exposure: 'HIGH' },
   { code: '13Z', title: 'Field Artillery Senior Sergeant', exposure: 'HIGH' },
 
   // Air Defense Artillery
-  { code: '14E', title: 'Patriot Fire Control Enhanced Operator/Maintainer', exposure: 'HIGH' },
+  { code: '14E', title: 'Patriot Fire Control Enhanced Operator/ Maintainer', exposure: 'HIGH' },
   { code: '14G', title: 'Air Defense Battle Management System Operator', exposure: 'MOD' },
   { code: '14M', title: 'Man Portable Air Defense System Crewmember', exposure: 'HIGH' },
   { code: '14S', title: 'Air and Missile Defense Crewmember', exposure: 'HIGH' },
-  { code: '14T', title: 'Patriot Launching Station Enhanced Operator/Maintainer', exposure: 'HIGH' },
+  { code: '14T', title: 'Patriot Launching Station Enhanced Operator/ Maintainer', exposure: 'HIGH' },
   { code: '14Z', title: 'Air Defense Artillery Senior Sergeant', exposure: 'HIGH' },
 
   // Aviation - HIGH exposure
@@ -67,20 +67,20 @@ const ARMY_ENLISTED = [
   { code: '15F', title: 'Aircraft Electrician', exposure: 'HIGH' },
   { code: '15G', title: 'Aircraft Structural Repairer', exposure: 'HIGH' },
   { code: '15H', title: 'Aircraft Pneudraulics Repairer', exposure: 'HIGH' },
-  { code: '15J', title: 'OH-58D/ARH Armament/Electrical/Avionics Systems Repairer', exposure: 'HIGH' },
+  { code: '15J', title: 'OH-58D/ ARH Armament/ Electrical/ Avionics Systems Repairer', exposure: 'HIGH' },
   { code: '15K', title: 'Aircraft Components Repair Supervisor', exposure: 'HIGH' },
   { code: '15M', title: 'UH-1 Helicopter Repairer', exposure: 'HIGH' },
   { code: '15N', title: 'Avionics Mechanic', exposure: 'HIGH' },
   { code: '15P', title: 'Aviation Operations Specialist', exposure: 'MOD' },
   { code: '15Q', title: 'Air Traffic Control Operator', exposure: 'MOD' },
   { code: '15R', title: 'AH-64 Attack Helicopter Repairer', exposure: 'HIGH' },
-  { code: '15S', title: 'OH-58D/ARH Helicopter Repairer', exposure: 'HIGH' },
+  { code: '15S', title: 'OH-58D/ ARH Helicopter Repairer', exposure: 'HIGH' },
   { code: '15T', title: 'UH-60 Helicopter Repairer', exposure: 'HIGH' },
   { code: '15U', title: 'CH-47 Helicopter Repairer', exposure: 'HIGH' },
-  { code: '15V', title: 'Observation/Scout Helicopter Repairer', exposure: 'HIGH' },
+  { code: '15V', title: 'Observation/ Scout Helicopter Repairer', exposure: 'HIGH' },
   { code: '15W', title: 'Unmanned Aerial Vehicle Operator', exposure: 'MOD' },
-  { code: '15X', title: 'AH-64A Armament/Electrical/Avionics Systems Repairer', exposure: 'HIGH' },
-  { code: '15Y', title: 'AH-64D Armament/Electrical/Avionics Systems Repairer', exposure: 'HIGH' },
+  { code: '15X', title: 'AH-64A Armament/ Electrical/ Avionics Systems Repairer', exposure: 'HIGH' },
+  { code: '15Y', title: 'AH-64D Armament/ Electrical/ Avionics Systems Repairer', exposure: 'HIGH' },
   { code: '15Z', title: 'Aircraft Maintenance Senior Sergeant', exposure: 'HIGH' },
 
   // Special Forces - HIGH exposure
@@ -91,7 +91,7 @@ const ARMY_ENLISTED = [
   { code: '18F', title: 'Special Forces Assistant Operations & Intelligence Sergeant', exposure: 'HIGH' },
   { code: '18Z', title: 'Special Forces Senior Sergeant', exposure: 'HIGH' },
 
-  // Armor/Cavalry - HIGH exposure
+  // Armor/ Cavalry - HIGH exposure
   { code: '19D', title: 'Cavalry Scout', exposure: 'HIGH' },
   { code: '19K', title: 'M1 Armor Crewman', exposure: 'HIGH' },
   { code: '19Z', title: 'Armor Senior Sergeant', exposure: 'HIGH' },
@@ -112,7 +112,7 @@ const ARMY_ENLISTED = [
   // Military Police
   { code: '31B', title: 'Military Police', exposure: 'HIGH' },
   { code: '31D', title: 'CID Special Agent', exposure: 'MOD' },
-  { code: '31E', title: 'Internment/Resettlement Specialist', exposure: 'MOD' },
+  { code: '31E', title: 'Internment/ Resettlement Specialist', exposure: 'MOD' },
 
   // Intelligence - LOW exposure
   { code: '35F', title: 'Intelligence Analyst', exposure: 'LOW' },
@@ -144,7 +144,7 @@ const ARMY_ENLISTED = [
   { code: '88M', title: 'Motor Transport Operator', exposure: 'HIGH' },
   { code: '88N', title: 'Transportation Management Coordinator', exposure: 'LOW' },
 
-  // Ammunition/EOD - HIGH exposure
+  // Ammunition/ EOD - HIGH exposure
   { code: '89A', title: 'Ammunition Stock Control & Accounting Specialist', exposure: 'MOD' },
   { code: '89B', title: 'Ammunition Specialist', exposure: 'HIGH' },
   { code: '89D', title: 'Explosive Ordnance Disposal Specialist', exposure: 'HIGH' },
@@ -155,12 +155,12 @@ const ARMY_ENLISTED = [
   { code: '91C', title: 'Utilities Equipment Repairer', exposure: 'HIGH' },
   { code: '91D', title: 'Power-Generation Equipment Repairer', exposure: 'HIGH' },
   { code: '91E', title: 'Allied Trades Specialist', exposure: 'HIGH' },
-  { code: '91F', title: 'Small Arms/Artillery Repairer', exposure: 'HIGH' },
+  { code: '91F', title: 'Small Arms/ Artillery Repairer', exposure: 'HIGH' },
   { code: '91J', title: 'Quartermaster & Chemical Equipment Repairer', exposure: 'HIGH' },
   { code: '91K', title: 'Armament Repairer', exposure: 'HIGH' },
   { code: '91W', title: 'Metal Worker', exposure: 'HIGH' },
 
-  // Supply/Logistics - varies
+  // Supply/ Logistics - varies
   { code: '92A', title: 'Automated Logistical Specialist', exposure: 'LOW' },
   { code: '92F', title: 'Petroleum Supply Specialist', exposure: 'HIGH' },
   { code: '92G', title: 'Food Service Specialist', exposure: 'MOD' },
@@ -216,7 +216,7 @@ const ARMY_WARRANT = [
 const NAVY_ENLISTED = [
   // Aviation Ratings - HIGH
   { code: 'AB', title: 'Aviation Boatswain\'s Mate', exposure: 'HIGH' },
-  { code: 'ABE', title: 'Aviation Boatswain\'s Mate (Launching/Recovery)', exposure: 'HIGH' },
+  { code: 'ABE', title: 'Aviation Boatswain\'s Mate (Launching/ Recovery)', exposure: 'HIGH' },
   { code: 'ABF', title: 'Aviation Boatswain\'s Mate (Fuels)', exposure: 'HIGH' },
   { code: 'ABH', title: 'Aviation Boatswain\'s Mate (Aircraft Handling)', exposure: 'HIGH' },
   { code: 'AC', title: 'Air Traffic Controller', exposure: 'MOD' },
@@ -242,7 +242,7 @@ const NAVY_ENLISTED = [
   { code: 'OS', title: 'Operations Specialist', exposure: 'MOD' },
   { code: 'QM', title: 'Quartermaster', exposure: 'MOD' },
 
-  // Weapons/Combat
+  // Weapons/ Combat
   { code: 'FC', title: 'Fire Controlman', exposure: 'HIGH' },
   { code: 'FT', title: 'Fire Control Technician', exposure: 'HIGH' },
   { code: 'GM', title: 'Gunner\'s Mate', exposure: 'HIGH' },
@@ -272,13 +272,13 @@ const NAVY_ENLISTED = [
   { code: 'SW', title: 'Steelworker', exposure: 'HIGH' },
   { code: 'UT', title: 'Utilitiesman', exposure: 'HIGH' },
 
-  // Special Warfare/EOD
+  // Special Warfare/ EOD
   { code: 'EOD', title: 'Explosive Ordnance Disposal', exposure: 'HIGH' },
   { code: 'ND', title: 'Navy Diver', exposure: 'HIGH' },
   { code: 'SB', title: 'Special Operations Boat Operator', exposure: 'HIGH' },
   { code: 'SO', title: 'Special Operator (SEAL)', exposure: 'HIGH' },
 
-  // Electronics/Communications
+  // Electronics/ Communications
   { code: 'CT', title: 'Cryptologic Technician', exposure: 'LOW' },
   { code: 'ET', title: 'Electronics Technician', exposure: 'MOD' },
   { code: 'IT', title: 'Information Systems Technician', exposure: 'LOW' },
@@ -317,11 +317,11 @@ const MARINE_CORPS = [
   { code: '0844', title: 'Fire Direction Controlman', exposure: 'HIGH' },
   { code: '0861', title: 'Fire Support Man', exposure: 'HIGH' },
 
-  // Tanks/AAV (18XX)
+  // Tanks/ AAV (18XX)
   { code: '1812', title: 'M1A1 Tank Crewman', exposure: 'HIGH' },
   { code: '1833', title: 'AAV Crewman', exposure: 'HIGH' },
 
-  // EOD/Ordnance (23XX)
+  // EOD/ Ordnance (23XX)
   { code: '2311', title: 'Ammunition Technician', exposure: 'HIGH' },
   { code: '2336', title: 'Explosive Ordnance Disposal Technician', exposure: 'HIGH' },
 
@@ -341,55 +341,55 @@ const MARINE_CORPS = [
   { code: '6042', title: 'Individual Material Readiness List Asset Manager', exposure: 'LOW' },
   { code: '6046', title: 'Aircraft Maintenance Administration Specialist', exposure: 'LOW' },
   { code: '6048', title: 'Flight Equipment Technician', exposure: 'HIGH' },
-  { code: '6062', title: 'Aircraft Intermediate Level Hydraulic/Pneumatic Mechanic', exposure: 'HIGH' },
-  { code: '6072', title: 'Aircraft Maintenance Support Equipment Electrician/Refrigeration Mechanic', exposure: 'HIGH' },
-  { code: '6073', title: 'Aircraft Maintenance Support Equipment Hydraulic/Pneumatic/Structures Mechanic', exposure: 'HIGH' },
+  { code: '6062', title: 'Aircraft Intermediate Level Hydraulic/ Pneumatic Mechanic', exposure: 'HIGH' },
+  { code: '6072', title: 'Aircraft Maintenance Support Equipment Electrician/ Refrigeration Mechanic', exposure: 'HIGH' },
+  { code: '6073', title: 'Aircraft Maintenance Support Equipment Hydraulic/ Pneumatic/ Structures Mechanic', exposure: 'HIGH' },
   { code: '6074', title: 'Cryogenics Equipment Operator', exposure: 'HIGH' },
   { code: '6092', title: 'Aircraft Intermediate Level Structures Mechanic', exposure: 'HIGH' },
-  { code: '6111', title: 'Helicopter/Tiltrotor Mechanic, CH-53', exposure: 'HIGH' },
-  { code: '6112', title: 'Helicopter Mechanic, UH/AH-1', exposure: 'HIGH' },
-  { code: '6113', title: 'Helicopter/Tiltrotor Mechanic, MV-22', exposure: 'HIGH' },
-  { code: '6114', title: 'Helicopter/Tiltrotor Powerplants Mechanic, CH-53', exposure: 'HIGH' },
+  { code: '6111', title: 'Helicopter/ Tiltrotor Mechanic, CH-53', exposure: 'HIGH' },
+  { code: '6112', title: 'Helicopter Mechanic, UH/ AH-1', exposure: 'HIGH' },
+  { code: '6113', title: 'Helicopter/ Tiltrotor Mechanic, MV-22', exposure: 'HIGH' },
+  { code: '6114', title: 'Helicopter/ Tiltrotor Powerplants Mechanic, CH-53', exposure: 'HIGH' },
   { code: '6116', title: 'Tiltrotor Mechanic, MV-22', exposure: 'HIGH' },
-  { code: '6122', title: 'Helicopter Power Plants Mechanic, UH/AH-1', exposure: 'HIGH' },
-  { code: '6123', title: 'Helicopter/Tiltrotor Crew Chief, CH-46', exposure: 'HIGH' },
-  { code: '6124', title: 'Helicopter/Tiltrotor Crew Chief, CH-53', exposure: 'HIGH' },
-  { code: '6132', title: 'Helicopter/Tiltrotor Crew Chief, UH-1/AH-1', exposure: 'HIGH' },
+  { code: '6122', title: 'Helicopter Power Plants Mechanic, UH/ AH-1', exposure: 'HIGH' },
+  { code: '6123', title: 'Helicopter/ Tiltrotor Crew Chief, CH-46', exposure: 'HIGH' },
+  { code: '6124', title: 'Helicopter/ Tiltrotor Crew Chief, CH-53', exposure: 'HIGH' },
+  { code: '6132', title: 'Helicopter/ Tiltrotor Crew Chief, UH-1/ AH-1', exposure: 'HIGH' },
   { code: '6152', title: 'Helicopter Airframe Mechanic, CH-53', exposure: 'HIGH' },
   { code: '6153', title: 'Helicopter Airframe Mechanic, CH-46', exposure: 'HIGH' },
-  { code: '6154', title: 'Helicopter/Tiltrotor Airframe Mechanic, UH-1/AH-1', exposure: 'HIGH' },
+  { code: '6154', title: 'Helicopter/ Tiltrotor Airframe Mechanic, UH-1/ AH-1', exposure: 'HIGH' },
   { code: '6156', title: 'Tiltrotor Airframe Mechanic, MV-22', exposure: 'HIGH' },
-  { code: '6172', title: 'Helicopter/Tiltrotor Crew Chief, CH-53E', exposure: 'HIGH' },
+  { code: '6172', title: 'Helicopter/ Tiltrotor Crew Chief, CH-53E', exposure: 'HIGH' },
   { code: '6173', title: 'Helicopter Crew Chief, CH-46', exposure: 'HIGH' },
   { code: '6174', title: 'Helicopter Crew Chief, UH-1N', exposure: 'HIGH' },
   { code: '6176', title: 'Tiltrotor Crew Chief, MV-22', exposure: 'HIGH' },
-  { code: '6212', title: 'Fixed-Wing Aircraft Mechanic, EA-6/F/A-18', exposure: 'HIGH' },
+  { code: '6212', title: 'Fixed-Wing Aircraft Mechanic, EA-6/ F/ A-18', exposure: 'HIGH' },
   { code: '6214', title: 'Intermediate Level Structures Mechanic, Fixed-Wing', exposure: 'HIGH' },
   { code: '6216', title: 'Fixed-Wing Aircraft Mechanic, KC-130', exposure: 'HIGH' },
   { code: '6217', title: 'Fixed-Wing Aircraft Mechanic, F-35', exposure: 'HIGH' },
-  { code: '6218', title: 'Fixed-Wing Crew Chief, EA-6/AV-8', exposure: 'HIGH' },
-  { code: '6222', title: 'Fixed-Wing Aircraft Power Plants Mechanic, F/A-18', exposure: 'HIGH' },
+  { code: '6218', title: 'Fixed-Wing Crew Chief, EA-6/ AV-8', exposure: 'HIGH' },
+  { code: '6222', title: 'Fixed-Wing Aircraft Power Plants Mechanic, F/ A-18', exposure: 'HIGH' },
   { code: '6227', title: 'Fixed-Wing Aircraft Power Plants Mechanic, F-35', exposure: 'HIGH' },
-  { code: '6252', title: 'Fixed-Wing Aircraft Airframe Mechanic, EA-6/F/A-18', exposure: 'HIGH' },
+  { code: '6252', title: 'Fixed-Wing Aircraft Airframe Mechanic, EA-6/ F/ A-18', exposure: 'HIGH' },
   { code: '6256', title: 'Fixed-Wing Aircraft Airframe Mechanic, KC-130', exposure: 'HIGH' },
   { code: '6257', title: 'Fixed-Wing Aircraft Airframe Mechanic, F-35', exposure: 'HIGH' },
   { code: '6276', title: 'Fixed-Wing Crew Chief, KC-130', exposure: 'HIGH' },
-  { code: '6282', title: 'Fixed-Wing Aircraft Safety Equipment Mechanic, EA-6/F/A-18/AV-8', exposure: 'HIGH' },
+  { code: '6282', title: 'Fixed-Wing Aircraft Safety Equipment Mechanic, EA-6/ F/ A-18/ AV-8', exposure: 'HIGH' },
   { code: '6286', title: 'Fixed-Wing Aircraft Safety Equipment Mechanic, KC-130', exposure: 'HIGH' },
   { code: '6287', title: 'Fixed-Wing Aircraft Safety Equipment Mechanic, F-35', exposure: 'HIGH' },
-  { code: '6311', title: 'Aircraft Communications/Navigation/Electrical/Weapons Systems Technician, AH-1', exposure: 'HIGH' },
-  { code: '6312', title: 'Aircraft Communications/Navigation/Electrical/Weapon Systems Technician, CH-46/53', exposure: 'HIGH' },
-  { code: '6313', title: 'Aircraft Communications/Navigation/Radar Systems Technician, CH-53', exposure: 'HIGH' },
+  { code: '6311', title: 'Aircraft Communications/ Navigation/ Electrical/ Weapons Systems Technician, AH-1', exposure: 'HIGH' },
+  { code: '6312', title: 'Aircraft Communications/ Navigation/ Electrical/ Weapon Systems Technician, CH-46/ 53', exposure: 'HIGH' },
+  { code: '6313', title: 'Aircraft Communications/ Navigation/ Radar Systems Technician, CH-53', exposure: 'HIGH' },
   { code: '6314', title: 'Unmanned Aerial Vehicle (UAV) Avionics Technician', exposure: 'MOD' },
-  { code: '6316', title: 'Aircraft Communications/Navigation/Electrical/Weapons Systems Technician, MV-22', exposure: 'HIGH' },
-  { code: '6317', title: 'Aircraft Communications/Navigation Systems Technician, KC-130', exposure: 'HIGH' },
-  { code: '6322', title: 'Aircraft Communications/Navigation/Electrical Systems Technician, EA-6/AV-8/F/A-18', exposure: 'HIGH' },
-  { code: '6323', title: 'Aircraft Communications/Navigation Systems Technician, EA-6', exposure: 'HIGH' },
-  { code: '6324', title: 'Aircraft Communications/Navigation/Weapons Systems Technician, AV-8', exposure: 'HIGH' },
-  { code: '6326', title: 'Aircraft Communications/Navigation/Electrical/Weapons Systems Technician, F/A-18', exposure: 'HIGH' },
+  { code: '6316', title: 'Aircraft Communications/ Navigation/ Electrical/ Weapons Systems Technician, MV-22', exposure: 'HIGH' },
+  { code: '6317', title: 'Aircraft Communications/ Navigation Systems Technician, KC-130', exposure: 'HIGH' },
+  { code: '6322', title: 'Aircraft Communications/ Navigation/ Electrical Systems Technician, EA-6/ AV-8/ F/ A-18', exposure: 'HIGH' },
+  { code: '6323', title: 'Aircraft Communications/ Navigation Systems Technician, EA-6', exposure: 'HIGH' },
+  { code: '6324', title: 'Aircraft Communications/ Navigation/ Weapons Systems Technician, AV-8', exposure: 'HIGH' },
+  { code: '6326', title: 'Aircraft Communications/ Navigation/ Electrical/ Weapons Systems Technician, F/ A-18', exposure: 'HIGH' },
   { code: '6327', title: 'Fixed-Wing Aircraft Avionics Technician, F-35', exposure: 'HIGH' },
-  { code: '6332', title: 'Aircraft Electrical Systems Technician, UH-1/AH-1/CH-53', exposure: 'HIGH' },
-  { code: '6333', title: 'Aircraft Electrical Systems Technician, CH-46/53', exposure: 'HIGH' },
+  { code: '6332', title: 'Aircraft Electrical Systems Technician, UH-1/ AH-1/ CH-53', exposure: 'HIGH' },
+  { code: '6333', title: 'Aircraft Electrical Systems Technician, CH-46/ 53', exposure: 'HIGH' },
   { code: '6336', title: 'Aircraft Electrical Systems Technician, MV-22', exposure: 'HIGH' },
   { code: '6338', title: 'Aircraft Electrical Systems Technician, KC-130', exposure: 'HIGH' },
   { code: '6386', title: 'Aircraft Electronic Countermeasures Systems Technician, EA-6', exposure: 'HIGH' },
@@ -411,8 +411,8 @@ const MARINE_CORPS = [
   { code: '3521', title: 'Automotive Organizational Mechanic', exposure: 'HIGH' },
   { code: '3531', title: 'Motor Vehicle Operator', exposure: 'HIGH' },
 
-  // Supply/Logistics - varies
-  { code: '0431', title: 'Logistics/Embarkation Specialist', exposure: 'MOD' },
+  // Supply/ Logistics - varies
+  { code: '0431', title: 'Logistics/ Embarkation Specialist', exposure: 'MOD' },
   { code: '3043', title: 'Supply Administration and Operations Clerk', exposure: 'LOW' },
   { code: '3051', title: 'Warehouse Clerk', exposure: 'MOD' },
 
@@ -422,7 +422,7 @@ const MARINE_CORPS = [
   { code: '0151', title: 'Administrative Clerk', exposure: 'LOW' },
   { code: '0161', title: 'Postal Clerk', exposure: 'LOW' },
   { code: '0171', title: 'Budget Technician', exposure: 'LOW' },
-  { code: '0193', title: 'Personnel/Administrative Chief', exposure: 'LOW' },
+  { code: '0193', title: 'Personnel/ Administrative Chief', exposure: 'LOW' },
 
   // Intel - LOW
   { code: '0231', title: 'Intelligence Specialist', exposure: 'LOW' },
@@ -468,8 +468,8 @@ const AIR_FORCE_ENLISTED = [
   { code: '2A1X3', title: 'Communication & Navigation Systems', exposure: 'HIGH' },
   { code: '2A1X4', title: 'Airborne Surveillance Radar Systems', exposure: 'HIGH' },
   { code: '2A1X7', title: 'Electronic Warfare Systems', exposure: 'HIGH' },
-  { code: '2A3X1', title: 'F-15/F-111 Avionics Systems', exposure: 'HIGH' },
-  { code: '2A3X2', title: 'F-16/F-117/CV-22 Avionic Systems', exposure: 'HIGH' },
+  { code: '2A3X1', title: 'F-15/ F-111 Avionics Systems', exposure: 'HIGH' },
+  { code: '2A3X2', title: 'F-16/ F-117/ CV-22 Avionic Systems', exposure: 'HIGH' },
   { code: '2A3X3', title: 'Tactical Aircraft Maintenance', exposure: 'HIGH' },
   { code: '2A4X1', title: 'Aircraft Guidance & Control', exposure: 'HIGH' },
   { code: '2A4X2', title: 'Aircraft Communication & Navigation Systems', exposure: 'HIGH' },
@@ -487,7 +487,7 @@ const AIR_FORCE_ENLISTED = [
   { code: '2A7X3', title: 'Aircraft Structural Maintenance', exposure: 'HIGH' },
   { code: '2A7X4', title: 'Survival Equipment', exposure: 'MOD' },
 
-  // Electronics/Comm - varies
+  // Electronics/ Comm - varies
   { code: '2E0X1', title: 'Ground Radar Systems', exposure: 'HIGH' },
   { code: '2E1X1', title: 'Satellite and Wideband Communications Equipment', exposure: 'MOD' },
   { code: '2E1X2', title: 'Meteorological and Navigation Systems', exposure: 'MOD' },
@@ -511,7 +511,7 @@ const AIR_FORCE_ENLISTED = [
   { code: '2T3X4', title: 'General Purpose Vehicle Mechanic', exposure: 'HIGH' },
   { code: '2T3X5', title: 'Vehicle Body Maintenance', exposure: 'HIGH' },
 
-  // Weapons/Munitions - HIGH
+  // Weapons/ Munitions - HIGH
   { code: '2M0X1', title: 'Missile and Space Systems Electronic Maintenance', exposure: 'HIGH' },
   { code: '2M0X2', title: 'Missile and Space Systems Maintenance', exposure: 'HIGH' },
   { code: '2M0X3', title: 'Missile and Space Facilities', exposure: 'HIGH' },
@@ -533,7 +533,7 @@ const AIR_FORCE_ENLISTED = [
   { code: '3E8X1', title: 'Explosive Ordnance Disposal', exposure: 'HIGH' },
   { code: '3E9X1', title: 'Readiness', exposure: 'MOD' },
 
-  // Services/Support - varies
+  // Services/ Support - varies
   { code: '3M0X1', title: 'Services', exposure: 'MOD' },
   { code: '3N0X1', title: 'Public Affairs', exposure: 'LOW' },
   { code: '3N0X2', title: 'Radio and Television Broadcasting', exposure: 'LOW' },
@@ -932,7 +932,7 @@ export default function MOSNoiseExposureLookup() {
           )}
 
           {/* Legal References */}
-          <div className="bg-gray-100 dark:bg-gray-700/50 rounded-lg p-4 text-sm">
+          <div className="bg-gray-100 dark:bg-gray-700/50 rounded-lg p-4 text-sm text-left">
             <h4 className="font-semibold text-gray-900 dark:text-white mb-2">
               Legal References
             </h4>
