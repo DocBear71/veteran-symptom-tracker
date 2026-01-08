@@ -2900,6 +2900,49 @@ export const CONDITIONS = {
     bodySystem: 'respiratory',
   },
 
+  SYPHILIS: {
+    id: 'syphilis',
+    name: 'Syphilis',
+    diagnosticCode: '6310',
+    cfrReference: '38 CFR 4.88b',
+    symptomIds: ['syphilis-positive-test', 'syphilis-treated', 'syphilis-active'],
+  },
+  CEREBROSPINAL_SYPHILIS: {
+    id: 'cerebrospinal-syphilis',
+    name: 'Cerebrospinal Syphilis',
+    diagnosticCode: '8013',
+    cfrReference: '38 CFR 4.124a',
+    symptomIds: ['neurosyphilis-headache', 'neurosyphilis-seizures', 'neurosyphilis-vision', 'neurosyphilis-paralysis', 'neurosyphilis-fatigue'],
+  },
+  MENINGOVASCULAR_SYPHILIS: {
+    id: 'meningovascular-syphilis',
+    name: 'Meningovascular Syphilis',
+    diagnosticCode: '8014',
+    cfrReference: '38 CFR 4.124a',
+    symptomIds: ['neurosyphilis-stroke', 'neurosyphilis-headache', 'neurosyphilis-seizures', 'neurosyphilis-vision', 'neurosyphilis-paralysis'],
+  },
+  TABES_DORSALIS: {
+    id: 'tabes-dorsalis',
+    name: 'Tabes Dorsalis',
+    diagnosticCode: '8015',
+    cfrReference: '38 CFR 4.124a',
+    symptomIds: ['tabes-lightning-pain', 'tabes-ataxia', 'tabes-romberg-positive', 'tabes-position-sense-loss', 'tabes-absent-reflexes', 'tabes-charcot-joint', 'tabes-argyll-robertson', 'tabes-bladder-dysfunction', 'tabes-bowel-dysfunction'],
+  },
+  SYPHILITIC_DEMENTIA: {
+    id: 'syphilitic-dementia',
+    name: 'Dementia due to CNS Syphilis',
+    diagnosticCode: '9301',
+    cfrReference: '38 CFR 4.130',
+    symptomIds: ['syphilis-memory-loss', 'syphilis-cognitive-decline', 'syphilis-personality-change', 'syphilis-confusion', 'syphilis-psychotic', 'syphilis-judgment-impaired'],
+  },
+  SYPHILITIC_HEART_DISEASE: {
+    id: 'syphilitic-heart-disease',
+    name: 'Syphilitic Heart Disease',
+    diagnosticCode: '7004',
+    cfrReference: '38 CFR 4.104',
+    symptomIds: ['syphilitic-heart-chest-pain', 'syphilitic-heart-dyspnea', 'syphilitic-heart-fatigue', 'syphilitic-heart-palpitations', 'syphilitic-heart-chf', 'syphilitic-heart-dizziness'],
+  },
+
 };
 // ============================================
 // MIGRAINE RATING CRITERIA (DC 8100)
@@ -26839,6 +26882,528 @@ export const AMPUTATION_CRITERIA = {
     { percent: 40, summary: 'Loss of foot', dc: '5167' },
   ],
   smcNote: 'Loss of use of hand or foot qualifies for SMC-K ($139.87/month). Multiple losses may qualify for higher SMC levels.',
+};
+
+// ============================================
+// STD/SYPHILIS CONDITIONS - Rating Criteria
+// DC 6310, 7004, 8013, 8014, 8015, 9301
+// For addition to ratingCriteria.js
+// ============================================
+
+// =================================================================
+// SYPHILIS (BASE CONDITION) - DC 6310
+// =================================================================
+export const SYPHILIS_CRITERIA = {
+  diagnosticCode: '6310',
+  condition: 'Syphilis and Other Treponemal Infections',
+  cfrReference: '38 CFR § 4.88b, Diagnostic Code 6310',
+
+  note: 'Syphilis itself is rated at 0% when inactive/treated. Compensation is based on complications affecting the nervous system, vascular system, eyes, or ears. Rate under the appropriate diagnostic code for the specific complication.',
+
+  ratings: [
+    {
+      percent: 0,
+      summary: 'Inactive/treated syphilis without complications',
+      criteriaDescription: [
+        'History of syphilis infection',
+        'Successfully treated with antibiotics',
+        'No current active disease',
+        'No residual complications',
+      ],
+      evidenceNeeded: [
+        'Positive syphilis serology (RPR, VDRL, or treponemal test)',
+        'Treatment records showing antibiotic therapy',
+        'Follow-up testing showing stable/declining titers',
+        'Medical evaluation ruling out complications',
+      ],
+    },
+  ],
+
+  complications: [
+    { code: '7004', condition: 'Syphilitic Heart Disease', system: 'Cardiovascular' },
+    { code: '8013', condition: 'Cerebrospinal Syphilis', system: 'Neurological' },
+    { code: '8014', condition: 'Meningovascular Syphilis', system: 'Neurological' },
+    { code: '8015', condition: 'Tabes Dorsalis', system: 'Neurological' },
+    { code: '9301', condition: 'Dementia due to CNS Syphilis', system: 'Mental Health' },
+    { code: '6010', condition: 'Syphilitic Eye Disease', system: 'Ophthalmologic' },
+  ],
+
+  definitions: {
+    'Treponemal infection': 'Infection caused by Treponema pallidum bacteria (syphilis) or related organisms',
+    'RPR': 'Rapid Plasma Reagin - non-treponemal screening test for syphilis',
+    'VDRL': 'Venereal Disease Research Laboratory test - another screening test',
+    'Tertiary syphilis': 'Late-stage syphilis that can affect heart, brain, and other organs',
+    'Neurosyphilis': 'Syphilis infection of the central nervous system',
+  },
+
+  disclaimer: 'Veterans with service-connected syphilis should be evaluated for all potential complications. Even if the base syphilis rating is 0%, secondary conditions affecting the heart, nervous system, eyes, or mental health may be separately rated and service-connected.',
+};
+
+// =================================================================
+// SYPHILITIC HEART DISEASE - DC 7004
+// =================================================================
+export const SYPHILITIC_HEART_DISEASE_CRITERIA = {
+  diagnosticCode: '7004',
+  condition: 'Syphilitic Heart Disease',
+  cfrReference: '38 CFR § 4.104, Diagnostic Code 7004',
+
+  note: 'Rate under the General Rating Formula for heart disease based on METs testing, ejection fraction, or symptoms. Syphilis can cause aortitis, aortic regurgitation, or coronary ostial stenosis.',
+
+  ratings: [
+    {
+      percent: 100,
+      summary: 'Chronic congestive heart failure, or severe limitation',
+      criteriaDescription: [
+        'Chronic congestive heart failure, OR',
+        'Workload of 3 METs or less results in dyspnea, fatigue, angina, dizziness, or syncope, OR',
+        'Left ventricular ejection fraction less than 30%',
+      ],
+      evidenceNeeded: [
+        'Echocardiogram showing ejection fraction < 30%',
+        'Stress test showing workload ≤ 3 METs',
+        'Documentation of chronic CHF',
+        'Cardiology evaluation linking to syphilis',
+      ],
+    },
+    {
+      percent: 60,
+      summary: 'More than one episode of CHF in past year, or moderate limitation',
+      criteriaDescription: [
+        'More than one episode of acute congestive heart failure in past year, OR',
+        'Workload greater than 3 METs but not greater than 5 METs results in symptoms, OR',
+        'Left ventricular ejection fraction of 30-50%',
+      ],
+      evidenceNeeded: [
+        'Echocardiogram showing ejection fraction 30-50%',
+        'Stress test showing workload 3-5 METs',
+        'Records of CHF episodes',
+        'Cardiology evaluation',
+      ],
+    },
+    {
+      percent: 30,
+      summary: 'Workload 5-7 METs causes symptoms',
+      criteriaDescription: [
+        'Workload greater than 5 METs but not greater than 7 METs results in dyspnea, fatigue, angina, dizziness, or syncope, OR',
+        'Evidence of cardiac hypertrophy or dilatation on electrocardiogram, echocardiogram, or X-ray',
+      ],
+      evidenceNeeded: [
+        'Stress test showing workload 5-7 METs',
+        'ECG, echo, or X-ray showing cardiac changes',
+        'Documentation of symptoms',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Workload 7-10 METs causes symptoms',
+      criteriaDescription: [
+        'Workload greater than 7 METs but not greater than 10 METs results in dyspnea, fatigue, angina, dizziness, or syncope, OR',
+        'Continuous medication required',
+      ],
+      evidenceNeeded: [
+        'Stress test showing workload 7-10 METs',
+        'Medication records',
+        'Documentation of symptoms',
+      ],
+    },
+  ],
+
+  definitions: {
+    'METs': 'Metabolic Equivalent of Task - measure of exercise capacity',
+    'Ejection fraction': 'Percentage of blood pumped out of the heart with each beat',
+    'Aortitis': 'Inflammation of the aorta, common in tertiary syphilis',
+    'Aortic regurgitation': 'Leaky aortic valve allowing backflow',
+  },
+
+  disclaimer: 'Syphilitic heart disease is a complication of tertiary syphilis. Service connection requires establishing nexus between heart disease and service-connected syphilis infection.',
+};
+
+// =================================================================
+// CEREBROSPINAL SYPHILIS - DC 8013
+// =================================================================
+export const CEREBROSPINAL_SYPHILIS_CRITERIA = {
+  diagnosticCode: '8013',
+  condition: 'Cerebrospinal Syphilis (Neurosyphilis)',
+  cfrReference: '38 CFR § 4.124a, Diagnostic Code 8013',
+
+  note: 'Rate upon the severity of convulsions, paralysis, visual impairment, or psychotic involvement. Uses the Central Nervous System rating criteria. May involve brain and/or spinal cord infection.',
+
+  ratings: [
+    {
+      percent: 100,
+      summary: 'Severe neurological impairment',
+      criteriaDescription: [
+        'Severe convulsions/seizures, OR',
+        'Complete paralysis of affected areas, OR',
+        'Severe visual impairment/blindness, OR',
+        'Severe psychotic symptoms',
+      ],
+      evidenceNeeded: [
+        'Neurology evaluation documenting severity',
+        'CSF analysis showing infection',
+        'MRI/CT showing CNS involvement',
+        'Documentation of functional impairment',
+      ],
+    },
+    {
+      percent: 60,
+      summary: 'Moderately severe neurological symptoms',
+      criteriaDescription: [
+        'Frequent seizures despite medication, OR',
+        'Significant paralysis or weakness, OR',
+        'Moderate visual impairment, OR',
+        'Moderate cognitive/psychiatric symptoms',
+      ],
+      evidenceNeeded: [
+        'Seizure logs if applicable',
+        'Neurology records',
+        'Functional assessment',
+        'Treatment records',
+      ],
+    },
+    {
+      percent: 30,
+      summary: 'Moderate neurological symptoms',
+      criteriaDescription: [
+        'Occasional seizures, OR',
+        'Mild to moderate weakness/paralysis, OR',
+        'Mild visual changes, OR',
+        'Mild cognitive symptoms',
+      ],
+      evidenceNeeded: [
+        'Neurology evaluation',
+        'Documentation of symptom frequency',
+        'Treatment records',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Minimal residuals (minimum rating with ascertainable residuals)',
+      criteriaDescription: [
+        'Mild residual symptoms',
+        'Headaches, dizziness, or fatigue',
+        'Subjective complaints consistent with disease',
+      ],
+      evidenceNeeded: [
+        'Documentation of residual symptoms',
+        'History of cerebrospinal syphilis',
+        'Current symptom diary',
+      ],
+    },
+  ],
+
+  symptoms: [
+    'Headaches',
+    'Seizures/convulsions',
+    'Vision problems (double vision, blindness)',
+    'Cognitive impairment',
+    'Memory problems',
+    'Personality changes',
+    'Nerve paralysis',
+    'Fatigue',
+    'Dementia',
+  ],
+
+  definitions: {
+    'Cerebrospinal syphilis': 'Syphilis infection affecting the brain and/or spinal cord',
+    'CSF': 'Cerebrospinal fluid - tested via lumbar puncture to diagnose neurosyphilis',
+    'General paresis': 'Progressive dementia caused by neurosyphilis',
+  },
+
+  disclaimer: 'Cerebrospinal syphilis requires documentation of CNS infection. Rate based on the most severe residual symptoms. Separate ratings may apply for distinct manifestations that don\'t overlap.',
+};
+
+// =================================================================
+// MENINGOVASCULAR SYPHILIS - DC 8014
+// =================================================================
+export const MENINGOVASCULAR_SYPHILIS_CRITERIA = {
+  diagnosticCode: '8014',
+  condition: 'Meningovascular Syphilis',
+  cfrReference: '38 CFR § 4.124a, Diagnostic Code 8014',
+
+  note: 'Infection of the meninges (brain lining) and blood vessels in the brain. Rate upon the severity of convulsions, paralysis, visual impairment, or psychotic involvement.',
+
+  ratings: [
+    {
+      percent: 100,
+      summary: 'Severe neurological impairment',
+      criteriaDescription: [
+        'Stroke-like episodes with permanent deficits, OR',
+        'Severe seizures, OR',
+        'Complete paralysis, OR',
+        'Severe cognitive impairment',
+      ],
+      evidenceNeeded: [
+        'Neurology evaluation',
+        'Imaging showing vascular changes',
+        'CSF analysis',
+        'Documentation of stroke-like episodes',
+      ],
+    },
+    {
+      percent: 60,
+      summary: 'Moderately severe symptoms',
+      criteriaDescription: [
+        'Recurrent stroke-like episodes, OR',
+        'Frequent seizures, OR',
+        'Significant weakness/paralysis, OR',
+        'Moderate cognitive decline',
+      ],
+      evidenceNeeded: [
+        'Neurology records',
+        'Imaging studies',
+        'Functional assessment',
+      ],
+    },
+    {
+      percent: 30,
+      summary: 'Moderate symptoms',
+      criteriaDescription: [
+        'Occasional symptoms, OR',
+        'Mild to moderate neurological deficits, OR',
+        'Controlled seizures',
+      ],
+      evidenceNeeded: [
+        'Neurology evaluation',
+        'Treatment records',
+        'Symptom documentation',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Minimal residuals',
+      criteriaDescription: [
+        'Mild residual symptoms',
+        'Headaches, fatigue, mild memory issues',
+        'Ascertainable residuals present',
+      ],
+      evidenceNeeded: [
+        'Documentation of residuals',
+        'Medical history',
+      ],
+    },
+  ],
+
+  symptoms: [
+    'Stroke-like episodes',
+    'Headaches',
+    'Seizures',
+    'Vision changes (double vision)',
+    'Memory problems',
+    'Fatigue',
+    'Nerve paralysis',
+    'Dementia',
+  ],
+
+  definitions: {
+    'Meningovascular': 'Affecting the meninges (brain covering) and blood vessels',
+    'Cerebrovascular accident': 'Stroke - can occur from syphilitic vasculitis',
+  },
+
+  disclaimer: 'Meningovascular syphilis affects brain blood vessels and can cause stroke-like symptoms. Rate based on residual neurological deficits.',
+};
+
+// =================================================================
+// TABES DORSALIS - DC 8015
+// =================================================================
+export const TABES_DORSALIS_CRITERIA = {
+  diagnosticCode: '8015',
+  condition: 'Tabes Dorsalis',
+  cfrReference: '38 CFR § 4.124a, Diagnostic Code 8015',
+
+  note: 'A form of neurosyphilis affecting the posterior columns of the spinal cord. Causes progressive degeneration of sensory nerve fibers. Rate upon the severity of symptoms including gait abnormality, pain, and sensory loss.',
+
+  ratings: [
+    {
+      percent: 100,
+      summary: 'Severe impairment',
+      criteriaDescription: [
+        'Unable to walk without assistance, OR',
+        'Severe lightning pains requiring constant medication, OR',
+        'Complete sensory loss in lower extremities, OR',
+        'Severe bladder/bowel dysfunction',
+      ],
+      evidenceNeeded: [
+        'Neurology evaluation',
+        'Gait analysis',
+        'Documentation of pain severity',
+        'Bladder/bowel function assessment',
+      ],
+    },
+    {
+      percent: 60,
+      summary: 'Moderately severe symptoms',
+      criteriaDescription: [
+        'Significant gait disturbance requiring assistive device, OR',
+        'Frequent severe lightning pains, OR',
+        'Marked sensory loss, OR',
+        'Moderate bladder/bowel issues',
+      ],
+      evidenceNeeded: [
+        'Neurology records',
+        'Pain diary',
+        'Sensory examination',
+        'Functional assessment',
+      ],
+    },
+    {
+      percent: 30,
+      summary: 'Moderate symptoms (minimum rating)',
+      criteriaDescription: [
+        'Ataxic gait (unsteady walking), OR',
+        'Intermittent lightning pains, OR',
+        'Decreased sensation, OR',
+        'Mild bladder dysfunction',
+      ],
+      evidenceNeeded: [
+        'Neurology evaluation',
+        'Symptom documentation',
+        'Treatment records',
+      ],
+    },
+  ],
+
+  symptoms: [
+    'Lightning pains (sharp, stabbing pains)',
+    'Ataxia (unsteady gait)',
+    'Loss of reflexes',
+    'Sensory loss (especially position sense)',
+    'Romberg sign positive',
+    'Bladder dysfunction',
+    'Bowel dysfunction',
+    'Argyll Robertson pupils',
+    'Joint damage (Charcot joints)',
+    'Vision problems',
+  ],
+
+  definitions: {
+    'Tabes dorsalis': 'Degeneration of the dorsal columns of spinal cord from syphilis',
+    'Lightning pains': 'Brief, severe, stabbing pains characteristic of tabes dorsalis',
+    'Ataxia': 'Lack of muscle coordination affecting gait and balance',
+    'Romberg sign': 'Swaying/falling when standing with eyes closed - indicates sensory ataxia',
+    'Argyll Robertson pupils': 'Pupils that accommodate but don\'t react to light - classic sign',
+    'Charcot joint': 'Joint destruction from loss of protective sensation',
+  },
+
+  disclaimer: 'Tabes dorsalis is a late manifestation of syphilis affecting the spinal cord. The minimum rating is 30% when ascertainable residuals are present.',
+};
+
+// =================================================================
+// DEMENTIA DUE TO CNS SYPHILIS - DC 9301
+// =================================================================
+export const SYPHILITIC_DEMENTIA_CRITERIA = {
+  diagnosticCode: '9301',
+  condition: 'Dementia Associated with Central Nervous System Syphilis',
+  cfrReference: '38 CFR § 4.130, Diagnostic Code 9301',
+
+  note: 'Also known as General Paresis or Dementia Paralytica. Rated under the General Rating Formula for Mental Disorders. Progressive dementia caused by CNS syphilis infection.',
+
+  ratings: [
+    {
+      percent: 100,
+      summary: 'Total occupational and social impairment',
+      criteriaDescription: [
+        'Gross impairment in thought processes or communication',
+        'Persistent delusions or hallucinations',
+        'Grossly inappropriate behavior',
+        'Persistent danger of hurting self or others',
+        'Intermittent inability to perform activities of daily living',
+        'Disorientation to time or place',
+        'Memory loss for names of close relatives or own name',
+      ],
+      evidenceNeeded: [
+        'Psychiatric evaluation',
+        'Neuropsychological testing',
+        'Documentation of functional impairment',
+        'CSF analysis confirming neurosyphilis',
+      ],
+    },
+    {
+      percent: 70,
+      summary: 'Deficiencies in most areas',
+      criteriaDescription: [
+        'Suicidal ideation',
+        'Obsessional rituals interfering with routine activities',
+        'Intermittently illogical, obscure, or irrelevant speech',
+        'Near-continuous panic or depression',
+        'Impaired impulse control',
+        'Spatial disorientation',
+        'Neglect of personal appearance and hygiene',
+        'Difficulty adapting to stressful circumstances',
+        'Inability to establish and maintain effective relationships',
+      ],
+      evidenceNeeded: [
+        'Psychiatric evaluation',
+        'Documentation of symptoms',
+        'Functional assessment',
+      ],
+    },
+    {
+      percent: 50,
+      summary: 'Reduced reliability and productivity',
+      criteriaDescription: [
+        'Flattened affect',
+        'Circumstantial, circumlocutory, or stereotyped speech',
+        'Panic attacks more than once a week',
+        'Difficulty understanding complex commands',
+        'Impairment of short and long-term memory',
+        'Impaired judgment',
+        'Impaired abstract thinking',
+        'Disturbances of motivation and mood',
+        'Difficulty establishing effective work and social relationships',
+      ],
+      evidenceNeeded: [
+        'Psychiatric evaluation',
+        'Cognitive testing',
+        'Work history documentation',
+      ],
+    },
+    {
+      percent: 30,
+      summary: 'Occasional decrease in work efficiency',
+      criteriaDescription: [
+        'Depressed mood, anxiety, suspiciousness',
+        'Panic attacks weekly or less',
+        'Chronic sleep impairment',
+        'Mild memory loss (forgetting names, directions)',
+      ],
+      evidenceNeeded: [
+        'Psychiatric evaluation',
+        'Symptom documentation',
+      ],
+    },
+    {
+      percent: 10,
+      summary: 'Mild symptoms',
+      criteriaDescription: [
+        'Symptoms controlled by continuous medication',
+        'Occupational and social impairment due to mild or transient symptoms',
+      ],
+      evidenceNeeded: [
+        'Treatment records',
+        'Medication history',
+      ],
+    },
+    {
+      percent: 0,
+      summary: 'Diagnosed but asymptomatic',
+      criteriaDescription: [
+        'Formally diagnosed condition',
+        'No symptoms impairing occupational or social functioning',
+      ],
+      evidenceNeeded: [
+        'Diagnosis documentation',
+        'Evaluation showing no current impairment',
+      ],
+    },
+  ],
+
+  definitions: {
+    'General paresis': 'Progressive dementia from neurosyphilis, also called dementia paralytica',
+    'Cognitive decline': 'Progressive loss of memory, reasoning, and other mental functions',
+  },
+
+  disclaimer: 'Syphilitic dementia is a serious complication of untreated neurosyphilis. Early treatment can halt progression but may not reverse existing damage.',
 };
 
 
@@ -55029,6 +55594,798 @@ export const analyzeADLLogs = (logs) => {
     },
   };
 };
+
+
+// ============================================
+// DC 6310: SYPHILIS (BASE CONDITION)
+// ============================================
+/**
+ * Analyzes Syphilis logs to determine supported rating level
+ * Based on 38 CFR 4.88b, DC 6310
+ * Note: Syphilis itself is rated at 0% - compensation is based on complications
+ */
+export const analyzeSyphilisLogs = (logs, options = {}) => {
+  const { evaluationPeriodDays = 365 } = options;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  // Filter for base syphilis symptoms
+  const syphilisLogs = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    const symptomId = getLogSymptomId(log);
+    return logDate >= cutoffDate && symptomId && (
+        symptomId.includes('syphilis-positive') ||
+        symptomId.includes('syphilis-treated') ||
+        symptomId.includes('syphilis-active') ||
+        symptomId === 'syphilis'
+    );
+  });
+
+  if (syphilisLogs.length === 0) {
+    return {
+      condition: 'Syphilis',
+      diagnosticCode: '6310',
+      hasData: false,
+      message: 'No syphilis status logged',
+      supportedRating: null,
+      ratingRationale: [],
+      gaps: [
+        'Document syphilis diagnosis with positive serology (RPR, VDRL, or treponemal test)',
+        'Record treatment history (antibiotic therapy)',
+        'Note any neurological symptoms (headaches, vision changes, gait problems)',
+        'Note any cardiac symptoms (chest pain, shortness of breath)',
+        'Track cognitive changes if present',
+        'Get evaluated for complications affecting nervous system, heart, eyes, or ears',
+      ],
+    };
+  }
+
+  const evidence = [];
+  const gaps = [];
+  const ratingRationale = [];
+
+  // Count status types
+  const positiveTests = syphilisLogs.filter(s => getLogSymptomId(s)?.includes('positive')).length;
+  const treated = syphilisLogs.filter(s => getLogSymptomId(s)?.includes('treated')).length;
+  const active = syphilisLogs.filter(s => getLogSymptomId(s)?.includes('active')).length;
+
+  evidence.push(`${syphilisLogs.length} syphilis-related entries logged`);
+  if (positiveTests > 0) evidence.push('Positive syphilis serology documented');
+  if (treated > 0) evidence.push('Treatment completion documented');
+  if (active > 0) evidence.push('Active infection documented');
+
+  // Base syphilis is always 0% - rated by complications
+  const supportedRating = 0;
+  ratingRationale.push('DC 6310: Syphilis itself is rated at 0%');
+  ratingRationale.push('Compensation is based on complications affecting specific body systems');
+  ratingRationale.push('Rate complications under appropriate diagnostic codes:');
+  ratingRationale.push('• DC 7004 - Syphilitic Heart Disease');
+  ratingRationale.push('• DC 8013 - Cerebrospinal Syphilis');
+  ratingRationale.push('• DC 8014 - Meningovascular Syphilis');
+  ratingRationale.push('• DC 8015 - Tabes Dorsalis');
+  ratingRationale.push('• DC 9301 - Syphilitic Dementia');
+
+  // Gaps - focus on identifying complications
+  gaps.push('Get neurology evaluation if ANY neurological symptoms present');
+  gaps.push('Get cardiology evaluation if ANY cardiac symptoms present');
+  gaps.push('Request CSF analysis if neurosyphilis suspected');
+  gaps.push('Document all residual symptoms for appropriate complication ratings');
+  gaps.push('Even at 0%, service connection is important for future complications');
+
+  return {
+    condition: 'Syphilis',
+    diagnosticCode: '6310',
+    hasData: true,
+    supportedRating,
+    ratingRationale,
+    evidence,
+    gaps,
+    metrics: {
+      totalLogs: syphilisLogs.length,
+      evaluationPeriod: evaluationPeriodDays,
+      positiveTests,
+      treated,
+      active,
+    },
+    note: 'Syphilis is rated at 0% when inactive. Seek separate ratings for complications under DC 7004, 8013, 8014, 8015, or 9301.',
+  };
+};
+
+
+// ============================================
+// DC 8013: CEREBROSPINAL SYPHILIS
+// ============================================
+/**
+ * Analyzes Cerebrospinal Syphilis logs to determine supported rating level
+ * Based on 38 CFR 4.124a, DC 8013
+ * Rated on severity of neurological symptoms
+ */
+export const analyzeCerebrospinalSyphilisLogs = (logs, options = {}) => {
+  const { evaluationPeriodDays = 365 } = options;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  // Filter for cerebrospinal/neurosyphilis symptoms
+  const csSymptoms = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    const symptomId = getLogSymptomId(log);
+    return logDate >= cutoffDate && symptomId && (
+        symptomId.includes('neurosyphilis') ||
+        symptomId.includes('cerebrospinal-syphilis') ||
+        (symptomId.includes('syphilis') && (
+            symptomId.includes('headache') ||
+            symptomId.includes('seizure') ||
+            symptomId.includes('vision') ||
+            symptomId.includes('paralysis') ||
+            symptomId.includes('fatigue')
+        ))
+    );
+  });
+
+  if (csSymptoms.length === 0) {
+    return {
+      condition: 'Cerebrospinal Syphilis',
+      diagnosticCode: '8013',
+      hasData: false,
+      message: 'No cerebrospinal syphilis symptoms logged',
+      supportedRating: null,
+      ratingRationale: [],
+      gaps: [
+        'Document neurological symptoms: headaches, seizures, vision changes',
+        'Note any paralysis or weakness',
+        'Track cognitive symptoms if present',
+        'Get lumbar puncture (CSF analysis) to confirm CNS involvement',
+        'Obtain neurology evaluation',
+        'Document impact on daily activities',
+      ],
+    };
+  }
+
+  const evidence = [];
+  const gaps = [];
+  let supportedRating = 10; // Minimum rating with ascertainable residuals
+  const ratingRationale = [];
+
+  // Count symptom types
+  const symptomCounts = {
+    headaches: csSymptoms.filter(s => getLogSymptomId(s)?.includes('headache')).length,
+    seizures: csSymptoms.filter(s => getLogSymptomId(s)?.includes('seizure')).length,
+    visionChanges: csSymptoms.filter(s => getLogSymptomId(s)?.includes('vision')).length,
+    paralysis: csSymptoms.filter(s => getLogSymptomId(s)?.includes('paralysis')).length,
+    fatigue: csSymptoms.filter(s => getLogSymptomId(s)?.includes('fatigue')).length,
+  };
+
+  // Check severity from log data
+  let severeSeizures = false;
+  let severeParalysis = false;
+  let severeVision = false;
+
+  csSymptoms.forEach(log => {
+    const severity = log.severity || log.functionalImpact;
+    const symptomId = getLogSymptomId(log);
+
+    if (symptomId?.includes('seizure') && severity >= 4) severeSeizures = true;
+    if (symptomId?.includes('paralysis') && severity >= 3) severeParalysis = true;
+    if (symptomId?.includes('vision') && severity >= 3) severeVision = true;
+  });
+
+  evidence.push(`${csSymptoms.length} cerebrospinal syphilis symptoms logged over ${evaluationPeriodDays} days`);
+
+  // Rating determination based on neurological severity
+  if (severeSeizures || severeParalysis || severeVision ||
+      (symptomCounts.seizures >= 10 && symptomCounts.paralysis > 0)) {
+    supportedRating = 100;
+    ratingRationale.push('Severe neurological impairment documented');
+    if (severeSeizures) ratingRationale.push('Severe/uncontrolled seizures');
+    if (severeParalysis) ratingRationale.push('Significant paralysis documented');
+    if (severeVision) ratingRationale.push('Severe visual impairment');
+  } else if (symptomCounts.seizures >= 5 ||
+      (symptomCounts.paralysis >= 3 && symptomCounts.visionChanges >= 3)) {
+    supportedRating = 60;
+    ratingRationale.push('Moderately severe neurological symptoms');
+    ratingRationale.push('Frequent seizures or significant deficits documented');
+  } else if (symptomCounts.headaches >= 5 || symptomCounts.seizures >= 2 ||
+      symptomCounts.paralysis >= 1 || symptomCounts.visionChanges >= 2) {
+    supportedRating = 30;
+    ratingRationale.push('Moderate neurological symptoms');
+    ratingRationale.push('Regular symptoms affecting daily functioning');
+  } else {
+    supportedRating = 10;
+    ratingRationale.push('Minimum rating with ascertainable residuals');
+    ratingRationale.push('Mild residual symptoms consistent with cerebrospinal syphilis');
+  }
+
+  // Evidence details
+  if (symptomCounts.headaches > 0) evidence.push(`${symptomCounts.headaches} headache episodes`);
+  if (symptomCounts.seizures > 0) evidence.push(`${symptomCounts.seizures} seizure episodes`);
+  if (symptomCounts.visionChanges > 0) evidence.push(`${symptomCounts.visionChanges} vision change episodes`);
+  if (symptomCounts.paralysis > 0) evidence.push(`${symptomCounts.paralysis} paralysis/weakness episodes`);
+
+  // Gaps
+  gaps.push('Obtain CSF analysis (lumbar puncture) confirming CNS infection');
+  gaps.push('Get MRI/CT imaging of brain/spinal cord');
+  gaps.push('Document all neurological deficits in detail');
+  if (symptomCounts.seizures > 0) gaps.push('Maintain seizure diary with frequency and type');
+  if (supportedRating >= 70) gaps.push('Consider evaluation for SMC if supervision required');
+
+  return {
+    condition: 'Cerebrospinal Syphilis',
+    diagnosticCode: '8013',
+    hasData: true,
+    supportedRating,
+    ratingRationale,
+    evidence,
+    gaps,
+    metrics: {
+      totalLogs: csSymptoms.length,
+      evaluationPeriod: evaluationPeriodDays,
+      symptomCounts,
+      severeSeizures,
+      severeParalysis,
+      severeVision,
+    },
+  };
+};
+
+
+// ============================================
+// DC 8014: MENINGOVASCULAR SYPHILIS
+// ============================================
+/**
+ * Analyzes Meningovascular Syphilis logs to determine supported rating level
+ * Based on 38 CFR 4.124a, DC 8014
+ * Focuses on vascular/stroke-like symptoms
+ */
+export const analyzeMeningovascularSyphilisLogs = (logs, options = {}) => {
+  const { evaluationPeriodDays = 365 } = options;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  // Filter for meningovascular symptoms (stroke-like, vascular)
+  const mvSymptoms = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    const symptomId = getLogSymptomId(log);
+    return logDate >= cutoffDate && symptomId && (
+        symptomId.includes('meningovascular') ||
+        symptomId.includes('neurosyphilis-stroke') ||
+        (symptomId.includes('neurosyphilis') && (
+            symptomId.includes('headache') ||
+            symptomId.includes('seizure') ||
+            symptomId.includes('paralysis')
+        ))
+    );
+  });
+
+  if (mvSymptoms.length === 0) {
+    return {
+      condition: 'Meningovascular Syphilis',
+      diagnosticCode: '8014',
+      hasData: false,
+      message: 'No meningovascular syphilis symptoms logged',
+      supportedRating: null,
+      ratingRationale: [],
+      gaps: [
+        'Document stroke-like episodes (TIA or stroke symptoms)',
+        'Track headaches and neurological symptoms',
+        'Note any paralysis or weakness',
+        'Get brain MRI/CT showing vascular changes',
+        'CSF analysis confirming neurosyphilis',
+        'Neurology evaluation documenting deficits',
+      ],
+    };
+  }
+
+  const evidence = [];
+  const gaps = [];
+  let supportedRating = 10;
+  const ratingRationale = [];
+
+  // Count symptom types
+  const symptomCounts = {
+    strokeEpisodes: mvSymptoms.filter(s => getLogSymptomId(s)?.includes('stroke')).length,
+    headaches: mvSymptoms.filter(s => getLogSymptomId(s)?.includes('headache')).length,
+    seizures: mvSymptoms.filter(s => getLogSymptomId(s)?.includes('seizure')).length,
+    paralysis: mvSymptoms.filter(s => getLogSymptomId(s)?.includes('paralysis')).length,
+  };
+
+  // Check for severe strokes with permanent deficits
+  let permanentDeficits = false;
+  let recurrentStrokes = symptomCounts.strokeEpisodes >= 2;
+
+  mvSymptoms.forEach(log => {
+    const severity = log.severity || log.functionalImpact;
+    const symptomId = getLogSymptomId(log);
+
+    if (symptomId?.includes('stroke') && severity >= 3) permanentDeficits = true;
+  });
+
+  evidence.push(`${mvSymptoms.length} meningovascular syphilis symptoms logged over ${evaluationPeriodDays} days`);
+
+  // Rating determination
+  if (permanentDeficits && symptomCounts.paralysis > 0) {
+    supportedRating = 100;
+    ratingRationale.push('Severe stroke with permanent neurological deficits');
+    ratingRationale.push('Significant paralysis or cognitive impairment documented');
+  } else if (recurrentStrokes || (symptomCounts.strokeEpisodes > 0 && symptomCounts.paralysis > 0)) {
+    supportedRating = 60;
+    ratingRationale.push('Recurrent stroke-like episodes documented');
+    ratingRationale.push('Significant neurological deficits present');
+  } else if (symptomCounts.strokeEpisodes > 0 || symptomCounts.headaches >= 5) {
+    supportedRating = 30;
+    ratingRationale.push('Moderate symptoms documented');
+    ratingRationale.push('History of vascular events or frequent symptoms');
+  } else {
+    supportedRating = 10;
+    ratingRationale.push('Minimum rating with ascertainable residuals');
+  }
+
+  // Evidence details
+  if (symptomCounts.strokeEpisodes > 0) evidence.push(`${symptomCounts.strokeEpisodes} stroke-like episodes`);
+  if (symptomCounts.headaches > 0) evidence.push(`${symptomCounts.headaches} headache episodes`);
+  if (symptomCounts.paralysis > 0) evidence.push(`${symptomCounts.paralysis} paralysis/weakness episodes`);
+
+  // Gaps
+  gaps.push('Brain MRI/CT showing vascular changes or stroke');
+  gaps.push('CSF analysis confirming neurosyphilis');
+  gaps.push('Neurology evaluation documenting all deficits');
+  gaps.push('Document any permanent deficits from stroke events');
+  if (supportedRating >= 70) gaps.push('Consider evaluation for SMC');
+
+  return {
+    condition: 'Meningovascular Syphilis',
+    diagnosticCode: '8014',
+    hasData: true,
+    supportedRating,
+    ratingRationale,
+    evidence,
+    gaps,
+    metrics: {
+      totalLogs: mvSymptoms.length,
+      evaluationPeriod: evaluationPeriodDays,
+      symptomCounts,
+      permanentDeficits,
+      recurrentStrokes,
+    },
+  };
+};
+
+
+// ============================================
+// DC 8015: TABES DORSALIS
+// ============================================
+/**
+ * Analyzes Tabes Dorsalis logs to determine supported rating level
+ * Based on 38 CFR 4.124a, DC 8015
+ * Minimum rating is 30% with ascertainable residuals
+ */
+export const analyzeTabesDorsalisLogs = (logs, options = {}) => {
+  const { evaluationPeriodDays = 365 } = options;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  // Filter for tabes dorsalis symptoms
+  const tabesSymptoms = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    const symptomId = getLogSymptomId(log);
+    return logDate >= cutoffDate && symptomId && symptomId.includes('tabes');
+  });
+
+  if (tabesSymptoms.length === 0) {
+    return {
+      condition: 'Tabes Dorsalis',
+      diagnosticCode: '8015',
+      hasData: false,
+      message: 'No tabes dorsalis symptoms logged',
+      supportedRating: null,
+      ratingRationale: [],
+      gaps: [
+        'Document "lightning pains" (brief, severe, stabbing pains) - KEY VA TERM',
+        'Track gait disturbance/ataxia severity',
+        'Note Romberg sign if positive (unsteady with eyes closed)',
+        'Document loss of position sense (proprioception)',
+        'Record any bladder or bowel dysfunction',
+        'Note Charcot joints if present (joint destruction)',
+        'Get neurology evaluation documenting characteristic findings',
+      ],
+    };
+  }
+
+  const evidence = [];
+  const gaps = [];
+  let supportedRating = 30; // Minimum rating for tabes dorsalis
+  const ratingRationale = [];
+
+  // Count symptom types
+  const symptomCounts = {
+    lightningPains: tabesSymptoms.filter(s => getLogSymptomId(s)?.includes('lightning')).length,
+    ataxia: tabesSymptoms.filter(s => getLogSymptomId(s)?.includes('ataxia')).length,
+    romberg: tabesSymptoms.filter(s => getLogSymptomId(s)?.includes('romberg')).length,
+    positionSenseLoss: tabesSymptoms.filter(s => getLogSymptomId(s)?.includes('position-sense')).length,
+    absentReflexes: tabesSymptoms.filter(s => getLogSymptomId(s)?.includes('absent-reflex')).length,
+    charcotJoint: tabesSymptoms.filter(s => getLogSymptomId(s)?.includes('charcot')).length,
+    argyllRobertson: tabesSymptoms.filter(s => getLogSymptomId(s)?.includes('argyll')).length,
+    bladderDysfunction: tabesSymptoms.filter(s => getLogSymptomId(s)?.includes('bladder')).length,
+    bowelDysfunction: tabesSymptoms.filter(s => getLogSymptomId(s)?.includes('bowel')).length,
+  };
+
+  // Check for severe symptoms
+  let requiresAssistance = false;
+  let severePain = false;
+  let completeSensoryLoss = false;
+  let severeBladderBowel = false;
+
+  tabesSymptoms.forEach(log => {
+    const severity = log.severity || log.functionalImpact;
+    const symptomId = getLogSymptomId(log);
+
+    if (symptomId?.includes('ataxia') && severity >= 4) requiresAssistance = true;
+    if (symptomId?.includes('lightning') && severity >= 4) severePain = true;
+    if (symptomId?.includes('position-sense') && severity >= 3) completeSensoryLoss = true;
+    if ((symptomId?.includes('bladder') || symptomId?.includes('bowel')) && severity >= 3) severeBladderBowel = true;
+  });
+
+  evidence.push(`${tabesSymptoms.length} tabes dorsalis symptoms logged over ${evaluationPeriodDays} days`);
+
+  // Rating determination - Note: Minimum is 30% for tabes dorsalis
+  if (requiresAssistance || (severePain && severeBladderBowel) ||
+      (completeSensoryLoss && symptomCounts.charcotJoint > 0)) {
+    supportedRating = 100;
+    ratingRationale.push('Severe impairment documented');
+    if (requiresAssistance) ratingRationale.push('Cannot walk without assistance');
+    if (severePain) ratingRationale.push('Severe lightning pains requiring constant medication');
+    if (completeSensoryLoss) ratingRationale.push('Complete sensory loss in lower extremities');
+    if (severeBladderBowel) ratingRationale.push('Severe bladder/bowel dysfunction');
+    if (symptomCounts.charcotJoint > 0) ratingRationale.push('Charcot joint (neuropathic arthropathy) documented');
+  } else if ((symptomCounts.lightningPains >= 5 && symptomCounts.ataxia >= 3) ||
+      (symptomCounts.bladderDysfunction > 0 && symptomCounts.ataxia > 0) ||
+      symptomCounts.charcotJoint > 0) {
+    supportedRating = 60;
+    ratingRationale.push('Moderately severe symptoms documented');
+    ratingRationale.push('Significant gait disturbance and/or frequent severe pain');
+    if (symptomCounts.bladderDysfunction > 0) ratingRationale.push('Bladder dysfunction present');
+  } else {
+    supportedRating = 30;
+    ratingRationale.push('Minimum rating (30%) for tabes dorsalis with ascertainable residuals');
+    ratingRationale.push('Documented symptoms consistent with tabes dorsalis');
+  }
+
+  // Evidence details
+  if (symptomCounts.lightningPains > 0) evidence.push(`${symptomCounts.lightningPains} lightning pain episodes (KEY finding)`);
+  if (symptomCounts.ataxia > 0) evidence.push(`${symptomCounts.ataxia} ataxia/gait disturbance entries`);
+  if (symptomCounts.romberg > 0) evidence.push('Positive Romberg sign documented');
+  if (symptomCounts.positionSenseLoss > 0) evidence.push('Loss of position sense documented');
+  if (symptomCounts.charcotJoint > 0) evidence.push('Charcot joint documented');
+  if (symptomCounts.bladderDysfunction > 0) evidence.push(`${symptomCounts.bladderDysfunction} bladder dysfunction entries`);
+
+  // Gaps
+  gaps.push('Use term "lightning pains" in documentation - recognized VA terminology');
+  gaps.push('Get formal gait analysis documenting ataxia severity');
+  gaps.push('Neurology evaluation with sensory examination');
+  if (symptomCounts.bladderDysfunction > 0 || symptomCounts.bowelDysfunction > 0) {
+    gaps.push('Urology evaluation for bladder dysfunction');
+    gaps.push('Consider separate rating under DC 7542 (neurogenic bladder) if applicable');
+  }
+  if (supportedRating >= 60) gaps.push('Document assistive device requirements (cane, walker)');
+  if (supportedRating >= 100) gaps.push('Consider Aid & Attendance (SMC-L) evaluation');
+
+  return {
+    condition: 'Tabes Dorsalis',
+    diagnosticCode: '8015',
+    hasData: true,
+    supportedRating,
+    ratingRationale,
+    evidence,
+    gaps,
+    metrics: {
+      totalLogs: tabesSymptoms.length,
+      evaluationPeriod: evaluationPeriodDays,
+      symptomCounts,
+      requiresAssistance,
+      severePain,
+      completeSensoryLoss,
+      severeBladderBowel,
+    },
+    note: 'Tabes dorsalis has a MINIMUM rating of 30% when ascertainable residuals are present.',
+  };
+};
+
+
+// ============================================
+// DC 9301: SYPHILITIC DEMENTIA
+// ============================================
+/**
+ * Analyzes Syphilitic Dementia logs (General Paresis)
+ * Based on 38 CFR 4.130, DC 9301
+ * Uses General Rating Formula for Mental Disorders
+ */
+export const analyzeSyphiliticDementiaLogs = (logs, options = {}) => {
+  const { evaluationPeriodDays = 365 } = options;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  // Filter for syphilitic dementia symptoms
+  const dementiaSymptoms = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    const symptomId = getLogSymptomId(log);
+    return logDate >= cutoffDate && symptomId && (
+        symptomId.includes('syphilis-memory') ||
+        symptomId.includes('syphilis-cognitive') ||
+        symptomId.includes('syphilis-personality') ||
+        symptomId.includes('syphilis-confusion') ||
+        symptomId.includes('syphilis-psychotic') ||
+        symptomId.includes('syphilis-judgment') ||
+        symptomId.includes('syphilitic-dementia')
+    );
+  });
+
+  if (dementiaSymptoms.length === 0) {
+    return {
+      condition: 'Dementia due to CNS Syphilis',
+      diagnosticCode: '9301',
+      hasData: false,
+      message: 'No syphilitic dementia symptoms logged',
+      supportedRating: null,
+      ratingRationale: [],
+      gaps: [
+        'Document memory problems with specific examples',
+        'Track confusion and disorientation episodes',
+        'Note personality or behavioral changes',
+        'Record impact on daily activities and independence',
+        'Get neuropsychological testing for objective cognitive measures',
+        'CSF analysis confirming neurosyphilis if not already done',
+      ],
+    };
+  }
+
+  const evidence = [];
+  const gaps = [];
+  let supportedRating = 10;
+  const ratingRationale = [];
+
+  // Count symptom types
+  const symptomCounts = {
+    memoryLoss: dementiaSymptoms.filter(s => getLogSymptomId(s)?.includes('memory')).length,
+    cognitivDecline: dementiaSymptoms.filter(s => getLogSymptomId(s)?.includes('cognitive')).length,
+    personalityChange: dementiaSymptoms.filter(s => getLogSymptomId(s)?.includes('personality')).length,
+    confusion: dementiaSymptoms.filter(s => getLogSymptomId(s)?.includes('confusion')).length,
+    psychotic: dementiaSymptoms.filter(s => getLogSymptomId(s)?.includes('psychotic')).length,
+    judgmentImpaired: dementiaSymptoms.filter(s => getLogSymptomId(s)?.includes('judgment')).length,
+  };
+
+  // Check for severe indicators
+  let cannotRecognizeFamily = false;
+  let cannotCareForSelf = false;
+  let persistentPsychosis = false;
+
+  dementiaSymptoms.forEach(log => {
+    const severity = log.severity || log.functionalImpact;
+    const symptomId = getLogSymptomId(log);
+
+    if (symptomId?.includes('memory') && severity >= 4) cannotRecognizeFamily = true;
+    if (symptomId?.includes('cognitive') && severity >= 4) cannotCareForSelf = true;
+    if (symptomId?.includes('psychotic') && severity >= 3) persistentPsychosis = true;
+  });
+
+  evidence.push(`${dementiaSymptoms.length} syphilitic dementia symptoms logged over ${evaluationPeriodDays} days`);
+
+  // Calculate severity indicators
+  const severeIndicators = symptomCounts.psychotic + (cannotRecognizeFamily ? 2 : 0) + (cannotCareForSelf ? 2 : 0);
+  const moderateIndicators = symptomCounts.confusion + symptomCounts.judgmentImpaired + symptomCounts.personalityChange;
+  const mildIndicators = symptomCounts.memoryLoss + symptomCounts.cognitivDecline;
+
+  // Rating based on General Rating Formula for Mental Disorders
+  if (cannotCareForSelf || cannotRecognizeFamily || (persistentPsychosis && severeIndicators >= 3)) {
+    supportedRating = 100;
+    ratingRationale.push('Total occupational and social impairment');
+    if (cannotCareForSelf) ratingRationale.push('Unable to perform activities of daily living');
+    if (cannotRecognizeFamily) ratingRationale.push('Memory loss for names of close relatives');
+    if (persistentPsychosis) ratingRationale.push('Persistent delusions or hallucinations');
+    gaps.push('Apply for Aid & Attendance (SMC-L) - NO 100% requirement needed');
+  } else if (severeIndicators > 0 || (moderateIndicators >= 3 && symptomCounts.confusion > 0)) {
+    supportedRating = 70;
+    ratingRationale.push('Deficiencies in most areas');
+    ratingRationale.push('Spatial disorientation or neglect of personal hygiene likely');
+    ratingRationale.push('Inability to establish and maintain effective relationships');
+  } else if (moderateIndicators >= 2 || (mildIndicators >= 3 && moderateIndicators >= 1)) {
+    supportedRating = 50;
+    ratingRationale.push('Reduced reliability and productivity');
+    ratingRationale.push('Difficulty understanding complex commands');
+    ratingRationale.push('Impairment of short and long-term memory');
+  } else if (mildIndicators >= 2 || moderateIndicators >= 1) {
+    supportedRating = 30;
+    ratingRationale.push('Occasional decrease in work efficiency');
+    ratingRationale.push('Mild memory loss (forgetting names, directions)');
+  } else {
+    supportedRating = 10;
+    ratingRationale.push('Mild or transient symptoms');
+    ratingRationale.push('Symptoms controlled by continuous medication');
+  }
+
+  // Evidence details
+  if (symptomCounts.memoryLoss > 0) evidence.push(`${symptomCounts.memoryLoss} memory loss episodes`);
+  if (symptomCounts.confusion > 0) evidence.push(`${symptomCounts.confusion} confusion/disorientation episodes`);
+  if (symptomCounts.personalityChange > 0) evidence.push(`${symptomCounts.personalityChange} personality change entries`);
+  if (symptomCounts.psychotic > 0) evidence.push(`${symptomCounts.psychotic} psychotic symptom episodes`);
+
+  // Gaps
+  gaps.push('Neuropsychological testing for objective cognitive assessment');
+  gaps.push('Buddy statements from family documenting changes noticed');
+  gaps.push('Document impact on ability to work');
+  gaps.push('Track ability to handle finances, medications, daily tasks');
+  if (supportedRating >= 70) {
+    gaps.push('Document caregiver requirements');
+    gaps.push('Consider SMC-L (Aid & Attendance) - NEEDS-BASED, no % requirement');
+  }
+
+  return {
+    condition: 'Dementia due to CNS Syphilis',
+    diagnosticCode: '9301',
+    hasData: true,
+    supportedRating,
+    ratingRationale,
+    evidence,
+    gaps,
+    metrics: {
+      totalLogs: dementiaSymptoms.length,
+      evaluationPeriod: evaluationPeriodDays,
+      symptomCounts,
+      cannotRecognizeFamily,
+      cannotCareForSelf,
+      persistentPsychosis,
+    },
+  };
+};
+
+
+// ============================================
+// DC 7004: SYPHILITIC HEART DISEASE
+// ============================================
+/**
+ * Analyzes Syphilitic Heart Disease logs
+ * Based on 38 CFR 4.104, DC 7004
+ * Uses General Rating Formula for Diseases of the Heart (METs-based)
+ */
+export const analyzeSyphiliticHeartDiseaseLogs = (logs, measurements = [], options = {}) => {
+  const { evaluationPeriodDays = 365 } = options;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+
+  // Filter for syphilitic heart symptoms
+  const heartSymptoms = logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    const symptomId = getLogSymptomId(log);
+    return logDate >= cutoffDate && symptomId && symptomId.includes('syphilitic-heart');
+  });
+
+  // Also check for METs and EF measurements
+  const metsReadings = Array.isArray(measurements) ? measurements.filter(m =>
+      m.measurementType === 'mets-capacity' && new Date(m.timestamp) >= cutoffDate
+  ) : [];
+  const efReadings = Array.isArray(measurements) ? measurements.filter(m =>
+      m.measurementType === 'ejection-fraction' && new Date(m.timestamp) >= cutoffDate
+  ) : [];
+
+  if (heartSymptoms.length === 0 && metsReadings.length === 0 && efReadings.length === 0) {
+    return {
+      condition: 'Syphilitic Heart Disease',
+      diagnosticCode: '7004',
+      hasData: false,
+      message: 'No syphilitic heart disease symptoms logged',
+      supportedRating: null,
+      ratingRationale: [],
+      gaps: [
+        'Document cardiac symptoms: chest pain, shortness of breath, fatigue',
+        'Get echocardiogram to measure ejection fraction',
+        'Get stress test with METs capacity measurement',
+        'Track CHF episodes if any',
+        'Cardiology evaluation establishing nexus to syphilis',
+        'Note aortic involvement (aortitis, aortic regurgitation)',
+      ],
+    };
+  }
+
+  const evidence = [];
+  const gaps = [];
+  let supportedRating = 10;
+  const ratingRationale = [];
+
+  // Count symptom types
+  const symptomCounts = {
+    chestPain: heartSymptoms.filter(s => getLogSymptomId(s)?.includes('chest-pain')).length,
+    dyspnea: heartSymptoms.filter(s => getLogSymptomId(s)?.includes('dyspnea')).length,
+    fatigue: heartSymptoms.filter(s => getLogSymptomId(s)?.includes('fatigue')).length,
+    palpitations: heartSymptoms.filter(s => getLogSymptomId(s)?.includes('palpitations')).length,
+    chf: heartSymptoms.filter(s => getLogSymptomId(s)?.includes('chf')).length,
+    dizziness: heartSymptoms.filter(s => getLogSymptomId(s)?.includes('dizziness')).length,
+  };
+
+  // Get METs and EF values
+  let lowestMets = null;
+  let lowestEF = null;
+  let chronicCHF = symptomCounts.chf >= 3; // 3+ CHF episodes suggests chronic
+
+  if (metsReadings.length > 0) {
+    lowestMets = Math.min(...metsReadings.map(m => m.value));
+  }
+  if (efReadings.length > 0) {
+    lowestEF = Math.min(...efReadings.map(m => m.value));
+  }
+
+  evidence.push(`${heartSymptoms.length} cardiac symptoms logged over ${evaluationPeriodDays} days`);
+
+  // Rating based on General Rating Formula for Heart Disease
+  // 100%: Chronic CHF, OR METs ≤3, OR EF <30%
+  // 60%: >1 CHF episode/year, OR METs 3-5, OR EF 30-50%
+  // 30%: METs 5-7, OR cardiac hypertrophy/dilatation on testing
+  // 10%: METs 7-10, OR continuous medication
+
+  if (chronicCHF || (lowestMets !== null && lowestMets <= 3) || (lowestEF !== null && lowestEF < 30)) {
+    supportedRating = 100;
+    ratingRationale.push('Meets criteria for 100% rating');
+    if (chronicCHF) ratingRationale.push('Chronic congestive heart failure documented');
+    if (lowestMets !== null && lowestMets <= 3) ratingRationale.push(`METs capacity: ${lowestMets} (≤3 METs)`);
+    if (lowestEF !== null && lowestEF < 30) ratingRationale.push(`Ejection fraction: ${lowestEF}% (<30%)`);
+  } else if (symptomCounts.chf >= 1 || (lowestMets !== null && lowestMets <= 5) ||
+      (lowestEF !== null && lowestEF <= 50)) {
+    supportedRating = 60;
+    ratingRationale.push('Meets criteria for 60% rating');
+    if (symptomCounts.chf >= 1) ratingRationale.push(`${symptomCounts.chf} CHF episode(s) documented`);
+    if (lowestMets !== null && lowestMets <= 5) ratingRationale.push(`METs capacity: ${lowestMets} (3-5 METs range)`);
+    if (lowestEF !== null && lowestEF <= 50) ratingRationale.push(`Ejection fraction: ${lowestEF}% (30-50% range)`);
+  } else if ((lowestMets !== null && lowestMets <= 7) ||
+      (symptomCounts.dyspnea >= 5 && symptomCounts.fatigue >= 5)) {
+    supportedRating = 30;
+    ratingRationale.push('Meets criteria for 30% rating');
+    if (lowestMets !== null) ratingRationale.push(`METs capacity: ${lowestMets} (5-7 METs range)`);
+    ratingRationale.push('Symptoms with moderate exertion documented');
+  } else if (heartSymptoms.length > 0) {
+    supportedRating = 10;
+    ratingRationale.push('Meets criteria for 10% rating');
+    ratingRationale.push('Symptoms with greater than 7 METs OR continuous medication required');
+  }
+
+  // Evidence details
+  if (symptomCounts.chestPain > 0) evidence.push(`${symptomCounts.chestPain} chest pain episodes`);
+  if (symptomCounts.dyspnea > 0) evidence.push(`${symptomCounts.dyspnea} shortness of breath episodes`);
+  if (symptomCounts.chf > 0) evidence.push(`${symptomCounts.chf} CHF episodes`);
+  if (lowestMets !== null) evidence.push(`Lowest METs: ${lowestMets}`);
+  if (lowestEF !== null) evidence.push(`Lowest EF: ${lowestEF}%`);
+
+  // Gaps
+  if (metsReadings.length === 0) gaps.push('Get stress test with METs capacity measurement');
+  if (efReadings.length === 0) gaps.push('Get echocardiogram with ejection fraction measurement');
+  gaps.push('Cardiology evaluation establishing nexus between heart disease and syphilis');
+  gaps.push('Document aortitis or aortic regurgitation if present (classic syphilitic findings)');
+  if (supportedRating >= 60) gaps.push('Track all hospitalizations for cardiac events');
+  if (symptomCounts.chf > 0) gaps.push('Document all CHF episodes with dates');
+
+  return {
+    condition: 'Syphilitic Heart Disease',
+    diagnosticCode: '7004',
+    hasData: true,
+    supportedRating,
+    ratingRationale,
+    evidence,
+    gaps,
+    metrics: {
+      totalLogs: heartSymptoms.length,
+      evaluationPeriod: evaluationPeriodDays,
+      symptomCounts,
+      lowestMets,
+      lowestEF,
+      chronicCHF,
+      metsReadingsCount: metsReadings.length,
+      efReadingsCount: efReadings.length,
+    },
+  };
+};
+
 
 // ============================================
 // HELPER FUNCTIONS

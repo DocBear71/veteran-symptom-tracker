@@ -1473,7 +1473,7 @@ const SHOULDER_DESCRIPTION = {
     'Major/dominant arm': 'Your dominant hand side - rated higher because more functional impact',
     'Minor arm': 'Non-dominant side - rated slightly lower',
     'Shoulder level': '90 degrees - arm straight out to side, parallel to ground',
-    '25° from side': 'Severe limitation - arm can barely move away from body',
+    '25&deg; from side': 'Severe limitation - arm can barely move away from body',
     'Ankylosis': 'Frozen shoulder - joint completely immobile - highest ratings',
     'Impingement': 'Soft tissue caught in joint - causes pain with certain movements',
   },
@@ -4264,7 +4264,7 @@ const SARCOIDOSIS_DESCRIPTION = {
   keyTerms: {
     'Granulomas': 'Clusters of immune cells - hallmark of sarcoidosis',
     'Hilar adenopathy': 'Enlarged lymph nodes in chest - common finding',
-    'Löfgren syndrome': 'Acute sarcoidosis with good prognosis',
+    'L&Ouml;fgren syndrome': 'Acute sarcoidosis with good prognosis',
     'Extra-pulmonary': 'Sarcoidosis affecting organs other than lungs',
   },
 };
@@ -6638,7 +6638,7 @@ const CAMPYLOBACTER_DESCRIPTION = {
   keyTerms: {
     'Campylobacter': 'Bacterial infection causing gastroenteritis',
     'Reactive arthritis': 'Joint inflammation triggered by infection',
-    'Guillain-Barré syndrome': 'Nerve damage that can follow campylobacter',
+    'Guillain-Barr&#233; syndrome': 'Nerve damage that can follow campylobacter',
     'Post-infectious IBS': 'IBS developing after GI infection',
   },
 };
@@ -9558,6 +9558,367 @@ const EPILEPSY_DESCRIPTION = {
   },
 };
 
+// ============================================
+// STD/SYPHILIS CONDITION DESCRIPTIONS
+// For addition to conditionDescriptions.js
+// ============================================
+
+// =============================================================================
+// SYPHILIS (BASE) - DC 6310
+// =============================================================================
+export const SYPHILIS_DESCRIPTION = {
+  diagnosticCode: '6310',
+  conditionName: 'Syphilis and Other Treponemal Infections',
+
+  evidenceLookingFor: [
+    'Positive syphilis serology (RPR, VDRL, or treponemal-specific test)',
+    'In-service diagnosis or treatment records',
+    'Documentation of disease stage at diagnosis',
+    'Treatment records (antibiotic therapy)',
+    'Follow-up testing showing titer levels',
+    'Evaluation for complications (neurological, cardiac, ocular)',
+    'CSF analysis if neurosyphilis suspected',
+    'Cardiology evaluation if cardiac symptoms present',
+  ],
+
+  ratingLevelMeanings: [
+    {
+      percent: 0,
+      meaning: 'Inactive/treated syphilis without complications',
+      realWorld: 'You had syphilis that was treated. No active disease and no residual complications. Establishes service connection for potential future complications.',
+    },
+  ],
+
+  documentationTips: [
+    'Keep all STI testing records from service',
+    'Document any neurological symptoms (headaches, vision changes, gait problems)',
+    'Document any cardiac symptoms (chest pain, shortness of breath)',
+    'Track cognitive changes or memory problems',
+    'Note any unusual pains, especially "lightning" stabbing pains',
+    'Get evaluated by neurology if ANY neurological symptoms',
+    'Get evaluated by cardiology if ANY cardiac symptoms',
+    'Request CSF analysis if neurosyphilis is suspected',
+  ],
+
+  keyTerms: {
+    'Treponema pallidum': 'The bacterium that causes syphilis',
+    'RPR/VDRL': 'Screening blood tests for syphilis',
+    'Treponemal test': 'Confirmatory test (FTA-ABS, TP-PA)',
+    'Tertiary syphilis': 'Late-stage syphilis affecting organs',
+    'Neurosyphilis': 'Syphilis infection of the nervous system',
+    'Latent syphilis': 'Infected but without symptoms',
+  },
+};
+
+// =============================================================================
+// CEREBROSPINAL SYPHILIS - DC 8013
+// =============================================================================
+export const CEREBROSPINAL_SYPHILIS_DESCRIPTION = {
+  diagnosticCode: '8013',
+  conditionName: 'Cerebrospinal Syphilis',
+
+  evidenceLookingFor: [
+    'Positive CSF-VDRL or CSF treponemal test',
+    'Lumbar puncture results',
+    'MRI/CT showing CNS involvement',
+    'Neurology evaluation documenting deficits',
+    'Documentation of seizures if present',
+    'Vision evaluation (ophthalmology)',
+    'Cognitive/neuropsychological testing',
+    'Treatment records (IV penicillin)',
+  ],
+
+  ratingLevelMeanings: [
+    {
+      percent: 10,
+      meaning: 'Minimum rating with ascertainable residuals',
+      realWorld: 'Mild residual symptoms like occasional headaches, fatigue, or minor cognitive issues that are clearly from the infection.',
+    },
+    {
+      percent: 30,
+      meaning: 'Moderate neurological symptoms',
+      realWorld: 'Regular symptoms affecting daily life - frequent headaches, controlled seizures, or mild cognitive impairment.',
+    },
+    {
+      percent: 60,
+      meaning: 'Moderately severe symptoms',
+      realWorld: 'Significant neurological problems - frequent seizures despite medication, notable paralysis, or moderate cognitive decline.',
+    },
+    {
+      percent: 100,
+      meaning: 'Severe neurological impairment',
+      realWorld: 'Major neurological devastation - uncontrolled seizures, severe paralysis, blindness, or severe dementia.',
+    },
+  ],
+
+  documentationTips: [
+    'Get lumbar puncture (spinal tap) to confirm CNS infection',
+    'Document ALL neurological symptoms in detail',
+    'Keep seizure diary if you have convulsions',
+    'Get formal neuropsychological testing for cognitive symptoms',
+    'Track vision changes with ophthalmology',
+    'Document how symptoms affect work and daily activities',
+    'Note any paralysis or weakness with specific locations',
+    'Keep records of all treatments and their effectiveness',
+  ],
+
+  keyTerms: {
+    'CSF': 'Cerebrospinal fluid - tested via lumbar puncture',
+    'CNS': 'Central nervous system (brain and spinal cord)',
+    'General paresis': 'Progressive dementia from neurosyphilis',
+    'Meningitis': 'Infection of brain/spinal cord coverings',
+  },
+};
+
+// =============================================================================
+// MENINGOVASCULAR SYPHILIS - DC 8014
+// =============================================================================
+export const MENINGOVASCULAR_SYPHILIS_DESCRIPTION = {
+  diagnosticCode: '8014',
+  conditionName: 'Meningovascular Syphilis',
+
+  evidenceLookingFor: [
+    'Positive CSF testing',
+    'MRI/CT showing vascular changes or stroke',
+    'Angiography showing vessel inflammation',
+    'Documentation of stroke-like episodes',
+    'Neurology evaluation',
+    'Timeline of symptom progression',
+    'Treatment records',
+    'Functional assessment',
+  ],
+
+  ratingLevelMeanings: [
+    {
+      percent: 10,
+      meaning: 'Minimal residuals',
+      realWorld: 'Minor lingering symptoms - mild headaches or fatigue after treatment.',
+    },
+    {
+      percent: 30,
+      meaning: 'Moderate symptoms',
+      realWorld: 'Noticeable deficits that affect daily life but are manageable.',
+    },
+    {
+      percent: 60,
+      meaning: 'Moderately severe symptoms',
+      realWorld: 'Recurrent stroke-like episodes or significant permanent deficits from previous strokes.',
+    },
+    {
+      percent: 100,
+      meaning: 'Severe impairment',
+      realWorld: 'Major stroke with permanent severe deficits - paralysis, severe cognitive impairment, or blindness.',
+    },
+  ],
+
+  documentationTips: [
+    'Document any "mini-stroke" or TIA episodes',
+    'Get brain imaging (MRI/CT) to show vascular changes',
+    'Track ALL neurological symptoms',
+    'Note recovery timeline after any stroke-like episodes',
+    'Document permanent deficits from past strokes',
+    'Keep records of any hospitalization',
+    'Track impact on work and daily activities',
+  ],
+
+  keyTerms: {
+    'Meningovascular': 'Affecting brain coverings and blood vessels',
+    'Vasculitis': 'Inflammation of blood vessels',
+    'TIA': 'Transient ischemic attack (mini-stroke)',
+    'Cerebrovascular accident': 'Stroke',
+  },
+};
+
+// =============================================================================
+// TABES DORSALIS - DC 8015
+// =============================================================================
+export const TABES_DORSALIS_DESCRIPTION = {
+  diagnosticCode: '8015',
+  conditionName: 'Tabes Dorsalis',
+
+  evidenceLookingFor: [
+    'Positive syphilis serology with neurological symptoms',
+    'CSF analysis (may be positive or negative in burned-out tabes)',
+    'Neurological examination documenting characteristic findings',
+    'Gait analysis showing ataxia',
+    'Sensory examination showing loss of position sense',
+    'Documentation of lightning pains',
+    'Bladder/bowel function assessment',
+    'X-rays showing Charcot joints if present',
+  ],
+
+  ratingLevelMeanings: [
+    {
+      percent: 30,
+      meaning: 'Moderate symptoms (minimum rating)',
+      realWorld: 'You have noticeable gait problems, occasional lightning pains, or decreased sensation. You can still walk but have to concentrate. This is the MINIMUM rating for tabes dorsalis.',
+    },
+    {
+      percent: 60,
+      meaning: 'Moderately severe symptoms',
+      realWorld: 'Significant gait disturbance requiring a cane or walker. Frequent severe lightning pains. Marked sensory loss. May have bladder or bowel issues.',
+    },
+    {
+      percent: 100,
+      meaning: 'Severe impairment',
+      realWorld: 'Cannot walk without assistance. Constant severe lightning pains requiring strong medication. Complete sensory loss in legs. Severe bladder/bowel dysfunction or Charcot joints.',
+    },
+  ],
+
+  documentationTips: [
+    'ALWAYS document "lightning pains" using that exact VA term',
+    'Describe gait problems in detail - do you need assistance?',
+    'Note if you have positive Romberg sign (unsteady with eyes closed)',
+    'Document any falls due to balance problems',
+    'Track bladder issues (urgency, hesitancy, incontinence)',
+    'Track bowel issues if present',
+    'Note any joint problems (Charcot joints)',
+    'Document impact on ability to work and perform daily activities',
+    'Get formal gait analysis if possible',
+  ],
+
+  keyTerms: {
+    'Lightning pains': 'Brief, severe, shooting/stabbing pains - THE key symptom',
+    'Ataxia': 'Uncoordinated, unsteady gait',
+    'Romberg sign': 'Falling/swaying when standing with eyes closed',
+    'Proprioception': 'Sense of body position - lost in tabes',
+    'Charcot joint': 'Joint destruction from loss of protective sensation',
+    'Dorsal columns': 'Spinal cord pathways damaged in tabes',
+  },
+};
+
+// =============================================================================
+// SYPHILITIC DEMENTIA - DC 9301
+// =============================================================================
+export const SYPHILITIC_DEMENTIA_DESCRIPTION = {
+  diagnosticCode: '9301',
+  conditionName: 'Dementia Associated with CNS Syphilis (General Paresis)',
+
+  evidenceLookingFor: [
+    'Positive syphilis serology',
+    'CSF analysis showing infection',
+    'Neuropsychological testing documenting cognitive decline',
+    'Psychiatric evaluation',
+    'Brain imaging (MRI/CT)',
+    'Documentation of functional impairment',
+    'Timeline showing progressive decline',
+    'Witness statements about behavioral changes',
+  ],
+
+  ratingLevelMeanings: [
+    {
+      percent: 0,
+      meaning: 'Diagnosed but no symptoms',
+      realWorld: 'History of neurosyphilis but no current cognitive or psychiatric symptoms.',
+    },
+    {
+      percent: 10,
+      meaning: 'Mild symptoms controlled by medication',
+      realWorld: 'Minor symptoms that are well-controlled. Minimal impact on work or social life.',
+    },
+    {
+      percent: 30,
+      meaning: 'Occasional decrease in work efficiency',
+      realWorld: 'Depressed mood, mild memory problems, or sleep issues. Can still work but with some difficulty.',
+    },
+    {
+      percent: 50,
+      meaning: 'Reduced reliability and productivity',
+      realWorld: 'Significant memory problems, difficulty understanding complex tasks, mood disturbances. Work performance notably affected.',
+    },
+    {
+      percent: 70,
+      meaning: 'Deficiencies in most areas',
+      realWorld: 'Severe memory and cognitive problems. May have confusion, poor hygiene, or difficulty with relationships. Cannot work most jobs.',
+    },
+    {
+      percent: 100,
+      meaning: 'Total occupational and social impairment',
+      realWorld: 'Severe dementia. Cannot care for self. May not recognize family. Needs constant supervision.',
+    },
+  ],
+
+  documentationTips: [
+    'Get formal neuropsychological testing',
+    'Document memory problems with specific examples',
+    'Have family/friends write buddy statements about changes they\'ve noticed',
+    'Track personality or behavioral changes',
+    'Document ability to handle finances, medications, daily tasks',
+    'Note any hallucinations or delusions',
+    'Keep psychiatric treatment records',
+    'Document impact on work - why you can\'t work or struggle to work',
+  ],
+
+  keyTerms: {
+    'General paresis': 'Progressive dementia from neurosyphilis - same as DC 9301',
+    'Dementia paralytica': 'Another name for syphilitic dementia',
+    'Cognitive decline': 'Worsening memory, reasoning, and thinking',
+    'Executive function': 'Planning, organizing, decision-making abilities',
+  },
+};
+
+// =============================================================================
+// SYPHILITIC HEART DISEASE - DC 7004
+// =============================================================================
+export const SYPHILITIC_HEART_DISEASE_DESCRIPTION = {
+  diagnosticCode: '7004',
+  conditionName: 'Syphilitic Heart Disease',
+
+  evidenceLookingFor: [
+    'Echocardiogram showing aortic involvement or valve disease',
+    'CT/MRI angiography showing aortitis',
+    'Positive syphilis serology with cardiac findings',
+    'Exercise stress test with METs measurement',
+    'Ejection fraction measurement',
+    'Documentation of CHF episodes',
+    'Cardiology evaluation establishing nexus to syphilis',
+    'Treatment records',
+  ],
+
+  ratingLevelMeanings: [
+    {
+      percent: 10,
+      meaning: 'Workload 7-10 METs causes symptoms, or continuous medication',
+      realWorld: 'You have symptoms (shortness of breath, fatigue, chest pain) with moderate activity like climbing stairs. Or you need daily medication to control the condition.',
+    },
+    {
+      percent: 30,
+      meaning: 'Workload 5-7 METs causes symptoms, or cardiac changes on testing',
+      realWorld: 'Symptoms with routine activities like walking briskly. Tests show your heart is enlarged or working harder than normal.',
+    },
+    {
+      percent: 60,
+      meaning: 'Workload 3-5 METs causes symptoms, or EF 30-50%, or CHF episodes',
+      realWorld: 'Symptoms with light activity like slow walking or light housework. Your heart is pumping less efficiently. You may have had heart failure episodes.',
+    },
+    {
+      percent: 100,
+      meaning: 'Chronic CHF, or workload ≤3 METs, or EF <30%',
+      realWorld: 'Severe heart disease. Symptoms at rest or minimal activity. Chronic heart failure. Your heart pumps very poorly. May need assistance with daily activities.',
+    },
+  ],
+
+  documentationTips: [
+    'Get echocardiogram to measure ejection fraction',
+    'Get stress test with METs measurement',
+    'Document ALL symptoms: chest pain, shortness of breath, fatigue, dizziness',
+    'Track CHF episodes - note dates, hospitalizations',
+    'Keep records of all cardiac medications',
+    'Have cardiologist write nexus opinion linking heart disease to syphilis',
+    'Document functional limitations - what can\'t you do?',
+    'Note impact on work and daily activities',
+  ],
+
+  keyTerms: {
+    'METs': 'Metabolic equivalents - measure of exercise capacity',
+    'Ejection fraction': 'Percentage of blood pumped per heartbeat (normal 55-70%)',
+    'Aortitis': 'Inflammation of the aorta - classic syphilitic finding',
+    'Aortic regurgitation': 'Leaky aortic valve from syphilis damage',
+    'CHF': 'Congestive heart failure',
+  },
+};
+
+
 // =============================================================================
 // GENERIC CONDITION (For GenericRatingCard)
 // =============================================================================
@@ -9757,7 +10118,7 @@ const CONDITION_DESCRIPTIONS = {
   '7330': INTESTINAL_FISTULA_DESCRIPTION,
   '7323': COLITIS_DESCRIPTION,
   '6351': HIV_DESCRIPTION,
-  '6310': MALARIA_DESCRIPTION,
+  '6304': MALARIA_DESCRIPTION,
   '6311': BRUCELLOSIS_DESCRIPTION,
   '5009': INFECTIOUS_ARTHRITIS_DESCRIPTION,
   // Batch 9: More neurological, endocrine, blood disorders
@@ -9808,7 +10169,6 @@ const CONDITION_DESCRIPTIONS = {
   // Batch 11: Cardiac, GI, endocrine, and misc conditions
   '7000': VALVULAR_HEART_DESCRIPTION,
   '7001': VALVULAR_HEART_DESCRIPTION,
-  '7004': VALVULAR_HEART_DESCRIPTION,
   '7007': HYPERTENSIVE_HEART_DESCRIPTION,
   '7008': HYPERTENSIVE_HEART_DESCRIPTION,
   '7002': PERICARDITIS_DESCRIPTION,
@@ -9937,6 +10297,12 @@ const CONDITION_DESCRIPTIONS = {
   '7310': POSTGASTRECTOMY_DESCRIPTION,
   '7311': POSTGASTRECTOMY_DESCRIPTION,
   '0000': GENERIC_CONDITION_DESCRIPTION,
+  '6310': SYPHILIS_DESCRIPTION,
+  '8013': CEREBROSPINAL_SYPHILIS_DESCRIPTION,
+  '8014': MENINGOVASCULAR_SYPHILIS_DESCRIPTION,
+  '8015': TABES_DORSALIS_DESCRIPTION,
+  '9301': SYPHILITIC_DEMENTIA_DESCRIPTION,
+  '7004': SYPHILITIC_HEART_DISEASE_DESCRIPTION,
 };
 
 /**

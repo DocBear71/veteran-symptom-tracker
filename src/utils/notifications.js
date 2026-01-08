@@ -96,7 +96,7 @@ export const shouldShowReminder = () => {
   const lastNotified = settings.lastNotified ? new Date(settings.lastNotified) : null;
 
   for (const reminderTime of settings.times) {
-    // Check if current time matches a reminder time (within 1 minute window)
+    // Check if current time matches a reminder time (within 1-minute window)
     const [reminderHour, reminderMin] = reminderTime.split(':').map(Number);
     const reminderDate = new Date(now);
     reminderDate.setHours(reminderHour, reminderMin, 0, 0);

@@ -398,6 +398,9 @@ const Settings = ({ onNavigate }) => {  // ← ADD onNavigate prop
             </div>
         )}
 
+        {/* MOS Noise Exposure Lookup */}
+        {currentProfile && (currentProfile.type === 'veteran' ||
+            (currentProfile.type === 'caregiver' && currentProfile.metadata?.isVeteranCaregiver)) && (
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
           <div className="flex items-start gap-4">
             <span className="text-3xl">🔊</span>
@@ -417,6 +420,8 @@ const Settings = ({ onNavigate }) => {  // ← ADD onNavigate prop
             </div>
           </div>
         </div>
+        )}
+
 
         {/* Notifications */}
         <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">

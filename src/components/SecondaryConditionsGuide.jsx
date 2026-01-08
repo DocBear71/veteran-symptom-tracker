@@ -223,41 +223,34 @@ const PrimaryConditionPanel = ({ conditionId, conditionData, userServiceConnecte
         {/* Header */}
         <button
             onClick={() => setExpanded(!expanded)}
-            className="w-full px-6 py-4 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+            className="w-full px-4 py-4 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
         >
-          <div className="flex items-center gap-3">
-            <span className="text-2xl">{icon}</span>
-            <div className="text-left">
-              <div className="flex items-center gap-2">
-                <h3 className="font-semibold text-lg text-gray-900 dark:text-white">
-                  {criteria.condition}
-                </h3>
+          <div className="flex items-center gap-3 flex-1 min-w-0">
+            <span className="text-2xl flex-shrink-0">{icon}</span>
+            <div className="text-left flex-1 min-w-0">
+              <h3 className="font-semibold text-base text-gray-900 dark:text-white">
+                {criteria.condition}
+              </h3>
+              <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mt-1">
+                <span className="text-sm text-gray-600 dark:text-gray-400">
+                  DC {criteria.diagnosticCode}
+                </span>
+                <span className={`px-2 py-0.5 text-xs font-bold rounded-full bg-${color}-100 dark:bg-${color}-900/30 text-${color}-600 dark:text-${color}-400`}>
+                  {totalSecondaries} secondaries
+                </span>
                 {isUserServiceConnected && (
                     <span className="px-2 py-0.5 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400 text-xs rounded-full font-medium">
-                  Service-Connected
-                </span>
+                      SC
+                    </span>
                 )}
               </div>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
-                DC {criteria.diagnosticCode} • {totalSecondaries} potential secondary conditions
-              </p>
             </div>
           </div>
-          <div className="flex items-center gap-4">
-            <div className={`text-right px-3 py-1 rounded-lg bg-${color}-100 dark:bg-${color}-900/30`}>
-              <div className={`text-xl font-bold text-${color}-600 dark:text-${color}-400`}>
-                {totalSecondaries}
-              </div>
-              <div className="text-xs text-gray-500 dark:text-gray-400">
-                Secondaries
-              </div>
-            </div>
-            {expanded ? (
-                <ChevronUp className="w-5 h-5 text-gray-400" />
-            ) : (
-                <ChevronDown className="w-5 h-5 text-gray-400" />
-            )}
-          </div>
+          {expanded ? (
+              <ChevronUp className="w-5 h-5 text-gray-400 flex-shrink-0 ml-2" />
+          ) : (
+              <ChevronDown className="w-5 h-5 text-gray-400 flex-shrink-0 ml-2" />
+          )}
         </button>
 
         {/* Expanded Content */}

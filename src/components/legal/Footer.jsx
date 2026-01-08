@@ -7,6 +7,9 @@ import TermsOfUse from './TermsOfUse';
 import AboutUs from './AboutUs';
 import Contact from './Contact';
 import Donations from './Donations';
+import VATermsAndFAQ from '../VATermsAndFAQ';
+import CPExamPrep from '../CPExamPrep';
+import AfterActionReport from '../AfterActionReport';
 
 /**
  * Footer Component
@@ -69,7 +72,7 @@ const Footer = () => {
             {/* Company Info */}
             <div className="text-center mb-4">
               <p className="text-blue-200 dark:text-gray-400 text-sm">
-                © {new Date().getFullYear()} Doc Bear Enterprises, LLC. All rights reserved.
+                © 2025 - {new Date().getFullYear()} Doc Bear Enterprises, LLC. All rights reserved.
               </p>
               <p className="text-blue-300 dark:text-gray-500 text-xs mt-1">
                 🎖️ Built by a Veteran, for Veterans
@@ -101,7 +104,7 @@ const Footer = () => {
             </div>
 
             {/* Second Row */}
-            <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 text-sm">
+            <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 text-sm mb-3">
               <button
                   onClick={() => openModal('contact')}
                   className="text-blue-200 hover:text-white transition-colors"
@@ -116,6 +119,16 @@ const Footer = () => {
                 Support Us
               </button>
               <span className="text-blue-400 dark:text-gray-600">|</span>
+              <button
+                  onClick={() => openModal('va-terms')}
+                  className="text-blue-200 hover:text-white transition-colors"
+              >
+                VA Terms & FAQ
+              </button>
+            </div>
+
+            {/* Third Row */}
+            <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 text-sm">
               <a
                   href="https://www.docbear-ent.com"
                   target="_blank"
@@ -124,6 +137,22 @@ const Footer = () => {
               >
                 Doc Bear Enterprises
               </a>
+
+            <span className="text-blue-400 dark:text-gray-600">|</span>
+
+            <button
+                onClick={() => openModal('cp-exam-prep')}
+                className="text-blue-200 hover:text-white transition-colors"
+            >
+              C&P Exam Prep
+            </button>
+              <span className="text-blue-400 dark:text-gray-600">|</span>
+              <button
+                  onClick={() => openModal('after-action')}
+                  className="text-blue-200 hover:text-white transition-colors"
+              >
+                Exam Report
+              </button>
             </div>
 
             {/* App Info */}
@@ -166,6 +195,12 @@ const Footer = () => {
         {showModal === 'donations' && (
             <ModalWrapper title="Support Our Mission">
               <Donations />
+            </ModalWrapper>
+        )}
+
+        {showModal === 'va-terms' && (
+            <ModalWrapper title="VA Terms, Definitions & FAQ">
+              <VATermsAndFAQ embedded={true} />
             </ModalWrapper>
         )}
       </>

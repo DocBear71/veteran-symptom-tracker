@@ -4265,6 +4265,71 @@ export const symptomCategories = [
     ],
   },
 
+  {
+    id: 'syphilis',
+    name: 'Syphilis & Complications',
+    symptoms: [
+      { id: 'syphilis-positive-test', name: 'Positive Syphilis Test', description: 'RPR, VDRL, or treponemal test positive' },
+      { id: 'syphilis-treated', name: 'Syphilis Treatment Completed', description: 'Completed antibiotic treatment' },
+      { id: 'syphilis-active', name: 'Active Syphilis Infection', description: 'Currently active syphilis' },
+    ]
+  },
+  // Tabes Dorsalis (DC 8015)
+  {
+    id: 'tabes-dorsalis',
+    name: 'Tabes Dorsalis Symptoms',
+    symptoms: [
+      { id: 'tabes-lightning-pain', name: 'Lightning Pains', description: 'Brief, severe, stabbing pains - key VA term' },
+      { id: 'tabes-ataxia', name: 'Sensory Ataxia', description: 'Unsteady gait due to loss of position sense' },
+      { id: 'tabes-romberg-positive', name: 'Positive Romberg Sign', description: 'Swaying/falling when standing with eyes closed' },
+      { id: 'tabes-position-sense-loss', name: 'Loss of Position Sense', description: 'Cannot tell where limbs are without looking' },
+      { id: 'tabes-absent-reflexes', name: 'Absent Deep Tendon Reflexes', description: 'Loss of knee-jerk and other reflexes' },
+      { id: 'tabes-charcot-joint', name: 'Charcot Joint', description: 'Joint destruction from loss of protective sensation' },
+      { id: 'tabes-argyll-robertson', name: 'Argyll Robertson Pupils', description: 'Pupils accommodate but do not react to light' },
+      { id: 'tabes-bladder-dysfunction', name: 'Bladder Dysfunction (Tabes)', description: 'Loss of bladder control from spinal cord involvement' },
+      { id: 'tabes-bowel-dysfunction', name: 'Bowel Dysfunction (Tabes)', description: 'Loss of bowel control from spinal cord involvement' },
+    ]
+  },
+  // Cerebrospinal/Meningovascular Syphilis (DC 8013, 8014)
+  {
+    id: 'neurosyphilis',
+    name: 'Neurosyphilis Symptoms',
+    symptoms: [
+      { id: 'neurosyphilis-headache', name: 'Neurosyphilis Headache', description: 'Persistent headache from CNS infection' },
+      { id: 'neurosyphilis-seizures', name: 'Seizures (Neurosyphilis)', description: 'Convulsions caused by CNS syphilis' },
+      { id: 'neurosyphilis-stroke', name: 'Stroke-Like Episodes', description: 'Stroke symptoms from syphilitic vasculitis' },
+      { id: 'neurosyphilis-vision', name: 'Vision Changes (Neurosyphilis)', description: 'Double vision, blurred vision, or vision loss' },
+      { id: 'neurosyphilis-paralysis', name: 'Nerve Paralysis (Neurosyphilis)', description: 'Weakness or paralysis from CNS syphilis' },
+      { id: 'neurosyphilis-fatigue', name: 'Fatigue (Neurosyphilis)', description: 'Persistent fatigue from CNS infection' },
+    ]
+  },
+  // Syphilitic Dementia (DC 9301)
+  {
+    id: 'syphilitic-dementia',
+    name: 'Syphilitic Dementia Symptoms',
+    symptoms: [
+      { id: 'syphilis-memory-loss', name: 'Memory Loss (Syphilitic)', description: 'Progressive memory impairment from neurosyphilis' },
+      { id: 'syphilis-cognitive-decline', name: 'Cognitive Decline (Syphilitic)', description: 'Progressive decline in thinking and reasoning' },
+      { id: 'syphilis-personality-change', name: 'Personality Changes (Syphilitic)', description: 'Behavioral or personality changes' },
+      { id: 'syphilis-confusion', name: 'Confusion/Disorientation', description: 'Disorientation to time or place' },
+      { id: 'syphilis-psychotic', name: 'Psychotic Symptoms (Neurosyphilis)', description: 'Delusions or hallucinations' },
+      { id: 'syphilis-judgment-impaired', name: 'Impaired Judgment', description: 'Poor decision-making ability' },
+    ]
+  },
+  // Syphilitic Heart Disease (DC 7004)
+  {
+    id: 'syphilitic-heart',
+    name: 'Syphilitic Heart Disease Symptoms',
+    symptoms: [
+      { id: 'syphilitic-heart-chest-pain', name: 'Chest Pain (Syphilitic Heart)', description: 'Chest pain from syphilitic aortitis' },
+      { id: 'syphilitic-heart-dyspnea', name: 'Shortness of Breath (Syphilitic Heart)', description: 'Dyspnea from syphilitic heart disease' },
+      { id: 'syphilitic-heart-fatigue', name: 'Cardiac Fatigue (Syphilitic)', description: 'Fatigue from reduced cardiac function' },
+      { id: 'syphilitic-heart-palpitations', name: 'Palpitations (Syphilitic Heart)', description: 'Irregular heartbeat from valve disease' },
+      { id: 'syphilitic-heart-chf', name: 'CHF Episode (Syphilitic)', description: 'Congestive heart failure episode' },
+      { id: 'syphilitic-heart-dizziness', name: 'Dizziness/Syncope (Syphilitic)', description: 'Dizziness or fainting from heart disease' },
+    ]
+  },
+
 
 
 ];
@@ -4552,6 +4617,12 @@ export const getBodySystem = (categoryName) => {
     return 'infectious';
   }
 
+  // Syphilis/STD conditions
+  if (name.includes('syphilis') || name.includes('syphilitic') ||
+      name.includes('tabes') || name.includes('neurosyphilis')) {
+    return 'infectious';
+  }
+
   // Immune/Autoimmune conditions (Systemic Lupus goes here, NOT skin)
   if (name.includes('systemic lupus') || name.includes('sle') || name.includes('autoimmune')) {
     return 'immune';
@@ -4806,6 +4877,13 @@ const getParentCategory = (categoryName) => {
   // Penis/Testis conditions (DC 7520-7524) - under genitourinary
   if (name.includes('penis')) return 'genitourinary';
   if (name.includes('testis')) return 'genitourinary';
+  if (name.includes('tabes')) return 'tabes-dorsalis';
+  if (name.includes('neurosyphilis')) return 'neurosyphilis';
+  if (name.includes('syphilitic-heart')) return 'syphilitic-heart';
+  if (name.includes('syphilis') && (name.includes('memory') || name.includes('cognitive') ||
+      name.includes('personality') || name.includes('confusion') || name.includes('psychotic') ||
+      name.includes('judgment'))) return 'syphilitic-dementia';
+  if (name.includes('syphilis')) return 'syphilis';
   return null; // No parent, this is a standalone category
 };
 

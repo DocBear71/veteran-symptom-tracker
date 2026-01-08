@@ -1,5 +1,6 @@
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
+import { calculateCombinedRatingDetailed } from './vaRatingCalculator';
 import { getSymptomLogs, saveSymptomLog, getMedicationLogsForSymptom, getAppointments, getOccurrenceTime, isBackDated } from './storage';
 import { getMeasurements } from './measurements';
 import { stripDCCode } from '../data/symptoms';
@@ -2862,7 +2863,7 @@ const getMeasurementsForDateRange = (dateRange) => {
  * Analyze all conditions and return rating evidence
  * @param {Array} logs - All symptom logs
  * @param {Object} options - Analysis options
- * @returns {Array} Array of condition analyses with data
+ * @returns {Array} Array of condition analyzes with data
  */
 const analyzeAllConditions = (logs, options = {}) => {
     const { evaluationPeriodDays = 90 } = options;
@@ -3152,6 +3153,369 @@ const analyzeAllConditions = (logs, options = {}) => {
 };
 
 /**
+ * Calculate evidence strength for a condition analysis
+ * Returns: 'strong', 'moderate', 'weak', or 'gaps'
+ */
+const getEvidenceStrength = (analysis) => {
+  if (!analysis || !analysis.hasData) return 'gaps';
+
+  const rating = parseInt(analysis.supportedRating) || 0;
+  const evidenceCount = analysis.evidence?.length || 0;
+  const gapsCount = analysis.gaps?.length || 0;
+  const rationaleCount = analysis.ratingRationale?.length || 0;
+
+  // Strong: High rating with good evidence and few gaps
+  if (rating >= 50 && evidenceCount >= 3 && gapsCount <= 2) return 'strong';
+  if (rating >= 30 && evidenceCount >= 4 && gapsCount <= 3) return 'strong';
+
+  // Moderate: Decent rating with some evidence
+  if (rating >= 30 && evidenceCount >= 2) return 'moderate';
+  if (rating >= 10 && evidenceCount >= 3 && gapsCount <= 4) return 'moderate';
+
+  // Weak: Low rating or limited evidence
+  if (rating > 0 && evidenceCount >= 1) return 'weak';
+
+  // Gaps: No rating or no evidence
+  return 'gaps';
+};
+
+/**
+ * Get color values for evidence strength
+ */
+const getEvidenceStrengthColor = (strength) => {
+  switch (strength) {
+    case 'strong':
+      return { fill: [34, 197, 94], text: [255, 255, 255], label: 'STRONG' }; // Green
+    case 'moderate':
+      return { fill: [234, 179, 8], text: [0, 0, 0], label: 'MODERATE' }; // Yellow
+    case 'weak':
+      return { fill: [249, 115, 22], text: [255, 255, 255], label: 'WEAK' }; // Orange
+    case 'gaps':
+    default:
+      return { fill: [239, 68, 68], text: [255, 255, 255], label: 'GAPS' }; // Red
+  }
+};
+
+/**
+ * Generate the Rating Evidence Summary Page
+ * Call this after cover page, before Table of Contents
+ */
+const generateRatingEvidenceSummaryPage = (doc, ratingAnalyses, pageWidth) => {
+  doc.addPage();
+  let currentY = 20;
+
+  // ========== PAGE HEADER ==========
+  doc.setFontSize(18);
+  doc.setTextColor(30, 58, 138);
+  doc.setFont(undefined, 'bold');
+  doc.text('RATING EVIDENCE SUMMARY', pageWidth / 2, currentY, { align: 'center' });
+
+  doc.setFontSize(10);
+  doc.setFont(undefined, 'normal');
+  doc.setTextColor(100);
+  currentY += 8;
+  doc.text('Executive Overview of Documented Conditions', pageWidth / 2, currentY, { align: 'center' });
+
+  currentY += 15;
+
+  // ========== COMBINED RATING CALCULATION ==========
+  // Prepare conditions for VA math calculation
+  const conditionsForCalc = ratingAnalyses
+  .filter(a => a.supportedRating > 0)
+  .map(a => ({
+    conditionName: a.condition || 'Unknown',
+    currentRating: parseInt(a.supportedRating) || 0
+  }));
+
+  const combinedResult = calculateCombinedRatingDetailed(conditionsForCalc);
+
+  // Combined Rating Box
+  doc.setFillColor(30, 58, 138);
+  doc.rect(14, currentY, pageWidth - 28, 45, 'F');
+
+  // Main combined rating
+  doc.setFontSize(14);
+  doc.setTextColor(255, 255, 255);
+  doc.setFont(undefined, 'bold');
+  doc.text('ESTIMATED COMBINED RATING (VA MATH)', 20, currentY + 10);
+
+  doc.setFontSize(36);
+  doc.text(`${combinedResult.combinedRating}%`, pageWidth - 50, currentY + 30, { align: 'center' });
+
+  // Details
+  doc.setFontSize(10);
+  doc.setFont(undefined, 'normal');
+  doc.text(`Conditions with Evidence: ${conditionsForCalc.length}`, 20, currentY + 20);
+  doc.text(`Actual Combined: ${combinedResult.totalDisability?.toFixed(1) || 0}%`, 20, currentY + 28);
+  doc.text(`(Rounded per 38 CFR 4.25)`, 20, currentY + 36);
+
+  // Rating tier indicator
+  let tierText = '';
+  let tierNote = '';
+  if (combinedResult.combinedRating >= 100) {
+    tierText = 'TOTAL DISABILITY';
+    tierNote = 'May qualify for TDIU or 100% Schedular';
+  } else if (combinedResult.combinedRating >= 70) {
+    tierText = 'SIGNIFICANT DISABILITY';
+    tierNote = 'May qualify for SMC considerations';
+  } else if (combinedResult.combinedRating >= 50) {
+    tierText = 'MODERATE DISABILITY';
+    tierNote = 'Dependent benefits may apply';
+  } else if (combinedResult.combinedRating >= 30) {
+    tierText = 'COMPENSABLE';
+    tierNote = 'Additional conditions may increase';
+  } else {
+    tierText = 'MINIMAL';
+    tierNote = 'Document gaps to strengthen claims';
+  }
+
+  doc.setFontSize(9);
+  doc.text(tierText, pageWidth - 50, currentY + 38, { align: 'center' });
+
+  currentY += 55;
+
+  // ========== VA MATH BREAKDOWN ==========
+  if (combinedResult.breakdown && combinedResult.breakdown.length > 0) {
+    doc.setFontSize(11);
+    doc.setTextColor(30, 58, 138);
+    doc.setFont(undefined, 'bold');
+    doc.text('VA Math Calculation Breakdown', 14, currentY);
+    doc.setFont(undefined, 'normal');
+
+    currentY += 3;
+
+    // Explanation text
+    doc.setFontSize(8);
+    doc.setTextColor(100);
+    doc.text('VA uses "bilateral factor" math: each rating applies to remaining efficiency, not added directly.', 14, currentY + 5);
+
+    currentY += 10;
+
+    // Breakdown table
+    const breakdownData = combinedResult.breakdown.map((step, idx) => [
+      `${step.step}`,
+      step.conditionName.length > 30 ? step.conditionName.substring(0, 30) + '...' : step.conditionName,
+      `${step.rating}%`,
+      `${step.disabilityAdded.toFixed(1)}%`,
+      `${step.remainingEfficiency.toFixed(1)}%`
+    ]);
+
+    autoTable(doc, {
+      startY: currentY,
+      head: [['#', 'Condition', 'Rating', 'Disability Added', 'Remaining Efficiency']],
+      body: breakdownData,
+      headStyles: {
+        fillColor: [59, 130, 246],
+        fontStyle: 'bold',
+        fontSize: 8,
+        cellPadding: 2
+      },
+      bodyStyles: {
+        fontSize: 8,
+        cellPadding: 2
+      },
+      columnStyles: {
+        0: { cellWidth: 10 },
+        1: { cellWidth: 70 },
+        2: { cellWidth: 20, halign: 'center' },
+        3: { cellWidth: 30, halign: 'center' },
+        4: { cellWidth: 35, halign: 'center' }
+      },
+      alternateRowStyles: { fillColor: [245, 247, 250] },
+      margin: { left: 14, right: 14 },
+      tableWidth: 'auto',
+    });
+
+    currentY = doc.lastAutoTable.finalY + 5;
+
+    // Final calculation note
+    doc.setFontSize(8);
+    doc.setTextColor(60);
+    doc.text(`Final: 100% - ${combinedResult.totalEfficiency?.toFixed(1) || 0}% remaining = ${combinedResult.totalDisability?.toFixed(1) || 0}% → Rounded to ${combinedResult.combinedRating}%`, 14, currentY);
+
+    currentY += 12;
+  }
+
+  // ========== EVIDENCE STRENGTH OVERVIEW ==========
+  doc.setFontSize(11);
+  doc.setTextColor(30, 58, 138);
+  doc.setFont(undefined, 'bold');
+  doc.text('Evidence Strength by Condition', 14, currentY);
+  doc.setFont(undefined, 'normal');
+
+  currentY += 8;
+
+  // Legend
+  doc.setFontSize(7);
+  doc.setTextColor(80);
+
+  // Strong legend
+  doc.setFillColor(34, 197, 94);
+  doc.rect(14, currentY - 3, 8, 4, 'F');
+  doc.text('STRONG - Well documented, minimal gaps', 24, currentY);
+
+  // Moderate legend
+  doc.setFillColor(234, 179, 8);
+  doc.rect(80, currentY - 3, 8, 4, 'F');
+  doc.text('MODERATE - Good evidence, some gaps', 90, currentY);
+
+  // Weak legend
+  doc.setFillColor(249, 115, 22);
+  doc.rect(14, currentY + 4, 8, 4, 'F');
+  doc.text('WEAK - Limited documentation', 24, currentY + 7);
+
+  // Gaps legend
+  doc.setFillColor(239, 68, 68);
+  doc.rect(80, currentY + 4, 8, 4, 'F');
+  doc.text('GAPS - Needs more evidence', 90, currentY + 7);
+
+  currentY += 15;
+
+  // Evidence summary table
+  const evidenceData = ratingAnalyses.map(analysis => {
+    const strength = getEvidenceStrength(analysis);
+    const strengthInfo = getEvidenceStrengthColor(strength);
+    const conditionName = analysis.condition || 'Unknown';
+    const dcCode = analysis.diagnosticCode || '-';
+    const rating = analysis.supportedRating || 0;
+    const evidenceCount = analysis.evidence?.length || 0;
+    const gapsCount = analysis.gaps?.length || 0;
+
+    return {
+      condition: conditionName.length > 35 ? conditionName.substring(0, 35) + '...' : conditionName,
+      dcCode,
+      rating: `${rating}%`,
+      evidence: evidenceCount,
+      gaps: gapsCount,
+      strength: strengthInfo.label,
+      strengthColor: strengthInfo.fill
+    };
+  });
+
+  // Custom table with colored strength badges
+  autoTable(doc, {
+    startY: currentY,
+    head: [['Condition', 'DC', 'Rating', 'Evidence', 'Gaps', 'Strength']],
+    body: evidenceData.map(row => [
+      row.condition,
+      row.dcCode,
+      row.rating,
+      row.evidence.toString(),
+      row.gaps.toString(),
+      row.strength
+    ]),
+    headStyles: {
+      fillColor: [30, 58, 138],
+      fontStyle: 'bold',
+      fontSize: 8
+    },
+    bodyStyles: {
+      fontSize: 8,
+      cellPadding: 2
+    },
+    columnStyles: {
+      0: { cellWidth: 60 },
+      1: { cellWidth: 18, halign: 'center' },
+      2: { cellWidth: 18, halign: 'center' },
+      3: { cellWidth: 20, halign: 'center' },
+      4: { cellWidth: 15, halign: 'center' },
+      5: { cellWidth: 25, halign: 'center' }
+    },
+    alternateRowStyles: { fillColor: [245, 247, 250] },
+    margin: { left: 14, right: 14 },
+    didParseCell: function(data) {
+      // Color the strength column based on value
+      if (data.column.index === 5 && data.section === 'body') {
+        const strengthLabel = data.cell.raw;
+        if (strengthLabel === 'STRONG') {
+          data.cell.styles.fillColor = [34, 197, 94];
+          data.cell.styles.textColor = [255, 255, 255];
+          data.cell.styles.fontStyle = 'bold';
+        } else if (strengthLabel === 'MODERATE') {
+          data.cell.styles.fillColor = [234, 179, 8];
+          data.cell.styles.textColor = [0, 0, 0];
+          data.cell.styles.fontStyle = 'bold';
+        } else if (strengthLabel === 'WEAK') {
+          data.cell.styles.fillColor = [249, 115, 22];
+          data.cell.styles.textColor = [255, 255, 255];
+          data.cell.styles.fontStyle = 'bold';
+        } else if (strengthLabel === 'GAPS') {
+          data.cell.styles.fillColor = [239, 68, 68];
+          data.cell.styles.textColor = [255, 255, 255];
+          data.cell.styles.fontStyle = 'bold';
+        }
+      }
+    }
+  });
+
+  currentY = doc.lastAutoTable.finalY + 10;
+
+  // ========== PRIORITY ACTIONS BOX ==========
+  // Check if we need a new page
+  if (currentY > 240) {
+    doc.addPage();
+    currentY = 20;
+  }
+
+  // Find conditions that need the most attention
+  const weakConditions = ratingAnalyses.filter(a => {
+    const strength = getEvidenceStrength(a);
+    return strength === 'weak' || strength === 'gaps';
+  });
+
+  const highPotentialConditions = ratingAnalyses.filter(a => {
+    const strength = getEvidenceStrength(a);
+    const rating = parseInt(a.supportedRating) || 0;
+    // Conditions close to next rating tier that need more evidence
+    return (strength === 'moderate' || strength === 'weak') &&
+        (rating === 20 || rating === 40 || rating === 60 || rating === 90);
+  });
+
+  // Priority Actions Box
+  doc.setFillColor(254, 249, 195); // Light yellow background
+  doc.setDrawColor(234, 179, 8);
+  doc.rect(14, currentY, pageWidth - 28, 40, 'FD');
+
+  doc.setFontSize(10);
+  doc.setTextColor(120, 53, 15);
+  doc.setFont(undefined, 'bold');
+  doc.text('PRIORITY ACTIONS TO STRENGTHEN YOUR CLAIM', 20, currentY + 8);
+  doc.setFont(undefined, 'normal');
+  doc.setFontSize(8);
+
+  let actionY = currentY + 15;
+
+  if (weakConditions.length > 0) {
+    const weakNames = weakConditions.slice(0, 3).map(c => c.condition || 'Unknown').join(', ');
+    doc.text(`• Focus documentation on: ${weakNames}`, 20, actionY);
+    actionY += 6;
+  }
+
+  if (highPotentialConditions.length > 0) {
+    const highNames = highPotentialConditions.slice(0, 2).map(c => `${c.condition} (${c.supportedRating}%)`).join(', ');
+    doc.text(`• Near higher tier - strengthen evidence: ${highNames}`, 20, actionY);
+    actionY += 6;
+  }
+
+  // General tips
+  doc.text('• Review "Gaps" column above and address missing documentation', 20, actionY);
+  actionY += 6;
+  doc.text('• Prepare for C&P exam by reviewing your worst days for each condition', 20, actionY);
+
+  currentY += 50;
+
+  // ========== DISCLAIMER ==========
+  doc.setFontSize(7);
+  doc.setTextColor(120);
+  doc.setFont(undefined, 'italic');
+  const disclaimerText = 'Note: This analysis is for documentation guidance only. Combined rating shown is an estimate based on logged symptoms. The VA makes all final rating determinations based on C&P examinations and complete medical evidence. Evidence strength is calculated from logged data and may not reflect all medical records.';
+  const disclaimerLines = doc.splitTextToSize(disclaimerText, pageWidth - 28);
+  doc.text(disclaimerLines, 14, currentY);
+
+  return doc;
+};
+
+/**
  * Generate VA Claim Package PDF
  * Professional format optimized for VA disability claims
  */
@@ -3207,7 +3571,20 @@ export const generateVAClaimPackagePDF = async (dateRange = 'all', options = {})
     doc.text('This package contains documented evidence of service-connected conditions', pageWidth / 2, 210, { align: 'center' });
     doc.text('prepared for submission to the Department of Veterans Affairs', pageWidth / 2, 218, { align: 'center' });
 
-    // Start new page for content
+    // ========== RATING EVIDENCE SUMMARY PAGE (v2.1) ==========
+    // Generate preliminary analysis for summary page
+    const summaryAnalyses = analyzeAllConditions(filteredLogs, {
+      evaluationPeriodDays: typeof dateRange === 'object' && dateRange.type === 'custom'
+          ? Math.floor((new Date(dateRange.endDate) - new Date(dateRange.startDate)) / (1000 * 60 * 60 * 24))
+          : (dateRange === '7days' ? 7 : dateRange === '30days' ? 30 : dateRange === '60days' ? 60 : dateRange === '90days' ? 90 : dateRange === '180days' ? 180 : dateRange === 'year' ? 365 : 90)
+    });
+
+    // Only add summary page if we have rating data
+    if (summaryAnalyses.length > 0) {
+      generateRatingEvidenceSummaryPage(doc, summaryAnalyses, pageWidth);
+    }
+
+    // Start new page for Table of Contents
     doc.addPage();
     currentY = 20;
 
@@ -3230,32 +3607,45 @@ export const generateVAClaimPackagePDF = async (dateRange = 'all', options = {})
             : (dateRange === '7days' ? 7 : dateRange === '30days' ? 30 : dateRange === '60days' ? 60 : dateRange === '90days' ? 90 : dateRange === '180days' ? 180 : dateRange === 'year' ? 365 : 90)
     });
 
-    const tocItems = [
-        '1. Symptom Summary',
-        '2. Detailed Symptom Entries',
-    ];
 
-    let sectionNum = 3;
+    const tocItems = [];
+    let tocSectionNum = 1;
+
+    // Add Rating Evidence Summary if we have analyses
+    if (preliminaryAnalyses.length > 0) {
+      tocItems.push(`${tocSectionNum}. Rating Evidence Summary`);
+      tocSectionNum++;
+    }
+
+    tocItems.push(`${tocSectionNum}. Symptom Summary`);
+    tocSectionNum++;
+    tocItems.push(`${tocSectionNum}. Detailed Symptom Entries`);
+    tocSectionNum++;
+
 
     if (preliminaryAnalyses.length > 0) {
-        tocItems.push(`${sectionNum}. VA Rating Evidence Analysis`);
-        sectionNum++;
+      tocItems.push(`${tocSectionNum}. VA Rating Evidence Analysis`);
+      tocSectionNum++;
     }
 
     if (appointments.length > 0) {
-        tocItems.push(`${sectionNum}. Appointment History`);
-        sectionNum++;
+      tocItems.push(`${tocSectionNum}. Appointment History`);
+      tocSectionNum++;
     }
 
     if (measurements.length > 0) {
-        tocItems.push(`${sectionNum}. Medical Measurements`);
+      tocItems.push(`${tocSectionNum}. Medical Measurements`);
     }
 
-    tocItems.forEach((item, index) => {
-        doc.text(item, 20, currentY + (index * 8));
-    });
+  tocItems.forEach((item, index) => {
+    doc.text(item, 20, currentY + (index * 8));
+  });
 
-    // ========== SYMPTOM CONTENT ==========
+  // Initialize dynamic section counter
+  // Starts at 2 if Rating Evidence Summary is present (it's section 1), otherwise starts at 1
+  let currentSection = preliminaryAnalyses.length > 0 ? 2 : 1;
+
+  // ========== SYMPTOM CONTENT ==========
     if (filteredLogs.length > 0) {
         doc.addPage();
         currentY = 20;
@@ -3263,7 +3653,7 @@ export const generateVAClaimPackagePDF = async (dateRange = 'all', options = {})
         doc.setFontSize(14);
         doc.setTextColor(30, 58, 138);
         doc.setFont(undefined, 'bold');
-        doc.text('1. SYMPTOM SUMMARY', 14, currentY);
+      doc.text(`${currentSection}. SYMPTOM SUMMARY`, 14, currentY);
         doc.setFont(undefined, 'normal');
 
         const summaryData = generateSummary(filteredLogs);
@@ -3290,7 +3680,8 @@ export const generateVAClaimPackagePDF = async (dateRange = 'all', options = {})
         doc.setFontSize(14);
         doc.setTextColor(30, 58, 138);
         doc.setFont(undefined, 'bold');
-        doc.text('2. DETAILED SYMPTOM ENTRIES', 14, currentY);
+      currentSection++;
+      doc.text(`${currentSection}. DETAILED SYMPTOM ENTRIES`, 14, currentY);
         doc.setFont(undefined, 'normal');
 
       const detailData = logs.map(log => {
@@ -4818,7 +5209,8 @@ export const generateVAClaimPackagePDF = async (dateRange = 'all', options = {})
         doc.setFontSize(14);
         doc.setTextColor(30, 58, 138);
         doc.setFont(undefined, 'bold');
-        doc.text('3. VA RATING EVIDENCE ANALYSIS', 14, currentY);
+        currentSection++;
+        doc.text(`${currentSection}. VA RATING EVIDENCE ANALYSIS`, 14, currentY);
         doc.setFont(undefined, 'normal');
 
         doc.setFontSize(9);
@@ -5022,9 +5414,9 @@ export const generateVAClaimPackagePDF = async (dateRange = 'all', options = {})
         doc.setTextColor(30, 58, 138);
         doc.setFont(undefined, 'bold');
 
-        // Update section number based on whether rating analysis was included
-        const appointmentSectionNum = ratingAnalyses.length > 0 ? '4' : '3';
-        doc.text(`${appointmentSectionNum}. APPOINTMENT HISTORY`, 14, currentY);
+        // Increment and use dynamic section counter
+        currentSection++;
+        doc.text(`${currentSection}. APPOINTMENT HISTORY`, 14, currentY);
         doc.setFont(undefined, 'normal');
 
         const appointmentData = appointments.map(apt => {
@@ -5059,12 +5451,9 @@ export const generateVAClaimPackagePDF = async (dateRange = 'all', options = {})
         doc.setTextColor(30, 58, 138);
         doc.setFont(undefined, 'bold');
 
-        // Section number depends on what's been included
-        let measurementSectionNum = '3';
-        if (ratingAnalyses.length > 0) measurementSectionNum = '4';
-        if (appointments.length > 0) measurementSectionNum = String(Number(measurementSectionNum) + 1);
-
-        doc.text(`${measurementSectionNum}. MEDICAL MEASUREMENTS`, 14, currentY);
+        // Increment and use dynamic section counter
+        currentSection++;
+        doc.text(`${currentSection}. MEDICAL MEASUREMENTS`, 14, currentY);
         doc.setFont(undefined, 'normal');
 
         doc.setFontSize(10);

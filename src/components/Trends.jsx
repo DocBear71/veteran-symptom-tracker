@@ -14,6 +14,7 @@ import {
 import { getSymptomLogs, saveSymptomLog } from '../utils/storage';
 import RatingEvidence from './RatingEvidence';
 import { useProfile } from '../hooks/useProfile';
+import CPResources from './CPResources';
 
 // Custom tooltip component for dark mode support
 const CustomTooltip = ({ active, payload, label }) => {
@@ -205,61 +206,68 @@ const Trends = () => {
   return (
       <div className="space-y-4 pb-20">
         {/* Tab Selector */}
-        <div className="flex border-b border-gray-200 dark:border-gray-700">
+        <div className="flex border-b border-gray-200 dark:border-gray-700 mb-4">
           <button
               onClick={() => setActiveTab('charts')}
-              className={`flex-1 py-3 text-center font-medium ${
+              className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
                   activeTab === 'charts'
-                      ? 'text-blue-600 border-b-2 border-blue-600'
-                      : 'text-gray-500 dark:text-gray-400'
+                      ? 'border-blue-500 text-blue-600 dark:text-blue-400'
+                      : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
               }`}
           >
-            Charts
+            📊 Charts
           </button>
-          {features.showRatingCorrelation && (
-              <button
-                  onClick={() => setActiveTab('ratings')}
-                  className={`flex-1 py-3 text-center font-medium ${
-                      activeTab === 'ratings'
-                          ? 'text-blue-600 border-b-2 border-blue-600'
-                          : 'text-gray-500 dark:text-gray-400'
-                  }`}
-              >
-                Rating Evidence
-              </button>
-          )}
+          <button
+              onClick={() => setActiveTab('rating')}
+              className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
+                  activeTab === 'rating'
+                      ? 'border-blue-500 text-blue-600 dark:text-blue-400'
+                      : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+              }`}
+          >
+            ⚖️ Rating Evidence
+          </button>
+          <button
+              onClick={() => setActiveTab('cp-resources')}
+              className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
+                  activeTab === 'cp-resources'
+                      ? 'border-blue-500 text-blue-600 dark:text-blue-400'
+                      : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+              }`}
+          >
+            🎖️ C&P Resources
+          </button>
         </div>
 
         {/* Tab Content */}
-        {activeTab === 'charts' ? (
+        {activeTab === 'charts' && (
             <>
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
                 Trends & Patterns
               </h2>
 
               {/* Filters */}
-              <div className="flex gap-2 mb-4 flex-wrap">
+              <div className="flex gap-2 mb-4 flex-wrap w-full">
+                <select
+                    value={selectedSymptom}
+                    onChange={(e) => setSelectedSymptom(e.target.value)}
+                    className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 flex-1 min-w-0 max-w-[160px] sm:max-w-[200px]"
+                >
+                  <option value="all">All Symptoms</option>
+                  {availableSymptoms.map(symptom => (
+                      <option key={symptom} value={symptom}>{symptom}</option>
+                  ))}
+                </select>
                 <select
                     value={dateRange}
                     onChange={(e) => setDateRange(e.target.value)}
-                    className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                    className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 flex-1 min-w-0 max-w-[160px] sm:max-w-[200px]"
                 >
                   <option value="week">Last 7 Days</option>
                   <option value="month">Last 30 Days</option>
                   <option value="3months">Last 90 Days</option>
                   <option value="year">Last Year</option>
                   <option value="all">All Time</option>
-                </select>
-
-                <select
-                    value={selectedSymptom}
-                    onChange={(e) => setSelectedSymptom(e.target.value)}
-                    className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
-                >
-                  <option value="all">All Symptoms</option>
-                  {availableSymptoms.map(symptom => (
-                      <option key={symptom} value={symptom}>{symptom}</option>
-                  ))}
                 </select>
               </div>
 
@@ -306,7 +314,7 @@ const Trends = () => {
                                   tick={{ fontSize: 12, fill: '#9CA3AF' }}
                                   stroke="#6B7280"
                               />
-                              <Tooltip content={<CustomTooltip />} />
+                              <Tooltip content={(props) => <CustomTooltip {...props} />} />
                               <Legend wrapperStyle={{ fontSize: '12px' }} />
                               <Line
                                   type="monotone"
@@ -354,7 +362,7 @@ const Trends = () => {
                                   width={100}
                                   stroke="#6B7280"
                               />
-                              <Tooltip content={<CustomTooltip />} />
+                              <Tooltip content={(props) => <CustomTooltip {...props} />} />
                               <Bar
                                   dataKey="count"
                                   fill="#3B82F6"
@@ -417,7 +425,7 @@ const Trends = () => {
                                   tick={{ fontSize: 12, fill: '#9CA3AF' }}
                                   stroke="#6B7280"
                               />
-                              <Tooltip content={<CustomTooltip />} />
+                              <Tooltip content={(props) => <CustomTooltip {...props} />} />
                               <Bar
                                   dataKey="entries"
                                   fill="#10B981"
@@ -431,9 +439,14 @@ const Trends = () => {
                   </>
               )}
             </>
-        ) : (
-            /* Rating Evidence Tab */
+        )}
+
+        {activeTab === 'rating' && (
             <RatingEvidence />
+        )}
+
+        {activeTab === 'cp-resources' && (
+            <CPResources />
         )}
       </div>
   );

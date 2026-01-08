@@ -118,6 +118,12 @@ import {
   analyzeShigellaLogs,
   analyzeWestNileLogs,
   analyzeNTMLogs,
+  analyzeSyphilisLogs,
+  analyzeCerebrospinalSyphilisLogs,
+  analyzeMeningovascularSyphilisLogs,
+  analyzeTabesDorsalisLogs,
+  analyzeSyphiliticDementiaLogs,
+  analyzeSyphiliticHeartDiseaseLogs,
   analyzeSomaticSymptomDisorderLogs,
   analyzeOtherSpecifiedSomaticLogs,
   analyzeUnspecifiedSomaticLogs,
@@ -875,7 +881,26 @@ const RatingEvidence = () => {
     const ntmAnalysis = useMemo(() => {
       return analyzeNTMLogs(logs, { evaluationPeriodDays: evaluationDays  });
     }, [logs, evaluationDays]);
-    // Phase 7: Dental/Oral Analysis Hooks
+    // Syphilis/STD Conditions
+    const syphilisAnalysis = useMemo(() => {
+      return analyzeSyphilisLogs(logs, { evaluationPeriodDays: evaluationDays });
+    }, [logs, evaluationDays]);
+    const cerebrospinalSyphilisAnalysis = useMemo(() => {
+      return analyzeCerebrospinalSyphilisLogs(logs, { evaluationPeriodDays: evaluationDays });
+    }, [logs, evaluationDays]);
+    const meningovascularSyphilisAnalysis = useMemo(() => {
+      return analyzeMeningovascularSyphilisLogs(logs, { evaluationPeriodDays: evaluationDays });
+    }, [logs, evaluationDays]);
+    const tabesDorsalisAnalysis = useMemo(() => {
+      return analyzeTabesDorsalisLogs(logs, { evaluationPeriodDays: evaluationDays });
+    }, [logs, evaluationDays]);
+    const syphiliticDementiaAnalysis = useMemo(() => {
+      return analyzeSyphiliticDementiaLogs(logs, { evaluationPeriodDays: evaluationDays });
+    }, [logs, evaluationDays]);
+    const syphiliticHeartDiseaseAnalysis = useMemo(() => {
+      return analyzeSyphiliticHeartDiseaseLogs(logs, { evaluationPeriodDays: evaluationDays });
+    }, [logs, evaluationDays]);
+  // Phase 7: Dental/Oral Analysis Hooks
     const toothLossAnalysis = useMemo(() => {
       return analyzeToothLossLogs(logs, { evaluationPeriodDays: evaluationDays });
     }, [logs, evaluationDays]);
@@ -1611,6 +1636,12 @@ const RatingEvidence = () => {
         shigellaAnalysis.hasData,
         westNileAnalysis.hasData,
         ntmAnalysis.hasData,
+        syphilisAnalysis.hasData,
+        cerebrospinalSyphilisAnalysis.hasData,
+        meningovascularSyphilisAnalysis.hasData,
+        tabesDorsalisAnalysis.hasData,
+        syphiliticDementiaAnalysis.hasData,
+        syphiliticHeartDiseaseAnalysis.hasData,
       ].filter(Boolean).length,
 
       dental: [
@@ -1721,6 +1752,8 @@ const RatingEvidence = () => {
     hivAnalysis.hasData, hepatitisBAnalysis.hasData, hepatitisCAnalysis.hasData, lymeDiseaseAnalysis.hasData,
     malariaAnalysis.hasData, brucellosisAnalysis.hasData, campylobacterAnalysis.hasData, qFeverAnalysis.hasData,
     salmonellaAnalysis.hasData, shigellaAnalysis.hasData, westNileAnalysis.hasData, ntmAnalysis.hasData,
+    syphilisAnalysis.hasData, cerebrospinalSyphilisAnalysis.hasData, meningovascularSyphilisAnalysis.hasData,
+    tabesDorsalisAnalysis.hasData, syphiliticDementiaAnalysis.hasData, syphiliticHeartDiseaseAnalysis.hasData,
     // Dental
     toothLossAnalysis.hasData, mandibleNonunionAnalysis.hasData, malignantOralNeoplasmAnalysis.hasData,
     benignOralNeoplasmAnalysis.hasData,
@@ -1838,6 +1871,12 @@ const RatingEvidence = () => {
         shigellaAnalysis.hasData ||
         westNileAnalysis.hasData ||
         ntmAnalysis.hasData ||
+        syphilisAnalysis.hasData ||
+        cerebrospinalSyphilisAnalysis.hasData ||
+        meningovascularSyphilisAnalysis.hasData ||
+        tabesDorsalisAnalysis.hasData ||
+        syphiliticDementiaAnalysis.hasData ||
+        syphiliticHeartDiseaseAnalysis.hasData ||
         schizophreniaAnalysis.hasData ||
         schizoaffectiveDisorderAnalysis.hasData ||
         delusionalDisorderAnalysis.hasData ||
@@ -1951,6 +1990,18 @@ const RatingEvidence = () => {
 
     return (
         <div className="space-y-4 text-left">
+          <div className="bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700 rounded-lg p-4 mb-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <h4 className="font-semibold text-blue-900 dark:text-blue-200">
+                  📋 Preparing for a C&P Exam?
+                </h4>
+                <p className="text-sm text-blue-700 dark:text-blue-300">
+                  Get personalized prep tips based on your conditions by selecting C&P Resources, above.
+                </p>
+              </div>
+            </div>
+          </div>
             {/* Header */}
             <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
                 <div className="flex items-center justify-between mb-2">
@@ -2546,6 +2597,43 @@ const RatingEvidence = () => {
                 analysis={ntmAnalysis}
                 expanded={expandedSection === 'ntm'}
                 onToggle={() => toggleSection('ntm')}
+            />
+            {/* Syphilis/STD Conditions */}
+            <GenericRatingCard
+                analysis={syphilisAnalysis}
+                expanded={expandedSection === 'syphilis'}
+                onToggle={() => toggleSection('syphilis')}
+                icon="🦠"
+            />
+            <GenericRatingCard
+                analysis={cerebrospinalSyphilisAnalysis}
+                expanded={expandedSection === 'cerebrospinal-syphilis'}
+                onToggle={() => toggleSection('cerebrospinal-syphilis')}
+                icon="🧠"
+            />
+            <GenericRatingCard
+                analysis={meningovascularSyphilisAnalysis}
+                expanded={expandedSection === 'meningovascular-syphilis'}
+                onToggle={() => toggleSection('meningovascular-syphilis')}
+                icon="🧠"
+            />
+            <GenericRatingCard
+                analysis={tabesDorsalisAnalysis}
+                expanded={expandedSection === 'tabes-dorsalis'}
+                onToggle={() => toggleSection('tabes-dorsalis')}
+                icon="🦴"
+            />
+            <GenericRatingCard
+                analysis={syphiliticDementiaAnalysis}
+                expanded={expandedSection === 'syphilitic-dementia'}
+                onToggle={() => toggleSection('syphilitic-dementia')}
+                icon="🧠"
+            />
+            <GenericRatingCard
+                analysis={syphiliticHeartDiseaseAnalysis}
+                expanded={expandedSection === 'syphilitic-heart-disease'}
+                onToggle={() => toggleSection('syphilitic-heart-disease')}
+                icon="❤️"
             />
           </ConditionGroup>
 

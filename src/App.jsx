@@ -15,6 +15,10 @@ import ThankYou from './components/legal/ThankYou.jsx';
 import SecondaryConditionsGuide from './components/SecondaryConditionsGuide';
 import PresumptiveConditionsGuide from './components/PresumptiveConditionsGuide';
 import MOSNoiseExposureLookup from './components/MOSNoiseExposureLookup';
+import VATermsAndFAQ from './components/VATermsAndFAQ';
+import CPExamPrep from './components/CPExamPrep';
+import AfterActionReport from './components/AfterActionReport';
+
 
 // Profile system
 import { ProfileProvider, useProfile } from './hooks/useProfile.jsx';
@@ -42,6 +46,9 @@ const getInitialViewFromURL = () => {
     '/secondary-conditions': 'secondary-conditions',
     '/presumptive-conditions': 'presumptive-conditions',
     '/mos-noise-exposure': 'mos-noise-exposure',
+    '/va-terms-faq': 'va-terms-faq',
+    '/cp-exam-prep': 'cp-exam-prep',
+    '/after-action-report': 'after-action-report',
   };
 
   return pathToView[path] || 'log';
@@ -122,6 +129,9 @@ const AppContent = () => {
       'secondary-conditions': '/secondary-conditions',
       'presumptive-conditions': '/presumptive-conditions',
       'mos-noise-exposure': '/mos-noise-exposure',
+      'va-terms-faq': '/va-terms-faq',
+      '/cp-exam-prep': '/cp-exam-prep',
+      '/after-action-report': 'after-action-report',
     };
 
     const newPath = viewToPath[view] || '/';
@@ -167,6 +177,12 @@ const AppContent = () => {
         return <PresumptiveConditionsGuide />;
       case 'mos-noise-exposure':
         return <MOSNoiseExposureLookup />;
+      case 'va-terms-faq':
+        return <VATermsAndFAQ />;
+      case 'cp-exam-prep':
+        return <CPExamPrep />;
+      case 'after-action-report':
+        return <AfterActionReport />
       default:
         return <SymptomLogger />;
     }

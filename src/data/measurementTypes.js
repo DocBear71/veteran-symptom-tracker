@@ -2366,7 +2366,7 @@ export const interpretMeasurement = (measurementTypeId, values, metadata = {}) =
       const { weight, height } = values;
       if (!height) return null; // Need height to calculate BMI
 
-      // Calculate BMI: (weight in lbs / (height in inches)Ã‚Â²) Ãƒâ€” 703
+      // Calculate BMI: (weight in lbs / (height in inches)Ã‚Â²) Ãƒâ€ 703
       const bmi = (weight / (height * height)) * 703;
 
       if (bmi >= 40) return { ...interpretations.obese3, bmi: bmi.toFixed(1) };
