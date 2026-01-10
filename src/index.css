@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+:root {
+    --base-font-size: 16px;
+}
+
 /* Enable dark mode variant */
 @custom-variant dark (&:where(.dark, .dark *));
 
@@ -120,4 +124,192 @@ input[type="range"]::-moz-range-thumb {
 
 .group-other .border-l-4 {
     border-left-color: rgb(59, 130, 246) !important; /* blue-500 */
+}
+
+/* ============================================
+   V2.5 ACCESSIBILITY STYLES
+   ============================================ */
+
+/* Base font size controlled by CSS variable */
+html {
+    font-size: var(--base-font-size, 16px);
+}
+
+/* ============================================
+   HIGH CONTRAST MODE
+   ============================================ */
+
+.high-contrast {
+    --text-primary: #000000;
+    --text-secondary: #1a1a1a;
+    --bg-primary: #ffffff;
+    --bg-secondary: #f0f0f0;
+    --border-color: #000000;
+}
+
+.high-contrast.dark {
+    --text-primary: #ffffff;
+    --text-secondary: #e5e5e5;
+    --bg-primary: #000000;
+    --bg-secondary: #1a1a1a;
+    --border-color: #ffffff;
+}
+
+/* High contrast text overrides */
+.high-contrast .text-gray-500,
+.high-contrast .text-gray-600 {
+    color: var(--text-secondary) !important;
+}
+
+.high-contrast.dark .text-gray-400,
+.high-contrast.dark .text-gray-500 {
+    color: var(--text-secondary) !important;
+}
+
+.high-contrast .text-gray-700,
+.high-contrast .text-gray-800,
+.high-contrast .text-gray-900 {
+    color: var(--text-primary) !important;
+}
+
+.high-contrast.dark .text-white,
+.high-contrast.dark .text-gray-100 {
+    color: var(--text-primary) !important;
+}
+
+/* High contrast borders */
+.high-contrast .border-gray-200,
+.high-contrast .border-gray-300 {
+    border-color: var(--border-color) !important;
+    border-width: 2px !important;
+}
+
+.high-contrast.dark .border-gray-600,
+.high-contrast.dark .border-gray-700 {
+    border-color: var(--border-color) !important;
+    border-width: 2px !important;
+}
+
+/* High contrast buttons and inputs */
+.high-contrast button:not([disabled]) {
+    border: 2px solid currentColor !important;
+}
+
+.high-contrast button:focus,
+.high-contrast input:focus,
+.high-contrast select:focus,
+.high-contrast textarea:focus {
+    outline: 3px solid #0066cc !important;
+    outline-offset: 2px !important;
+}
+
+.high-contrast input,
+.high-contrast select,
+.high-contrast textarea {
+    border: 2px solid var(--border-color) !important;
+}
+
+/* Dark + high contrast combination */
+.dark.high-contrast .bg-gray-800,
+.dark.high-contrast .bg-gray-900 {
+    background-color: #000000 !important;
+}
+
+.dark.high-contrast .bg-gray-700 {
+    background-color: #1a1a1a !important;
+}
+
+/* ============================================
+   REDUCED MOTION
+   ============================================ */
+
+/* System preference for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* User-enabled reduced motion class */
+.reduced-motion *,
+.reduced-motion *::before,
+.reduced-motion *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+}
+
+/* ============================================
+   SCREEN READER OPTIMIZATIONS
+   ============================================ */
+
+/* Enhanced focus indicators */
+.sr-optimized *:focus-visible {
+    outline: 3px solid #0066cc !important;
+    outline-offset: 3px !important;
+}
+
+/* Visually hidden but accessible to screen readers */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Skip link for keyboard navigation */
+.sr-optimized .skip-link {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: #0066cc;
+    color: white;
+    padding: 8px 16px;
+    z-index: 100;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.sr-optimized .skip-link:focus {
+    top: 0;
+}
+
+/* Enhanced link underlines */
+.sr-optimized a:not(.no-underline) {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+/* Ensure disabled elements are clearly indicated */
+.sr-optimized [disabled],
+.sr-optimized [aria-disabled="true"] {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Touch target minimum size (44x44 for WCAG) */
+@media (pointer: coarse) {
+    .sr-optimized button:not([role="switch"]),
+    .sr-optimized a,
+    .sr-optimized [role="button"]:not([role="switch"]) {
+        min-height: 44px;
+        min-width: 44px;
+    }
+}
+
+/* Error states - ensure visible indication */
+[aria-invalid="true"] {
+    border-color: #dc2626 !important;
+    box-shadow: 0 0 0 1px #dc2626;
 }

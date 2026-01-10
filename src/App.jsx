@@ -18,6 +18,8 @@ import MOSNoiseExposureLookup from './components/MOSNoiseExposureLookup';
 import VATermsAndFAQ from './components/VATermsAndFAQ';
 import CPExamPrep from './components/CPExamPrep';
 import AfterActionReport from './components/AfterActionReport';
+import QuickActionsMenu from './components/QuickActionsMenu';
+import { initializeAccessibility } from './components/AccessibilitySettings';
 
 
 // Profile system
@@ -63,6 +65,11 @@ const AppContent = () => {
 
   // Phase 1H - Copy last entry prefill data
   const [prefillData, setPrefillData] = useState(null);
+
+  // V2.5 - Initialize accessibility settings on app load
+  useEffect(() => {
+    initializeAccessibility();
+  }, []);
 
   /// Run multi-profile migration and cleanup on first load
   useEffect(() => {
@@ -199,6 +206,13 @@ const AppContent = () => {
         <Layout currentView={currentView} onNavigate={handleNavigate}>
           {renderView()}
         </Layout>
+
+        {/* V2.5 - Quick Actions Floating Button */}
+        <QuickActionsMenu
+            onNavigate={handleNavigate}
+            currentView={currentView}
+            hiddenViews={['log', 'settings']}
+        />
       </>
   );
 };

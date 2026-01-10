@@ -21,6 +21,7 @@ import { getBackupHistory } from '../utils/storageVersion';
 import { restoreFromEmergencyBackup } from '../utils/storageVersion';
 import { createEmergencyBackup } from '../utils/storageVersion';
 import CaregiverProgramInfo from './CaregiverProgramInfo';
+import AccessibilitySettings from './AccessibilitySettings';
 
 /**
  * Display backup history
@@ -276,44 +277,75 @@ const Settings = ({ onNavigate }) => {  // ← ADD onNavigate prop
       <div className="space-y-4 text-left">
         <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Settings</h2>
 
-        {/* Theme Settings */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
-          <h3 className="font-medium text-gray-900 dark:text-white mb-3">Appearance</h3>
-
-          <label className="block text-sm text-gray-700 dark:text-gray-300 mb-2">Theme</label>
-          <div className="grid grid-cols-3 gap-2">
-            <button
-                onClick={() => setThemeMode('light')}
-                className={`py-2 px-3 rounded-lg border-2 transition-colors ${
-                    theme === 'light'
-                        ? 'border-blue-900 dark:border-blue-500 bg-blue-50 dark:bg-blue-900/30 text-blue-900 dark:text-blue-300'
-                        : 'border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
-                }`}
-            >
-              ☀️ Light
-            </button>
-            <button
-                onClick={() => setThemeMode('dark')}
-                className={`py-2 px-3 rounded-lg border-2 transition-colors ${
-                    theme === 'dark'
-                        ? 'border-blue-900 dark:border-blue-500 bg-blue-50 dark:bg-blue-900/30 text-blue-900 dark:text-blue-300'
-                        : 'border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
-                }`}
-            >
-              🌙 Dark
-            </button>
-            <button
-                onClick={() => setThemeMode('system')}
-                className={`py-2 px-3 rounded-lg border-2 transition-colors ${
-                    theme === 'system'
-                        ? 'border-blue-900 dark:border-blue-500 bg-blue-50 dark:bg-blue-900/30 text-blue-900 dark:text-blue-300'
-                        : 'border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
-                }`}
-            >
-              💻 System
-            </button>
+        {/* Theme Settings - Collapsible */}
+        <details className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden group">
+          <summary className="px-4 py-3 cursor-pointer flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors list-none">
+            <div className="flex items-center gap-2">
+              <span className="text-xl">🎨</span>
+              <div>
+                <h3 className="font-medium text-gray-900 dark:text-white">Appearance</h3>
+                <p className="text-xs text-gray-500 dark:text-gray-400">Theme and display settings</p>
+              </div>
+            </div>
+            <span className="text-gray-400 dark:text-gray-500 transition-transform group-open:rotate-180">
+              ▼
+            </span>
+          </summary>
+          <div className="px-4 pb-4 border-t border-gray-200 dark:border-gray-700 pt-3">
+            <label className="block text-sm text-gray-700 dark:text-gray-300 mb-2">Theme</label>
+            <div className="grid grid-cols-3 gap-2">
+              <button
+                  onClick={() => setThemeMode('light')}
+                  className={`py-2 px-3 rounded-lg border-2 transition-colors ${
+                      theme === 'light'
+                          ? 'border-blue-900 dark:border-blue-500 bg-blue-50 dark:bg-blue-900/30 text-blue-900 dark:text-blue-300'
+                          : 'border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
+                  }`}
+              >
+                ☀️ Light
+              </button>
+              <button
+                  onClick={() => setThemeMode('dark')}
+                  className={`py-2 px-3 rounded-lg border-2 transition-colors ${
+                      theme === 'dark'
+                          ? 'border-blue-900 dark:border-blue-500 bg-blue-50 dark:bg-blue-900/30 text-blue-900 dark:text-blue-300'
+                          : 'border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
+                  }`}
+              >
+                🌙 Dark
+              </button>
+              <button
+                  onClick={() => setThemeMode('system')}
+                  className={`py-2 px-3 rounded-lg border-2 transition-colors ${
+                      theme === 'system'
+                          ? 'border-blue-900 dark:border-blue-500 bg-blue-50 dark:bg-blue-900/30 text-blue-900 dark:text-blue-300'
+                          : 'border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
+                  }`}
+              >
+                💻 System
+              </button>
+            </div>
           </div>
-        </div>
+        </details>
+
+        {/* V2.5 - Accessibility Settings - Collapsible */}
+        <details className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden group">
+          <summary className="px-4 py-3 cursor-pointer flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors list-none">
+            <div className="flex items-center gap-2">
+              <span className="text-xl">👁️</span>
+              <div>
+                <h3 className="font-medium text-gray-900 dark:text-white">Accessibility</h3>
+                <p className="text-xs text-gray-500 dark:text-gray-400">Font size, contrast, and motion settings</p>
+              </div>
+            </div>
+            <span className="text-gray-400 dark:text-gray-500 transition-transform group-open:rotate-180">
+              ▼
+            </span>
+          </summary>
+          <div className="border-t border-gray-200 dark:border-gray-700">
+            <AccessibilitySettings embedded={true} />
+          </div>
+        </details>
 
         {/* Message Banner */}
         {message && (
