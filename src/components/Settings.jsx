@@ -20,6 +20,7 @@ import useProfile from '../hooks/useProfile.jsx';
 import { getBackupHistory } from '../utils/storageVersion';
 import { restoreFromEmergencyBackup } from '../utils/storageVersion';
 import { createEmergencyBackup } from '../utils/storageVersion';
+import CaregiverProgramInfo from './CaregiverProgramInfo';
 
 /**
  * Display backup history
@@ -85,6 +86,7 @@ const Settings = ({ onNavigate }) => {  // ← ADD onNavigate prop
   const [deleteConfirmText, setDeleteConfirmText] = useState('');
   const [pendingRestore, setPendingRestore] = useState(null);
   const fileInputRef = useRef(null);
+  const [showCaregiverProgram, setShowCaregiverProgram] = useState(false);
 
 
   useEffect(() => {
@@ -420,6 +422,44 @@ const Settings = ({ onNavigate }) => {  // ← ADD onNavigate prop
             </div>
           </div>
         </div>
+        )}
+
+        {/* PCAFC Caregiver Program Info - Caregiver profiles only */}
+        {currentProfile && currentProfile.type === 'caregiver' && (
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+              <div className="flex items-start gap-4">
+                <span className="text-3xl">💗</span>
+                <div className="flex-1">
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                    VA Caregiver Support Program (PCAFC)
+                  </h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                    Learn about the Program of Comprehensive Assistance for Family Caregivers -
+                    eligibility, benefits, monthly stipend levels, and how to apply.
+                  </p>
+                  <div className="flex flex-wrap gap-2 mt-2">
+                <span className="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-xs rounded-full">
+                  💵 Monthly Stipend
+                </span>
+                    <span className="px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 text-xs rounded-full">
+                  🏥 CHAMPVA Coverage
+                </span>
+                    <span className="px-2 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400 text-xs rounded-full">
+                  🌴 Respite Care
+                </span>
+                  </div>
+                  <button
+                      onClick={() => setShowCaregiverProgram(true)}
+                      className="mt-3 px-4 py-2 bg-pink-600 hover:bg-pink-700 text-white rounded-lg text-sm font-medium transition-colors inline-flex items-center gap-2"
+                  >
+                    <span>View PCAFC Guide</span>
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
         )}
 
 
@@ -806,6 +846,44 @@ const Settings = ({ onNavigate }) => {  // ← ADD onNavigate prop
                       Delete Everything
                     </button>
                   </div>
+                </div>
+              </div>
+            </div>
+        )}
+
+        {/* PCAFC Caregiver Program Modal */}
+        {showCaregiverProgram && (
+            <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col">
+                {/* Modal Header */}
+                <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-gradient-to-r from-pink-600 to-purple-600">
+                  <h2 className="text-xl font-bold text-white flex items-center gap-2">
+                    <span>💗</span>
+                    VA Caregiver Support Program
+                  </h2>
+                  <button
+                      onClick={() => setShowCaregiverProgram(false)}
+                      className="text-white hover:text-pink-200 transition-colors"
+                  >
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </div>
+
+                {/* Modal Content */}
+                <div className="flex-1 overflow-y-auto p-6">
+                  <CaregiverProgramInfo />
+                </div>
+
+                {/* Modal Footer */}
+                <div className="px-6 py-4 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700/50">
+                  <button
+                      onClick={() => setShowCaregiverProgram(false)}
+                      className="w-full py-2 px-4 bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-200 font-medium rounded-lg hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors"
+                  >
+                    Close
+                  </button>
                 </div>
               </div>
             </div>
