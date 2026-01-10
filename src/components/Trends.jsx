@@ -15,6 +15,7 @@ import { getSymptomLogs, saveSymptomLog } from '../utils/storage';
 import RatingEvidence from './RatingEvidence';
 import { useProfile } from '../hooks/useProfile';
 import CPResources from './CPResources';
+import ServiceConnectionGuide from './ServiceConnectionGuide';
 
 // Custom tooltip component for dark mode support
 const CustomTooltip = ({ active, payload, label }) => {
@@ -237,6 +238,16 @@ const Trends = () => {
           >
             🎖️ C&P Resources
           </button>
+          <button
+              onClick={() => setActiveTab('service-connection')}
+              className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
+                  activeTab === 'service-connection'
+                      ? 'border-blue-500 text-blue-600 dark:text-blue-400'
+                      : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+              }`}
+          >
+            ⚖️ Service Connection
+          </button>
         </div>
 
         {/* Tab Content */}
@@ -447,6 +458,10 @@ const Trends = () => {
 
         {activeTab === 'cp-resources' && (
             <CPResources />
+        )}
+
+        {activeTab === 'service-connection' && (
+            <ServiceConnectionGuide />
         )}
       </div>
   );

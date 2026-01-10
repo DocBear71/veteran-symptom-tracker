@@ -3,6 +3,7 @@ import { ChevronDown, ChevronUp } from 'lucide-react';
 import { MIGRAINE_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
+import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 
 /**
  * Migraine Rating Card Component - Gold Standard Version
@@ -132,6 +133,15 @@ export default function MigraineRatingCard({ analysis, expanded, onToggle }) {
                   diagnosticCode="8100"
                   currentRating={supportedRating}
               />
+              <RatingEnhancementsDisplay
+                  diagnosticCode="8100"  // Use the appropriate DC code
+                  showDefinitions={true}
+                  showCaseLaw={true}
+                  showTips={true}
+                  showExamTips={true}
+              />
+
+
 
               {/* VA Rating Schedule */}
               <div>

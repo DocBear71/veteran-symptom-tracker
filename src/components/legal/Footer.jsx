@@ -8,8 +8,6 @@ import AboutUs from './AboutUs';
 import Contact from './Contact';
 import Donations from './Donations';
 import VATermsAndFAQ from '../VATermsAndFAQ';
-import CPExamPrep from '../CPExamPrep';
-import AfterActionReport from '../AfterActionReport';
 
 /**
  * Footer Component
@@ -138,21 +136,6 @@ const Footer = () => {
                 Doc Bear Enterprises
               </a>
 
-            <span className="text-blue-400 dark:text-gray-600">|</span>
-
-            <button
-                onClick={() => openModal('cp-exam-prep')}
-                className="text-blue-200 hover:text-white transition-colors"
-            >
-              C&P Exam Prep
-            </button>
-              <span className="text-blue-400 dark:text-gray-600">|</span>
-              <button
-                  onClick={() => openModal('after-action')}
-                  className="text-blue-200 hover:text-white transition-colors"
-              >
-                Exam Report
-              </button>
             </div>
 
             {/* App Info */}

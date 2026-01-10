@@ -3,6 +3,7 @@ import { ChevronDown, ChevronUp } from 'lucide-react';
 import { MENTAL_HEALTH_SHARED_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
+import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 
 /**
  * Mental Health Rating Card - Gold Standard Version
@@ -140,6 +141,13 @@ export default function MentalHealthRatingCard({
               <UnderstandingYourRating
                   diagnosticCode={displayCode}
                   currentRating={typeof supportedRating === 'number' ? supportedRating : parseInt(supportedRating, 10)}
+              />
+              <RatingEnhancementsDisplay
+                  diagnosticCode={displayCode}  // Use the appropriate DC code
+                  showDefinitions={true}
+                  showCaseLaw={true}
+                  showTips={true}
+                  showExamTips={true}
               />
 
 

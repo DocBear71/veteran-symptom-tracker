@@ -3,6 +3,7 @@ import { ChevronDown, ChevronUp } from 'lucide-react';
 import { PTSD_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
+import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 
 /**
  * PTSD Rating Card - Gold Standard Version
@@ -106,6 +107,13 @@ export default function PTSDRatingCard({ analysis, expanded, onToggle }) {
               <UnderstandingYourRating
                   diagnosticCode="9411"
                   currentRating={numericRating}
+              />
+              <RatingEnhancementsDisplay
+                  diagnosticCode="9411"  // Use the appropriate DC code
+                  showDefinitions={true}
+                  showCaseLaw={true}
+                  showTips={true}
+                  showExamTips={true}
               />
 
 

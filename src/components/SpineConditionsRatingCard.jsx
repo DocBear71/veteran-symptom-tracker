@@ -8,6 +8,7 @@ import {
 } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
+import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 
 /**
  * Spine Conditions Rating Card Component - Gold Standard Version
@@ -241,6 +242,13 @@ export default function SpineConditionsRatingCard({ analysis, diagnosticCode, ex
               <UnderstandingYourRating
                   diagnosticCode={diagnosticCode}
                   currentRating={numericRating}
+              />
+              <RatingEnhancementsDisplay
+                  diagnosticCode={diagnosticCode}  // Use the appropriate DC code
+                  showDefinitions={true}
+                  showCaseLaw={true}
+                  showTips={true}
+                  showExamTips={true}
               />
 
               {/* Section 3: VA Rating Schedule */}

@@ -3,6 +3,7 @@ import { ChevronDown, ChevronUp } from 'lucide-react';
 import { SLEEP_APNEA_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
+import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 
 /**
  * Sleep Apnea Rating Card Component - Gold Standard Version
@@ -159,6 +160,13 @@ export default function SleepApneaRatingCard({ analysis, profile, expanded, onTo
               <UnderstandingYourRating
                   diagnosticCode="6847"
                   currentRating={supportedRating}
+              />
+              <RatingEnhancementsDisplay
+                  diagnosticCode="6847"  // Use the appropriate DC code
+                  showDefinitions={true}
+                  showCaseLaw={true}
+                  showTips={true}
+                  showExamTips={true}
               />
 
               {/* VA Rating Schedule */}

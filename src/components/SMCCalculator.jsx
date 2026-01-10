@@ -7,6 +7,12 @@ import {
   SMC_RATES_2026,
   SMC_K_CRITERIA,
   SMC_S_CRITERIA,
+  SMC_L_CRITERIA,
+  SMC_M_CRITERIA,
+  SMC_N_CRITERIA,
+  SMC_O_CRITERIA,
+  SMC_R_CRITERIA,
+  SMC_T_CRITERIA,
   calculateSMCKEligibility,
   calculateSMCSEligibility,
   getCompleteSMCAnalysis
@@ -40,6 +46,7 @@ const SMCCalculator = ({
   const { profile } = useProfile();
   const [smcAnalysis, setSmcAnalysis] = useState(null);
   const [adlAnalysis, setAdlAnalysis] = useState(null);
+  const [higherSMCAnalysis, setHigherSMCAnalysis] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [expandedSections, setExpandedSections] = useState({});
 
@@ -123,15 +130,25 @@ const SMCCalculator = ({
         // Perform ADL/A&A analysis
         const adlResults = analyzeADLForSMC(adlLogs);
 
+
+        // Perform SMC-L analysis
+        const smcLResults = analyzeSMCLEligibility(scConditions, adlLogs);
+
+        // Perform Higher SMC analysis (M, N, O, R, T)
+        const higherResults = analyzeHigherSMCLevels(scConditions, adlLogs, smcKResults, smcLResults);
+
         // Combine all results
         setSmcAnalysis({
           smcK: smcKResults,
           smcS: smcSResults,
+          smcL: smcLResults,
           scConditions,
           totalConditions: scConditions.length,
         });
 
         setAdlAnalysis(adlResults);
+        setHigherSMCAnalysis(higherResults);
+
 
       } catch (error) {
         console.error('Error analyzing SMC eligibility:', error);
@@ -443,6 +460,316 @@ const SMCCalculator = ({
   };
 
   /**
+   * Analyze for SMC-L eligibility
+   * SMC-L requires bilateral losses OR factual A&A need
+   */
+  const analyzeSMCLEligibility = (conditions, adlLogs) => {
+    const eligibleConditions = [];
+    let qualifyingPathway = null;
+
+    // Check for bilateral feet loss
+    const hasBilateralFeetLoss = conditions.some(c => {
+      const name = (c.conditionName || '').toLowerCase();
+      return (name.includes('bilateral') && (name.includes('foot') || name.includes('feet'))) ||
+          (name.includes('amputation') && name.includes('both') && name.includes('foot'));
+    });
+
+    if (hasBilateralFeetLoss) {
+      eligibleConditions.push({
+        category: 'BILATERAL_FEET',
+        name: 'Loss of Both Feet',
+        description: 'Anatomical loss or loss of use of both feet',
+      });
+      qualifyingPathway = 'bilateral_feet';
+    }
+
+    // Check for bilateral hands loss
+    const hasBilateralHandsLoss = conditions.some(c => {
+      const name = (c.conditionName || '').toLowerCase();
+      return (name.includes('bilateral') && name.includes('hand')) ||
+          (name.includes('amputation') && name.includes('both') && name.includes('hand'));
+    });
+
+    if (hasBilateralHandsLoss) {
+      eligibleConditions.push({
+        category: 'BILATERAL_HANDS',
+        name: 'Loss of Both Hands',
+        description: 'Anatomical loss or loss of use of both hands',
+        note: 'Bilateral hand loss may qualify for SMC-M instead',
+      });
+      qualifyingPathway = 'bilateral_hands';
+    }
+
+    // Check for one hand + one foot loss
+    const hasHandLoss = conditions.some(c => {
+      const name = (c.conditionName || '').toLowerCase();
+      return name.includes('hand') && (name.includes('amputation') || name.includes('loss of use'));
+    });
+
+    const hasFootLoss = conditions.some(c => {
+      const name = (c.conditionName || '').toLowerCase();
+      return name.includes('foot') && (name.includes('amputation') || name.includes('loss of use'));
+    });
+
+    if (hasHandLoss && hasFootLoss) {
+      eligibleConditions.push({
+        category: 'HAND_AND_FOOT',
+        name: 'Loss of One Hand and One Foot',
+        description: 'Anatomical loss or loss of use of one hand AND one foot',
+      });
+      qualifyingPathway = 'hand_and_foot';
+    }
+
+    // Check ADL logs for factual A&A need
+    const adlFactors = analyzeADLFactors(adlLogs);
+    const hasFactualAA = adlFactors.factorsAffected >= 3 || adlFactors.hasBedridden || adlFactors.hasTotalDependence;
+
+    if (hasFactualAA) {
+      eligibleConditions.push({
+        category: 'AID_AND_ATTENDANCE',
+        name: 'Factual Need for Aid & Attendance',
+        description: `${adlFactors.factorsAffected} ADL factors documented`,
+        adlFactors: adlFactors,
+      });
+      if (!qualifyingPathway) qualifyingPathway = 'factual_aa';
+    }
+
+    const eligible = eligibleConditions.length > 0;
+
+    return {
+      eligible,
+      eligibleConditions,
+      qualifyingPathway,
+      monthlyAmount: eligible ? SMC_RATES_2026.L.veteran_alone : 0,
+      halfStepEligible: eligible && (adlFactors.factorsAffected >= 5 || adlFactors.hasNursingLevel),
+      halfStepAmount: SMC_RATES_2026.L_HALF?.veteran_alone || 5240.83,
+    };
+  };
+
+  /**
+   * Analyze ADL factors from logs
+   */
+  const analyzeADLFactors = (adlLogs) => {
+    if (!adlLogs || adlLogs.length === 0) {
+      return {
+        factorsAffected: 0,
+        factors: {},
+        hasBedridden: false,
+        hasTotalDependence: false,
+        hasNursingLevel: false,
+        hasHousebound: false,
+      };
+    }
+
+    const factors = {
+      dressing: adlLogs.some(l => l.symptomId?.includes('dress')),
+      hygiene: adlLogs.some(l => l.symptomId?.includes('hygiene') || l.symptomId?.includes('bath')),
+      feeding: adlLogs.some(l => l.symptomId?.includes('feed') || l.symptomId?.includes('eat')),
+      toileting: adlLogs.some(l =>
+          l.symptomId?.includes('toilet') || l.symptomId?.includes('bowel') ||
+          l.symptomId?.includes('bladder') || l.symptomId?.includes('incontinence')
+      ),
+      mobility: adlLogs.some(l =>
+          l.symptomId?.includes('mobility') || l.symptomId?.includes('bed') ||
+          l.symptomId?.includes('wheelchair') || l.symptomId?.includes('transfer')
+      ),
+      safety: adlLogs.some(l => l.symptomId?.includes('safety') || l.symptomId?.includes('supervision')),
+      cognitive: adlLogs.some(l => l.symptomId?.includes('cognitive') || l.symptomId?.includes('memory')),
+    };
+
+    return {
+      factorsAffected: Object.values(factors).filter(Boolean).length,
+      factors,
+      hasBedridden: adlLogs.some(l => l.symptomId?.includes('bedridden')),
+      hasTotalDependence: adlLogs.some(l => l.symptomId?.includes('total-depend')),
+      hasNursingLevel: adlLogs.some(l => l.symptomId?.includes('nursing-level')),
+      hasHousebound: adlLogs.some(l => l.symptomId?.includes('housebound')),
+    };
+  };
+
+  /**
+   * Analyze for higher SMC levels (M, N, O, R, T)
+   */
+  const analyzeHigherSMCLevels = (conditions, adlLogs, smcKResults, smcLResults) => {
+    const results = {
+      smcM: { eligible: false, conditions: [], reason: '', monthlyAmount: 0 },
+      smcN: { eligible: false, conditions: [], reason: '', monthlyAmount: 0 },
+      smcO: { eligible: false, conditions: [], reason: '', monthlyAmount: 0 },
+      smcR1: { eligible: false, conditions: [], reason: '', monthlyAmount: 0 },
+      smcR2: { eligible: false, conditions: [], reason: '', monthlyAmount: 0 },
+      smcT: { eligible: false, conditions: [], reason: '', monthlyAmount: 0 },
+      highestLevel: null,
+      highestAmount: 0,
+    };
+
+    // Helper to check for specific loss types
+    const hasConditionType = (type) => {
+      return conditions.some(c => {
+        const name = (c.conditionName || '').toLowerCase();
+        const dc = (c.diagnosticCode || '').toString();
+        switch (type) {
+          case 'bilateral_hands':
+            return (name.includes('bilateral') && name.includes('hand')) ||
+                (name.includes('both') && name.includes('hand'));
+          case 'bilateral_feet':
+            return (name.includes('bilateral') && (name.includes('foot') || name.includes('feet')));
+          case 'bilateral_blindness':
+            return (name.includes('bilateral') && name.includes('blind')) || dc === '6064';
+          case 'bilateral_blindness_light_only':
+            return dc === '6063' || (name.includes('light perception only') && name.includes('both'));
+          case 'bilateral_deafness':
+            return (name.includes('bilateral') && name.includes('deaf')) || (dc === '6100' && c.currentRating === 100);
+          case 'hand_loss':
+            return name.includes('hand') && (name.includes('amputation') || name.includes('loss of use'));
+          case 'foot_loss':
+            return name.includes('foot') && (name.includes('amputation') || name.includes('loss of use'));
+          case 'leg_above_knee':
+            return name.includes('leg') && (name.includes('above knee') || name.includes('hip'));
+          case 'arm_above_elbow':
+            return name.includes('arm') && (name.includes('above elbow') || name.includes('shoulder'));
+          case 'paraplegia':
+            return name.includes('paraplegia') || name.includes('spinal cord') ||
+                (name.includes('paralysis') && name.includes('lower'));
+          case 'quadriplegia':
+            return name.includes('quadriplegia') || name.includes('tetraplegia');
+          case 'tbi_100':
+            return (dc === '8045' || name.includes('tbi') || name.includes('traumatic brain')) && c.currentRating === 100;
+          case 'als':
+            return dc === '8017' || name.includes('als') || name.includes('amyotrophic lateral');
+          default:
+            return false;
+        }
+      });
+    };
+
+    const adlFactors = analyzeADLFactors(adlLogs);
+
+    // SMC-M Analysis
+    if (hasConditionType('bilateral_hands')) {
+      results.smcM.eligible = true;
+      results.smcM.conditions.push('Loss of use of both hands');
+      results.smcM.reason = 'Bilateral hand loss qualifies for SMC-M';
+    }
+
+    if (hasConditionType('hand_loss') && hasConditionType('leg_above_knee')) {
+      results.smcM.eligible = true;
+      results.smcM.conditions.push('Loss of one hand + one leg near hip');
+      results.smcM.reason = 'Hand and leg (hip level) loss qualifies for SMC-M';
+    }
+
+    if (hasConditionType('bilateral_blindness') && hasConditionType('bilateral_deafness')) {
+      results.smcM.eligible = true;
+      results.smcM.conditions.push('Bilateral blindness (5/200) + bilateral deafness');
+      results.smcM.reason = 'Blindness and deafness combination qualifies for SMC-M';
+    }
+
+    if (results.smcM.eligible) {
+      results.smcM.monthlyAmount = SMC_RATES_2026.M.veteran_alone;
+    }
+
+    // SMC-N Analysis
+    if (hasConditionType('arm_above_elbow') && conditions.filter(c =>
+        (c.conditionName || '').toLowerCase().includes('arm') &&
+        (c.conditionName || '').toLowerCase().includes('above elbow')
+    ).length >= 2) {
+      results.smcN.eligible = true;
+      results.smcN.conditions.push('Loss of both arms above elbow level');
+      results.smcN.reason = 'Bilateral arm loss above elbow qualifies for SMC-N';
+    }
+
+    if (results.smcN.eligible) {
+      results.smcN.monthlyAmount = SMC_RATES_2026.N.veteran_alone;
+    }
+
+    // SMC-O Analysis
+    if (hasConditionType('paraplegia')) {
+      const hasSphincter = conditions.some(c => {
+        const name = (c.conditionName || '').toLowerCase();
+        return name.includes('sphincter') || name.includes('incontinence');
+      });
+      if (hasSphincter) {
+        results.smcO.eligible = true;
+        results.smcO.conditions.push('Paraplegia with loss of sphincter control');
+        results.smcO.reason = 'Paraplegia with sphincter loss qualifies for SMC-O';
+      }
+    }
+
+    if (hasConditionType('quadriplegia')) {
+      results.smcO.eligible = true;
+      results.smcO.conditions.push('Quadriplegia');
+      results.smcO.reason = 'Quadriplegia qualifies for SMC-O';
+    }
+
+    if (hasConditionType('als')) {
+      results.smcO.eligible = true;
+      results.smcO.conditions.push('ALS (Amyotrophic Lateral Sclerosis)');
+      results.smcO.reason = 'ALS qualifies for SMC-O (minimum 100% rating)';
+    }
+
+    // Check for multiple L/M/N level combinations (pyramiding allowed at O)
+    let lmnCount = 0;
+    if (smcLResults?.eligible) lmnCount++;
+    if (results.smcM.eligible) lmnCount++;
+    if (results.smcN.eligible) lmnCount++;
+
+    if (lmnCount >= 2 && !results.smcO.eligible) {
+      results.smcO.eligible = true;
+      results.smcO.conditions.push('Multiple SMC-L/M/N level disabilities');
+      results.smcO.reason = 'Combination meeting multiple L/M/N criteria qualifies for SMC-O (pyramiding)';
+    }
+
+    if (results.smcO.eligible) {
+      results.smcO.monthlyAmount = SMC_RATES_2026.O.veteran_alone;
+      results.smcO.note = 'SMC-K is NOT paid with SMC-O';
+    }
+
+    // SMC-R1 Analysis
+    if (results.smcO.eligible && adlFactors.factorsAffected >= 3) {
+      results.smcR1.eligible = true;
+      results.smcR1.conditions.push('SMC-O eligible + Aid & Attendance need');
+      results.smcR1.reason = 'SMC-O with separate A&A need qualifies for SMC-R1';
+      results.smcR1.monthlyAmount = SMC_RATES_2026.R1.veteran_alone;
+    }
+
+    // SMC-R2 Analysis
+    if (results.smcR1.eligible && adlFactors.hasNursingLevel) {
+      results.smcR2.eligible = true;
+      results.smcR2.conditions.push('SMC-R1 eligible + nursing home level care needed');
+      results.smcR2.reason = 'SMC-R1 with nursing home level care qualifies for SMC-R2';
+      results.smcR2.monthlyAmount = SMC_RATES_2026.R2.veteran_alone;
+    }
+
+    // SMC-T Analysis
+    if (hasConditionType('tbi_100') && adlFactors.factorsAffected >= 3) {
+      results.smcT.eligible = true;
+      results.smcT.conditions.push('TBI at 100% + Aid & Attendance need');
+      results.smcT.reason = 'TBI at 100% with A&A need qualifies for SMC-T';
+      results.smcT.monthlyAmount = SMC_RATES_2026.T.veteran_alone;
+      results.smcT.note = 'SMC-T is specifically for TBI residuals requiring A&A';
+    }
+
+    // Determine highest eligible level
+    const levels = [
+      { key: 'smcR2', amount: results.smcR2.monthlyAmount, eligible: results.smcR2.eligible },
+      { key: 'smcT', amount: results.smcT.monthlyAmount, eligible: results.smcT.eligible },
+      { key: 'smcR1', amount: results.smcR1.monthlyAmount, eligible: results.smcR1.eligible },
+      { key: 'smcO', amount: results.smcO.monthlyAmount, eligible: results.smcO.eligible },
+      { key: 'smcN', amount: results.smcN.monthlyAmount, eligible: results.smcN.eligible },
+      { key: 'smcM', amount: results.smcM.monthlyAmount, eligible: results.smcM.eligible },
+    ];
+
+    for (const level of levels) {
+      if (level.eligible) {
+        results.highestLevel = level.key;
+        results.highestAmount = level.amount;
+        break;
+      }
+    }
+
+    return results;
+  };
+
+  /**
    * Analyze SMC-K eligibility from passed rating card analyses
    * This checks the actual logged symptoms via the rating card analysis props
    */
@@ -594,31 +921,59 @@ const SMCCalculator = ({
   // Calculate total potential SMC
   const totalPotentialSMC = useMemo(() => {
     let total = 0;
+    let baseLevel = null;
 
-    if (smcAnalysis?.smcK?.eligible) {
+    // Check for highest level (R2 > T > R1 > O > N > M > L > S)
+    if (higherSMCAnalysis?.smcR2?.eligible) {
+      total = higherSMCAnalysis.smcR2.monthlyAmount;
+      baseLevel = 'R2';
+    } else if (higherSMCAnalysis?.smcT?.eligible) {
+      total = higherSMCAnalysis.smcT.monthlyAmount;
+      baseLevel = 'T';
+    } else if (higherSMCAnalysis?.smcR1?.eligible) {
+      total = higherSMCAnalysis.smcR1.monthlyAmount;
+      baseLevel = 'R1';
+    } else if (higherSMCAnalysis?.smcO?.eligible) {
+      total = higherSMCAnalysis.smcO.monthlyAmount;
+      baseLevel = 'O';
+    } else if (higherSMCAnalysis?.smcN?.eligible) {
+      total = higherSMCAnalysis.smcN.monthlyAmount;
+      baseLevel = 'N';
+    } else if (higherSMCAnalysis?.smcM?.eligible) {
+      total = higherSMCAnalysis.smcM.monthlyAmount;
+      baseLevel = 'M';
+    } else if (smcAnalysis?.smcL?.eligible) {
+      total = smcAnalysis.smcL.monthlyAmount;
+      baseLevel = 'L';
+    } else if (adlAnalysis?.potentialLevel === 'L') {
+      total = adlAnalysis.potentialAmount;
+      baseLevel = 'L';
+    } else if (smcAnalysis?.smcS?.eligible) {
+      total = smcAnalysis.smcS.monthlyAmount;
+      baseLevel = 'S';
+    }
+
+    // SMC-K is additive UNLESS at O, R, or T
+    if (smcAnalysis?.smcK?.eligible && !['O', 'R1', 'R2', 'T'].includes(baseLevel)) {
       total += smcAnalysis.smcK.monthlyAmount;
     }
 
-    // SMC-S/L/R are replacements, not additive (except K)
-    // Show the highest applicable level
-    if (adlAnalysis?.potentialLevel === 'R') {
-      total = Math.max(total, adlAnalysis.potentialAmount);
-    } else if (adlAnalysis?.potentialLevel === 'L') {
-      total = Math.max(total, adlAnalysis.potentialAmount);
-    } else if (smcAnalysis?.smcS?.eligible || adlAnalysis?.potentialLevel === 'S') {
-      total = Math.max(total, SMC_RATES_2026.S.veteran_alone);
-    }
-
-    // SMC-K is additive on top of S/L (but not O/R/T)
-    if (smcAnalysis?.smcK?.eligible && adlAnalysis?.potentialLevel !== 'R') {
-      // K can be added to S or L
-      if (adlAnalysis?.potentialLevel === 'S' || adlAnalysis?.potentialLevel === 'L' || smcAnalysis?.smcS?.eligible) {
-        total += smcAnalysis.smcK.monthlyAmount;
-      }
-    }
-
     return total;
-  }, [smcAnalysis, adlAnalysis]);
+  }, [smcAnalysis, adlAnalysis, higherSMCAnalysis]);
+
+  // Determine highest SMC level
+  const highestSMCLevel = useMemo(() => {
+    if (higherSMCAnalysis?.smcR2?.eligible) return 'R2';
+    if (higherSMCAnalysis?.smcT?.eligible) return 'T';
+    if (higherSMCAnalysis?.smcR1?.eligible) return 'R1';
+    if (higherSMCAnalysis?.smcO?.eligible) return 'O';
+    if (higherSMCAnalysis?.smcN?.eligible) return 'N';
+    if (higherSMCAnalysis?.smcM?.eligible) return 'M';
+    if (smcAnalysis?.smcL?.eligible || adlAnalysis?.potentialLevel === 'L') return 'L';
+    if (smcAnalysis?.smcS?.eligible || adlAnalysis?.potentialLevel === 'S') return 'S';
+    if (smcAnalysis?.smcK?.eligible) return 'K';
+    return null;
+  }, [smcAnalysis, adlAnalysis, higherSMCAnalysis]);
 
   if (isLoading) {
     return (
@@ -631,7 +986,36 @@ const SMCCalculator = ({
     );
   }
 
-  const hasAnyEligibility = smcAnalysis?.smcK?.eligible || smcAnalysis?.smcS?.eligible || adlAnalysis?.potentialLevel;
+  const hasAnyEligibility = smcAnalysis?.smcK?.eligible ||
+      smcAnalysis?.smcS?.eligible ||
+      smcAnalysis?.smcL?.eligible ||
+      adlAnalysis?.potentialLevel ||
+      higherSMCAnalysis?.highestLevel;
+
+  // Color scheme for each SMC level
+  const getLevelColors = (level) => {
+    switch (level) {
+      case 'K':
+        return { bg: 'bg-amber-50 dark:bg-amber-900/20', border: 'border-amber-300 dark:border-amber-700', text: 'text-amber-600 dark:text-amber-400', badge: 'bg-amber-200 dark:bg-amber-800 text-amber-800 dark:text-amber-200' };
+      case 'S':
+        return { bg: 'bg-purple-50 dark:bg-purple-900/20', border: 'border-purple-300 dark:border-purple-700', text: 'text-purple-600 dark:text-purple-400', badge: 'bg-purple-200 dark:bg-purple-800 text-purple-800 dark:text-purple-200' };
+      case 'L':
+        return { bg: 'bg-blue-50 dark:bg-blue-900/20', border: 'border-blue-300 dark:border-blue-700', text: 'text-blue-600 dark:text-blue-400', badge: 'bg-blue-200 dark:bg-blue-800 text-blue-800 dark:text-blue-200' };
+      case 'M':
+        return { bg: 'bg-indigo-50 dark:bg-indigo-900/20', border: 'border-indigo-300 dark:border-indigo-700', text: 'text-indigo-600 dark:text-indigo-400', badge: 'bg-indigo-200 dark:bg-indigo-800 text-indigo-800 dark:text-indigo-200' };
+      case 'N':
+        return { bg: 'bg-violet-50 dark:bg-violet-900/20', border: 'border-violet-300 dark:border-violet-700', text: 'text-violet-600 dark:text-violet-400', badge: 'bg-violet-200 dark:bg-violet-800 text-violet-800 dark:text-violet-200' };
+      case 'O':
+        return { bg: 'bg-red-50 dark:bg-red-900/20', border: 'border-red-300 dark:border-red-700', text: 'text-red-600 dark:text-red-400', badge: 'bg-red-200 dark:bg-red-800 text-red-800 dark:text-red-200' };
+      case 'R1':
+      case 'R2':
+        return { bg: 'bg-rose-50 dark:bg-rose-900/20', border: 'border-rose-300 dark:border-rose-700', text: 'text-rose-600 dark:text-rose-400', badge: 'bg-rose-200 dark:bg-rose-800 text-rose-800 dark:text-rose-200' };
+      case 'T':
+        return { bg: 'bg-orange-50 dark:bg-orange-900/20', border: 'border-orange-300 dark:border-orange-700', text: 'text-orange-600 dark:text-orange-400', badge: 'bg-orange-200 dark:bg-orange-800 text-orange-800 dark:text-orange-200' };
+      default:
+        return { bg: 'bg-gray-50 dark:bg-gray-700/30', border: 'border-gray-200 dark:border-gray-600', text: 'text-gray-600 dark:text-gray-400', badge: 'bg-gray-200 dark:bg-gray-600 text-gray-600 dark:text-gray-300' };
+    }
+  };
 
   return (
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden border-l-4 border-amber-500">
@@ -686,8 +1070,50 @@ const SMCCalculator = ({
             <div className="px-6 pb-6 space-y-6">
               <div className="border-t border-gray-200 dark:border-gray-700" />
 
+              {/* SMC Hierarchy Visual */}
+              <div className="bg-gradient-to-r from-amber-50 to-red-50 dark:from-gray-700/50 dark:to-gray-700/50 rounded-lg p-4">
+                <h4 className="font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+                  <Calculator className="w-5 h-5" />
+                  SMC Level Hierarchy
+                </h4>
+                <div className="flex flex-wrap gap-2">
+                  {['K', 'S', 'L', 'M', 'N', 'O', 'R1', 'R2', 'T'].map(level => {
+                    const colors = getLevelColors(level);
+                    const isEligible =
+                        (level === 'K' && smcAnalysis?.smcK?.eligible) ||
+                        (level === 'S' && smcAnalysis?.smcS?.eligible) ||
+                        (level === 'L' && (smcAnalysis?.smcL?.eligible || adlAnalysis?.potentialLevel === 'L')) ||
+                        (level === 'M' && higherSMCAnalysis?.smcM?.eligible) ||
+                        (level === 'N' && higherSMCAnalysis?.smcN?.eligible) ||
+                        (level === 'O' && higherSMCAnalysis?.smcO?.eligible) ||
+                        (level === 'R1' && higherSMCAnalysis?.smcR1?.eligible) ||
+                        (level === 'R2' && higherSMCAnalysis?.smcR2?.eligible) ||
+                        (level === 'T' && higherSMCAnalysis?.smcT?.eligible);
+                    const isHighest = level === highestSMCLevel;
+
+                    return (
+                        <div
+                            key={level}
+                            className={`px-3 py-1.5 rounded-lg border-2 flex items-center gap-1.5 ${
+                                isEligible ? colors.bg + ' ' + colors.border : 'bg-gray-100 dark:bg-gray-700 border-gray-200 dark:border-gray-600'
+                            } ${isHighest ? 'ring-2 ring-green-500 ring-offset-1' : ''}`}
+                        >
+            <span className={`font-bold text-sm ${isEligible ? colors.text : 'text-gray-400'}`}>
+              SMC-{level}
+            </span>
+                          {isEligible && <CheckCircle className="w-4 h-4 text-green-500" />}
+                          {isHighest && <span className="text-xs text-green-600 dark:text-green-400 font-medium">★</span>}
+                        </div>
+                    );
+                  })}
+                </div>
+                <p className="text-xs text-gray-600 dark:text-gray-400 mt-2">
+                  K is additive (except with O/R/T). S through T are replacement rates (highest applies).
+                </p>
+              </div>
+
               {/* Overview Cards */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-left">
                 {/* SMC-K Card */}
                 <div className={`p-4 rounded-lg border-2 ${
                     smcAnalysis?.smcK?.eligible
@@ -785,6 +1211,174 @@ const SMCCalculator = ({
                 </div>
               </div>
 
+              {/* Overview Cards - Row 2: M, N, O */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {/* SMC-M Card */}
+                <div className={`p-4 rounded-lg border-2 ${
+                    higherSMCAnalysis?.smcM?.eligible
+                        ? 'bg-indigo-50 dark:bg-indigo-900/20 border-indigo-300 dark:border-indigo-700'
+                        : 'bg-gray-50 dark:bg-gray-700/30 border-gray-200 dark:border-gray-600'
+                }`}>
+                  <div className="flex items-center gap-2 mb-2">
+      <span className={`px-2 py-0.5 rounded text-xs font-bold ${
+          higherSMCAnalysis?.smcM?.eligible
+              ? 'bg-indigo-200 dark:bg-indigo-800 text-indigo-800 dark:text-indigo-200'
+              : 'bg-gray-200 dark:bg-gray-600 text-gray-600 dark:text-gray-300'
+      }`}>
+        SMC-M
+      </span>
+                    {higherSMCAnalysis?.smcM?.eligible && <CheckCircle className="w-4 h-4 text-green-500" />}
+                  </div>
+                  <div className="text-lg font-bold text-gray-900 dark:text-white">
+                    {higherSMCAnalysis?.smcM?.eligible
+                        ? `$${higherSMCAnalysis.smcM.monthlyAmount.toFixed(2)}/mo`
+                        : 'Not Eligible'
+                    }
+                  </div>
+                  <div className="text-xs text-gray-600 dark:text-gray-400">
+                    Severe combinations
+                  </div>
+                </div>
+
+                {/* SMC-N Card */}
+                <div className={`p-4 rounded-lg border-2 ${
+                    higherSMCAnalysis?.smcN?.eligible
+                        ? 'bg-violet-50 dark:bg-violet-900/20 border-violet-300 dark:border-violet-700'
+                        : 'bg-gray-50 dark:bg-gray-700/30 border-gray-200 dark:border-gray-600'
+                }`}>
+                  <div className="flex items-center gap-2 mb-2">
+      <span className={`px-2 py-0.5 rounded text-xs font-bold ${
+          higherSMCAnalysis?.smcN?.eligible
+              ? 'bg-violet-200 dark:bg-violet-800 text-violet-800 dark:text-violet-200'
+              : 'bg-gray-200 dark:bg-gray-600 text-gray-600 dark:text-gray-300'
+      }`}>
+        SMC-N
+      </span>
+                    {higherSMCAnalysis?.smcN?.eligible && <CheckCircle className="w-4 h-4 text-green-500" />}
+                  </div>
+                  <div className="text-lg font-bold text-gray-900 dark:text-white">
+                    {higherSMCAnalysis?.smcN?.eligible
+                        ? `$${higherSMCAnalysis.smcN.monthlyAmount.toFixed(2)}/mo`
+                        : 'Not Eligible'
+                    }
+                  </div>
+                  <div className="text-xs text-gray-600 dark:text-gray-400">
+                    Most severe (below O)
+                  </div>
+                </div>
+
+                {/* SMC-O Card */}
+                <div className={`p-4 rounded-lg border-2 ${
+                    higherSMCAnalysis?.smcO?.eligible
+                        ? 'bg-red-50 dark:bg-red-900/20 border-red-300 dark:border-red-700'
+                        : 'bg-gray-50 dark:bg-gray-700/30 border-gray-200 dark:border-gray-600'
+                }`}>
+                  <div className="flex items-center gap-2 mb-2">
+      <span className={`px-2 py-0.5 rounded text-xs font-bold ${
+          higherSMCAnalysis?.smcO?.eligible
+              ? 'bg-red-200 dark:bg-red-800 text-red-800 dark:text-red-200'
+              : 'bg-gray-200 dark:bg-gray-600 text-gray-600 dark:text-gray-300'
+      }`}>
+        SMC-O
+      </span>
+                    {higherSMCAnalysis?.smcO?.eligible && <CheckCircle className="w-4 h-4 text-green-500" />}
+                  </div>
+                  <div className="text-lg font-bold text-gray-900 dark:text-white">
+                    {higherSMCAnalysis?.smcO?.eligible
+                        ? `$${higherSMCAnalysis.smcO.monthlyAmount.toFixed(2)}/mo`
+                        : 'Not Eligible'
+                    }
+                  </div>
+                  <div className="text-xs text-gray-600 dark:text-gray-400">
+                    Maximum schedular
+                  </div>
+                </div>
+              </div>
+
+              {/* Overview Cards - Row 3: R1, R2, T */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {/* SMC-R1 Card */}
+                <div className={`p-4 rounded-lg border-2 ${
+                    higherSMCAnalysis?.smcR1?.eligible
+                        ? 'bg-rose-50 dark:bg-rose-900/20 border-rose-300 dark:border-rose-700'
+                        : 'bg-gray-50 dark:bg-gray-700/30 border-gray-200 dark:border-gray-600'
+                }`}>
+                  <div className="flex items-center gap-2 mb-2">
+      <span className={`px-2 py-0.5 rounded text-xs font-bold ${
+          higherSMCAnalysis?.smcR1?.eligible
+              ? 'bg-rose-200 dark:bg-rose-800 text-rose-800 dark:text-rose-200'
+              : 'bg-gray-200 dark:bg-gray-600 text-gray-600 dark:text-gray-300'
+      }`}>
+        SMC-R1
+      </span>
+                    {higherSMCAnalysis?.smcR1?.eligible && <CheckCircle className="w-4 h-4 text-green-500" />}
+                  </div>
+                  <div className="text-lg font-bold text-gray-900 dark:text-white">
+                    {higherSMCAnalysis?.smcR1?.eligible
+                        ? `$${higherSMCAnalysis.smcR1.monthlyAmount.toFixed(2)}/mo`
+                        : 'Not Eligible'
+                    }
+                  </div>
+                  <div className="text-xs text-gray-600 dark:text-gray-400">
+                    Higher A&A (O + A&A)
+                  </div>
+                </div>
+
+                {/* SMC-R2 Card */}
+                <div className={`p-4 rounded-lg border-2 ${
+                    higherSMCAnalysis?.smcR2?.eligible
+                        ? 'bg-rose-50 dark:bg-rose-900/20 border-rose-300 dark:border-rose-700'
+                        : 'bg-gray-50 dark:bg-gray-700/30 border-gray-200 dark:border-gray-600'
+                }`}>
+                  <div className="flex items-center gap-2 mb-2">
+      <span className={`px-2 py-0.5 rounded text-xs font-bold ${
+          higherSMCAnalysis?.smcR2?.eligible
+              ? 'bg-rose-200 dark:bg-rose-800 text-rose-800 dark:text-rose-200'
+              : 'bg-gray-200 dark:bg-gray-600 text-gray-600 dark:text-gray-300'
+      }`}>
+        SMC-R2
+      </span>
+                    {higherSMCAnalysis?.smcR2?.eligible && <CheckCircle className="w-4 h-4 text-green-500" />}
+                  </div>
+                  <div className="text-lg font-bold text-gray-900 dark:text-white">
+                    {higherSMCAnalysis?.smcR2?.eligible
+                        ? `$${higherSMCAnalysis.smcR2.monthlyAmount.toFixed(2)}/mo`
+                        : 'Not Eligible'
+                    }
+                  </div>
+                  <div className="text-xs text-gray-600 dark:text-gray-400">
+                    Nursing home level
+                  </div>
+                </div>
+
+                {/* SMC-T Card */}
+                <div className={`p-4 rounded-lg border-2 ${
+                    higherSMCAnalysis?.smcT?.eligible
+                        ? 'bg-orange-50 dark:bg-orange-900/20 border-orange-300 dark:border-orange-700'
+                        : 'bg-gray-50 dark:bg-gray-700/30 border-gray-200 dark:border-gray-600'
+                }`}>
+                  <div className="flex items-center gap-2 mb-2">
+      <span className={`px-2 py-0.5 rounded text-xs font-bold ${
+          higherSMCAnalysis?.smcT?.eligible
+              ? 'bg-orange-200 dark:bg-orange-800 text-orange-800 dark:text-orange-200'
+              : 'bg-gray-200 dark:bg-gray-600 text-gray-600 dark:text-gray-300'
+      }`}>
+        SMC-T
+      </span>
+                    {higherSMCAnalysis?.smcT?.eligible && <CheckCircle className="w-4 h-4 text-green-500" />}
+                  </div>
+                  <div className="text-lg font-bold text-gray-900 dark:text-white">
+                    {higherSMCAnalysis?.smcT?.eligible
+                        ? `$${higherSMCAnalysis.smcT.monthlyAmount.toFixed(2)}/mo`
+                        : 'Not Eligible'
+                    }
+                  </div>
+                  <div className="text-xs text-gray-600 dark:text-gray-400">
+                    TBI-specific A&A
+                  </div>
+                </div>
+              </div>
+
               {/* SMC-K Details */}
               {smcAnalysis?.smcK && (
                   <div className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
@@ -793,16 +1387,16 @@ const SMCCalculator = ({
                         className="w-full px-4 py-3 flex items-center justify-between bg-gray-50 dark:bg-gray-700/50 hover:bg-gray-100 dark:hover:bg-gray-700"
                     >
                       <div className="flex items-center gap-2">
-                  <span className="font-medium text-gray-900 dark:text-white">
-                    SMC-K Analysis
-                  </span>
+                        <span className="font-medium text-gray-900 dark:text-white text-left">
+                          SMC-K Analysis (Stackable x3)
+                        </span>
                         <span className={`px-2 py-0.5 rounded text-xs ${
                             smcAnalysis.smcK.eligible
                                 ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300'
                                 : 'bg-gray-100 dark:bg-gray-600 text-gray-600 dark:text-gray-300'
                         }`}>
-                    {smcAnalysis.smcK.eligible ? 'Eligible' : 'Not Eligible'}
-                  </span>
+                          {smcAnalysis.smcK.eligible ? 'Eligible' : 'Not Eligible'}
+                        </span>
                       </div>
                       {expandedSections.smcK ? (
                           <ChevronUp className="w-4 h-4 text-gray-400" />
@@ -879,7 +1473,7 @@ const SMCCalculator = ({
                         className="w-full px-4 py-3 flex items-center justify-between bg-gray-50 dark:bg-gray-700/50 hover:bg-gray-100 dark:hover:bg-gray-700"
                     >
                       <div className="flex items-center gap-2">
-                  <span className="font-medium text-gray-900 dark:text-white">
+                  <span className="font-medium text-gray-900 dark:text-white text-left">
                     SMC-S Analysis (Housebound)
                   </span>
                         <span className={`px-2 py-0.5 rounded text-xs ${
@@ -968,6 +1562,312 @@ const SMCCalculator = ({
                   </div>
               )}
 
+              {/* SMC-M/N/O Details */}
+              <div className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
+                <button
+                    onClick={() => toggleSection('higherSMC')}
+                    className="w-full px-4 py-3 flex items-center justify-between bg-gray-50 dark:bg-gray-700/50 hover:bg-gray-100 dark:hover:bg-gray-700"
+                >
+                  <div className="flex items-center gap-2">
+                    <span className="font-medium text-gray-900 dark:text-white text-left">SMC-M/N/O Analysis (Severe Combinations)</span>
+                    <span className={`px-2 py-0.5 rounded text-xs ${
+                        higherSMCAnalysis?.smcM?.eligible || higherSMCAnalysis?.smcN?.eligible || higherSMCAnalysis?.smcO?.eligible
+                            ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300'
+                            : 'bg-gray-100 dark:bg-gray-600 text-gray-600 dark:text-gray-300'
+                    }`}>
+        {higherSMCAnalysis?.smcO?.eligible ? 'SMC-O Eligible' :
+            higherSMCAnalysis?.smcN?.eligible ? 'SMC-N Eligible' :
+                higherSMCAnalysis?.smcM?.eligible ? 'SMC-M Eligible' : 'Not Eligible'}
+      </span>
+                  </div>
+                  {expandedSections.higherSMC ? <ChevronUp className="w-4 h-4 text-gray-400" /> : <ChevronDown className="w-4 h-4 text-gray-400" />}
+                </button>
+
+                {expandedSections.higherSMC && (
+                    <div className="px-4 py-3 space-y-4">
+                      <p className="text-sm text-gray-600 dark:text-gray-400">
+                        SMC levels M, N, and O are for veterans with severe combinations of disabilities
+                        involving multiple anatomical losses or paralysis.
+                      </p>
+
+                      {/* SMC-M */}
+                      <div className={`p-3 rounded-lg border ${
+                          higherSMCAnalysis?.smcM?.eligible
+                              ? 'bg-indigo-50 dark:bg-indigo-900/20 border-indigo-300 dark:border-indigo-700'
+                              : 'bg-gray-50 dark:bg-gray-700/30 border-gray-200 dark:border-gray-600'
+                      }`}>
+                        <div className="flex items-center justify-between mb-2">
+                          <div className="flex items-center gap-2">
+                            <span className="font-bold text-indigo-600 dark:text-indigo-400">SMC-M</span>
+                            <span className="text-sm text-gray-600 dark:text-gray-400">${SMC_RATES_2026.M.veteran_alone.toFixed(2)}/mo</span>
+                          </div>
+                          {higherSMCAnalysis?.smcM?.eligible && <CheckCircle className="w-5 h-5 text-green-500" />}
+                        </div>
+                        <p className="text-xs text-gray-600 dark:text-gray-400 mb-2">Qualifies for:</p>
+                        <ul className="text-xs text-gray-600 dark:text-gray-400 list-disc list-inside">
+                          <li>Loss of both hands</li>
+                          <li>One hand + one leg near hip preventing prosthesis</li>
+                          <li>Blindness (5/200) + deafness</li>
+                          <li>Blindness (5/200) + hand or foot loss</li>
+                        </ul>
+                        {higherSMCAnalysis?.smcM?.eligible && (
+                            <div className="mt-2 p-2 bg-green-100 dark:bg-green-900/30 rounded">
+                              <p className="text-sm text-green-700 dark:text-green-300">{higherSMCAnalysis.smcM.reason}</p>
+                            </div>
+                        )}
+                      </div>
+
+                      {/* SMC-N */}
+                      <div className={`p-3 rounded-lg border ${
+                          higherSMCAnalysis?.smcN?.eligible
+                              ? 'bg-violet-50 dark:bg-violet-900/20 border-violet-300 dark:border-violet-700'
+                              : 'bg-gray-50 dark:bg-gray-700/30 border-gray-200 dark:border-gray-600'
+                      }`}>
+                        <div className="flex items-center justify-between mb-2">
+                          <div className="flex items-center gap-2">
+                            <span className="font-bold text-violet-600 dark:text-violet-400">SMC-N</span>
+                            <span className="text-sm text-gray-600 dark:text-gray-400">${SMC_RATES_2026.N.veteran_alone.toFixed(2)}/mo</span>
+                          </div>
+                          {higherSMCAnalysis?.smcN?.eligible && <CheckCircle className="w-5 h-5 text-green-500" />}
+                        </div>
+                        <p className="text-xs text-gray-600 dark:text-gray-400 mb-2">Qualifies for:</p>
+                        <ul className="text-xs text-gray-600 dark:text-gray-400 list-disc list-inside">
+                          <li>Loss of both arms above elbow</li>
+                          <li>Loss of both legs above knee</li>
+                          <li>Blindness (light perception) + hand + foot loss</li>
+                        </ul>
+                        {higherSMCAnalysis?.smcN?.eligible && (
+                            <div className="mt-2 p-2 bg-green-100 dark:bg-green-900/30 rounded">
+                              <p className="text-sm text-green-700 dark:text-green-300">{higherSMCAnalysis.smcN.reason}</p>
+                            </div>
+                        )}
+                      </div>
+
+                      {/* SMC-O */}
+                      <div className={`p-3 rounded-lg border ${
+                          higherSMCAnalysis?.smcO?.eligible
+                              ? 'bg-red-50 dark:bg-red-900/20 border-red-300 dark:border-red-700'
+                              : 'bg-gray-50 dark:bg-gray-700/30 border-gray-200 dark:border-gray-600'
+                      }`}>
+                        <div className="flex flex-wrap items-center gap-2 mb-2">
+                          <span className="font-bold text-red-600 dark:text-red-400 whitespace-nowrap">SMC-O</span>
+                          <span className="text-sm text-gray-600 dark:text-gray-400 whitespace-nowrap">${SMC_RATES_2026.O.veteran_alone.toFixed(2)}/mo</span>
+                          <span className="text-xs bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 px-1.5 py-0.5 rounded whitespace-nowrap">Max Schedular</span>
+                          {higherSMCAnalysis?.smcO?.eligible && <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />}
+                        </div>
+                        <p className="text-xs text-gray-600 dark:text-gray-400 mb-2">Qualifies for:</p>
+                        <ul className="text-xs text-gray-600 dark:text-gray-400 list-disc list-inside">
+                          <li>Paraplegia with sphincter loss</li>
+                          <li>Quadriplegia</li>
+                          <li>ALS (Amyotrophic Lateral Sclerosis)</li>
+                          <li>Multiple L/M/N level combinations (pyramiding allowed)</li>
+                        </ul>
+                        {higherSMCAnalysis?.smcO?.eligible && (
+                            <div className="mt-2 p-2 bg-green-100 dark:bg-green-900/30 rounded">
+                              <p className="text-sm text-green-700 dark:text-green-300">{higherSMCAnalysis.smcO.reason}</p>
+                            </div>
+                        )}
+                        <p className="text-xs text-amber-600 dark:text-amber-400 mt-2">
+                          ⚠️ SMC-K is NOT paid with SMC-O
+                        </p>
+                      </div>
+                    </div>
+                )}
+              </div>
+
+              {/* SMC-R/T Details */}
+              <div className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
+                <button
+                    onClick={() => toggleSection('smcRT')}
+                    className="w-full px-4 py-3 flex items-center justify-between bg-gray-50 dark:bg-gray-700/50 hover:bg-gray-100 dark:hover:bg-gray-700"
+                >
+                  <div className="flex items-center gap-2">
+                    <span className="font-medium text-gray-900 dark:text-white text-left">SMC-R/T Analysis (Higher A&A / TBI)</span>
+                    <span className={`px-2 py-0.5 rounded text-xs ${
+                        higherSMCAnalysis?.smcR1?.eligible || higherSMCAnalysis?.smcR2?.eligible || higherSMCAnalysis?.smcT?.eligible
+                            ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300'
+                            : 'bg-gray-100 dark:bg-gray-600 text-gray-600 dark:text-gray-300'
+                    }`}>
+        {higherSMCAnalysis?.smcR2?.eligible ? 'SMC-R2 Eligible' :
+            higherSMCAnalysis?.smcT?.eligible ? 'SMC-T Eligible' :
+                higherSMCAnalysis?.smcR1?.eligible ? 'SMC-R1 Eligible' : 'Not Eligible'}
+      </span>
+                  </div>
+                  {expandedSections.smcRT ? <ChevronUp className="w-4 h-4 text-gray-400" /> : <ChevronDown className="w-4 h-4 text-gray-400" />}
+                </button>
+
+                {expandedSections.smcRT && (
+                    <div className="px-4 py-3 space-y-4">
+                      <p className="text-sm text-gray-600 dark:text-gray-400">
+                        SMC-R and SMC-T are the highest SMC levels, for veterans requiring the most intensive care.
+                      </p>
+
+                      {/* SMC-R1 */}
+                      <div className={`p-3 rounded-lg border ${
+                          higherSMCAnalysis?.smcR1?.eligible
+                              ? 'bg-rose-50 dark:bg-rose-900/20 border-rose-300 dark:border-rose-700'
+                              : 'bg-gray-50 dark:bg-gray-700/30 border-gray-200 dark:border-gray-600'
+                      }`}>
+                        <div className="flex flex-wrap items-center gap-2 mb-2">
+                          <span className="font-bold text-rose-600 dark:text-rose-400 whitespace-nowrap">SMC-R1</span>
+                          <span className="text-sm text-gray-600 dark:text-gray-400 whitespace-nowrap">${SMC_RATES_2026.R1.veteran_alone.toFixed(2)}/mo</span>
+                          {higherSMCAnalysis?.smcR1?.eligible && <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />}
+                        </div>
+                        <p className="text-xs text-gray-600 dark:text-gray-400">
+                          Requires SMC-O or SMC-P eligibility PLUS need for Aid & Attendance based on a SEPARATE disability.
+                        </p>
+                        {higherSMCAnalysis?.smcR1?.eligible && (
+                            <div className="mt-2 p-2 bg-green-100 dark:bg-green-900/30 rounded">
+                              <p className="text-sm text-green-700 dark:text-green-300">{higherSMCAnalysis.smcR1.reason}</p>
+                            </div>
+                        )}
+                      </div>
+
+                      {/* SMC-R2 */}
+                      <div className={`p-3 rounded-lg border ${
+                          higherSMCAnalysis?.smcR2?.eligible
+                              ? 'bg-rose-50 dark:bg-rose-900/20 border-rose-300 dark:border-rose-700'
+                              : 'bg-gray-50 dark:bg-gray-700/30 border-gray-200 dark:border-gray-600'
+                      }`}>
+                        <div className="flex flex-wrap items-center gap-2 mb-2">
+                          <span className="font-bold text-rose-600 dark:text-rose-400 whitespace-nowrap">SMC-R2</span>
+                          <span className="text-sm text-gray-600 dark:text-gray-400 whitespace-nowrap">${SMC_RATES_2026.R2.veteran_alone.toFixed(2)}/mo</span>
+                          <span className="text-xs bg-rose-100 dark:bg-rose-900/30 text-rose-700 dark:text-rose-300 px-1.5 py-0.5 rounded whitespace-nowrap">Highest</span>
+                          {higherSMCAnalysis?.smcR2?.eligible && <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />}
+                        </div>
+                        <p className="text-xs text-gray-600 dark:text-gray-400">
+                          Requires SMC-R1 eligibility PLUS need for nursing home level care (would require hospitalization without personal healthcare services).
+                        </p>
+                        {higherSMCAnalysis?.smcR2?.eligible && (
+                            <div className="mt-2 p-2 bg-green-100 dark:bg-green-900/30 rounded">
+                              <p className="text-sm text-green-700 dark:text-green-300">{higherSMCAnalysis.smcR2.reason}</p>
+                            </div>
+                        )}
+                      </div>
+
+                      {/* SMC-T */}
+                      <div className={`p-3 rounded-lg border ${
+                          higherSMCAnalysis?.smcT?.eligible
+                              ? 'bg-orange-50 dark:bg-orange-900/20 border-orange-300 dark:border-orange-700'
+                              : 'bg-gray-50 dark:bg-gray-700/30 border-gray-200 dark:border-gray-600'
+                      }`}>
+                        <div className="flex flex-wrap items-center gap-2 mb-2">
+                          <span className="font-bold text-orange-600 dark:text-orange-400 whitespace-nowrap">SMC-T</span>
+                          <span className="text-sm text-gray-600 dark:text-gray-400 whitespace-nowrap">${SMC_RATES_2026.T.veteran_alone.toFixed(2)}/mo</span>
+                          <span className="text-xs bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 px-1.5 py-0.5 rounded whitespace-nowrap">TBI</span>
+                          {higherSMCAnalysis?.smcT?.eligible && <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />}
+                        </div>
+                        <p className="text-xs text-gray-600 dark:text-gray-400">
+                          Requires TBI (DC 8045) rated at 100% PLUS need for Aid & Attendance specifically due to TBI residuals.
+                        </p>
+                        {higherSMCAnalysis?.smcT?.eligible && (
+                            <div className="mt-2 p-2 bg-green-100 dark:bg-green-900/30 rounded">
+                              <p className="text-sm text-green-700 dark:text-green-300">{higherSMCAnalysis.smcT.reason}</p>
+                            </div>
+                        )}
+                        <p className="text-xs text-amber-600 dark:text-amber-400 mt-2">
+                          ⚠️ SMC-K is NOT paid with SMC-T
+                        </p>
+                      </div>
+                    </div>
+                )}
+              </div>
+
+              {/* 2026 Rates Reference */}
+              <div className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
+                <button
+                    onClick={() => toggleSection('rates')}
+                    className="w-full px-4 py-3 flex items-center justify-between bg-gray-50 dark:bg-gray-700/50 hover:bg-gray-100 dark:hover:bg-gray-700"
+                >
+                  <div className="flex items-center gap-2">
+                    <span className="font-medium text-gray-900 dark:text-white text-left">2026 SMC Rates Reference</span>
+                    <span className="text-xs bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-2 py-0.5 rounded">
+        Effective Dec 1, 2025
+      </span>
+                  </div>
+                  {expandedSections.rates ? <ChevronUp className="w-4 h-4 text-gray-400" /> : <ChevronDown className="w-4 h-4 text-gray-400" />}
+                </button>
+
+                {expandedSections.rates && (
+                    <div className="px-4 py-3">
+                      <table className="w-full text-sm">
+                        <thead>
+                        <tr className="border-b border-gray-200 dark:border-gray-700">
+                          <th className="text-left py-2 text-gray-700 dark:text-gray-300 w-20">Level</th>
+                          <th className="text-right py-2 text-gray-700 dark:text-gray-300 w-24">Rate</th>
+                          <th className="text-left py-2 text-gray-700 dark:text-gray-300 pl-3">Description</th>
+                        </tr>
+                        </thead>
+                        <tbody className="text-gray-600 dark:text-gray-400">
+                        <tr className="border-b border-gray-100 dark:border-gray-800">
+                          <td className="py-1.5 font-medium text-amber-600 dark:text-amber-400 whitespace-nowrap">SMC-K</td>
+                          <td className="py-1.5 text-right whitespace-nowrap">${SMC_RATES_2026.K.rate.toFixed(2)}</td>
+                          <td className="py-1.5 pl-3">Additive (max 3)</td>
+                        </tr>
+                        <tr className="border-b border-gray-100 dark:border-gray-800">
+                          <td className="py-1.5 font-medium text-purple-600 dark:text-purple-400 whitespace-nowrap">SMC-S</td>
+                          <td className="py-1.5 text-right whitespace-nowrap">${SMC_RATES_2026.S.veteran_alone.toFixed(2)}</td>
+                          <td className="py-1.5 pl-3">Housebound</td>
+                        </tr>
+                        <tr className="border-b border-gray-100 dark:border-gray-800">
+                          <td className="py-1.5 font-medium text-blue-600 dark:text-blue-400 whitespace-nowrap">SMC-L</td>
+                          <td className="py-1.5 text-right whitespace-nowrap">${SMC_RATES_2026.L.veteran_alone.toFixed(2)}</td>
+                          <td className="py-1.5 pl-3">Basic A&A</td>
+                        </tr>
+                        <tr className="border-b border-gray-100 dark:border-gray-800">
+                          <td className="py-1.5 font-medium text-blue-600 dark:text-blue-400 whitespace-nowrap">SMC-L½</td>
+                          <td className="py-1.5 text-right whitespace-nowrap">${SMC_RATES_2026.L_HALF.veteran_alone.toFixed(2)}</td>
+                          <td className="py-1.5 pl-3">L + ½ to M</td>
+                        </tr>
+                        <tr className="border-b border-gray-100 dark:border-gray-800">
+                          <td className="py-1.5 font-medium text-indigo-600 dark:text-indigo-400 whitespace-nowrap">SMC-M</td>
+                          <td className="py-1.5 text-right whitespace-nowrap">${SMC_RATES_2026.M.veteran_alone.toFixed(2)}</td>
+                          <td className="py-1.5 pl-3">Severe combo</td>
+                        </tr>
+                        <tr className="border-b border-gray-100 dark:border-gray-800">
+                          <td className="py-1.5 font-medium text-indigo-600 dark:text-indigo-400 whitespace-nowrap">SMC-M½</td>
+                          <td className="py-1.5 text-right whitespace-nowrap">${SMC_RATES_2026.M_HALF.veteran_alone.toFixed(2)}</td>
+                          <td className="py-1.5 pl-3">M + ½ to N</td>
+                        </tr>
+                        <tr className="border-b border-gray-100 dark:border-gray-800">
+                          <td className="py-1.5 font-medium text-violet-600 dark:text-violet-400 whitespace-nowrap">SMC-N</td>
+                          <td className="py-1.5 text-right whitespace-nowrap">${SMC_RATES_2026.N.veteran_alone.toFixed(2)}</td>
+                          <td className="py-1.5 pl-3">Most severe</td>
+                        </tr>
+                        <tr className="border-b border-gray-100 dark:border-gray-800">
+                          <td className="py-1.5 font-medium text-violet-600 dark:text-violet-400 whitespace-nowrap">SMC-N½</td>
+                          <td className="py-1.5 text-right whitespace-nowrap">${SMC_RATES_2026.N_HALF.veteran_alone.toFixed(2)}</td>
+                          <td className="py-1.5 pl-3">N + ½ to O</td>
+                        </tr>
+                        <tr className="border-b border-gray-100 dark:border-gray-800 bg-red-50 dark:bg-red-900/10">
+                          <td className="py-1.5 font-medium text-red-600 dark:text-red-400 whitespace-nowrap">SMC-O</td>
+                          <td className="py-1.5 text-right whitespace-nowrap">${SMC_RATES_2026.O.veteran_alone.toFixed(2)}</td>
+                          <td className="py-1.5 pl-3">Max schedular</td>
+                        </tr>
+                        <tr className="border-b border-gray-100 dark:border-gray-800">
+                          <td className="py-1.5 font-medium text-rose-600 dark:text-rose-400 whitespace-nowrap">SMC-R1</td>
+                          <td className="py-1.5 text-right whitespace-nowrap">${SMC_RATES_2026.R1.veteran_alone.toFixed(2)}</td>
+                          <td className="py-1.5 pl-3">Higher A&A</td>
+                        </tr>
+                        <tr className="border-b border-gray-100 dark:border-gray-800 bg-rose-50 dark:bg-rose-900/10">
+                          <td className="py-1.5 font-medium text-rose-600 dark:text-rose-400 whitespace-nowrap">SMC-R2</td>
+                          <td className="py-1.5 text-right whitespace-nowrap">${SMC_RATES_2026.R2.veteran_alone.toFixed(2)}</td>
+                          <td className="py-1.5 pl-3">Nursing level</td>
+                        </tr>
+                        <tr>
+                          <td className="py-1.5 font-medium text-orange-600 dark:text-orange-400 whitespace-nowrap">SMC-T</td>
+                          <td className="py-1.5 text-right whitespace-nowrap">${SMC_RATES_2026.T.veteran_alone.toFixed(2)}</td>
+                          <td className="py-1.5 pl-3">TBI A&A</td>
+                        </tr>
+                        </tbody>
+                      </table>
+                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-3">
+                        Veteran alone rates. 2.8% COLA effective Dec 1, 2025.
+                      </p>
+                    </div>
+                )}
+              </div>
+
               {/* ADL / Aid & Attendance Details */}
               <div className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
                 <button
@@ -975,7 +1875,7 @@ const SMCCalculator = ({
                     className="w-full px-4 py-3 flex items-center justify-between bg-gray-50 dark:bg-gray-700/50 hover:bg-gray-100 dark:hover:bg-gray-700"
                 >
                   <div className="flex items-center gap-2">
-                <span className="font-medium text-gray-900 dark:text-white">
+                <span className="font-medium text-gray-900 dark:text-white text-left">
                   Aid & Attendance Analysis (SMC-L/R)
                 </span>
                     <span className={`px-2 py-0.5 rounded text-xs ${
@@ -1126,11 +2026,19 @@ const SMCCalculator = ({
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-blue-500 mt-0.5">•</span>
-                    <span><strong>SMC-S:</strong> File for increase if you have 100% for one condition. Request "Housebound" status with supporting evidence.</span>
+                    <span><strong>SMC-S:</strong> File for increase if you have 100% for one condition. Request "Housebound" status.</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-blue-500 mt-0.5">•</span>
-                    <span><strong>SMC-L (A&A):</strong> Submit VA Form 21-2680 (Examination for Housebound Status or Permanent Need for Aid & Attendance) completed by your physician.</span>
+                    <span><strong>SMC-L/R (A&A):</strong> Submit VA Form 21-2680 completed by your physician.</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-blue-500 mt-0.5">•</span>
+                    <span><strong>SMC-M/N/O:</strong> These are typically granted based on documented anatomical losses. Ensure all losses are service-connected.</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-blue-500 mt-0.5">•</span>
+                    <span><strong>SMC-T:</strong> File VA Form 21-2680 noting TBI as the basis for A&A needs.</span>
                   </li>
                 </ul>
               </div>
@@ -1139,7 +2047,8 @@ const SMCCalculator = ({
               <div className="bg-gray-100 dark:bg-gray-700/50 rounded-lg p-3 text-xs text-gray-600 dark:text-gray-400">
                 <strong>Important:</strong> SMC eligibility analysis is based on 38 CFR § 3.350 and 38 U.S.C. § 1114.
                 This is for documentation guidance only. The VA makes all final SMC determinations.
-                Rates shown are 2026 rates effective December 1, 2025.
+                Rates shown are 2026 rates effective December 1, 2025. Half-step amounts (L½, M½, N½) are for
+                veterans who meet criteria between two levels.
               </div>
             </div>
         )}

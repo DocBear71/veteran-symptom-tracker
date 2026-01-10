@@ -2,6 +2,7 @@ import { ChevronDown, ChevronUp } from 'lucide-react';
 import { MENTAL_HEALTH_SHARED_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
+import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 
 /**
  * Phase 8B Mental Health Rating Card - Gold Standard Version
@@ -134,6 +135,15 @@ export default function Phase8BMentalHealthRatingCard({ analysis, expanded, onTo
                     </div>
                   </div>
               )}
+
+              {/* Rating Enhancements - Definitions, Case Law, Tips */}
+              <RatingEnhancementsDisplay
+                  diagnosticCode={diagnosticCode || '9400'}
+                  showDefinitions={true}
+                  showCaseLaw={true}
+                  showTips={true}
+                  showExamTips={true}
+              />
 
               {/* VA Rating Schedule */}
               <div>

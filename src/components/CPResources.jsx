@@ -6,12 +6,21 @@ import React, { useState } from 'react';
 import CPExamPrep from './CPExamPrep';
 import AfterActionReport from './AfterActionReport';
 import BuddyStatementGenerator from './BuddyStatementGenerator';
+import RatingScenarioCalculator from './RatingScenarioCalculator';
 
 const CPResources = () => {
   const [activeResource, setActiveResource] = useState(null);
 
   // Resource cards configuration
   const resources = [
+    {
+      id: 'scenario-calc',
+      title: 'Rating Scenario Calculator',
+      description: 'Explore "what if" scenarios to see how additional conditions might affect your combined VA disability rating.',
+      icon: '🧮',
+      color: 'indigo',
+      features: ['VA Math calculator', 'What-if scenarios', 'Save & compare', 'Step-by-step breakdown'],
+    },
     {
       id: 'exam-prep',
       title: 'C&P Exam Prep Checklist',
@@ -40,6 +49,14 @@ const CPResources = () => {
 
   // Color mapping for cards
   const colorClasses = {
+    indigo: {
+      bg: 'bg-indigo-50 dark:bg-indigo-900/20',
+      border: 'border-indigo-200 dark:border-indigo-800',
+      hoverBorder: 'hover:border-indigo-500 dark:hover:border-indigo-500',
+      icon: 'bg-indigo-100 dark:bg-indigo-900',
+      iconText: 'text-indigo-600 dark:text-indigo-400',
+      badge: 'bg-indigo-100 dark:bg-indigo-900 text-indigo-700 dark:text-indigo-300',
+    },
     blue: {
       bg: 'bg-blue-50 dark:bg-blue-900/20',
       border: 'border-blue-200 dark:border-blue-800',
@@ -69,6 +86,8 @@ const CPResources = () => {
   // Render the selected resource component
   const renderActiveResource = () => {
     switch (activeResource) {
+      case 'scenario-calc':
+        return <RatingScenarioCalculator embedded={true} onClose={() => setActiveResource(null)} />;
       case 'exam-prep':
         return <CPExamPrep embedded={true} onClose={() => setActiveResource(null)} />;
       case 'after-action':
@@ -122,16 +141,17 @@ const CPResources = () => {
             <div>
               <h4 className="font-semibold text-yellow-800 dark:text-yellow-200 text-left">Tip: Use These Tools Together</h4>
               <p className="text-sm text-yellow-700 dark:text-yellow-300 mt-1 text-left">
+                <strong>Planning:</strong> Use the Rating Scenario Calculator to explore potential outcomes.<br/>
                 <strong>Before your exam:</strong> Use the Prep Checklist to prepare.<br/>
-                <strong> After your exam:</strong> Complete the After Action Report while details are fresh.<br/>
-                <strong> Anytime:</strong> Generate Buddy Statements from family and friends to strengthen your claim.
+                <strong>After your exam:</strong> Complete the After Action Report while details are fresh.<br/>
+                <strong>Anytime:</strong> Generate Buddy Statements from family and friends to strengthen your claim.
               </p>
             </div>
           </div>
         </div>
 
         {/* Resource Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {resources.map(resource => {
             const colors = colorClasses[resource.color];
 
@@ -239,7 +259,7 @@ const CPResources = () => {
             C&P Exam Timeline
           </h3>
 
-          <div className="relative">
+          <div className="relative text-left">
             {/* Timeline Line */}
             <div className="absolute left-4 top-0 bottom-0 w-0.5 bg-blue-200 dark:bg-blue-800"></div>
 
@@ -249,6 +269,12 @@ const CPResources = () => {
                 <div className="absolute -left-10 w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-sm">1</div>
                 <h4 className="font-medium text-gray-900 dark:text-white">Claim Filed</h4>
                 <p className="text-sm text-gray-600 dark:text-gray-400">VA receives and processes your claim</p>
+              </div>
+
+              <div className="relative">
+                <div className="absolute -left-10 w-8 h-8 bg-indigo-500 rounded-full flex items-center justify-center text-white font-bold text-sm">★</div>
+                <h4 className="font-medium text-indigo-700 dark:text-indigo-300">Use Rating Scenario Calculator</h4>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Explore potential rating outcomes and plan your claim strategy</p>
               </div>
 
               <div className="relative">

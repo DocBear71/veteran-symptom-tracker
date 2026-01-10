@@ -2,6 +2,7 @@ import { ChevronDown, ChevronUp } from 'lucide-react';
 import { HEARING_LOSS_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
+import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 
 /**
  * Hearing Loss Rating Card Component - Gold Standard Version
@@ -98,6 +99,13 @@ export default function HearingLossRatingCard({ analysis, expanded, onToggle }) 
               <UnderstandingYourRating
                   diagnosticCode="6100"
                   currentRating={typeof supportedRating === 'number' ? supportedRating : parseInt(supportedRating, 10)}
+              />
+              <RatingEnhancementsDisplay
+                  diagnosticCode="6100"  // Use the appropriate DC code
+                  showDefinitions={true}
+                  showCaseLaw={true}
+                  showTips={true}
+                  showExamTips={true}
               />
 
               <div>
