@@ -1,5 +1,5 @@
 // file: src/components/legal/Donations.jsx v3 - Doc Bear's Symptom Vault Donations page
-// Donations page with working PayPal link
+//  with working PayPal link
 // UPDATED: Live PayPal donation button
 
 import React from 'react';

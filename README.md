@@ -40,22 +40,22 @@ Correlates your logged symptoms with official VA rating criteria from 38 CFR Par
 
 **Body System Coverage (v2.5):**
 
-| Body System | Conditions | DC Codes |
-|-------------|------------|----------|
-| 🦴 **Musculoskeletal** | 28 | 5000-5299 |
-| 🫁 **Respiratory** | 10 | 6000-6099 |
-| 👁️ **Eye & Ear** | 12 | 6100-6299 |
-| 🦠 **Infectious Diseases** | 12 | 6300-6399 |
-| ❤️ **Cardiovascular** | 13 | 7000-7199 |
-| 🫃 **Digestive** | 16 | 7200-7399 |
-| 🫘 **Genitourinary** | 12 | 7500-7699 |
-| 🩸 **Hemic & Lymphatic** | 16 | 7700-7799 |
-| 🧴 **Skin** | 13 | 7800-7899 |
-| 🦋 **Endocrine** | 10 | 7900-7999 |
-| ⚡ **Neurological** | 38 | 8000-8999 |
-| 🧠 **Mental Health** | 33 | 9200-9499 |
-| 🦷 **Dental & Oral** | 5 | 9900-9999 |
-| 📋 **Other/ADL** | 10+ | Various |
+| Body System                | Conditions | DC Codes  |
+|----------------------------|------------|-----------|
+| 🦴 **Musculoskeletal**     | 28         | 5000-5299 |
+| 🫁 **Respiratory**         | 10         | 6000-6099 |
+| 👁️ **Eye & Ear**          | 12         | 6100-6299 |
+| 🦠 **Infectious Diseases** | 12         | 6300-6399 |
+| ❤️ **Cardiovascular**      | 13         | 7000-7199 |
+| 🫃 **Digestive**           | 16         | 7200-7399 |
+| 🫘 **Genitourinary**       | 12         | 7500-7699 |
+| 🩸 **Hemic & Lymphatic**   | 16         | 7700-7799 |
+| 🧴 **Skin**                | 13         | 7800-7899 |
+| 🦋 **Endocrine**           | 10         | 7900-7999 |
+| ⚡ **Neurological**         | 38         | 8000-8999 |
+| 🧠 **Mental Health**       | 33         | 9200-9499 |
+| 🦷 **Dental & Oral**       | 5          | 9900-9999 |
+| 📋 **Other/ADL**           | 10+        | Various   |
 
 Each analysis shows:
 - Evidence summary with symptom frequency and metrics
@@ -175,7 +175,7 @@ npm run build
 3. Tap to install - app works offline
 
 ### Desktop (Chrome/Edge)
-1. Click the install icon in the address bar
+1. Click the installation icon in the address bar
 2. Or: Menu → Install Doc Bear's Symptom Vault
 3. App opens in its own window
 

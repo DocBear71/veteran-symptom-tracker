@@ -83,14 +83,14 @@ Version 2.0 represents a major milestone for the Veteran Symptom Tracker applica
 
 ## 📊 Statistics
 
-| Metric | v1.x | v2.0 |
-|--------|------|------|
-| Total Conditions | ~115 | 185+ |
-| Condition Descriptions | 0 | 170+ |
+| Metric                   | v1.x | v2.0 |
+|--------------------------|------|------|
+| Total Conditions         | ~115 | 185+ |
+| Condition Descriptions   | 0    | 170+ |
 | Diagnostic Codes Covered | ~115 | 240+ |
-| Rating Cards | 79 | 85+ |
-| Body System Categories | 0 | 14 |
-| VA DC Coverage | ~60% | 95%+ |
+| Rating Cards             | 79   | 85+  |
+| Body System Categories   | 0    | 14   |
+| VA DC Coverage           | ~60% | 95%+ |
 
 ---
 

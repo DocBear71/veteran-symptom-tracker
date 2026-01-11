@@ -218,29 +218,29 @@ Export functionality was already robust. Optional enhancements deferred.
 
 ## Version History Summary
 
-| Version | Date | Highlights |
-|---------|------|------------|
-| 2.5.0 | Jan 2025 | Quick Actions Menu, Accessibility Settings, WCAG 2.1 AA |
-| 2.4.0 | Jan 2025 | Skipped (export already complete) |
-| 2.3.0 | Jan 2025 | PCAFC Caregiver Program Guide |
-| 2.2.0 | Jan 2025 | Rating Enhancements, Case Law, Service Connection Guide |
-| 2.0.0 | Dec 2024 | Educational content, body system grouping, color standardization |
-| 1.x | 2024 | Phases 1-7 condition implementation |
-| 0.x | 2024 | MVP development, core features |
+| Version | Date     | Highlights                                                       |
+|---------|----------|------------------------------------------------------------------|
+| 2.5.0   | Jan 2025 | Quick Actions Menu, Accessibility Settings, WCAG 2.1 AA          |
+| 2.4.0   | Jan 2025 | Skipped (export already complete)                                |
+| 2.3.0   | Jan 2025 | PCAFC Caregiver Program Guide                                    |
+| 2.2.0   | Jan 2025 | Rating Enhancements, Case Law, Service Connection Guide          |
+| 2.0.0   | Dec 2024 | Educational content, body system grouping, color standardization |
+| 1.x     | 2024     | Phases 1-7 condition implementation                              |
+| 0.x     | 2024     | MVP development, core features                                   |
 
 ---
 
 ## Roadmap Status
 
-| Phase | Version | Status |
-|-------|---------|--------|
-| V2.2 Rating Enhancements | 2.2.0 | ✅ Complete |
-| V2.3 Caregiver Program | 2.3.0 | ✅ Complete |
-| V2.4 Export Enhancements | 2.4.0 | ⏭️ Skipped (already complete) |
-| V2.5 User Experience | 2.5.0 | ✅ Complete |
-| V3.0 Mobile Apps | - | 🔲 Not Started |
-| V3.1 Cloud Sync | - | 🔲 Not Started |
-| V3.2 AI Analytics | - | 🔲 Not Started |
+| Phase                    | Version | Status                        |
+|--------------------------|---------|-------------------------------|
+| V2.2 Rating Enhancements | 2.2.0   | ✅ Complete                    |
+| V2.3 Caregiver Program   | 2.3.0   | ✅ Complete                    |
+| V2.4 Export Enhancements | 2.4.0   | ⏭️ Skipped (already complete) |
+| V2.5 User Experience     | 2.5.0   | ✅ Complete                    |
+| V3.0 Mobile Apps         | -       | 🔲 Not Started                |
+| V3.1 Cloud Sync          | -       | 🔲 Not Started                |
+| V3.2 AI Analytics        | -       | 🔲 Not Started                |
 
 ---
 

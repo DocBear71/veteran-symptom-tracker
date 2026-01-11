@@ -2,6 +2,7 @@ import { ChevronDown, ChevronUp } from 'lucide-react';
 import { DIABETES_INSIPIDUS_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
+import {isRatingSupported} from '../utils/ratingUtils.js';
 
 /**
  * Diabetes Insipidus Rating Card - Gold Standard Version
@@ -12,20 +13,6 @@ export default function DiabetesInsipidusRatingCard({ analysis, expanded, onTogg
 
   const { supportedRating, ratingRationale, gaps, metrics } = analysis;
   const criteria = DIABETES_INSIPIDUS_CRITERIA;
-
-  const isRatingSupported = (ratingPercent) => {
-    if (supportedRating === null || supportedRating === undefined) return false;
-    if (typeof supportedRating === 'number') return ratingPercent === supportedRating;
-    if (typeof supportedRating === 'string') {
-      if (supportedRating.includes('-') || supportedRating.includes('/')) {
-        // Handle "30/10" format for this condition
-        const parts = supportedRating.split(/[-\/]/);
-        return parts.map(Number).includes(ratingPercent);
-      }
-      return ratingPercent === parseInt(supportedRating, 10);
-    }
-    return false;
-  };
 
   return (
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden border-l-4 border-orange-500">
@@ -124,7 +111,7 @@ export default function DiabetesInsipidusRatingCard({ analysis, expanded, onTogg
                 <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-center">VA Rating Schedule</h4>
                 <div className="space-y-2">
                   {criteria.ratings.map((rating, idx) => {
-                    const isSupported = isRatingSupported(rating.percent);
+                    const isSupported = isRatingSupported(rating.percent, supportedRating);
                     return (
                         <div
                             key={idx}

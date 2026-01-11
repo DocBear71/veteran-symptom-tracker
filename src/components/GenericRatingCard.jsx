@@ -3,13 +3,14 @@ import { getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import SMCAlertBanner from './SMCAlertBanner';
+import {isRatingSupported} from '../utils/ratingUtils.js';
 
 /**
  * Generic Rating Card - Gold Standard Version
  * Fallback card for conditions without specific implementations
  *
  * IMPORTANT: This card looks for ratings in multiple places:
- * - criteria.ratings (standard)
+ * - criteria. Ratings (standard)
  * - criteria.ratingsIncapacitatingEpisodes (intervertebral disc)
  * - criteria.ratingsGeneralFormula (alternative spine ratings)
  */
@@ -21,19 +22,6 @@ export default function GenericRatingCard({ analysis, expanded, onToggle, icon =
   // Handle both formats
   const displayRationale = rationale || ratingRationale || [];
   const displayGaps = evidenceGaps || gaps || [];
-
-  const isRatingSupported = (ratingPercent) => {
-    if (supportedRating === null || supportedRating === undefined) return false;
-    if (typeof supportedRating === 'number') return ratingPercent === supportedRating;
-    if (typeof supportedRating === 'string') {
-      if (supportedRating.includes('-')) {
-        const [low, high] = supportedRating.split('-').map(Number);
-        return ratingPercent >= low && ratingPercent <= high;
-      }
-      return ratingPercent === parseInt(supportedRating, 10);
-    }
-    return false;
-  };
 
   // Format rating display
   const formatRating = (rating) => {
@@ -171,7 +159,7 @@ export default function GenericRatingCard({ analysis, expanded, onToggle, icon =
                       {ratings.map((rating, idx) => {
                         const percent = rating.percent ?? rating.rating ?? 0;
                         const summary = rating.summary || rating.description || rating.criteria || '';
-                        const isSupported = isRatingSupported(percent);
+                        const isSupported = isRatingSupported(percent, supportedRating);
                         return (
                             <div
                                 key={idx}

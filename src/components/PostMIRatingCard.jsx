@@ -2,6 +2,7 @@ import { ChevronDown, ChevronUp } from 'lucide-react';
 import { POST_MI_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
+import {isRatingSupported} from '../utils/ratingUtils.js';
 
 export default function PostMIRatingCard({ analysis, expanded, onToggle }) {
   if (!analysis || !analysis.hasData) return null;
@@ -13,18 +14,6 @@ export default function PostMIRatingCard({ analysis, expanded, onToggle }) {
   const rationale = ratingRationale || analysis.rationale || [];
   const evidenceGaps = gaps || analysis.evidenceGaps || [];
 
-  const isRatingSupported = (ratingPercent) => {
-    if (supportedRating === null || supportedRating === undefined) return false;
-    if (typeof supportedRating === 'number') return ratingPercent === supportedRating;
-    if (typeof supportedRating === 'string') {
-      if (supportedRating.includes('-')) {
-        const [low, high] = supportedRating.split('-').map(Number);
-        return ratingPercent >= low && ratingPercent <= high;
-      }
-      return ratingPercent === parseInt(supportedRating, 10);
-    }
-    return false;
-  };
   return (
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden border-l-4 border-rose-500">
         <button onClick={onToggle} className="w-full px-6 py-4 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
@@ -131,7 +120,7 @@ export default function PostMIRatingCard({ analysis, expanded, onToggle }) {
                 <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-center">VA Rating Schedule</h4>
                 <div className="space-y-2">
                   {criteria.ratings.map(rating => {
-                    const isSupported = isRatingSupported(rating.percent);
+                    const isSupported = isRatingSupported(rating.percent, supportedRating);
                     return (
                         <div key={rating.percent} className={`p-3 rounded-lg border ${isSupported ? 'border-2' : ''} ${getRatingRowColor(rating.percent, isSupported)}`}>
                           <div className="flex items-center gap-3">

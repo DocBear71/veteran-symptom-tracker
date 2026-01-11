@@ -2,6 +2,7 @@ import { ChevronDown, ChevronUp } from 'lucide-react';
 import { HYPERPARATHYROIDISM_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
+import {isRatingSupported} from '../utils/ratingUtils.js';
 
 /**
  * Hyperparathyroidism Rating Card - Gold Standard Version
@@ -18,19 +19,6 @@ export default function HyperparathyroidismRatingCard({ analysis, expanded, onTo
 
   const { supportedRating, ratingRationale, gaps, metrics } = analysis;
   const criteria = HYPERPARATHYROIDISM_CRITERIA;
-
-  const isRatingSupported = (ratingPercent) => {
-    if (supportedRating === null || supportedRating === undefined) return false;
-    if (typeof supportedRating === 'number') return ratingPercent === supportedRating;
-    if (typeof supportedRating === 'string') {
-      if (supportedRating.includes('-')) {
-        const [low, high] = supportedRating.split('-').map(Number);
-        return ratingPercent >= low && ratingPercent <= high;
-      }
-      return ratingPercent === parseInt(supportedRating, 10);
-    }
-    return false;
-  };
 
   return (
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden border-l-4 border-orange-500">
@@ -145,7 +133,7 @@ export default function HyperparathyroidismRatingCard({ analysis, expanded, onTo
                 <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-center">VA Rating Schedule</h4>
                 <div className="space-y-2">
                   {criteria.ratings.map((rating, idx) => {
-                    const isSupported = isRatingSupported(rating.percent);
+                    const isSupported = isRatingSupported(rating.percent, supportedRating);
                     return (
                         <div
                             key={idx}

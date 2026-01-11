@@ -2,6 +2,7 @@ import { ChevronDown, ChevronUp } from 'lucide-react';
 import { HEPATITIS_C_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
+import {isRatingSupported} from '../utils/ratingUtils.js';
 
 /**
  * Hepatitis C Rating Card Component - Gold Standard Version
@@ -15,20 +16,6 @@ export default function HepatitisCRatingCard({ analysis, expanded, onToggle }) {
 
   const { supportedRating, ratingRationale, evidence, gaps, metrics } = analysis;
   const criteria = HEPATITIS_C_CRITERIA;
-
-  // Helper: Check if rating is supported
-  const isRatingSupported = (ratingPercent) => {
-    if (supportedRating === null || supportedRating === undefined) return false;
-    if (typeof supportedRating === 'number') return ratingPercent === supportedRating;
-    if (typeof supportedRating === 'string') {
-      if (supportedRating.includes('-')) {
-        const [low, high] = supportedRating.split('-').map(Number);
-        return ratingPercent >= low && ratingPercent <= high;
-      }
-      return ratingPercent === parseInt(supportedRating, 10);
-    }
-    return false;
-  };
 
   const totalLogs = metrics?.totalLogs || 0;
 
@@ -168,7 +155,7 @@ export default function HepatitisCRatingCard({ analysis, expanded, onToggle }) {
                 </h4>
                 <div className="space-y-2">
                   {criteria.ratings.map(rating => {
-                    const isSupported = isRatingSupported(rating.percent);
+                    const isSupported = isRatingSupported(rating.percent, supportedRating);
                     return (
                         <div
                             key={rating.percent}

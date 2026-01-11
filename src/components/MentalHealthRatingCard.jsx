@@ -4,6 +4,7 @@ import { MENTAL_HEALTH_SHARED_CRITERIA, getRatingRowColor, getRatingTextColor } 
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
+import {isRatingSupported} from '../utils/ratingUtils.js';
 
 /**
  * Mental Health Rating Card - Gold Standard Version
@@ -38,19 +39,6 @@ export default function MentalHealthRatingCard({
   // Handle both formats
   const displayRationale = rationale || ratingRationale || [];
   const displayGaps = evidenceGaps || gaps || [];
-
-  const isRatingSupported = (ratingPercent) => {
-    if (supportedRating === null || supportedRating === undefined) return false;
-    if (typeof supportedRating === 'number') return ratingPercent === supportedRating;
-    if (typeof supportedRating === 'string') {
-      if (supportedRating.includes('-')) {
-        const [low, high] = supportedRating.split('-').map(Number);
-        return ratingPercent >= low && ratingPercent <= high;
-      }
-      return ratingPercent === parseInt(supportedRating, 10);
-    }
-    return false;
-  };
 
   // Get ratings - use getAllRatings function if provided, otherwise use default criteria
   const getRatings = () => {
@@ -159,7 +147,7 @@ export default function MentalHealthRatingCard({
                       {ratings.map((rating, idx) => {
                         const percent = rating.percent ?? rating.rating ?? 0;
                         const summary = rating.summary || rating.description || rating.criteria || '';
-                        const isSupported = isRatingSupported(percent);
+                        const isSupported = isRatingSupported(percent, supportedRating);
                         return (
                             <div
                                 key={idx}

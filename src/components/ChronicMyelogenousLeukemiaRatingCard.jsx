@@ -2,6 +2,7 @@ import { ChevronDown, ChevronUp } from 'lucide-react';
 import { CHRONIC_MYELOGENOUS_LEUKEMIA_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
+import {isRatingSupported} from '../utils/ratingUtils.js';
 
 export default function ChronicMyelogenousLeukemiaRatingCard({ analysis, expanded, onToggle }) {
   if (!analysis || !analysis.hasData) {
@@ -10,20 +11,6 @@ export default function ChronicMyelogenousLeukemiaRatingCard({ analysis, expande
 
   const { supportedRating, rationale, evidenceGaps, metrics } = analysis;
   const criteria = CHRONIC_MYELOGENOUS_LEUKEMIA_CRITERIA;
-
-  // Check if a rating is supported (handles both numbers and strings)
-  const isRatingSupported = (ratingPercent) => {
-    if (supportedRating === null || supportedRating === undefined) return false;
-    if (typeof supportedRating === 'number') return ratingPercent === supportedRating;
-    if (typeof supportedRating === 'string') {
-      if (supportedRating.includes('-')) {
-        const [low, high] = supportedRating.split('-').map(Number);
-        return ratingPercent >= low && ratingPercent <= high;
-      }
-      return ratingPercent === parseInt(supportedRating, 10);
-    }
-    return false;
-  };
 
   return (
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden border-l-4 border-orange-500">
@@ -107,7 +94,7 @@ export default function ChronicMyelogenousLeukemiaRatingCard({ analysis, expande
                 </h4>
                 <div className="space-y-2">
                   {criteria.ratings.map(rating => {
-                    const isSupported = isRatingSupported(rating.percent);
+                    const isSupported = isRatingSupported(rating.percent, supportedRating);
                     return (
                         <div
                             key={rating.percent}

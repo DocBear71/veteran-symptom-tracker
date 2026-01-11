@@ -9,6 +9,7 @@ import {
 } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
+import {isRatingSupported} from '../utils/ratingUtils.js';
 
 /**
 
@@ -67,19 +68,6 @@ export default function GeneralSkinRatingCard({ analysis, expanded, onToggle }) 
   };
 
   const criteria = config.criteria;
-
-  const isRatingSupported = (ratingPercent) => {
-    if (supportedRating === null || supportedRating === undefined) return false;
-    if (typeof supportedRating === 'number') return ratingPercent === supportedRating;
-    if (typeof supportedRating === 'string') {
-      if (supportedRating.includes('-')) {
-        const [low, high] = supportedRating.split('-').map(Number);
-        return ratingPercent >= low && ratingPercent <= high;
-      }
-      return ratingPercent === parseInt(supportedRating, 10);
-    }
-    return false;
-  };
 
   const totalLogs = metrics?.totalLogs || 0;
   const bodyPercentage = metrics?.bodyPercentage || 'Not documented';
@@ -251,7 +239,7 @@ export default function GeneralSkinRatingCard({ analysis, expanded, onToggle }) 
                 </h4>
                 <div className="space-y-2">
                   {criteria.ratings.map((rating, idx) => {
-                    const isSupported = isRatingSupported(rating.percent);
+                    const isSupported = isRatingSupported(rating.percent, supportedRating);
                     return (
                         <div
                             key={idx}
