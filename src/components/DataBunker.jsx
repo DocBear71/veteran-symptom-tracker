@@ -1,10 +1,35 @@
 import { Download, Upload, Shield, AlertTriangle } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { getDataStats } from '../utils/storage';
 
 export default function DataBunker() {
-  const [lastBackup, setLastBackup] = useState(
-      localStorage.getItem('lastBackupDate')
-  );
+    const [lastBackup, setLastBackup] = useState(
+        localStorage.getItem('lastBackupDate')
+    );
+    const [dataStats, setDataStats] = useState({
+        logs: 0,
+        customSymptoms: 0,
+        chronicSymptoms: 0,
+        appointments: 0,
+        measurements: 0
+    });
+
+    // Load data stats on mount and listen for changes
+    useEffect(() => {
+        setDataStats(getDataStats());
+
+        const handleDataChange = () => {
+            setDataStats(getDataStats());
+        };
+
+        window.addEventListener('profileChanged', handleDataChange);
+        window.addEventListener('storage', handleDataChange);
+
+        return () => {
+            window.removeEventListener('profileChanged', handleDataChange);
+            window.removeEventListener('storage', handleDataChange);
+        };
+    }, []);
 
   const handleExportBunker = () => {
     const data = {
@@ -106,7 +131,40 @@ export default function DataBunker() {
           </div>
         </div>
 
-        {/* Warning if no recent backup */}
+          {/* Data Stats */}
+          <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-3 mb-4">
+              <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Your data to protect:
+              </p>
+              <div className="grid grid-cols-2 gap-2 text-center">
+                  <div className="bg-white dark:bg-gray-800 rounded-lg p-2">
+                      <p className="text-xl font-bold text-green-600 dark:text-green-400">
+                          {dataStats.logs}
+                      </p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">Symptom Entries</p>
+                  </div>
+                  <div className="bg-white dark:bg-gray-800 rounded-lg p-2">
+                      <p className="text-xl font-bold text-green-600 dark:text-green-400">
+                          {dataStats.appointments || 0}
+                      </p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">Appointments</p>
+                  </div>
+                  <div className="bg-white dark:bg-gray-800 rounded-lg p-2">
+                      <p className="text-xl font-bold text-green-600 dark:text-green-400">
+                          {dataStats.chronicSymptoms || 0}
+                      </p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">Quick Log Items</p>
+                  </div>
+                  <div className="bg-white dark:bg-gray-800 rounded-lg p-2">
+                      <p className="text-xl font-bold text-green-600 dark:text-green-400">
+                          {dataStats.measurements || 0}
+                      </p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">Measurements</p>
+                  </div>
+              </div>
+          </div>
+
+          {/* Warning if no recent backup */}
         {(daysSinceBackup === null || daysSinceBackup > 7) && (
             <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200
                         dark:border-amber-800 rounded-lg p-3 mb-4">

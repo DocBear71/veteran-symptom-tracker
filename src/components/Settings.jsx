@@ -795,11 +795,11 @@ const Settings = ({ onNavigate }) => {  // ← ADD onNavigate prop
           </p>
         </div>
 
-        {/* Backup & Restore Section */}
+        {/* Backup & Restore Section
         <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
           <h3 className="font-medium text-gray-900 dark:text-white mb-3">Backup & Restore</h3>
 
-          {/* Data Stats */}
+          {/* Data Stats
           <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-3 mb-4">
             <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">Your data:</p>
             <div className="grid grid-cols-2 gap-2 text-center">
@@ -850,6 +850,7 @@ const Settings = ({ onNavigate }) => {  // ← ADD onNavigate prop
             💡 Back up regularly to avoid losing your symptom history
           </p>
         </div>
+        */}
 
         {/* Help & Tutorial Section */}
         <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">

@@ -3379,30 +3379,56 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed, onNavigate }) =
 
   return (
       <div className="pb-20">
-        {/* Measurements Quick Access Card */}
-        <button
-            onClick={() => onNavigate && onNavigate('measurements')}
-            className="w-full bg-gradient-to-r from-blue-50 to-indigo-50
+          {/* Quick Access Cards - Stack on mobile, side-by-side on larger screens */}
+          <div className="flex flex-col sm:flex-row gap-3 mb-6">
+              {/* Measurements Quick Access Card */}
+              <button
+                  onClick={() => onNavigate && onNavigate('measurements')}
+                  className="flex-1 bg-gradient-to-r from-blue-50 to-indigo-50
                      dark:from-blue-900/20 dark:to-indigo-900/20
                      border border-blue-200 dark:border-blue-800
-                     rounded-lg p-4 mb-6 hover:shadow-md transition-all
+                     rounded-lg p-4 hover:shadow-md transition-all
                      hover:scale-[1.02] active:scale-[0.98]"
-        >
-          <div className="flex items-center gap-3">
-            <span className="text-3xl">📏</span>
-            <div className="flex-1 text-left">
-              <h3 className="font-semibold text-gray-900 dark:text-white">
-                Track Measurements
-              </h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
-                Blood pressure, glucose, weight, vitals
-              </p>
-            </div>
-            <span className="text-blue-600 dark:text-blue-400 text-xl">→</span>
-          </div>
-        </button>
+              >
+                  <div className="flex items-center gap-3">
+                      <span className="text-3xl">📏</span>
+                      <div className="flex-1 text-left">
+                          <h3 className="font-semibold text-gray-900 dark:text-white">
+                              Track Measurements
+                          </h3>
+                          <p className="text-sm text-gray-600 dark:text-gray-400">
+                              Blood pressure, glucose, weight, vitals
+                          </p>
+                      </div>
+                      <span className="text-blue-600 dark:text-blue-400 text-xl">→</span>
+                  </div>
+              </button>
 
-        {/* Quick Log Section */}
+              {/* Medications Quick Access Card */}
+              <button
+                  onClick={() => onNavigate && onNavigate('meds')}
+                  className="flex-1 bg-gradient-to-r from-green-50 to-emerald-50
+                     dark:from-green-900/20 dark:to-emerald-900/20
+                     border border-green-200 dark:border-green-800
+                     rounded-lg p-4 hover:shadow-md transition-all
+                     hover:scale-[1.02] active:scale-[0.98]"
+              >
+                  <div className="flex items-center gap-3">
+                      <span className="text-3xl">💊</span>
+                      <div className="flex-1 text-left">
+                          <h3 className="font-semibold text-gray-900 dark:text-white">
+                              Medications
+                          </h3>
+                          <p className="text-sm text-gray-600 dark:text-gray-400">
+                              Log meds, track dosages
+                          </p>
+                      </div>
+                      <span className="text-green-600 dark:text-green-400 text-xl">→</span>
+                  </div>
+              </button>
+          </div>
+
+          {/* Quick Log Section */}
         <QuickLog
             key={refreshQuickLog}
             onLogSaved={onLogSaved}

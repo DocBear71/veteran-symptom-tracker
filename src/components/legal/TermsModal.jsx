@@ -48,50 +48,52 @@ export default function TermsModal({ isOpen, onAccept }) {
             </p>
           </div>
 
-          {/* Critical Disclaimer Banner */}
-          <div className="bg-yellow-50 dark:bg-yellow-900/30 border-b-2 border-yellow-500
-                        px-6 py-4 flex-shrink-0">
-            <div className="flex items-start gap-3">
-              <AlertTriangle className="w-6 h-6 text-yellow-600 dark:text-yellow-400
-                                       flex-shrink-0 mt-0.5" />
-              <div>
-                <p className="font-bold text-yellow-800 dark:text-yellow-300 mb-2">
-                  ⚠️ Important Medical & Legal Disclaimer
-                </p>
-                <div className="text-sm text-yellow-700 dark:text-yellow-400 space-y-2">
-                  <p>
-                    <strong>The creator of this app is NOT a medical doctor, licensed
-                      healthcare provider, or medical professional.</strong> This app was
-                    created by a veteran to help fellow veterans document their symptoms.
-                  </p>
-                  <p>
-                    Doc Bear's Symptom Vault is a personal documentation tool only. It is
-                    NOT a medical device, diagnostic tool, or substitute for professional
-                    medical advice, diagnosis, or treatment.
-                  </p>
-                  <p>
-                    <strong>Always seek the advice of your physician or other qualified
-                      health provider</strong> with any questions you may have regarding a
-                    medical condition.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
+            {/* Disclaimer banner moved inside scrollable area below */}
 
           {/* Scrollable Terms Content */}
-          <div
-              className="flex-1 overflow-y-auto px-6 py-4 text-sm text-gray-700
+            <div
+                className="flex-1 overflow-y-auto px-6 py-4 text-sm text-gray-700
                        dark:text-gray-300"
-              onScroll={handleScroll}
-          >
-            <div className="space-y-4">
-              {/* Key Points Summary */}
+                onScroll={handleScroll}
+            >
+                <div className="space-y-4">
+                    {/* Critical Disclaimer Banner - now scrollable */}
+                    <div className="bg-yellow-50 dark:bg-yellow-900/30 border-2 border-yellow-500
+                            rounded-lg p-4 -mx-2">
+                        <div className="flex items-start gap-3 text-left">
+                            <AlertTriangle className="w-6 h-6 text-yellow-600 dark:text-yellow-400
+                                           flex-shrink-0 mt-0.5" />
+                            <div>
+                                <p className="font-bold text-yellow-800 dark:text-yellow-300 mb-2">
+                                    ⚠️ Important Medical & Legal Disclaimer
+                                </p>
+                                <div className="text-sm text-yellow-700 dark:text-yellow-400 space-y-2">
+                                    <p>
+                                        <strong>The creator of this app is NOT a medical doctor, licensed
+                                            healthcare provider, or medical professional.</strong> This app was
+                                        created by a veteran to help fellow veterans document their symptoms.
+                                    </p>
+                                    <p>
+                                        Doc Bear's Symptom Vault is a personal documentation tool only. It is
+                                        NOT a medical device, diagnostic tool, or substitute for professional
+                                        medical advice, diagnosis, or treatment.
+                                    </p>
+                                    <p>
+                                        <strong>Always seek the advice of your physician or other qualified
+                                            health provider</strong> with any questions you may have regarding a
+                                        medical condition.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Key Points Summary */}
               <section>
                 <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
                   By using this app, you understand and agree that:
                 </h3>
-                <ul className="space-y-2 ml-4">
+                <ul className="space-y-2 ml-4 text-left">
                   <li className="flex items-start gap-2">
                     <span className="text-blue-600 dark:text-blue-400 mt-1">•</span>
                     <span>This app is for <strong>documentation purposes only</strong>,

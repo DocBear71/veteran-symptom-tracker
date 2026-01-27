@@ -1,17 +1,19 @@
 import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import {
-  LineChart,
-  Line,
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-  Legend,
+    LineChart,
+    Line,
+    BarChart,
+    Bar,
+    XAxis,
+    YAxis,
+    CartesianGrid,
+    Tooltip,
+    ResponsiveContainer,
+    Legend,
 } from 'recharts';
 import { getSymptomLogs, saveSymptomLog } from '../utils/storage';
+import { getMeasurements, getMeasurementStats } from '../utils/measurements';
+import { getAllMeasurementTypes, getMeasurementType, formatMeasurementValue, interpretMeasurement } from '../data/measurementTypes';
 import RatingEvidence from './RatingEvidence';
 import { useProfile } from '../hooks/useProfile';
 import CPResources from './CPResources';
@@ -69,6 +71,235 @@ const ChartContainer = ({ children, height = 256 }) => {
         )}
       </div>
   );
+};
+
+/**
+ * Measurements Trends Component
+ * Displays measurement history with charts and statistics
+ */
+const MeasurementsTrends = ({ dateRange }) => {
+    const [selectedType, setSelectedType] = useState('all');
+    const [measurements, setMeasurements] = useState([]);
+    const measurementTypes = getAllMeasurementTypes();
+
+    useEffect(() => {
+        loadMeasurements();
+    }, [dateRange, selectedType]);
+
+    const loadMeasurements = () => {
+        const now = new Date();
+        let days = null;
+
+        switch (dateRange) {
+            case 'week': days = 7; break;
+            case 'month': days = 30; break;
+            case '3months': days = 90; break;
+            case 'year': days = 365; break;
+            default: days = null;
+        }
+
+        const options = {};
+        if (days) options.days = days;
+        if (selectedType !== 'all') options.type = selectedType;
+
+        const data = getMeasurements(options);
+        setMeasurements(data);
+    };
+
+    // Group measurements by type for summary
+    const measurementSummary = useMemo(() => {
+        const summary = {};
+        measurements.forEach(m => {
+            if (!summary[m.measurementType]) {
+                summary[m.measurementType] = {
+                    type: getMeasurementType(m.measurementType),
+                    count: 0,
+                    latest: null,
+                    values: []
+                };
+            }
+            summary[m.measurementType].count++;
+            if (!summary[m.measurementType].latest) {
+                summary[m.measurementType].latest = m;
+            }
+            summary[m.measurementType].values.push(m);
+        });
+        return summary;
+    }, [measurements]);
+
+    // Prepare chart data for selected measurement type
+    const chartData = useMemo(() => {
+        if (selectedType === 'all' || measurements.length === 0) return [];
+
+        const type = getMeasurementType(selectedType);
+        if (!type) return [];
+
+        // Get primary field for charting
+        const primaryField = type.fields.find(f => f.required)?.key;
+        if (!primaryField) return [];
+
+        return measurements
+            .slice()
+            .reverse() // Oldest first for chart
+            .map(m => ({
+                date: new Date(m.timestamp).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+                value: m.values[primaryField],
+                fullDate: new Date(m.timestamp).toLocaleString(),
+                ...m.values
+            }));
+    }, [measurements, selectedType]);
+
+    return (
+        <div className="space-y-4">
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+                Measurement Trends
+            </h2>
+
+            {/* Filter */}
+            <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
+                <label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 block">
+                    Filter by measurement type:
+                </label>
+                <select
+                    value={selectedType}
+                    onChange={(e) => setSelectedType(e.target.value)}
+                    className="w-full md:w-64 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg
+                     bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                >
+                    <option value="all">All measurements</option>
+                    {measurementTypes.map(type => (
+                        <option key={type.id} value={type.id}>
+                            {type.icon} {type.name}
+                        </option>
+                    ))}
+                </select>
+            </div>
+
+            {/* No Data State */}
+            {measurements.length === 0 ? (
+                <div className="text-center py-12 text-gray-500 dark:text-gray-400">
+                    <p className="text-4xl mb-2">📊</p>
+                    <p>No measurements recorded</p>
+                    <p className="text-sm">Track measurements from the Log tab to see trends</p>
+                </div>
+            ) : (
+                <>
+                    {/* Summary Cards - Show when viewing all */}
+                    {selectedType === 'all' && (
+                        <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                            {Object.entries(measurementSummary).map(([typeId, data]) => (
+                                <button
+                                    key={typeId}
+                                    onClick={() => setSelectedType(typeId)}
+                                    className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 text-left hover:border-blue-400 dark:hover:border-blue-500 transition-colors"
+                                >
+                                    <div className="flex items-center gap-2 mb-2">
+                                        <span className="text-2xl">{data.type?.icon || '📊'}</span>
+                                        <span className="font-medium text-gray-900 dark:text-white text-sm">
+                      {data.type?.shortName || typeId}
+                    </span>
+                                    </div>
+                                    <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">{data.count}</p>
+                                    <p className="text-xs text-gray-500 dark:text-gray-400">entries</p>
+                                    {data.latest && (
+                                        <p className="text-xs text-gray-600 dark:text-gray-400 mt-1 truncate">
+                                            Latest: {formatMeasurementValue(typeId, data.latest.values)}
+                                        </p>
+                                    )}
+                                </button>
+                            ))}
+                        </div>
+                    )}
+
+                    {/* Chart - Show when specific type selected */}
+                    {selectedType !== 'all' && chartData.length > 1 && (
+                        <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
+                            <h3 className="font-medium text-gray-900 dark:text-white mb-3">
+                                {getMeasurementType(selectedType)?.name} Over Time
+                            </h3>
+                            <ChartContainer height={256}>
+                                <LineChart data={chartData} margin={{ top: 5, right: 5, left: -20, bottom: 5 }}>
+                                    <CartesianGrid strokeDasharray="3 3" stroke="#374151" opacity={0.3} />
+                                    <XAxis
+                                        dataKey="date"
+                                        tick={{ fontSize: 12, fill: '#9CA3AF' }}
+                                        interval="preserveStartEnd"
+                                        stroke="#6B7280"
+                                    />
+                                    <YAxis
+                                        tick={{ fontSize: 12, fill: '#9CA3AF' }}
+                                        stroke="#6B7280"
+                                    />
+                                    <Tooltip content={(props) => <CustomTooltip {...props} />} />
+                                    <Line
+                                        type="monotone"
+                                        dataKey="value"
+                                        stroke="#3B82F6"
+                                        strokeWidth={2}
+                                        name="Value"
+                                        dot={{ fill: '#3B82F6', r: 3 }}
+                                        activeDot={{ r: 5 }}
+                                    />
+                                </LineChart>
+                            </ChartContainer>
+                        </div>
+                    )}
+
+                    {/* Recent Measurements List */}
+                    <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+                        <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+                            <h3 className="font-medium text-gray-900 dark:text-white">
+                                Recent Measurements ({measurements.length})
+                            </h3>
+                        </div>
+                        <div className="divide-y divide-gray-200 dark:divide-gray-700 max-h-96 overflow-y-auto">
+                            {measurements.slice(0, 20).map(m => {
+                                const type = getMeasurementType(m.measurementType);
+                                const interpretation = interpretMeasurement(m.measurementType, m.values, m.metadata);
+
+                                return (
+                                    <div key={m.id} className="p-4">
+                                        <div className="flex items-start gap-3">
+                                            <span className="text-xl">{type?.icon || '📊'}</span>
+                                            <div className="flex-1 min-w-0">
+                                                <div className="flex items-center justify-between gap-2">
+                                                    <p className="font-medium text-gray-900 dark:text-white">
+                                                        {type?.shortName || m.measurementType}
+                                                    </p>
+                                                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                                                        {new Date(m.timestamp).toLocaleDateString()}
+                                                    </p>
+                                                </div>
+                                                <p className="text-sm text-gray-700 dark:text-gray-300">
+                                                    {formatMeasurementValue(m.measurementType, m.values)}
+                                                </p>
+                                                {interpretation && (
+                                                    <span className={`inline-block mt-1 px-2 py-0.5 rounded text-xs font-medium ${
+                                                        interpretation.color === 'green' ? 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300' :
+                                                            interpretation.color === 'yellow' ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300' :
+                                                                interpretation.color === 'orange' ? 'bg-orange-100 dark:bg-orange-900/30 text-orange-800 dark:text-orange-300' :
+                                                                    interpretation.color === 'red' ? 'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300' :
+                                                                        'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300'
+                                                    }`}>
+                            {interpretation.label}
+                          </span>
+                                                )}
+                                                {m.notes && (
+                                                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                                                        📝 {m.notes}
+                                                    </p>
+                                                )}
+                                            </div>
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </div>
+                </>
+            )}
+        </div>
+    );
 };
 
 const Trends = () => {
@@ -206,49 +437,59 @@ const Trends = () => {
 
   return (
       <div className="space-y-4 pb-20">
-        {/* Tab Selector */}
-        <div className="flex border-b border-gray-200 dark:border-gray-700 mb-4">
-          <button
-              onClick={() => setActiveTab('charts')}
-              className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
-                  activeTab === 'charts'
-                      ? 'border-blue-500 text-blue-600 dark:text-blue-400'
-                      : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
-              }`}
-          >
-            📊 Charts
-          </button>
-          <button
-              onClick={() => setActiveTab('rating')}
-              className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
-                  activeTab === 'rating'
-                      ? 'border-blue-500 text-blue-600 dark:text-blue-400'
-                      : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
-              }`}
-          >
-            ⚖️ Rating Evidence
-          </button>
-          <button
-              onClick={() => setActiveTab('cp-resources')}
-              className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
-                  activeTab === 'cp-resources'
-                      ? 'border-blue-500 text-blue-600 dark:text-blue-400'
-                      : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
-              }`}
-          >
-            🎖️ C&P Resources
-          </button>
-          <button
-              onClick={() => setActiveTab('service-connection')}
-              className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
-                  activeTab === 'service-connection'
-                      ? 'border-blue-500 text-blue-600 dark:text-blue-400'
-                      : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
-              }`}
-          >
-            ⚖️ Service Connection
-          </button>
-        </div>
+          {/* Tab Selector - Grid layout for mobile wrapping */}
+          <div className="grid grid-cols-3 sm:grid-cols-5 gap-1 mb-4 bg-gray-100 dark:bg-gray-800 rounded-lg p-1">
+              <button
+                  onClick={() => setActiveTab('charts')}
+                  className={`px-2 py-2 text-xs sm:text-sm font-medium rounded-md transition-colors ${
+                      activeTab === 'charts'
+                          ? 'bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400 shadow-sm'
+                          : 'text-gray-600 dark:text-gray-400 hover:bg-white/50 dark:hover:bg-gray-700/50'
+                  }`}
+              >
+                  📊 Charts, Trends, & Patterns
+              </button>
+              <button
+                  onClick={() => setActiveTab('rating')}
+                  className={`px-2 py-2 text-xs sm:text-sm font-medium rounded-md transition-colors ${
+                      activeTab === 'rating'
+                          ? 'bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400 shadow-sm'
+                          : 'text-gray-600 dark:text-gray-400 hover:bg-white/50 dark:hover:bg-gray-700/50'
+                  }`}
+              >
+                  ⚖️ Rating & Evidence
+              </button>
+              <button
+                  onClick={() => setActiveTab('cp-resources')}
+                  className={`px-2 py-2 text-xs sm:text-sm font-medium rounded-md transition-colors ${
+                      activeTab === 'cp-resources'
+                          ? 'bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400 shadow-sm'
+                          : 'text-gray-600 dark:text-gray-400 hover:bg-white/50 dark:hover:bg-gray-700/50'
+                  }`}
+              >
+                  🎖️ C&P Resources
+              </button>
+              <button
+                  onClick={() => setActiveTab('service-connection')}
+                  className={`px-2 py-2 text-xs sm:text-sm font-medium rounded-md transition-colors ${
+                      activeTab === 'service-connection'
+                          ? 'bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400 shadow-sm'
+                          : 'text-gray-600 dark:text-gray-400 hover:bg-white/50 dark:hover:bg-gray-700/50'
+                  }`}
+              >
+                  🔗 Service Connection
+              </button>
+              <button
+                  onClick={() => setActiveTab('measurements')}
+                  className={`px-2 py-2 text-xs sm:text-sm font-medium rounded-md transition-colors ${
+                      activeTab === 'measurements'
+                          ? 'bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400 shadow-sm'
+                          : 'text-gray-600 dark:text-gray-400 hover:bg-white/50 dark:hover:bg-gray-700/50'
+                  }`}
+              >
+                  📏 Vitals Measurements
+              </button>
+          </div>
 
         {/* Tab Content */}
         {activeTab === 'charts' && (
@@ -463,6 +704,10 @@ const Trends = () => {
         {activeTab === 'service-connection' && (
             <ServiceConnectionGuide />
         )}
+
+      {activeTab === 'measurements' && (
+          <MeasurementsTrends dateRange={dateRange} />
+      )}
       </div>
   );
 };
