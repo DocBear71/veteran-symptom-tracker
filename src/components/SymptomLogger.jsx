@@ -20,7 +20,7 @@ import QuickLog from './QuickLog';
 import AddChronicModal from './AddChronicModal';
 import WhyTrackThis from './WhyTrackThis.jsx';
 
-const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
+const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed, onNavigate }) => {
   const [stressLevel, setStressLevel] = useState(5);
   const [weather, setWeather] = useState('');
   // Check if user is a veteran for VA-specific features
@@ -3379,6 +3379,29 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
 
   return (
       <div className="pb-20">
+        {/* Measurements Quick Access Card */}
+        <button
+            onClick={() => onNavigate && onNavigate('measurements')}
+            className="w-full bg-gradient-to-r from-blue-50 to-indigo-50
+                     dark:from-blue-900/20 dark:to-indigo-900/20
+                     border border-blue-200 dark:border-blue-800
+                     rounded-lg p-4 mb-6 hover:shadow-md transition-all
+                     hover:scale-[1.02] active:scale-[0.98]"
+        >
+          <div className="flex items-center gap-3">
+            <span className="text-3xl">📏</span>
+            <div className="flex-1 text-left">
+              <h3 className="font-semibold text-gray-900 dark:text-white">
+                Track Measurements
+              </h3>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                Blood pressure, glucose, weight, vitals
+              </p>
+            </div>
+            <span className="text-blue-600 dark:text-blue-400 text-xl">→</span>
+          </div>
+        </button>
+
         {/* Quick Log Section */}
         <QuickLog
             key={refreshQuickLog}

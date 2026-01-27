@@ -177,7 +177,11 @@ const AppContent = () => {
   const renderView = () => {
     switch (currentView) {
       case 'log':
-        return <SymptomLogger prefillData={prefillData} onPrefillUsed={() => setPrefillData(null)} />;
+        return <SymptomLogger
+            prefillData={prefillData}
+            onPrefillUsed={() => setPrefillData(null)}
+            onNavigate={handleNavigate}
+        />;
       case 'history':
         return <SymptomHistory onCopyLog={handleCopyLog} />;
       case 'measurements':
