@@ -1,4 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
+import DataBunker from './DataBunker';
+import PrivacyExplainer from './PrivacyExplainer';
+import { Shield } from 'lucide-react';
 import {
   notificationsSupported,
   getNotificationPermission,
@@ -88,6 +91,7 @@ const Settings = ({ onNavigate }) => {  // ← ADD onNavigate prop
   const [pendingRestore, setPendingRestore] = useState(null);
   const fileInputRef = useRef(null);
   const [showCaregiverProgram, setShowCaregiverProgram] = useState(false);
+  const [showPrivacyExplainer, setShowPrivacyExplainer] = useState(false);
 
 
   useEffect(() => {
@@ -276,6 +280,122 @@ const Settings = ({ onNavigate }) => {  // ← ADD onNavigate prop
   return (
       <div className="space-y-4 text-left">
         <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Settings</h2>
+
+        {/* Safety Features Section */}
+        <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 mt-6">
+          <h3 className="font-semibold text-gray-900 dark:text-white mb-2
+                 flex items-center gap-2">
+            <span>🛡️</span>
+            Safety Features
+          </h3>
+          <p className="text-sm text-gray-600 dark:text-gray-400">
+            <strong>Panic Key:</strong> Triple-tap the{' '}
+            <kbd className="px-2 py-0.5 bg-gray-200 dark:bg-gray-700 rounded text-xs
+                    font-mono">Esc</kbd>{' '}
+            key, or triple-tap anywhere on your mobile device to instantly leave this app and go to Google. Your data remains saved.
+          </p>
+        </div>
+
+        {/* Crisis Resources - Always Visible for Veterans */}
+        {(currentProfile && currentProfile.type === 'veteran' && (
+            <div className="bg-red-50 dark:bg-red-900/20 border border-red-200
+                  dark:border-red-800 rounded-lg p-4 mb-6">
+              <h3 className="font-semibold text-red-800 dark:text-red-300 mb-2
+                   flex items-center gap-2">
+                <span>🆘</span>
+                Veterans Crisis Line
+              </h3>
+              <div className="space-y-2 text-sm">
+                <a
+                    href="tel:988"
+                    className="block w-full py-4 px-6 bg-red-600 hover:bg-red-700
+             text-white text-center text-lg font-bold rounded-lg
+             active:scale-95 transition-transform"
+                >
+                  📞 Tap to Call Veterans Crisis Line, then just press dial
+                </a>
+                <a href="sms:838255"
+                   className="flex items-center gap-2 text-red-700 dark:text-red-400
+                    hover:underline">
+                  <span>💬</span>
+                  <span>Text <strong>838255</strong></span>
+                </a>
+                <a href="https://www.veteranscrisisline.net/get-help-now/chat/"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   className="flex items-center gap-2 text-red-700 dark:text-red-400
+                    hover:underline">
+                  <span>💻</span>
+                  <span>Chat online 24/7</span>
+                </a>
+              </div>
+              <p className="text-xs text-red-600 dark:text-red-500 mt-2">
+                Free, confidential support available 24/7
+              </p>
+            </div>
+        ))}
+
+        {/* Privacy & Security Section */}
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md border
+                        border-gray-200 dark:border-gray-700 p-6 mb-6">
+          <div className="flex items-center gap-3 mb-4">
+            <span className="text-2xl">🔒</span>
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                Privacy & Security
+              </h3>
+              <p className="text-sm text-gray-500 dark:text-gray-400">
+                How we protect your data
+              </p>
+            </div>
+          </div>
+
+          <div className="space-y-3">
+            {/* Privacy Features Grid */}
+            <div className="grid grid-cols-2 gap-2 mb-4">
+              <div className="bg-green-50 dark:bg-green-900/20 rounded-lg p-3 text-center">
+                <div className="text-2xl mb-1">🚫☁️</div>
+                <div className="text-xs text-green-700 dark:text-green-400 font-medium">
+                  No Cloud
+                </div>
+              </div>
+              <div className="bg-green-50 dark:bg-green-900/20 rounded-lg p-3 text-center">
+                <div className="text-2xl mb-1">🤖❌</div>
+                <div className="text-xs text-green-700 dark:text-green-400 font-medium">
+                  No AI
+                </div>
+              </div>
+              <div className="bg-green-50 dark:bg-green-900/20 rounded-lg p-3 text-center">
+                <div className="text-2xl mb-1">📊❌</div>
+                <div className="text-xs text-green-700 dark:text-green-400 font-medium">
+                  No Analytics
+                </div>
+              </div>
+              <div className="bg-green-50 dark:bg-green-900/20 rounded-lg p-3 text-center">
+                <div className="text-2xl mb-1">🔒</div>
+                <div className="text-xs text-green-700 dark:text-green-400 font-medium">
+                  100% Local
+                </div>
+              </div>
+            </div>
+
+            <button
+                onClick={() => setShowPrivacyExplainer(true)}
+                className="w-full px-4 py-3 bg-green-600 hover:bg-green-700
+                           text-white rounded-lg font-medium transition-colors
+                           flex items-center justify-center gap-2"
+            >
+              <span>🔍</span>
+              <span>Learn How We Keep Your Data Private</span>
+            </button>
+
+            <p className="text-xs text-gray-500 dark:text-gray-400 text-center">
+              More private than tools that use analytics or cloud features
+            </p>
+          </div>
+        </div>
+
+
 
         {/* Theme Settings - Collapsible */}
         <details className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden group">
@@ -588,6 +708,10 @@ const Settings = ({ onNavigate }) => {  // ← ADD onNavigate prop
               </div>
           )}
         </div>
+        {/* The Bunker - Crash-Proof Backup System */}
+        <div className="mb-6">
+          <DataBunker />
+        </div>
 
         {/* Emergency Data Recovery */}
         <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
@@ -759,29 +883,122 @@ const Settings = ({ onNavigate }) => {  // ← ADD onNavigate prop
           </div>
         </div>
 
-        {/* Data Privacy & Danger Zone */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
-          <h3 className="font-medium text-gray-900 dark:text-white mb-3">Your Data</h3>
-          <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+        {/* Data Privacy Info */}
+        <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200
+                        dark:border-gray-700 p-6">
+          <div className="flex items-center gap-3 mb-3">
+            <span className="text-2xl">🔐</span>
+            <h3 className="font-medium text-gray-900 dark:text-white">Your Data</h3>
+          </div>
+          <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
             All data is stored locally on your device. Nothing is sent to any server.
           </p>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
-            Use the Export features to back up your data or share with your VSO.
+          <p className="text-sm text-gray-500 dark:text-gray-400">
+            Use the Export features above to back up your data or share with your VSO.
           </p>
+        </div>
 
-          {/* Danger Zone */}
-          <div className="border-t border-gray-200 dark:border-gray-700 pt-4 mt-4">
-            <h4 className="font-medium text-red-600 dark:text-red-400 mb-3">Danger Zone</h4>
-            <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
-              Permanently delete all your data. This cannot be undone.
-            </p>
-            <button
-                onClick={() => setShowDeleteConfirm(true)}
-                className="w-full py-2 px-4 border-2 border-red-500 text-red-600 dark:text-red-400 font-medium rounded-lg hover:bg-red-50 dark:hover:bg-red-900/30"
-            >
-              Delete All Data
-            </button>
+        {/* ATOMIC WIPE - DANGER ZONE */}
+        <div className="bg-red-50 dark:bg-red-900/20 border-2 border-red-200
+                        dark:border-red-800 rounded-lg p-6">
+          <div className="flex items-center gap-3 mb-4">
+            <span className="text-3xl">⚠️</span>
+            <div>
+              <h3 className="text-lg font-semibold text-red-600 dark:text-red-400">
+                Danger Zone
+              </h3>
+              <p className="text-sm text-red-700 dark:text-red-300">
+                Permanent data deletion
+              </p>
+            </div>
           </div>
+
+          {!showDeleteConfirm ? (
+              <>
+                <p className="text-sm text-gray-700 dark:text-gray-300 mb-4">
+                  <strong>Atomic Wipe</strong> permanently deletes ALL your data including
+                  symptom logs, chronic symptoms, service-connected conditions, medications,
+                  measurements, automatic backups, and all settings.
+                </p>
+                <p className="text-sm text-red-600 dark:text-red-400 font-medium mb-4">
+                  ⚠️ This action cannot be undone. Export a backup first if you want to
+                  save your data.
+                </p>
+                <button
+                    onClick={() => setShowDeleteConfirm(true)}
+                    className="w-full py-3 px-4 bg-red-600 hover:bg-red-700 text-white
+                               font-bold rounded-lg transition-colors flex items-center
+                               justify-center gap-2"
+                >
+                  <span>☢️</span>
+                  <span>Atomic Wipe - Delete All Data</span>
+                </button>
+              </>
+          ) : (
+              <div className="space-y-4">
+                <div className="bg-red-100 dark:bg-red-900/40 border border-red-300
+                                dark:border-red-700 rounded-lg p-4">
+                  <p className="text-red-800 dark:text-red-200 font-semibold mb-2">
+                    ⚠️ FINAL WARNING
+                  </p>
+                  <p className="text-sm text-red-700 dark:text-red-300 mb-2">
+                    This will permanently delete:
+                  </p>
+                  <ul className="text-sm text-red-700 dark:text-red-300 space-y-1 ml-4">
+                    <li>• {dataStats.logs} symptom log entries</li>
+                    <li>• {dataStats.chronicSymptoms || 0} quick log items</li>
+                    <li>• {dataStats.appointments || 0} appointments</li>
+                    <li>• {dataStats.customSymptoms} custom symptoms</li>
+                    <li>• All service-connected conditions</li>
+                    <li>• All automatic backups (last 7 days)</li>
+                    <li>• All settings and preferences</li>
+                  </ul>
+                  <p className="text-sm text-red-800 dark:text-red-200 font-semibold mt-3">
+                    This action CANNOT be undone.
+                  </p>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Type <strong className="text-red-600 dark:text-red-400">DELETE</strong> to confirm:
+                  </label>
+                  <input
+                      type="text"
+                      value={deleteConfirmText}
+                      onChange={(e) => setDeleteConfirmText(e.target.value)}
+                      placeholder="Type DELETE"
+                      className="w-full px-4 py-3 border-2 border-red-300 dark:border-red-700
+                                 rounded-lg bg-white dark:bg-gray-800 text-gray-900
+                                 dark:text-white focus:ring-2 focus:ring-red-500
+                                 focus:border-red-500 text-center font-mono text-lg"
+                  />
+                </div>
+
+                <div className="flex gap-3">
+                  <button
+                      onClick={() => {
+                        setShowDeleteConfirm(false);
+                        setDeleteConfirmText('');
+                      }}
+                      className="flex-1 py-3 px-4 bg-gray-200 dark:bg-gray-700
+                                 text-gray-700 dark:text-gray-300 font-medium rounded-lg
+                                 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                      onClick={handleDeleteAllData}
+                      disabled={deleteConfirmText !== 'DELETE'}
+                      className="flex-1 py-3 px-4 bg-red-600 text-white font-bold
+                                 rounded-lg hover:bg-red-700 disabled:bg-gray-400
+                                 dark:disabled:bg-gray-600 disabled:cursor-not-allowed
+                                 transition-colors"
+                  >
+                    ☢️ Delete Everything
+                  </button>
+                </div>
+              </div>
+          )}
         </div>
 
         {/* Restore Confirmation Modal */}
@@ -920,6 +1137,11 @@ const Settings = ({ onNavigate }) => {  // ← ADD onNavigate prop
               </div>
             </div>
         )}
+        {/* Privacy Explainer Modal */}
+        <PrivacyExplainer
+            isOpen={showPrivacyExplainer}
+            onClose={() => setShowPrivacyExplainer(false)}
+        />
       </div>
   );
 };

@@ -18,8 +18,11 @@ import { getProfileType, PROFILE_TYPES } from '../utils/profile';
 import OccurrenceTimePicker from './OccurrenceTimePicker.jsx';
 import QuickLog from './QuickLog';
 import AddChronicModal from './AddChronicModal';
+import WhyTrackThis from './WhyTrackThis.jsx';
 
 const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
+  const [stressLevel, setStressLevel] = useState(5);
+  const [weather, setWeather] = useState('');
   // Check if user is a veteran for VA-specific features
   const isVeteran = getProfileType() === PROFILE_TYPES.VETERAN;
   // Body System / Category / Symptom selection state
@@ -1464,7 +1467,7 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
       selectedSymptom?.includes('genital') ||
       ['kidney-stones', 'kidney-pain', 'blood-in-urine', 'kidney-infection',
         'renal-swelling', 'renal-fatigue', 'renal-nausea', 'decreased-urination',
-        'foamy-urine', 'high-blood-pressure', 'urinary-frequency', 'urinary-urgency',
+        'foamy-urine', 'urinary-frequency', 'urinary-urgency',
         'painful-urination', 'urinary-incontinence', 'urine-retention', 'weak-stream',
         'hesitancy', 'nocturia', 'bladder-pain', 'recurrent-uti', 'incomplete-emptying',
         'prostate-symptoms', 'prostate-pain', 'erectile-dysfunction', 'testicular-pain',
@@ -3065,6 +3068,7 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
       isFlareUp,
       duration: duration || null,
       timeOfDay: timeOfDay || null,
+      weather: weather || null,
     };
 
     // Add condition-specific data
@@ -3298,6 +3302,7 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
     setIsFlareUp(false);
     setDuration('');
     setTimeOfDay('');
+    setWeather('');
 
     setShowSuccess(true);
     setTimeout(() => setShowSuccess(false), 2000);
@@ -3329,6 +3334,18 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
       setCustomError(result.message);
     }
   };
+
+  const weatherOptions = [
+    { value: '', label: 'Not specified' },
+    { value: 'clear', label: '☀️ Clear/Sunny' },
+    { value: 'cloudy', label: '☁️ Cloudy' },
+    { value: 'rainy', label: '🌧️ Rainy' },
+    { value: 'stormy', label: '⛈️ Stormy' },
+    { value: 'hot', label: '🥵 Hot' },
+    { value: 'cold', label: '🥶 Cold' },
+    { value: 'humid', label: '💧 Humid' },
+    { value: 'pressure-change', label: '📊 Barometric Pressure Change' },
+  ];
 
   const getSeverityInfo = (value) => {
     if (value <= 2) return { label: 'Minimal', color: 'text-green-600 dark:text-green-400' };
@@ -3673,8 +3690,44 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
                       <option value="varies">Varies</option>
                     </select>
                   </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      🌤️ Weather (optional)
+                    </label>
+                    <select
+                        value={weather}
+                        onChange={(e) => setWeather(e.target.value)}
+                        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600
+               rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                    >
+                      {weatherOptions.map(opt => (
+                          <option key={opt.value} value={opt.value}>{opt.label}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      😰 Stress Level: {stressLevel}/10
+                    </label>
+                    <input
+                        type="range"
+                        min="0"
+                        max="10"
+                        value={stressLevel}
+                        onChange={(e) => setStressLevel(parseInt(e.target.value))}
+                        className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none
+               cursor-pointer accent-purple-600"
+                    />
+                    <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400 mt-1">
+                      <span>0 - Calm</span>
+                      <span>5 - Moderate</span>
+                      <span>10 - Extreme</span>
+                    </div>
+                  </div>
                 </div>
               </div>
+
+
           )}
 
           {/* ============================================ */}
@@ -3682,6 +3735,11 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
           {/* For IBS, GERD, UC, peptic ulcer, hemorrhoids, diverticulitis */}
           {/* ============================================ */}
           {isGISelected && (
+              <>
+              <WhyTrackThis
+                  symptomId={selectedSymptom}
+                  category="ibs"
+              />
               <div className="bg-amber-50 dark:bg-amber-900/20 p-4 rounded-lg border border-amber-200 dark:border-amber-800 space-y-4">
                 <h3 className="font-medium text-amber-900 dark:text-amber-200 flex items-center gap-2">
                   <span>🩺</span> GI Symptom Details
@@ -3886,10 +3944,13 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
                   </label>
                 </div>
               </div>
+              </>
           )}
 
           {/* Migraine-Specific Fields */}
           {isMigraineSelected && (
+              <>
+              <WhyTrackThis condition="migraine" />
               <div className="bg-purple-50 dark:bg-purple-900/30 p-4 rounded-lg border border-purple-200 dark:border-purple-800 space-y-4">
                 <h3 className="font-medium text-purple-900 dark:text-purple-200">Migraine Details</h3>
                 <p className="text-xs text-purple-700 dark:text-purple-300">These details align with VA rating criteria</p>
@@ -3965,10 +4026,16 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
                          className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white" />
                 </div>
               </div>
+              </>
           )}
 
           {/* Sleep-Specific Fields */}
           {(isSleepSelected || isNightmareSelected) && (
+              <>
+                <WhyTrackThis
+                    symptomId={selectedSymptom}
+                    category="sleep-disorders"
+                />
               <div className="bg-indigo-50 dark:bg-indigo-900/30 p-4 rounded-lg border border-indigo-200 dark:border-indigo-800 space-y-4">
                 <h3 className="font-medium text-indigo-900 dark:text-indigo-200">Sleep Details</h3>
                 <p className="text-xs text-indigo-700 dark:text-indigo-300">Track sleep patterns for VA claims documentation</p>
@@ -4041,10 +4108,16 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
                   </div>
                 </div>
               </div>
+              </>
           )}
 
           {/* PTSD-Related Fields */}
           {isPTSDRelated && (
+              <>
+              <WhyTrackThis
+                  symptomId={selectedSymptom}
+                  category="ptsd"
+              />
               <div className="bg-amber-50 dark:bg-amber-900/30 p-4 rounded-lg border border-amber-200 dark:border-amber-800 space-y-4">
                 <h3 className="font-medium text-amber-900 dark:text-amber-200">Mental Health Details</h3>
                 <p className="text-xs text-amber-700 dark:text-amber-300">These align with PTSD rating criteria</p>
@@ -4082,10 +4155,16 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
                          className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white" />
                 </div>
               </div>
+              </>
           )}
 
           {/* PHASE 8A EXTENDED: ANXIETY DISORDERS FORM */}
           {isAnxietyFormRelated && (
+              <>
+              <WhyTrackThis
+                  symptomId={selectedSymptom}
+                  category="anxiety"
+              />
               <div className="bg-blue-50 dark:bg-blue-900/30 p-4 rounded-lg border border-blue-200 dark:border-blue-800 space-y-4">
                 <h3 className="font-medium text-blue-900 dark:text-blue-200">Anxiety Episode Details</h3>
                 <p className="text-xs text-blue-700 dark:text-blue-300">Track physical symptoms, triggers, and impact for VA claims evidence</p>
@@ -4201,12 +4280,18 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
                   <strong>For VA Claims:</strong> Document physical symptoms, triggers, and functional impact. Panic attacks require 4+ physical symptoms occurring simultaneously.
                 </div>
               </div>
+              </>
           )}
 
           {/* ============================================
               PHASE 8A EXTENDED: DEPRESSION FORM
               ============================================ */}
           {isDepressionFormRelated && (
+              <>
+              <WhyTrackThis
+                  symptomId={selectedSymptom}
+                  category="depression"
+              />
               <div className="bg-indigo-50 dark:bg-indigo-900/30 p-4 rounded-lg border border-indigo-200 dark:border-indigo-800 space-y-4">
                 <h3 className="font-medium text-indigo-900 dark:text-indigo-200">Depression Episode Details</h3>
                 <p className="text-xs text-indigo-700 dark:text-indigo-300">Track mood, physical symptoms, and functional impact for VA claims evidence</p>
@@ -4345,12 +4430,18 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
                   <strong>For VA Claims:</strong> MDD diagnosis requires 5+ symptoms including depressed mood or anhedonia, present most of the day, nearly every day for 2+ weeks.
                 </div>
               </div>
+              </>
           )}
 
           {/* ============================================
               PHASE 8A EXTENDED: BIPOLAR/CYCLOTHYMIC FORM
               ============================================ */}
           {isBipolarFormRelated && (
+              <>
+              <WhyTrackThis
+                  symptomId={selectedSymptom}
+                  category="bipolar"
+              />
               <div className="bg-purple-50 dark:bg-purple-900/30 p-4 rounded-lg border border-purple-200 dark:border-purple-800 space-y-4">
                 <h3 className="font-medium text-purple-900 dark:text-purple-200">Bipolar Episode Details</h3>
                 <p className="text-xs text-purple-700 dark:text-purple-300">Track mood state, symptoms, and functional impact for VA claims evidence</p>
@@ -4508,10 +4599,16 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
                   <strong>For VA Claims:</strong> Manic episodes last 1+ week, hypomanic 4+ days. Document sleep patterns, risky behaviors, and functional impairment.
                 </div>
               </div>
+              </>
           )}
 
           {/* PHASE 8A EXTENDED: OCD FORM */}
           {isOCDFormRelated && (
+              <>
+              <WhyTrackThis
+                  symptomId={selectedSymptom}
+                  category="ocd"
+              />
               <div className="bg-teal-50 dark:bg-teal-900/30 p-4 rounded-lg border border-teal-200 dark:border-teal-800 space-y-4">
                 <h3 className="font-medium text-teal-900 dark:text-teal-200">OCD Episode Details</h3>
                 <p className="text-xs text-teal-700 dark:text-teal-300">Track obsessions, compulsions, time consumed, and impact for VA claims evidence</p>
@@ -4638,10 +4735,16 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
                   <strong>For VA Claims:</strong> OCD diagnosis requires time-consuming obsessions/compulsions (1+ hour/day) causing significant distress or functional impairment.
                 </div>
               </div>
+              </>
           )}
 
           {/* ADJUSTMENT DISORDER FORM */}
           {isAdjustmentDisorderFormRelated && (
+              <>
+              <WhyTrackThis
+                  symptomId={selectedSymptom}
+                  category="adjustment-disorder"
+              />
               <div className="bg-yellow-50 dark:bg-yellow-900/30 p-4 rounded-lg border border-yellow-200 dark:border-yellow-800 space-y-4">
                 <h3 className="font-medium text-yellow-900 dark:text-yellow-200">Adjustment Disorder Episode Details</h3>
                 <p className="text-xs text-yellow-700 dark:text-yellow-300">Track stressor, timeline, and response for VA claims evidence</p>
@@ -4864,10 +4967,16 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
                   (acute &lt;6 months, chronic ≥6 months), and (4) Functional impairment. Timeline documentation is critical.
                 </div>
               </div>
+              </>
           )}
 
           {/* Phase 1C: Respiratory Form */}
           {isRespiratorySelected && (
+              <>
+              <WhyTrackThis
+                  symptomId={selectedSymptom}
+                  category="respiratory"
+              />
               <div className="bg-sky-50 dark:bg-sky-900/30 p-4 rounded-lg border border-sky-200 dark:border-sky-800 space-y-4">
                 <h3 className="font-medium text-sky-900 dark:text-sky-200">Respiratory Details</h3>
                 <p className="text-xs text-sky-700 dark:text-sky-300">Track breathing symptoms for VA claims</p>
@@ -5019,10 +5128,16 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
                   </div>
                 </div>
               </div>
+              </>
           )}
 
           {/* Phase 1D: Joint/ROM Form */}
           {isJointSelected && (
+              <>
+              <WhyTrackThis
+                  symptomId={selectedSymptom}
+                  category="arthritis"
+              />
               <div className="bg-indigo-50 dark:bg-indigo-900/30 p-4 rounded-lg border border-indigo-200 dark:border-indigo-800 space-y-4">
                 <h3 className="font-medium text-indigo-900 dark:text-indigo-200">Joint & ROM Details</h3>
                 <p className="text-xs text-indigo-700 dark:text-indigo-300">Document joint limitations for VA claims</p>
@@ -5167,11 +5282,17 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
                   </div>
                 </div>
               </div>
+              </>
           )}
 
 
           {/* Phase 4C: Spine Condition Fields */}
           {isSpineConditionSelected && (
+              <>
+              <WhyTrackThis
+                  symptomId={selectedSymptom}
+                  category="back-spine"
+              />
               <div className="space-y-4 p-4 bg-amber-50 dark:bg-amber-900/20 rounded-lg border border-amber-200 dark:border-amber-700">
                 <h4 className="font-medium text-amber-800 dark:text-amber-200 flex items-center gap-2">
                   <span>🦴</span> Spine Condition Details
@@ -5279,10 +5400,17 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
                     </div>
                 )}
               </div>
+              </>
           )}
 
           {/* Phase 1E: Seizure/Episode Form */}
           {isSeizureSelected && (
+
+              <>
+              <WhyTrackThis
+                  symptomId={selectedSymptom}
+                  category="neurological"
+              />
               <div className="bg-purple-50 dark:bg-purple-900/30 p-4 rounded-lg border border-purple-200 dark:border-purple-800 space-y-4">
                 <h3 className="font-medium text-purple-900 dark:text-purple-200">Seizure/Episode Details</h3>
                 <p className="text-xs text-purple-700 dark:text-purple-300">Document episode characteristics for VA claims</p>
@@ -5775,10 +5903,16 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
                     </div>
                 )}
               </div>
+              </>
           )}
 
           {/* Pain-Specific Fields */}
           {isPainSelected && (
+              <>
+              <WhyTrackThis
+                  symptomId={selectedSymptom}
+                  category="pain"
+              />
               <div className="bg-rose-50 dark:bg-rose-900/30 p-4 rounded-lg border border-rose-200 dark:border-rose-800 space-y-4">
                 <h3 className="font-medium text-rose-900 dark:text-rose-200">Pain Details</h3>
                 <p className="text-xs text-rose-700 dark:text-rose-300">Document impact on daily activities for VA claims</p>
@@ -5843,10 +5977,16 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
                   </div>
                 </div>
               </div>
+              </>
           )}
 
           {/* Phase 3: Genitourinary Details */}
           {isGenitourinaryRelated && (
+              <>
+              <WhyTrackThis
+                  symptomId={selectedSymptom}
+                  category="genitourinary"
+              />
               <div className="space-y-4 p-4 bg-teal-50 dark:bg-teal-900/20 rounded-lg border border-teal-200 dark:border-teal-800">
                 <h3 className="font-medium text-teal-900 dark:text-teal-200">Genitourinary Details</h3>
 
@@ -6455,10 +6595,16 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
                   </div>
                 </div>
               </div>
+              </>
           )}
 
           {/* Phase 4: Gynecological Details */}
           {isGynecologicalRelated && (
+              <>
+              <WhyTrackThis
+                  symptomId={selectedSymptom}
+                  category="gynecological"
+              />
               <div className="space-y-4 p-4 bg-rose-50 dark:bg-rose-900/20 rounded-lg border border-rose-200 dark:border-rose-800">
                 <div className="flex items-center gap-2 mb-2">
                   <span className="text-2xl">🌸</span>
@@ -6976,10 +7122,16 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
                   </div>
                 </div>
               </div>
+              </>
           )}
 
           {/* Phase 5: Anemia Form */}
           {isAnemiaRelated && (
+              <>
+              <WhyTrackThis
+                  symptomId={selectedSymptom}
+                  category="hemic-lymphatic"
+              />
               <div className="bg-red-50 dark:bg-red-900/20 rounded-lg p-4 space-y-4 border border-red-200 dark:border-red-800">
                 <h3 className="font-semibold text-red-900 dark:text-red-100 flex items-center gap-2">
                   🩸 Anemia Details
@@ -7091,10 +7243,16 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
                     </>
                 )}
               </div>
+              </>
           )}
 
           {/* Sickle Cell Crisis Form */}
           {isSickleCellRelated && (
+              <>
+              <WhyTrackThis
+                  symptomId={selectedSymptom}
+                  category="hemic-lymphatic"
+              />
               <div className="bg-red-50 dark:bg-red-900/20 rounded-lg p-4 space-y-4 border border-red-200 dark:border-red-800">
                 <h3 className="font-semibold text-red-900 dark:text-red-100 flex items-center gap-2">
                   🩸 Sickle Cell Crisis Details
@@ -7268,10 +7426,16 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
                   </select>
                 </div>
               </div>
+              </>
           )}
 
           {/* Bleeding Disorder Form */}
           {isBleedingDisorderRelated && (
+              <>
+              <WhyTrackThis
+                  symptomId={selectedSymptom}
+                  category="dental-oral"
+              />
               <div className="bg-red-50 dark:bg-red-900/20 rounded-lg p-4 space-y-4 border border-red-200 dark:border-red-800">
                 <h3 className="font-semibold text-red-900 dark:text-red-100 flex items-center gap-2">
                   🩸 Bleeding Disorder Details
@@ -7392,6 +7556,7 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
                   </div>
                 </div>
               </div>
+              </>
           )}
 
           {/* Infection-Related Form */}
@@ -8814,6 +8979,11 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
 
           {/* Phase 6: HIV/AIDS Form */}
           {isHIVRelated && (
+              <>
+              <WhyTrackThis
+                  symptomId={selectedSymptom}
+                  category="hiv-aids"
+              />
               <div className="bg-red-50 dark:bg-red-900/20 rounded-lg p-6 border-2 border-red-200 dark:border-red-800 space-y-4">
                 <div className="flex items-center gap-3 mb-4">
                   <span className="text-3xl">🦠</span>
@@ -9078,10 +9248,16 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
                   </ul>
                 </div>
               </div>
+              </>
           )}
 
           {/* Phase 6: Hepatitis (B & C) Form */}
           {isHepatitisRelated && (
+              <>
+              <WhyTrackThis
+                  symptomId={selectedSymptom}
+                  category="hepatitis"
+              />
               <div className="bg-amber-50 dark:bg-amber-900/20 rounded-lg p-6 border-2 border-amber-200 dark:border-amber-800 space-y-4">
                 <div className="flex items-center gap-3 mb-4">
                   <span className="text-3xl">🦠</span>
@@ -9175,10 +9351,16 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
                   </ul>
                 </div>
               </div>
+              </>
           )}
 
           {/* Phase 6: Lyme Disease Form */}
           {isLymeRelated && (
+              <>
+              <WhyTrackThis
+                  symptomId={selectedSymptom}
+                  category="lyme-disease"
+              />
               <div className="bg-green-50 dark:bg-green-900/20 rounded-lg p-6 border-2 border-green-200 dark:border-green-800 space-y-4">
                 <div className="flex items-center gap-3 mb-4">
                   <span className="text-3xl">🦟</span>
@@ -9308,6 +9490,7 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
                   </ul>
                 </div>
               </div>
+              </>
           )}
 
           {/* Phase 6: Malaria Form */}
@@ -10652,6 +10835,11 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
 
           {/* Phase 9: Cardiovascular Conditions Form */}
           {isCardiovascularRelated && (
+              <>
+              <WhyTrackThis
+                  symptomId={selectedSymptom}
+                  category="cardiovascular"
+              />
               <div className="space-y-4 p-3 bg-red-50 dark:bg-red-900/20 rounded-lg">
                 <h4 className="font-medium text-gray-900 dark:text-white flex items-center gap-2">
                   <span>❤️</span> Cardiovascular Details
@@ -10905,6 +11093,7 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
                     </div>
                 )}
               </div>
+              </>
           )}
 
           {/* Phase 10: Digestive System Fields */}
@@ -11221,6 +11410,11 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
 
           {/* Multiple Sclerosis Form */}
           {isMultipleSclerosisRelated && (
+              <>
+              <WhyTrackThis
+                  symptomId={selectedSymptom}
+                  category="multiple-sclerosis"
+              />
               <div className="bg-purple-50 dark:bg-purple-900/20 p-4 rounded-lg border border-purple-200 dark:border-purple-800">
                 <h4 className="font-medium text-purple-900 dark:text-purple-200 mb-3 flex items-center gap-2">
                   🧠 Multiple Sclerosis Details
@@ -11359,10 +11553,16 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
                   </label>
                 </div>
               </div>
+              </>
           )}
 
           {/* Parkinson's Disease Form */}
           {isParkinsonsRelated && (
+              <>
+              <WhyTrackThis
+                  symptomId={selectedSymptom}
+                  category="parkinsons-disease"
+              />
               <div className="bg-indigo-50 dark:bg-indigo-900/20 p-4 rounded-lg border border-indigo-200 dark:border-indigo-800">
                 <h4 className="font-medium text-indigo-900 dark:text-indigo-200 mb-3 flex items-center gap-2">
                   🧠 Parkinson's Disease Details
@@ -11556,10 +11756,16 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
                   </div>
                 </div>
               </div>
+              </>
           )}
 
           {/* Myasthenia Gravis Form */}
           {isMyastheniaRelated && (
+              <>
+              <WhyTrackThis
+                  symptomId={selectedSymptom}
+                  category="myasthenia-gravis"
+              />
               <div className="bg-teal-50 dark:bg-teal-900/20 p-4 rounded-lg border border-teal-200 dark:border-teal-800">
                 <h4 className="font-medium text-teal-900 dark:text-teal-200 mb-3 flex items-center gap-2">
                   💪 Myasthenia Gravis Details
@@ -11782,12 +11988,18 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
                     </div>
                 )}
               </div>
+              </>
           )}
 
           {/* ============================================ */}
           {/* PHASE 1B: NARCOLEPSY FORM */}
           {/* ============================================ */}
           {isNarcolepsyRelated && (
+              <>
+              <WhyTrackThis
+                  symptomId={selectedSymptom}
+                  category="narcolepsy"
+              />
               <div className="bg-indigo-50 dark:bg-indigo-900/20 p-4 rounded-lg border border-indigo-200 dark:border-indigo-800">
                 <h4 className="font-medium text-indigo-900 dark:text-indigo-200 mb-3 flex items-center gap-2">
                   <span>😴</span> Narcolepsy Details
@@ -11953,12 +12165,18 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
                   </div>
                 </div>
               </div>
+              </>
           )}
 
           {/* ============================================ */}
           {/* PHASE 1B: ALS FORM */}
           {/* ============================================ */}
           {isALSRelated && (
+              <>
+              <WhyTrackThis
+                  symptomId={selectedSymptom}
+                  category="als"
+              />
               <div className="bg-rose-50 dark:bg-rose-900/20 p-4 rounded-lg border border-rose-200 dark:border-rose-800">
                 <h4 className="font-medium text-rose-900 dark:text-rose-200 mb-3 flex items-center gap-2">
                   <span>💪</span> ALS Details
@@ -12135,6 +12353,7 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed }) => {
                   </label>
                 </div>
               </div>
+              </>
           )}
 
           {/* ============================================ */}

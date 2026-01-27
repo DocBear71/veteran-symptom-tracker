@@ -68,12 +68,34 @@ const Footer = () => {
         <footer className="bg-blue-900 dark:bg-gray-800 text-white mt-8">
           <div className="max-w-lg mx-auto px-4 py-6">
             {/* Company Info */}
+            <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700
+                    text-center space-y-2">
+              <div className="flex items-center justify-center gap-2">
+                <img
+                    src="../../../public/icon-512.png"
+                    alt="Doc Bear"
+                    className="w-8 h-8 rounded-lg"
+                />
+                <span className="font-semibold text-gray-900 dark:text-white">
+          Doc Bear's Symptom Vault
+        </span>
+              </div>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                Version 3.0.0
+              </p>
+              <div className="flex flex-col items-center gap-2 text-xs
+        text-gray-500 dark:text-gray-500">
+                <span>📊 158,000+ lines of code</span>
+                <span>🏥 240+ diagnostic codes</span>
+                <span>📈 960+ symptoms</span>
+              </div>
+              <p className="text-xs text-gray-400 dark:text-gray-600">
+                Built with ❤️ by a Marine Corps veteran
+              </p>
+            </div>
             <div className="text-center mb-4">
               <p className="text-blue-200 dark:text-gray-400 text-sm">
-                © 2025 - {new Date().getFullYear()} Doc Bear Enterprises, LLC. All rights reserved.
-              </p>
-              <p className="text-blue-300 dark:text-gray-500 text-xs mt-1">
-                🎖️ Built by a Veteran, for Veterans
+                © 2023 - {new Date().getFullYear()} Doc Bear Enterprises, LLC. <br/>All rights reserved.
               </p>
             </div>
 
@@ -141,7 +163,7 @@ const Footer = () => {
             {/* App Info */}
             <div className="mt-4 pt-4 border-t border-blue-800 dark:border-gray-700 text-center">
               <p className="text-blue-300 dark:text-gray-500 text-xs">
-                Doc Bear's Symptom Vault v2.0 • Privacy-First Health Tracking
+                Doc Bear's Symptom Vault v3.0.0 <br/> Privacy-First Health Tracking
               </p>
               <p className="text-blue-400 dark:text-gray-600 text-xs mt-1">
                 Your data stays on your device. Always.

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import './App.css';
 
 // Components
+import TermsModal from './components/legal/TermsModal';
 import Layout from './components/Layout';
 import SymptomLogger from './components/SymptomLogger';
 import SymptomHistory from './components/SymptomHistory';
@@ -62,6 +63,7 @@ const AppContent = () => {
   const [currentView, setCurrentView] = useState(getInitialViewFromURL());
   const { shouldShowOnboarding, refreshProfile } = useProfile();
   const [showOnboarding, setShowOnboarding] = useState(shouldShowOnboarding);
+  const [showTerms, setShowTerms] = useState(false);
 
   // Phase 1H - Copy last entry prefill data
   const [prefillData, setPrefillData] = useState(null);
@@ -70,6 +72,18 @@ const AppContent = () => {
   useEffect(() => {
     initializeAccessibility();
   }, []);
+
+  useEffect(() => {
+    const termsAccepted = localStorage.getItem('symptomTracker_termsAccepted');
+    if (!termsAccepted) {
+      setShowTerms(true);
+    }
+  }, []);
+
+  const handleAcceptTerms = () => {
+    localStorage.setItem('symptomTracker_termsAccepted', new Date().toISOString());
+    setShowTerms(false);
+  };
 
   /// Run multi-profile migration and cleanup on first load
   useEffect(() => {
@@ -197,6 +211,13 @@ const AppContent = () => {
 
   return (
       <>
+        {/* Terms Modal - MUST accept before anything else */}
+        {showTerms && (
+            <TermsModal
+                isOpen={showTerms}
+                onAccept={handleAcceptTerms}
+            />
+        )}
         {/* Onboarding Modal */}
         {showOnboarding && (
             <OnboardingModal onComplete={handleOnboardingComplete} />

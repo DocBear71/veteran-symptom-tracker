@@ -16,6 +16,23 @@ const SymptomHistory = ({ onCopyLog }) => {
   // Sub-tab for appointments
   const [appointmentTab, setAppointmentTab] = useState('history');
 
+  // Ref for scroll container
+  const containerRef = useRef(null);
+
+  // Scroll to top when tabs change
+  useEffect(() => {
+    // Scroll the container
+    if (containerRef.current) {
+      containerRef.current.scrollTop = 0;
+      containerRef.current.scrollIntoView({ behavior: 'instant', block: 'start' });
+    }
+    // Scroll window (instant, not smooth)
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    // Also try scrolling to the top of the page
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  }, [mainTab, appointmentTab, filter]);
+
   useEffect(() => {
     loadLogs();
   }, [filter]);
@@ -140,7 +157,7 @@ const SymptomHistory = ({ onCopyLog }) => {
   };
 
   return (
-      <div className="pb-20">
+      <div ref={containerRef}  className="pb-20">
         {/* Main Tab Toggle: Symptoms vs Appointments */}
         <div className="flex gap-2 mb-4">
           <button

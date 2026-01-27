@@ -313,3 +313,14 @@ html {
     border-color: #dc2626 !important;
     box-shadow: 0 0 0 1px #dc2626;
 }
+
+.safe-area-bottom {
+    padding-bottom: env(safe-area-inset-bottom, 0);
+}
+
+/* Add padding to main content when bottom nav is present */
+@media (max-width: 768px) {
+    .main-content {
+        padding-bottom: 5rem; /* Height of bottom nav + spacing */
+    }
+}
