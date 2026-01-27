@@ -749,7 +749,7 @@ const VATermsAndFAQ = ({ embedded = false }) => {
   };
 
   return (
-      <div className="max-w-4xl mx-auto p-4 pb-24">
+      <div className="max-w-4xl mx-auto p-4 pb-1">
         {/* Header */}
         {!embedded && (
         <div className="mb-6">

@@ -72,7 +72,7 @@ const Footer = () => {
                     text-center space-y-2">
               <div className="flex items-center justify-center gap-2">
                 <img
-                    src="../../../public/icon-512.png"
+                    src="/icon-512.png"
                     alt="Doc Bear"
                     className="w-8 h-8 rounded-lg"
                 />
@@ -81,7 +81,7 @@ const Footer = () => {
         </span>
               </div>
               <p className="text-sm text-gray-600 dark:text-gray-400">
-                Version 3.0.0
+                Version 2.1.0
               </p>
               <div className="flex flex-col items-center gap-2 text-xs
         text-gray-500 dark:text-gray-500">

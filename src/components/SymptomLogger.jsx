@@ -3378,7 +3378,7 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed, onNavigate }) =
   const severityInfo = getSeverityInfo(severity);
 
   return (
-      <div className="pb-20">
+      <div className="pb-1">
           {/* Quick Access Cards - Stack on mobile, side-by-side on larger screens */}
           <div className="flex flex-col sm:flex-row gap-3 mb-6">
               {/* Measurements Quick Access Card */}

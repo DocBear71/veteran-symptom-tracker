@@ -771,7 +771,7 @@ const PresumptiveConditionsGuide = () => {
 
   // Main render
   return (
-      <div className="max-w-4xl mx-auto p-4 pb-24">
+      <div className="max-w-4xl mx-auto p-4 pb-1">
         {/* Header */}
         <div className="mb-6">
           <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-3">
