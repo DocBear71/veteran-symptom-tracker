@@ -1,6 +1,7 @@
 import { useRef, useState, useEffect } from 'react';
 import { Zap, X } from 'lucide-react';
 import { getChronicSymptoms, removeChronicSymptom, saveSymptomLog, getMedications, logMedicationTaken, getSymptomLogs } from '../utils/storage';
+import { formatDosage, getDosageForLog } from '../utils/medicationUtils';
 import { useProfile } from '../hooks/useProfile';
 import { stripDCCode } from '../data/symptoms';
 import OccurrenceTimePicker from './OccurrenceTimePicker';
@@ -2193,7 +2194,7 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
           logMedicationTaken({
             medicationId: med.id,
             medicationName: med.name,
-            dosage: med.dosage,
+            dosage: getDosageForLog(med),
             takenFor: entry.symptomName,
             symptomLogId: savedEntry.id,
           });
@@ -3304,7 +3305,7 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
                                     className="w-4 h-4 text-teal-600 rounded"
                                 />
                                 <span className="text-gray-700 dark:text-gray-300">
-                          {med.name} ({med.dosage})
+                          {med.name} ({formatDosage(med)})
                         </span>
                               </label>
                           ))}

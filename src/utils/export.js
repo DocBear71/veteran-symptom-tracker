@@ -2,6 +2,7 @@ import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import { calculateCombinedRatingDetailed } from './vaRatingCalculator';
 import { getSymptomLogs, saveSymptomLog, getMedicationLogsForSymptom, getAppointments, getOccurrenceTime, isBackDated } from './storage';
+import { formatDosage } from './medicationUtils';
 import { getMeasurements } from './measurements';
 import { stripDCCode } from '../data/symptoms';
 import {
@@ -1758,7 +1759,7 @@ export const generatePDF = (dateRange = 'all', options = { includeAppointments: 
 
         // Add medications to the PDF file after all the symptoms
             if (linkedMeds.length > 0) {
-                const medInfo = linkedMeds.map(m => `${m.medicationName} ${m.dosage}`).join(', ');
+              const medInfo = linkedMeds.map(m => `${m.medicationName} ${formatDosage(m)}`).join(', ');
                 notes = `Meds: ${medInfo}` + (notes !== '-' ? ` | ${notes}` : '');
             }
 
@@ -2070,7 +2071,7 @@ export const generateCSV = (dateRange = 'all', options = { includeAppointments: 
             log.isFlareUp ? 'Yes' : '',
             log.duration ? formatDuration(log.duration) : '',
             log.timeOfDay ? formatTimeOfDay(log.timeOfDay) : '',
-            linkedMeds.map(m => `${m.medicationName} ${m.dosage}`).join('; '),
+            linkedMeds.map(m => `${m.medicationName} ${formatDosage(m)}`).join('; '),
             // GI fields
             log.giData?.bristolScale || '',
             log.giData?.frequencyPerDay || '',
@@ -5165,7 +5166,7 @@ export const generateVAClaimPackagePDF = async (dateRange = 'all', options = {})
 
         // Add medications to the PDF after all the symptoms are completed.
             if (linkedMeds.length > 0) {
-                const medInfo = linkedMeds.map(m => `${m.medicationName} ${m.dosage}`).join(', ');
+              const medInfo = linkedMeds.map(m => `${m.medicationName} ${formatDosage(m)}`).join(', ');
                 notes = `Meds: ${medInfo}` + (notes !== '-' ? ` | ${notes}` : '');
             }
 

@@ -7,6 +7,7 @@ import {
   getMedicationLogsForSymptom,
   deleteMedicationLog,
 } from '../utils/storage';
+import { formatDosage, getDosageForLog } from '../utils/medicationUtils';
 import OccurrenceTimePicker from './OccurrenceTimePicker';
 
 const EditLogModal = ({log, isOpen, onClose, onSaved}) => {
@@ -2418,7 +2419,7 @@ const EditLogModal = ({log, isOpen, onClose, onSaved}) => {
                   logMedicationTaken({
                     medicationId: med.id,
                     medicationName: med.name,
-                    dosage: med.dosage,
+                    dosage: getDosageForLog(med),
                     takenFor: log.symptomName,
                     symptomLogId: log.id,
                   });
@@ -11095,7 +11096,7 @@ const EditLogModal = ({log, isOpen, onClose, onSaved}) => {
                                        }}
                                        className="w-4 h-4 text-teal-600 rounded"/>
                                 <span
-                                    className="text-sm text-gray-700 dark:text-gray-300">{med.name} ({med.dosage})</span>
+                                    className="text-sm text-gray-700 dark:text-gray-300">{med.name} ({formatDosage(med)})</span>
                               </label>
                           ))}
                         </div>

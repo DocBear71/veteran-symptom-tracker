@@ -1,6 +1,7 @@
 import { useRef, useState, useEffect, useMemo, useCallback, memo } from 'react';
 import { Calendar, Clock, Edit2, Trash2, ChevronDown, ChevronUp, Filter, History } from 'lucide-react';
 import { getSymptomLogs, deleteSymptomLog, getMedicationLogsForSymptom, getOccurrenceTime, isBackDated } from '../utils/storage';
+import { formatDosage } from '../utils/medicationUtils';
 import { useProfile } from '../hooks/useProfile';
 import EditLogModal from './EditLogModal';
 import AppointmentForm from './AppointmentForm';
@@ -262,7 +263,7 @@ const SymptomHistory = ({ onCopyLog }) => {
                                     <div className="flex flex-wrap gap-1">
                                       {log.linkedMedications.map((med, idx) => (
                                           <span key={idx} className="px-2 py-0.5 bg-teal-200 dark:bg-teal-800 text-teal-800 dark:text-teal-200 rounded-full text-xs">
-                                                                {med.medicationName} {med.dosage}
+                                                                {med.medicationName} {formatDosage(med)}
                                                             </span>
                                       ))}
                                     </div>
