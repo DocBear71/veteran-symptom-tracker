@@ -38,9 +38,14 @@ const SymptomHistory = ({ onCopyLog }) => {
     loadLogs();
   }, [filter]);
 
-  const loadLogs = () => {
-    let allLogs = getSymptomLogs();
-    allLogs.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+    const loadLogs = () => {
+        let allLogs = getSymptomLogs();
+        // Sort by occurrence time (uses occurredAt for back-dated entries, timestamp otherwise)
+        allLogs.sort((a, b) => {
+            const timeA = new Date(getOccurrenceTime(a));
+            const timeB = new Date(getOccurrenceTime(b));
+            return timeB - timeA;
+        });
 
     // Attach linked medications to each log
     allLogs = allLogs.map(log => ({
@@ -48,14 +53,14 @@ const SymptomHistory = ({ onCopyLog }) => {
       linkedMedications: getMedicationLogsForSymptom(log.id),
     }));
 
-    const now = new Date();
-    if (filter === 'today') {
-      const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-      allLogs = allLogs.filter(log => new Date(log.timestamp) >= today);
-    } else if (filter === 'week') {
-      const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
-      allLogs = allLogs.filter(log => new Date(log.timestamp) >= weekAgo);
-    }
+        const now = new Date();
+        if (filter === 'today') {
+            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            allLogs = allLogs.filter(log => new Date(getOccurrenceTime(log)) >= today);
+        } else if (filter === 'week') {
+            const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+            allLogs = allLogs.filter(log => new Date(getOccurrenceTime(log)) >= weekAgo);
+        }
 
     setLogs(allLogs);
   };
