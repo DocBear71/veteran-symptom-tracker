@@ -310,12 +310,15 @@ export const getMedicationLogs = (profileId = null) => {
 export const logMedicationTaken = (entry, profileId = null) => {
   const logs = getMedicationLogs(profileId);
 
+  const now = new Date().toISOString();
   const newLog = {
     id: crypto.randomUUID(),
     medicationId: entry.medicationId,
     medicationName: entry.medicationName,
     dosage: entry.dosage,
-    timestamp: new Date().toISOString(),
+    timestamp: now,
+    // When the medication was actually taken (defaults to now, supports backdating)
+    occurredAt: entry.occurredAt || now,
     takenFor: entry.takenFor || '',
     symptomLogId: entry.symptomLogId || null,
     effectiveness: entry.effectiveness || null,
@@ -360,6 +363,24 @@ export const deleteMedicationLog = (id, profileId = null) => {
   const filtered = logs.filter(log => log.id !== id);
   const key = getProfileKey('symptomTracker_medicationLogs', profileId);
   localStorage.setItem(key, JSON.stringify(filtered));
+};
+
+export const updateMedicationLog = (id, updates, profileId = null) => {
+  const logs = getMedicationLogs(profileId);
+  const index = logs.findIndex(log => log.id === id);
+  if (index === -1) {
+    return { success: false, message: 'Medication log not found' };
+  }
+  logs[index] = {
+    ...logs[index],
+    ...updates,
+    id: logs[index].id, // preserve original id
+    timestamp: logs[index].timestamp, // preserve original creation time
+    updatedAt: new Date().toISOString(),
+  };
+  const key = getProfileKey('symptomTracker_medicationLogs', profileId);
+  localStorage.setItem(key, JSON.stringify(logs));
+  return { success: true, log: logs[index] };
 };
 
 export const getTodaysMedicationLogs = (profileId = null) => {

@@ -17,6 +17,7 @@ export default function OccurrenceTimePicker({ value, onChange, label = "When di
   const [customDate, setCustomDate] = useState('');
   const [customTime, setCustomTime] = useState('');
   const [userInteracting, setUserInteracting] = useState(false); // Prevent useEffect override
+  const [timeError, setTimeError] = useState('');
 
   // Initialize from value prop (but don't override during user interaction)
   useEffect(() => {
@@ -52,6 +53,7 @@ export default function OccurrenceTimePicker({ value, onChange, label = "When di
   const handleModeChange = (newMode) => {
     setUserInteracting(true); // Prevent useEffect from overriding
     setMode(newMode);
+    setTimeError(''); // Clear any validation error from previous mode
 
     const now = new Date();
 
@@ -92,24 +94,37 @@ export default function OccurrenceTimePicker({ value, onChange, label = "When di
     }
   };
 
-  // Handle time change for earlier-today mode
+  // Handle time change for earlier-today, yesterday, or custom mode.
+  // Always accept the value immediately — validate only in "earlier-today"
+  // mode, showing a warning instead of resetting/blocking.
   const handleTimeChange = (newTime) => {
     setCustomTime(newTime);
+    setTimeError(''); // Clear any previous error
 
     const now = new Date();
     const [hours, minutes] = newTime.split(':');
 
     if (mode === 'earlier-today') {
-      const newDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hours, minutes);
+      const newDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), parseInt(hours), parseInt(minutes));
+      if (newDate > now) {
+        // Time is in the future — show error but still store the value
+        // so the user can fix AM/PM without losing their hour/minute selection
+        setTimeError('This time is later than now — check your AM/PM setting');
+        return; // Don't call onChange with a future time
+      }
       onChange(newDate.toISOString());
     } else if (mode === 'yesterday') {
       const yesterday = new Date(now);
       yesterday.setDate(yesterday.getDate() - 1);
-      yesterday.setHours(hours, minutes);
+      yesterday.setHours(parseInt(hours), parseInt(minutes));
       onChange(yesterday.toISOString());
     } else if (mode === 'custom' && customDate) {
       const [year, month, day] = customDate.split('-');
-      const newDate = new Date(year, month - 1, day, hours, minutes);
+      const newDate = new Date(parseInt(year), parseInt(month) - 1, parseInt(day), parseInt(hours), parseInt(minutes));
+      if (newDate > now) {
+        setTimeError('Cannot log for a future time');
+        return;
+      }
       onChange(newDate.toISOString());
     }
   };
@@ -199,11 +214,19 @@ export default function OccurrenceTimePicker({ value, onChange, label = "When di
                   type="time"
                   value={customTime}
                   onChange={(e) => handleTimeChange(e.target.value)}
-                  max={mode === 'earlier-today' ? new Date().toTimeString().slice(0, 5) : undefined}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg
+                  className={`w-full px-3 py-2 border rounded-lg
                      bg-white dark:bg-gray-700 text-gray-900 dark:text-white
-                     focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                     focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                      timeError
+                          ? 'border-red-400 dark:border-red-500'
+                          : 'border-gray-300 dark:border-gray-600'
+                  }`}
               />
+              {timeError && (
+                  <p className="text-xs text-red-500 dark:text-red-400 mt-1">
+                    ⚠️ {timeError}
+                  </p>
+              )}
             </div>
         )}
 
@@ -232,10 +255,19 @@ export default function OccurrenceTimePicker({ value, onChange, label = "When di
                     type="time"
                     value={customTime}
                     onChange={(e) => handleTimeChange(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg
+                    className={`w-full px-3 py-2 border rounded-lg
                        bg-white dark:bg-gray-700 text-gray-900 dark:text-white
-                       focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                       focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                        timeError
+                            ? 'border-red-400 dark:border-red-500'
+                            : 'border-gray-300 dark:border-gray-600'
+                    }`}
                 />
+                {timeError && (
+                    <p className="text-xs text-red-500 dark:text-red-400 mt-1">
+                      ⚠️ {timeError}
+                    </p>
+                )}
               </div>
             </div>
         )}

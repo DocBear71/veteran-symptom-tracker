@@ -7,9 +7,11 @@ import {
   logMedicationTaken,
   getMedicationLogs,
   deleteMedicationLog,
+  updateMedicationLog,
 } from '../utils/storage';
 import { formatDosage, formatDosageWithTotal, getDosageForLog, UNIT_TYPE_OPTIONS } from '../utils/medicationUtils';
 import { getActiveProfileId } from '../utils/profiles';
+import OccurrenceTimePicker from './OccurrenceTimePicker';
 
 // ─── Medication Groups: localStorage helpers ────────────────────────────
 // Uses same profile-namespacing pattern as storage.js for data isolation.
@@ -27,6 +29,56 @@ const getMedicationGroups = () => {
 const saveMedicationGroups = (groups) => {
   localStorage.setItem(getGroupsKey(), JSON.stringify(groups));
 };
+
+// ─── Reusable Dosage Form Fields ─────────────────────────────────
+// MUST be defined outside the main component to prevent re-mounting on each render
+const DosageFields = ({ data, onChange }) => (
+    <>
+        <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                Strength per unit <span className="text-red-500">*</span>
+            </label>
+            <input type="text" value={data.strength}
+                   onChange={(e) => onChange(prev => ({ ...prev, strength: e.target.value }))}
+                   placeholder="e.g., 20mg, 500mg, 10mg/5ml"
+                   className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500" />
+        </div>
+        <div className="grid grid-cols-2 gap-3">
+            <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Qty per dose</label>
+                <input type="number" min="1" max="20"
+                       value={data.quantity === '' ? '' : data.quantity}
+                       onChange={(e) => {
+                           const val = e.target.value;
+                           // Allow empty string while typing, store as empty so user can clear & retype
+                           onChange(prev => ({ ...prev, quantity: val === '' ? '' : parseInt(val) || '' }));
+                       }}
+                       onBlur={(e) => {
+                           // On blur, default empty/invalid back to 1
+                           if (!e.target.value || parseInt(e.target.value) < 1) {
+                               onChange(prev => ({ ...prev, quantity: 1 }));
+                           }
+                       }}
+                       className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500" />
+            </div>
+            <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Form</label>
+                <select value={data.unitType}
+                        onChange={(e) => onChange(prev => ({ ...prev, unitType: e.target.value }))}
+                        className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500">
+                    {UNIT_TYPE_OPTIONS.map(opt => (<option key={opt.value} value={opt.value}>{opt.label}</option>))}
+                </select>
+            </div>
+        </div>
+        {data.strength && (
+            <div className="text-xs text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-700/50 p-2 rounded">
+                Displays as: <span className="font-medium text-gray-700 dark:text-gray-300">
+                    {formatDosageWithTotal({ strength: data.strength, quantity: parseInt(data.quantity) || 1, unitType: data.unitType })}
+                </span>
+            </div>
+        )}
+    </>
+);
 
 const Medications = () => {
   const [medications, setMedications] = useState([]);
@@ -56,7 +108,18 @@ const Medications = () => {
 
   // Batch log & group form state
   const [batchLogData, setBatchLogData] = useState({ takenFor: '', notes: '' });
+  const [batchOccurredAt, setBatchOccurredAt] = useState(new Date().toISOString());
   const [groupForm, setGroupForm] = useState({ name: '', icon: '🌅', medicationIds: [] });
+
+  // Group quick-log confirmation modal
+  const [showGroupLogConfirm, setShowGroupLogConfirm] = useState(false);
+  const [pendingGroup, setPendingGroup] = useState(null);
+  const [groupLogData, setGroupLogData] = useState({ notes: '', occurredAt: new Date().toISOString() });
+
+  // Edit medication log modal
+  const [showEditLogForm, setShowEditLogForm] = useState(false);
+  const [editingLog, setEditingLog] = useState(null);
+  const [editLogData, setEditLogData] = useState({ takenFor: '', notes: '', occurredAt: '' });
 
   useEffect(() => { loadData(); }, []);
 
@@ -112,25 +175,40 @@ const Medications = () => {
     const medsToLog = medications.filter(m => selectedMedIds.has(m.id));
     let count = 0;
     medsToLog.forEach(med => {
-      const r = logMedicationTaken({ medicationId: med.id, medicationName: med.name, dosage: getDosageForLog(med), takenFor: batchLogData.takenFor, notes: batchLogData.notes });
+      const r = logMedicationTaken({ medicationId: med.id, medicationName: med.name, dosage: getDosageForLog(med), takenFor: batchLogData.takenFor, notes: batchLogData.notes, occurredAt: batchOccurredAt });
       if (r.success) count++;
     });
     showMessage(`Logged ${count} medication${count !== 1 ? 's' : ''}`);
     setSelectedMedIds(new Set()); setShowBatchLogForm(false);
-    setBatchLogData({ takenFor: '', notes: '' }); loadData();
+    setBatchLogData({ takenFor: '', notes: '' }); setBatchOccurredAt(new Date().toISOString()); loadData();
   };
 
   // ─── Group Quick Log ─────────────────────────────────────────────
+  // Opens a confirmation modal so user can set time and optional notes
   const handleGroupQuickLog = (group) => {
     const meds = medications.filter(m => m.isActive && group.medicationIds.includes(m.id));
     if (meds.length === 0) { showMessage('No active medications in this group'); return; }
+    setPendingGroup(group);
+    setGroupLogData({ notes: '', occurredAt: new Date().toISOString() });
+    setShowGroupLogConfirm(true);
+  };
+
+  const handleConfirmGroupLog = (e) => {
+    e.preventDefault();
+    if (!pendingGroup) return;
+    const meds = medications.filter(m => m.isActive && pendingGroup.medicationIds.includes(m.id));
     let count = 0;
     meds.forEach(med => {
-      const r = logMedicationTaken({ medicationId: med.id, medicationName: med.name, dosage: getDosageForLog(med), takenFor: group.name, notes: `Logged via "${group.name}" group` });
+      const r = logMedicationTaken({
+        medicationId: med.id, medicationName: med.name, dosage: getDosageForLog(med),
+        takenFor: pendingGroup.name,
+        notes: groupLogData.notes || `Logged via "${pendingGroup.name}" group`,
+        occurredAt: groupLogData.occurredAt,
+      });
       if (r.success) count++;
     });
-    showMessage(`${group.icon} Logged ${count} med${count !== 1 ? 's' : ''} from "${group.name}"`);
-    loadData();
+    showMessage(`${pendingGroup.icon} Logged ${count} med${count !== 1 ? 's' : ''} from "${pendingGroup.name}"`);
+    setShowGroupLogConfirm(false); setPendingGroup(null); loadData();
   };
 
   // ─── Group CRUD ──────────────────────────────────────────────────
@@ -201,6 +279,29 @@ const Medications = () => {
     } else { showMessage(result.message || 'Failed to update'); }
   };
 
+  // ─── Edit Medication Log ─────────────────────────────────────────
+  const handleEditLog = (log) => {
+    setEditingLog(log);
+    setEditLogData({
+      takenFor: log.takenFor || '',
+      notes: log.notes || '',
+      occurredAt: log.occurredAt || log.timestamp,
+    });
+    setShowEditLogForm(true);
+  };
+
+  const handleSaveEditLog = (e) => {
+    e.preventDefault();
+    const result = updateMedicationLog(editingLog.id, {
+      takenFor: editLogData.takenFor,
+      notes: editLogData.notes,
+      occurredAt: editLogData.occurredAt,
+    });
+    if (result.success) {
+      showMessage('Log updated!'); setShowEditLogForm(false); setEditingLog(null); loadData();
+    } else { showMessage(result.message || 'Failed to update'); }
+  };
+
   // ─── Delete handlers ─────────────────────────────────────────────
   const handleDeleteMedication = (id) => { if (window.confirm('Remove this medication from your list?')) { deleteMedication(id); loadData(); } };
   const handleDeleteLog = (id) => { if (window.confirm('Delete this log entry?')) { deleteMedicationLog(id); loadData(); } };
@@ -215,43 +316,7 @@ const Medications = () => {
   const groupIcons = ['🌅', '🌙', '☀️', '🕐', '💊', '🏥', '⚡', '🎯'];
   const activeMeds = medications.filter(m => m.isActive);
 
-  // ─── Reusable Dosage Form Fields ─────────────────────────────────
-  const DosageFields = ({ data, onChange }) => (
-      <>
-        <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Strength per unit <span className="text-red-500">*</span>
-          </label>
-          <input type="text" value={data.strength}
-                 onChange={(e) => onChange(prev => ({ ...prev, strength: e.target.value }))}
-                 placeholder="e.g., 20mg, 500mg, 10mg/5ml"
-                 className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500" />
-        </div>
-        <div className="grid grid-cols-2 gap-3">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Qty per dose</label>
-            <input type="number" min="1" max="20" value={data.quantity}
-                   onChange={(e) => onChange(prev => ({ ...prev, quantity: parseInt(e.target.value) || 1 }))}
-                   className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500" />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Form</label>
-            <select value={data.unitType}
-                    onChange={(e) => onChange(prev => ({ ...prev, unitType: e.target.value }))}
-                    className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500">
-              {UNIT_TYPE_OPTIONS.map(opt => (<option key={opt.value} value={opt.value}>{opt.label}</option>))}
-            </select>
-          </div>
-        </div>
-        {data.strength && (
-            <div className="text-xs text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-700/50 p-2 rounded">
-              Displays as: <span className="font-medium text-gray-700 dark:text-gray-300">
-                        {formatDosageWithTotal({ strength: data.strength, quantity: parseInt(data.quantity) || 1, unitType: data.unitType })}
-                    </span>
-            </div>
-        )}
-      </>
-  );
+
 
   // ─── Reusable Checkbox Icon ──────────────────────────────────────
   const CheckIcon = ({ checked, size = 6 }) => (
@@ -266,6 +331,35 @@ const Medications = () => {
       </div>
   );
 
+  // ─── Group logs by occurredAt timestamp for visual clustering ────
+  // Logs within 60 seconds of each other are considered part of the same batch.
+  const groupedLogs = (() => {
+    if (logs.length === 0) return [];
+
+    const groups = [];
+    let currentGroup = null;
+
+    logs.forEach(log => {
+      const logTime = new Date(log.occurredAt || log.timestamp).getTime();
+
+      if (currentGroup && Math.abs(logTime - currentGroup.time) < 60000) {
+        // Within 60 seconds of the group — add to it
+        currentGroup.items.push(log);
+      } else {
+        // Start a new group
+        currentGroup = {
+          time: logTime,
+          // Use takenFor as group label if it matches a group name, otherwise generic
+          label: log.takenFor || null,
+          items: [log],
+        };
+        groups.push(currentGroup);
+      }
+    });
+
+    return groups;
+  })();
+
   return (
       <div className="pb-20">
         <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Medications</h2>
@@ -276,11 +370,11 @@ const Medications = () => {
             </div>
         )}
 
-        {/* Tabs */}
-        <div className="flex gap-2 mb-4 overflow-x-auto">
+        {/* Tabs — 2×2 grid on small screens, single row on wider screens */}
+        <div className="grid grid-cols-4 gap-1.5 mb-4">
           {[{ id: 'log', label: 'Quick Log' }, { id: 'groups', label: 'Groups' }, { id: 'list', label: 'My Meds' }, { id: 'history', label: 'History' }].map((tab) => (
               <button key={tab.id} onClick={() => setActiveTab(tab.id)}
-                      className={`px-4 py-2 rounded-full text-sm font-medium transition-colors whitespace-nowrap ${
+                      className={`py-2 px-1 rounded-lg text-xs font-medium transition-colors text-center ${
                           activeTab === tab.id ? 'bg-blue-900 dark:bg-blue-600 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
                       }`}>{tab.label}</button>
           ))}
@@ -356,7 +450,7 @@ const Medications = () => {
                                   <button onClick={() => setSelectedMedIds(new Set(activeMeds.map(m => m.id)))}
                                           className="px-3 py-2 text-sm text-blue-200 hover:text-white border border-blue-400 dark:border-blue-500 rounded-lg">All</button>
                               )}
-                              <button onClick={() => setShowBatchLogForm(true)}
+                              <button onClick={() => { setBatchOccurredAt(new Date().toISOString()); setShowBatchLogForm(true); }}
                                       className="px-5 py-2 bg-white text-blue-900 font-semibold rounded-lg hover:bg-blue-50 transition-colors">Log Selected</button>
                             </div>
                           </div>
@@ -406,15 +500,14 @@ const Medications = () => {
                                 <button onClick={() => handleDeleteGroup(group.id)} className="p-1.5 text-gray-400 dark:text-gray-500 hover:text-red-500 dark:hover:text-red-400" title="Delete group">🗑️</button>
                               </div>
                             </div>
-                            <div className="space-y-1 mb-3">
-                              {activeGroupMeds.map(med => (
-                                  <div key={med.id} className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
-                                    <span className="text-green-500">●</span>
-                                    <span>{med.name}</span>
-                                    <span className="text-gray-400 dark:text-gray-500">({formatDosage(med)})</span>
-                                  </div>
-                              ))}
-                            </div>
+                              <div className="space-y-1 mb-3">
+                                  {activeGroupMeds.map(med => (
+                                      <div key={med.id} className="flex items-start gap-2 text-sm text-gray-700 dark:text-gray-300">
+                                          <span className="text-green-500 mt-0.5 shrink-0">●</span>
+                                          <span className="break-words min-w-0">{med.name} <span className="text-gray-400 dark:text-gray-500">({formatDosage(med)})</span></span>
+                                      </div>
+                                  ))}
+                              </div>
                             <button onClick={() => handleGroupQuickLog(group)} disabled={activeGroupMeds.length === 0}
                                     className="w-full py-2 px-3 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-lg text-sm font-medium hover:bg-blue-100 dark:hover:bg-blue-800/40 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
                               Log All {activeGroupMeds.length} Meds
@@ -470,20 +563,93 @@ const Medications = () => {
                   <div className="text-center py-8 text-gray-500 dark:text-gray-400"><p className="text-4xl mb-2">📋</p><p>No medication logs yet</p></div>
               ) : (
                   <div className="space-y-3">
-                    {logs.map((log) => (
-                        <div key={log.id} className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
-                          <div className="flex justify-between items-start text-left">
-                            <div className="flex-1 min-w-0">
-                              <p className="font-semibold text-gray-900 dark:text-white">{log.medicationName}</p>
-                              <p className="text-sm text-gray-600 dark:text-gray-400">{formatDosage(log)}</p>
-                              <p className="text-xs text-gray-400 dark:text-gray-500">{formatDate(log.timestamp)}</p>
-                              {log.takenFor && <p className="text-xs text-blue-600 dark:text-blue-400 mt-1">For: {log.takenFor}</p>}
-                              {log.notes && <p className="text-sm text-gray-500 dark:text-gray-400 mt-1 bg-gray-50 dark:bg-gray-700 p-2 rounded">{log.notes}</p>}
+                    {groupedLogs.map((group, gIdx) => {
+                      const firstLog = group.items[0];
+                      const isMulti = group.items.length > 1;
+                      const displayTime = firstLog.occurredAt || firstLog.timestamp;
+                      const loggedTime = firstLog.timestamp;
+                      const isBackDated = firstLog.occurredAt && firstLog.timestamp &&
+                          new Date(firstLog.timestamp) - new Date(firstLog.occurredAt) > 60000;
+
+                      // Match to a saved medication group for icon
+                      const matchingGroup = groups.find(g => g.name === firstLog.takenFor);
+                      const groupIcon = matchingGroup?.icon || (isMulti ? '💊' : null);
+
+                      if (isMulti) {
+                        // ── Grouped card for batch/group logs ──
+                        const sharedNotes = group.items.every(l => l.notes === firstLog.notes) ? firstLog.notes : null;
+
+                        return (
+                            <div key={`group-${gIdx}`} className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
+                              {/* Group header */}
+                              <div className="mb-3">
+                                <div className="flex items-center gap-2">
+                                  {groupIcon && <span className="text-lg">{groupIcon}</span>}
+                                  <p className="font-semibold text-gray-900 dark:text-white">
+                                    {firstLog.takenFor || `${group.items.length} Medications`}
+                                  </p>
+                                </div>
+                                <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">
+                                  {formatDate(displayTime)} · {group.items.length} meds
+                                </p>
+                                {isBackDated && (
+                                    <p className="text-xs text-amber-500 dark:text-amber-400">
+                                      ⏱ Back-dated (logged {formatDate(loggedTime)})
+                                    </p>
+                                )}
+                              </div>
+
+                              {/* Individual meds in group */}
+                              <div className="space-y-2">
+                                {group.items.map(log => (
+                                    <div key={log.id} className="flex justify-between items-start text-left pl-3 border-l-2 border-blue-200 dark:border-blue-700">
+                                      <div className="flex-1 min-w-0">
+                                        <p className="text-sm font-medium text-gray-900 dark:text-white">{log.medicationName}</p>
+                                        <p className="text-xs text-gray-500 dark:text-gray-400">{formatDosage(log)}</p>
+                                      </div>
+                                      <div className="flex items-center gap-1 ml-2 shrink-0">
+                                        <button onClick={() => handleEditLog(log)} className="text-gray-400 dark:text-gray-500 hover:text-blue-500 dark:hover:text-blue-400 p-0.5" title="Edit log">✏️</button>
+                                        <button onClick={() => handleDeleteLog(log.id)} className="text-gray-400 dark:text-gray-500 hover:text-red-500 dark:hover:text-red-400 p-0.5" title="Delete log">🗑️</button>
+                                      </div>
+                                    </div>
+                                ))}
+                              </div>
+
+                              {/* Shared notes */}
+                              {sharedNotes && (
+                                  <p className="text-sm text-gray-500 dark:text-gray-400 mt-3 bg-gray-50 dark:bg-gray-700 p-2 rounded">
+                                    {sharedNotes}
+                                  </p>
+                              )}
                             </div>
-                            <button onClick={() => handleDeleteLog(log.id)} className="text-gray-400 dark:text-gray-500 hover:text-red-500 dark:hover:text-red-400 ml-2">🗑️</button>
-                          </div>
-                        </div>
-                    ))}
+                        );
+                      } else {
+                        // ── Single medication card ──
+                        const log = firstLog;
+                        return (
+                            <div key={log.id} className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
+                              <div className="flex justify-between items-start text-left">
+                                <div className="flex-1 min-w-0">
+                                  <p className="font-semibold text-gray-900 dark:text-white">{log.medicationName}</p>
+                                  <p className="text-sm text-gray-600 dark:text-gray-400">{formatDosage(log)}</p>
+                                  <p className="text-xs text-gray-400 dark:text-gray-500">{formatDate(displayTime)}</p>
+                                  {isBackDated && (
+                                      <p className="text-xs text-amber-500 dark:text-amber-400">
+                                        ⏱ Back-dated (logged {formatDate(loggedTime)})
+                                      </p>
+                                  )}
+                                  {log.takenFor && <p className="text-xs text-blue-600 dark:text-blue-400 mt-1">For: {log.takenFor}</p>}
+                                  {log.notes && <p className="text-sm text-gray-500 dark:text-gray-400 mt-1 bg-gray-50 dark:bg-gray-700 p-2 rounded">{log.notes}</p>}
+                                </div>
+                                <div className="flex items-center gap-1 ml-2 shrink-0">
+                                  <button onClick={() => handleEditLog(log)} className="text-gray-400 dark:text-gray-500 hover:text-blue-500 dark:hover:text-blue-400" title="Edit log">✏️</button>
+                                  <button onClick={() => handleDeleteLog(log.id)} className="text-gray-400 dark:text-gray-500 hover:text-red-500 dark:hover:text-red-400" title="Delete log">🗑️</button>
+                                </div>
+                              </div>
+                            </div>
+                        );
+                      }
+                    })}
                   </div>
               )}
             </div>
@@ -571,6 +737,9 @@ const Medications = () => {
                     <textarea value={batchLogData.notes} onChange={(e) => setBatchLogData(prev => ({ ...prev, notes: e.target.value }))}
                               placeholder="Any additional notes" rows={2}
                               className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500" />
+                  </div>
+                  <div className="pt-2 border-t border-gray-200 dark:border-gray-700">
+                    <OccurrenceTimePicker value={batchOccurredAt} onChange={setBatchOccurredAt} label="When were these taken?" />
                   </div>
                   {selectedMedIds.size >= 2 && groups.length === 0 && (
                       <p className="text-xs text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 p-2 rounded">💡 Tip: Use the Groups tab to save this combo for even faster logging next time.</p>
@@ -700,6 +869,97 @@ const Medications = () => {
                   <div className="flex gap-2">
                     <button type="button" onClick={() => { setShowEditMedForm(false); setEditingMed(null); }} className="flex-1 py-2 px-4 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700">Cancel</button>
                     <button type="submit" className="flex-1 py-3 px-4 bg-blue-900 dark:bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-800 dark:hover:bg-blue-700">Save Changes</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+        )}
+
+        {/* ═══════════ GROUP LOG CONFIRMATION MODAL ═══════════ */}
+        {showGroupLogConfirm && pendingGroup && (
+            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+              <div className="bg-white dark:bg-gray-800 rounded-lg w-full max-w-md max-h-[90vh] overflow-y-auto">
+                <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+                        {pendingGroup.icon} Log {pendingGroup.name}
+                      </h2>
+                      <p className="text-sm text-gray-500 dark:text-gray-400">
+                        {medications.filter(m => m.isActive && pendingGroup.medicationIds.includes(m.id)).length} medications
+                      </p>
+                    </div>
+                    <button onClick={() => { setShowGroupLogConfirm(false); setPendingGroup(null); }}
+                            className="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 text-xl">✕</button>
+                  </div>
+                </div>
+                <form onSubmit={handleConfirmGroupLog} className="p-4 space-y-4">
+                  <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3">
+                    <div className="space-y-1">
+                      {medications.filter(m => m.isActive && pendingGroup.medicationIds.includes(m.id)).map(med => (
+                          <div key={med.id} className="flex items-center gap-2 text-sm">
+                            <span className="text-green-500">●</span>
+                            <span className="text-gray-900 dark:text-white">{med.name}</span>
+                            <span className="text-gray-500 dark:text-gray-400">({formatDosage(med)})</span>
+                          </div>
+                      ))}
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Notes (optional)</label>
+                    <textarea value={groupLogData.notes} onChange={(e) => setGroupLogData(prev => ({ ...prev, notes: e.target.value }))}
+                              placeholder="Any additional notes" rows={2}
+                              className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500" />
+                  </div>
+                  <div className="pt-2 border-t border-gray-200 dark:border-gray-700">
+                    <OccurrenceTimePicker value={groupLogData.occurredAt} onChange={(val) => setGroupLogData(prev => ({ ...prev, occurredAt: val }))} label="When were these taken?" />
+                  </div>
+                  <div className="flex gap-2">
+                    <button type="button" onClick={() => { setShowGroupLogConfirm(false); setPendingGroup(null); }}
+                            className="flex-1 py-2 px-4 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700">Cancel</button>
+                    <button type="submit"
+                            className="flex-1 py-3 px-4 bg-blue-900 dark:bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-800 dark:hover:bg-blue-700">Log All</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+        )}
+
+        {/* ═══════════ EDIT MEDICATION LOG MODAL ═══════════ */}
+        {showEditLogForm && editingLog && (
+            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+              <div className="bg-white dark:bg-gray-800 rounded-lg w-full max-w-md max-h-[90vh] overflow-y-auto">
+                <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Edit Log Entry</h2>
+                      <p className="text-sm text-gray-500 dark:text-gray-400">{editingLog.medicationName} — {formatDosage(editingLog)}</p>
+                    </div>
+                    <button onClick={() => { setShowEditLogForm(false); setEditingLog(null); }}
+                            className="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 text-xl">✕</button>
+                  </div>
+                </div>
+                <form onSubmit={handleSaveEditLog} className="p-4 space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Taken for (optional)</label>
+                    <input type="text" value={editLogData.takenFor} onChange={(e) => setEditLogData(prev => ({ ...prev, takenFor: e.target.value }))}
+                           placeholder="e.g., Morning routine, Pain flare-up"
+                           className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500" />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Notes (optional)</label>
+                    <textarea value={editLogData.notes} onChange={(e) => setEditLogData(prev => ({ ...prev, notes: e.target.value }))}
+                              placeholder="Any additional notes" rows={2}
+                              className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500" />
+                  </div>
+                  <div className="pt-2 border-t border-gray-200 dark:border-gray-700">
+                    <OccurrenceTimePicker value={editLogData.occurredAt} onChange={(val) => setEditLogData(prev => ({ ...prev, occurredAt: val }))} label="When was this taken?" />
+                  </div>
+                  <div className="flex gap-2">
+                    <button type="button" onClick={() => { setShowEditLogForm(false); setEditingLog(null); }}
+                            className="flex-1 py-2 px-4 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700">Cancel</button>
+                    <button type="submit"
+                            className="flex-1 py-3 px-4 bg-blue-900 dark:bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-800 dark:hover:bg-blue-700">Save Changes</button>
                   </div>
                 </form>
               </div>
