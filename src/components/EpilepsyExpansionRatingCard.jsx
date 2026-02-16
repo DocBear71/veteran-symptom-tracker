@@ -10,6 +10,7 @@ import {
 } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
+import MedicationCorrelation from './MedicationCorrelation';
 
 /**
  * Epilepsy Expansion Rating Card Component - Gold Standard Version
@@ -188,6 +189,7 @@ export default function EpilepsyExpansionRatingCard({ analysis, expanded, onTogg
                   </div>
                 </div>
               </div>
+              <MedicationCorrelation analysis={analysis} />
 
               {/* Section 2: Analysis Rationale */}
               {ratingRationale?.length > 0 && (

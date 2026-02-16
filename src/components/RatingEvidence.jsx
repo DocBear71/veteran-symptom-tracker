@@ -2164,18 +2164,21 @@ const RatingEvidence = () => {
                 expanded={expandedSection === 'lumbosacral-strain'}
                 onToggle={() => toggleSection('lumbosacral-strain')}
                 icon="🦴"
+                conditionKey="lumbosacralStrain"
             />
             <GenericRatingCard
                 analysis={intervertebralDiscAnalysis}
                 expanded={expandedSection === 'intervertebral-disc'}
                 onToggle={() => toggleSection('intervertebral-disc')}
                 icon="💿"
+                conditionKey="intervertebralDisc"
             />
             <GenericRatingCard
                 analysis={kneeInstabilityAnalysis}
                 expanded={expandedSection === 'knee-instability'}
                 onToggle={() => toggleSection('knee-instability')}
                 icon="🦵"
+                conditionKey="kneeInstability"
             />
             <ShoulderRatingCard
                 analysis={shoulderAnalysis}
@@ -2232,6 +2235,7 @@ const RatingEvidence = () => {
                 expanded={expandedSection === 'fibromyalgia'}
                 onToggle={() => toggleSection('fibromyalgia')}
                 icon="💪"
+                conditionKey="fibromyalgia"
             />
             <GoutRatingCard
                 analysis={goutAnalysis}
@@ -2406,6 +2410,7 @@ const RatingEvidence = () => {
                 expanded={expandedSection === 'deviated-septum'}
                 onToggle={() => toggleSection('deviated-septum')}
                 icon="👃"
+                conditionKey="deviatedSeptum"
             />
             <GenericRatingCard
                 analysis={noseLossAnalysis}
@@ -2418,6 +2423,7 @@ const RatingEvidence = () => {
                 expanded={expandedSection === 'chronic-laryngitis'}
                 onToggle={() => toggleSection('chronic-laryngitis')}
                 icon="🗣️"
+                conditionKey="laryngitis"
             />
             <GenericRatingCard
                 analysis={aphoniaAnalysis}
@@ -2470,6 +2476,7 @@ const RatingEvidence = () => {
                 expanded={expandedSection === 'tinnitus'}
                 onToggle={() => toggleSection('tinnitus')}
                 icon="👂"
+                conditionKey="tinnitus"
             />
             <MenieresRatingCard
                 analysis={menieresAnalysis}
@@ -2707,12 +2714,14 @@ const RatingEvidence = () => {
                 expanded={expandedSection === 'raynauds'}
                 onToggle={() => toggleSection('raynauds')}
                 icon="🥶"
+                conditionKey="raynauds"
             />
             <GenericRatingCard
                 analysis={varicoseVeinsAnalysis}
                 expanded={expandedSection === 'varicoseVeins'}
                 onToggle={() => toggleSection('varicoseVeins')}
                 icon="🦵"
+                conditionKey="varicoseVeins"
             />
           </ConditionGroup>
 
@@ -2746,24 +2755,28 @@ const RatingEvidence = () => {
                 expanded={expandedSection === 'ulcerativeColitis'}
                 onToggle={() => toggleSection('ulcerativeColitis')}
                 icon="🩸"
+                conditionKey="ulcerativeColitis"
             />
             <GenericRatingCard
                 analysis={pepticUlcerAnalysis}
                 expanded={expandedSection === 'pepticUlcer'}
                 onToggle={() => toggleSection('pepticUlcer')}
                 icon="🔥"
+                conditionKey="pepticUlcer"
             />
             <GenericRatingCard
                 analysis={hemorrhoidAnalysis}
                 expanded={expandedSection === 'hemorrhoids'}
                 onToggle={() => toggleSection('hemorrhoids')}
                 icon="🩹"
+                conditionKey="hemorrhoids"
             />
             <GenericRatingCard
                 analysis={diverticulitisAnalysis}
                 expanded={expandedSection === 'diverticulitis'}
                 onToggle={() => toggleSection('diverticulitis')}
                 icon="🫃"
+                conditionKey="diverticulitis"
             />
             <CirrhosisRatingCard
                 analysis={cirrhosisAnalysis}
@@ -3019,6 +3032,7 @@ const RatingEvidence = () => {
                 expanded={expandedSection === 'chronicUrticaria'}
                 onToggle={() => toggleSection('chronicUrticaria')}
                 icon="🔴"
+                conditionKey="chronicUrticaria"
             />
             <AcneChloracneRatingCard
                 analysis={acneAnalysis}
@@ -3087,6 +3101,7 @@ const RatingEvidence = () => {
                 expanded={expandedSection === 'hypothyroidism'}
                 onToggle={() => toggleSection('hypothyroidism')}
                 icon="🦋"
+                conditionKey="hypothyroidism"
             />
             <HyperthyroidismRatingCard
                 analysis={hyperthyroidismAnalysis}
@@ -3151,6 +3166,7 @@ const RatingEvidence = () => {
                 expanded={expandedSection === 'tbi'}
                 onToggle={() => toggleSection('tbi')}
                 icon="🧠"
+                conditionKey="tbi"
             />
             <TBIResidualsRatingCard
                 analysis={tbiResidualsAnalysis}

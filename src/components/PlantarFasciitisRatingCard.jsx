@@ -2,6 +2,7 @@ import { ChevronDown, ChevronUp } from 'lucide-react';
 import { PLANTAR_FASCIITIS_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
+import MedicationCorrelation from './MedicationCorrelation';
 
 /**
  * Plantar Fasciitis Rating Card - Gold Standard Version
@@ -111,6 +112,7 @@ export default function PlantarFasciitisRatingCard({ analysis, expanded, onToggl
                 </div>
               </div>
 
+              <MedicationCorrelation analysis={analysis} />
               {/* Analysis Rationale */}
               {rationale?.length > 0 && (
                   <div>

@@ -8,6 +8,7 @@ import {
 } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
+import MedicationCorrelation from './MedicationCorrelation';
 
 /**
 
@@ -220,6 +221,7 @@ export default function FootConditionsRatingCard({ analysis, diagnosticCode, exp
                   </div>
                 </div>
               </div>
+              <MedicationCorrelation analysis={analysis} />
 
               {/* Section 2: Analysis Rationale */}
               {ratingRationale?.length > 0 && (

@@ -16,6 +16,7 @@ import {
   HEMORRHOIDS_CRITERIA,
   PRURITUS_ANI_CRITERIA,
 } from '../utils/ratingCriteria';
+import MedicationCorrelation from './MedicationCorrelation';
 
 const RectumAnusRatingCard = ({ analysis, expanded, onToggle }) => {
   if (!analysis?.hasData) {
@@ -234,6 +235,7 @@ const RectumAnusRatingCard = ({ analysis, expanded, onToggle }) => {
                     </div>
                 )}
               </div>
+              <MedicationCorrelation analysis={analysis} />
 
               {/* Section 2: Analysis Rationale */}
               {rationale && rationale.length > 0 && (

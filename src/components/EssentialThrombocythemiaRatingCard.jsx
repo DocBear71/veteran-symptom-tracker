@@ -3,6 +3,7 @@ import { MYELOPROLIFERATIVE_7718_CRITERIA, getRatingRowColor, getRatingTextColor
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import {isRatingSupported} from '../utils/ratingUtils.js';
+import MedicationCorrelation from './MedicationCorrelation';
 
 export default function EssentialThrombocythemiaRatingCard({ analysis, expanded, onToggle }) {
   if (!analysis || !analysis.hasData) {
@@ -58,6 +59,7 @@ export default function EssentialThrombocythemiaRatingCard({ analysis, expanded,
                   currentAnalysis={analysis}
               />
 
+              <MedicationCorrelation analysis={analysis} />
               {/* Your Evidence */}
               {rationale && rationale.length > 0 && (
                   <div>

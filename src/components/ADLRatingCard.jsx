@@ -3,6 +3,7 @@ import { ChevronDown, ChevronUp, CheckCircle, Circle, AlertTriangle, Info, Dolla
 import { getRatingTextColor } from '../utils/ratingCriteria';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import SMCAlertBanner from './SMCAlertBanner';
+import MedicationCorrelation from './MedicationCorrelation';
 
 /**
  * ADL Rating Card Component
@@ -325,7 +326,7 @@ const ADLRatingCard = ({ analysis, expanded, onToggle }) => {
                   </div>
                 </div>
               </div>
-
+              <MedicationCorrelation analysis={analysis} />
               {/* Analysis Rationale */}
               {rationale && rationale.length > 0 && (
                   <div>

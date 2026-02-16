@@ -7,6 +7,7 @@ import { ChevronDown, ChevronUp } from 'lucide-react';
 import { PARKINSONS_DISEASE_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
+import MedicationCorrelation from './MedicationCorrelation';
 
 export default function ParkinsonsRatingCard({ analysis, expanded, onToggle }) {
   if (!analysis || !analysis.hasData) return null;
@@ -103,6 +104,7 @@ export default function ParkinsonsRatingCard({ analysis, expanded, onToggle }) {
                   </div>
                 </div>
               </div>
+              <MedicationCorrelation analysis={analysis} />
 
               {/* Section 2: Analysis Rationale */}
               {rationale?.length > 0 && (

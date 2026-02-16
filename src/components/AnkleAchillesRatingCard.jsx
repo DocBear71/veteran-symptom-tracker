@@ -2,6 +2,7 @@ import { ChevronDown, ChevronUp } from 'lucide-react';
 import { ANKLE_ACHILLES_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
+import MedicationCorrelation from './MedicationCorrelation';
 
 /**
  * Ankle/Achilles Tendon Rating Card Component - Gold Standard Version
@@ -136,6 +137,7 @@ export default function AnkleAchillesRatingCard({ analysis, expanded, onToggle }
                   </div>
                 </div>
               </div>
+              <MedicationCorrelation analysis={analysis} />
 
               {/* Section 2: Analysis Rationale */}
               {rationale && rationale.length > 0 && (

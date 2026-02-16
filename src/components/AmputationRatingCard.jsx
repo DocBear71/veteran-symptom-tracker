@@ -8,6 +8,7 @@
 import React from 'react';
 import { ChevronDown, ChevronUp, AlertTriangle, Info, CheckCircle } from 'lucide-react';
 import SMCAlertBanner from './SMCAlertBanner';
+import MedicationCorrelation from './MedicationCorrelation';
 
 /**
  * Amputation / Extremity Loss Rating Card
@@ -323,7 +324,7 @@ const AmputationRatingCard = ({ analysis, expanded, onToggle }) => {
                     </div>
                   </div>
               )}
-
+              <MedicationCorrelation analysis={analysis} />
               {/* Section 4: Analysis Rationale */}
               {rationale && rationale.length > 0 && (
                   <div>

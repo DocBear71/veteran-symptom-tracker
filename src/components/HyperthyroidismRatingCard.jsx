@@ -3,6 +3,7 @@ import { HYPERTHYROIDISM_CRITERIA, getRatingRowColor, getRatingTextColor } from 
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import {isRatingSupported} from '../utils/ratingUtils.js';
+import MedicationCorrelation from './MedicationCorrelation';
 
 /**
  * Hyperthyroidism/Graves' Disease Rating Card - Gold Standard Version
@@ -97,8 +98,8 @@ export default function HyperthyroidismRatingCard({ analysis, expanded, onToggle
                   </div>
                 </div>
               </div>
-
-              {/* Analysis Rationale */}
+<MedicationCorrelation analysis={analysis} />
+{/* Analysis Rationale */}
               {ratingRationale?.length > 0 && (
                   <div>
                     <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-center">Analysis Rationale</h4>

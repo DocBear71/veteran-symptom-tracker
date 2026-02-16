@@ -2,6 +2,7 @@ import { ChevronDown, ChevronUp } from 'lucide-react';
 import { INTESTINAL_FISTULA_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
+import MedicationCorrelation from './MedicationCorrelation';
 
 /**
 
@@ -189,7 +190,7 @@ export default function IntestinalFistulaRatingCard({ analysis, expanded, onTogg
                   Based on 130cc ostomy bags or pad changes per day
                 </p>
               </div>
-
+              <MedicationCorrelation analysis={analysis} />
               {/* Analysis Rationale */}
               {ratingRationale?.length > 0 && (
                   <div>

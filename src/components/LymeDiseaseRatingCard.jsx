@@ -3,6 +3,7 @@ import { LYME_DISEASE_CRITERIA, getRatingRowColor, getRatingTextColor } from '..
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import {isRatingSupported} from '../utils/ratingUtils.js';
+import MedicationCorrelation from './MedicationCorrelation';
 
 /**
  * Lyme Disease Rating Card Component - Gold Standard Version
@@ -123,6 +124,7 @@ export default function LymeDiseaseRatingCard({ analysis, expanded, onToggle }) 
                   </div>
                 </div>
               </div>
+              <MedicationCorrelation analysis={analysis} />
 
               {/* Section 2: Analysis Rationale */}
               {ratingRationale && ratingRationale.length > 0 && (

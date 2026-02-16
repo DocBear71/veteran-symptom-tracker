@@ -2,6 +2,7 @@ import {ChevronDown, ChevronUp} from 'lucide-react';
 import {SICKLE_CELL_ANEMIA_CRITERIA, getRatingRowColor, getRatingTextColor} from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
+import MedicationCorrelation from './MedicationCorrelation';
 
 export default function SickleCellAnemiaRatingCard({
                                                      analysis,
@@ -113,6 +114,7 @@ export default function SickleCellAnemiaRatingCard({
                   </div>
                 </div>
               </div>
+              <MedicationCorrelation analysis={analysis} />
               {rationale?.length > 0 && (<div><h4
                   className="font-medium text-gray-900 dark:text-white mb-2 text-center">Analysis
                 Rationale</h4>

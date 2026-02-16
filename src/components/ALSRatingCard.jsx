@@ -2,6 +2,7 @@ import {ChevronDown, ChevronUp} from 'lucide-react';
 import {ALS_CRITERIA, getRatingRowColor, getRatingTextColor} from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
+import MedicationCorrelation from './MedicationCorrelation';
 
 /**
  * ALS Rating Card Component - Gold Standard Version
@@ -101,6 +102,7 @@ export default function ALSRatingCard({analysis, expanded, onToggle}) {
                     )}
                   </div>
               )}
+              <MedicationCorrelation analysis={analysis} />
 
               {/* Analysis Rationale */}
               {ratingRationale?.length > 0 && (

@@ -3,6 +3,7 @@ import { NON_HODGKINS_LYMPHOMA_CRITERIA, getRatingRowColor, getRatingTextColor }
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import {isRatingSupported} from '../utils/ratingUtils.js';
+import MedicationCorrelation from './MedicationCorrelation';
 
 export default function NonHodgkinsLymphomaRatingCard({ analysis, expanded, onToggle }) {
   if (!analysis || !analysis.hasData) {
@@ -69,6 +70,7 @@ export default function NonHodgkinsLymphomaRatingCard({ analysis, expanded, onTo
                 </p>
               </div>
 
+              <MedicationCorrelation analysis={analysis} />
               {/* Your Evidence */}
               {rationale && rationale.length > 0 && (
                   <div>

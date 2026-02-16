@@ -2,6 +2,7 @@ import { ChevronDown, ChevronUp } from 'lucide-react';
 import { getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
+import MedicationCorrelation from './MedicationCorrelation';
 
 /**
  * Multi-Joint Arthritis Rating Card - DC 5002
@@ -130,7 +131,7 @@ export default function MultiJointArthritisRatingCard({ analysis, expanded, onTo
                   </div>
                 </div>
               </div>
-
+              <MedicationCorrelation analysis={analysis} />
               {/* Analysis Rationale */}
               {ratingRationale?.length > 0 && (
                   <div>

@@ -2,6 +2,7 @@ import { ChevronDown, ChevronUp } from 'lucide-react';
 import { getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
+import MedicationCorrelation from './MedicationCorrelation';
 
 /**
  * Myositis Rating Card - DC 5021
@@ -129,7 +130,7 @@ export default function MyositisRatingCard({ analysis, expanded, onToggle }) {
                   </div>
                 </div>
               </div>
-
+              <MedicationCorrelation analysis={analysis} />
               {/* Analysis Rationale */}
               {ratingRationale?.length > 0 && (
                   <div>

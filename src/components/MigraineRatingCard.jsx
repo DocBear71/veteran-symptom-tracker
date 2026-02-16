@@ -4,6 +4,7 @@ import { MIGRAINE_CRITERIA, getRatingRowColor, getRatingTextColor } from '../uti
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
+import MedicationCorrelation from './MedicationCorrelation';
 
 /**
  * Migraine Rating Card Component - Gold Standard Version
@@ -110,7 +111,7 @@ export default function MigraineRatingCard({ analysis, expanded, onToggle }) {
                   </div>
                 </div>
               </div>
-
+              <MedicationCorrelation analysis={analysis} />
               {/* Analysis Rationale */}
               {rationale?.length > 0 && (
                   <div>

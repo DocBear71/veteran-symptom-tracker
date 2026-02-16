@@ -2,6 +2,7 @@ import { ChevronDown, ChevronUp } from 'lucide-react';
 import { SCARS_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
+import MedicationCorrelation from './MedicationCorrelation';
 
 /**
  * Scars Rating Card Component - Gold Standard Version
@@ -77,6 +78,7 @@ export default function ScarsRatingCard({ analysis, expanded, onToggle }) {
                   </div>
                 </div>
               </div>
+              <MedicationCorrelation analysis={analysis} />
 
               {ratingRationale && ratingRationale.length > 0 && (
                   <div>

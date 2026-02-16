@@ -2,6 +2,7 @@ import { ChevronDown, ChevronUp } from 'lucide-react';
 import { APLASTIC_ANEMIA_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
+import MedicationCorrelation from './MedicationCorrelation';
 
 /**
  * Aplastic Anemia Rating Card Component - Gold Standard Version
@@ -68,7 +69,7 @@ export default function AplasticAnemiaRatingCard({ analysis, expanded, onToggle 
                   </div>
                 </div>
               </div>
-
+              <MedicationCorrelation analysis={analysis} />
               {/* Analysis Rationale */}
               {rationale && rationale.length > 0 && (
                   <div>

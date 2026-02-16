@@ -3,6 +3,7 @@ import { ADDISONS_DISEASE_CRITERIA, getRatingRowColor, getRatingTextColor } from
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import { isRatingSupported } from '../utils/ratingUtils';
+import MedicationCorrelation from './MedicationCorrelation';
 
 /**
  * Addison's Disease Rating Card - Gold Standard Version
@@ -97,7 +98,7 @@ export default function AddisonsDiseaseRatingCard({ analysis, expanded, onToggle
                   </div>
                 </div>
               </div>
-
+              <MedicationCorrelation analysis={analysis} />
               {/* Analysis Rationale */}
               {ratingRationale?.length > 0 && (
                   <div>

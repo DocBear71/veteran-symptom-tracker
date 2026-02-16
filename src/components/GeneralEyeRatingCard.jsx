@@ -7,6 +7,7 @@ import {
 } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
+import MedicationCorrelation from './MedicationCorrelation';
 
 /**
 
@@ -160,6 +161,7 @@ export default function GeneralEyeRatingCard({ analysis, expanded, onToggle }) {
                   </div>
                 </div>
               </div>
+              <MedicationCorrelation analysis={analysis} />
 
               {/* Section 2: Analysis Rationale */}
               {ratingRationale?.length > 0 && (

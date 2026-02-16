@@ -3,6 +3,7 @@ import { LEUKEMIA_CRITERIA, getRatingRowColor, getRatingTextColor } from '../uti
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import {isRatingSupported} from '../utils/ratingUtils.js';
+import MedicationCorrelation from './MedicationCorrelation';
 
 export default function LeukemiaRatingCard({ analysis, expanded, onToggle }) {
   if (!analysis || !analysis.hasData) {
@@ -69,6 +70,7 @@ export default function LeukemiaRatingCard({ analysis, expanded, onToggle }) {
                 </p>
               </div>
 
+              <MedicationCorrelation analysis={analysis} />
               {/* Your Evidence */}
               {rationale && rationale.length > 0 && (
                   <div>

@@ -12,6 +12,7 @@ import {
   BERIBERI_CRITERIA,
   PELLAGRA_CRITERIA,
 } from '../utils/ratingCriteria';
+import MedicationCorrelation from './MedicationCorrelation';
 
 const NutritionalDeficiencyRatingCard = ({ analysis, expanded, onToggle }) => {
   if (!analysis?.hasData) {
@@ -235,6 +236,7 @@ const NutritionalDeficiencyRatingCard = ({ analysis, expanded, onToggle }) => {
                     </div>
                 )}
               </div>
+              <MedicationCorrelation analysis={analysis} />
 
               {/* Section 2: Analysis Rationale */}
               {rationale && rationale.length > 0 && (

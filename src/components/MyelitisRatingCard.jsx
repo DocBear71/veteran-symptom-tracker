@@ -2,6 +2,7 @@ import {ChevronDown, ChevronUp} from 'lucide-react';
 import {MYELITIS_CRITERIA, getRatingRowColor, getRatingTextColor} from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
+import MedicationCorrelation from './MedicationCorrelation';
 
 /**
  * Myelitis Rating Card Component - Gold Standard Version
@@ -87,6 +88,7 @@ export default function MyelitisRatingCard({analysis, expanded, onToggle}) {
                     )}
                   </div>
               )}
+              <MedicationCorrelation analysis={analysis} />
 
               {/* Analysis Rationale */}
               {ratingRationale?.length > 0 && (

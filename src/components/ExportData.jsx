@@ -165,8 +165,8 @@ const ExportData = () => {
                   className="mt-1"
               />
               <div className="flex-1">
-                <p className="font-medium text-gray-900 dark:text-white">Standard Report</p>
-                <p className="text-sm text-gray-500 dark:text-gray-400">
+                <p className="font-medium text-gray-900 dark:text-white text-left">Standard Report</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400 text-left">
                   Comprehensive symptom log with all details - best for personal records
                 </p>
               </div>
@@ -183,10 +183,10 @@ const ExportData = () => {
                   className="mt-1"
               />
               <div className="flex-1">
-                <p className="font-medium text-gray-900 dark:text-white">
+                <p className="font-medium text-gray-900 dark:text-white text-left">
                   VA Claim Package 📋
                 </p>
-                <p className="text-sm text-gray-500 dark:text-gray-400">
+                <p className="text-sm text-gray-500 dark:text-gray-400 text-left">
                   Professional format optimized for VA disability claims with rating evidence
                 </p>
               </div>
@@ -299,7 +299,7 @@ const ExportData = () => {
                         className="w-5 h-5 rounded border-gray-300 dark:border-gray-600 text-blue-600 focus:ring-blue-500"
                     />
                     <div>
-                      <p className="font-medium text-gray-900 dark:text-white">Include Appointments</p>
+                      <p className="font-medium text-gray-900 dark:text-white text-left ">Include Appointments</p>
                       <p className="text-sm text-gray-500 dark:text-gray-400">
                         {stats.appointments} appointment{stats.appointments !== 1 ? 's' : ''} logged
                       </p>
@@ -314,7 +314,7 @@ const ExportData = () => {
                         className="w-5 h-5 rounded border-gray-300 dark:border-gray-600 text-blue-600 focus:ring-blue-500"
                     />
                     <div>
-                      <p className="font-medium text-gray-900 dark:text-white">Include Measurements</p>
+                      <p className="font-medium text-gray-900 dark:text-white text-left ">Include Measurements</p>
                       <p className="text-sm text-gray-500 dark:text-gray-400">
                         Blood pressure, glucose, FEV-1, etc.
                       </p>
@@ -329,9 +329,9 @@ const ExportData = () => {
                         className="w-5 h-5 rounded border-gray-300 dark:border-gray-600 text-blue-600 focus:ring-blue-500"
                     />
                     <div>
-                      <p className="font-medium text-gray-900 dark:text-white">Include Medications</p>
+                      <p className="font-medium text-gray-900 dark:text-white text-left">Include Medications</p>
                       <p className="text-sm text-gray-500 dark:text-gray-400">
-                        Medication usage linked to symptoms
+                        Medication logs with effectiveness and side effects
                       </p>
                     </div>
                   </label>

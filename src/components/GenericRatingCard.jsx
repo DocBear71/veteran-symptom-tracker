@@ -4,6 +4,7 @@ import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import SMCAlertBanner from './SMCAlertBanner';
 import {isRatingSupported} from '../utils/ratingUtils.js';
+import MedicationCorrelation from './MedicationCorrelation';
 
 /**
  * Generic Rating Card - Gold Standard Version
@@ -14,7 +15,7 @@ import {isRatingSupported} from '../utils/ratingUtils.js';
  * - criteria.ratingsIncapacitatingEpisodes (intervertebral disc)
  * - criteria.ratingsGeneralFormula (alternative spine ratings)
  */
-export default function GenericRatingCard({ analysis, expanded, onToggle, icon = '📋' }) {
+export default function GenericRatingCard({ analysis, expanded, onToggle, icon = '📋', conditionKey = null }) {
   if (!analysis || !analysis.hasData) return null;
 
   const { supportedRating, rationale, evidenceGaps, metrics, condition, diagnosticCode, criteria, ratingRationale, gaps } = analysis;
@@ -129,6 +130,9 @@ export default function GenericRatingCard({ analysis, expanded, onToggle, icon =
                   </div>
                 </div>
               </div>
+
+              {/* Medication Correlation - §4.10 Evidence */}
+              <MedicationCorrelation analysis={analysis} />
 
               {/* Analysis Rationale */}
               {displayRationale?.length > 0 && (

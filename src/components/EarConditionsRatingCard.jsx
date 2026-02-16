@@ -14,6 +14,7 @@ import {
 } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
+import MedicationCorrelation from './MedicationCorrelation';
 
 /**
  * EarConditionsRatingCard - Displays VA rating analysis for ear conditions
@@ -233,6 +234,7 @@ const EarConditionsRatingCard = ({ analysis, expanded, onToggle }) => {
                   </div>
                 </div>
               </div>
+              <MedicationCorrelation analysis={analysis} />
 
               {/* Section 2: Analysis Rationale */}
               {ratingRationale && ratingRationale.length > 0 && (

@@ -12,6 +12,7 @@ import {
 import { formatDosage, formatDosageWithTotal, getDosageForLog, UNIT_TYPE_OPTIONS } from '../utils/medicationUtils';
 import { getActiveProfileId } from '../utils/profiles';
 import OccurrenceTimePicker from './OccurrenceTimePicker';
+import MedicationDocumentationGuide from './MedicationDocumentationGuide';
 
 // ─── Medication Groups: localStorage helpers ────────────────────────────
 // Uses same profile-namespacing pattern as storage.js for data isolation.
@@ -80,6 +81,85 @@ const DosageFields = ({ data, onChange }) => (
     </>
 );
 
+// ─── Reusable Effectiveness + Side Effects fields ────────────────
+// MUST be outside the main component to prevent input focus loss on re-render.
+// All data (levels, side effects list) is self-contained here.
+const EFFECTIVENESS_LEVELS = [
+  { value: 'none', label: 'No Relief', color: 'bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 border-red-300 dark:border-red-700' },
+  { value: 'slight', label: 'Slight', color: 'bg-orange-100 dark:bg-orange-900 text-orange-800 dark:text-orange-200 border-orange-300 dark:border-orange-700' },
+  { value: 'moderate', label: 'Moderate', color: 'bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 border-yellow-300 dark:border-yellow-700' },
+  { value: 'significant', label: 'Significant', color: 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 border-green-300 dark:border-green-700' },
+  { value: 'complete', label: 'Complete', color: 'bg-emerald-100 dark:bg-emerald-900 text-emerald-800 dark:text-emerald-200 border-emerald-300 dark:border-emerald-700' },
+];
+
+const EFFECTIVENESS_LABELS = {
+  none: 'No Relief', slight: 'Slight Relief', moderate: 'Moderate Relief',
+  significant: 'Significant Relief', complete: 'Complete Relief',
+};
+
+const COMMON_SIDE_EFFECTS = [
+  'Drowsiness', 'Dizziness', 'Nausea', 'Weight Gain', 'Fatigue',
+  'Headache', 'Dry Mouth', 'Constipation', 'Insomnia', 'Brain Fog',
+  'GI Upset', 'Sexual Dysfunction', 'Appetite Changes', 'Mood Changes',
+  'Muscle Weakness', 'Blurred Vision', 'Tremor', 'Swelling',
+];
+
+const EffectivenessSideEffectsFields = ({ data, onChange }) => (
+    <>
+      {/* Effectiveness */}
+      <div>
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          How effective? <span className="text-xs text-gray-400 font-normal">(optional)</span>
+        </label>
+        <div className="flex flex-wrap gap-1.5">
+          {EFFECTIVENESS_LEVELS.map((level) => (
+              <button key={level.value} type="button"
+                      onClick={() => onChange(prev => ({ ...prev, effectiveness: prev.effectiveness === level.value ? '' : level.value }))}
+                      className={`px-3 py-1.5 rounded-full text-xs font-medium border transition-all ${
+                          data.effectiveness === level.value
+                              ? level.color + ' ring-2 ring-offset-1 ring-blue-500 dark:ring-offset-gray-800'
+                              : 'bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 border-gray-200 dark:border-gray-600 hover:bg-gray-200 dark:hover:bg-gray-600'
+                      }`}>
+                {level.label}
+              </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Side Effects */}
+      <div>
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          Side effects? <span className="text-xs text-gray-400 font-normal">(optional)</span>
+        </label>
+        <div className="flex flex-wrap gap-1.5 mb-2">
+          {COMMON_SIDE_EFFECTS.map((effect) => {
+            const isSelected = data.sideEffects.includes(effect);
+            return (
+                <button key={effect} type="button"
+                        onClick={() => onChange(prev => ({
+                          ...prev,
+                          sideEffects: prev.sideEffects.includes(effect)
+                              ? prev.sideEffects.filter(e => e !== effect)
+                              : [...prev.sideEffects, effect],
+                        }))}
+                        className={`px-2.5 py-1 rounded-full text-xs font-medium border transition-all ${
+                            isSelected
+                                ? 'bg-amber-100 dark:bg-amber-900 text-amber-800 dark:text-amber-200 border-amber-400 dark:border-amber-600 ring-1 ring-amber-400'
+                                : 'bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 border-gray-200 dark:border-gray-600 hover:bg-gray-200 dark:hover:bg-gray-600'
+                        }`}>
+                  {isSelected ? '✓ ' : ''}{effect}
+                </button>
+            );
+          })}
+        </div>
+        <input type="text" value={data.sideEffectsOther}
+               onChange={(e) => onChange(prev => ({ ...prev, sideEffectsOther: e.target.value }))}
+               placeholder="Other side effects..."
+               className="w-full p-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500" />
+      </div>
+    </>
+);
+
 const Medications = () => {
   const [medications, setMedications] = useState([]);
   const [logs, setLogs] = useState([]);
@@ -107,19 +187,19 @@ const Medications = () => {
   });
 
   // Batch log & group form state
-  const [batchLogData, setBatchLogData] = useState({ takenFor: '', notes: '' });
+  const [batchLogData, setBatchLogData] = useState({ takenFor: '', effectiveness: '', sideEffects: [], sideEffectsOther: '', notes: '' });
   const [batchOccurredAt, setBatchOccurredAt] = useState(new Date().toISOString());
   const [groupForm, setGroupForm] = useState({ name: '', icon: '🌅', medicationIds: [] });
 
   // Group quick-log confirmation modal
   const [showGroupLogConfirm, setShowGroupLogConfirm] = useState(false);
   const [pendingGroup, setPendingGroup] = useState(null);
-  const [groupLogData, setGroupLogData] = useState({ notes: '', occurredAt: new Date().toISOString() });
+  const [groupLogData, setGroupLogData] = useState({ effectiveness: '', sideEffects: [], sideEffectsOther: '', notes: '', occurredAt: new Date().toISOString() });
 
   // Edit medication log modal
   const [showEditLogForm, setShowEditLogForm] = useState(false);
   const [editingLog, setEditingLog] = useState(null);
-  const [editLogData, setEditLogData] = useState({ takenFor: '', notes: '', occurredAt: '' });
+  const [editLogData, setEditLogData] = useState({ takenFor: '', effectiveness: '', sideEffects: [], sideEffectsOther: '', notes: '', occurredAt: '' });
 
   useEffect(() => { loadData(); }, []);
 
@@ -174,13 +254,24 @@ const Medications = () => {
     e.preventDefault();
     const medsToLog = medications.filter(m => selectedMedIds.has(m.id));
     let count = 0;
+    // Combine selected side effects with any custom entry
+    const batchAllSideEffects = [
+      ...batchLogData.sideEffects,
+      ...(batchLogData.sideEffectsOther.trim() ? [batchLogData.sideEffectsOther.trim()] : []),
+    ].join(', ');
+
     medsToLog.forEach(med => {
-      const r = logMedicationTaken({ medicationId: med.id, medicationName: med.name, dosage: getDosageForLog(med), takenFor: batchLogData.takenFor, notes: batchLogData.notes, occurredAt: batchOccurredAt });
+      const r = logMedicationTaken({
+        medicationId: med.id, medicationName: med.name, dosage: getDosageForLog(med),
+        takenFor: batchLogData.takenFor, notes: batchLogData.notes, occurredAt: batchOccurredAt,
+        effectiveness: batchLogData.effectiveness || null,
+        sideEffects: batchAllSideEffects,
+      });
       if (r.success) count++;
     });
     showMessage(`Logged ${count} medication${count !== 1 ? 's' : ''}`);
     setSelectedMedIds(new Set()); setShowBatchLogForm(false);
-    setBatchLogData({ takenFor: '', notes: '' }); setBatchOccurredAt(new Date().toISOString()); loadData();
+    setBatchLogData({ takenFor: '', effectiveness: '', sideEffects: [], sideEffectsOther: '', notes: '' }); setBatchOccurredAt(new Date().toISOString()); loadData();
   };
 
   // ─── Group Quick Log ─────────────────────────────────────────────
@@ -189,7 +280,7 @@ const Medications = () => {
     const meds = medications.filter(m => m.isActive && group.medicationIds.includes(m.id));
     if (meds.length === 0) { showMessage('No active medications in this group'); return; }
     setPendingGroup(group);
-    setGroupLogData({ notes: '', occurredAt: new Date().toISOString() });
+    setGroupLogData({ effectiveness: '', sideEffects: [], sideEffectsOther: '', notes: '', occurredAt: new Date().toISOString() });
     setShowGroupLogConfirm(true);
   };
 
@@ -198,12 +289,19 @@ const Medications = () => {
     if (!pendingGroup) return;
     const meds = medications.filter(m => m.isActive && pendingGroup.medicationIds.includes(m.id));
     let count = 0;
+    const groupAllSideEffects = [
+      ...groupLogData.sideEffects,
+      ...(groupLogData.sideEffectsOther.trim() ? [groupLogData.sideEffectsOther.trim()] : []),
+    ].join(', ');
+
     meds.forEach(med => {
       const r = logMedicationTaken({
         medicationId: med.id, medicationName: med.name, dosage: getDosageForLog(med),
         takenFor: pendingGroup.name,
         notes: groupLogData.notes || `Logged via "${pendingGroup.name}" group`,
         occurredAt: groupLogData.occurredAt,
+        effectiveness: groupLogData.effectiveness || null,
+        sideEffects: groupAllSideEffects,
       });
       if (r.success) count++;
     });
@@ -282,8 +380,18 @@ const Medications = () => {
   // ─── Edit Medication Log ─────────────────────────────────────────
   const handleEditLog = (log) => {
     setEditingLog(log);
+    // Parse sideEffects string back into array for chip selection
+    const existingSideEffects = log.sideEffects
+        ? log.sideEffects.split(',').map(s => s.trim()).filter(Boolean)
+        : [];
+    const knownEffects = existingSideEffects.filter(e => COMMON_SIDE_EFFECTS.includes(e));
+    const otherEffects = existingSideEffects.filter(e => !COMMON_SIDE_EFFECTS.includes(e));
+
     setEditLogData({
       takenFor: log.takenFor || '',
+      effectiveness: log.effectiveness || '',
+      sideEffects: knownEffects,
+      sideEffectsOther: otherEffects.join(', '),
       notes: log.notes || '',
       occurredAt: log.occurredAt || log.timestamp,
     });
@@ -292,8 +400,15 @@ const Medications = () => {
 
   const handleSaveEditLog = (e) => {
     e.preventDefault();
+    const editAllSideEffects = [
+      ...editLogData.sideEffects,
+      ...(editLogData.sideEffectsOther.trim() ? [editLogData.sideEffectsOther.trim()] : []),
+    ].join(', ');
+
     const result = updateMedicationLog(editingLog.id, {
       takenFor: editLogData.takenFor,
+      effectiveness: editLogData.effectiveness || null,
+      sideEffects: editAllSideEffects,
       notes: editLogData.notes,
       occurredAt: editLogData.occurredAt,
     });
@@ -314,6 +429,15 @@ const Medications = () => {
     'three-times': 'Three Times Daily', 'four-times': 'Four Times Daily', 'weekly': 'Weekly', 'other': 'Other',
   };
   const groupIcons = ['🌅', '🌙', '☀️', '🕐', '💊', '🏥', '⚡', '🎯'];
+
+  // ─── Effectiveness & Side Effects (§4.10 compliance) ─────────────
+  // Constants defined outside component (EFFECTIVENESS_LEVELS, COMMON_SIDE_EFFECTS, etc.)
+  // to prevent re-mount focus loss. Internal aliases for convenience:
+  const getEffectivenessColor = (val) => {
+    const level = EFFECTIVENESS_LEVELS.find(l => l.value === val);
+    return level ? level.color : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 border-gray-300 dark:border-gray-600';
+  };
+
   const activeMeds = medications.filter(m => m.isActive);
 
 
@@ -364,6 +488,13 @@ const Medications = () => {
       <div className="pb-20">
         <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Medications</h2>
 
+        {/* §4.10 Educational Guide - Veteran profiles only */}
+        <div className="mt-4">
+          <MedicationDocumentationGuide />
+        </div>
+        <br/>
+
+
         {message && (
             <div className="mb-4 p-3 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-lg text-center">
               {message}
@@ -412,6 +543,7 @@ const Medications = () => {
                             className="mt-3 text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-medium">+ Add your first medication</button>
                   </div>
               ) : (
+
                   <div>
                     <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">Tap to select, then log all at once:</p>
                     <div className="space-y-2">
@@ -615,9 +747,22 @@ const Medications = () => {
                                 ))}
                               </div>
 
+                              {/* Effectiveness & Side Effects (shared across batch) */}
+                              {firstLog.effectiveness && (
+                                  <div className="mt-3">
+                                  <span className={`inline-block px-2.5 py-0.5 rounded-full text-xs font-medium border ${getEffectivenessColor(firstLog.effectiveness)}`}>
+                                    {EFFECTIVENESS_LABELS[firstLog.effectiveness] || firstLog.effectiveness}
+                                  </span>
+                                  </div>
+                              )}
+                              {firstLog.sideEffects && (
+                                  <p className="text-xs text-amber-600 dark:text-amber-400 mt-1">
+                                    ⚠️ {firstLog.sideEffects}
+                                  </p>
+                              )}
                               {/* Shared notes */}
                               {sharedNotes && (
-                                  <p className="text-sm text-gray-500 dark:text-gray-400 mt-3 bg-gray-50 dark:bg-gray-700 p-2 rounded">
+                                  <p className="text-sm text-gray-500 dark:text-gray-400 mt-2 bg-gray-50 dark:bg-gray-700 p-2 rounded">
                                     {sharedNotes}
                                   </p>
                               )}
@@ -639,6 +784,14 @@ const Medications = () => {
                                       </p>
                                   )}
                                   {log.takenFor && <p className="text-xs text-blue-600 dark:text-blue-400 mt-1">For: {log.takenFor}</p>}
+                                  {log.effectiveness && (
+                                      <span className={`inline-block mt-1 px-2.5 py-0.5 rounded-full text-xs font-medium border ${getEffectivenessColor(log.effectiveness)}`}>
+                                      {EFFECTIVENESS_LABELS[log.effectiveness] || log.effectiveness}
+                                    </span>
+                                  )}
+                                  {log.sideEffects && (
+                                      <p className="text-xs text-amber-600 dark:text-amber-400 mt-1">⚠️ {log.sideEffects}</p>
+                                  )}
                                   {log.notes && <p className="text-sm text-gray-500 dark:text-gray-400 mt-1 bg-gray-50 dark:bg-gray-700 p-2 rounded">{log.notes}</p>}
                                 </div>
                                 <div className="flex items-center gap-1 ml-2 shrink-0">
@@ -738,6 +891,7 @@ const Medications = () => {
                               placeholder="Any additional notes" rows={2}
                               className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500" />
                   </div>
+                  <EffectivenessSideEffectsFields data={batchLogData} onChange={setBatchLogData} />
                   <div className="pt-2 border-t border-gray-200 dark:border-gray-700">
                     <OccurrenceTimePicker value={batchOccurredAt} onChange={setBatchOccurredAt} label="When were these taken?" />
                   </div>
@@ -905,6 +1059,7 @@ const Medications = () => {
                       ))}
                     </div>
                   </div>
+                  <EffectivenessSideEffectsFields data={groupLogData} onChange={setGroupLogData} />
                   <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Notes (optional)</label>
                     <textarea value={groupLogData.notes} onChange={(e) => setGroupLogData(prev => ({ ...prev, notes: e.target.value }))}
@@ -946,6 +1101,7 @@ const Medications = () => {
                            placeholder="e.g., Morning routine, Pain flare-up"
                            className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500" />
                   </div>
+                  <EffectivenessSideEffectsFields data={editLogData} onChange={setEditLogData} />
                   <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Notes (optional)</label>
                     <textarea value={editLogData.notes} onChange={(e) => setEditLogData(prev => ({ ...prev, notes: e.target.value }))}
@@ -965,6 +1121,7 @@ const Medications = () => {
               </div>
             </div>
         )}
+
       </div>
   );
 };

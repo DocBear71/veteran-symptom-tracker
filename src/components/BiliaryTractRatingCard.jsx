@@ -2,6 +2,7 @@ import { ChevronDown, ChevronUp } from 'lucide-react';
 import { BILIARY_TRACT_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
+import MedicationCorrelation from './MedicationCorrelation';
 
 /**
  * Biliary Tract Disease Rating Card Component
@@ -144,8 +145,8 @@ export default function BiliaryTractRatingCard({ analysis, expanded, onToggle })
                   <strong>Attack Criteria:</strong> RUQ pain + nausea + vomiting on same day counts as documented attack
                 </p>
               </div>
-
-              {/* Analysis Rationale */}
+<MedicationCorrelation analysis={analysis} />
+{/* Analysis Rationale */}
               {ratingRationale?.length > 0 && (
                   <div>
                     <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-center">

@@ -2,6 +2,7 @@ import { ChevronDown, ChevronUp } from 'lucide-react';
 import { LOSS_OF_SMELL_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
+import MedicationCorrelation from './MedicationCorrelation';
 
 /**
  * Loss of Smell (Anosmia) Rating Card Component - Gold Standard Version
@@ -201,6 +202,7 @@ export default function LossOfSmellRatingCard({ analysis, expanded, onToggle }) 
                   </div>
                 </div>
               </div>
+              <MedicationCorrelation analysis={analysis} />
 
               {/* Section 2: Analysis Rationale */}
               {rationale && rationale.length > 0 && (

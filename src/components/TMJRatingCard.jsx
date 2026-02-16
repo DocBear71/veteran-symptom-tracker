@@ -2,6 +2,7 @@ import {ChevronDown, ChevronUp} from 'lucide-react';
 import {TMJ_CRITERIA, TMJ_DISORDER_CRITERIA, getRatingRowColor, getRatingTextColor} from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
+import MedicationCorrelation from './MedicationCorrelation';
 
 export default function TMJRatingCard({analysis, expanded, onToggle}) {
   if (!analysis || !analysis.hasData) return null;
@@ -105,6 +106,7 @@ export default function TMJRatingCard({analysis, expanded, onToggle}) {
                   </div>
                 </div>
               </div>
+              <MedicationCorrelation analysis={analysis} />
               {rationale?.length > 0 && (<div><h4
                   className="font-medium text-gray-900 dark:text-white mb-2 text-center">Analysis
                 Rationale</h4>

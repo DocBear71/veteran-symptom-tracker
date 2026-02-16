@@ -3,6 +3,7 @@ import { HYPERTENSIVE_HEART_CRITERIA, getRatingRowColor, getRatingTextColor } fr
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import {isRatingSupported} from '../utils/ratingUtils.js';
+import MedicationCorrelation from './MedicationCorrelation';
 
 export default function HypertensiveHeartRatingCard({ analysis, expanded, onToggle }) {
   if (!analysis || !analysis.hasData) return null;
@@ -91,7 +92,7 @@ export default function HypertensiveHeartRatingCard({ analysis, expanded, onTogg
                   </div>
                 </div>
               </div>
-
+              <MedicationCorrelation analysis={analysis} />
               {/* Analysis Rationale */}
               {rationale && rationale.length > 0 && (
                   <div>

@@ -5,6 +5,7 @@ import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 import {isRatingSupported} from '../utils/ratingUtils.js';
+import MedicationCorrelation from './MedicationCorrelation';
 
 /**
  * Mental Health Rating Card - Gold Standard Version
@@ -109,7 +110,7 @@ export default function MentalHealthRatingCard({
                   </div>
                 </div>
               </div>
-
+              <MedicationCorrelation analysis={analysis} />
               {/* Analysis Rationale */}
               {displayRationale?.length > 0 && (
                   <div>

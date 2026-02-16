@@ -2,6 +2,7 @@ import { ChevronDown, ChevronUp } from 'lucide-react';
 import { EPILEPSY_MAJOR_CRITERIA, EPILEPSY_MINOR_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
+import MedicationCorrelation from './MedicationCorrelation';
 
 /**
  * Seizure/Epilepsy Rating Card Component - Gold Standard Version
@@ -146,6 +147,7 @@ export default function SeizureRatingCard({ analysis, expanded, onToggle }) {
                 </div>
               </div>
 
+              <MedicationCorrelation analysis={analysis} />
               {/* Analysis Rationale */}
               {rationale?.length > 0 && (
                   <div>

@@ -3,6 +3,7 @@ import { ALOPECIA_AREATA_CRITERIA, getRatingRowColor, getRatingTextColor } from 
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import {isRatingSupported} from '../utils/ratingUtils.js';
+import MedicationCorrelation from './MedicationCorrelation';
 
 /**
 
@@ -174,6 +175,7 @@ export default function AlopeciaAreataRatingCard({ analysis, expanded, onToggle 
                   </div>
                 </div>
               </div>
+              <MedicationCorrelation analysis={analysis} />
 
               {/* Section 2: Analysis Rationale */}
               {ratingRationale && ratingRationale.length > 0 && (

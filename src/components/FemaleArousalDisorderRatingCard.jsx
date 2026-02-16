@@ -2,6 +2,7 @@ import { ChevronDown, ChevronUp } from 'lucide-react';
 import { FEMALE_SEXUAL_AROUSAL_DISORDER_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
+import MedicationCorrelation from './MedicationCorrelation';
 
 /**
  * Female Arousal Disorder Rating Card Component - Gold Standard Version
@@ -62,7 +63,8 @@ export default function FemaleArousalDisorderRatingCard({ analysis, expanded, on
                   </div>
                 </div>
               </div>
-
+              <MedicationCorrelation analysis={analysis} />
+              {/* Analysis Rationale */}
               {rationale && rationale.length > 0 && (
                   <div>
                     <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-center">Analysis Rationale</h4>

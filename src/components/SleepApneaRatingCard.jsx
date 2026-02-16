@@ -4,6 +4,7 @@ import { SLEEP_APNEA_CRITERIA, getRatingRowColor, getRatingTextColor } from '../
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
+import MedicationCorrelation from './MedicationCorrelation';
 
 /**
  * Sleep Apnea Rating Card Component - Gold Standard Version
@@ -138,7 +139,7 @@ export default function SleepApneaRatingCard({ analysis, profile, expanded, onTo
                     </div>
                   </div>
               )}
-
+              <MedicationCorrelation analysis={analysis} />
               {/* Analysis Rationale */}
               {!requiresProfileSetup && rationale?.length > 0 && (
                   <div>

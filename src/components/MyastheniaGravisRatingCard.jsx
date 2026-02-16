@@ -7,6 +7,7 @@ import { ChevronDown, ChevronUp } from 'lucide-react';
 import { MYASTHENIA_GRAVIS_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
+import MedicationCorrelation from './MedicationCorrelation';
 
 export default function MyastheniaGravisRatingCard({ analysis, expanded, onToggle }) {
   if (!analysis || !analysis.hasData) return null;
@@ -129,6 +130,7 @@ export default function MyastheniaGravisRatingCard({ analysis, expanded, onToggl
                     )}
                   </div>
               )}
+              <MedicationCorrelation analysis={analysis} />
 
               {/* Section 2: Analysis Rationale */}
               {rationale?.length > 0 && (

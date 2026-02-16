@@ -3,6 +3,7 @@ import { CAD_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ra
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import {isRatingSupported} from '../utils/ratingUtils.js';
+import MedicationCorrelation from './MedicationCorrelation';
 
 export default function CADRatingCard({ analysis, expanded, onToggle }) {
   if (!analysis || !analysis.hasData) return null;
@@ -85,7 +86,7 @@ export default function CADRatingCard({ analysis, expanded, onToggle }) {
                   </div>
                 </div>
               </div>
-
+              <MedicationCorrelation analysis={analysis} />
               {/* Analysis Rationale */}
               {rationale && rationale.length > 0 && (
                   <div>

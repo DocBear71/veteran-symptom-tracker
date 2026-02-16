@@ -3,6 +3,7 @@ import { DIABETES_CRITERIA, getRatingRowColor, getRatingTextColor } from '../uti
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import {isRatingSupported} from '../utils/ratingUtils.js';
+import MedicationCorrelation from './MedicationCorrelation';
 
 /**
  * Diabetes Rating Card - Gold Standard Version
@@ -74,7 +75,7 @@ export default function DiabetesRatingCard({ analysis, expanded, onToggle }) {
                   </div>
                 </div>
               </div>
-
+              <MedicationCorrelation analysis={analysis} />
               {/* Analysis Rationale */}
               {displayRationale?.length > 0 && (
                   <div>

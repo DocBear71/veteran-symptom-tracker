@@ -6,6 +6,7 @@ import {
 } from '../utils/ratingCriteria';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
+import MedicationCorrelation from './MedicationCorrelation';
 import SMCAlertBanner from './SMCAlertBanner';
 
 const EyeVisionRatingCard = ({ analysis, expanded, onToggle }) => {
@@ -85,6 +86,9 @@ const EyeVisionRatingCard = ({ analysis, expanded, onToggle }) => {
 
               {/* SMC-K Alert Banner */}
               <SMCAlertBanner analysis={analysis} />
+
+              {/* Medication Correlation - §4.10 Evidence */}
+              <MedicationCorrelation analysis={analysis} />
 
               {/* Visual Acuity Summary */}
               {(acuityTrends.worstLeft || acuityTrends.worstRight) && (

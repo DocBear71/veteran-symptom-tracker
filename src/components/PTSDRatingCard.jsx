@@ -4,6 +4,7 @@ import { PTSD_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/r
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
+import MedicationCorrelation from './MedicationCorrelation';
 
 /**
  * PTSD Rating Card - Gold Standard Version
@@ -87,7 +88,7 @@ export default function PTSDRatingCard({ analysis, expanded, onToggle }) {
                   </div>
                 </div>
               </div>
-
+              <MedicationCorrelation analysis={analysis} />
               {/* Analysis Rationale */}
               {displayRationale?.length > 0 && (
                   <div>

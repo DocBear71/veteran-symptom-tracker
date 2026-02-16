@@ -2,6 +2,7 @@ import { ChevronDown, ChevronUp } from 'lucide-react';
 import { HERNIA_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
+import MedicationCorrelation from './MedicationCorrelation';
 
 /**
 
@@ -164,6 +165,7 @@ export default function HerniaRatingCard({ analysis, expanded, onToggle }) {
                     </p>
                   </div>
               )}
+              <MedicationCorrelation analysis={analysis} />
 
               {/* Analysis Rationale */}
               {ratingRationale?.length > 0 && (

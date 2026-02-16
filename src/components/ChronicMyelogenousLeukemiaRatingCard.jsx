@@ -3,6 +3,7 @@ import { CHRONIC_MYELOGENOUS_LEUKEMIA_CRITERIA, getRatingRowColor, getRatingText
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import {isRatingSupported} from '../utils/ratingUtils.js';
+import MedicationCorrelation from './MedicationCorrelation';
 
 export default function ChronicMyelogenousLeukemiaRatingCard({ analysis, expanded, onToggle }) {
   if (!analysis || !analysis.hasData) {
@@ -68,7 +69,7 @@ export default function ChronicMyelogenousLeukemiaRatingCard({ analysis, expande
                   After achieving stable remission with TKI therapy, rating may be reduced based on residual symptoms.
                 </p>
               </div>
-
+              <MedicationCorrelation analysis={analysis} />
               {/* Your Evidence */}
               {rationale && rationale.length > 0 && (
                   <div>

@@ -9,6 +9,7 @@ import {
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
+import MedicationCorrelation from './MedicationCorrelation';
 
 /**
  * Spine Conditions Rating Card Component - Gold Standard Version
@@ -220,6 +221,7 @@ export default function SpineConditionsRatingCard({ analysis, diagnosticCode, ex
                   </div>
                 </div>
               </div>
+              <MedicationCorrelation analysis={analysis} />
 
               {/* Section 2: Analysis Rationale */}
               {ratingRationale?.length > 0 && (

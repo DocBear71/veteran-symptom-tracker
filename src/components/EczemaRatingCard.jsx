@@ -3,6 +3,7 @@ import { ECZEMA_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import {isRatingSupported} from '../utils/ratingUtils.js';
+import MedicationCorrelation from './MedicationCorrelation';
 
 /**
  * Eczema/Dermatitis Rating Card Component - Gold Standard Version
@@ -111,6 +112,7 @@ export default function EczemaRatingCard({ analysis, expanded, onToggle }) {
                 </div>
               </div>
 
+              <MedicationCorrelation analysis={analysis} />
               {/* Section 2: Analysis Rationale */}
               {ratingRationale && ratingRationale.length > 0 && (
                   <div>

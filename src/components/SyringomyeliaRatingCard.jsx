@@ -2,6 +2,7 @@ import {ChevronDown, ChevronUp} from 'lucide-react';
 import {SYRINGOMYELIA_CRITERIA, getRatingRowColor, getRatingTextColor} from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
+import MedicationCorrelation from './MedicationCorrelation';
 
 /**
  * Syringomyelia Rating Card Component - Gold Standard Version
@@ -80,6 +81,7 @@ export default function SyringomyeliaRatingCard({analysis, expanded, onToggle}) 
                     </span>
                   </div>
               )}
+              <MedicationCorrelation analysis={analysis} />
 
               {/* Analysis Rationale */}
               {ratingRationale?.length > 0 && (

@@ -3,6 +3,7 @@ import { MALARIA_CRITERIA, getRatingRowColor, getRatingTextColor } from '../util
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import {isRatingSupported} from '../utils/ratingUtils.js';
+import MedicationCorrelation from './MedicationCorrelation';
 
 /**
  * Malaria Rating Card Component - Gold Standard Version
@@ -124,6 +125,7 @@ export default function MalariaRatingCard({ analysis, expanded, onToggle }) {
                   </div>
                 </div>
               </div>
+              <MedicationCorrelation analysis={analysis} />
 
               {/* Section 2: Analysis Rationale */}
               {ratingRationale && ratingRationale.length > 0 && (

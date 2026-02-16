@@ -2,6 +2,7 @@ import { ChevronDown, ChevronUp } from 'lucide-react';
 import { SPHINCTER_IMPAIRMENT_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
+import MedicationCorrelation from './MedicationCorrelation';
 
 /**
  * Sphincter Impairment Rating Card Component - Gold Standard Version
@@ -82,7 +83,7 @@ export default function SphincterImpairmentRatingCard({ analysis, expanded, onTo
                   </div>
                 </div>
               </div>
-
+              <MedicationCorrelation analysis={analysis} />
               {/* Analysis Rationale */}
               {rationale && rationale.length > 0 && (
                   <div>

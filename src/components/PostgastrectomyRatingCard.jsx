@@ -2,6 +2,7 @@ import { ChevronDown, ChevronUp } from 'lucide-react';
 import { POSTGASTRECTOMY_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
+import MedicationCorrelation from './MedicationCorrelation';
 
 /**
  * Postgastrectomy Syndrome Rating Card Component
@@ -179,6 +180,7 @@ export default function PostgastrectomyRatingCard({ analysis, expanded, onToggle
                     </p>
                   </div>
               )}
+              <MedicationCorrelation analysis={analysis} />
 
               {/* Analysis Rationale */}
               {ratingRationale?.length > 0 && (

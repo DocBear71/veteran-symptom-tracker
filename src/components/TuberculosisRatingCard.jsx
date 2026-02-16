@@ -10,6 +10,7 @@ import {
   TUBERCULOSIS_INACTIVE_CRITERIA,
   TUBERCULOSIS_MILIARY_CRITERIA
 } from '../utils/ratingCriteria';
+import MedicationCorrelation from './MedicationCorrelation';
 
 const TuberculosisRatingCard = ({ analysis, expanded, onToggle }) => {
   if (!analysis?.hasData) {
@@ -217,6 +218,7 @@ const TuberculosisRatingCard = ({ analysis, expanded, onToggle }) => {
                   </div>
                 </div>
               </div>
+              <MedicationCorrelation analysis={analysis} />
 
               {/* Section 2: Analysis Rationale */}
               {rationale && rationale.length > 0 && (

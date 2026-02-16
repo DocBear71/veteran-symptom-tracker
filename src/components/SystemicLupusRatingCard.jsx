@@ -6,6 +6,7 @@
 
 import { ChevronDown, ChevronUp, AlertCircle, Info } from 'lucide-react';
 import { SYSTEMIC_LUPUS_CRITERIA } from '../utils/ratingCriteria';
+import MedicationCorrelation from './MedicationCorrelation';
 
 const SystemicLupusRatingCard = ({ analysis, expanded, onToggle }) => {
   if (!analysis?.hasData) {
@@ -160,6 +161,7 @@ const SystemicLupusRatingCard = ({ analysis, expanded, onToggle }) => {
                   </div>
                 </div>
               </div>
+              <MedicationCorrelation analysis={analysis} />
 
               {/* Section 2: Analysis Rationale */}
               {rationale && rationale.length > 0 && (

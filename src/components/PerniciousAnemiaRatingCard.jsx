@@ -3,6 +3,7 @@ import { PERNICIOUS_ANEMIA_CRITERIA, getRatingRowColor, getRatingTextColor } fro
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import {isRatingSupported} from '../utils/ratingUtils.js';
+import MedicationCorrelation from './MedicationCorrelation';
 
 export default function PerniciousAnemiaRatingCard({ analysis, expanded, onToggle }) {
   if (!analysis || !analysis.hasData) {
@@ -58,6 +59,7 @@ export default function PerniciousAnemiaRatingCard({ analysis, expanded, onToggl
                   currentAnalysis={analysis}
               />
 
+              <MedicationCorrelation analysis={analysis} />
               {/* Your Evidence */}
               {rationale && rationale.length > 0 && (
                   <div>

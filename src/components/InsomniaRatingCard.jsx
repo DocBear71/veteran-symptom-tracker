@@ -2,6 +2,7 @@ import { ChevronDown, ChevronUp } from 'lucide-react';
 import { INSOMNIA_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
+import MedicationCorrelation from './MedicationCorrelation';
 
 /**
  * Insomnia Rating Card Component - Gold Standard Version
@@ -104,6 +105,7 @@ export default function InsomniaRatingCard({ analysis, expanded, onToggle }) {
                 </div>
               </div>
 
+              <MedicationCorrelation analysis={analysis} />
               {/* Analysis Rationale */}
               {rationale?.length > 0 && (
                   <div>

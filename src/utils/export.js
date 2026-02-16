@@ -1,7 +1,14 @@
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import { calculateCombinedRatingDetailed } from './vaRatingCalculator';
-import { getSymptomLogs, saveSymptomLog, getMedicationLogsForSymptom, getAppointments, getOccurrenceTime, isBackDated } from './storage';
+import { getSymptomLogs,
+  saveSymptomLog,
+  getMedicationLogs,
+  getMedicationLogsForSymptom,
+  getAppointments,
+  getOccurrenceTime,
+  isBackDated
+} from './storage';
 import { formatDosage } from './medicationUtils';
 import { getMeasurements } from './measurements';
 import { stripDCCode } from '../data/symptoms';
@@ -11,6 +18,14 @@ import {
     generateFEV1TrendChart,
     generateHbA1cTrendChart
 } from './chartExport';
+// Effectiveness display labels for medication export
+const EFFECTIVENESS_EXPORT_LABELS = {
+  none: 'No Relief',
+  slight: 'Slight Relief',
+  moderate: 'Moderate Relief',
+  significant: 'Significant Relief',
+  complete: 'Complete Relief',
+};
 import {
   CONDITIONS,
   analyzeMigraineLogs,
@@ -1758,10 +1773,17 @@ export const generatePDF = (dateRange = 'all', options = { includeAppointments: 
         }
 
         // Add medications to the PDF file after all the symptoms
-            if (linkedMeds.length > 0) {
-              const medInfo = linkedMeds.map(m => `${m.medicationName} ${formatDosage(m)}`).join(', ');
-                notes = `Meds: ${medInfo}` + (notes !== '-' ? ` | ${notes}` : '');
-            }
+        if (linkedMeds.length > 0) {
+          const medInfo = linkedMeds.map(m => {
+            let info = `${m.medicationName} ${formatDosage(m)}`;
+            if (m.effectiveness) info += ` [${EFFECTIVENESS_EXPORT_LABELS[m.effectiveness] || m.effectiveness}]`;
+            return info;
+          }).join(', ');
+          const medSideEffects = [...new Set(linkedMeds.filter(m => m.sideEffects).map(m => m.sideEffects))].join('; ');
+          let medLine = `Meds: ${medInfo}`;
+          if (medSideEffects) medLine += ` | Side Effects: ${medSideEffects}`;
+          notes = medLine + (notes !== '-' ? ` | ${notes}` : '');
+        }
 
         return [
             new Date(getOccurrenceTime(log)).toLocaleString() + backDatedTag,
@@ -1770,8 +1792,6 @@ export const generatePDF = (dateRange = 'all', options = { includeAppointments: 
             notes
         ];
       });
-
-
 
         autoTable(doc, {
             startY: currentY + 4,
@@ -1788,10 +1808,61 @@ export const generatePDF = (dateRange = 'all', options = { includeAppointments: 
             styles: { fontSize: 8, cellPadding: 2 },
         });
 
-        currentY = doc.lastAutoTable.finalY + 10;
+      currentY = doc.lastAutoTable.finalY + 10;
     }
 
-    // ========== APPOINTMENTS SECTION ==========
+  // ========== MEDICATION LOG SECTION ==========
+  const allMedLogs = filterLogsByDateRange(getMedicationLogs(), dateRange);
+  if (allMedLogs.length > 0) {
+    if (currentY > 230) {
+      doc.addPage();
+      currentY = 20;
+    }
+
+    doc.setFontSize(14);
+    doc.setTextColor(30, 58, 138);
+    doc.text('Medication Log', 14, currentY);
+
+    const medLogData = allMedLogs.map(log => {
+      const occurredDate = new Date(log.occurredAt || log.timestamp);
+      let details = '';
+      if (log.takenFor) details += `For: ${log.takenFor}`;
+      if (log.effectiveness) {
+        details += (details ? ' | ' : '') + (EFFECTIVENESS_EXPORT_LABELS[log.effectiveness] || log.effectiveness);
+      }
+      if (log.sideEffects) {
+        details += (details ? ' | ' : '') + `Side Effects: ${log.sideEffects}`;
+      }
+      if (log.notes) {
+        details += (details ? ' | ' : '') + log.notes;
+      }
+      return [
+        occurredDate.toLocaleString(),
+        log.medicationName || '',
+        formatDosage(log),
+        details || '-'
+      ];
+    });
+
+    autoTable(doc, {
+      startY: currentY + 4,
+      head: [['Date/Time', 'Medication', 'Dosage', 'Details']],
+      body: medLogData,
+      headStyles: { fillColor: [22, 163, 74] }, // Green for medications
+      alternateRowStyles: { fillColor: [240, 253, 244] },
+      columnStyles: {
+        0: { cellWidth: 40 },
+        1: { cellWidth: 35 },
+        2: { cellWidth: 25 },
+        3: { cellWidth: 'auto' }
+      },
+      styles: { fontSize: 8, cellPadding: 2 },
+    });
+
+    currentY = doc.lastAutoTable.finalY + 10;
+  }
+
+  // ========== APPOINTMENTS SECTION ==========
     if (options.includeAppointments && appointments.length > 0) {
         // Check if we need a new page
         if (currentY > 230) {
@@ -1882,7 +1953,7 @@ export const generateCSV = (dateRange = 'all', options = { includeAppointments: 
         'Occurred Date', 'Occurred Time', 'Logged Date', 'Logged Time', 'Back-Dated', 'Symptom', 'Category', 'Severity',
         // Universal fields
         'Flare-Up', 'Duration', 'Time of Day',
-        'Medications Taken',
+        'Medications Taken', 'Med Effectiveness', 'Med Side Effects',
         // GI fields
         'Bristol Scale', 'GI Frequency', 'Urgency', 'Blood Present', 'Bloating', 'GI Pain Location', 'Meal Related', 'Nighttime GI',
         // Phase 11: Respiratory fields
@@ -2072,6 +2143,8 @@ export const generateCSV = (dateRange = 'all', options = { includeAppointments: 
             log.duration ? formatDuration(log.duration) : '',
             log.timeOfDay ? formatTimeOfDay(log.timeOfDay) : '',
             linkedMeds.map(m => `${m.medicationName} ${formatDosage(m)}`).join('; '),
+            linkedMeds.map(m => m.effectiveness ? (EFFECTIVENESS_EXPORT_LABELS[m.effectiveness] || m.effectiveness) : '').filter(Boolean).join('; '),
+            linkedMeds.map(m => m.sideEffects || '').filter(Boolean).join('; '),
             // GI fields
             log.giData?.bristolScale || '',
             log.giData?.frequencyPerDay || '',
@@ -2569,7 +2642,41 @@ export const generateCSV = (dateRange = 'all', options = { includeAppointments: 
         ).join('\n');
     }
 
-    // ========== APPOINTMENTS SECTION ==========
+  // ========== CSV MEDICATION LOG SECTION ==========
+  const allMedLogsCSV = filterLogsByDateRange(getMedicationLogs(), dateRange);
+  if (allMedLogsCSV.length > 0) {
+    csvContent += '\n\n=== MEDICATION LOG ===\n\n';
+
+    const medHeaders = [
+      'Occurred Date', 'Occurred Time', 'Logged Date', 'Logged Time',
+      'Medication', 'Dosage', 'Taken For', 'Effectiveness',
+      'Side Effects', 'Notes'
+    ];
+
+    const medRows = allMedLogsCSV.map(log => {
+      const occurredDate = new Date(log.occurredAt || log.timestamp);
+      const loggedDate = new Date(log.timestamp);
+      return [
+        occurredDate.toLocaleDateString(),
+        occurredDate.toLocaleTimeString(),
+        loggedDate.toLocaleDateString(),
+        loggedDate.toLocaleTimeString(),
+        log.medicationName || '',
+        formatDosage(log),
+        log.takenFor || '',
+        log.effectiveness ? (EFFECTIVENESS_EXPORT_LABELS[log.effectiveness] || log.effectiveness) : '',
+        log.sideEffects || '',
+        log.notes || ''
+      ];
+    });
+
+    csvContent += medHeaders.join(',') + '\n';
+    csvContent += medRows.map(row =>
+        row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(',')
+    ).join('\n');
+  }
+
+  // ========== APPOINTMENTS SECTION ==========
     if (options.includeAppointments && appointments.length > 0) {
         csvContent += '\n\n=== APPOINTMENTS ===\n\n';
 
@@ -3316,15 +3423,15 @@ const generateRatingEvidenceSummaryPage = (doc, ratingAnalyses, pageWidth) => {
         cellPadding: 2
       },
       columnStyles: {
-        0: { cellWidth: 10 },
-        1: { cellWidth: 70 },
-        2: { cellWidth: 20, halign: 'center' },
-        3: { cellWidth: 30, halign: 'center' },
-        4: { cellWidth: 35, halign: 'center' }
+        0: { cellWidth: 'auto' },
+        1: { cellWidth: 'auto' },
+        2: { cellWidth: 'auto', halign: 'center' },
+        3: { cellWidth: 'auto', halign: 'center' },
+        4: { cellWidth: 'auto', halign: 'center' }
       },
       alternateRowStyles: { fillColor: [245, 247, 250] },
       margin: { left: 14, right: 14 },
-      tableWidth: 'auto',
+      tableWidth: 'wrap',
     });
 
     currentY = doc.lastAutoTable.finalY + 5;
@@ -3415,15 +3522,17 @@ const generateRatingEvidenceSummaryPage = (doc, ratingAnalyses, pageWidth) => {
       cellPadding: 2
     },
     columnStyles: {
-      0: { cellWidth: 60 },
-      1: { cellWidth: 18, halign: 'center' },
-      2: { cellWidth: 18, halign: 'center' },
-      3: { cellWidth: 20, halign: 'center' },
-      4: { cellWidth: 15, halign: 'center' },
-      5: { cellWidth: 25, halign: 'center' }
+      0: { cellWidth: 'auto' },
+      1: { cellWidth: 'auto', halign: 'center' },
+      2: { cellWidth: 'auto', halign: 'center' },
+      3: { cellWidth: 'auto', halign: 'center' },
+      4: { cellWidth: 'auto', halign: 'center' },
+      5: { cellWidth: 'auto', halign: 'center' }
     },
     alternateRowStyles: { fillColor: [245, 247, 250] },
     margin: { left: 14, right: 14 },
+    tableWidth: 'wrap',
+
     didParseCell: function(data) {
       // Color the strength column based on value
       if (data.column.index === 5 && data.section === 'body') {
@@ -5164,11 +5273,18 @@ export const generateVAClaimPackagePDF = async (dateRange = 'all', options = {})
           }
         }
 
-        // Add medications to the PDF after all the symptoms are completed.
-            if (linkedMeds.length > 0) {
-              const medInfo = linkedMeds.map(m => `${m.medicationName} ${formatDosage(m)}`).join(', ');
-                notes = `Meds: ${medInfo}` + (notes !== '-' ? ` | ${notes}` : '');
-            }
+        // Add medications to the PDF file after all the symptoms
+        if (linkedMeds.length > 0) {
+          const medInfo = linkedMeds.map(m => {
+            let info = `${m.medicationName} ${formatDosage(m)}`;
+            if (m.effectiveness) info += ` [${EFFECTIVENESS_EXPORT_LABELS[m.effectiveness] || m.effectiveness}]`;
+            return info;
+          }).join(', ');
+          const medSideEffects = [...new Set(linkedMeds.filter(m => m.sideEffects).map(m => m.sideEffects))].join('; ');
+          let medLine = `Meds: ${medInfo}`;
+          if (medSideEffects) medLine += ` | Side Effects: ${medSideEffects}`;
+          notes = medLine + (notes !== '-' ? ` | ${notes}` : '');
+        }
 
             return [
                 new Date(getOccurrenceTime(log)).toLocaleString() + backDatedTag,
@@ -5195,7 +5311,66 @@ export const generateVAClaimPackagePDF = async (dateRange = 'all', options = {})
         });
     }
 
-    // ========== RATING ANALYSIS ==========
+  // ========== MEDICATION LOG SECTION ==========
+  const allMedLogsVA = filterLogsByDateRange(getMedicationLogs(), dateRange);
+  if (allMedLogsVA.length > 0) {
+    doc.addPage();
+    currentY = 20;
+
+    doc.setFontSize(14);
+    doc.setTextColor(30, 58, 138);
+    doc.setFont(undefined, 'bold');
+    currentSection++;
+    doc.text(`${currentSection}. MEDICATION LOG`, 14, currentY);
+    doc.setFont(undefined, 'normal');
+
+    doc.setFontSize(9);
+    doc.setTextColor(100);
+    doc.text('Medication usage with effectiveness and side effects documentation (38 CFR §4.10)', 14, currentY + 8);
+
+    currentY += 16;
+
+    const medLogDataVA = allMedLogsVA.map(log => {
+      const occurredDate = new Date(log.occurredAt || log.timestamp);
+      let details = '';
+      if (log.takenFor) details += `For: ${log.takenFor}`;
+      if (log.effectiveness) {
+        details += (details ? ' | ' : '') + (EFFECTIVENESS_EXPORT_LABELS[log.effectiveness] || log.effectiveness);
+      }
+      if (log.sideEffects) {
+        details += (details ? ' | ' : '') + `Side Effects: ${log.sideEffects}`;
+      }
+      if (log.notes) {
+        details += (details ? ' | ' : '') + log.notes;
+      }
+      return [
+        occurredDate.toLocaleString(),
+        log.medicationName || '',
+        formatDosage(log),
+        details || '-'
+      ];
+    });
+
+    autoTable(doc, {
+      startY: currentY,
+      head: [['Date/Time', 'Medication', 'Dosage', 'Details']],
+      body: medLogDataVA,
+      headStyles: { fillColor: [22, 163, 74], fontStyle: 'bold' },
+      alternateRowStyles: { fillColor: [240, 253, 244] },
+      columnStyles: {
+        0: { cellWidth: 40 },
+        1: { cellWidth: 35 },
+        2: { cellWidth: 25 },
+        3: { cellWidth: 'auto' }
+      },
+      styles: { fontSize: 8, cellPadding: 2 },
+      margin: { left: 14, right: 14 },
+    });
+
+    currentY = doc.lastAutoTable.finalY + 10;
+  }
+
+  // ========== RATING ANALYSIS ==========
     // Analyze all conditions and add rating evidence
     const ratingAnalyses = analyzeAllConditions(filteredLogs, {
         evaluationPeriodDays: typeof dateRange === 'object' && dateRange.type === 'custom'

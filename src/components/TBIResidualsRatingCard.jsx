@@ -2,6 +2,7 @@ import { ChevronDown, ChevronUp } from 'lucide-react';
 import { TBI_RESIDUALS_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
+import MedicationCorrelation from './MedicationCorrelation';
 
 /**
  * TBI Residuals Rating Card Component - Gold Standard Version
@@ -77,6 +78,7 @@ export default function TBIResidualsRatingCard({ analysis, expanded, onToggle })
                   </div>
                 </div>
               </div>
+              <MedicationCorrelation analysis={analysis} />
 
               {ratingRationale && ratingRationale.length > 0 && (
                   <div>

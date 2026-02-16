@@ -3,6 +3,7 @@ import { CHRONIC_RENAL_DISEASE_CRITERIA, getRatingRowColor, getRatingTextColor }
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import {isRatingSupported} from '../utils/ratingUtils.js';
+import MedicationCorrelation from './MedicationCorrelation';
 
 /**
  * Chronic Renal Disease Rating Card Component - Gold Standard Version
@@ -66,7 +67,8 @@ export default function ChronicRenalDiseaseRatingCard({ analysis, expanded, onTo
                   </div>
                 </div>
               </div>
-
+              <MedicationCorrelation analysis={analysis} />
+              {/* Analysis Rationale */}
               {rationale && rationale.length > 0 && (
                   <div>
                     <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-center">Analysis Rationale</h4>

@@ -3,6 +3,7 @@ import { HIV_AIDS_CRITERIA, getRatingRowColor, getRatingTextColor } from '../uti
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import {isRatingSupported} from '../utils/ratingUtils.js';
+import MedicationCorrelation from './MedicationCorrelation';
 
 /**
  * HIV/AIDS Rating Card Component - Gold Standard Version
@@ -132,6 +133,7 @@ export default function HIVRatingCard({ analysis, expanded, onToggle }) {
                   </div>
                 </div>
               </div>
+              <MedicationCorrelation analysis={analysis} />
 
               {/* Section 2: Analysis Rationale */}
               {ratingRationale && ratingRationale.length > 0 && (

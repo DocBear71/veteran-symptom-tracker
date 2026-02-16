@@ -2,6 +2,7 @@ import {ChevronDown, ChevronUp} from 'lucide-react';
 import {PULMONARY_FIBROSIS_CRITERIA, getRatingRowColor, getRatingTextColor} from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
+import MedicationCorrelation from './MedicationCorrelation';
 
 /**
  * Pulmonary Fibrosis Rating Card Component - Matches AsthmaRatingCard styling
@@ -74,6 +75,7 @@ export default function PulmonaryFibrosisRatingCard({analysis, expanded, onToggl
                   </div>
                 </div>
               </div>
+              <MedicationCorrelation analysis={analysis} />
               {rationale?.length > 0 && (
                   <div>
                     <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-center">Analysis Rationale</h4>

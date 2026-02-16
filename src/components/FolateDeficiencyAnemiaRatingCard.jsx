@@ -3,6 +3,7 @@ import { FOLATE_DEFICIENCY_ANEMIA_CRITERIA, getRatingRowColor, getRatingTextColo
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import {isRatingSupported} from '../utils/ratingUtils.js';
+import MedicationCorrelation from './MedicationCorrelation';
 
 export default function FolateDeficiencyAnemiaRatingCard({ analysis, expanded, onToggle }) {
   if (!analysis || !analysis.hasData) {
@@ -58,6 +59,7 @@ export default function FolateDeficiencyAnemiaRatingCard({ analysis, expanded, o
                   currentAnalysis={analysis}
               />
 
+              <MedicationCorrelation analysis={analysis} />
               {/* Your Evidence */}
               {rationale && rationale.length > 0 && (
                   <div>

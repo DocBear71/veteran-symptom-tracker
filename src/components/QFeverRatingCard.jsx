@@ -3,6 +3,7 @@ import { Q_FEVER_CRITERIA, getRatingRowColor, getRatingTextColor } from '../util
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import {isRatingSupported} from '../utils/ratingUtils.js';
+import MedicationCorrelation from './MedicationCorrelation';
 
 export default function QFeverRatingCard({ analysis, expanded, onToggle }) {
   if (!analysis || !analysis.hasData) return null;
@@ -61,6 +62,7 @@ export default function QFeverRatingCard({ analysis, expanded, onToggle }) {
                   </div>
                 </div>
               </div>
+              <MedicationCorrelation analysis={analysis} />
 
               {ratingRationale && ratingRationale.length > 0 && (
                   <div>

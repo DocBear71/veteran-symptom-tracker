@@ -3,6 +3,7 @@ import { POST_PHLEBITIC_CRITERIA, getRatingRowColor, getRatingTextColor } from '
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import {isRatingSupported} from '../utils/ratingUtils.js';
+import MedicationCorrelation from './MedicationCorrelation';
 
 export default function PostPhlebiticRatingCard({ analysis, expanded, onToggle }) {
   if (!analysis || !analysis.hasData) return null;
@@ -102,6 +103,7 @@ export default function PostPhlebiticRatingCard({ analysis, expanded, onToggle }
                     </div>
                   </div>
               )}
+              <MedicationCorrelation analysis={analysis} />
 
               {/* Analysis Rationale */}
               {rationale && rationale.length > 0 && (

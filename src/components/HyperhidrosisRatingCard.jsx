@@ -3,6 +3,7 @@ import { HYPERHIDROSIS_CRITERIA, getRatingRowColor, getRatingTextColor } from '.
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import {isRatingSupported} from '../utils/ratingUtils.js';
+import MedicationCorrelation from './MedicationCorrelation';
 
 /**
 
@@ -238,6 +239,7 @@ export default function HyperhidrosisRatingCard({ analysis, expanded, onToggle }
                   Both criteria must be met for 30% rating
                 </p>
               </div>
+              <MedicationCorrelation analysis={analysis} />
 
               {/* Section 2: Analysis Rationale */}
               {ratingRationale && ratingRationale.length > 0 && (

@@ -2,6 +2,7 @@ import {ChevronDown, ChevronUp} from 'lucide-react';
 import UnderstandingYourRating from './UnderstandingYourRating.jsx';
 import {getRatingTextColor} from '../utils/ratingCriteria.js';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
+import MedicationCorrelation from './MedicationCorrelation';
 
 export default function MaxillaMalunionRatingCard({
                                                     analysis,
@@ -112,6 +113,7 @@ export default function MaxillaMalunionRatingCard({
                   </div>
                 </div>
               </div>
+              <MedicationCorrelation analysis={analysis} />
               {rationale?.length > 0 && (<div><h4
                   className="font-medium text-gray-900 dark:text-white mb-2 text-center">Analysis
                 Rationale</h4>
