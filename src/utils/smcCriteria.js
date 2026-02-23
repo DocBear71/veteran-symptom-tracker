@@ -16,89 +16,89 @@
 // ============================================
 // Updated with 2.8% COLA increase
 export const SMC_RATES_2026 = {
-  K: {
-    rate: 139.87,
-    maxAwards: 3,
-    maxTotal: 419.61, // 3 x $139.87
-    description: 'Additive benefit for specific anatomical losses',
-    paymentType: 'additive', // Added to other compensation
-  },
-  L: {
-    veteran_alone: 4993.35,
-    with_spouse: 5259.35,
-    description: 'Aid & Attendance / bilateral losses',
-    paymentType: 'replacement', // Replaces standard compensation
-  },
-  L_HALF: {
-    veteran_alone: 5240.83,
-    with_spouse: 5506.83,
-    description: 'SMC-L + additional 50% toward M',
-    paymentType: 'replacement',
-  },
-  M: {
-    veteran_alone: 5505.87,
-    with_spouse: 5771.87,
-    description: 'More severe combinations',
-    paymentType: 'replacement',
-  },
-  M_HALF: {
-    veteran_alone: 5862.18,
-    with_spouse: 6128.18,
-    description: 'SMC-M + additional 50% toward N',
-    paymentType: 'replacement',
-  },
-  N: {
-    veteran_alone: 6218.48,
-    with_spouse: 6484.48,
-    description: 'Most severe combinations below O',
-    paymentType: 'replacement',
-  },
-  N_HALF: {
-    veteran_alone: 6583.49,
-    with_spouse: 6849.49,
-    description: 'SMC-N + additional 50% toward O',
-    paymentType: 'replacement',
-  },
-  O: {
-    veteran_alone: 6948.50,
-    with_spouse: 7214.50,
-    description: 'Maximum schedular SMC (allows pyramiding)',
-    paymentType: 'replacement',
-    note: 'SMC-K is NOT paid with SMC-O',
-  },
-  P: {
-    veteran_alone: 6948.50, // Same as O, but specific anatomical losses
-    with_spouse: 7214.50,
-    description: 'Specific anatomical losses (cannot exceed O)',
-    paymentType: 'replacement',
-  },
-  R1: {
-    veteran_alone: 9973.73,
-    with_spouse: 10239.73,
-    description: 'Higher level Aid & Attendance',
-    paymentType: 'replacement',
-    note: 'SMC-K is NOT paid with SMC-R',
-  },
-  R2: {
-    veteran_alone: 11438.14,
-    with_spouse: 11704.14,
-    description: 'Highest level care needs',
-    paymentType: 'replacement',
-    note: 'SMC-K is NOT paid with SMC-R',
-  },
-  S: {
-    veteran_alone: 4108.37,
-    with_spouse: 4374.37,
-    description: 'Housebound status',
-    paymentType: 'replacement',
-  },
-  T: {
-    veteran_alone: 11438.14,
-    with_spouse: 11704.14,
-    description: 'Aid & Attendance for TBI residuals',
-    paymentType: 'replacement',
-    note: 'SMC-K is NOT paid with SMC-T',
-  },
+    K: {
+        rate: 139.87,
+        maxAwards: 3,
+        maxTotal: 419.61, // 3 x $139.87
+        description: 'Additive benefit for specific anatomical losses',
+        paymentType: 'additive', // Added to other compensation
+    },
+    L: {
+        veteran_alone: 4900.83,
+        with_spouse: 5120.42,
+        description: 'Aid & Attendance / bilateral losses',
+        paymentType: 'replacement', // Replaces standard compensation
+    },
+    L_HALF: {
+        veteran_alone: 5154.00,
+        with_spouse: 5373.59,
+        description: 'SMC-L + additional 50% toward M',
+        paymentType: 'replacement',
+    },
+    M: {
+        veteran_alone: 5408.55,
+        with_spouse: 5628.14,
+        description: 'More severe combinations',
+        paymentType: 'replacement',
+    },
+    M_HALF: {
+        veteran_alone: 5780.00,
+        with_spouse: 5999.59,
+        description: 'SMC-M + additional 50% toward N',
+        paymentType: 'replacement',
+    },
+    N: {
+        veteran_alone: 6152.64,
+        with_spouse: 6372.23,
+        description: 'Most severe combinations below O',
+        paymentType: 'replacement',
+    },
+    N_HALF: {
+        veteran_alone: 6514.00,
+        with_spouse: 6733.59,
+        description: 'SMC-N + additional 50% toward O',
+        paymentType: 'replacement',
+    },
+    O: {
+        veteran_alone: 6877.12,
+        with_spouse: 7096.71,
+        description: 'Maximum schedular SMC (allows pyramiding)',
+        paymentType: 'replacement',
+        note: 'SMC-K is NOT paid with SMC-O',
+    },
+    P: {
+        veteran_alone: 6877.12, // Same as O, but specific anatomical losses
+        with_spouse: 7096.71,
+        description: 'Specific anatomical losses (cannot exceed O)',
+        paymentType: 'replacement',
+    },
+    R1: {
+        veteran_alone: 9826.88,
+        with_spouse: 10046.47,
+        description: 'Higher level Aid & Attendance',
+        paymentType: 'replacement',
+        note: 'SMC-K is NOT paid with SMC-R',
+    },
+    R2: {
+        veteran_alone: 11271.67,
+        with_spouse: 11491.26,
+        description: 'Highest level care needs',
+        paymentType: 'replacement',
+        note: 'SMC-K is NOT paid with SMC-R',
+    },
+    S: {
+        veteran_alone: 4408.53,
+        with_spouse: 4628.12,
+        description: 'Housebound status',
+        paymentType: 'replacement',
+    },
+    T: {
+        veteran_alone: 11271.67,
+        with_spouse: 11491.26,
+        description: 'Aid & Attendance for TBI residuals',
+        paymentType: 'replacement',
+        note: 'SMC-K is NOT paid with SMC-T',
+    },
 };
 
 // ============================================

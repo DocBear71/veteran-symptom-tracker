@@ -542,7 +542,7 @@ const SMCCalculator = ({
       qualifyingPathway,
       monthlyAmount: eligible ? SMC_RATES_2026.L.veteran_alone : 0,
       halfStepEligible: eligible && (adlFactors.factorsAffected >= 5 || adlFactors.hasNursingLevel),
-      halfStepAmount: SMC_RATES_2026.L_HALF?.veteran_alone || 5240.83,
+        halfStepAmount: SMC_RATES_2026.L_HALF?.veteran_alone || 5154.00,
     };
   };
 
@@ -1211,6 +1211,15 @@ const SMCCalculator = ({
                 </div>
               </div>
 
+                {/* Rate clarification note */}
+                <div className="bg-gray-50 dark:bg-gray-700/30 rounded-lg px-3 py-2 flex items-start gap-2">
+                    <Info className="w-4 h-4 text-blue-500 mt-0.5 shrink-0" />
+                    <p className="text-xs text-gray-600 dark:text-gray-400">
+                        <strong>Note:</strong> SMC rates shown are <strong>total monthly compensation</strong> at that level,
+                        not an additional amount on top of the base 100% rate. SMC-K is the exception — it is added to your existing rate.
+                    </p>
+                </div>
+
               {/* Overview Cards - Row 2: M, N, O */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {/* SMC-M Card */}
@@ -1861,9 +1870,13 @@ const SMCCalculator = ({
                         </tr>
                         </tbody>
                       </table>
-                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-3">
-                        Veteran alone rates. 2.8% COLA effective Dec 1, 2025.
-                      </p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-3">
+                            Veteran alone rates. 2.8% COLA effective Dec 1, 2025.
+                        </p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                            Rates for L through T are <strong>total monthly compensation</strong> at that level, not added to the base 100% rate.
+                            Only SMC-K is additive.
+                        </p>
                     </div>
                 )}
               </div>

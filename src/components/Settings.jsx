@@ -576,7 +576,32 @@ const Settings = ({ onNavigate }) => {  // ← ADD onNavigate prop
         </div>
         )}
 
-        {/* PCAFC Caregiver Program Info - Caregiver profiles only */}
+          {/* Strategic Filing Guide - Veteran only */}
+          {currentProfile && (currentProfile.type === 'veteran' ||
+              (currentProfile.type === 'caregiver' && currentProfile.metadata?.isVeteranCaregiver)) && (
+              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+                  <div className="flex items-start gap-4">
+                      <span className="text-3xl">♟️</span>
+                      <div className="flex-1">
+                          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                              Strategic Filing Guide
+                          </h3>
+                          <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                              Already at 100%? Learn when and why to file additional claims for SMC, reduction protection, DIC strategy, and ancillary benefits.
+                          </p>
+                          <button
+                              onClick={() => onNavigate && onNavigate('strategic-filing')}
+                              className="mt-3 px-4 py-2 bg-blue-900 hover:bg-blue-800 dark:bg-blue-700 dark:hover:bg-blue-600 text-white rounded-lg text-sm font-medium transition-colors"
+                          >
+                              View Guide
+                          </button>
+                      </div>
+                  </div>
+              </div>
+          )}
+
+
+          {/* PCAFC Caregiver Program Info - Caregiver profiles only */}
         {currentProfile && currentProfile.type === 'caregiver' && (
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
               <div className="flex items-start gap-4">

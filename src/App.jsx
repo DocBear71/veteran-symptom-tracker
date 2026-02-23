@@ -16,6 +16,7 @@ import ThankYou from './components/legal/ThankYou.jsx';
 import SecondaryConditionsGuide from './components/SecondaryConditionsGuide';
 import PresumptiveConditionsGuide from './components/PresumptiveConditionsGuide';
 import MOSNoiseExposureLookup from './components/MOSNoiseExposureLookup';
+import StrategicFilingGuide from './components/StrategicFilingGuide';
 import VATermsAndFAQ from './components/VATermsAndFAQ';
 import CPExamPrep from './components/CPExamPrep';
 import AfterActionReport from './components/AfterActionReport';
@@ -51,6 +52,7 @@ const getInitialViewFromURL = () => {
     '/mos-noise-exposure': 'mos-noise-exposure',
     '/va-terms-faq': 'va-terms-faq',
     '/cp-exam-prep': 'cp-exam-prep',
+    '/strategic-filing': 'strategic-filing',
     '/after-action-report': 'after-action-report',
   };
 
@@ -151,6 +153,7 @@ const AppContent = () => {
       'presumptive-conditions': '/presumptive-conditions',
       'mos-noise-exposure': '/mos-noise-exposure',
       'va-terms-faq': '/va-terms-faq',
+      'strategic-filing': '/strategic-filing',
       '/cp-exam-prep': '/cp-exam-prep',
       '/after-action-report': 'after-action-report',
     };
@@ -206,6 +209,8 @@ const AppContent = () => {
         return <VATermsAndFAQ />;
       case 'cp-exam-prep':
         return <CPExamPrep />;
+      case 'strategic-filing':
+        return <StrategicFilingGuide onBack={() => handleNavigate('settings')} />;
       case 'after-action-report':
         return <AfterActionReport />
       default:
