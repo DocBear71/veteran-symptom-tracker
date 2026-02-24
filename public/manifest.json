@@ -1,9 +1,11 @@
 {
   "name": "Doc Bear's Symptom Vault",
-  "short_name": "Symptom Tracker",
+  "short_name": "Symptom Vault",
   "description": "Track daily symptoms for VA disability claims",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
+  "orientation": "portrait",
   "background_color": "#1e3a8a",
   "theme_color": "#1e3a8a",
   "icons": [

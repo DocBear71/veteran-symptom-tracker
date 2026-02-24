@@ -23,6 +23,20 @@ if (savedTheme === 'dark') {
   }
 }
 
+// Guard against accidental external navigation in PWA standalone mode.
+// Rapid taps can trigger anchor default behavior and break out of fullscreen.
+if (window.matchMedia('(display-mode: standalone)').matches) {
+  document.addEventListener('click', (e) => {
+    const anchor = e.target.closest('a');
+    if (anchor && anchor.href) {
+      const url = new URL(anchor.href, window.location.origin);
+      if (url.origin === window.location.origin && !anchor.target) {
+        e.preventDefault();
+      }
+    }
+  });
+}
+
 createRoot(document.getElementById('root')).render(
     <StrictMode>
       <App />
