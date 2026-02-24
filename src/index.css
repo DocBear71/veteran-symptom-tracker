@@ -14,6 +14,17 @@ input[type="range"] {
     background: transparent;
 }
 
+/* Prevent double-tap zoom on Android Chrome from triggering navigation.
+   touch-action: manipulation disables the 300ms delay and double-tap-to-zoom
+   on all interactive elements globally. */
+button,
+input,
+select,
+textarea,
+a {
+    touch-action: manipulation;
+}
+
 input[type="range"]::-webkit-slider-runnable-track {
     height: 8px;
     background: #e5e7eb;
