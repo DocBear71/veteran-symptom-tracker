@@ -9,7 +9,15 @@ import {
   deleteMedicationLog,
   updateMedicationLog,
 } from '../utils/storage';
-import { formatDosage, formatDosageWithTotal, getDosageForLog, UNIT_TYPE_OPTIONS } from '../utils/medicationUtils';
+import {
+  formatDosage,
+  formatDosageWithTotal,
+  getDosageForLog,
+  UNIT_TYPE_OPTIONS,
+  EFFECTIVENESS_LEVELS,
+  EFFECTIVENESS_LABELS,
+  COMMON_SIDE_EFFECTS
+} from '../utils/medicationUtils';
 import { getActiveProfileId } from '../utils/profiles';
 import OccurrenceTimePicker from './OccurrenceTimePicker';
 import MedicationDocumentationGuide from './MedicationDocumentationGuide';
@@ -83,26 +91,7 @@ const DosageFields = ({ data, onChange }) => (
 
 // ─── Reusable Effectiveness + Side Effects fields ────────────────
 // MUST be outside the main component to prevent input focus loss on re-render.
-// All data (levels, side effects list) is self-contained here.
-const EFFECTIVENESS_LEVELS = [
-  { value: 'none', label: 'No Relief', color: 'bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 border-red-300 dark:border-red-700' },
-  { value: 'slight', label: 'Slight', color: 'bg-orange-100 dark:bg-orange-900 text-orange-800 dark:text-orange-200 border-orange-300 dark:border-orange-700' },
-  { value: 'moderate', label: 'Moderate', color: 'bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 border-yellow-300 dark:border-yellow-700' },
-  { value: 'significant', label: 'Significant', color: 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 border-green-300 dark:border-green-700' },
-  { value: 'complete', label: 'Complete', color: 'bg-emerald-100 dark:bg-emerald-900 text-emerald-800 dark:text-emerald-200 border-emerald-300 dark:border-emerald-700' },
-];
-
-const EFFECTIVENESS_LABELS = {
-  none: 'No Relief', slight: 'Slight Relief', moderate: 'Moderate Relief',
-  significant: 'Significant Relief', complete: 'Complete Relief',
-};
-
-const COMMON_SIDE_EFFECTS = [
-  'Drowsiness', 'Dizziness', 'Nausea', 'Weight Gain', 'Fatigue',
-  'Headache', 'Dry Mouth', 'Constipation', 'Insomnia', 'Brain Fog',
-  'GI Upset', 'Sexual Dysfunction', 'Appetite Changes', 'Mood Changes',
-  'Muscle Weakness', 'Blurred Vision', 'Tremor', 'Swelling',
-];
+// Constants (EFFECTIVENESS_LEVELS, EFFECTIVENESS_LABELS, COMMON_SIDE_EFFECTS) imported from medicationUtils.
 
 const EffectivenessSideEffectsFields = ({ data, onChange }) => (
     <>
@@ -757,7 +746,7 @@ const Medications = () => {
                               )}
                               {firstLog.sideEffects && (
                                   <p className="text-xs text-amber-600 dark:text-amber-400 mt-1">
-                                    ⚠️ {firstLog.sideEffects}
+                                    ⚠️ {Array.isArray(firstLog.sideEffects) ? firstLog.sideEffects.join(', ') : firstLog.sideEffects}
                                   </p>
                               )}
                               {/* Shared notes */}
@@ -790,7 +779,7 @@ const Medications = () => {
                                     </span>
                                   )}
                                   {log.sideEffects && (
-                                      <p className="text-xs text-amber-600 dark:text-amber-400 mt-1">⚠️ {log.sideEffects}</p>
+                                      <p className="text-xs text-amber-600 dark:text-amber-400 mt-1">⚠️ {Array.isArray(log.sideEffects) ? log.sideEffects.join(', ') : log.sideEffects}</p>
                                   )}
                                   {log.notes && <p className="text-sm text-gray-500 dark:text-gray-400 mt-1 bg-gray-50 dark:bg-gray-700 p-2 rounded">{log.notes}</p>}
                                 </div>

@@ -88,7 +88,8 @@ export const UNIT_TYPE_OPTIONS = [
   { value: 'tablet', label: 'Tablet(s)' },
   { value: 'capsule', label: 'Capsule(s)' },
   { value: 'injection', label: 'Injection' },
-  { value: 'powder', label: 'Powder/Packet' },
+  { value: 'powder', label: 'Powder' },
+  { value: 'packet', label: 'Packet' },
   { value: 'liquid', label: 'Liquid (ml)' },
   { value: 'drop', label: 'Drop(s)' },
   { value: 'patch', label: 'Patch(es)' },
@@ -96,3 +97,38 @@ export const UNIT_TYPE_OPTIONS = [
   { value: 'inhaler', label: 'Inhaler Puff(s)' },
   { value: 'other', label: 'Other' },
 ];
+
+// ============================================
+// SHARED EFFECTIVENESS & SIDE EFFECTS CONSTANTS
+// Used by SymptomLogger, QuickLog, EditLogModal, and Medications
+// ============================================
+
+export const EFFECTIVENESS_LEVELS = [
+  { value: 'none', label: 'No Relief', color: 'bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 border-red-300 dark:border-red-700' },
+  { value: 'slight', label: 'Slight', color: 'bg-orange-100 dark:bg-orange-900 text-orange-800 dark:text-orange-200 border-orange-300 dark:border-orange-700' },
+  { value: 'moderate', label: 'Moderate', color: 'bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 border-yellow-300 dark:border-yellow-700' },
+  { value: 'significant', label: 'Significant', color: 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 border-green-300 dark:border-green-700' },
+  { value: 'complete', label: 'Complete', color: 'bg-emerald-100 dark:bg-emerald-900 text-emerald-800 dark:text-emerald-200 border-emerald-300 dark:border-emerald-700' },
+];
+
+export const EFFECTIVENESS_LABELS = {
+  none: 'No Relief', slight: 'Slight Relief', moderate: 'Moderate Relief',
+  significant: 'Significant Relief', complete: 'Complete Relief',
+};
+
+export const COMMON_SIDE_EFFECTS = [
+  'Drowsiness', 'Dizziness', 'Nausea', 'Weight Gain', 'Fatigue',
+  'Headache', 'Dry Mouth', 'Constipation', 'Insomnia', 'Brain Fog',
+  'GI Upset', 'Sexual Dysfunction', 'Appetite Changes', 'Mood Changes',
+  'Muscle Weakness', 'Blurred Vision', 'Tremor', 'Swelling',
+];
+
+/**
+ * Default medication detail object for tracking effectiveness and side effects
+ * per medication when logging symptoms.
+ */
+export const getDefaultMedDetail = () => ({
+  effectiveness: '',
+  sideEffects: [],
+  sideEffectsOther: '',
+});

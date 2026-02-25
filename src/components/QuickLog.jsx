@@ -1,10 +1,15 @@
 import { useRef, useState, useEffect } from 'react';
 import { Zap, X } from 'lucide-react';
 import { getChronicSymptoms, removeChronicSymptom, saveSymptomLog, getMedications, logMedicationTaken, getSymptomLogs } from '../utils/storage';
-import { formatDosage, getDosageForLog } from '../utils/medicationUtils';
+import {
+  formatDosage,
+  getDefaultMedDetail,
+  getDosageForLog,
+} from '../utils/medicationUtils';
 import { useProfile } from '../hooks/useProfile';
 import { stripDCCode } from '../data/symptoms';
 import OccurrenceTimePicker from './OccurrenceTimePicker';
+import MedicationEffectivenessInline from './MedicationEffectivenessInline';
 
 const QuickLog = ({ onLogSaved, onAddChronic }) => {
   const { isVeteran } = useProfile();
@@ -25,8 +30,8 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
   const [logSeverity, setLogSeverity] = useState(5);
   const [logNotes, setLogNotes] = useState('');
 
-  // Medication state
-  const [selectedMedications, setSelectedMedications] = useState([]);
+  // Medication state - object keyed by med ID with effectiveness/side effects
+  const [selectedMedications, setSelectedMedications] = useState({});
 
   // Condition-specific states
   const [migraineData, setMigraineData] = useState({
@@ -1456,7 +1461,7 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
     setLogSeverity(chronic.defaultSeverity || 5);
     setLogNotes('');
     setOccurredAt(new Date().toISOString());
-    setSelectedMedications([]);
+    setSelectedMedications({});
 
     // Reset condition-specific data
     setMigraineData({
@@ -2001,7 +2006,7 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
     setSelectedChronic(null);
     setLogSeverity(5);
     setLogNotes('');
-    setSelectedMedications([]);
+    setSelectedMedications({});
   };
 
   const handleConfirmLog = () => {
@@ -2187,16 +2192,22 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
     const savedEntry = saveSymptomLog(entry);
 
     // Log medications if selected
-    if (selectedMedications.length > 0) {
-      selectedMedications.forEach(medId => {
+    if (Object.keys(selectedMedications).length > 0) {
+      Object.entries(selectedMedications).forEach(([medId, medDetail]) => {
         const med = medications.find(m => m.id === medId);
         if (med) {
+          const allSideEffects = [
+            ...(medDetail.sideEffects || []),
+            ...(medDetail.sideEffectsOther?.trim() ? [medDetail.sideEffectsOther.trim()] : []),
+          ];
           logMedicationTaken({
             medicationId: med.id,
             medicationName: med.name,
             dosage: getDosageForLog(med),
             takenFor: entry.symptomName,
             symptomLogId: savedEntry.id,
+            effectiveness: medDetail.effectiveness || null,
+            sideEffects: allSideEffects.length > 0 ? allSideEffects : '',
           });
         }
       });
@@ -3283,32 +3294,48 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
                       <div className="bg-teal-50 dark:bg-teal-900/30 p-4 rounded-lg border border-teal-200 dark:border-teal-800">
                         <h3 className="font-medium text-teal-900 dark:text-teal-200 text-sm mb-3">Medications Taken</h3>
                         <div className="space-y-2">
-                          {activeMedications.map(med => (
-                              <label
-                                  key={med.id}
-                                  className={`flex items-center gap-2 p-2 rounded-lg border cursor-pointer text-sm ${
-                                      selectedMedications.includes(med.id)
-                                          ? 'bg-teal-100 dark:bg-teal-900/50 border-teal-400 dark:border-teal-600'
-                                          : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700'
-                                  }`}
-                              >
-                                <input
-                                    type="checkbox"
-                                    checked={selectedMedications.includes(med.id)}
-                                    onChange={(e) => {
-                                      if (e.target.checked) {
-                                        setSelectedMedications(prev => [...prev, med.id]);
-                                      } else {
-                                        setSelectedMedications(prev => prev.filter(id => id !== med.id));
-                                      }
-                                    }}
-                                    className="w-4 h-4 text-teal-600 rounded"
-                                />
-                                <span className="text-gray-700 dark:text-gray-300">
-                          {med.name} ({formatDosage(med)})
-                        </span>
-                              </label>
-                          ))}
+                          {activeMedications.map(med => {
+                            const isSelected = !!selectedMedications[med.id];
+                            return (
+                                <div key={med.id}>
+                                  <label
+                                      className={`flex items-center gap-2 p-2 rounded-lg border cursor-pointer text-sm ${
+                                          isSelected
+                                              ? 'bg-teal-100 dark:bg-teal-900/50 border-teal-400 dark:border-teal-600'
+                                              : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700'
+                                      }`}
+                                  >
+                                    <input
+                                        type="checkbox"
+                                        checked={isSelected}
+                                        onChange={(e) => {
+                                          if (e.target.checked) {
+                                            setSelectedMedications(prev => ({ ...prev, [med.id]: getDefaultMedDetail() }));
+                                          } else {
+                                            setSelectedMedications(prev => {
+                                              const next = { ...prev };
+                                              delete next[med.id];
+                                              return next;
+                                            });
+                                          }
+                                        }}
+                                        className="w-4 h-4 text-teal-600 rounded"
+                                    />
+                                    <span className="text-gray-700 dark:text-gray-300">
+                                    {med.name} ({formatDosage(med)})
+                                  </span>
+                                  </label>
+                                  {/* Inline effectiveness & side effects for this medication */}
+                                  {isSelected && (
+                                      <MedicationEffectivenessInline
+                                          medDetail={selectedMedications[med.id]}
+                                          onChange={(updated) => setSelectedMedications(prev => ({ ...prev, [med.id]: updated }))}
+                                          compact
+                                      />
+                                  )}
+                                </div>
+                            );
+                          })}
                         </div>
                       </div>
                   )}

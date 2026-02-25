@@ -15,10 +15,12 @@ import {
 } from '../data/symptoms';
 import { saveSymptomLog, getCustomSymptoms, addCustomSymptom, getMedications, logMedicationTaken } from '../utils/storage';
 import { getProfileType, PROFILE_TYPES } from '../utils/profile';
+import { getDefaultMedDetail } from '../utils/medicationUtils';
 import OccurrenceTimePicker from './OccurrenceTimePicker.jsx';
 import QuickLog from './QuickLog';
 import AddChronicModal from './AddChronicModal';
 import WhyTrackThis from './WhyTrackThis.jsx';
+import MedicationEffectivenessInline from './MedicationEffectivenessInline';
 
 const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed, onNavigate }) => {
   const [stressLevel, setStressLevel] = useState(5);
@@ -63,7 +65,8 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed, onNavigate }) =
   // Medication for symptom
   const [medications, setMedications] = useState([]);
   const [tookMedication, setTookMedication] = useState(false);
-  const [selectedMedications, setSelectedMedications] = useState([]);
+  // Object keyed by medication ID: { [medId]: { effectiveness, sideEffects, sideEffectsOther } }
+  const [selectedMedications, setSelectedMedications] = useState({});
 
   // Migraine-specific fields
   const [migraineData, setMigraineData] = useState({
@@ -3274,16 +3277,23 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed, onNavigate }) =
     const savedEntry = saveSymptomLog(entry);
 
     // Log medications if taken
-    if (tookMedication && selectedMedications.length > 0) {
-      selectedMedications.forEach(medId => {
+    if (tookMedication && Object.keys(selectedMedications).length > 0) {
+      Object.entries(selectedMedications).forEach(([medId, medDetail]) => {
         const med = medications.find(m => m.id === medId);
         if (med) {
+          // Combine side effects array with any custom "other" side effects
+          const allSideEffects = [
+            ...(medDetail.sideEffects || []),
+            ...(medDetail.sideEffectsOther?.trim() ? [medDetail.sideEffectsOther.trim()] : []),
+          ];
           logMedicationTaken({
             medicationId: med.id,
             medicationName: med.name,
             dosage: med.dosage,
-            takenFor: entry.symptomName,
-            symptomLogId: entry.id,
+            takenFor: savedEntry.symptomName,
+            symptomLogId: savedEntry.id,
+            effectiveness: medDetail.effectiveness || null,
+            sideEffects: allSideEffects.length > 0 ? allSideEffects : '',
           });
         }
       });
@@ -3297,7 +3307,7 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed, onNavigate }) =
     setNotes('');
     setOccurredAt(new Date().toISOString());
     setTookMedication(false);
-    setSelectedMedications([]);
+    setSelectedMedications({});
     // Reset universal fields
     setIsFlareUp(false);
     setDuration('');
@@ -13012,7 +13022,7 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed, onNavigate }) =
                       checked={tookMedication}
                       onChange={(e) => {
                         setTookMedication(e.target.checked);
-                        if (!e.target.checked) setSelectedMedications([]);
+                        if (!e.target.checked) setSelectedMedications({});
                       }}
                       className="w-4 h-4 text-teal-600 rounded"
                   />
@@ -13022,32 +13032,47 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed, onNavigate }) =
                 {tookMedication && (
                     <div className="mt-3 space-y-2">
                       <p className="text-sm text-teal-700 dark:text-teal-300">Select all that apply:</p>
-                      {medications.filter(m => m.isActive).map(med => (
-                          <label
-                              key={med.id}
-                              className={`flex items-center gap-2 p-2 rounded-lg border cursor-pointer transition-colors ${
-                                  selectedMedications.includes(med.id)
-                                      ? 'bg-teal-100 dark:bg-teal-900/50 border-teal-400 dark:border-teal-600'
-                                      : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 hover:border-teal-300 dark:hover:border-teal-600'
-                              }`}
-                          >
-                            <input
-                                type="checkbox"
-                                checked={selectedMedications.includes(med.id)}
-                                onChange={(e) => {
-                                  if (e.target.checked) {
-                                    setSelectedMedications(prev => [...prev, med.id]);
-                                  } else {
-                                    setSelectedMedications(prev => prev.filter(id => id !== med.id));
-                                  }
-                                }}
-                                className="w-4 h-4 text-teal-600 rounded"
-                            />
-                            <span className="text-sm text-gray-700 dark:text-gray-300">
-                      {med.name} ({med.dosage})
-                    </span>
-                          </label>
-                      ))}
+                      {medications.filter(m => m.isActive).map(med => {
+                        const isSelected = !!selectedMedications[med.id];
+                        return (
+                            <div key={med.id}>
+                              <label
+                                  className={`flex items-center gap-2 p-2 rounded-lg border cursor-pointer transition-colors ${
+                                      isSelected
+                                          ? 'bg-teal-100 dark:bg-teal-900/50 border-teal-400 dark:border-teal-600'
+                                          : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 hover:border-teal-300 dark:hover:border-teal-600'
+                                  }`}
+                              >
+                                <input
+                                    type="checkbox"
+                                    checked={isSelected}
+                                    onChange={(e) => {
+                                      if (e.target.checked) {
+                                        setSelectedMedications(prev => ({ ...prev, [med.id]: getDefaultMedDetail() }));
+                                      } else {
+                                        setSelectedMedications(prev => {
+                                          const next = { ...prev };
+                                          delete next[med.id];
+                                          return next;
+                                        });
+                                      }
+                                    }}
+                                    className="w-4 h-4 text-teal-600 rounded"
+                                />
+                                <span className="text-sm text-gray-700 dark:text-gray-300">
+                                {med.name} ({med.dosage})
+                              </span>
+                              </label>
+                              {/* Inline effectiveness & side effects for this medication */}
+                              {isSelected && (
+                                  <MedicationEffectivenessInline
+                                      medDetail={selectedMedications[med.id]}
+                                      onChange={(updated) => setSelectedMedications(prev => ({ ...prev, [med.id]: updated }))}
+                                  />
+                              )}
+                            </div>
+                        );
+                      })}
                     </div>
                 )}
               </div>
