@@ -63,21 +63,6 @@ const getInitialViewFromURL = () => {
 const AppContent = () => {
   // Initialize view from URL path (for direct links like /thank-you)
   const [currentView, setCurrentView] = useState(getInitialViewFromURL());
-
-  // TEMPORARY DEBUG - remove after fixing
-  useEffect(() => {
-    const unload = localStorage.getItem('unloadTrigger');
-    const lastClick = localStorage.getItem('lastClick');
-    const lastAnchor = localStorage.getItem('lastAnchorClick');
-    if (unload) {
-      console.warn('UNLOAD DETECTED:', unload);
-      console.warn('LAST CLICK:', lastClick);
-      console.warn('LAST ANCHOR:', lastAnchor);
-      alert(`Navigation detected!\nLast click: ${lastClick}\nAnchor: ${lastAnchor}`);
-      localStorage.removeItem('unloadTrigger');
-    }
-  }, []);
-
   const { shouldShowOnboarding, refreshProfile } = useProfile();
   const [showOnboarding, setShowOnboarding] = useState(shouldShowOnboarding);
   const [showTerms, setShowTerms] = useState(false);
