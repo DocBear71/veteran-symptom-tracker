@@ -238,30 +238,34 @@ const Medications = () => {
     });
   };
 
-  // ─── Batch Log ───────────────────────────────────────────────────
-  const handleBatchLog = (e) => {
-    e.preventDefault();
-    const medsToLog = medications.filter(m => selectedMedIds.has(m.id));
-    let count = 0;
-    // Combine selected side effects with any custom entry
-    const batchAllSideEffects = [
-      ...batchLogData.sideEffects,
-      ...(batchLogData.sideEffectsOther.trim() ? [batchLogData.sideEffectsOther.trim()] : []),
-    ].join(', ');
+    // ─── Batch Log ───────────────────────────────────────────────────
+    const handleBatchLog = (e) => {
+        e.preventDefault();
+        const medsToLog = medications.filter(m => selectedMedIds.has(m.id));
+        let count = 0;
+        // Combine selected side effects with any custom entry
+        const batchAllSideEffects = [
+            ...batchLogData.sideEffects,
+            ...(batchLogData.sideEffectsOther.trim() ? [batchLogData.sideEffectsOther.trim()] : []),
+        ].join(', ');
 
-    medsToLog.forEach(med => {
-      const r = logMedicationTaken({
-        medicationId: med.id, medicationName: med.name, dosage: getDosageForLog(med),
-        takenFor: batchLogData.takenFor, notes: batchLogData.notes, occurredAt: batchOccurredAt,
-        effectiveness: batchLogData.effectiveness || null,
-        sideEffects: batchAllSideEffects,
-      });
-      if (r.success) count++;
-    });
-    showMessage(`Logged ${count} medication${count !== 1 ? 's' : ''}`);
-    setSelectedMedIds(new Set()); setShowBatchLogForm(false);
-    setBatchLogData({ takenFor: '', effectiveness: '', sideEffects: [], sideEffectsOther: '', notes: '' }); setBatchOccurredAt(new Date().toISOString()); loadData();
-  };
+        // Generate one batchId shared by all meds in this submission
+        const batchId = `batch_${Date.now()}`;
+
+        medsToLog.forEach(med => {
+            const r = logMedicationTaken({
+                medicationId: med.id, medicationName: med.name, dosage: getDosageForLog(med),
+                takenFor: batchLogData.takenFor, notes: batchLogData.notes, occurredAt: batchOccurredAt,
+                effectiveness: batchLogData.effectiveness || null,
+                sideEffects: batchAllSideEffects,
+                batchId,
+            });
+            if (r.success) count++;
+        });
+        showMessage(`Logged ${count} medication${count !== 1 ? 's' : ''}`);
+        setSelectedMedIds(new Set()); setShowBatchLogForm(false);
+        setBatchLogData({ takenFor: '', effectiveness: '', sideEffects: [], sideEffectsOther: '', notes: '' }); setBatchOccurredAt(new Date().toISOString()); loadData();
+    };
 
   // ─── Group Quick Log ─────────────────────────────────────────────
   // Opens a confirmation modal so user can set time and optional notes
@@ -273,25 +277,29 @@ const Medications = () => {
     setShowGroupLogConfirm(true);
   };
 
-  const handleConfirmGroupLog = (e) => {
-    e.preventDefault();
-    if (!pendingGroup) return;
-    const meds = medications.filter(m => m.isActive && pendingGroup.medicationIds.includes(m.id));
-    let count = 0;
-    const groupAllSideEffects = [
-      ...groupLogData.sideEffects,
-      ...(groupLogData.sideEffectsOther.trim() ? [groupLogData.sideEffectsOther.trim()] : []),
-    ].join(', ');
+    const handleConfirmGroupLog = (e) => {
+        e.preventDefault();
+        if (!pendingGroup) return;
+        const meds = medications.filter(m => m.isActive && pendingGroup.medicationIds.includes(m.id));
+        let count = 0;
+        const groupAllSideEffects = [
+            ...groupLogData.sideEffects,
+            ...(groupLogData.sideEffectsOther.trim() ? [groupLogData.sideEffectsOther.trim()] : []),
+        ].join(', ');
 
-    meds.forEach(med => {
-      const r = logMedicationTaken({
-        medicationId: med.id, medicationName: med.name, dosage: getDosageForLog(med),
-        takenFor: pendingGroup.name,
-        notes: groupLogData.notes || `Logged via "${pendingGroup.name}" group`,
-        occurredAt: groupLogData.occurredAt,
-        effectiveness: groupLogData.effectiveness || null,
-        sideEffects: groupAllSideEffects,
-      });
+        // Generate one batchId shared by all meds in this submission
+        const batchId = `batch_${Date.now()}`;
+
+        meds.forEach(med => {
+            const r = logMedicationTaken({
+                medicationId: med.id, medicationName: med.name, dosage: getDosageForLog(med),
+                takenFor: pendingGroup.name,
+                notes: groupLogData.notes || `Logged via "${pendingGroup.name}" group`,
+                occurredAt: groupLogData.occurredAt,
+                effectiveness: groupLogData.effectiveness || null,
+                sideEffects: groupAllSideEffects,
+                batchId,
+            });
       if (r.success) count++;
     });
     showMessage(`${pendingGroup.icon} Logged ${count} med${count !== 1 ? 's' : ''} from "${pendingGroup.name}"`);
@@ -444,34 +452,58 @@ const Medications = () => {
       </div>
   );
 
-  // ─── Group logs by occurredAt timestamp for visual clustering ────
-  // Logs within 60 seconds of each other are considered part of the same batch.
-  const groupedLogs = (() => {
-    if (logs.length === 0) return [];
+    // ─── Group logs by batchId (exact) or occurredAt (legacy fallback) ────
+    // New logs use batchId for precise grouping. Old logs fall back to
+    // a 2-minute time window on occurredAt.
+    const groupedLogs = (() => {
+        if (logs.length === 0) return [];
 
-    const groups = [];
-    let currentGroup = null;
+        const groups = [];
+        // Map of batchId -> group for O(1) lookup
+        const batchMap = {};
 
-    logs.forEach(log => {
-      const logTime = new Date(log.occurredAt || log.timestamp).getTime();
+        logs.forEach(log => {
+            // ── Strategy 1: exact batchId match (new logs) ──
+            if (log.batchId) {
+                if (batchMap[log.batchId]) {
+                    batchMap[log.batchId].items.push(log);
+                    return;
+                }
+                const newGroup = {
+                    time: new Date(log.occurredAt || log.timestamp).getTime(),
+                    batchId: log.batchId,
+                    label: log.takenFor || null,
+                    items: [log],
+                };
+                batchMap[log.batchId] = newGroup;
+                groups.push(newGroup);
+                return;
+            }
 
-      if (currentGroup && Math.abs(logTime - currentGroup.time) < 60000) {
-        // Within 60 seconds of the group — add to it
-        currentGroup.items.push(log);
-      } else {
-        // Start a new group
-        currentGroup = {
-          time: logTime,
-          // Use takenFor as group label if it matches a group name, otherwise generic
-          label: log.takenFor || null,
-          items: [log],
-        };
-        groups.push(currentGroup);
-      }
-    });
+            // ── Strategy 2: time proximity fallback (legacy logs without batchId) ──
+            // Uses a tighter 2-minute window and requires same takenFor label to group.
+            const logTime = new Date(log.occurredAt || log.timestamp).getTime();
+            const lastGroup = groups[groups.length - 1];
 
-    return groups;
-  })();
+            if (
+                lastGroup &&
+                !lastGroup.batchId && // don't merge into a batchId group
+                Math.abs(logTime - lastGroup.time) < 120000 &&
+                lastGroup.label === (log.takenFor || null)
+            ) {
+                lastGroup.items.push(log);
+            } else {
+                groups.push({
+                    time: logTime,
+                    batchId: null,
+                    label: log.takenFor || null,
+                    items: [log],
+                });
+            }
+        });
+
+        return groups;
+    })();
 
   return (
       <div className="pb-20">

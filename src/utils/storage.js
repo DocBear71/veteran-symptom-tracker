@@ -308,23 +308,25 @@ export const getMedicationLogs = (profileId = null) => {
 };
 
 export const logMedicationTaken = (entry, profileId = null) => {
-  const logs = getMedicationLogs(profileId);
+    const logs = getMedicationLogs(profileId);
 
-  const now = new Date().toISOString();
-  const newLog = {
-    id: crypto.randomUUID(),
-    medicationId: entry.medicationId,
-    medicationName: entry.medicationName,
-    dosage: entry.dosage,
-    timestamp: now,
-    // When the medication was actually taken (defaults to now, supports backdating)
-    occurredAt: entry.occurredAt || now,
-    takenFor: entry.takenFor || '',
-    symptomLogId: entry.symptomLogId || null,
-    effectiveness: entry.effectiveness || null,
-    sideEffects: entry.sideEffects || '',
-    notes: entry.notes || '',
-  };
+    const now = new Date().toISOString();
+    const newLog = {
+        id: crypto.randomUUID(),
+        medicationId: entry.medicationId,
+        medicationName: entry.medicationName,
+        dosage: entry.dosage,
+        timestamp: now,
+        // When the medication was actually taken (defaults to now, supports backdating)
+        occurredAt: entry.occurredAt || now,
+        // batchId groups logs submitted together (same form submission)
+        batchId: entry.batchId || null,
+        takenFor: entry.takenFor || '',
+        symptomLogId: entry.symptomLogId || null,
+        effectiveness: entry.effectiveness || null,
+        sideEffects: entry.sideEffects || '',
+        notes: entry.notes || '',
+    };
 
   logs.push(newLog);
   const key = getProfileKey('symptomTracker_medicationLogs', profileId);
