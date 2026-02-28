@@ -15,7 +15,7 @@ import {
 } from '../data/symptoms';
 import { saveSymptomLog, getCustomSymptoms, addCustomSymptom, getMedications, logMedicationTaken } from '../utils/storage';
 import { getProfileType, PROFILE_TYPES } from '../utils/profile';
-import { getDefaultMedDetail } from '../utils/medicationUtils';
+import { formatDosage, getDefaultMedDetail, getDosageForLog } from '../utils/medicationUtils';
 import OccurrenceTimePicker from './OccurrenceTimePicker.jsx';
 import QuickLog from './QuickLog';
 import AddChronicModal from './AddChronicModal';
@@ -3276,26 +3276,35 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed, onNavigate }) =
 
     const savedEntry = saveSymptomLog(entry);
 
-      // Log medications if taken
-      if (tookMedication && selectedMedications.length > 0) {
-          // Shared batchId groups all meds from this symptom log into one history card.
-          // occurredAt passed through so history shows when meds were taken, not when entered.
-          const batchId = `batch_${Date.now()}`;
-          selectedMedications.forEach(medId => {
-              const med = medications.find(m => m.id === medId);
-              if (med) {
-                logMedicationTaken({
-                  medicationId: med.id,
-                  medicationName: med.name,
-                  dosage: med.dosage,
-                  takenFor: entry.symptomName,
-                  symptomLogId: savedEntry.id,
-                  occurredAt: entry.occurredAt,
-                  batchId,
-                });
-              }
+    // Log medications if taken
+    // selectedMedications is an object keyed by medId: { [medId]: { effectiveness, sideEffects, ... } }
+    const selectedMedIds = Object.keys(selectedMedications);
+    if (tookMedication && selectedMedIds.length > 0) {
+      // Shared batchId groups all meds from this symptom log into one history card.
+      // occurredAt passed through so history shows when meds were taken, not when entered.
+      const batchId = `batch_${Date.now()}`;
+      selectedMedIds.forEach(medId => {
+        const med = medications.find(m => m.id === medId);
+        const medDetail = selectedMedications[medId];
+        if (med) {
+          const allSideEffects = [
+            ...(medDetail?.sideEffects || []),
+            ...(medDetail?.sideEffectsOther?.trim() ? [medDetail.sideEffectsOther.trim()] : []),
+          ];
+          logMedicationTaken({
+            medicationId: med.id,
+            medicationName: med.name,
+            dosage: getDosageForLog(med),
+            takenFor: entry.symptomName,
+            symptomLogId: savedEntry.id,
+            effectiveness: medDetail?.effectiveness || null,
+            sideEffects: allSideEffects.length > 0 ? allSideEffects : '',
+            occurredAt: entry.occurredAt,
+            batchId,
           });
-      }
+        }
+      });
+    }
 
     // Reset form after successful save
     setSelectedCategory('');
