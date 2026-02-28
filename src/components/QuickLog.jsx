@@ -2191,27 +2191,30 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
 
     const savedEntry = saveSymptomLog(entry);
 
-    // Log medications if selected
-    if (Object.keys(selectedMedications).length > 0) {
-      Object.entries(selectedMedications).forEach(([medId, medDetail]) => {
-        const med = medications.find(m => m.id === medId);
-        if (med) {
-          const allSideEffects = [
-            ...(medDetail.sideEffects || []),
-            ...(medDetail.sideEffectsOther?.trim() ? [medDetail.sideEffectsOther.trim()] : []),
-          ];
-          logMedicationTaken({
-            medicationId: med.id,
-            medicationName: med.name,
-            dosage: getDosageForLog(med),
-            takenFor: entry.symptomName,
-            symptomLogId: savedEntry.id,
-            effectiveness: medDetail.effectiveness || null,
-            sideEffects: allSideEffects.length > 0 ? allSideEffects : '',
+      // Log medications if selected
+      if (Object.keys(selectedMedications).length > 0) {
+          const batchId = `batch_${Date.now()}`;
+          Object.entries(selectedMedications).forEach(([medId, medDetail]) => {
+              const med = medications.find(m => m.id === medId);
+              if (med) {
+                  const allSideEffects = [
+                      ...(medDetail.sideEffects || []),
+                      ...(medDetail.sideEffectsOther?.trim() ? [medDetail.sideEffectsOther.trim()] : []),
+                  ];
+                  logMedicationTaken({
+                      medicationId: med.id,
+                      medicationName: med.name,
+                      dosage: getDosageForLog(med),
+                      takenFor: entry.symptomName,
+                      symptomLogId: savedEntry.id,
+                      effectiveness: medDetail.effectiveness || null,
+                      sideEffects: allSideEffects.length > 0 ? allSideEffects : '',
+                      occurredAt: entry.occurredAt,
+                      batchId,
+                  });
+              }
           });
-        }
-      });
-    }
+      }
 
     // Show success
     setShowSuccess(selectedChronic.symptomId);

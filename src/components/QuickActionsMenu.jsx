@@ -207,9 +207,16 @@ const QuickActionsMenu = ({
   // ==========================================
   // QUICK LOG MEDICATION
   // ==========================================
-  const handleQuickMedLog = async (medication) => {
-    try {
-      logMedicationTaken(medication.id);
+    const handleQuickMedLog = async (medication) => {
+        try {
+            logMedicationTaken({
+                medicationId: medication.id,
+                medicationName: medication.name,
+                dosage: medication.dosage || '',
+                takenFor: '',
+                occurredAt: new Date().toISOString(),
+                batchId: `batch_${Date.now()}`,
+            });
       setShowSuccess(medication.id);
 
       if (onLogSaved) {

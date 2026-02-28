@@ -195,7 +195,13 @@ const Medications = () => {
   const loadData = () => {
     setMedications(getMedications());
     const allLogs = getMedicationLogs();
-    allLogs.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+    // Sort by when medication was actually taken (occurredAt), fall back to
+    // entry timestamp for legacy logs that predate the occurredAt field.
+    allLogs.sort((a, b) => {
+      const timeA = new Date(a.occurredAt || a.timestamp);
+      const timeB = new Date(b.occurredAt || b.timestamp);
+      return timeB - timeA;
+    });
     setLogs(allLogs);
     setGroups(getMedicationGroups());
   };

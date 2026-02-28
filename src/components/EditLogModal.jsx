@@ -2427,52 +2427,58 @@ const EditLogModal = ({log, isOpen, onClose, onSaved}) => {
               }
             });
 
-            // Add new medications (not previously logged)
-            selectedMedIds.forEach(medId => {
-              if (!existingMedIds.includes(medId)) {
-                const med = medications.find(m => m.id === medId);
-                const medDetail = selectedMedications[medId];
-                if (med) {
-                  const allSideEffects = [
-                    ...(medDetail.sideEffects || []),
-                    ...(medDetail.sideEffectsOther?.trim() ? [medDetail.sideEffectsOther.trim()] : []),
-                  ];
-                  logMedicationTaken({
-                    medicationId: med.id,
-                    medicationName: med.name,
-                    dosage: getDosageForLog(med),
-                    takenFor: log.symptomName,
-                    symptomLogId: log.id,
-                    effectiveness: medDetail.effectiveness || null,
-                    sideEffects: allSideEffects.length > 0 ? allSideEffects : '',
-                  });
-                }
-              } else {
-                // Update existing medication log with new effectiveness/sideEffects
-                const existingLog = existingMedLogs.find(m => m.medicationId === medId);
-                const medDetail = selectedMedications[medId];
-                if (existingLog && medDetail) {
-                  const allSideEffects = [
-                    ...(medDetail.sideEffects || []),
-                    ...(medDetail.sideEffectsOther?.trim() ? [medDetail.sideEffectsOther.trim()] : []),
-                  ];
-                  // Delete and re-create to update effectiveness/sideEffects
-                  deleteMedicationLog(existingLog.id);
-                  const med = medications.find(m => m.id === medId);
-                  if (med) {
-                    logMedicationTaken({
-                      medicationId: med.id,
-                      medicationName: med.name,
-                      dosage: getDosageForLog(med),
-                      takenFor: log.symptomName,
-                      symptomLogId: log.id,
-                      effectiveness: medDetail.effectiveness || null,
-                      sideEffects: allSideEffects.length > 0 ? allSideEffects : '',
-                    });
+              // Add new medications (not previously logged)
+// Single batchId for all meds in this edit so they group into one history card
+              const batchId = `batch_${Date.now()}`;
+              selectedMedIds.forEach(medId => {
+                  if (!existingMedIds.includes(medId)) {
+                      const med = medications.find(m => m.id === medId);
+                      const medDetail = selectedMedications[medId];
+                      if (med) {
+                          const allSideEffects = [
+                              ...(medDetail.sideEffects || []),
+                              ...(medDetail.sideEffectsOther?.trim() ? [medDetail.sideEffectsOther.trim()] : []),
+                          ];
+                          logMedicationTaken({
+                              medicationId: med.id,
+                              medicationName: med.name,
+                              dosage: getDosageForLog(med),
+                              takenFor: log.symptomName,
+                              symptomLogId: log.id,
+                              effectiveness: medDetail.effectiveness || null,
+                              sideEffects: allSideEffects.length > 0 ? allSideEffects : '',
+                              occurredAt: occurredAt,
+                              batchId,
+                          });
+                      }
+                  } else {
+                      // Update existing medication log with new effectiveness/sideEffects
+                      const existingLog = existingMedLogs.find(m => m.medicationId === medId);
+                      const medDetail = selectedMedications[medId];
+                      if (existingLog && medDetail) {
+                          const allSideEffects = [
+                              ...(medDetail.sideEffects || []),
+                              ...(medDetail.sideEffectsOther?.trim() ? [medDetail.sideEffectsOther.trim()] : []),
+                          ];
+                          // Delete and re-create to update effectiveness/sideEffects
+                          deleteMedicationLog(existingLog.id);
+                          const med = medications.find(m => m.id === medId);
+                          if (med) {
+                              logMedicationTaken({
+                                  medicationId: med.id,
+                                  medicationName: med.name,
+                                  dosage: getDosageForLog(med),
+                                  takenFor: log.symptomName,
+                                  symptomLogId: log.id,
+                                  effectiveness: medDetail.effectiveness || null,
+                                  sideEffects: allSideEffects.length > 0 ? allSideEffects : '',
+                                  occurredAt: occurredAt,
+                                  batchId,
+                              });
+                          }
+                      }
                   }
-                }
-              }
-            });
+              });
 
             onSaved();
             onClose();

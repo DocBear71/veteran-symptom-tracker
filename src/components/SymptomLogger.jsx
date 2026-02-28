@@ -3276,28 +3276,26 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed, onNavigate }) =
 
     const savedEntry = saveSymptomLog(entry);
 
-    // Log medications if taken
-    if (tookMedication && Object.keys(selectedMedications).length > 0) {
-      Object.entries(selectedMedications).forEach(([medId, medDetail]) => {
-        const med = medications.find(m => m.id === medId);
-        if (med) {
-          // Combine side effects array with any custom "other" side effects
-          const allSideEffects = [
-            ...(medDetail.sideEffects || []),
-            ...(medDetail.sideEffectsOther?.trim() ? [medDetail.sideEffectsOther.trim()] : []),
-          ];
-          logMedicationTaken({
-            medicationId: med.id,
-            medicationName: med.name,
-            dosage: med.dosage,
-            takenFor: savedEntry.symptomName,
-            symptomLogId: savedEntry.id,
-            effectiveness: medDetail.effectiveness || null,
-            sideEffects: allSideEffects.length > 0 ? allSideEffects : '',
+      // Log medications if taken
+      if (tookMedication && selectedMedications.length > 0) {
+          // Shared batchId groups all meds from this symptom log into one history card.
+          // occurredAt passed through so history shows when meds were taken, not when entered.
+          const batchId = `batch_${Date.now()}`;
+          selectedMedications.forEach(medId => {
+              const med = medications.find(m => m.id === medId);
+              if (med) {
+                logMedicationTaken({
+                  medicationId: med.id,
+                  medicationName: med.name,
+                  dosage: med.dosage,
+                  takenFor: entry.symptomName,
+                  symptomLogId: savedEntry.id,
+                  occurredAt: entry.occurredAt,
+                  batchId,
+                });
+              }
           });
-        }
-      });
-    }
+      }
 
     // Reset form after successful save
     setSelectedCategory('');
