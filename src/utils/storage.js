@@ -120,14 +120,18 @@ export const getOccurrenceTime = (log) => {
 };
 
 /**
- * Check if a log was back-dated (occurred before it was logged)
+ * Check if a log was back-dated (occurred on a previous calendar day)
+ * Only flags entries where the occurrence date is before the day it was logged.
+ * Same-day entries (even hours earlier) are NOT considered back-dated.
  */
 export const isBackDated = (log) => {
   if (!log.occurredAt || !log.timestamp) return false;
   const occurred = new Date(log.occurredAt);
   const logged = new Date(log.timestamp);
-  // Consider back-dated if occurrence is more than 1 minute before logging
-  return (logged - occurred) > 60000; // 60 seconds
+  // Compare calendar dates only (ignore time component)
+  const occurredDate = new Date(occurred.getFullYear(), occurred.getMonth(), occurred.getDate());
+  const loggedDate = new Date(logged.getFullYear(), logged.getMonth(), logged.getDate());
+  return occurredDate < loggedDate;
 };
 
 // ============================================

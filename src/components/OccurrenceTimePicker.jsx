@@ -272,11 +272,11 @@ export default function OccurrenceTimePicker({ value, onChange, label = "When di
             </div>
         )}
 
-        {/* Info text for back-dated logs */}
-        {mode !== 'now' && (
+        {/* Info text for back-dated logs — only show for previous-day entries */}
+        {(mode === 'yesterday' || mode === 'custom') && (
             <div className="mt-2 p-2 bg-amber-50 dark:bg-amber-900/20 rounded-lg border border-amber-200 dark:border-amber-800">
               <p className="text-xs text-amber-800 dark:text-amber-300">
-                ℹ️ This log will be marked as back-dated and shown with an indicator in your history.
+                ℹ️ Entries logged for a previous day are marked as back-dated in your history and exports.
               </p>
             </div>
         )}
