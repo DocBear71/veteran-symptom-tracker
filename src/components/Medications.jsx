@@ -8,6 +8,7 @@ import {
   getMedicationLogs,
   deleteMedicationLog,
   updateMedicationLog,
+  isBackDated,
 } from '../utils/storage';
 import {
   formatDosage,
@@ -727,8 +728,7 @@ const Medications = () => {
                       const isMulti = group.items.length > 1;
                       const displayTime = firstLog.occurredAt || firstLog.timestamp;
                       const loggedTime = firstLog.timestamp;
-                      const isBackDated = firstLog.occurredAt && firstLog.timestamp &&
-                          new Date(firstLog.timestamp) - new Date(firstLog.occurredAt) > 60000;
+                        const backDated = isBackDated(firstLog);
 
                       // Match to a saved medication group for icon
                       const matchingGroup = groups.find(g => g.name === firstLog.takenFor);
@@ -751,11 +751,11 @@ const Medications = () => {
                                 <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">
                                   {formatDate(displayTime)} · {group.items.length} meds
                                 </p>
-                                {isBackDated && (
-                                    <p className="text-xs text-amber-500 dark:text-amber-400">
-                                      ⏱ Back-dated (logged {formatDate(loggedTime)})
-                                    </p>
-                                )}
+                                  {backDated && (
+                                      <p className="text-xs text-amber-500 dark:text-amber-400">
+                                          ⏱ Back-dated (logged {formatDate(loggedTime)})
+                                      </p>
+                                  )}
                               </div>
 
                               {/* Individual meds in group */}
@@ -805,11 +805,11 @@ const Medications = () => {
                                   <p className="font-semibold text-gray-900 dark:text-white">{log.medicationName}</p>
                                   <p className="text-sm text-gray-600 dark:text-gray-400">{formatDosage(log)}</p>
                                   <p className="text-xs text-gray-400 dark:text-gray-500">{formatDate(displayTime)}</p>
-                                  {isBackDated && (
-                                      <p className="text-xs text-amber-500 dark:text-amber-400">
-                                        ⏱ Back-dated (logged {formatDate(loggedTime)})
-                                      </p>
-                                  )}
+                                    {backDated && (
+                                        <p className="text-xs text-amber-500 dark:text-amber-400">
+                                            ⏱ Back-dated (logged {formatDate(loggedTime)})
+                                        </p>
+                                    )}
                                   {log.takenFor && <p className="text-xs text-blue-600 dark:text-blue-400 mt-1">For: {log.takenFor}</p>}
                                   {log.effectiveness && (
                                       <span className={`inline-block mt-1 px-2.5 py-0.5 rounded-full text-xs font-medium border ${getEffectivenessColor(log.effectiveness)}`}>
