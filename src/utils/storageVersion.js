@@ -59,16 +59,18 @@ export const createEmergencyBackup = () => {
     const key = localStorage.key(i);
     if (!key) continue;
 
-    // Include if it's in the critical keys list
-    if (criticalKeys.includes(key)) {
-      backup.data[key] = localStorage.getItem(key);
-      continue;
-    }
+      // Include if it's in the critical keys list
+      if (criticalKeys.includes(key)) {
+          const raw = localStorage.getItem(key);
+          try { backup.data[key] = JSON.parse(raw); } catch { backup.data[key] = raw; }
+          continue;
+      }
 
-    // Include profile-specific critical data
-    if (key.match(/symptomTracker_(logs|chronicSymptoms|serviceConnected)_[a-f0-9-]+$/)) {
-      backup.data[key] = localStorage.getItem(key);
-    }
+      // Include profile-specific critical data
+      if (key.match(/symptomTracker_(logs|chronicSymptoms|serviceConnected)_[a-f0-9-]+$/)) {
+          const raw = localStorage.getItem(key);
+          try { backup.data[key] = JSON.parse(raw); } catch { backup.data[key] = raw; }
+      }
   }
 
   const backupString = JSON.stringify(backup);
@@ -122,10 +124,14 @@ export const restoreFromEmergencyBackup = () => {
   try {
     const backup = JSON.parse(backupString);
 
-    // Restore all data
-    Object.entries(backup.data).forEach(([key, value]) => {
-      localStorage.setItem(key, value);
-    });
+      // Restore all data — re-stringify objects/arrays for localStorage
+      Object.entries(backup.data).forEach(([key, value]) => {
+          if (typeof value === 'string') {
+              localStorage.setItem(key, value);
+          } else {
+              localStorage.setItem(key, JSON.stringify(value));
+          }
+      });
 
     console.log('Data restored from backup:', backup.timestamp);
     return true;
