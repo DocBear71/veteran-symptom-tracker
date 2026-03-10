@@ -93,6 +93,16 @@ const Settings = ({ onNavigate }) => {  // ← ADD onNavigate prop
   const [showCaregiverProgram, setShowCaregiverProgram] = useState(false);
   const [showPrivacyExplainer, setShowPrivacyExplainer] = useState(false);
 
+  // Generic app settings (weight tracker, etc.)
+  const [settings, setSettings] = useState(() =>
+      JSON.parse(localStorage.getItem('symptomTracker_settings') || '{}')
+  );
+
+  const saveSettings = (newSettings) => {
+    setSettings(newSettings);
+    localStorage.setItem('symptomTracker_settings', JSON.stringify(newSettings));
+  };
+
 
   useEffect(() => {
     const checkStatus = async () => {
@@ -801,6 +811,33 @@ const Settings = ({ onNavigate }) => {  // ← ADD onNavigate prop
               </div>
             </div>
           </div>
+        </div>
+
+        {/* Weight Tracker Settings */}
+        <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
+          <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">
+            ⚖️ Weight Tracker
+          </h3>
+          <label className="flex items-center justify-between cursor-pointer">
+            <div>
+              <div className="text-sm text-gray-700 dark:text-gray-300">
+                Auto-fill last logged weight
+              </div>
+              <div className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                Pre-populate the weight field when logging a new entry
+              </div>
+            </div>
+            <div
+                onClick={() => saveSettings({ ...settings, autoFillLastWeight: !(settings.autoFillLastWeight ?? true) })}
+                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors cursor-pointer flex-shrink-0 ml-4 ${
+                    (settings.autoFillLastWeight ?? true) ? 'bg-blue-600' : 'bg-gray-300 dark:bg-gray-600'
+                }`}
+            >
+              <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                  (settings.autoFillLastWeight ?? true) ? 'translate-x-6' : 'translate-x-1'
+              }`} />
+            </div>
+          </label>
         </div>
 
         {/* Export Data Section - NEW */}

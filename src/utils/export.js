@@ -11,6 +11,8 @@ import { getSymptomLogs,
 } from './storage';
 import { formatDosage } from './medicationUtils';
 import { getMeasurements } from './measurements';
+import { getWeightGoal } from './storage';
+import { getWeightTrend, getAverageRate } from './weightStats';
 import { stripDCCode } from '../data/symptoms';
 import {
     generateBPTrendChart,
@@ -5618,9 +5620,199 @@ export const generateVAClaimPackagePDF = async (dateRange = 'all', options = {})
         });
     }
 
+  // ========== WEIGHT TRACKER SUMMARY ==========
+  // Dedicated weight section — separate from generic measurements block
+  // Provides goal progress, BMI, trend analysis, and full history for C&P documentation
+  const weightMeasurements = measurements
+  .filter(m => m.measurementType === 'weight' && m.values?.weight)
+  .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+
+  if (weightMeasurements.length > 0) {
+    const weightGoal = getWeightGoal();
+
+    doc.addPage();
+    currentY = 20;
+
+    doc.setFontSize(14);
+    doc.setTextColor(30, 58, 138);
+    doc.setFont(undefined, 'bold');
+    currentSection++;
+    doc.text(`${currentSection}. WEIGHT TRACKING SUMMARY`, 14, currentY);
+    doc.setFont(undefined, 'normal');
+
+    doc.setFontSize(9);
+    doc.setTextColor(100);
+    doc.text('Weight history with goal progress and trend analysis for VA documentation', 14, currentY + 8);
+    currentY += 20;
+
+    // ── Snapshot stats row ──
+    const firstEntry  = weightMeasurements[0];
+    const latestEntry = weightMeasurements[weightMeasurements.length - 1];
+    const bestWeight  = weightGoal
+        ? (weightGoal.goalWeight < (weightGoal.startWeight || firstEntry.values.weight)
+            ? Math.min(...weightMeasurements.map(m => m.values.weight))
+            : Math.max(...weightMeasurements.map(m => m.values.weight)))
+        : Math.min(...weightMeasurements.map(m => m.values.weight));
+
+    const currentWeight = latestEntry.values.weight;
+
+    // BMI calculation (use height from any measurement that has it)
+    const heightEntry = weightMeasurements.slice().reverse().find(m => m.values?.height);
+    let bmiStr = 'N/A';
+    let bmiLabel = '';
+    if (heightEntry?.values?.height) {
+      const heightIn = heightEntry.values.height;
+      const bmi = (currentWeight / (heightIn * heightIn)) * 703;
+      bmiStr = bmi.toFixed(1);
+      if      (bmi < 18.5) bmiLabel = 'Underweight';
+      else if (bmi < 25)   bmiLabel = 'Normal';
+      else if (bmi < 30)   bmiLabel = 'Overweight';
+      else if (bmi < 35)   bmiLabel = 'Obese I';
+      else if (bmi < 40)   bmiLabel = 'Obese II';
+      else                 bmiLabel = 'Obese III';
+    }
+
+    // Trend stats
+    const trend30  = getWeightTrend(weightMeasurements, 30);
+    const rate30   = getAverageRate(weightMeasurements, 30);
+    const totalChange = parseFloat((currentWeight - firstEntry.values.weight).toFixed(1));
+
+    // Stats summary table
+    const snapshotData = [
+      ['Starting Weight', `${firstEntry.values.weight} lbs`, 'as of ' + new Date(firstEntry.timestamp).toLocaleDateString()],
+      ['Current Weight',  `${currentWeight} lbs`,           'as of ' + new Date(latestEntry.timestamp).toLocaleDateString()],
+      ['Best Weight',     `${bestWeight} lbs`,               'over documented period'],
+      ['Total Change',    `${totalChange > 0 ? '+' : ''}${totalChange} lbs`, totalChange < 0 ? 'lost' : totalChange > 0 ? 'gained' : 'no change'],
+      ['Current BMI',     bmiStr !== 'N/A' ? `${bmiStr} (${bmiLabel})` : 'N/A', bmiLabel ? `38 CFR §4.73 — ${bmiLabel}` : ''],
+      ['30-Day Rate',     rate30 !== null ? `${rate30 > 0 ? '+' : ''}${rate30} lbs/wk` : 'Insufficient data', '30-day average'],
+    ];
+
+    if (weightGoal) {
+      const remaining = parseFloat((currentWeight - weightGoal.goalWeight).toFixed(1));
+      const totalNeeded = Math.abs((weightGoal.startWeight || firstEntry.values.weight) - weightGoal.goalWeight);
+      const achieved = Math.abs(totalChange);
+      const pct = totalNeeded > 0 ? Math.min(100, Math.round((achieved / totalNeeded) * 100)) : 0;
+      snapshotData.push(
+          ['Goal Weight',    `${weightGoal.goalWeight} lbs`,                      weightGoal.targetDate ? `Target: ${new Date(weightGoal.targetDate).toLocaleDateString()}` : 'No target date set'],
+          ['Goal Progress',  `${pct}%`,                                            `${Math.abs(remaining)} lbs remaining`],
+      );
+    }
+
+    autoTable(doc, {
+      startY: currentY,
+      head: [['Metric', 'Value', 'Notes']],
+      body: snapshotData,
+      headStyles: { fillColor: [30, 58, 138], fontStyle: 'bold', fontSize: 9 },
+      alternateRowStyles: { fillColor: [245, 247, 250] },
+      columnStyles: {
+        0: { cellWidth: 50, fontStyle: 'bold' },
+        1: { cellWidth: 45 },
+        2: { cellWidth: 'auto' },
+      },
+      styles: { fontSize: 9, cellPadding: 3 },
+      margin: { left: 14, right: 14 },
+    });
+
+    currentY = doc.lastAutoTable.finalY + 10;
+
+    // ── Trend rows (1wk / 30d / 1yr) ──
+    if (currentY > 220) { doc.addPage(); currentY = 20; }
+
+    doc.setFontSize(11);
+    doc.setTextColor(30, 58, 138);
+    doc.setFont(undefined, 'bold');
+    doc.text('Weight Tendency', 14, currentY);
+    doc.setFont(undefined, 'normal');
+    currentY += 4;
+
+    const isLossGoal = weightGoal
+        ? (weightGoal.startWeight || firstEntry.values.weight) > weightGoal.goalWeight
+        : true;
+
+    const trendRows = [7, 30, 365].map(days => {
+      const t = getWeightTrend(weightMeasurements, days);
+      const r = t ? parseFloat(((t.delta / Math.max(t.daySpan, 1)) * 7).toFixed(1)) : null;
+      const label = days === 7 ? '1 Week' : days === 30 ? '30 Days' : '1 Year';
+      const direction = t
+          ? (Math.abs(t.delta) < 0.5 ? 'Stable'
+              : ((isLossGoal ? t.delta < 0 : t.delta > 0) ? 'On track' : 'Off track'))
+          : 'Insufficient data';
+      return [
+        label,
+        t ? `${t.delta > 0 ? '+' : ''}${t.delta} lbs` : '—',
+        r !== null ? `${r > 0 ? '+' : ''}${r} lbs/wk` : '—',
+        direction,
+      ];
+    });
+
+    autoTable(doc, {
+      startY: currentY,
+      head: [['Period', 'Change', 'Rate', 'Status']],
+      body: trendRows,
+      headStyles: { fillColor: [59, 130, 246], fontStyle: 'bold', fontSize: 9 },
+      alternateRowStyles: { fillColor: [239, 246, 255] },
+      styles: { fontSize: 9, cellPadding: 3 },
+      margin: { left: 14, right: 14 },
+    });
+
+    currentY = doc.lastAutoTable.finalY + 10;
+
+    // ── Full weight history table ──
+    if (currentY > 220) { doc.addPage(); currentY = 20; }
+
+    doc.setFontSize(11);
+    doc.setTextColor(30, 58, 138);
+    doc.setFont(undefined, 'bold');
+    doc.text('Weight History', 14, currentY);
+    doc.setFont(undefined, 'normal');
+    currentY += 4;
+
+    // Build history newest-first with delta column
+    const historyData = [...weightMeasurements]
+    .reverse()
+    .map((m, idx, arr) => {
+      const prev = arr[idx + 1];
+      const delta = prev
+          ? parseFloat((m.values.weight - prev.values.weight).toFixed(1))
+          : null;
+      const deltaStr = delta === null ? '—'
+          : delta === 0 ? '0 lbs'
+              : `${delta > 0 ? '+' : ''}${delta} lbs`;
+      const bmi = (heightEntry?.values?.height)
+          ? ((m.values.weight / (heightEntry.values.height ** 2)) * 703).toFixed(1)
+          : '—';
+      return [
+        new Date(m.timestamp).toLocaleDateString(),
+        `${m.values.weight} lbs`,
+        deltaStr,
+        bmi !== '—' ? bmi : '—',
+        m.notes || '—',
+      ];
+    });
+
+    autoTable(doc, {
+      startY: currentY,
+      head: [['Date', 'Weight', 'Change', 'BMI', 'Notes']],
+      body: historyData,
+      headStyles: { fillColor: [30, 58, 138], fontStyle: 'bold', fontSize: 9 },
+      alternateRowStyles: { fillColor: [245, 247, 250] },
+      columnStyles: {
+        0: { cellWidth: 30 },
+        1: { cellWidth: 25 },
+        2: { cellWidth: 25 },
+        3: { cellWidth: 20 },
+        4: { cellWidth: 'auto' },
+      },
+      styles: { fontSize: 8, cellPadding: 2 },
+      margin: { left: 14, right: 14 },
+    });
+
+    currentY = doc.lastAutoTable.finalY + 10;
+  }
+
     // ========== MEASUREMENTS ==========
-    if (measurements.length > 0) {
-        doc.addPage();
+    if (measurements.filter(m => m.measurementType !== 'weight').length > 0) {
+      doc.addPage();
         currentY = 20;
 
         doc.setFontSize(14);
@@ -5634,16 +5826,18 @@ export const generateVAClaimPackagePDF = async (dateRange = 'all', options = {})
 
         doc.setFontSize(10);
         doc.setTextColor(60);
-        doc.text(`Total measurements: ${measurements.length}`, 14, currentY + 8);
+      doc.text(`Total measurements: ${measurements.filter(m => m.measurementType !== 'weight').length}`, 14, currentY + 8);
         doc.text('(Blood Pressure, Glucose, FEV-1, Peak Flow, etc.)', 14, currentY + 14);
 
         // Group by measurement type
         const measurementsByType = {};
         measurements.forEach(m => {
-            if (!measurementsByType[m.measurementType]) {
-                measurementsByType[m.measurementType] = [];
-            }
-            measurementsByType[m.measurementType].push(m);
+          // Weight has its own dedicated section (7. WEIGHT TRACKING SUMMARY) — skip here
+          if (m.measurementType === 'weight') return;
+          if (!measurementsByType[m.measurementType]) {
+            measurementsByType[m.measurementType] = [];
+          }
+          measurementsByType[m.measurementType].push(m);
         });
 
         currentY += 22;

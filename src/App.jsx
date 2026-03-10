@@ -8,6 +8,7 @@ import SymptomLogger from './components/SymptomLogger';
 import SymptomHistory from './components/SymptomHistory';
 import Medications from './components/Medications';
 import Measurements from './components/Measurements';
+import WeightTracker from './components/WeightTracker';
 import Trends from './components/Trends';
 import ExportData from './components/ExportData';
 import Settings from './components/Settings';
@@ -53,7 +54,8 @@ const getInitialViewFromURL = () => {
     '/va-terms-faq': 'va-terms-faq',
     '/cp-exam-prep': 'cp-exam-prep',
     '/strategic-filing': 'strategic-filing',
-    '/after-action-report': 'after-action-report',
+    'after-action-report': 'after-action-report',
+    'weight-tracker': '/weight-tracker',
   };
 
   return pathToView[path] || 'log';
@@ -155,7 +157,8 @@ const AppContent = () => {
       'va-terms-faq': '/va-terms-faq',
       'strategic-filing': '/strategic-filing',
       '/cp-exam-prep': '/cp-exam-prep',
-      '/after-action-report': 'after-action-report',
+      'after-action-report': 'after-action-report',
+      'weight-tracker': '/weight-tracker',
     };
 
     const newPath = viewToPath[view] || '/';
@@ -188,7 +191,9 @@ const AppContent = () => {
       case 'history':
         return <SymptomHistory onCopyLog={handleCopyLog} />;
       case 'measurements':
-        return <Measurements />;
+        return <Measurements onNavigate={handleNavigate} />;
+      case 'weight-tracker':
+        return <WeightTracker onNavigate={handleNavigate} />;
       case 'meds':
         return <Medications />;
       case 'trends':

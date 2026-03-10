@@ -756,6 +756,45 @@ export const importAllData = (jsonData, options = { merge: false }, profileId = 
   }
 };
 
+// ============================================
+// WEIGHT GOAL
+// ============================================
+
+/**
+ * Get the user's weight goal settings for VA documentation tracking.
+ * Stored per-profile so each profile has independent goals.
+ */
+export const getWeightGoal = (profileId = null) => {
+  const key = getProfileKey('symptomTracker_weightGoal', profileId);
+  const data = localStorage.getItem(key);
+  return data ? JSON.parse(data) : null;
+};
+
+/**
+ * Save weight goal settings.
+ * @param {Object} goal - { goalWeight, targetDate, startWeight, startDate }
+ */
+export const saveWeightGoal = (goal, profileId = null) => {
+  const key = getProfileKey('symptomTracker_weightGoal', profileId);
+  const goalData = {
+    goalWeight: goal.goalWeight,           // Target weight in lbs
+    targetDate: goal.targetDate || null,   // Optional ISO date string
+    startWeight: goal.startWeight || null, // Weight when goal was set
+    startDate: goal.startDate || new Date().toISOString(), // When goal was created
+    updatedAt: new Date().toISOString(),
+  };
+  localStorage.setItem(key, JSON.stringify(goalData));
+  return goalData;
+};
+
+/**
+ * Clear weight goal (user wants to remove their goal).
+ */
+export const clearWeightGoal = (profileId = null) => {
+  const key = getProfileKey('symptomTracker_weightGoal', profileId);
+  localStorage.removeItem(key);
+};
+
 export const clearAllData = (profileId = null) => {
   const activeId = profileId || getActiveProfileId();
 
@@ -769,4 +808,5 @@ export const clearAllData = (profileId = null) => {
   localStorage.removeItem(getProfileKey('symptomTracker_appointments', activeId));
   localStorage.removeItem(getProfileKey('symptomTracker_reminderSettings', activeId));
   localStorage.removeItem(getProfileKey('symptomTracker_sleepApneaProfile', activeId));
+  localStorage.removeItem(getProfileKey('symptomTracker_weightGoal', activeId));
 };

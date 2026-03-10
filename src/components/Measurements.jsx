@@ -19,7 +19,7 @@ import { formatLocalDateTime } from '../utils/datetime';
  * Measurements Component - Phase 1
  * Displays measurement tracking interface for objective health data
  */
-const Measurements = () => {
+const Measurements = ({ onNavigate }) => {
   const { features } = useProfile();
   const [measurements, setMeasurements] = useState([]);
   const [showAddModal, setShowAddModal] = useState(false);
@@ -37,6 +37,11 @@ const Measurements = () => {
   };
 
   const handleAddClick = (measurementType) => {
+    // Weight gets its own dedicated tracker page instead of the modal
+    if (measurementType.id === 'weight' && onNavigate) {
+      onNavigate('weight-tracker');
+      return;
+    }
     setSelectedMeasurementType(measurementType);
     setShowAddModal(true);
   };
