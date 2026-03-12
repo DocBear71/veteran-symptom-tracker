@@ -1,6 +1,6 @@
 // Service Worker for Doc Bear's Symptom Vault
 // Version updated on each deploy to bust cache
-const CACHE_VERSION = 'v2';
+const CACHE_VERSION = 'v3';
 const CACHE_NAME = `symptom-tracker-${CACHE_VERSION}`;
 
 // Only cache the shell, not the hashed assets

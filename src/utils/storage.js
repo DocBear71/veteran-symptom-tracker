@@ -405,7 +405,15 @@ export const getAppointments = (profileId = null) => {
   try {
     const key = getProfileKey('symptomTracker_appointments', profileId);
     const data = localStorage.getItem(key);
-    return data ? JSON.parse(data) : [];
+    if (!data) return [];
+    const appointments = JSON.parse(data);
+    // Sort by actual appointment date, most recent first
+    // Falls back to createdAt for records missing appointmentDate
+    return appointments.sort((a, b) => {
+      const dateA = new Date(a.appointmentDate || a.createdAt || 0);
+      const dateB = new Date(b.appointmentDate || b.createdAt || 0);
+      return dateB - dateA;
+    });
   } catch (error) {
     console.error('Error reading appointments:', error);
     return [];

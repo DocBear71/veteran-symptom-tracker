@@ -2222,6 +2222,8 @@ export const MEASUREMENT_TYPES = {
     },
   },
 
+
+
   // ============================================
   // PHASE 10: LIVER FUNCTION - MELD SCORE
   // ============================================
@@ -2298,6 +2300,78 @@ export const MEASUREMENT_TYPES = {
       moderate: { meld_score: [10, 12], label: 'Moderate (10-11) - 30% Rating', color: 'yellow' },
       mild: { meld_score: [7, 10], label: 'Mild (7-9) - 10% Rating', color: 'green' },
       minimal: { meld_score: [0, 7], label: 'Minimal (≤6) - 0% Rating', color: 'green' },
+    },
+  },
+  PAIN_SCORE: {
+    id: 'pain-score',
+    name: 'Pain Score',
+    shortName: 'Pain',
+    icon: '😣',
+    description: 'Track pain levels over time for chronic pain conditions and VA documentation',
+
+    fields: [
+      {
+        key: 'painScore',
+        label: 'Pain Level',
+        unit: '/10',
+        type: 'number',
+        min: 0,
+        max: 10,
+        step: 1,
+        required: true,
+        placeholder: '5',
+        help: '0 = no pain, 10 = worst pain imaginable',
+      },
+    ],
+
+    metadata: [
+      {
+        key: 'painLocation',
+        label: 'Primary pain location',
+        type: 'text',
+        placeholder: 'e.g., lower back, knees, head',
+        required: false,
+      },
+      {
+        key: 'painType',
+        label: 'Pain type',
+        type: 'select',
+        options: [
+          { value: 'aching', label: 'Aching' },
+          { value: 'burning', label: 'Burning' },
+          { value: 'sharp', label: 'Sharp/Stabbing' },
+          { value: 'throbbing', label: 'Throbbing' },
+          { value: 'shooting', label: 'Shooting' },
+          { value: 'pressure', label: 'Pressure/Squeezing' },
+          { value: 'other', label: 'Other' },
+        ],
+        default: 'aching',
+      },
+      {
+        key: 'atRest',
+        label: 'Pain at rest?',
+        type: 'boolean',
+        default: true,
+      },
+      {
+        key: 'withActivity',
+        label: 'Pain worsens with activity?',
+        type: 'boolean',
+        default: false,
+      },
+    ],
+
+    relatedConditions: [
+      'chronic-pain', 'fibromyalgia', 'lumbosacral-strain',
+      'degenerative-arthritis', 'peripheral-neuropathy',
+    ],
+
+    interpretation: {
+      none:     { painScore: [0, 0],   label: 'No Pain',       color: 'green'  },
+      mild:     { painScore: [1, 3],   label: 'Mild Pain',     color: 'yellow' },
+      moderate: { painScore: [4, 6],   label: 'Moderate Pain', color: 'orange' },
+      severe:   { painScore: [7, 8],   label: 'Severe Pain',   color: 'red'    },
+      worst:    { painScore: [9, 10],  label: 'Worst Pain',    color: 'red'    },
     },
   },
 };
@@ -2460,6 +2534,14 @@ export const interpretMeasurement = (measurementTypeId, values, metadata = {}) =
       if (meld_score > 6) return { label: 'Mild (7-9)', color: 'green', rating: '10%' };
       return { label: 'Minimal (≤6)', color: 'green', rating: '0%' };
     }
+    case 'pain-score': {
+      const { painScore } = values;
+      if (painScore === 0) return interpretations.none;
+      if (painScore <= 3)  return interpretations.mild;
+      if (painScore <= 6)  return interpretations.moderate;
+      if (painScore <= 8)  return interpretations.severe;
+      return interpretations.worst;
+    }
 
     default:
       return null;
@@ -2602,6 +2684,8 @@ export const formatMeasurementValue = (measurementTypeId, values) => {
 
       return parts.join(' | ');
     }
+    case 'pain-score':
+      return `${values.painScore}/10`;
     case 'meld-score': {
       let result = `MELD ${values.meld_score}`;
       const components = [];

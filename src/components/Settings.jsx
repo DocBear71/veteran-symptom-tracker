@@ -71,9 +71,113 @@ const BackupHistoryDisplay = () => {
   );
 };
 
+/**
+ * Display VA Blue Button import history from audit log
+ */
+const BBImportHistory = () => {
+  const [history, setHistory] = useState([]);
+  const [expanded, setExpanded] = useState(false);
 
-const Settings = ({ onNavigate }) => {  // ← ADD onNavigate prop
-  // Theme state (no context needed)
+  useEffect(() => {
+    try {
+      const log = JSON.parse(localStorage.getItem('symptomTracker_bbImportLog') || '[]');
+      setHistory(log);
+    } catch {
+      setHistory([]);
+    }
+  }, []);
+
+  const handleClearHistory = () => {
+    if (window.confirm('Clear import history? This only removes the history log — your imported data (measurements, appointments, conditions) will not be affected.')) {
+      localStorage.removeItem('symptomTracker_bbImportLog');
+      setHistory([]);
+    }
+  };
+
+  // Check if most recent import was more than 90 days ago
+  const showStaleWarning = history.length > 0 && (() => {
+    const lastImport = new Date(history[0].importedAt);
+    const daysSince = (Date.now() - lastImport.getTime()) / (1000 * 60 * 60 * 24);
+    return daysSince > 90;
+  })();
+
+  if (history.length === 0) {
+    return (
+        <div className="bg-gray-50 dark:bg-gray-700/30 rounded-lg p-4 text-center mt-3">
+          <p className="text-sm text-gray-500 dark:text-gray-400">No imports yet.</p>
+        </div>
+    );
+  }
+
+  const displayed = expanded ? history : history.slice(0, 3);
+
+  return (
+      <>
+      {showStaleWarning && (
+          <div className="bg-amber-50 dark:bg-amber-900/30 border border-amber-200 dark:border-amber-700 rounded-lg p-3 mt-3 text-sm text-amber-800 dark:text-amber-300">
+            ⚠️ <strong>Your last Blue Button import was over 90 days ago.</strong> Consider re-importing to keep your VA records current.
+          </div>
+      )}
+
+      <div className="mt-3 space-y-2">
+        {displayed.map((entry, idx) => {
+          const { counts, importedAt, dateRange, sections } = entry;
+          const date = new Date(importedAt);
+          const dateLabel = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+          const timeLabel = date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+
+          // Build a compact summary string
+          const parts = [];
+          if (counts.measurements > 0) parts.push(`${counts.measurements} measurement${counts.measurements !== 1 ? 's' : ''}`);
+          if (counts.appointments > 0) parts.push(`${counts.appointments} appt${counts.appointments !== 1 ? 's' : ''}`);
+          if (counts.conditions > 0)   parts.push(`${counts.conditions} condition${counts.conditions !== 1 ? 's' : ''}`);
+          if (counts.skipped > 0)      parts.push(`${counts.skipped} skipped`);
+
+          const rangeLabel = dateRange?.start && dateRange?.end
+              ? `${dateRange.start} → ${dateRange.end}`
+              : 'All dates';
+
+          return (
+              <div key={idx} className="bg-gray-50 dark:bg-gray-700/30 rounded-lg p-3 text-sm">
+                <div className="flex items-center justify-between">
+              <span className="font-medium text-gray-900 dark:text-white">
+                📥 {dateLabel} at {timeLabel}
+              </span>
+                  {counts.errors > 0 && (
+                      <span className="text-xs text-red-500">⚠️ {counts.errors} error{counts.errors !== 1 ? 's' : ''}</span>
+                  )}
+                </div>
+                <p className="text-gray-600 dark:text-gray-400 mt-0.5">
+                  {parts.length > 0 ? parts.join(' · ') : 'Nothing imported'}
+                </p>
+                <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">
+                  Range: {rangeLabel}
+                </p>
+              </div>
+          );
+        })}
+        {history.length > 3 && (
+            <button
+                onClick={() => setExpanded(e => !e)}
+                className="text-xs text-blue-600 dark:text-blue-400 hover:underline w-full text-center pt-1"
+            >
+              {expanded ? 'Show less' : `Show ${history.length - 3} more`}
+            </button>
+        )}
+        <div className="flex justify-end mt-2">
+          <button
+              onClick={handleClearHistory}
+              className="text-xs text-red-500 dark:text-red-400 hover:underline"
+          >
+            Clear import history
+          </button>
+        </div>
+      </div>
+      </>
+  );
+};
+
+const Settings = ({ onNavigate, onOpenBlueButton }) => {
   const [theme, setTheme] = useState(() => {
     return localStorage.getItem('symptomTracker_theme') || 'system';
   });
@@ -838,6 +942,26 @@ const Settings = ({ onNavigate }) => {  // ← ADD onNavigate prop
               }`} />
             </div>
           </label>
+        </div>
+
+        <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
+          <h3 className="font-medium text-gray-900 dark:text-white mb-3">VA Blue Button Import</h3>
+          <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+            Bring your VA records into Symptom Vault — labs, vitals, appointments, and conditions
+          </p>
+          <button
+              onClick={onOpenBlueButton}
+              className="w-full py-3 px-4 bg-blue-900 text-white rounded-lg text-sm font-semibold hover:bg-blue-800 transition-colors"
+          >
+            📥 Import VA Blue Button Data
+          </button>
+          <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
+            Download your report from VA.gov "Review Medical Records" as a .txt file, then import it here
+          </p>
+          <div className="mt-4 border-t border-gray-200 dark:border-gray-700 pt-3">
+            <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Import History</p>
+            <BBImportHistory />
+          </div>
         </div>
 
         {/* Export Data Section - NEW */}

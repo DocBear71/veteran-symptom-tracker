@@ -77,14 +77,15 @@ const ChartContainer = ({ children, height = 256 }) => {
  * Measurements Trends Component
  * Displays measurement history with charts and statistics
  */
-const MeasurementsTrends = ({ dateRange }) => {
-    const [selectedType, setSelectedType] = useState('all');
-    const [measurements, setMeasurements] = useState([]);
-    const measurementTypes = getAllMeasurementTypes();
+const MeasurementsTrends = () => {
+  const [selectedType, setSelectedType] = useState('all');
+  const [measurements, setMeasurements] = useState([]);
+  const [dateRange, setDateRange] = useState('all');  // own independent date range
+  const measurementTypes = getAllMeasurementTypes();
 
-    useEffect(() => {
-        loadMeasurements();
-    }, [dateRange, selectedType]);
+  useEffect(() => {
+    loadMeasurements();
+  }, [dateRange, selectedType]);
 
     const loadMeasurements = () => {
         const now = new Date();
@@ -151,14 +152,33 @@ const MeasurementsTrends = ({ dateRange }) => {
 
     return (
         <div className="space-y-4">
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
-                Measurement Trends
-            </h2>
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+            Measurement Trends
+          </h2>
 
-            {/* Filter */}
-            <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
-                <label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 block">
-                    Filter by measurement type:
+          {/* Filters */}
+          <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
+            <div className="flex gap-3 flex-wrap mb-3">
+              <div className="flex-1 min-w-[140px]">
+                <label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 block">
+                  Date range:
+                </label>
+                <select
+                    value={dateRange}
+                    onChange={(e) => setDateRange(e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg
+                         bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm"
+                >
+                  <option value="week">Last 7 Days</option>
+                  <option value="month">Last 30 Days</option>
+                  <option value="3months">Last 90 Days</option>
+                  <option value="year">Last Year</option>
+                  <option value="all">All Time</option>
+                </select>
+              </div>
+              <div className="flex-1 min-w-[140px]">
+                <label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 block">
+                  Measurement type:
                 </label>
                 <select
                     value={selectedType}
@@ -173,7 +193,9 @@ const MeasurementsTrends = ({ dateRange }) => {
                         </option>
                     ))}
                 </select>
+              </div>
             </div>
+          </div>
 
             {/* No Data State */}
             {measurements.length === 0 ? (
@@ -706,7 +728,7 @@ const Trends = () => {
         )}
 
       {activeTab === 'measurements' && (
-          <MeasurementsTrends dateRange={dateRange} />
+          <MeasurementsTrends />
       )}
       </div>
   );

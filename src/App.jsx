@@ -23,6 +23,8 @@ import CPExamPrep from './components/CPExamPrep';
 import AfterActionReport from './components/AfterActionReport';
 import QuickActionsMenu from './components/QuickActionsMenu';
 import { initializeAccessibility } from './components/AccessibilitySettings';
+import BlueButtonImport from './components/BlueButtonImport';
+
 
 
 // Profile system
@@ -56,6 +58,7 @@ const getInitialViewFromURL = () => {
     '/strategic-filing': 'strategic-filing',
     'after-action-report': 'after-action-report',
     'weight-tracker': '/weight-tracker',
+    'blue-button-import': '/blue-button-import',
   };
 
   return pathToView[path] || 'log';
@@ -68,6 +71,7 @@ const AppContent = () => {
   const { shouldShowOnboarding, refreshProfile } = useProfile();
   const [showOnboarding, setShowOnboarding] = useState(shouldShowOnboarding);
   const [showTerms, setShowTerms] = useState(false);
+  const [showBlueButton, setShowBlueButton] = useState(false);
 
   // Phase 1H - Copy last entry prefill data
   const [prefillData, setPrefillData] = useState(null);
@@ -159,6 +163,7 @@ const AppContent = () => {
       '/cp-exam-prep': '/cp-exam-prep',
       'after-action-report': 'after-action-report',
       'weight-tracker': '/weight-tracker',
+      'blue-button-import': '/blue-button-import',
     };
 
     const newPath = viewToPath[view] || '/';
@@ -201,7 +206,7 @@ const AppContent = () => {
       case 'export':
         return <ExportData />;
       case 'settings':
-        return <Settings onNavigate={handleNavigate} />;
+        return <Settings onNavigate={handleNavigate} onOpenBlueButton={() => setShowBlueButton(true)} />;
       case 'thank-you':
         return <ThankYou />;
       case 'secondary-conditions':
@@ -218,6 +223,8 @@ const AppContent = () => {
         return <StrategicFilingGuide onBack={() => handleNavigate('settings')} />;
       case 'after-action-report':
         return <AfterActionReport />
+      case 'blue-button-import':
+        return null;
       default:
         return <SymptomLogger />;
     }
@@ -241,6 +248,17 @@ const AppContent = () => {
         <Layout currentView={currentView} onNavigate={handleNavigate}>
           {renderView()}
         </Layout>
+
+        {/* Blue Button Import Wizard */}
+        {showBlueButton && (
+            <BlueButtonImport
+                onClose={() => setShowBlueButton(false)}
+                onImportComplete={(result) => {
+                  setShowBlueButton(false);
+                  // Phase 5 will handle writing to storage here
+                }}
+            />
+        )}
 
         {/* V2.5 - Quick Actions Floating Button */}
         <QuickActionsMenu

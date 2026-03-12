@@ -12,6 +12,23 @@ const APPOINTMENT_TYPES = [
     { value: 'other', label: 'Other' },
 ];
 
+// Convert 12-hour time (e.g. "9:00 AM") to 24-hour format (e.g. "09:00")
+// Returns the value unchanged if it's already in HH:mm format or empty
+const to24Hour = (timeStr) => {
+  if (!timeStr) return '';
+  // Already in HH:mm format — pass through
+  if (/^\d{2}:\d{2}$/.test(timeStr)) return timeStr;
+  // Parse 12-hour format
+  const match = timeStr.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
+  if (!match) return timeStr; // Unknown format — pass through unchanged
+  let hours = parseInt(match[1], 10);
+  const minutes = match[2];
+  const period = match[3].toUpperCase();
+  if (period === 'AM' && hours === 12) hours = 0;
+  if (period === 'PM' && hours !== 12) hours += 12;
+  return `${String(hours).padStart(2, '0')}:${minutes}`;
+};
+
 const EditAppointmentModal = ({ appointment, onClose, onSave }) => {
     const [formData, setFormData] = useState({
         appointmentType: '',
@@ -33,7 +50,7 @@ const EditAppointmentModal = ({ appointment, onClose, onSave }) => {
             setFormData({
                 appointmentType: appointment.appointmentType || '',
                 appointmentDate: appointment.appointmentDate || '',
-                appointmentTime: appointment.appointmentTime || '',
+                appointmentTime: to24Hour(appointment.appointmentTime || ''),
                 providerName: appointment.providerName || '',
                 facility: appointment.facility || '',
                 reasonForVisit: appointment.reasonForVisit || '',
