@@ -1,8 +1,6 @@
 import {
   VISION_LOSS_CRITERIA,
-  GLAUCOMA_CRITERIA,
-  getRatingRowColor,
-  getRatingTextColor,
+  GLAUCOMA_CRITERIA
 } from '../utils/ratingCriteria';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import ServiceConnectedBanner from './ServiceConnectedBanner';

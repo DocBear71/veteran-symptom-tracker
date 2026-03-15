@@ -11,6 +11,7 @@ import {
   TUBERCULOSIS_MILIARY_CRITERIA
 } from '../utils/ratingCriteria';
 import MedicationCorrelation from './MedicationCorrelation';
+import ServiceConnectedBanner from './ServiceConnectedBanner';
 
 const TuberculosisRatingCard = ({ analysis, expanded, onToggle }) => {
   if (!analysis?.hasData) {
@@ -127,6 +128,13 @@ const TuberculosisRatingCard = ({ analysis, expanded, onToggle }) => {
         {expanded && (
             <div className="px-6 pb-6 space-y-6">
               <div className="border-t border-gray-200 dark:border-gray-700" />
+
+              {/* Service-Connected Status Banner */}
+              <ServiceConnectedBanner
+                conditionKey="tuberculosis"
+                currentAnalysis={analysis}
+              />
+
 
               {/* Active TB Warning Banner */}
               {(diseaseStatus === 'active' || diseaseStatus === 'miliary-active') && (

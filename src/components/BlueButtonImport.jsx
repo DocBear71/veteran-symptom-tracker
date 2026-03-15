@@ -12,7 +12,6 @@
 import { useState, useCallback, useRef } from 'react';
 import {
   validateBluebuttonFile,
-  detectSections,
   getSectionDateRange,
   parseVitals,
   parseLabs,
@@ -24,7 +23,6 @@ import {
   SECTION_KEYS,
   formatDateForDisplay,
   toISOString,
-  toISODateTime,
 } from '../utils/bluebuttonParser';
 import { saveMeasurement, getMeasurements } from '../utils/measurements';
 import { saveAppointment, getAppointments, addCustomSymptom } from '../utils/storage';
@@ -70,7 +68,7 @@ const TYPE_LABELS = {
 
 export default function BlueButtonImport({ onClose, onImportComplete }) {
   const [step, setStep] = useState(WIZARD_STEPS.UPLOAD);
-  const [fileText, setFileText] = useState(null);
+  const [, setFileText] = useState(null);
   const [reportInfo, setReportInfo] = useState(null);
   const [validationError, setValidationError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -103,6 +101,25 @@ export default function BlueButtonImport({ onClose, onImportComplete }) {
     setIsLoading(true);
     setLoadProgress(0);
 
+    const _buildSectionData = (text, detected) => {
+      const { sectionMap } = detected;
+      const ranges = {};
+      Object.entries(sectionMap).forEach(([key, section]) => {
+        ranges[key] = getSectionDateRange(section.rawText, key);
+      });
+      setSectionData(detected);
+      setSectionRanges(ranges);
+
+      let earliest = null;
+      let latest = null;
+      Object.values(ranges).forEach(({ start, end }) => {
+        if (start && (!earliest || start < earliest)) earliest = start;
+        if (end && (!latest || end > latest)) latest = end;
+      });
+      if (earliest) setDateRangeStart(toISOString(earliest));
+      if (latest) setDateRangeEnd(toISOString(latest));
+    };
+
     const reader = new FileReader();
     reader.onprogress = (e) => {
       if (e.lengthComputable) setLoadProgress(Math.round((e.loaded / e.total) * 100));
@@ -129,24 +146,6 @@ export default function BlueButtonImport({ onClose, onImportComplete }) {
     reader.readAsText(file);
   }, []);
 
-  const _buildSectionData = (text, detected) => {
-    const { sectionMap } = detected;
-    const ranges = {};
-    Object.entries(sectionMap).forEach(([key, section]) => {
-      ranges[key] = getSectionDateRange(section.rawText, key);
-    });
-    setSectionData(detected);
-    setSectionRanges(ranges);
-
-    let earliest = null;
-    let latest = null;
-    Object.values(ranges).forEach(({ start, end }) => {
-      if (start && (!earliest || start < earliest)) earliest = start;
-      if (end && (!latest || end > latest)) latest = end;
-    });
-    if (earliest) setDateRangeStart(toISOString(earliest));
-    if (latest) setDateRangeEnd(toISOString(latest));
-  };
 
   const handleFileDrop = useCallback((e) => {
     e.preventDefault();
@@ -626,7 +625,7 @@ function StepUpload({ onFileSelect, onFileDrop, onDragOver, fileInputRef, isLoad
 
 // ── Step 1 ────────────────────────────────────────────────────
 
-function StepSelect({ reportInfo, sectionData, sectionRanges, selectedSections, onToggleSection,
+function StepSelect({ reportInfo, sectionRanges, selectedSections, onToggleSection,
                       dateRangeStart, dateRangeEnd, onDateRangeStartChange, onDateRangeEndChange, onBack, onNext }) {
 
   const { veteranName, reportDateRange, detectedSections } = reportInfo;
@@ -707,7 +706,7 @@ function StepSelect({ reportInfo, sectionData, sectionRanges, selectedSections, 
   );
 }
 
-function SectionCheckbox({ sectionKey, label, isPresent, isSelected, range, onToggle }) {
+function SectionCheckbox({ label, isPresent, isSelected, range, onToggle }) {
   return (
       <label className={`flex items-start gap-3 p-3 rounded-lg border cursor-pointer transition-colors
       ${!isPresent ? 'bg-gray-50 border-gray-200 opacity-50 cursor-not-allowed'

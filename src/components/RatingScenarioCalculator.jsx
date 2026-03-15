@@ -71,7 +71,9 @@ const RatingScenarioCalculator = ({ embedded = false, onClose }) => {
   const { profile } = useProfile();
 
   // State for service-connected conditions from profile
-  const [serviceConnectedConditions, setServiceConnectedConditions] = useState([]);
+  const [serviceConnectedConditions, setServiceConnectedConditions] = useState(() =>
+      profile?.id ? (getServiceConnectedConditions(profile.id) || []) : []
+  );
 
   // State for hypothetical conditions added by user
   const [hypotheticalConditions, setHypotheticalConditions] = useState([]);
@@ -85,7 +87,15 @@ const RatingScenarioCalculator = ({ embedded = false, onClose }) => {
   });
 
   // State for saved scenarios
-  const [savedScenarios, setSavedScenarios] = useState([]);
+  const [savedScenarios, setSavedScenarios] = useState(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      return saved ? JSON.parse(saved) : [];
+    } catch (e) {
+      console.error('Error loading saved scenarios:', e);
+      return [];
+    }
+  });
   const [scenarioName, setScenarioName] = useState('');
   const [showSaveModal, setShowSaveModal] = useState(false);
   const [compareMode, setCompareMode] = useState(false);
@@ -98,25 +108,13 @@ const RatingScenarioCalculator = ({ embedded = false, onClose }) => {
   // EFFECTS
   // ============================================
 
-  // Load service-connected conditions from profile
+  // Reload service-connected conditions when profile changes
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => {
     if (profile?.id) {
-      const conditions = getServiceConnectedConditions(profile.id);
-      setServiceConnectedConditions(conditions || []);
+      setServiceConnectedConditions(getServiceConnectedConditions(profile.id) || []);
     }
   }, [profile]);
-
-  // Load saved scenarios from localStorage
-  useEffect(() => {
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) {
-        setSavedScenarios(JSON.parse(saved));
-      }
-    } catch (e) {
-      console.error('Error loading saved scenarios:', e);
-    }
-  }, []);
 
   // ============================================
   // CALCULATIONS

@@ -1,5 +1,4 @@
-import { useRef, useState, useEffect } from 'react';
-import { Zap, X } from 'lucide-react';
+import { useState, useEffect } from 'react';
 import { getChronicSymptoms, removeChronicSymptom, saveSymptomLog, getMedications, logMedicationTaken, getSymptomLogs } from '../utils/storage';
 import {
   formatDosage,
@@ -768,11 +767,6 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
     usesAssistiveDevice: false,
   });
 
-
-  useEffect(() => {
-    loadData();
-  }, []);
-
   const loadData = () => {
     setChronicSymptoms(getChronicSymptoms());
     setMedications(getMedications());
@@ -810,6 +804,9 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
     setSymptomFrequency(frequency);
   };
 
+  useEffect(() => {
+    loadData();
+  }, []);
 
   // Peripheral nerve prefixes to exclude from generic pain/GU detection
   const peripheralNervePrefixes = ['uprn-', 'mdrn-', 'lwrn-', 'alrn-', 'radn-', 'medn-', 'ulnn-',
@@ -1245,13 +1242,6 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
   ].includes(selectedChronic?.symptomId);
 
   // Other Anxiety/Mood
-  const isOtherSpecifiedAnxietyRelated = [
-    'other-anxiety-symptoms',
-    'other-anxiety-worry',
-    'other-anxiety-avoidance',
-    'other-anxiety-physical',
-  ].includes(selectedChronic?.symptomId);
-
   const isDepersonalizationRelated = [
     'depersonalization-detachment',
     'derealization-unreality',
@@ -1353,8 +1343,6 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
       selectedChronic?.category === "Parkinson's Disease Symptoms";
   const isMyastheniaRelated = selectedChronic?.symptomId?.startsWith('mg-') ||
       selectedChronic?.category === 'Myasthenia Gravis Symptoms';
-  const isNeurologicalPhase1ARelated = isMultipleSclerosisRelated ||
-      isParkinsonsRelated || isMyastheniaRelated;
   // ============================================
   // PHASE 1B: ADDITIONAL NEUROLOGICAL DETECTION
   // ============================================
@@ -1366,8 +1354,6 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
       selectedChronic?.category === 'syringomyelia';
   const isMyelitisRelated = selectedChronic?.symptomId?.startsWith('myel-') ||
       selectedChronic?.category === 'myelitis';
-  const isNeurologicalPhase1BRelated = isNarcolepsyRelated || isALSRelated ||
-      isSyringomyeliaRelated || isMyelitisRelated;
   // ============================================
   // PHASE 3A: ENDOCRINE - THYROID & PARATHYROID DETECTION
   // ============================================
@@ -1380,8 +1366,6 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
       selectedChronic?.category === 'hyperparathyroidism';
   const isHypoparathyroidismRelated = selectedChronic?.symptomId?.startsWith('hopth-') ||
       selectedChronic?.category === 'hypoparathyroidism';
-  const isEndocrinePhase3ARelated = isHyperthyroidismRelated || isThyroiditisRelated ||
-      isHyperparathyroidismRelated || isHypoparathyroidismRelated;
   // Phase 3B: Adrenal & Pituitary Detection
   const isAddisonsDiseaseRelated = selectedChronic?.symptomId?.startsWith('addisons-') ||
       selectedChronic?.category === 'addisons-disease';
@@ -1391,8 +1375,6 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
       selectedChronic?.category === 'diabetes-insipidus';
   const isHyperaldosteronismRelated = selectedChronic?.symptomId?.startsWith('haldo-') ||
       selectedChronic?.category === 'hyperaldosteronism';
-  const isEndocrinePhase3BRelated = isAddisonsDiseaseRelated || isCushingsSyndromeRelated ||
-      isDiabetesInsipidusRelated || isHyperaldosteronismRelated;
   // ============================================
   // PHASE 1C: PERIPHERAL NERVE DETECTION
   // ============================================
@@ -3333,7 +3315,7 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
                                       <MedicationEffectivenessInline
                                           medDetail={selectedMedications[med.id]}
                                           onChange={(updated) => setSelectedMedications(prev => ({ ...prev, [med.id]: updated }))}
-                                          compact
+
                                       />
                                   )}
                                 </div>

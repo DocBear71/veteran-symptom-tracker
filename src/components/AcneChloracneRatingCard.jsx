@@ -28,6 +28,8 @@ export default function AcneChloracneRatingCard({ analysis, expanded, onToggle }
   const totalLogs = metrics?.totalLogs || 0;
   const hasDeepAcne = isChloracne ? metrics?.hasDeepChloracne : metrics?.hasDeepAcne;
   const hasSuperficialOnly = metrics?.hasSuperficialOnly || false;
+  // hasSuperficialOnly = true means surface lesions logged but NO deep nodules/cysts
+  // This is VA-significant: superficial acne rates 0% regardless of extent
 
   return (
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden border-l-4 border-orange-500">
@@ -89,14 +91,25 @@ export default function AcneChloracneRatingCard({ analysis, expanded, onToggle }
                     <div className="text-xs text-blue-700 dark:text-blue-300">Total Logs</div>
                   </div>
 
-                  {/* Acne Type */}
+                  {/* Acne Type - three states:
+                      Deep = nodules/cysts logged (10-30% ratable)
+                      Superficial = surface lesions only (0% per VA)
+                      None = no acne type logged yet */}
                   <div className={`p-3 rounded-lg text-center ${
-                      hasDeepAcne ? 'bg-red-50 dark:bg-red-900/20' : 'bg-gray-50 dark:bg-gray-700/30'
+                      hasDeepAcne
+                          ? 'bg-red-50 dark:bg-red-900/20'
+                          : hasSuperficialOnly
+                              ? 'bg-yellow-50 dark:bg-yellow-900/20'
+                              : 'bg-gray-50 dark:bg-gray-700/30'
                   }`}>
                     <div className={`text-2xl font-bold ${
-                        hasDeepAcne ? 'text-red-600 dark:text-red-400' : 'text-gray-400'
+                        hasDeepAcne
+                            ? 'text-red-600 dark:text-red-400'
+                            : hasSuperficialOnly
+                                ? 'text-yellow-600 dark:text-yellow-400'
+                                : 'text-gray-400'
                     }`}>
-                      {hasDeepAcne ? 'Deep' : 'Surface'}
+                      {hasDeepAcne ? 'Deep' : hasSuperficialOnly ? 'Surface' : '—'}
                     </div>
                     <div className="text-xs text-gray-600 dark:text-gray-400">Acne Type</div>
                   </div>

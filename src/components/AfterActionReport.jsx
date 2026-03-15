@@ -2,7 +2,7 @@
 // v2.1 Feature - Document exam details immediately after for records/appeals
 // Updated with collapsible sections
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { jsPDF } from 'jspdf';
 
 // Storage key for saved reports
@@ -12,7 +12,7 @@ const getSavedReports = () => {
   try {
     const saved = localStorage.getItem(STORAGE_KEY);
     return saved ? JSON.parse(saved) : [];
-  } catch (e) {
+  } catch {
     return [];
   }
 };
@@ -69,7 +69,7 @@ const CollapsibleCategory = ({ title, isExpanded, onToggle, children }) => (
 
 const AfterActionReport = ({ embedded = false, onClose }) => {
   const [activeView, setActiveView] = useState('new');
-  const [savedReports, setSavedReports] = useState([]);
+  const [savedReports, setSavedReports] = useState(() => getSavedReports());
   const [selectedReport, setSelectedReport] = useState(null);
 
   const [expandedSections, setExpandedSections] = useState({
@@ -138,8 +138,6 @@ const AfterActionReport = ({ embedded = false, onClose }) => {
     requestedDBQCopy: false,
     examinerProvidedInfo: false,
   });
-
-  useEffect(() => { setSavedReports(getSavedReports()); }, []);
 
   const commonQuestions = {
     'Mental Health': [

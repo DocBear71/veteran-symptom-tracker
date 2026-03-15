@@ -2,7 +2,6 @@ import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import { calculateCombinedRatingDetailed } from './vaRatingCalculator';
 import { getSymptomLogs,
-  saveSymptomLog,
   getMedicationLogs,
   getMedicationLogsForSymptom,
   getAppointments,
@@ -29,7 +28,6 @@ const EFFECTIVENESS_EXPORT_LABELS = {
   complete: 'Complete Relief',
 };
 import {
-  CONDITIONS,
   analyzeMigraineLogs,
   analyzeSleepApneaLogs,
   analyzePTSDLogs,
@@ -322,7 +320,7 @@ export const generatePDF = (dateRange = 'all', options = { includeAppointments: 
         // Phase 1B: Add GI details
         if (log.giData) {
           const giInfo = [];
-          if (log.giData.bristolScale) giInfo.push(`Bristol ${log.giData.bristolScale}`);
+          if (log.giData.bristolScale) giInfo.push(formatBristolScale(log.giData.bristolScale));
           if (log.giData.frequencyPerDay) giInfo.push(`${log.giData.frequencyPerDay}x/day`);
           if (log.giData.urgencyLevel && log.giData.urgencyLevel !== 'none') giInfo.push(formatUrgency(log.giData.urgencyLevel));
           if (log.giData.bloodPresent) giInfo.push('BLOOD PRESENT');
@@ -1318,9 +1316,7 @@ export const generatePDF = (dateRange = 'all', options = { includeAppointments: 
           if (od.trigger) ocdInfo.push(`Trigger: ${od.trigger}`);
 
           if (ocdInfo.length > 0) {
-            const oldNotes = notes;
             notes = ocdInfo.join(' | ') + (notes !== '-' ? ` | ${notes}` : '');
-          } else {
           }
         }
 
@@ -2102,7 +2098,6 @@ export const generateCSV = (dateRange = 'all', options = { includeAppointments: 
       ];
 
         const symptomRows = logs.map(log => {
-            const date = new Date(log.timestamp);
             const linkedMeds = getMedicationLogsForSymptom(log.id);
 
             // Migraine data
@@ -3001,12 +2996,18 @@ const analyzeAllConditions = (logs, options = {}) => {
         'menieres': analyzeMenieresLogs,
         'rhinitis': analyzeRhinitisLogs,
         'tmj': analyzeTMJLogs,
+        'tooth-loss': analyzeToothLossLogs,
+        'mandible-nonunion': analyzeMandibleNonunionLogs,
+        'malignant-oral-neoplasm': analyzeMalignantOralNeoplasmLogs,
+        'benign-oral-neoplasm': analyzeBenignOralNeoplasmLogs,
         'plantar-fasciitis': analyzePlantarFasciitisLogs,
         'insomnia': analyzeInsomniaLogs,
         'sinusitis': analyzeSinusitisLogs,
         'shoulder': analyzeShoulderLogs,
         'hip': analyzeHipLogs,
+        'hip-thigh': analyzeHipThighLogs,
         'ankle': analyzeAnkleLogs,
+        'ankle-achilles': analyzeAnkleAchillesLogs,
         'wrist': analyzeWristLogs,
         'elbow': analyzeElbowLogs,
         'degenerative-arthritis': analyzeDegenerativeArthritisLogs,
@@ -3272,7 +3273,6 @@ const getEvidenceStrength = (analysis) => {
   const rating = parseInt(analysis.supportedRating) || 0;
   const evidenceCount = analysis.evidence?.length || 0;
   const gapsCount = analysis.gaps?.length || 0;
-  const rationaleCount = analysis.ratingRationale?.length || 0;
 
   // Strong: High rating with good evidence and few gaps
   if (rating >= 50 && evidenceCount >= 3 && gapsCount <= 2) return 'strong';
@@ -3380,7 +3380,9 @@ const generateRatingEvidenceSummaryPage = (doc, ratingAnalyses, pageWidth) => {
   }
 
   doc.setFontSize(9);
-  doc.text(tierText, pageWidth - 50, currentY + 38, { align: 'center' });
+  doc.text(tierText, pageWidth - 50, currentY + 35, { align: 'center' });
+  doc.setFontSize(7);
+  doc.text(tierNote, pageWidth - 50, currentY + 41, { align: 'center' });
 
   currentY += 55;
 
@@ -3402,7 +3404,7 @@ const generateRatingEvidenceSummaryPage = (doc, ratingAnalyses, pageWidth) => {
     currentY += 10;
 
     // Breakdown table
-    const breakdownData = combinedResult.breakdown.map((step, idx) => [
+    const breakdownData = combinedResult.breakdown.map((step) => [
       `${step.step}`,
       step.conditionName.length > 30 ? step.conditionName.substring(0, 30) + '...' : step.conditionName,
       `${step.rating}%`,
@@ -3813,7 +3815,7 @@ export const generateVAClaimPackagePDF = async (dateRange = 'all', options = {})
         // Phase 1B: Add GI details
         if (log.giData) {
           const giInfo = [];
-          if (log.giData.bristolScale) giInfo.push(`Bristol ${log.giData.bristolScale}`);
+          if (log.giData.bristolScale) giInfo.push(formatBristolScale(log.giData.bristolScale));
           if (log.giData.frequencyPerDay) giInfo.push(`${log.giData.frequencyPerDay}x/day`);
           if (log.giData.urgencyLevel && log.giData.urgencyLevel !== 'none') giInfo.push(formatUrgency(log.giData.urgencyLevel));
           if (log.giData.bloodPresent) giInfo.push('BLOOD PRESENT');
@@ -4821,9 +4823,7 @@ export const generateVAClaimPackagePDF = async (dateRange = 'all', options = {})
           if (od.trigger) ocdInfo.push(`Trigger: ${od.trigger}`);
 
           if (ocdInfo.length > 0) {
-            const oldNotes = notes;
             notes = ocdInfo.join(' | ') + (notes !== '-' ? ` | ${notes}` : '');
-          } else {
           }
         }
 
@@ -5673,7 +5673,6 @@ export const generateVAClaimPackagePDF = async (dateRange = 'all', options = {})
     }
 
     // Trend stats
-    const trend30  = getWeightTrend(weightMeasurements, 30);
     const rate30   = getAverageRate(weightMeasurements, 30);
     const totalChange = parseFloat((currentWeight - firstEntry.values.weight).toFixed(1));
 

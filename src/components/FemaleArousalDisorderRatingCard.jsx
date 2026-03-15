@@ -1,6 +1,5 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
-import { FEMALE_SEXUAL_AROUSAL_DISORDER_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
-import UnderstandingYourRating from './UnderstandingYourRating';
+import { FEMALE_SEXUAL_AROUSAL_DISORDER_CRITERIA, getRatingRowColor } from '../utils/ratingCriteria';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import MedicationCorrelation from './MedicationCorrelation';
 

@@ -45,6 +45,7 @@ const EditAppointmentModal = ({ appointment, onClose, onSave }) => {
     });
 
     // Populate form with existing appointment data
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     useEffect(() => {
         if (appointment) {
             setFormData({

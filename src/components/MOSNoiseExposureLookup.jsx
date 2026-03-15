@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Search, ChevronDown, ChevronUp, Volume2, AlertCircle, Info, ArrowLeft, ExternalLink } from 'lucide-react';
+import { Search, Volume2, AlertCircle, Info, ArrowLeft } from 'lucide-react';
 
 /**
  * MOS Noise Exposure Lookup Component
@@ -657,7 +657,6 @@ const EXPOSURE_COLORS = {
 export default function MOSNoiseExposureLookup() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedBranch, setSelectedBranch] = useState(null);
-  const [expandedBranch, setExpandedBranch] = useState(null);
   const [showInfo, setShowInfo] = useState(false);
 
   // Search across all branches
@@ -702,7 +701,6 @@ export default function MOSNoiseExposureLookup() {
   const handleBack = () => {
     if (selectedBranch) {
       setSelectedBranch(null);
-      setExpandedBranch(null);
     } else {
       window.history.back();
     }

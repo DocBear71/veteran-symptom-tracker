@@ -493,13 +493,9 @@ const PresumptiveConditionsGuide = () => {
   const isVeteran = profile?.type === 'veteran' ||
       (profile?.type === 'caregiver' && profile?.caregiverType === 'veteran-caregiver');
 
-  if (!isVeteran) {
-    return null;
-  }
-
-  // Search functionality
+  // Search functionality - must be before early return (Rules of Hooks)
   const filteredConditions = useMemo(() => {
-    if (!searchQuery.trim()) return null;
+    if (!isVeteran || !searchQuery.trim()) return null;
 
     const query = searchQuery.toLowerCase();
     const results = [];
@@ -522,7 +518,11 @@ const PresumptiveConditionsGuide = () => {
     });
 
     return results;
-  }, [searchQuery]);
+  }, [searchQuery, isVeteran]);
+
+  if (!isVeteran) {
+    return null;
+  }
 
   const toggleSection = (sectionId) => {
     setExpandedSections(prev => ({

@@ -204,6 +204,11 @@ export default function PeripheralNerveRatingCard({ nerveType, analysis, expande
   const criteria = config.criteria;
   const isUpperExtremity = config.isUpperExtremity;
 
+  // Build single diagnostic code string for educational content
+  const diagnosticCode = diagnosticCodes
+      ? `${diagnosticCodes.paralysis}/${diagnosticCodes.neuritis}/${diagnosticCodes.neuralgia}`
+      : criteria.diagnosticCodes?.paralysis?.toString() || '';
+
   // Build DC code display string
   const dcDisplay = diagnosticCodes
       ? `DC ${diagnosticCodes.paralysis}/${diagnosticCodes.neuritis}/${diagnosticCodes.neuralgia}`

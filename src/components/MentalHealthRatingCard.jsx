@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { MENTAL_HEALTH_SHARED_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
@@ -23,10 +22,9 @@ export default function MentalHealthRatingCard({
                                                  icon = '🧠',
                                                  conditionName,
                                                  diagnosticCode,
-                                                 getAllRatings,
-                                                 getDefinition
+                                                 getAllRatings
                                                }) {
-  const [showDefinitions, setShowDefinitions] = useState(false);
+
 
   if (!analysis || !analysis.hasData) return null;
 

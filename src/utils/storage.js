@@ -20,13 +20,13 @@ const getProfileKey = (baseKey, profileId = null) => {
 
     if (isMigrated) {
       // Migration already complete - no active profile is an error
-      console.error(`âŒ No active profile ID for key: ${baseKey}`);
+      console.error(`❌ No active profile ID for key: ${baseKey}`);
       console.error('This should not happen. Profile system may not be initialized.');
       // Return empty namespaced key to prevent reading old shared data
       return `${baseKey}_INVALID_NO_PROFILE`;
     } else {
       // Migration in progress - allow fallback temporarily
-      console.warn(`⚠ ï¸  Migration in progress, temporary fallback for: ${baseKey}`);
+      console.warn(`⚠️ Migration in progress, temporary fallback for: ${baseKey}`);
       return baseKey;
     }
   }
@@ -529,7 +529,7 @@ export const getDataStats = (profileId = null) => {
   try {
     const allMeasurements = getMeasurements({ profileId });
     measurements = allMeasurements ? allMeasurements.length : 0;
-  } catch (error) {
+  } catch (_error) {
     // Measurements module might not be available
     measurements = 0;
   }

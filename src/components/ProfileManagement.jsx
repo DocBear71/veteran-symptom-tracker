@@ -26,17 +26,17 @@ const ProfileManagement = () => {
   const [profileToDelete, setProfileToDelete] = useState(null);
   const [deleteConfirmText, setDeleteConfirmText] = useState('');
 
-  // Load profiles
-  useEffect(() => {
-    loadProfiles();
-  }, []);
-
   const loadProfiles = () => {
     const allProfiles = getProfiles();
     const active = getActiveProfile();
     setProfiles(allProfiles);
     setActiveProfileState(active);
   };
+
+  // Load profiles
+  useEffect(() => {
+    loadProfiles();
+  }, []);
 
   const handleSwitchProfile = (profileId) => {
     const result = setActiveProfile(profileId);

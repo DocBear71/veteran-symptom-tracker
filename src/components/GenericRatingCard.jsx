@@ -90,7 +90,7 @@ export default function GenericRatingCard({ analysis, expanded, onToggle, icon =
 
               {/* Service-Connected Status Banner */}
               <ServiceConnectedBanner
-                  conditionKey="generic"
+                  conditionKey={conditionKey || 'generic'}
                   currentAnalysis={analysis}
               />
 

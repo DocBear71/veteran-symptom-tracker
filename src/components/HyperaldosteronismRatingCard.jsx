@@ -1,5 +1,5 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
-import { HYPERALDOSTERONISM_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
+import { HYPERALDOSTERONISM_CRITERIA, getRatingRowColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import {isRatingSupported} from '../utils/ratingUtils.js';

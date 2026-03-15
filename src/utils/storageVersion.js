@@ -81,12 +81,12 @@ export const createEmergencyBackup = () => {
     try {
       localStorage.setItem(BACKUP_KEY, backupString);
       console.log(`✅ Emergency backup saved to localStorage (${backupSizeMB} MB)`, new Date().toISOString());
-    } catch (quotaError) {
+    } catch (_quotaError) {
       console.warn(`⚠️ localStorage quota exceeded (${backupSizeMB} MB) - using sessionStorage only`);
       // Remove old backup to free space
       try {
         localStorage.removeItem(BACKUP_KEY);
-      } catch (e) {
+      } catch (_e) {
         // Ignore cleanup errors
       }
     }
@@ -95,7 +95,7 @@ export const createEmergencyBackup = () => {
     try {
       sessionStorage.setItem(BACKUP_KEY, backupString);
       console.log('✅ Emergency backup also saved to sessionStorage');
-    } catch (sessionError) {
+    } catch (_sessionError) {
       console.warn('⚠️ sessionStorage quota exceeded');
     }
 

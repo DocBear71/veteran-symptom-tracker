@@ -127,6 +127,23 @@ export default function HepatitisCRatingCard({ analysis, expanded, onToggle }) {
               </div>
               <MedicationCorrelation analysis={analysis} />
 
+              {/* Supporting Evidence - string array from analysis function */}
+              {evidence && evidence.length > 0 && (
+                  <div>
+                    <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-center">
+                      Supporting Evidence
+                    </h4>
+                    <div className="bg-emerald-50 dark:bg-emerald-900/20 rounded-lg p-3 space-y-2">
+                      {evidence.map((item, idx) => (
+                          <div key={idx} className="flex items-start gap-2">
+                            <span className="text-emerald-600 dark:text-emerald-400 mt-0.5">✓</span>
+                            <span className="text-sm text-gray-700 dark:text-gray-300">{item}</span>
+                          </div>
+                      ))}
+                    </div>
+                  </div>
+              )}
+
               {/* Section 2: Analysis Rationale */}
               {ratingRationale && ratingRationale.length > 0 && (
                   <div>

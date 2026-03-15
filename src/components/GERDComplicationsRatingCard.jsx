@@ -80,6 +80,24 @@ export default function GERDComplicationsRatingCard({ analysis, expanded, onTogg
               </div>
 
               <MedicationCorrelation analysis={analysis} />
+
+              {/* Supporting Evidence - string array from analysis function */}
+              {evidence && evidence.length > 0 && (
+                  <div>
+                    <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-center">
+                      Supporting Evidence
+                    </h4>
+                    <div className="bg-lime-50 dark:bg-lime-900/20 rounded-lg p-3 space-y-2">
+                      {evidence.map((item, idx) => (
+                          <div key={idx} className="flex items-start gap-2">
+                            <span className="text-lime-600 dark:text-lime-400 mt-0.5">✓</span>
+                            <span className="text-sm text-gray-700 dark:text-gray-300">{item}</span>
+                          </div>
+                      ))}
+                    </div>
+                  </div>
+              )}
+
               {ratingRationale && ratingRationale.length > 0 && (
                   <div>
                     <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-center">Analysis Rationale</h4>
@@ -93,6 +111,11 @@ export default function GERDComplicationsRatingCard({ analysis, expanded, onTogg
                     </div>
                   </div>
               )}
+
+              <UnderstandingYourRating
+                  diagnosticCode="7346"
+                  currentRating={numericRating}
+              />
 
               <div>
                 <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-center">VA Rating Schedule</h4>

@@ -8,6 +8,7 @@ import { getConditionDescription } from '../data/conditionDescriptions';
 import { jsPDF } from 'jspdf';
 import autoTable from 'jspdf-autotable';
 
+
 /**
  * C&P Exam Preparation Checklist
  *
@@ -16,7 +17,7 @@ import autoTable from 'jspdf-autotable';
  * - Logged symptoms
  * - VA rating criteria
  */
-const CPExamPrep = ({ embedded = false, onClose }) => {
+const CPExamPrep = ({ embedded = false, onClose, onNavigate }) => {
   const [activeTab, setActiveTab] = useState('checklist');
   const [expandedCondition, setExpandedCondition] = useState(null);
 
@@ -154,6 +155,12 @@ const CPExamPrep = ({ embedded = false, onClose }) => {
 
   // Generate likely examiner questions based on condition
   const generateExaminerQuestions = (conditionId, description) => {
+    // description.evidenceLookingFor contains VA-specific evidence items
+    // that map naturally to questions the examiner will probe for
+    const evidenceQuestions = description?.evidenceLookingFor
+    ?.slice(0, 3)
+    .map(item => `Can you describe your ${item.toLowerCase()}?`) || [];
+
     const baseQuestions = [
       "When did you first notice these symptoms?",
       "How have your symptoms progressed over time?",
@@ -243,7 +250,7 @@ const CPExamPrep = ({ embedded = false, onClose }) => {
       }
     });
 
-    return [...specificQuestions, ...baseQuestions].slice(0, 8);
+    return [...specificQuestions, ...evidenceQuestions, ...baseQuestions].slice(0, 8);
   };
 
   // Export to PDF

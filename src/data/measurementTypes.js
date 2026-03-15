@@ -2549,7 +2549,7 @@ export const interpretMeasurement = (measurementTypeId, values, metadata = {}) =
 };
 
 // Helper to format measurement value for display
-export const formatMeasurementValue = (measurementTypeId, values) => {
+export const formatMeasurementValue = (measurementTypeId, values, metadata = {}) => {
   const type = getMeasurementType(measurementTypeId);
   if (!type) return '';
 
@@ -2573,7 +2573,6 @@ export const formatMeasurementValue = (measurementTypeId, values) => {
       if (values.peakFlow) {
         let display = `${values.peakFlow} L/min`;
         // Show percentage of personal best if provided
-        const metadata = arguments[2]; // Get metadata if passed
         if (metadata?.personalBest && metadata.personalBest > 0) {
           const percent = ((values.peakFlow / metadata.personalBest) * 100).toFixed(0);
           display += ` (${percent}% of best)`;
@@ -2581,12 +2580,13 @@ export const formatMeasurementValue = (measurementTypeId, values) => {
         return display;
       }
       return '';
-    case 'rom':
-      const joint = arguments[2]?.joint || '';
-      const movement = arguments[2]?.movement || '';
-      const side = arguments[2]?.side || '';
+    case 'rom': {
+      const joint = metadata?.joint || '';
+      const movement = metadata?.movement || '';
+      const side = metadata?.side || '';
       return `${values.measurement}° ${movement ? `(${movement})` : ''} ${joint ? `- ${joint}` : ''} ${side ? `[${side}]` : ''}`.trim();
-    case 'bristol-scale':
+    }
+    case 'bristol-scale': {
       const bristolLabels = {
         1: 'Type 1 (Hard lumps)',
         2: 'Type 2 (Lumpy)',
@@ -2597,20 +2597,25 @@ export const formatMeasurementValue = (measurementTypeId, values) => {
         7: 'Type 7 (Liquid)',
       };
       return bristolLabels[values.bristolType] || `Type ${values.bristolType}`;
-    case 'fev1':
+    }
+    case 'fev1': {
       if (values.fev1Predicted) {
-        const percentPredicted = ((values.fev1 / values.fev1Predicted) * 100).toFixed(0);
+        const percentPredicted = ((values.fev1 / values.fev1Predicted) *
+            100).toFixed(0);
         return `${values.fev1} L (${percentPredicted}% predicted)`;
       }
       return `${values.fev1} L`;
+    }
     case 'fvc':
       return `${values.fvc} L`;
-    case 'dlco':
+    case 'dlco': {
       if (values.dlcoPredicted) {
-        const percentPredicted = ((values.dlco / values.dlcoPredicted) * 100).toFixed(0);
+        const percentPredicted = ((values.dlco / values.dlcoPredicted) *
+            100).toFixed(0);
         return `${values.dlco} mL/min/mmHg (${percentPredicted}% predicted)`;
       }
       return `${values.dlco} mL/min/mmHg`;
+    }
     case 'egfr':
       return `${values.egfr} mL/min/1.73m²`;
     case 'creatinine':

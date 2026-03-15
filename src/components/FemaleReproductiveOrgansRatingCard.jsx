@@ -15,6 +15,7 @@ export default function FemaleReproductiveOrgansRatingCard({ analysis, expanded,
 
   const { supportedRating, rationale, evidenceGaps, metrics } = analysis;
   const criteria = FEMALE_REPRODUCTIVE_ORGANS_CRITERIA;
+  const diagnosticCode = '7610-7629';
 
   const isRatingSupported = (ratingPercent) => supportedRating === ratingPercent;
 

@@ -128,24 +128,3 @@ const WhyTrackThis = ({
 };
 
 export default WhyTrackThis;
-
-// ============================================
-// HELPER: Check if content exists for a symptom
-// ============================================
-export const hasEducationalContent = (symptomId) => {
-  return !!educationalContent[symptomId];
-};
-
-// ============================================
-// HELPER: Get all symptom IDs with specific content
-// ============================================
-export const getSymptomIdsWithContent = () => {
-  return Object.keys(educationalContent).filter(key => !key.startsWith('_'));
-};
-
-// ============================================
-// HELPER: Get all category mappings
-// ============================================
-export const getCategoryMappings = () => {
-  return { ...categoryMapping };
-};

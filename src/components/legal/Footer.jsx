@@ -9,6 +9,42 @@ import Contact from './Contact';
 import Donations from './Donations';
 import VATermsAndFAQ from '../VATermsAndFAQ';
 
+// Modal wrapper component for consistent styling
+const ModalWrapper = ({ children, title, onClose }) => (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white dark:bg-gray-900 rounded-lg max-w-4xl w-full max-h-[90vh] flex flex-col shadow-xl">
+        {/* Header - Fixed at top */}
+        <div className="bg-blue-900 dark:bg-gray-800 text-white p-4 rounded-t-lg flex-shrink-0">
+          <div className="flex items-center justify-between">
+            <h2 className="text-xl font-bold">{title}</h2>
+            <button
+                onClick={onClose}
+                className="text-white hover:text-gray-200 text-2xl font-bold p-1 hover:bg-white hover:bg-opacity-20 rounded w-10 h-10 flex items-center justify-center"
+                aria-label="Close modal"
+            >
+              ×
+            </button>
+          </div>
+        </div>
+
+        {/* Scrollable Content */}
+        <div className="flex-1 overflow-y-auto bg-white dark:bg-gray-900">
+          {children}
+        </div>
+
+        {/* Footer with close button */}
+        <div className="border-t border-gray-200 dark:border-gray-700 p-4 flex-shrink-0">
+          <button
+              onClick={onClose}
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+);
+
 /**
  * Footer Component
  *
@@ -25,42 +61,6 @@ const Footer = () => {
   const closeModal = () => {
     setShowModal(null);
   };
-
-  // Modal wrapper component for consistent styling
-  const ModalWrapper = ({ children, title }) => (
-      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-        <div className="bg-white dark:bg-gray-900 rounded-lg max-w-4xl w-full max-h-[90vh] flex flex-col shadow-xl">
-          {/* Header - Fixed at top */}
-          <div className="bg-blue-900 dark:bg-gray-800 text-white p-4 rounded-t-lg flex-shrink-0">
-            <div className="flex items-center justify-between">
-              <h2 className="text-xl font-bold">{title}</h2>
-              <button
-                  onClick={closeModal}
-                  className="text-white hover:text-gray-200 text-2xl font-bold p-1 hover:bg-white hover:bg-opacity-20 rounded w-10 h-10 flex items-center justify-center"
-                  aria-label="Close modal"
-              >
-                ×
-              </button>
-            </div>
-          </div>
-
-          {/* Scrollable Content */}
-          <div className="flex-1 overflow-y-auto bg-white dark:bg-gray-900">
-            {children}
-          </div>
-
-          {/* Footer with close button */}
-          <div className="border-t border-gray-200 dark:border-gray-700 p-4 flex-shrink-0">
-            <button
-                onClick={closeModal}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
-            >
-              Close
-            </button>
-          </div>
-        </div>
-      </div>
-  );
 
   return (
       <>
@@ -174,37 +174,37 @@ const Footer = () => {
 
         {/* Modals */}
         {showModal === 'privacy' && (
-            <ModalWrapper title="Privacy Policy">
+            <ModalWrapper title="Privacy Policy" onClose={closeModal}>
               <PrivacyPolicy />
             </ModalWrapper>
         )}
 
         {showModal === 'terms' && (
-            <ModalWrapper title="Terms of Use">
+            <ModalWrapper title="Terms of Use" onClose={closeModal}>
               <TermsOfUse />
             </ModalWrapper>
         )}
 
         {showModal === 'about' && (
-            <ModalWrapper title="About Doc Bear's Symptom Vault">
+            <ModalWrapper title="About Doc Bear's Symptom Vault" onClose={closeModal}>
               <AboutUs />
             </ModalWrapper>
         )}
 
         {showModal === 'contact' && (
-            <ModalWrapper title="Contact Us">
+            <ModalWrapper title="Contact Us" onClose={closeModal}>
               <Contact />
             </ModalWrapper>
         )}
 
         {showModal === 'donations' && (
-            <ModalWrapper title="Support Our Mission">
+            <ModalWrapper title="Support Our Mission" onClose={closeModal}>
               <Donations />
             </ModalWrapper>
         )}
 
         {showModal === 'va-terms' && (
-            <ModalWrapper title="VA Terms, Definitions & FAQ">
+            <ModalWrapper title="VA Terms, Definitions & FAQ" onClose={closeModal}>
               <VATermsAndFAQ embedded={true} />
             </ModalWrapper>
         )}

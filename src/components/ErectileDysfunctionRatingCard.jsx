@@ -1,5 +1,5 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
-import { ERECTILE_DYSFUNCTION_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
+import { ERECTILE_DYSFUNCTION_CRITERIA, getRatingRowColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import MedicationCorrelation from './MedicationCorrelation';

@@ -9,6 +9,7 @@ import React from 'react';
 import { ChevronDown, ChevronUp, AlertTriangle, Info, CheckCircle } from 'lucide-react';
 import SMCAlertBanner from './SMCAlertBanner';
 import MedicationCorrelation from './MedicationCorrelation';
+import ServiceConnectedBanner from './ServiceConnectedBanner';
 
 /**
  * Amputation / Extremity Loss Rating Card
@@ -66,17 +67,9 @@ const AmputationRatingCard = ({ analysis, expanded, onToggle }) => {
     return supportedRating >= ratingPercent;
   };
 
-  // Simplified rating schedule for amputations
-  const ratingSchedule = [
-    { percent: 90, summary: 'Loss of arm at shoulder / Loss of thigh at hip', dc: '5120/5160' },
-    { percent: 80, summary: 'Loss of arm above elbow / Loss of thigh above knee (major)', dc: '5121/5161' },
-    { percent: 70, summary: 'Loss of arm below elbow / Loss of hand (major)', dc: '5124/5125' },
-    { percent: 60, summary: 'Loss of arm below elbow / Loss of hand (minor) / Loss of leg below knee', dc: '5124/5125/5165' },
-    { percent: 40, summary: 'Loss of foot / Loss of use of foot', dc: '5167' },
-    { percent: 30, summary: 'Partial foot loss (Chopart/Lisfranc)', dc: '5166' },
-    { percent: 20, summary: 'Loss of great toe with metatarsal', dc: '5171' },
-    { percent: 10, summary: 'Loss of 2-4 toes / Loss of great toe without metatarsal', dc: '5172/5171' },
-  ];
+  // Use authoritative criteria from ratingCriteria.js rather than a local hardcoded list
+  // criteriaReference = AMPUTATION_CRITERIA, contains the canonical ratings array
+  const ratingSchedule = criteriaReference?.ratings || [];
 
   return (
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden border-l-4 border-amber-500">
@@ -123,6 +116,13 @@ const AmputationRatingCard = ({ analysis, expanded, onToggle }) => {
         {expanded && (
             <div className="px-6 pb-6 space-y-6">
               <div className="border-t border-gray-200 dark:border-gray-700" />
+
+              {/* Service-Connected Status Banner */}
+              <ServiceConnectedBanner
+                conditionKey="amputation"
+                currentAnalysis={analysis}
+              />
+
 
               {/* SMC-K Alert Banner */}
               {smcEligible && smcData && (
@@ -363,9 +363,11 @@ const AmputationRatingCard = ({ analysis, expanded, onToggle }) => {
                               <div className={`text-sm ${isSupported ? 'text-gray-900 dark:text-white' : 'text-gray-500 dark:text-gray-400'}`}>
                                 {rating.summary}
                               </div>
-                              <div className="text-xs text-gray-500 dark:text-gray-400">
-                                DC {rating.dc}
-                              </div>
+                              {rating.dc && (
+                                  <div className="text-xs text-gray-500 dark:text-gray-400">
+                                    DC {rating.dc}
+                                  </div>
+                              )}
                             </div>
                             {isSupported && (
                                 <span className="text-green-600 dark:text-green-400">✓</span>

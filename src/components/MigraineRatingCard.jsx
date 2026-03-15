@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { MIGRAINE_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';

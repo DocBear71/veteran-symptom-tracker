@@ -1,7 +1,6 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import DataBunker from './DataBunker';
 import PrivacyExplainer from './PrivacyExplainer';
-import { Shield } from 'lucide-react';
 import {
   notificationsSupported,
   getNotificationPermission,
@@ -30,11 +29,7 @@ import AccessibilitySettings from './AccessibilitySettings';
  * Display backup history
  */
 const BackupHistoryDisplay = () => {
-  const [history, setHistory] = useState([]);
-
-  useEffect(() => {
-    setHistory(getBackupHistory());
-  }, []);
+  const [history, setHistory] = useState(() => getBackupHistory());
 
   if (history.length === 0) {
     return (
@@ -75,17 +70,14 @@ const BackupHistoryDisplay = () => {
  * Display VA Blue Button import history from audit log
  */
 const BBImportHistory = () => {
-  const [history, setHistory] = useState([]);
-  const [expanded, setExpanded] = useState(false);
-
-  useEffect(() => {
+  const [history, setHistory] = useState(() => {
     try {
-      const log = JSON.parse(localStorage.getItem('symptomTracker_bbImportLog') || '[]');
-      setHistory(log);
+      return JSON.parse(localStorage.getItem('symptomTracker_bbImportLog') || '[]');
     } catch {
-      setHistory([]);
+      return [];
     }
-  }, []);
+  });
+  const [expanded, setExpanded] = useState(false);
 
   const handleClearHistory = () => {
     if (window.confirm('Clear import history? This only removes the history log — your imported data (measurements, appointments, conditions) will not be affected.')) {
@@ -95,11 +87,12 @@ const BBImportHistory = () => {
   };
 
   // Check if most recent import was more than 90 days ago
-  const showStaleWarning = history.length > 0 && (() => {
+  const showStaleWarning = useMemo(() => {
+    if (history.length === 0) return false;
     const lastImport = new Date(history[0].importedAt);
     const daysSince = (Date.now() - lastImport.getTime()) / (1000 * 60 * 60 * 24);
     return daysSince > 90;
-  })();
+  }, [history]);
 
   if (history.length === 0) {
     return (

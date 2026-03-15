@@ -1,21 +1,17 @@
 import { useRef, useState, useEffect, useMemo } from 'react';
-import { X, ChevronDown, ChevronUp, Plus, Search } from 'lucide-react';
+import { ChevronDown, Search } from 'lucide-react';
 import {
-  symptomCategories,
   sortedSymptomCategories,
   BODY_SYSTEMS,
   getBodySystemList,
   getBodySystem,
   stripDCCode,
-  getCategoriesByBodySystem,
   searchSymptoms,
-  allSymptomsWithBodySystem,
   getRelatedConditions,
-  getSuggestedConditions
 } from '../data/symptoms';
 import { saveSymptomLog, getCustomSymptoms, addCustomSymptom, getMedications, logMedicationTaken } from '../utils/storage';
 import { getProfileType, PROFILE_TYPES } from '../utils/profile';
-import { formatDosage, getDefaultMedDetail, getDosageForLog } from '../utils/medicationUtils';
+import { getDefaultMedDetail, getDosageForLog } from '../utils/medicationUtils';
 import OccurrenceTimePicker from './OccurrenceTimePicker.jsx';
 import QuickLog from './QuickLog';
 import AddChronicModal from './AddChronicModal';
@@ -31,7 +27,7 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed, onNavigate }) =
   const [selectedBodySystem, setSelectedBodySystem] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedSymptom, setSelectedSymptom] = useState('');
-  const [symptomName, setSymptomName] = useState('');
+  const [, setSymptomName] = useState('');
 
   // Search mode state
   const [isSearchMode, setIsSearchMode] = useState(false);
@@ -46,7 +42,7 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed, onNavigate }) =
   const [notes, setNotes] = useState('');
   const [occurredAt, setOccurredAt] = useState(new Date().toISOString());
   const [showSuccess, setShowSuccess] = useState(false);
-  const [customSymptoms, setCustomSymptoms] = useState([]);
+  const [customSymptoms, setCustomSymptoms] = useState(() => getCustomSymptoms());
   const [refreshQuickLog, setRefreshQuickLog] = useState(0);
 
   const [isFlareUp, setIsFlareUp] = useState(false);
@@ -63,7 +59,7 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed, onNavigate }) =
   const [showChronicModal, setShowChronicModal] = useState(false);
 
   // Medication for symptom
-  const [medications, setMedications] = useState([]);
+  const [medications, setMedications] = useState(() => getMedications());
   const [tookMedication, setTookMedication] = useState(false);
   // Object keyed by medication ID: { [medId]: { effectiveness, sideEffects, sideEffectsOther } }
   const [selectedMedications, setSelectedMedications] = useState({});
@@ -983,11 +979,6 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed, onNavigate }) =
   const processedPrefillId = useRef(null);
   const isPrefilling = useRef(false);
 
-  useEffect(() => {
-    setCustomSymptoms(getCustomSymptoms());
-    setMedications(getMedications());
-  }, []);
-
   // Phase 1H - Handle prefill data from "Log again" button
   useEffect(() => {
     if (prefillData && prefillData.id && processedPrefillId.current !== prefillData.id) {
@@ -1005,9 +996,11 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed, onNavigate }) =
         // Set body system first for 3-level dropdown
         const bodySystem = getBodySystem(categoryInfo.name);
         console.log('Setting body system:', bodySystem);
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setSelectedBodySystem(bodySystem);
         // Use the category ID (not name) for the dropdown
         console.log('Setting category ID:', categoryInfo.id);
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setSelectedCategory(categoryInfo.id);
         setSelectedSymptom(prefillData.symptomId);
       } else {
@@ -1199,7 +1192,8 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed, onNavigate }) =
         }, 50);
       }, 100);
     }
-  }, [prefillData]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [prefillData, onPrefillUsed]);
 
 
   // Peripheral nerve prefixes to exclude from generic pain/GU detection
@@ -1695,6 +1689,7 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed, onNavigate }) =
 );
 
   // Schizophrenia Spectrum Disorders (use basic mental health logging)
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   const isSchizophreniaRelated = [
     'schizophrenia-hallucinations',
     'schizophrenia-delusions',
@@ -1703,19 +1698,23 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed, onNavigate }) =
     'schizophrenia-negative-symptoms',
   ].includes(selectedSymptom);
 
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   const isSchizoaffectiveRelated = [
     'schizoaffective-mood-episodes',
     'psychotic-episode',
   ].includes(selectedSymptom);
 
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   const isDelusionalDisorderRelated = [
     'psychotic-episode',
   ].includes(selectedSymptom);
 
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   const isPsychoticNOSRelated = [
     'psychotic-episode',
   ].includes(selectedSymptom);
 
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   const isBriefPsychoticRelated = [
     'brief-psychotic-episode',
   ].includes(selectedSymptom);
@@ -1891,10 +1890,6 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed, onNavigate }) =
         'mg-improvement-rest', 'mg-crisis', 'mg-hospitalization', 'mg-voice-fatigue',
         'mg-arm-elevation-difficulty'].includes(selectedSymptom);
 
-  // Combined Phase 1A neurological detection
-  const isNeurologicalPhase1ARelated = isMultipleSclerosisRelated ||
-      isParkinsonsRelated || isMyastheniaRelated;
-
   // ============================================
   // PHASE 1B: ADDITIONAL NEUROLOGICAL DETECTION
   // ============================================
@@ -2065,10 +2060,6 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed, onNavigate }) =
 
   const isPeripheralNerveRelated = isUpperExtremityNerveRelated || isLowerExtremityNerveRelated;
 
-  // Combined Phase 1B neurological detection
-  const isNeurologicalPhase1BRelated = isNarcolepsyRelated || isALSRelated ||
-      isSyringomyeliaRelated || isMyelitisRelated;
-
   // Phase 3A: Endocrine - Thyroid & Parathyroid Detection
   const isHyperthyroidismRelated = selectedSymptom?.startsWith('hyper-') ||
       selectedSymptom?.startsWith('graves-') ||
@@ -2093,9 +2084,7 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed, onNavigate }) =
       ['hopth-muscle-cramps', 'hopth-tingling', 'hopth-muscle-spasms', 'hopth-fatigue',
         'hopth-dry-skin', 'hopth-brittle-nails', 'hopth-hair-loss', 'hopth-seizures',
         'hopth-depression', 'hopth-anxiety', 'hopth-memory-problems', 'hopth-cataracts'].includes(selectedSymptom);
-  // Combined Phase 3A Endocrine detection
-  const isEndocrinePhase3ARelated = isHyperthyroidismRelated || isThyroiditisRelated ||
-      isHyperparathyroidismRelated || isHypoparathyroidismRelated;
+
   // Phase 3B: Adrenal & Pituitary Detection
   const isAddisonsDiseaseRelated = selectedSymptom?.startsWith('addisons-') ||
       selectedCategory === 'addisons-disease';
@@ -2105,9 +2094,6 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed, onNavigate }) =
       selectedCategory === 'diabetes-insipidus';
   const isHyperaldosteronismRelated = selectedSymptom?.startsWith('haldo-') ||
       selectedCategory === 'hyperaldosteronism';
-  // Combined Phase 3B Endocrine detection
-  const isEndocrinePhase3BRelated = isAddisonsDiseaseRelated || isCushingsSyndromeRelated ||
-      isDiabetesInsipidusRelated || isHyperaldosteronismRelated;
 
   // Reset condition-specific data when symptom changes
   useEffect(() => {
@@ -2118,6 +2104,7 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed, onNavigate }) =
     }
 
     if (!isMigraineSelected) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setMigraineData({
         duration: '', prostrating: null, aura: false, nausea: false,
         lightSensitivity: false, soundSensitivity: false, triggers: '',
@@ -2812,7 +2799,10 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed, onNavigate }) =
     isBulimiaRelated, isAnxietyFormRelated, isDepressionFormRelated, isBipolarFormRelated, isOCDFormRelated,
     isAdjustmentDisorderFormRelated, isBingeEatingRelated, isDissociativeRelated, isAcuteStressRelated,
     isPersonalityDisorderRelated, isCardiovascularRelated, isDigestivePhase10Related,
-    isNarcolepsyRelated, isALSRelated, isSyringomyeliaRelated, isMyelitisRelated, isPeripheralNerveRelated]);
+    isNarcolepsyRelated, isALSRelated, isSyringomyeliaRelated, isMyelitisRelated, isPeripheralNerveRelated,
+    isCyclothymicRelated, isDepersonalizationRelated, isIllnessAnxietyRelated, isMultipleSclerosisRelated,
+    isMyastheniaRelated, isParkinsonsRelated, isSomaticSymptomRelated, isSpineConditionSelected
+  ]);
 
 
   // Phase 3: Detect genitourinary system based on symptom
@@ -2841,10 +2831,11 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed, onNavigate }) =
       else if (sphincterSymptoms.includes(selectedSymptom)) system = 'sphincter';
 
       if (system && genitourinaryData.affectedSystem !== system) {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setGenitourinaryData(prev => ({ ...prev, affectedSystem: system }));
       }
     }
-  }, [selectedSymptom, isGenitourinaryRelated]);
+  }, [selectedSymptom, isGenitourinaryRelated, genitourinaryData.affectedSystem]);
 
   // Phase 4: Detect gynecological organ/condition based on symptom
   useEffect(() => {
@@ -2873,10 +2864,11 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed, onNavigate }) =
       else if (pcosSymptoms.includes(selectedSymptom)) organ = 'ovary';
 
       if (organ && gynecologicalData.affectedOrgan !== organ) {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setGynecologicalData(prev => ({ ...prev, affectedOrgan: organ }));
       }
     }
-  }, [selectedSymptom, isGynecologicalRelated]);
+  }, [selectedSymptom, isGynecologicalRelated, gynecologicalData.affectedOrgan]);
 
   // Build categories list including custom symptoms
   const getAllCategories = () => {
@@ -2982,6 +2974,7 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed, onNavigate }) =
       }));
 
       const standardResults = searchSymptoms(searchQuery, 20);
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setSearchResults([...customResults, ...standardResults].slice(0, 25));
     } else {
       setSearchResults([]);

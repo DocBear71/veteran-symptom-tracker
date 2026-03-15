@@ -141,18 +141,14 @@ const NavButton = ({ icon: Icon, emoji, label, view, currentView, onNavigate }) 
 // ==============================================
 const Layout = ({ children, currentView, onNavigate }) => {
   const { labels, features, isVeteran } = useProfile();
-  const [activeProfile, setActiveProfile] = useState(null);
+  const [activeProfile, setActiveProfile] = useState(() => getActiveProfile());
 
   // Initialize panic key
   usePanicKey('https://www.google.com');
 
   useEffect(() => {
-    const profile = getActiveProfile();
-    setActiveProfile(profile);
-
     const handleProfileChange = () => {
-      const updatedProfile = getActiveProfile();
-      setActiveProfile(updatedProfile);
+      setActiveProfile(getActiveProfile());
     };
 
     window.addEventListener('profileChanged', handleProfileChange);

@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+
 // ============================================
 // VA RATING CRITERIA - DATA STRUCTURE & ANALYSIS
 // ============================================
@@ -3776,144 +3778,144 @@ export const BIPOLAR_CRITERIA = {
 // SOCIAL ANXIETY DISORDER CRITERIA (DC 9403)
 // ============================================
 export const SOCIAL_ANXIETY_CRITERIA = {
-    diagnosticCode: '9403',
-    condition: 'Social Anxiety Disorder',
-    cfrReference: '38 CFR 4.130, Diagnostic Code 9403',
-    usesSharedCriteria: true,
-    sharedCriteria: MENTAL_HEALTH_SHARED_CRITERIA,
-    ratings: MENTAL_HEALTH_SHARED_CRITERIA.ratings,
-    definitions: {
-        ...MENTAL_HEALTH_SHARED_CRITERIA.definitions,
-        socialAnxiety: {
-            term: 'Social Anxiety',
-            definition: 'Marked fear or anxiety about social situations where the individual may be scrutinized by others, leading to avoidance or endured with intense distress.',
-        },
-        performanceAnxiety: {
-            term: 'Performance Anxiety',
-            definition: 'Fear specifically related to performing or being observed during activities like public speaking, eating, or writing in front of others.',
-        },
+  diagnosticCode: '9403',
+  condition: 'Social Anxiety Disorder',
+  cfrReference: '38 CFR 4.130, Diagnostic Code 9403',
+  usesSharedCriteria: true,
+  sharedCriteria: MENTAL_HEALTH_SHARED_CRITERIA,
+  ratings: MENTAL_HEALTH_SHARED_CRITERIA.ratings,
+  definitions: {
+    ...MENTAL_HEALTH_SHARED_CRITERIA.definitions,
+    socialAnxiety: {
+      term: 'Social Anxiety',
+      definition: 'Marked fear or anxiety about social situations where the individual may be scrutinized by others, leading to avoidance or endured with intense distress.',
     },
-    importantNotes: MENTAL_HEALTH_SHARED_CRITERIA.importantNotes,
+    performanceAnxiety: {
+      term: 'Performance Anxiety',
+      definition: 'Fear specifically related to performing or being observed during activities like public speaking, eating, or writing in front of others.',
+    },
+  },
+  importantNotes: MENTAL_HEALTH_SHARED_CRITERIA.importantNotes,
 };
 
 // ============================================
 // OBSESSIVE-COMPULSIVE DISORDER CRITERIA (DC 9404)
 // ============================================
 export const OCD_CRITERIA = {
-    diagnosticCode: '9404',
-    condition: 'Obsessive-Compulsive Disorder',
-    cfrReference: '38 CFR 4.130, Diagnostic Code 9404',
-    usesSharedCriteria: true,
-    sharedCriteria: MENTAL_HEALTH_SHARED_CRITERIA,
-    ratings: MENTAL_HEALTH_SHARED_CRITERIA.ratings,
-    definitions: {
-        ...MENTAL_HEALTH_SHARED_CRITERIA.definitions,
-        obsessions: {
-            term: 'Obsessions',
-            definition: 'Recurrent, persistent, intrusive thoughts, urges, or images that cause marked anxiety or distress. The individual attempts to ignore, suppress, or neutralize them.',
-        },
-        compulsions: {
-            term: 'Compulsions',
-            definition: 'Repetitive behaviors or mental acts performed in response to obsessions or according to rigid rules, aimed at reducing anxiety or preventing a dreaded event.',
-        },
-        rituals: {
-            term: 'Rituals',
-            definition: 'Repetitive, stereotyped behaviors that interfere with routine activities. VA criteria specifically note "obsessional rituals which interfere with routine activities" as a 70% criterion.',
-        },
+  diagnosticCode: '9404',
+  condition: 'Obsessive-Compulsive Disorder',
+  cfrReference: '38 CFR 4.130, Diagnostic Code 9404',
+  usesSharedCriteria: true,
+  sharedCriteria: MENTAL_HEALTH_SHARED_CRITERIA,
+  ratings: MENTAL_HEALTH_SHARED_CRITERIA.ratings,
+  definitions: {
+    ...MENTAL_HEALTH_SHARED_CRITERIA.definitions,
+    obsessions: {
+      term: 'Obsessions',
+      definition: 'Recurrent, persistent, intrusive thoughts, urges, or images that cause marked anxiety or distress. The individual attempts to ignore, suppress, or neutralize them.',
     },
-    importantNotes: [
-        ...MENTAL_HEALTH_SHARED_CRITERIA.importantNotes,
-        'OCD rituals that interfere with routine activities are specifically mentioned in the 70% criteria',
-        'Time spent on obsessions/compulsions is important documentation',
-    ],
+    compulsions: {
+      term: 'Compulsions',
+      definition: 'Repetitive behaviors or mental acts performed in response to obsessions or according to rigid rules, aimed at reducing anxiety or preventing a dreaded event.',
+    },
+    rituals: {
+      term: 'Rituals',
+      definition: 'Repetitive, stereotyped behaviors that interfere with routine activities. VA criteria specifically note "obsessional rituals which interfere with routine activities" as a 70% criterion.',
+    },
+  },
+  importantNotes: [
+    ...MENTAL_HEALTH_SHARED_CRITERIA.importantNotes,
+    'OCD rituals that interfere with routine activities are specifically mentioned in the 70% criteria',
+    'Time spent on obsessions/compulsions is important documentation',
+  ],
 };
 
 // ============================================
 // PERSISTENT DEPRESSIVE DISORDER (DYSTHYMIA) CRITERIA (DC 9433)
 // ============================================
 export const PERSISTENT_DEPRESSIVE_CRITERIA = {
-    diagnosticCode: '9433',
-    condition: 'Persistent Depressive Disorder (Dysthymia)',
-    cfrReference: '38 CFR 4.130, Diagnostic Code 9433',
-    usesSharedCriteria: true,
-    sharedCriteria: MENTAL_HEALTH_SHARED_CRITERIA,
-    ratings: MENTAL_HEALTH_SHARED_CRITERIA.ratings,
-    definitions: {
-        ...MENTAL_HEALTH_SHARED_CRITERIA.definitions,
-        dysthymia: {
-            term: 'Dysthymia/Persistent Depressive Disorder',
-            definition: 'Chronic depressed mood occurring more days than not for at least 2 years. Less severe than major depression but more chronic and persistent.',
-        },
+  diagnosticCode: '9433',
+  condition: 'Persistent Depressive Disorder (Dysthymia)',
+  cfrReference: '38 CFR 4.130, Diagnostic Code 9433',
+  usesSharedCriteria: true,
+  sharedCriteria: MENTAL_HEALTH_SHARED_CRITERIA,
+  ratings: MENTAL_HEALTH_SHARED_CRITERIA.ratings,
+  definitions: {
+    ...MENTAL_HEALTH_SHARED_CRITERIA.definitions,
+    dysthymia: {
+      term: 'Dysthymia/Persistent Depressive Disorder',
+      definition: 'Chronic depressed mood occurring more days than not for at least 2 years. Less severe than major depression but more chronic and persistent.',
     },
-    importantNotes: [
-        ...MENTAL_HEALTH_SHARED_CRITERIA.importantNotes,
-        'Dysthymia is characterized by chronic, persistent symptoms rather than discrete episodes',
-        'Documentation showing consistent symptoms over 2+ years strengthens claims',
-    ],
+  },
+  importantNotes: [
+    ...MENTAL_HEALTH_SHARED_CRITERIA.importantNotes,
+    'Dysthymia is characterized by chronic, persistent symptoms rather than discrete episodes',
+    'Documentation showing consistent symptoms over 2+ years strengthens claims',
+  ],
 };
 
 // ============================================
 // CHRONIC ADJUSTMENT DISORDER CRITERIA (DC 9440)
 // ============================================
 export const ADJUSTMENT_DISORDER_CRITERIA = {
-    diagnosticCode: '9440',
-    condition: 'Chronic Adjustment Disorder',
-    cfrReference: '38 CFR 4.130, Diagnostic Code 9440',
-    usesSharedCriteria: true,
-    sharedCriteria: MENTAL_HEALTH_SHARED_CRITERIA,
-    ratings: MENTAL_HEALTH_SHARED_CRITERIA.ratings,
-    definitions: {
-        ...MENTAL_HEALTH_SHARED_CRITERIA.definitions,
-        adjustmentDisorder: {
-            term: 'Adjustment Disorder',
-            definition: 'Emotional or behavioral symptoms in response to an identifiable stressor, occurring within 3 months of the stressor. Symptoms are clinically significant and out of proportion to the stressor.',
-        },
-        chronicAdjustment: {
-            term: 'Chronic Adjustment Disorder',
-            definition: 'Adjustment disorder lasting 6 months or longer after the stressor or its consequences have ended. Often service-connected due to ongoing adjustment to post-military life.',
-        },
+  diagnosticCode: '9440',
+  condition: 'Chronic Adjustment Disorder',
+  cfrReference: '38 CFR 4.130, Diagnostic Code 9440',
+  usesSharedCriteria: true,
+  sharedCriteria: MENTAL_HEALTH_SHARED_CRITERIA,
+  ratings: MENTAL_HEALTH_SHARED_CRITERIA.ratings,
+  definitions: {
+    ...MENTAL_HEALTH_SHARED_CRITERIA.definitions,
+    adjustmentDisorder: {
+      term: 'Adjustment Disorder',
+      definition: 'Emotional or behavioral symptoms in response to an identifiable stressor, occurring within 3 months of the stressor. Symptoms are clinically significant and out of proportion to the stressor.',
     },
-    importantNotes: [
-        ...MENTAL_HEALTH_SHARED_CRITERIA.importantNotes,
-        'Chronic adjustment disorder persists 6+ months after stressor',
-        'Common in Veterans adjusting to civilian life or dealing with service-related changes',
-    ],
+    chronicAdjustment: {
+      term: 'Chronic Adjustment Disorder',
+      definition: 'Adjustment disorder lasting 6 months or longer after the stressor or its consequences have ended. Often service-connected due to ongoing adjustment to post-military life.',
+    },
+  },
+  importantNotes: [
+    ...MENTAL_HEALTH_SHARED_CRITERIA.importantNotes,
+    'Chronic adjustment disorder persists 6+ months after stressor',
+    'Common in Veterans adjusting to civilian life or dealing with service-related changes',
+  ],
 };
 
 // ============================================
 // UNSPECIFIED ANXIETY DISORDER CRITERIA (DC 9413)
 // ============================================
 export const UNSPECIFIED_ANXIETY_CRITERIA = {
-    diagnosticCode: '9413',
-    condition: 'Unspecified Anxiety Disorder',
-    cfrReference: '38 CFR 4.130, Diagnostic Code 9413',
-    usesSharedCriteria: true,
-    sharedCriteria: MENTAL_HEALTH_SHARED_CRITERIA,
-    ratings: MENTAL_HEALTH_SHARED_CRITERIA.ratings,
-    definitions: MENTAL_HEALTH_SHARED_CRITERIA.definitions,
-    importantNotes: [
-        ...MENTAL_HEALTH_SHARED_CRITERIA.importantNotes,
-        'Used when anxiety symptoms are present but do not meet full criteria for a specific anxiety disorder',
-        'Rated using the same General Rating Formula as other anxiety disorders',
-    ],
+  diagnosticCode: '9413',
+  condition: 'Unspecified Anxiety Disorder',
+  cfrReference: '38 CFR 4.130, Diagnostic Code 9413',
+  usesSharedCriteria: true,
+  sharedCriteria: MENTAL_HEALTH_SHARED_CRITERIA,
+  ratings: MENTAL_HEALTH_SHARED_CRITERIA.ratings,
+  definitions: MENTAL_HEALTH_SHARED_CRITERIA.definitions,
+  importantNotes: [
+    ...MENTAL_HEALTH_SHARED_CRITERIA.importantNotes,
+    'Used when anxiety symptoms are present but do not meet full criteria for a specific anxiety disorder',
+    'Rated using the same General Rating Formula as other anxiety disorders',
+  ],
 };
 
 // ============================================
 // UNSPECIFIED DEPRESSIVE DISORDER CRITERIA (DC 9435)
 // ============================================
 export const UNSPECIFIED_DEPRESSIVE_CRITERIA = {
-    diagnosticCode: '9435',
-    condition: 'Unspecified Depressive Disorder',
-    cfrReference: '38 CFR 4.130, Diagnostic Code 9435',
-    usesSharedCriteria: true,
-    sharedCriteria: MENTAL_HEALTH_SHARED_CRITERIA,
-    ratings: MENTAL_HEALTH_SHARED_CRITERIA.ratings,
-    definitions: MENTAL_HEALTH_SHARED_CRITERIA.definitions,
-    importantNotes: [
-        ...MENTAL_HEALTH_SHARED_CRITERIA.importantNotes,
-        'Used when depressive symptoms are present but do not meet full criteria for a specific depressive disorder',
-        'Rated using the same General Rating Formula as other depressive disorders',
-    ],
+  diagnosticCode: '9435',
+  condition: 'Unspecified Depressive Disorder',
+  cfrReference: '38 CFR 4.130, Diagnostic Code 9435',
+  usesSharedCriteria: true,
+  sharedCriteria: MENTAL_HEALTH_SHARED_CRITERIA,
+  ratings: MENTAL_HEALTH_SHARED_CRITERIA.ratings,
+  definitions: MENTAL_HEALTH_SHARED_CRITERIA.definitions,
+  importantNotes: [
+    ...MENTAL_HEALTH_SHARED_CRITERIA.importantNotes,
+    'Used when depressive symptoms are present but do not meet full criteria for a specific depressive disorder',
+    'Rated using the same General Rating Formula as other depressive disorders',
+  ],
 };
 
 // ============================================
@@ -28048,8 +28050,8 @@ const analyzeMentalHealthCondition = (
   // Calculate average severity
   const logsWithSeverity = relevantLogs.filter(log => log.severity && log.severity > 0);
   const avgSeverity = logsWithSeverity.length > 0
-    ? logsWithSeverity.reduce((sum, log) => sum + log.severity, 0) / logsWithSeverity.length
-    : 0;
+      ? logsWithSeverity.reduce((sum, log) => sum + log.severity, 0) / logsWithSeverity.length
+      : 0;
 
   // Check for hospitalization indicators
   const hospitalizationLogs = relevantLogs.filter(log => {
@@ -28172,78 +28174,78 @@ export const analyzeBipolarLogs = (logs, options = {}) => {
  * Analyzes Social Anxiety Disorder symptom logs
  */
 export const analyzeSocialAnxietyLogs = (logs, options = {}) => {
-    return analyzeMentalHealthCondition(
-        logs,
-        'social-anxiety',
-        CONDITIONS.SOCIAL_ANXIETY.symptomIds,
-        SOCIAL_ANXIETY_CRITERIA,
-        options,
-    );
+  return analyzeMentalHealthCondition(
+      logs,
+      'social-anxiety',
+      CONDITIONS.SOCIAL_ANXIETY.symptomIds,
+      SOCIAL_ANXIETY_CRITERIA,
+      options,
+  );
 };
 
 /**
  * Analyzes OCD symptom logs
  */
 export const analyzeOCDLogs = (logs, options = {}) => {
-    return analyzeMentalHealthCondition(
-        logs,
-        'ocd',
-        CONDITIONS.OCD.symptomIds,
-        OCD_CRITERIA,
-        options,
-    );
+  return analyzeMentalHealthCondition(
+      logs,
+      'ocd',
+      CONDITIONS.OCD.symptomIds,
+      OCD_CRITERIA,
+      options,
+  );
 };
 
 /**
  * Analyzes Persistent Depressive Disorder (Dysthymia) symptom logs
  */
 export const analyzePersistentDepressiveLogs = (logs, options = {}) => {
-    return analyzeMentalHealthCondition(
-        logs,
-        'persistent-depressive',
-        CONDITIONS.PERSISTENT_DEPRESSIVE.symptomIds,
-        PERSISTENT_DEPRESSIVE_CRITERIA,
-        options,
-    );
+  return analyzeMentalHealthCondition(
+      logs,
+      'persistent-depressive',
+      CONDITIONS.PERSISTENT_DEPRESSIVE.symptomIds,
+      PERSISTENT_DEPRESSIVE_CRITERIA,
+      options,
+  );
 };
 
 /**
  * Analyzes Chronic Adjustment Disorder symptom logs
  */
 export const analyzeAdjustmentDisorderLogs = (logs, options = {}) => {
-    return analyzeMentalHealthCondition(
-        logs,
-        'adjustment-disorder',
-        CONDITIONS.ADJUSTMENT_DISORDER.symptomIds,
-        ADJUSTMENT_DISORDER_CRITERIA,
-        options,
-    );
+  return analyzeMentalHealthCondition(
+      logs,
+      'adjustment-disorder',
+      CONDITIONS.ADJUSTMENT_DISORDER.symptomIds,
+      ADJUSTMENT_DISORDER_CRITERIA,
+      options,
+  );
 };
 
 /**
  * Analyzes Unspecified Anxiety Disorder symptom logs
  */
 export const analyzeUnspecifiedAnxietyLogs = (logs, options = {}) => {
-    return analyzeMentalHealthCondition(
-        logs,
-        'unspecified-anxiety',
-        CONDITIONS.UNSPECIFIED_ANXIETY.symptomIds,
-        UNSPECIFIED_ANXIETY_CRITERIA,
-        options,
-    );
+  return analyzeMentalHealthCondition(
+      logs,
+      'unspecified-anxiety',
+      CONDITIONS.UNSPECIFIED_ANXIETY.symptomIds,
+      UNSPECIFIED_ANXIETY_CRITERIA,
+      options,
+  );
 };
 
 /**
  * Analyzes Unspecified Depressive Disorder symptom logs
  */
 export const analyzeUnspecifiedDepressiveLogs = (logs, options = {}) => {
-    return analyzeMentalHealthCondition(
-        logs,
-        'unspecified-depressive',
-        CONDITIONS.UNSPECIFIED_DEPRESSIVE.symptomIds,
-        UNSPECIFIED_DEPRESSIVE_CRITERIA,
-        options,
-    );
+  return analyzeMentalHealthCondition(
+      logs,
+      'unspecified-depressive',
+      CONDITIONS.UNSPECIFIED_DEPRESSIVE.symptomIds,
+      UNSPECIFIED_DEPRESSIVE_CRITERIA,
+      options,
+  );
 };
 
 
@@ -35202,7 +35204,7 @@ export const analyzeHyperthyroidismLogs = (logs, options = {}) => {
   }
 
   if (eyeSymptoms.length > 0) {
-    ratingRationale.push(`${eyeSymptoms.length} Graves\' eye symptoms documented - may warrant separate evaluation under eye DCs`);
+    ratingRationale.push(`${eyeSymptoms.length} Graves' eye symptoms documented - may warrant separate evaluation under eye DCs`);
     gaps.push('Obtain ophthalmology evaluation for Graves\' eye disease - separately ratable');
   }
 
@@ -37392,8 +37394,8 @@ export const analyzeKidneyStonesLogs = (logs) => {
   evidenceGaps.push('Get urology treatment records documenting recurrent stones');
 
   return {
-      condition: 'Kidney Stones (Nephrolithiasis)',
-      diagnosticCode: '7508',
+    condition: 'Kidney Stones (Nephrolithiasis)',
+    diagnosticCode: '7508',
 
     hasData: true,
     totalLogs: stoneLogs.length,
@@ -37499,8 +37501,8 @@ export const analyzeChronicRenalDiseaseLogs = (logs, options = {}) => {
   evidenceGaps.push('Document any complications (anemia, bone disease, metabolic issues)');
 
   return {
-      condition: 'Chronic Kidney Disease',
-      diagnosticCode: '7530',
+    condition: 'Chronic Kidney Disease',
+    diagnosticCode: '7530',
 
     hasData: true,
     totalLogs: renalLogs.length,
@@ -37538,8 +37540,8 @@ export const analyzeVoidingDysfunctionLogs = (logs) => {
   // Analyze incontinence
   const incontinenceLogs = voidingLogs.filter(log => log.genitourinaryData?.incontinenceEpisode);
   const padChangeCounts = voidingLogs
-      .map(log => parseInt(log.genitourinaryData?.padChangesRequired) || 0)
-      .filter(count => count > 0);
+  .map(log => parseInt(log.genitourinaryData?.padChangesRequired) || 0)
+  .filter(count => count > 0);
   const avgPadChanges = padChangeCounts.length > 0
       ? (padChangeCounts.reduce((a, b) => a + b, 0) / padChangeCounts.length).toFixed(1)
       : 0;
@@ -37547,15 +37549,15 @@ export const analyzeVoidingDysfunctionLogs = (logs) => {
 
   // Analyze frequency
   const frequencyCounts = voidingLogs
-      .map(log => parseInt(log.genitourinaryData?.urinaryFrequency24h) || 0)
-      .filter(count => count > 0);
+  .map(log => parseInt(log.genitourinaryData?.urinaryFrequency24h) || 0)
+  .filter(count => count > 0);
   const avgFrequency = frequencyCounts.length > 0
       ? (frequencyCounts.reduce((a, b) => a + b, 0) / frequencyCounts.length).toFixed(1)
       : 0;
 
   const nocturnalCounts = voidingLogs
-      .map(log => parseInt(log.genitourinaryData?.nocturiaCount) || 0)
-      .filter(count => count > 0);
+  .map(log => parseInt(log.genitourinaryData?.nocturiaCount) || 0)
+  .filter(count => count > 0);
   const avgNocturia = nocturnalCounts.length > 0
       ? (nocturnalCounts.reduce((a, b) => a + b, 0) / nocturnalCounts.length).toFixed(1)
       : 0;
@@ -37621,8 +37623,8 @@ export const analyzeVoidingDysfunctionLogs = (logs) => {
   evidenceGaps.push('Document any urodynamic testing results');
 
   return {
-      condition: 'Voiding Dysfunction',
-      diagnosticCode: '7542',
+    condition: 'Voiding Dysfunction',
+    diagnosticCode: '7542',
 
     hasData: true,
     totalLogs: voidingLogs.length,
@@ -37696,8 +37698,8 @@ export const analyzeSphincterImpairmentLogs = (logs) => {
   ];
 
   return {
-      condition: 'Sphincter Control Impairment',
-      diagnosticCode: '7332',
+    condition: 'Sphincter Control Impairment',
+    diagnosticCode: '7332',
 
     hasData: true,
     totalLogs: sphincterLogs.length,
@@ -37978,7 +37980,7 @@ export const analyzeTestisConditionsLogs = (logs, options = {}) => {
   };
 };
 
-export const analyzeIronDeficiencyAnemiaLogs = (logs, options = {}) => {
+export const analyzeIronDeficiencyAnemiaLogs = (logs, _options = {}) => {
   if (!logs || logs.length === 0) {
     return {
       hasData: false,
@@ -38050,8 +38052,8 @@ export const analyzeIronDeficiencyAnemiaLogs = (logs, options = {}) => {
   evidenceGaps.push('Obtain provider statement regarding treatment frequency and necessity');
 
   return {
-      condition: 'Iron Deficiency Anemia',
-      diagnosticCode: '7720',
+    condition: 'Iron Deficiency Anemia',
+    diagnosticCode: '7720',
 
     hasData: true,
     supportedRating,
@@ -38061,7 +38063,7 @@ export const analyzeIronDeficiencyAnemiaLogs = (logs, options = {}) => {
     criteriaReference: IRON_DEFICIENCY_ANEMIA_CRITERIA
   };
 };
-export const analyzeFolateDeficiencyAnemiaLogs = (logs, options = {}) => {
+export const analyzeFolateDeficiencyAnemiaLogs = (logs, _options = {}) => {
   const anemiaLogs = logs.filter(log => log.anemiaData?.type === 'folate-deficiency');
 
   if (anemiaLogs.length === 0) {
@@ -38096,8 +38098,8 @@ export const analyzeFolateDeficiencyAnemiaLogs = (logs, options = {}) => {
   }
 
   return {
-      condition: 'Folic Acid Deficiency Anemia',
-      diagnosticCode: '7721',
+    condition: 'Folic Acid Deficiency Anemia',
+    diagnosticCode: '7721',
 
     hasData: true,
     supportedRating,
@@ -38107,7 +38109,7 @@ export const analyzeFolateDeficiencyAnemiaLogs = (logs, options = {}) => {
     criteriaReference: FOLATE_DEFICIENCY_ANEMIA_CRITERIA
   };
 };
-export const analyzePerniciousAnemiaLogs = (logs, options = {}) => {
+export const analyzePerniciousAnemiaLogs = (logs, _options = {}) => {
   const b12Logs = logs.filter(log =>
       log.anemiaData?.type === 'b12-deficiency' ||
       log.b12DeficiencyData?.deficiency_cause === 'pernicious-anemia' ||
@@ -38189,7 +38191,7 @@ export const analyzePerniciousAnemiaLogs = (logs, options = {}) => {
     criteriaReference: PERNICIOUS_ANEMIA_CRITERIA
   };
 };
-export const analyzeHemolyticAnemiaLogs = (logs, options = {}) => {
+export const analyzeHemolyticAnemiaLogs = (logs, _options = {}) => {
   const hemolyticLogs = logs.filter(log => log.anemiaData?.type === 'hemolytic');
 
   if (hemolyticLogs.length === 0) {
@@ -38231,14 +38233,14 @@ export const analyzeHemolyticAnemiaLogs = (logs, options = {}) => {
     supportedRating = 30;
     if (metrics.hasImmunosuppression) rationale.push('Continuous immunosuppressive therapy required');
     if (metrics.transfusionCount > 0) rationale.push(`${metrics.transfusionCount} transfusions per year`);
-  } else if (metrics.hasImmunosuppression) {
+  } else {
     supportedRating = 10;
     rationale.push('Continuous oral medication required');
   }
 
   return {
-      condition: 'Acquired Hemolytic Anemia',
-      diagnosticCode: '7723',
+    condition: 'Acquired Hemolytic Anemia',
+    diagnosticCode: '7723',
 
     hasData: true,
     supportedRating,
@@ -38252,7 +38254,7 @@ export const analyzeHemolyticAnemiaLogs = (logs, options = {}) => {
     criteriaReference: HEMOLYTIC_ANEMIA_CRITERIA
   };
 };
-export const analyzeSickleCellAnemiaLogs = (logs, options = {}) => {
+export const analyzeSickleCellAnemiaLogs = (logs, _options = {}) => {
   const sickleLogs = logs.filter(log =>
       log.anemiaData?.type === 'sickle-cell' ||
       log.sickleCellData ||
@@ -38320,8 +38322,8 @@ export const analyzeSickleCellAnemiaLogs = (logs, options = {}) => {
   }
 
   return {
-      condition: 'Sickle Cell Anemia',
-      diagnosticCode: '7714',
+    condition: 'Sickle Cell Anemia',
+    diagnosticCode: '7714',
 
     hasData: true,
     supportedRating,
@@ -38331,7 +38333,7 @@ export const analyzeSickleCellAnemiaLogs = (logs, options = {}) => {
     criteriaReference: SICKLE_CELL_ANEMIA_CRITERIA
   };
 };
-export const analyzeAplasticAnemiaLogs = (logs, options = {}) => {
+export const analyzeAplasticAnemiaLogs = (logs, _options = {}) => {
   const aplasticLogs = logs.filter(log => log.anemiaData?.type === 'aplastic');
 
   if (aplasticLogs.length === 0) {
@@ -38384,8 +38386,8 @@ export const analyzeAplasticAnemiaLogs = (logs, options = {}) => {
   }
 
   return {
-      condition: 'Aplastic Anemia',
-      diagnosticCode: '7716',
+    condition: 'Aplastic Anemia',
+    diagnosticCode: '7716',
 
     hasData: true,
     supportedRating,
@@ -38401,7 +38403,7 @@ export const analyzeAplasticAnemiaLogs = (logs, options = {}) => {
     criteriaReference: APLASTIC_ANEMIA_CRITERIA
   };
 };
-export const analyzePolycythemiaVeraLogs = (logs, options = {}) => {
+export const analyzePolycythemiaVeraLogs = (logs, _options = {}) => {
   const polyLogs = logs.filter(log =>
       log.polycythemiaData?.diagnosis === 'polycythemia-vera' ||
       ['itching-after-bathing', 'burning-hands-feet', 'redness-skin'].includes(log.symptomId)
@@ -38463,8 +38465,8 @@ export const analyzePolycythemiaVeraLogs = (logs, options = {}) => {
   }
 
   return {
-      condition: 'Polycythemia Vera',
-      diagnosticCode: '7704',
+    condition: 'Polycythemia Vera',
+    diagnosticCode: '7704',
 
     hasData: true,
     supportedRating,
@@ -38479,7 +38481,7 @@ export const analyzePolycythemiaVeraLogs = (logs, options = {}) => {
     criteriaReference: POLYCYTHEMIA_VERA_CRITERIA
   };
 };
-export const analyzeImmuneThrombocytopeniaLogs = (logs, options = {}) => {
+export const analyzeImmuneThrombocytopeniaLogs = (logs, _options = {}) => {
   const itpLogs = logs.filter(log =>
       log.bleedingDisorderData?.disorder_type === 'thrombocytopenia' ||
       ['easy-bruising', 'prolonged-bleeding', 'petechiae'].includes(log.symptomId)
@@ -38552,8 +38554,8 @@ export const analyzeImmuneThrombocytopeniaLogs = (logs, options = {}) => {
   }
 
   return {
-      condition: 'Immune Thrombocytopenia (ITP)',
-      diagnosticCode: '7705',
+    condition: 'Immune Thrombocytopenia (ITP)',
+    diagnosticCode: '7705',
 
     hasData: true,
     supportedRating,
@@ -38570,7 +38572,7 @@ export const analyzeImmuneThrombocytopeniaLogs = (logs, options = {}) => {
 };
 
 
-export const analyzeLeukemiaLogs = (logs, options = {}) => {
+export const analyzeLeukemiaLogs = (logs, _options = {}) => {
   const leukemiaLogs = logs.filter(log =>
       ['cll', 'cml', 'all', 'aml'].includes(log.lymphomaLeukemiaData?.diagnosis) ||
       ['bone-pain-leukemia', 'night-sweats-blood', 'frequent-infections'].includes(log.symptomId)
@@ -38651,7 +38653,7 @@ export const analyzeLeukemiaLogs = (logs, options = {}) => {
 };
 
 
-export const analyzeHodgkinsLymphomaLogs = (logs, options = {}) => {
+export const analyzeHodgkinsLymphomaLogs = (logs, _options = {}) => {
   const hodgkinsLogs = logs.filter(log =>
       log.lymphomaLeukemiaData?.diagnosis === 'hodgkin' ||
       ['swollen-lymph-nodes', 'night-sweats-blood'].includes(log.symptomId)
@@ -38696,24 +38698,24 @@ export const analyzeHodgkinsLymphomaLogs = (logs, options = {}) => {
   }
 
   return {
-      condition: 'Hodgkin\'s Lymphoma',
-      diagnosticCode: '7709',
-      hasData: true,
-      supportedRating,
-      rationale,
-      gaps: [
-        'Upload oncology consultation reports',
-        'Upload pathology report confirming diagnosis',
-        'Upload PET/CT scan results',
-        'Upload treatment records'
-      ],
-      metrics: { totalLogs: hodgkinsLogs.length },
-      criteriaReference: HODGKINS_LYMPHOMA_CRITERIA
+    condition: 'Hodgkin\'s Lymphoma',
+    diagnosticCode: '7709',
+    hasData: true,
+    supportedRating,
+    rationale,
+    gaps: [
+      'Upload oncology consultation reports',
+      'Upload pathology report confirming diagnosis',
+      'Upload PET/CT scan results',
+      'Upload treatment records'
+    ],
+    metrics: { totalLogs: hodgkinsLogs.length },
+    criteriaReference: HODGKINS_LYMPHOMA_CRITERIA
   };
 };
 
 
-export const analyzeMultipleMyelomaLogs = (logs, options = {}) => {
+export const analyzeMultipleMyelomaLogs = (logs, _options = {}) => {
   const myelomaLogs = logs.filter(log =>
       log.lymphomaLeukemiaData?.diagnosis === 'multiple-myeloma' ||
       getLogSymptomId(log) === 'bone-pain-leukemia'
@@ -38776,7 +38778,7 @@ export const analyzeMultipleMyelomaLogs = (logs, options = {}) => {
 };
 
 
-export const analyzeNonHodgkinsLymphomaLogs = (logs, options = {}) => {
+export const analyzeNonHodgkinsLymphomaLogs = (logs, _options = {}) => {
   const nhlLogs = logs.filter(log => log.lymphomaLeukemiaData?.diagnosis === 'non-hodgkin');
 
   if (nhlLogs.length === 0) {
@@ -38818,8 +38820,8 @@ export const analyzeNonHodgkinsLymphomaLogs = (logs, options = {}) => {
   }
 
   return {
-      condition: 'Non-Hodgkin\'s Lymphoma',
-      diagnosticCode: '7715',
+    condition: 'Non-Hodgkin\'s Lymphoma',
+    diagnosticCode: '7715',
 
     hasData: true,
     supportedRating,
@@ -38834,7 +38836,7 @@ export const analyzeNonHodgkinsLymphomaLogs = (logs, options = {}) => {
     criteriaReference: NON_HODGKINS_LYMPHOMA_CRITERIA
   };
 };
-export const analyzeMyeloproliferative7718Logs = (logs, options = {}) => {
+export const analyzeMyeloproliferative7718Logs = (logs, _options = {}) => {
   const mpnLogs = logs.filter(log =>
       ['essential-thrombocythemia', 'primary-myelofibrosis'].includes(log.polycythemiaData?.diagnosis)
   );
@@ -38889,8 +38891,8 @@ export const analyzeMyeloproliferative7718Logs = (logs, options = {}) => {
   }
 
   return {
-      condition: 'Essential Thrombocythemia',
-      diagnosticCode: '7718',
+    condition: 'Essential Thrombocythemia',
+    diagnosticCode: '7718',
 
     hasData: true,
     supportedRating,
@@ -38906,7 +38908,7 @@ export const analyzeMyeloproliferative7718Logs = (logs, options = {}) => {
     criteriaReference: MYELOPROLIFERATIVE_7718_CRITERIA
   };
 };
-export const analyzeChronicMyelogenousLeukemiaLogs = (logs, options = {}) => {
+export const analyzeChronicMyelogenousLeukemiaLogs = (logs, _options = {}) => {
   const cmlLogs = logs.filter(log => log.lymphomaLeukemiaData?.diagnosis === 'cml');
 
   if (cmlLogs.length === 0) {
@@ -38950,8 +38952,8 @@ export const analyzeChronicMyelogenousLeukemiaLogs = (logs, options = {}) => {
   }
 
   return {
-      condition: 'Chronic Myelogenous Leukemia',
-      diagnosticCode: '7703',
+    condition: 'Chronic Myelogenous Leukemia',
+    diagnosticCode: '7703',
 
     hasData: true,
     supportedRating,
@@ -38967,7 +38969,7 @@ export const analyzeChronicMyelogenousLeukemiaLogs = (logs, options = {}) => {
     criteriaReference: CHRONIC_MYELOGENOUS_LEUKEMIA_CRITERIA
   };
 };
-export const analyzeSolitaryPlasmacytomaLogs = (logs, options = {}) => {
+export const analyzeSolitaryPlasmacytomaLogs = (logs, _options = {}) => {
   const plasmacytomaLogs = logs.filter(log =>
       log.lymphomaLeukemiaData?.diagnosis === 'plasmacytoma'
   );
@@ -39001,8 +39003,8 @@ export const analyzeSolitaryPlasmacytomaLogs = (logs, options = {}) => {
   }
 
   return {
-      condition: 'Solitary Plasmacytoma',
-      diagnosticCode: '7712',
+    condition: 'Solitary Plasmacytoma',
+    diagnosticCode: '7712',
 
     hasData: true,
     supportedRating,
@@ -39018,7 +39020,7 @@ export const analyzeSolitaryPlasmacytomaLogs = (logs, options = {}) => {
     criteriaReference: SOLITARY_PLASMACYTOMA_CRITERIA
   };
 };
-export const analyzeMyelodysplasticSyndromesLogs = (logs, options = {}) => {
+export const analyzeMyelodysplasticSyndromesLogs = (logs, _options = {}) => {
   const mdsLogs = logs.filter(log => log.lymphomaLeukemiaData?.diagnosis === 'mds');
 
   if (mdsLogs.length === 0) {
@@ -39070,8 +39072,8 @@ export const analyzeMyelodysplasticSyndromesLogs = (logs, options = {}) => {
   }
 
   return {
-      condition: 'Myelodysplastic Syndromes',
-      diagnosticCode: '7703',
+    condition: 'Myelodysplastic Syndromes',
+    diagnosticCode: '7703',
 
     hasData: true,
     supportedRating,
@@ -39177,8 +39179,8 @@ export const analyzeEndometriosisLogs = (logs) => {
   evidenceGaps.push('Document pain severity and interference with daily activities');
 
   return {
-      condition: 'Endometriosis',
-      diagnosticCode: '7629',
+    condition: 'Endometriosis',
+    diagnosticCode: '7629',
 
     hasData: true,
     totalLogs: endoLogs.length,
@@ -39424,8 +39426,8 @@ export const analyzePelvicProlapseLogs = (logs) => {
   ];
 
   return {
-      condition: 'Pelvic Organ Prolapse',
-      diagnosticCode: '7628',
+    condition: 'Pelvic Organ Prolapse',
+    diagnosticCode: '7628',
 
     hasData: true,
     totalLogs: prolapseLogs.length,
@@ -39466,8 +39468,8 @@ export const analyzeFemaleArousalDisorderLogs = (logs) => {
   const hasDecreasedLibido = fsadLogs.some(log => log.gynecologicalData?.libidoDecreased);
 
   return {
-      condition: 'Female Sexual Arousal Disorder (FSAD)',
-      diagnosticCode: '7632',
+    condition: 'Female Sexual Arousal Disorder (FSAD)',
+    diagnosticCode: '7632',
 
     hasData: true,
     totalLogs: fsadLogs.length,
@@ -40191,8 +40193,8 @@ export const analyzeHIVLogs = (logs, options = {}) => {
   const hivLogs = logs.filter(log => {
     const logDate = new Date(log.timestamp);
     return logDate >= cutoffDate && (
-      CONDITIONS.HIV_AIDS.symptomIds.includes(getLogSymptomId(log)) ||
-      getLogSymptomId(log)?.includes('hiv')
+        CONDITIONS.HIV_AIDS.symptomIds.includes(getLogSymptomId(log)) ||
+        getLogSymptomId(log)?.includes('hiv')
     );
   });
 
@@ -40279,11 +40281,11 @@ export const analyzeHIVLogs = (logs, options = {}) => {
   });
 
   const totalConstitutionalSymptoms =
-    symptomCounts.nightSweats +
-    symptomCounts.persistentFever +
-    symptomCounts.weightLoss +
-    symptomCounts.chronicDiarrhea +
-    symptomCounts.fatigue;
+      symptomCounts.nightSweats +
+      symptomCounts.persistentFever +
+      symptomCounts.weightLoss +
+      symptomCounts.chronicDiarrhea +
+      symptomCounts.fatigue;
 
   evidence.push(`${hivLogs.length} HIV-related symptoms logged over ${evaluationPeriodDays} days`);
 
@@ -40293,41 +40295,41 @@ export const analyzeHIVLogs = (logs, options = {}) => {
   if (hasOpportunisticInfection && symptomCounts.opportunisticInfections >= 2) {
     supportedRating = 100;
     ratingRationale.push(
-      'Recurrent opportunistic infections documented',
-      `${symptomCounts.opportunisticInfections} opportunistic infection episodes logged`,
-      'Meets criteria for 100% rating under DC 6351'
+        'Recurrent opportunistic infections documented',
+        `${symptomCounts.opportunisticInfections} opportunistic infection episodes logged`,
+        'Meets criteria for 100% rating under DC 6351'
     );
     evidence.push(`Opportunistic infection type: ${infectionType}`);
     evidence.push('Recurrent infections indicate severe immunosuppression');
   } else if (
-    weightLossPercentage >= 10 &&
-    totalConstitutionalSymptoms >= 15 &&
-    (symptomCounts.chronicDiarrhea >= 5 || symptomCounts.fatigue >= 10)
+      weightLossPercentage >= 10 &&
+      totalConstitutionalSymptoms >= 15 &&
+      (symptomCounts.chronicDiarrhea >= 5 || symptomCounts.fatigue >= 10)
   ) {
     supportedRating = 100;
     ratingRationale.push(
-      'Pathological weight loss (>=10% body weight) with debilitating constitutional symptoms',
-      `Weight loss: ${weightLossPercentage}% documented`,
-      `${totalConstitutionalSymptoms} constitutional symptoms over evaluation period`,
-      'Chronic diarrhea and/or severe fatigue documented',
-      'Meets criteria for 100% rating'
+        'Pathological weight loss (>=10% body weight) with debilitating constitutional symptoms',
+        `Weight loss: ${weightLossPercentage}% documented`,
+        `${totalConstitutionalSymptoms} constitutional symptoms over evaluation period`,
+        'Chronic diarrhea and/or severe fatigue documented',
+        'Meets criteria for 100% rating'
     );
     evidence.push(`Pathological weight loss: ${weightLossPercentage}%`);
   }
 
   // 60% Rating: Refractory constitutional symptoms OR post-opportunistic infection
   else if (
-    (hasOpportunisticInfection && symptomCounts.opportunisticInfections === 1) ||
-    (totalConstitutionalSymptoms >= 10 && (symptomCounts.chronicDiarrhea >= 3 || weightLossPercentage >= 5))
+      (hasOpportunisticInfection && symptomCounts.opportunisticInfections === 1) ||
+      (totalConstitutionalSymptoms >= 10 && (symptomCounts.chronicDiarrhea >= 3 || weightLossPercentage >= 5))
   ) {
     supportedRating = 60;
     ratingRationale.push(
-      hasOpportunisticInfection
-        ? 'Minimum 60% rating following documented opportunistic infection'
-        : 'Refractory constitutional symptoms with intermittent diarrhea',
-      'Frequent constitutional symptoms documented',
-      weightLossPercentage >= 5 ? `Significant weight loss: ${weightLossPercentage}%` : '',
-      'Meets criteria for 60% rating'
+        hasOpportunisticInfection
+            ? 'Minimum 60% rating following documented opportunistic infection'
+            : 'Refractory constitutional symptoms with intermittent diarrhea',
+        'Frequent constitutional symptoms documented',
+        weightLossPercentage >= 5 ? `Significant weight loss: ${weightLossPercentage}%` : '',
+        'Meets criteria for 60% rating'
     ).filter(Boolean);
 
     if (hasOpportunisticInfection) {
@@ -40337,9 +40339,9 @@ export const analyzeHIVLogs = (logs, options = {}) => {
 
   // 30% Rating: Recurrent constitutional symptoms, intermittent diarrhea, on antiretrovirals
   else if (
-    totalConstitutionalSymptoms >= 5 ||
-    onAntiretrovirals ||
-    (symptomCounts.chronicDiarrhea >= 2 && hasConstitutionalSymptoms)
+      totalConstitutionalSymptoms >= 5 ||
+      onAntiretrovirals ||
+      (symptomCounts.chronicDiarrhea >= 2 && hasConstitutionalSymptoms)
   ) {
     supportedRating = 30;
     ratingRationale.push(...[
@@ -40358,9 +40360,9 @@ export const analyzeHIVLogs = (logs, options = {}) => {
   else if (totalConstitutionalSymptoms >= 2 || symptomCounts.cognitiveImpairment > 0) {
     supportedRating = 10;
     ratingRationale.push(
-      'Constitutional symptoms following HIV diagnosis',
-      symptomCounts.cognitiveImpairment > 0 ? 'Cognitive impairment/memory loss documented' : '',
-      'Meets criteria for 10% rating'
+        'Constitutional symptoms following HIV diagnosis',
+        symptomCounts.cognitiveImpairment > 0 ? 'Cognitive impairment/memory loss documented' : '',
+        'Meets criteria for 10% rating'
     ).filter(Boolean);
   }
 
@@ -40368,9 +40370,9 @@ export const analyzeHIVLogs = (logs, options = {}) => {
   else {
     supportedRating = 0;
     ratingRationale.push(
-      'HIV diagnosis with minimal symptoms',
-      'May have lymphadenopathy but otherwise asymptomatic',
-      '0% (asymptomatic) rating'
+        'HIV diagnosis with minimal symptoms',
+        'May have lymphadenopathy but otherwise asymptomatic',
+        '0% (asymptomatic) rating'
     );
   }
 
@@ -42499,8 +42501,8 @@ const analyzeEatingDisorderCondition = (logs, conditionKey, symptomIds, criteria
   // Calculate average severity
   const logsWithSeverity = relevantLogs.filter(log => log.severity && log.severity > 0);
   const avgSeverity = logsWithSeverity.length > 0
-    ? logsWithSeverity.reduce((sum, log) => sum + log.severity, 0) / logsWithSeverity.length
-    : 0;
+      ? logsWithSeverity.reduce((sum, log) => sum + log.severity, 0) / logsWithSeverity.length
+      : 0;
 
   // Check for hospitalization (eating disorders track this via symptom ID)
   const hospitalized = hospitalizations > 0;
@@ -50768,13 +50770,14 @@ export const analyzeSciaticNerveLogs = (logs, options = {}) => {
     case 'severe':
       supportedRating = 60;
       break;
-    case 'moderate':
+    case 'moderate': {
       // Check for "moderately severe" based on atrophy
       const hasAtrophy = relevantLogs.some(log =>
           getLogSymptomId(log).toLowerCase() === 'scin-muscle-atrophy'
       );
       supportedRating = hasAtrophy ? 40 : 20;
       break;
+    }
     default:
       supportedRating = 10;
   }
@@ -53440,7 +53443,7 @@ export const analyzePellagraLogs = (logs, options = {}) => {
  * Analyzes Vulva/Clitoris Disease logs (DC 7610)
  * Uses General Rating Formula for DC 7610-7615
  */
-export const analyzeVulvaClitorisDiseaseLogs = (logs, options = {}) => {
+export const analyzeVulvaClitorisDiseaseLogs = (logs, _options = {}) => {
   const symptomIds = [
     'vulvovaginitis', 'vaginal-irritation'
   ];
@@ -53509,7 +53512,7 @@ export const analyzeVulvaClitorisDiseaseLogs = (logs, options = {}) => {
  * Analyzes Vagina Disease logs (DC 7611)
  * Uses General Rating Formula for DC 7610-7615
  */
-export const analyzeVaginaDiseaseLogs = (logs, options = {}) => {
+export const analyzeVaginaDiseaseLogs = (logs, _options = {}) => {
   const symptomIds = [
     'vaginal-irritation', 'abnormal-discharge'
   ];
@@ -53575,7 +53578,7 @@ export const analyzeVaginaDiseaseLogs = (logs, options = {}) => {
  * Analyzes Cervix Disease logs (DC 7612)
  * Uses General Rating Formula for DC 7610-7615
  */
-export const analyzeCervixDiseaseLogs = (logs, options = {}) => {
+export const analyzeCervixDiseaseLogs = (logs, _options = {}) => {
   const symptomIds = [
     'cervicitis', 'abnormal-discharge'
   ];
@@ -53640,7 +53643,7 @@ export const analyzeCervixDiseaseLogs = (logs, options = {}) => {
  * Analyzes Uterus Disease logs (DC 7613)
  * Uses General Rating Formula for DC 7610-7615
  */
-export const analyzeUterusDiseaseLogs = (logs, options = {}) => {
+export const analyzeUterusDiseaseLogs = (logs, _options = {}) => {
   const symptomIds = [
     'uterine-cramping', 'chronic-pelvic-pain', 'lower-abdominal-pain'
   ];
@@ -53706,7 +53709,7 @@ export const analyzeUterusDiseaseLogs = (logs, options = {}) => {
  * Analyzes Fallopian Tube/PID logs (DC 7614)
  * Uses General Rating Formula for DC 7610-7615
  */
-export const analyzeFallopianTubePIDLogs = (logs, options = {}) => {
+export const analyzeFallopianTubePIDLogs = (logs, _options = {}) => {
   const symptomIds = [
     'pid-symptoms', 'abnormal-discharge', 'chronic-pelvic-pain', 'lower-abdominal-pain'
   ];
@@ -53774,7 +53777,7 @@ export const analyzeFallopianTubePIDLogs = (logs, options = {}) => {
  * Analyzes Ovary Disease logs (DC 7615)
  * Uses General Rating Formula for DC 7610-7615
  */
-export const analyzeOvaryDiseaseLogs = (logs, options = {}) => {
+export const analyzeOvaryDiseaseLogs = (logs, _options = {}) => {
   const symptomIds = [
     'ovarian-cysts', 'polycystic-ovaries', 'ovulation-pain', 'anovulation',
     'painful-periods', 'heavy-menstrual-bleeding', 'irregular-periods',
@@ -53849,7 +53852,7 @@ export const analyzeOvaryDiseaseLogs = (logs, options = {}) => {
 /**
  * Analyzes Esophageal Spasm logs (DC 7204)
  */
-export const analyzeEsophagealSpasmLogs = (logs, options = {}) => {
+export const analyzeEsophagealSpasmLogs = (logs, _options = {}) => {
   const symptomIds = [
     'dysphagia', 'chest-pain-swallowing', 'esophageal-spasm',
     'difficulty-swallowing', 'food-sticking'
@@ -53929,7 +53932,7 @@ export const analyzeEsophagealSpasmLogs = (logs, options = {}) => {
 /**
  * Analyzes Rectal Prolapse logs (DC 7334)
  */
-export const analyzeRectalProlapseLogs = (logs, options = {}) => {
+export const analyzeRectalProlapseLogs = (logs, _options = {}) => {
   const symptomIds = [
     'rectal-prolapse', 'rectal-protrusion', 'bowel-protrusion'
   ];
@@ -53999,7 +54002,7 @@ export const analyzeRectalProlapseLogs = (logs, options = {}) => {
 /**
  * Analyzes Rectal Stricture logs (DC 7333)
  */
-export const analyzeRectalStrictureLogs = (logs, options = {}) => {
+export const analyzeRectalStrictureLogs = (logs, _options = {}) => {
   const symptomIds = [
     'rectal-stricture', 'anal-stricture', 'bowel-obstruction',
     'difficulty-defecating', 'narrow-stool'
@@ -54078,7 +54081,7 @@ export const analyzeRectalStrictureLogs = (logs, options = {}) => {
 /**
  * Analyzes Anal Fistula logs (DC 7335)
  */
-export const analyzeAnalFistulaLogs = (logs, options = {}) => {
+export const analyzeAnalFistulaLogs = (logs, _options = {}) => {
   const symptomIds = [
     'anal-fistula', 'perianal-fistula', 'fistula-drainage',
     'perianal-abscess', 'anal-abscess'
@@ -54149,7 +54152,7 @@ export const analyzeAnalFistulaLogs = (logs, options = {}) => {
 /**
  * Analyzes Pruritus Ani logs (DC 7337)
  */
-export const analyzePruritusAniLogs = (logs, options = {}) => {
+export const analyzePruritusAniLogs = (logs, _options = {}) => {
   const symptomIds = [
     'pruritus-ani', 'anal-itching', 'perianal-itching', 'rectal-itching'
   ];
@@ -54211,7 +54214,7 @@ export const analyzePruritusAniLogs = (logs, options = {}) => {
 /**
  * Analyzes Chronic Cystitis logs (DC 7512)
  */
-export const analyzeChronicCystitisLogs = (logs, options = {}) => {
+export const analyzeChronicCystitisLogs = (logs, _options = {}) => {
   const symptomIds = [
     'urinary-frequency', 'urinary-urgency', 'dysuria', 'bladder-pain',
     'urinary-incontinence', 'nocturia', 'recurrent-uti'
@@ -54306,7 +54309,7 @@ export const analyzeChronicCystitisLogs = (logs, options = {}) => {
  * Analyzes general Eye Conditions logs
  * Uses General Rating Formula for Diseases of the Eye (incapacitating episodes)
  */
-export const analyzeEyeConditionsLogs = (logs, options = {}) => {
+export const analyzeEyeConditionsLogs = (logs, _options = {}) => {
   const symptomIds = [
     'eye-pain', 'vision-changes', 'blurred-vision', 'eye-inflammation',
     'photophobia', 'eye-redness', 'eye-discharge', 'double-vision'
@@ -54386,7 +54389,7 @@ export const analyzeEyeConditionsLogs = (logs, options = {}) => {
 /**
  * Analyzes Peripheral Arterial Disease (PAD) logs (DC 7114)
  */
-export const analyzePeripheralArterialDiseaseLogs = (logs, options = {}) => {
+export const analyzePeripheralArterialDiseaseLogs = (logs, _options = {}) => {
   const symptomIds = [
     'claudication', 'leg-pain-walking', 'calf-pain', 'leg-cramping',
     'cold-extremities', 'numbness-legs', 'leg-weakness', 'rest-pain',
@@ -54494,7 +54497,7 @@ export const analyzePeripheralArterialDiseaseLogs = (logs, options = {}) => {
 /**
  * Analyzes Mandible Malunion logs (DC 9904)
  */
-export const analyzeMandibleMalunionLogs = (logs, options = {}) => {
+export const analyzeMandibleMalunionLogs = (logs, _options = {}) => {
   const symptomIds = [
     'jaw-pain', 'jaw-misalignment', 'bite-problems', 'chewing-difficulty',
     'jaw-clicking', 'facial-asymmetry', 'malocclusion'
@@ -54577,7 +54580,7 @@ export const analyzeMandibleMalunionLogs = (logs, options = {}) => {
 /**
  * Analyzes Maxilla Malunion logs (DC 9916)
  */
-export const analyzeMaxillaMalunionLogs = (logs, options = {}) => {
+export const analyzeMaxillaMalunionLogs = (logs, _options = {}) => {
   const symptomIds = [
     'jaw-pain', 'facial-pain', 'bite-problems', 'chewing-difficulty',
     'sinus-problems', 'facial-asymmetry', 'nasal-obstruction'
@@ -54660,7 +54663,7 @@ export const analyzeMaxillaMalunionLogs = (logs, options = {}) => {
 /**
  * Analyzes Maxilla/Mandible Bone Disease (Osteomyelitis) logs (DC 9900)
  */
-export const analyzeMaxillaMandibleBoneDiseaseLogs = (logs, options = {}) => {
+export const analyzeMaxillaMandibleBoneDiseaseLogs = (logs, _options = {}) => {
   const symptomIds = [
     'jaw-pain', 'jaw-swelling', 'jaw-drainage', 'tooth-loosening',
     'jaw-numbness', 'fistula', 'bone-exposed'
@@ -54762,7 +54765,7 @@ export const analyzeMaxillaMandibleBoneDiseaseLogs = (logs, options = {}) => {
 /**
  * Analyzes Essential Thrombocythemia logs (DC 7718)
  */
-export const analyzeEssentialThrombocythemiaLogs = (logs, options = {}) => {
+export const analyzeEssentialThrombocythemiaLogs = (logs, _options = {}) => {
   const symptomIds = [
     'fatigue', 'headache', 'dizziness', 'vision-changes',
     'bleeding', 'bruising', 'blood-clot', 'splenomegaly',
@@ -54861,7 +54864,7 @@ export const analyzeEssentialThrombocythemiaLogs = (logs, options = {}) => {
 /**
  * Analyzes Active Tuberculosis logs (DC 6730)
  */
-export const analyzeActiveTuberculosisLogs = (logs, options = {}) => {
+export const analyzeActiveTuberculosisLogs = (logs, _options = {}) => {
   const symptomIds = [
     'cough', 'hemoptysis', 'night-sweats', 'fever', 'weight-loss',
     'fatigue', 'chest-pain', 'shortness-of-breath'
@@ -54945,7 +54948,7 @@ export const analyzeActiveTuberculosisLogs = (logs, options = {}) => {
 /**
  * Analyzes Inactive Tuberculosis logs (DC 6731)
  */
-export const analyzeInactiveTuberculosisLogs = (logs, options = {}) => {
+export const analyzeInactiveTuberculosisLogs = (logs, _options = {}) => {
   const symptomIds = [
     'cough', 'shortness-of-breath', 'fatigue', 'chest-pain',
     'reduced-lung-function', 'scarring'
@@ -55041,7 +55044,7 @@ export const analyzeInactiveTuberculosisLogs = (logs, options = {}) => {
 /**
  * Analyzes Neurogenic Bladder logs (DC 7542)
  */
-export const analyzeNeurogenicBladderLogs = (logs, options = {}) => {
+export const analyzeNeurogenicBladderLogs = (logs, _options = {}) => {
   const symptomIds = [
     'urinary-frequency', 'urinary-urgency', 'urinary-incontinence',
     'urinary-retention', 'nocturia', 'catheterization', 'bladder-spasms'
@@ -55136,7 +55139,7 @@ export const analyzeNeurogenicBladderLogs = (logs, options = {}) => {
 /**
  * Analyzes Prostate Conditions logs (DC 7527)
  */
-export const analyzeProstateConditionsLogs = (logs, options = {}) => {
+export const analyzeProstateConditionsLogs = (logs, _options = {}) => {
   const symptomIds = [
     'urinary-frequency', 'urinary-urgency', 'weak-stream', 'hesitancy',
     'nocturia', 'incomplete-emptying', 'urinary-retention', 'dysuria'
@@ -55224,7 +55227,7 @@ export const analyzeProstateConditionsLogs = (logs, options = {}) => {
 /**
  * Analyzes Urethral Stricture logs (DC 7518)
  */
-export const analyzeUrethralStrictureLogs = (logs, options = {}) => {
+export const analyzeUrethralStrictureLogs = (logs, _options = {}) => {
   const symptomIds = [
     'weak-stream', 'hesitancy', 'straining', 'incomplete-emptying',
     'urinary-retention', 'dysuria', 'uti-recurrent'
@@ -57188,5 +57191,3 @@ export const getAphoniaDefinition = (term) => APHONIA_CRITERIA.definitions?.[ter
 export const getLaryngealStenosisDefinition = (term) => LARYNGEAL_STENOSIS_CRITERIA.definitions?.[term] || null;
 export const getPharynxInjuryDefinition = (term) => PHARYNX_INJURY_CRITERIA.definitions?.[term] || null;
 export const getDementiaDefinition = (term) => DEMENTIA_CRITERIA.definitions?.[term] || null;
-
-

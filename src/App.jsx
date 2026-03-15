@@ -22,7 +22,7 @@ import VATermsAndFAQ from './components/VATermsAndFAQ';
 import CPExamPrep from './components/CPExamPrep';
 import AfterActionReport from './components/AfterActionReport';
 import QuickActionsMenu from './components/QuickActionsMenu';
-import { initializeAccessibility } from './components/AccessibilitySettings';
+import { initializeAccessibility } from './utils/accessibilityUtils.js';
 import BlueButtonImport from './components/BlueButtonImport';
 
 
@@ -129,7 +129,7 @@ const AppContent = () => {
       refreshProfile();
     };
     initialize();
-  }, []);
+  }, [refreshProfile]);
 
   // Handle browser back/forward buttons
   useEffect(() => {
@@ -210,7 +210,7 @@ const AppContent = () => {
       case 'thank-you':
         return <ThankYou />;
       case 'secondary-conditions':
-        return <SecondaryConditionsGuide onNavigateToSymptom={(symptom) => handleNavigate('log')} />;
+        return <SecondaryConditionsGuide onNavigateToSymptom={(_symptom) => handleNavigate('log')} />;
       case 'presumptive-conditions':
         return <PresumptiveConditionsGuide />;
       case 'mos-noise-exposure':
@@ -253,7 +253,7 @@ const AppContent = () => {
         {showBlueButton && (
             <BlueButtonImport
                 onClose={() => setShowBlueButton(false)}
-                onImportComplete={(result) => {
+                onImportComplete={(_result) => {
                   setShowBlueButton(false);
                   // Phase 5 will handle writing to storage here
                 }}

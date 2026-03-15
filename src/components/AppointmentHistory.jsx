@@ -30,15 +30,16 @@ const AppointmentHistory = () => {
     const [appointments, setAppointments] = useState([]);
     const [editingAppointment, setEditingAppointment] = useState(null);
 
-    // Load appointments on mount
+  const loadAppointments = () => {
+    const data = getAppointments();
+    setAppointments(data);
+  };
+
+  // Load appointments on mount
     useEffect(() => {
         loadAppointments();
     }, []);
 
-    const loadAppointments = () => {
-        const data = getAppointments();
-        setAppointments(data);
-    };
 
     // Format date for display
     const formatDate = (dateString) => {

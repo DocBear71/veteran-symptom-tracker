@@ -1,8 +1,7 @@
-import { useRef, useState, useEffect, useMemo, useCallback, memo } from 'react';
-import { Calendar, Clock, Edit2, Trash2, ChevronDown, ChevronUp, Filter, History } from 'lucide-react';
+import { useRef, useState, useEffect, useCallback } from 'react';
+import { History } from 'lucide-react';
 import { getSymptomLogs, deleteSymptomLog, getMedicationLogsForSymptom, getOccurrenceTime, isBackDated } from '../utils/storage';
 import { formatDosage } from '../utils/medicationUtils';
-import { useProfile } from '../hooks/useProfile';
 import EditLogModal from './EditLogModal';
 import AppointmentForm from './AppointmentForm';
 import AppointmentHistory from './AppointmentHistory';
@@ -34,10 +33,6 @@ const SymptomHistory = ({ onCopyLog }) => {
     document.body.scrollTop = 0;
   }, [mainTab, appointmentTab, filter]);
 
-  useEffect(() => {
-    loadLogs();
-  }, [filter]);
-
     const loadLogs = () => {
         let allLogs = getSymptomLogs();
         // Sort by occurrence time (uses occurredAt for back-dated entries, timestamp otherwise)
@@ -64,6 +59,11 @@ const SymptomHistory = ({ onCopyLog }) => {
 
     setLogs(allLogs);
   };
+
+  useEffect(() => {
+    loadLogs();
+  }, [filter, loadLogs]);
+
 
   const handleDelete = (id) => {
     if (window.confirm('Delete this entry?')) {

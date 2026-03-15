@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { ChevronDown, ChevronUp, ClipboardList, BarChart3, Lightbulb, BookOpen } from 'lucide-react';
-import { getConditionDescription, hasConditionDescription } from '../data/conditionDescriptions';
+import { getConditionDescription } from '../data/conditionDescriptions';
 import { getProfileType, PROFILE_TYPES } from '../utils/profile';
 
 /**

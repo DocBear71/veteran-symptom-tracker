@@ -4,18 +4,7 @@ import { useProfile } from '../hooks/useProfile';
 import { getServiceConnectedConditions } from '../utils/profiles';
 import { getSymptomLogs } from '../utils/storage';
 import {
-  SMC_RATES_2026,
-  SMC_K_CRITERIA,
-  SMC_S_CRITERIA,
-  SMC_L_CRITERIA,
-  SMC_M_CRITERIA,
-  SMC_N_CRITERIA,
-  SMC_O_CRITERIA,
-  SMC_R_CRITERIA,
-  SMC_T_CRITERIA,
-  calculateSMCKEligibility,
-  calculateSMCSEligibility,
-  getCompleteSMCAnalysis
+  SMC_RATES_2026
 } from '../utils/smcCriteria';
 
 /**
@@ -49,11 +38,6 @@ const SMCCalculator = ({
   const [higherSMCAnalysis, setHigherSMCAnalysis] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [expandedSections, setExpandedSections] = useState({});
-
-  // Only show for veteran profiles
-  if (!profile || profile.type !== 'veteran') {
-    return null;
-  }
 
   /**
    * Merge SMC-K results from both Service-Connected conditions and logged symptoms
@@ -158,6 +142,7 @@ const SMCCalculator = ({
     };
 
     analyzeEligibility();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [profile]);
 
   /**
@@ -974,6 +959,11 @@ const SMCCalculator = ({
     if (smcAnalysis?.smcK?.eligible) return 'K';
     return null;
   }, [smcAnalysis, adlAnalysis, higherSMCAnalysis]);
+
+  // Only show for veteran profiles
+  if (!profile || profile.type !== 'veteran') {
+    return null;
+  }
 
   if (isLoading) {
     return (

@@ -699,7 +699,7 @@ const VATermsAndFAQ = ({ embedded = false }) => {
     let terms = Object.entries(VA_TERMS);
 
     if (selectedCategory !== 'all') {
-      terms = terms.filter(([_, data]) => data.category === selectedCategory);
+      terms = terms.filter(([, data]) => data.category === selectedCategory);
     }
 
     if (searchQuery.trim()) {

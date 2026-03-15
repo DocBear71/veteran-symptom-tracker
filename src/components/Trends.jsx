@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import {
     LineChart,
     Line,
@@ -11,8 +11,8 @@ import {
     ResponsiveContainer,
     Legend,
 } from 'recharts';
-import { getSymptomLogs, saveSymptomLog } from '../utils/storage';
-import { getMeasurements, getMeasurementStats } from '../utils/measurements';
+import { getSymptomLogs } from '../utils/storage';
+import { getMeasurements } from '../utils/measurements';
 import { getAllMeasurementTypes, getMeasurementType, formatMeasurementValue, interpretMeasurement } from '../data/measurementTypes';
 import RatingEvidence from './RatingEvidence';
 import { useProfile } from '../hooks/useProfile';
@@ -83,29 +83,29 @@ const MeasurementsTrends = () => {
   const [dateRange, setDateRange] = useState('all');  // own independent date range
   const measurementTypes = getAllMeasurementTypes();
 
+  const loadMeasurements = () => {
+    const now = new Date();
+    let days = null;
+
+    switch (dateRange) {
+      case 'week': days = 7; break;
+      case 'month': days = 30; break;
+      case '3months': days = 90; break;
+      case 'year': days = 365; break;
+      default: days = null;
+    }
+
+    const options = {};
+    if (days) options.days = days;
+    if (selectedType !== 'all') options.type = selectedType;
+
+    const data = getMeasurements(options);
+    setMeasurements(data);
+  };
+
   useEffect(() => {
     loadMeasurements();
   }, [dateRange, selectedType]);
-
-    const loadMeasurements = () => {
-        const now = new Date();
-        let days = null;
-
-        switch (dateRange) {
-            case 'week': days = 7; break;
-            case 'month': days = 30; break;
-            case '3months': days = 90; break;
-            case 'year': days = 365; break;
-            default: days = null;
-        }
-
-        const options = {};
-        if (days) options.days = days;
-        if (selectedType !== 'all') options.type = selectedType;
-
-        const data = getMeasurements(options);
-        setMeasurements(data);
-    };
 
     // Group measurements by type for summary
     const measurementSummary = useMemo(() => {
@@ -332,10 +332,6 @@ const Trends = () => {
   const [availableSymptoms, setAvailableSymptoms] = useState([]);
   const [activeTab, setActiveTab] = useState('charts');
 
-  useEffect(() => {
-    loadData();
-  }, [dateRange]);
-
   const loadData = () => {
     let allLogs = getSymptomLogs();
 
@@ -367,6 +363,11 @@ const Trends = () => {
     const symptoms = [...new Set(allLogs.map(log => log.symptomName))];
     setAvailableSymptoms(symptoms);
   };
+
+  useEffect(() => {
+    loadData();
+  }, [dateRange]);
+
 
   // Memoize filtered logs to prevent recalculation on every render
   const filteredLogs = useMemo(() => {

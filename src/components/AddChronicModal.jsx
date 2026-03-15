@@ -28,6 +28,7 @@ const AddChronicModal = ({ isOpen, onClose, onAdded }) => {
   const [searchResults, setSearchResults] = useState([]);
   const searchInputRef = useRef(null);
 
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => {
     if (isOpen) {
       setCustomSymptoms(getCustomSymptoms());
@@ -44,7 +45,7 @@ const AddChronicModal = ({ isOpen, onClose, onAdded }) => {
   }, [isOpen]);
 
   // Build combined symptom list with custom symptoms
-  const getAllCategories = () => {
+  const allCategories = useMemo(() => {
     const categories = sortedSymptomCategories.map(cat => ({
       ...cat,
       symptoms: [...cat.symptoms],
@@ -74,9 +75,7 @@ const AddChronicModal = ({ isOpen, onClose, onAdded }) => {
     });
 
     return categories;
-  };
-
-  const allCategories = useMemo(() => getAllCategories(), [customSymptoms]);
+  }, [customSymptoms]);
 
   // Get body systems list for dropdown
   const bodySystemList = useMemo(() => getBodySystemList(), []);
@@ -130,6 +129,7 @@ const AddChronicModal = ({ isOpen, onClose, onAdded }) => {
   }, [selectedCategory, allCategories]);
 
   // Handle search
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => {
     if (searchQuery.length >= 2) {
       const customResults = customSymptoms

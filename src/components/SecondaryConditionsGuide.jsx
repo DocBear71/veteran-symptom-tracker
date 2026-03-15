@@ -45,7 +45,7 @@ const NEXUS_BADGES = {
 /**
  * Individual Secondary Condition Card
  */
-const SecondaryConditionCard = ({ condition, primaryCondition, onTrackSymptoms }) => {
+const SecondaryConditionCard = ({ condition, onTrackSymptoms }) => {
   const [expanded, setExpanded] = useState(false);
   const nexusBadge = NEXUS_BADGES[condition.nexusStrength] || NEXUS_BADGES.possible;
 
@@ -162,7 +162,7 @@ const SecondaryConditionCard = ({ condition, primaryCondition, onTrackSymptoms }
 /**
  * Category Section - Groups related secondary conditions
  */
-const CategorySection = ({ categoryId, category, primaryCondition, onTrackSymptoms }) => {
+const CategorySection = ({ category, primaryCondition, onTrackSymptoms }) => {
   const [expanded, setExpanded] = useState(true);
 
   return (
@@ -204,7 +204,7 @@ const CategorySection = ({ categoryId, category, primaryCondition, onTrackSympto
 /**
  * Primary Condition Panel - Shows all secondaries for a primary condition
  */
-const PrimaryConditionPanel = ({ conditionId, conditionData, userServiceConnected, onTrackSymptoms }) => {
+const PrimaryConditionPanel = ({ conditionData, userServiceConnected, onTrackSymptoms }) => {
   const [expanded, setExpanded] = useState(false);
   const { criteria, icon, color } = conditionData;
   const secondaryData = criteria?.secondaryConditions;
@@ -371,7 +371,7 @@ const PrimaryConditionPanel = ({ conditionId, conditionData, userServiceConnecte
 /**
  * Main Secondary Conditions Guide Component
  */
-const SecondaryConditionsGuide = ({ userServiceConnected = [], onTrackSymptoms, onNavigateToSymptom }) => {
+const SecondaryConditionsGuide = ({ userServiceConnected = [], onTrackSymptoms }) => {
   const { isVeteran } = useProfile();
   const [filterMode, setFilterMode] = useState('all'); // 'all', 'service-connected', 'common'
   const [searchTerm, setSearchTerm] = useState('');
@@ -381,14 +381,14 @@ const SecondaryConditionsGuide = ({ userServiceConnected = [], onTrackSymptoms, 
     let conditions = Object.entries(SECONDARY_CONDITIONS_MAP);
 
     if (filterMode === 'service-connected' && userServiceConnected.length > 0) {
-      conditions = conditions.filter(([id, data]) =>
+      conditions = conditions.filter(([, data]) =>
           userServiceConnected.includes(data.criteria?.diagnosticCode)
       );
     }
 
     if (searchTerm) {
       const term = searchTerm.toLowerCase();
-      conditions = conditions.filter(([id, data]) => {
+      conditions = conditions.filter(([, data]) => {
         const criteria = data.criteria;
         if (criteria?.condition?.toLowerCase().includes(term)) return true;
         if (criteria?.diagnosticCode?.includes(term)) return true;

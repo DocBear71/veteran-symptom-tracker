@@ -143,6 +143,7 @@ const SMCAlertBanner = ({
             {/* Category */}
             <p className={`text-sm ${colors.text} mb-2`}>
               <span className="font-medium">Qualifying Condition:</span> {getCategoryName()}
+              {conditionName && <span className="ml-1">— {conditionName}</span>}
               {diagnosticCode && <span className="ml-1">(DC {diagnosticCode})</span>}
             </p>
 

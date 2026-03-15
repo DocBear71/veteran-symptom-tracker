@@ -11,7 +11,7 @@
  * V2.5 User Experience Improvements
  */
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import {
   Eye,
   Type,
@@ -21,120 +21,24 @@ import {
   RotateCcw,
   Info
 } from 'lucide-react';
-
-// ============================================
-// CONSTANTS
-// ============================================
-const STORAGE_KEY = 'symptomTracker_accessibility';
-
-const FONT_SIZE_OPTIONS = [
-  { id: 'small', label: 'Small', value: '14px', scale: 0.875 },
-  { id: 'medium', label: 'Medium', value: '16px', scale: 1 },
-  { id: 'large', label: 'Large', value: '18px', scale: 1.125 },
-  { id: 'xl', label: 'Extra Large', value: '20px', scale: 1.25 },
-];
-
-const DEFAULT_SETTINGS = {
-  fontSize: 'medium',
-  highContrast: false,
-  reducedMotion: false,
-  screenReaderOptimized: false,
-};
-
-// ============================================
-// ACCESSIBILITY SETTINGS STORAGE
-// ============================================
-export const getAccessibilitySettings = () => {
-  try {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored) {
-      return { ...DEFAULT_SETTINGS, ...JSON.parse(stored) };
-    }
-  } catch (error) {
-    console.error('Error loading accessibility settings:', error);
-  }
-  return DEFAULT_SETTINGS;
-};
-
-export const saveAccessibilitySettings = (settings) => {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
-    // Dispatch event for other components to react
-    window.dispatchEvent(new CustomEvent('accessibilityChanged', { detail: settings }));
-    return true;
-  } catch (error) {
-    console.error('Error saving accessibility settings:', error);
-    return false;
-  }
-};
-
-// ============================================
-// APPLY ACCESSIBILITY SETTINGS
-// ============================================
-export const applyAccessibilitySettings = (settings) => {
-  const root = document.documentElement;
-
-  // Font size
-  const fontOption = FONT_SIZE_OPTIONS.find(f => f.id === settings.fontSize);
-  if (fontOption) {
-    root.style.setProperty('--base-font-size', fontOption.value);
-    root.style.fontSize = fontOption.value;
-  }
-
-  // High contrast mode
-  if (settings.highContrast) {
-    root.classList.add('high-contrast');
-  } else {
-    root.classList.remove('high-contrast');
-  }
-
-  // Reduced motion
-  if (settings.reducedMotion) {
-    root.classList.add('reduced-motion');
-  } else {
-    root.classList.remove('reduced-motion');
-  }
-
-  // Screen reader optimizations
-  if (settings.screenReaderOptimized) {
-    root.classList.add('sr-optimized');
-  } else {
-    root.classList.remove('sr-optimized');
-  }
-};
-
-// ============================================
-// INITIALIZE ON PAGE LOAD
-// ============================================
-export const initializeAccessibility = () => {
-  const settings = getAccessibilitySettings();
-  applyAccessibilitySettings(settings);
-
-  // Also check system preference for reduced motion
-  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (prefersReducedMotion && !settings.reducedMotion) {
-    // Respect system preference but don't override user choice
-    const updatedSettings = { ...settings, reducedMotion: true };
-    saveAccessibilitySettings(updatedSettings);
-    applyAccessibilitySettings(updatedSettings);
-  }
-
-  return settings;
-};
+import {
+  FONT_SIZE_OPTIONS,
+  DEFAULT_SETTINGS,
+  getAccessibilitySettings,
+  saveAccessibilitySettings,
+  applyAccessibilitySettings,
+} from '../utils/accessibilityUtils';
 
 // ============================================
 // MAIN COMPONENT
 // ============================================
 const AccessibilitySettings = ({ embedded = false }) => {
-  const [settings, setSettings] = useState(DEFAULT_SETTINGS);
-  const [showSaved, setShowSaved] = useState(false);
-
-  // Load settings on mount
-  useEffect(() => {
+  const [settings, setSettings] = useState(() => {
     const loaded = getAccessibilitySettings();
-    setSettings(loaded);
     applyAccessibilitySettings(loaded);
-  }, []);
+    return loaded;
+  });
+  const [showSaved, setShowSaved] = useState(false);
 
   // Update setting handler
   const updateSetting = (key, value) => {

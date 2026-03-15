@@ -5,7 +5,7 @@ import { formatDisplayDate, formatDisplayTime } from '../utils/datetime';
  * Blood Pressure Trend Chart
  * Displays systolic and diastolic readings over time with VA rating thresholds
  */
-const BloodPressureTrendChart = ({ measurements, evaluationDays = 90 }) => {
+const BloodPressureTrendChart = ({ measurements }) => {
   const [showDataPoints, setShowDataPoints] = useState(true);
 
   if (!measurements || measurements.length === 0) {

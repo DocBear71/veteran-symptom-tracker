@@ -4,7 +4,6 @@ import {
   PROFILE_TYPES,
   setProfileType,
   setOnboardingComplete,
-  getProfileType,
 } from '../utils/profile.js';
 
 const OnboardingModal = ({ onComplete }) => {

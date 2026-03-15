@@ -14,7 +14,7 @@ import { EFFECTIVENESS_LEVELS, COMMON_SIDE_EFFECTS } from '../utils/medicationUt
 import { useState } from 'react';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 
-const MedicationEffectivenessInline = ({ medDetail, onChange, compact = false }) => {
+const MedicationEffectivenessInline = ({ medDetail, onChange }) => {
   const [showSideEffects, setShowSideEffects] = useState(
       (medDetail.sideEffects && medDetail.sideEffects.length > 0) || !!medDetail.sideEffectsOther
   );

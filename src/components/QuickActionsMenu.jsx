@@ -66,8 +66,7 @@ const QuickActionsMenu = ({
   const [recentSymptoms, setRecentSymptoms] = useState([]);
   const [showQuickLog, setShowQuickLog] = useState(false);
   const [showMedLog, setShowMedLog] = useState(false);
-  const [selectedItem, setSelectedItem] = useState(null);
-  const [logSeverity, setLogSeverity] = useState(5);
+  const [logSeverity] = useState(5);
   const [showSuccess, setShowSuccess] = useState(null);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
@@ -78,19 +77,6 @@ const QuickActionsMenu = ({
   // ==========================================
   // LOAD DATA
   // ==========================================
-  useEffect(() => {
-    loadData();
-
-    // Check reduced motion preference
-    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-    setPrefersReducedMotion(mediaQuery.matches);
-
-    const handleMotionChange = (e) => setPrefersReducedMotion(e.matches);
-    mediaQuery.addEventListener('change', handleMotionChange);
-
-    return () => mediaQuery.removeEventListener('change', handleMotionChange);
-  }, []);
-
   const loadData = useCallback(() => {
     // Load chronic symptoms (favorites)
     const chronic = getChronicSymptoms();
@@ -118,6 +104,19 @@ const QuickActionsMenu = ({
     }
     setRecentSymptoms(uniqueSymptoms);
   }, []);
+
+  useEffect(() => {
+    loadData();
+
+    // Check reduced motion preference
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    setPrefersReducedMotion(mediaQuery.matches);
+
+    const handleMotionChange = (e) => setPrefersReducedMotion(e.matches);
+    mediaQuery.addEventListener('change', handleMotionChange);
+
+    return () => mediaQuery.removeEventListener('change', handleMotionChange);
+  }, [loadData]);
 
   // Reload data when menu opens
   useEffect(() => {
@@ -174,6 +173,7 @@ const QuickActionsMenu = ({
   // ==========================================
   const handleQuickSymptomLog = async (symptom) => {
     const logEntry = {
+      // eslint-disable-next-line react-hooks/purity
       id: Date.now().toString(),
       symptomId: symptom.symptomId,
       symptomName: symptom.symptomName,
@@ -214,6 +214,7 @@ const QuickActionsMenu = ({
                 medicationName: medication.name,
                 dosage: medication.dosage || '',
                 takenFor: '',
+              // eslint-disable-next-line react-hooks/purity
                 occurredAt: new Date().toISOString(),
                 batchId: `batch_${Date.now()}`,
             });

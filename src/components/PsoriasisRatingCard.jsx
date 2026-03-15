@@ -12,7 +12,7 @@ import MedicationCorrelation from './MedicationCorrelation';
 export default function PsoriasisRatingCard({ analysis, expanded, onToggle }) {
   if (!analysis || !analysis.hasData) return null;
 
-  const { supportedRating, ratingRationale, evidence, gaps, metrics } = analysis;
+  const { supportedRating, ratingRationale, gaps, metrics } = analysis;
   const criteria = PSORIASIS_CRITERIA;
 
   // Normalize rating for comparison (handles string vs number)

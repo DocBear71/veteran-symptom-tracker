@@ -16,7 +16,7 @@ import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 export default function Phase8BMentalHealthRatingCard({ analysis, expanded, onToggle }) {
   if (!analysis || !analysis.hasData) return null;
 
-  const { supportedRating, ratingRationale, gaps, evidence, metrics, condition, diagnosticCode } = analysis;
+  const { supportedRating, ratingRationale, gaps, metrics, condition, diagnosticCode } = analysis;
   const criteria = MENTAL_HEALTH_SHARED_CRITERIA;
 
   // Get appropriate emoji based on condition

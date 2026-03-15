@@ -20,6 +20,7 @@ export default function OccurrenceTimePicker({ value, onChange, label = "When di
   const [timeError, setTimeError] = useState('');
 
   // Initialize from value prop (but don't override during user interaction)
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => {
     if (value && !userInteracting) {
       const occurrenceDate = new Date(value);
@@ -63,15 +64,16 @@ export default function OccurrenceTimePicker({ value, onChange, label = "When di
         setUserInteracting(false);
         break;
 
-      case 'earlier-today':
+      case 'earlier-today': {
         // Default to 2 hours ago
         const twoHoursAgo = new Date(now.getTime() - (2 * 60 * 60 * 1000));
         setCustomTime(twoHoursAgo.toTimeString().slice(0, 5));
         onChange(twoHoursAgo.toISOString());
         setTimeout(() => setUserInteracting(false), 100);
         break;
+      }
 
-      case 'yesterday':
+      case 'yesterday': {
         // Default to same time yesterday
         const yesterday = new Date(now);
         yesterday.setDate(yesterday.getDate() - 1);
@@ -79,8 +81,9 @@ export default function OccurrenceTimePicker({ value, onChange, label = "When di
         onChange(yesterday.toISOString());
         setTimeout(() => setUserInteracting(false), 100);
         break;
+      }
 
-      case 'custom':
+      case 'custom': {
         // Default to 3 days ago at noon (outside yesterday range)
         const customDefault = new Date(now);
         customDefault.setDate(customDefault.getDate() - 3);
@@ -91,6 +94,7 @@ export default function OccurrenceTimePicker({ value, onChange, label = "When di
         // Keep userInteracting flag longer for custom to prevent mode switch
         setTimeout(() => setUserInteracting(false), 500);
         break;
+      }
     }
   };
 

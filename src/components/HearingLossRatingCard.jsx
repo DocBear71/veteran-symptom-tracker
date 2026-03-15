@@ -1,5 +1,5 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
-import { HEARING_LOSS_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
+import { HEARING_LOSS_CRITERIA, getRatingRowColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
@@ -14,7 +14,7 @@ import MedicationCorrelation from './MedicationCorrelation';
 export default function HearingLossRatingCard({ analysis, expanded, onToggle }) {
   if (!analysis || !analysis.hasData) return null;
 
-  const { supportedRating, ratingRationale, evidence, gaps, metrics } = analysis;
+  const { supportedRating, ratingRationale, gaps, metrics } = analysis;
   const criteria = HEARING_LOSS_CRITERIA;
 
   return (

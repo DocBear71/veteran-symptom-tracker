@@ -13,7 +13,7 @@ import MedicationCorrelation from './MedicationCorrelation';
 export default function EczemaRatingCard({ analysis, expanded, onToggle }) {
   if (!analysis || !analysis.hasData) return null;
 
-  const { supportedRating, ratingRationale, evidence, gaps, metrics } = analysis;
+  const { supportedRating, ratingRationale, gaps, metrics } = analysis;
   const criteria = ECZEMA_CRITERIA;
 
   const totalLogs = metrics?.totalLogs || 0;
@@ -113,6 +113,7 @@ export default function EczemaRatingCard({ analysis, expanded, onToggle }) {
               </div>
 
               <MedicationCorrelation analysis={analysis} />
+
               {/* Section 2: Analysis Rationale */}
               {ratingRationale && ratingRationale.length > 0 && (
                   <div>

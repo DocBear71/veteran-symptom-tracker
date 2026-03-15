@@ -190,7 +190,7 @@ const SecondaryRow = ({ secondary }) => {
 /**
  * Summary card for a single primary condition's secondaries
  */
-const ConditionSecondaryCard = ({ conditionKey, data, isExpanded, onToggle }) => {
+const ConditionSecondaryCard = ({ data, isExpanded, onToggle }) => {
   const secondaryInfo = SECONDARY_DATA[data.key];
   if (!secondaryInfo) return null;
 

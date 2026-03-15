@@ -5,7 +5,7 @@ import { formatDisplayDate, formatDisplayTime } from '../utils/datetime';
  * Glucose Trend Chart with HbA1c Overlay
  * Displays blood glucose readings over time with diabetes thresholds and HbA1c trend
  */
-const GlucoseTrendChart = ({ glucoseMeasurements, hba1cMeasurements, evaluationDays = 90 }) => {
+const GlucoseTrendChart = ({ glucoseMeasurements, hba1cMeasurements }) => {
   const [showDataPoints, setShowDataPoints] = useState(true);
   const [showHbA1c, setShowHbA1c] = useState(true);
 
@@ -261,6 +261,21 @@ const GlucoseTrendChart = ({ glucoseMeasurements, hba1cMeasurements, evaluationD
                   />
               );
             })}
+
+            {/* HbA1c threshold lines (right axis scale) */}
+            {showHbA1c && sortedHbA1c.length > 0 && hba1cThresholds.map((threshold, i) => (
+                <line
+                    key={`hba1c-threshold-${i}`}
+                    x1={padding.left}
+                    y1={scaleYHbA1c(threshold.value)}
+                    x2={width - padding.right}
+                    y2={scaleYHbA1c(threshold.value)}
+                    stroke={threshold.color}
+                    strokeWidth="1"
+                    strokeDasharray="3,6"
+                    opacity="0.25"
+                />
+            ))}
 
             {/* Glucose line */}
             <path

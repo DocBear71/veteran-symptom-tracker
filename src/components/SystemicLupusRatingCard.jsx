@@ -7,6 +7,7 @@
 import { ChevronDown, ChevronUp, AlertCircle, Info } from 'lucide-react';
 import { SYSTEMIC_LUPUS_CRITERIA } from '../utils/ratingCriteria';
 import MedicationCorrelation from './MedicationCorrelation';
+import ServiceConnectedBanner from './ServiceConnectedBanner';
 
 const SystemicLupusRatingCard = ({ analysis, expanded, onToggle }) => {
   if (!analysis?.hasData) {
@@ -87,6 +88,13 @@ const SystemicLupusRatingCard = ({ analysis, expanded, onToggle }) => {
         {expanded && (
             <div className="px-6 pb-6 space-y-6">
               <div className="border-t border-gray-200 dark:border-gray-700" />
+
+              {/* Service-Connected Status Banner */}
+              <ServiceConnectedBanner
+                conditionKey="systemicLupus"
+                currentAnalysis={analysis}
+              />
+
 
               {/* Section 1: Evidence Summary (4-box grid) */}
               <div>

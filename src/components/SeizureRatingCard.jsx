@@ -21,9 +21,6 @@ export default function SeizureRatingCard({ analysis, expanded, onToggle }) {
   const majorCriteria = EPILEPSY_MAJOR_CRITERIA;
   const minorCriteria = EPILEPSY_MINOR_CRITERIA;
 
-  // Use appropriate criteria based on type
-  const primaryCriteria = seizureType === 'minor' ? minorCriteria : majorCriteria;
-
   const isRatingSupported = (percent) => supportedRating === percent;
 
   // Determine display title based on seizure type

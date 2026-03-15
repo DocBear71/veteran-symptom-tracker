@@ -26,15 +26,15 @@ const Measurements = ({ onNavigate }) => {
   const [selectedMeasurementType, setSelectedMeasurementType] = useState(null);
   const [filterType, setFilterType] = useState('all');
 
-
-  useEffect(() => {
-    loadMeasurements();
-  }, [filterType]);
-
   const loadMeasurements = () => {
     const options = filterType !== 'all' ? { type: filterType } : {};
     setMeasurements(getMeasurements(options));
   };
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    loadMeasurements();
+  }, [filterType]);
 
   const handleAddClick = (measurementType) => {
     // Weight gets its own dedicated tracker page instead of the modal
@@ -287,6 +287,7 @@ const AddMeasurementModal = ({ measurementType, onSave, onCancel }) => {
   const [timestamp, setTimestamp] = useState(() => formatLocalDateTime());
 
   // Initialize metadata with defaults
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => {
     const defaultMetadata = {};
     measurementType.metadata?.forEach(field => {

@@ -36,10 +36,6 @@ const WeightTracker = ({ onNavigate }) => {
   const [showLogModal, setShowLogModal] = useState(false);
   const [showGoalModal, setShowGoalModal] = useState(false);
 
-  useEffect(() => {
-    loadData();
-  }, []);
-
   const loadData = () => {
     // Load weight measurements only
     const allMeasurements = getMeasurements({ type: 'weight' });
@@ -50,6 +46,10 @@ const WeightTracker = ({ onNavigate }) => {
     setMeasurements(sorted);
     setWeightGoal(getWeightGoal());
   };
+
+  useEffect(() => {
+    loadData();
+  }, []);
 
   const handleSaveMeasurement = (measurementData) => {
     saveMeasurement(measurementData);
@@ -327,6 +327,23 @@ const TrendAnalysis = ({ measurements, weightGoal }) => {
   );
 };
 
+// Extracted outside WeightChart to prevent recreation on every render
+const WeightChartTooltip = ({ active, payload, label }) => {
+  if (!active || !payload?.length) return null;
+  return (
+      <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-2 shadow-lg text-xs">
+        <p className="font-medium text-gray-900 dark:text-white mb-1">{label}</p>
+        {payload.map((entry, i) => (
+            <p key={i} style={{ color: entry.color }}>
+              {entry.name}: <span className="font-semibold">{entry.value}</span>
+              {entry.name === 'Weight' ? ' lbs' : ''}
+            </p>
+        ))}
+      </div>
+  );
+};
+
+
 // ============================================
 // WEIGHT CHART
 // Phase 4: Line chart with time range selector
@@ -387,22 +404,6 @@ const WeightChart = ({ measurements, weightGoal }) => {
   const minW = weights.length ? Math.floor(Math.min(...weights) - 5) : 0;
   const maxW = weights.length ? Math.ceil(Math.max(...weights) + 5) : 300;
 
-  // Custom tooltip
-  const CustomTooltip = ({ active, payload, label }) => {
-    if (!active || !payload?.length) return null;
-    return (
-        <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-2 shadow-lg text-xs">
-          <p className="font-medium text-gray-900 dark:text-white mb-1">{label}</p>
-          {payload.map((entry, i) => (
-              <p key={i} style={{ color: entry.color }}>
-                {entry.name}: <span className="font-semibold">{entry.value}</span>
-                {entry.name === 'Weight' ? ' lbs' : ''}
-              </p>
-          ))}
-        </div>
-    );
-  };
-
   const ranges = [
     { key: '3w',  label: '3 Weeks' },
     { key: '90d', label: '90 Days' },
@@ -462,7 +463,7 @@ const WeightChart = ({ measurements, weightGoal }) => {
                         axisLine={false}
                         tickFormatter={v => `${v}`}
                     />
-                    <Tooltip content={<CustomTooltip />} />
+                    <Tooltip content={WeightChartTooltip} />
 
                     {/* Goal reference line */}
                     {weightGoal?.goalWeight && (

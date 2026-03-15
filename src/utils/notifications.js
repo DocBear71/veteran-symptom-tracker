@@ -89,7 +89,6 @@ export const shouldShowReminder = () => {
   if (!settings.enabled) return false;
 
   const now = new Date();
-  const currentTime = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
   const today = now.toDateString();
 
   // Check if we've already notified today at this time

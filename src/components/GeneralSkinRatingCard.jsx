@@ -399,7 +399,7 @@ function renderConditionSpecificMetrics(condition, metrics) {
           </div>
       );
 
-    case 'Dermatophytosis':
+    case 'Dermatophytosis': {
       const fungalTypes = [];
       if (metrics.tineaPedisLogs > 0) fungalTypes.push("Athlete's Foot");
       if (metrics.onychomycosisLogs > 0) fungalTypes.push('Nail Fungus');
@@ -435,14 +435,18 @@ function renderConditionSpecificMetrics(condition, metrics) {
             </div>
             {fungalTypes.length > 0 && (
                 <div className="bg-gray-50 dark:bg-gray-700/30 rounded-lg p-2">
-                  <span className="text-xs text-gray-600 dark:text-gray-400">Types: </span>
-                  <span className="text-xs text-gray-800 dark:text-gray-200">{fungalTypes.join(', ')}</span>
+                  <span
+                      className="text-xs text-gray-600 dark:text-gray-400">Types: </span>
+                  <span
+                      className="text-xs text-gray-800 dark:text-gray-200">{fungalTypes.join(
+                      ', ')}</span>
                 </div>
             )}
           </div>
       );
+    }
 
-    case 'Skin Infections':
+    case 'Skin Infections': {
       const infectionTypes = [];
       if (metrics.cellulitisLogs > 0) infectionTypes.push('Cellulitis');
       if (metrics.abscessLogs > 0) infectionTypes.push('Abscess');
@@ -480,12 +484,17 @@ function renderConditionSpecificMetrics(condition, metrics) {
             </div>
             {infectionTypes.length > 0 && (
                 <div className="bg-gray-50 dark:bg-gray-700/30 rounded-lg p-2">
-                  <span className="text-xs text-gray-600 dark:text-gray-400">Types: </span>
-                  <span className="text-xs text-gray-800 dark:text-gray-200">{infectionTypes.join(', ')}</span>
+                  <span
+                      className="text-xs text-gray-600 dark:text-gray-400">Types: </span>
+                  <span
+                      className="text-xs text-gray-800 dark:text-gray-200">{infectionTypes.join(
+                      ', ')}</span>
                 </div>
             )}
           </div>
       );
+    }
+
 
     default:
       return null;
@@ -495,7 +504,7 @@ function renderConditionSpecificMetrics(condition, metrics) {
 /**
  * Render condition-specific notes in the Important Information section
  */
-function renderConditionSpecificNotes(condition, metrics) {
+function renderConditionSpecificNotes(condition, _metrics) {
   const commonNotes = [
     <li key="body" className="text-sm text-blue-800 dark:text-blue-300 flex items-start gap-2">
       <span className="text-blue-500 mt-0.5">•</span>

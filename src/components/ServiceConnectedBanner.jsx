@@ -1,5 +1,4 @@
 import React from 'react';
-import { getServiceConnectedCondition } from '../utils/profiles';
 import { useProfile } from '../hooks/useProfile';
 
 /**

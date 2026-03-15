@@ -822,7 +822,7 @@ export const generateHbA1cTrendChart = (measurements, options = {}) => {
   ctx.fillStyle = '#333';
   ctx.font = '22px Arial';
 
-  timestamps.forEach((timestamp, i) => {
+  timestamps.forEach((timestamp) => {
     const x = scaleX(timestamp);
     const dateStr = timestamp.toLocaleDateString('en-US', { month: 'short', year: '2-digit' });
     ctx.fillText(dateStr, x, height - padding.bottom + 20);

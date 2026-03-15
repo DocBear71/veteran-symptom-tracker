@@ -13,6 +13,15 @@ const ServiceConnectedConditions = () => {
   const [showAddModal, setShowAddModal] = useState(false);
   const [editingCondition, setEditingCondition] = useState(null);
 
+  const [conditions, setConditions] = useState([]);
+
+  useEffect(() => {
+    if (currentProfile && currentProfile.id) {
+      const loadedConditions = getServiceConnectedConditions(currentProfile.id);
+      setConditions(loadedConditions);
+    }
+  }, [currentProfile, currentProfile?.id]);
+
   // Safety check - don't render if no profile
   if (!profile || !profile.id) {
     return null;
@@ -26,14 +35,6 @@ const ServiceConnectedConditions = () => {
     );
   }
 
-  const [conditions, setConditions] = useState([]);
-
-  useEffect(() => {
-    if (currentProfile && currentProfile.id) {
-      const loadedConditions = getServiceConnectedConditions(currentProfile.id);
-      setConditions(loadedConditions);
-    }
-  }, [currentProfile, currentProfile?.id]);
 
   const handleRemove = (conditionId) => {
     if (window.confirm('Remove this service-connected condition from your profile?')) {

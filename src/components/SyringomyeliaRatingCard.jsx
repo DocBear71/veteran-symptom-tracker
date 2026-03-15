@@ -50,6 +50,13 @@ export default function SyringomyeliaRatingCard({analysis, expanded, onToggle}) 
             <div className="px-6 pb-6 space-y-6">
               <div className="border-t border-gray-200 dark:border-gray-700"/>
 
+              {/* Service-Connected Status Banner */}
+              <ServiceConnectedBanner
+                conditionKey="syringomyelia"
+                currentAnalysis={analysis}
+              />
+
+
               {/* Evidence Summary */}
               <div>
                 <h4 className="font-medium text-gray-900 dark:text-white mb-3 text-center">Evidence Summary</h4>

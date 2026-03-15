@@ -56,7 +56,7 @@ export default function usePanicKey(redirectUrl = 'https://www.google.com') {
     // ============================================
     // MOBILE: Triple-tap anywhere on screen
     // ============================================
-    const handleTouchStart = (e) => {
+    const handleTouchStart = (_e) => {
       const now = Date.now();
       const timeSinceLastTap = now - lastTapTimeRef.current;
 
@@ -96,7 +96,7 @@ export default function usePanicKey(redirectUrl = 'https://www.google.com') {
     let clickTimer = null;
     let lastClickTime = 0;
 
-    const handleClick = (e) => {
+    const _handleClick = (e) => {
       // Ignore clicks on interactive elements (buttons, links, inputs)
       const tagName = e.target.tagName.toLowerCase();
       const isInteractive = ['button', 'a', 'input', 'select', 'textarea', 'label'].includes(tagName) ||
@@ -141,14 +141,7 @@ export default function usePanicKey(redirectUrl = 'https://www.google.com') {
     window.addEventListener('keydown', handleKeyDown);
     window.addEventListener('touchstart', handleTouchStart, { passive: true });
     // Uncomment below if you want triple-click to work on desktop too
-    // window.addEventListener('click', handleClick);
-
-    // Log initialization (remove in production if desired)
-    if (process.env.NODE_ENV === 'development') {
-      console.log('🛡️ Panic key initialized:');
-      console.log('   Desktop: Triple-tap Escape key');
-      console.log('   Mobile: Triple-tap anywhere on screen');
-    }
+    // window.addEventListener('click', _handleClick);
 
     // Cleanup
     return () => {

@@ -1,9 +1,8 @@
 // file: src/hooks/useProfile.jsx v2 - Profile context and hook
-// Updated to support caregivers caring for veterans with veteran feature access
+// eslint-disable-next-line react-refresh/only-export-components -- hooks file legitimately exports multiple items
 
 import { useState, useEffect, useCallback, createContext, useContext } from 'react';
 import {
-  getProfile,
   getProfileType,
   getLabels,
   getFeatureFlags,

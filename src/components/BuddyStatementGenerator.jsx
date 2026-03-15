@@ -1,7 +1,7 @@
 // BuddyStatementGenerator.jsx - Generate Lay/Buddy Statements for VA Claims
 // v2.1 Feature - Templates and guidance for supporting statements
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { jsPDF } from 'jspdf';
 
 // Storage key for saved statements
@@ -11,7 +11,7 @@ const getSavedStatements = () => {
   try {
     const saved = localStorage.getItem(STORAGE_KEY);
     return saved ? JSON.parse(saved) : [];
-  } catch (e) {
+  } catch {
     return [];
   }
 };
@@ -71,7 +71,7 @@ const CollapsibleCategory = ({ title, isExpanded, onToggle, children, count }) =
 
 const BuddyStatementGenerator = ({ embedded = false, onClose }) => {
   const [activeView, setActiveView] = useState('new');
-  const [savedStatements, setSavedStatements] = useState([]);
+  const [savedStatements, setSavedStatements] = useState(() => getSavedStatements());
   const [selectedStatement, setSelectedStatement] = useState(null);
   const [generatedStatement, setGeneratedStatement] = useState('');
   const [showPreview, setShowPreview] = useState(false);
@@ -166,10 +166,6 @@ const BuddyStatementGenerator = ({ embedded = false, onClose }) => {
     // Certification
     willingToTestify: false,
   });
-
-  useEffect(() => {
-    setSavedStatements(getSavedStatements());
-  }, []);
 
   // Relationship options
   const relationshipOptions = [

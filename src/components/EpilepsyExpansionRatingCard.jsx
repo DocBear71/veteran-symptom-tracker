@@ -200,7 +200,7 @@ export default function EpilepsyExpansionRatingCard({ analysis, expanded, onTogg
                     <div className="bg-gray-50 dark:bg-gray-700/30 rounded-lg p-3 space-y-2">
                       {ratingRationale.map((item, idx) => (
                           <div key={idx} className="flex items-start gap-2">
-                            <span className="text-blue-600 dark:text-blue-400 mt-0.5">◆</span>
+                            <span className={`${getAccentTextColor()} mt-0.5`}>◆</span>
                             <span className="text-sm text-gray-700 dark:text-gray-300">{item}</span>
                           </div>
                       ))}

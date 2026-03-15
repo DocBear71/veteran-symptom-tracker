@@ -125,7 +125,28 @@ export default function AlopeciaAreataRatingCard({ analysis, expanded, onToggle 
                 </div>
 
                 {/* Additional metrics row */}
+                {/* hasBodyHairLoss = partial body hair loss; distinct from hasAllBodyHairLoss (universalis) */}
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-3">
+                  {/* Partial Body Hair - bridges gap between 0% and 10% threshold */}
+                  <div className={`p-3 rounded-lg text-center ${
+                      hasAllBodyHairLoss
+                          ? 'bg-green-50 dark:bg-green-900/20'
+                          : hasBodyHairLoss
+                              ? 'bg-amber-50 dark:bg-amber-900/20'
+                              : 'bg-gray-50 dark:bg-gray-700/30'
+                  }`}>
+                    <div className={`text-2xl font-bold ${
+                        hasAllBodyHairLoss
+                            ? 'text-green-600 dark:text-green-400'
+                            : hasBodyHairLoss
+                                ? 'text-amber-600 dark:text-amber-400'
+                                : 'text-gray-400'
+                    }`}>
+                      {hasAllBodyHairLoss ? 'All' : hasBodyHairLoss ? 'Partial' : 'No'}
+                    </div>
+                    <div className="text-xs text-gray-600 dark:text-gray-400">Body Hair</div>
+                  </div>
+
                   {/* Nail Changes */}
                   <div className={`p-3 rounded-lg text-center ${
                       metrics?.nailChangesLogs > 0 ? 'bg-amber-50 dark:bg-amber-900/20' : 'bg-gray-50 dark:bg-gray-700/30'

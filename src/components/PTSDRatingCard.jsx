@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { PTSD_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
@@ -11,7 +10,7 @@ import MedicationCorrelation from './MedicationCorrelation';
  * DC 9411 - 38 CFR 4.130
  */
 export default function PTSDRatingCard({ analysis, expanded, onToggle }) {
-  const [showDefinitions, setShowDefinitions] = useState(false);
+
 
   if (!analysis || !analysis.hasData) return null;
 

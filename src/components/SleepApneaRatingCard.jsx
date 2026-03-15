@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { SLEEP_APNEA_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
@@ -11,7 +10,6 @@ import MedicationCorrelation from './MedicationCorrelation';
  * DC 6847 - 38 CFR 4.97
  */
 export default function SleepApneaRatingCard({ analysis, profile, expanded, onToggle, onSetupClick }) {
-  const [showDefinitions, setShowDefinitions] = useState(false);
 
   if (!analysis) return null;
 

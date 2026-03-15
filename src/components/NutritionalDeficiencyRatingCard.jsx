@@ -13,6 +13,7 @@ import {
   PELLAGRA_CRITERIA,
 } from '../utils/ratingCriteria';
 import MedicationCorrelation from './MedicationCorrelation';
+import ServiceConnectedBanner from './ServiceConnectedBanner';
 
 const NutritionalDeficiencyRatingCard = ({ analysis, expanded, onToggle }) => {
   if (!analysis?.hasData) {
@@ -140,6 +141,13 @@ const NutritionalDeficiencyRatingCard = ({ analysis, expanded, onToggle }) => {
         {expanded && (
             <div className="px-6 pb-6 space-y-6">
               <div className="border-t border-gray-200 dark:border-gray-700" />
+
+              {/* Service-Connected Status Banner */}
+              <ServiceConnectedBanner
+                conditionKey="nutritionalDeficiency"
+                currentAnalysis={analysis}
+              />
+
 
               {/* Section 1: Evidence Summary (4-box grid) */}
               <div>

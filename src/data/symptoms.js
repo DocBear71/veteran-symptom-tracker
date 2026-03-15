@@ -4662,7 +4662,7 @@ export const getBodySystem = (categoryName) => {
 export const stripDCCode = (name) => {
   if (!name) return '';
   // Remove patterns like "(DC 8912)", "(DC 7338)", "(DC 5024/5025)", etc.
-  return name.replace(/\s*\(DC\s*[\d\/]+\)\s*/gi, '').trim();
+  return name.replace(/\s*\(DC\s*[\d/]+\)\s*/gi, '').trim();
 };
 
 /**
@@ -5137,7 +5137,7 @@ export const getRelatedConditions = (categoryName) => {
   if (!categoryName) return [];
   const nameLower = categoryName.toLowerCase();
 
-  for (const [key, conditionGroup] of Object.entries(RELATED_CONDITIONS)) {
+  for (const [,conditionGroup] of Object.entries(RELATED_CONDITIONS)) {
     const matches = conditionGroup.categoryPatterns.some(pattern =>
         nameLower.includes(pattern.toLowerCase())
     );

@@ -1,5 +1,4 @@
-import {useRef, useState, useEffect} from 'react';
-import { X } from 'lucide-react';
+import {useState, useEffect} from 'react';
 import {
   updateSymptomLog,
   getMedications,
@@ -271,6 +270,33 @@ const EditLogModal = ({log, isOpen, onClose, onSaved}) => {
     crisis_location: [],
     hospitalization_required: false,
     organ_damage: [],
+  });
+
+  const [infectionData, setInfectionData] = useState({
+    infection_type: [],
+    frequency: '',
+    severity: '',
+    requires_hospitalization: '',
+    treatment: [],
+    immune_status: '',
+  });
+
+  const [treatmentData, setTreatmentData] = useState({
+    treatment_type: '',
+    regimen: '',
+    cycle_number: '',
+    side_effects: [],
+    severity: '',
+    management: [],
+  });
+
+  const [b12DeficiencyData, setB12DeficiencyData] = useState({
+    deficiency_cause: '',
+    neurological_symptoms: [],
+    treatment: [],
+    injection_frequency: '',
+    last_injection: '',
+    improvement_noted: '',
   });
 
 // Phase 6: HIV/AIDS Data
@@ -769,6 +795,7 @@ const EditLogModal = ({log, isOpen, onClose, onSaved}) => {
   });
 
   // Myelitis data (DC 8010)
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   const [myelitisData, setMyelitisData] = useState({
     weaknessDistribution: '',
     sensoryLevel: '',
@@ -807,6 +834,7 @@ const EditLogModal = ({log, isOpen, onClose, onSaved}) => {
   });
 
 
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => {
           if (isOpen && log) {
             setSeverity(log.severity || 5);
@@ -2015,7 +2043,7 @@ const EditLogModal = ({log, isOpen, onClose, onSaved}) => {
   // PHASE 8B: ADDITIONAL MENTAL HEALTH CONDITIONS - DETECTION LOGIC
 
       // Schizophrenia Spectrum Disorders
-        const isSchizophreniaRelated = [
+        const _isSchizophreniaRelated = [
           'schizophrenia-hallucinations',
           'schizophrenia-delusions',
           'schizophrenia-disorganized-speech',
@@ -2023,25 +2051,25 @@ const EditLogModal = ({log, isOpen, onClose, onSaved}) => {
           'schizophrenia-negative-symptoms',
         ].includes(log?.symptomId);
 
-        const isSchizoaffectiveRelated = [
+        const _isSchizoaffectiveRelated = [
           'schizophrenia-hallucinations',
           'schizophrenia-delusions',
           'schizoaffective-mood-episodes',
           'psychotic-episode',
         ].includes(log?.symptomId);
 
-        const isDelusionalDisorderRelated = [
+        const _isDelusionalDisorderRelated = [
           'schizophrenia-delusions',
           'psychotic-episode',
         ].includes(log?.symptomId);
 
-        const isPsychoticNOSRelated = [
+        const _isPsychoticNOSRelated = [
           'psychotic-episode',
           'schizophrenia-hallucinations',
           'schizophrenia-delusions',
         ].includes(log?.symptomId);
 
-        const isBriefPsychoticRelated = [
+        const _isBriefPsychoticRelated = [
           'brief-psychotic-episode',
           'schizophrenia-hallucinations',
           'schizophrenia-delusions',
@@ -2154,7 +2182,7 @@ const EditLogModal = ({log, isOpen, onClose, onSaved}) => {
             log?.category === 'Myasthenia Gravis Symptoms' ||
             log?.myastheniaData;
 
-        const isNeurologicalPhase1ARelated = isMultipleSclerosisRelated ||
+        const _isNeurologicalPhase1ARelated = isMultipleSclerosisRelated ||
             isParkinsonsRelated || isMyastheniaRelated;
 
         // ============================================
@@ -2177,7 +2205,7 @@ const EditLogModal = ({log, isOpen, onClose, onSaved}) => {
             log?.category === 'myelitis' ||
             log?.myelitisData;
 
-        const isNeurologicalPhase1BRelated = isNarcolepsyRelated || isALSRelated ||
+        const _isNeurologicalPhase1BRelated = isNarcolepsyRelated || isALSRelated ||
             isSyringomyeliaRelated || isMyelitisRelated;
         // ============================================
         // PHASE 3A: ENDOCRINE - THYROID & PARATHYROID DETECTION
@@ -2191,7 +2219,7 @@ const EditLogModal = ({log, isOpen, onClose, onSaved}) => {
             log?.category === 'hyperparathyroidism';
         const isHypoparathyroidismRelated = log?.symptomId?.startsWith('hopth-') ||
             log?.category === 'hypoparathyroidism';
-        const isEndocrinePhase3ARelated = isHyperthyroidismRelated || isThyroiditisRelated ||
+        const _isEndocrinePhase3ARelated = isHyperthyroidismRelated || isThyroiditisRelated ||
             isHyperparathyroidismRelated || isHypoparathyroidismRelated;
         // Phase 3B: Adrenal & Pituitary Detection
         const isAddisonsDiseaseRelated = log?.symptomId?.startsWith('addisons-') ||
@@ -2202,7 +2230,7 @@ const EditLogModal = ({log, isOpen, onClose, onSaved}) => {
             log?.category === 'diabetes-insipidus';
         const isHyperaldosteronismRelated = log?.symptomId?.startsWith('haldo-') ||
             log?.category === 'hyperaldosteronism';
-        const isEndocrinePhase3BRelated = isAddisonsDiseaseRelated || isCushingsSyndromeRelated ||
+        const _isEndocrinePhase3BRelated = isAddisonsDiseaseRelated || isCushingsSyndromeRelated ||
             isDiabetesInsipidusRelated || isHyperaldosteronismRelated;
 
         // ============================================

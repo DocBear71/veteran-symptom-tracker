@@ -1,9 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { ChevronDown, ChevronUp, CheckCircle, Circle, AlertTriangle, Info, DollarSign, Heart } from 'lucide-react';
-import { getRatingTextColor } from '../utils/ratingCriteria';
-import ServiceConnectedBanner from './ServiceConnectedBanner';
-import SMCAlertBanner from './SMCAlertBanner';
 import MedicationCorrelation from './MedicationCorrelation';
+import ServiceConnectedBanner from './ServiceConnectedBanner';
 
 /**
  * ADL Rating Card Component
@@ -15,7 +13,6 @@ const ADLRatingCard = ({ analysis, expanded, onToggle }) => {
   if (!analysis || !analysis.hasData) return null;
 
   const {
-    supportedLevel,
     totalLogs,
     factorsAffected,
     factors,
@@ -25,8 +22,7 @@ const ADLRatingCard = ({ analysis, expanded, onToggle }) => {
     hasHousebound,
     potentialSMC,
     rationale,
-    evidenceGaps,
-    metrics
+    evidenceGaps
   } = analysis;
 
   // Determine the SMC level indicator
@@ -123,6 +119,13 @@ const ADLRatingCard = ({ analysis, expanded, onToggle }) => {
         {expanded && (
             <div className="px-6 pb-6 space-y-6">
               <div className="border-t border-gray-200 dark:border-gray-700" />
+
+              {/* Service-Connected Status Banner */}
+              <ServiceConnectedBanner
+                conditionKey="aDL"
+                currentAnalysis={analysis}
+              />
+
 
               {/* SMC Potential Banner */}
               {potentialSMC && (

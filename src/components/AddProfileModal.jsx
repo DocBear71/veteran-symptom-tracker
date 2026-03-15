@@ -2,7 +2,7 @@
 // Updated to support caregivers caring for veterans with veteran feature access
 
 import { useState } from 'react';
-import { createProfile, PROFILE_COLORS, getColorById } from '../utils/profiles';
+import { createProfile, PROFILE_COLORS } from '../utils/profiles';
 import { PROFILE_OPTIONS } from '../utils/profile';
 
 /**
