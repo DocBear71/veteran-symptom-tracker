@@ -1,10 +1,10 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
-import { MENTAL_HEALTH_SHARED_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
+import { getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import MedicationCorrelation from './MedicationCorrelation';
 import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
-
+import {MENTAL_HEALTH_SHARED_CRITERIA} from '../utils/ratingLogic/index.js';
 /**
  * Phase 8B Mental Health Rating Card - Gold Standard Version
  * Handles: Schizophrenia, Schizoaffective, Delusional, Psychotic NOS, Brief Psychotic,

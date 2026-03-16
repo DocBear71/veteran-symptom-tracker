@@ -1,4 +1,4 @@
-// src/components/forms/SymptomForms/index.js
+// src/components/forms/SymptomForms/_shared.js
 // Central export for all extracted condition-specific form components.
 // Add each new form here as it is extracted from SymptomLogger / EditLogModal.
 

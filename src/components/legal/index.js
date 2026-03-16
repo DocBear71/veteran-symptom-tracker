@@ -1,4 +1,4 @@
-// file: src/components/legal/index.js - Export all legal components
+// file: src/components/legal/_shared.js - Export all legal components
 // Central export point for legal/footer components
 
 export { default as PrivacyPolicy } from './PrivacyPolicy';

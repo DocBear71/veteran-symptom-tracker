@@ -10,7 +10,6 @@ import { useProfile } from '../hooks/useProfile';
 // Import criteria objects that have secondaryConditions data
 import {
   DIABETES_CRITERIA,
-  PTSD_CRITERIA,
   TINNITUS_CRITERIA,
   SLEEP_APNEA_CRITERIA,
   FIBROMYALGIA_CRITERIA,
@@ -20,6 +19,8 @@ import {
   MULTIPLE_SCLEROSIS_CRITERIA,
   ALS_CRITERIA,
 } from '../utils/ratingCriteria';
+import {PTSD_CRITERIA} from '../utils/ratingLogic/index.js';
+
 
 // Map of condition IDs to their criteria objects (only those with secondaryConditions)
 const SECONDARY_CONDITIONS_MAP = {
