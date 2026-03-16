@@ -57,7 +57,7 @@ export default function DataBunker() {
         const data = {
             version: '2.0',
             exportDate: new Date().toISOString(),
-            appVersion: '3.1.0',
+            appVersion: '3.2.0',
             activeProfileId,
             // Store all raw localStorage data for complete backup
             rawData: allData,

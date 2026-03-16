@@ -356,8 +356,8 @@ AI Cloud: None             ❌
                         bg-gray-50 dark:bg-gray-900/50">
             <div className="flex items-center justify-between text-xs text-gray-500
                         dark:text-gray-400">
-              <span>Doc Bear's Symptom Vault v3.0.0</span>
-              <span>158,000+ lines of privacy-focused code</span>
+              <span>Doc Bear's Symptom Vault v3.2.0</span>
+              <span>200,000+ lines of privacy-focused code</span>
             </div>
           </div>
         </div>

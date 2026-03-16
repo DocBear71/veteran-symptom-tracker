@@ -4503,7 +4503,7 @@ export const getBodySystem = (categoryName) => {
       name.includes('deviated septum') || name.includes('nasal septum') || name.includes('nose loss') ||
       name.includes('septum') || name.includes('nasal obstruction') ||
       name.includes('laryngitis') || name.includes('aphonia') || name.includes('laryngeal') ||
-      name.includes('stenosis') || name.includes('pharynx') || name.includes('voice loss')) {
+      name.includes('laryngeal stenosis') || name.includes('pharynx') || name.includes('voice loss')) {
     return 'respiratory';
   }
 

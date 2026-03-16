@@ -1,6 +1,6 @@
 // Service Worker for Doc Bear's Symptom Vault
 // Version updated on each deploy to bust cache
-const CACHE_VERSION = 'v3';
+const CACHE_VERSION = 'v3.2.0';
 const CACHE_NAME = `symptom-tracker-${CACHE_VERSION}`;
 
 // Only cache the shell, not the hashed assets
@@ -48,6 +48,12 @@ self.addEventListener('fetch', (event) => {
     );
     return;
   }
+
+  // some change here
+  // Skip non-http(s) requests (chrome-extension://, etc.)
+  // The Cache API only supports http and https schemes
+  const url = new URL(event.request.url);
+  if (url.protocol !== 'http:' && url.protocol !== 'https:') return;
 
   // For assets (JS, CSS), try network first, then cache
   event.respondWith(

@@ -33,8 +33,8 @@ const SymptomHistory = ({ onCopyLog }) => {
     document.body.scrollTop = 0;
   }, [mainTab, appointmentTab, filter]);
 
-    const loadLogs = () => {
-        let allLogs = getSymptomLogs();
+  const loadLogs = useCallback(() => {
+    let allLogs = getSymptomLogs();
         // Sort by occurrence time (uses occurredAt for back-dated entries, timestamp otherwise)
         allLogs.sort((a, b) => {
             const timeA = new Date(getOccurrenceTime(a));
@@ -42,8 +42,16 @@ const SymptomHistory = ({ onCopyLog }) => {
             return timeB - timeA;
         });
 
-    // Attach linked medications to each log
-    allLogs = allLogs.map(log => ({
+    // Deduplicate by ID — guards against StrictMode double-invocation in dev
+    // and any future storage anomalies
+    const seen = new Set();
+    allLogs = allLogs
+    .filter(log => {
+      if (seen.has(log.id)) return false;
+      seen.add(log.id);
+      return true;
+    })
+    .map(log => ({
       ...log,
       linkedMedications: getMedicationLogsForSymptom(log.id),
     }));
@@ -58,11 +66,11 @@ const SymptomHistory = ({ onCopyLog }) => {
         }
 
     setLogs(allLogs);
-  };
+  }, [filter]);
 
   useEffect(() => {
     loadLogs();
-  }, [filter, loadLogs]);
+  }, [filter]);
 
 
   const handleDelete = (id) => {
