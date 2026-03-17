@@ -24,10 +24,10 @@ const CPResources = () => {
     {
       id: 'exam-prep',
       title: 'C&P Exam Prep Checklist',
-      description: 'Prepare for your Compensation & Pension exam with personalized checklists, tips, and key VA terminology.',
+      description: 'Prepare for your C&P exam with personalized checklists, exam tips, and a printable 3-element nexus summary to hand directly to your examiner.',
       icon: '📋',
       color: 'blue',
-      features: ['Documents checklist', 'Exam tips', 'VA terminology', 'Condition-specific prep'],
+      features: ['Documents checklist', 'Exam tips', 'VA terminology', 'Condition-specific prep', 'Nexus one-pager'],
     },
     {
       id: 'after-action',
@@ -89,7 +89,13 @@ const CPResources = () => {
       case 'scenario-calc':
         return <RatingScenarioCalculator embedded={true} onClose={() => setActiveResource(null)} />;
       case 'exam-prep':
-        return <CPExamPrep embedded={true} onClose={() => setActiveResource(null)} />;
+        return <CPExamPrep
+            embedded={true}
+            onClose={() => setActiveResource(null)}
+            onNavigate={(target) => {
+              if (target === 'after-action-report') setActiveResource('after-action');
+            }}
+        />;
       case 'after-action':
         return <AfterActionReport embedded={true} onClose={() => setActiveResource(null)} />;
       case 'buddy-statement':

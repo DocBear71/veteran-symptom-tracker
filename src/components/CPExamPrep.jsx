@@ -3,7 +3,7 @@
 
 import React, { useState, useMemo } from 'react';
 import { getSymptomLogs } from '../utils/storage';
-import { getServiceConnectedConditions } from '../utils/profiles.js';
+import { getActiveProfile, getActiveProfileId, getServiceConnectedConditions } from '../utils/profiles.js';
 import { getConditionDescription } from '../data/conditionDescriptions';
 import { jsPDF } from 'jspdf';
 import autoTable from 'jspdf-autotable';
@@ -21,9 +21,141 @@ const CPExamPrep = ({ embedded = false, onClose, onNavigate }) => {
   const [activeTab, setActiveTab] = useState('checklist');
   const [expandedCondition, setExpandedCondition] = useState(null);
 
-  // Get user's conditions and symptoms
+  // --- Nexus Summary State ---
+  // Resolve veteran name from the active profile's .name field
+  const resolveVeteranName = () => {
+    try {
+      const profile = getActiveProfile();
+      return profile?.name || '';
+    } catch { return ''; }
+  };
+
+  // Build the localStorage key scoped to active profile + condition slug
+  // e.g. "docbear_nexus_abc123_sleep-apnea"
+  // This prevents nexus summaries from leaking across profiles
+  const nexusStorageKey = (conditionSlug) => {
+    const profileId = getActiveProfileId() || 'default';
+    return `docbear_nexus_${profileId}_${conditionSlug || 'default'}`;
+  };
+
+  // Load a saved summary for the given condition key
+  const loadSavedSummary = (conditionSlug) => {
+    try {
+      const saved = localStorage.getItem(nexusStorageKey(conditionSlug));
+      return saved ? JSON.parse(saved) : null;
+    } catch { return null; }
+  };
+
+  // The condition the veteran is currently editing a nexus for
+  // Tracks which localStorage slot is active
+  const [activeNexusCondition, setActiveNexusCondition] = useState('');
+
+  const defaultSummary = {
+    veteranName: resolveVeteranName(), // auto-populated, stays editable
+    claimedCondition: '',
+    // Element 1 — Current Diagnosis
+    diagnosis: '',
+    diagnosisDate: '',
+    treatingProvider: '',
+    // Element 2 — In-Service Events (array supports multiple)
+    inServiceEvents: [{ event: '', dateOrTimeframe: '', evidence: '' }],
+    // Element 3 — Medical Nexus
+    nexusExplanation: '',
+    supportingEvidence: '',
+    // Functional Impact
+    workLimitations: '',
+    sleepProblems: '',
+    communicationDifficulty: '',
+    physicalLimitations: '',
+    otherImpact: '',
+  };
+
+  const [nexusSummary, setNexusSummary] = useState(() => {
+    // On first load, no condition is selected — start with defaults
+    return defaultSummary;
+  });
+
+  const [nexusSaveStatus, setNexusSaveStatus] = useState(''); // '', 'saved', 'error'
+
+  // Save nexus summary to localStorage under the active condition's key
+  const saveNexusSummary = (data, conditionSlug) => {
+    const key = nexusStorageKey(conditionSlug ?? activeNexusCondition);
+    try {
+      localStorage.setItem(key, JSON.stringify(data));
+      setNexusSaveStatus('saved');
+      setTimeout(() => setNexusSaveStatus(''), 2500);
+    } catch {
+      setNexusSaveStatus('error');
+    }
+  };
+
+  // Switch to editing a different condition's nexus summary.
+  // Saves current work first, then loads (or initializes) the new condition's data.
+  const switchNexusCondition = (conditionSlug) => {
+    // Save whatever is currently in state before switching
+    if (activeNexusCondition) {
+      saveNexusSummary(nexusSummary, activeNexusCondition);
+    }
+    setActiveNexusCondition(conditionSlug);
+    const existing = loadSavedSummary(conditionSlug);
+    setNexusSummary(existing || {
+      ...defaultSummary,
+      claimedCondition: conditionSlug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
+    });
+  };
+
+  // Update a top-level nexus field and auto-save to the active condition key
+  const updateNexusField = (field, value) => {
+    const updated = { ...nexusSummary, [field]: value };
+    setNexusSummary(updated);
+    saveNexusSummary(updated);
+  };
+
+  // Update a specific in-service event by index
+  const updateInServiceEvent = (index, field, value) => {
+    const updatedEvents = nexusSummary.inServiceEvents.map((ev, i) =>
+        i === index ? { ...ev, [field]: value } : ev
+    );
+    const updated = { ...nexusSummary, inServiceEvents: updatedEvents };
+    setNexusSummary(updated);
+    saveNexusSummary(updated);
+  };
+
+  // Add a new blank in-service event row
+  const addInServiceEvent = () => {
+    const updated = {
+      ...nexusSummary,
+      inServiceEvents: [...nexusSummary.inServiceEvents, { event: '', dateOrTimeframe: '', evidence: '' }]
+    };
+    setNexusSummary(updated);
+    saveNexusSummary(updated);
+  };
+
+  // Remove an in-service event row by index
+  const removeInServiceEvent = (index) => {
+    if (nexusSummary.inServiceEvents.length === 1) return; // always keep at least one
+    const updatedEvents = nexusSummary.inServiceEvents.filter((_, i) => i !== index);
+    const updated = { ...nexusSummary, inServiceEvents: updatedEvents };
+    setNexusSummary(updated);
+    saveNexusSummary(updated);
+  };
+
+  // Clear only the active condition's nexus summary
+  const clearNexusSummary = () => {
+    const conditionLabel = activeNexusCondition
+        ? `the nexus summary for "${activeNexusCondition.replace(/-/g, ' ')}"`
+        : 'this nexus summary';
+    if (!window.confirm(`Clear ${conditionLabel}? This cannot be undone.`)) return;
+    const fresh = { ...defaultSummary };
+    setNexusSummary(fresh);
+    if (activeNexusCondition) {
+      localStorage.removeItem(nexusStorageKey(activeNexusCondition));
+    }
+  };
+
   const serviceConnectedConditions = useMemo(() => {
-    return getServiceConnectedConditions() || [];
+    const profileId = getActiveProfileId();
+    return profileId ? getServiceConnectedConditions(profileId) : [];
   }, []);
 
   const symptomLogs = useMemo(() => {
@@ -253,6 +385,149 @@ const CPExamPrep = ({ embedded = false, onClose, onNavigate }) => {
     return [...specificQuestions, ...evidenceQuestions, ...baseQuestions].slice(0, 8);
   };
 
+  // Export the nexus one-pager to a clean single-page PDF
+  const exportNexusToPDF = () => {
+    const doc = new jsPDF();
+    const pageWidth = doc.internal.pageSize.width;
+    const margin = 14;
+    const usableWidth = pageWidth - margin * 2;
+    let y = 18;
+
+    const addPageIfNeeded = (spaceNeeded = 20) => {
+      if (y + spaceNeeded > 275) { doc.addPage(); y = 18; }
+    };
+
+    const sectionLabel = (color, label) => {
+      doc.setFillColor(...color);
+      doc.roundedRect(margin, y, usableWidth, 7, 1, 1, 'F');
+      doc.setTextColor(255, 255, 255);
+      doc.setFontSize(9);
+      doc.setFont(undefined, 'bold');
+      doc.text(label, margin + 2, y + 5);
+      y += 10;
+      doc.setTextColor(40);
+    };
+
+    const fieldLine = (label, value) => {
+      if (!value || !value.trim()) return;
+      addPageIfNeeded(12);
+      doc.setFontSize(8);
+      doc.setFont(undefined, 'bold');
+      doc.text(`${label}:`, margin + 2, y);
+      doc.setFont(undefined, 'normal');
+      const lines = doc.splitTextToSize(value, usableWidth - 30);
+      doc.text(lines, margin + 40, y);
+      y += Math.max(6, lines.length * 4.5) + 2;
+    };
+
+    const bodyText = (text) => {
+      if (!text || !text.trim()) return;
+      addPageIfNeeded(10);
+      doc.setFontSize(8);
+      doc.setFont(undefined, 'normal');
+      const lines = doc.splitTextToSize(text, usableWidth - 4);
+      doc.text(lines, margin + 2, y);
+      y += lines.length * 4.5 + 3;
+    };
+
+    // ── Header ──
+    doc.setFillColor(30, 58, 138);
+    doc.rect(0, 0, pageWidth, 24, 'F');
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(14);
+    doc.setFont(undefined, 'bold');
+    doc.text('C&P EXAM NEXUS SUMMARY', pageWidth / 2, 11, { align: 'center' });
+    doc.setFontSize(8);
+    doc.setFont(undefined, 'normal');
+    doc.text('Submit with your claim and hand a copy to your examiner', pageWidth / 2, 18, { align: 'center' });
+    y = 30;
+
+    // ── Veteran Info ──
+    doc.setTextColor(40);
+    doc.setFontSize(9);
+    doc.setFont(undefined, 'bold');
+    if (nexusSummary.veteranName) {
+      doc.text(`Veteran: ${nexusSummary.veteranName}`, margin, y);
+      y += 6;
+    }
+    if (nexusSummary.claimedCondition) {
+      doc.text(`Claimed Condition: ${nexusSummary.claimedCondition}`, margin, y);
+      y += 6;
+    }
+
+    // Horizontal rule
+    doc.setDrawColor(200);
+    doc.line(margin, y, pageWidth - margin, y);
+    y += 5;
+
+    // ── Element 1 ──
+    sectionLabel([30, 58, 138], 'ELEMENT 1 — CURRENT DIAGNOSIS');
+    fieldLine('Diagnosis', nexusSummary.diagnosis);
+    fieldLine('Date Diagnosed', nexusSummary.diagnosisDate);
+    fieldLine('Provider / Facility', nexusSummary.treatingProvider);
+    y += 3;
+
+    // ── Element 2 ──
+    addPageIfNeeded(15);
+    sectionLabel([180, 90, 20], 'ELEMENT 2 — IN-SERVICE EVENT / EXPOSURE');
+    nexusSummary.inServiceEvents.forEach((ev, idx) => {
+      if (nexusSummary.inServiceEvents.length > 1) {
+        doc.setFontSize(8);
+        doc.setFont(undefined, 'bold');
+        doc.setTextColor(100);
+        doc.text(`Event ${idx + 1}`, margin + 2, y);
+        y += 5;
+        doc.setTextColor(40);
+      }
+      fieldLine('Event / Exposure', ev.event);
+      fieldLine('Date / Timeframe', ev.dateOrTimeframe);
+      fieldLine('Evidence in Records', ev.evidence);
+    });
+    y += 3;
+
+    // ── Element 3 ──
+    addPageIfNeeded(15);
+    sectionLabel([22, 101, 52], 'ELEMENT 3 — MEDICAL NEXUS');
+    bodyText(nexusSummary.nexusExplanation);
+    if (nexusSummary.supportingEvidence) {
+      doc.setFont(undefined, 'bold');
+      doc.setFontSize(8);
+      doc.text('Supporting Evidence:', margin + 2, y);
+      y += 5;
+      bodyText(nexusSummary.supportingEvidence);
+    }
+    y += 3;
+
+    // ── Functional Impact ──
+    addPageIfNeeded(15);
+    sectionLabel([88, 28, 135], 'FUNCTIONAL IMPACT');
+    fieldLine('Work Limitations', nexusSummary.workLimitations);
+    fieldLine('Sleep Problems', nexusSummary.sleepProblems);
+    fieldLine('Communication', nexusSummary.communicationDifficulty);
+    fieldLine('Physical Limitations', nexusSummary.physicalLimitations);
+    fieldLine('Other Impact', nexusSummary.otherImpact);
+
+    // ── Footer ──
+    const pageCount = doc.internal.getNumberOfPages();
+    for (let i = 1; i <= pageCount; i++) {
+      doc.setPage(i);
+      doc.setFontSize(7);
+      doc.setTextColor(160);
+      doc.text(
+          `Nexus Summary — ${nexusSummary.veteranName || 'Veteran'} — Generated ${new Date().toLocaleDateString()} — Doc Bear's Symptom Vault`,
+          pageWidth / 2,
+          doc.internal.pageSize.height - 8,
+          { align: 'center' }
+      );
+    }
+
+    const filename = nexusSummary.claimedCondition
+        ? `Nexus-Summary-${nexusSummary.claimedCondition.replace(/\s+/g, '-')}-${new Date().toISOString().split('T')[0]}.pdf`
+        : `Nexus-Summary-${new Date().toISOString().split('T')[0]}.pdf`;
+
+    doc.save(filename);
+  };
+
   // Export to PDF
   const exportToPDF = () => {
     const doc = new jsPDF();
@@ -368,7 +643,7 @@ const CPExamPrep = ({ embedded = false, onClose, onNavigate }) => {
 
     // Condition-specific pages
     const conditionsToInclude = serviceConnectedConditions.length > 0
-        ? serviceConnectedConditions.map(c => c.conditionId || c.id)
+        ? serviceConnectedConditions.map(c => c.conditionKey || c.conditionId || c.id)
         : recentConditions;
 
     if (conditionsToInclude.length > 0) {
@@ -490,12 +765,13 @@ const CPExamPrep = ({ embedded = false, onClose, onNavigate }) => {
 
           {/* Tab Navigation - Mobile Optimized */}
           <div className={`bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 ${embedded ? '' : 'border-x'}`}>
-            <div className="grid grid-cols-4 gap-1 p-1">
+            <div className="grid grid-cols-5 gap-1 p-1">
               {[
                 { id: 'checklist', label: 'Checklist', icon: '✅' },
                 { id: 'tips', label: 'Tips', icon: '💡' },
                 { id: 'terminology', label: 'Terms', icon: '📖' },
                 { id: 'conditions', label: 'Conditions', icon: '🎯' },
+                { id: 'nexus', label: 'Nexus', icon: '📄' },
               ].map(tab => (
                   <button
                       key={tab.id}
@@ -622,7 +898,7 @@ const CPExamPrep = ({ embedded = false, onClose, onNavigate }) => {
                                 Service-Connected Conditions
                               </h4>
                               {serviceConnectedConditions.map((condition, idx) => {
-                                const conditionId = condition.conditionId || condition.id;
+                                const conditionId = condition.conditionKey || condition.conditionId || condition.id;
                                 const prep = getConditionPrepTips(conditionId);
                                 const isExpanded = expandedCondition === conditionId;
 
@@ -750,6 +1026,363 @@ const CPExamPrep = ({ embedded = false, onClose, onNavigate }) => {
                 </div>
             )}
           </div>
+          {/* ── NEXUS SUMMARY TAB ── */}
+          {activeTab === 'nexus' && (
+              <div className="space-y-6 text-left">
+
+                {/* Condition selector — determines which localStorage slot is used */}
+                <div className="bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg p-4 space-y-3">
+                  <h4 className="font-semibold text-gray-900 dark:text-white text-sm">
+                    Which condition is this nexus summary for?
+                  </h4>
+
+                  {/* Quick-select from service-connected conditions if available */}
+                  {serviceConnectedConditions.length > 0 && (
+                      <div className="flex flex-wrap gap-2">
+                        {serviceConnectedConditions.map((c, idx) => {
+                          const slug = c.conditionKey || c.conditionId || c.id;
+                          const label = c.conditionName || slug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+                          const isActive = activeNexusCondition === slug;
+                          return (
+                              <button
+                                  key={idx}
+                                  onClick={() => switchNexusCondition(slug)}
+                                  className={`text-xs px-3 py-1.5 rounded-full border font-medium transition-colors ${
+                                      isActive
+                                          ? 'bg-blue-600 text-white border-blue-600'
+                                          : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-500 hover:border-blue-400'
+                                  }`}
+                              >
+                                {label}
+                                {/* Dot indicator if a saved summary exists for this condition */}
+                                {loadSavedSummary(slug) && !isActive && (
+                                    <span className="ml-1.5 inline-block w-1.5 h-1.5 bg-green-500 rounded-full align-middle" title="Saved summary exists" />
+                                )}
+                              </button>
+                          );
+                        })}
+                      </div>
+                  )}
+
+                  {/* Manual condition entry for conditions not in their profile */}
+                  <div>
+                    <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">
+                      Or type a condition name to start a new summary:
+                    </label>
+                    <div className="flex gap-2">
+                      <input
+                          type="text"
+                          id="nexus-condition-manual"
+                          placeholder="e.g., sleep-apnea, tinnitus, ptsd"
+                          className="flex-1 border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none"
+                          onKeyDown={e => {
+                            if (e.key === 'Enter' && e.target.value.trim()) {
+                              switchNexusCondition(e.target.value.trim().toLowerCase().replace(/\s+/g, '-'));
+                              e.target.value = '';
+                            }
+                          }}
+                      />
+                      <button
+                          onClick={() => {
+                            const input = document.getElementById('nexus-condition-manual');
+                            if (input?.value.trim()) {
+                              switchNexusCondition(input.value.trim().toLowerCase().replace(/\s+/g, '-'));
+                              input.value = '';
+                            }
+                          }}
+                          className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors"
+                      >
+                        Start
+                      </button>
+                    </div>
+                  </div>
+
+                  {activeNexusCondition && (
+                      <p className="text-xs text-green-600 dark:text-green-400 font-medium">
+                        ✓ Editing: <strong>{activeNexusCondition.replace(/-/g, ' ')}</strong>
+                        {' '}— saves automatically
+                      </p>
+                  )}
+                </div>
+
+                {/* Gate: only show the form once a condition is selected */}
+                {!activeNexusCondition && (
+                    <div className="text-center py-8 text-gray-500 dark:text-gray-400 text-sm">
+                      Select or type a condition above to begin your nexus summary.
+                    </div>
+                )}
+
+                {activeNexusCondition && (
+                    <>
+
+                    {/* Explainer banner */}
+                    <div className="bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700 rounded-lg p-4">
+                      <h3 className="font-semibold text-blue-900 dark:text-blue-200 mb-1">
+                        📄 C&P Exam Nexus Summary
+                      </h3>
+                  <p className="text-sm text-blue-800 dark:text-blue-300">
+                    Fill out this one-page summary covering the three elements required for service connection.
+                    Submit it with your claim <strong>and</strong> hand a copy directly to the examiner.
+                    Your answers are saved automatically.
+                  </p>
+                </div>
+
+                {/* Save status indicator */}
+                {nexusSaveStatus === 'saved' && (
+                    <p className="text-sm text-green-600 dark:text-green-400 font-medium">✓ Saved automatically</p>
+                )}
+                {nexusSaveStatus === 'error' && (
+                    <p className="text-sm text-red-600 dark:text-red-400 font-medium">⚠ Could not save — storage may be full</p>
+                )}
+
+                {/* Veteran Name + Claimed Condition */}
+                <div className="bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg p-4 space-y-4">
+                  <h4 className="font-semibold text-gray-900 dark:text-white text-base">Veteran Information</h4>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      Veteran Name
+                    </label>
+                    <input
+                        type="text"
+                        value={nexusSummary.veteranName}
+                        onChange={e => updateNexusField('veteranName', e.target.value)}
+                        placeholder="Full legal name"
+                        className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      Claimed Condition
+                    </label>
+                    <input
+                        type="text"
+                        value={nexusSummary.claimedCondition}
+                        onChange={e => updateNexusField('claimedCondition', e.target.value)}
+                        placeholder="e.g., Sleep Apnea, PTSD, COPD"
+                        className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none"
+                    />
+                  </div>
+                </div>
+
+                {/* Element 1 — Current Diagnosis */}
+                <div className="bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg p-4 space-y-4">
+                  <div className="flex items-center gap-2">
+                    <span className="bg-blue-600 text-white text-xs font-bold px-2 py-1 rounded">Element 1</span>
+                    <h4 className="font-semibold text-gray-900 dark:text-white">Current Diagnosis</h4>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      Diagnosis
+                    </label>
+                    <input
+                        type="text"
+                        value={nexusSummary.diagnosis}
+                        onChange={e => updateNexusField('diagnosis', e.target.value)}
+                        placeholder="e.g., Obstructive Sleep Apnea (ICD-10: G47.33)"
+                        className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      Date Diagnosed
+                    </label>
+                    <input
+                        type="text"
+                        value={nexusSummary.diagnosisDate}
+                        onChange={e => updateNexusField('diagnosisDate', e.target.value)}
+                        placeholder="e.g., March 2022"
+                        className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      Treating Provider or Facility
+                    </label>
+                    <input
+                        type="text"
+                        value={nexusSummary.treatingProvider}
+                        onChange={e => updateNexusField('treatingProvider', e.target.value)}
+                        placeholder="e.g., VA Medical Center, Iowa City"
+                        className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none"
+                    />
+                  </div>
+                </div>
+
+                {/* Element 2 — In-Service Event / Exposure */}
+                <div className="bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg p-4 space-y-4">
+                  <div className="flex items-center gap-2">
+                    <span className="bg-orange-600 text-white text-xs font-bold px-2 py-1 rounded">Element 2</span>
+                    <h4 className="font-semibold text-gray-900 dark:text-white">In-Service Event / Exposure</h4>
+                  </div>
+
+                  {nexusSummary.inServiceEvents.map((ev, idx) => (
+                      <div key={idx} className="border border-gray-200 dark:border-gray-500 rounded-lg p-3 space-y-3 relative">
+                        {nexusSummary.inServiceEvents.length > 1 && (
+                            <button
+                                onClick={() => removeInServiceEvent(idx)}
+                                className="absolute top-2 right-2 text-red-400 hover:text-red-600 text-lg font-bold leading-none"
+                                aria-label="Remove this event"
+                            >
+                              ×
+                            </button>
+                        )}
+
+                        <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">
+                          Event {nexusSummary.inServiceEvents.length > 1 ? idx + 1 : ''}
+                        </p>
+
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            Event, Injury, or Exposure
+                          </label>
+                          <textarea
+                              rows={2}
+                              value={ev.event}
+                              onChange={e => updateInServiceEvent(idx, 'event', e.target.value)}
+                              placeholder="e.g., Continuous exposure to diesel exhaust and burn pit smoke during deployment to Iraq (2004–2005)"
+                              className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none resize-none"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            Date or Timeframe
+                          </label>
+                          <input
+                              type="text"
+                              value={ev.dateOrTimeframe}
+                              onChange={e => updateInServiceEvent(idx, 'dateOrTimeframe', e.target.value)}
+                              placeholder="e.g., 2004–2005, Camp Taji, Iraq"
+                              className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            Evidence in Records
+                          </label>
+                          <input
+                              type="text"
+                              value={ev.evidence}
+                              onChange={e => updateInServiceEvent(idx, 'evidence', e.target.value)}
+                              placeholder="e.g., STRs, DD-214, MOS exposure records, unit deployment orders"
+                              className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none"
+                          />
+                        </div>
+                      </div>
+                  ))}
+
+                  <button
+                      onClick={addInServiceEvent}
+                      className="text-sm text-blue-600 dark:text-blue-400 hover:underline font-medium flex items-center gap-1"
+                  >
+                    + Add another event or exposure
+                  </button>
+                </div>
+
+                {/* Element 3 — Medical Nexus */}
+                <div className="bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg p-4 space-y-4">
+                  <div className="flex items-center gap-2">
+                    <span className="bg-green-600 text-white text-xs font-bold px-2 py-1 rounded">Element 3</span>
+                    <h4 className="font-semibold text-gray-900 dark:text-white">Medical Nexus</h4>
+                  </div>
+
+                  <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-700 rounded-lg p-3 text-xs text-green-800 dark:text-green-300">
+                    <strong>Example:</strong> Service-connected COPD worsens breathing mechanics during sleep → contributes to obstructive sleep apnea.
+                    Explain the chain of causation clearly — the examiner uses this to write their medical opinion.
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      How the Condition Is Connected to Service
+                    </label>
+                    <textarea
+                        rows={4}
+                        value={nexusSummary.nexusExplanation}
+                        onChange={e => updateNexusField('nexusExplanation', e.target.value)}
+                        placeholder="Describe in plain language how your in-service event caused or aggravated your current diagnosis. Be specific about the causal chain."
+                        className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-green-500 outline-none resize-none"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      Supporting Medical Literature or Opinion (optional)
+                    </label>
+                    <textarea
+                        rows={2}
+                        value={nexusSummary.supportingEvidence}
+                        onChange={e => updateNexusField('supportingEvidence', e.target.value)}
+                        placeholder="e.g., Independent Medical Opinion from Dr. Smith (attached); VA study on burn pit exposure and respiratory conditions"
+                        className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-green-500 outline-none resize-none"
+                    />
+                  </div>
+                </div>
+
+                {/* Functional Impact */}
+                <div className="bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg p-4 space-y-4">
+                  <div className="flex items-center gap-2">
+                    <span className="bg-purple-600 text-white text-xs font-bold px-2 py-1 rounded">Impact</span>
+                    <h4 className="font-semibold text-gray-900 dark:text-white">Functional Impact</h4>
+                  </div>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                    Describe how the condition affects daily life. Leave blank any that don't apply.
+                  </p>
+
+                  {[
+                    { field: 'workLimitations', label: 'Work Limitations', placeholder: 'e.g., Missed 12 days of work in the past year; unable to work night shifts' },
+                    { field: 'sleepProblems', label: 'Sleep Problems', placeholder: 'e.g., Wake 4–5 times per night; daytime fatigue affects concentration' },
+                    { field: 'communicationDifficulty', label: 'Communication Difficulty', placeholder: 'e.g., Hearing loss requires repetition in conversations; avoids phone calls' },
+                    { field: 'physicalLimitations', label: 'Physical Limitations', placeholder: 'e.g., Cannot walk more than 1 block without stopping; unable to lift over 10 lbs' },
+                    { field: 'otherImpact', label: 'Other Daily Life Impact', placeholder: 'e.g., Social isolation, relationship strain, difficulty with self-care tasks' },
+                  ].map(({ field, label, placeholder }) => (
+                      <div key={field}>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                          {label}
+                        </label>
+                        <textarea
+                            rows={2}
+                            value={nexusSummary[field]}
+                            onChange={e => updateNexusField(field, e.target.value)}
+                            placeholder={placeholder}
+                            className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-purple-500 outline-none resize-none"
+                        />
+                      </div>
+                  ))}
+                </div>
+
+                {/* Action Buttons */}
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <button
+                      onClick={exportNexusToPDF}
+                      className="flex-1 bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-6 rounded-lg transition-colors flex items-center justify-center gap-2"
+                  >
+                    📄 Print / Export One-Pager PDF
+                  </button>
+                  <button
+                      onClick={clearNexusSummary}
+                      className="sm:flex-none bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-medium py-3 px-4 rounded-lg transition-colors text-sm"
+                  >
+                    🗑 Clear
+                  </button>
+                </div>
+
+                    {/* Submission reminder */}
+                      <div className="bg-yellow-50 dark:bg-yellow-900/30 border border-yellow-200 dark:border-yellow-700 rounded-lg p-4 text-sm text-yellow-800 dark:text-yellow-300">
+                        <strong>⚠ Reminder:</strong> Submit this document to the VA with your claim <em>and</em> bring a printed copy to hand directly to the examiner.
+                        You are not arguing — you are making it easy for them to see the connection.
+                      </div>
+
+                    </> // closes activeNexusCondition gate
+                )}
+
+              </div>
+          )}
         </div>
       </div>
   );
