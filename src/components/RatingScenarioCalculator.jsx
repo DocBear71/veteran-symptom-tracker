@@ -157,6 +157,110 @@ const RatingScenarioCalculator = ({ embedded = false, onClose }) => {
   const ratingDifference = projectedRating - currentRating;
 
   // ============================================
+  // SMC-S1 / HOUSEBOUND ANALYSIS (Buie Shuffle)
+  // ============================================
+
+  const smcS1Analysis = useMemo(() => {
+    // Merge real and hypothetical conditions for analysis
+    // This lets veterans model "what if one condition hits 100%" scenarios
+    const allConditions = [
+      ...serviceConnectedConditions.map(c => ({
+        id: c.id,
+        conditionName: c.conditionName,
+        currentRating: c.currentRating,
+        isHypothetical: false,
+      })),
+      ...hypotheticalConditions.map(c => ({
+        id: c.id,
+        conditionName: c.name,
+        currentRating: c.rating,
+        isHypothetical: true,
+      })),
+    ];
+
+    if (allConditions.length === 0) return null;
+
+    const ratings = allConditions.map(c => c.currentRating);
+    const hasHundredPercent = ratings.some(r => r === 100);
+    // Use projectedRating (includes hypotheticals) instead of currentRating
+    const hasTDIU = projectedRating === 100;
+
+    // SMC-S1 requires EITHER:
+    // Path A: One condition rated 100% schedular + others combining to 60%+
+    // Path B: TDIU based on a single condition + others combining to 60%+
+    // (Bradley v. Peake / Buie v. Shinseki)
+
+    // Find the highest-rated single condition
+    const sortedRatings = [...ratings].sort((a, b) => b - a);
+    const highestRating = sortedRatings[0] || 0;
+    const remainingRatings = sortedRatings.slice(1);
+
+    // Calculate combined value of all conditions EXCEPT the highest one
+    // This determines whether the "others combine to 60%+" threshold is met
+    const othersRaw = remainingRatings.length > 0
+        ? Math.round((1 - remainingRatings.reduce((remaining, r) => remaining * (1 - r / 100), 1)) * 100)
+        : 0;
+
+    // Find the condition(s) rated at 100% (real or hypothetical)
+    const hundredPercentConditions = allConditions.filter(c => c.currentRating === 100);
+
+    // For each 100% condition, compute what the OTHERS combine to
+    const pathAResults = hundredPercentConditions.map(anchor => {
+      const otherRatings = allConditions
+      .filter(c => c.id !== anchor.id)
+      .map(c => c.currentRating);
+      const othersCombined = otherRatings.length > 0
+          ? Math.round((1 - otherRatings.reduce((rem, r) => rem * (1 - r / 100), 1)) * 100)
+          : 0;
+      return {
+        anchorCondition: anchor.conditionName,
+        anchorRating: 100,
+        othersCombined,
+        qualifies: othersCombined >= 60,
+        isHypothetical: anchor.isHypothetical,
+      };
+    });
+
+    // Path A: Does any 100% condition + others ≥ 60% qualify?
+    const pathAQualifies = pathAResults.some(r => r.qualifies);
+    const pathABestMatch = pathAResults.find(r => r.qualifies) || pathAResults[0];
+
+    // Path B: TDIU scenario — user is at 100% combined but no single condition is 100%
+    // Check if the highest single condition could support TDIU alone,
+    // and whether the remaining conditions combine to 60%+
+    const pathBPossible = hasTDIU && !hasHundredPercent && highestRating >= 60;
+    const pathBOthersCombined = othersRaw;
+    const pathBQualifies = pathBPossible && pathBOthersCombined >= 60;
+
+    const qualifiesForSMCS1 = pathAQualifies || pathBQualifies;
+
+    // Determine how close they are if not qualifying
+    const closestOthersCombined = pathAResults.length > 0
+        ? Math.max(...pathAResults.map(r => r.othersCombined))
+        : pathBOthersCombined;
+
+    const shortfall = Math.max(0, 60 - closestOthersCombined);
+
+    return {
+      qualifiesForSMCS1,
+      hasHundredPercent,
+      hasTDIU,
+      pathAQualifies,
+      pathABestMatch,
+      pathBPossible,
+      pathBQualifies,
+      pathBOthersCombined,
+      highestRating,
+      closestOthersCombined,
+      shortfall,
+      totalConditions: serviceConnectedConditions.length,
+    };
+  }, [serviceConnectedConditions, hypotheticalConditions, currentRating, projectedRating]);
+
+  // Track whether the SMC-S1 panel is expanded
+  const [showSmcS1, setShowSmcS1] = useState(false);
+
+  // ============================================
   // HANDLERS
   // ============================================
 
@@ -611,6 +715,147 @@ const RatingScenarioCalculator = ({ embedded = false, onClose }) => {
                     </div>
                   </div>
                 </div>
+              </div>
+          )}
+
+          {/* SMC-S1 / Housebound Checker */}
+          {smcS1Analysis && (
+              <div className={`rounded-lg border-2 overflow-hidden mb-6 ${
+                  smcS1Analysis.qualifiesForSMCS1
+                      ? 'border-amber-400 dark:border-amber-500 bg-white dark:bg-gray-800'
+                      : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800'
+              }`}>
+
+                {/* Collapsible Header */}
+                <button
+                    onClick={() => setShowSmcS1(!showSmcS1)}
+                    className="w-full px-5 py-4 flex items-center justify-between text-left hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
+                >
+                <span className="font-semibold text-lg text-gray-900 dark:text-white flex items-center gap-2">
+                  <span>🏠</span>
+                  SMC-S1 Housebound Check
+                  {smcS1Analysis.qualifiesForSMCS1 && (
+                      <span className="ml-2 text-sm font-bold px-2 py-0.5 bg-amber-100 dark:bg-amber-900/40 text-amber-800 dark:text-amber-300 rounded-full">
+                      ⚠ May Qualify
+                    </span>
+                  )}
+                </span>
+                  <span className="text-2xl text-gray-400">{showSmcS1 ? '−' : '+'}</span>
+                </button>
+
+                {showSmcS1 && (
+                    <div className="px-5 pb-5 border-t border-gray-200 dark:border-gray-700 pt-4 space-y-4">
+
+                      {/* What is SMC-S1 */}
+                      <div className="text-sm text-gray-600 dark:text-gray-400 text-left">
+                        <strong className="text-gray-900 dark:text-white">What is SMC-S1 (Statutory Housebound)?</strong>
+                        <p className="mt-1">
+                          Special Monthly Compensation at the S-1 level pays <strong>above</strong> the regular
+                          100% rate — currently several hundred dollars more per month. It requires either:
+                        </p>
+                        <ul className="mt-2 space-y-1 list-disc list-inside">
+                          <li><strong>Path A:</strong> One condition rated at 100% schedular + all other conditions combining to 60% or more</li>
+                          <li><strong>Path B:</strong> TDIU based on a <em>single</em> condition + all other conditions combining to 60% or more (Bradley v. Peake / Buie v. Shinseki)</li>
+                        </ul>
+                      </div>
+
+                      {/* Result Card */}
+                      {smcS1Analysis.qualifiesForSMCS1 ? (
+                          <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-300 dark:border-amber-700 rounded-lg p-4 text-left">
+                            <h4 className="font-bold text-amber-900 dark:text-amber-200 text-base mb-2">
+                              ⚠ Your profile may support an SMC-S1 claim
+                            </h4>
+
+                            {smcS1Analysis.pathAQualifies && smcS1Analysis.pathABestMatch && (
+                                <div className="text-sm text-amber-800 dark:text-amber-300 space-y-1">
+                                  <p><strong>Path A match found:</strong></p>
+                                  <p>
+                                    • <strong>{smcS1Analysis.pathABestMatch.anchorCondition}</strong> is rated at 100%
+                                    {smcS1Analysis.pathABestMatch.isHypothetical && (
+                                        <span className="ml-1 text-xs bg-indigo-200 dark:bg-indigo-800 text-indigo-700 dark:text-indigo-300 px-1.5 py-0.5 rounded">hypothetical</span>
+                                    )}
+                                  </p>
+                                  <p>
+                                    • Your other conditions combine to approximately{' '}
+                                    <strong>{smcS1Analysis.pathABestMatch.othersCombined}%</strong> — which meets the 60% threshold
+                                  </p>
+                                </div>
+                            )}
+
+                            {smcS1Analysis.pathBQualifies && (
+                                <div className="text-sm text-amber-800 dark:text-amber-300 space-y-1 mt-2">
+                                  <p><strong>Path B (Buie Shuffle) possible:</strong></p>
+                                  <p>
+                                    • You are at 100% combined — if your highest-rated condition
+                                    ({smcS1Analysis.highestRating}%) could support TDIU alone, your remaining
+                                    conditions combine to <strong>{smcS1Analysis.pathBOthersCombined}%</strong>
+                                  </p>
+                                  <p>• Review your C&P exams for language stating one condition prevents work</p>
+                                </div>
+                            )}
+
+                            <div className="mt-3 pt-3 border-t border-amber-300 dark:border-amber-700 text-xs text-amber-700 dark:text-amber-400">
+                              <strong>Next steps:</strong> Contact your VSO, Claims Agent, or VA-accredited attorney.
+                              Request your C-File (VA Form 20-10206) and review C&P exams for language supporting
+                              single-disability TDIU. Do not file without a strategy — every claim opens the file.
+                            </div>
+                          </div>
+
+                      ) : (
+                          <div className="bg-gray-50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-lg p-4 text-left">
+                            <h4 className="font-semibold text-gray-900 dark:text-white mb-2">
+                              Current profile does not appear to meet SMC-S1 thresholds
+                            </h4>
+
+                            {smcS1Analysis.hasHundredPercent ? (
+                                <div className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+                                  <p>You have a 100% condition. Your other conditions currently combine to approximately{' '}
+                                    <strong>{smcS1Analysis.closestOthersCombined}%</strong> — the threshold is 60%.</p>
+                                  {smcS1Analysis.shortfall > 0 && (
+                                      <p className="text-indigo-600 dark:text-indigo-400">
+                                        💡 Adding conditions totaling roughly <strong>{smcS1Analysis.shortfall}%+</strong> more
+                                        could meet the threshold. Use the hypothetical scenario above to explore.
+                                      </p>
+                                  )}
+                                </div>
+                            ) : (
+                                <div className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+                                  <p>SMC-S1 requires one condition rated at 100% schedular, or TDIU attributable
+                                    to a single condition. No single condition in your profile is currently at 100%.</p>
+                                  <p className="text-indigo-600 dark:text-indigo-400 mt-1">
+                                    💡 Use the hypothetical scenario above to model what a 100% rating on one
+                                    condition would mean for your SMC-S1 eligibility.
+                                  </p>
+                                </div>
+                            )}
+                          </div>
+                      )}
+
+                      {/* "What If" bridge to hypothetical calculator */}
+                      {!smcS1Analysis.qualifiesForSMCS1 && smcS1Analysis.hasHundredPercent && smcS1Analysis.shortfall > 0 && (
+                          <div className="bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-200 dark:border-indigo-700 rounded-lg p-3 text-sm text-indigo-800 dark:text-indigo-300 text-left">
+                            <strong>Tip:</strong> Scroll up and add hypothetical conditions to see how close
+                            you can get to the 60% threshold for your other conditions.
+                          </div>
+                      )}
+
+                      {/* Legal references */}
+                      <div className="text-xs text-gray-500 dark:text-gray-400 text-left border-t border-gray-200 dark:border-gray-700 pt-3">
+                        <strong>Legal basis:</strong> 38 USC §1114(s) — Bradley v. Peake (Fed. Cir. 2008) established
+                        that TDIU counts as a 100% rating for SMC-S purposes. Buie v. Shinseki requires VA to
+                        determine if a single disability supports TDIU when SMC-S is potentially applicable.
+                        Akles v. Derwinski / Payne v. Wilkie — VA must consider SMC even if not claimed.
+                      </div>
+
+                      {/* Disclaimer */}
+                      <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-700 rounded-lg p-3 text-xs text-yellow-800 dark:text-yellow-300 text-left">
+                        ⚠ This analysis is based on your profile data and uses simplified VA math estimates.
+                        It is not a legal determination. SMC eligibility involves medical evidence, C&P findings,
+                        and VA adjudication. Always consult a VA-accredited representative before filing.
+                      </div>
+
+                    </div>
+                )}
               </div>
           )}
 
