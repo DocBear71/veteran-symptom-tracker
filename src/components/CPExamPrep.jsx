@@ -77,6 +77,9 @@ const CPExamPrep = ({ embedded = false, onClose, onNavigate }) => {
 
   const [nexusSaveStatus, setNexusSaveStatus] = useState(''); // '', 'saved', 'error'
 
+  // Controls Theory of Service Connection explainer visibility
+  const [showTheory, setShowTheory] = useState(false);
+
   // Save nexus summary to localStorage under the active condition's key
   const saveNexusSummary = (data, conditionSlug) => {
     const key = nexusStorageKey(conditionSlug ?? activeNexusCondition);
@@ -89,11 +92,31 @@ const CPExamPrep = ({ embedded = false, onClose, onNavigate }) => {
     }
   };
 
+  // Returns true only if the veteran has entered meaningful content
+  // Used to avoid saving blank default summaries to localStorage
+  const hasNexusContent = (summary) => {
+    const textFields = [
+      summary.diagnosis, summary.diagnosisDate, summary.treatingProvider,
+      summary.nexusExplanation, summary.supportingEvidence,
+      summary.workLimitations, summary.sleepProblems,
+      summary.communicationDifficulty, summary.physicalLimitations,
+      summary.otherImpact,
+    ];
+    const hasText = textFields.some(f => f && f.trim().length > 0);
+    const hasEventContent = summary.inServiceEvents?.some(
+        ev => (ev.event && ev.event.trim()) ||
+            (ev.dateOrTimeframe && ev.dateOrTimeframe.trim()) ||
+            (ev.evidence && ev.evidence.trim())
+    );
+    return hasText || hasEventContent;
+  };
+
   // Switch to editing a different condition's nexus summary.
   // Saves current work first, then loads (or initializes) the new condition's data.
   const switchNexusCondition = (conditionSlug) => {
-    // Save whatever is currently in state before switching
-    if (activeNexusCondition) {
+    // Only save before switching if the summary has meaningful content
+    // Prevents blank default summaries from triggering the green dot indicator
+    if (activeNexusCondition && hasNexusContent(nexusSummary)) {
       saveNexusSummary(nexusSummary, activeNexusCondition);
     }
     setActiveNexusCondition(conditionSlug);
@@ -1054,15 +1077,24 @@ const CPExamPrep = ({ embedded = false, onClose, onNavigate }) => {
                                   }`}
                               >
                                 {label}
-                                {/* Dot indicator if a saved summary exists for this condition */}
-                                {loadSavedSummary(slug) && !isActive && (
-                                    <span className="ml-1.5 inline-block w-1.5 h-1.5 bg-green-500 rounded-full align-middle" title="Saved summary exists" />
-                                )}
+                                {/* Dot indicator only if saved summary has actual content */}
+                                {(() => {
+                                  const saved = loadSavedSummary(slug);
+                                  return saved && !isActive && hasNexusContent(saved)
+                                      ? <span className="ml-1.5 inline-block w-1.5 h-1.5 bg-green-500 rounded-full align-middle" title="Saved summary exists" />
+                                      : null;
+                                })()}
                               </button>
                           );
                         })}
                       </div>
                   )}
+
+                  {/* Green dot legend */}
+                  <p className="text-xs text-gray-400 dark:text-gray-500 flex items-center gap-1.5">
+                    <span className="inline-block w-1.5 h-1.5 bg-green-500 rounded-full flex-shrink-0" />
+                    Green dot means a saved summary exists for that condition.
+                  </p>
 
                   {/* Manual condition entry for conditions not in their profile */}
                   <div>
@@ -1098,10 +1130,149 @@ const CPExamPrep = ({ embedded = false, onClose, onNavigate }) => {
                   </div>
 
                   {activeNexusCondition && (
-                      <p className="text-xs text-green-600 dark:text-green-400 font-medium">
-                        ✓ Editing: <strong>{activeNexusCondition.replace(/-/g, ' ')}</strong>
-                        {' '}— saves automatically
-                      </p>
+                      <div className="flex items-center justify-between">
+                        <p className="text-xs text-green-600 dark:text-green-400 font-medium">
+                          ✓ Editing: <strong>{activeNexusCondition.replace(/-/g, ' ')}</strong>
+                          {' '}— saves automatically
+                        </p>
+                        <button
+                            onClick={() => {
+                              // Save current work then deselect — does NOT delete saved data
+                              saveNexusSummary(nexusSummary, activeNexusCondition);
+                              setActiveNexusCondition('');
+                              setNexusSummary(defaultSummary);
+                            }}
+                            className="text-xs text-gray-500 dark:text-gray-400 hover:text-red-500 dark:hover:text-red-400 underline"
+                        >
+                          ← Change condition
+                        </button>
+                      </div>
+                  )}
+                </div>
+                {/* Theory of Service Connection explainer — always visible */}
+                {/* Theory of Service Connection explainer */}
+                <div className="bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg overflow-hidden">
+                  <button
+                      onClick={() => setShowTheory(!showTheory)}
+                      className="w-full px-4 py-3 flex items-center justify-between text-left hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
+                  >
+                    <span className="font-semibold text-gray-900 dark:text-white text-sm flex items-center gap-2">
+                      <span>⚖️</span>
+                      Which Theory of Service Connection Applies to Me?
+                    </span>
+                    <span className="text-gray-400 text-lg">{showTheory ? '−' : '+'}</span>
+                  </button>
+
+                  {showTheory && (
+                      <div className="px-4 pb-4 border-t border-gray-200 dark:border-gray-600 pt-3 space-y-4 text-left">
+
+                        <p className="text-sm text-gray-600 dark:text-gray-400">
+                          Every VA claim requires a <strong>theory</strong> explaining how your condition
+                          connects to service. Choosing the right one shapes how you write Element 3
+                          of your nexus summary. The four theories are:
+                        </p>
+
+                        {/* Direct */}
+                        <div className="rounded-lg border border-blue-200 dark:border-blue-700 bg-blue-50 dark:bg-blue-900/20 p-3">
+                          <div className="flex items-center gap-2 mb-1">
+                            <span className="bg-blue-600 text-white text-xs font-bold px-2 py-0.5 rounded">Direct</span>
+                            <h5 className="font-semibold text-blue-900 dark:text-blue-200 text-sm">Direct Service Connection</h5>
+                          </div>
+                          <p className="text-sm text-blue-800 dark:text-blue-300">
+                            The condition was <strong>caused by</strong> an event, injury, or exposure
+                            during active duty service.
+                          </p>
+                          <p className="text-xs text-blue-700 dark:text-blue-400 mt-2 italic">
+                            Example: Knee injury from a training accident → current knee condition is
+                            directly caused by that in-service event.
+                          </p>
+                          <p className="text-xs text-blue-700 dark:text-blue-400 mt-1">
+                            <strong>Element 3 tip:</strong> Describe the in-service event and explain
+                            how it directly caused the current diagnosis. Medical literature or an
+                            independent medical opinion (IMO) strengthens this.
+                          </p>
+                        </div>
+
+                        {/* Secondary */}
+                        <div className="rounded-lg border border-green-200 dark:border-green-700 bg-green-50 dark:bg-green-900/20 p-3">
+                          <div className="flex items-center gap-2 mb-1">
+                            <span className="bg-green-600 text-white text-xs font-bold px-2 py-0.5 rounded">Secondary</span>
+                            <h5 className="font-semibold text-green-900 dark:text-green-200 text-sm">Secondary Service Connection</h5>
+                          </div>
+                          <p className="text-sm text-green-800 dark:text-green-300">
+                            The condition was <strong>caused or aggravated by</strong> an already
+                            service-connected condition.
+                          </p>
+                          <p className="text-xs text-green-700 dark:text-green-400 mt-2 italic">
+                            Example: Service-connected COPD worsens breathing mechanics during sleep
+                            → contributes to obstructive sleep apnea (secondary to COPD).
+                          </p>
+                          <p className="text-xs text-green-700 dark:text-green-400 mt-1">
+                            <strong>Element 3 tip:</strong> Name the service-connected primary condition,
+                            then explain the medical causal chain to the secondary condition. You do
+                            not need a separate in-service event — the primary condition is the bridge.
+                            File even if the primary hasn't been rated yet — effective dates matter.
+                          </p>
+                        </div>
+
+                        {/* Presumptive */}
+                        <div className="rounded-lg border border-purple-200 dark:border-purple-700 bg-purple-50 dark:bg-purple-900/20 p-3">
+                          <div className="flex items-center gap-2 mb-1">
+                            <span className="bg-purple-600 text-white text-xs font-bold px-2 py-0.5 rounded">Presumptive</span>
+                            <h5 className="font-semibold text-purple-900 dark:text-purple-200 text-sm">Presumptive Service Connection</h5>
+                          </div>
+                          <p className="text-sm text-purple-800 dark:text-purple-300">
+                            The law <strong>presumes</strong> the condition is service-connected based
+                            on your service era, location, or exposure — no causal proof required.
+                          </p>
+                          <p className="text-xs text-purple-700 dark:text-purple-400 mt-2 italic">
+                            Examples: Agent Orange presumptives (Vietnam veterans), burn pit / toxic
+                            exposure presumptives (PACT Act), Gulf War undiagnosed illness presumptives,
+                            POW presumptives, radiation exposure.
+                          </p>
+                          <p className="text-xs text-purple-700 dark:text-purple-400 mt-1">
+                            <strong>Element 3 tip:</strong> State the presumptive law or regulation
+                            that applies (e.g., 38 CFR 3.309, PACT Act). You still need Element 1
+                            (current diagnosis) and Element 2 (qualifying service), but the nexus
+                            is established by law — not medical opinion.
+                          </p>
+                        </div>
+
+                        {/* Aggravation */}
+                        <div className="rounded-lg border border-orange-200 dark:border-orange-700 bg-orange-50 dark:bg-orange-900/20 p-3">
+                          <div className="flex items-center gap-2 mb-1">
+                            <span className="bg-orange-600 text-white text-xs font-bold px-2 py-0.5 rounded">Aggravation</span>
+                            <h5 className="font-semibold text-orange-900 dark:text-orange-200 text-sm">Aggravation of a Pre-Existing Condition</h5>
+                          </div>
+                          <p className="text-sm text-orange-800 dark:text-orange-300">
+                            A condition existed <strong>before service</strong> but was permanently
+                            worsened <em>beyond its natural progression</em> by military service.
+                          </p>
+                          <p className="text-xs text-orange-700 dark:text-orange-400 mt-2 italic">
+                            Example: Pre-existing mild scoliosis significantly worsened by years of
+                            heavy rucksack loads during infantry service.
+                          </p>
+                          <p className="text-xs text-orange-700 dark:text-orange-400 mt-1">
+                            <strong>Element 3 tip:</strong> Acknowledge the pre-existing condition,
+                            then document the degree of worsening attributable to service — not just
+                            natural progression. An IMO addressing the baseline vs. current severity
+                            is especially valuable here.
+                          </p>
+                        </div>
+
+                        {/* Quick picker */}
+                        <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-3 text-xs text-gray-600 dark:text-gray-400">
+                          <strong className="text-gray-900 dark:text-white">Not sure which applies?</strong>
+                          <ul className="mt-2 space-y-1">
+                            <li>• Happened <em>during</em> service, no prior history → <strong>Direct</strong></li>
+                            <li>• Caused by another service-connected condition → <strong>Secondary</strong></li>
+                            <li>• Vietnam / Gulf War / burn pit / PACT Act era → <strong>Presumptive</strong></li>
+                            <li>• Had it before service but service made it worse → <strong>Aggravation</strong></li>
+                            <li>• Multiple theories may apply — claim all that fit</li>
+                          </ul>
+                        </div>
+
+                      </div>
                   )}
                 </div>
 
@@ -1126,6 +1297,8 @@ const CPExamPrep = ({ embedded = false, onClose, onNavigate }) => {
                     Your answers are saved automatically.
                   </p>
                 </div>
+
+
 
                 {/* Save status indicator */}
                 {nexusSaveStatus === 'saved' && (
@@ -1366,9 +1539,9 @@ const CPExamPrep = ({ embedded = false, onClose, onNavigate }) => {
                   </button>
                   <button
                       onClick={clearNexusSummary}
-                      className="sm:flex-none bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-medium py-3 px-4 rounded-lg transition-colors text-sm"
+                      className="sm:flex-none bg-gray-100 dark:bg-gray-700 hover:bg-red-100 dark:hover:bg-red-900/30 hover:text-red-600 dark:hover:text-red-400 text-gray-700 dark:text-gray-300 font-medium py-3 px-4 rounded-lg transition-colors text-sm"
                   >
-                    🗑 Clear
+                    🗑 Clear This Summary
                   </button>
                 </div>
 
