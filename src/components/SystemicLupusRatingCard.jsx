@@ -5,7 +5,7 @@
 // ============================================
 
 import { ChevronDown, ChevronUp, AlertCircle, Info } from 'lucide-react';
-import { SYSTEMIC_LUPUS_CRITERIA } from '../utils/ratinglogic/';
+import { SYSTEMIC_LUPUS_CRITERIA } from '../utils/ratingLogic/';
 import MedicationCorrelation from './MedicationCorrelation';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
