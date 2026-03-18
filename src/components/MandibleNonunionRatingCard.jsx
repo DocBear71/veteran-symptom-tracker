@@ -1,8 +1,10 @@
 import {ChevronDown, ChevronUp} from 'lucide-react';
-import {MANDIBLE_NONUNION_CRITERIA, getRatingRowColor, getRatingTextColor} from '../utils/ratingCriteria';
+import {getRatingRowColor, getRatingTextColor} from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import MedicationCorrelation from './MedicationCorrelation';
+import {MANDIBLE_NONUNION_CRITERIA} from '../utils/ratingLogic/index.js';
+import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 
 export default function MandibleNonunionRatingCard({
                                                      analysis,
@@ -55,8 +57,8 @@ export default function MandibleNonunionRatingCard({
 
               {/* Service-Connected Status Banner */}
               <ServiceConnectedBanner
-                conditionKey="mandibleNonunion"
-                currentAnalysis={analysis}
+                  conditionKey="mandibleNonunion"
+                  currentAnalysis={analysis}
               />
 
               <div><h4
@@ -132,6 +134,14 @@ export default function MandibleNonunionRatingCard({
               <UnderstandingYourRating
                   diagnosticCode="9906"
                   currentRating={numericRating}
+              />
+
+              <RatingEnhancementsDisplay
+                  diagnosticCode="9906"
+                  showDefinitions={true}
+                  showCaseLaw={true}
+                  showTips={true}
+                  showExamTips={true}
               />
 
               {criteria?.ratings && (<div><h4

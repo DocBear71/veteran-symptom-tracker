@@ -4,10 +4,12 @@
 // Additional ratings for motor and non-motor residuals
 
 import { ChevronDown, ChevronUp } from 'lucide-react';
-import { PARKINSONS_DISEASE_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
+import { getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import MedicationCorrelation from './MedicationCorrelation';
+import {PARKINSONS_DISEASE_CRITERIA} from '../utils/ratingLogic/index';
+import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 
 export default function ParkinsonsRatingCard({ analysis, expanded, onToggle }) {
   if (!analysis || !analysis.hasData) return null;
@@ -127,6 +129,14 @@ export default function ParkinsonsRatingCard({ analysis, expanded, onToggle }) {
               <UnderstandingYourRating
                   diagnosticCode="8004"
                   currentRating={numericRating}
+              />
+
+              <RatingEnhancementsDisplay
+                  diagnosticCode="8004"
+                  showDefinitions={true}
+                  showCaseLaw={true}
+                  showTips={true}
+                  showExamTips={true}
               />
 
               {/* Section 3: VA Rating Schedule */}

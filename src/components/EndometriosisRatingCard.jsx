@@ -1,8 +1,10 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
-import { ENDOMETRIOSIS_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
+import { getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import MedicationCorrelation from './MedicationCorrelation';
+import {ENDOMETRIOSIS_CRITERIA} from '../utils/ratingLogic/index.js';
+import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 
 /**
  * Endometriosis Rating Card Component - Gold Standard Version
@@ -88,6 +90,14 @@ export default function EndometriosisRatingCard({ analysis, expanded, onToggle }
               <UnderstandingYourRating
                   diagnosticCode="7615"
                   currentRating={supportedRating}
+              />
+
+              <RatingEnhancementsDisplay
+                  diagnosticCode="7615"
+                  showDefinitions={true}
+                  showCaseLaw={true}
+                  showTips={true}
+                  showExamTips={true}
               />
 
               <div>

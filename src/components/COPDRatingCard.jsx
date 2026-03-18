@@ -1,8 +1,10 @@
 import {ChevronDown, ChevronUp} from 'lucide-react';
-import {COPD_CRITERIA, getRatingRowColor, getRatingTextColor} from '../utils/ratingCriteria';
+import {getRatingRowColor, getRatingTextColor} from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import MedicationCorrelation from './MedicationCorrelation';
+import {COPD_CRITERIA} from '../utils/ratingLogic/index.js';
+import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 
 /**
  * COPD Rating Card Component - Matches AsthmaRatingCard styling
@@ -100,6 +102,14 @@ export default function COPDRatingCard({analysis, expanded, onToggle}) {
               <UnderstandingYourRating
                   diagnosticCode="6604"
                   currentRating={numericRating}
+              />
+
+              <RatingEnhancementsDisplay
+                  diagnosticCode="6604"
+                  showDefinitions={true}
+                  showCaseLaw={true}
+                  showTips={true}
+                  showExamTips={true}
               />
 
               <div>

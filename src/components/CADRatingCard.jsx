@@ -1,9 +1,11 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
-import { CAD_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
+import { getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import {isRatingSupported} from '../utils/ratingUtils.js';
 import MedicationCorrelation from './MedicationCorrelation';
+import {CAD_CRITERIA} from '../utils/ratingLogic/index.js';
+import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 
 export default function CADRatingCard({ analysis, expanded, onToggle }) {
   if (!analysis || !analysis.hasData) return null;
@@ -106,6 +108,14 @@ export default function CADRatingCard({ analysis, expanded, onToggle }) {
               <UnderstandingYourRating
                   diagnosticCode="7005"
                   currentRating={supportedRating}
+              />
+
+              <RatingEnhancementsDisplay
+                  diagnosticCode="7005"
+                  showDefinitions={true}
+                  showCaseLaw={true}
+                  showTips={true}
+                  showExamTips={true}
               />
 
               {/* VA Rating Schedule */}

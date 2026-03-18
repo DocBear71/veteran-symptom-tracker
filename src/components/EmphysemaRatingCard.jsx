@@ -1,8 +1,10 @@
 import {ChevronDown, ChevronUp} from 'lucide-react';
-import {EMPHYSEMA_CRITERIA, getRatingRowColor, getRatingTextColor} from '../utils/ratingCriteria';
+import {getRatingRowColor, getRatingTextColor} from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import MedicationCorrelation from './MedicationCorrelation';
+import {EMPHYSEMA_CRITERIA} from '../utils/ratingLogic/index.js';
+import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 
 /**
  * Emphysema Rating Card Component - Matches AsthmaRatingCard styling
@@ -100,6 +102,14 @@ export default function EmphysemaRatingCard({analysis, expanded, onToggle}) {
               <UnderstandingYourRating
                   diagnosticCode="6603"
                   currentRating={numericRating}
+              />
+
+              <RatingEnhancementsDisplay
+                  diagnosticCode="6603"
+                  showDefinitions={true}
+                  showCaseLaw={true}
+                  showTips={true}
+                  showExamTips={true}
               />
 
               <div>

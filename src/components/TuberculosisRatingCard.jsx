@@ -9,9 +9,11 @@ import {
   TUBERCULOSIS_ACTIVE_CRITERIA,
   TUBERCULOSIS_INACTIVE_CRITERIA,
   TUBERCULOSIS_MILIARY_CRITERIA
-} from '../utils/ratingCriteria';
+} from '../utils/ratingLogic/index';
 import MedicationCorrelation from './MedicationCorrelation';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
+import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
+import UnderstandingYourRating from './UnderstandingYourRating';
 
 const TuberculosisRatingCard = ({ analysis, expanded, onToggle }) => {
   if (!analysis?.hasData) {
@@ -131,8 +133,8 @@ const TuberculosisRatingCard = ({ analysis, expanded, onToggle }) => {
 
               {/* Service-Connected Status Banner */}
               <ServiceConnectedBanner
-                conditionKey="tuberculosis"
-                currentAnalysis={analysis}
+                  conditionKey="tuberculosis"
+                  currentAnalysis={analysis}
               />
 
 
@@ -362,6 +364,20 @@ const TuberculosisRatingCard = ({ analysis, expanded, onToggle }) => {
                     </ul>
                   </div>
               )}
+
+
+              <UnderstandingYourRating
+                  diagnosticCode={diagnosticCode}
+                  currentRating={numericRating}
+              />
+
+              <RatingEnhancementsDisplay
+                  diagnosticCode={diagnosticCode}
+                  showDefinitions={true}
+                  showCaseLaw={true}
+                  showTips={true}
+                  showExamTips={true}
+              />
 
               {/* Section 9: Disclaimer */}
               <div className="bg-gray-100 dark:bg-gray-700/50 rounded-lg p-3 text-xs text-gray-600 dark:text-gray-400">

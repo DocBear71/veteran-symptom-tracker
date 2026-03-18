@@ -137,6 +137,12 @@ export default function Phase8BMentalHealthRatingCard({ analysis, expanded, onTo
                   </div>
               )}
 
+              {/* Understanding Your Rating - Educational Content */}
+              <UnderstandingYourRating
+                  diagnosticCode={diagnosticCode || '9400'}
+                  currentRating={typeof supportedRating === 'number' ? supportedRating : parseInt(supportedRating, 10)}
+              />
+
               {/* Rating Enhancements - Definitions, Case Law, Tips */}
               <RatingEnhancementsDisplay
                   diagnosticCode={diagnosticCode || '9400'}

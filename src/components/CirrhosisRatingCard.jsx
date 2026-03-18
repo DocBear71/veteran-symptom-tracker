@@ -1,8 +1,10 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
-import { CIRRHOSIS_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
+import { getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import MedicationCorrelation from './MedicationCorrelation';
+import {CIRRHOSIS_CRITERIA} from '../utils/ratingLogic/index.js';
+import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 
 /**
  * Cirrhosis Rating Card Component
@@ -138,8 +140,8 @@ export default function CirrhosisRatingCard({ analysis, expanded, onToggle }) {
                   </div>
                 </div>
               </div>
-<MedicationCorrelation analysis={analysis} />
-{/* Analysis Rationale */}
+              <MedicationCorrelation analysis={analysis} />
+              {/* Analysis Rationale */}
               {ratingRationale?.length > 0 && (
                   <div>
                     <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-center">
@@ -160,6 +162,14 @@ export default function CirrhosisRatingCard({ analysis, expanded, onToggle }) {
               <UnderstandingYourRating
                   diagnosticCode="7312"
                   currentRating={supportedRating}
+              />
+
+              <RatingEnhancementsDisplay
+                  diagnosticCode="7312"
+                  showDefinitions={true}
+                  showCaseLaw={true}
+                  showTips={true}
+                  showExamTips={true}
               />
 
               {/* VA Rating Schedule */}

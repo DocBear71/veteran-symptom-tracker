@@ -1,8 +1,10 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
-import { PLANTAR_FASCIITIS_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
+import { getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import MedicationCorrelation from './MedicationCorrelation';
+import {PLANTAR_FASCIITIS_CRITERIA} from '../utils/ratingLogic/index';
+import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 
 /**
  * Plantar Fasciitis Rating Card - Gold Standard Version
@@ -134,6 +136,14 @@ export default function PlantarFasciitisRatingCard({ analysis, expanded, onToggl
               <UnderstandingYourRating
                   diagnosticCode={criteria.diagnosticCode || '5276'}
                   currentRating={numericRating}
+              />
+
+              <RatingEnhancementsDisplay
+                  diagnosticCode={criteria.diagnosticCode || '5276'}
+                  showDefinitions={true}
+                  showCaseLaw={true}
+                  showTips={true}
+                  showExamTips={true}
               />
 
               {/* VA Rating Schedule */}

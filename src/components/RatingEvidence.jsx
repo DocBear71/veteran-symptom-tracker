@@ -5,209 +5,6 @@ import { getProfileType, PROFILE_TYPES } from '../utils/profile';
 import { getSuggestedConditions } from '../data/symptoms';
 import SMCCalculator from './SMCCalculator';
 import {
-  analyzeMigraineLogs,
-  analyzeSleepApneaLogs,
-  analyzeLumbosacralStrainLogs,
-  analyzeIntervertebralDiscLogs,
-  analyzeKneeInstabilityLogs,
-  analyzeTBILogs,
-  analyzeTBIResidualsLogs,
-  analyzeHypertensionLogs,
-  analyzeTinnitusLogs,
-  analyzeFibromyalgiaLogs,
-  analyzeDiabetesLogs,
-  analyzeIBSLogs,
-  analyzeGERDLogs,
-  analyzeGERDComplicationsLogs,
-  analyzeUlcerativeColitisLogs,
-  analyzePepticUlcerLogs,
-  analyzeHemorrhoidLogs,
-  analyzeDiverticulitisLogs,
-  analyzeHypothyroidismLogs,
-  analyzeRaynaudsLogs,
-  analyzeVaricoseVeinsLogs,
-  analyzeChronicUrticariaLogs,
-  analyzeRadiculopathyLogs,
-  analyzeChronicFatigueLogs,
-  analyzePeripheralNeuropathyLogs,
-  analyzeMenieresLogs,
-  analyzeRhinitisLogs,
-  analyzeTMJLogs,
-  analyzePlantarFasciitisLogs,
-  analyzeInsomniaLogs,
-  analyzeSinusitisLogs,
-  analyzeDeviatedSeptumLogs,
-  analyzeNoseLossLogs,
-  analyzeChronicLaryngitisLogs,
-  analyzeAphoniaLogs,
-  analyzeLaryngealStenosisLogs,
-  analyzePharynxInjuryLogs,
-  analyzeShoulderLogs,
-  analyzeHipLogs,
-  analyzeAnkleLogs,
-  analyzeAnkleAchillesLogs,
-  analyzeHipThighLogs,
-  analyzeWristLogs,
-  analyzeElbowLogs,
-  analyzeDegenerativeArthritisLogs,
-  analyzeAsthmaLogs,
-  analyzeHearingLossLogs,
-  analyzeScarsLogs,
-  analyzePsoriasisLogs,
-  analyzeEczemaLogs,
-  analyzeEpilepsyMajorLogs,
-  analyzeEpilepsyMinorLogs,
-  analyzeJacksonianEpilepsyLogs,
-  analyzeDiencephalicEpilepsyLogs,
-  analyzePsychomotorEpilepsyLogs,
-  analyzeVisionLogs,
-  analyzeLossOfSmellLogs,
-  analyzeLossOfTasteLogs,
-  analyzeKidneyStonesLogs,
-  analyzeChronicRenalDiseaseLogs,
-  analyzeVoidingDysfunctionLogs,
-  analyzeSphincterImpairmentLogs,
-  analyzeErectileDysfunctionLogs,
-  analyzePenisConditionsLogs,
-  analyzeTestisConditionsLogs,
-  analyzeEndometriosisLogs,
-  analyzeFemaleReproductiveOrgansLogs,
-  analyzePelvicProlapseLogs,
-  analyzeFemaleArousalDisorderLogs,
-  analyzeIronDeficiencyAnemiaLogs,
-  analyzeFolateDeficiencyAnemiaLogs,
-  analyzePerniciousAnemiaLogs,
-  analyzeHemolyticAnemiaLogs,
-  analyzeSickleCellAnemiaLogs,
-  analyzeAplasticAnemiaLogs,
-  analyzePolycythemiaVeraLogs,
-  analyzeImmuneThrombocytopeniaLogs,
-  analyzeLeukemiaLogs,
-  analyzeHodgkinsLymphomaLogs,
-  analyzeMultipleMyelomaLogs,
-  analyzeNonHodgkinsLymphomaLogs,
-  analyzeMyeloproliferative7718Logs,
-  analyzeChronicMyelogenousLeukemiaLogs,
-  analyzeSolitaryPlasmacytomaLogs,
-  analyzeMyelodysplasticSyndromesLogs,
-  analyzeToothLossLogs,
-  analyzeMandibleNonunionLogs,
-  analyzeMalignantOralNeoplasmLogs,
-  analyzeBenignOralNeoplasmLogs,
-  analyzeHIVLogs,
-  analyzeHepatitisCLogs,
-  analyzeHepatitisBLogs,
-  analyzeLymeDiseaseLogs,
-  analyzeMalariaLogs,
-  analyzeBrucellosisLogs,
-  analyzeCampylobacterLogs,
-  analyzeQFeverLogs,
-  analyzeSalmonellaLogs,
-  analyzeShigellaLogs,
-  analyzeWestNileLogs,
-  analyzeNTMLogs,
-  analyzeSyphilisLogs,
-  analyzeCerebrospinalSyphilisLogs,
-  analyzeMeningovascularSyphilisLogs,
-  analyzeTabesDorsalisLogs,
-  analyzeSyphiliticDementiaLogs,
-  analyzeSyphiliticHeartDiseaseLogs,
-  analyzeCardiomyopathyLogs,
-  analyzeCADLogs,
-  analyzePostMILogs,
-  analyzeHypertensiveHeartLogs,
-  analyzeColdInjuryLogs,
-  analyzePADLogs,
-  analyzeSVTLogs,
-  analyzeVentricularArrhythmiaLogs,
-  analyzePericarditisLogs,
-  analyzePostPhlebiticLogs,
-  analyzeCirrhosisLogs,
-  analyzeGastritisLogs,
-  analyzePancreatitisLogs,
-  analyzeBiliaryTractLogs,
-  analyzeCOPDLogs,
-  analyzeChronicBronchitisLogs,
-  analyzeEmphysemaLogs,
-  analyzeBronchiectasisLogs,
-  analyzePulmonaryFibrosisLogs,
-  analyzeSarcoidosisLogs,
-  analyzeMultipleSclerosisLogs,
-  analyzeParkinsonsDiseaseLogs,
-  analyzeMyastheniaGravisLogs,
-  analyzeNarcolepsyLogs,
-  analyzeALSLogs,
-  analyzeSyringomyeliaLogs,
-  analyzeMyelitisLogs,
-  analyzeUpperRadicularGroupLogs,
-  analyzeMiddleRadicularGroupLogs,
-  analyzeLowerRadicularGroupLogs,
-  analyzeAllRadicularGroupsLogs,
-  analyzeRadialNerveLogs,
-  analyzeMedianNerveLogs,
-  analyzeUlnarNerveLogs,
-  analyzeMusculocutaneousNerveLogs,
-  analyzeCircumflexNerveLogs,
-  analyzeLongThoracicNerveLogs,
-  analyzeSciaticNerveLogs,
-  analyzeCommonPeronealNerveLogs,
-  analyzeSuperficialPeronealNerveLogs,
-  analyzeDeepPeronealNerveLogs,
-  analyzeTibialNerveLogs,
-  analyzePosteriorTibialNerveLogs,
-  analyzeFemoralNerveLogs,
-  analyzeSaphenousNerveLogs,
-  analyzeObturatorNerveLogs,
-  analyzeLateralFemoralCutaneousNerveLogs,
-  analyzeIlioinguinalNerveLogs,
-  analyzeHyperthyroidismLogs,
-  analyzeThyroiditisLogs,
-  analyzeHyperparathyroidismLogs,
-  analyzeHypoparathyroidismLogs,
-  analyzeAddisonsDiseaseLog,
-  analyzeCushingsSyndromeLogs,
-  analyzeDiabetesInsipidusLogs,
-  analyzeHyperaldosteronismLogs,
-  analyzeGoutLogs,
-  analyzeBursitisLogs,
-  analyzeTendinitisLogs,
-  analyzeMyositisLogs,
-  analyzeOsteomyelitisLogs,
-  analyzeMultiJointArthritisLogs,
-  analyzeVertebralFractureLogs,
-  analyzeSacroiliacInjuryLogs,
-  analyzeSpinalStenosisLogs,
-  analyzeAnkylosingSpondylitisLogs,
-  analyzeSpinalFusionLogs,
-  analyzeWeakFootLogs,
-  analyzeClawFootLogs,
-  analyzeMetatarsalgiaLogs,
-  analyzeHalluxValgusLogs,
-  analyzeHalluxRigidusLogs,
-  analyzeHerniaLogs,
-  analyzePeritonealAdhesionsLogs,
-  analyzeEsophagealLogs,
-  analyzePostgastrectomyLogs,
-  analyzeIntestinalFistulaLogs,
-  analyzeAcneLogs,
-  analyzeChloracneLogs,
-  analyzeAlopeciaAreataLogs,
-  analyzeHyperhidrosisLogs,
-  analyzeDiscoidLupusLogs,
-  analyzeBullousDisordersLogs,
-  analyzeCutaneousVasculitisLogs,
-  analyzeDermatophytosisLogs,
-  analyzeSkinInfectionsLogs,
-  analyzeUveitis,
-  analyzeKeratitis,
-  analyzeChronicConjunctivitis,
-  analyzeScleritis,
-  analyzePeripheralVestibular,
-  analyzeChronicSuppurativeOtitisMedia,
-  analyzeChronicOtitisExterna,
-  analyzeChronicNonsuppurativeOtitisMedia,
-  analyzeAmputationLogs,
-  analyzeADLLogs,
   getAllMajorDepressionRatings,
   getAllGeneralizedAnxietyRatings,
   getAllPanicDisorderRatings,
@@ -250,6 +47,12 @@ import {
   formatRating,
 } from '../utils/ratingCriteria';
 import {
+  // Mental Health
+  analyzePTSDLogs,
+  analyzeMajorDepressionLogs,
+  analyzeGeneralizedAnxietyLogs,
+  analyzePanicDisorderLogs,
+  analyzeBipolarLogs,
   analyzeSocialAnxietyLogs,
   analyzeOCDLogs,
   analyzePersistentDepressiveLogs,
@@ -279,11 +82,246 @@ import {
   analyzeNarcissisticPersonalityDisorderLogs,
   analyzeAvoidantPersonalityDisorderLogs,
   analyzeDementiaLogs,
-  analyzePTSDLogs,
-  analyzeMajorDepressionLogs,
-  analyzeGeneralizedAnxietyLogs,
-  analyzePanicDisorderLogs,
-  analyzeBipolarLogs,
+    // Neurological
+  analyzeMigraineLogs,
+  analyzeTBILogs,
+  analyzeRadiculopathyLogs,
+  analyzeChronicFatigueLogs,
+  analyzePeripheralNeuropathyLogs,
+  analyzeInsomniaLogs,
+  analyzeTBIResidualsLogs,
+  analyzeEpilepsyMajorLogs,
+  analyzeEpilepsyMinorLogs,
+  analyzeJacksonianEpilepsyLogs,
+  analyzeDiencephalicEpilepsyLogs,
+  analyzePsychomotorEpilepsyLogs,
+  analyzeTinnitusLogs,
+  analyzeFibromyalgiaLogs,
+  analyzeMultipleSclerosisLogs,
+  analyzeParkinsonsDiseaseLogs,
+  analyzeMyastheniaGravisLogs,
+  analyzeNarcolepsyLogs,
+  analyzeALSLogs,
+  analyzeSyringomyeliaLogs,
+  analyzeMyelitisLogs,
+  analyzeUpperRadicularGroupLogs,
+  analyzeMiddleRadicularGroupLogs,
+  analyzeLowerRadicularGroupLogs,
+  analyzeAllRadicularGroupsLogs,
+  analyzeRadialNerveLogs,
+  analyzeMedianNerveLogs,
+  analyzeUlnarNerveLogs,
+  analyzeMusculocutaneousNerveLogs,
+  analyzeCircumflexNerveLogs,
+  analyzeLongThoracicNerveLogs,
+  analyzeSciaticNerveLogs,
+  analyzeCommonPeronealNerveLogs,
+  analyzeSuperficialPeronealNerveLogs,
+  analyzeDeepPeronealNerveLogs,
+  analyzeTibialNerveLogs,
+  analyzePosteriorTibialNerveLogs,
+  analyzeFemoralNerveLogs,
+  analyzeSaphenousNerveLogs,
+  analyzeObturatorNerveLogs,
+  analyzeLateralFemoralCutaneousNerveLogs,
+  analyzeIlioinguinalNerveLogs,
+  analyzeWeakFootLogs,
+  analyzeClawFootLogs,
+  analyzeMetatarsalgiaLogs,
+  analyzeHalluxValgusLogs,
+  analyzeHalluxRigidusLogs,
+  analyzeLossOfSmellLogs,
+  analyzeLossOfTasteLogs,
+  // Musculoskeletal
+  analyzeLumbosacralStrainLogs,
+  analyzeIntervertebralDiscLogs,
+  analyzeKneeInstabilityLogs,
+  analyzePlantarFasciitisLogs,
+  analyzeShoulderLogs,
+  analyzeHipLogs,
+  analyzeAnkleLogs,
+  analyzeWristLogs,
+  analyzeElbowLogs,
+  analyzeDegenerativeArthritisLogs,
+  analyzeGoutLogs,
+  analyzeBursitisLogs,
+  analyzeTendinitisLogs,
+  analyzeAnkleAchillesLogs,
+  analyzeHipThighLogs,
+  analyzeMyositisLogs,
+  analyzeOsteomyelitisLogs,
+  analyzeMultiJointArthritisLogs,
+  analyzeVertebralFractureLogs,
+  analyzeSacroiliacInjuryLogs,
+  analyzeSpinalStenosisLogs,
+  analyzeAnkylosingSpondylitisLogs,
+  analyzeSpinalFusionLogs,
+  analyzeAmputationLogs,
+  analyzeADLLogs,
+    // Cardiorespiratory
+  analyzeSleepApneaLogs,
+  analyzeHypertensionLogs,
+  analyzeAsthmaLogs,
+  analyzeCOPDLogs,
+  analyzeChronicBronchitisLogs,
+  analyzeEmphysemaLogs,
+  analyzeBronchiectasisLogs,
+  analyzePulmonaryFibrosisLogs,
+  analyzeSarcoidosisLogs,
+  analyzeCardiomyopathyLogs,
+  analyzeSVTLogs,
+  analyzeVentricularArrhythmiaLogs,
+  analyzePericarditisLogs,
+  analyzePostPhlebiticLogs,
+  analyzeCADLogs,
+  analyzePostMILogs,
+  analyzeHypertensiveHeartLogs,
+  analyzeColdInjuryLogs,
+  analyzePADLogs,
+  analyzeRaynaudsLogs,
+  analyzeVaricoseVeinsLogs,
+  analyzeRhinitisLogs,
+  analyzeSinusitisLogs,
+  analyzeDeviatedSeptumLogs,
+  analyzeNoseLossLogs,
+  analyzeChronicLaryngitisLogs,
+  analyzeAphoniaLogs,
+  analyzeLaryngealStenosisLogs,
+  analyzePharynxInjuryLogs,
+  analyzeChronicUrticariaLogs,
+  analyzePeripheralArterialDiseaseLogs,
+  analyzeSyphiliticHeartDiseaseLogs,
+    // Digestive
+  analyzeIBSLogs,
+  analyzeGERDLogs,
+  analyzeGERDComplicationsLogs,
+  analyzeUlcerativeColitisLogs,
+  analyzePepticUlcerLogs,
+  analyzeHemorrhoidLogs,
+  analyzeDiverticulitisLogs,
+  analyzeCirrhosisLogs,
+  analyzeGastritisLogs,
+  analyzePancreatitisLogs,
+  analyzeBiliaryTractLogs,
+  analyzeHerniaLogs,
+  analyzePeritonealAdhesionsLogs,
+  analyzeEsophagealLogs,
+  analyzePostgastrectomyLogs,
+  analyzeIntestinalFistulaLogs,
+  analyzeEsophagealSpasmLogs,
+  analyzeSphincterControlLogs,
+  analyzeRectalProlapseLogs,
+  analyzeRectalStrictureLogs,
+  analyzeAnalFistulaLogs,
+  analyzePruritusAniLogs,
+    // Skin & Endocrine
+  analyzeDiabetesLogs,
+  analyzeHypothyroidismLogs,
+  analyzeHyperthyroidismLogs,
+  analyzeThyroiditisLogs,
+  analyzeHyperparathyroidismLogs,
+  analyzeHypoparathyroidismLogs,
+  analyzeAddisonsDiseaseLog,
+  analyzeCushingsSyndromeLogs,
+  analyzeDiabetesInsipidusLogs,
+  analyzeHyperaldosteronismLogs,
+  analyzeScarsLogs,
+  analyzePsoriasisLogs,
+  analyzeEczemaLogs,
+  analyzeAcneLogs,
+  analyzeChloracneLogs,
+  analyzeAlopeciaAreataLogs,
+  analyzeHyperhidrosisLogs,
+  analyzeDiscoidLupusLogs,
+  analyzeBullousDisordersLogs,
+  analyzeCutaneousVasculitisLogs,
+  analyzeDermatophytosisLogs,
+  analyzeSkinInfectionsLogs,
+  analyzeSystemicLupusLogs,
+  analyzeAvitaminosisLogs,
+  analyzeBeriberiLogs,
+  analyzePellagraLogs,
+    // Genitourinary
+  analyzeKidneyStonesLogs,
+  analyzeChronicRenalDiseaseLogs,
+  analyzeVoidingDysfunctionLogs,
+  analyzeErectileDysfunctionLogs,
+  analyzeEndometriosisLogs,
+  analyzeFemaleReproductiveOrgansLogs,
+  analyzePelvicProlapseLogs,
+  analyzeFemaleArousalDisorderLogs,
+  analyzeChronicCystitisLogs,
+  analyzeNeurogenicBladderLogs,
+  analyzeProstateConditionsLogs,
+  analyzeUrethralStrictureLogs,
+  analyzePenisConditionsLogs,
+  analyzeTestisConditionsLogs,
+  analyzeSphincterImpairmentLogs,
+  analyzeVulvaClitorisDiseaseLogs,
+  analyzeVaginaDiseaseLogs,
+  analyzeCervixDiseaseLogs,
+  analyzeUterusDiseaseLogs,
+  analyzeFallopianTubePIDLogs,
+  analyzeOvaryDiseaseLogs,
+    // Hemic And Lymphatic
+  analyzeIronDeficiencyAnemiaLogs,
+  analyzeFolateDeficiencyAnemiaLogs,
+  analyzePerniciousAnemiaLogs,
+  analyzeHemolyticAnemiaLogs,
+  analyzeSickleCellAnemiaLogs,
+  analyzeAplasticAnemiaLogs,
+  analyzePolycythemiaVeraLogs,
+  analyzeImmuneThrombocytopeniaLogs,
+  analyzeLeukemiaLogs,
+  analyzeHodgkinsLymphomaLogs,
+  analyzeMultipleMyelomaLogs,
+  analyzeNonHodgkinsLymphomaLogs,
+  analyzeMyeloproliferative7718Logs,
+  analyzeChronicMyelogenousLeukemiaLogs,
+  analyzeSolitaryPlasmacytomaLogs,
+  analyzeMyelodysplasticSyndromesLogs,
+    // Dental & Visual
+  analyzeMenieresLogs,
+  analyzeTMJLogs,
+  analyzeHearingLossLogs,
+  analyzeVisionLogs,
+  analyzeToothLossLogs,
+  analyzeMandibleNonunionLogs,
+  analyzeMalignantOralNeoplasmLogs,
+  analyzeBenignOralNeoplasmLogs,
+  analyzeUveitis,
+  analyzeKeratitis,
+  analyzeChronicConjunctivitis,
+  analyzeScleritis,
+  analyzePeripheralVestibular,
+  analyzeChronicSuppurativeOtitisMedia,
+  analyzeChronicOtitisExterna,
+  analyzeChronicNonsuppurativeOtitisMedia,
+  analyzeEyeConditionsLogs,
+  analyzeMandibleMalunionLogs,
+  analyzeMaxillaMalunionLogs,
+  analyzeMaxillaMandibleBoneDiseaseLogs,
+    // Infectious Diseases
+  analyzeHIVLogs,
+  analyzeHepatitisCLogs,
+  analyzeHepatitisBLogs,
+  analyzeLymeDiseaseLogs,
+  analyzeMalariaLogs,
+  analyzeBrucellosisLogs,
+  analyzeCampylobacterLogs,
+  analyzeQFeverLogs,
+  analyzeSalmonellaLogs,
+  analyzeShigellaLogs,
+  analyzeWestNileLogs,
+  analyzeNTMLogs,
+  analyzeTuberculosisLogs,
+  analyzeActiveTuberculosisLogs,
+  analyzeInactiveTuberculosisLogs,
+  analyzeSyphilisLogs,
+  analyzeCerebrospinalSyphilisLogs,
+  analyzeMeningovascularSyphilisLogs,
+  analyzeTabesDorsalisLogs,
+  analyzeSyphiliticDementiaLogs,
 } from '../utils/ratingLogic/index'
 import MigraineRatingCard from './MigraineRatingCard';
 import SleepApneaRatingCard from './SleepApneaRatingCard';
@@ -424,6 +462,7 @@ import HipThighRatingCard from './HipThighRatingCard';
 import SecondaryConditionsSummary from './SecondaryConditionsSummary';
 import ADLRatingCard from './ADLRatingCard';
 import AmputationRatingCard from './AmputationRatingCard';
+import TuberculosisRatingCard from './TuberculosisRatingCard.jsx';
 
 
 
@@ -677,6 +716,9 @@ const RatingEvidence = () => {
     const chronicUrticariaAnalysis = useMemo(() => {
         return analyzeChronicUrticariaLogs(logs, { evaluationPeriodDays: evaluationDays });
     }, [logs, evaluationDays]);
+  const peripheralArterialDiseaseAnalysis = useMemo(() => {
+    return analyzePeripheralArterialDiseaseLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
     const psoriasisAnalysis = useMemo(() => {
         return analyzePsoriasisLogs(logs, { evaluationPeriodDays: evaluationDays });
     }, [logs, evaluationDays]);
@@ -848,6 +890,15 @@ const RatingEvidence = () => {
     const ntmAnalysis = useMemo(() => {
       return analyzeNTMLogs(logs, { evaluationPeriodDays: evaluationDays  });
     }, [logs, evaluationDays]);
+    const tuberculosisAnalysis = useMemo(() => {
+      return analyzeTuberculosisLogs(logs, { evaluationPeriodDays: evaluationDays  });
+    }, [logs, evaluationDays]);
+  const tuberculosisActiveAnalysis = useMemo(() => {
+    return analyzeActiveTuberculosisLogs(logs, { evaluationPeriodDays: evaluationDays  });
+  }, [logs, evaluationDays]);
+  const tuberculosisInactiveAnalysis = useMemo(() => {
+    return analyzeInactiveTuberculosisLogs(logs, { evaluationPeriodDays: evaluationDays  });
+  }, [logs, evaluationDays]);
     // Syphilis/STD Conditions
     const syphilisAnalysis = useMemo(() => {
       return analyzeSyphilisLogs(logs, { evaluationPeriodDays: evaluationDays });
@@ -1493,6 +1544,9 @@ const RatingEvidence = () => {
         padAnalysis,
         raynaudsAnalysis,
         varicoseVeinsAnalysis,
+        chronicUrticariaAnalysis,
+        peripheralArterialDiseaseAnalysis,
+        syphiliticHeartDiseaseAnalysis,
       ].filter(hasData).length,
 
       digestive: [
@@ -1604,6 +1658,9 @@ const RatingEvidence = () => {
         shigellaAnalysis,
         westNileAnalysis,
         ntmAnalysis,
+        tuberculosisAnalysis,
+        tuberculosisActiveAnalysis,
+        tuberculosisInactiveAnalysis,
         syphilisAnalysis,
         cerebrospinalSyphilisAnalysis,
         meningovascularSyphilisAnalysis,
@@ -1681,6 +1738,7 @@ const RatingEvidence = () => {
     ventricularArrhythmiaAnalysis, pericarditisAnalysis, postPhlebiticAnalysis,
     cadAnalysis, postMIAnalysis, hypertensiveHeartAnalysis,
     coldInjuryAnalysis, padAnalysis, raynaudsAnalysis, varicoseVeinsAnalysis,
+    chronicUrticariaAnalysis, peripheralArterialDiseaseAnalysis, syphiliticHeartDiseaseAnalysis,
     // Digestive
     ibsAnalysis, gerdAnalysis, GERDComplicationsAnalysis,
     ulcerativeColitisAnalysis, pepticUlcerAnalysis, hemorrhoidAnalysis,
@@ -1719,7 +1777,8 @@ const RatingEvidence = () => {
     // Infectious
     hivAnalysis, hepatitisBAnalysis, hepatitisCAnalysis, lymeDiseaseAnalysis,
     malariaAnalysis, brucellosisAnalysis, campylobacterAnalysis, qFeverAnalysis,
-    salmonellaAnalysis, shigellaAnalysis, westNileAnalysis, ntmAnalysis,
+    salmonellaAnalysis, shigellaAnalysis, westNileAnalysis, ntmAnalysis, tuberculosisActiveAnalysis,
+    tuberculosisAnalysis, tuberculosisInactiveAnalysis,
     syphilisAnalysis, cerebrospinalSyphilisAnalysis, meningovascularSyphilisAnalysis,
     tabesDorsalisAnalysis, syphiliticDementiaAnalysis, syphiliticHeartDiseaseAnalysis,
     // Dental
@@ -1786,6 +1845,8 @@ const RatingEvidence = () => {
         raynaudsAnalysis.hasData ||
         varicoseVeinsAnalysis.hasData ||
         chronicUrticariaAnalysis.hasData ||
+        peripheralArterialDiseaseAnalysis.hasData ||
+        syphiliticHeartDiseaseAnalysis.hasData ||
         hearingLossAnalysis.hasData ||
         lossOfSmellAnalysis.hasData ||
         lossOfTasteAnalysis.hasData ||
@@ -1843,6 +1904,9 @@ const RatingEvidence = () => {
         shigellaAnalysis.hasData ||
         westNileAnalysis.hasData ||
         ntmAnalysis.hasData ||
+        tuberculosisAnalysis.hasData ||
+        tuberculosisInactiveAnalysis.hasData ||
+        tuberculosisActiveAnalysis.hasData ||
         syphilisAnalysis.hasData ||
         cerebrospinalSyphilisAnalysis.hasData ||
         meningovascularSyphilisAnalysis.hasData ||
@@ -2577,6 +2641,21 @@ const RatingEvidence = () => {
                 expanded={expandedSection === 'ntm'}
                 onToggle={() => toggleSection('ntm')}
             />
+            <TuberculosisRatingCard
+              analysis={tuberculosisAnalysis}
+              expanded={expandedSection === 'tuberculosis'}
+              onToggle={() => toggleSection('tuberculosis')}
+              />
+            <TuberculosisRatingCard
+                analysis={tuberculosisActiveAnalysis}
+                expanded={expandedSection === 'tuberculosis-active'}
+                onToggle={() => toggleSection('tuberculosis-active')}
+            />
+            <TuberculosisRatingCard
+                analysis={tuberculosisInactiveAnalysis}
+                expanded={expandedSection === 'tuberculosis-inactive'}
+                onToggle={() => toggleSection('tuberculosis-inactive')}
+            />
             {/* Syphilis/STD Conditions */}
             <GenericRatingCard
                 analysis={syphilisAnalysis}
@@ -2695,6 +2774,25 @@ const RatingEvidence = () => {
                 icon="🦵"
                 conditionKey="varicoseVeins"
             />
+            <GenericRatingCard
+                analysis={chronicUrticariaAnalysis}
+                expanded={expandedSection === 'chronicUrticaria'}
+                onToggle={() => toggleSection('chronicUrticaria')}
+                icon="🦵"
+                conditionKey="varicoseVeins"
+            /><GenericRatingCard
+              analysis={peripheralArterialDiseaseAnalysis}
+              expanded={expandedSection === 'peripheralArterial'}
+              onToggle={() => toggleSection('peripheralArterial')}
+              icon="🦵"
+              conditionKey="varicoseVeins"
+          /><GenericRatingCard
+              analysis={syphiliticHeartDiseaseAnalysis}
+              expanded={expandedSection === 'syphiliticHeart'}
+              onToggle={() => toggleSection('syphiliticHeart')}
+              icon="🦵"
+              conditionKey="varicoseVeins"
+          />
           </ConditionGroup>
 
           {/* ========== DIGESTIVE ========== */}

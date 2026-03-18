@@ -1,10 +1,11 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
-import { HEARING_LOSS_CRITERIA, getRatingRowColor } from '../utils/ratingCriteria';
+import { getRatingRowColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 import {isRatingSupported} from '../utils/ratingUtils.js';
 import MedicationCorrelation from './MedicationCorrelation';
+import {HEARING_LOSS_CRITERIA} from '../utils/ratingLogic/index.js';
 
 /**
  * Hearing Loss Rating Card Component - Gold Standard Version

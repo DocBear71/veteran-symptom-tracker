@@ -1,9 +1,11 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
-import { HYPOPARATHYROIDISM_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
+import { getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
+import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import {isRatingSupported} from '../utils/ratingUtils.js';
 import MedicationCorrelation from './MedicationCorrelation';
+import {HYPOPARATHYROIDISM_CRITERIA} from '../utils/ratingLogic/index.js';
 
 /**
  * Hypoparathyroidism Rating Card - Gold Standard Version
@@ -97,8 +99,8 @@ export default function HypoparathyroidismRatingCard({ analysis, expanded, onTog
                   </div>
                 </div>
               </div>
-<MedicationCorrelation analysis={analysis} />
-{/* Analysis Rationale */}
+              <MedicationCorrelation analysis={analysis} />
+              {/* Analysis Rationale */}
               {ratingRationale?.length > 0 && (
                   <div>
                     <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-center">Analysis Rationale</h4>
@@ -112,6 +114,19 @@ export default function HypoparathyroidismRatingCard({ analysis, expanded, onTog
                     </div>
                   </div>
               )}
+
+              {/* Understanding Your Rating - Educational Content */}
+              <UnderstandingYourRating
+                  diagnosticCode="7905"
+                  currentRating={typeof supportedRating === 'number' ? supportedRating : parseInt(supportedRating, 10)}
+              />
+              <RatingEnhancementsDisplay
+                  diagnosticCode="7905"
+                  showDefinitions={true}
+                  showCaseLaw={true}
+                  showTips={true}
+                  showExamTips={true}
+              />
 
               {/* VA Rating Schedule */}
               <div>

@@ -5,8 +5,11 @@
 // Includes SMC-K eligibility detection
 // ============================================
 
-import React from 'react';
 import { ChevronDown, ChevronUp, AlertTriangle, Info, CheckCircle } from 'lucide-react';
+import { getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
+import { AMPUTATION_CRITERIA } from '../utils/ratingLogic/index.js';
+import UnderstandingYourRating from './UnderstandingYourRating';
+import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 import SMCAlertBanner from './SMCAlertBanner';
 import MedicationCorrelation from './MedicationCorrelation';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
@@ -27,8 +30,7 @@ import ServiceConnectedBanner from './ServiceConnectedBanner';
  * @param {boolean} expanded - Whether card is expanded
  * @param {function} onToggle - Toggle expand/collapse
  */
-const AmputationRatingCard = ({ analysis, expanded, onToggle }) => {
-  // Don't render if no data
+export default function AmputationRatingCard({ analysis, expanded, onToggle }) {
   if (!analysis?.hasData) {
     return null;
   }
@@ -40,36 +42,21 @@ const AmputationRatingCard = ({ analysis, expanded, onToggle }) => {
     rationale = [],
     evidenceGaps = [],
     metrics = {},
-    criteriaReference,
     smcEligible,
     smcData,
   } = analysis;
 
-  // Get rating color based on percentage
-  const getRatingColor = (percent) => {
-    if (percent >= 70) return 'text-red-600 dark:text-red-400';
-    if (percent >= 50) return 'text-orange-600 dark:text-orange-400';
-    if (percent >= 30) return 'text-yellow-600 dark:text-yellow-400';
-    return 'text-green-600 dark:text-green-400';
+  const criteria = AMPUTATION_CRITERIA;
+
+  const normalizeRating = (rating) => {
+    if (rating === null || rating === undefined) return null;
+    if (typeof rating === 'number') return rating;
+    if (typeof rating === 'string') return parseInt(rating, 10);
+    return null;
   };
 
-  // Get row color for rating schedule
-  const getRatingRowColor = (percent, isSupported) => {
-    if (!isSupported) return 'bg-gray-50 dark:bg-gray-700/30 border-gray-200 dark:border-gray-600';
-    if (percent >= 70) return 'bg-red-50 dark:bg-red-900/20 border-red-300 dark:border-red-700';
-    if (percent >= 50) return 'bg-orange-50 dark:bg-orange-900/20 border-orange-300 dark:border-orange-700';
-    if (percent >= 30) return 'bg-yellow-50 dark:bg-yellow-900/20 border-yellow-300 dark:border-yellow-700';
-    return 'bg-green-50 dark:bg-green-900/20 border-green-300 dark:border-green-700';
-  };
-
-  // Check if rating is supported
-  const isRatingSupported = (ratingPercent) => {
-    return supportedRating >= ratingPercent;
-  };
-
-  // Use authoritative criteria from ratingCriteria.js rather than a local hardcoded list
-  // criteriaReference = AMPUTATION_CRITERIA, contains the canonical ratings array
-  const ratingSchedule = criteriaReference?.ratings || [];
+  const numericRating = normalizeRating(supportedRating);
+  const isRatingSupported = (p) => numericRating !== null && numericRating >= p;
 
   return (
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden border-l-4 border-amber-500">
@@ -97,7 +84,7 @@ const AmputationRatingCard = ({ analysis, expanded, onToggle }) => {
             </span>
             )}
             <div className="text-right">
-              <div className={`text-2xl font-bold ${getRatingColor(supportedRating)}`}>
+              <div className={`text-2xl font-bold ${getRatingTextColor(supportedRating)}`}>
                 {supportedRating !== null && supportedRating !== undefined ? `${supportedRating}%` : 'N/A'}
               </div>
               <div className="text-xs text-gray-500 dark:text-gray-400">
@@ -342,36 +329,43 @@ const AmputationRatingCard = ({ analysis, expanded, onToggle }) => {
                   </div>
               )}
 
+              {/* Understanding Your Rating - Educational Content */}
+              <UnderstandingYourRating
+                  diagnosticCode="5120"
+                  currentRating={numericRating}
+              />
+
+              {/* Rating Enhancement Information */}
+              <RatingEnhancementsDisplay analysis={analysis} />
+
               {/* Section 5: VA Rating Schedule */}
               <div>
                 <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-center">
                   VA Rating Schedule (Amputations)
                 </h4>
                 <div className="space-y-2">
-                  {ratingSchedule.map((rating, idx) => {
-                    const isSupported = isRatingSupported(rating.percent);
+                  {criteria.ratings.map(r => {
+                    const s = isRatingSupported(r.percent);
                     return (
                         <div
-                            key={idx}
-                            className={`p-3 rounded-lg border ${isSupported ? 'border-2' : ''} ${getRatingRowColor(rating.percent, isSupported)}`}
+                            key={r.percent}
+                            className={`p-3 rounded-lg border ${s ? 'border-2' : ''} ${getRatingRowColor(r.percent, s)}`}
                         >
                           <div className="flex items-center gap-3">
-                            <div className={`w-14 text-center font-bold ${isSupported ? 'text-gray-900 dark:text-white' : 'text-gray-500 dark:text-gray-400'}`}>
-                              {rating.percent}%
+                            <div className={`w-14 text-center font-bold ${s ? 'text-gray-900 dark:text-white' : 'text-gray-500 dark:text-gray-400'}`}>
+                              {r.percent}%
                             </div>
                             <div className="flex-1">
-                              <div className={`text-sm ${isSupported ? 'text-gray-900 dark:text-white' : 'text-gray-500 dark:text-gray-400'}`}>
-                                {rating.summary}
+                              <div className={`text-sm ${s ? 'text-gray-900 dark:text-white' : 'text-gray-500 dark:text-gray-400'}`}>
+                                {r.summary}
                               </div>
-                              {rating.dc && (
+                              {r.dc && (
                                   <div className="text-xs text-gray-500 dark:text-gray-400">
-                                    DC {rating.dc}
+                                    DC {r.dc}
                                   </div>
                               )}
                             </div>
-                            {isSupported && (
-                                <span className="text-green-600 dark:text-green-400">✓</span>
-                            )}
+                            {s && <span className="text-green-600 dark:text-green-400">✓</span>}
                           </div>
                         </div>
                     );
@@ -449,6 +443,4 @@ const AmputationRatingCard = ({ analysis, expanded, onToggle }) => {
         )}
       </div>
   );
-};
-
-export default AmputationRatingCard;
+}

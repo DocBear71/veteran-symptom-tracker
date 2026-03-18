@@ -1,8 +1,10 @@
 import {ChevronDown, ChevronUp} from 'lucide-react';
-import {BENIGN_ORAL_NEOPLASM_CRITERIA, getRatingRowColor, getRatingTextColor} from '../utils/ratingCriteria';
+import {getRatingRowColor, getRatingTextColor} from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import MedicationCorrelation from './MedicationCorrelation';
+import {BENIGN_ORAL_NEOPLASM_CRITERIA} from '../utils/ratingLogic/index.js';
+import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 
 export default function BenignOralNeoplasmRatingCard({
                                                        analysis,
@@ -133,6 +135,14 @@ export default function BenignOralNeoplasmRatingCard({
               <UnderstandingYourRating
                   diagnosticCode="9914"
                   currentRating={numericRating}
+              />
+
+              <RatingEnhancementsDisplay
+                  diagnosticCode="9914"
+                  showDefinitions={true}
+                  showCaseLaw={true}
+                  showTips={true}
+                  showExamTips={true}
               />
 
               {criteria?.ratings && (<div><h4

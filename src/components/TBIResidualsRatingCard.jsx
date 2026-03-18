@@ -1,8 +1,10 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
-import { TBI_RESIDUALS_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
+import { getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import MedicationCorrelation from './MedicationCorrelation';
+import {TBI_RESIDUALS_CRITERIA} from '../utils/ratingLogic/index';
+import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 
 /**
  * TBI Residuals Rating Card Component - Gold Standard Version
@@ -98,6 +100,14 @@ export default function TBIResidualsRatingCard({ analysis, expanded, onToggle })
               <UnderstandingYourRating
                   diagnosticCode="8045"
                   currentRating={numericRating}
+              />
+
+              <RatingEnhancementsDisplay
+                  diagnosticCode="8045"
+                  showDefinitions={true}
+                  showCaseLaw={true}
+                  showTips={true}
+                  showExamTips={true}
               />
 
               <div>

@@ -1,9 +1,13 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
-import { FEMALE_REPRODUCTIVE_ORGANS_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
+import { getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import MedicationCorrelation from './MedicationCorrelation';
 import SMCAlertBanner from './SMCAlertBanner';
+import {
+FEMALE_REPRODUCTIVE_ORGANS_CRITERIA
+} from '../utils/ratingLogic/index.js';
+import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 
 /**
  * Female Reproductive Organs Rating Card Component - Gold Standard Version
@@ -93,6 +97,14 @@ export default function FemaleReproductiveOrgansRatingCard({ analysis, expanded,
               <UnderstandingYourRating
                   diagnosticCode={diagnosticCode}
                   currentRating={supportedRating}
+              />
+
+              <RatingEnhancementsDisplay
+                  diagnosticCode={diagnosticCode}
+                  showDefinitions={true}
+                  showCaseLaw={true}
+                  showTips={true}
+                  showExamTips={true}
               />
 
               <div>

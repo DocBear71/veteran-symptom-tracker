@@ -1,8 +1,10 @@
 import {ChevronDown, ChevronUp} from 'lucide-react';
-import {MALIGNANT_ORAL_NEOPLASM_CRITERIA, getRatingRowColor, getRatingTextColor} from '../utils/ratingCriteria';
+import {getRatingRowColor, getRatingTextColor} from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import MedicationCorrelation from './MedicationCorrelation';
+import {MALIGNANT_ORAL_NEOPLASM_CRITERIA} from '../utils/ratingLogic/index.js';
+import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 
 export default function MalignantOralNeoplasmRatingCard({
                                                           analysis,
@@ -57,8 +59,8 @@ export default function MalignantOralNeoplasmRatingCard({
 
               {/* Service-Connected Status Banner */}
               <ServiceConnectedBanner
-                conditionKey="malignantOralNeoplasm"
-                currentAnalysis={analysis}
+                  conditionKey="malignantOralNeoplasm"
+                  currentAnalysis={analysis}
               />
 
               <div><h4
@@ -135,6 +137,14 @@ export default function MalignantOralNeoplasmRatingCard({
               <UnderstandingYourRating
                   diagnosticCode="9915"
                   currentRating={numericRating}
+              />
+
+              <RatingEnhancementsDisplay
+                  diagnosticCode="9915"
+                  showDefinitions={true}
+                  showCaseLaw={true}
+                  showTips={true}
+                  showExamTips={true}
               />
 
               {criteria?.ratings && (<div><h4

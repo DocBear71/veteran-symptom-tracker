@@ -1,8 +1,10 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
-import { HERNIA_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
+import { getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import MedicationCorrelation from './MedicationCorrelation';
+import {HERNIA_CRITERIA} from '../utils/ratingLogic/index.js';
+import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 
 /**
 
@@ -188,6 +190,14 @@ export default function HerniaRatingCard({ analysis, expanded, onToggle }) {
               <UnderstandingYourRating
                   diagnosticCode="7338"
                   currentRating={supportedRating}
+              />
+
+              <RatingEnhancementsDisplay
+                  diagnosticCode="7338"
+                  showDefinitions={true}
+                  showCaseLaw={true}
+                  showTips={true}
+                  showExamTips={true}
               />
 
               {/* VA Rating Schedule */}

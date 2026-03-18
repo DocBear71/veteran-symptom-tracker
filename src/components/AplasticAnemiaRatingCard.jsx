@@ -1,8 +1,10 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
-import { APLASTIC_ANEMIA_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
+import { getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
+import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import MedicationCorrelation from './MedicationCorrelation';
+import {APLASTIC_ANEMIA_CRITERIA} from '../utils/ratingLogic/index.js';
 
 /**
  * Aplastic Anemia Rating Card Component - Gold Standard Version
@@ -84,6 +86,19 @@ export default function AplasticAnemiaRatingCard({ analysis, expanded, onToggle 
                     </div>
                   </div>
               )}
+
+              {/* Understanding Your Rating - Educational Content */}
+              <UnderstandingYourRating
+                  diagnosticCode="7716"
+                  currentRating={typeof supportedRating === 'number' ? supportedRating : parseInt(supportedRating, 10)}
+              />
+              <RatingEnhancementsDisplay
+                  diagnosticCode="7716"
+                  showDefinitions={true}
+                  showCaseLaw={true}
+                  showTips={true}
+                  showExamTips={true}
+              />
 
               {/* VA Rating Schedule */}
               <div>

@@ -1,8 +1,10 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
-import { EPILEPSY_MAJOR_CRITERIA, EPILEPSY_MINOR_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
+import { getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import MedicationCorrelation from './MedicationCorrelation';
+import { EPILEPSY_MAJOR_CRITERIA, EPILEPSY_MINOR_CRITERIA} from '../utils/ratingLogic/index';
+import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 
 /**
  * Seizure/Epilepsy Rating Card Component - Gold Standard Version
@@ -166,6 +168,14 @@ export default function SeizureRatingCard({ analysis, expanded, onToggle }) {
               <UnderstandingYourRating
                   diagnosticCode={getDiagnosticCode()}
                   currentRating={supportedRating}
+              />
+
+              <RatingEnhancementsDisplay
+                  diagnosticCode={getDiagnosticCode()}
+                  showDefinitions={true}
+                  showCaseLaw={true}
+                  showTips={true}
+                  showExamTips={true}
               />
 
               {/* VA Rating Schedule - Major Seizures (DC 8910) */}

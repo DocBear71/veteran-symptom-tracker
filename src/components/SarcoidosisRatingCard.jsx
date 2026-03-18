@@ -1,8 +1,10 @@
 import {ChevronDown, ChevronUp} from 'lucide-react';
-import {SARCOIDOSIS_CRITERIA, getRatingRowColor, getRatingTextColor} from '../utils/ratingCriteria';
+import {getRatingRowColor, getRatingTextColor} from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import MedicationCorrelation from './MedicationCorrelation';
+import {SARCOIDOSIS_CRITERIA} from '../utils/ratingLogic/index.js';
+import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 
 /**
  * Sarcoidosis Rating Card Component - Matches AsthmaRatingCard styling
@@ -51,8 +53,8 @@ export default function SarcoidosisRatingCard({analysis, expanded, onToggle}) {
 
               {/* Service-Connected Status Banner */}
               <ServiceConnectedBanner
-                conditionKey="sarcoidosis"
-                currentAnalysis={analysis}
+                  conditionKey="sarcoidosis"
+                  currentAnalysis={analysis}
               />
 
               <div>
@@ -103,6 +105,14 @@ export default function SarcoidosisRatingCard({analysis, expanded, onToggle}) {
               <UnderstandingYourRating
                   diagnosticCode="6846"
                   currentRating={numericRating}
+              />
+
+              <RatingEnhancementsDisplay
+                  diagnosticCode="6846"
+                  showDefinitions={true}
+                  showCaseLaw={true}
+                  showTips={true}
+                  showExamTips={true}
               />
 
               <div>

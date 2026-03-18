@@ -1,9 +1,10 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
-import { MIGRAINE_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
+import { getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 import MedicationCorrelation from './MedicationCorrelation';
+import {MIGRAINE_CRITERIA} from '../utils/ratingLogic/index';
 
 /**
  * Migraine Rating Card Component - Gold Standard Version

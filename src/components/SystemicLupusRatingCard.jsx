@@ -5,9 +5,11 @@
 // ============================================
 
 import { ChevronDown, ChevronUp, AlertCircle, Info } from 'lucide-react';
-import { SYSTEMIC_LUPUS_CRITERIA } from '../utils/ratingCriteria';
+import { SYSTEMIC_LUPUS_CRITERIA } from '../utils/ratinglogic/index';
 import MedicationCorrelation from './MedicationCorrelation';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
+import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
+import UnderstandingYourRating from './UnderstandingYourRating';
 
 const SystemicLupusRatingCard = ({ analysis, expanded, onToggle }) => {
   if (!analysis?.hasData) {
@@ -91,8 +93,8 @@ const SystemicLupusRatingCard = ({ analysis, expanded, onToggle }) => {
 
               {/* Service-Connected Status Banner */}
               <ServiceConnectedBanner
-                conditionKey="systemicLupus"
-                currentAnalysis={analysis}
+                  conditionKey="systemicLupus"
+                  currentAnalysis={analysis}
               />
 
 
@@ -288,6 +290,20 @@ const SystemicLupusRatingCard = ({ analysis, expanded, onToggle }) => {
                     </div>
                   </div>
               )}
+
+
+              <UnderstandingYourRating
+                  diagnosticCode="6350"
+                  currentRating={numericRating}
+              />
+
+              <RatingEnhancementsDisplay
+                  diagnosticCode="6350"
+                  showDefinitions={true}
+                  showCaseLaw={true}
+                  showTips={true}
+                  showExamTips={true}
+              />
 
               {/* Section 8: Disclaimer */}
               <div className="bg-gray-100 dark:bg-gray-700/50 rounded-lg p-3 text-xs text-gray-600 dark:text-gray-400">

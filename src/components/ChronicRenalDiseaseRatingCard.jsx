@@ -1,9 +1,11 @@
-import { ChevronDown, ChevronUp } from 'lucide-react';
-import { CHRONIC_RENAL_DISEASE_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
+import {ChevronDown, ChevronUp} from 'lucide-react';
+import {getRatingRowColor, getRatingTextColor} from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import {isRatingSupported} from '../utils/ratingUtils.js';
 import MedicationCorrelation from './MedicationCorrelation';
+import {CHRONIC_RENAL_DISEASE_CRITERIA} from '../utils/ratingLogic/index.js';
+import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 
 /**
  * Chronic Renal Disease Rating Card Component - Gold Standard Version
@@ -14,8 +16,6 @@ export default function ChronicRenalDiseaseRatingCard({ analysis, expanded, onTo
   if (!analysis || !analysis.hasData) return null;
 
   const { supportedRating, rationale, evidenceGaps, metrics } = analysis;
-  const criteria = CHRONIC_RENAL_DISEASE_CRITERIA;
-
   return (
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden border-l-4 border-teal-500">
         <button onClick={onToggle} className="w-full px-6 py-4 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
@@ -88,10 +88,18 @@ export default function ChronicRenalDiseaseRatingCard({ analysis, expanded, onTo
                   currentRating={supportedRating}
               />
 
+              <RatingEnhancementsDisplay
+                  diagnosticCode="7531"
+                  showDefinitions={true}
+                  showCaseLaw={true}
+                  showTips={true}
+                  showExamTips={true}
+              />
+
               <div>
                 <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-center">VA Rating Schedule</h4>
                 <div className="space-y-2">
-                  {criteria.ratings.map(rating => {
+                  {CHRONIC_RENAL_DISEASE_CRITERIA.ratings.map(rating => {
                     const isSupported = isRatingSupported(rating.percent, supportedRating);
                     return (
                         <div key={rating.percent} className={`p-3 rounded-lg border ${isSupported ? 'border-2' : ''} ${getRatingRowColor(rating.percent, isSupported)}`}>

@@ -1,8 +1,10 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
-import { POSTGASTRECTOMY_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
+import { getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import MedicationCorrelation from './MedicationCorrelation';
+import {POSTGASTRECTOMY_CRITERIA} from '../utils/ratingLogic/index.js';
+import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 
 /**
  * Postgastrectomy Syndrome Rating Card Component
@@ -203,6 +205,14 @@ export default function PostgastrectomyRatingCard({ analysis, expanded, onToggle
               <UnderstandingYourRating
                   diagnosticCode={criteria.diagnosticCode || '7310'}
                   currentRating={parseInt(supportedRating) || null}
+              />
+
+              <RatingEnhancementsDisplay
+                  diagnosticCode={criteria.diagnosticCode || '7310'}
+                  showDefinitions={true}
+                  showCaseLaw={true}
+                  showTips={true}
+                  showExamTips={true}
               />
 
 

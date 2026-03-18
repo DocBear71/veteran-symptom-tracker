@@ -1,8 +1,10 @@
 import {ChevronDown, ChevronUp} from 'lucide-react';
-import {SYRINGOMYELIA_CRITERIA, getRatingRowColor, getRatingTextColor} from '../utils/ratingCriteria';
+import {getRatingRowColor, getRatingTextColor} from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import MedicationCorrelation from './MedicationCorrelation';
+import {SYRINGOMYELIA_CRITERIA} from '../utils/ratingLogic/index';
+import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 
 /**
  * Syringomyelia Rating Card Component - Gold Standard Version
@@ -52,8 +54,8 @@ export default function SyringomyeliaRatingCard({analysis, expanded, onToggle}) 
 
               {/* Service-Connected Status Banner */}
               <ServiceConnectedBanner
-                conditionKey="syringomyelia"
-                currentAnalysis={analysis}
+                  conditionKey="syringomyelia"
+                  currentAnalysis={analysis}
               />
 
 
@@ -109,6 +111,14 @@ export default function SyringomyeliaRatingCard({analysis, expanded, onToggle}) 
               <UnderstandingYourRating
                   diagnosticCode="8024"
                   currentRating={numericRating}
+              />
+
+              <RatingEnhancementsDisplay
+                  diagnosticCode="8024"
+                  showDefinitions={true}
+                  showCaseLaw={true}
+                  showTips={true}
+                  showExamTips={true}
               />
 
               {/* VA Rating Schedule */}

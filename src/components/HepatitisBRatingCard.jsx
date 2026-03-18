@@ -1,22 +1,25 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
-import { HEPATITIS_B_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
+import { getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import {isRatingSupported} from '../utils/ratingUtils.js';
 import MedicationCorrelation from './MedicationCorrelation';
+import {HEPATITIS_C_CRITERIA} from '../utils/ratingLogic/index.js';
+import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 
 /**
- * Hepatitis B Rating Card Component - Gold Standard Version
- * Displays VA rating analysis for Hepatitis B (DC 7345)
+ * Hepatitis C Rating Card Component - Gold Standard Version
+ * Displays VA rating analysis for Hepatitis C (DC 7354)
  * Based on 38 CFR 4.114
  */
-export default function HepatitisBRatingCard({ analysis, expanded, onToggle }) {
+export default function HepatitisCRatingCard({ analysis, expanded, onToggle }) {
   if (!analysis || !analysis.hasData) {
     return null;
   }
 
   const { supportedRating, ratingRationale, evidence, gaps, metrics } = analysis;
-  const criteria = HEPATITIS_B_CRITERIA;
+  const criteria = HEPATITIS_C_CRITERIA;
+
   const totalLogs = metrics?.totalLogs || 0;
 
   return (
@@ -30,10 +33,10 @@ export default function HepatitisBRatingCard({ analysis, expanded, onToggle }) {
             <span className="text-2xl">🦠</span>
             <div className="text-left">
               <h3 className="font-semibold text-lg text-gray-900 dark:text-white">
-                Hepatitis B
+                Hepatitis C
               </h3>
               <p className="text-sm text-gray-600 dark:text-gray-400">
-                DC 7345 - 38 CFR 4.114
+                DC 7354 - 38 CFR 4.114
               </p>
             </div>
           </div>
@@ -61,7 +64,7 @@ export default function HepatitisBRatingCard({ analysis, expanded, onToggle }) {
 
               {/* Service-Connected Status Banner */}
               <ServiceConnectedBanner
-                  conditionKey="hepititisB"
+                  conditionKey="hepatitisC"
                   currentAnalysis={analysis}
               />
 
@@ -162,8 +165,16 @@ export default function HepatitisBRatingCard({ analysis, expanded, onToggle }) {
 
               {/* Understanding Your Rating - Educational Content */}
               <UnderstandingYourRating
-                  diagnosticCode="7345"
+                  diagnosticCode="7354"
                   currentRating={supportedRating}
+              />
+
+              <RatingEnhancementsDisplay
+                  diagnosticCode="7354"
+                  showDefinitions={true}
+                  showCaseLaw={true}
+                  showTips={true}
+                  showExamTips={true}
               />
 
               {/* Section 3: VA Rating Schedule */}
@@ -226,18 +237,18 @@ export default function HepatitisBRatingCard({ analysis, expanded, onToggle }) {
                   </li>
                   <li className="text-sm text-blue-800 dark:text-blue-300 flex items-start gap-2">
                     <span className="text-blue-500 mt-0.5">•</span>
-                    <span>Document weight changes and dietary restrictions</span>
+                    <span>Document weight changes over time</span>
                   </li>
                   <li className="text-sm text-blue-800 dark:text-blue-300 flex items-start gap-2">
                     <span className="text-blue-500 mt-0.5">•</span>
-                    <span>Keep records of liver function lab values</span>
+                    <span>Keep records of liver enzyme lab values</span>
                   </li>
                 </ul>
               </div>
 
               {/* Section 6: Disclaimer */}
               <div className="bg-gray-100 dark:bg-gray-700/50 rounded-lg p-3 text-xs text-gray-600 dark:text-gray-400">
-                <strong>Important:</strong> Based on 38 CFR 4.114, Diagnostic Code 7345 - Hepatitis B.
+                <strong>Important:</strong> Based on 38 CFR 4.114, Diagnostic Code 7354 - Hepatitis C.
                 This analysis is for documentation purposes only. The VA makes all final rating determinations.
               </div>
             </div>

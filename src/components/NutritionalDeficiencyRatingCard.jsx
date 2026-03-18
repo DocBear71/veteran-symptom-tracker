@@ -11,9 +11,11 @@ import {
   AVITAMINOSIS_CRITERIA,
   BERIBERI_CRITERIA,
   PELLAGRA_CRITERIA,
-} from '../utils/ratingCriteria';
+} from '../utils/ratingLogic/index';
 import MedicationCorrelation from './MedicationCorrelation';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
+import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
+import UnderstandingYourRating from './UnderstandingYourRating';
 
 const NutritionalDeficiencyRatingCard = ({ analysis, expanded, onToggle }) => {
   if (!analysis?.hasData) {
@@ -144,8 +146,8 @@ const NutritionalDeficiencyRatingCard = ({ analysis, expanded, onToggle }) => {
 
               {/* Service-Connected Status Banner */}
               <ServiceConnectedBanner
-                conditionKey="nutritionalDeficiency"
-                currentAnalysis={analysis}
+                  conditionKey="nutritionalDeficiency"
+                  currentAnalysis={analysis}
               />
 
 
@@ -368,6 +370,20 @@ const NutritionalDeficiencyRatingCard = ({ analysis, expanded, onToggle }) => {
                     <p className="text-xs text-amber-700 dark:text-amber-400 mt-2">*If untreated</p>
                   </div>
               )}
+
+
+              <UnderstandingYourRating
+                  diagnosticCode={diagnosticCode}
+                  currentRating={numericRating}
+              />
+
+              <RatingEnhancementsDisplay
+                  diagnosticCode={diagnosticCode}
+                  showDefinitions={true}
+                  showCaseLaw={true}
+                  showTips={true}
+                  showExamTips={true}
+              />
 
               {/* Section 6: Disclaimer */}
               {criteria.disclaimer && (

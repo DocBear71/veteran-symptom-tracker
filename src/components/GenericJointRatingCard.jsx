@@ -1,6 +1,7 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
+import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import MedicationCorrelation from './MedicationCorrelation';
 
@@ -164,8 +165,8 @@ export default function GenericJointRatingCard({
                   </div>
                 </div>
               </div>
-<MedicationCorrelation analysis={analysis} />
-{/* Analysis Rationale */}
+              <MedicationCorrelation analysis={analysis} />
+              {/* Analysis Rationale */}
               {displayRationale?.length > 0 && (
                   <div>
                     <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-center">
@@ -188,6 +189,13 @@ export default function GenericJointRatingCard({
                   currentRating={numericRating}
               />
 
+              <RatingEnhancementsDisplay
+                  diagnosticCode={displayCode}
+                  showDefinitions={true}
+                  showCaseLaw={true}
+                  showTips={true}
+                  showExamTips={true}
+              />
               {/* VA Rating Schedule */}
               {displayCriteria?.ratings && (
                   <div>

@@ -1,16 +1,16 @@
-import { ChevronDown, ChevronUp } from 'lucide-react';
-import { CAMPYLOBACTER_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
+import {ChevronDown, ChevronUp} from 'lucide-react';
+import {getRatingRowColor, getRatingTextColor} from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import {isRatingSupported} from '../utils/ratingUtils.js';
 import MedicationCorrelation from './MedicationCorrelation';
+import {CAMPYLOBACTER_CRITERIA} from '../utils/ratingLogic/index.js';
+import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 
 export default function CampylobacterRatingCard({ analysis, expanded, onToggle }) {
   if (!analysis || !analysis.hasData) return null;
 
   const { supportedRating, ratingRationale, evidence, gaps, metrics } = analysis;
-  const criteria = CAMPYLOBACTER_CRITERIA;
-
   return (
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden border-l-4 border-emerald-500">
         <button onClick={onToggle} className="w-full px-6 py-4 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
@@ -97,14 +97,22 @@ export default function CampylobacterRatingCard({ analysis, expanded, onToggle }
 
               {/* Understanding Your Rating - Educational Content */}
               <UnderstandingYourRating
-                  diagnosticCode="6316"
+                  diagnosticCode="6330"
                   currentRating={supportedRating}
+              />
+
+              <RatingEnhancementsDisplay
+                  diagnosticCode="6330"
+                  showDefinitions={true}
+                  showCaseLaw={true}
+                  showTips={true}
+                  showExamTips={true}
               />
 
               <div>
                 <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-center">VA Rating Schedule</h4>
                 <div className="space-y-2">
-                  {criteria.ratings.map(rating => {
+                  {CAMPYLOBACTER_CRITERIA.ratings.map(rating => {
                     const isSupported = isRatingSupported(rating.percent, supportedRating);
                     return (
                         <div key={rating.percent} className={`p-3 rounded-lg border ${isSupported ? 'border-2' : ''} ${getRatingRowColor(rating.percent, isSupported)}`}>

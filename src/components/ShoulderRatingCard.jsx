@@ -1,8 +1,10 @@
 import {ChevronDown, ChevronUp} from 'lucide-react';
-import {SHOULDER_CRITERIA, getRatingRowColor, getRatingTextColor} from '../utils/ratingCriteria';
+import {getRatingRowColor, getRatingTextColor} from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import MedicationCorrelation from './MedicationCorrelation';
+import {SHOULDER_CRITERIA} from '../utils/ratingLogic/index';
+import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 
 export default function ShoulderRatingCard({analysis, expanded, onToggle}) {
   if (!analysis || !analysis.hasData) return null;
@@ -51,8 +53,8 @@ export default function ShoulderRatingCard({analysis, expanded, onToggle}) {
 
               {/* Service-Connected Status Banner */}
               <ServiceConnectedBanner
-                conditionKey="shoulder"
-                currentAnalysis={analysis}
+                  conditionKey="shoulder"
+                  currentAnalysis={analysis}
               />
 
               <div><h4
@@ -111,18 +113,18 @@ export default function ShoulderRatingCard({analysis, expanded, onToggle}) {
               </div>
               <MedicationCorrelation analysis={analysis} />
               {rationale?.length > 0 && (<div><h4
-                  className="font-medium text-gray-900 dark:text-white mb-2 text-center">Analysis
-                Rationale</h4>
-                <div
-                    className="bg-gray-50 dark:bg-gray-700/30 rounded-lg p-3 space-y-2">{rationale.map(
-                    (item, idx) => (
-                        <div key={idx} className="flex items-start gap-2"><span
-                            className="text-blue-600 dark:text-blue-400 mt-0.5">◆</span><span
-                            className="text-sm text-gray-700 dark:text-gray-300">{item}</span>
-                        </div>
-                    ))}
-                </div>
-              </div>
+                      className="font-medium text-gray-900 dark:text-white mb-2 text-center">Analysis
+                    Rationale</h4>
+                    <div
+                        className="bg-gray-50 dark:bg-gray-700/30 rounded-lg p-3 space-y-2">{rationale.map(
+                        (item, idx) => (
+                            <div key={idx} className="flex items-start gap-2"><span
+                                className="text-blue-600 dark:text-blue-400 mt-0.5">◆</span><span
+                                className="text-sm text-gray-700 dark:text-gray-300">{item}</span>
+                            </div>
+                        ))}
+                    </div>
+                  </div>
               )}
 
               {/* Understanding Your Rating - Educational Content */}
@@ -131,10 +133,18 @@ export default function ShoulderRatingCard({analysis, expanded, onToggle}) {
                   currentRating={numericRating}
               />
 
+              <RatingEnhancementsDisplay
+                  diagnosticCode="5201"
+                  showDefinitions={true}
+                  showCaseLaw={true}
+                  showTips={true}
+                  showExamTips={true}
+              />
+
               <div>
                 <h4
-                  className="font-medium text-gray-900 dark:text-white mb-2 text-center">VA
-                Rating Schedule</h4>
+                    className="font-medium text-gray-900 dark:text-white mb-2 text-center">VA
+                  Rating Schedule</h4>
                 <div className="space-y-2">{criteria.ratings.map(r => {
                   const s = isRatingSupported(r.percent);
                   return (<div key={r.percent}

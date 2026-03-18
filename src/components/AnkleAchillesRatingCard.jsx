@@ -1,8 +1,10 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
-import { ANKLE_ACHILLES_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
+import { getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
+import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import MedicationCorrelation from './MedicationCorrelation';
+import {ANKLE_ACHILLES_CRITERIA} from '../utils/ratingLogic/index';
 
 /**
  * Ankle/Achilles Tendon Rating Card Component - Gold Standard Version
@@ -216,6 +218,13 @@ export default function AnkleAchillesRatingCard({ analysis, expanded, onToggle }
               {/* Understanding Your Rating */}
               <UnderstandingYourRating definitions={criteria.definitions} />
 
+              <RatingEnhancementsDisplay
+                  diagnosticCode="5270"
+                  showDefinitions={true}
+                  showCaseLaw={true}
+                  showTips={true}
+                  showExamTips={true}
+              />
               {/* Section 5: Important Information */}
               {criteria.note && (
                   <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-200 dark:border-blue-800">

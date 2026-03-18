@@ -4,10 +4,12 @@
 // Tracks fatigable weakness pattern and MGFA classification
 
 import { ChevronDown, ChevronUp } from 'lucide-react';
-import { MYASTHENIA_GRAVIS_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
+import { getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import MedicationCorrelation from './MedicationCorrelation';
+import {MYASTHENIA_GRAVIS_CRITERIA} from '../utils/ratingLogic/index';
+import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 
 export default function MyastheniaGravisRatingCard({ analysis, expanded, onToggle }) {
   if (!analysis || !analysis.hasData) return null;
@@ -153,6 +155,14 @@ export default function MyastheniaGravisRatingCard({ analysis, expanded, onToggl
               <UnderstandingYourRating
                   diagnosticCode="8025"
                   currentRating={numericRating}
+              />
+
+              <RatingEnhancementsDisplay
+                  diagnosticCode="8025"
+                  showDefinitions={true}
+                  showCaseLaw={true}
+                  showTips={true}
+                  showExamTips={true}
               />
 
               {/* Section 3: VA Rating Schedule */}

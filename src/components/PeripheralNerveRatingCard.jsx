@@ -25,12 +25,13 @@ import {
   SAPHENOUS_NERVE_CRITERIA,
   OBTURATOR_NERVE_CRITERIA,
   LATERAL_FEMORAL_CUTANEOUS_NERVE_CRITERIA,
-  ILIOINGUINAL_NERVE_CRITERIA, getRatingRowColor, getRatingTextColor,
-} from '../utils/ratingCriteria';
+  ILIOINGUINAL_NERVE_CRITERIA
+} from '../utils/ratingLogic/index';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import MedicationCorrelation from './MedicationCorrelation';
-
+import {getRatingRowColor, getRatingTextColor} from '../utils/ratingCriteria'
+import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 /**
 
  * Peripheral Nerve Rating Card Component - Gold Standard Version
@@ -318,8 +319,8 @@ export default function PeripheralNerveRatingCard({ nerveType, analysis, expande
               </span>
                 )}
               </div>
-<MedicationCorrelation analysis={analysis} />
-{/* Analysis Rationale */}
+              <MedicationCorrelation analysis={analysis} />
+              {/* Analysis Rationale */}
               {ratingRationale && ratingRationale.length > 0 && (
                   <div>
                     <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-center">Analysis Rationale</h4>
@@ -338,6 +339,14 @@ export default function PeripheralNerveRatingCard({ nerveType, analysis, expande
               <UnderstandingYourRating
                   diagnosticCode={diagnosticCode}
                   currentRating={numericRating}
+              />
+
+              <RatingEnhancementsDisplay
+                  diagnosticCode={diagnosticCode}
+                  showDefinitions={true}
+                  showCaseLaw={true}
+                  showTips={true}
+                  showExamTips={true}
               />
 
               {/* VA Rating Schedule */}

@@ -1,8 +1,10 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
-import { BILIARY_TRACT_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
+import { getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import MedicationCorrelation from './MedicationCorrelation';
+import {BILIARY_TRACT_CRITERIA} from '../utils/ratingLogic/index.js';
+import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 
 /**
  * Biliary Tract Disease Rating Card Component
@@ -145,8 +147,8 @@ export default function BiliaryTractRatingCard({ analysis, expanded, onToggle })
                   <strong>Attack Criteria:</strong> RUQ pain + nausea + vomiting on same day counts as documented attack
                 </p>
               </div>
-<MedicationCorrelation analysis={analysis} />
-{/* Analysis Rationale */}
+              <MedicationCorrelation analysis={analysis} />
+              {/* Analysis Rationale */}
               {ratingRationale?.length > 0 && (
                   <div>
                     <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-center">
@@ -167,6 +169,14 @@ export default function BiliaryTractRatingCard({ analysis, expanded, onToggle })
               <UnderstandingYourRating
                   diagnosticCode="7314"
                   currentRating={supportedRating}
+              />
+
+              <RatingEnhancementsDisplay
+                  diagnosticCode="7314"
+                  showDefinitions={true}
+                  showCaseLaw={true}
+                  showTips={true}
+                  showExamTips={true}
               />
 
               {/* VA Rating Schedule */}

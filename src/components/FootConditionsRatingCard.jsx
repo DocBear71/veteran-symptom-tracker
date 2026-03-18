@@ -1,19 +1,23 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import {
-  WEAK_FOOT_CRITERIA,
-  CLAW_FOOT_CRITERIA,
-  METATARSALGIA_CRITERIA,
-  HALLUX_VALGUS_CRITERIA,
-  HALLUX_RIGIDUS_CRITERIA, getRatingRowColor, getRatingTextColor,
+  getRatingRowColor, getRatingTextColor,
 } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import MedicationCorrelation from './MedicationCorrelation';
+import {
+    WEAK_FOOT_CRITERIA,
+    CLAW_FOOT_CRITERIA,
+    METATARSALGIA_CRITERIA,
+    HALLUX_VALGUS_CRITERIA,
+    HALLUX_RIGIDUS_CRITERIA,
+} from '../utils/ratingLogic/index'
+import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 
 /**
 
  * Foot Conditions Rating Card Component - Gold Standard Version
- * Handles 5 foot conditions:
+ * Handles 5-foot conditions:
  * DC 5277: Weak Foot (Bilateral)
  * DC 5278: Claw Foot (Pes Cavus)
  * DC 5279: Metatarsalgia (Morton's Disease)
@@ -244,6 +248,14 @@ export default function FootConditionsRatingCard({ analysis, diagnosticCode, exp
               <UnderstandingYourRating
                   diagnosticCode={diagnosticCode}
                   currentRating={numericRating}
+              />
+
+              <RatingEnhancementsDisplay
+                  diagnosticCode={diagnosticCode}
+                  showDefinitions={true}
+                  showCaseLaw={true}
+                  showTips={true}
+                  showExamTips={true}
               />
 
               {/* Section 3: VA Rating Schedule */}

@@ -1,8 +1,10 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
-import { HIP_THIGH_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
+import { getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
+import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import MedicationCorrelation from './MedicationCorrelation';
+import {HIP_THIGH_CRITERIA} from '../utils/ratingLogic/index';
 
 /**
  * Hip and Thigh Rating Card Component - Gold Standard Version
@@ -216,6 +218,13 @@ export default function HipThighRatingCard({ analysis, expanded, onToggle }) {
               {/* Understanding Your Rating */}
               <UnderstandingYourRating definitions={criteria.definitions} />
 
+              <RatingEnhancementsDisplay
+                  diagnosticCode={analysis?.diagnosticCode || "5250"}
+                  showDefinitions={true}
+                  showCaseLaw={true}
+                  showTips={true}
+                  showExamTips={true}
+              />
               {/* Special Note for Multiple Hip Ratings */}
               <div className="bg-amber-50 dark:bg-amber-900/20 p-4 rounded-lg border border-amber-200 dark:border-amber-800">
                 <h4 className="font-semibold text-amber-900 dark:text-amber-200 mb-2 flex items-center gap-2">

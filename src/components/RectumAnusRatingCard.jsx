@@ -15,9 +15,11 @@ import {
   ANAL_FISTULA_CRITERIA,
   HEMORRHOIDS_CRITERIA,
   PRURITUS_ANI_CRITERIA,
-} from '../utils/ratingCriteria';
+} from '../utils/ratingLogic/index';
 import MedicationCorrelation from './MedicationCorrelation';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
+import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
+import UnderstandingYourRating from './UnderstandingYourRating';
 
 const RectumAnusRatingCard = ({ analysis, expanded, onToggle }) => {
   if (!analysis?.hasData) {
@@ -157,8 +159,8 @@ const RectumAnusRatingCard = ({ analysis, expanded, onToggle }) => {
 
               {/* Service-Connected Status Banner */}
               <ServiceConnectedBanner
-                conditionKey="rectumAnus"
-                currentAnalysis={analysis}
+                  conditionKey="rectumAnus"
+                  currentAnalysis={analysis}
               />
 
 
@@ -295,6 +297,20 @@ const RectumAnusRatingCard = ({ analysis, expanded, onToggle }) => {
                   })}
                 </div>
               </div>
+
+
+              <UnderstandingYourRating
+                  diagnosticCode={diagnosticCode}
+                  currentRating={numericRating}
+              />
+
+              <RatingEnhancementsDisplay
+                  diagnosticCode={diagnosticCode}
+                  showDefinitions={true}
+                  showCaseLaw={true}
+                  showTips={true}
+                  showExamTips={true}
+              />
 
               {/* Section 4: Documentation Gaps */}
               {evidenceGaps && evidenceGaps.length > 0 && (

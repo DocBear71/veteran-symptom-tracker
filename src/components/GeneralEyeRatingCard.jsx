@@ -1,13 +1,18 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import {
-  UVEITIS_CRITERIA,
-  KERATITIS_CRITERIA,
-  CHRONIC_CONJUNCTIVITIS_CRITERIA,
-  SCLERITIS_CRITERIA, getRatingRowColor, getRatingTextColor,
+  getRatingRowColor,
+  getRatingTextColor,
 } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import MedicationCorrelation from './MedicationCorrelation';
+import {
+    UVEITIS_CRITERIA,
+    KERATITIS_CRITERIA,
+    CHRONIC_CONJUNCTIVITIS_CRITERIA,
+    SCLERITIS_CRITERIA,
+} from '../utils/ratingLogic/index'
+import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 
 /**
 
@@ -184,6 +189,14 @@ export default function GeneralEyeRatingCard({ analysis, expanded, onToggle }) {
               <UnderstandingYourRating
                   diagnosticCode={diagnosticCode}
                   currentRating={numericRating}
+              />
+
+              <RatingEnhancementsDisplay
+                  diagnosticCode={diagnosticCode}
+                  showDefinitions={true}
+                  showCaseLaw={true}
+                  showTips={true}
+                  showExamTips={true}
               />
 
               {/* Section 3: VA Rating Schedule */}

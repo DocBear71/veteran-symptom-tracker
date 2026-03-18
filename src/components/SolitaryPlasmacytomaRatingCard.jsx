@@ -1,9 +1,11 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
-import { SOLITARY_PLASMACYTOMA_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
+import { getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
+import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import {isRatingSupported} from '../utils/ratingUtils.js';
 import MedicationCorrelation from './MedicationCorrelation';
+import {SOLITARY_PLASMACYTOMA_CRITERIA} from '../utils/ratingLogic/index.js';
 
 export default function SolitaryPlasmacytomaRatingCard({ analysis, expanded, onToggle }) {
   if (!analysis || !analysis.hasData) {
@@ -88,6 +90,19 @@ export default function SolitaryPlasmacytomaRatingCard({ analysis, expanded, onT
                     </div>
                   </div>
               )}
+
+              {/* Understanding Your Rating - Educational Content */}
+              <UnderstandingYourRating
+                  diagnosticCode="7709"
+                  currentRating={typeof supportedRating === 'number' ? supportedRating : parseInt(supportedRating, 10)}
+              />
+              <RatingEnhancementsDisplay
+                  diagnosticCode="7709"
+                  showDefinitions={true}
+                  showCaseLaw={true}
+                  showTips={true}
+                  showExamTips={true}
+              />
 
               {/* VA Rating Schedule */}
               <div>

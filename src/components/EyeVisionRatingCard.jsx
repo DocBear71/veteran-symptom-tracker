@@ -1,11 +1,13 @@
 import {
   VISION_LOSS_CRITERIA,
   GLAUCOMA_CRITERIA
-} from '../utils/ratingCriteria';
+} from '../utils/ratinglogic/index';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import MedicationCorrelation from './MedicationCorrelation';
 import SMCAlertBanner from './SMCAlertBanner';
+import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
+import UnderstandingYourRating from './UnderstandingYourRating';
 
 const EyeVisionRatingCard = ({ analysis, expanded, onToggle }) => {
 
@@ -324,6 +326,20 @@ const EyeVisionRatingCard = ({ analysis, expanded, onToggle }) => {
                   </div>
                 </details>
               </div>
+
+
+              <UnderstandingYourRating
+                  diagnosticCode="6061"
+                  currentRating={numericRating}
+              />
+
+              <RatingEnhancementsDisplay
+                  diagnosticCode="6061"
+                  showDefinitions={true}
+                  showCaseLaw={true}
+                  showTips={true}
+                  showExamTips={true}
+              />
 
               {/* Important Notes */}
               <div

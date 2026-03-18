@@ -6,15 +6,18 @@
 
 import React from 'react';
 import { ChevronDown, ChevronUp } from 'lucide-react';
-import {
-  PERIPHERAL_VESTIBULAR_CRITERIA,
-  CHRONIC_SUPPURATIVE_OTITIS_MEDIA_CRITERIA,
-  CHRONIC_OTITIS_EXTERNA_CRITERIA,
-  CHRONIC_NONSUPPURATIVE_OTITIS_MEDIA_CRITERIA, getRatingRowColor, getRatingTextColor,
+import {getRatingRowColor, getRatingTextColor,
 } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import MedicationCorrelation from './MedicationCorrelation';
+import {
+    PERIPHERAL_VESTIBULAR_CRITERIA,
+    CHRONIC_SUPPURATIVE_OTITIS_MEDIA_CRITERIA,
+    CHRONIC_OTITIS_EXTERNA_CRITERIA,
+    CHRONIC_NONSUPPURATIVE_OTITIS_MEDIA_CRITERIA,
+} from '../utils/ratingLogic/index'
+import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 
 /**
  * EarConditionsRatingCard - Displays VA rating analysis for ear conditions
@@ -257,6 +260,14 @@ const EarConditionsRatingCard = ({ analysis, expanded, onToggle }) => {
               <UnderstandingYourRating
                   diagnosticCode={diagnosticCode}
                   currentRating={typeof supportedRating === 'number' ? supportedRating : null}
+              />
+
+              <RatingEnhancementsDisplay
+                  diagnosticCode={diagnosticCode}
+                  showDefinitions={true}
+                  showCaseLaw={true}
+                  showTips={true}
+                  showExamTips={true}
               />
 
               {/* Section 3: VA Rating Schedule */}

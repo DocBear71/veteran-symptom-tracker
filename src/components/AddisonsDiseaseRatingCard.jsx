@@ -1,9 +1,11 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
-import { ADDISONS_DISEASE_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
+import { getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import { isRatingSupported } from '../utils/ratingUtils';
 import MedicationCorrelation from './MedicationCorrelation';
+import {ADDISONS_DISEASE_CRITERIA} from '../utils/ratingLogic/index.js';
+import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 
 /**
  * Addison's Disease Rating Card - Gold Standard Version
@@ -118,6 +120,14 @@ export default function AddisonsDiseaseRatingCard({ analysis, expanded, onToggle
               <UnderstandingYourRating
                   diagnosticCode="7911"
                   currentRating={supportedRating}
+              />
+
+              <RatingEnhancementsDisplay
+                  diagnosticCode="7911"
+                  showDefinitions={true}
+                  showCaseLaw={true}
+                  showTips={true}
+                  showExamTips={true}
               />
 
               {/* VA Rating Schedule */}

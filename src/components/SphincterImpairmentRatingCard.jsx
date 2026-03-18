@@ -1,8 +1,13 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
-import { SPHINCTER_IMPAIRMENT_CRITERIA, getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
+import {
+  getRatingRowColor,
+  getRatingTextColor,
+} from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import MedicationCorrelation from './MedicationCorrelation';
+import {SPHINCTER_IMPAIRMENT_CRITERIA} from '../utils/ratingLogic/index.js';
+import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 
 /**
  * Sphincter Impairment Rating Card Component - Gold Standard Version
@@ -103,6 +108,14 @@ export default function SphincterImpairmentRatingCard({ analysis, expanded, onTo
               <UnderstandingYourRating
                   diagnosticCode="7332"
                   currentRating={numericRating}
+              />
+
+              <RatingEnhancementsDisplay
+                  diagnosticCode="7332"
+                  showDefinitions={true}
+                  showCaseLaw={true}
+                  showTips={true}
+                  showExamTips={true}
               />
 
               {/* VA Rating Schedule */}

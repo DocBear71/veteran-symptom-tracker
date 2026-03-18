@@ -3,6 +3,8 @@ import { getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import MedicationCorrelation from './MedicationCorrelation';
+import { isRatingSupported } from '../utils/ratingUtils';
+import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 
 /**
  * Osteomyelitis Rating Card - DC 5000
@@ -14,34 +16,23 @@ export default function OsteomyelitisRatingCard({ analysis, expanded, onToggle }
 
   const { supportedRating, ratingRationale, gaps, metrics, criteria } = analysis;
 
-  // Handle supportedRating that could be number, string, or range
+  // Normalize rating for display and comparison
+  const normalizeRating = (rating) => {
+    if (rating === null || rating === undefined) return null;
+    if (typeof rating === 'number') return rating;
+    if (typeof rating === 'string') {
+      const match = rating.match(/(\d+)/);
+      return match ? parseInt(match[1], 10) : null;
+    }
+    return null;
+  };
+
+  const numericRating = normalizeRating(supportedRating);
+
   const formatRatingDisplay = (rating) => {
     if (rating === null || rating === undefined) return 'N/A';
-    const ratingStr = String(rating);
-    return ratingStr.includes('-') ? ratingStr + '%' : ratingStr + '%';
-  };
-
-  // For highlighting in the rating schedule
-  const getNumericRating = (rating) => {
-    if (rating === null || rating === undefined) return null;
-    const ratingStr = String(rating);
-    if (ratingStr.includes('-')) {
-      const parts = ratingStr.split('-');
-      return parseInt(parts[1], 10);
-    }
-    return parseInt(ratingStr, 10);
-  };
-
-  const numericRating = getNumericRating(supportedRating);
-
-  const isRatingSupported = (percent) => {
-    if (numericRating === null) return false;
-    const ratingStr = String(supportedRating);
-    if (ratingStr.includes('-')) {
-      const [low, high] = ratingStr.split('-').map(p => parseInt(p, 10));
-      return percent >= low && percent <= high;
-    }
-    return numericRating === percent;
+    const s = String(rating);
+    return s.includes('%') ? s : s + '%';
   };
 
   return (
@@ -154,6 +145,14 @@ export default function OsteomyelitisRatingCard({ analysis, expanded, onToggle }
                   currentRating={numericRating}
               />
 
+              <RatingEnhancementsDisplay
+                  diagnosticCode="5000"
+                  showDefinitions={true}
+                  showCaseLaw={true}
+                  showTips={true}
+                  showExamTips={true}
+              />
+
               {/* VA Rating Schedule */}
               {criteria?.ratings && (
                   <div>
@@ -162,7 +161,7 @@ export default function OsteomyelitisRatingCard({ analysis, expanded, onToggle }
                     </h4>
                     <div className="space-y-2">
                       {criteria.ratings.map((rating, idx) => {
-                        const isSupported = isRatingSupported(rating.percent);
+                        const isSupported = isRatingSupported(rating.percent, supportedRating);
                         return (
                             <div
                                 key={`${rating.percent}-${idx}`}

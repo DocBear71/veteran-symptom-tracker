@@ -5,6 +5,7 @@ import ServiceConnectedBanner from './ServiceConnectedBanner';
 import SMCAlertBanner from './SMCAlertBanner';
 import {isRatingSupported} from '../utils/ratingUtils.js';
 import MedicationCorrelation from './MedicationCorrelation';
+import RatingEnhancementsDisplay from './RatingEnhancementsDisplay.jsx';
 
 /**
  * Generic Rating Card - Gold Standard Version
@@ -153,6 +154,15 @@ export default function GenericRatingCard({ analysis, expanded, onToggle, icon =
               <UnderstandingYourRating
                   diagnosticCode={diagnosticCode || '0000'}
                   currentRating={typeof supportedRating === 'number' ? supportedRating : parseInt(supportedRating) || null}
+              />
+
+              {/* Rating Enhancements - Definitions, Case Law, Tips */}
+              <RatingEnhancementsDisplay
+                  diagnosticCode={diagnosticCode || '0000'}
+                  showDefinitions={true}
+                  showCaseLaw={true}
+                  showTips={true}
+                  showExamTips={true}
               />
 
               {/* VA Rating Schedule - Show if we found any ratings */}

@@ -1,8 +1,10 @@
 import {ChevronDown, ChevronUp} from 'lucide-react';
-import {PULMONARY_FIBROSIS_CRITERIA, getRatingRowColor, getRatingTextColor} from '../utils/ratingCriteria';
+import {getRatingRowColor, getRatingTextColor} from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import MedicationCorrelation from './MedicationCorrelation';
+import {PULMONARY_FIBROSIS_CRITERIA} from '../utils/ratingLogic/index.js';
+import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 
 /**
  * Pulmonary Fibrosis Rating Card Component - Matches AsthmaRatingCard styling
@@ -51,8 +53,8 @@ export default function PulmonaryFibrosisRatingCard({analysis, expanded, onToggl
 
               {/* Service-Connected Status Banner */}
               <ServiceConnectedBanner
-                conditionKey="pulmonaryFibrosis"
-                currentAnalysis={analysis}
+                  conditionKey="pulmonaryFibrosis"
+                  currentAnalysis={analysis}
               />
 
               <div>
@@ -101,6 +103,14 @@ export default function PulmonaryFibrosisRatingCard({analysis, expanded, onToggl
               <UnderstandingYourRating
                   diagnosticCode="6731"
                   currentRating={numericRating}
+              />
+
+              <RatingEnhancementsDisplay
+                  diagnosticCode="6731"
+                  showDefinitions={true}
+                  showCaseLaw={true}
+                  showTips={true}
+                  showExamTips={true}
               />
 
               <div>

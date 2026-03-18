@@ -1,7 +1,12 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
-import { FEMALE_SEXUAL_AROUSAL_DISORDER_CRITERIA, getRatingRowColor } from '../utils/ratingCriteria';
+import { getRatingRowColor } from '../utils/ratingCriteria';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import MedicationCorrelation from './MedicationCorrelation';
+import {
+FEMALE_SEXUAL_AROUSAL_DISORDER_CRITERIA
+} from '../utils/ratingLogic/index.js';
+import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
+import UnderstandingYourRating from './UnderstandingYourRating';
 
 /**
  * Female Arousal Disorder Rating Card Component - Gold Standard Version
@@ -120,6 +125,20 @@ export default function FemaleArousalDisorderRatingCard({ analysis, expanded, on
                   <li className="text-sm text-blue-800 dark:text-blue-300 flex items-start gap-2"><span className="text-blue-500 mt-0.5">•</span><span>May qualify for Special Monthly Compensation (SMC-K)</span></li>
                 </ul>
               </div>
+
+
+              <UnderstandingYourRating
+                  diagnosticCode="7632"
+                  currentRating={numericRating}
+              />
+
+              <RatingEnhancementsDisplay
+                  diagnosticCode="7632"
+                  showDefinitions={true}
+                  showCaseLaw={true}
+                  showTips={true}
+                  showExamTips={true}
+              />
 
               <div className="bg-gray-100 dark:bg-gray-700/50 rounded-lg p-3 text-xs text-gray-600 dark:text-gray-400">
                 <strong>Important:</strong> Based on 38 CFR 4.115b - Female Sexual Arousal Disorder. This analysis is for documentation purposes only.

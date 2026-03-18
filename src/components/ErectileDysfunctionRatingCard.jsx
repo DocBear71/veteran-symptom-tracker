@@ -1,9 +1,11 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
-import { ERECTILE_DYSFUNCTION_CRITERIA, getRatingRowColor } from '../utils/ratingCriteria';
+import { getRatingRowColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import MedicationCorrelation from './MedicationCorrelation';
 import SMCAlertBanner from './SMCAlertBanner';
+import {ERECTILE_DYSFUNCTION_CRITERIA} from '../utils/ratingLogic/index.js';
+import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 
 /**
  * Erectile Dysfunction Rating Card Component - Gold Standard Version
@@ -111,6 +113,14 @@ export default function ErectileDysfunctionRatingCard({ analysis, expanded, onTo
               <UnderstandingYourRating
                   diagnosticCode="7522"
                   currentRating={numericRating}
+              />
+
+              <RatingEnhancementsDisplay
+                  diagnosticCode="7522"
+                  showDefinitions={true}
+                  showCaseLaw={true}
+                  showTips={true}
+                  showExamTips={true}
               />
 
               {/* VA Rating Schedule */}

@@ -1,8 +1,10 @@
 import {ChevronDown, ChevronUp} from 'lucide-react';
-import {SICKLE_CELL_ANEMIA_CRITERIA, getRatingRowColor, getRatingTextColor} from '../utils/ratingCriteria';
+import {getRatingRowColor, getRatingTextColor} from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import MedicationCorrelation from './MedicationCorrelation';
+import {SICKLE_CELL_ANEMIA_CRITERIA} from '../utils/ratingLogic/index.js';
+import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 
 export default function SickleCellAnemiaRatingCard({
                                                      analysis,
@@ -57,8 +59,8 @@ export default function SickleCellAnemiaRatingCard({
 
               {/* Service-Connected Status Banner */}
               <ServiceConnectedBanner
-                conditionKey="sickleCellAnemia"
-                currentAnalysis={analysis}
+                  conditionKey="sickleCellAnemia"
+                  currentAnalysis={analysis}
               />
 
               <div>
@@ -138,6 +140,14 @@ export default function SickleCellAnemiaRatingCard({
               <UnderstandingYourRating
                   diagnosticCode="7702"
                   currentRating={numericRating}
+              />
+
+              <RatingEnhancementsDisplay
+                  diagnosticCode="7702"
+                  showDefinitions={true}
+                  showCaseLaw={true}
+                  showTips={true}
+                  showExamTips={true}
               />
 
               <div><h4

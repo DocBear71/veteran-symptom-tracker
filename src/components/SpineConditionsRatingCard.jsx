@@ -1,15 +1,18 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import {
-  VERTEBRAL_FRACTURE_CRITERIA,
-  SACROILIAC_INJURY_CRITERIA,
-  SPINAL_STENOSIS_CRITERIA,
-  ANKYLOSING_SPONDYLITIS_CRITERIA,
-  SPINAL_FUSION_CRITERIA, getRatingRowColor, getRatingTextColor,
+  getRatingRowColor, getRatingTextColor,
 } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 import MedicationCorrelation from './MedicationCorrelation';
+import {
+  VERTEBRAL_FRACTURE_CRITERIA,
+  SACROILIAC_INJURY_CRITERIA,
+  SPINAL_STENOSIS_CRITERIA,
+  ANKYLOSING_SPONDYLITIS_CRITERIA,
+  SPINAL_FUSION_CRITERIA,
+} from '../utils/ratingLogic/index'
 
 /**
  * Spine Conditions Rating Card Component - Gold Standard Version

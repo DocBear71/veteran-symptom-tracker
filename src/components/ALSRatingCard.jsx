@@ -1,8 +1,10 @@
 import {ChevronDown, ChevronUp} from 'lucide-react';
-import {ALS_CRITERIA, getRatingRowColor, getRatingTextColor} from '../utils/ratingCriteria';
+import {getRatingRowColor, getRatingTextColor} from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
+import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import MedicationCorrelation from './MedicationCorrelation';
+import {ALS_CRITERIA} from '../utils/ratingLogic/index';
 
 /**
  * ALS Rating Card Component - Gold Standard Version
@@ -125,6 +127,13 @@ export default function ALSRatingCard({analysis, expanded, onToggle}) {
                   currentRating={numericRating}
               />
 
+              <RatingEnhancementsDisplay
+                  diagnosticCode="8017"
+                  showDefinitions={true}
+                  showCaseLaw={true}
+                  showTips={true}
+                  showExamTips={true}
+              />
               {/* VA Rating Schedule */}
               <div>
                 <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-center">VA Rating Schedule</h4>

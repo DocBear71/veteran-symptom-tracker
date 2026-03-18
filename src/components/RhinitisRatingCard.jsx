@@ -1,8 +1,10 @@
 import {ChevronDown, ChevronUp} from 'lucide-react';
-import {RHINITIS_CRITERIA, getRatingRowColor, getRatingTextColor} from '../utils/ratingCriteria';
+import {getRatingRowColor, getRatingTextColor} from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import MedicationCorrelation from './MedicationCorrelation';
+import {RHINITIS_CRITERIA} from '../utils/ratingLogic/index.js';
+import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 
 export default function RhinitisRatingCard({analysis, expanded, onToggle}) {
   if (!analysis || !analysis.hasData) return null;
@@ -51,8 +53,8 @@ export default function RhinitisRatingCard({analysis, expanded, onToggle}) {
 
               {/* Service-Connected Status Banner */}
               <ServiceConnectedBanner
-                conditionKey="rhinitis"
-                currentAnalysis={analysis}
+                  conditionKey="rhinitis"
+                  currentAnalysis={analysis}
               />
 
               <div><h4
@@ -114,24 +116,32 @@ export default function RhinitisRatingCard({analysis, expanded, onToggle}) {
               </div>
               <MedicationCorrelation analysis={analysis} />
               {rationale?.length > 0 && (<div><h4
-                  className="font-medium text-gray-900 dark:text-white mb-2 text-center">Analysis
-                Rationale</h4>
-                <div
-                    className="bg-gray-50 dark:bg-gray-700/30 rounded-lg p-3 space-y-2">{rationale.map(
-                    (item, idx) => (
-                        <div key={idx} className="flex items-start gap-2"><span
-                            className="text-blue-600 dark:text-blue-400 mt-0.5">◆</span><span
-                            className="text-sm text-gray-700 dark:text-gray-300">{item}</span>
-                        </div>
-                    ))}
-                </div>
-              </div>
+                      className="font-medium text-gray-900 dark:text-white mb-2 text-center">Analysis
+                    Rationale</h4>
+                    <div
+                        className="bg-gray-50 dark:bg-gray-700/30 rounded-lg p-3 space-y-2">{rationale.map(
+                        (item, idx) => (
+                            <div key={idx} className="flex items-start gap-2"><span
+                                className="text-blue-600 dark:text-blue-400 mt-0.5">◆</span><span
+                                className="text-sm text-gray-700 dark:text-gray-300">{item}</span>
+                            </div>
+                        ))}
+                    </div>
+                  </div>
               )}
 
               {/* Understanding Your Rating - Educational Content */}
               <UnderstandingYourRating
                   diagnosticCode={criteria.diagnosticCode || '6522'}
                   currentRating={numericRating}
+              />
+
+              <RatingEnhancementsDisplay
+                  diagnosticCode={criteria.diagnosticCode || '6522'}
+                  showDefinitions={true}
+                  showCaseLaw={true}
+                  showTips={true}
+                  showExamTips={true}
               />
               <div>
                 <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-center">VA Rating Schedule</h4>

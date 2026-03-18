@@ -6598,7 +6598,7 @@ const WEST_NILE_DESCRIPTION = {
 // CAMPYLOBACTER - DC 6316
 // =============================================================================
 const CAMPYLOBACTER_DESCRIPTION = {
-  diagnosticCode: '6316',
+  diagnosticCode: '6330',
   conditionName: 'Campylobacter Infection',
 
   evidenceLookingFor: [
@@ -6742,10 +6742,10 @@ const SALMONELLA_DESCRIPTION = {
 };
 
 // =============================================================================
-// Q FEVER - DC 6319
+// Q FEVER - DC 6331
 // =============================================================================
 const Q_FEVER_DESCRIPTION = {
-  diagnosticCode: '6319',
+  diagnosticCode: '6331',
   conditionName: 'Q Fever',
 
   evidenceLookingFor: [
@@ -10202,10 +10202,10 @@ const CONDITION_DESCRIPTIONS = {
   '5020': SYNOVITIS_DESCRIPTION,
   '8540': LYMPHEDEMA_DESCRIPTION,
   '6315': WEST_NILE_DESCRIPTION,
-  '6316': CAMPYLOBACTER_DESCRIPTION,
+  '6330': CAMPYLOBACTER_DESCRIPTION,
   '6317': SHIGELLA_DESCRIPTION,
   '6318': SALMONELLA_DESCRIPTION,
-  '6319': Q_FEVER_DESCRIPTION,
+  '6331': Q_FEVER_DESCRIPTION,
   '6320': LYME_DISEASE_DESCRIPTION,
   '6326': NTM_DESCRIPTION,
   '7631': INFERTILITY_DESCRIPTION,

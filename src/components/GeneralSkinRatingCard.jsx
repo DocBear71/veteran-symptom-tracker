@@ -1,16 +1,19 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
-import {
-  DISCOID_LUPUS_CRITERIA,
-  BULLOUS_DISORDERS_CRITERIA,
-  CUTANEOUS_VASCULITIS_CRITERIA,
-  DERMATOPHYTOSIS_CRITERIA,
-  SKIN_INFECTIONS_CRITERIA,
-  GENERAL_SKIN_FORMULA_CRITERIA, getRatingRowColor, getRatingTextColor,
+import {getRatingRowColor, getRatingTextColor,
 } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import {isRatingSupported} from '../utils/ratingUtils.js';
 import MedicationCorrelation from './MedicationCorrelation';
+import {
+    DISCOID_LUPUS_CRITERIA,
+    BULLOUS_DISORDERS_CRITERIA,
+    CUTANEOUS_VASCULITIS_CRITERIA,
+    DERMATOPHYTOSIS_CRITERIA,
+    SKIN_INFECTIONS_CRITERIA,
+    GENERAL_SKIN_FORMULA_CRITERIA,
+} from '../utils/ratingLogic/index'
+import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 
 /**
 
@@ -232,6 +235,14 @@ export default function GeneralSkinRatingCard({ analysis, expanded, onToggle }) 
               <UnderstandingYourRating
                   diagnosticCode={diagnosticCode}
                   currentRating={supportedRating}
+              />
+
+              <RatingEnhancementsDisplay
+                  diagnosticCode={diagnosticCode}
+                  showDefinitions={true}
+                  showCaseLaw={true}
+                  showTips={true}
+                  showExamTips={true}
               />
 
               {/* Section 3: VA Rating Schedule */}

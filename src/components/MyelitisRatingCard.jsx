@@ -1,8 +1,10 @@
 import {ChevronDown, ChevronUp} from 'lucide-react';
-import {MYELITIS_CRITERIA, getRatingRowColor, getRatingTextColor} from '../utils/ratingCriteria';
+import {getRatingRowColor, getRatingTextColor} from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import MedicationCorrelation from './MedicationCorrelation';
+import {MYELITIS_CRITERIA} from '../utils/ratingLogic/index';
+import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 
 /**
  * Myelitis Rating Card Component - Gold Standard Version
@@ -52,8 +54,8 @@ export default function MyelitisRatingCard({analysis, expanded, onToggle}) {
 
               {/* Service-Connected Status Banner */}
               <ServiceConnectedBanner
-                conditionKey="myelitis"
-                currentAnalysis={analysis}
+                  conditionKey="myelitis"
+                  currentAnalysis={analysis}
               />
 
 
@@ -116,6 +118,14 @@ export default function MyelitisRatingCard({analysis, expanded, onToggle}) {
               <UnderstandingYourRating
                   diagnosticCode="8023"
                   currentRating={numericRating}
+              />
+
+              <RatingEnhancementsDisplay
+                  diagnosticCode="8023"
+                  showDefinitions={true}
+                  showCaseLaw={true}
+                  showTips={true}
+                  showExamTips={true}
               />
 
               {/* VA Rating Schedule */}

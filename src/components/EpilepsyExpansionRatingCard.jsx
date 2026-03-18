@@ -2,16 +2,18 @@
 
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import {
-  EPILEPSY_JACKSONIAN_CRITERIA,
-  EPILEPSY_DIENCEPHALIC_CRITERIA,
-  EPILEPSY_PSYCHOMOTOR_CRITERIA,
   getRatingRowColor,
   getRatingTextColor,
 } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import MedicationCorrelation from './MedicationCorrelation';
-
+import {
+    EPILEPSY_JACKSONIAN_CRITERIA,
+    EPILEPSY_DIENCEPHALIC_CRITERIA,
+    EPILEPSY_PSYCHOMOTOR_CRITERIA,
+} from '../utils/ratingLogic/index'
+import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 /**
  * Epilepsy Expansion Rating Card Component - Gold Standard Version
  * DC 8912 - Jacksonian/Focal Epilepsy - 38 CFR 4.124a
@@ -212,6 +214,14 @@ export default function EpilepsyExpansionRatingCard({ analysis, expanded, onTogg
               <UnderstandingYourRating
                   diagnosticCode={config.code}
                   currentRating={numericRating}
+              />
+
+              <RatingEnhancementsDisplay
+                  diagnosticCode={config.code}
+                  showDefinitions={true}
+                  showCaseLaw={true}
+                  showTips={true}
+                  showExamTips={true}
               />
 
               {/* Section 3: VA Rating Schedule */}

@@ -4,22 +4,20 @@
 // ============================================
 
 import { useState, useMemo } from 'react';
-import { ChevronDown, ChevronUp, Link2, AlertCircle, FileText, ExternalLink, Info, CheckCircle, Circle } from 'lucide-react';
+import { ChevronDown, ChevronUp, Link2, AlertCircle, FileText, Info, CheckCircle, Circle } from 'lucide-react';
 import { useProfile } from '../hooks/useProfile';
-
-// Import criteria objects that have secondaryConditions data
 import {
-  DIABETES_CRITERIA,
+  PTSD_CRITERIA,
   TINNITUS_CRITERIA,
-  SLEEP_APNEA_CRITERIA,
   FIBROMYALGIA_CRITERIA,
-  HYPERTENSION_CRITERIA,
   PERIPHERAL_NEUROPATHY_CRITERIA,
   PARKINSONS_DISEASE_CRITERIA,
   MULTIPLE_SCLEROSIS_CRITERIA,
   ALS_CRITERIA,
-} from '../utils/ratingCriteria';
-import {PTSD_CRITERIA} from '../utils/ratingLogic/index.js';
+  SLEEP_APNEA_CRITERIA,
+  HYPERTENSION_CRITERIA,
+  DIABETES_CRITERIA,
+} from '../utils/ratingLogic/index.js';
 
 
 // Map of condition IDs to their criteria objects (only those with secondaryConditions)
