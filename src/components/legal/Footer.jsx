@@ -81,7 +81,7 @@ const Footer = () => {
         </span>
               </div>
               <p className="text-sm text-gray-600 dark:text-gray-400">
-                Version 3.2.0
+                Version 3.3.0
               </p>
               <div className="flex flex-col items-center gap-2 text-xs
         text-gray-500 dark:text-gray-500">
