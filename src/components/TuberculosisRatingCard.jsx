@@ -9,7 +9,7 @@ import {
   TUBERCULOSIS_ACTIVE_CRITERIA,
   TUBERCULOSIS_INACTIVE_CRITERIA,
   TUBERCULOSIS_MILIARY_CRITERIA
-} from '../utils/ratingLogic/index';
+} from '../utils/ratingLogic/';
 import MedicationCorrelation from './MedicationCorrelation';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';

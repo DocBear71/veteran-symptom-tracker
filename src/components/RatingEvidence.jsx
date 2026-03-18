@@ -322,7 +322,7 @@ import {
   analyzeMeningovascularSyphilisLogs,
   analyzeTabesDorsalisLogs,
   analyzeSyphiliticDementiaLogs,
-} from '../utils/ratingLogic/index'
+} from '../utils/ratingLogic/'
 import MigraineRatingCard from './MigraineRatingCard';
 import SleepApneaRatingCard from './SleepApneaRatingCard';
 import MentalHealthRatingCard from './MentalHealthRatingCard';

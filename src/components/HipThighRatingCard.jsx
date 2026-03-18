@@ -4,7 +4,7 @@ import UnderstandingYourRating from './UnderstandingYourRating';
 import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import MedicationCorrelation from './MedicationCorrelation';
-import {HIP_THIGH_CRITERIA} from '../utils/ratingLogic/index';
+import {HIP_THIGH_CRITERIA} from '../utils/ratingLogic/';
 
 /**
  * Hip and Thigh Rating Card Component - Gold Standard Version

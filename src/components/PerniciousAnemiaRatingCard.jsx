@@ -5,7 +5,7 @@ import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import {isRatingSupported} from '../utils/ratingUtils.js';
 import MedicationCorrelation from './MedicationCorrelation';
-import {PERNICIOUS_ANEMIA_CRITERIA} from '../utils/ratingLogic/index.js';
+import {PERNICIOUS_ANEMIA_CRITERIA} from '../utils/ratingLogic/';
 
 export default function PerniciousAnemiaRatingCard({ analysis, expanded, onToggle }) {
   if (!analysis || !analysis.hasData) {

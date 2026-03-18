@@ -5,7 +5,7 @@ import ServiceConnectedBanner from './ServiceConnectedBanner';
 import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 import {isRatingSupported} from '../utils/ratingUtils.js';
 import MedicationCorrelation from './MedicationCorrelation';
-import {MENTAL_HEALTH_SHARED_CRITERIA} from '../utils/ratingLogic/index.js';
+import {MENTAL_HEALTH_SHARED_CRITERIA} from '../utils/ratingLogic/';
 
 /**
  * Mental Health Rating Card - Gold Standard Version

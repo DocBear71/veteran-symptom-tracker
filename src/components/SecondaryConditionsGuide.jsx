@@ -17,7 +17,7 @@ import {
   SLEEP_APNEA_CRITERIA,
   HYPERTENSION_CRITERIA,
   DIABETES_CRITERIA,
-} from '../utils/ratingLogic/index.js';
+} from '../utils/ratingLogic/';
 
 
 // Map of condition IDs to their criteria objects (only those with secondaryConditions)

@@ -4,7 +4,7 @@ import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import MedicationCorrelation from './MedicationCorrelation';
 import SMCAlertBanner from './SMCAlertBanner';
-import {ERECTILE_DYSFUNCTION_CRITERIA} from '../utils/ratingLogic/index.js';
+import {ERECTILE_DYSFUNCTION_CRITERIA} from '../utils/ratingLogic/';
 import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 
 /**

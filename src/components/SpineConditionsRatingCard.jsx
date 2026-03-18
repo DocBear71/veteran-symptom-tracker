@@ -12,7 +12,7 @@ import {
   SPINAL_STENOSIS_CRITERIA,
   ANKYLOSING_SPONDYLITIS_CRITERIA,
   SPINAL_FUSION_CRITERIA,
-} from '../utils/ratingLogic/index'
+} from '../utils/ratingLogic/'
 
 /**
  * Spine Conditions Rating Card Component - Gold Standard Version

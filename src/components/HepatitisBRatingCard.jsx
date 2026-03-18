@@ -4,7 +4,7 @@ import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import {isRatingSupported} from '../utils/ratingUtils.js';
 import MedicationCorrelation from './MedicationCorrelation';
-import {HEPATITIS_C_CRITERIA} from '../utils/ratingLogic/index.js';
+import {HEPATITIS_C_CRITERIA} from '../utils/ratingLogic/';
 import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 
 /**

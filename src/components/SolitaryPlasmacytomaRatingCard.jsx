@@ -5,7 +5,7 @@ import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import {isRatingSupported} from '../utils/ratingUtils.js';
 import MedicationCorrelation from './MedicationCorrelation';
-import {SOLITARY_PLASMACYTOMA_CRITERIA} from '../utils/ratingLogic/index.js';
+import {SOLITARY_PLASMACYTOMA_CRITERIA} from '../utils/ratingLogic/';
 
 export default function SolitaryPlasmacytomaRatingCard({ analysis, expanded, onToggle }) {
   if (!analysis || !analysis.hasData) {

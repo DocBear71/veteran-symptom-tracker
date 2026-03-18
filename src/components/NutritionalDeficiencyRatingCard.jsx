@@ -11,7 +11,7 @@ import {
   AVITAMINOSIS_CRITERIA,
   BERIBERI_CRITERIA,
   PELLAGRA_CRITERIA,
-} from '../utils/ratingLogic/index';
+} from '../utils/ratingLogic/';
 import MedicationCorrelation from './MedicationCorrelation';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';

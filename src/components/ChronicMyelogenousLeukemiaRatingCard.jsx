@@ -7,7 +7,7 @@ import {isRatingSupported} from '../utils/ratingUtils.js';
 import MedicationCorrelation from './MedicationCorrelation';
 import {
   CHRONIC_MYELOGENOUS_LEUKEMIA_CRITERIA
-} from '../utils/ratingLogic/index.js';
+} from '../utils/ratingLogic/';
 
 export default function ChronicMyelogenousLeukemiaRatingCard({ analysis, expanded, onToggle }) {
   if (!analysis || !analysis.hasData) {

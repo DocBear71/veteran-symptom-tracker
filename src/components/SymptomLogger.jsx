@@ -72,7 +72,7 @@ import {
   TreatmentForm,            INITIAL_TREATMENT_DATA,
   B12DeficiencyForm,        INITIAL_B12_DEFICIENCY_DATA,
   DigestiveForm,            INITIAL_DIGESTIVE_DATA,
-} from './forms/SymptomForms/index.js';
+} from './forms/SymptomForms/';
 import MedicationEffectivenessInline from './MedicationEffectivenessInline';
 
 const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed, onNavigate }) => {

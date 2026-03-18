@@ -5,7 +5,7 @@ import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import {isRatingSupported} from '../utils/ratingUtils.js';
 import MedicationCorrelation from './MedicationCorrelation';
-import {HYPOPARATHYROIDISM_CRITERIA} from '../utils/ratingLogic/index.js';
+import {HYPOPARATHYROIDISM_CRITERIA} from '../utils/ratingLogic/';
 
 /**
  * Hypoparathyroidism Rating Card - Gold Standard Version

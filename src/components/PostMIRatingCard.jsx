@@ -5,7 +5,7 @@ import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import {isRatingSupported} from '../utils/ratingUtils.js';
 import MedicationCorrelation from './MedicationCorrelation';
-import {POST_MI_CRITERIA} from '../utils/ratingLogic/index.js';
+import {POST_MI_CRITERIA} from '../utils/ratingLogic/';
 
 export default function PostMIRatingCard({ analysis, expanded, onToggle }) {
   if (!analysis || !analysis.hasData) return null;

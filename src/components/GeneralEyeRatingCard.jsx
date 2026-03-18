@@ -11,7 +11,7 @@ import {
     KERATITIS_CRITERIA,
     CHRONIC_CONJUNCTIVITIS_CRITERIA,
     SCLERITIS_CRITERIA,
-} from '../utils/ratingLogic/index'
+} from '../utils/ratingLogic/'
 import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 
 /**

@@ -308,7 +308,7 @@ import {
   MENINGOVASCULAR_SYPHILIS_CRITERIA,
   TABES_DORSALIS_CRITERIA,
   SYPHILITIC_DEMENTIA_CRITERIA,
-} from './ratingLogic/index';
+} from './ratingLogic/';
 
 /**
  * Safely get symptom ID from a log entry

@@ -4,7 +4,7 @@ import UnderstandingYourRating from './UnderstandingYourRating';
 import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import MedicationCorrelation from './MedicationCorrelation';
-import {APLASTIC_ANEMIA_CRITERIA} from '../utils/ratingLogic/index.js';
+import {APLASTIC_ANEMIA_CRITERIA} from '../utils/ratingLogic/';
 
 /**
  * Aplastic Anemia Rating Card Component - Gold Standard Version

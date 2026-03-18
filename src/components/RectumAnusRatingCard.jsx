@@ -15,7 +15,7 @@ import {
   ANAL_FISTULA_CRITERIA,
   HEMORRHOIDS_CRITERIA,
   PRURITUS_ANI_CRITERIA,
-} from '../utils/ratingLogic/index';
+} from '../utils/ratingLogic/';
 import MedicationCorrelation from './MedicationCorrelation';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';

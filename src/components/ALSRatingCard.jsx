@@ -4,7 +4,7 @@ import UnderstandingYourRating from './UnderstandingYourRating';
 import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import MedicationCorrelation from './MedicationCorrelation';
-import {ALS_CRITERIA} from '../utils/ratingLogic/index';
+import {ALS_CRITERIA} from '../utils/ratingLogic/';
 
 /**
  * ALS Rating Card Component - Gold Standard Version

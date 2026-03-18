@@ -6,7 +6,7 @@ import MedicationCorrelation from './MedicationCorrelation';
 import {
     TMJ_CRITERIA,
     TMJ_DISORDER_CRITERIA,
-} from '../utils/ratingLogic/index.js';
+} from '../utils/ratingLogic/';
 import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 
 export default function TMJRatingCard({analysis, expanded, onToggle}) {

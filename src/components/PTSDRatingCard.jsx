@@ -4,7 +4,7 @@ import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 import MedicationCorrelation from './MedicationCorrelation';
-import {PTSD_CRITERIA} from '../utils/ratingLogic/index.js';
+import {PTSD_CRITERIA} from '../utils/ratingLogic/';
 
 /**
  * PTSD Rating Card - Gold Standard Version

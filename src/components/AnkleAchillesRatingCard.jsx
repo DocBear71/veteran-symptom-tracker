@@ -4,7 +4,7 @@ import UnderstandingYourRating from './UnderstandingYourRating';
 import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import MedicationCorrelation from './MedicationCorrelation';
-import {ANKLE_ACHILLES_CRITERIA} from '../utils/ratingLogic/index';
+import {ANKLE_ACHILLES_CRITERIA} from '../utils/ratingLogic/';
 
 /**
  * Ankle/Achilles Tendon Rating Card Component - Gold Standard Version

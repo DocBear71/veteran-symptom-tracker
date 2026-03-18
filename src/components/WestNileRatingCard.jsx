@@ -4,7 +4,7 @@ import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import {isRatingSupported} from '../utils/ratingUtils.js';
 import MedicationCorrelation from './MedicationCorrelation';
-import {WEST_NILE_CRITERIA} from '../utils/ratingLogic/index.js';
+import {WEST_NILE_CRITERIA} from '../utils/ratingLogic/';
 import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 
 export default function WestNileRatingCard({ analysis, expanded, onToggle }) {

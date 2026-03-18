@@ -303,7 +303,7 @@ import {
   analyzeMeningovascularSyphilisLogs,
   analyzeTabesDorsalisLogs,
   analyzeSyphiliticDementiaLogs,
-} from '../utils/ratingLogic/index'
+} from '../utils/ratingLogic/'
 
 // Appointment type labels for export
 const APPOINTMENT_TYPE_LABELS = {

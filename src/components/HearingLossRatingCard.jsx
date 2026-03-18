@@ -5,7 +5,7 @@ import ServiceConnectedBanner from './ServiceConnectedBanner';
 import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 import {isRatingSupported} from '../utils/ratingUtils.js';
 import MedicationCorrelation from './MedicationCorrelation';
-import {HEARING_LOSS_CRITERIA} from '../utils/ratingLogic/index.js';
+import {HEARING_LOSS_CRITERIA} from '../utils/ratingLogic/';
 
 /**
  * Hearing Loss Rating Card Component - Gold Standard Version

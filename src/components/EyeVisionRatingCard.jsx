@@ -1,7 +1,7 @@
 import {
   VISION_LOSS_CRITERIA,
   GLAUCOMA_CRITERIA
-} from '../utils/ratinglogic/index';
+} from '../utils/ratinglogic/';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import MedicationCorrelation from './MedicationCorrelation';

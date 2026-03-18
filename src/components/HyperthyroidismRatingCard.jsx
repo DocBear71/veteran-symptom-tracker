@@ -5,7 +5,7 @@ import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import {isRatingSupported} from '../utils/ratingUtils.js';
 import MedicationCorrelation from './MedicationCorrelation';
-import {HYPERTHYROIDISM_CRITERIA} from '../utils/ratingLogic/index.js';
+import {HYPERTHYROIDISM_CRITERIA} from '../utils/ratingLogic/';
 
 /**
  * Hyperthyroidism/Graves' Disease Rating Card - Gold Standard Version

@@ -4,7 +4,7 @@ import ServiceConnectedBanner from './ServiceConnectedBanner';
 import MedicationCorrelation from './MedicationCorrelation';
 import {
 FEMALE_SEXUAL_AROUSAL_DISORDER_CRITERIA
-} from '../utils/ratingLogic/index.js';
+} from '../utils/ratingLogic/';
 import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 import UnderstandingYourRating from './UnderstandingYourRating';
 

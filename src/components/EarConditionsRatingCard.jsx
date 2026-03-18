@@ -16,7 +16,7 @@ import {
     CHRONIC_SUPPURATIVE_OTITIS_MEDIA_CRITERIA,
     CHRONIC_OTITIS_EXTERNA_CRITERIA,
     CHRONIC_NONSUPPURATIVE_OTITIS_MEDIA_CRITERIA,
-} from '../utils/ratingLogic/index'
+} from '../utils/ratingLogic/'
 import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 
 /**

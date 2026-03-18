@@ -3,7 +3,7 @@ import { getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import MedicationCorrelation from './MedicationCorrelation';
-import { EPILEPSY_MAJOR_CRITERIA, EPILEPSY_MINOR_CRITERIA} from '../utils/ratingLogic/index';
+import { EPILEPSY_MAJOR_CRITERIA, EPILEPSY_MINOR_CRITERIA} from '../utils/ratingLogic/';
 import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 
 /**

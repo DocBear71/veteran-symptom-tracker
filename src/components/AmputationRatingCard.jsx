@@ -7,7 +7,7 @@
 
 import { ChevronDown, ChevronUp, AlertTriangle, Info, CheckCircle } from 'lucide-react';
 import { getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
-import { AMPUTATION_CRITERIA } from '../utils/ratingLogic/index.js';
+import { AMPUTATION_CRITERIA } from '../utils/ratingLogic/';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 import SMCAlertBanner from './SMCAlertBanner';

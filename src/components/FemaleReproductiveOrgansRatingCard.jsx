@@ -6,7 +6,7 @@ import MedicationCorrelation from './MedicationCorrelation';
 import SMCAlertBanner from './SMCAlertBanner';
 import {
 FEMALE_REPRODUCTIVE_ORGANS_CRITERIA
-} from '../utils/ratingLogic/index.js';
+} from '../utils/ratingLogic/';
 import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 
 /**

@@ -4,7 +4,7 @@ import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import { isRatingSupported } from '../utils/ratingUtils';
 import MedicationCorrelation from './MedicationCorrelation';
-import {ADDISONS_DISEASE_CRITERIA} from '../utils/ratingLogic/index.js';
+import {ADDISONS_DISEASE_CRITERIA} from '../utils/ratingLogic/';
 import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 
 /**

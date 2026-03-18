@@ -4,7 +4,7 @@ import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 import MedicationCorrelation from './MedicationCorrelation';
-import {SLEEP_APNEA_CRITERIA} from '../utils/ratingLogic/index.js';
+import {SLEEP_APNEA_CRITERIA} from '../utils/ratingLogic/';
 
 /**
  * Sleep Apnea Rating Card Component - Gold Standard Version

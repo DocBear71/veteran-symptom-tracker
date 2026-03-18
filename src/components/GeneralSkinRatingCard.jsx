@@ -12,7 +12,7 @@ import {
     DERMATOPHYTOSIS_CRITERIA,
     SKIN_INFECTIONS_CRITERIA,
     GENERAL_SKIN_FORMULA_CRITERIA,
-} from '../utils/ratingLogic/index'
+} from '../utils/ratingLogic/'
 import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 
 /**

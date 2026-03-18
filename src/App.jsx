@@ -24,6 +24,7 @@ import AfterActionReport from './components/AfterActionReport';
 import QuickActionsMenu from './components/QuickActionsMenu';
 import { initializeAccessibility } from './utils/accessibilityUtils.js';
 import BlueButtonImport from './components/BlueButtonImport';
+import { createEmergencyBackup, createDailyBackup } from './utils/storageVersion';
 
 
 
@@ -96,8 +97,6 @@ const AppContent = () => {
   /// Run multi-profile migration and cleanup on first load
   useEffect(() => {
     const initialize = async () => {
-      // Import backup utilities
-      const { createEmergencyBackup, createDailyBackup } = await import('./utils/storageVersion');
 
       // Check if user has any data before creating backup
       const hasData = localStorage.getItem('symptomTracker_logs') ||

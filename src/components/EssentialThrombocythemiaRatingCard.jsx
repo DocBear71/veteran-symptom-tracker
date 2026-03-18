@@ -5,7 +5,7 @@ import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import {isRatingSupported} from '../utils/ratingUtils.js';
 import MedicationCorrelation from './MedicationCorrelation';
-import {MYELOPROLIFERATIVE_7718_CRITERIA} from '../utils/ratingLogic/index.js';
+import {MYELOPROLIFERATIVE_7718_CRITERIA} from '../utils/ratingLogic/';
 
 export default function EssentialThrombocythemiaRatingCard({ analysis, expanded, onToggle }) {
   if (!analysis || !analysis.hasData) {

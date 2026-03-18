@@ -4,7 +4,7 @@ import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import MedicationCorrelation from './MedicationCorrelation';
 import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
-import {MENTAL_HEALTH_SHARED_CRITERIA} from '../utils/ratingLogic/index.js';
+import {MENTAL_HEALTH_SHARED_CRITERIA} from '../utils/ratingLogic/';
 /**
  * Phase 8B Mental Health Rating Card - Gold Standard Version
  * Handles: Schizophrenia, Schizoaffective, Delusional, Psychotic NOS, Brief Psychotic,

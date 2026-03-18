@@ -3,7 +3,7 @@ import {getRatingRowColor, getRatingTextColor} from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import MedicationCorrelation from './MedicationCorrelation';
-import {RHINITIS_CRITERIA} from '../utils/ratingLogic/index.js';
+import {RHINITIS_CRITERIA} from '../utils/ratingLogic/';
 import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 
 export default function RhinitisRatingCard({analysis, expanded, onToggle}) {

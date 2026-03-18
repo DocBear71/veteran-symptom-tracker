@@ -8,7 +8,7 @@ import { getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import MedicationCorrelation from './MedicationCorrelation';
-import {MULTIPLE_SCLEROSIS_CRITERIA} from '../utils/ratingLogic/index';
+import {MULTIPLE_SCLEROSIS_CRITERIA} from '../utils/ratingLogic/';
 import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 
 export default function MSRatingCard({ analysis, expanded, onToggle }) {

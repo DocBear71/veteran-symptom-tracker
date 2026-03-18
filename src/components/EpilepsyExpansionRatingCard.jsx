@@ -12,7 +12,7 @@ import {
     EPILEPSY_JACKSONIAN_CRITERIA,
     EPILEPSY_DIENCEPHALIC_CRITERIA,
     EPILEPSY_PSYCHOMOTOR_CRITERIA,
-} from '../utils/ratingLogic/index'
+} from '../utils/ratingLogic/'
 import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 /**
  * Epilepsy Expansion Rating Card Component - Gold Standard Version

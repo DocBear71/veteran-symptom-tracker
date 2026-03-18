@@ -26,7 +26,7 @@ import {
   OBTURATOR_NERVE_CRITERIA,
   LATERAL_FEMORAL_CUTANEOUS_NERVE_CRITERIA,
   ILIOINGUINAL_NERVE_CRITERIA
-} from '../utils/ratingLogic/index';
+} from '../utils/ratingLogic/';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import MedicationCorrelation from './MedicationCorrelation';

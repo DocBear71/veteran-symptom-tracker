@@ -11,7 +11,7 @@ import {
     METATARSALGIA_CRITERIA,
     HALLUX_VALGUS_CRITERIA,
     HALLUX_RIGIDUS_CRITERIA,
-} from '../utils/ratingLogic/index'
+} from '../utils/ratingLogic/'
 import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 
 /**

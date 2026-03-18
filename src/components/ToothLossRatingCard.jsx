@@ -3,7 +3,7 @@ import {getRatingRowColor, getRatingTextColor} from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import MedicationCorrelation from './MedicationCorrelation';
-import {TOOTH_LOSS_CRITERIA} from '../utils/ratingLogic/index.js';
+import {TOOTH_LOSS_CRITERIA} from '../utils/ratingLogic/';
 import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 
 export default function ToothLossRatingCard({analysis, expanded, onToggle}) {

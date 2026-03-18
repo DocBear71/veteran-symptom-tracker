@@ -5,7 +5,7 @@ import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import {isRatingSupported} from '../utils/ratingUtils.js';
 import MedicationCorrelation from './MedicationCorrelation';
-import {DIABETES_INSIPIDUS_CRITERIA} from '../utils/ratingLogic/index.js';
+import {DIABETES_INSIPIDUS_CRITERIA} from '../utils/ratingLogic/';
 
 /**
  * Diabetes Insipidus Rating Card - Gold Standard Version
