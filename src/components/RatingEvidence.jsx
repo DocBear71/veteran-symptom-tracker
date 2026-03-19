@@ -463,6 +463,10 @@ import SecondaryConditionsSummary from './SecondaryConditionsSummary';
 import ADLRatingCard from './ADLRatingCard';
 import AmputationRatingCard from './AmputationRatingCard';
 import TuberculosisRatingCard from './TuberculosisRatingCard.jsx';
+import RectumAnusRatingCard from './RectumAnusRatingCard.jsx';
+import SystemicLupusRatingCard from './SystemicLupusRatingCard.jsx';
+import NutritionalDeficiencyRatingCard
+  from './NutritionalDeficiencyRatingCard.jsx';
 
 
 
@@ -1323,7 +1327,83 @@ const RatingEvidence = () => {
   const adlAnalysis = useMemo(() => {
     return analyzeADLLogs(logs);
   }, [logs]);
-
+  // Digestive - Anorectal & Sphincter
+  const esophagealSpasmAnalysis = useMemo(() => {
+    return analyzeEsophagealSpasmLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  const sphincterControlAnalysis = useMemo(() => {
+    return analyzeSphincterControlLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  const rectalProlapseAnalysis = useMemo(() => {
+    return analyzeRectalProlapseLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  const rectalStrictureAnalysis = useMemo(() => {
+    return analyzeRectalStrictureLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  const analFistulaAnalysis = useMemo(() => {
+    return analyzeAnalFistulaLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  const pruritusAniAnalysis = useMemo(() => {
+    return analyzePruritusAniLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  // Skin - Systemic & Nutritional
+  const systemicLupusAnalysis = useMemo(() => {
+    return analyzeSystemicLupusLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  const avitaminosisAnalysis = useMemo(() => {
+    return analyzeAvitaminosisLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  const beriberiAnalysis = useMemo(() => {
+    return analyzeBeriberiLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  const pellagraAnalysis = useMemo(() => {
+    return analyzePellagraLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  // Genitourinary - specific (replacing voiding dysfunction placeholders)
+  const chronicCystitisAnalysis = useMemo(() => {
+    return analyzeChronicCystitisLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  const neurogenicBladderAnalysis = useMemo(() => {
+    return analyzeNeurogenicBladderLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  const prostateConditionsAnalysis = useMemo(() => {
+    return analyzeProstateConditionsLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  const urethralStrictureAnalysis = useMemo(() => {
+    return analyzeUrethralStrictureLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  // Gynecological - individual organ analyses
+  const vulvaClitorisAnalysis = useMemo(() => {
+    return analyzeVulvaClitorisDiseaseLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  const vaginaDiseaseAnalysis = useMemo(() => {
+    return analyzeVaginaDiseaseLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  const cervixDiseaseAnalysis = useMemo(() => {
+    return analyzeCervixDiseaseLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  const uterusDiseaseAnalysis = useMemo(() => {
+    return analyzeUterusDiseaseLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  const fallopianTubePIDAnalysis = useMemo(() => {
+    return analyzeFallopianTubePIDLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  const ovaryDiseaseAnalysis = useMemo(() => {
+    return analyzeOvaryDiseaseLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  // Dental & Visual - Jaw & General Eye
+  const eyeConditionsAnalysis = useMemo(() => {
+    return analyzeEyeConditionsLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  const mandibleMalunionAnalysis = useMemo(() => {
+    return analyzeMandibleMalunionLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  const maxillaMalunionAnalysis = useMemo(() => {
+    return analyzeMaxillaMalunionLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
+  const maxillaMandibleBoneDiseaseAnalysis = useMemo(() => {
+    return analyzeMaxillaMandibleBoneDiseaseLogs(logs, { evaluationPeriodDays: evaluationDays });
+  }, [logs, evaluationDays]);
 
   const activeConditions = useMemo(() => {
     const conditions = [];
@@ -1566,6 +1646,12 @@ const RatingEvidence = () => {
         esophagealAnalysis,
         postgastrectomyAnalysis,
         intestinalFistulaAnalysis,
+        esophagealSpasmAnalysis,
+        sphincterControlAnalysis,
+        rectalProlapseAnalysis,
+        rectalStrictureAnalysis,
+        analFistulaAnalysis,
+        pruritusAniAnalysis,
       ].filter(hasData).length,
 
       endocrine: [
@@ -1585,12 +1671,22 @@ const RatingEvidence = () => {
         kidneyStonesAnalysis,
         chronicRenalDiseaseAnalysis,
         voidingDysfunctionAnalysis,
+        chronicCystitisAnalysis,
+        neurogenicBladderAnalysis,
+        prostateConditionsAnalysis,
+        urethralStrictureAnalysis,
         sphincterImpairmentAnalysis,
         erectileDysfunctionAnalysis,
         penisConditionsAnalysis,
         testisConditionsAnalysis,
         endometriosisAnalysis,
         femaleReproductiveOrgansAnalysis,
+        vulvaClitorisAnalysis,
+        vaginaDiseaseAnalysis,
+        cervixDiseaseAnalysis,
+        uterusDiseaseAnalysis,
+        fallopianTubePIDAnalysis,
+        ovaryDiseaseAnalysis,
         pelvicProlapseAnalysis,
         femaleArousalDisorderAnalysis,
       ].filter(hasData).length,
@@ -1609,6 +1705,10 @@ const RatingEvidence = () => {
         cutaneousVasculitisAnalysis,
         dermatophytosisAnalysis,
         skinInfectionsAnalysis,
+        systemicLupusAnalysis,
+        avitaminosisAnalysis,
+        beriberiAnalysis,
+        pellagraAnalysis,
       ].filter(hasData).length,
 
       eyeEar: [
@@ -1672,8 +1772,12 @@ const RatingEvidence = () => {
       dental: [
         toothLossAnalysis,
         mandibleNonunionAnalysis,
+        mandibleMalunionAnalysis,
+        maxillaMalunionAnalysis,
+        maxillaMandibleBoneDiseaseAnalysis,
         malignantOralNeoplasmAnalysis,
         benignOralNeoplasmAnalysis,
+        eyeConditionsAnalysis,
       ].filter(hasData).length,
 
       other: [
@@ -1745,7 +1849,8 @@ const RatingEvidence = () => {
     diverticulitisAnalysis, cirrhosisAnalysis, gastritisAnalysis,
     pancreatitisAnalysis, biliaryTractAnalysis, herniaAnalysis,
     peritonealAdhesionsAnalysis, esophagealAnalysis, postgastrectomyAnalysis,
-    intestinalFistulaAnalysis,
+    intestinalFistulaAnalysis, esophagealSpasmAnalysis, sphincterControlAnalysis,
+    rectalProlapseAnalysis, rectalStrictureAnalysis, analFistulaAnalysis, pruritusAniAnalysis,
     // Endocrine
     diabetesAnalysis, hypothyroidismAnalysis, hyperthyroidismAnalysis,
     thyroiditisAnalysis, hyperparathyroidismAnalysis, hypoparathyroidismAnalysis,
@@ -1753,15 +1858,18 @@ const RatingEvidence = () => {
     hyperaldosteronismAnalysis,
     // Genitourinary
     kidneyStonesAnalysis, chronicRenalDiseaseAnalysis, voidingDysfunctionAnalysis,
-    sphincterImpairmentAnalysis, erectileDysfunctionAnalysis,
+    chronicCystitisAnalysis, neurogenicBladderAnalysis, prostateConditionsAnalysis,
+    urethralStrictureAnalysis, sphincterImpairmentAnalysis, erectileDysfunctionAnalysis,
     penisConditionsAnalysis, testisConditionsAnalysis,
-    endometriosisAnalysis,
+    endometriosisAnalysis, vulvaClitorisAnalysis, vaginaDiseaseAnalysis,
+    cervixDiseaseAnalysis, uterusDiseaseAnalysis, fallopianTubePIDAnalysis, ovaryDiseaseAnalysis,
     femaleReproductiveOrgansAnalysis, pelvicProlapseAnalysis, femaleArousalDisorderAnalysis,
     // Skin
     eczemaAnalysis, psoriasisAnalysis, scarsAnalysis, chronicUrticariaAnalysis,
     acneAnalysis, chloracneAnalysis, alopeciaAreataAnalysis, hyperhidrosisAnalysis,
     discoidLupusAnalysis, bullousDisordersAnalysis, cutaneousVasculitisAnalysis,
     dermatophytosisAnalysis, skinInfectionsAnalysis,
+    systemicLupusAnalysis, avitaminosisAnalysis, beriberiAnalysis, pellagraAnalysis,
     // Eye/Ear
     visionAnalysis, hearingLossAnalysis, tinnitusAnalysis, menieresAnalysis,
     uveitisAnalysis, keratitisAnalysis, chronicConjunctivitisAnalysis,
@@ -1782,8 +1890,9 @@ const RatingEvidence = () => {
     syphilisAnalysis, cerebrospinalSyphilisAnalysis, meningovascularSyphilisAnalysis,
     tabesDorsalisAnalysis, syphiliticDementiaAnalysis, syphiliticHeartDiseaseAnalysis,
     // Dental
-    toothLossAnalysis, mandibleNonunionAnalysis, malignantOralNeoplasmAnalysis,
-    benignOralNeoplasmAnalysis,
+    toothLossAnalysis, mandibleNonunionAnalysis, mandibleMalunionAnalysis,
+    maxillaMalunionAnalysis, maxillaMandibleBoneDiseaseAnalysis,
+    malignantOralNeoplasmAnalysis, benignOralNeoplasmAnalysis, eyeConditionsAnalysis,
     // Other
     chronicFatigueAnalysis, insomniaAnalysis, adlAnalysis,
     // Additional musculoskeletal
@@ -2021,7 +2130,31 @@ const RatingEvidence = () => {
         chronicSuppurativeOtitisMediaAnalysis.hasData ||
         chronicOtitisExternaAnalysis.hasData ||
         chronicNonsuppurativeOtitisMediaAnalysis.hasData ||
-        adlAnalysis.hasData
+        adlAnalysis.hasData ||
+        esophagealSpasmAnalysis.hasData ||
+        sphincterControlAnalysis.hasData ||
+        rectalProlapseAnalysis.hasData ||
+        rectalStrictureAnalysis.hasData ||
+        analFistulaAnalysis.hasData ||
+        pruritusAniAnalysis.hasData ||
+        systemicLupusAnalysis.hasData ||
+        avitaminosisAnalysis.hasData ||
+        beriberiAnalysis.hasData ||
+        pellagraAnalysis.hasData ||
+        chronicCystitisAnalysis.hasData ||
+        neurogenicBladderAnalysis.hasData ||
+        prostateConditionsAnalysis.hasData ||
+        urethralStrictureAnalysis.hasData ||
+        vulvaClitorisAnalysis.hasData ||
+        vaginaDiseaseAnalysis.hasData ||
+        cervixDiseaseAnalysis.hasData ||
+        uterusDiseaseAnalysis.hasData ||
+        fallopianTubePIDAnalysis.hasData ||
+        ovaryDiseaseAnalysis.hasData ||
+        eyeConditionsAnalysis.hasData ||
+        mandibleMalunionAnalysis.hasData ||
+        maxillaMalunionAnalysis.hasData ||
+        maxillaMandibleBoneDiseaseAnalysis.hasData
     ;
 
     return (
@@ -2893,6 +3026,40 @@ const RatingEvidence = () => {
                 expanded={expandedSection === 'intestinal-fistula'}
                 onToggle={() => toggleSection('intestinal-fistula')}
             />
+            <RectumAnusRatingCard
+                analysis={esophagealSpasmAnalysis}
+                expanded={expandedSection === 'esophageal-spasm'}
+                onToggle={() => toggleSection('esophageal-spasm')}
+            />
+            <SphincterImpairmentRatingCard
+                analysis={sphincterControlAnalysis}
+                expanded={expandedSection === 'sphincter-control'}
+                onToggle={() => toggleSection('sphincter-control')}
+            />
+            <GenericRatingCard
+                analysis={rectalProlapseAnalysis}
+                expanded={expandedSection === 'rectal-prolapse'}
+                onToggle={() => toggleSection('rectal-prolapse')}
+                icon="🩺"
+            />
+            <GenericRatingCard
+                analysis={rectalStrictureAnalysis}
+                expanded={expandedSection === 'rectal-stricture'}
+                onToggle={() => toggleSection('rectal-stricture')}
+                icon="🩺"
+            />
+            <GenericRatingCard
+                analysis={analFistulaAnalysis}
+                expanded={expandedSection === 'anal-fistula'}
+                onToggle={() => toggleSection('anal-fistula')}
+                icon="🩺"
+            />
+            <GenericRatingCard
+                analysis={pruritusAniAnalysis}
+                expanded={expandedSection === 'pruritus-ani'}
+                onToggle={() => toggleSection('pruritus-ani')}
+                icon="🩺"
+            />
           </ConditionGroup>
 
           {/* ========== GENITOURINARY ========== */}
@@ -2916,22 +3083,22 @@ const RatingEvidence = () => {
                 onToggle={() => toggleSection('chronic-renal-disease')}
             />
             <ChronicCystitisRatingCard
-                analysis={voidingDysfunctionAnalysis}
+                analysis={chronicCystitisAnalysis}
                 expanded={expandedSection === 'chronic-cystitis'}
                 onToggle={() => toggleSection('chronic-cystitis')}
             />
             <NeurogenicBladderRatingCard
-                analysis={voidingDysfunctionAnalysis}
+                analysis={neurogenicBladderAnalysis}
                 expanded={expandedSection === 'neurogenic-bladder'}
                 onToggle={() => toggleSection('neurogenic-bladder')}
             />
             <ProstateConditionsRatingCard
-                analysis={voidingDysfunctionAnalysis}
+                analysis={prostateConditionsAnalysis}
                 expanded={expandedSection === 'prostate-conditions'}
                 onToggle={() => toggleSection('prostate-conditions')}
             />
             <UrethralStrictureRatingCard
-                analysis={voidingDysfunctionAnalysis}
+                analysis={urethralStrictureAnalysis}
                 expanded={expandedSection === 'urethral-stricture'}
                 onToggle={() => toggleSection('urethral-stricture')}
             />
@@ -2966,6 +3133,42 @@ const RatingEvidence = () => {
                 analysis={femaleReproductiveOrgansAnalysis}
                 expanded={expandedSection === 'female-reproductive-organs'}
                 onToggle={() => toggleSection('female-reproductive-organs')}
+            />
+            <GenericRatingCard
+                analysis={vulvaClitorisAnalysis}
+                expanded={expandedSection === 'vulva-clitoris-disease'}
+                onToggle={() => toggleSection('vulva-clitoris-disease')}
+                icon="🩺"
+            />
+            <GenericRatingCard
+                analysis={vaginaDiseaseAnalysis}
+                expanded={expandedSection === 'vagina-disease'}
+                onToggle={() => toggleSection('vagina-disease')}
+                icon="🩺"
+            />
+            <GenericRatingCard
+                analysis={cervixDiseaseAnalysis}
+                expanded={expandedSection === 'cervix-disease'}
+                onToggle={() => toggleSection('cervix-disease')}
+                icon="🩺"
+            />
+            <GenericRatingCard
+                analysis={uterusDiseaseAnalysis}
+                expanded={expandedSection === 'uterus-disease'}
+                onToggle={() => toggleSection('uterus-disease')}
+                icon="🩺"
+            />
+            <GenericRatingCard
+                analysis={fallopianTubePIDAnalysis}
+                expanded={expandedSection === 'fallopian-tube-pid'}
+                onToggle={() => toggleSection('fallopian-tube-pid')}
+                icon="🩺"
+            />
+            <GenericRatingCard
+                analysis={ovaryDiseaseAnalysis}
+                expanded={expandedSection === 'ovary-disease'}
+                onToggle={() => toggleSection('ovary-disease')}
+                icon="🩺"
             />
             <PelvicProlapseRatingCard
                 analysis={pelvicProlapseAnalysis}
@@ -3148,6 +3351,26 @@ const RatingEvidence = () => {
                 analysis={skinInfectionsAnalysis}
                 expanded={expandedSection === 'skin-infections'}
                 onToggle={() => toggleSection('skin-infections')}
+            />
+            <SystemicLupusRatingCard
+                analysis={systemicLupusAnalysis}
+                expanded={expandedSection === 'systemic-lupus'}
+                onToggle={() => toggleSection('systemic-lupus')}
+            />
+            <NutritionalDeficiencyRatingCard
+                analysis={avitaminosisAnalysis}
+                expanded={expandedSection === 'avitaminosis'}
+                onToggle={() => toggleSection('avitaminosis')}
+            />
+            <NutritionalDeficiencyRatingCard
+                analysis={beriberiAnalysis}
+                expanded={expandedSection === 'beriberi'}
+                onToggle={() => toggleSection('beriberi')}
+            />
+            <NutritionalDeficiencyRatingCard
+                analysis={pellagraAnalysis}
+                expanded={expandedSection === 'pellagra'}
+                onToggle={() => toggleSection('pellagra')}
             />
           </ConditionGroup>
 
@@ -3707,9 +3930,26 @@ const RatingEvidence = () => {
                 onToggle={() => toggleSection('mandible-nonunion')}
             />
             <MaxillaMalunionRatingCard
-                analysis={mandibleNonunionAnalysis}
+                analysis={maxillaMalunionAnalysis}
                 expanded={expandedSection === 'maxilla-malunion'}
                 onToggle={() => toggleSection('maxilla-malunion')}
+            />
+            <GeneralEyeRatingCard
+                analysis={eyeConditionsAnalysis}
+                expanded={expandedSection === 'eye-conditions'}
+                onToggle={() => toggleSection('eye-conditions')}
+            />
+            <GenericRatingCard
+                analysis={mandibleMalunionAnalysis}
+                expanded={expandedSection === 'mandible-malunion'}
+                onToggle={() => toggleSection('mandible-malunion')}
+                icon="🦷"
+            />
+            <GenericRatingCard
+                analysis={maxillaMandibleBoneDiseaseAnalysis}
+                expanded={expandedSection === 'maxilla-mandible-bone-disease'}
+                onToggle={() => toggleSection('maxilla-mandible-bone-disease')}
+                icon="🦷"
             />
             <MalignantOralNeoplasmRatingCard
                 analysis={malignantOralNeoplasmAnalysis}

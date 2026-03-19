@@ -3119,26 +3119,44 @@ const analyzeAllConditions = (logs, options = {}) => {
         'cyclothymic': analyzeCyclothymicLogs,
         'anorexia-nervosa': analyzeAnorexiaNervosaLogs,
         'bulimia-nervosa': analyzeBulimiaNervosaLogs,
+        'schizophrenia': analyzeSchizophreniaLogs,
+        'schizoaffective-disorder': analyzeSchizoaffectiveDisorderLogs,
+        'delusional-disorder': analyzeDelusionalDisorderLogs,
+        'psychotic-disorder-nos': analyzePsychoticDisorderNOSLogs,
+        'brief-psychotic-disorder': analyzeBriefPsychoticDisorderLogs,
+        'binge-eating-disorder': analyzeBingeEatingDisorderLogs,
+        'dissociative-identity-disorder': analyzeDissociativeIdentityDisorderLogs,
+        'dissociative-amnesia': analyzeDissociativeAmnesiaLogs,
+        'acute-stress-disorder': analyzeAcuteStressDisorderLogs,
+        'antisocial-personality-disorder': analyzeAntisocialPersonalityDisorderLogs,
+        'borderline-personality-disorder': analyzeBorderlinePersonalityDisorderLogs,
+        'narcissistic-personality-disorder': analyzeNarcissisticPersonalityDisorderLogs,
+        'avoidant-personality-disorder': analyzeAvoidantPersonalityDisorderLogs,
+        'dementia': analyzeDementiaLogs,
         'vision-loss': analyzeVisionLogs,
         // Phase 3: Genitourinary
         'kidney-stones': analyzeKidneyStonesLogs,
         'chronic-renal-disease': analyzeChronicRenalDiseaseLogs,
-        'chronic-cystitis': analyzeVoidingDysfunctionLogs,
-        'neurogenic-bladder': analyzeVoidingDysfunctionLogs,
-        'prostate-conditions': analyzeVoidingDysfunctionLogs,
-        'urethral-stricture': analyzeVoidingDysfunctionLogs,
+        'voiding-dysfunction': analyzeVoidingDysfunctionLogs,
+        'chronic-cystitis': analyzeChronicCystitisLogs,
+        'neurogenic-bladder': analyzeNeurogenicBladderLogs,
+        'prostate-conditions': analyzeProstateConditionsLogs,
+        'urethral-stricture': analyzeUrethralStrictureLogs,
         'sphincter-impairment': analyzeSphincterImpairmentLogs,
         'erectile-dysfunction': analyzeErectileDysfunctionLogs,
+        'testis-conditions': analyzeTestisConditionsLogs,
+        'penis-conditions': analyzePenisConditionsLogs,
         // Phase 4: Gynecological
         'endometriosis': analyzeEndometriosisLogs,
-        'vulva-clitoris-disease': analyzeFemaleReproductiveOrgansLogs,
-        'vagina-disease': analyzeFemaleReproductiveOrgansLogs,
-        'cervix-disease': analyzeFemaleReproductiveOrgansLogs,
-        'uterus-disease': analyzeFemaleReproductiveOrgansLogs,
-        'fallopian-tube-pid': analyzeFemaleReproductiveOrgansLogs,
-        'ovary-disease': analyzeFemaleReproductiveOrgansLogs,
+        'vulva-clitoris-disease': analyzeVulvaClitorisDiseaseLogs,
+        'vagina-disease': analyzeVaginaDiseaseLogs,
+        'cervix-disease': analyzeCervixDiseaseLogs,
+        'uterus-disease': analyzeUterusDiseaseLogs,
+        'fallopian-tube-pid': analyzeFallopianTubePIDLogs,
+        'ovary-disease': analyzeOvaryDiseaseLogs,
         'pelvic-prolapse': analyzePelvicProlapseLogs,
         'female-sexual-arousal-disorder': analyzeFemaleArousalDisorderLogs,
+        'female-reproductive-organs': analyzeFemaleReproductiveOrgansLogs,
         // Phase 5: Hemic/Lymphatic
         'iron-deficiency-anemia': analyzeIronDeficiencyAnemiaLogs,
         'folate-deficiency-anemia': analyzeFolateDeficiencyAnemiaLogs,
@@ -3168,6 +3186,14 @@ const analyzeAllConditions = (logs, options = {}) => {
         'shigella': analyzeShigellaLogs,
         'west-nile': analyzeWestNileLogs,
         'ntm': analyzeNTMLogs,
+        'tuberculosis': analyzeTuberculosisLogs,
+        'tuberculosis-active': analyzeActiveTuberculosisLogs,
+        'tuberculosis-inactive': analyzeInactiveTuberculosisLogs,
+        'syphilis': analyzeSyphilisLogs,
+        'cerebrospinal-syphilis': analyzeCerebrospinalSyphilisLogs,
+        'meningovascular-syphilis': analyzeMeningovascularSyphilisLogs,
+        'tabes-dorsalis': analyzeTabesDorsalisLogs,
+        'syphilitic-dementia': analyzeSyphiliticDementiaLogs,
         // Phase 9: Cardiovascular
         'cardiomyopathy': analyzeCardiomyopathyLogs,
         'svt': analyzeSVTLogs,
@@ -3186,6 +3212,12 @@ const analyzeAllConditions = (logs, options = {}) => {
         'gastritis': analyzeGastritisLogs,
         'pancreatitis': analyzePancreatitisLogs,
         'biliaryTract': analyzeBiliaryTractLogs,
+        'esophageal-spasm': analyzeEsophagealSpasmLogs,
+        'sphincter-control': analyzeSphincterControlLogs,
+        'rectal-prolapse': analyzeRectalProlapseLogs,
+        'rectal-stricture': analyzeRectalStrictureLogs,
+        'anal-fistula': analyzeAnalFistulaLogs,
+        'pruritus-ani': analyzePruritusAniLogs,
         // Phase 1A: Neurological Conditions
         'multiple-sclerosis': analyzeMultipleSclerosisLogs,
         'parkinsons-disease': analyzeParkinsonsDiseaseLogs,
@@ -3271,17 +3303,48 @@ const analyzeAllConditions = (logs, options = {}) => {
         'cutaneous-vasculitis': analyzeCutaneousVasculitisLogs,
         'dermatophytosis': analyzeDermatophytosisLogs,
         'skin-infections': analyzeSkinInfectionsLogs,
+        'systemic-lupus': analyzeSystemicLupusLogs,
+        'avitaminosis': analyzeAvitaminosisLogs,
+        'beriberi': analyzeBeriberiLogs,
+        'pellagra': analyzePellagraLogs,
         // Phase 7A: Eye Conditions
         'uveitis': analyzeUveitis,
         'keratitis': analyzeKeratitis,
         'chronic-conjunctivitis': analyzeChronicConjunctivitis,
         'scleritis': analyzeScleritis,
-        // Phase 7B: Ear Conditions
-        'peripheral-vestibular': analyzePeripheralVestibular,
-        'chronic-suppurative-otitis-media': analyzeChronicSuppurativeOtitisMedia,
-        'chronic-otitis-externa': analyzeChronicOtitisExterna,
-        'chronic-nonsuppurative-otitis-media': analyzeChronicNonsuppurativeOtitisMedia,
-      };
+        'eye-conditions': analyzeEyeConditionsLogs,
+        'mandible-malunion': analyzeMandibleMalunionLogs,
+        'maxilla-malunion': analyzeMaxillaMalunionLogs,
+        'maxilla-mandible-bone-disease': analyzeMaxillaMandibleBoneDiseaseLogs,
+      // Phase 7B: Ear Conditions
+      'peripheral-vestibular': analyzePeripheralVestibular,
+      'chronic-suppurative-otitis-media': analyzeChronicSuppurativeOtitisMedia,
+      'chronic-otitis-externa': analyzeChronicOtitisExterna,
+      'chronic-nonsuppurative-otitis-media': analyzeChronicNonsuppurativeOtitisMedia,
+      // Neurological - Sensory Loss
+      'loss-of-smell': analyzeLossOfSmellLogs,
+      'loss-of-taste': analyzeLossOfTasteLogs,
+      // Musculoskeletal - Amputation
+      'amputation': analyzeAmputationLogs,
+      'adl': analyzeADLLogs,
+      // Cardiorespiratory - Pulmonary
+      'copd': analyzeCOPDLogs,
+      'chronic-bronchitis': analyzeChronicBronchitisLogs,
+      'emphysema': analyzeEmphysemaLogs,
+      'bronchiectasis': analyzeBronchiectasisLogs,
+      'pulmonary-fibrosis': analyzePulmonaryFibrosisLogs,
+      'sarcoidosis': analyzeSarcoidosisLogs,
+      // Cardiorespiratory - Upper Respiratory & Laryngeal
+      'deviated-septum': analyzeDeviatedSeptumLogs,
+      'nose-loss': analyzeNoseLossLogs,
+      'chronic-laryngitis': analyzeChronicLaryngitisLogs,
+      'aphonia': analyzeAphoniaLogs,
+      'laryngeal-stenosis': analyzeLaryngealStenosisLogs,
+      'pharynx-injury': analyzePharynxInjuryLogs,
+      // Cardiorespiratory - Vascular
+      'peripheral-arterial-disease-detailed': analyzePeripheralArterialDiseaseLogs,
+      'syphilitic-heart-disease': analyzeSyphiliticHeartDiseaseLogs,
+    };
 
     const analyses = [];
 
@@ -3300,12 +3363,19 @@ const analyzeAllConditions = (logs, options = {}) => {
             } else if (conditionId === 'cad' || conditionId === 'post-mi' || conditionId === 'hypertensive-heart') {
               // Phase 2A: METs-based cardiac conditions need measurements
               result = analyzeFunc(logs, [], { evaluationPeriodDays });
+            } else if (conditionId === 'adl') {
+              // ADL uses no options parameter
+              result = analyzeFunc(logs);
             } else {
-                result = analyzeFunc(logs, { evaluationPeriodDays });
+              result = analyzeFunc(logs, { evaluationPeriodDays });
             }
 
-            // Only include conditions with actual data
-            if (result && result.hasData && result.supportedRating !== null) {
+          // Only include conditions with actual data
+          // Note: ADL returns supportedLevel instead of supportedRating
+          const hasValidRating = result && result.hasData &&
+              (result.supportedRating !== null && result.supportedRating !== undefined ||
+                  result.supportedLevel !== null && result.supportedLevel !== undefined);
+          if (hasValidRating) {
               // Debug: check if condition field is missing
               if (!result.condition) {
                 console.warn(`⚠️ Analysis function for '${conditionId}' is missing 'condition' field in return value`);

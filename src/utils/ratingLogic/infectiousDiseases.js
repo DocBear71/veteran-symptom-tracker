@@ -9,7 +9,7 @@
 // Conditions included:
 //   DC 6351  — HIV-Related Illness
 //   DC 7354  — Hepatitis C
-//   DC 7314  — Hepatitis B
+//   DC 7345  — Hepatitis B
 //   DC 6319  — Lyme Disease
 //   DC 6304  — Malaria
 //   DC 6316  — Brucellosis
@@ -73,7 +73,7 @@ export const INFECTIOUS_CONDITIONS = {
   HEPATITIS_B: {
     id: 'hepatitis-b',
     name: 'Hepatitis B',
-    diagnosticCode: '7314',
+    diagnosticCode: '7345',
     cfrReference: '38 CFR 4.114',
     symptomIds: [
       'hep-fatigue',
@@ -611,9 +611,9 @@ export const HEPATITIS_C_CRITERIA = {
   ],
 };
 export const HEPATITIS_B_CRITERIA = {
-  diagnosticCode: '7314',
+  diagnosticCode: '7345',
   condition: 'Hepatitis B',
-  cfrReference: '38 CFR 4.114, Diagnostic Code 7314',
+  cfrReference: '38 CFR 4.114, Diagnostic Code 7345',
 
   ratings: [
     {
@@ -3034,7 +3034,7 @@ export const analyzeHepatitisBLogs = (logs, options = {}) => {
   if (hepBLogs.length === 0) {
     return {
       condition: 'Hepatitis B',
-      diagnosticCode: '7314',
+      diagnosticCode: '7345',
       hasData: false,
       message: 'No Hepatitis B symptoms logged',
       supportedRating: null,
@@ -3165,7 +3165,7 @@ export const analyzeHepatitisBLogs = (logs, options = {}) => {
 
   return {
     condition: 'Hepatitis B',
-    diagnosticCode: '7314',
+    diagnosticCode: '7345',
     hasData: true,
     supportedRating,
     ratingRationale,
