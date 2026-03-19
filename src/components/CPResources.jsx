@@ -7,6 +7,7 @@ import CPExamPrep from './CPExamPrep';
 import AfterActionReport from './AfterActionReport';
 import BuddyStatementGenerator from './BuddyStatementGenerator';
 import RatingScenarioCalculator from './RatingScenarioCalculator';
+import StrategicFilingGuide from './StrategicFilingGuide';
 
 const CPResources = () => {
   const [activeResource, setActiveResource] = useState(null);
@@ -45,6 +46,14 @@ const CPResources = () => {
       color: 'purple',
       features: ['Guided templates', 'Condition-specific observations', 'Multiple export formats', 'Save drafts'],
     },
+    {
+      id: 'strategic-filing',
+      title: 'Strategic Filing Guide',
+      description: 'At 100%, you stop chasing numbers and start building structure. Learn when and why to keep filing — SMC, DIC protection, reduction defense, and ancillary benefits.',
+      icon: '🎯',
+      color: 'amber',
+      features: ['SMC-S1 / Housebound', 'SMC-K & ladder', 'DIC strategy', 'Reduction protection', 'PDF export'],
+    },
   ];
 
   // Color mapping for cards
@@ -81,6 +90,14 @@ const CPResources = () => {
       iconText: 'text-purple-600 dark:text-purple-400',
       badge: 'bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-300',
     },
+    amber: {
+      bg: 'bg-amber-50 dark:bg-amber-900/20',
+      border: 'border-amber-200 dark:border-amber-800',
+      hoverBorder: 'hover:border-amber-500 dark:hover:border-amber-500',
+      icon: 'bg-amber-100 dark:bg-amber-900',
+      iconText: 'text-amber-600 dark:text-amber-400',
+      badge: 'bg-amber-100 dark:bg-amber-900 text-amber-700 dark:text-amber-300',
+    },
   };
 
   // Render the selected resource component
@@ -96,10 +113,10 @@ const CPResources = () => {
               if (target === 'after-action-report') setActiveResource('after-action');
             }}
         />;
-      case 'after-action':
-        return <AfterActionReport embedded={true} onClose={() => setActiveResource(null)} />;
       case 'buddy-statement':
         return <BuddyStatementGenerator embedded={true} onClose={() => setActiveResource(null)} />;
+      case 'strategic-filing':
+        return <StrategicFilingGuide onBack={() => setActiveResource(null)} />;
       default:
         return null;
     }

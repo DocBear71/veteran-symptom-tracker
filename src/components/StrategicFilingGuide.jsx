@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { ChevronDown, ChevronUp, ArrowLeft } from 'lucide-react';
+import { ChevronDown, ChevronUp } from 'lucide-react';
+import { jsPDF } from 'jspdf';
 
 /**
  * StrategicFilingGuide Component
@@ -75,26 +76,188 @@ const ExampleCard = ({ scenario, details }) => (
 );
 
 export default function StrategicFilingGuide({ onBack }) {
-    return (
+
+  const exportToPDF = () => {
+    const doc = new jsPDF();
+    const pageWidth = doc.internal.pageSize.width;
+    const margin = 14;
+    const usableWidth = pageWidth - margin * 2;
+    let y = 18;
+
+    const addPageIfNeeded = (space = 20) => {
+      if (y + space > 275) { doc.addPage(); y = 18; }
+    };
+
+    const sectionHeader = (title, rgb) => {
+      addPageIfNeeded(14);
+      doc.setFillColor(...rgb);
+      doc.roundedRect(margin, y, usableWidth, 8, 1, 1, 'F');
+      doc.setTextColor(255, 255, 255);
+      doc.setFontSize(10);
+      doc.setFont(undefined, 'bold');
+      doc.text(title, margin + 3, y + 5.5);
+      y += 12;
+      doc.setTextColor(40);
+      doc.setFont(undefined, 'normal');
+    };
+
+    const bodyText = (text, indent = 0) => {
+      addPageIfNeeded(10);
+      doc.setFontSize(8.5);
+      doc.setFont(undefined, 'normal');
+      const lines = doc.splitTextToSize(text, usableWidth - indent - 2);
+      doc.text(lines, margin + indent, y);
+      y += lines.length * 4.5 + 2;
+    };
+
+    const bulletItem = (text) => {
+      addPageIfNeeded(8);
+      doc.setFontSize(8.5);
+      doc.text('•', margin + 2, y);
+      const lines = doc.splitTextToSize(text, usableWidth - 10);
+      doc.text(lines, margin + 7, y);
+      y += lines.length * 4.5 + 1;
+    };
+
+    const exampleBox = (text) => {
+      addPageIfNeeded(18);
+      doc.setFillColor(245, 245, 245);
+      doc.setDrawColor(200);
+      const lines = doc.splitTextToSize(`Example: ${text}`, usableWidth - 8);
+      const boxH = lines.length * 4.5 + 6;
+      doc.roundedRect(margin, y, usableWidth, boxH, 1, 1, 'FD');
+      doc.setFontSize(8);
+      doc.setFont(undefined, 'italic');
+      doc.setTextColor(80);
+      doc.text(lines, margin + 4, y + 4.5);
+      doc.setFont(undefined, 'normal');
+      doc.setTextColor(40);
+      y += boxH + 4;
+    };
+
+    // ── Header ──
+    doc.setFillColor(30, 58, 138);
+    doc.rect(0, 0, pageWidth, 26, 'F');
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(15);
+    doc.setFont(undefined, 'bold');
+    doc.text('STRATEGIC FILING GUIDE', pageWidth / 2, 11, { align: 'center' });
+    doc.setFontSize(9);
+    doc.setFont(undefined, 'normal');
+    doc.text('Beyond 100% — Structure, SMC & Long-Term Protection', pageWidth / 2, 19, { align: 'center' });
+    y = 32;
+
+    doc.setTextColor(40);
+    doc.setFontSize(8.5);
+    bodyText('Being at 100% is not the ceiling. The real ceiling is proper SMC structure, reduction protection, and long-term benefits for you and your family.');
+    y += 3;
+
+    // ── P&T ──
+    sectionHeader('FIRST — CHECK IF YOU\'RE P&T', [22, 101, 52]);
+    bodyText('If you\'re 100% schedular or TDIU, you may already be Permanent & Total (P&T). Every claim opens the file — filing when P&T should be strategic.');
+    bodyText('To verify P&T status:');
+    bulletItem('Check your decision letter — if Chapter 35 (DEA) is granted, you\'re likely P&T.');
+    bulletItem('VA.gov => Benefits => Download Benefit Letters => Benefit Summary and Service Verification Letter.');
+    bulletItem('Look for: "You are considered to be totally and permanently disabled solely due to your service-connected disabilities."');
+    bodyText('P&T also unlocks Chapter 35 DEA (dependent education) and possibly CHAMPVA for dependents.');
+    y += 3;
+
+    // ── SMC-S1 ──
+    sectionHeader('SMC-S1 — STATUTORY HOUSEBOUND', [109, 40, 217]);
+    bodyText('If one condition is rated 100% AND other conditions combine to 60%+, you may qualify for SMC-S1 — pays above the regular 100% rate.');
+    exampleBox('Veteran is 100% for PTSD. Also has 40% back, 30% migraines, and 20% radiculopathy. Those combine to 60%+. May qualify for SMC-S1.');
+    bodyText('Commonly missed: If TDIU is based on one single condition and other conditions combine to 60%+, that may also qualify (Bradley v. Peake / Buie v. Shinseki).');
+    y += 3;
+
+    // ── SMC Ladder ──
+    sectionHeader('SMC LADDER — L, M, N AND BEYOND', [30, 58, 138]);
+    bodyText('For loss of use or Aid & Attendance needs, higher SMC levels provide significantly more monthly compensation. SMC levels increase with:');
+    bulletItem('Loss of use of extremities (hands, feet)');
+    bulletItem('Blindness or severe visual impairment');
+    bulletItem('Need for regular Aid & Attendance');
+    bulletItem('Being permanently bedridden');
+    exampleBox('Veteran is 100% for cancer but later develops neuropathy causing loss of use of both feet. Could qualify for SMC-L or higher — thousands more per month.');
+    y += 3;
+
+    // ── Reduction Protection ──
+    sectionHeader('REDUCTION PROTECTION', [180, 120, 20]);
+    bodyText('A 100% rating built on a single condition is vulnerable. If VA proposes a reduction, a thin structure offers little protection. Establishing secondary conditions creates a safety net.');
+    exampleBox('Veteran is 100% solely on one mental health rating. VA proposes reduction. No other significant ratings in place. Strong secondary conditions could have protected this veteran\'s combined rating.');
+    y += 3;
+
+    // ── SMC-K ──
+    sectionHeader('SMC-K — ADDITIONAL MONTHLY COMPENSATION', [22, 101, 52]);
+    bodyText('SMC-K is additive — paid on top of your existing rate. Does not change your percentage. Common qualifying conditions:');
+    bulletItem('Erectile dysfunction (DC 7522) — secondary to service-connected condition or medication');
+    bulletItem('Female sexual arousal disorder (DC 7632)');
+    bulletItem('Loss of use of one hand or one foot');
+    exampleBox('Veteran is 100% for heart disease. Develops ED secondary to blood pressure medication. Qualifies for SMC-K — additional monthly pay on top of 100%.');
+    y += 3;
+
+    // ── DIC ──
+    sectionHeader('DIC STRATEGY — PROTECTING YOUR FAMILY', [185, 28, 28]);
+    bodyText('Dependency and Indemnity Compensation (DIC) provides monthly benefits to surviving spouses. Strategic filing while alive protects your family\'s eligibility.');
+    exampleBox('Veteran is 100% PTSD. Has heart disease related to service but never claims it. Passes away from heart disease. Surviving spouse\'s DIC path becomes significantly harder.');
+    bodyText('The 10-Year Rule: A condition rated for 10+ continuous years generally cannot be severed. Long service-connection history protects DIC eligibility for survivors.');
+    y += 3;
+
+    // ── Ancillary ──
+    sectionHeader('ANCILLARY BENEFITS', [8, 145, 178]);
+    bodyText('Specific conditions unlock benefits beyond monthly compensation. These require the right condition to be service-connected:');
+    bulletItem('Automobile allowance and adaptive equipment grant');
+    bulletItem('Specially Adapted Housing (SAH) / Special Home Adaptation (SHA) grants');
+    bulletItem('Expanded caregiver program eligibility');
+    bulletItem('Dental treatment and clothing allowance');
+    y += 3;
+
+    // ── Strategic vs Reactive ──
+    sectionHeader('STRATEGIC VS. REACTIVE FILING', [180, 90, 20]);
+    bodyText('Every claim opens the file. The question is not "Can I file?" — it\'s "What does this accomplish long term?"');
+    bulletItem('Strategic: Filing for SMC-S1 when you have the structure to support it');
+    bulletItem('Strategic: Secondary conditions for reduction protection');
+    bulletItem('Strategic: Conditions that unlock ancillary benefits or protect DIC');
+    bulletItem('Risky: Filing without understanding impact on existing rating structure');
+
+    // ── Footer ──
+    const pageCount = doc.internal.getNumberOfPages();
+    for (let i = 1; i <= pageCount; i++) {
+      doc.setPage(i);
+      doc.setFontSize(7);
+      doc.setTextColor(150);
+      doc.text(
+          `Strategic Filing Guide — Page ${i} of ${pageCount} — Doc Bear's Symptom Vault — Educational purposes only, not legal advice`,
+          pageWidth / 2,
+          doc.internal.pageSize.height - 8,
+          { align: 'center' }
+      );
+    }
+
+    doc.save(`Strategic-Filing-Guide-${new Date().toISOString().split('T')[0]}.pdf`);
+  };
+
+  return (
         <div className="pb-20 space-y-4">
             {/* Header with Back Button */}
-            <div className="flex items-center gap-3 mb-2">
-                <button
-                    onClick={onBack}
-                    className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-                    aria-label="Go back"
-                >
-                    <ArrowLeft className="w-5 h-5 text-gray-600 dark:text-gray-400" />
-                </button>
-                <div>
-                    <h2 className="text-lg font-bold text-gray-900 dark:text-white">
-                        Strategic Filing Guide
-                    </h2>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">
-                        Beyond 100% — Structure, SMC & Protection
-                    </p>
-                </div>
+          {/* Header */}
+          <div className="bg-gradient-to-r from-amber-700 to-amber-500 dark:from-gray-800 dark:to-gray-700 rounded-lg p-5 text-white relative">
+            <div className="text-center">
+              <h2 className="text-xl font-bold flex items-center justify-center gap-2">
+                <span>🎯</span>
+                Strategic Filing Guide
+              </h2>
+              <p className="text-amber-100 dark:text-gray-300 text-sm mt-1">
+                Beyond 100% — Structure, SMC & Protection
+              </p>
             </div>
+          </div>
+
+          {/* Export Button */}
+          <button
+              onClick={exportToPDF}
+              className="w-full sm:w-auto bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-5 rounded-lg transition-colors flex items-center justify-center gap-2 text-sm"
+          >
+            📄 Export Guide to PDF
+          </button>
 
             {/* Key Message Banner */}
             <div className="bg-blue-900 dark:bg-blue-800 rounded-lg p-4 text-white">
@@ -126,7 +289,7 @@ export default function StrategicFilingGuide({ onBack }) {
                     <h4 className="text-sm font-semibold text-green-900 dark:text-green-200 mb-2">
                         Two Ways to Check:
                     </h4>
-                    <div className="text-sm text-green-800 dark:text-green-300 space-y-2">
+                    <div className="text-sm text-green-800 dark:text-green-300 space-y-2 text-left">
                         <p className="flex items-start gap-2">
                             <span className="font-bold mt-0.5">1.</span>
                             <span>
@@ -360,7 +523,7 @@ export default function StrategicFilingGuide({ onBack }) {
                     </p>
                 </div>
 
-                <div className="text-sm text-gray-600 dark:text-gray-400 space-y-2">
+                <div className="text-sm text-gray-600 dark:text-gray-400 space-y-2 text-left">
                     <p className="flex items-start gap-2">
                         <span className="text-green-500 mt-0.5">✓</span>
                         <span><strong>Strategic:</strong> Filing for SMC-S1 when you have the structure to support it</span>
