@@ -314,22 +314,22 @@ export const getMedicationLogs = (profileId = null) => {
 export const logMedicationTaken = (entry, profileId = null) => {
     const logs = getMedicationLogs(profileId);
 
-    const now = new Date().toISOString();
     const newLog = {
-        id: crypto.randomUUID(),
-        medicationId: entry.medicationId,
-        medicationName: entry.medicationName,
-        dosage: entry.dosage,
-        timestamp: now,
-        // When the medication was actually taken (defaults to now, supports backdating)
-        occurredAt: entry.occurredAt || now,
-        // batchId groups logs submitted together (same form submission)
-        batchId: entry.batchId || null,
-        takenFor: entry.takenFor || '',
-        symptomLogId: entry.symptomLogId || null,
-        effectiveness: entry.effectiveness || null,
-        sideEffects: entry.sideEffects || '',
-        notes: entry.notes || '',
+      id: crypto.randomUUID(),
+      timestamp: new Date().toISOString(),
+      // occurredAt reflects WHEN the medication was actually taken (maybe back-dated).
+      // Fall back to timestamp so legacy reads always have a valid date.
+      occurredAt: entry.occurredAt || new Date().toISOString(),
+      medicationId: entry.medicationId,
+      medicationName: entry.medicationName,
+      dosage: entry.dosage,
+      // batchId groups logs submitted together (same form submission)
+      batchId: entry.batchId || null,
+      takenFor: entry.takenFor || '',
+      symptomLogId: entry.symptomLogId || null,
+      effectiveness: entry.effectiveness || null,
+      sideEffects: entry.sideEffects || '',
+      notes: entry.notes || '',
     };
 
   logs.push(newLog);
