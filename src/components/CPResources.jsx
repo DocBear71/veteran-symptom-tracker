@@ -8,6 +8,7 @@ import AfterActionReport from './AfterActionReport';
 import BuddyStatementGenerator from './BuddyStatementGenerator';
 import RatingScenarioCalculator from './RatingScenarioCalculator';
 import StrategicFilingGuide from './StrategicFilingGuide';
+import CaregiverProgramsGuide from './CaregiverProgramsGuide';
 
 const CPResources = () => {
   const [activeResource, setActiveResource] = useState(null);
@@ -45,6 +46,14 @@ const CPResources = () => {
       icon: '👥',
       color: 'purple',
       features: ['Guided templates', 'Condition-specific observations', 'Multiple export formats', 'Save drafts'],
+    },
+    {
+      id: 'caregiver-programs',
+      title: 'VA Caregiver Programs',
+      description: 'Understand the difference between Veteran Directed Care (VDC) and the Family Caregiver Program (PCAFC) — who gets paid, how much, and whether you can receive both.',
+      icon: '❤️',
+      color: 'teal',
+      features: ['VDC vs PCAFC', 'Stipend amounts', 'Eligibility guidance', 'PDF export'],
     },
     {
       id: 'strategic-filing',
@@ -90,6 +99,14 @@ const CPResources = () => {
       iconText: 'text-purple-600 dark:text-purple-400',
       badge: 'bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-300',
     },
+    teal: {
+      bg: 'bg-teal-50 dark:bg-teal-900/20',
+      border: 'border-teal-200 dark:border-teal-800',
+      hoverBorder: 'hover:border-teal-500 dark:hover:border-teal-500',
+      icon: 'bg-teal-100 dark:bg-teal-900',
+      iconText: 'text-teal-600 dark:text-teal-400',
+      badge: 'bg-teal-100 dark:bg-teal-900 text-teal-700 dark:text-teal-300',
+    },
     amber: {
       bg: 'bg-amber-50 dark:bg-amber-900/20',
       border: 'border-amber-200 dark:border-amber-800',
@@ -117,6 +134,8 @@ const CPResources = () => {
         return <BuddyStatementGenerator embedded={true} onClose={() => setActiveResource(null)} />;
       case 'strategic-filing':
         return <StrategicFilingGuide onBack={() => setActiveResource(null)} />;
+      case 'caregiver-programs':
+        return <CaregiverProgramsGuide onBack={() => setActiveResource(null)} />;
       default:
         return null;
     }
