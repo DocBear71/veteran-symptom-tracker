@@ -431,8 +431,11 @@ export default function BlueButtonImport({ onClose, onImportComplete }) {
     });
   };
 
-  const _importCondition = (record) => {
-    addCustomSymptom(record.name, 'Imported (VA Problem List)');
+  const _importCondition = (record, index = 0) => {
+    // addCustomSymptom uses Date.now() for IDs — calling it synchronously
+    // in a loop causes timestamp collisions. We pass an offset so each
+    // condition gets a guaranteed-unique ID even when imported at the same ms.
+    addCustomSymptom(record.name, 'Imported (VA Problem List)', index);
   };
 
   const _saveImportAuditLog = (counts) => {

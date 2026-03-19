@@ -155,7 +155,7 @@ export const addCustomSymptom = (name, category = 'Custom', profileId = null) =>
   }
 
   const newSymptom = {
-    id: `custom-${Date.now()}`,
+    id: `custom-${crypto.randomUUID()}`,
     name: name.trim(),
     category,
     isCustom: true,

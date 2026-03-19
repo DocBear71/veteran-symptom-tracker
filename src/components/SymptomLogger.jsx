@@ -14,6 +14,7 @@ import { getProfileType, PROFILE_TYPES } from '../utils/profile';
 import { getDefaultMedDetail, getDosageForLog } from '../utils/medicationUtils';
 import OccurrenceTimePicker from './OccurrenceTimePicker.jsx';
 import QuickLog from './QuickLog';
+import { SECONDARY_CONDITIONS_MAP } from '../data/secondaryConditions';
 import AddChronicModal from './AddChronicModal';
 import WhyTrackThis from './WhyTrackThis.jsx';
 import {
@@ -78,12 +79,72 @@ import MedicationEffectivenessInline from './MedicationEffectivenessInline';
 const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed, onNavigate }) => {
   const [stressLevel, setStressLevel] = useState(5);
   const [weather, setWeather] = useState('');
+  const [selectedSymptom, setSelectedSymptom] = useState('');
   // Check if user is a veteran for VA-specific features
   const isVeteran = getProfileType() === PROFILE_TYPES.VETERAN;
+
+  // Map selected symptom to a secondary conditions key
+  // Checks the most common condition slug patterns against secondaryConditions.js
+  const secondaryConditionSuggestions = useMemo(() => {
+    if (!selectedSymptom || !isVeteran) return null;
+
+    // Map symptom ID prefixes/patterns to secondaryConditions.js keys
+    const symptomToConditionKey = [
+      // PTSD: ptsd-nightmare, ptsd-flashback, ptsd-panic, etc.
+      { key: 'ptsd',             match: s => s.startsWith('ptsd-') || s === 'ptsd' },
+      // Diabetes Mellitus: dm-hypoglycemia-episode, dm-insulin-daily, etc.
+      // Diabetes Insipidus: di-polyuria, di-polydipsia, etc. (no secondary map — skip)
+      { key: 'diabetes',         match: s => s.startsWith('dm-') },
+      // Hypertension: high-blood-pressure, hypertension-headache, htn-*, haldo-hypertension
+      { key: 'hypertension',     match: s => s.startsWith('htn-') || s === 'high-blood-pressure' || s === 'hypertension-headache' || s.includes('hypertension') },
+      // Sleep Apnea: apnea-* symptoms
+      { key: 'sleepApnea',       match: s => s.startsWith('apnea-') },
+      // Fibromyalgia: fibro-widespread-pain, fibro-tender-points, etc.
+      { key: 'fibromyalgia',     match: s => s.startsWith('fibro-') },
+      // Tinnitus: 'tinnitus' or menieres-tinnitus
+      { key: 'tinnitus',         match: s => s === 'tinnitus' || s === 'menieres-tinnitus' || s === 'tinnitus-blood' },
+      // Migraines: 'migraine' or migraine-*
+      { key: 'migraines',        match: s => s === 'migraine' || s.startsWith('migraine-') },
+      // Multiple Sclerosis: ms-fatigue, ms-numbness-tingling, etc.
+      { key: 'multipleSclerosis',match: s => s.startsWith('ms-') },
+      // Parkinson's: pd-resting-tremor, pd-rigidity, etc.
+      { key: 'parkinsons',       match: s => s.startsWith('pd-') },
+      // ALS: als-muscle-weakness, als-fasciculations, etc.
+      { key: 'als',              match: s => s.startsWith('als-') },
+      // Back: lower-back-pain, back-stiffness, back-spasm, back-radicular, disc-pain, lbs-*, ls-*, vfx-*, ss-*, si-*, as-*, sf-*
+      { key: 'backCondition',    match: s => s.startsWith('lower-back') || s.startsWith('back-') || s.startsWith('disc-') || s.startsWith('lbs-') || s.startsWith('ls-') || s.startsWith('vfx-') || s.startsWith('ss-back') || s.startsWith('si-') || s.startsWith('as-back') || s.startsWith('sf-') },
+      // Knee: knee-instability, knee-swelling, etc.
+      { key: 'kneeCondition',    match: s => s.startsWith('knee-') },
+      // PTSD-adjacent — also catch general ptsd symptom IDs from mental-health category
+      { key: 'ptsd',             match: s => s === 'ptsd-nightmare' || s === 'ptsd-flashback' || s === 'ptsd-panic' || s === 'ptsd-hypervigilance' || s === 'ptsd-avoidance' },
+    ];
+
+    const match = symptomToConditionKey.find(({ match }) => match(selectedSymptom));
+    if (!match) return null;
+
+    const conditionData = SECONDARY_CONDITIONS_MAP[match.key];
+    if (!conditionData) return null;
+
+    // Return top 3 secondaries with SMC-potential flagged
+    return {
+      primaryCondition: conditionData.primaryCondition,
+      conditionKey: match.key,
+      topSecondaries: conditionData.secondaryConditions
+      .slice(0, 3)
+      .map(s => ({
+        name: s.name,
+        diagnosticCode: s.diagnosticCode,
+        nexusStrength: s.nexusStrength,
+        smcPotential: s.smcPotential || false,
+      })),
+      totalCount: conditionData.secondaryConditions.length,
+    };
+  }, [selectedSymptom, isVeteran]);
+
   // Body System / Category / Symptom selection state
   const [selectedBodySystem, setSelectedBodySystem] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
-  const [selectedSymptom, setSelectedSymptom] = useState('');
+
   const [, setSymptomName] = useState('');
   // Search mode state
   const [isSearchMode, setIsSearchMode] = useState(false);
@@ -3358,6 +3419,78 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed, onNavigate }) =
                 <p className="text-xs text-blue-600 dark:text-blue-400 mt-3 italic">
                   💡 Tip: Consider adding related conditions to your Chronic Symptoms for easier tracking
                 </p>
+              </div>
+          )}
+
+          {/* Secondary Conditions Prompt — Veterans Only */}
+          {secondaryConditionSuggestions && (
+              <div className="bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded-lg p-4">
+                <div className="flex items-start gap-2 mb-3">
+                  <span className="text-lg flex-shrink-0">🔗</span>
+                  <div>
+                    <h3 className="font-medium text-purple-900 dark:text-purple-200 text-sm">
+                      Secondary Conditions — File Now, Protect Your Effective Date
+                    </h3>
+                    <p className="text-xs text-purple-700 dark:text-purple-300 mt-0.5">
+                      Veterans tracking <strong>{secondaryConditionSuggestions.primaryCondition}</strong> commonly
+                      also claim these secondary conditions. Filing now — even before the primary is rated —
+                      preserves your effective date.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="space-y-1.5 mb-3">
+                  {secondaryConditionSuggestions.topSecondaries.map((secondary, idx) => (
+                      <div
+                          key={idx}
+                          className="flex items-center justify-between bg-white dark:bg-gray-800 rounded-lg px-3 py-2 border border-purple-100 dark:border-purple-900"
+                      >
+                        <div className="flex items-center gap-2">
+                      <span className="text-xs font-medium text-gray-900 dark:text-white">
+                        {secondary.name}
+                      </span>
+                          <span className="text-xs text-gray-400 dark:text-gray-500">
+                        DC {secondary.diagnosticCode}
+                      </span>
+                          {secondary.smcPotential && (
+                              <span className="text-xs px-1.5 py-0.5 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 rounded font-medium">
+                          SMC-K
+                        </span>
+                          )}
+                        </div>
+                        <span className={`text-xs px-1.5 py-0.5 rounded font-medium ${
+                            secondary.nexusStrength === 'strong'
+                                ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400'
+                                : secondary.nexusStrength === 'moderate'
+                                    ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400'
+                                    : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400'
+                        }`}>
+                      {secondary.nexusStrength}
+                    </span>
+                      </div>
+                  ))}
+                </div>
+
+                {secondaryConditionSuggestions.totalCount > 3 && (
+                    <p className="text-xs text-purple-600 dark:text-purple-400 mb-2">
+                      +{secondaryConditionSuggestions.totalCount - 3} more in the Secondary Conditions Guide
+                    </p>
+                )}
+
+                <div className="flex flex-col sm:flex-row gap-2">
+                  {onNavigate && (
+                      <button
+                          type="button"
+                          onClick={() => onNavigate('secondary-conditions')}
+                          className="flex-1 text-xs py-2 px-3 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors font-medium"
+                      >
+                        View Full Secondary Conditions Guide →
+                      </button>
+                  )}
+                  <div className="flex-1 text-xs py-2 px-3 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded-lg text-center">
+                    💡 Filing secondary conditions preserves your effective date
+                  </div>
+                </div>
               </div>
           )}
 
