@@ -170,7 +170,7 @@ const BBImportHistory = () => {
   );
 };
 
-const Settings = ({ onNavigate, onOpenBlueButton }) => {
+const Settings = ({ onNavigate, onOpenBlueButton, onShowFraudAlert }) => {
   const [theme, setTheme] = useState(() => {
     return localStorage.getItem('symptomTracker_theme') || 'system';
   });
@@ -1030,6 +1030,22 @@ const Settings = ({ onNavigate, onOpenBlueButton }) => {
           </p>
         </div>
         */}
+
+        {/* Fraud Alert */}
+        <button
+            onClick={onShowFraudAlert}
+            className="w-full flex items-center gap-3 p-3 bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-lg transition-colors text-left"
+        >
+          <span className="text-xl">🚨</span>
+          <div>
+            <p className="text-sm font-medium text-red-800 dark:text-red-300">
+              VA Fraud Alert
+            </p>
+            <p className="text-xs text-red-600 dark:text-red-400">
+              View current VA appointment scam warning
+            </p>
+          </div>
+        </button>
 
         {/* Help & Tutorial Section */}
         <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">

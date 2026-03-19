@@ -74,6 +74,21 @@ const AppContent = () => {
   const [showTerms, setShowTerms] = useState(false);
   const [showBlueButton, setShowBlueButton] = useState(false);
 
+  // Fraud alert banner — dismissed state persisted to localStorage
+  const [showFraudAlert, setShowFraudAlert] = useState(() => {
+    return localStorage.getItem('docbear_fraudAlertDismissed') !== 'true';
+  });
+
+  const dismissFraudAlert = () => {
+    localStorage.setItem('docbear_fraudAlertDismissed', 'true');
+    setShowFraudAlert(false);
+  };
+
+  const reopenFraudAlert = () => {
+    localStorage.removeItem('docbear_fraudAlertDismissed');
+    setShowFraudAlert(true);
+  };
+
   // Phase 1H - Copy last entry prefill data
   const [prefillData, setPrefillData] = useState(null);
 
@@ -205,7 +220,11 @@ const AppContent = () => {
       case 'export':
         return <ExportData />;
       case 'settings':
-        return <Settings onNavigate={handleNavigate} onOpenBlueButton={() => setShowBlueButton(true)} />;
+        return <Settings
+            onNavigate={handleNavigate}
+            onOpenBlueButton={() => setShowBlueButton(true)}
+            onShowFraudAlert={reopenFraudAlert}
+        />;
       case 'thank-you':
         return <ThankYou />;
       case 'secondary-conditions':
@@ -231,6 +250,42 @@ const AppContent = () => {
 
   return (
       <>
+        {/* Fraud Alert Banner */}
+        {showFraudAlert && (
+            <div className="fixed top-0 left-0 right-0 z-50 bg-red-700 dark:bg-red-900 text-white shadow-lg">
+              <div className="max-w-4xl mx-auto px-4 py-3">
+                <div className="flex items-start gap-3">
+                  <span className="text-xl flex-shrink-0 mt-0.5">🚨</span>
+                  <div className="flex-1 min-w-0">
+                    <p className="font-bold text-sm">
+                      Fraud Alert — VA Appointment Scam
+                    </p>
+                    <p className="text-xs text-red-100 mt-0.5 leading-relaxed">
+                      VA does <strong>not</strong> charge upfront for appointments and does{' '}
+                      <strong>not</strong> send payment requests by email, text, or phone.
+                      If you receive a suspicious letter, call, or message — do not pay.
+                      Contact your local VA medical center directly to verify.
+                    </p>
+                    <p className="text-xs text-red-200 mt-1">
+                      Report scams: VSAFE{' '}
+                      <span className="font-mono">1-833-38V-SAFE</span>
+                      {' '}· VA OIG Hotline{' '}
+                      <span className="font-mono">1-800-488-8244</span>
+                      {' '}· VHAOICHelpline@va.gov
+                    </p>
+                  </div>
+                  <button
+                      onClick={dismissFraudAlert}
+                      className="flex-shrink-0 text-red-200 hover:text-white text-xl font-bold leading-none p-1 -mt-1"
+                      aria-label="Dismiss fraud alert"
+                  >
+                    ×
+                  </button>
+                </div>
+              </div>
+            </div>
+        )}
+
         {/* Terms Modal - MUST accept before anything else */}
         {showTerms && (
             <TermsModal
