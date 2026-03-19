@@ -200,6 +200,23 @@ const CategorySection = ({ category, primaryCondition, onTrackSymptoms }) => {
   );
 };
 
+// Conditions where unestablished service connection poses meaningful DIC risk
+// if the veteran passes away from or with that condition unconnected
+const DIC_SENSITIVE_CONDITIONS = new Set([
+  'hypertension', 'diabetes', 'sleep-apnea', 'als',
+  'multiple-sclerosis', 'parkinsons', 'ptsd',
+]);
+
+// Returns true if ANY secondary under this primary has smcPotential
+// Used to decide whether to show the SMC-K / DIC flag
+const hasSMCPotentialSecondaries = (criteria) => {
+  const categories = criteria?.secondaryConditions?.categories;
+  if (!categories) return false;
+  return Object.values(categories).some(cat =>
+      cat.conditions?.some(c => c.smcConsideration)
+  );
+};
+
 /**
  * Primary Condition Panel - Shows all secondaries for a primary condition
  */
@@ -326,6 +343,57 @@ const PrimaryConditionPanel = ({ conditionData, userServiceConnected, onTrackSym
                   </div>
               )}
 
+              {/* DIC Awareness Flag — shown for conditions with meaningful survivor benefit implications */}
+              {DIC_SENSITIVE_CONDITIONS.has(
+                  Object.entries(SECONDARY_CONDITIONS_MAP).find(
+                      ([, data]) => data.criteria?.diagnosticCode === criteria?.diagnosticCode
+                  )?.[0] || ''
+              ) && (
+                  <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 text-left">
+                    <div className="space-y-2">
+                      <h4 className="font-semibold text-red-900 dark:text-red-200 text-sm flex items-center gap-2">
+                        <AlertCircle className="w-4 h-4 text-red-600 dark:text-red-400 flex-shrink-0" />
+                        👨‍👩‍👧 DIC Protection — File Strategically
+                      </h4>
+                        <p className="text-sm text-red-800 dark:text-red-300">
+                          If a veteran passes away from a condition that was <strong>never service-connected</strong>,
+                          the surviving spouse's path to Dependency and Indemnity Compensation (DIC)
+                          becomes significantly harder.
+                        </p>
+                        <p className="text-sm text-red-800 dark:text-red-300">
+                          Establishing service connection for <strong>{criteria.condition}</strong> now —
+                          even at 0% — creates a record that protects your family's DIC eligibility.
+                        </p>
+                        <div className="bg-red-100 dark:bg-red-900/40 rounded p-2 text-xs text-red-700 dark:text-red-400 space-y-1.5">
+                          <p className="font-semibold text-red-800 dark:text-red-300">VA Protection Rules — The Clock Starts When You File:</p>
+                          <p>
+                            <strong>5-Year Rule:</strong> After 5 continuous years at the same rating,
+                            the VA cannot reduce it unless the <em>entire</em> record shows sustained
+                            improvement — not just one exam.
+                          </p>
+                          <p>
+                            <strong>10-Year Rule:</strong> After 10 continuous years of service connection,
+                            the VA cannot sever (terminate) that service connection — even if it was
+                            granted in error — unless fraud is proven. This is the key DIC protection rule.
+                          </p>
+                          <p>
+                            <strong>20-Year Rule:</strong> After 20 continuous years at or above a specific
+                            rating level, the VA cannot reduce the rating below that level — ever —
+                            unless fraud is proven.
+                          </p>
+                          <p className="italic">
+                            The sooner service connection is established, the sooner these clocks start
+                            running — protecting both your benefits and your family's DIC eligibility.
+                          </p>
+                        </div>
+                        <p className="text-xs text-red-600 dark:text-red-500 italic">
+                          Contact your VSO, claims agent, or VA-accredited attorney to discuss
+                          DIC strategy specific to your situation.
+                        </p>
+                      </div>
+                  </div>
+              )}
+
               {/* Important Notes */}
               {secondaryData.importantNotes && secondaryData.importantNotes.length > 0 && (
                   <div className="bg-amber-50 dark:bg-amber-900/20 p-4 rounded-lg">
@@ -335,7 +403,7 @@ const PrimaryConditionPanel = ({ conditionData, userServiceConnected, onTrackSym
                     </h4>
                     <ul className="space-y-1">
                       {secondaryData.importantNotes.map((note, idx) => (
-                          <li key={idx} className="flex items-start gap-2 text-sm text-amber-800 dark:text-amber-300">
+                          <li key={idx} className="flex items-start gap-2 text-sm text-amber-800 dark:text-amber-300 text-left">
                             <span className="text-amber-600 dark:text-amber-400 mt-1">•</span>
                             {note}
                           </li>

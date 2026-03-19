@@ -362,6 +362,24 @@ const SecondaryConditionsSummary = ({
             </div>
           </div>
         </div>
+
+        {/* DIC Awareness */}
+        <div className="bg-red-50 dark:bg-red-900/20 p-3 rounded-lg border border-red-200 dark:border-red-800">
+          <div className="flex items-start gap-2">
+            <AlertCircle className="w-4 h-4 text-red-600 dark:text-red-400 mt-0.5 flex-shrink-0" />
+            <div className="text-sm text-red-800 dark:text-red-300">
+              <strong>DIC Protection:</strong> Filing secondary conditions now — even at 0% —
+              creates a service-connection record that protects your surviving spouse's
+              Dependency and Indemnity Compensation (DIC) eligibility.
+              <span className="block mt-1">
+                <strong>5-year rule:</strong> Rating stabilizes after 5 years — cannot reduce without sustained improvement across all evidence.{' '}
+                <strong>10-year rule:</strong> Service connection cannot be severed after 10 years.{' '}
+                <strong>20-year rule:</strong> Rating level cannot drop below its 20-year mark.
+                The sooner you file, the sooner these clocks start.
+              </span>
+            </div>
+          </div>
+        </div>
       </div>
   );
 };
