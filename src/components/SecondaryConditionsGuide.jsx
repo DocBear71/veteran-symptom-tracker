@@ -19,6 +19,211 @@ import {
   DIABETES_CRITERIA,
 } from '../utils/ratingLogic/';
 
+// Inline criteria for musculoskeletal conditions not yet in ratingLogic
+// These follow the same shape as ratingLogic criteria objects
+const BACK_CONDITION_CRITERIA = {
+  condition: 'Back Condition (Spine)',
+  diagnosticCode: '5235-5243',
+  secondaryConditions: {
+    description: 'Spinal conditions commonly cause secondary disabilities through nerve compression, altered gait, and reduced mobility. File all secondaries — they add to your combined rating.',
+    categories: {
+      neurological: {
+        name: 'Neurological',
+        conditions: [
+          {
+            manifestation: 'Radiculopathy — Lower Extremity',
+            suggestedDCs: ['8520'],
+            dcDescriptions: ['Sciatic nerve paralysis'],
+            nexusStrength: 'strong',
+            notes: 'Sciatic nerve pain, numbness, or weakness from disc compression. Rate separately from the back condition itself.',
+          },
+          {
+            manifestation: 'Radiculopathy — Upper Extremity',
+            suggestedDCs: ['8515'],
+            dcDescriptions: ['Musculocutaneous nerve paralysis'],
+            nexusStrength: 'strong',
+            notes: 'For cervical spine conditions causing arm/hand symptoms.',
+          },
+        ],
+      },
+      genitourinary: {
+        name: 'Genitourinary',
+        conditions: [
+          {
+            manifestation: 'Neurogenic Bladder',
+            suggestedDCs: ['7542'],
+            dcDescriptions: ['Urinary tract infection (recurrent)'],
+            nexusStrength: 'moderate',
+            notes: 'From cauda equina involvement. Document urodynamic studies.',
+          },
+          {
+            manifestation: 'Erectile Dysfunction',
+            suggestedDCs: ['7522'],
+            dcDescriptions: ['Erectile dysfunction'],
+            nexusStrength: 'moderate',
+            notes: 'Can result from nerve damage or pain medication side effects.',
+            smcConsideration: true,
+            smcNote: 'May qualify for SMC-K (special monthly compensation) as a separate award.',
+          },
+        ],
+      },
+      musculoskeletal: {
+        name: 'Musculoskeletal',
+        conditions: [
+          {
+            manifestation: 'Hip Condition (Altered Gait)',
+            suggestedDCs: ['5252'],
+            dcDescriptions: ['Femur, limitation of extension of'],
+            nexusStrength: 'moderate',
+            notes: 'Altered gait pattern from back pain causes abnormal hip loading and degenerative changes over time.',
+          },
+          {
+            manifestation: 'Knee Condition (Altered Gait)',
+            suggestedDCs: ['5260'],
+            dcDescriptions: ['Leg, limitation of flexion of'],
+            nexusStrength: 'moderate',
+            notes: 'Altered gait from back pain transfers stress to the knees.',
+          },
+        ],
+      },
+      mentalHealth: {
+        name: 'Mental Health',
+        conditions: [
+          {
+            manifestation: 'Depression',
+            suggestedDCs: ['9434'],
+            dcDescriptions: ['Depressive disorder'],
+            nexusStrength: 'moderate',
+            notes: 'Chronic pain and functional limitations from back conditions commonly lead to clinical depression.',
+          },
+        ],
+      },
+      endocrine: {
+        name: 'Endocrine / Intermediate Step',
+        conditions: [
+          {
+            manifestation: 'Obesity (Intermediate Step)',
+            suggestedDCs: ['7717'],
+            dcDescriptions: ['Endocrine condition — obesity'],
+            nexusStrength: 'moderate',
+            notes: 'Reduced mobility from chronic back pain leads to weight gain. Obesity then serves as an intermediate step connecting back condition to diabetes (DC 7913) or sleep apnea (DC 6847). Document the full chain: SC back → reduced mobility → obesity → secondary condition.',
+            intermediateStep: true,
+          },
+        ],
+      },
+    },
+    importantNotes: [
+      'Radiculopathy must be rated separately from the back condition — do not let VA merge them.',
+      'Document all functional limitations: bending, lifting, sitting, standing time limits.',
+      'If obesity is the intermediate step, get a nexus opinion that explicitly traces the full causal chain.',
+    ],
+    documentationStrategy: [
+      'Request all imaging: X-ray, MRI, CT scan of affected spine segments.',
+      'Keep a symptom log showing frequency and duration of radiculopathy flares.',
+      'Get an independent medical opinion (IMO) if VA denies the secondary connection.',
+    ],
+  },
+};
+
+const KNEE_CONDITION_CRITERIA = {
+  condition: 'Knee Condition',
+  diagnosticCode: '5256-5263',
+  secondaryConditions: {
+    description: 'Knee conditions cause secondary disabilities through altered gait, instability, reduced mobility, and fall risk. The chain-of-events doctrine (38 CFR §3.310) is especially important for knee claims.',
+    categories: {
+      musculoskeletal: {
+        name: 'Musculoskeletal',
+        conditions: [
+          {
+            manifestation: 'Hip Condition (Opposite Side)',
+            suggestedDCs: ['5252'],
+            dcDescriptions: ['Femur, limitation of extension of'],
+            nexusStrength: 'moderate',
+            notes: 'Compensatory loading of the opposite hip from favoring the injured knee.',
+          },
+          {
+            manifestation: 'Back Condition (Altered Gait)',
+            suggestedDCs: ['5237'],
+            dcDescriptions: ['Lumbosacral strain'],
+            nexusStrength: 'moderate',
+            notes: 'Altered gait from knee instability transfers stress to the lumbar spine.',
+          },
+          {
+            manifestation: 'Ankle Condition (Same Side)',
+            suggestedDCs: ['5271'],
+            dcDescriptions: ['Ankle, limited motion of'],
+            nexusStrength: 'moderate',
+            notes: 'Altered gait affects the same-side ankle.',
+          },
+          {
+            manifestation: 'Shoulder Condition (Fall from Instability)',
+            suggestedDCs: ['5200', '5201', '5202', '5203'],
+            dcDescriptions: ['Scapulohumeral articulation', 'Arm, limitation of motion of'],
+            nexusStrength: 'moderate',
+            notes: '38 CFR §3.310 chain-of-events: SC knee instability causes a fall → shoulder injury → chronic impairment. Document the specific fall event, the mechanism (knee gave out), and the resulting shoulder diagnosis. Buddy/lay statements from witnesses are especially valuable.',
+            chainOfEvents: true,
+          },
+        ],
+      },
+      neurological: {
+        name: 'Neurological',
+        conditions: [
+          {
+            manifestation: 'Head/TBI Residuals (Fall from Instability)',
+            suggestedDCs: ['8045'],
+            dcDescriptions: ['Brain disease due to trauma'],
+            nexusStrength: 'moderate',
+            notes: '38 CFR §3.310 chain-of-events: SC knee instability → fall → head impact → TBI residuals. ER records and treating provider notes from the time of injury are critical evidence.',
+            chainOfEvents: true,
+          },
+        ],
+      },
+      mentalHealth: {
+        name: 'Mental Health',
+        conditions: [
+          {
+            manifestation: 'Depression',
+            suggestedDCs: ['9434'],
+            dcDescriptions: ['Depressive disorder'],
+            nexusStrength: 'possible',
+            notes: 'Chronic pain and limited mobility from knee conditions commonly contribute to depression.',
+          },
+        ],
+      },
+      endocrine: {
+        name: 'Endocrine / Intermediate Step',
+        conditions: [
+          {
+            manifestation: 'Obesity (Intermediate Step)',
+            suggestedDCs: ['7717'],
+            dcDescriptions: ['Endocrine condition — obesity'],
+            nexusStrength: 'moderate',
+            notes: 'Reduced mobility from chronic knee condition leads to weight gain. Obesity then serves as an intermediate step to diabetes (DC 7913) or sleep apnea (DC 6847). Document the full chain: SC knee → reduced mobility → obesity → secondary condition.',
+            intermediateStep: true,
+          },
+        ],
+      },
+    },
+    caseLawReferences: [
+      {
+        case: '38 CFR §3.310',
+        citation: '38 CFR §3.310',
+        holding: 'Secondary service connection — a disability which is proximately due to or the result of a service-connected disease or injury shall be service connected. Includes chain-of-events causation.',
+      },
+    ],
+    importantNotes: [
+      'Chain-of-events claims require documenting the specific triggering event — a fall, a stumble, a "giving out" episode.',
+      'Buddy/lay statements from anyone who witnessed falls or functional decline are powerful evidence.',
+      'Obesity as an intermediate step requires an explicit nexus opinion tracing the full causal chain.',
+    ],
+    documentationStrategy: [
+      'Log every fall or near-fall caused by knee instability with date, location, and what happened.',
+      'Ask your treating provider to document instability episodes and fall risk in their notes.',
+      'For shoulder/TBI claims, obtain ER records from the date of the injury-causing fall.',
+    ],
+  },
+};
+
 
 // Map of condition IDs to their criteria objects (only those with secondaryConditions)
 const SECONDARY_CONDITIONS_MAP = {
@@ -32,6 +237,8 @@ const SECONDARY_CONDITIONS_MAP = {
   'parkinsons': { criteria: PARKINSONS_DISEASE_CRITERIA, icon: '🧠', color: 'purple' },
   'multiple-sclerosis': { criteria: MULTIPLE_SCLEROSIS_CRITERIA, icon: '🧠', color: 'indigo' },
   'als': { criteria: ALS_CRITERIA, icon: '🧠', color: 'red' },
+  'back-condition': { criteria: BACK_CONDITION_CRITERIA, icon: '🦴', color: 'amber' },
+  'knee-condition': { criteria: KNEE_CONDITION_CRITERIA, icon: '🦵', color: 'lime' },
 };
 
 // Nexus strength indicators
@@ -107,6 +314,35 @@ const SecondaryConditionCard = ({ condition, onTrackSymptoms }) => {
                     </div>
                     <div className="text-sm text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-700/30 p-2 rounded">
                       {condition.notes}
+                    </div>
+                  </div>
+              )}
+
+              {/* Chain of Events flag */}
+              {condition.chainOfEvents && (
+                  <div className="bg-orange-50 dark:bg-orange-900/20 p-2 rounded border border-orange-200 dark:border-orange-800">
+                    <div className="flex items-start gap-2">
+                      <span className="text-orange-600 dark:text-orange-400 font-bold text-sm flex-shrink-0">⛓</span>
+                      <div className="text-sm text-orange-800 dark:text-orange-300">
+                        <strong>Chain-of-Events Nexus (38 CFR §3.310):</strong> This secondary condition
+                        may be connected through a causal chain — your SC condition caused an event
+                        (e.g. a fall) that directly caused this condition. Document the triggering
+                        event specifically.
+                      </div>
+                    </div>
+                  </div>
+              )}
+
+              {/* Intermediate Step flag */}
+              {condition.intermediateStep && (
+                  <div className="bg-teal-50 dark:bg-teal-900/20 p-2 rounded border border-teal-200 dark:border-teal-800">
+                    <div className="flex items-start gap-2">
+                      <span className="text-teal-600 dark:text-teal-400 font-bold text-sm flex-shrink-0">🔗</span>
+                      <div className="text-sm text-teal-800 dark:text-teal-300">
+                        <strong>Intermediate Step:</strong> This condition can serve as a bridge
+                        in your causal chain. VA recognizes intermediate steps — document the full
+                        chain from your SC condition through this condition to the final secondary condition.
+                      </div>
                     </div>
                   </div>
               )}
@@ -206,6 +442,11 @@ const DIC_SENSITIVE_CONDITIONS = new Set([
   'hypertension', 'diabetes', 'sleep-apnea', 'als',
   'multiple-sclerosis', 'parkinsons', 'ptsd',
 ]);
+
+// NOTE: Tailwind color classes used dynamically via SECONDARY_CONDITIONS_MAP color values.
+// If adding new conditions, ensure their color value has bg-{color}-100, text-{color}-600,
+// bg-{color}-500, etc. defined in tailwind config or as safelist entries.
+// 'amber' and 'lime' are standard Tailwind colors and work without additional config.
 
 // Returns true if ANY secondary under this primary has smcPotential
 // Used to decide whether to show the SMC-K / DIC flag
@@ -414,7 +655,7 @@ const PrimaryConditionPanel = ({ conditionData, userServiceConnected, onTrackSym
 
               {/* Documentation Strategy */}
               {secondaryData.documentationStrategy && secondaryData.documentationStrategy.length > 0 && (
-                  <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg">
+                  <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg text-left">
                     <h4 className="font-medium text-green-900 dark:text-green-200 mb-2 flex items-center gap-2">
                       <CheckCircle className="w-4 h-4" />
                       Documentation Strategy
@@ -587,6 +828,89 @@ const SecondaryConditionsGuide = ({ userServiceConnected = [], onTrackSymptoms }
                   />
               ))
           )}
+        </div>
+
+        {/* How to File */}
+        <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-5">
+          <h3 className="font-semibold text-blue-900 dark:text-blue-200 text-base mb-3 flex items-center gap-2">
+            <FileText className="w-5 h-5" />
+            How to File a Secondary Claim
+          </h3>
+          <div className="space-y-3 text-sm text-blue-800 dark:text-blue-300">
+            <p>
+              File on <strong>VA Form 21-526EZ</strong> or online at <strong>va.gov</strong>,
+              or through your VSO, accredited claims agent, or attorney.
+            </p>
+            <div className="bg-white dark:bg-gray-800 rounded-lg p-3 border border-blue-200 dark:border-blue-700 space-y-2">
+              <p className="font-semibold text-blue-900 dark:text-blue-200">Three things VA needs to see:</p>
+              <div className="flex items-start gap-2 text-left">
+                <span className="bg-blue-600 text-white text-xs font-bold px-1.5 py-0.5 rounded mt-0.5 flex-shrink-0">1</span>
+                <span>A <strong>current chronic diagnosis</strong> of the secondary condition</span>
+              </div>
+              <div className="flex items-start gap-2 text-left">
+                <span className="bg-blue-600 text-white text-xs font-bold px-1.5 py-0.5 rounded mt-0.5 flex-shrink-0">2</span>
+                <span>An <strong>already service-connected primary condition</strong></span>
+              </div>
+              <div className="flex items-start gap-2 text-left">
+                <span className="bg-blue-600 text-white text-xs font-bold px-1.5 py-0.5 rounded mt-0.5 flex-shrink-0">3</span>
+                <span>A <strong>medical nexus</strong> showing the primary condition caused or aggravated the secondary condition</span>
+              </div>
+            </div>
+            <div className="bg-blue-100 dark:bg-blue-900/40 rounded-lg p-3">
+              <p className="font-semibold text-blue-900 dark:text-blue-200 mb-1">Key tip when filing:</p>
+              <p>
+                Clearly state <strong>"secondary to [your SC condition]"</strong> in your claim.
+                Do not just list the new condition — explicitly name the primary SC condition
+                that caused it and describe the causal chain.
+              </p>
+            </div>
+            <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-700 rounded-lg p-3">
+              <p className="font-semibold text-amber-900 dark:text-amber-200 mb-1">
+                ⚠️ Chain-of-events claims (38 CFR §3.310)
+              </p>
+              <p className="text-amber-800 dark:text-amber-300 text-left">
+                If your SC condition <em>started a chain reaction</em> — for example, SC knee instability
+                causes a fall which causes a shoulder injury — the end result can still be
+                service-connected even if the SC condition didn't directly cause it.
+                Document the specific triggering event and get a nexus opinion connecting the chain.
+              </p>
+            </div>
+            <p className="text-xs text-blue-700 dark:text-blue-400 italic">
+              Don't leave secondary conditions on the table. File the right way and protect your effective date.
+              Contact your VSO, Agent, or Attorney if you have questions about your specific situation.
+            </p>
+          </div>
+        </div>
+
+        {/* Buddy Statement Generator cross-reference */}
+        <div className="bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded-lg p-4">
+          <div className="flex items-start gap-3">
+            <span className="text-2xl flex-shrink-0">👥</span>
+            <div>
+              <h4 className="font-semibold text-purple-900 dark:text-purple-200 text-sm mb-1">
+                Buddy &amp; Lay Statements Strengthen Secondary Claims
+              </h4>
+              <p className="text-sm text-purple-800 dark:text-purple-300 text-left">
+                For chain-of-events claims especially — if someone witnessed the fall, the injury,
+                or the functional decline caused by your SC condition — their statement can be
+                powerful supporting evidence. Spouse, family, friends, and coworkers can all
+                submit lay statements.
+              </p>
+              {onTrackSymptoms && (
+                  <button
+                      onClick={() => onTrackSymptoms({ navigateTo: 'buddy-statement' })}
+                      className="mt-2 text-xs bg-purple-600 hover:bg-purple-700 text-white px-3 py-1.5 rounded-lg transition-colors font-medium"
+                  >
+                    👥 Open Buddy Statement Generator →
+                  </button>
+              )}
+              {!onTrackSymptoms && (
+                  <p className="text-xs text-purple-600 dark:text-purple-400 mt-1">
+                    Available in C&amp;P Resources → Buddy Statement Generator
+                  </p>
+              )}
+            </div>
+          </div>
         </div>
 
         {/* Disclaimer */}
