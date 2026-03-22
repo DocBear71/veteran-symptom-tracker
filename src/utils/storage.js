@@ -266,9 +266,13 @@ export const addMedication = (medication, profileId = null) => {
     id: crypto.randomUUID(),
     name: medication.name.trim(),
     dosage: medication.dosage.trim(),
+    strength: medication.strength || '',
+    quantity: medication.quantity || 1,
+    unitType: medication.unitType || 'tablet',
     frequency: medication.frequency || 'as-needed',
     forConditions: medication.forConditions || [],
     notes: medication.notes || '',
+    dosingIntervalHours: medication.dosingIntervalHours ?? null,
     isActive: true,
     createdAt: new Date().toISOString(),
   };

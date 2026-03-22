@@ -1,5 +1,13 @@
 import { useState, useEffect } from 'react';
-import { getChronicSymptoms, removeChronicSymptom, saveSymptomLog, getMedications, logMedicationTaken, getSymptomLogs } from '../utils/storage';
+import {
+  getChronicSymptoms,
+  removeChronicSymptom,
+  saveSymptomLog,
+  getMedications,
+  logMedicationTaken,
+  getSymptomLogs,
+  getMedicationLogs
+} from '../utils/storage';
 import {
   formatDosage,
   getDefaultMedDetail,
@@ -14,6 +22,7 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
   const { isVeteran } = useProfile();
   const [chronicSymptoms, setChronicSymptoms] = useState([]);
   const [medications, setMedications] = useState([]);
+  const [medLogs, setMedLogs] = useState([]);
   const [showSuccess, setShowSuccess] = useState('');
   const [editMode, setEditMode] = useState(false);
   const [occurredAt, setOccurredAt] = useState(new Date().toISOString());
@@ -770,6 +779,7 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
   const loadData = () => {
     setChronicSymptoms(getChronicSymptoms());
     setMedications(getMedications());
+    setMedLogs(getMedicationLogs());
 
     // Phase 1G - Load recent symptoms and calculate frequency
     const allLogs = getSymptomLogs();
@@ -1444,6 +1454,8 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
     setLogNotes('');
     setOccurredAt(new Date().toISOString());
     setSelectedMedications({});
+    // Refresh med logs so dosing badges reflect latest state
+    setMedLogs(getMedicationLogs());
 
     // Reset condition-specific data
     setMigraineData({
@@ -2201,6 +2213,9 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
     // Show success
     setShowSuccess(selectedChronic.symptomId);
     setTimeout(() => setShowSuccess(''), 1500);
+
+    // Refresh medLogs so dosing badges update immediately
+    setMedLogs(getMedicationLogs());
 
     handleCloseModal();
     if (onLogSaved) onLogSaved();
@@ -3295,6 +3310,27 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
                                         checked={isSelected}
                                         onChange={(e) => {
                                           if (e.target.checked) {
+                                            // Safety check: if dosing interval set and too soon, require confirmation
+                                            if (med.dosingIntervalHours) {
+                                              const lastLog = medLogs
+                                              .filter(l => l.medicationId === med.id)
+                                              .sort((a, b) => new Date(b.occurredAt || b.timestamp) - new Date(a.occurredAt || a.timestamp))[0];
+                                              if (lastLog) {
+                                                const intervalMs = med.dosingIntervalHours * 60 * 60 * 1000;
+                                                const lastTakenMs = new Date(lastLog.occurredAt || lastLog.timestamp).getTime();
+                                                const remainingMs = (lastTakenMs + intervalMs) - Date.now();
+                                                if (remainingMs > 0) {
+                                                  const totalMin = Math.floor(remainingMs / 60_000);
+                                                  const hrs = Math.floor(totalMin / 60);
+                                                  const mins = totalMin % 60;
+                                                  const waitLabel = hrs > 0 ? `${hrs}h ${mins}m` : `${mins}m`;
+                                                  const confirmed = window.confirm(
+                                                      `⚠️ Too soon for ${med.name}\n\nMinimum interval: every ${med.dosingIntervalHours}h\nTime remaining: ${waitLabel}\n\nLog anyway?`
+                                                  );
+                                                  if (!confirmed) return;
+                                                }
+                                              }
+                                            }
                                             setSelectedMedications(prev => ({ ...prev, [med.id]: getDefaultMedDetail() }));
                                           } else {
                                             setSelectedMedications(prev => {
@@ -3306,9 +3342,35 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
                                         }}
                                         className="w-4 h-4 text-teal-600 rounded"
                                     />
-                                    <span className="text-gray-700 dark:text-gray-300">
-                                    {med.name} ({formatDosage(med)})
-                                  </span>
+                                    <div className="flex-1 min-w-0">
+                                      <span className="text-gray-700 dark:text-gray-300">
+                                        {med.name} ({formatDosage(med)})
+                                      </span>
+                                      {/* Compact dosing status badge — only for meds with interval set */}
+                                      {med.dosingIntervalHours && (() => {
+                                        const lastLog = medLogs
+                                        .filter(l => l.medicationId === med.id)
+                                        .sort((a, b) => new Date(b.occurredAt || b.timestamp) - new Date(a.occurredAt || a.timestamp))[0];
+                                        if (!lastLog) return null;
+                                        const intervalMs = med.dosingIntervalHours * 60 * 60 * 1000;
+                                        const lastTakenMs = new Date(lastLog.occurredAt || lastLog.timestamp).getTime();
+                                        const remainingMs = (lastTakenMs + intervalMs) - Date.now();
+                                        const isSafe = remainingMs <= 0;
+                                        const totalMin = Math.max(0, Math.floor(remainingMs / 60_000));
+                                        const hrs = Math.floor(totalMin / 60);
+                                        const mins = totalMin % 60;
+                                        const waitLabel = hrs > 0 ? `${hrs}h ${mins}m` : `${mins}m`;
+                                        return (
+                                            <span className={`ml-2 text-xs font-medium px-1.5 py-0.5 rounded ${
+                                                isSafe
+                                                    ? 'bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-400'
+                                                    : 'bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-400'
+                                            }`}>
+                                            {isSafe ? '✓ Safe' : `⏳ ${waitLabel}`}
+                                          </span>
+                                        );
+                                      })()}
+                                    </div>
                                   </label>
                                   {/* Inline effectiveness & side effects for this medication */}
                                   {isSelected && (

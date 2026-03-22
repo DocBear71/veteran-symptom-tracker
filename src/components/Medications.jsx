@@ -150,6 +150,93 @@ const EffectivenessSideEffectsFields = ({ data, onChange }) => (
     </>
 );
 
+// ─── Dosing Timer Component ──────────────────────────────────────────
+// Shows time since last dose and countdown to next safe dose.
+// Only renders for medications with dosingIntervalHours set.
+// Uses a 1-minute interval to keep the display live.
+const DosingTimer = ({ med, logs }) => {
+  const [now, setNow] = useState(() => Date.now());
+
+  // Tick every minute to keep elapsed/remaining time current
+  useEffect(() => {
+    const interval = setInterval(() => setNow(Date.now()), 60_000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Find the most recent log entry for this specific medication
+  const lastLog = logs
+  .filter(l => l.medicationId === med.id)
+  .sort((a, b) => new Date(b.occurredAt || b.timestamp) - new Date(a.occurredAt || a.timestamp))[0];
+
+  if (!lastLog) {
+    return (
+        <div className="mt-2 px-2 py-1.5 bg-gray-50 dark:bg-gray-700/50 rounded-lg flex items-center gap-2">
+          <span className="text-sm">⏱</span>
+          <span className="text-xs text-gray-500 dark:text-gray-400">
+          No doses logged yet — timer starts after first log
+        </span>
+        </div>
+    );
+  }
+
+  const intervalMs = med.dosingIntervalHours * 60 * 60 * 1000;
+  const lastTakenMs = new Date(lastLog.occurredAt || lastLog.timestamp).getTime();
+  const nextSafeMs = lastTakenMs + intervalMs;
+  const elapsedMs = now - lastTakenMs;
+  const remainingMs = nextSafeMs - now;
+  const isSafe = remainingMs <= 0;
+
+  // Format a millisecond duration as "Xh Ym" or "Ym"
+  const formatDuration = (ms) => {
+    const totalMin = Math.max(0, Math.floor(Math.abs(ms) / 60_000));
+    const hrs = Math.floor(totalMin / 60);
+    const mins = totalMin % 60;
+    if (hrs > 0) return `${hrs}h ${mins}m`;
+    return `${mins}m`;
+  };
+
+  const elapsedLabel = formatDuration(elapsedMs);
+  const remainingLabel = formatDuration(remainingMs);
+
+  return (
+      <div className={`mt-2 rounded-lg border p-2.5 ${
+          isSafe
+              ? 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800'
+              : 'bg-amber-50 dark:bg-amber-900/20 border-amber-200 dark:border-amber-800'
+      }`}>
+        <div className="flex items-center justify-between gap-3">
+          {/* Status badge */}
+          <div className="flex items-center gap-1.5 flex-shrink-0">
+            <span className={`w-2 h-2 rounded-full flex-shrink-0 ${isSafe ? 'bg-green-500' : 'bg-amber-500'}`} />
+            <span className={`text-xs font-semibold ${isSafe ? 'text-green-700 dark:text-green-400' : 'text-amber-700 dark:text-amber-400'}`}>
+            {isSafe ? '✓ Safe to take' : '⏳ Wait'}
+          </span>
+          </div>
+
+          {/* Time info */}
+          <div className="flex items-center gap-3 text-xs text-right">
+            <div>
+              <span className="text-gray-500 dark:text-gray-400">Since last dose: </span>
+              <span className="font-medium text-gray-700 dark:text-gray-300">{elapsedLabel} ago</span>
+            </div>
+            {!isSafe && (
+                <div>
+                  <span className="text-amber-600 dark:text-amber-400 font-medium">{remainingLabel} left</span>
+                </div>
+            )}
+          </div>
+        </div>
+
+        {/* Warning banner when too soon */}
+        {!isSafe && (
+            <div className="mt-1.5 text-xs text-amber-700 dark:text-amber-300">
+              Next safe dose: {new Date(nextSafeMs).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}
+            </div>
+        )}
+      </div>
+  );
+};
+
 const Medications = () => {
   const [medications, setMedications] = useState([]);
   const [logs, setLogs] = useState([]);
@@ -163,6 +250,7 @@ const Medications = () => {
   const [editMedData, setEditMedData] = useState({
     name: '', strength: '', quantity: 1, unitType: 'tablet',
     frequency: 'as-needed', forConditions: '', notes: '', isActive: true,
+    dosingIntervalHours: '',
   });
   const [message, setMessage] = useState('');
 
@@ -174,6 +262,7 @@ const Medications = () => {
   const [newMed, setNewMed] = useState({
     name: '', strength: '', quantity: 1, unitType: 'tablet',
     frequency: 'as-needed', forConditions: '', notes: '',
+    dosingIntervalHours: '',
   });
 
   // Batch log & group form state
@@ -227,6 +316,8 @@ const Medications = () => {
       frequency: newMed.frequency,
       forConditions: newMed.forConditions.split(',').map(c => c.trim()).filter(c => c),
       notes: newMed.notes,
+      // Dosing interval — null if not set, stored in hours (e.g. 4, 6, 8, 12)
+      dosingIntervalHours: newMed.dosingIntervalHours ? parseFloat(newMed.dosingIntervalHours) : null,
     });
     if (result.success) {
       showMessage('Medication added!');
@@ -246,10 +337,28 @@ const Medications = () => {
   };
 
     // ─── Batch Log ───────────────────────────────────────────────────
-    const handleBatchLog = (e) => {
-        e.preventDefault();
-        const medsToLog = medications.filter(m => selectedMedIds.has(m.id));
-        let count = 0;
+  const handleBatchLog = (e) => {
+    e.preventDefault();
+    const medsToLog = medications.filter(m => selectedMedIds.has(m.id));
+
+    // Check dosing intervals — warn for any med logged too soon
+    const tooSoon = medsToLog.filter(med => {
+      if (!med.dosingIntervalHours) return false;
+      const lastLog = logs
+      .filter(l => l.medicationId === med.id)
+      .sort((a, b) => new Date(b.occurredAt || b.timestamp) - new Date(a.occurredAt || a.timestamp))[0];
+      if (!lastLog) return false;
+      const remainingMs = (new Date(lastLog.occurredAt || lastLog.timestamp).getTime() + med.dosingIntervalHours * 3600000) - Date.now();
+      return remainingMs > 0;
+    });
+
+    if (tooSoon.length > 0) {
+      const names = tooSoon.map(m => m.name).join(', ');
+      const confirmed = window.confirm(`⚠️ Too soon for: ${names}\n\nMinimum dosing interval not met. Log anyway?`);
+      if (!confirmed) return;
+    }
+
+    let count = 0;
         // Combine selected side effects with any custom entry
         const batchAllSideEffects = [
             ...batchLogData.sideEffects,
@@ -356,6 +465,7 @@ const Medications = () => {
       forConditions: Array.isArray(med.forConditions) ? med.forConditions.join(', ') : '',
       notes: med.notes || '',
       isActive: med.isActive !== false,
+      dosingIntervalHours: med.dosingIntervalHours != null ? String(med.dosingIntervalHours) : '',
     });
     setShowEditMedForm(true);
   };
@@ -375,6 +485,7 @@ const Medications = () => {
       forConditions: editMedData.forConditions.split(',').map(c => c.trim()).filter(c => c),
       notes: editMedData.notes,
       isActive: editMedData.isActive,
+      dosingIntervalHours: editMedData.dosingIntervalHours ? parseFloat(editMedData.dosingIntervalHours) : null,
     });
     if (result.success) {
       showMessage('Medication updated!'); setShowEditMedForm(false); setEditingMed(null); loadData();
@@ -703,6 +814,13 @@ const Medications = () => {
                               <p className="text-xs text-blue-600 dark:text-blue-400">{frequencyLabels[med.frequency]}</p>
                               {med.forConditions?.length > 0 && <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">For: {med.forConditions.join(', ')}</p>}
                               {med.notes && <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">{med.notes}</p>}
+                              {/* Dosing Timer — only renders if interval is set */}
+                              {med.dosingIntervalHours && (
+                                  <DosingTimer
+                                      med={med}
+                                      logs={logs}
+                                  />
+                              )}
                             </div>
                             <div className="flex items-center gap-2 ml-2">
                               <button onClick={() => handleEditMedication(med)} className="text-gray-400 dark:text-gray-500 hover:text-blue-500 dark:hover:text-blue-400" title="Edit medication">✏️</button>
@@ -861,6 +979,30 @@ const Medications = () => {
                       <option value="twice-daily">Twice Daily</option><option value="three-times">Three Times Daily</option>
                       <option value="four-times">Four Times Daily</option><option value="weekly">Weekly</option><option value="other">Other</option>
                     </select>
+                  </div>
+                  {/* Dosing Interval — drives the safety timer */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      Minimum time between doses
+                      <span className="text-xs text-gray-400 font-normal ml-1">(optional — enables dosing timer)</span>
+                    </label>
+                    <select value={newMed.dosingIntervalHours}
+                            onChange={(e) => setNewMed(prev => ({ ...prev, dosingIntervalHours: e.target.value }))}
+                            className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500">
+                      <option value="">Not set (no timer)</option>
+                      <option value="2">Every 2 hours</option>
+                      <option value="3">Every 3 hours</option>
+                      <option value="4">Every 4 hours</option>
+                      <option value="6">Every 6 hours</option>
+                      <option value="8">Every 8 hours</option>
+                      <option value="12">Every 12 hours</option>
+                      <option value="24">Every 24 hours</option>
+                    </select>
+                    {newMed.dosingIntervalHours && (
+                        <p className="text-xs text-blue-600 dark:text-blue-400 mt-1">
+                          ⏱ A safety timer will show when it's safe to take the next dose.
+                        </p>
+                    )}
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Prescribed For (optional)</label>
@@ -1022,6 +1164,25 @@ const Medications = () => {
                       <option value="as-needed">As Needed (PRN)</option><option value="daily">Once Daily</option>
                       <option value="twice-daily">Twice Daily</option><option value="three-times">Three Times Daily</option>
                       <option value="four-times">Four Times Daily</option><option value="weekly">Weekly</option><option value="other">Other</option>
+                    </select>
+                  </div>
+                  {/* Dosing Interval */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      Minimum time between doses
+                      <span className="text-xs text-gray-400 font-normal ml-1">(optional — enables dosing timer)</span>
+                    </label>
+                    <select value={editMedData.dosingIntervalHours}
+                            onChange={(e) => setEditMedData(prev => ({ ...prev, dosingIntervalHours: e.target.value }))}
+                            className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500">
+                      <option value="">Not set (no timer)</option>
+                      <option value="2">Every 2 hours</option>
+                      <option value="3">Every 3 hours</option>
+                      <option value="4">Every 4 hours</option>
+                      <option value="6">Every 6 hours</option>
+                      <option value="8">Every 8 hours</option>
+                      <option value="12">Every 12 hours</option>
+                      <option value="24">Every 24 hours</option>
                     </select>
                   </div>
                   <div>
