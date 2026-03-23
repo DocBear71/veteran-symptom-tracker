@@ -9,6 +9,10 @@ import {
   deleteMedicationLog,
   updateMedicationLog,
   isBackDated,
+  getMedicationHistory,
+  saveMedicationHistory,
+  updateMedicationHistory,
+  deleteMedicationHistory,
 } from '../utils/storage';
 import {
   formatDosage,
@@ -239,8 +243,12 @@ const DosingTimer = ({ med, logs }) => {
 
 const Medications = () => {
   const [medications, setMedications] = useState([]);
+  const [medHistory, setMedHistory] = useState([]);
   const [logs, setLogs] = useState([]);
   const [groups, setGroups] = useState([]);
+  const [expandedHistoryId, setExpandedHistoryId] = useState(null);
+  const [editingHistoryEntry, setEditingHistoryEntry] = useState(null);
+  const [historyNotesDraft, setHistoryNotesDraft] = useState('');
   const [activeTab, setActiveTab] = useState('log');
   const [showAddForm, setShowAddForm] = useState(false);
   const [showGroupForm, setShowGroupForm] = useState(false);
@@ -284,6 +292,14 @@ const Medications = () => {
 
   const loadData = () => {
     setMedications(getMedications());
+    // Sort history by lastFilledStr descending (most recent first)
+    const history = getMedicationHistory();
+    history.sort((a, b) => {
+      const dateA = new Date(a.lastFilledStr || a.archivedAt || 0);
+      const dateB = new Date(b.lastFilledStr || b.archivedAt || 0);
+      return dateB - dateA;
+    });
+    setMedHistory(history);
     const allLogs = getMedicationLogs();
     // Sort by when medication was actually taken (occurredAt), fall back to
     // entry timestamp for legacy logs that predate the occurredAt field.
@@ -534,6 +550,58 @@ const Medications = () => {
 
   // ─── Delete handlers ─────────────────────────────────────────────
   const handleDeleteMedication = (id) => { if (window.confirm('Remove this medication from your list?')) { deleteMedication(id); loadData(); } };
+
+  // ─── Discontinue: moves active med to Medication History ────────
+  const handleDiscontinueMedication = (med) => {
+    if (!window.confirm(`Move "${med.name}" to Medication History? You can restore it later.`)) return;
+    saveMedicationHistory({
+      name: med.name,
+      dosage: med.dosage,
+      strength: med.strength,
+      quantity: med.quantity,
+      unitType: med.unitType,
+      frequency: med.frequency,
+      forConditions: med.forConditions,
+      notes: med.notes,
+      isActive: false,
+      source: med.source || 'manual',
+      discontinuedAt: new Date().toISOString(),
+      archivedAt: new Date().toISOString(),
+    });
+    deleteMedication(med.id);
+    showMessage(`${med.name} moved to Medication History`);
+    loadData();
+  };
+
+  // ─── Restore: moves history entry back to active meds ───────────
+  const handleRestoreFromHistory = (entry) => {
+    if (!window.confirm(`Restore "${entry.name}" to your active medications?`)) return;
+    addMedication({
+      name: entry.name,
+      dosage: entry.dosage || 'See instructions',
+      strength: entry.strength || '',
+      quantity: entry.quantity || 1,
+      unitType: entry.unitType || 'tablet',
+      frequency: entry.frequency || 'as-needed',
+      forConditions: entry.forConditions || [],
+      notes: entry.notes || '',
+      isActive: true,
+      source: entry.source || 'manual',
+    });
+    deleteMedicationHistory(entry.id);
+    showMessage(`${entry.name} restored to active medications`);
+    loadData();
+  };
+
+  // ─── Save history entry notes edit ──────────────────────────────
+  const handleSaveHistoryNotes = (entry) => {
+    updateMedicationHistory(entry.id, { notes: historyNotesDraft });
+    setEditingHistoryEntry(null);
+    setHistoryNotesDraft('');
+    showMessage('Notes saved');
+    loadData();
+  };
+
   const handleDeleteLog = (id) => { if (window.confirm('Delete this log entry?')) { deleteMedicationLog(id); loadData(); } };
 
   // ─── Helpers ─────────────────────────────────────────────────────
@@ -824,11 +892,122 @@ const Medications = () => {
                             </div>
                             <div className="flex items-center gap-2 ml-2">
                               <button onClick={() => handleEditMedication(med)} className="text-gray-400 dark:text-gray-500 hover:text-blue-500 dark:hover:text-blue-400" title="Edit medication">✏️</button>
+                              <button onClick={() => handleDiscontinueMedication(med)}
+                                      className="text-gray-400 dark:text-gray-500 hover:text-amber-500 dark:hover:text-amber-400"
+                                      title="Discontinue — move to history">🗄️</button>
                               <button onClick={() => handleDeleteMedication(med.id)} className="text-gray-400 dark:text-gray-500 hover:text-red-500 dark:hover:text-red-400" title="Delete medication">🗑️</button>
                             </div>
                           </div>
                         </div>
                     ))}
+                  </div>
+              )}
+
+              {/* ── Medication History Section ───────────────── */}
+              {medHistory.length > 0 && (
+                  <div className="mt-6">
+                    <div className="flex items-center gap-3 mb-3">
+                      <div className="flex-1 h-px bg-gray-200 dark:bg-gray-700" />
+                      <p className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wide whitespace-nowrap">
+                        Medication History ({medHistory.length})
+                      </p>
+                      <div className="flex-1 h-px bg-gray-200 dark:bg-gray-700" />
+                    </div>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mb-3">
+                      Past prescriptions and discontinued medications. Useful for VA C&P documentation.
+                    </p>
+                    <div className="space-y-2">
+                      {medHistory.map((entry) => (
+                          <div key={entry.id}
+                               className="bg-gray-50 dark:bg-gray-800/60 rounded-lg border border-gray-200 dark:border-gray-700">
+                            {/* Collapsed header — always visible */}
+                            <button
+                                onClick={() => setExpandedHistoryId(prev => prev === entry.id ? null : entry.id)}
+                                className="w-full flex items-center justify-between p-3 text-left">
+                              <div className="flex-1 min-w-0">
+                                <div className="flex items-center gap-2 flex-wrap">
+                                  <p className="font-medium text-gray-700 dark:text-gray-300 text-sm">{entry.name}</p>
+                                  {entry.source === 'blue-button' && (
+                                      <span className="text-xs px-1.5 py-0.5 bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 rounded">VA</span>
+                                  )}
+                                </div>
+                                <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">
+                                  {entry.lastFilledStr
+                                      ? `Last filled: ${entry.lastFilledStr}`
+                                      : entry.discontinuedAt
+                                          ? `Discontinued: ${new Date(entry.discontinuedAt).toLocaleDateString()}`
+                                          : 'No date recorded'}
+                                </p>
+                              </div>
+                              <span className="text-gray-400 dark:text-gray-500 text-xs ml-2">
+                            {expandedHistoryId === entry.id ? '▲' : '▼'}
+                          </span>
+                            </button>
+
+                            {/* Expanded detail */}
+                            {expandedHistoryId === entry.id && (
+                                <div className="px-3 pb-3 border-t border-gray-200 dark:border-gray-700 pt-3 space-y-2">
+                                  {entry.dosage && (
+                                      <p className="text-xs text-gray-600 dark:text-gray-400">
+                                        <span className="font-medium">Dosage:</span> {entry.dosage}
+                                      </p>
+                                  )}
+                                  {entry.forConditions?.length > 0 && (
+                                      <p className="text-xs text-gray-600 dark:text-gray-400">
+                                        <span className="font-medium">For:</span> {entry.forConditions.join(', ')}
+                                      </p>
+                                  )}
+
+                                  {/* Notes — view or edit */}
+                                  {editingHistoryEntry === entry.id ? (
+                                      <div className="space-y-2">
+                                <textarea
+                                    value={historyNotesDraft}
+                                    onChange={(e) => setHistoryNotesDraft(e.target.value)}
+                                    rows={3}
+                                    className="w-full p-2 text-xs border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                                    placeholder="Add notes about this prescription..."
+                                />
+                                        <div className="flex gap-2">
+                                          <button onClick={() => handleSaveHistoryNotes(entry)}
+                                                  className="px-3 py-1.5 bg-blue-900 dark:bg-blue-600 text-white text-xs rounded-lg hover:bg-blue-800">
+                                            Save
+                                          </button>
+                                          <button onClick={() => { setEditingHistoryEntry(null); setHistoryNotesDraft(''); }}
+                                                  className="px-3 py-1.5 border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-400 text-xs rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700">
+                                            Cancel
+                                          </button>
+                                        </div>
+                                      </div>
+                                  ) : (
+                                      <div>
+                                        {entry.notes && (
+                                            <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">{entry.notes}</p>
+                                        )}
+                                        <button
+                                            onClick={() => { setEditingHistoryEntry(entry.id); setHistoryNotesDraft(entry.notes || ''); }}
+                                            className="text-xs text-blue-600 dark:text-blue-400 hover:underline">
+                                          {entry.notes ? '✏️ Edit notes' : '+ Add notes'}
+                                        </button>
+                                      </div>
+                                  )}
+
+                                  {/* Actions */}
+                                  <div className="flex gap-2 pt-1">
+                                    <button onClick={() => handleRestoreFromHistory(entry)}
+                                            className="flex-1 py-1.5 px-3 bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-400 border border-green-200 dark:border-green-800 rounded-lg text-xs font-medium hover:bg-green-100 dark:hover:bg-green-900/50 transition-colors">
+                                      ↩ Restore to Active
+                                    </button>
+                                    <button onClick={() => { if (window.confirm('Delete this history entry?')) { deleteMedicationHistory(entry.id); loadData(); } }}
+                                            className="py-1.5 px-3 text-red-400 dark:text-red-500 border border-red-200 dark:border-red-800 rounded-lg text-xs hover:bg-red-50 dark:hover:bg-red-900/30 transition-colors">
+                                      🗑️
+                                    </button>
+                                  </div>
+                                </div>
+                            )}
+                          </div>
+                      ))}
+                    </div>
                   </div>
               )}
             </div>

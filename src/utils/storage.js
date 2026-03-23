@@ -306,6 +306,49 @@ export const deleteMedication = (id, profileId = null) => {
 export const saveMedication = addMedication;
 
 // ============================================
+// MEDICATION HISTORY
+// Records of past/discontinued prescriptions
+// imported from Blue Button or archived by user
+// ============================================
+
+export const getMedicationHistory = (profileId = null) => {
+  const key = getProfileKey('symptomTracker_medicationHistory', profileId);
+  const data = localStorage.getItem(key);
+  return data ? JSON.parse(data) : [];
+};
+
+export const saveMedicationHistory = (entry, profileId = null) => {
+  const history = getMedicationHistory(profileId);
+  const newEntry = {
+    ...entry,
+    id: entry.id || `medh_${crypto.randomUUID()}`,
+    archivedAt: entry.archivedAt || new Date().toISOString(),
+    source: entry.source || 'manual',
+  };
+  history.push(newEntry);
+  const key = getProfileKey('symptomTracker_medicationHistory', profileId);
+  localStorage.setItem(key, JSON.stringify(history));
+  return { success: true, entry: newEntry };
+};
+
+export const updateMedicationHistory = (id, updates, profileId = null) => {
+  const history = getMedicationHistory(profileId);
+  const index = history.findIndex(e => e.id === id);
+  if (index === -1) return { success: false, message: 'Entry not found' };
+  history[index] = { ...history[index], ...updates, id: history[index].id };
+  const key = getProfileKey('symptomTracker_medicationHistory', profileId);
+  localStorage.setItem(key, JSON.stringify(history));
+  return { success: true, entry: history[index] };
+};
+
+export const deleteMedicationHistory = (id, profileId = null) => {
+  const history = getMedicationHistory(profileId);
+  const filtered = history.filter(e => e.id !== id);
+  const key = getProfileKey('symptomTracker_medicationHistory', profileId);
+  localStorage.setItem(key, JSON.stringify(filtered));
+};
+
+// ============================================
 // MEDICATION LOGS
 // ============================================
 
@@ -595,6 +638,7 @@ export const exportAllData = (profileId = null) => {
     favorites: getChronicSymptoms(activeId), // Keep "favorites" key for compatibility
     medications: getMedications(activeId),
     medicationLogs: getMedicationLogs(activeId),
+    medicationHistory: getMedicationHistory(activeId),
     appointments: getAppointments(activeId),
     serviceConnected: activeId ? getServiceConnectedConditions(activeId) : [], // ← ADD THIS LINE
     reminderSettings: getReminderSettings(activeId),
@@ -719,6 +763,11 @@ export const importAllData = (jsonData, options = { merge: false }, profileId = 
         localStorage.setItem(key, JSON.stringify(data.medicationLogs));
       }
 
+      if (data.medicationHistory) {
+        const key = getProfileKey('symptomTracker_medicationHistory', activeId);
+        localStorage.setItem(key, JSON.stringify(data.medicationHistory));
+      }
+
       if (data.appointments) {
         const key = getProfileKey('symptomTracker_appointments', activeId);
         localStorage.setItem(key, JSON.stringify(data.appointments));
@@ -821,4 +870,5 @@ export const clearAllData = (profileId = null) => {
   localStorage.removeItem(getProfileKey('symptomTracker_reminderSettings', activeId));
   localStorage.removeItem(getProfileKey('symptomTracker_sleepApneaProfile', activeId));
   localStorage.removeItem(getProfileKey('symptomTracker_weightGoal', activeId));
+  localStorage.removeItem(getProfileKey('symptomTracker_medicationHistory', activeId));
 };

@@ -811,8 +811,10 @@ export function parseMedications(sectionText) {
     const blockLines = block.split('\n');
     const name = blockLines[0].trim();
 
-    // Skip boilerplate blocks
+    // Skip boilerplate blocks and section headers
     if (!name || name.length < 2 || name.startsWith('This is a list')) return;
+    if (/^\d+\)\s+/i.test(name)) return; // skip "6) Medications" section header
+    if (/^-{3,}$/.test(name)) return;    // skip separator lines
 
     const lastFilledMatch = block.match(/- Last filled on:\s+([A-Za-z]+ \d{1,2},\s*\d{4})/i);
     const statusMatch = block.match(/- Status:\s+(\w+)/i);

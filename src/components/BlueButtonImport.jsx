@@ -24,8 +24,19 @@ import {
   formatDateForDisplay,
   toISOString,
 } from '../utils/bluebuttonParser';
-import { saveMeasurement, getMeasurements } from '../utils/measurements';
-import { saveAppointment, getAppointments, addCustomSymptom } from '../utils/storage';
+import {
+  saveMeasurement,
+  getMeasurements
+} from '../utils/measurements';
+import {
+  saveAppointment,
+  getAppointments,
+  addCustomSymptom,
+  getCustomSymptoms,
+  getMedications,
+  addMedication,
+  saveMedicationHistory
+} from '../utils/storage';
 
 // ─────────────────────────────────────────────────────────────
 // CONSTANTS
@@ -225,7 +236,19 @@ export default function BlueButtonImport({ onClose, onImportComplete }) {
         }
 
         if (selectedSections.includes(SECTION_KEYS.MEDICATIONS) && sectionMap[SECTION_KEYS.MEDICATIONS]) {
+          const _PREVIEW_SUPPLY_KW = [
+            'BANDAGE', 'GAUZE', 'LANCET', 'TAPE,', 'NEEDLE,', 'TABLET CUTTER',
+            'METER', 'TEST STRIP', 'DISPOSAL', 'HYPAFIX', 'SOFTCLIX',
+            'COLON ELECTROLYTE', 'SIMETHICONE', 'LAVAGE',
+          ];
           parseMedications(sectionMap[SECTION_KEYS.MEDICATIONS].rawText)
+          .filter(m => {
+            // Skip section header artifact
+            if (/^\d+\)\s+/i.test(m.name)) return false;
+            // Skip supply/device items
+            const upper = m.name.toUpperCase();
+            return !_PREVIEW_SUPPLY_KW.some(kw => upper.includes(kw));
+          })
           .forEach(m => allRecords.push({ ...m, category: 'medication', type: 'medication' }));
         }
 
@@ -237,14 +260,24 @@ export default function BlueButtonImport({ onClose, onImportComplete }) {
         // Conflict detection against existing Vault data
         const existingMeasurements = getMeasurements();
         const existingAppointments = getAppointments();
+        const existingMedications = getMedications();
 
         const initialStates = {};
         allRecords.forEach((record, idx) => {
           const key = `record_${idx}`;
           record._key = key;
-          record._conflict = _detectConflict(record, existingMeasurements, existingAppointments);
-          // Conflicts are skipped by default; user can toggle to import anyway
-          initialStates[key] = record._conflict ? 'conflict-skip' : 'include';
+          record._conflict = _detectConflict(
+              record, existingMeasurements, existingAppointments, existingMedications
+          );
+          if (!record._conflict) {
+            initialStates[key] = 'include';
+          } else if (record._conflictType === 'history') {
+            // Older prescription that conflicts — default to send to History
+            initialStates[key] = 'conflict-history';
+          } else {
+            // Recent prescription that conflicts — default to skip
+            initialStates[key] = 'conflict-skip';
+          }
         });
 
         setParsedData(allRecords);
@@ -257,7 +290,7 @@ export default function BlueButtonImport({ onClose, onImportComplete }) {
     }, 50);
   };
 
-  const _detectConflict = (record, existingMeasurements, existingAppointments) => {
+  const _detectConflict = (record, existingMeasurements, existingAppointments, existingMedications) => {
     if (record.category === 'vital' || record.category === 'lab') {
       // Heart-rate-only records share the blood-pressure vaultType but carry no
       // systolic/diastolic — comparing them against real BP readings is meaningless
@@ -277,15 +310,163 @@ export default function BlueButtonImport({ onClose, onImportComplete }) {
       );
       return match ? `An appointment already exists on ${record.dateStr}` : null;
     }
+    if (record.category === 'appointment') {
+      const match = existingAppointments.find(a =>
+          a.appointmentDate?.startsWith(record.dateStr || '')
+      );
+      return match ? `An appointment already exists on ${record.dateStr}` : null;
+    }
+    if (record.category === 'condition') {
+      const existingCustomSymptoms = getCustomSymptoms();
+      const conditionName = record.name.toLowerCase().trim();
+      const match = existingCustomSymptoms.find(s =>
+          s.name.toLowerCase().trim() === conditionName
+      );
+      return match ? `"${match.name}" already exists in your conditions list` : null;
+    }
+    if (record.category === 'medication') {
+      const bbBaseName = record.name
+      .replace(/\s+\d[\d.]*\s*(MG|MCG|GM|ML|MG\/ML|UNIT|%|UNT)[^\s]*/gi, '')
+      .replace(/\s+(TAB|CAP|CREAM|GEL|PATCH|SOLN|PWDR|INJ|OINT|SUPP|DROPS|SPRAY)[^\s]*/gi, '')
+      .trim()
+      .toLowerCase();
+      const match = existingMedications.find(m =>
+          m.name.toLowerCase().includes(bbBaseName) ||
+          bbBaseName.includes(m.name.toLowerCase())
+      );
+      if (match) {
+        const oneYearAgo = new Date();
+        oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
+        const lastFilled = record.lastFilled ? new Date(record.lastFilled) : null;
+        const isOld = !lastFilled || lastFilled < oneYearAgo;
+
+        // Extract numeric strength from Blue Button name
+        // Only match MG/MCG/UNT — skip ML and GM which are volumes/weights not strengths
+        // "PRAZOSIN HCL 2MG CAP" → 2
+        // "SEMAGLUTIDE 1MG/0.75ML" → 1 (first MG match, not the ML)
+        const bbStrengthMatch = record.name.match(/\s+([\d.]+)\s*(MG|MCG|UNT)(?![/\w])/i)
+            || record.name.match(/\s+([\d.]+)\s*(MG|MCG|UNT)/i);
+        const bbStrength = bbStrengthMatch ? parseFloat(bbStrengthMatch[1]) : null;
+
+        // Extract numeric strength from Vault entry
+        // Vault strength field formats vary:
+        //   "10 mg", "10mg", "5 × 5mg capsules (25mg total)", "1mg/0.75ml"
+        // Strategy: find the FIRST MG/MCG/UNT value, ignoring ML (volume) and totals
+        // Normalize whitespace and remove non-breaking spaces before matching
+        // Use strength field if available, fall back to dosage
+        // Some older Vault entries only have dosage (e.g. "10 mg", "800 mg", "25mg")
+        // Strip quantity multiplier prefix if present: "3 × 20mg capsules" → "20mg capsules"
+        // Build vault strength string — prefer strength field, fall back to dosage
+        // Normalize ALL whitespace variants before matching
+        const rawVaultStr = (match.strength !== undefined && match.strength !== null && match.strength !== '')
+            ? String(match.strength)
+            : String(match.dosage || '');
+        const vaultStrengthStr = rawVaultStr
+        .replace(/\u00a0/g, ' ')         // non-breaking space
+            .replace(/\u2009/g, ' ')         // thin space
+            .replace(/\u202f/g, ' ')         // narrow no-break space
+            .replace(/\s+/g, ' ')            // collapse all whitespace
+            .replace(/^\d+\s*[×xX\*]\s*/,'') // strip "3 × " or "5x " multiplier prefix
+            .trim();
+        // Match number + unit with explicit space handling
+        // Handles: "10mg", "10 mg", "10  mg", "800 mg", "2.5mg"
+        const vaultAllMatches = [...vaultStrengthStr.matchAll(/([\d.]+)\s{0,3}(MG|MCG|UNT)/gi)];
+        const vaultStrengthCandidates = vaultAllMatches
+        .filter(m => {
+          const idx = m.index;
+          const before = vaultStrengthStr.slice(Math.max(0, idx - 10), idx).toLowerCase();
+          return !before.includes('total');
+        })
+        .map(m => parseFloat(m[1]));
+        // Use first (smallest per-unit) candidate, not min — avoids 0.75ml confusion
+        const vaultStrength = vaultStrengthCandidates.length > 0
+            ? vaultStrengthCandidates[0]
+            : null;
+
+        // Determine if strengths differ
+        const strengthDiffers = bbStrength !== null &&
+            vaultStrength !== null &&
+            bbStrength !== vaultStrength;
+
+        // Extract quantity from Blue Button instructions
+        // "TAKE FOUR CAPSULES BY MOUTH" → 4
+        // "TAKE TWO TABLETS BY MOUTH" → 2
+        // "TAKE 1 TABLET BY MOUTH" → 1
+        const WORD_TO_NUM = {
+          one: 1, two: 2, three: 3, four: 4, five: 5,
+          six: 6, seven: 7, eight: 8, nine: 9, ten: 10,
+        };
+        // "ONE-HALF" or "one half" tablet — treat as 0.5, won't match unit word pattern
+        // so these naturally fall through to bbQty = null, skipping quantity comparison
+        const instrText = (record.instructions || '').toLowerCase();
+        // Only extract quantity when followed by a unit word (tablet/capsule/cap/tab/patch/unit)
+        // This prevents "TAKE 17 GM" from being misread as quantity 17
+        const UNIT_WORDS = '(tablet|tablets|capsule|capsules|cap|caps|tab|tabs|patch|patches|unit|units|drop|drops)';
+        const instrWordMatch = instrText.match(
+            new RegExp(`take\\s+(one|two|three|four|five|six|seven|eight|nine|ten)\\s+${UNIT_WORDS}`, 'i')
+        );
+        const instrDigitMatch = instrText.match(
+            new RegExp(`take\\s+(\\d+)\\s+${UNIT_WORDS}`, 'i')
+        );
+        const bbQty = instrWordMatch
+            ? WORD_TO_NUM[instrWordMatch[1].toLowerCase()]
+            : instrDigitMatch
+                ? parseInt(instrDigitMatch[1])
+                : null;
+
+        // Compare against Vault quantity
+        const vaultQty = match.quantity ? parseInt(match.quantity) : null;
+        const quantityDiffers = bbQty !== null &&
+            vaultQty !== null &&
+            bbQty !== vaultQty;
+
+        // Route to History if: older than 1 year, different strength, OR different quantity
+        const shouldHistory = isOld || strengthDiffers || quantityDiffers;
+        record._conflictType = shouldHistory ? 'history' : 'skip';
+
+        // Determine if Blue Button entry is newer than the Vault entry
+        // If so, flag it so the veteran knows to consider updating their active med
+        const vaultCreatedAt = match.createdAt ? new Date(match.createdAt) : null;
+        const bbIsNewer = lastFilled !== null &&
+            vaultCreatedAt !== null &&
+            lastFilled > vaultCreatedAt;
+        // Only flag "more recent" when there's actually a difference worth updating
+        // For exact matches (same strength + quantity), a newer fill date just means
+        // it's a refill — nothing to update, so suppress the flag
+        const hasDifference = strengthDiffers || quantityDiffers;
+        const newerFlag = (bbIsNewer && hasDifference) ? ' — ⚠️ Blue Button entry is more recent, consider updating your active med' : '';
+
+        // Build descriptive conflict message
+        // Use match.strength || match.dosage for display (some older entries lack strength field)
+        const vaultStrengthDisplay = match.strength || match.dosage || 'unknown';
+        let reason;
+        if (strengthDiffers) {
+          reason = `"${match.name}" exists at different strength (${vaultStrengthDisplay} vs ${bbStrengthMatch?.[0]?.trim()})${newerFlag}`;
+        } else if (quantityDiffers) {
+          reason = `"${match.name}" exists at different quantity (${vaultQty} vs ${bbQty} ${match.unitType || 'units'})${newerFlag}`;
+        } else {
+          reason = `"${match.name}" already exists in your medications list${newerFlag}`;
+        }
+        return reason;
+      }
+    }
     return null;
   };
 
   const toggleRecord = (key, currentState) => {
     setRecordStates(prev => {
-      const isConflict = parsedData.find(r => r._key === key)?._conflict;
+      const record = parsedData.find(r => r._key === key);
+      const isConflict = !!record?._conflict;
+      const conflictType = record?._conflictType;
       let next;
       if (isConflict) {
-        next = currentState === 'conflict-skip' ? 'conflict-import' : 'conflict-skip';
+        if (conflictType === 'history') {
+          // Cycle: conflict-history → conflict-skip → conflict-history
+          next = currentState === 'conflict-history' ? 'conflict-skip' : 'conflict-history';
+        } else {
+          // Cycle: conflict-skip → conflict-import → conflict-skip
+          next = currentState === 'conflict-skip' ? 'conflict-import' : 'conflict-skip';
+        }
       } else {
         next = currentState === 'include' ? 'skip' : 'include';
       }
@@ -299,7 +480,9 @@ export default function BlueButtonImport({ onClose, onImportComplete }) {
       parsedData.forEach(record => {
         if (record.category === category) {
           if (action === 'all') {
-            next[record._key] = record._conflict ? 'conflict-import' : 'include';
+            if (!record._conflict) next[record._key] = 'include';
+            else if (record._conflictType === 'history') next[record._key] = 'conflict-history';
+            else next[record._key] = 'conflict-import';
           } else {
             next[record._key] = record._conflict ? 'conflict-skip' : 'skip';
           }
@@ -312,7 +495,7 @@ export default function BlueButtonImport({ onClose, onImportComplete }) {
   // ── Import execution ──────────────────────────────────────
 
   const handleImport = () => {
-    const counts = { measurements: 0, appointments: 0, conditions: 0, medications: 0, skipped: 0, errors: 0 };
+    const counts = { measurements: 0, appointments: 0, conditions: 0, medications: 0, medicationHistory: 0, skipped: 0, errors: 0 };
 
     parsedData.forEach(record => {
       const state = recordStates[record._key];
@@ -325,7 +508,30 @@ export default function BlueButtonImport({ onClose, onImportComplete }) {
         else if (record.category === 'lab') { _importLab(record); counts.measurements++; }
         else if (record.category === 'appointment') { _importAppointment(record); counts.appointments++; }
         else if (record.category === 'condition') { _importCondition(record); counts.conditions++; }
-        else if (record.category === 'medication') { counts.medications++; } // reference only
+        else if (record.category === 'medication') {
+          const medName = record.name.toUpperCase();
+          const SUPPLY_KW = [
+            'BANDAGE', 'GAUZE', 'LANCET', 'TAPE,', 'NEEDLE,', 'TABLET CUTTER',
+            'METER', 'TEST STRIP', 'DISPOSAL', 'HYPAFIX', 'SOFTCLIX',
+            'COLON ELECTROLYTE', 'SIMETHICONE', 'LAVAGE',
+          ];
+          const isSupply = SUPPLY_KW.some(kw => medName.includes(kw));
+          if (isSupply) {
+            counts.skipped++;
+          } else if (state === 'conflict-history') {
+            // User confirmed: send this conflicting older prescription to History
+            _importMedication(record, false); // false = route to history
+            counts.medicationHistory++;
+          } else {
+            const oneYearAgo = new Date();
+            oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
+            const lastFilled = record.lastFilled ? new Date(record.lastFilled) : null;
+            const isRecent = lastFilled && lastFilled >= oneYearAgo;
+            _importMedication(record, isRecent);
+            if (isRecent) { counts.medications++; }
+            else { counts.medicationHistory++; }
+          }
+        }
       } catch (err) {
         console.error('Import error for record:', record._key, err);
         counts.errors++;
@@ -437,6 +643,59 @@ export default function BlueButtonImport({ onClose, onImportComplete }) {
     // condition gets a guaranteed-unique ID even when imported at the same ms.
     addCustomSymptom(record.name, 'Imported (VA Problem List)', index);
   };
+
+  const _getMedicationDestination = (record) => {
+    if (_isSupplyItem(record.name)) return 'skip';
+    const oneYearAgo = new Date();
+    oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
+    const lastFilled = record.lastFilled ? new Date(record.lastFilled) : null;
+    return (lastFilled && lastFilled >= oneYearAgo) ? 'active' : 'history';
+  };
+
+  // Supply/device keywords — these are not medications and should not import
+  const SUPPLY_KEYWORDS = [
+    'BANDAGE', 'GAUZE', 'LANCET', 'TAPE,', 'NEEDLE,', 'TABLET CUTTER',
+    'METER', 'TEST STRIP', 'DISPOSAL', 'HYPAFIX', 'SOFTCLIX', 'COLON ELECTROLYTE',
+    'SIMETHICONE', 'LAVAGE',
+  ];
+
+  const _isSupplyItem = (name) => {
+    const upper = name.toUpperCase();
+    return SUPPLY_KEYWORDS.some(kw => upper.includes(kw));
+  };
+
+  const _importMedication = (record, isRecent = false) => {
+    const notesParts = [
+      record.instructions,
+      record.prescribedBy ? `Prescribed by: ${record.prescribedBy}` : null,
+      record.facility     ? `Facility: ${record.facility}` : null,
+      record.rxNumber     ? `Rx #: ${record.rxNumber}` : null,
+      record.lastFilledStr ? `Last filled: ${record.lastFilledStr}` : null,
+    ].filter(Boolean).join(' | ');
+
+    const medPayload = {
+      name: record.name,
+      dosage: 'See instructions',
+      strength: '',
+      frequency: 'as-needed',
+      forConditions: record.reasonForUse ? [record.reasonForUse] : [],
+      notes: notesParts,
+      isActive: record.status === 'active',
+      source: 'blue-button',
+    };
+
+    if (isRecent) {
+    addMedication(medPayload);
+  } else {
+    saveMedicationHistory({
+      ...medPayload,
+      lastFilledStr: record.lastFilledStr || null,
+      prescribedOnStr: record.prescribedOnStr || null,
+      archivedAt: new Date().toISOString(),
+      source: 'blue-button',
+    });
+  }
+};
 
   const _saveImportAuditLog = (counts) => {
     try {
@@ -822,9 +1081,8 @@ function StepPreview({ isParsing, parsedData, recordStates, onToggleRecord, onTo
                          recordStates={recordStates} onToggleRecord={onToggleRecord} onToggleCategory={onToggleCategory} />
         )}
         {groups.medication.length > 0 && (
-            <RecordGroup label="Medications (Reference Only)" category="medication" records={groups.medication}
-                         recordStates={recordStates} onToggleRecord={onToggleRecord} onToggleCategory={onToggleCategory}
-                         referenceOnly />
+            <RecordGroup label="Medications" category="medication" records={groups.medication}
+                         recordStates={recordStates} onToggleRecord={onToggleRecord} onToggleCategory={onToggleCategory} />
         )}
 
         <div className="flex justify-between mt-6 pt-4 border-t border-gray-200">
@@ -879,7 +1137,7 @@ function RecordGroup({ label, category, records, recordStates, onToggleRecord, o
 }
 
 function RecordRow({ record, state, onToggle, referenceOnly }) {
-  const isIncluded = state === 'include' || state === 'conflict-import';
+  const isIncluded = state === 'include' || state === 'conflict-import' || state === 'conflict-history';
   const isConflict = !!record._conflict;
   const label  = _getRecordLabel(record);
   const detail = _getRecordDetail(record);
@@ -900,9 +1158,15 @@ function RecordRow({ record, state, onToggle, referenceOnly }) {
                 <span className={`text-xs px-1.5 py-0.5 rounded border ${
                     state === 'conflict-import'
                         ? 'bg-blue-100 text-blue-700 border-blue-200'
-                        : 'bg-amber-100 text-amber-700 border-amber-200'
+                        : state === 'conflict-history'
+                            ? 'bg-purple-100 text-purple-700 border-purple-200'
+                            : 'bg-amber-100 text-amber-700 border-amber-200'
                 }`}>
-              {state === 'conflict-import' ? '⚡ Import anyway' : '⚠️ Conflict — skipped'}
+              {state === 'conflict-import'
+                  ? '⚡ Import anyway'
+                  : state === 'conflict-history'
+                      ? '📋 → Medication History'
+                      : '⚠️ Conflict — skipped'}
             </span>
             )}
           </div>
@@ -950,7 +1214,7 @@ function _getRecordDetail(record) {
 // ── Step 3: Complete ──────────────────────────────────────────
 
 function StepComplete({ importResult, onClose }) {
-  const { measurements, appointments, conditions, medications, skipped, errors } = importResult;
+  const { measurements, appointments, conditions, medications, medicationHistory, skipped, errors } = importResult;
   return (
       <div className="text-center py-8">
         <div className="text-5xl mb-4">✅</div>
@@ -963,7 +1227,8 @@ function StepComplete({ importResult, onClose }) {
             {measurements > 0 && <li>✓ {measurements} measurement{measurements !== 1 ? 's' : ''} (vitals + labs)</li>}
             {appointments > 0 && <li>✓ {appointments} appointment{appointments !== 1 ? 's' : ''}</li>}
             {conditions > 0  && <li>✓ {conditions} condition{conditions !== 1 ? 's' : ''} added to symptom list</li>}
-            {medications > 0 && <li className="text-gray-600">📋 {medications} medication{medications !== 1 ? 's' : ''} (reference only)</li>}
+            {medications > 0 && <li>✓ {medications} medication{medications !== 1 ? 's' : ''} added to active list</li>}
+            {medicationHistory > 0 && <li className="text-gray-600">📋 {medicationHistory} older prescription{medicationHistory !== 1 ? 's' : ''} saved to Medication History</li>}
             {skipped > 0     && <li className="text-gray-500">— {skipped} record{skipped !== 1 ? 's' : ''} skipped</li>}
             {errors > 0      && <li className="text-red-600">⚠️ {errors} error{errors !== 1 ? 's' : ''}</li>}
           </ul>

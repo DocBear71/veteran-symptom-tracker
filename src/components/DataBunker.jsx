@@ -65,10 +65,14 @@ export default function DataBunker() {
             data: {
                 symptomLogs: JSON.parse(localStorage.getItem(`symptomTracker_logs_${activeProfileId}`) || '[]'),
                 customSymptoms: JSON.parse(localStorage.getItem(`symptomTracker_customSymptoms_${activeProfileId}`) || '[]'),
-                chronicSymptoms: JSON.parse(localStorage.getItem(`symptomTracker_chronicSymptoms_${activeProfileId}`) || '[]'),
-                serviceConnectedConditions: JSON.parse(
-                    localStorage.getItem(`symptomTracker_serviceConnected_${activeProfileId}`) || '[]'
-                ),
+                chronicSymptoms: JSON.parse(localStorage.getItem(`symptomTracker_favorites_${activeProfileId}`) || '[]'),
+              serviceConnectedConditions: (() => {
+                try {
+                  const profiles = JSON.parse(localStorage.getItem('symptomTracker_profiles') || '[]');
+                  const profile = profiles.find(p => p.id === activeProfileId);
+                  return profile?.serviceConnectedConditions || [];
+                } catch { return []; }
+              })(),
                 medications: JSON.parse(localStorage.getItem(`symptomTracker_medications_${activeProfileId}`) || '[]'),
                 medicationLogs: JSON.parse(localStorage.getItem(`symptomTracker_medicationLogs_${activeProfileId}`) || '[]'),
                 measurements: JSON.parse(localStorage.getItem(`symptomTracker_measurements_${activeProfileId}`) || '[]'),
