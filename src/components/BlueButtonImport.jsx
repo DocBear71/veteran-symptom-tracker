@@ -19,6 +19,7 @@ import {
   parseMedications,
   parseAppointments,
   parseActiveMedSummary,
+  parseMentalHealthScores,
   SECTION_LABELS,
   IMPORTABLE_SECTIONS,
   SECTION_KEYS,
@@ -37,7 +38,10 @@ import {
   getMedications,
   addMedication,
   updateMedication,
-  saveMedicationHistory
+  saveMedicationHistory,
+  getMedicationHistory,
+  saveMentalHealthScore,
+  getMentalHealthScores,
 } from '../utils/storage';
 
 // ─────────────────────────────────────────────────────────────
@@ -264,17 +268,24 @@ export default function BlueButtonImport({ onClose, onImportComplete }) {
           .forEach(a => allRecords.push({ ...a, category: 'appointment', type: 'appointment' }));
         }
 
+        // Mental health scores parsed from full file text (spans all sections)
+        if (selectedSections.includes(SECTION_KEYS.CARE_NOTES)) {
+          parseMentalHealthScores(fileTextRef.current || '')
+          .forEach(s => allRecords.push({ ...s, category: 'mental_health', type: 'mental_health' }));
+        }
+
         // Conflict detection against existing Vault data
         const existingMeasurements = getMeasurements();
         const existingAppointments = getAppointments();
         const existingMedications = getMedications();
+        const existingMedHistory = getMedicationHistory();
 
         const initialStates = {};
         allRecords.forEach((record, idx) => {
           const key = `record_${idx}`;
           record._key = key;
           record._conflict = _detectConflict(
-              record, existingMeasurements, existingAppointments, existingMedications
+              record, existingMeasurements, existingAppointments, existingMedications, existingMedHistory
           );
           if (!record._conflict) {
             initialStates[key] = 'include';
@@ -297,7 +308,7 @@ export default function BlueButtonImport({ onClose, onImportComplete }) {
     }, 50);
   };
 
-  const _detectConflict = (record, existingMeasurements, existingAppointments, existingMedications) => {
+  const _detectConflict = (record, existingMeasurements, existingAppointments, existingMedications, existingMedHistory = []) => {
     if (record.category === 'vital' || record.category === 'lab') {
       // Heart-rate-only records share the blood-pressure vaultType but carry no
       // systolic/diastolic — comparing them against real BP readings is meaningless
@@ -323,6 +334,13 @@ export default function BlueButtonImport({ onClose, onImportComplete }) {
       );
       return match ? `An appointment already exists on ${record.dateStr}` : null;
     }
+
+    if (record.category === 'mental_health') {
+      const existing = getMentalHealthScores();
+      const match = existing.find(s => s.dateStr === record.dateStr);
+      return match ? `Mental health scores already recorded for ${record.dateStr}` : null;
+    }
+
     if (record.category === 'condition') {
       const existingCustomSymptoms = getCustomSymptoms();
       const conditionName = record.name.toLowerCase().trim();
@@ -456,6 +474,19 @@ export default function BlueButtonImport({ onClose, onImportComplete }) {
         }
         return reason;
       }
+
+      // No match in active meds — check Medication History by Rx number
+      // If this exact Rx# was already imported to history, skip it silently
+      if (existingMedHistory.length > 0 && record.rxNumber) {
+        const historyMatch = existingMedHistory.find(h => {
+          const rxInNotes = h.notes?.match(/Rx #:\s*(\S+)/)?.[1];
+          return rxInNotes && rxInNotes === record.rxNumber;
+        });
+        if (historyMatch) {
+          record._conflictType = 'skip';
+          return `Already in Medication History (Rx #${record.rxNumber})`;
+        }
+      }
     }
     return null;
   };
@@ -519,6 +550,20 @@ export default function BlueButtonImport({ onClose, onImportComplete }) {
         else if (record.category === 'lab') { _importLab(record); counts.measurements++; }
         else if (record.category === 'appointment') { _importAppointment(record); counts.appointments++; }
         else if (record.category === 'condition') { _importCondition(record); counts.conditions++; }
+        else if (record.category === 'mental_health') {
+          saveMentalHealthScore({
+            dateStr:   record.dateStr,
+            gad7:      record.gad7,
+            phq9:      record.phq9,
+            pcl5:      record.pcl5,
+            responses: record.responses,
+            clinician: record.clinician,
+            location:  record.location,
+            source:    'blue-button',
+            savedAt:   new Date().toISOString(),
+          });
+          counts.mentalHealth = (counts.mentalHealth || 0) + 1;
+        }
         else if (record.category === 'medication') {
           const medName = record.name.toUpperCase();
           const SUPPLY_KW = [
@@ -1092,6 +1137,7 @@ function StepPreview({ isParsing, parsedData, recordStates, onToggleRecord, onTo
     condition:   parsedData.filter(r => r.category === 'condition'),
     medication:  parsedData.filter(r => r.category === 'medication'),
     appointment: parsedData.filter(r => r.category === 'appointment'),
+    mental_health: parsedData.filter(r => r.category === 'mental_health'),
   };
 
   const includedCount = Object.values(recordStates).filter(s => s === 'include' || s === 'conflict-import').length;
@@ -1136,6 +1182,14 @@ function StepPreview({ isParsing, parsedData, recordStates, onToggleRecord, onTo
             </div>
         )}
 
+        {groups.mental_health.length > 0 && (
+            <div className="bg-purple-50 border border-purple-200 rounded-lg p-3 mb-4 text-xs text-purple-800">
+              🧠 <strong>Mental health scores</strong> (GAD-7, PHQ-9, PCL-5) will be saved to your
+              Mental Health Scores section in Measurements, one record per assessment session.
+              Item-level responses are captured where available for C&P documentation.
+            </div>
+        )}
+
         {/* Record groups — ordered by likely importance to veterans */}
         {groups.vital.length > 0 && (
             <RecordGroup label="Vitals" category="vital" records={groups.vital}
@@ -1153,6 +1207,12 @@ function StepPreview({ isParsing, parsedData, recordStates, onToggleRecord, onTo
             <RecordGroup label="Appointments" category="appointment" records={groups.appointment}
                          recordStates={recordStates} onToggleRecord={onToggleRecord} onToggleCategory={onToggleCategory} />
         )}
+
+        {groups.mental_health.length > 0 && (
+            <RecordGroup label="Mental Health Scores" category="mental_health" records={groups.mental_health}
+                         recordStates={recordStates} onToggleRecord={onToggleRecord} onToggleCategory={onToggleCategory} />
+        )}
+
         {groups.medication.length > 0 && (
             <RecordGroup label="Medications" category="medication" records={groups.medication}
                          recordStates={recordStates} onToggleRecord={onToggleRecord} onToggleCategory={onToggleCategory} />
@@ -1273,6 +1333,13 @@ function _getRecordLabel(record) {
   if (record.category === 'condition')   return record.name;
   if (record.category === 'medication')  return record.name;
   if (record.category === 'appointment') return record.clinic || record.location || record.type || 'VA Appointment';
+  if (record.category === 'mental_health') {
+    const parts = [];
+    if (record.gad7 !== null) parts.push(`GAD-7: ${record.gad7}`);
+    if (record.phq9 !== null) parts.push(`PHQ-9: ${record.phq9}`);
+    if (record.pcl5 !== null) parts.push(`PCL-5: ${record.pcl5}`);
+    return parts.length > 0 ? parts.join(' · ') : 'Mental Health Scores';
+  }
   return 'Record';
 }
 
@@ -1281,6 +1348,11 @@ function _getRecordDetail(record) {
   if (record.category === 'condition')   return record.sctCode ? `SNOMED: ${record.sctCode}` : null;
   if (record.category === 'medication')  return record.instructions ? record.instructions.slice(0, 80) + (record.instructions.length > 80 ? '…' : '') : null;
   if (record.category === 'appointment') return record.status ? `Status: ${record.status}` : null;
+  if (record.category === 'mental_health') {
+    const hasResponses = record.responses &&
+        (record.responses.gad7 || record.responses.phq9 || record.responses.pcl5);
+    return hasResponses ? 'Includes item-level responses' : 'Scores only';
+  }
   return null;
 }
 
@@ -1302,6 +1374,7 @@ function StepComplete({ importResult, onClose }) {
             {conditions > 0  && <li>✓ {conditions} condition{conditions !== 1 ? 's' : ''} added to symptom list</li>}
             {medications > 0 && <li>✓ {medications} medication{medications !== 1 ? 's' : ''} added to active list</li>}
             {medicationHistory > 0 && <li className="text-gray-600">📋 {medicationHistory} older prescription{medicationHistory !== 1 ? 's' : ''} saved to Medication History</li>}
+            {importResult.mentalHealth > 0 && <li>🧠 {importResult.mentalHealth} mental health assessment{importResult.mentalHealth !== 1 ? 's' : ''} saved</li>}
             {skipped > 0     && <li className="text-gray-500">— {skipped} record{skipped !== 1 ? 's' : ''} skipped</li>}
             {errors > 0      && <li className="text-red-600">⚠️ {errors} error{errors !== 1 ? 's' : ''}</li>}
           </ul>

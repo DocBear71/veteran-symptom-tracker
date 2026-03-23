@@ -871,4 +871,42 @@ export const clearAllData = (profileId = null) => {
   localStorage.removeItem(getProfileKey('symptomTracker_sleepApneaProfile', activeId));
   localStorage.removeItem(getProfileKey('symptomTracker_weightGoal', activeId));
   localStorage.removeItem(getProfileKey('symptomTracker_medicationHistory', activeId));
+  localStorage.removeItem(getProfileKey('symptomTracker_mentalHealthScores', activeId));
+};
+
+// ============================================
+// MENTAL HEALTH SCORES
+// GAD-7, PHQ-9, PCL-5 imported from VA Blue Button
+// or manually logged. Profile-namespaced.
+// ============================================
+
+export const getMentalHealthScores = (profileId = null) => {
+  const key = getProfileKey('symptomTracker_mentalHealthScores', profileId);
+  const data = localStorage.getItem(key);
+  return data ? JSON.parse(data) : [];
+};
+
+export const saveMentalHealthScore = (entry, profileId = null) => {
+  const scores = getMentalHealthScores(profileId);
+  const newEntry = {
+    ...entry,
+    id: entry.id || `mhs_${crypto.randomUUID()}`,
+    savedAt: entry.savedAt || new Date().toISOString(),
+  };
+  scores.push(newEntry);
+  const key = getProfileKey('symptomTracker_mentalHealthScores', profileId);
+  localStorage.setItem(key, JSON.stringify(scores));
+  return { success: true, entry: newEntry };
+};
+
+export const deleteMentalHealthScore = (id, profileId = null) => {
+  const scores = getMentalHealthScores(profileId);
+  const filtered = scores.filter(s => s.id !== id);
+  const key = getProfileKey('symptomTracker_mentalHealthScores', profileId);
+  localStorage.setItem(key, JSON.stringify(filtered));
+};
+
+export const clearMentalHealthScores = (profileId = null) => {
+  const key = getProfileKey('symptomTracker_mentalHealthScores', profileId);
+  localStorage.removeItem(key);
 };

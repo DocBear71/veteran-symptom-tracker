@@ -1176,3 +1176,303 @@ export function countImportableRecords(parsed) {
   const total = Object.values(byType).reduce((sum, n) => sum + n, 0);
   return { total, byType };
 }
+
+// ─────────────────────────────────────────────────────────────
+// MENTAL HEALTH SCORES parser
+// ─────────────────────────────────────────────────────────────
+
+/**
+ * parseMentalHealthScores
+ * Extracts GAD-7, PHQ-9, and PCL-5 scores from the full Blue Button
+ * file text. Handles three distinct formats found in VistA output:
+ *
+ * FORMAT 1 — Inline date+score block (most reliable):
+ *   9/29/25:
+ *   GAD-7 score:  19
+ *   PHQ-9 Depression Scale Score: 22
+ *   PCL-5 Weekly Score:  57
+ *
+ * FORMAT 2 — Dash-list in care notes (repeated across visits):
+ *   - PCL-5:  57            (09/28/2025)
+ *   - PHQ9:   22            (09/28/2025)
+ *   - GAD7:   19            (09/28/2025)
+ *
+ * FORMAT 3 — Full diagnostic study note with item responses:
+ *   Date Given: 12/29/2025
+ *   GAD-7 score:  21
+ *   Questions and Answers
+ *   1. Feeling nervous, anxious or on edge
+ *       Nearly every day
+ *
+ * Deduplication: records are keyed by date+scoreType+score.
+ * Sessions (all three scores on same date) are merged into a single record.
+ *
+ * @param {string} fullText - Entire Blue Button file text
+ * @returns {MentalHealthRecord[]}
+ *
+ * MentalHealthRecord shape:
+ * {
+ *   date: Date,
+ *   dateStr: string,           // ISO date string YYYY-MM-DD
+ *   gad7: number|null,
+ *   phq9: number|null,
+ *   pcl5: number|null,
+ *   responses: {               // item-level responses from Format 3 (when available)
+ *     gad7: Array<{item, question, answer}> | null,
+ *     phq9: Array<{item, question, answer}> | null,
+ *     pcl5: Array<{item, question, answer}> | null,
+ *   },
+ *   clinician: string|null,
+ *   location: string|null,
+ *   source: 'blue-button',
+ *   format: string,            // which format(s) contributed to this record
+ * }
+ */
+export function parseMentalHealthScores(fullText) {
+  const lines = fullText.split('\n');
+
+  // ── Working data structures ──────────────────────────────
+  // sessions keyed by normalized date string (YYYY-MM-DD)
+  const sessions = {};
+
+  const _getOrCreate = (dateKey, rawDateStr) => {
+    if (!sessions[dateKey]) {
+      sessions[dateKey] = {
+        dateKey,
+        rawDateStr,
+        gad7: null, phq9: null, pcl5: null,
+        responses: { gad7: null, phq9: null, pcl5: null },
+        clinician: null,
+        location: null,
+        formats: new Set(),
+      };
+    }
+    return sessions[dateKey];
+  };
+
+  // ── Date normalization ───────────────────────────────────
+  const _normalizeDate = (str) => {
+    if (!str) return null;
+    str = str.trim();
+    // MM/DD/YYYY
+    let m = str.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+    if (m) return `${m[3]}-${m[1].padStart(2,'0')}-${m[2].padStart(2,'0')}`;
+    // MM/DD/YY
+    m = str.match(/^(\d{1,2})\/(\d{1,2})\/(\d{2})$/);
+    if (m) {
+      const yr = parseInt(m[3]) < 50 ? `20${m[3]}` : `19${m[3]}`;
+      return `${yr}-${m[1].padStart(2,'0')}-${m[2].padStart(2,'0')}`;
+    }
+    // M/D/YY
+    m = str.match(/^(\d{1,2})\/(\d{1,2})\/(\d{2})$/);
+    if (m) {
+      const yr = parseInt(m[3]) < 50 ? `20${m[3]}` : `19${m[3]}`;
+      return `${yr}-${m[1].padStart(2,'0')}-${m[2].padStart(2,'0')}`;
+    }
+    return null;
+  };
+
+  // ── Item response extractor ──────────────────────────────
+  // Reads numbered Q&A blocks: "1. Question text\n    Answer\n"
+  // Stops at boilerplate lines (Information contained..., /es/, etc.)
+  const _extractResponses = (startIdx) => {
+    const responses = [];
+    let i = startIdx;
+    const STOP_PATTERNS = [
+      /^Information contained/i,
+      /^\/es\//i,
+      /^Copyright/i,
+      /^PRIME-MD/i,
+      /^All rights reserved/i,
+      /^Signed:/i,
+    ];
+
+    while (i < lines.length) {
+      const line = lines[i].trim();
+      if (STOP_PATTERNS.some(p => p.test(line))) break;
+      // Match numbered question: "1. Question text" or "  1. Question text"
+      const qMatch = line.match(/^\s*(\d{1,2})\.\s+(.+)$/);
+      if (qMatch) {
+        const item = parseInt(qMatch[1]);
+        const question = qMatch[2].trim();
+        // Answer is the next non-empty line (may be indented)
+        let answer = null;
+        let j = i + 1;
+        while (j < lines.length) {
+          const ans = lines[j].trim();
+          if (ans.length > 0) {
+            // Don't grab the next question as an answer
+            if (/^\d{1,2}\./.test(ans)) break;
+            if (STOP_PATTERNS.some(p => p.test(ans))) break;
+            answer = ans;
+            break;
+          }
+          j++;
+        }
+        if (answer) {
+          responses.push({ item, question, answer });
+        }
+      }
+      i++;
+      // Stop after collecting 20 items (PCL-5 has 20, the max)
+      if (responses.length >= 20) break;
+    }
+    return responses.length > 0 ? responses : null;
+  };
+
+  // ═══════════════════════════════════════════════════════════
+  // FORMAT 1 — Inline date prefix block
+  // Pattern: date line, then 3 score lines immediately after
+  // ═══════════════════════════════════════════════════════════
+  for (let i = 0; i < lines.length - 3; i++) {
+    const line = lines[i].trim();
+    const dateMatch = line.match(/^(\d{1,2}\/\d{1,2}\/\d{2,4}):?\s*$/);
+    if (!dateMatch) continue;
+
+    const dateKey = _normalizeDate(dateMatch[1]);
+    if (!dateKey) continue;
+
+    // Check next 3 lines for the score triple
+    const next = [lines[i+1], lines[i+2], lines[i+3]].map(l => l.trim());
+    const g = next[0].match(/^GAD-7 score:\s+(\d+)/i);
+    const p = next[1].match(/^PHQ-9 Depression Scale Score:\s+(\d+)/i);
+    const c = next[2].match(/^PCL-5 Weekly Score:\s+(\d+)/i);
+
+    if (g && p && c) {
+      const sess = _getOrCreate(dateKey, dateMatch[1]);
+      if (sess.gad7 === null) sess.gad7 = parseInt(g[1]);
+      if (sess.phq9 === null) sess.phq9 = parseInt(p[1]);
+      if (sess.pcl5 === null) sess.pcl5 = parseInt(c[1]);
+      sess.formats.add('inline');
+    }
+  }
+
+  // ═══════════════════════════════════════════════════════════
+  // FORMAT 2 — Dash-list care note entries
+  // Pattern: "- PCL-5:  57  (09/28/2025)"
+  // ═══════════════════════════════════════════════════════════
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i].trim();
+    const pclMatch = line.match(/^-\s+PCL-5:\s+(\d+)\s+\((\d{2}\/\d{2}\/\d{4})\)/);
+    if (!pclMatch) continue;
+
+    const dateKey = _normalizeDate(pclMatch[2]);
+    if (!dateKey) continue;
+
+    const pcl5 = parseInt(pclMatch[1]);
+    let phq9 = null, gad7 = null;
+
+    // Look forward up to 6 lines for the other two scores
+    for (let j = i + 1; j < Math.min(i + 7, lines.length); j++) {
+      const nl = lines[j].trim();
+      const phqM = nl.match(/^-\s+PHQ9:\s+(\d+)/);
+      const gadM = nl.match(/^-\s+GAD7:\s+(\d+)/);
+      if (phqM) phq9 = parseInt(phqM[1]);
+      if (gadM) gad7 = parseInt(gadM[1]);
+    }
+
+    const sess = _getOrCreate(dateKey, pclMatch[2]);
+    // Only fill if not already set by Format 1 (prefer Format 1 dates)
+    if (sess.pcl5 === null) sess.pcl5 = pcl5;
+    if (sess.phq9 === null && phq9 !== null) sess.phq9 = phq9;
+    if (sess.gad7 === null && gad7 !== null) sess.gad7 = gad7;
+    sess.formats.add('dash-list');
+  }
+
+  // ═══════════════════════════════════════════════════════════
+  // FORMAT 3 — Full diagnostic study notes
+  // Detects by "Date Given: MM/DD/YYYY" followed by a score line
+  // Captures item responses from "Questions and Answers" block
+  // ═══════════════════════════════════════════════════════════
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i].trim();
+
+    // "Date Given: MM/DD/YYYY" is the anchor for Format 3
+    const dateGivenMatch = line.match(/^Date Given:\s+(\d{1,2}\/\d{1,2}\/\d{4})/i);
+    if (!dateGivenMatch) continue;
+
+    const dateKey = _normalizeDate(dateGivenMatch[1]);
+    if (!dateKey) continue;
+
+    // Scan forward up to 60 lines for score, clinician, and Q&A block
+    let score = null, scoreType = null, clinician = null, location = null;
+    let qaStartIdx = null;
+
+    for (let j = i + 1; j < Math.min(i + 60, lines.length); j++) {
+      const nl = lines[j].trim();
+
+      // Stop at next note boundary
+      if (/^MENTAL HEALTH DIAGNOSTIC STUDY NOTE/.test(nl) && j > i + 5) break;
+      if (/^\/es\//.test(nl) && qaStartIdx !== null) break;
+
+      // Extract clinician
+      if (/^Clinician:/.test(nl) && !clinician) {
+        clinician = nl.replace(/^Clinician:\s*/i, '').trim();
+      }
+      // Extract location
+      if (/^Location:/.test(nl) && !location) {
+        location = nl.replace(/^Location:\s*/i, '').trim();
+      }
+
+      // GAD-7 score line
+      const gadM = nl.match(/^GAD-7 score:\s+(\d+)/i);
+      if (gadM && !score) { score = parseInt(gadM[1]); scoreType = 'gad7'; }
+
+      // PHQ-9 score line
+      const phqM = nl.match(/^PHQ-9 Depression Scale Score:\s+(\d+)/i);
+      if (phqM && !score) { score = parseInt(phqM[1]); scoreType = 'phq9'; }
+
+      // PCL-5 score line
+      const pclM = nl.match(/^PCL-5 Weekly Score:\s+(\d+)/i);
+      if (pclM && !score) { score = parseInt(pclM[1]); scoreType = 'pcl5'; }
+
+      // "Questions and Answers" marks start of item response block
+      if (/^Questions and Answers/i.test(nl) && score !== null) {
+        qaStartIdx = j + 1;
+        break;
+      }
+    }
+
+    if (!score || !scoreType) continue;
+
+    const sess = _getOrCreate(dateKey, dateGivenMatch[1]);
+
+    // Set score if not already populated
+    if (sess[scoreType] === null) sess[scoreType] = score;
+
+    // Capture item responses (Format 3 only)
+    if (qaStartIdx !== null && sess.responses[scoreType] === null) {
+      sess.responses[scoreType] = _extractResponses(qaStartIdx);
+    }
+
+    // Set clinician/location if not yet set
+    if (clinician && !sess.clinician) sess.clinician = clinician;
+    if (location && !sess.location) sess.location = location;
+
+    sess.formats.add('full-note');
+  }
+
+  // ── Build final records ──────────────────────────────────
+  // Deduplicate: one record per session date.
+  // Skip sessions with no scores at all (shouldn't happen but guard it).
+  const results = Object.values(sessions)
+  .filter(s => s.gad7 !== null || s.phq9 !== null || s.pcl5 !== null)
+  .map(s => {
+    const date = new Date(s.dateKey + 'T12:00:00');
+    return {
+      date,
+      dateStr: s.dateKey,
+      gad7: s.gad7,
+      phq9: s.phq9,
+      pcl5: s.pcl5,
+      responses: s.responses,
+      clinician: s.clinician,
+      location: s.location,
+      source: 'blue-button',
+      format: [...s.formats].join('+'),
+    };
+  })
+  .sort((a, b) => a.date - b.date); // chronological
+
+  return results;
+}

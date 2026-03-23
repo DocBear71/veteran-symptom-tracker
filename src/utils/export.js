@@ -6,7 +6,8 @@ import { getSymptomLogs,
   getMedicationLogsForSymptom,
   getAppointments,
   getOccurrenceTime,
-  isBackDated
+  isBackDated,
+  getMentalHealthScores,
 } from './storage';
 import { formatDosage } from './medicationUtils';
 import { getMeasurements } from './measurements';
@@ -3787,11 +3788,14 @@ export const generateVAClaimPackagePDF = async (dateRange = 'all', options = {})
         ? filterAppointmentsByDateRange(getAppointments(), dateRange)
         : [];
 
-    const measurements = options.includeMeasurements !== false
-        ? getMeasurementsForDateRange(dateRange)
-        : [];
+  const measurements = options.includeMeasurements !== false
+      ? getMeasurementsForDateRange(dateRange)
+      : [];
 
-    if (filteredLogs.length === 0 && appointments.length === 0 && measurements.length === 0) {
+  const mentalHealthScores = getMentalHealthScores()
+  .sort((a, b) => new Date(a.dateStr) - new Date(b.dateStr));
+
+  if (filteredLogs.length === 0 && appointments.length === 0 && measurements.length === 0) {
         alert('No data to export for the selected date range and filters');
         return;
     }
@@ -6076,6 +6080,139 @@ export const generateVAClaimPackagePDF = async (dateRange = 'all', options = {})
             currentY = doc.lastAutoTable.finalY + 12;
         });
     }
+
+  // ========== MENTAL HEALTH SCORES ==========
+  if (mentalHealthScores.length > 0) {
+    doc.addPage();
+    currentY = 20;
+
+    doc.setFontSize(14);
+    doc.setTextColor(30, 58, 138);
+    doc.setFont(undefined, 'bold');
+    currentSection++;
+    doc.text(`${currentSection}. MENTAL HEALTH ASSESSMENTS`, 14, currentY);
+    doc.setFont(undefined, 'normal');
+
+    doc.setFontSize(10);
+    doc.setTextColor(60);
+    doc.text(`${mentalHealthScores.length} assessment session${mentalHealthScores.length !== 1 ? 's' : ''} (GAD-7, PHQ-9, PCL-5)`, 14, currentY + 8);
+    doc.text('Scores relevant to PTSD, MDD, and GAD disability claims', 14, currentY + 14);
+    currentY += 24;
+
+    // ── Summary score table (all sessions) ──
+    const summaryRows = mentalHealthScores.map(s => {
+      const date = s.dateStr
+          ? new Date(s.dateStr + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+          : '—';
+
+      const gadSev = s.gad7 !== null
+          ? (s.gad7 <= 4 ? 'Minimal' : s.gad7 <= 9 ? 'Mild' : s.gad7 <= 14 ? 'Moderate' : 'Severe')
+          : '—';
+      const phqSev = s.phq9 !== null
+          ? (s.phq9 <= 4 ? 'Minimal' : s.phq9 <= 9 ? 'Mild' : s.phq9 <= 14 ? 'Moderate' : s.phq9 <= 19 ? 'Mod-Severe' : 'Severe')
+          : '—';
+      const pclSev = s.pcl5 !== null
+          ? (s.pcl5 <= 30 ? 'Sub-threshold' : s.pcl5 <= 49 ? 'Moderate PTSD' : 'Severe PTSD')
+          : '—';
+
+      return [
+        date,
+        s.gad7 !== null ? `${s.gad7}/21 — ${gadSev}` : '—',
+        s.phq9 !== null ? `${s.phq9}/27 — ${phqSev}` : '—',
+        s.pcl5 !== null ? `${s.pcl5}/80 — ${pclSev}` : '—',
+        s.clinician || '—',
+      ];
+    });
+
+    autoTable(doc, {
+      startY: currentY,
+      head: [['Date', 'GAD-7 (Anxiety)', 'PHQ-9 (Depression)', 'PCL-5 (PTSD)', 'Clinician']],
+      body: summaryRows,
+      headStyles: { fillColor: [88, 28, 135], fontStyle: 'bold', fontSize: 9 },
+      alternateRowStyles: { fillColor: [245, 243, 255] },
+      columnStyles: {
+        0: { cellWidth: 28 },
+        1: { cellWidth: 38 },
+        2: { cellWidth: 38 },
+        3: { cellWidth: 38 },
+        4: { cellWidth: 'auto' },
+      },
+      styles: { fontSize: 8, cellPadding: 2 },
+      margin: { left: 14, right: 14 },
+    });
+    currentY = doc.lastAutoTable.finalY + 10;
+
+    // ── Item-level responses (sessions that have them) ──
+    const sessionsWithResponses = mentalHealthScores.filter(s =>
+        s.responses && (s.responses.gad7?.length || s.responses.phq9?.length || s.responses.pcl5?.length)
+    );
+
+    if (sessionsWithResponses.length > 0) {
+      if (currentY > 220) { doc.addPage(); currentY = 20; }
+
+      doc.setFontSize(11);
+      doc.setTextColor(88, 28, 135);
+      doc.setFont(undefined, 'bold');
+      doc.text('Item-Level Responses', 14, currentY);
+      doc.setFont(undefined, 'normal');
+      doc.setTextColor(60);
+      doc.setFontSize(9);
+      doc.text('Individual question responses captured from full diagnostic notes', 14, currentY + 5);
+      currentY += 12;
+
+      sessionsWithResponses.forEach(s => {
+        const dateLabel = s.dateStr
+            ? new Date(s.dateStr + 'T12:00:00').toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
+            : 'Unknown date';
+
+        const SCORE_SECTIONS = [
+          { key: 'gad7', label: `GAD-7 (score: ${s.gad7 ?? '—'}/21)`, responses: s.responses?.gad7 },
+          { key: 'phq9', label: `PHQ-9 (score: ${s.phq9 ?? '—'}/27)`, responses: s.responses?.phq9 },
+          { key: 'pcl5', label: `PCL-5 (score: ${s.pcl5 ?? '—'}/80)`, responses: s.responses?.pcl5 },
+        ].filter(sec => sec.responses?.length);
+
+        if (SCORE_SECTIONS.length === 0) return;
+
+        if (currentY > 240) { doc.addPage(); currentY = 20; }
+
+        doc.setFontSize(10);
+        doc.setTextColor(88, 28, 135);
+        doc.setFont(undefined, 'bold');
+        doc.text(`Assessment: ${dateLabel}`, 14, currentY);
+        doc.setFont(undefined, 'normal');
+        currentY += 5;
+
+        SCORE_SECTIONS.forEach(sec => {
+          if (currentY > 240) { doc.addPage(); currentY = 20; }
+
+          const rows = sec.responses.map(r => [
+            `${r.item}.`,
+            r.question,
+            r.answer,
+          ]);
+
+          autoTable(doc, {
+            startY: currentY,
+            head: [[{ content: sec.label, colSpan: 3 }]],
+            body: rows,
+            headStyles: { fillColor: [124, 58, 237], fontStyle: 'bold', fontSize: 8, textColor: 255 },
+            alternateRowStyles: { fillColor: [250, 245, 255] },
+            columnStyles: {
+              0: { cellWidth: 8 },
+              1: { cellWidth: 'auto' },
+              2: { cellWidth: 42 },
+            },
+            styles: { fontSize: 7.5, cellPadding: 2 },
+            margin: { left: 14, right: 14 },
+          });
+
+          currentY = doc.lastAutoTable.finalY + 6;
+        });
+
+        currentY += 4;
+      });
+    }
+  }
 
     // Add footer with page numbers
     const pageCount = doc.internal.getNumberOfPages();
