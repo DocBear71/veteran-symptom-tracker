@@ -880,8 +880,12 @@ const Medications = () => {
                               </div>
                               <p className="text-sm text-gray-600 dark:text-gray-400">{formatDosageWithTotal(med)}</p>
                               <p className="text-xs text-blue-600 dark:text-blue-400">{frequencyLabels[med.frequency]}</p>
-                              {med.forConditions?.length > 0 && <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">For: {med.forConditions.join(', ')}</p>}
                               {med.notes && <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">{med.notes}</p>}
+                              {med.lastRefillDate && med.lastRefillSource === 'blue-button' && (
+                                  <p className="text-xs text-blue-600 dark:text-blue-400 mt-1">
+                                    🔄 Last refilled: {new Date(med.lastRefillDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })} · via VA Blue Button
+                                  </p>
+                              )}
                               {/* Dosing Timer — only renders if interval is set */}
                               {med.dosingIntervalHours && (
                                   <DosingTimer

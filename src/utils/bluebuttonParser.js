@@ -816,6 +816,10 @@ export function parseMedications(sectionText) {
     if (/^\d+\)\s+/i.test(name)) return; // skip "6) Medications" section header
     if (/^-{3,}$/.test(name)) return;    // skip separator lines
 
+    // Skip medications documented as "never filled" — these are non-VA provider
+    // medications recorded for informational purposes only. They were never dispensed
+    // by VA pharmacy and should not appear in the veteran's active med list or history.
+    if (/- Last filled on:\s+Not filled yet/i.test(block)) return;
     const lastFilledMatch = block.match(/- Last filled on:\s+([A-Za-z]+ \d{1,2},\s*\d{4})/i);
     const statusMatch = block.match(/- Status:\s+(\w+)/i);
     const rxNumMatch = block.match(/- Prescription number:\s+(\S+)/i);
@@ -851,6 +855,184 @@ export function parseMedications(sectionText) {
   });
 
   return results;
+}
+
+// ─────────────────────────────────────────────────────────────
+// PHASE 3b — Active Medications Summary parser (Format A)
+// ─────────────────────────────────────────────────────────────
+
+/**
+ * parseActiveMedSummary
+ * Extracts rich metadata from the Format A active medications summary table.
+ *
+ * Format A appears in TWO locations in the Blue Button file:
+ *   1. Standalone section near the top of the file
+ *   2. Embedded inside individual care note sections
+ *
+ * Format A structure (confirmed from actual file):
+ *   BACLOFEN 5MG TAB Qty: 360 for 90 days    ACTIVE (S)   Issue: 09/11/24
+ *     TAKE ONE TABLET BY MOUTH FOUR TIMES A DAY  Refills: 0  Last : 08/27/25
+ *   Indication: FOR SPASTICITY                              Expr : 09/12/25
+ *
+ * This parser is intentionally additive — it returns an array of objects
+ * suitable for MERGING into existing Vault medication entries. It never
+ * creates new medications; it only enriches matched ones.
+ *
+ * @param {string} fullText - The ENTIRE Blue Button file text (not just a section)
+ * @returns {FormatARecord[]}
+ *
+ * FormatARecord shape:
+ * {
+ *   name: string,              // Raw name from file (e.g., "BACLOFEN 5MG TAB")
+ *   baseName: string,          // Stripped base name for matching (e.g., "BACLOFEN")
+ *   qty: number|null,
+ *   daysSupply: number|null,
+ *   status: string,            // "active", "discontinued", etc.
+ *   issueDate: Date|null,
+ *   issueDateStr: string|null,
+ *   lastFillDate: Date|null,
+ *   lastFillDateStr: string|null,
+ *   expirationDate: Date|null,
+ *   expirationDateStr: string|null,
+ *   refillsRemaining: number|null,
+ *   instructions: string|null,
+ *   indication: string|null,
+ *   source: 'blue-button',
+ * }
+ */
+export function parseActiveMedSummary(fullText) {
+  const results = [];
+
+  // ── Strategy ──────────────────────────────────────────────
+  // Format A entries always follow this 3-line pattern:
+  //
+  // Line 1 (name/status line):
+  //   NAME [Qty: N for N days]   STATUS   Issue: MM/DD/YY
+  //
+  // Line 2 (instructions line, indented):
+  //   [spaces]INSTRUCTIONS   Refills: N   Last : MM/DD/YY
+  //
+  // Line 3 (indication line, optional):
+  //   Indication: TEXT   [spaces]   Expr : MM/DD/YY
+  //
+  // "Last :" and "Expr :" have a trailing space before the colon — this is
+  // intentional in the VistA output and must be matched literally.
+  //
+  // Date format in Format A is MM/DD/YY (two-digit year), unlike the
+  // "Month DD, YYYY" format used everywhere else in the file.
+  // ─────────────────────────────────────────────────────────
+
+  const lines = fullText.split('\n');
+  const seen = new Set(); // deduplicate across multiple embedded occurrences
+
+  for (let i = 0; i < lines.length - 1; i++) {
+    const line = lines[i];
+
+    // Line 1 detection: must contain "ACTIVE" or "DISCONTINUED" and "Issue:"
+    // The name is at the START of the line (no leading spaces on line 1)
+    if (!/Issue:\s*\d{2}\/\d{2}\/\d{2}/i.test(line)) continue;
+    if (!/ACTIVE|DISCONTINUED|EXPIRED|HOLD/i.test(line)) continue;
+
+    // ── Parse Line 1 ──────────────────────────────────────
+    // Example: "BACLOFEN 5MG TAB Qty: 360 for 90 days    ACTIVE (S)   Issue: 09/11/24"
+
+    // Extract medication name: everything before "Qty:" or the status word
+    // Remove trailing spaces, then strip Qty clause if present
+    const nameRaw = line
+    .replace(/\s+Qty:.*$/i, '')           // strip "Qty: ..." and everything after
+        .replace(/\s+(ACTIVE|DISCONTINUED|EXPIRED|HOLD).*$/i, '') // strip status onward
+        .trim();
+
+    if (!nameRaw || nameRaw.length < 3) continue;
+
+    // Extract qty and days supply
+    const qtyMatch = line.match(/Qty:\s*(\d+)\s+for\s+(\d+)\s+days/i);
+    const qty = qtyMatch ? parseInt(qtyMatch[1]) : null;
+    const daysSupply = qtyMatch ? parseInt(qtyMatch[2]) : null;
+
+    // Extract status (ACTIVE, DISCONTINUED, etc.)
+    const statusMatch = line.match(/(ACTIVE|DISCONTINUED|EXPIRED|HOLD)\s*(?:\([^)]+\))?/i);
+    const status = statusMatch ? statusMatch[1].toLowerCase() : 'unknown';
+
+    // Extract Issue date (MM/DD/YY)
+    const issueDateMatch = line.match(/Issue:\s*(\d{2}\/\d{2}\/\d{2})/i);
+    const issueDate = issueDateMatch ? parseShortDate(issueDateMatch[1]) : null;
+
+    // ── Parse Line 2 (instructions + refills + last fill) ─
+    const line2 = lines[i + 1] || '';
+    const refillsMatch = line2.match(/Refills:\s*(\d+)/i);
+    const lastFillMatch = line2.match(/Last\s*:\s*(\d{2}\/\d{2}\/\d{2})/i);
+    const refillsRemaining = refillsMatch ? parseInt(refillsMatch[1]) : null;
+    const lastFillDate = lastFillMatch ? parseShortDate(lastFillMatch[1]) : null;
+
+    // Instructions: everything on line 2 before "Refills:" (trim leading whitespace)
+    const instructions = line2
+    .replace(/\s+Refills:.*$/i, '')
+    .replace(/\s+Last\s*:.*$/i, '')
+    .trim() || null;
+
+    // ── Parse Line 3 (indication + expiration, optional) ──
+    const line3 = (lines[i + 2] || '');
+    const indicationMatch = line3.match(/Indication:\s*(.+?)(?:\s{3,}|Expr\s*:|$)/i);
+    const expirationMatch = line3.match(/Expr\s*:\s*(\d{2}\/\d{2}\/\d{2})/i);
+    const indication = indicationMatch ? indicationMatch[1].trim() : null;
+    const expirationDate = expirationMatch ? parseShortDate(expirationMatch[1]) : null;
+
+    // ── Deduplicate ───────────────────────────────────────
+    // Key by name + issue date to avoid duplicating entries that appear in
+    // both the standalone section AND embedded in care notes
+    const dedupKey = `${nameRaw}|${issueDateMatch?.[1] || ''}`;
+    if (seen.has(dedupKey)) continue;
+    seen.add(dedupKey);
+
+    // ── Build base name for Vault matching ────────────────
+    // Strip strength, form, and route suffixes (same logic used in conflict detection)
+    const baseName = nameRaw
+    .replace(/\s+\d[\d.]*\s*(MG|MCG|GM|ML|MG\/ML|UNIT|%|UNT)[^\s]*/gi, '')
+    .replace(/\s+(TAB|CAP|CREAM|GEL|PATCH|SOLN|PWDR|INJ|OINT|SUPP|DROPS|SPRAY|HCL|SULFATE|SODIUM)[^\s]*/gi, '')
+    .trim()
+    .toLowerCase();
+
+    results.push({
+      name: nameRaw,
+      baseName,
+      qty,
+      daysSupply,
+      status,
+      issueDate,
+      issueDateStr: toISOString(issueDate),
+      lastFillDate,
+      lastFillDateStr: toISOString(lastFillDate),
+      expirationDate,
+      expirationDateStr: toISOString(expirationDate),
+      refillsRemaining,
+      instructions: instructions || null,
+      indication,
+      source: 'blue-button',
+    });
+  }
+
+  return results;
+}
+
+/**
+ * parseShortDate
+ * Parses MM/DD/YY format dates used in Format A summary tables.
+ * Two-digit years: 00-49 = 2000-2049, 50-99 = 1950-1999.
+ *
+ * @param {string} str - e.g., "09/11/24"
+ * @returns {Date|null}
+ */
+export function parseShortDate(str) {
+  if (!str) return null;
+  const m = str.match(/^(\d{2})\/(\d{2})\/(\d{2})$/);
+  if (!m) return null;
+  const month = parseInt(m[1]) - 1; // zero-indexed
+  const day   = parseInt(m[2]);
+  const yr    = parseInt(m[3]);
+  const year  = yr < 50 ? 2000 + yr : 1900 + yr;
+  const d = new Date(year, month, day);
+  return isNaN(d.getTime()) ? null : d;
 }
 
 // ─────────────────────────────────────────────────────────────

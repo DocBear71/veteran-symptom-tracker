@@ -18,6 +18,7 @@ import {
   parseConditions,
   parseMedications,
   parseAppointments,
+  parseActiveMedSummary,
   SECTION_LABELS,
   IMPORTABLE_SECTIONS,
   SECTION_KEYS,
@@ -35,6 +36,7 @@ import {
   getCustomSymptoms,
   getMedications,
   addMedication,
+  updateMedication,
   saveMedicationHistory
 } from '../utils/storage';
 
@@ -79,7 +81,10 @@ const TYPE_LABELS = {
 
 export default function BlueButtonImport({ onClose, onImportComplete }) {
   const [step, setStep] = useState(WIZARD_STEPS.UPLOAD);
-  const [, setFileText] = useState(null);
+  // useRef keeps the raw file text readable at import time without triggering re-renders.
+  // The original state approach discarded the value (destructured as [,setFileText])
+  // which caused a ReferenceError when Format A enrichment tried to read it.
+  const fileTextRef = useRef(null);
   const [reportInfo, setReportInfo] = useState(null);
   const [validationError, setValidationError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -99,6 +104,8 @@ export default function BlueButtonImport({ onClose, onImportComplete }) {
   const [importResult, setImportResult] = useState(null);
 
   const fileInputRef = useRef(null);
+  // Prevents StrictMode double-invocation from running the import twice
+  const importInProgressRef = useRef(false);
 
   // ── Step 0 ────────────────────────────────────────────────
 
@@ -143,7 +150,7 @@ export default function BlueButtonImport({ onClose, onImportComplete }) {
         setIsLoading(false);
         return;
       }
-      setFileText(text);
+      fileTextRef.current = text;
       setReportInfo(validation.reportInfo);
       setIsLoading(false);
       setLoadProgress(100);
@@ -495,6 +502,10 @@ export default function BlueButtonImport({ onClose, onImportComplete }) {
   // ── Import execution ──────────────────────────────────────
 
   const handleImport = () => {
+    // Guard against StrictMode double-invocation in development
+    if (importInProgressRef.current) return;
+    importInProgressRef.current = true;
+
     const counts = { measurements: 0, appointments: 0, conditions: 0, medications: 0, medicationHistory: 0, skipped: 0, errors: 0 };
 
     parsedData.forEach(record => {
@@ -538,9 +549,69 @@ export default function BlueButtonImport({ onClose, onImportComplete }) {
       }
     });
 
+    // ── Format A enrichment pass ──────────────────────────
+    // After all Format C medications are imported, parse the Format A
+    // summary table from the full file text and additively apply richer
+    // metadata (lastRefillDate, issueDate, expirationDate) to matched
+    // active Vault medications. This never overwrites user-entered fields.
+    if (selectedSections.includes(SECTION_KEYS.MEDICATIONS) && fileTextRef.current) {
+      try {
+        const formatARecords = parseActiveMedSummary(fileTextRef.current);
+        const vaultMeds = getMedications();
+        let enrichedCount = 0;
+
+        formatARecords.forEach(faRec => {
+          // Find the best-matching active Vault medication by base name
+          const match = vaultMeds.find(vm => {
+            const vaultBaseName = vm.name
+            .replace(/\s+\d[\d.]*\s*(MG|MCG|GM|ML|MG\/ML|UNIT|%|UNT)[^\s]*/gi, '')
+            .replace(/\s+(TAB|CAP|CREAM|GEL|PATCH|SOLN|PWDR|INJ|OINT|SUPP|DROPS|SPRAY|HCL|SULFATE|SODIUM)[^\s]*/gi, '')
+            .trim()
+            .toLowerCase();
+            return (
+                vaultBaseName === faRec.baseName ||
+                vaultBaseName.includes(faRec.baseName) ||
+                faRec.baseName.includes(vaultBaseName)
+            );
+          });
+
+          if (!match) return;
+
+          // Build additive-only update — never overwrite fields the veteran set manually
+          const updates = {};
+          if (faRec.lastFillDateStr && !match.lastRefillDate) {
+            updates.lastRefillDate    = faRec.lastFillDateStr;
+            updates.lastRefillSource  = 'blue-button';
+          }
+          if (faRec.issueDateStr && !match.issueDate) {
+            updates.issueDate         = faRec.issueDateStr;
+          }
+          if (faRec.expirationDateStr && !match.expirationDate) {
+            updates.expirationDate    = faRec.expirationDateStr;
+          }
+          if (faRec.refillsRemaining !== null && match.refillsRemaining === undefined) {
+            updates.refillsRemaining  = faRec.refillsRemaining;
+          }
+
+          if (Object.keys(updates).length > 0) {
+            updateMedication(match.id, updates);
+            enrichedCount++;
+          }
+        });
+
+        if (enrichedCount > 0) {
+          counts.medicationsEnriched = enrichedCount;
+        }
+      } catch (enrichErr) {
+        console.error('Format A enrichment error:', enrichErr);
+        // Non-fatal — import continues normally
+      }
+    }
+
     _saveImportAuditLog(counts);
     setImportResult(counts);
-    setFileText(null); // Discard raw file from memory
+    fileTextRef.current = null; // Discard raw file from memory
+    importInProgressRef.current = false;
     setStep(WIZARD_STEPS.COMPLETE);
     if (onImportComplete) onImportComplete(counts);
   };
@@ -1050,9 +1121,11 @@ function StepPreview({ isParsing, parsedData, recordStates, onToggleRecord, onTo
         )}
 
         {groups.medication.length > 0 && (
-            <div className="bg-gray-50 border border-gray-200 rounded-lg p-3 mb-4 text-xs text-gray-700">
-              💊 <strong>Medications are reference-only</strong> and will not be written to your Vault medication list.
-              They are shown here for informational purposes only.
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-4 text-xs text-blue-800">
+              💊 <strong>Medications will be imported</strong> — recent fills (within 1 year) go to your active
+              medication list; older fills go to Medication History. Blue Button data
+              (last fill date, issue date, expiration) will also be applied to any matching
+              medications already in your Vault.
             </div>
         )}
 
