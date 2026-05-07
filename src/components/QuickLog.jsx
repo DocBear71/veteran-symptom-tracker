@@ -2544,7 +2544,7 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
                                 max="24"
                                 step="0.5"
                                 value={sleepData.hoursSlept}
-                                onChange={(e) => setSleepData(prev => ({ ...prev, hoursSlept: e.target.value }))}
+                                onChange={(e) => setSleepData(prev => ({ ...prev, hoursSlept: e.target.value === '' ? '' : Number(e.target.value) }))}
                                 placeholder="Hrs"
                                 className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm"
                             />
@@ -2556,7 +2556,7 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
                                 min="0"
                                 max="20"
                                 value={sleepData.wakeUps}
-                                onChange={(e) => setSleepData(prev => ({ ...prev, wakeUps: e.target.value }))}
+                                onChange={(e) => setSleepData(prev => ({ ...prev, wakeUps: e.target.value === '' ? '' : Number(e.target.value) }))}
                                 placeholder="Times"
                                 className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm"
                             />

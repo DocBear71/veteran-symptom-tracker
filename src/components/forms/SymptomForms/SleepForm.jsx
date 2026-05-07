@@ -45,7 +45,7 @@ const SleepForm = ({ initialData = {}, onChange }) => {
             </label>
             <input type="number" min="0" max="24" step="0.5"
                    value={data.hoursSlept}
-                   onChange={e => handleChange('hoursSlept', e.target.value)}
+                   onChange={e => handleChange('hoursSlept', e.target.value === '' ? '' : Number(e.target.value))}
                    placeholder="Hours"
                    className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white" />
           </div>
@@ -55,7 +55,7 @@ const SleepForm = ({ initialData = {}, onChange }) => {
             </label>
             <input type="number" min="0" max="20"
                    value={data.wakeUps}
-                   onChange={e => handleChange('wakeUps', e.target.value)}
+                   onChange={e => handleChange('wakeUps', e.target.value === '' ? '' : Number(e.target.value))}
                    placeholder="Times"
                    className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white" />
           </div>

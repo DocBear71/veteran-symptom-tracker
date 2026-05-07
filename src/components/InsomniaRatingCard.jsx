@@ -13,7 +13,10 @@ import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 export default function InsomniaRatingCard({ analysis, expanded, onToggle }) {
   if (!analysis || !analysis.hasData) return null;
 
-  const { supportedRating, rationale, evidenceGaps, metrics } = analysis;
+  // REPLACE WITH:
+  // Match the field names returned by analyzeInsomniaLogs in
+  // src/utils/ratingLogic/neurological.js: ratingRationale + gaps
+  const { supportedRating, ratingRationale: rationale, gaps: evidenceGaps, metrics } = analysis;
   const criteria = INSOMNIA_CRITERIA;
 
   const isRatingSupported = (percent) => supportedRating === percent;

@@ -5794,6 +5794,13 @@ export const analyzeInsomniaLogs = (logs, options = {}) => {
         'Track early morning awakening',
         'Note daytime fatigue and functional impact',
       ],
+      // Empty metrics so the card renders zero/dash placeholders cleanly
+      metrics: {
+        totalLogs: 0,
+        avgSleepHours: null,
+        poorSleepNights: 0,
+        daytimeImpairment: 0,
+      },
       criteria: INSOMNIA_CRITERIA,
       disclaimer: INSOMNIA_CRITERIA.disclaimer,
     };
@@ -5893,6 +5900,51 @@ export const analyzeInsomniaLogs = (logs, options = {}) => {
   gaps.push('Sleep study may be required for higher ratings');
   gaps.push('Document treatments tried (medication, CBT-I, sleep hygiene)');
 
+  // ─── METRICS FOR EVIDENCE SUMMARY CARD ─────────────────────────────────
+  // Pull sleep duration / quality data from log.sleepData on each insomnia
+  // log. Some logs may not have sleepData (older entries, quick logs), so
+  // we skip those for averages but still count them toward totalLogs.
+  //
+  // NOTE: hoursSlept and wakeUps are saved as STRINGS by the symptom logger
+  // form (raw <input> values, not coerced to Number on save). We coerce here
+  // defensively so logs from any era render correctly. quality is already
+  // saved as a number.
+  const toNum = (v) => {
+    if (typeof v === 'number') return v;
+    if (typeof v === 'string' && v.trim() !== '') {
+      const n = parseFloat(v);
+      return Number.isFinite(n) ? n : null;
+    }
+    return null;
+  };
+
+  const logsWithSleepHours = insomniaSymptoms
+  .map(l => ({ log: l, hours: toNum(l.sleepData?.hoursSlept) }))
+  .filter(x => x.hours !== null && x.hours > 0);
+  const avgSleepHours = logsWithSleepHours.length > 0
+      ? (logsWithSleepHours.reduce((sum, x) => sum + x.hours, 0)
+          / logsWithSleepHours.length).toFixed(1)
+      : null;
+
+  // "Poor night" = under 6 hrs sleep, OR quality <= 4/10, OR self-reported
+  // not rested, OR multiple wake-ups (>=2). Any one signal counts the night.
+  const poorSleepNights = insomniaSymptoms.filter(log => {
+    const sd = log.sleepData;
+    if (!sd) return false;
+    const hours = toNum(sd.hoursSlept);
+    const quality = toNum(sd.quality);
+    const wakeUps = toNum(sd.wakeUps);
+    if (hours !== null && hours < 6) return true;
+    if (quality !== null && quality <= 4) return true;
+    if (sd.feelRested === false) return true;
+    if (wakeUps !== null && wakeUps >= 2) return true;
+    return false;
+  }).length;
+
+  // Daytime impairment count = fatigue + irritability symptom logs.
+  // These are the documented daytime consequences of poor sleep.
+  const daytimeImpairment = fatigueCount + irritabilityCount;
+
   return {
     condition: 'Insomnia (Sleep Disorder)',
     diagnosticCode: '8108',
@@ -5901,6 +5953,12 @@ export const analyzeInsomniaLogs = (logs, options = {}) => {
     ratingRationale,
     evidence,
     gaps,
+    metrics: {
+      totalLogs: insomniaSymptoms.length,
+      avgSleepHours,            // string like "4.2" or null
+      poorSleepNights,          // count of nights matching any "poor sleep" signal
+      daytimeImpairment,        // fatigue + irritability log count
+    },
     criteria: INSOMNIA_CRITERIA,
     disclaimer: INSOMNIA_CRITERIA.disclaimer,
   };
