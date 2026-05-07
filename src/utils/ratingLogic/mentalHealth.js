@@ -93,6 +93,14 @@ const analyzeMentalHealthCondition = (
         hospitalizationCount: 0,
         dangerToSelf: false,
         dangerToOthers: false,
+        nightmares: 0,
+        flashbacks: 0,
+        avoidance: 0,
+        hypervigilance: 0,
+        intrusiveThoughts: 0,
+        exaggeratedStartle: 0,
+        emotionalNumbing: 0,
+        panicAttacks: 0,
       },
     };
   }
@@ -141,6 +149,53 @@ const analyzeMentalHealthCondition = (
     if (impactKeywords.daily.some(kw => notes.includes(kw))) notesAnalysis.dailyImpact++;
     if (impactKeywords.severe.some(kw => notes.includes(kw))) notesAnalysis.severeSymptoms++;
   });
+
+  // ============================================
+  // Sub-object aggregation: ptsdData & sleepData
+  // ============================================
+  // Many PTSD-relevant signals are stored on ptsdData/sleepData sub-objects
+  // rather than as separate symptomIds. We count both sources and union them
+  // (per-log dedupe via a Set of log IDs) so a single log doesn't double-count
+  // when both a symptomId and a sub-object flag are present.
+  const ptsdNightmareIds = new Set();
+  const ptsdFlashbackIds = new Set();
+  const ptsdAvoidanceIds = new Set();
+  const ptsdHypervigilanceIds = new Set();
+  const ptsdIntrusiveIds = new Set();
+  const ptsdStartleIds = new Set();
+  const ptsdNumbingIds = new Set();
+
+  relevantLogs.forEach(log => {
+    const sid = getLogSymptomId(log);
+
+    // Nightmare counts: symptomId 'ptsd-nightmare' OR 'nightmares' OR ptsdData/sleepData boolean
+    if (sid === 'ptsd-nightmare' || sid === 'nightmares') ptsdNightmareIds.add(log.id);
+    if (log.ptsdData?.nightmares === true) ptsdNightmareIds.add(log.id);
+    if (log.sleepData?.nightmares === true) ptsdNightmareIds.add(log.id);
+
+    // Flashbacks: symptomId 'ptsd-flashback' OR ptsdData.flashbacks
+    if (sid === 'ptsd-flashback') ptsdFlashbackIds.add(log.id);
+    if (log.ptsdData?.flashbacks === true) ptsdFlashbackIds.add(log.id);
+
+    // Avoidance: symptomId 'ptsd-avoidance' OR ptsdData.avoidance
+    if (sid === 'ptsd-avoidance') ptsdAvoidanceIds.add(log.id);
+    if (log.ptsdData?.avoidance === true) ptsdAvoidanceIds.add(log.id);
+
+    // Hypervigilance, intrusive thoughts, startle, emotional numbing — sub-object only
+    if (sid === 'ptsd-hypervigilance') ptsdHypervigilanceIds.add(log.id);
+    if (log.ptsdData?.hypervigilance === true) ptsdHypervigilanceIds.add(log.id);
+    if (log.ptsdData?.intrusiveThoughts === true) ptsdIntrusiveIds.add(log.id);
+    if (log.ptsdData?.exaggeratedStartle === true) ptsdStartleIds.add(log.id);
+    if (log.ptsdData?.emotionalNumbering === true) ptsdNumbingIds.add(log.id);
+  });
+
+  const nightmareCount = ptsdNightmareIds.size;
+  const flashbackCount = ptsdFlashbackIds.size;
+  const avoidanceCount = ptsdAvoidanceIds.size;
+  const hypervigilanceCount = ptsdHypervigilanceIds.size;
+  const intrusiveCount = ptsdIntrusiveIds.size;
+  const startleCount = ptsdStartleIds.size;
+  const numbingCount = ptsdNumbingIds.size;
 
   const evidence = {
     evaluationPeriod: {
@@ -284,6 +339,15 @@ const analyzeMentalHealthCondition = (
       hospitalizationCount,
       dangerToSelf,
       dangerToOthers,
+      // PTSD-specific counts (will be 0 for non-PTSD conditions, which is correct)
+      nightmares: nightmareCount,
+      flashbacks: flashbackCount,
+      avoidance: avoidanceCount,
+      hypervigilance: hypervigilanceCount,
+      intrusiveThoughts: intrusiveCount,
+      exaggeratedStartle: startleCount,
+      emotionalNumbing: numbingCount,
+      panicAttacks: panicCount,
     },
     disclaimer: 'CRITICAL DISCLAIMER: Mental health ratings are based on professional evaluation of functional impairment in work and social settings, not symptom frequency alone. This analysis helps you understand what your documentation might support, but a comprehensive mental health evaluation is required for any rating determination. All mental health concerns should be discussed with a qualified provider.',
     crisisResources: {
