@@ -14,7 +14,7 @@ export default function ChronicMyelogenousLeukemiaRatingCard({ analysis, expande
     return null;
   }
 
-  const { supportedRating, rationale, evidenceGaps, metrics } = analysis;
+  const { supportedRating, ratingRationale: rationale, gaps: evidenceGaps, metrics } = analysis;
   const criteria = CHRONIC_MYELOGENOUS_LEUKEMIA_CRITERIA;
 
   return (

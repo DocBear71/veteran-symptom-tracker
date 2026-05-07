@@ -12,7 +12,7 @@ export default function EssentialThrombocythemiaRatingCard({ analysis, expanded,
     return null;
   }
 
-  const { supportedRating, rationale, evidenceGaps, metrics } = analysis;
+  const { supportedRating, ratingRationale: rationale, gaps: evidenceGaps, metrics } = analysis;
   const criteria = MYELOPROLIFERATIVE_7718_CRITERIA;
 
   return (

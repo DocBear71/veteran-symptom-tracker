@@ -13,7 +13,7 @@ import {HIP_THIGH_CRITERIA} from '../utils/ratingLogic/';
 export default function HipThighRatingCard({ analysis, expanded, onToggle }) {
   if (!analysis || !analysis.hasData) return null;
 
-  const { supportedRating, rationale, evidenceGaps, metrics } = analysis;
+  const { supportedRating, ratingRationale: rationale, gaps: evidenceGaps, metrics } = analysis;
   const criteria = HIP_THIGH_CRITERIA;
 
   // Normalize rating for comparison (handles string vs number)

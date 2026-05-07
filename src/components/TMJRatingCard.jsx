@@ -11,7 +11,7 @@ import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 
 export default function TMJRatingCard({analysis, expanded, onToggle}) {
   if (!analysis || !analysis.hasData) return null;
-  const {supportedRating, rationale, evidenceGaps, metrics} = analysis;
+  const { supportedRating, ratingRationale: rationale, gaps: evidenceGaps, metrics } = analysis;
   const criteria = TMJ_DISORDER_CRITERIA || TMJ_CRITERIA;
 
   // Normalize rating for comparison (handles string vs number)

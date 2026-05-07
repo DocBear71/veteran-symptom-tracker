@@ -13,7 +13,7 @@ import {ANKLE_ACHILLES_CRITERIA} from '../utils/ratingLogic/';
 export default function AnkleAchillesRatingCard({ analysis, expanded, onToggle }) {
   if (!analysis || !analysis.hasData) return null;
 
-  const { supportedRating, rationale, evidenceGaps, metrics } = analysis;
+  const { supportedRating, ratingRationale: rationale, gaps: evidenceGaps, metrics } = analysis;
   const criteria = ANKLE_ACHILLES_CRITERIA;
 
   // Normalize rating for comparison (handles string vs number)

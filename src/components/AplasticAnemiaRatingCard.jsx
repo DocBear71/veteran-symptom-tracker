@@ -14,7 +14,7 @@ import {APLASTIC_ANEMIA_CRITERIA} from '../utils/ratingLogic/';
 export default function AplasticAnemiaRatingCard({ analysis, expanded, onToggle }) {
   if (!analysis || !analysis.hasData) return null;
 
-  const { supportedRating, rationale, evidenceGaps, metrics } = analysis;
+  const { supportedRating, ratingRationale: rationale, gaps: evidenceGaps, metrics } = analysis;
   const criteria = APLASTIC_ANEMIA_CRITERIA;
 
   const isRatingSupported = (ratingPercent) => supportedRating === ratingPercent;

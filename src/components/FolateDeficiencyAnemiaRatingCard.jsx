@@ -12,7 +12,7 @@ export default function FolateDeficiencyAnemiaRatingCard({ analysis, expanded, o
     return null;
   }
 
-  const { supportedRating, rationale, evidenceGaps, metrics } = analysis;
+  const { supportedRating, ratingRationale: rationale, gaps: evidenceGaps, metrics } = analysis;
   const criteria = FOLATE_DEFICIENCY_ANEMIA_CRITERIA;
 
   return (

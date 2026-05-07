@@ -12,7 +12,7 @@ export default function HemolyticAnemiaRatingCard({ analysis, expanded, onToggle
     return null;
   }
 
-  const { supportedRating, rationale, evidenceGaps, metrics } = analysis;
+  const { supportedRating, ratingRationale: rationale, gaps: evidenceGaps, metrics } = analysis;
   const criteria = HEMOLYTIC_ANEMIA_CRITERIA;
 
   return (

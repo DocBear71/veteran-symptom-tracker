@@ -10,7 +10,7 @@ import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 export default function PostPhlebiticRatingCard({ analysis, expanded, onToggle }) {
   if (!analysis || !analysis.hasData) return null;
 
-  const { supportedRating, rationale, evidenceGaps, metrics } = analysis;
+  const { supportedRating, ratingRationale: rationale, gaps: evidenceGaps, metrics } = analysis;
   const criteria = POST_PHLEBITIC_CRITERIA;
 
   return (

@@ -10,7 +10,7 @@ import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 export default function CardiomyopathyRatingCard({ analysis, expanded, onToggle }) {
   if (!analysis || !analysis.hasData) return null;
 
-  const { supportedRating, rationale, evidenceGaps, metrics } = analysis;
+  const { supportedRating, ratingRationale: rationale, gaps: evidenceGaps, metrics } = analysis;
   const criteria = CARDIOMYOPATHY_CRITERIA;
 
   return (

@@ -8,7 +8,7 @@ import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 
 export default function IronDeficiencyAnemiaRatingCard({ analysis, expanded, onToggle }) {
   if (!analysis || !analysis.hasData) return null;
-  const { supportedRating, rationale, evidenceGaps, metrics } = analysis;
+  const { supportedRating, ratingRationale: rationale, gaps: evidenceGaps, metrics } = analysis;
   const criteria = IRON_DEFICIENCY_ANEMIA_CRITERIA;
   const isRatingSupported = (ratingPercent) => supportedRating === ratingPercent;
 

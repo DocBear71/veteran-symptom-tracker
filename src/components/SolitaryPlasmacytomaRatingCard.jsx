@@ -12,7 +12,7 @@ export default function SolitaryPlasmacytomaRatingCard({ analysis, expanded, onT
     return null;
   }
 
-  const { supportedRating, rationale, evidenceGaps, metrics } = analysis;
+  const { supportedRating, ratingRationale: rationale, gaps: evidenceGaps, metrics } = analysis;
   const criteria = SOLITARY_PLASMACYTOMA_CRITERIA;
 
   return (

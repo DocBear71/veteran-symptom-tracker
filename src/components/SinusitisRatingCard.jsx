@@ -8,7 +8,7 @@ import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 
 export default function SinusitisRatingCard({analysis, expanded, onToggle}) {
   if (!analysis || !analysis.hasData) return null;
-  const {supportedRating, rationale, evidenceGaps, metrics} = analysis;
+  const { supportedRating, ratingRationale: rationale, gaps: evidenceGaps, metrics } = analysis;
   const criteria = SINUSITIS_CRITERIA;
 
   // Normalize rating for comparison (handles string vs number)

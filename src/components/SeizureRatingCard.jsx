@@ -16,7 +16,7 @@ import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 export default function SeizureRatingCard({ analysis, expanded, onToggle }) {
   if (!analysis || !analysis.hasData) return null;
 
-  const { supportedRating, rationale, evidenceGaps, metrics } = analysis;
+  const { supportedRating, ratingRationale: rationale, gaps: evidenceGaps, metrics } = analysis;
 
   // Determine which criteria to use based on seizure type or show both
   const seizureType = metrics?.seizureType || 'major'; // 'major', 'minor', or 'both'

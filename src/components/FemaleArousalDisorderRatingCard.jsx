@@ -16,7 +16,7 @@ import UnderstandingYourRating from './UnderstandingYourRating';
 export default function FemaleArousalDisorderRatingCard({ analysis, expanded, onToggle }) {
   if (!analysis || !analysis.hasData) return null;
 
-  const { supportedRating, rationale, evidenceGaps, metrics } = analysis;
+  const { supportedRating, ratingRationale: rationale, gaps: evidenceGaps, metrics } = analysis;
   const criteria = FEMALE_SEXUAL_AROUSAL_DISORDER_CRITERIA;
 
   const isRatingSupported = (ratingPercent) => supportedRating === ratingPercent;

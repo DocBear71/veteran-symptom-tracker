@@ -12,7 +12,7 @@ export default function PerniciousAnemiaRatingCard({ analysis, expanded, onToggl
     return null;
   }
 
-  const { supportedRating, rationale, evidenceGaps, metrics } = analysis;
+  const { supportedRating, ratingRationale: rationale, gaps: evidenceGaps, metrics } = analysis;
   const criteria = PERNICIOUS_ANEMIA_CRITERIA;
 
   return (

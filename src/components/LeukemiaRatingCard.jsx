@@ -12,7 +12,7 @@ export default function LeukemiaRatingCard({ analysis, expanded, onToggle }) {
     return null;
   }
 
-  const { supportedRating, rationale, evidenceGaps, metrics } = analysis;
+  const { supportedRating, ratingRationale: rationale, gaps: evidenceGaps, metrics } = analysis;
   const criteria = LEUKEMIA_CRITERIA;
 
   return (

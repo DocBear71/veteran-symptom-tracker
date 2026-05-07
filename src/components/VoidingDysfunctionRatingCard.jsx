@@ -20,7 +20,7 @@ export default function VoidingDysfunctionRatingCard({
                                                      }) {
   if (!analysis || !analysis.hasData) return null;
 
-  const { supportedRating, rationale, evidenceGaps, metrics } = analysis;
+  const { supportedRating, ratingRationale: rationale, gaps: evidenceGaps, metrics } = analysis;
   const criteria = VOIDING_DYSFUNCTION_CRITERIA;
 
   // Helper: Check if rating is supported

@@ -12,7 +12,7 @@ export default function MultipleMyelomaRatingCard({
                                                     onToggle,
                                                   }) {
   if (!analysis || !analysis.hasData) return null;
-  const {supportedRating, rationale, evidenceGaps, metrics} = analysis;
+  const { supportedRating, ratingRationale: rationale, gaps: evidenceGaps, metrics } = analysis;
   const criteria = MULTIPLE_MYELOMA_CRITERIA;
 
   // Normalize rating for comparison (handles string vs number)

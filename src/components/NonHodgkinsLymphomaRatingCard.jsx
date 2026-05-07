@@ -12,7 +12,7 @@ export default function NonHodgkinsLymphomaRatingCard({ analysis, expanded, onTo
     return null;
   }
 
-  const { supportedRating, rationale, evidenceGaps, metrics } = analysis;
+  const { supportedRating, ratingRationale: rationale, gaps: evidenceGaps, metrics } = analysis;
   const criteria = NON_HODGKINS_LYMPHOMA_CRITERIA;
 
   return (

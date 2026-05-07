@@ -12,7 +12,7 @@ export default function HodgkinsLymphomaRatingCard({ analysis, expanded, onToggl
     return null;
   }
 
-  const { supportedRating, rationale, evidenceGaps, metrics } = analysis;
+  const { supportedRating, ratingRationale: rationale, gaps: evidenceGaps, metrics } = analysis;
   const criteria = HODGKINS_LYMPHOMA_CRITERIA;
 
   return (

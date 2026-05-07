@@ -14,7 +14,7 @@ import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 export default function PelvicProlapseRatingCard({ analysis, expanded, onToggle }) {
   if (!analysis || !analysis.hasData) return null;
 
-  const { supportedRating, rationale, evidenceGaps, metrics } = analysis;
+  const { supportedRating, ratingRationale: rationale, gaps: evidenceGaps, metrics } = analysis;
   const criteria = PELVIC_PROLAPSE_CRITERIA;
 
   const isRatingSupported = (ratingPercent) => supportedRating === ratingPercent;
