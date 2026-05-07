@@ -2649,7 +2649,7 @@ export const AMPUTATION_CRITERIA = {
 
 export const analyzeLumbosacralStrainLogs = (logs, options = {}) => {
   const conditionCriteria = LUMBOSACRAL_STRAIN_CRITERIA;
-  const evaluationPeriodDays = options.days || 90;
+  const { evaluationPeriodDays = 90 } = options;
   const symptomIds = MUSCULOSKELETAL_CONDITIONS.LUMBOSACRAL_STRAIN.symptomIds;
 
   // Filter logs for back-related symptoms
@@ -2667,6 +2667,17 @@ export const analyzeLumbosacralStrainLogs = (logs, options = {}) => {
       condition: conditionCriteria.condition,
       diagnosticCode: conditionCriteria.diagnosticCode,
       message: 'No back pain symptoms logged in evaluation period',
+      metrics: {
+        totalLogs: 0,
+        avgSeverity: 0,
+        symptomDays: 0,
+        flareUps: 0,
+        radicularCount: 0,
+        severeSymptoms: 0,
+        hasRadicularPain: false,
+        hasMuscleSpasm: false,
+        hasStiffness: false,
+      },
     };
   }
 
@@ -2681,6 +2692,22 @@ export const analyzeLumbosacralStrainLogs = (logs, options = {}) => {
   const hasMuscleSpasm = relevantLogs.some(log => getLogSymptomId(log) === 'back-spasm');
   const hasStiffness = relevantLogs.some(log => getLogSymptomId(log) === 'back-stiffness');
 
+  // ============================================
+  // Compute metrics for Evidence Summary card display
+  // ============================================
+  const radicularCount = relevantLogs.filter(log => {
+    const sid = getLogSymptomId(log);
+    return sid === 'back-radicular' || sid === 'back-numbness';
+  }).length;
+  const flareUps = relevantLogs.filter(log => log.isFlareUp === true).length;
+  const symptomDays = new Set(
+      relevantLogs.map(log => {
+        const date = log.occurredAt || log.timestamp;
+        return date ? date.slice(0, 10) : null; // YYYY-MM-DD
+      }).filter(Boolean)
+  ).size;
+  const severeSymptoms7Plus = relevantLogs.filter(log => (log.severity || 0) >= 7).length;
+
   // Evidence collected
   const evidence = [
     `${totalSymptoms} back pain symptoms logged over ${(evaluationPeriodDays / 30).toFixed(1)} months`,
@@ -2693,17 +2720,32 @@ export const analyzeLumbosacralStrainLogs = (logs, options = {}) => {
   if (hasMuscleSpasm) evidence.push('Muscle spasm episodes documented');
   if (hasStiffness) evidence.push('Back stiffness documented');
 
+  // Build rationale that surfaces the documented evidence depth (Option A)
+  const supportingRationale = [
+    `${totalSymptoms} back pain symptoms documented over ${(evaluationPeriodDays / 30).toFixed(1)} months`,
+    `Average severity ${avgSeverity.toFixed(1)}/10 across ${symptomDays} distinct days`,
+  ];
+  if (severeSymptoms7Plus > 0) {
+    supportingRationale.push(`${severeSymptoms7Plus} severe episodes (severity 7+)`);
+  }
+  if (flareUps > 0) {
+    supportingRationale.push(`${flareUps} flare-up episodes — relevant to DC 5243 incapacitating episode criteria if physician-prescribed bed rest occurred`);
+  }
+  if (radicularCount > 0) {
+    supportingRationale.push(`${radicularCount} radicular pain/numbness episodes documented`);
+  }
+  supportingRationale.push(
+      'Rating itself requires goniometer ROM measurement at C&P examination',
+      'This documentation supports requesting evaluation and demonstrating chronic impairment',
+  );
+
   return {
     hasData: true,
     condition: conditionCriteria.condition,
     diagnosticCode: conditionCriteria.diagnosticCode,
     evaluationPeriodDays,
     supportedRating: 'Requires Clinical Measurement',
-    ratingRationale: [
-      'Back pain conditions require Range of Motion (ROM) measurements by a healthcare provider',
-      'Symptom logs document pain patterns but cannot determine ROM limitations',
-      'Your symptom documentation shows ongoing back pain that warrants clinical evaluation',
-    ],
+    ratingRationale: supportingRationale,
     assessmentLevel: 'Clinical Evaluation Required',
     evidence,
     gaps: [
@@ -2712,8 +2754,20 @@ export const analyzeLumbosacralStrainLogs = (logs, options = {}) => {
       'Document any abnormal gait or spinal contour observed by provider',
       'Get imaging if not already done (X-ray, MRI)',
       'Document functional limitations: difficulty bending, lifting, walking',
+      flareUps > 0 ? `${flareUps} flare-ups logged — if any required physician-prescribed bed rest, request that documentation from your provider for DC 5243 incapacitating episodes rating` : 'If you experience flare-ups requiring bed rest, ask your physician to prescribe and document them for DC 5243 incapacitating episodes rating',
     ],
     criteria: conditionCriteria,
+    metrics: {
+      totalLogs: totalSymptoms,
+      avgSeverity: Number(avgSeverity.toFixed(1)),
+      symptomDays,
+      flareUps,
+      radicularCount,
+      severeSymptoms: severeSymptoms7Plus,
+      hasRadicularPain,
+      hasMuscleSpasm,
+      hasStiffness,
+    },
     disclaimer: 'Musculoskeletal conditions require objective Range of Motion measurements performed by a healthcare provider. Your symptom documentation helps establish the pattern and severity of pain, but clinical examination is essential for rating determination.',
   };
 };
@@ -2725,7 +2779,7 @@ export const analyzeLumbosacralStrainLogs = (logs, options = {}) => {
 
 export const analyzeIntervertebralDiscLogs = (logs, options = {}) => {
   const conditionCriteria = INTERVERTEBRAL_DISC_CRITERIA;
-  const evaluationPeriodDays = options.days || 365; // Use full year for episode tracking
+  const { evaluationPeriodDays = 365 } = options; // Use full year for episode tracking
   const symptomIds = MUSCULOSKELETAL_CONDITIONS.INTERVERTEBRAL_DISC.symptomIds;
 
   // Filter relevant logs
@@ -2743,6 +2797,16 @@ export const analyzeIntervertebralDiscLogs = (logs, options = {}) => {
       condition: conditionCriteria.condition,
       diagnosticCode: conditionCriteria.diagnosticCode,
       message: 'No disc-related symptoms logged in evaluation period',
+      metrics: {
+        totalLogs: 0,
+        avgSeverity: 0,
+        symptomDays: 0,
+        flareUps: 0,
+        radicularCount: 0,
+        severeSymptoms: 0,
+        hasDiscPain: false,
+        hasRadicularPain: false,
+      },
     };
   }
 
@@ -2753,6 +2817,25 @@ export const analyzeIntervertebralDiscLogs = (logs, options = {}) => {
   const hasDiscPain = relevantLogs.some(log => getLogSymptomId(log) === 'disc-pain');
   const hasRadicularPain = relevantLogs.some(log => getLogSymptomId(log) === 'back-radicular' || getLogSymptomId(log) === 'back-numbness');
 
+  // ============================================
+  // Compute metrics for Evidence Summary card display
+  // DC 5243 has TWO rating paths: incapacitating episodes OR ROM. The flareUps
+  // count is critical here because each flare-up could be a documented
+  // incapacitating episode if physician-prescribed bed rest accompanied it.
+  // ============================================
+  const radicularCount = relevantLogs.filter(log => {
+    const sid = getLogSymptomId(log);
+    return sid === 'back-radicular' || sid === 'back-numbness';
+  }).length;
+  const flareUps = relevantLogs.filter(log => log.isFlareUp === true).length;
+  const symptomDays = new Set(
+      relevantLogs.map(log => {
+        const date = log.occurredAt || log.timestamp;
+        return date ? date.slice(0, 10) : null;
+      }).filter(Boolean)
+  ).size;
+  const severeSymptoms7Plus = relevantLogs.filter(log => (log.severity || 0) >= 7).length;
+
   const evidence = [
     `${totalSymptoms} disc-related symptoms logged over ${(evaluationPeriodDays / 30).toFixed(1)} months`,
     `Average severity: ${avgSeverity.toFixed(1)}/5`,
@@ -2762,17 +2845,29 @@ export const analyzeIntervertebralDiscLogs = (logs, options = {}) => {
   if (hasDiscPain) evidence.push('Disc pain specifically documented');
   if (hasRadicularPain) evidence.push('Nerve compression symptoms (radiating pain/numbness)');
 
+  // Build rationale surfacing documented evidence (Option A) and incapacitating episode framing (Option B)
+  const supportingRationale = [
+    `${totalSymptoms} disc-related symptoms documented over ${(evaluationPeriodDays / 30).toFixed(1)} months`,
+    `Average severity ${avgSeverity.toFixed(1)}/10 across ${symptomDays} distinct days`,
+  ];
+  if (flareUps > 0) {
+    supportingRationale.push(`${flareUps} flare-up episodes logged — potential incapacitating episodes if physician-prescribed bed rest accompanied them`);
+  }
+  if (radicularCount > 0) {
+    supportingRationale.push(`${radicularCount} radicular/nerve compression episodes — supports DC 5243 (requires imaging confirmation)`);
+  }
+  supportingRationale.push(
+      'Disc syndrome can be rated TWO ways: (1) incapacitating episodes, OR (2) ROM measurements',
+      'Either path requires clinical documentation beyond symptom logs',
+  );
+
   return {
     hasData: true,
     condition: conditionCriteria.condition,
     diagnosticCode: conditionCriteria.diagnosticCode,
     evaluationPeriodDays,
     supportedRating: 'Requires Clinical Documentation',
-    ratingRationale: [
-      'Disc syndrome can be rated TWO ways: (1) Based on incapacitating episodes, OR (2) Based on ROM measurements',
-      'Your symptom logs show ongoing disc-related pain',
-      'To use incapacitating episodes method, you need physician-prescribed bed rest for each episode',
-    ],
+    ratingRationale: supportingRationale,
     assessmentLevel: 'Clinical Evaluation Required',
     evidence,
     gaps: [
@@ -2780,11 +2875,21 @@ export const analyzeIntervertebralDiscLogs = (logs, options = {}) => {
       'For incapacitating episodes rating: Each episode must have BOTH:',
       '  - Physician prescription for bed rest during episode',
       '  - Treatment by physician during episode',
-      'Track total DURATION of incapacitating episodes over 12 months',
+      flareUps > 0 ? `${flareUps} flare-ups logged — request physician documentation of any that required bed rest` : 'Track total DURATION of incapacitating episodes over 12 months',
       'Alternative: Get ROM measurements for rating under General Formula',
       'Document functional limitations and impact on daily activities',
     ],
     criteria: conditionCriteria,
+    metrics: {
+      totalLogs: totalSymptoms,
+      avgSeverity: Number(avgSeverity.toFixed(1)),
+      symptomDays,
+      flareUps,
+      radicularCount,
+      severeSymptoms: severeSymptoms7Plus,
+      hasDiscPain,
+      hasRadicularPain,
+    },
     disclaimer: 'Disc syndrome diagnosis requires imaging confirmation and can only be rated 5243 when there is disc herniation with nerve root compression/irritation. Otherwise, use DC 5242 for degenerative disc disease. Rating requires either documented incapacitating episodes OR clinical ROM measurements.',
   };
 };
@@ -2795,7 +2900,7 @@ export const analyzeIntervertebralDiscLogs = (logs, options = {}) => {
 
 export const analyzeKneeInstabilityLogs = (logs, options = {}) => {
   const conditionCriteria = KNEE_INSTABILITY_CRITERIA;
-  const evaluationPeriodDays = options.days || 90;
+  const { evaluationPeriodDays = 90 } = options;
   const symptomIds = MUSCULOSKELETAL_CONDITIONS.KNEE_INSTABILITY.symptomIds;
 
   const relevantLogs = logs.filter(log => {
