@@ -14,7 +14,7 @@ export default function SleepApneaRatingCard({ analysis, profile, expanded, onTo
 
   if (!analysis) return null;
 
-  const { supportedRating, rationale, evidenceGaps, metrics, evidence, requiresProfileSetup } = analysis;
+  const { supportedRating, ratingRationale: rationale, gaps: evidenceGaps, metrics, evidence, requiresProfileSetup } = analysis;
   const criteria = SLEEP_APNEA_CRITERIA;
 
   const isRatingSupported = (percent) => supportedRating === percent;

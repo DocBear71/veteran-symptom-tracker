@@ -10,7 +10,7 @@ import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
 export default function ArrhythmiaRatingCard({ analysis, expanded, onToggle }) {
   if (!analysis || !analysis.hasData) return null;
 
-  const { supportedRating, rationale, evidenceGaps, metrics, condition, diagnosticCode } = analysis;
+  const { supportedRating, ratingRationale: rationale, gaps: evidenceGaps, metrics, condition, diagnosticCode } = analysis;
 
   // Determine which criteria to use based on condition
   const isVentricular = condition?.includes('Ventricular') || diagnosticCode === '7011';

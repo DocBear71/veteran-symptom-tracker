@@ -14,7 +14,7 @@ export default function MigraineRatingCard({ analysis, expanded, onToggle }) {
 
   if (!analysis || !analysis.hasData) return null;
 
-  const { supportedRating, rationale, evidenceGaps, metrics, evidence } = analysis;
+  const { supportedRating, ratingRationale: rationale, gaps: evidenceGaps, metrics, evidence } = analysis;
   const criteria = MIGRAINE_CRITERIA;
 
   const isRatingSupported = (percent) => supportedRating === percent;
