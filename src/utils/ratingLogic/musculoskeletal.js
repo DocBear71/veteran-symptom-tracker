@@ -3146,6 +3146,18 @@ export const analyzeHipLogs = (logs, options = {}) => {
       ],
       criteria: HIP_CRITERIA,
       disclaimer: HIP_CRITERIA.disclaimer,
+      metrics: {
+        totalLogs: 0,
+        avgPain: null,
+        flexion: null,
+        flareUps: 0,
+        painCount: 0,
+        limitedROMCount: 0,
+        stiffnessCount: 0,
+        weaknessCount: 0,
+        limpingCount: 0,
+        episodesPerWeek: 0,
+      },
     };
   }
 
@@ -3240,6 +3252,24 @@ export const analyzeHipLogs = (logs, options = {}) => {
   gaps.push('Track functional impact: walking distance, stairs, sitting, getting in/out of car');
   gaps.push('X-rays showing arthritis or other pathology strengthen claim');
 
+  // ============================================
+  // Compute metrics for Evidence Summary card display
+  // ============================================
+  // Average severity across all hip logs (for "Avg Pain" box)
+  const logsWithSeverity = hipSymptoms.filter(l => typeof l.severity === 'number' && l.severity > 0);
+  const avgPain = logsWithSeverity.length > 0
+      ? Number((logsWithSeverity.reduce((sum, l) => sum + l.severity, 0) / logsWithSeverity.length).toFixed(1))
+      : null;
+
+  // Flare-up count (any hip log flagged as flare-up)
+  const flareUps = hipSymptoms.filter(l => l.isFlareUp === true).length;
+
+  // Flexion degrees: HIP form does not currently capture numeric ROM degrees
+  // (jointData.romEstimate is free text like "limited"). Leave as null so the
+  // card displays "—" honestly rather than fabricating a number. When/if the
+  // form adds a numeric flexion field, surface it here.
+  const flexion = null;
+
   return {
     condition: 'Hip Conditions',
     diagnosticCode: '5252-5255',
@@ -3250,6 +3280,19 @@ export const analyzeHipLogs = (logs, options = {}) => {
     gaps,
     criteria: HIP_CRITERIA,
     disclaimer: HIP_CRITERIA.disclaimer,
+    metrics: {
+      totalLogs: hipSymptoms.length,
+      avgPain,
+      flexion,
+      flareUps,
+      // Sub-counts available for future card enhancements:
+      painCount,
+      limitedROMCount,
+      stiffnessCount,
+      weaknessCount,
+      limpingCount,
+      episodesPerWeek: Number(episodesPerWeek.toFixed(1)),
+    },
   };
 };
 
@@ -4336,8 +4379,26 @@ export function analyzeHipThighLogs(logs, profileId) {
     return symptomId && symptomId.includes('pain');
   }).length;
 
-  // Count limited ROM episodes
+  // ============================================
+  // Limited ROM detection (multi-signal)
+  // ============================================
+  // Detection priority: structured data first (symptomId, jointData), then
+  // free-text fallback (notes keywords) for older logs without structured fields.
+  // Counts each log at most once.
   const limitedROM = relevantLogs.filter(log => {
+    const symptomId = getLogSymptomId(log) || '';
+    // 1. Direct symptomId match (e.g., 'hip-limited-rom')
+    if (symptomId.includes('limited-rom') || symptomId.includes('limited-motion')) return true;
+    // 2. jointData structured signals
+    if (log.jointData) {
+      if (log.jointData.instability === true) return true;
+      if (log.jointData.locking === true) return true;
+      const rom = (log.jointData.romEstimate || '').toString().toLowerCase();
+      if (rom && (rom.includes('limited') || rom.includes('reduced') || rom.includes('decreased') || rom.includes('severe') || rom.includes('moderate'))) return true;
+      const stiffness = (log.jointData.morningStiffness || '').toString().toLowerCase();
+      if (stiffness && stiffness !== 'none' && stiffness !== '') return true;
+    }
+    // 3. Notes keyword fallback (legacy logs without structured fields)
     const notes = (log.notes || '').toLowerCase();
     return notes.includes('stiff') ||
         notes.includes('limited') ||
@@ -4346,12 +4407,19 @@ export function analyzeHipThighLogs(logs, profileId) {
         notes.includes('rom');
   }).length;
 
-  // Count assistive device usage
+  // ============================================
+  // Assistive device detection (multi-signal)
+  // ============================================
   const assistiveDevice = relevantLogs.filter(log => {
+    // 1. Structured peripheralNerveData field if present
+    if (log.peripheralNerveData?.usesAssistiveDevice === true) return true;
+    // 2. Notes keyword fallback
     const notes = (log.notes || '').toLowerCase();
     return notes.includes('crutch') ||
         notes.includes('cane') ||
-        notes.includes('walker');
+        notes.includes('walker') ||
+        notes.includes('wheelchair') ||
+        notes.includes('assistive device');
   }).length;
 
   // Calculate average severity
