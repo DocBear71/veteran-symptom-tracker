@@ -19,6 +19,7 @@ import OccurrenceTimePicker from './OccurrenceTimePicker';
 import MedicationEffectivenessInline from './MedicationEffectivenessInline';
 import PTSDForm, { INITIAL_PTSD_DATA } from './forms/SymptomForms/PTSDForm';
 import AnxietyForm, { INITIAL_ANXIETY_DATA } from './forms/SymptomForms/AnxietyForm';
+import SleepForm, { INITIAL_SLEEP_DATA } from './forms/SymptomForms/SleepForm';
 
 const QuickLog = ({ onLogSaved, onAddChronic }) => {
   const { isVeteran } = useProfile();
@@ -54,15 +55,7 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
     triggers: '',
   });
 
-  const [sleepData, setSleepData] = useState({
-    hoursSlept: '',
-    quality: 5,
-    wakeUps: '',
-    troubleFallingAsleep: false,
-    troubleStayingAsleep: false,
-    nightmares: false,
-    feelRested: null,
-  });
+  const [sleepData, setSleepData] = useState(INITIAL_SLEEP_DATA);
 
   const [ptsdData, setPtsdData] = useState(INITIAL_PTSD_DATA);
 
@@ -1433,10 +1426,7 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
       duration: '', prostrating: null, aura: false, nausea: false,
       lightSensitivity: false, soundSensitivity: false, triggers: '',
     });
-    setSleepData({
-      hoursSlept: '', quality: 5, wakeUps: '', troubleFallingAsleep: false,
-      troubleStayingAsleep: false, nightmares: false, feelRested: null,
-    });
+    setSleepData(INITIAL_SLEEP_DATA);
     setPtsdData(INITIAL_PTSD_DATA);
     setPainData({
       radiating: false, radiatingTo: '', limitedRangeOfMotion: false,
@@ -2474,92 +2464,15 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
                       </div>
                   )}
 
-                  {/* SLEEP-SPECIFIC FIELDS */}
+                  {/* SLEEP DETAILS — canonical SleepForm component.
+                      Refactored from inline JSX (Aug 2026) to eliminate drift between
+                      QuickLog and EditLogModal which both edit sleepData. Migration
+                      adds the Sleep Quality slider that was missing from inline. */}
                   {isSleepRelated && (
-                      <div className="bg-indigo-50 dark:bg-indigo-900/30 p-4 rounded-lg border border-indigo-200 dark:border-indigo-800 space-y-4">
-                        <h3 className="font-medium text-indigo-900 dark:text-indigo-200 text-sm">Sleep Details</h3>
-
-                        <div className="grid grid-cols-2 gap-3">
-                          <div>
-                            <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Hours Slept</label>
-                            <input
-                                type="number"
-                                min="0"
-                                max="24"
-                                step="0.5"
-                                value={sleepData.hoursSlept}
-                                onChange={(e) => setSleepData(prev => ({ ...prev, hoursSlept: e.target.value === '' ? '' : Number(e.target.value) }))}
-                                placeholder="Hrs"
-                                className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm"
-                            />
-                          </div>
-                          <div>
-                            <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Woke Up</label>
-                            <input
-                                type="number"
-                                min="0"
-                                max="20"
-                                value={sleepData.wakeUps}
-                                onChange={(e) => setSleepData(prev => ({ ...prev, wakeUps: e.target.value === '' ? '' : Number(e.target.value) }))}
-                                placeholder="Times"
-                                className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm"
-                            />
-                          </div>
-                        </div>
-
-                        <div className="grid grid-cols-1 gap-2">
-                          {[
-                            { key: 'troubleFallingAsleep', label: 'Trouble falling asleep' },
-                            { key: 'troubleStayingAsleep', label: 'Trouble staying asleep' },
-                            { key: 'nightmares', label: 'Nightmares' },
-                          ].map(({ key, label }) => (
-                              <label
-                                  key={key}
-                                  className={`flex items-center gap-2 p-2 rounded-lg border cursor-pointer text-sm ${
-                                      sleepData[key]
-                                          ? 'bg-indigo-100 dark:bg-indigo-900/50 border-indigo-300 dark:border-indigo-700'
-                                          : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700'
-                                  }`}
-                              >
-                                <input
-                                    type="checkbox"
-                                    checked={sleepData[key]}
-                                    onChange={(e) => setSleepData(prev => ({ ...prev, [key]: e.target.checked }))}
-                                    className="w-4 h-4 text-indigo-600 rounded"
-                                />
-                                <span className="text-gray-700 dark:text-gray-300">{label}</span>
-                              </label>
-                          ))}
-                        </div>
-
-                        <div>
-                          <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-2">Feel rested?</label>
-                          <div className="flex gap-2">
-                            <button
-                                type="button"
-                                onClick={() => setSleepData(prev => ({ ...prev, feelRested: true }))}
-                                className={`flex-1 py-2 px-3 rounded-lg border-2 text-sm font-medium ${
-                                    sleepData.feelRested === true
-                                        ? 'bg-green-100 dark:bg-green-900/50 border-green-500 text-green-700 dark:text-green-300'
-                                        : 'bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300'
-                                }`}
-                            >
-                              Yes
-                            </button>
-                            <button
-                                type="button"
-                                onClick={() => setSleepData(prev => ({ ...prev, feelRested: false }))}
-                                className={`flex-1 py-2 px-3 rounded-lg border-2 text-sm font-medium ${
-                                    sleepData.feelRested === false
-                                        ? 'bg-red-100 dark:bg-red-900/50 border-red-500 text-red-700 dark:text-red-300'
-                                        : 'bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300'
-                                }`}
-                            >
-                              No
-                            </button>
-                          </div>
-                        </div>
-                      </div>
+                      <SleepForm
+                          initialData={sleepData}
+                          onChange={(field, value) => setSleepData(prev => ({ ...prev, [field]: value }))}
+                      />
                   )}
 
                   {/* PTSD-SPECIFIC FIELDS — canonical PTSDForm component.
