@@ -27,6 +27,83 @@ export const INITIAL_PAIN_DATA = {
 // ─── Activity list (static — no reason to re-create on every render) ─────────
 const ACTIVITIES = ['Walking', 'Standing', 'Sitting', 'Sleeping', 'Lifting', 'Bending', 'Driving', 'Working'];
 
+// Common pain locations — keep aligned with VA rating system body regions where possible
+const PAIN_LOCATIONS = [
+  'Lower back',
+  'Upper back',
+  'Neck',
+  'Shoulder',
+  'Elbow',
+  'Wrist / hand',
+  'Hip',
+  'Knee',
+  'Ankle / foot',
+  'Head',
+  'Chest',
+  'Abdomen',
+  'Other',
+];
+
+// ─── Subcomponent: pain location field with canonical + "Other" fallback ────
+// Owns its own UI state (`mode` = 'canonical' | 'other') so the freeform input
+// stays visible while the user types, even if the value is briefly empty.
+// Reports the canonical or freeform value to the parent via `onChange`.
+const PainLocationField = ({ value, onChange }) => {
+  const isCanonical = PAIN_LOCATIONS.includes(value) && value !== 'Other';
+  // mode reflects what the user is doing right now, not just the stored value.
+  // If the stored value is non-canonical and non-empty, the user is in "Other" mode.
+  const initialMode = isCanonical ? 'canonical' : (value ? 'other' : 'canonical');
+  const [mode, setMode] = useState(initialMode);
+
+  // Keep mode in sync if the parent resets the value (e.g., editing a different log)
+  useEffect(() => {
+    setMode(isCanonical ? 'canonical' : (value ? 'other' : 'canonical'));
+  }, [isCanonical, value]);
+
+  const handleSelectChange = (e) => {
+    const next = e.target.value;
+    if (next === 'Other') {
+      setMode('other');
+      onChange('');  // clear value; user will type into freeform
+    } else {
+      setMode('canonical');
+      onChange(next);
+    }
+  };
+
+  // Determine what the dropdown should show as selected
+  const selectValue = mode === 'other' ? 'Other' : (isCanonical ? value : '');
+
+  return (
+      <div>
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          Pain Location
+        </label>
+        <select
+            value={selectValue}
+            onChange={handleSelectChange}
+            className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+        >
+          <option value="">Select location...</option>
+          {PAIN_LOCATIONS.map(loc => (
+              <option key={loc} value={loc}>{loc}</option>
+          ))}
+        </select>
+
+        {mode === 'other' && (
+            <input
+                type="text"
+                value={value}
+                onChange={(e) => onChange(e.target.value)}
+                placeholder="Describe location (e.g., left lateral knee)"
+                className="w-full mt-2 p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                autoFocus
+            />
+        )}
+      </div>
+  );
+};
+
 // ─── Component ────────────────────────────────────────────────────────────────
 const PainForm = ({ initialData, onChange }) => {
   const [formData, setFormData] = useState(
@@ -69,6 +146,12 @@ const PainForm = ({ initialData, onChange }) => {
         <p className="text-xs text-rose-700 dark:text-rose-300">
           Document impact on daily activities for VA claims
         </p>
+
+        {/* Pain location — canonical dropdown with "Other" → free-text fallback */}
+        <PainLocationField
+            value={formData.painLocation}
+            onChange={(val) => handleChange('painLocation', val)}
+        />
 
         {/* Pain type */}
         <div>

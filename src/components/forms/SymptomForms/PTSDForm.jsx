@@ -14,6 +14,7 @@ export const INITIAL_PTSD_DATA = {
   hypervigilance: false,
   exaggeratedStartle: false,
   intrusiveThoughts: false,
+  triggerUnknown: false,
   triggerDescription: '',
 };
 
@@ -73,16 +74,44 @@ const PTSDForm = ({ initialData = {}, onChange }) => {
           </div>
         </div>
 
-        {/* Trigger */}
+        {/* Trigger — checkbox for unidentified triggers, optional freeform context.
+            Both fields can be set together to capture "trigger unknown, but here's
+            what was happening" — more useful for C&P prep than "Unknown" alone. */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Trigger (if known)
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            Trigger
           </label>
+
+          {/* "Trigger unknown" checkbox — same pill styling as Associated Experiences */}
+          <label
+              className={`flex items-center gap-2 p-2 rounded-lg border cursor-pointer mb-2 ${
+                  data.triggerUnknown
+                      ? 'bg-amber-100 dark:bg-amber-900/50 border-amber-300 dark:border-amber-700'
+                      : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700'
+              }`}
+          >
+            <input
+                type="checkbox"
+                checked={data.triggerUnknown}
+                onChange={(e) => handleChange('triggerUnknown', e.target.checked)}
+                className="w-4 h-4 text-amber-600 rounded"
+            />
+            <span className="text-sm text-gray-700 dark:text-gray-300">
+              No identifiable trigger
+            </span>
+          </label>
+
+          {/* Freeform description — always available. Placeholder adapts based on
+              checkbox state to suggest the kind of context that's most useful. */}
           <input
               type="text"
               value={data.triggerDescription}
               onChange={(e) => handleChange('triggerDescription', e.target.value)}
-              placeholder="What triggered this episode?"
+              placeholder={
+                data.triggerUnknown
+                    ? 'Optional: what was happening when it occurred?'
+                    : 'What triggered this episode?'
+              }
               className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
           />
         </div>

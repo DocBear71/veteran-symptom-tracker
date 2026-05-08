@@ -69,6 +69,7 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
     hypervigilance: false,
     exaggeratedStartle: false,
     intrusiveThoughts: false,
+    triggerUnknown: false,
     triggerDescription: '',
   });
 
@@ -440,6 +441,7 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
     calledOut: false,
     cancelledPlans: false,
     neededSafetyPerson: false,
+    triggerUnknown: false,
     trigger: '',
     episodeDuration: '',
     wasPanicAttack: false,
@@ -1469,7 +1471,7 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
     setPtsdData({
       flashbacks: false, avoidance: false, emotionalNumbering: false,
       hypervigilance: false, exaggeratedStartle: false, intrusiveThoughts: false,
-      triggerDescription: '',
+      triggerUnknown: false, triggerDescription: '',
     });
     setPainData({
       radiating: false, radiatingTo: '', limitedRangeOfMotion: false,
@@ -1687,6 +1689,7 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
       calledOut: false,
       cancelledPlans: false,
       neededSafetyPerson: false,
+      triggerUnknown: false,
       trigger: '',
       episodeDuration: '',
       wasPanicAttack: false,
@@ -2652,12 +2655,33 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
                         </div>
 
                         <div>
-                          <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Trigger</label>
+                          <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-2">Trigger</label>
+
+                          <label
+                              className={`flex items-center gap-2 p-2 rounded-lg border cursor-pointer mb-2 text-sm ${
+                                  ptsdData.triggerUnknown
+                                      ? 'bg-amber-100 dark:bg-amber-900/50 border-amber-300 dark:border-amber-700'
+                                      : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700'
+                              }`}
+                          >
+                            <input
+                                type="checkbox"
+                                checked={ptsdData.triggerUnknown}
+                                onChange={(e) => setPtsdData(prev => ({ ...prev, triggerUnknown: e.target.checked }))}
+                                className="w-4 h-4 text-amber-600 rounded"
+                            />
+                            <span className="text-gray-700 dark:text-gray-300">No identifiable trigger</span>
+                          </label>
+
                           <input
                               type="text"
                               value={ptsdData.triggerDescription}
                               onChange={(e) => setPtsdData(prev => ({ ...prev, triggerDescription: e.target.value }))}
-                              placeholder="What triggered this?"
+                              placeholder={
+                                ptsdData.triggerUnknown
+                                    ? 'Optional: what was happening?'
+                                    : 'What triggered this?'
+                              }
                               className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm"
                           />
                         </div>
@@ -3285,104 +3309,6 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
                                 </label>
                             ))}
                           </div>
-                        </div>
-                      </div>
-                  )}
-
-                  {/* Medications */}
-                  {activeMedications.length > 0 && (
-                      <div className="bg-teal-50 dark:bg-teal-900/30 p-4 rounded-lg border border-teal-200 dark:border-teal-800">
-                        <h3 className="font-medium text-teal-900 dark:text-teal-200 text-sm mb-3">Medications Taken</h3>
-                        <div className="space-y-2">
-                          {activeMedications.map(med => {
-                            const isSelected = !!selectedMedications[med.id];
-                            return (
-                                <div key={med.id}>
-                                  <label
-                                      className={`flex items-center gap-2 p-2 rounded-lg border cursor-pointer text-sm ${
-                                          isSelected
-                                              ? 'bg-teal-100 dark:bg-teal-900/50 border-teal-400 dark:border-teal-600'
-                                              : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700'
-                                      }`}
-                                  >
-                                    <input
-                                        type="checkbox"
-                                        checked={isSelected}
-                                        onChange={(e) => {
-                                          if (e.target.checked) {
-                                            // Safety check: if dosing interval set and too soon, require confirmation
-                                            if (med.dosingIntervalHours) {
-                                              const lastLog = medLogs
-                                              .filter(l => l.medicationId === med.id)
-                                              .sort((a, b) => new Date(b.occurredAt || b.timestamp) - new Date(a.occurredAt || a.timestamp))[0];
-                                              if (lastLog) {
-                                                const intervalMs = med.dosingIntervalHours * 60 * 60 * 1000;
-                                                const lastTakenMs = new Date(lastLog.occurredAt || lastLog.timestamp).getTime();
-                                                const remainingMs = (lastTakenMs + intervalMs) - Date.now();
-                                                if (remainingMs > 0) {
-                                                  const totalMin = Math.floor(remainingMs / 60_000);
-                                                  const hrs = Math.floor(totalMin / 60);
-                                                  const mins = totalMin % 60;
-                                                  const waitLabel = hrs > 0 ? `${hrs}h ${mins}m` : `${mins}m`;
-                                                  const confirmed = window.confirm(
-                                                      `⚠️ Too soon for ${med.name}\n\nMinimum interval: every ${med.dosingIntervalHours}h\nTime remaining: ${waitLabel}\n\nLog anyway?`
-                                                  );
-                                                  if (!confirmed) return;
-                                                }
-                                              }
-                                            }
-                                            setSelectedMedications(prev => ({ ...prev, [med.id]: getDefaultMedDetail() }));
-                                          } else {
-                                            setSelectedMedications(prev => {
-                                              const next = { ...prev };
-                                              delete next[med.id];
-                                              return next;
-                                            });
-                                          }
-                                        }}
-                                        className="w-4 h-4 text-teal-600 rounded"
-                                    />
-                                    <div className="flex-1 min-w-0">
-                                      <span className="text-gray-700 dark:text-gray-300">
-                                        {med.name} ({formatDosage(med)})
-                                      </span>
-                                      {/* Compact dosing status badge — only for meds with interval set */}
-                                      {med.dosingIntervalHours && (() => {
-                                        const lastLog = medLogs
-                                        .filter(l => l.medicationId === med.id)
-                                        .sort((a, b) => new Date(b.occurredAt || b.timestamp) - new Date(a.occurredAt || a.timestamp))[0];
-                                        if (!lastLog) return null;
-                                        const intervalMs = med.dosingIntervalHours * 60 * 60 * 1000;
-                                        const lastTakenMs = new Date(lastLog.occurredAt || lastLog.timestamp).getTime();
-                                        const remainingMs = (lastTakenMs + intervalMs) - Date.now();
-                                        const isSafe = remainingMs <= 0;
-                                        const totalMin = Math.max(0, Math.floor(remainingMs / 60_000));
-                                        const hrs = Math.floor(totalMin / 60);
-                                        const mins = totalMin % 60;
-                                        const waitLabel = hrs > 0 ? `${hrs}h ${mins}m` : `${mins}m`;
-                                        return (
-                                            <span className={`ml-2 text-xs font-medium px-1.5 py-0.5 rounded ${
-                                                isSafe
-                                                    ? 'bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-400'
-                                                    : 'bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-400'
-                                            }`}>
-                                            {isSafe ? '✓ Safe' : `⏳ ${waitLabel}`}
-                                          </span>
-                                        );
-                                      })()}
-                                    </div>
-                                  </label>
-                                  {/* Inline effectiveness & side effects for this medication */}
-                                  {isSelected && (
-                                      <MedicationEffectivenessInline
-                                          medDetail={selectedMedications[med.id]}
-                                          onChange={(updated) => setSelectedMedications(prev => ({ ...prev, [med.id]: updated }))}
-
-                                      />
-                                  )}
-                                </div>
-                            );
-                          })}
                         </div>
                       </div>
                   )}
@@ -6251,7 +6177,7 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
                         {/* Physical Symptoms */}
                         <div>
                           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Physical Symptoms</label>
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-left">
                             {[
                               { key: 'heartRacing', label: 'Heart racing/palpitations' },
                               { key: 'sweating', label: 'Sweating' },
@@ -6346,13 +6272,37 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
                           </label>
                         </div>
 
-                        {/* Trigger */}
+                        {/* Trigger — checkbox for unidentified triggers, optional freeform context */}
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Trigger/Situation</label>
-                          <input type="text" value={anxietyData.trigger}
-                                 onChange={(e) => setAnxietyData(prev => ({ ...prev, trigger: e.target.value }))}
-                                 placeholder="What triggered this anxiety episode?"
-                                 className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white" />
+                          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Trigger/Situation</label>
+
+                          <label
+                              className={`flex items-center gap-2 p-2 rounded-lg border cursor-pointer mb-2 ${
+                                  anxietyData.triggerUnknown
+                                      ? 'bg-blue-100 dark:bg-blue-900/50 border-blue-300 dark:border-blue-700'
+                                      : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700'
+                              }`}
+                          >
+                            <input
+                                type="checkbox"
+                                checked={anxietyData.triggerUnknown}
+                                onChange={(e) => setAnxietyData(prev => ({ ...prev, triggerUnknown: e.target.checked }))}
+                                className="w-4 h-4 text-blue-600 rounded"
+                            />
+                            <span className="text-sm text-gray-700 dark:text-gray-300">No identifiable trigger</span>
+                          </label>
+
+                          <input
+                              type="text"
+                              value={anxietyData.trigger}
+                              onChange={(e) => setAnxietyData(prev => ({ ...prev, trigger: e.target.value }))}
+                              placeholder={
+                                anxietyData.triggerUnknown
+                                    ? 'Optional: what was happening when it occurred?'
+                                    : 'What triggered this anxiety episode?'
+                              }
+                              className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                          />
                         </div>
 
                         <div className="bg-blue-100 dark:bg-blue-900/20 p-3 rounded text-xs text-gray-600 dark:text-gray-400">
@@ -8143,6 +8093,105 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
                         )}
                       </div>
                   )}
+
+                  {/* Medications */}
+                  {activeMedications.length > 0 && (
+                      <div className="bg-teal-50 dark:bg-teal-900/30 p-4 rounded-lg border border-teal-200 dark:border-teal-800">
+                        <h3 className="font-medium text-teal-900 dark:text-teal-200 text-sm mb-3">Medications Taken</h3>
+                        <div className="space-y-2 text-left">
+                          {activeMedications.map(med => {
+                            const isSelected = !!selectedMedications[med.id];
+                            return (
+                                <div key={med.id}>
+                                  <label
+                                      className={`flex items-center gap-2 p-2 rounded-lg border cursor-pointer text-sm ${
+                                          isSelected
+                                              ? 'bg-teal-100 dark:bg-teal-900/50 border-teal-400 dark:border-teal-600'
+                                              : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700'
+                                      }`}
+                                  >
+                                    <input
+                                        type="checkbox"
+                                        checked={isSelected}
+                                        onChange={(e) => {
+                                          if (e.target.checked) {
+                                            // Safety check: if dosing interval set and too soon, require confirmation
+                                            if (med.dosingIntervalHours) {
+                                              const lastLog = medLogs
+                                              .filter(l => l.medicationId === med.id)
+                                              .sort((a, b) => new Date(b.occurredAt || b.timestamp) - new Date(a.occurredAt || a.timestamp))[0];
+                                              if (lastLog) {
+                                                const intervalMs = med.dosingIntervalHours * 60 * 60 * 1000;
+                                                const lastTakenMs = new Date(lastLog.occurredAt || lastLog.timestamp).getTime();
+                                                const remainingMs = (lastTakenMs + intervalMs) - Date.now();
+                                                if (remainingMs > 0) {
+                                                  const totalMin = Math.floor(remainingMs / 60_000);
+                                                  const hrs = Math.floor(totalMin / 60);
+                                                  const mins = totalMin % 60;
+                                                  const waitLabel = hrs > 0 ? `${hrs}h ${mins}m` : `${mins}m`;
+                                                  const confirmed = window.confirm(
+                                                      `⚠️ Too soon for ${med.name}\n\nMinimum interval: every ${med.dosingIntervalHours}h\nTime remaining: ${waitLabel}\n\nLog anyway?`
+                                                  );
+                                                  if (!confirmed) return;
+                                                }
+                                              }
+                                            }
+                                            setSelectedMedications(prev => ({ ...prev, [med.id]: getDefaultMedDetail() }));
+                                          } else {
+                                            setSelectedMedications(prev => {
+                                              const next = { ...prev };
+                                              delete next[med.id];
+                                              return next;
+                                            });
+                                          }
+                                        }}
+                                        className="w-4 h-4 text-teal-600 rounded"
+                                    />
+                                    <div className="flex-1 min-w-0">
+                                      <span className="text-gray-700 dark:text-gray-300">
+                                        {med.name} ({formatDosage(med)})
+                                      </span>
+                                      {/* Compact dosing status badge — only for meds with interval set */}
+                                      {med.dosingIntervalHours && (() => {
+                                        const lastLog = medLogs
+                                        .filter(l => l.medicationId === med.id)
+                                        .sort((a, b) => new Date(b.occurredAt || b.timestamp) - new Date(a.occurredAt || a.timestamp))[0];
+                                        if (!lastLog) return null;
+                                        const intervalMs = med.dosingIntervalHours * 60 * 60 * 1000;
+                                        const lastTakenMs = new Date(lastLog.occurredAt || lastLog.timestamp).getTime();
+                                        const remainingMs = (lastTakenMs + intervalMs) - Date.now();
+                                        const isSafe = remainingMs <= 0;
+                                        const totalMin = Math.max(0, Math.floor(remainingMs / 60_000));
+                                        const hrs = Math.floor(totalMin / 60);
+                                        const mins = totalMin % 60;
+                                        const waitLabel = hrs > 0 ? `${hrs}h ${mins}m` : `${mins}m`;
+                                        return (
+                                            <span className={`ml-2 text-xs font-medium px-1.5 py-0.5 rounded ${
+                                                isSafe
+                                                    ? 'bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-400'
+                                                    : 'bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-400'
+                                            }`}>
+                                            {isSafe ? '✓ Safe' : `⏳ ${waitLabel}`}
+                                          </span>
+                                        );
+                                      })()}
+                                    </div>
+                                  </label>
+                                  {/* Inline effectiveness & side effects for this medication */}
+                                  {isSelected && (
+                                      <MedicationEffectivenessInline
+                                          medDetail={selectedMedications[med.id]}
+                                          onChange={(updated) => setSelectedMedications(prev => ({ ...prev, [med.id]: updated }))}
+
+                                      />
+                                  )}
+                                </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                  )}
+
 
                   {/* Notes */}
                   <div>

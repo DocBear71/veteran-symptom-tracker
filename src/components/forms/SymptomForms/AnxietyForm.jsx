@@ -31,6 +31,7 @@ export const INITIAL_ANXIETY_DATA = {
   cancelledPlans: false,
   neededSafetyPerson: false,
   // Context
+  triggerUnknown: false,
   trigger: '',
   episodeDuration: '',
   wasPanicAttack: false,
@@ -170,16 +171,39 @@ const AnxietyForm = ({ initialData = {}, onChange }) => {
           </label>
         </div>
 
-        {/* Trigger */}
+        {/* Trigger — checkbox for unidentified triggers, optional freeform context. */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             Trigger/Situation
           </label>
+
+          <label
+              className={`flex items-center gap-2 p-2 rounded-lg border cursor-pointer mb-2 ${
+                  data.triggerUnknown
+                      ? 'bg-blue-100 dark:bg-blue-900/50 border-blue-300 dark:border-blue-700'
+                      : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700'
+              }`}
+          >
+            <input
+                type="checkbox"
+                checked={data.triggerUnknown}
+                onChange={(e) => handleChange('triggerUnknown', e.target.checked)}
+                className="w-4 h-4 text-blue-600 rounded"
+            />
+            <span className="text-sm text-gray-700 dark:text-gray-300">
+              No identifiable trigger
+            </span>
+          </label>
+
           <input
               type="text"
               value={data.trigger}
               onChange={(e) => handleChange('trigger', e.target.value)}
-              placeholder="What triggered this anxiety episode?"
+              placeholder={
+                data.triggerUnknown
+                    ? 'Optional: what was happening when it occurred?'
+                    : 'What triggered this anxiety episode?'
+              }
               className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
           />
         </div>
