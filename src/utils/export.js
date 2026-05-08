@@ -387,9 +387,15 @@ export const generatePDF = (dateRange = 'all', options = { includeAppointments: 
 
         // Phase 1A: Add universal fields first
         const universalInfo = [];
-        if (log.isFlareUp) universalInfo.push('🔥 FLARE-UP');
+        if (log.isFlareUp) universalInfo.push('FLARE-UP');
         if (log.duration) universalInfo.push(formatDuration(log.duration));
         if (log.timeOfDay) universalInfo.push(formatTimeOfDay(log.timeOfDay));
+        if (log.weather) universalInfo.push(formatWeather(log.weather));
+        // Stress level — only show if not the default 5 (avoids noise on logs
+        // where the slider was untouched). Format: "Stress: 8/10".
+        if (log.stressLevel !== undefined && log.stressLevel !== null && log.stressLevel !== 5) {
+          universalInfo.push(`Stress: ${log.stressLevel}/10`);
+        }
         if (universalInfo.length > 0) {
           notes = universalInfo.join(' | ') + (notes !== '-' ? ` | ${notes}` : '');
         }
@@ -2027,7 +2033,7 @@ export const generateCSV = (dateRange = 'all', options = { includeAppointments: 
       const symptomHeaders = [
         'Occurred Date', 'Occurred Time', 'Logged Date', 'Logged Time', 'Back-Dated', 'Symptom', 'Category', 'Severity',
         // Universal fields
-        'Flare-Up', 'Duration', 'Time of Day',
+        'Flare-Up', 'Duration', 'Time of Day', 'Weather', 'Stress Level',
         'Medications Taken', 'Med Effectiveness', 'Med Side Effects',
         // GI fields
         'Bristol Scale', 'GI Frequency', 'Urgency', 'Blood Present', 'Bloating', 'GI Pain Location', 'Meal Related', 'Nighttime GI',
@@ -2216,6 +2222,11 @@ export const generateCSV = (dateRange = 'all', options = { includeAppointments: 
             log.isFlareUp ? 'Yes' : '',
             log.duration ? formatDuration(log.duration) : '',
             log.timeOfDay ? formatTimeOfDay(log.timeOfDay) : '',
+            log.weather ? formatWeather(log.weather) : '',
+            // Stress level: emit raw number if saved (including default 5 — CSV is
+            // for analysis, where users can filter on values themselves). Empty
+            // string for legacy logs without the field.
+            (log.stressLevel !== undefined && log.stressLevel !== null) ? log.stressLevel : '',
             linkedMeds.map(m => `${m.medicationName} ${formatDosage(m)}`).join('; '),
             linkedMeds.map(m => m.effectiveness ? (EFFECTIVENESS_EXPORT_LABELS[m.effectiveness] || m.effectiveness) : '').filter(Boolean).join('; '),
             linkedMeds.map(m => m.sideEffects || '').filter(Boolean).join('; '),
@@ -2960,13 +2971,24 @@ const formatDuration = (duration) => {
   return labels[duration] || duration;
 };
 
-// Phase 1A: Format time of day
 const formatTimeOfDay = (timeOfDay) => {
   const labels = {
     'morning': 'Morning', 'afternoon': 'Afternoon', 'evening': 'Evening',
     'night': 'Night', 'all-day': 'All Day', 'varies': 'Varies',
   };
   return labels[timeOfDay] || timeOfDay;
+};
+
+// Format weather option for export. Strips emojis from values like
+// "☀️ Clear/Sunny" because PDF and CSV outputs don't render emojis cleanly
+// across all viewers/spreadsheet apps.
+const formatWeather = (weather) => {
+  const labels = {
+    'clear': 'Clear/Sunny', 'cloudy': 'Cloudy', 'rainy': 'Rainy',
+    'stormy': 'Stormy', 'hot': 'Hot', 'cold': 'Cold', 'humid': 'Humid',
+    'pressure-change': 'Barometric Pressure Change',
+  };
+  return labels[weather] || weather;
 };
 
 // Phase 1B: Format Bristol Scale
@@ -3590,7 +3612,7 @@ const generateRatingEvidenceSummaryPage = (doc, ratingAnalyses, pageWidth) => {
     // Final calculation note
     doc.setFontSize(8);
     doc.setTextColor(60);
-    doc.text(`Final: 100% - ${combinedResult.totalEfficiency?.toFixed(1) || 0}% remaining = ${combinedResult.totalDisability?.toFixed(1) || 0}% → Rounded to ${combinedResult.combinedRating}%`, 14, currentY);
+    doc.text(`Final: 100% - ${combinedResult.totalEfficiency?.toFixed(1) || 0}% remaining = ${combinedResult.totalDisability?.toFixed(1) || 0}% - Rounded to ${combinedResult.combinedRating}%`, 14, currentY);
 
     currentY += 12;
   }
@@ -3955,9 +3977,15 @@ export const generateVAClaimPackagePDF = async (dateRange = 'all', options = {})
 
         // Phase 1A: Add universal fields first
         const universalInfo = [];
-        if (log.isFlareUp) universalInfo.push('🔥 FLARE-UP');
+        if (log.isFlareUp) universalInfo.push('FLARE-UP');
         if (log.duration) universalInfo.push(formatDuration(log.duration));
         if (log.timeOfDay) universalInfo.push(formatTimeOfDay(log.timeOfDay));
+        if (log.weather) universalInfo.push(formatWeather(log.weather));
+        // Stress level — only show if not the default 5 (avoids noise on logs
+        // where the slider was untouched). Format: "Stress: 8/10".
+        if (log.stressLevel !== undefined && log.stressLevel !== null && log.stressLevel !== 5) {
+          universalInfo.push(`Stress: ${log.stressLevel}/10`);
+        }
         if (universalInfo.length > 0) {
           notes = universalInfo.join(' | ') + (notes !== '-' ? ` | ${notes}` : '');
         }

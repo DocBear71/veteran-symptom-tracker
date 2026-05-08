@@ -267,6 +267,22 @@ const SymptomHistory = ({ onCopyLog }) => {
                                       <span>{formatTimeOfDay(log.timeOfDay)}</span>
                                     </>
                                 )}
+                                {/* Stress Level — only show if saved AND not the default 5
+                                    (so we don't add visual noise for logs that didn't intentionally
+                                    set a stress level). */}
+                                {log.stressLevel !== undefined && log.stressLevel !== null && log.stressLevel !== 5 && (
+                                    <>
+                                      <span>•</span>
+                                      <span className={`${
+                                          log.stressLevel >= 8 ? 'text-red-600 dark:text-red-400' :
+                                              log.stressLevel >= 6 ? 'text-orange-600 dark:text-orange-400' :
+                                                  log.stressLevel >= 4 ? 'text-yellow-700 dark:text-yellow-400' :
+                                                      'text-green-600 dark:text-green-400'
+                                      }`}>
+                                        😰 Stress: {log.stressLevel}/10
+                                      </span>
+                                    </>
+                                )}
                               </div>
 
                               {/* Linked Medications */}
