@@ -2779,7 +2779,7 @@ export const analyzeLumbosacralStrainLogs = (logs, options = {}) => {
 
 export const analyzeIntervertebralDiscLogs = (logs, options = {}) => {
   const conditionCriteria = INTERVERTEBRAL_DISC_CRITERIA;
-  const { evaluationPeriodDays = 365 } = options; // Use full year for episode tracking
+  const { evaluationPeriodDays = 90 } = options; // Full year is default for dropdown menu
   const symptomIds = MUSCULOSKELETAL_CONDITIONS.INTERVERTEBRAL_DISC.symptomIds;
 
   // Filter relevant logs

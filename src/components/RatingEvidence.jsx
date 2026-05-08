@@ -1,4 +1,4 @@
-import { useState, useMemo, memo } from 'react';
+import {useState, useMemo, memo, useEffect} from 'react';
 import { getSymptomLogs, getChronicSymptoms } from '../utils/storage';
 import { getMeasurements } from '../utils/measurements';
 import { getProfileType, PROFILE_TYPES } from '../utils/profile';
@@ -503,9 +503,9 @@ const saveSleepApneaProfile = (profile) => {
 const RatingEvidence = () => {
   const [logs, setLogs] = useState(() => getSymptomLogs());
   const [measurements, setMeasurements] = useState(() => getMeasurements());
-  const [evaluationDays, setEvaluationDays] = useState(90);
+  const [evaluationDays, setEvaluationDays] = useState(365);
   const [expandedSection, setExpandedSection] = useState(null);
-  const [expandedGroup, setExpandedGroup] = useState('musculoskeletal');
+  const [expandedGroup, setExpandedGroup] = useState(null);
   const [sleepApneaProfile, setSleepApneaProfile] = useState(getSleepApneaProfile());
   const [showSleepApneaSetup, setShowSleepApneaSetup] = useState(false);
   const [chronicSymptoms, setChronicSymptoms] = useState(() => getChronicSymptoms());
@@ -514,6 +514,12 @@ const RatingEvidence = () => {
 
   // Check if user is a veteran
   const isVeteran = getProfileType() === PROFILE_TYPES.VETERAN;
+
+  // Ensure the page starts at the top when mounted, so the header explainer
+  // is visible before users scroll to expanded condition groups.
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'auto' });
+  }, []);
 
   const toggleGroup = (groupId) => {
     setExpandedGroup(prev => prev === groupId ? null : groupId);
@@ -2171,39 +2177,56 @@ const RatingEvidence = () => {
               </div>
             </div>
           </div>
-            {/* Header */}
-            <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
-                <div className="flex items-center justify-between mb-2">
-                    <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
-                        Rating Evidence Summary
-                    </h2>
-                    <span className="text-xs px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 rounded-full">
+          {/* Header */}
+          <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
+            <div className="flex items-center justify-between mb-2">
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+                Rating Evidence Summary
+              </h2>
+              <span className="text-xs px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 rounded-full">
             Beta
-          </span>
-                </div>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
-                    See how your documented symptoms align with VA rating criteria
-                </p>
-
-                {/* Evaluation Period Selector */}
-                <div className="mt-3 flex items-center gap-2">
-                    <label className="text-sm text-gray-600 dark:text-gray-400">
-                        Evaluation period:
-                    </label>
-                    <select
-                        value={evaluationDays}
-                        onChange={(e) => setEvaluationDays(Number(e.target.value))}
-                        className="text-sm border border-gray-300 dark:border-gray-600 rounded px-2 py-1
-                       bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                    >
-                        <option value={30}>Last 30 days</option>
-                        <option value={60}>Last 60 days</option>
-                        <option value={90}>Last 90 days</option>
-                        <option value={180}>Last 6 months</option>
-                        <option value={365}>Last year</option>
-                    </select>
-                </div>
+        </span>
             </div>
+            <p className="text-sm text-gray-600 dark:text-gray-400">
+              See how your documented symptoms align with VA rating criteria
+            </p>
+
+            {/* Evaluation Period Selector */}
+            <div className="mt-3 flex items-center gap-2 flex-wrap">
+              <label className="text-sm text-gray-600 dark:text-gray-400">
+                Evaluation period:
+              </label>
+              <select
+                  value={evaluationDays}
+                  onChange={(e) => setEvaluationDays(Number(e.target.value))}
+                  className="text-sm border border-gray-300 dark:border-gray-600 rounded px-2 py-1
+                       bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+              >
+                <option value={30}>Last 30 days</option>
+                <option value={60}>Last 60 days</option>
+                <option value={90}>Last 90 days</option>
+                <option value={180}>Last 6 months</option>
+                <option value={365}>Last year</option>
+              </select>
+            </div>
+
+            {/* Evaluation Period Explainer */}
+            <div className="mt-3 p-3 rounded-md bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800">
+              <div className="flex items-start gap-2">
+                <svg className="w-4 h-4 mt-0.5 flex-shrink-0 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <div className="text-xs text-blue-900 dark:text-blue-200 leading-relaxed">
+                  <p className="font-semibold mb-1">About the evaluation period</p>
+                  <p>
+                    Cards default to <strong>Last year</strong> because C&amp;P examiners review your full claim history,
+                    and many VA rating criteria (like incapacitating episodes under DC 5243) are evaluated over 12 months.
+                    Use the selector above to narrow the view when you want to focus on recent symptoms.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
 
           {/* Disclaimer */}
           <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-3">
