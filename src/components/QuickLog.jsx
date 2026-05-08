@@ -18,6 +18,7 @@ import { stripDCCode } from '../data/symptoms';
 import OccurrenceTimePicker from './OccurrenceTimePicker';
 import MedicationEffectivenessInline from './MedicationEffectivenessInline';
 import PTSDForm, { INITIAL_PTSD_DATA } from './forms/SymptomForms/PTSDForm';
+import AnxietyForm, { INITIAL_ANXIETY_DATA } from './forms/SymptomForms/AnxietyForm';
 
 const QuickLog = ({ onLogSaved, onAddChronic }) => {
   const { isVeteran } = useProfile();
@@ -413,31 +414,7 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
     restrictedIntake: false,
   });
   // Form 1: Anxiety Disorders
-  const [anxietyData, setAnxietyData] = useState({
-    heartRacing: false,
-    sweating: false,
-    trembling: false,
-    shortnessOfBreath: false,
-    chestTightness: false,
-    nausea: false,
-    dizziness: false,
-    hotFlashes: false,
-    numbnessTingling: false,
-    racingThoughts: false,
-    fearOfLosingControl: false,
-    fearOfDying: false,
-    feelingDetached: false,
-    difficultyConcentrating: false,
-    avoidedSocial: false,
-    leftEarly: false,
-    calledOut: false,
-    cancelledPlans: false,
-    neededSafetyPerson: false,
-    triggerUnknown: false,
-    trigger: '',
-    episodeDuration: '',
-    wasPanicAttack: false,
-  });
+  const [anxietyData, setAnxietyData] = useState(INITIAL_ANXIETY_DATA);
 
   // Form 2: Depression
   const [depressionData, setDepressionData] = useState({
@@ -1657,31 +1634,7 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
       compensatoryBehaviors: [],
       restrictedIntake: false,
     });
-    setAnxietyData({
-      heartRacing: false,
-      sweating: false,
-      trembling: false,
-      shortnessOfBreath: false,
-      chestTightness: false,
-      nausea: false,
-      dizziness: false,
-      hotFlashes: false,
-      numbnessTingling: false,
-      racingThoughts: false,
-      fearOfLosingControl: false,
-      fearOfDying: false,
-      feelingDetached: false,
-      difficultyConcentrating: false,
-      avoidedSocial: false,
-      leftEarly: false,
-      calledOut: false,
-      cancelledPlans: false,
-      neededSafetyPerson: false,
-      triggerUnknown: false,
-      trigger: '',
-      episodeDuration: '',
-      wasPanicAttack: false,
-    });
+    setAnxietyData(INITIAL_ANXIETY_DATA);
 
     setDepressionData({
       depressedMood: false,
@@ -6099,147 +6052,14 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
                       </div>
                   )}
 
-                  {/* PHASE 8A EXTENDED: ANXIETY DISORDERS FORM */}
+                  {/* ANXIETY DISORDERS FORM — canonical AnxietyForm component.
+                      Refactored from inline JSX to eliminate drift between
+                      QuickLog and EditLogModal which both edit anxietyData. */}
                   {isAnxietyFormRelated && (
-                      <div className="bg-blue-50 dark:bg-blue-900/30 p-4 rounded-lg border border-blue-200 dark:border-blue-800 space-y-4">
-                        <h3 className="font-medium text-blue-900 dark:text-blue-200">Anxiety Episode Details</h3>
-                        <p className="text-xs text-blue-700 dark:text-blue-300">Track physical symptoms, triggers, and impact for VA claims evidence</p>
-
-                        {/* Physical Symptoms */}
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Physical Symptoms</label>
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-left">
-                            {[
-                              { key: 'heartRacing', label: 'Heart racing/palpitations' },
-                              { key: 'sweating', label: 'Sweating' },
-                              { key: 'trembling', label: 'Trembling/shaking' },
-                              { key: 'shortnessOfBreath', label: 'Shortness of breath' },
-                              { key: 'chestTightness', label: 'Chest tightness' },
-                              { key: 'nausea', label: 'Nausea' },
-                              { key: 'dizziness', label: 'Dizziness/lightheadedness' },
-                              { key: 'hotFlashes', label: 'Hot flashes/chills' },
-                              { key: 'numbnessTingling', label: 'Numbness/tingling' },
-                            ].map(({ key, label }) => (
-                                <label key={key} className={`flex items-center gap-2 p-2 rounded-lg border cursor-pointer ${
-                                    anxietyData[key] ? 'bg-blue-100 dark:bg-blue-900/50 border-blue-300 dark:border-blue-700' : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700'
-                                }`}>
-                                  <input type="checkbox" checked={anxietyData[key]}
-                                         onChange={(e) => setAnxietyData(prev => ({ ...prev, [key]: e.target.checked }))}
-                                         className="w-4 h-4 text-blue-600 rounded" />
-                                  <span className="text-sm text-gray-700 dark:text-gray-300">{label}</span>
-                                </label>
-                            ))}
-                          </div>
-                        </div>
-
-                        {/* Cognitive Symptoms */}
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Cognitive Symptoms</label>
-                          <div className="grid grid-cols-1 gap-2">
-                            {[
-                              { key: 'racingThoughts', label: 'Racing thoughts' },
-                              { key: 'fearOfLosingControl', label: 'Fear of losing control' },
-                              { key: 'fearOfDying', label: 'Fear of dying' },
-                              { key: 'feelingDetached', label: 'Feeling detached from reality' },
-                              { key: 'difficultyConcentrating', label: 'Difficulty concentrating' },
-                            ].map(({ key, label }) => (
-                                <label key={key} className={`flex items-center gap-2 p-2 rounded-lg border cursor-pointer ${
-                                    anxietyData[key] ? 'bg-blue-100 dark:bg-blue-900/50 border-blue-300 dark:border-blue-700' : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700'
-                                }`}>
-                                  <input type="checkbox" checked={anxietyData[key]}
-                                         onChange={(e) => setAnxietyData(prev => ({ ...prev, [key]: e.target.checked }))}
-                                         className="w-4 h-4 text-blue-600 rounded" />
-                                  <span className="text-sm text-gray-700 dark:text-gray-300">{label}</span>
-                                </label>
-                            ))}
-                          </div>
-                        </div>
-
-                        {/* Avoidance Behaviors */}
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Avoidance/Impact</label>
-                          <div className="grid grid-cols-1 gap-2">
-                            {[
-                              { key: 'avoidedSocial', label: 'Avoided social situations' },
-                              { key: 'leftEarly', label: 'Left situation early' },
-                              { key: 'calledOut', label: 'Called out of work/school' },
-                              { key: 'cancelledPlans', label: 'Cancelled plans' },
-                              { key: 'neededSafetyPerson', label: 'Required safety person present' },
-                            ].map(({ key, label }) => (
-                                <label key={key} className={`flex items-center gap-2 p-2 rounded-lg border cursor-pointer ${
-                                    anxietyData[key] ? 'bg-blue-100 dark:bg-blue-900/50 border-blue-300 dark:border-blue-700' : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700'
-                                }`}>
-                                  <input type="checkbox" checked={anxietyData[key]}
-                                         onChange={(e) => setAnxietyData(prev => ({ ...prev, [key]: e.target.checked }))}
-                                         className="w-4 h-4 text-blue-600 rounded" />
-                                  <span className="text-sm text-gray-700 dark:text-gray-300">{label}</span>
-                                </label>
-                            ))}
-                          </div>
-                        </div>
-
-                        {/* Episode Duration */}
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Episode Duration</label>
-                          <select value={anxietyData.episodeDuration}
-                                  onChange={(e) => setAnxietyData(prev => ({ ...prev, episodeDuration: e.target.value }))}
-                                  className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white">
-                            <option value="">Select duration...</option>
-                            <option value="<5min">Less than 5 minutes</option>
-                            <option value="5-15min">5-15 minutes</option>
-                            <option value="15-30min">15-30 minutes</option>
-                            <option value="30-60min">30-60 minutes</option>
-                            <option value=">1hr">More than 1 hour</option>
-                          </select>
-                        </div>
-
-                        {/* Panic Attack Toggle */}
-                        <div>
-                          <label className="flex items-center gap-2">
-                            <input type="checkbox" checked={anxietyData.wasPanicAttack}
-                                   onChange={(e) => setAnxietyData(prev => ({ ...prev, wasPanicAttack: e.target.checked }))}
-                                   className="w-4 h-4 text-blue-600 rounded" />
-                            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">This was a panic attack</span>
-                          </label>
-                        </div>
-
-                        {/* Trigger — checkbox for unidentified triggers, optional freeform context */}
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Trigger/Situation</label>
-
-                          <label
-                              className={`flex items-center gap-2 p-2 rounded-lg border cursor-pointer mb-2 ${
-                                  anxietyData.triggerUnknown
-                                      ? 'bg-blue-100 dark:bg-blue-900/50 border-blue-300 dark:border-blue-700'
-                                      : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700'
-                              }`}
-                          >
-                            <input
-                                type="checkbox"
-                                checked={anxietyData.triggerUnknown}
-                                onChange={(e) => setAnxietyData(prev => ({ ...prev, triggerUnknown: e.target.checked }))}
-                                className="w-4 h-4 text-blue-600 rounded"
-                            />
-                            <span className="text-sm text-gray-700 dark:text-gray-300">No identifiable trigger</span>
-                          </label>
-
-                          <input
-                              type="text"
-                              value={anxietyData.trigger}
-                              onChange={(e) => setAnxietyData(prev => ({ ...prev, trigger: e.target.value }))}
-                              placeholder={
-                                anxietyData.triggerUnknown
-                                    ? 'Optional: what was happening when it occurred?'
-                                    : 'What triggered this anxiety episode?'
-                              }
-                              className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
-                          />
-                        </div>
-
-                        <div className="bg-blue-100 dark:bg-blue-900/20 p-3 rounded text-xs text-gray-600 dark:text-gray-400">
-                          <strong>For VA Claims:</strong> Document physical symptoms, triggers, and functional impact. Panic attacks require 4+ physical symptoms occurring simultaneously.
-                        </div>
-                      </div>
+                      <AnxietyForm
+                          initialData={anxietyData}
+                          onChange={(field, value) => setAnxietyData(prev => ({ ...prev, [field]: value }))}
+                      />
                   )}
 
                   {/* ============================================
