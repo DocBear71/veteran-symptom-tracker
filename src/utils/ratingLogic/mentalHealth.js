@@ -85,6 +85,8 @@ const analyzeMentalHealthCondition = (
         'Include notes about how symptoms affect work and relationships',
         'Document treatment and medication if applicable',
       ],
+      safetyFlag: false,
+      safetySources: [],
       metrics: {
         totalLogs: 0,
         avgSeverity: 0,
@@ -101,6 +103,8 @@ const analyzeMentalHealthCondition = (
         exaggeratedStartle: 0,
         emotionalNumbing: 0,
         panicAttacks: 0,
+        safetyFlagTriggered: false,
+        structuredCrisisFlags: 0,
       },
     };
   }
@@ -137,8 +141,110 @@ const analyzeMentalHealthCondition = (
     work: ['work', 'job', 'employment', 'productivity', 'performance', 'absent', 'late', 'called off'],
     social: ['relationship', 'family', 'friends', 'isolated', 'alone', 'avoiding', 'social'],
     daily: ['shower', 'hygiene', 'eat', 'sleep', 'basic', 'daily', 'routine'],
-    severe: ['suicidal', 'hospital', 'emergency', 'crisis', 'violent', 'dangerous'],
+    // NOTE: 'severe' keyword detection is now handled separately by detectSafetySignal()
+    // below — that detector uses word boundaries, negation handling, and structured-flag
+    // checks to reduce false positives. This list retained for any legacy callers but
+    // not used for rating cascade decisions in this analyzer.
+    severe: ['suicidal', 'hospitalized', 'inpatient', 'emergency room', 'crisis', 'self-harm'],
   };
+
+  // ============================================
+  // Safety signal detection (independent of rating cascade)
+  // ============================================
+  // This function returns { triggered, sources } where:
+  //   triggered = true if any genuine safety signal is detected
+  //   sources   = array of human-readable signal sources (for transparency/audit)
+  //
+  // Detection sources, in priority order:
+  //   1. Structured boolean flag (depressionData.suicidalIdeation === true) — highest
+  //      confidence because it's an intentional user input via the form
+  //   2. Crisis phrase matches in notes (specific multi-word phrases — fewer false
+  //      positives than single-word matches)
+  //   3. Word-boundary single keyword matches with negation handling
+  //
+  // Negation handling: skip a match if any of these phrases appear within the
+  // 30 characters immediately preceding the keyword:
+  //   "no longer", "not ", "wasn't", "never", "denies", "denied", "without any",
+  //   "free from", "free of", "no more"
+  const detectSafetySignal = (logs) => {
+    const sources = [];
+
+    // 1. Structured flag check
+    const structuredFlagCount = logs.filter(l => l.depressionData?.suicidalIdeation === true).length;
+    if (structuredFlagCount > 0) {
+      sources.push(`${structuredFlagCount} log(s) with suicidalIdeation flag`);
+    }
+
+    // 2 & 3. Notes content analysis
+    const negationPattern = /(no longer|not |wasn't|isn't|never|denies|denied|without any|free from|free of|no more)/i;
+    const crisisPhrases = [
+      /\bsuicidal (thoughts?|ideation|plan)\b/i,
+      /\bself[\s-]harm\b/i,
+      /\bwant(ing)? to (die|hurt myself|end (it|my life))\b/i,
+      /\bplan(ning)? to (kill|hurt) myself\b/i,
+      /\bhomicidal (thoughts?|ideation)\b/i,
+      /\bactively (planning|considering)\b/i,
+    ];
+    const singleKeywords = [
+      /\bsuicidal\b/i,
+      /\bhospitalized\b/i,
+      /\binpatient\b/i,
+      /\b(emergency room|er visit)\b/i,
+      /\bin crisis\b/i,
+    ];
+
+    let phraseMatchCount = 0;
+    let keywordMatchCount = 0;
+
+    logs.forEach(log => {
+      const notes = log.notes || '';
+      if (!notes) return;
+
+      // Check crisis phrases first (more specific, less likely to be false positive)
+      for (const pattern of crisisPhrases) {
+        const match = notes.match(pattern);
+        if (match) {
+          // Look at 30 chars before the match for negation
+          const matchIdx = match.index;
+          const context = notes.slice(Math.max(0, matchIdx - 30), matchIdx);
+          if (!negationPattern.test(context)) {
+            phraseMatchCount++;
+            break; // count this log once
+          }
+        }
+      }
+
+      // Single keyword fallback with negation
+      for (const pattern of singleKeywords) {
+        const match = notes.match(pattern);
+        if (match) {
+          const matchIdx = match.index;
+          const context = notes.slice(Math.max(0, matchIdx - 30), matchIdx);
+          if (!negationPattern.test(context)) {
+            keywordMatchCount++;
+            break;
+          }
+        }
+      }
+    });
+
+    if (phraseMatchCount > 0) {
+      sources.push(`${phraseMatchCount} log(s) with crisis phrase in notes`);
+    }
+    if (keywordMatchCount > 0) {
+      sources.push(`${keywordMatchCount} log(s) with crisis keyword in notes`);
+    }
+
+    return {
+      triggered: sources.length > 0,
+      sources,
+      structuredFlagCount,
+      phraseMatchCount,
+      keywordMatchCount,
+    };
+  };
+
+  const safetySignal = detectSafetySignal(relevantLogs);
 
   const notesAnalysis = { workImpact: 0, socialImpact: 0, dailyImpact: 0, severeSymptoms: 0 };
 
@@ -217,18 +323,34 @@ const analyzeMentalHealthCondition = (
   let gaps = [];
   let assessmentLevel = 'preliminary';
 
-  if (notesAnalysis.severeSymptoms > 0) {
+  // Rating cascade is now driven purely by frequency and pattern of impairment per
+  // 38 CFR §4.130 General Rating Formula for Mental Disorders. The safety callout
+  // (handled separately via safetySignal) is independent — it surfaces on the card
+  // when warranted but does not distort the rating tier.
+  //
+  // Tier 1 (70-100%): Sustained pattern of severe impairment
+  // Requires multiple independent evidence sources, not a single keyword match.
+  if (
+      (panicPerWeek >= 2 && totalSymptoms >= 20) ||
+      (symptomTypesPresent.length >= 4 && symptomsPerMonth >= 20) ||
+      (notesAnalysis.workImpact >= 10 && notesAnalysis.socialImpact >= 10 && notesAnalysis.dailyImpact >= 5)
+  ) {
     supportedRating = '70-100';
     assessmentLevel = 'requires-professional-evaluation';
     ratingRationale = [
-      'Logged symptoms indicate severe impairment requiring immediate professional evaluation',
-      'Notes reference crisis-level symptoms',
-      'CRITICAL: If experiencing suicidal thoughts, call Veterans Crisis Line: 988 then Press 1',
-    ];
+      `${totalSymptoms} symptoms logged over ${monthsInPeriod.toFixed(1)} months`,
+      panicPerWeek >= 2 ? `Panic attacks: ${panicPerWeek.toFixed(1)} per week (severe frequency)` : '',
+      symptomTypesPresent.length >= 4 ? `${symptomTypesPresent.length} distinct symptom types documented` : '',
+      notesAnalysis.workImpact >= 10 ? `${notesAnalysis.workImpact} logs reference work impact` : '',
+      notesAnalysis.socialImpact >= 10 ? `${notesAnalysis.socialImpact} logs reference social impact` : '',
+      notesAnalysis.dailyImpact >= 5 ? `${notesAnalysis.dailyImpact} logs reference impact on daily activities` : '',
+      'Pattern suggests severe occupational and social impairment',
+    ].filter(Boolean);
     gaps = [
-      'Seek immediate mental health treatment',
-      'Document all treatment and hospitalizations',
-      'Request comprehensive functional assessment from mental health provider',
+      'Comprehensive mental health evaluation required for 70-100% rating',
+      'Document all treatment, medications, and any hospitalizations',
+      'Request detailed functional assessment from mental health provider',
+      'Provide statements about work limitations (missed days, productivity, conflicts)',
     ];
   } else if (
       panicPerWeek > 1 ||
@@ -331,6 +453,10 @@ const analyzeMentalHealthCondition = (
     evidence,
     gaps,
     criteria: conditionCriteria,
+    // Safety flag is independent of the rating cascade. When triggered, the card
+    // should surface the Veterans Crisis Line callout regardless of the rating tier.
+    safetyFlag: safetySignal.triggered,
+    safetySources: safetySignal.sources,
     metrics: {
       totalLogs: relevantLogs.length,
       avgSeverity,
@@ -348,6 +474,9 @@ const analyzeMentalHealthCondition = (
       exaggeratedStartle: startleCount,
       emotionalNumbing: numbingCount,
       panicAttacks: panicCount,
+      // Safety signal counts (separate from rating tier)
+      safetyFlagTriggered: safetySignal.triggered,
+      structuredCrisisFlags: safetySignal.structuredFlagCount,
     },
     disclaimer: 'CRITICAL DISCLAIMER: Mental health ratings are based on professional evaluation of functional impairment in work and social settings, not symptom frequency alone. This analysis helps you understand what your documentation might support, but a comprehensive mental health evaluation is required for any rating determination. All mental health concerns should be discussed with a qualified provider.',
     crisisResources: {
