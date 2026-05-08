@@ -84,6 +84,7 @@ const EditLogModal = ({log, isOpen, onClose, onSaved}) => {
   const [isFlareUp, setIsFlareUp] = useState(false);
   const [duration, setDuration] = useState('');
   const [timeOfDay, setTimeOfDay] = useState('');
+  const [stressLevel, setStressLevel] = useState(5);
 
   // Migraine-specific fields — shape owned by MigraineForm, imported via INITIAL_MIGRAINE_DATA
   const [migraineData, setMigraineData] = useState({ ...INITIAL_MIGRAINE_DATA });
@@ -205,6 +206,9 @@ const EditLogModal = ({log, isOpen, onClose, onSaved}) => {
             setIsFlareUp(log.isFlareUp || false);
             setDuration(log.duration || '');
             setTimeOfDay(log.timeOfDay || '');
+            // stressLevel: legacy logs don't have this field → default 5 to match new-log default.
+            // This means editing an old log will save stressLevel=5 unless the user adjusts the slider.
+            setStressLevel(log.stressLevel ?? 5);
 
             // Get existing medication logs for this symptom
             const existingMeds = getMedicationLogsForSymptom(log.id);
@@ -1156,6 +1160,7 @@ const EditLogModal = ({log, isOpen, onClose, onSaved}) => {
             isFlareUp,
             duration: duration || null,
             timeOfDay: timeOfDay || null,
+            stressLevel: stressLevel,
           };
 
           if (isMigraine) updates.migraineData = migraineData;
@@ -1470,6 +1475,26 @@ const EditLogModal = ({log, isOpen, onClose, onSaved}) => {
                           <option value="all-day">All Day</option>
                           <option value="varies">Varies</option>
                         </select>
+                      </div>
+                    </div>
+
+                    {/* Stress Level — slider matches SymptomLogger and QuickLog */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        😰 Stress Level: {stressLevel}/10
+                      </label>
+                      <input
+                          type="range"
+                          min="0"
+                          max="10"
+                          value={stressLevel}
+                          onChange={(e) => setStressLevel(parseInt(e.target.value))}
+                          className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer accent-purple-600"
+                      />
+                      <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400 mt-1">
+                        <span>0 - Calm</span>
+                        <span>5 - Moderate</span>
+                        <span>10 - Extreme</span>
                       </div>
                     </div>
                   </div>

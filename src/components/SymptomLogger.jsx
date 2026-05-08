@@ -1824,6 +1824,7 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed, onNavigate }) =
       duration: duration || null,
       timeOfDay: timeOfDay || null,
       weather: weather || null,
+      stressLevel: stressLevel,  // 0-10 numeric scale; always saved (slider always has a value)
     };
 
     // Add condition-specific data
@@ -2072,6 +2073,7 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed, onNavigate }) =
     setDuration('');
     setTimeOfDay('');
     setWeather('');
+    setStressLevel(5);
 
     setShowSuccess(true);
     setTimeout(() => setShowSuccess(false), 2000);

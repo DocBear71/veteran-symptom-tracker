@@ -39,6 +39,20 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
   // Modal state
   const [selectedChronic, setSelectedChronic] = useState(null);
   const [logSeverity, setLogSeverity] = useState(5);
+  // isFlareUp is a top-level log property, NOT inside painData. The legacy
+  // painData.flareUp field is deprecated; rating analyzers (musculoskeletal.js)
+  // and SymptomHistory both read log.isFlareUp as the source of truth.
+  // SymptomLogger and EditLogModal use this same pattern.
+  const [isFlareUp, setIsFlareUp] = useState(false);
+
+  // Symptom Details fields — parity with SymptomLogger. Duration, Time of Day,
+  // and Weather are saved into the entry; Stress Level is collected for UX but
+  // not yet persisted (matches current SymptomLogger behavior). The persistence
+  // gap will be addressed separately.
+  const [duration, setDuration] = useState('');
+  const [timeOfDay, setTimeOfDay] = useState('');
+  const [weather, setWeather] = useState('');
+  const [stressLevel, setStressLevel] = useState(5);
   const [logNotes, setLogNotes] = useState('');
 
   // Medication state - object keyed by med ID with effectiveness/side effects
@@ -1415,6 +1429,11 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
     if (editMode) return;
     setSelectedChronic(chronic);
     setLogSeverity(chronic.defaultSeverity || 5);
+    setIsFlareUp(false);
+    setDuration('');
+    setTimeOfDay('');
+    setWeather('');
+    setStressLevel(5);
     setLogNotes('');
     setOccurredAt(new Date().toISOString());
     setSelectedMedications({});
@@ -1933,6 +1952,11 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
   const handleCloseModal = () => {
     setSelectedChronic(null);
     setLogSeverity(5);
+    setIsFlareUp(false);
+    setDuration('');
+    setTimeOfDay('');
+    setWeather('');
+    setStressLevel(5);
     setLogNotes('');
     setSelectedMedications({});
   };
@@ -1951,6 +1975,12 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
       symptomName: selectedChronic.symptomName,
       category: selectedChronic.category,
       severity: logSeverity,
+      isFlareUp: isFlareUp,
+      // Symptom Details fields — parity with SymptomLogger.
+      duration: duration || null,
+      timeOfDay: timeOfDay || null,
+      weather: weather || null,
+      stressLevel: stressLevel,  // 0-10 numeric scale; always saved (slider always has a value)
       notes: logNotes.trim(),
       occurredAt: occurredAt,
     };
@@ -2381,6 +2411,130 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
                       <p className="text-xs text-gray-500 dark:text-gray-400 mt-2 text-center">
                         0-3: Mild • 4-6: Moderate (affects activities) • 7-10: Severe (impairs function)
                       </p>
+                    </div>
+                  </div>
+
+                  {/* Flare-Up Toggle — log-level flag (not pain-specific). Read by all
+                      rating analyzers and matches SymptomLogger/EditLogModal pattern.
+                      Helper text and styling kept identical to SymptomLogger so the
+                      experience is consistent regardless of entry point. */}
+                  <label
+                      className={`flex items-center gap-3 p-3 rounded-lg border-2 cursor-pointer transition-all ${
+                          isFlareUp
+                              ? 'bg-orange-100 dark:bg-orange-900/30 border-orange-400 dark:border-orange-600'
+                              : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-600 hover:border-orange-300 dark:hover:border-orange-700'
+                      }`}
+                  >
+                    <input
+                        type="checkbox"
+                        checked={isFlareUp}
+                        onChange={(e) => setIsFlareUp(e.target.checked)}
+                        className="w-5 h-5 text-orange-600 rounded"
+                    />
+                    <div>
+                      <span className="font-medium text-gray-900 dark:text-gray-100">
+                        🔥 This is a flare-up
+                      </span>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">
+                        {isVeteran
+                            ? 'Symptom is worse than usual baseline — important for VA flare-up documentation'
+                            : 'Symptom is worse than usual baseline'}
+                      </p>
+                    </div>
+                  </label>
+
+                  {/* Symptom Details — Duration, Time of Day, Weather, Stress Level.
+                      Mirrors SymptomLogger's "Symptom Details" card so logs created via
+                      either entry point capture the same metadata. Stress slider is
+                      visible but its value is not yet persisted (matches SymptomLogger's
+                      current behavior; persistence to be added separately). */}
+                  <div className="bg-gray-50 dark:bg-gray-800/50 p-4 rounded-lg border border-gray-200 dark:border-gray-700 space-y-3">
+                    <h3 className="font-medium text-gray-900 dark:text-gray-100 flex items-center gap-2 text-sm">
+                      <span>📋</span> Symptom Details
+                    </h3>
+
+                    {/* Duration + Time of Day */}
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
+                          Duration
+                        </label>
+                        <select
+                            value={duration}
+                            onChange={(e) => setDuration(e.target.value)}
+                            className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm"
+                        >
+                          <option value="">How long?</option>
+                          <option value="just-started">Just started</option>
+                          <option value="minutes">Minutes</option>
+                          <option value="hours">Hours</option>
+                          <option value="days">Days</option>
+                          <option value="weeks">Weeks</option>
+                          <option value="months">Months+</option>
+                          <option value="ongoing">Ongoing/Chronic</option>
+                        </select>
+                      </div>
+
+                      <div>
+                        <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
+                          Time of Day
+                        </label>
+                        <select
+                            value={timeOfDay}
+                            onChange={(e) => setTimeOfDay(e.target.value)}
+                            className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm"
+                        >
+                          <option value="">When?</option>
+                          <option value="morning">Morning</option>
+                          <option value="afternoon">Afternoon</option>
+                          <option value="evening">Evening</option>
+                          <option value="night">Night</option>
+                          <option value="all-day">All Day</option>
+                          <option value="varies">Varies</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    {/* Weather + Stress Level */}
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
+                          🌤️ Weather (optional)
+                        </label>
+                        <select
+                            value={weather}
+                            onChange={(e) => setWeather(e.target.value)}
+                            className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm"
+                        >
+                          <option value="">Not specified</option>
+                          <option value="clear">☀️ Clear/Sunny</option>
+                          <option value="cloudy">☁️ Cloudy</option>
+                          <option value="rainy">🌧️ Rainy</option>
+                          <option value="stormy">⛈️ Stormy</option>
+                          <option value="hot">🥵 Hot</option>
+                          <option value="cold">🥶 Cold</option>
+                          <option value="humid">💧 Humid</option>
+                          <option value="pressure-change">📊 Barometric Pressure Change</option>
+                        </select>
+                      </div>
+
+                      <div>
+                        <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
+                          😰 Stress Level: {stressLevel}/10
+                        </label>
+                        <input
+                            type="range"
+                            min="0"
+                            max="10"
+                            value={stressLevel}
+                            onChange={(e) => setStressLevel(parseInt(e.target.value))}
+                            className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer accent-purple-600 mt-2"
+                        />
+                        <div className="flex justify-between text-[10px] text-gray-500 dark:text-gray-400 mt-1">
+                          <span>0 - Calm</span>
+                          <span>10 - Extreme</span>
+                        </div>
+                      </div>
                     </div>
                   </div>
 
@@ -3025,38 +3179,25 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
                           </select>
                         </div>
 
-                        <div className="grid grid-cols-2 gap-2">
-                          <label
-                              className={`flex items-center gap-2 p-2 rounded-lg border cursor-pointer text-sm ${
-                                  painData.radiating
-                                      ? 'bg-rose-100 dark:bg-rose-900/50 border-rose-300 dark:border-rose-700'
-                                      : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700'
-                              }`}
-                          >
-                            <input
-                                type="checkbox"
-                                checked={painData.radiating}
-                                onChange={(e) => setPainData(prev => ({ ...prev, radiating: e.target.checked }))}
-                                className="w-4 h-4 text-rose-600 rounded"
-                            />
-                            <span className="text-gray-700 dark:text-gray-300">Radiating</span>
-                          </label>
-                          <label
-                              className={`flex items-center gap-2 p-2 rounded-lg border cursor-pointer text-sm ${
-                                  painData.flareUp
-                                      ? 'bg-rose-100 dark:bg-rose-900/50 border-rose-300 dark:border-rose-700'
-                                      : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700'
-                              }`}
-                          >
-                            <input
-                                type="checkbox"
-                                checked={painData.flareUp}
-                                onChange={(e) => setPainData(prev => ({ ...prev, flareUp: e.target.checked }))}
-                                className="w-4 h-4 text-rose-600 rounded"
-                            />
-                            <span className="text-gray-700 dark:text-gray-300">Flare-up</span>
-                          </label>
-                        </div>
+                        {/* Radiating checkbox only — Flare-up moved to log-level toggle
+                            near severity. The deprecated painData.flareUp field is no
+                            longer written from QuickLog; SymptomHistory's fallback read
+                            keeps old logs visible. */}
+                        <label
+                            className={`flex items-center gap-2 p-2 rounded-lg border cursor-pointer text-sm ${
+                                painData.radiating
+                                    ? 'bg-rose-100 dark:bg-rose-900/50 border-rose-300 dark:border-rose-700'
+                                    : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700'
+                            }`}
+                        >
+                          <input
+                              type="checkbox"
+                              checked={painData.radiating}
+                              onChange={(e) => setPainData(prev => ({ ...prev, radiating: e.target.checked }))}
+                              className="w-4 h-4 text-rose-600 rounded"
+                          />
+                          <span className="text-gray-700 dark:text-gray-300">Radiating</span>
+                        </label>
 
                         {painData.radiating && (
                             <input
