@@ -17,6 +17,7 @@ import { useProfile } from '../hooks/useProfile';
 import { stripDCCode } from '../data/symptoms';
 import OccurrenceTimePicker from './OccurrenceTimePicker';
 import MedicationEffectivenessInline from './MedicationEffectivenessInline';
+import PTSDForm, { INITIAL_PTSD_DATA } from './forms/SymptomForms/PTSDForm';
 
 const QuickLog = ({ onLogSaved, onAddChronic }) => {
   const { isVeteran } = useProfile();
@@ -62,16 +63,7 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
     feelRested: null,
   });
 
-  const [ptsdData, setPtsdData] = useState({
-    flashbacks: false,
-    avoidance: false,
-    emotionalNumbering: false,
-    hypervigilance: false,
-    exaggeratedStartle: false,
-    intrusiveThoughts: false,
-    triggerUnknown: false,
-    triggerDescription: '',
-  });
+  const [ptsdData, setPtsdData] = useState(INITIAL_PTSD_DATA);
 
   const [painData, setPainData] = useState({
     radiating: false,
@@ -1468,11 +1460,7 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
       hoursSlept: '', quality: 5, wakeUps: '', troubleFallingAsleep: false,
       troubleStayingAsleep: false, nightmares: false, feelRested: null,
     });
-    setPtsdData({
-      flashbacks: false, avoidance: false, emotionalNumbering: false,
-      hypervigilance: false, exaggeratedStartle: false, intrusiveThoughts: false,
-      triggerUnknown: false, triggerDescription: '',
-    });
+    setPtsdData(INITIAL_PTSD_DATA);
     setPainData({
       radiating: false, radiatingTo: '', limitedRangeOfMotion: false,
       affectedActivities: [], painType: '', flareUp: false,
@@ -2621,71 +2609,14 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
                       </div>
                   )}
 
-                  {/* PTSD-SPECIFIC FIELDS */}
+                  {/* PTSD-SPECIFIC FIELDS — canonical PTSDForm component.
+                      Refactored from inline JSX (Aug 2026) to eliminate drift between
+                      QuickLog and EditLogModal which both edit ptsdData. */}
                   {isPTSDRelated && (
-                      <div className="bg-amber-50 dark:bg-amber-900/30 p-4 rounded-lg border border-amber-200 dark:border-amber-800 space-y-4">
-                        <h3 className="font-medium text-amber-900 dark:text-amber-200 text-sm">Mental Health Details</h3>
-
-                        <div className="grid grid-cols-2 gap-2">
-                          {[
-                            { key: 'flashbacks', label: 'Flashbacks' },
-                            { key: 'intrusiveThoughts', label: 'Intrusive thoughts' },
-                            { key: 'avoidance', label: 'Avoidance' },
-                            { key: 'hypervigilance', label: 'Hypervigilance' },
-                            { key: 'emotionalNumbering', label: 'Numbness' },
-                            { key: 'exaggeratedStartle', label: 'Startle' },
-                          ].map(({ key, label }) => (
-                              <label
-                                  key={key}
-                                  className={`flex items-center gap-2 p-2 rounded-lg border cursor-pointer text-sm ${
-                                      ptsdData[key]
-                                          ? 'bg-amber-100 dark:bg-amber-900/50 border-amber-300 dark:border-amber-700'
-                                          : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700'
-                                  }`}
-                              >
-                                <input
-                                    type="checkbox"
-                                    checked={ptsdData[key]}
-                                    onChange={(e) => setPtsdData(prev => ({ ...prev, [key]: e.target.checked }))}
-                                    className="w-4 h-4 text-amber-600 rounded"
-                                />
-                                <span className="text-gray-700 dark:text-gray-300">{label}</span>
-                              </label>
-                          ))}
-                        </div>
-
-                        <div>
-                          <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-2">Trigger</label>
-
-                          <label
-                              className={`flex items-center gap-2 p-2 rounded-lg border cursor-pointer mb-2 text-sm ${
-                                  ptsdData.triggerUnknown
-                                      ? 'bg-amber-100 dark:bg-amber-900/50 border-amber-300 dark:border-amber-700'
-                                      : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700'
-                              }`}
-                          >
-                            <input
-                                type="checkbox"
-                                checked={ptsdData.triggerUnknown}
-                                onChange={(e) => setPtsdData(prev => ({ ...prev, triggerUnknown: e.target.checked }))}
-                                className="w-4 h-4 text-amber-600 rounded"
-                            />
-                            <span className="text-gray-700 dark:text-gray-300">No identifiable trigger</span>
-                          </label>
-
-                          <input
-                              type="text"
-                              value={ptsdData.triggerDescription}
-                              onChange={(e) => setPtsdData(prev => ({ ...prev, triggerDescription: e.target.value }))}
-                              placeholder={
-                                ptsdData.triggerUnknown
-                                    ? 'Optional: what was happening?'
-                                    : 'What triggered this?'
-                              }
-                              className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm"
-                          />
-                        </div>
-                      </div>
+                      <PTSDForm
+                          initialData={ptsdData}
+                          onChange={(field, value) => setPtsdData(prev => ({ ...prev, [field]: value }))}
+                      />
                   )}
 
                   {/* GI-SPECIFIC FIELDS */}
