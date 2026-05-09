@@ -24,16 +24,13 @@ import {
   COMMON_SIDE_EFFECTS
 } from '../utils/medicationUtils';
 import { getActiveProfileId } from '../utils/profiles';
+import { getProfileKey } from '../utils/storage';
 import OccurrenceTimePicker from './OccurrenceTimePicker';
 import MedicationDocumentationGuide from './MedicationDocumentationGuide';
 
 // ─── Medication Groups: localStorage helpers ────────────────────────────
 // Uses same profile-namespacing pattern as storage.js for data isolation.
-const getGroupsKey = () => {
-  const profileId = getActiveProfileId();
-  const base = 'symptomTracker_medicationGroups';
-  return profileId ? `${base}_${profileId}` : base;
-};
+const getGroupsKey = () => getProfileKey('symptomTracker_medicationGroups');
 
 const getMedicationGroups = () => {
   try { return JSON.parse(localStorage.getItem(getGroupsKey())) || []; }

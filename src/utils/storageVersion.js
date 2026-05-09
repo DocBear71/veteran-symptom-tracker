@@ -17,7 +17,6 @@ export const checkAndMigrateStorage = () => {
   // First time user - just set version
   if (!currentVersion) {
     localStorage.setItem(VERSION_KEY, CURRENT_VERSION);
-    console.log('First time user - version set to', CURRENT_VERSION);
     return;
   }
 
@@ -27,7 +26,6 @@ export const checkAndMigrateStorage = () => {
   }
 
   // Different version - backup before any changes
-  console.log(`Migrating from ${currentVersion} to ${CURRENT_VERSION}`);
   createEmergencyBackup();
 
   // Update version
@@ -80,7 +78,6 @@ export const createEmergencyBackup = () => {
     // Try localStorage with quota handling
     try {
       localStorage.setItem(BACKUP_KEY, backupString);
-      console.log(`✅ Emergency backup saved to localStorage (${backupSizeMB} MB)`, new Date().toISOString());
     } catch (_quotaError) {
       console.warn(`⚠️ localStorage quota exceeded (${backupSizeMB} MB) - using sessionStorage only`);
       // Remove old backup to free space
@@ -94,7 +91,6 @@ export const createEmergencyBackup = () => {
     // Always try sessionStorage as fallback
     try {
       sessionStorage.setItem(BACKUP_KEY, backupString);
-      console.log('✅ Emergency backup also saved to sessionStorage');
     } catch (_sessionError) {
       console.warn('⚠️ sessionStorage quota exceeded');
     }
@@ -132,8 +128,6 @@ export const restoreFromEmergencyBackup = () => {
               localStorage.setItem(key, JSON.stringify(value));
           }
       });
-
-    console.log('Data restored from backup:', backup.timestamp);
     return true;
   } catch (error) {
     console.error('Failed to restore backup:', error);
@@ -173,7 +167,6 @@ export const createDailyBackup = () => {
     }
 
     localStorage.setItem('symptomTracker_backupHistory', JSON.stringify(backupHistory));
-    console.log('Daily backup created');
   } catch (error) {
     console.error('Failed to save daily backup metadata:', error);
   }

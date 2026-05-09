@@ -27,17 +27,14 @@ import { getProfile as getOldProfile, PROFILE_TYPES } from './profile';
 export const runMultiProfileMigration = () => {
   // Check if already migrated
   if (isMultiProfileInitialized()) {
-    console.log('Multi-profile already initialized');
     return { success: true, migrated: false };
   }
 
-  console.log('Starting multi-profile migration...');
 
   try {
     // Check if there are already profiles (shouldn't happen, but handle it)
     const existingProfiles = getProfiles();
     if (existingProfiles.length > 0) {
-      console.log('Profiles already exist, skipping migration');
       markMigrationComplete();
       return { success: true, migrated: false };
     }
@@ -68,7 +65,6 @@ export const runMultiProfileMigration = () => {
     }
 
     const defaultProfile = result.profile;
-    console.log('Created default profile:', defaultProfile);
 
     // Migrate existing data to new namespaced keys
     migrateData(defaultProfile.id);
@@ -79,7 +75,6 @@ export const runMultiProfileMigration = () => {
     // Mark migration as complete
     markMigrationComplete();
 
-    console.log('Multi-profile migration complete!');
     return {
       success: true,
       migrated: true,
@@ -120,17 +115,13 @@ const migrateData = (profileId) => {
       // Only migrate if new key doesn't exist yet (don't overwrite)
       if (!localStorage.getItem(newKey)) {
         localStorage.setItem(newKey, data);
-        console.log(`Migrated: ${oldKey} → ${newKey}`);
-      } else {
-        console.log(`Skipped migration for ${oldKey} (already exists in new format)`);
-      }
+       }
 
       // DON'T auto-delete old keys - keep them for now as backup
       // User can manually clean up later if needed
     }
   });
 
-  console.log(`Migration check complete for profile ${profileId}`);
 };
 
 /**
@@ -157,15 +148,8 @@ export const cleanupOldKeys = () => {
     if (localStorage.getItem(key)) {
       localStorage.removeItem(key);
       cleaned++;
-      console.log(`Cleaned up old key: ${key}`);
     }
   });
-
-  if (cleaned > 0) {
-    console.log(`✅ Cleaned up ${cleaned} old non-namespaced keys`);
-  } else {
-    console.log('No old keys to clean up');
-  }
 
   return { cleaned };
 };
@@ -203,7 +187,6 @@ export const migrateServiceConnectedConditions = () => {
 
   if (migrated > 0) {
     localStorage.setItem('symptomTracker_profiles', JSON.stringify(profiles));
-    console.log(`✅ Migrated ${migrated} profiles to include serviceConnectedConditions`);
   }
 
   return { migrated };

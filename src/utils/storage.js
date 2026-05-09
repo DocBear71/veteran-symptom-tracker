@@ -11,7 +11,7 @@ import { getMeasurements } from './measurements';
 /**
  * Get profile-namespaced storage key
  */
-const getProfileKey = (baseKey, profileId = null) => {
+export const getProfileKey = (baseKey, profileId = null) => {
   const activeId = profileId || getActiveProfileId();
   if (!activeId) {
     // During migration, old keys might be accessed briefly
@@ -721,6 +721,9 @@ export const exportAllData = (profileId = null) => {
     profile: null,
     onboardingComplete: localStorage.getItem('symptomTracker_onboardingComplete') === 'true',
     sleepApneaProfile: getSleepApneaProfile(activeId),
+    worksheet8940: get8940Worksheet(activeId),
+    weightGoal: getWeightGoal(activeId),
+    mentalHealthScores: getMentalHealthScores(activeId),
   };
 
   const jsonString = JSON.stringify(data, null, 2);
@@ -802,6 +805,24 @@ export const importAllData = (jsonData, options = { merge: false }, profileId = 
         }
       }
 
+      // Restore worksheet, weight goal, mental health scores if not already present
+      // (non-destructive: only restore if the current profile has no data)
+      if (data.worksheet8940 && !get8940Worksheet(activeId)?.lastSaved) {
+        save8940Worksheet(data.worksheet8940, activeId);
+      }
+
+      if (data.weightGoal && !getWeightGoal(activeId)) {
+        saveWeightGoal(data.weightGoal, activeId);
+      }
+
+      if (data.mentalHealthScores && Array.isArray(data.mentalHealthScores)) {
+        const existingScores = getMentalHealthScores(activeId);
+        if (!existingScores || existingScores.length === 0) {
+          const key = getProfileKey('symptomTracker_mentalHealthScores', activeId);
+          localStorage.setItem(key, JSON.stringify(data.mentalHealthScores));
+        }
+      }
+
       return {
         success: true,
         message: `Merged ${newLogs.length} new log entries`,
@@ -867,6 +888,21 @@ export const importAllData = (jsonData, options = { merge: false }, profileId = 
       if (data.sleepApneaProfile) {
         const key = getProfileKey('symptomTracker_sleepApneaProfile', activeId);
         localStorage.setItem(key, JSON.stringify(data.sleepApneaProfile));
+      }
+
+      if (data.worksheet8940) {
+        // On full replace, write directly to bypass the merge behavior of save8940Worksheet
+        const worksheetKey = getProfileKey('symptomTracker_8940worksheet', activeId);
+        localStorage.setItem(worksheetKey, JSON.stringify(data.worksheet8940));
+      }
+
+      if (data.weightGoal) {
+        saveWeightGoal(data.weightGoal, activeId);
+      }
+
+      if (data.mentalHealthScores && Array.isArray(data.mentalHealthScores)) {
+        const key = getProfileKey('symptomTracker_mentalHealthScores', activeId);
+        localStorage.setItem(key, JSON.stringify(data.mentalHealthScores));
       }
 
       if (data.profile) {
@@ -948,6 +984,7 @@ export const clearAllData = (profileId = null) => {
   localStorage.removeItem(getProfileKey('symptomTracker_weightGoal', activeId));
   localStorage.removeItem(getProfileKey('symptomTracker_medicationHistory', activeId));
   localStorage.removeItem(getProfileKey('symptomTracker_mentalHealthScores', activeId));
+  localStorage.removeItem(getProfileKey('symptomTracker_8940worksheet', activeId));
 };
 
 // ============================================

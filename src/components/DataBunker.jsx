@@ -57,7 +57,7 @@ export default function DataBunker() {
         const data = {
             version: '2.0',
             exportDate: new Date().toISOString(),
-            appVersion: '3.4.0',
+            appVersion: '3.5.0',
             activeProfileId,
             // Store all raw localStorage data for complete backup
             rawData: allData,
@@ -82,6 +82,11 @@ export default function DataBunker() {
                 theme: localStorage.getItem('symptomTracker_theme') || 'system',
                 reminderSettings: JSON.parse(localStorage.getItem('symptomTracker_reminderSettings') || '{}'),
                 onboardingComplete: localStorage.getItem('symptomTracker_onboardingComplete') === 'true',
+                worksheet8940: JSON.parse(localStorage.getItem(`symptomTracker_8940worksheet_${activeProfileId}`) || 'null'),
+                weightGoal: JSON.parse(localStorage.getItem(`symptomTracker_weightGoal_${activeProfileId}`) || 'null'),
+                mentalHealthScores: JSON.parse(localStorage.getItem(`symptomTracker_mentalHealthScores_${activeProfileId}`) || '[]'),
+                sleepApneaProfile: JSON.parse(localStorage.getItem(`symptomTracker_sleepApneaProfile_${activeProfileId}`) || 'null'),
+                medicationHistory: JSON.parse(localStorage.getItem(`symptomTracker_medicationHistory_${activeProfileId}`) || '[]'),
             }
         };
 
