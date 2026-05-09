@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import { useProfile } from '../hooks/useProfile';
 import {
   getServiceConnectedConditions,
@@ -6,6 +6,12 @@ import {
 } from '../utils/profiles';
 import { analyzeTDIUEligibility } from '../utils/tdiuEligibility';
 import { calculateCombinedRating } from '../utils/vaRatingCalculator';
+import {
+  get8940Worksheet,
+  save8940Worksheet,
+  clear8940Worksheet,
+} from '../utils/storage';
+import { generate8940WorksheetPDF } from '../utils/export';
 
 /**
  * TDIUTool — Comprehensive TDIU eligibility analysis and education.
@@ -33,9 +39,8 @@ import { calculateCombinedRating } from '../utils/vaRatingCalculator';
  * NEVER renders a determination. Every state points to a VSO. The educational
  * content is regulation-grounded with explicit CFR/USC citations.
  *
- * Phase 3 (future) will add the VA Form 21-8940 worksheet form below the
- * educational sections. Phase 4 will add PDF export. Both are intentionally
- * out of scope for Phase 2.
+ * * Phase 3 adds the VA Form 21-8940 worksheet below the educational sections.
+ *  * Phase 4 (future) will add PDF export.
  */
 
 // Federal poverty threshold for a single individual.
@@ -130,7 +135,13 @@ const TDIUTool = ({ embedded = false, onClose }) => {
         </div>
 
         {/* ============================================ */}
-        {/* SECTION 3: VSO REFERRAL                       */}
+        {/* SECTION 3: VA FORM 21-8940 WORKSHEET          */}
+        {/* ============================================ */}
+        <Form8940Worksheet profileId={profile.id} />
+
+
+        {/* ============================================ */}
+        {/* SECTION 4: VSO REFERRAL                       */}
         {/* ============================================ */}
         <div className="bg-yellow-50 dark:bg-yellow-900/20 border-2 border-yellow-300 dark:border-yellow-700 rounded-lg p-5">
           <h3 className="font-semibold text-yellow-900 dark:text-yellow-200 mb-2 flex items-center gap-2">
@@ -167,7 +178,7 @@ const TDIUTool = ({ embedded = false, onClose }) => {
       </div>
 
   {/* ============================================ */}
-  {/* SECTION 4: REGULATORY FOOTER                  */}
+  {/* SECTION 5: REGULATORY FOOTER                  */}
   {/* ============================================ */}
   <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg border border-gray-200 dark:border-gray-700 p-4 text-xs text-gray-600 dark:text-gray-400 space-y-1">
     <p className="font-medium text-gray-700 dark:text-gray-300 mb-1">
@@ -185,7 +196,7 @@ const TDIUTool = ({ embedded = false, onClose }) => {
       is current as of 2026. Verify the latest figure at HHS.gov before filing.
     </p>
     <p className="italic">
-      Phase 2 deliverable. Phase 3 will add the VA Form 21-8940 worksheet.
+      Phase 3 deliverable. Phase 4 (future) will add PDF export of the 21-8940 worksheet.
     </p>
   </div>
 </div>
@@ -669,11 +680,613 @@ const WhatYoullNeedToFile = () => (
       </div>
 
       <p className="bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800 rounded-lg p-3 text-xs">
-        💡 <strong>Phase 3 will add a 21-8940 worksheet</strong> to this tool — a structured
-        form that mirrors the actual VA form and produces a printable summary you can take
-        to your VSO. It is not yet implemented in this version.
+        💡 The <strong>VA Form 21-8940 Worksheet</strong> below this section lets you
+        draft your employment history and impairment narrative before meeting with your VSO.
+        All data is saved locally — nothing leaves your device.
       </p>
     </Section>
 );
+
+// ============================================================================
+// VA FORM 21-8940 WORKSHEET
+// ============================================================================
+// A structured form that mirrors VA Form 21-8940 (Veteran's Application for
+// Increased Compensation Based on Unemployability). This is a WORKSHEET only —
+// it does not submit to VA. All data is saved to localStorage.
+//
+// Sections:
+//   I.   Occupation & Education
+//   II.  Last Full-Time Employment
+//   III. Employment History (up to 5 prior employers)
+//   IV.  How Disabilities Affect Employment
+//
+// Users are explicitly reminded to review everything with their VSO before filing.
+// ============================================================================
+
+/**
+ * Blank employer entry template.
+ */
+const BLANK_EMPLOYER = () => ({
+  id: crypto.randomUUID(),
+  employer: '',
+  city: '',
+  state: '',
+  fromDate: '',
+  toDate: '',
+  hoursPerWeek: '',
+  grossEarnings: '',
+  reasonForLeaving: '',
+  conditionsThatAffected: '',
+});
+
+/**
+ * Small labelled input with consistent styling.
+ */
+const Field = ({ label, hint, children, required = false }) => (
+    <div className="space-y-1">
+      <label className="block text-xs font-medium text-gray-700 dark:text-gray-300">
+        {label}{required && <span className="text-red-500 ml-1">*</span>}
+      </label>
+      {hint && (
+          <p className="text-xs text-gray-500 dark:text-gray-400">{hint}</p>
+      )}
+      {children}
+    </div>
+);
+
+const inputCls =
+    'w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg ' +
+    'bg-white dark:bg-gray-700 text-gray-900 dark:text-white ' +
+    'focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400';
+
+const textareaCls = inputCls + ' resize-y min-h-[80px]';
+
+/**
+ * Single employer history row (collapsible card).
+ */
+const EmployerEntry = ({ entry, index, onChange, onRemove }) => {
+  const [expanded, setExpanded] = useState(true);
+
+  const handle = (field) => (e) =>
+      onChange(entry.id, { [field]: e.target.value });
+
+  const dateRange = entry.fromDate || entry.toDate
+      ? `${entry.fromDate || '?'} → ${entry.toDate || 'present'}`
+      : 'New employer';
+
+  return (
+      <div className="border border-gray-200 dark:border-gray-600 rounded-lg overflow-hidden">
+        {/* Employer card header */}
+        <div
+            role="button"
+            tabIndex={0}
+            onClick={() => setExpanded(x => !x)}
+            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setExpanded(x => !x); } }}
+            className="w-full flex items-center justify-between px-4 py-3 bg-gray-50 dark:bg-gray-700/50 text-left cursor-pointer select-none"
+            aria-expanded={expanded}
+        >
+          <div>
+          <span className="text-sm font-medium text-gray-900 dark:text-white">
+            {index + 1}. {entry.employer || 'Employer name'}
+          </span>
+            <span className="text-xs text-gray-500 dark:text-gray-400 ml-2">
+            {dateRange}
+          </span>
+          </div>
+          <div className="flex items-center gap-2">
+            <button
+                onClick={(e) => { e.stopPropagation(); onRemove(entry.id); }}
+                className="text-red-400 hover:text-red-600 text-xs px-2 py-1 rounded"
+                aria-label={`Remove employer ${index + 1}`}
+            >
+              Remove
+            </button>
+            <span className="text-gray-400">{expanded ? '▲' : '▼'}</span>
+          </div>
+        </div>
+
+        {expanded && (
+            <div className="p-4 space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <Field label="Employer name">
+                  <input
+                      type="text"
+                      value={entry.employer}
+                      onChange={handle('employer')}
+                      placeholder="Company or individual name"
+                      className={inputCls}
+                  />
+                </Field>
+                <Field label="City">
+                  <input
+                      type="text"
+                      value={entry.city}
+                      onChange={handle('city')}
+                      placeholder="City"
+                      className={inputCls}
+                  />
+                </Field>
+                <Field label="State">
+                  <input
+                      type="text"
+                      value={entry.state}
+                      onChange={handle('state')}
+                      placeholder="State (2-letter)"
+                      maxLength={2}
+                      className={inputCls}
+                  />
+                </Field>
+                <Field label="Hours per week">
+                  <input
+                      type="number"
+                      value={entry.hoursPerWeek}
+                      onChange={handle('hoursPerWeek')}
+                      placeholder="e.g. 40"
+                      min={0}
+                      max={168}
+                      className={inputCls}
+                  />
+                </Field>
+                <Field
+                    label="From date"
+                    hint="Approximate is fine"
+                >
+                  <input
+                      type="date"
+                      value={entry.fromDate}
+                      onChange={handle('fromDate')}
+                      className={inputCls}
+                  />
+                </Field>
+                <Field label="To date (leave blank if current)">
+                  <input
+                      type="date"
+                      value={entry.toDate}
+                      onChange={handle('toDate')}
+                      className={inputCls}
+                  />
+                </Field>
+              </div>
+
+              <Field
+                  label="Gross earnings (annual)"
+                  hint="Approximate annual gross earnings in this role"
+              >
+                <input
+                    type="text"
+                    value={entry.grossEarnings}
+                    onChange={handle('grossEarnings')}
+                    placeholder="e.g. $32,000 or hourly rate"
+                    className={inputCls}
+                />
+              </Field>
+
+              <Field
+                  label="Reason for leaving"
+                  hint="Be specific — VA will ask whether SC conditions contributed"
+              >
+            <textarea
+                value={entry.reasonForLeaving}
+                onChange={handle('reasonForLeaving')}
+                placeholder="e.g. Terminated due to excessive absences caused by back pain and migraines..."
+                className={textareaCls}
+            />
+              </Field>
+
+              <Field
+                  label="Service-connected conditions that affected this job"
+                  hint="List which conditions caused problems, and how"
+              >
+            <textarea
+                value={entry.conditionsThatAffected}
+                onChange={handle('conditionsThatAffected')}
+                placeholder="e.g. PTSD caused inability to work in crowded office; lumbar strain required frequent breaks..."
+                className={textareaCls}
+            />
+              </Field>
+            </div>
+        )}
+      </div>
+  );
+};
+
+/**
+ * Main 21-8940 Worksheet component.
+ */
+const Form8940Worksheet = ({ profileId }) => {
+  const [data, setData] = useState(null);
+  const [saveStatus, setSaveStatus] = useState('idle'); // idle | saving | saved | error
+  const [showClearConfirm, setShowClearConfirm] = useState(false);
+
+  // Load from storage on mount
+  useEffect(() => {
+    const saved = get8940Worksheet(profileId);
+    setData(saved);
+  }, [profileId]);
+
+  // Auto-save with 800ms debounce after any data change
+  useEffect(() => {
+    if (!data) return;
+    setSaveStatus('saving');
+    const timer = setTimeout(() => {
+      try {
+        save8940Worksheet(data, profileId);
+        setSaveStatus('saved');
+      } catch {
+        setSaveStatus('error');
+      }
+    }, 800);
+    return () => clearTimeout(timer);
+  }, [data, profileId]);
+
+  // Generic scalar field updater
+  const updateField = useCallback((field, value) => {
+    setData(prev => ({ ...prev, [field]: value }));
+  }, []);
+
+  // Employment history updaters
+  const addEmployer = useCallback(() => {
+    if ((data?.employmentHistory?.length ?? 0) >= 5) return;
+    setData(prev => ({
+      ...prev,
+      employmentHistory: [...(prev.employmentHistory || []), BLANK_EMPLOYER()],
+    }));
+  }, [data]);
+
+  const updateEmployer = useCallback((id, changes) => {
+    setData(prev => ({
+      ...prev,
+      employmentHistory: prev.employmentHistory.map(e =>
+          e.id === id ? { ...e, ...changes } : e
+      ),
+    }));
+  }, []);
+
+  const removeEmployer = useCallback((id) => {
+    setData(prev => ({
+      ...prev,
+      employmentHistory: prev.employmentHistory.filter(e => e.id !== id),
+    }));
+  }, []);
+
+  const handleClear = () => {
+    clear8940Worksheet(profileId);
+    const fresh = get8940Worksheet(profileId);
+    setData(fresh);
+    setShowClearConfirm(false);
+    setSaveStatus('idle');
+  };
+
+  const handleExport = () => {
+    // Pull a fresh copy from storage to ensure lastSaved is accurate
+    const current = get8940Worksheet(profileId);
+    // Priority: legal name (patientName) → display name → fallback
+    let veteranName = 'Veteran';
+    try {
+      const profiles = JSON.parse(localStorage.getItem('symptomTracker_profiles') || '[]');
+      const match = profiles.find(p => p.id === profileId);
+      if (match) {
+        veteranName = match.metadata?.patientName?.trim() || match.name || 'Veteran';
+      }
+    } catch { /* ignore */ }
+    generate8940WorksheetPDF(current, veteranName);
+  };
+
+  if (!data) {
+    return (
+        <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6 text-center">
+          <p className="text-gray-500 dark:text-gray-400 text-sm">Loading worksheet…</p>
+        </div>
+    );
+  }
+
+  const employerCount = data.employmentHistory?.length ?? 0;
+
+  return (
+      <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
+
+        {/* === Header === */}
+        <div className="px-5 py-4 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border-b border-gray-200 dark:border-gray-700">
+          <div className="flex items-start justify-between gap-3">
+            <div>
+              <h3 className="font-semibold text-gray-900 dark:text-white text-lg">
+                📋 VA Form 21-8940 Worksheet
+              </h3>
+              <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+                Draft your employment history and impairment narrative before meeting with your VSO.
+                This is a <strong>personal worksheet only</strong> — it does not submit to VA.
+              </p>
+            </div>
+            {/* Auto-save indicator */}
+            <div className="shrink-0 text-xs mt-1">
+              {saveStatus === 'saving' && (
+                  <span className="text-gray-400">Saving…</span>
+              )}
+              {saveStatus === 'saved' && (
+                  <span className="text-green-600 dark:text-green-400">✓ Saved</span>
+              )}
+              {saveStatus === 'error' && (
+                  <span className="text-red-500">Save error</span>
+              )}
+            </div>
+          </div>
+
+          {/* Disclaimer banner */}
+          <div className="mt-3 bg-yellow-50 dark:bg-yellow-900/30 border border-yellow-200 dark:border-yellow-700 rounded-lg px-3 py-2 text-xs text-yellow-900 dark:text-yellow-200">
+            ⚠️ <strong>Review with your VSO before filing.</strong> This worksheet helps you
+            organize your thoughts — the actual Form 21-8940 must be submitted through VA with
+            VSO guidance. Data is stored on your device only.
+          </div>
+        </div>
+
+        <div className="p-5 space-y-8">
+
+          {/* ===================== SECTION I — Occupation & Education ===================== */}
+          <section aria-labelledby="ws-section1">
+            <h4
+                id="ws-section1"
+                className="text-sm font-semibold text-gray-900 dark:text-white mb-4 pb-2 border-b border-gray-200 dark:border-gray-600"
+            >
+              Section I — Occupation &amp; Education
+            </h4>
+            <div className="space-y-4">
+              <Field
+                  label="Usual occupation"
+                  hint="What type of work did you do for most of your working life?"
+              >
+                <input
+                    type="text"
+                    value={data.usualOccupation}
+                    onChange={e => updateField('usualOccupation', e.target.value)}
+                    placeholder="e.g. Truck driver, warehouse supervisor, office administrator"
+                    className={inputCls}
+                />
+              </Field>
+
+              <Field
+                  label="Highest level of education completed"
+              >
+                <select
+                    value={data.educationLevel}
+                    onChange={e => updateField('educationLevel', e.target.value)}
+                    className={inputCls}
+                >
+                  <option value="">— Select —</option>
+                  <option value="less-than-hs">Less than high school</option>
+                  <option value="hs-diploma">High school diploma / GED</option>
+                  <option value="some-college">Some college (no degree)</option>
+                  <option value="associates">Associate's degree</option>
+                  <option value="bachelors">Bachelor's degree</option>
+                  <option value="graduate">Graduate degree (Master's, PhD, etc.)</option>
+                  <option value="professional">Professional degree (JD, MD, etc.)</option>
+                  <option value="vocational">Vocational / trade certification</option>
+                </select>
+              </Field>
+
+              <Field
+                  label="Vocational training or professional certifications"
+                  hint="Include military occupational specialties, trade programs, or professional licenses"
+              >
+              <textarea
+                  value={data.vocationalTraining}
+                  onChange={e => updateField('vocationalTraining', e.target.value)}
+                  placeholder="e.g. CDL (commercial driver's license), HVAC certification, 11B Infantry MOS..."
+                  className={textareaCls}
+              />
+              </Field>
+            </div>
+          </section>
+
+          {/* ===================== SECTION II — Last Employment ===================== */}
+          <section aria-labelledby="ws-section2">
+            <h4
+                id="ws-section2"
+                className="text-sm font-semibold text-gray-900 dark:text-white mb-4 pb-2 border-b border-gray-200 dark:border-gray-600"
+            >
+              Section II — Last Full-Time Employment
+            </h4>
+            <div className="space-y-4">
+              <Field
+                  label="Date of last full-time employment"
+                  hint="Date you last worked full-time. Full-time is generally 40 hours/week."
+              >
+                <input
+                    type="date"
+                    value={data.lastFullTimeDate}
+                    onChange={e => updateField('lastFullTimeDate', e.target.value)}
+                    className={inputCls}
+                />
+              </Field>
+
+              <Field
+                  label="Why did full-time employment end?"
+                  hint="Describe specifically how your service-connected conditions contributed. 'Could not maintain attendance due to chronic pain and PTSD episodes' is more useful than 'medical reasons.'"
+              >
+              <textarea
+                  value={data.lastFullTimeReason}
+                  onChange={e => updateField('lastFullTimeReason', e.target.value)}
+                  placeholder="e.g. Terminated after multiple attendance warnings. Absences were due to flare-ups of service-connected lumbar strain and PTSD nightmares causing daytime impairment..."
+                  className={textareaCls + ' min-h-[100px]'}
+              />
+              </Field>
+            </div>
+          </section>
+
+          {/* ===================== SECTION III — Employment History ===================== */}
+          <section aria-labelledby="ws-section3">
+            <div className="flex items-center justify-between mb-4 pb-2 border-b border-gray-200 dark:border-gray-600">
+              <h4
+                  id="ws-section3"
+                  className="text-sm font-semibold text-gray-900 dark:text-white"
+              >
+                Section III — Employment History
+                <span className="text-xs font-normal text-gray-500 dark:text-gray-400 ml-2">
+                (last 5 employers, most recent first)
+              </span>
+              </h4>
+              <button
+                  onClick={addEmployer}
+                  disabled={employerCount >= 5}
+                  className={`text-xs px-3 py-1.5 rounded-lg font-medium transition-colors ${
+                      employerCount >= 5
+                          ? 'bg-gray-100 dark:bg-gray-700 text-gray-400 cursor-not-allowed'
+                          : 'bg-blue-600 hover:bg-blue-700 text-white'
+                  }`}
+              >
+                + Add Employer
+              </button>
+            </div>
+
+            {employerCount === 0 ? (
+                <div className="bg-gray-50 dark:bg-gray-700/30 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-600 p-6 text-center">
+                  <p className="text-sm text-gray-500 dark:text-gray-400">
+                    No employers added yet. Use <strong>+ Add Employer</strong> to record up to 5 prior employers.
+                  </p>
+                  <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
+                    VA Form 21-8940 asks for your employment history from the last 5 years.
+                  </p>
+                </div>
+            ) : (
+                <div className="space-y-3">
+                  {data.employmentHistory.map((entry, idx) => (
+                      <EmployerEntry
+                          key={entry.id}
+                          entry={entry}
+                          index={idx}
+                          onChange={updateEmployer}
+                          onRemove={removeEmployer}
+                      />
+                  ))}
+                  {employerCount >= 5 && (
+                      <p className="text-xs text-gray-500 dark:text-gray-400 text-center mt-2">
+                        Maximum of 5 employers reached. Remove one to add another.
+                      </p>
+                  )}
+                </div>
+            )}
+          </section>
+
+          {/* ===================== SECTION IV — How Disabilities Affect Employment ===================== */}
+          <section aria-labelledby="ws-section4">
+            <h4
+                id="ws-section4"
+                className="text-sm font-semibold text-gray-900 dark:text-white mb-4 pb-2 border-b border-gray-200 dark:border-gray-600"
+            >
+              Section IV — How Disabilities Affect Employment
+            </h4>
+
+            <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-3 mb-4 text-xs text-blue-900 dark:text-blue-200">
+              💡 <strong>Tip:</strong> This section is the core of your TDIU argument.
+              Be specific about <em>functional</em> limitations — not just diagnoses.
+              "PTSD prevents me from working in environments with loud noises or unpredictable people"
+              is stronger than "I have PTSD."
+            </div>
+
+            <div className="space-y-4">
+              <Field
+                  label="Service-connected conditions that prevent or limit employment"
+                  hint="List each condition and its VA diagnostic code if known"
+              >
+              <textarea
+                  value={data.conditionsPreventingWork}
+                  onChange={e => updateField('conditionsPreventingWork', e.target.value)}
+                  placeholder="e.g. Lumbar strain (DC 5237, 40%), PTSD (DC 9411, 50%), Migraines (DC 8100, 30%)..."
+                  className={textareaCls}
+              />
+              </Field>
+
+              <Field
+                  label="How do these conditions specifically affect your ability to work?"
+                  hint="Describe functional impairments: attendance, concentration, physical demands, social interaction, stamina, pain, etc."
+              >
+              <textarea
+                  value={data.howConditionsAffect}
+                  onChange={e => updateField('howConditionsAffect', e.target.value)}
+                  placeholder={[
+                    'e.g. Lumbar strain: cannot sit or stand for more than 20 minutes without severe pain. ',
+                    'Requires frequent breaks and positional changes that are not compatible with production jobs.',
+                    '\n\nPTSD: hypervigilance causes inability to concentrate in open-office environments. ',
+                    'Anger/irritability has led to conflicts with supervisors at prior jobs. ',
+                    'Nightmares cause fatigue that impairs daytime function 3–4 days per week.',
+                  ].join('')}
+                  className={textareaCls + ' min-h-[140px]'}
+              />
+              </Field>
+
+              <Field
+                  label="Special accommodations required or received"
+                  hint="Include accommodations from prior employers, or accommodations you would require that are not reasonably available in competitive employment"
+              >
+              <textarea
+                  value={data.specialAccommodations}
+                  onChange={e => updateField('specialAccommodations', e.target.value)}
+                  placeholder="e.g. Required ability to lie down during work hours due to back pain. No employer was able to accommodate this. At family business, was allowed to leave without notice on bad days..."
+                  className={textareaCls}
+              />
+              </Field>
+
+              <Field
+                  label="Approximate days per year missed due to service-connected conditions"
+                  hint="Estimate based on recent experience. VA looks for patterns of lost time."
+              >
+                <input
+                    type="text"
+                    value={data.missedWorkDays}
+                    onChange={e => updateField('missedWorkDays', e.target.value)}
+                    placeholder="e.g. 60–80 days/year, or 2–3 days/week during flare-ups"
+                    className={inputCls}
+                />
+              </Field>
+            </div>
+          </section>
+
+          {/* ===================== Footer actions ===================== */}
+          <div className="pt-4 border-t border-gray-200 dark:border-gray-600 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+            <div className="text-xs text-gray-500 dark:text-gray-400">
+              {data.lastSaved
+                  ? `Last saved: ${new Date(data.lastSaved).toLocaleString()}`
+                  : 'Not yet saved'}
+            </div>
+
+            <div className="flex gap-3">
+              <button
+                  onClick={handleExport}
+                  className="text-xs px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors"
+              >
+                ⬇ Export PDF
+              </button>
+              {!showClearConfirm ? (
+                  <button
+                      onClick={() => setShowClearConfirm(true)}
+                      className="text-xs px-3 py-1.5 rounded-lg border border-red-300 dark:border-red-700 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
+                  >
+                    Clear worksheet
+                  </button>
+              ) : (
+                  <div className="flex items-center gap-2">
+                <span className="text-xs text-red-600 dark:text-red-400 font-medium">
+                  Clear all data?
+                </span>
+                    <button
+                        onClick={handleClear}
+                        className="text-xs px-3 py-1.5 rounded-lg bg-red-600 hover:bg-red-700 text-white"
+                    >
+                      Yes, clear
+                    </button>
+                    <button
+                        onClick={() => setShowClearConfirm(false)}
+                        className="text-xs px-3 py-1.5 rounded-lg border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+              )}
+            </div>
+          </div>
+
+        </div>
+      </div>
+  );
+};
 
 export default TDIUTool;

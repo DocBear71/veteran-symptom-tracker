@@ -81,6 +81,82 @@ export const deleteSymptomLog = (id, profileId = null) => {
   localStorage.setItem(key, JSON.stringify(filtered));
 };
 
+// ============================================
+// VA FORM 21-8940 WORKSHEET
+// ============================================
+// Stores the veteran's draft worksheet data for the TDIU application.
+// Mirrors the structure of VA Form 21-8940. One record per profile.
+
+/**
+ * Default empty worksheet matching Form 21-8940 sections.
+ */
+export const DEFAULT_8940_WORKSHEET = {
+  // Section I — Occupation & Education
+  usualOccupation: '',
+  educationLevel: '',
+  vocationalTraining: '',
+
+  // Section II — Last Employment
+  lastFullTimeDate: '',                 // ISO date string (YYYY-MM-DD)
+  lastFullTimeReason: '',               // Why full-time work ended
+
+  // Section III — Employment History (last 5 employers)
+  employmentHistory: [
+    // Each entry: { id, employer, city, state, fromDate, toDate,
+    //               hoursPerWeek, grossEarnings, reasonForLeaving,
+    //               conditionsThatAffected }
+  ],
+
+  // Section IV — How Disabilities Affect Employment
+  conditionsPreventingWork: '',         // Free text: which SC conditions affect work
+  howConditionsAffect: '',              // Free text: specific functional limitations
+  specialAccommodations: '',            // Free text: accommodations required/received
+  missedWorkDays: '',                   // Approximate days/year missed due to SC conditions
+
+  // Meta
+  lastSaved: null,                      // ISO timestamp
+};
+
+/**
+ * Retrieve saved 8940 worksheet for a profile.
+ * Returns DEFAULT_8940_WORKSHEET merged with any saved data.
+ */
+export const get8940Worksheet = (profileId = null) => {
+  const key = getProfileKey('symptomTracker_8940worksheet', profileId);
+  const raw = localStorage.getItem(key);
+  if (!raw) return { ...DEFAULT_8940_WORKSHEET, employmentHistory: [] };
+  try {
+    const saved = JSON.parse(raw);
+    return { ...DEFAULT_8940_WORKSHEET, ...saved };
+  } catch {
+    return { ...DEFAULT_8940_WORKSHEET, employmentHistory: [] };
+  }
+};
+
+/**
+ * Save (merge) 8940 worksheet fields for a profile.
+ * Partial updates are safe — only provided keys are overwritten.
+ */
+export const save8940Worksheet = (updates, profileId = null) => {
+  const current = get8940Worksheet(profileId);
+  const merged = {
+    ...current,
+    ...updates,
+    lastSaved: new Date().toISOString(),
+  };
+  const key = getProfileKey('symptomTracker_8940worksheet', profileId);
+  localStorage.setItem(key, JSON.stringify(merged));
+  return merged;
+};
+
+/**
+ * Clear the 8940 worksheet for a profile.
+ */
+export const clear8940Worksheet = (profileId = null) => {
+  const key = getProfileKey('symptomTracker_8940worksheet', profileId);
+  localStorage.removeItem(key);
+};
+
 export const updateSymptomLog = (id, updates, profileId = null) => {
   const logs = getSymptomLogs(profileId);
   const index = logs.findIndex(log => log.id === id);

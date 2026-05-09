@@ -20,6 +20,7 @@ const ExportData = () => {
   const [includeAppointments, setIncludeAppointments] = useState(true);
   const [includeMeasurements, setIncludeMeasurements] = useState(true);
   const [includeMedications, setIncludeMedications] = useState(true);
+  const [include8940Worksheet, setInclude8940Worksheet] = useState(true);
 
   // Export format
   const [exportFormat, setExportFormat] = useState('standard'); // 'standard' or 'va-claim'
@@ -62,6 +63,8 @@ const ExportData = () => {
       includeAppointments,
       includeMeasurements,
       includeMedications,
+      // Only pass worksheet option when VA Claim format is active
+      include8940Worksheet: exportFormat === 'va-claim' ? include8940Worksheet : false,
       conditions: selectedConditions.length > 0 ? selectedConditions : null,
       vaFormat: exportFormat === 'va-claim',
     };
@@ -335,6 +338,25 @@ const ExportData = () => {
                       </p>
                     </div>
                   </label>
+                  {/* 21-8940 Worksheet — only relevant for VA Claim Package format */}
+                  {exportFormat === 'va-claim' && (
+                      <label className="flex items-center gap-3 cursor-pointer">
+                        <input
+                            type="checkbox"
+                            checked={include8940Worksheet}
+                            onChange={(e) => setInclude8940Worksheet(e.target.checked)}
+                            className="w-5 h-5 rounded border-gray-300 dark:border-gray-600 text-blue-600 focus:ring-blue-500"
+                        />
+                        <div>
+                          <p className="font-medium text-gray-900 dark:text-white text-left">
+                            Include 21-8940 Worksheet
+                          </p>
+                          <p className="text-sm text-gray-500 dark:text-gray-400">
+                            Appends your TDIU employment history worksheet if data exists
+                          </p>
+                        </div>
+                      </label>
+                  )}
                 </div>
 
                 {/* Condition Filter */}
@@ -461,6 +483,7 @@ const ExportData = () => {
                 <li>• Charts for measurements (BP, glucose, etc.)</li>
                 <li>• Formatted for easy review by VSO or claims examiner</li>
                 <li>• Includes supporting documentation checklist</li>
+                <li>• Optionally appends 21-8940 TDIU worksheet (if completed)</li>
               </ul>
           ) : (
               <ul className="text-sm text-blue-800 dark:text-blue-300 space-y-1">

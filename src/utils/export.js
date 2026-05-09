@@ -8,6 +8,7 @@ import { getSymptomLogs,
   getOccurrenceTime,
   isBackDated,
   getMentalHealthScores,
+  get8940Worksheet,
 } from './storage';
 import { formatDosage } from './medicationUtils';
 import { getMeasurements } from './measurements';
@@ -2012,6 +2013,302 @@ export const generatePDF = (dateRange = 'all', options = { includeAppointments: 
     doc.save(`symptom-report-${dateStr}.pdf`);
 };
 
+// ============================================================================
+// VA FORM 21-8940 WORKSHEET PDF EXPORT
+// ============================================================================
+// Produces a clean summary-report PDF from the user's saved 21-8940 worksheet.
+// This is NOT the official VA form — it is a formatted summary for VSO review.
+// Structure mirrors Form 21-8940 sections I–IV.
+// ============================================================================
+
+/**
+ * Utility: write wrapped text and advance Y. Returns new Y position.
+ * Adds a new page automatically if content would overflow.
+ */
+const writeWrapped = (doc, text, x, y, maxWidth, lineHeight = 5, pageHeight = 280) => {
+  if (!text || text.trim() === '') return y;
+  const lines = doc.splitTextToSize(String(text), maxWidth);
+  lines.forEach(line => {
+    if (y > pageHeight) {
+      doc.addPage();
+      y = 20;
+    }
+    doc.text(line, x, y);
+    y += lineHeight;
+  });
+  return y;
+};
+
+/**
+ * Utility: draw a section header bar (blue background, white text).
+ * Returns Y after the header.
+ */
+const writeSectionHeader = (doc, label, y, pageWidth) => {
+  if (y > 260) { doc.addPage(); y = 20; }
+  doc.setFillColor(30, 58, 138);
+  doc.rect(14, y, pageWidth - 28, 8, 'F');
+  doc.setFontSize(10);
+  doc.setTextColor(255, 255, 255);
+  doc.setFont(undefined, 'bold');
+  doc.text(label, 17, y + 5.5);
+  doc.setFont(undefined, 'normal');
+  doc.setTextColor(30, 30, 30);
+  return y + 12;
+};
+
+/**
+ * Utility: draw a labelled field row.
+ * Label on left in gray, value below in dark text.
+ * Returns new Y position.
+ */
+const writeField = (doc, label, value, x, y, maxWidth, pageHeight = 275) => {
+  const displayValue = (value === null || value === undefined || String(value).trim() === '')
+      ? '(not provided)'
+      : String(value);
+
+  if (y > pageHeight - 12) { doc.addPage(); y = 20; }
+
+  // Label
+  doc.setFontSize(7.5);
+  doc.setTextColor(100);
+  doc.setFont(undefined, 'bold');
+  doc.text(label.toUpperCase(), x, y);
+  y += 4;
+
+  // Value (wrapped)
+  doc.setFontSize(9);
+  doc.setTextColor(30, 30, 30);
+  doc.setFont(undefined, 'normal');
+  y = writeWrapped(doc, displayValue, x, y, maxWidth, 5, pageHeight);
+  y += 3; // spacing after field
+  return y;
+};
+
+/**
+ * Utility: thin horizontal rule.
+ */
+const writeRule = (doc, y, pageWidth) => {
+  doc.setDrawColor(220, 220, 220);
+  doc.line(14, y, pageWidth - 14, y);
+  return y + 4;
+};
+
+/**
+ * Education level display label map.
+ */
+const EDUCATION_LABELS = {
+  'less-than-hs': 'Less than high school',
+  'hs-diploma': 'High school diploma / GED',
+  'some-college': 'Some college (no degree)',
+  'associates': "Associate's degree",
+  'bachelors': "Bachelor's degree",
+  'graduate': 'Graduate degree (Master\'s, PhD, etc.)',
+  'professional': 'Professional degree (JD, MD, etc.)',
+  'vocational': 'Vocational / trade certification',
+};
+
+/**
+ * Generate a formatted PDF summary of the 21-8940 worksheet.
+ * Called from TDIUTool with the worksheet data object and veteran name.
+ *
+ * @param {object} worksheet   - Data from get8940Worksheet()
+ * @param {string} veteranName - From profile.name
+ */
+export const generate8940WorksheetPDF = (worksheet, veteranName = 'Veteran') => {
+  const doc = new jsPDF();
+  const pageWidth = doc.internal.pageSize.width;
+  const margin = 14;
+  const contentWidth = pageWidth - margin * 2;
+  let y = 20;
+
+  // ── Cover / Title Block ──────────────────────────────────────────────────
+  doc.setFontSize(18);
+  doc.setTextColor(30, 58, 138);
+  doc.setFont(undefined, 'bold');
+  doc.text('VA Form 21-8940 — Pre-Filing Worksheet', margin, y);
+  y += 8;
+
+  doc.setFontSize(9);
+  doc.setFont(undefined, 'normal');
+  doc.setTextColor(80);
+  doc.text('Veteran\'s Application for Increased Compensation Based on Unemployability', margin, y);
+  y += 5;
+  doc.text('This is a personal worksheet only — it does not constitute a VA filing.', margin, y);
+  y += 5;
+  doc.text('Review all information with your VSO before submitting to VA.', margin, y);
+  y += 8;
+
+  // Meta row
+  doc.setFontSize(8.5);
+  doc.setTextColor(60);
+  doc.text(`Veteran: ${veteranName}`, margin, y);
+  doc.text(`Generated: ${new Date().toLocaleString()}`, margin + contentWidth / 2, y);
+  y += 5;
+
+  if (worksheet.lastSaved) {
+    doc.text(
+        `Worksheet last saved: ${new Date(worksheet.lastSaved).toLocaleString()}`,
+        margin, y
+    );
+    y += 5;
+  }
+
+  // Disclaimer box
+  y += 3;
+  doc.setFillColor(254, 243, 199); // amber-100
+  doc.setDrawColor(251, 191, 36);  // amber-400
+  doc.rect(margin, y, contentWidth, 14, 'FD');
+  doc.setFontSize(8);
+  doc.setTextColor(120, 53, 15);   // amber-900
+  doc.setFont(undefined, 'bold');
+  doc.text('***  NOT AN OFFICIAL VA FORM', margin + 3, y + 5);
+  doc.setFont(undefined, 'normal');
+  doc.text(
+      'This document is a personal pre-filing worksheet. The actual VA Form 21-8940 must be submitted',
+      margin + 3, y + 9
+  );
+  doc.text(
+      'through VA with VSO guidance. Regulation reference: 38 CFR §4.16.',
+      margin + 3, y + 13
+  );
+  y += 20;
+
+  // ── Section I — Occupation & Education ──────────────────────────────────
+  y = writeSectionHeader(doc, 'Section I — Occupation & Education', y, pageWidth);
+
+  y = writeField(doc, 'Usual Occupation', worksheet.usualOccupation, margin, y, contentWidth);
+  y = writeField(
+      doc,
+      'Highest Level of Education',
+      EDUCATION_LABELS[worksheet.educationLevel] || worksheet.educationLevel,
+      margin, y, contentWidth
+  );
+  y = writeField(doc, 'Vocational Training / Certifications', worksheet.vocationalTraining, margin, y, contentWidth);
+
+  y = writeRule(doc, y, pageWidth);
+
+  // ── Section II — Last Full-Time Employment ───────────────────────────────
+  y = writeSectionHeader(doc, 'Section II — Last Full-Time Employment', y, pageWidth);
+
+  const lastDateDisplay = worksheet.lastFullTimeDate
+      ? new Date(worksheet.lastFullTimeDate + 'T00:00:00').toLocaleDateString('en-US', {
+        year: 'numeric', month: 'long', day: 'numeric'
+      })
+      : '';
+
+  y = writeField(doc, 'Date of Last Full-Time Employment', lastDateDisplay, margin, y, contentWidth);
+  y = writeField(doc, 'Reason Full-Time Employment Ended', worksheet.lastFullTimeReason, margin, y, contentWidth);
+
+  y = writeRule(doc, y, pageWidth);
+
+  // ── Section III — Employment History ────────────────────────────────────
+  y = writeSectionHeader(doc, 'Section III — Employment History (Last 5 Employers)', y, pageWidth);
+
+  const employers = worksheet.employmentHistory || [];
+
+  if (employers.length === 0) {
+    doc.setFontSize(9);
+    doc.setTextColor(130);
+    doc.setFont(undefined, 'italic');
+    doc.text('No employment history recorded.', margin, y);
+    doc.setFont(undefined, 'normal');
+    y += 8;
+  } else {
+    employers.forEach((emp, idx) => {
+      // Employer sub-header
+      if (y > 255) { doc.addPage(); y = 20; }
+      doc.setFillColor(235, 241, 255);
+      doc.rect(margin, y, contentWidth, 7, 'F');
+      doc.setFontSize(9);
+      doc.setTextColor(30, 58, 138);
+      doc.setFont(undefined, 'bold');
+      doc.text(`Employer ${idx + 1}: ${emp.employer || '(name not provided)'}`, margin + 2, y + 5);
+      doc.setFont(undefined, 'normal');
+      doc.setTextColor(30, 30, 30);
+      y += 11;
+
+      // Two-column layout for compact fields
+      const halfWidth = (contentWidth - 6) / 2;
+      const col2x = margin + halfWidth + 6;
+
+      const fromDisplay = emp.fromDate
+          ? new Date(emp.fromDate + 'T00:00:00').toLocaleDateString('en-US', { year: 'numeric', month: 'short' })
+          : '';
+      const toDisplay = emp.toDate
+          ? new Date(emp.toDate + 'T00:00:00').toLocaleDateString('en-US', { year: 'numeric', month: 'short' })
+          : 'Present';
+
+      const leftY  = writeField(doc, 'From', fromDisplay, margin, y, halfWidth);
+      const rightY = writeField(doc, 'To', toDisplay, col2x, y, halfWidth);
+      y = Math.max(leftY, rightY);
+
+      const cityState = [emp.city, emp.state].filter(Boolean).join(', ');
+      const leftY2  = writeField(doc, 'City / State', cityState, margin, y, halfWidth);
+      const rightY2 = writeField(doc, 'Hours / Week', emp.hoursPerWeek, col2x, y, halfWidth);
+      y = Math.max(leftY2, rightY2);
+
+      y = writeField(doc, 'Gross Earnings (Annual)', emp.grossEarnings, margin, y, contentWidth);
+      y = writeField(doc, 'Reason for Leaving', emp.reasonForLeaving, margin, y, contentWidth);
+      y = writeField(doc, 'SC Conditions That Affected This Job', emp.conditionsThatAffected, margin, y, contentWidth);
+
+      if (idx < employers.length - 1) {
+        y = writeRule(doc, y, pageWidth);
+      }
+    });
+  }
+
+  y = writeRule(doc, y, pageWidth);
+
+  // ── Section IV — How Disabilities Affect Employment ──────────────────────
+  y = writeSectionHeader(doc, 'Section IV — How Disabilities Affect Employment', y, pageWidth);
+
+  y = writeField(doc, 'SC Conditions That Prevent or Limit Employment', worksheet.conditionsPreventingWork, margin, y, contentWidth);
+  y = writeField(doc, 'How These Conditions Specifically Affect Ability to Work', worksheet.howConditionsAffect, margin, y, contentWidth);
+  y = writeField(doc, 'Special Accommodations Required or Received', worksheet.specialAccommodations, margin, y, contentWidth);
+  y = writeField(doc, 'Approx. Days/Year Missed Due to SC Conditions', worksheet.missedWorkDays, margin, y, contentWidth);
+
+  y = writeRule(doc, y, pageWidth);
+
+  // ── Regulatory Footer ────────────────────────────────────────────────────
+  if (y > 250) { doc.addPage(); y = 20; }
+  doc.setFontSize(7.5);
+  doc.setTextColor(130);
+  doc.setFont(undefined, 'italic');
+  const footerLines = [
+    'Regulatory references: 38 CFR §4.16 (TDIU); 38 CFR §4.16(a) (schedular); 38 CFR §4.16(b) (extra-schedular).',
+    'Required forms: VA Form 21-8940 (primary TDIU application); VA Form 21-4192 (employer verification).',
+    'Generated by Doc Bear\'s Symptom Vault. Data stored locally on your device. Not a VA-issued document.',
+  ];
+  footerLines.forEach(line => {
+    y = writeWrapped(doc, line, margin, y, contentWidth, 4.5, 285);
+  });
+
+  // ── Page numbers ─────────────────────────────────────────────────────────
+  const pageCount = doc.internal.getNumberOfPages();
+  for (let i = 1; i <= pageCount; i++) {
+    doc.setPage(i);
+    doc.setFontSize(7.5);
+    doc.setFont(undefined, 'normal');
+    doc.setTextColor(150);
+    doc.text(
+        `Page ${i} of ${pageCount}`,
+        pageWidth - margin,
+        doc.internal.pageSize.height - 8,
+        { align: 'right' }
+    );
+    doc.text(
+        "Doc Bear's Symptom Vault — 21-8940 Worksheet",
+        margin,
+        doc.internal.pageSize.height - 8
+    );
+  }
+
+  // ── Save ──────────────────────────────────────────────────────────────────
+  const dateStr = new Date().toISOString().split('T')[0];
+  const safeName = veteranName.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+  doc.save(`tdiu-8940-worksheet-${safeName}-${dateStr}.pdf`);
+};
+
 // Generate CSV export
 export const generateCSV = (dateRange = 'all', options = { includeAppointments: true }) => {
     const logs = filterLogsByDateRange(getSymptomLogs(), dateRange);
@@ -3798,6 +4095,181 @@ const generateRatingEvidenceSummaryPage = (doc, ratingAnalyses, pageWidth) => {
   return doc;
 };
 
+// ============================================================================
+// 21-8940 WORKSHEET SECTION — appended to VA Claim Package when data exists
+// ============================================================================
+/**
+ * Appends the 21-8940 worksheet as a dedicated section inside an existing
+ * jsPDF document. Reuses the same helpers from generate8940WorksheetPDF
+ * (writeSectionHeader, writeField, writeRule, writeWrapped) which are defined
+ * earlier in this file.
+ *
+ * @param {object} doc         - Active jsPDF instance
+ * @param {number} pageWidth   - doc.internal.pageSize.width
+ * @param {number} sectionNum  - Current section counter from the claim package
+ * @param {string} veteranName - From profile legal name / display name
+ * @returns {void}
+ */
+const appendWorksheetSection = (doc, pageWidth, sectionNum, veteranName) => {
+  const worksheet = get8940Worksheet();
+  const margin = 14;
+  const contentWidth = pageWidth - margin * 2;
+
+  // ── Section divider page ────────────────────────────────────────────────
+  doc.addPage();
+  let y = 20;
+
+  // Section header matching claim package style
+  doc.setFontSize(14);
+  doc.setTextColor(30, 58, 138);
+  doc.setFont(undefined, 'bold');
+  doc.text(`${sectionNum}. VA FORM 21-8940 WORKSHEET`, margin, y);
+  doc.setFont(undefined, 'normal');
+  y += 8;
+
+  doc.setFontSize(9);
+  doc.setTextColor(100);
+  doc.text(
+      "Veteran's Application for Increased Compensation Based on Unemployability — Pre-Filing Worksheet",
+      margin, y
+  );
+  y += 5;
+  doc.text(
+      'This worksheet is a personal record only. It does not constitute a VA filing.',
+      margin, y
+  );
+  y += 5;
+
+  if (worksheet.lastSaved) {
+    doc.text(
+        `Worksheet last saved: ${new Date(worksheet.lastSaved).toLocaleString()}`,
+        margin, y
+    );
+    y += 5;
+  }
+
+  // Disclaimer box (amber, same as standalone export)
+  y += 3;
+  doc.setFillColor(254, 243, 199);
+  doc.setDrawColor(251, 191, 36);
+  doc.rect(margin, y, contentWidth, 10, 'FD');
+  doc.setFontSize(8);
+  doc.setTextColor(120, 53, 15);
+  doc.setFont(undefined, 'bold');
+  doc.text('*** NOT AN OFFICIAL VA FORM — Review with your VSO before filing ***', margin + 3, y + 6.5);
+  doc.setFont(undefined, 'normal');
+  doc.setTextColor(30, 30, 30);
+  y += 16;
+
+  // ── Section I — Occupation & Education ──────────────────────────────────
+  y = writeSectionHeader(doc, 'Section I — Occupation & Education', y, pageWidth);
+  y = writeField(doc, 'Usual Occupation', worksheet.usualOccupation, margin, y, contentWidth);
+  y = writeField(
+      doc,
+      'Highest Level of Education',
+      EDUCATION_LABELS[worksheet.educationLevel] || worksheet.educationLevel,
+      margin, y, contentWidth
+  );
+  y = writeField(doc, 'Vocational Training / Certifications', worksheet.vocationalTraining, margin, y, contentWidth);
+  y = writeRule(doc, y, pageWidth);
+
+  // ── Section II — Last Full-Time Employment ───────────────────────────────
+  y = writeSectionHeader(doc, 'Section II — Last Full-Time Employment', y, pageWidth);
+
+  const lastDateDisplay = worksheet.lastFullTimeDate
+      ? new Date(worksheet.lastFullTimeDate + 'T00:00:00').toLocaleDateString('en-US', {
+        year: 'numeric', month: 'long', day: 'numeric',
+      })
+      : '';
+
+  y = writeField(doc, 'Date of Last Full-Time Employment', lastDateDisplay, margin, y, contentWidth);
+  y = writeField(doc, 'Reason Full-Time Employment Ended', worksheet.lastFullTimeReason, margin, y, contentWidth);
+  y = writeRule(doc, y, pageWidth);
+
+  // ── Section III — Employment History ────────────────────────────────────
+  y = writeSectionHeader(doc, 'Section III — Employment History (Last 5 Employers)', y, pageWidth);
+
+  const employers = worksheet.employmentHistory || [];
+
+  if (employers.length === 0) {
+    doc.setFontSize(9);
+    doc.setTextColor(130);
+    doc.setFont(undefined, 'italic');
+    doc.text('No employment history recorded.', margin, y);
+    doc.setFont(undefined, 'normal');
+    doc.setTextColor(30, 30, 30);
+    y += 8;
+  } else {
+    employers.forEach((emp, idx) => {
+      if (y > 255) { doc.addPage(); y = 20; }
+
+      // Employer sub-header
+      doc.setFillColor(235, 241, 255);
+      doc.rect(margin, y, contentWidth, 7, 'F');
+      doc.setFontSize(9);
+      doc.setTextColor(30, 58, 138);
+      doc.setFont(undefined, 'bold');
+      doc.text(`Employer ${idx + 1}: ${emp.employer || '(name not provided)'}`, margin + 2, y + 5);
+      doc.setFont(undefined, 'normal');
+      doc.setTextColor(30, 30, 30);
+      y += 11;
+
+      const halfWidth = (contentWidth - 6) / 2;
+      const col2x = margin + halfWidth + 6;
+
+      const fromDisplay = emp.fromDate
+          ? new Date(emp.fromDate + 'T00:00:00').toLocaleDateString('en-US', { year: 'numeric', month: 'short' })
+          : '';
+      const toDisplay = emp.toDate
+          ? new Date(emp.toDate + 'T00:00:00').toLocaleDateString('en-US', { year: 'numeric', month: 'short' })
+          : 'Present';
+
+      const leftY  = writeField(doc, 'From', fromDisplay, margin, y, halfWidth);
+      const rightY = writeField(doc, 'To', toDisplay, col2x, y, halfWidth);
+      y = Math.max(leftY, rightY);
+
+      const cityState = [emp.city, emp.state].filter(Boolean).join(', ');
+      const leftY2  = writeField(doc, 'City / State', cityState, margin, y, halfWidth);
+      const rightY2 = writeField(doc, 'Hours / Week', emp.hoursPerWeek, col2x, y, halfWidth);
+      y = Math.max(leftY2, rightY2);
+
+      y = writeField(doc, 'Gross Earnings (Annual)', emp.grossEarnings, margin, y, contentWidth);
+      y = writeField(doc, 'Reason for Leaving', emp.reasonForLeaving, margin, y, contentWidth);
+      y = writeField(doc, 'SC Conditions That Affected This Job', emp.conditionsThatAffected, margin, y, contentWidth);
+
+      if (idx < employers.length - 1) {
+        y = writeRule(doc, y, pageWidth);
+      }
+    });
+  }
+
+  y = writeRule(doc, y, pageWidth);
+
+  // ── Section IV — How Disabilities Affect Employment ──────────────────────
+  y = writeSectionHeader(doc, 'Section IV — How Disabilities Affect Employment', y, pageWidth);
+  y = writeField(doc, 'SC Conditions That Prevent or Limit Employment', worksheet.conditionsPreventingWork, margin, y, contentWidth);
+  y = writeField(doc, 'How These Conditions Specifically Affect Ability to Work', worksheet.howConditionsAffect, margin, y, contentWidth);
+  y = writeField(doc, 'Special Accommodations Required or Received', worksheet.specialAccommodations, margin, y, contentWidth);
+  y = writeField(doc, 'Approx. Days/Year Missed Due to SC Conditions', worksheet.missedWorkDays, margin, y, contentWidth);
+
+  y = writeRule(doc, y, pageWidth);
+
+  // ── Regulatory footer ────────────────────────────────────────────────────
+  if (y > 260) { doc.addPage(); y = 20; }
+  doc.setFontSize(7.5);
+  doc.setTextColor(130);
+  doc.setFont(undefined, 'italic');
+  const footerLines = [
+    'Regulatory references: 38 CFR §4.16 (TDIU); 38 CFR §4.16(a) (schedular); 38 CFR §4.16(b) (extra-schedular).',
+    'Required forms: VA Form 21-8940 (primary TDIU application); VA Form 21-4192 (employer verification).',
+  ];
+  footerLines.forEach(line => {
+    y = writeWrapped(doc, line, margin, y, contentWidth, 4.5, 285);
+  });
+  doc.setFont(undefined, 'normal');
+  doc.setTextColor(30, 30, 30);
+};
+
 /**
  * Generate VA Claim Package PDF
  * Professional format optimized for VA disability claims
@@ -3919,9 +4391,39 @@ export const generateVAClaimPackagePDF = async (dateRange = 'all', options = {})
       tocSectionNum++;
     }
 
-    if (measurements.length > 0) {
-      tocItems.push(`${tocSectionNum}. Medical Measurements`);
+  if (measurements.length > 0) {
+    tocItems.push(`${tocSectionNum}. Medical Measurements`);
+    tocSectionNum++;
+  }
+
+  // Weight tracking — gated on weight measurements existing
+  const tocWeightMeasurements = measurements.filter(
+      m => m.measurementType === 'weight' && m.values?.weight
+  );
+  if (tocWeightMeasurements.length > 0) {
+    tocItems.push(`${tocSectionNum}. Weight Tracking Summary`);
+    tocSectionNum++;
+  }
+
+  // Mental health assessments — gated on scores existing
+  const tocMentalHealthScores = getMentalHealthScores();
+  if (tocMentalHealthScores.length > 0) {
+    tocItems.push(`${tocSectionNum}. Mental Health Assessments`);
+    tocSectionNum++;
+  }
+
+  // 21-8940 Worksheet — only when VA Claim format, option enabled, and data exists
+  if (options.include8940Worksheet) {
+    const tocWorksheet = get8940Worksheet();
+    const worksheetHasData = tocWorksheet.usualOccupation ||
+        tocWorksheet.lastFullTimeDate || tocWorksheet.lastFullTimeReason ||
+        tocWorksheet.conditionsPreventingWork || tocWorksheet.howConditionsAffect ||
+        (tocWorksheet.employmentHistory && tocWorksheet.employmentHistory.length > 0);
+    if (worksheetHasData) {
+      tocItems.push(`${tocSectionNum}. VA Form 21-8940 Worksheet`);
+      tocSectionNum++;
     }
+  }
 
   tocItems.forEach((item, index) => {
     doc.text(item, 20, currentY + (index * 8));
@@ -6239,6 +6741,32 @@ export const generateVAClaimPackagePDF = async (dateRange = 'all', options = {})
 
         currentY += 4;
       });
+    }
+  }
+
+  // ========== 21-8940 WORKSHEET SECTION ==========
+  // Only included when: VA Claim format is selected, option is enabled,
+  // and the worksheet has at least one field with data.
+  if (options.include8940Worksheet) {
+    const ws = get8940Worksheet();
+    const hasData = ws.usualOccupation || ws.lastFullTimeDate || ws.lastFullTimeReason ||
+        ws.conditionsPreventingWork || ws.howConditionsAffect ||
+        (ws.employmentHistory && ws.employmentHistory.length > 0);
+
+    if (hasData) {
+      // Resolve veteran name using same priority as standalone export
+      let veteranName = 'Veteran';
+      try {
+        const profiles = JSON.parse(localStorage.getItem('symptomTracker_profiles') || '[]');
+        const activeId = localStorage.getItem('symptomTracker_activeProfileId');
+        const match = profiles.find(p => p.id === activeId);
+        if (match) {
+          veteranName = match.metadata?.patientName?.trim() || match.name || 'Veteran';
+        }
+      } catch { /* ignore */ }
+
+      currentSection++;
+      appendWorksheetSection(doc, pageWidth, currentSection, veteranName);
     }
   }
 

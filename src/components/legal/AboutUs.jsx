@@ -55,7 +55,7 @@ const AboutUs = () => {
             <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 text-left">
               <h3 className="font-semibold text-blue-600 dark:text-blue-400 mb-2">📊 Rating Evidence</h3>
               <p className="text-sm text-gray-600 dark:text-gray-400">
-                For veterans: see how your documented symptoms align with VA rating criteria for 185+ conditions.
+                For veterans: see how your documented symptoms align with VA rating criteria for 200+ conditions.
               </p>
             </div>
             <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 text-left">

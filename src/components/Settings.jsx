@@ -24,6 +24,7 @@ import { restoreFromEmergencyBackup } from '../utils/storageVersion';
 import { createEmergencyBackup } from '../utils/storageVersion';
 import CaregiverProgramInfo from './CaregiverProgramInfo';
 import AccessibilitySettings from './AccessibilitySettings';
+import ProfileSettingsCard from './ProfileSettingsCard';
 
 /**
  * Display backup history
@@ -587,6 +588,9 @@ const Settings = ({ onNavigate, onOpenBlueButton, onShowFraudAlert }) => {
 
         {/* Profile Management */}
         <ProfileManagement />
+
+        {/* Profile Settings — available to all profile types */}
+        <ProfileSettingsCard />
 
         {/* Service-Connected Conditions (Veteran profiles only) - Collapsible */}
         {currentProfile && currentProfile.type === 'veteran' && (
