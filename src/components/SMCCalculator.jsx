@@ -1789,7 +1789,8 @@ const SMCCalculator = ({
 
                 {expandedSections.rates && (
                     <div className="px-4 py-3">
-                      <table className="w-full text-sm">
+                      <div className="overflow-x-auto">
+                        <table className="w-full text-sm">
                         <thead>
                         <tr className="border-b border-gray-200 dark:border-gray-700">
                           <th className="text-left py-2 text-gray-700 dark:text-gray-300 w-20">Level</th>
@@ -1860,6 +1861,7 @@ const SMCCalculator = ({
                         </tr>
                         </tbody>
                       </table>
+                      </div>
                         <p className="text-xs text-gray-500 dark:text-gray-400 mt-3">
                             Veteran alone rates. 2.8% COLA effective Dec 1, 2025.
                         </p>

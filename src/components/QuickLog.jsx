@@ -3227,7 +3227,7 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
 
                         <div>
                           <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-2">Activities Affected</label>
-                          <div className="grid grid-cols-4 gap-1">
+                          <div className="grid grid-cols-2 sm:grid-cols-4 gap-1">
                             {['Walking', 'Standing', 'Sitting', 'Sleeping', 'Lifting', 'Bending', 'Driving', 'Working'].map(activity => (
                                 <label
                                     key={activity}
