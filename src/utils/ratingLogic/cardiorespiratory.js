@@ -5120,7 +5120,7 @@ const analyzeRespiratoryPFT = (logs, options, conditionConfig) => {
     profileId = null,
   } = options;
 
-  const { conditionId, conditionName, diagnosticCode, symptomIds, criteria } = conditionConfig;
+  const { conditionId, condition: conditionName, diagnosticCode, symptomIds, criteria } = conditionConfig;
 
   const cutoffDate = new Date();
   cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);

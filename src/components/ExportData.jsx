@@ -294,7 +294,7 @@ const ExportData = () => {
               <div className="p-4 border-t border-gray-200 dark:border-gray-700 space-y-4">
                 {/* Include Options */}
                 <div className="space-y-3">
-                  <label className="flex items-center gap-3 cursor-pointer">
+                  <label key="opt-appointments" className="flex items-center gap-3 cursor-pointer">
                     <input
                         type="checkbox"
                         checked={includeAppointments}
@@ -309,7 +309,7 @@ const ExportData = () => {
                     </div>
                   </label>
 
-                  <label className="flex items-center gap-3 cursor-pointer">
+                  <label key="opt-measurements" className="flex items-center gap-3 cursor-pointer">
                     <input
                         type="checkbox"
                         checked={includeMeasurements}
@@ -324,7 +324,7 @@ const ExportData = () => {
                     </div>
                   </label>
 
-                  <label className="flex items-center gap-3 cursor-pointer">
+                  <label key="opt-medications" className="flex items-center gap-3 cursor-pointer">
                     <input
                         type="checkbox"
                         checked={includeMedications}
@@ -340,7 +340,7 @@ const ExportData = () => {
                   </label>
                   {/* 21-8940 Worksheet — only relevant for VA Claim Package format */}
                   {exportFormat === 'va-claim' && (
-                      <label className="flex items-center gap-3 cursor-pointer">
+                      <label key="opt-worksheet" className="flex items-center gap-3 cursor-pointer">
                         <input
                             type="checkbox"
                             checked={include8940Worksheet}
