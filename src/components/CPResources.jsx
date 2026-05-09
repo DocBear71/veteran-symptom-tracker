@@ -2,16 +2,26 @@
 // Combines all C&P exam tools in one place
 // Designed to be embedded in Trends.jsx as a third tab
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import CPExamPrep from './CPExamPrep';
 import AfterActionReport from './AfterActionReport';
 import BuddyStatementGenerator from './BuddyStatementGenerator';
 import RatingScenarioCalculator from './RatingScenarioCalculator';
 import StrategicFilingGuide from './StrategicFilingGuide';
 import CaregiverProgramsGuide from './CaregiverProgramsGuide';
+import TDIUTool from './TDIUTool';
 
 const CPResources = () => {
   const [activeResource, setActiveResource] = useState(null);
+
+  // Scroll to top whenever the active resource changes — both when opening
+  // a tool (so the user starts at the top of the new view) and when closing
+  // back to the hub (so they don't return to mid-document).
+  // 'auto' behavior is intentional — 'smooth' would compete with the React
+  // re-render and feel sluggish on mobile.
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'auto' });
+  }, [activeResource]);
 
   // Resource cards configuration
   const resources = [
@@ -62,6 +72,14 @@ const CPResources = () => {
       icon: '🎯',
       color: 'amber',
       features: ['SMC-S1 / Housebound', 'SMC-K & ladder', 'DIC strategy', 'Reduction protection', 'PDF export'],
+    },
+    {
+      id: 'tdiu-tool',
+      title: 'TDIU Eligibility & Documentation',
+      description: 'Total Disability based on Individual Unemployability. Live eligibility analysis, comprehensive education on the schedular vs employability distinction, and guidance on filing under §4.16(a) or §4.16(b).',
+      icon: '🎯',
+      color: 'rose',
+      features: ['§4.16(a) eligibility analysis', 'Schedular vs employability', 'Marginal employment guidance', 'Filing requirements', 'VSO referral'],
     },
   ];
 
@@ -115,6 +133,14 @@ const CPResources = () => {
       iconText: 'text-amber-600 dark:text-amber-400',
       badge: 'bg-amber-100 dark:bg-amber-900 text-amber-700 dark:text-amber-300',
     },
+    rose: {
+      bg: 'bg-rose-50 dark:bg-rose-900/20',
+      border: 'border-rose-200 dark:border-rose-800',
+      hoverBorder: 'hover:border-rose-500 dark:hover:border-rose-500',
+      icon: 'bg-rose-100 dark:bg-rose-900',
+      iconText: 'text-rose-600 dark:text-rose-400',
+      badge: 'bg-rose-100 dark:bg-rose-900 text-rose-700 dark:text-rose-300',
+    },
   };
 
   // Render the selected resource component
@@ -136,6 +162,8 @@ const CPResources = () => {
         return <StrategicFilingGuide onBack={() => setActiveResource(null)} />;
       case 'caregiver-programs':
         return <CaregiverProgramsGuide onBack={() => setActiveResource(null)} />;
+      case 'tdiu-tool':
+        return <TDIUTool embedded={true} onClose={() => setActiveResource(null)} />;
       default:
         return null;
     }
