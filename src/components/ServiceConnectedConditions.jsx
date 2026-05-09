@@ -6,6 +6,7 @@ import {
 } from '../utils/profiles'; // CORRECTED: Import from profiles.js
 import AddServiceConnectedModal from './AddServiceConnectedModal';
 import TDIUStatusCard from './TDIUStatusCard';
+import TDIUEligibilityCard from './TDIUEligibilityCard';
 import { calculateCombinedRating, calculateCombinedRatingDetailed, getRatingColor } from '../utils/vaRatingCalculator';
 import { formatDateOnly } from '../utils/datetime';
 
@@ -195,6 +196,14 @@ const ServiceConnectedConditions = () => {
             schedular Combined Rating. Self-contained: handles its own State 1
             (not granted, shows Add prompt) and State 2 (granted, shows details). */}
         <TDIUStatusCard />
+
+        {/* TDIU Eligibility Card — branches by state:
+            - Granted: maintenance & protection content
+            - Eligible (schedular): "may meet criteria" flag with VSO referral
+            - Not eligible (schedular): §4.16(b) extra-schedular awareness
+            - No conditions yet: onboarding prompt
+            All states point to a VSO; never renders a determination. */}
+        <TDIUEligibilityCard />
 
         {/* Conditions List */}
         {conditions.length === 0 ? (
