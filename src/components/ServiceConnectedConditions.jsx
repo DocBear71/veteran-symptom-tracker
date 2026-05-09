@@ -5,7 +5,9 @@ import {
   removeServiceConnectedCondition,
 } from '../utils/profiles'; // CORRECTED: Import from profiles.js
 import AddServiceConnectedModal from './AddServiceConnectedModal';
+import TDIUStatusCard from './TDIUStatusCard';
 import { calculateCombinedRating, calculateCombinedRatingDetailed, getRatingColor } from '../utils/vaRatingCalculator';
+import { formatDateOnly } from '../utils/datetime';
 
 const ServiceConnectedConditions = () => {
   const { profile, refreshProfile } = useProfile();
@@ -189,6 +191,11 @@ const ServiceConnectedConditions = () => {
             </details>
         )}
 
+        {/* TDIU Status Card — profile-level metadata, rendered below the
+            schedular Combined Rating. Self-contained: handles its own State 1
+            (not granted, shows Add prompt) and State 2 (granted, shows details). */}
+        <TDIUStatusCard />
+
         {/* Conditions List */}
         {conditions.length === 0 ? (
             <div className="text-center py-12 bg-gray-50 dark:bg-gray-800 rounded-lg border-2
@@ -222,17 +229,13 @@ const ServiceConnectedConditions = () => {
                           {condition.conditionName}
                         </h3>
                         <div className="flex items-center gap-3 flex-wrap">
-          <span className="inline-flex items-center px-3 py-1 rounded-lg bg-blue-100 dark:bg-blue-900/30 text-2xl font-bold text-blue-600 dark:text-blue-400">
-            {condition.currentRating}%
-          </span>
+                          <span className="inline-flex items-center px-3 py-1 rounded-lg bg-blue-100 dark:bg-blue-900/30 text-2xl font-bold text-blue-600 dark:text-blue-400">
+                            {condition.currentRating}%
+                          </span>
                           <span className="text-sm text-gray-600 dark:text-gray-400">
-            <span className="font-medium">Effective:</span>{' '}
-                            {new Date(condition.effectiveDate).toLocaleDateString('en-US', {
-                              month: '2-digit',
-                              day: '2-digit',
-                              year: 'numeric'
-                            })}
-          </span>
+                            <span className="font-medium">Effective:</span>{' '}
+                            {formatDateOnly(condition.effectiveDate)}
+                          </span>
                         </div>
                       </div>
 

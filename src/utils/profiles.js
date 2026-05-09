@@ -463,3 +463,101 @@ export const getServiceConnectedCondition = (profileId, conditionKey) => {
   const conditions = getServiceConnectedConditions(profileId);
   return conditions.find(c => c.conditionKey === conditionKey) || null;
 };
+
+// =============================================================================
+// TDIU STATUS MANAGEMENT
+// =============================================================================
+// TDIU (Total Disability based on Individual Unemployability) is granted under
+// 38 CFR §4.16. It is a status of the veteran (granted based on the combined
+// effect of all service-connected disabilities preventing substantially gainful
+// employment), NOT a property of any single condition. It coexists with the
+// schedular combined rating — TDIU does not replace the schedular rating, it
+// overlays it for payment purposes (paid at 100% rate).
+//
+// Stored as profile.tdiuStatus. Profiles without TDIU have no tdiuStatus key,
+// and getTDIUStatus returns null in that case (functionally equivalent to
+// "TDIU not granted").
+
+/**
+ * Get TDIU status for a profile.
+ * @param {string} profileId - Profile ID
+ * @returns {object|null} TDIU status object, or null if not granted
+ */
+export const getTDIUStatus = (profileId) => {
+  const profile = getProfileById(profileId);
+  return profile?.tdiuStatus || null;
+};
+
+/**
+ * Set or update TDIU status for a profile.
+ * @param {string} profileId - Profile ID
+ * @param {object} status - TDIU status fields:
+ *   - effectiveDate (string, ISO date) — date TDIU was granted, from VA decision letter
+ *   - type ('schedular' | 'extra-schedular') — §4.16(a) vs §4.16(b)
+ *   - permanentAndTotal (boolean) — P&T flag (signaled by Chapter 35 DEA eligibility)
+ *   - notes (string, optional) — free-form notes
+ * @returns {object} Result with success status
+ */
+export const setTDIUStatus = (profileId, status) => {
+  const profiles = getProfiles();
+  const profile = profiles.find(p => p.id === profileId);
+
+  if (!profile) {
+    return { success: false, message: 'Profile not found' };
+  }
+
+  // Preserve addedAt across edits (set on first save, kept thereafter)
+  const existingAddedAt = profile.tdiuStatus?.addedAt;
+  const now = new Date().toISOString();
+
+  profile.tdiuStatus = {
+    granted: true,                                       // implicit when status is set
+    effectiveDate: status.effectiveDate || '',
+    type: status.type || 'schedular',
+    permanentAndTotal: status.permanentAndTotal === true,
+    notes: status.notes || '',
+    addedAt: existingAddedAt || now,
+    updatedAt: now,
+  };
+
+  profile.updatedAt = now;
+
+  const result = saveProfiles(profiles);
+
+  if (result.success) {
+    // Trigger update event so any subscribed components refresh
+    window.dispatchEvent(new CustomEvent('profileUpdated', {
+      detail: { profileId, profile }
+    }));
+    return { success: true, profile, tdiuStatus: profile.tdiuStatus };
+  }
+  return result;
+};
+
+/**
+ * Clear TDIU status for a profile.
+ * Used when a veteran's TDIU is removed by VA, or if the user added it in error.
+ * @param {string} profileId - Profile ID
+ * @returns {object} Result with success status
+ */
+export const clearTDIUStatus = (profileId) => {
+  const profiles = getProfiles();
+  const profile = profiles.find(p => p.id === profileId);
+
+  if (!profile) {
+    return { success: false, message: 'Profile not found' };
+  }
+
+  delete profile.tdiuStatus;
+  profile.updatedAt = new Date().toISOString();
+
+  const result = saveProfiles(profiles);
+
+  if (result.success) {
+    window.dispatchEvent(new CustomEvent('profileUpdated', {
+      detail: { profileId, profile }
+    }));
+    return { success: true, profile };
+  }
+  return result;
+};

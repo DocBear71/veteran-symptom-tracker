@@ -53,6 +53,11 @@ export const formatLocalTime = (date = new Date()) => {
  * @returns {string} - Format: "Dec 6, 2025"
  *
  * Example: formatDisplayDate("2025-12-06") → "Dec 6, 2025"
+ *
+ * NOTE: This function has a known timezone-drift issue when given
+ * a pure date string like "2025-12-06" — for users west of UTC, the
+ * displayed date can shift to the previous day. Use formatDateOnly()
+ * for pure dates from <input type="date"> values.
  */
 export const formatDisplayDate = (date) => {
   const d = typeof date === 'string' ? new Date(date) : date;
@@ -61,6 +66,43 @@ export const formatDisplayDate = (date) => {
     day: 'numeric',
     year: 'numeric'
   });
+};
+
+/**
+ * Format a pure date string (YYYY-MM-DD) for display, without timezone drift.
+ *
+ * Use this for values that come from <input type="date"> or any other
+ * date-only source. The pure-date interpretation matters because
+ * `new Date("2021-07-28")` is parsed as midnight UTC, which shifts when
+ * .toLocaleDateString() applies the local timezone — e.g., Central Time
+ * users see "07/27/2021" instead of "07/28/2021".
+ *
+ * @param {string} dateString - Date in YYYY-MM-DD format (or full ISO; date portion is used)
+ * @param {string} [format='MM/DD/YYYY'] - 'MM/DD/YYYY' or 'short' (e.g., 'Jul 28, 2021')
+ * @returns {string} - Formatted date string, or empty string if invalid input
+ *
+ * Example: formatDateOnly("2021-07-28") → "07/28/2021"
+ * Example: formatDateOnly("2021-07-28", 'short') → "Jul 28, 2021"
+ */
+export const formatDateOnly = (dateString, format = 'MM/DD/YYYY') => {
+  if (!dateString || typeof dateString !== 'string') return '';
+
+  // Tolerate full ISO datetime strings — take the date portion only
+  const datePart = dateString.split('T')[0];
+  const [year, month, day] = datePart.split('-');
+
+  if (!year || !month || !day) return '';
+
+  if (format === 'short') {
+    const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const monthIdx = parseInt(month, 10) - 1;
+    if (monthIdx < 0 || monthIdx > 11) return '';
+    return `${monthNames[monthIdx]} ${parseInt(day, 10)}, ${year}`;
+  }
+
+  // Default: MM/DD/YYYY
+  return `${month}/${day}/${year}`;
 };
 
 /**
