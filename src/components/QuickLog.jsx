@@ -17,6 +17,9 @@ import { useProfile } from '../hooks/useProfile';
 import { stripDCCode } from '../data/symptoms';
 import OccurrenceTimePicker from './OccurrenceTimePicker';
 import MedicationEffectivenessInline from './MedicationEffectivenessInline';
+import PTSDForm, { INITIAL_PTSD_DATA } from './forms/SymptomForms/PTSDForm';
+import AnxietyForm, { INITIAL_ANXIETY_DATA } from './forms/SymptomForms/AnxietyForm';
+import SleepForm, { INITIAL_SLEEP_DATA } from './forms/SymptomForms/SleepForm';
 
 const QuickLog = ({ onLogSaved, onAddChronic }) => {
   const { isVeteran } = useProfile();
@@ -36,6 +39,20 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
   // Modal state
   const [selectedChronic, setSelectedChronic] = useState(null);
   const [logSeverity, setLogSeverity] = useState(5);
+  // isFlareUp is a top-level log property, NOT inside painData. The legacy
+  // painData.flareUp field is deprecated; rating analyzers (musculoskeletal.js)
+  // and SymptomHistory both read log.isFlareUp as the source of truth.
+  // SymptomLogger and EditLogModal use this same pattern.
+  const [isFlareUp, setIsFlareUp] = useState(false);
+
+  // Symptom Details fields — parity with SymptomLogger. Duration, Time of Day,
+  // and Weather are saved into the entry; Stress Level is collected for UX but
+  // not yet persisted (matches current SymptomLogger behavior). The persistence
+  // gap will be addressed separately.
+  const [duration, setDuration] = useState('');
+  const [timeOfDay, setTimeOfDay] = useState('');
+  const [weather, setWeather] = useState('');
+  const [stressLevel, setStressLevel] = useState(5);
   const [logNotes, setLogNotes] = useState('');
 
   // Medication state - object keyed by med ID with effectiveness/side effects
@@ -52,26 +69,9 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
     triggers: '',
   });
 
-  const [sleepData, setSleepData] = useState({
-    hoursSlept: '',
-    quality: 5,
-    wakeUps: '',
-    troubleFallingAsleep: false,
-    troubleStayingAsleep: false,
-    nightmares: false,
-    feelRested: null,
-  });
+  const [sleepData, setSleepData] = useState(INITIAL_SLEEP_DATA);
 
-  const [ptsdData, setPtsdData] = useState({
-    flashbacks: false,
-    avoidance: false,
-    emotionalNumbering: false,
-    hypervigilance: false,
-    exaggeratedStartle: false,
-    intrusiveThoughts: false,
-    triggerUnknown: false,
-    triggerDescription: '',
-  });
+  const [ptsdData, setPtsdData] = useState(INITIAL_PTSD_DATA);
 
   const [painData, setPainData] = useState({
     radiating: false,
@@ -421,31 +421,7 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
     restrictedIntake: false,
   });
   // Form 1: Anxiety Disorders
-  const [anxietyData, setAnxietyData] = useState({
-    heartRacing: false,
-    sweating: false,
-    trembling: false,
-    shortnessOfBreath: false,
-    chestTightness: false,
-    nausea: false,
-    dizziness: false,
-    hotFlashes: false,
-    numbnessTingling: false,
-    racingThoughts: false,
-    fearOfLosingControl: false,
-    fearOfDying: false,
-    feelingDetached: false,
-    difficultyConcentrating: false,
-    avoidedSocial: false,
-    leftEarly: false,
-    calledOut: false,
-    cancelledPlans: false,
-    neededSafetyPerson: false,
-    triggerUnknown: false,
-    trigger: '',
-    episodeDuration: '',
-    wasPanicAttack: false,
-  });
+  const [anxietyData, setAnxietyData] = useState(INITIAL_ANXIETY_DATA);
 
   // Form 2: Depression
   const [depressionData, setDepressionData] = useState({
@@ -1453,6 +1429,11 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
     if (editMode) return;
     setSelectedChronic(chronic);
     setLogSeverity(chronic.defaultSeverity || 5);
+    setIsFlareUp(false);
+    setDuration('');
+    setTimeOfDay('');
+    setWeather('');
+    setStressLevel(5);
     setLogNotes('');
     setOccurredAt(new Date().toISOString());
     setSelectedMedications({});
@@ -1464,15 +1445,8 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
       duration: '', prostrating: null, aura: false, nausea: false,
       lightSensitivity: false, soundSensitivity: false, triggers: '',
     });
-    setSleepData({
-      hoursSlept: '', quality: 5, wakeUps: '', troubleFallingAsleep: false,
-      troubleStayingAsleep: false, nightmares: false, feelRested: null,
-    });
-    setPtsdData({
-      flashbacks: false, avoidance: false, emotionalNumbering: false,
-      hypervigilance: false, exaggeratedStartle: false, intrusiveThoughts: false,
-      triggerUnknown: false, triggerDescription: '',
-    });
+    setSleepData(INITIAL_SLEEP_DATA);
+    setPtsdData(INITIAL_PTSD_DATA);
     setPainData({
       radiating: false, radiatingTo: '', limitedRangeOfMotion: false,
       affectedActivities: [], painType: '', flareUp: false,
@@ -1669,31 +1643,7 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
       compensatoryBehaviors: [],
       restrictedIntake: false,
     });
-    setAnxietyData({
-      heartRacing: false,
-      sweating: false,
-      trembling: false,
-      shortnessOfBreath: false,
-      chestTightness: false,
-      nausea: false,
-      dizziness: false,
-      hotFlashes: false,
-      numbnessTingling: false,
-      racingThoughts: false,
-      fearOfLosingControl: false,
-      fearOfDying: false,
-      feelingDetached: false,
-      difficultyConcentrating: false,
-      avoidedSocial: false,
-      leftEarly: false,
-      calledOut: false,
-      cancelledPlans: false,
-      neededSafetyPerson: false,
-      triggerUnknown: false,
-      trigger: '',
-      episodeDuration: '',
-      wasPanicAttack: false,
-    });
+    setAnxietyData(INITIAL_ANXIETY_DATA);
 
     setDepressionData({
       depressedMood: false,
@@ -2002,6 +1952,11 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
   const handleCloseModal = () => {
     setSelectedChronic(null);
     setLogSeverity(5);
+    setIsFlareUp(false);
+    setDuration('');
+    setTimeOfDay('');
+    setWeather('');
+    setStressLevel(5);
     setLogNotes('');
     setSelectedMedications({});
   };
@@ -2020,6 +1975,12 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
       symptomName: selectedChronic.symptomName,
       category: selectedChronic.category,
       severity: logSeverity,
+      isFlareUp: isFlareUp,
+      // Symptom Details fields — parity with SymptomLogger.
+      duration: duration || null,
+      timeOfDay: timeOfDay || null,
+      weather: weather || null,
+      stressLevel: stressLevel,  // 0-10 numeric scale; always saved (slider always has a value)
       notes: logNotes.trim(),
       occurredAt: occurredAt,
     };
@@ -2453,6 +2414,130 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
                     </div>
                   </div>
 
+                  {/* Flare-Up Toggle — log-level flag (not pain-specific). Read by all
+                      rating analyzers and matches SymptomLogger/EditLogModal pattern.
+                      Helper text and styling kept identical to SymptomLogger so the
+                      experience is consistent regardless of entry point. */}
+                  <label
+                      className={`flex items-center gap-3 p-3 rounded-lg border-2 cursor-pointer transition-all ${
+                          isFlareUp
+                              ? 'bg-orange-100 dark:bg-orange-900/30 border-orange-400 dark:border-orange-600'
+                              : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-600 hover:border-orange-300 dark:hover:border-orange-700'
+                      }`}
+                  >
+                    <input
+                        type="checkbox"
+                        checked={isFlareUp}
+                        onChange={(e) => setIsFlareUp(e.target.checked)}
+                        className="w-5 h-5 text-orange-600 rounded"
+                    />
+                    <div>
+                      <span className="font-medium text-gray-900 dark:text-gray-100">
+                        🔥 This is a flare-up
+                      </span>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">
+                        {isVeteran
+                            ? 'Symptom is worse than usual baseline — important for VA flare-up documentation'
+                            : 'Symptom is worse than usual baseline'}
+                      </p>
+                    </div>
+                  </label>
+
+                  {/* Symptom Details — Duration, Time of Day, Weather, Stress Level.
+                      Mirrors SymptomLogger's "Symptom Details" card so logs created via
+                      either entry point capture the same metadata. Stress slider is
+                      visible but its value is not yet persisted (matches SymptomLogger's
+                      current behavior; persistence to be added separately). */}
+                  <div className="bg-gray-50 dark:bg-gray-800/50 p-4 rounded-lg border border-gray-200 dark:border-gray-700 space-y-3">
+                    <h3 className="font-medium text-gray-900 dark:text-gray-100 flex items-center gap-2 text-sm">
+                      <span>📋</span> Symptom Details
+                    </h3>
+
+                    {/* Duration + Time of Day */}
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
+                          Duration
+                        </label>
+                        <select
+                            value={duration}
+                            onChange={(e) => setDuration(e.target.value)}
+                            className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm"
+                        >
+                          <option value="">How long?</option>
+                          <option value="just-started">Just started</option>
+                          <option value="minutes">Minutes</option>
+                          <option value="hours">Hours</option>
+                          <option value="days">Days</option>
+                          <option value="weeks">Weeks</option>
+                          <option value="months">Months+</option>
+                          <option value="ongoing">Ongoing/Chronic</option>
+                        </select>
+                      </div>
+
+                      <div>
+                        <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
+                          Time of Day
+                        </label>
+                        <select
+                            value={timeOfDay}
+                            onChange={(e) => setTimeOfDay(e.target.value)}
+                            className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm"
+                        >
+                          <option value="">When?</option>
+                          <option value="morning">Morning</option>
+                          <option value="afternoon">Afternoon</option>
+                          <option value="evening">Evening</option>
+                          <option value="night">Night</option>
+                          <option value="all-day">All Day</option>
+                          <option value="varies">Varies</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    {/* Weather + Stress Level */}
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
+                          🌤️ Weather (optional)
+                        </label>
+                        <select
+                            value={weather}
+                            onChange={(e) => setWeather(e.target.value)}
+                            className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm"
+                        >
+                          <option value="">Not specified</option>
+                          <option value="clear">☀️ Clear/Sunny</option>
+                          <option value="cloudy">☁️ Cloudy</option>
+                          <option value="rainy">🌧️ Rainy</option>
+                          <option value="stormy">⛈️ Stormy</option>
+                          <option value="hot">🥵 Hot</option>
+                          <option value="cold">🥶 Cold</option>
+                          <option value="humid">💧 Humid</option>
+                          <option value="pressure-change">📊 Barometric Pressure Change</option>
+                        </select>
+                      </div>
+
+                      <div>
+                        <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
+                          😰 Stress Level: {stressLevel}/10
+                        </label>
+                        <input
+                            type="range"
+                            min="0"
+                            max="10"
+                            value={stressLevel}
+                            onChange={(e) => setStressLevel(parseInt(e.target.value))}
+                            className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer accent-purple-600 mt-2"
+                        />
+                        <div className="flex justify-between text-[10px] text-gray-500 dark:text-gray-400 mt-1">
+                          <span>0 - Calm</span>
+                          <span>10 - Extreme</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
                   {/* MIGRAINE-SPECIFIC FIELDS */}
                   {isMigraine && (
                       <div className="bg-purple-50 dark:bg-purple-900/30 p-4 rounded-lg border border-purple-200 dark:border-purple-800 space-y-4">
@@ -2533,159 +2618,25 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
                       </div>
                   )}
 
-                  {/* SLEEP-SPECIFIC FIELDS */}
+                  {/* SLEEP DETAILS — canonical SleepForm component.
+                      Refactored from inline JSX (Aug 2026) to eliminate drift between
+                      QuickLog and EditLogModal which both edit sleepData. Migration
+                      adds the Sleep Quality slider that was missing from inline. */}
                   {isSleepRelated && (
-                      <div className="bg-indigo-50 dark:bg-indigo-900/30 p-4 rounded-lg border border-indigo-200 dark:border-indigo-800 space-y-4">
-                        <h3 className="font-medium text-indigo-900 dark:text-indigo-200 text-sm">Sleep Details</h3>
-
-                        <div className="grid grid-cols-2 gap-3">
-                          <div>
-                            <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Hours Slept</label>
-                            <input
-                                type="number"
-                                min="0"
-                                max="24"
-                                step="0.5"
-                                value={sleepData.hoursSlept}
-                                onChange={(e) => setSleepData(prev => ({ ...prev, hoursSlept: e.target.value === '' ? '' : Number(e.target.value) }))}
-                                placeholder="Hrs"
-                                className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm"
-                            />
-                          </div>
-                          <div>
-                            <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Woke Up</label>
-                            <input
-                                type="number"
-                                min="0"
-                                max="20"
-                                value={sleepData.wakeUps}
-                                onChange={(e) => setSleepData(prev => ({ ...prev, wakeUps: e.target.value === '' ? '' : Number(e.target.value) }))}
-                                placeholder="Times"
-                                className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm"
-                            />
-                          </div>
-                        </div>
-
-                        <div className="grid grid-cols-1 gap-2">
-                          {[
-                            { key: 'troubleFallingAsleep', label: 'Trouble falling asleep' },
-                            { key: 'troubleStayingAsleep', label: 'Trouble staying asleep' },
-                            { key: 'nightmares', label: 'Nightmares' },
-                          ].map(({ key, label }) => (
-                              <label
-                                  key={key}
-                                  className={`flex items-center gap-2 p-2 rounded-lg border cursor-pointer text-sm ${
-                                      sleepData[key]
-                                          ? 'bg-indigo-100 dark:bg-indigo-900/50 border-indigo-300 dark:border-indigo-700'
-                                          : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700'
-                                  }`}
-                              >
-                                <input
-                                    type="checkbox"
-                                    checked={sleepData[key]}
-                                    onChange={(e) => setSleepData(prev => ({ ...prev, [key]: e.target.checked }))}
-                                    className="w-4 h-4 text-indigo-600 rounded"
-                                />
-                                <span className="text-gray-700 dark:text-gray-300">{label}</span>
-                              </label>
-                          ))}
-                        </div>
-
-                        <div>
-                          <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-2">Feel rested?</label>
-                          <div className="flex gap-2">
-                            <button
-                                type="button"
-                                onClick={() => setSleepData(prev => ({ ...prev, feelRested: true }))}
-                                className={`flex-1 py-2 px-3 rounded-lg border-2 text-sm font-medium ${
-                                    sleepData.feelRested === true
-                                        ? 'bg-green-100 dark:bg-green-900/50 border-green-500 text-green-700 dark:text-green-300'
-                                        : 'bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300'
-                                }`}
-                            >
-                              Yes
-                            </button>
-                            <button
-                                type="button"
-                                onClick={() => setSleepData(prev => ({ ...prev, feelRested: false }))}
-                                className={`flex-1 py-2 px-3 rounded-lg border-2 text-sm font-medium ${
-                                    sleepData.feelRested === false
-                                        ? 'bg-red-100 dark:bg-red-900/50 border-red-500 text-red-700 dark:text-red-300'
-                                        : 'bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300'
-                                }`}
-                            >
-                              No
-                            </button>
-                          </div>
-                        </div>
-                      </div>
+                      <SleepForm
+                          initialData={sleepData}
+                          onChange={(field, value) => setSleepData(prev => ({ ...prev, [field]: value }))}
+                      />
                   )}
 
-                  {/* PTSD-SPECIFIC FIELDS */}
+                  {/* PTSD-SPECIFIC FIELDS — canonical PTSDForm component.
+                      Refactored from inline JSX (Aug 2026) to eliminate drift between
+                      QuickLog and EditLogModal which both edit ptsdData. */}
                   {isPTSDRelated && (
-                      <div className="bg-amber-50 dark:bg-amber-900/30 p-4 rounded-lg border border-amber-200 dark:border-amber-800 space-y-4">
-                        <h3 className="font-medium text-amber-900 dark:text-amber-200 text-sm">Mental Health Details</h3>
-
-                        <div className="grid grid-cols-2 gap-2">
-                          {[
-                            { key: 'flashbacks', label: 'Flashbacks' },
-                            { key: 'intrusiveThoughts', label: 'Intrusive thoughts' },
-                            { key: 'avoidance', label: 'Avoidance' },
-                            { key: 'hypervigilance', label: 'Hypervigilance' },
-                            { key: 'emotionalNumbering', label: 'Numbness' },
-                            { key: 'exaggeratedStartle', label: 'Startle' },
-                          ].map(({ key, label }) => (
-                              <label
-                                  key={key}
-                                  className={`flex items-center gap-2 p-2 rounded-lg border cursor-pointer text-sm ${
-                                      ptsdData[key]
-                                          ? 'bg-amber-100 dark:bg-amber-900/50 border-amber-300 dark:border-amber-700'
-                                          : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700'
-                                  }`}
-                              >
-                                <input
-                                    type="checkbox"
-                                    checked={ptsdData[key]}
-                                    onChange={(e) => setPtsdData(prev => ({ ...prev, [key]: e.target.checked }))}
-                                    className="w-4 h-4 text-amber-600 rounded"
-                                />
-                                <span className="text-gray-700 dark:text-gray-300">{label}</span>
-                              </label>
-                          ))}
-                        </div>
-
-                        <div>
-                          <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-2">Trigger</label>
-
-                          <label
-                              className={`flex items-center gap-2 p-2 rounded-lg border cursor-pointer mb-2 text-sm ${
-                                  ptsdData.triggerUnknown
-                                      ? 'bg-amber-100 dark:bg-amber-900/50 border-amber-300 dark:border-amber-700'
-                                      : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700'
-                              }`}
-                          >
-                            <input
-                                type="checkbox"
-                                checked={ptsdData.triggerUnknown}
-                                onChange={(e) => setPtsdData(prev => ({ ...prev, triggerUnknown: e.target.checked }))}
-                                className="w-4 h-4 text-amber-600 rounded"
-                            />
-                            <span className="text-gray-700 dark:text-gray-300">No identifiable trigger</span>
-                          </label>
-
-                          <input
-                              type="text"
-                              value={ptsdData.triggerDescription}
-                              onChange={(e) => setPtsdData(prev => ({ ...prev, triggerDescription: e.target.value }))}
-                              placeholder={
-                                ptsdData.triggerUnknown
-                                    ? 'Optional: what was happening?'
-                                    : 'What triggered this?'
-                              }
-                              className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm"
-                          />
-                        </div>
-                      </div>
+                      <PTSDForm
+                          initialData={ptsdData}
+                          onChange={(field, value) => setPtsdData(prev => ({ ...prev, [field]: value }))}
+                      />
                   )}
 
                   {/* GI-SPECIFIC FIELDS */}
@@ -3228,38 +3179,25 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
                           </select>
                         </div>
 
-                        <div className="grid grid-cols-2 gap-2">
-                          <label
-                              className={`flex items-center gap-2 p-2 rounded-lg border cursor-pointer text-sm ${
-                                  painData.radiating
-                                      ? 'bg-rose-100 dark:bg-rose-900/50 border-rose-300 dark:border-rose-700'
-                                      : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700'
-                              }`}
-                          >
-                            <input
-                                type="checkbox"
-                                checked={painData.radiating}
-                                onChange={(e) => setPainData(prev => ({ ...prev, radiating: e.target.checked }))}
-                                className="w-4 h-4 text-rose-600 rounded"
-                            />
-                            <span className="text-gray-700 dark:text-gray-300">Radiating</span>
-                          </label>
-                          <label
-                              className={`flex items-center gap-2 p-2 rounded-lg border cursor-pointer text-sm ${
-                                  painData.flareUp
-                                      ? 'bg-rose-100 dark:bg-rose-900/50 border-rose-300 dark:border-rose-700'
-                                      : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700'
-                              }`}
-                          >
-                            <input
-                                type="checkbox"
-                                checked={painData.flareUp}
-                                onChange={(e) => setPainData(prev => ({ ...prev, flareUp: e.target.checked }))}
-                                className="w-4 h-4 text-rose-600 rounded"
-                            />
-                            <span className="text-gray-700 dark:text-gray-300">Flare-up</span>
-                          </label>
-                        </div>
+                        {/* Radiating checkbox only — Flare-up moved to log-level toggle
+                            near severity. The deprecated painData.flareUp field is no
+                            longer written from QuickLog; SymptomHistory's fallback read
+                            keeps old logs visible. */}
+                        <label
+                            className={`flex items-center gap-2 p-2 rounded-lg border cursor-pointer text-sm ${
+                                painData.radiating
+                                    ? 'bg-rose-100 dark:bg-rose-900/50 border-rose-300 dark:border-rose-700'
+                                    : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700'
+                            }`}
+                        >
+                          <input
+                              type="checkbox"
+                              checked={painData.radiating}
+                              onChange={(e) => setPainData(prev => ({ ...prev, radiating: e.target.checked }))}
+                              className="w-4 h-4 text-rose-600 rounded"
+                          />
+                          <span className="text-gray-700 dark:text-gray-300">Radiating</span>
+                        </label>
 
                         {painData.radiating && (
                             <input
@@ -6168,147 +6106,14 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
                       </div>
                   )}
 
-                  {/* PHASE 8A EXTENDED: ANXIETY DISORDERS FORM */}
+                  {/* ANXIETY DISORDERS FORM — canonical AnxietyForm component.
+                      Refactored from inline JSX to eliminate drift between
+                      QuickLog and EditLogModal which both edit anxietyData. */}
                   {isAnxietyFormRelated && (
-                      <div className="bg-blue-50 dark:bg-blue-900/30 p-4 rounded-lg border border-blue-200 dark:border-blue-800 space-y-4">
-                        <h3 className="font-medium text-blue-900 dark:text-blue-200">Anxiety Episode Details</h3>
-                        <p className="text-xs text-blue-700 dark:text-blue-300">Track physical symptoms, triggers, and impact for VA claims evidence</p>
-
-                        {/* Physical Symptoms */}
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Physical Symptoms</label>
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-left">
-                            {[
-                              { key: 'heartRacing', label: 'Heart racing/palpitations' },
-                              { key: 'sweating', label: 'Sweating' },
-                              { key: 'trembling', label: 'Trembling/shaking' },
-                              { key: 'shortnessOfBreath', label: 'Shortness of breath' },
-                              { key: 'chestTightness', label: 'Chest tightness' },
-                              { key: 'nausea', label: 'Nausea' },
-                              { key: 'dizziness', label: 'Dizziness/lightheadedness' },
-                              { key: 'hotFlashes', label: 'Hot flashes/chills' },
-                              { key: 'numbnessTingling', label: 'Numbness/tingling' },
-                            ].map(({ key, label }) => (
-                                <label key={key} className={`flex items-center gap-2 p-2 rounded-lg border cursor-pointer ${
-                                    anxietyData[key] ? 'bg-blue-100 dark:bg-blue-900/50 border-blue-300 dark:border-blue-700' : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700'
-                                }`}>
-                                  <input type="checkbox" checked={anxietyData[key]}
-                                         onChange={(e) => setAnxietyData(prev => ({ ...prev, [key]: e.target.checked }))}
-                                         className="w-4 h-4 text-blue-600 rounded" />
-                                  <span className="text-sm text-gray-700 dark:text-gray-300">{label}</span>
-                                </label>
-                            ))}
-                          </div>
-                        </div>
-
-                        {/* Cognitive Symptoms */}
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Cognitive Symptoms</label>
-                          <div className="grid grid-cols-1 gap-2">
-                            {[
-                              { key: 'racingThoughts', label: 'Racing thoughts' },
-                              { key: 'fearOfLosingControl', label: 'Fear of losing control' },
-                              { key: 'fearOfDying', label: 'Fear of dying' },
-                              { key: 'feelingDetached', label: 'Feeling detached from reality' },
-                              { key: 'difficultyConcentrating', label: 'Difficulty concentrating' },
-                            ].map(({ key, label }) => (
-                                <label key={key} className={`flex items-center gap-2 p-2 rounded-lg border cursor-pointer ${
-                                    anxietyData[key] ? 'bg-blue-100 dark:bg-blue-900/50 border-blue-300 dark:border-blue-700' : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700'
-                                }`}>
-                                  <input type="checkbox" checked={anxietyData[key]}
-                                         onChange={(e) => setAnxietyData(prev => ({ ...prev, [key]: e.target.checked }))}
-                                         className="w-4 h-4 text-blue-600 rounded" />
-                                  <span className="text-sm text-gray-700 dark:text-gray-300">{label}</span>
-                                </label>
-                            ))}
-                          </div>
-                        </div>
-
-                        {/* Avoidance Behaviors */}
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Avoidance/Impact</label>
-                          <div className="grid grid-cols-1 gap-2">
-                            {[
-                              { key: 'avoidedSocial', label: 'Avoided social situations' },
-                              { key: 'leftEarly', label: 'Left situation early' },
-                              { key: 'calledOut', label: 'Called out of work/school' },
-                              { key: 'cancelledPlans', label: 'Cancelled plans' },
-                              { key: 'neededSafetyPerson', label: 'Required safety person present' },
-                            ].map(({ key, label }) => (
-                                <label key={key} className={`flex items-center gap-2 p-2 rounded-lg border cursor-pointer ${
-                                    anxietyData[key] ? 'bg-blue-100 dark:bg-blue-900/50 border-blue-300 dark:border-blue-700' : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700'
-                                }`}>
-                                  <input type="checkbox" checked={anxietyData[key]}
-                                         onChange={(e) => setAnxietyData(prev => ({ ...prev, [key]: e.target.checked }))}
-                                         className="w-4 h-4 text-blue-600 rounded" />
-                                  <span className="text-sm text-gray-700 dark:text-gray-300">{label}</span>
-                                </label>
-                            ))}
-                          </div>
-                        </div>
-
-                        {/* Episode Duration */}
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Episode Duration</label>
-                          <select value={anxietyData.episodeDuration}
-                                  onChange={(e) => setAnxietyData(prev => ({ ...prev, episodeDuration: e.target.value }))}
-                                  className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white">
-                            <option value="">Select duration...</option>
-                            <option value="<5min">Less than 5 minutes</option>
-                            <option value="5-15min">5-15 minutes</option>
-                            <option value="15-30min">15-30 minutes</option>
-                            <option value="30-60min">30-60 minutes</option>
-                            <option value=">1hr">More than 1 hour</option>
-                          </select>
-                        </div>
-
-                        {/* Panic Attack Toggle */}
-                        <div>
-                          <label className="flex items-center gap-2">
-                            <input type="checkbox" checked={anxietyData.wasPanicAttack}
-                                   onChange={(e) => setAnxietyData(prev => ({ ...prev, wasPanicAttack: e.target.checked }))}
-                                   className="w-4 h-4 text-blue-600 rounded" />
-                            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">This was a panic attack</span>
-                          </label>
-                        </div>
-
-                        {/* Trigger — checkbox for unidentified triggers, optional freeform context */}
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Trigger/Situation</label>
-
-                          <label
-                              className={`flex items-center gap-2 p-2 rounded-lg border cursor-pointer mb-2 ${
-                                  anxietyData.triggerUnknown
-                                      ? 'bg-blue-100 dark:bg-blue-900/50 border-blue-300 dark:border-blue-700'
-                                      : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700'
-                              }`}
-                          >
-                            <input
-                                type="checkbox"
-                                checked={anxietyData.triggerUnknown}
-                                onChange={(e) => setAnxietyData(prev => ({ ...prev, triggerUnknown: e.target.checked }))}
-                                className="w-4 h-4 text-blue-600 rounded"
-                            />
-                            <span className="text-sm text-gray-700 dark:text-gray-300">No identifiable trigger</span>
-                          </label>
-
-                          <input
-                              type="text"
-                              value={anxietyData.trigger}
-                              onChange={(e) => setAnxietyData(prev => ({ ...prev, trigger: e.target.value }))}
-                              placeholder={
-                                anxietyData.triggerUnknown
-                                    ? 'Optional: what was happening when it occurred?'
-                                    : 'What triggered this anxiety episode?'
-                              }
-                              className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
-                          />
-                        </div>
-
-                        <div className="bg-blue-100 dark:bg-blue-900/20 p-3 rounded text-xs text-gray-600 dark:text-gray-400">
-                          <strong>For VA Claims:</strong> Document physical symptoms, triggers, and functional impact. Panic attacks require 4+ physical symptoms occurring simultaneously.
-                        </div>
-                      </div>
+                      <AnxietyForm
+                          initialData={anxietyData}
+                          onChange={(field, value) => setAnxietyData(prev => ({ ...prev, [field]: value }))}
+                      />
                   )}
 
                   {/* ============================================

@@ -84,6 +84,8 @@ const EditLogModal = ({log, isOpen, onClose, onSaved}) => {
   const [isFlareUp, setIsFlareUp] = useState(false);
   const [duration, setDuration] = useState('');
   const [timeOfDay, setTimeOfDay] = useState('');
+  const [weather, setWeather] = useState('');
+  const [stressLevel, setStressLevel] = useState(5);
 
   // Migraine-specific fields — shape owned by MigraineForm, imported via INITIAL_MIGRAINE_DATA
   const [migraineData, setMigraineData] = useState({ ...INITIAL_MIGRAINE_DATA });
@@ -205,6 +207,10 @@ const EditLogModal = ({log, isOpen, onClose, onSaved}) => {
             setIsFlareUp(log.isFlareUp || false);
             setDuration(log.duration || '');
             setTimeOfDay(log.timeOfDay || '');
+            setWeather(log.weather || '');
+            // stressLevel: legacy logs don't have this field → default 5 to match new-log default.
+            // This means editing an old log will save stressLevel=5 unless the user adjusts the slider.
+            setStressLevel(log.stressLevel ?? 5);
 
             // Get existing medication logs for this symptom
             const existingMeds = getMedicationLogsForSymptom(log.id);
@@ -1156,6 +1162,8 @@ const EditLogModal = ({log, isOpen, onClose, onSaved}) => {
             isFlareUp,
             duration: duration || null,
             timeOfDay: timeOfDay || null,
+            weather: weather || null,
+            stressLevel: stressLevel,
           };
 
           if (isMigraine) updates.migraineData = migraineData;
@@ -1470,6 +1478,48 @@ const EditLogModal = ({log, isOpen, onClose, onSaved}) => {
                           <option value="all-day">All Day</option>
                           <option value="varies">Varies</option>
                         </select>
+                      </div>
+                    </div>
+
+                    {/* Weather + Stress Level — matches SymptomLogger and QuickLog 2-col layout */}
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                          🌤️ Weather (optional)
+                        </label>
+                        <select
+                            value={weather}
+                            onChange={(e) => setWeather(e.target.value)}
+                            className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm"
+                        >
+                          <option value="">Not specified</option>
+                          <option value="clear">☀️ Clear/Sunny</option>
+                          <option value="cloudy">☁️ Cloudy</option>
+                          <option value="rainy">🌧️ Rainy</option>
+                          <option value="stormy">⛈️ Stormy</option>
+                          <option value="hot">🥵 Hot</option>
+                          <option value="cold">🥶 Cold</option>
+                          <option value="humid">💧 Humid</option>
+                          <option value="pressure-change">📊 Barometric Pressure Change</option>
+                        </select>
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                          😰 Stress Level: {stressLevel}/10
+                        </label>
+                        <input
+                            type="range"
+                            min="0"
+                            max="10"
+                            value={stressLevel}
+                            onChange={(e) => setStressLevel(parseInt(e.target.value))}
+                            className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer accent-purple-600 mt-2"
+                        />
+                        <div className="flex justify-between text-[10px] text-gray-500 dark:text-gray-400 mt-1">
+                          <span>0 - Calm</span>
+                          <span>10 - Extreme</span>
+                        </div>
                       </div>
                     </div>
                   </div>
