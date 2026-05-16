@@ -561,3 +561,140 @@ export const clearTDIUStatus = (profileId) => {
   }
   return result;
 };
+
+// =============================================================================
+// EMPLOYMENT STATUS MANAGEMENT
+// =============================================================================
+// Tracks the veteran's current employment for TDIU marginal-employment analysis
+// under 38 CFR §4.16(a). This is separate from tdiuStatus (which tracks whether
+// TDIU has been GRANTED) — employment status is the input to determining
+// whether ongoing employment is "marginal" or in a "protected environment."
+//
+// Stored as profile.employmentStatus. Profiles without employment data have no
+// employmentStatus key, and getEmploymentStatus returns null in that case.
+//
+// Data shape:
+//   {
+//     currentlyEmployed: boolean,
+//     employerName: string (optional, never required),
+//     employerType: 'competitive' | 'family-business' | 'sheltered-workshop'
+//                 | 'self-employed' | 'other',
+//     startDate: string (ISO date),
+//     annualIncome: number (gross),
+//     overThresholdSince: string (ISO date, optional) — when current
+//        above-threshold streak began; used to flag the ~12-month review window
+//     lastEmployedDate: string (ISO date, optional) — for currentlyEmployed:false
+//     accommodations: string[] — IDs from PROTECTED_ENVIRONMENT_INDICATORS
+//     evidence: {
+//        employerLetter: boolean,
+//        attendanceRecords: boolean,
+//        coworkerStatements: boolean,
+//        jobDescription: boolean,
+//        vocationalOpinion: boolean,
+//        medicalNexus: boolean,
+//     },
+//     notes: string (optional),
+//     addedAt: ISO timestamp,
+//     updatedAt: ISO timestamp,
+//   }
+
+/**
+ * Get employment status for a profile.
+ * @param {string} profileId
+ * @returns {object|null}
+ */
+export const getEmploymentStatus = (profileId) => {
+  const profile = getProfileById(profileId);
+  return profile?.employmentStatus || null;
+};
+
+/**
+ * Set or update employment status for a profile.
+ *
+ * Performs a shallow merge into the existing record (preserves fields the
+ * caller didn't pass), but `evidence` and `accommodations` are replaced
+ * wholesale when present — that matches how the UI will treat them (full
+ * checklist state on each save).
+ *
+ * @param {string} profileId
+ * @param {object} status - Partial employment status fields (see shape above)
+ * @returns {object} Result with success status
+ */
+export const setEmploymentStatus = (profileId, status) => {
+  const profiles = getProfiles();
+  const profile = profiles.find(p => p.id === profileId);
+
+  if (!profile) {
+    return { success: false, message: 'Profile not found' };
+  }
+
+  const existing = profile.employmentStatus || {};
+  const now = new Date().toISOString();
+
+  // Auto-manage overThresholdSince timestamp:
+  //   - If income crosses ABOVE threshold (and we don't already have a date), set it.
+  //   - If income crosses BELOW threshold, clear it.
+  //   - Caller can override by explicitly passing overThresholdSince.
+  //
+  // We don't have the threshold here without importing from tdiuEligibility.js
+  // (which would create a circular concern), so we accept the override and
+  // let the caller manage it. The analysis function handles missing dates.
+  const next = {
+    ...existing,
+    ...status,
+    // Replace these wholesale when provided
+    accommodations: Array.isArray(status.accommodations)
+        ? status.accommodations
+        : (existing.accommodations || []),
+    evidence: status.evidence !== undefined
+        ? { ...status.evidence }
+        : (existing.evidence || {}),
+    addedAt: existing.addedAt || now,
+    updatedAt: now,
+  };
+
+  // If user explicitly set currentlyEmployed: false, clear overThresholdSince
+  if (status.currentlyEmployed === false) {
+    next.overThresholdSince = null;
+  }
+
+  profile.employmentStatus = next;
+  profile.updatedAt = now;
+
+  const result = saveProfiles(profiles);
+
+  if (result.success) {
+    window.dispatchEvent(new CustomEvent('profileUpdated', {
+      detail: { profileId, profile }
+    }));
+    return { success: true, profile, employmentStatus: profile.employmentStatus };
+  }
+  return result;
+};
+
+/**
+ * Clear employment status for a profile.
+ * @param {string} profileId
+ * @returns {object} Result with success status
+ */
+export const clearEmploymentStatus = (profileId) => {
+  const profiles = getProfiles();
+  const profile = profiles.find(p => p.id === profileId);
+
+  if (!profile) {
+    return { success: false, message: 'Profile not found' };
+  }
+
+  delete profile.employmentStatus;
+  profile.updatedAt = new Date().toISOString();
+
+  const result = saveProfiles(profiles);
+
+  if (result.success) {
+    window.dispatchEvent(new CustomEvent('profileUpdated', {
+      detail: { profileId, profile }
+    }));
+    return { success: true, profile };
+  }
+  return result;
+};

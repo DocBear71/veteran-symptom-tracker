@@ -12,6 +12,10 @@ import {
   clear8940Worksheet,
 } from '../utils/storage';
 import { generate8940WorksheetPDF } from '../utils/export';
+import {
+  CURRENT_POVERTY_THRESHOLD,
+  CURRENT_POVERTY_THRESHOLD_YEAR,
+} from '../utils/tdiuEligibility';
 
 /**
  * TDIUTool — Comprehensive TDIU eligibility analysis and education.
@@ -43,11 +47,12 @@ import { generate8940WorksheetPDF } from '../utils/export';
  *  * Phase 4 (future) will add PDF export.
  */
 
-// Federal poverty threshold for a single individual.
-// Current as of 2026; HHS publishes updates annually.
-// https://aspe.hhs.gov/topics/poverty-economic-mobility/poverty-guidelines
-const POVERTY_THRESHOLD_ANNUAL_2026 = 15650;
-const POVERTY_THRESHOLD_MONTHLY_2026 = Math.round(POVERTY_THRESHOLD_ANNUAL_2026 / 12);
+// Poverty threshold constants are sourced from tdiuEligibility.js so they
+// stay in sync with the analysis functions. Aliased locally for backwards
+// compatibility with existing references in this file.
+const POVERTY_THRESHOLD_ANNUAL = CURRENT_POVERTY_THRESHOLD;
+const POVERTY_THRESHOLD_YEAR = CURRENT_POVERTY_THRESHOLD_YEAR;
+const POVERTY_THRESHOLD_MONTHLY = Math.round(POVERTY_THRESHOLD_ANNUAL / 12);
 
 const TDIUTool = ({ embedded = false, onClose }) => {
   const { profile } = useProfile();
@@ -147,16 +152,16 @@ const TDIUTool = ({ embedded = false, onClose }) => {
           <h3 className="font-semibold text-yellow-900 dark:text-yellow-200 mb-2 flex items-center gap-2">
             <span>📌</span> Always Work With a VSO
           </h3>
-          <p className="text-sm text-yellow-900 dark:text-yellow-200 mb-3">
+          <p className="text-sm text-yellow-900 dark:text-yellow-200 mb-3 text-left">
             This tool helps you organize information. <strong>It does not determine
             eligibility.</strong> The rating math is one factor; the employment-impact
             analysis (which this app does not compute) is the other. Both factors
             require professional evaluation.
           </p>
-          <p className="text-sm text-yellow-900 dark:text-yellow-200 mb-3">
+          <p className="text-sm text-yellow-900 dark:text-yellow-200 mb-3 text-left">
             A Veterans Service Officer (VSO) — accredited representative — can:
           </p>
-          <ul className="text-sm text-yellow-900 dark:text-yellow-200 space-y-1 ml-5 list-disc mb-3">
+          <ul className="text-sm text-yellow-900 dark:text-yellow-200 space-y-1 ml-5 list-disc mb-3 text-left">
             <li>Evaluate the full eligibility picture, including employment factors</li>
             <li>Address §4.16(a) edge cases (body system combination, common etiology, bilateral factor)</li>
             <li>Help you complete VA Form 21-8940 correctly</li>
@@ -180,7 +185,7 @@ const TDIUTool = ({ embedded = false, onClose }) => {
   {/* ============================================ */}
   {/* SECTION 5: REGULATORY FOOTER                  */}
   {/* ============================================ */}
-  <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg border border-gray-200 dark:border-gray-700 p-4 text-xs text-gray-600 dark:text-gray-400 space-y-1">
+  <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg border border-gray-200 dark:border-gray-700 p-4 text-xs text-gray-600 dark:text-gray-400 space-y-1 text-left">
     <p className="font-medium text-gray-700 dark:text-gray-300 mb-1">
       Regulatory References:
     </p>
@@ -192,7 +197,7 @@ const TDIUTool = ({ embedded = false, onClose }) => {
     <p>• VA Form 21-8940 — Veteran's Application for Increased Compensation Based on Unemployability</p>
     <p>• VA Form 21-4192 — Request for Employment Information from Recent Employers</p>
     <p className="italic mt-2">
-      Federal poverty threshold of ${POVERTY_THRESHOLD_ANNUAL_2026.toLocaleString()}/year
+      Federal poverty threshold of ${POVERTY_THRESHOLD_ANNUAL.toLocaleString()}/year
       is current as of 2026. Verify the latest figure at HHS.gov before filing.
     </p>
     <p className="italic">
@@ -385,12 +390,12 @@ const Section = ({ title, summary, children }) => (
         <div className="flex-1 pr-4">
           <h4 className="font-semibold text-gray-900 dark:text-white">{title}</h4>
           {summary && (
-              <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{summary}</p>
+              <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 text-left">{summary}</p>
           )}
         </div>
         <span className="text-gray-400 dark:text-gray-500 transition-transform group-open:rotate-180">▼</span>
       </summary>
-      <div className="px-5 pb-5 text-sm text-gray-700 dark:text-gray-300 space-y-3 leading-relaxed">
+      <div className="px-5 pb-5 text-sm text-gray-700 dark:text-gray-300 space-y-3 leading-relaxed text-left">
         {children}
       </div>
     </details>
@@ -468,8 +473,8 @@ const SubstantiallyGainfulEmployment = () => (
         As of 2026, that threshold is approximately:
       </p>
       <ul className="ml-5 list-disc space-y-1">
-        <li>${POVERTY_THRESHOLD_ANNUAL_2026.toLocaleString()} per year</li>
-        <li>Approximately ${POVERTY_THRESHOLD_MONTHLY_2026.toLocaleString()} per month</li>
+        <li>${POVERTY_THRESHOLD_ANNUAL.toLocaleString()} per year</li>
+        <li>Approximately ${POVERTY_THRESHOLD_MONTHLY.toLocaleString()} per month</li>
       </ul>
       <p>
         Employment that produces earnings <em>at or below</em> the threshold is
@@ -502,33 +507,83 @@ const MarginalEmployment = () => (
         marginal and do not count as substantially gainful:
       </p>
 
-      <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3 space-y-1">
+      <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3 space-y-1 text-left">
         <p className="font-semibold text-gray-900 dark:text-white">
           1. Earnings below the poverty threshold
         </p>
         <p>
           Employment that produces gross earnings at or below the federal poverty threshold
           for a single individual. For 2026, that's approximately
-          ${POVERTY_THRESHOLD_ANNUAL_2026.toLocaleString()}/year.
+          ${POVERTY_THRESHOLD_ANNUAL.toLocaleString()}/year.
         </p>
       </div>
 
-      <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3 space-y-1">
+      <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3 space-y-2 text-left">
         <p className="font-semibold text-gray-900 dark:text-white">
           2. Sheltered or protected work environments
         </p>
         <p>
           Employment in a <em>protected environment</em> — even when earnings exceed the
-          poverty threshold. Examples include:
+          poverty threshold. VA has not adopted a bright-line definition; these claims
+          are highly fact-specific and often litigated (see <em>Cantrell v. Shulkin</em>,
+          28 Vet. App. 382 (2017), which required VA to adequately explain its reasoning).
+          The core question: would the employer's accommodations be tolerated in
+          competitive employment without the relationship/protection?
         </p>
-        <ul className="ml-5 list-disc">
-          <li>Family-owned business where the veteran is given accommodations not available to other employees</li>
-          <li>Sheltered workshop programs designed for individuals with disabilities</li>
-          <li>Employment situations where a third party (often a relative) keeps the veteran on payroll despite limited productive output</li>
+
+        <p className="font-medium text-gray-900 dark:text-white mt-2">
+          Accommodations that MAY support a protected environment finding
+        </p>
+        <p className="text-xs italic text-gray-600 dark:text-gray-400">
+          (all must be tied to service-connected conditions)
+        </p>
+        <ul className="ml-5 list-disc text-sm">
+          <li>Flexible schedule for PTSD, migraines, panic attacks, or similar symptoms</li>
+          <li>Excessive absences or lateness routinely excused</li>
+          <li>Reduced productivity standards or quotas</li>
+          <li>Permission to work at the veteran's own pace</li>
+          <li>Extra breaks beyond normal company policy</li>
+          <li>Excused from critical duties, deadlines, or meetings</li>
+          <li>Family business or friend-owned company making special accommodations</li>
+          <li>Behavioral outbursts or interpersonal issues being tolerated</li>
+          <li>Reduced workload while maintaining normal pay</li>
+          <li>Remote or isolated work assignments beyond what coworkers receive</li>
         </ul>
-        <p>
-          Documentation of the sheltered nature is essential. VA will look closely at
-          whether the work would survive in a competitive employment setting.
+
+        <p className="font-medium text-gray-900 dark:text-white mt-2">
+          What does NOT automatically qualify
+        </p>
+        <ul className="ml-5 list-disc text-sm">
+          <li>Simply working alone</li>
+          <li>Choosing a low-stress job</li>
+          <li>Self-employment by itself</li>
+          <li>Working from home alone</li>
+          <li>Having standard ADA accommodations alone</li>
+        </ul>
+
+        <p className="font-medium text-gray-900 dark:text-white mt-2">
+          Strong evidence to develop
+        </p>
+        <ul className="ml-5 list-disc text-sm">
+          <li>
+            <span className="font-medium">Detailed employer letter</span> explaining: why
+            accommodations are made, what duties are excused, what standards are relaxed,
+            how the veteran differs from similarly-situated employees, and whether the
+            veteran would likely be terminated in a competitive environment
+          </li>
+          <li>Documentation of missed work, late arrivals, or reduced productivity</li>
+          <li>Statements from coworkers or supervisors</li>
+          <li>Written job descriptions showing duties excused</li>
+          <li>Payroll or attendance records</li>
+          <li>Vocational expert opinions</li>
+          <li>Medical evidence linking the need for accommodations to service-connected disabilities</li>
+        </ul>
+
+        <p className="text-xs italic text-gray-600 dark:text-gray-400 mt-2">
+          Note: After roughly 12 months of earnings above the poverty threshold, VA may
+          send VA Form 21-4140 (Employment Questionnaire) and review whether the veteran
+          remains unemployable. Sustained earnings without supporting protected-environment
+          evidence can become evidence against continued unemployability.
         </p>
       </div>
 

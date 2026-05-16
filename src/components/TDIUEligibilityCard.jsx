@@ -4,7 +4,11 @@ import {
   getServiceConnectedConditions,
   getTDIUStatus,
 } from '../utils/profiles';
-import { analyzeTDIUEligibility } from '../utils/tdiuEligibility';
+import {
+  analyzeTDIUEligibility,
+  CURRENT_POVERTY_THRESHOLD,
+  CURRENT_POVERTY_THRESHOLD_YEAR,
+} from '../utils/tdiuEligibility';
 
 /**
  * TDIUEligibilityCard
@@ -62,17 +66,22 @@ const TDIUEligibilityCard = () => {
               <span className="text-teal-600 dark:text-teal-400 font-bold flex-shrink-0">•</span>
               <span>
               <strong className="text-gray-900 dark:text-white">Marginal employment is allowed:</strong>{' '}
-                Earnings below the federal poverty threshold
-                (~$15,650/year for 2026) don't count as substantially gainful.
-                Verify the latest threshold at HHS.gov.
+                Earnings at or below the U.S. Census Bureau poverty threshold for one
+                person (~${CURRENT_POVERTY_THRESHOLD.toLocaleString()}/year, {CURRENT_POVERTY_THRESHOLD_YEAR} data)
+                don't count as substantially gainful. Note: VA uses the Census Bureau
+                threshold, not the HHS Poverty Guideline — these are different numbers.
+                Reference: M21-1 Part IV, Subpart ii, 2.F.32.
             </span>
             </li>
             <li className="flex gap-2">
               <span className="text-teal-600 dark:text-teal-400 font-bold flex-shrink-0">•</span>
               <span>
               <strong className="text-gray-900 dark:text-white">Sheltered & family business work:</strong>{' '}
-                Generally does not count as substantially gainful, even above
-                the threshold. Document the sheltered nature carefully.
+                Employment in a protected environment may not count as substantially
+                gainful, even when earnings exceed the threshold. <em>Cantrell v. Shulkin</em>,
+                28 Vet. App. 382 (2017), requires VA to explain its reasoning on
+                protected-environment determinations — strong evidence (employer letter,
+                accommodations documentation, attendance records) is essential.
             </span>
             </li>
             <li className="flex gap-2">
@@ -96,7 +105,16 @@ const TDIUEligibilityCard = () => {
             )}
           </ul>
 
-          <div className="mt-4 p-3 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+          <div className="mt-4 p-3 bg-emerald-50 dark:bg-emerald-900/20 rounded-lg border border-emerald-200 dark:border-emerald-800">
+            <p className="text-xs text-emerald-900 dark:text-emerald-200">
+              🛡️ <strong>Working while on TDIU?</strong> The{' '}
+              <strong>Protected Work Environment Tracker</strong> in C&P Resources
+              helps you document accommodations, track evidence gaps, and generate
+              an employer letter aligned with <em>Cantrell v. Shulkin</em>.
+            </p>
+          </div>
+
+          <div className="mt-3 p-3 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
             <p className="text-xs text-gray-600 dark:text-gray-400">
               💡 Talk to your VSO before any major employment changes. The
               rules around resuming work and TDIU continuation are nuanced.

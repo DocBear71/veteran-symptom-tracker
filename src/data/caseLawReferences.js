@@ -243,6 +243,85 @@ export const SECONDARY_CASES = [
 ];
 
 /**
+ * Cases specific to TDIU and marginal employment
+ */
+export const TDIU_CASES = [
+  {
+    id: 'cantrell',
+    name: 'Cantrell v. Shulkin',
+    citation: '28 Vet. App. 382 (2017)',
+    year: 2017,
+    court: 'CAVC',
+    category: 'tdiu',
+
+    holding: 'When a veteran is engaged in employment that may qualify as a "protected environment" under 38 CFR §4.16(a), the Board must adequately explain its reasoning for finding (or not finding) that the employment is protected/sheltered. A bare conclusion is insufficient.',
+
+    significance: 'Forced the VA to explain WHY it concluded a job was or wasn\'t a protected environment. Veterans whose decisions don\'t address protected-environment evidence may have a remand-worthy error.',
+
+    practicalApplication: 'If you\'re employed above the poverty threshold but believe your work is in a protected environment (family business, sheltered workshop, heavily accommodated job), submit detailed evidence about the accommodations. If the VA decides without addressing that evidence, cite Cantrell.',
+
+    appliesTo: ['TDIU', 'Marginal employment', 'Protected work environment', 'Sheltered employment'],
+
+    keyQuote: 'The Board must provide an adequate statement of reasons or bases for its determinations regarding whether a veteran\'s employment qualifies as a protected environment.',
+
+    important: true
+  },
+
+  {
+    id: 'faust',
+    name: 'Faust v. West',
+    citation: '13 Vet. App. 342 (2000)',
+    year: 2000,
+    court: 'CAVC',
+    category: 'tdiu',
+
+    holding: 'A veteran is not precluded from substantially gainful employment merely because work is intermittent or part-time, but income below the poverty threshold is generally considered marginal and does not bar TDIU.',
+
+    significance: 'Established that income alone is not dispositive — the nature of employment matters. Above-threshold income can still be marginal if obtained in a protected environment.',
+
+    practicalApplication: 'Don\'t assume earning above poverty automatically disqualifies TDIU. The analysis must consider whether the employment is competitive or protected.',
+
+    appliesTo: ['TDIU', 'Marginal employment', 'Substantially gainful employment']
+  },
+
+  {
+    id: 'moore',
+    name: 'Moore v. Derwinski',
+    citation: '1 Vet. App. 356 (1991)',
+    year: 1991,
+    court: 'CAVC',
+    category: 'tdiu',
+
+    holding: 'TDIU analysis must consider whether the veteran is "capable of performing the physical and mental acts required by employment, not whether the veteran can find employment."',
+
+    significance: 'The standard is CAPACITY for substantially gainful employment, not actual job availability. Labor market conditions are not the issue.',
+
+    practicalApplication: 'If the VA suggests you "could find a job," remind them the question is whether your service-connected disabilities prevent you from performing one, not whether jobs exist.',
+
+    appliesTo: ['TDIU', 'Substantially gainful employment'],
+
+    keyQuote: 'The test is whether the veteran is capable of performing the physical and mental acts required by employment, not whether the veteran can find employment.'
+  },
+
+  {
+    id: 'geib',
+    name: 'Geib v. Shinseki',
+    citation: '733 F.3d 1350 (Fed. Cir. 2013)',
+    year: 2013,
+    court: 'Federal Circuit',
+    category: 'tdiu',
+
+    holding: 'The ultimate determination of whether a veteran is capable of substantially gainful employment is a factual and legal determination reserved for the VA adjudicator, not a medical examiner.',
+
+    significance: 'A medical examiner\'s opinion that a veteran "cannot work" is not binding — but neither is one that says the veteran can. The adjudicator weighs all evidence.',
+
+    practicalApplication: 'Don\'t rely on a single medical opinion. Build a record with multiple sources: medical evidence, vocational expert opinions, employer statements, and lay statements.',
+
+    appliesTo: ['TDIU', 'Vocational evidence']
+  }
+];
+
+/**
  * Cases related to examinations and duty to assist
  */
 export const EXAMINATION_CASES = [
@@ -333,6 +412,7 @@ export const ALL_CASES = [
   ...HEARING_CASES,
   ...MIGRAINE_CASES,
   ...SECONDARY_CASES,
+  ...TDIU_CASES,
   ...EXAMINATION_CASES,
   ...RATING_CASES
 ];
@@ -366,6 +446,11 @@ export const CASE_CATEGORIES = {
     description: 'Cases related to secondary service connection',
     cases: SECONDARY_CASES
   },
+  tdiu: {
+    name: 'TDIU / Marginal Employment',
+    description: 'Cases related to Total Disability based on Individual Unemployability, marginal employment, and protected/sheltered work environments',
+    cases: TDIU_CASES
+  },
   examination: {
     name: 'Examinations / Duty to Assist',
     description: 'Cases about VA examination requirements',
@@ -395,7 +480,10 @@ export const getCasesForCondition = (conditionType) => {
     'hip': [...LANDMARK_CASES, ...RATING_CASES],
     'shoulder': [...LANDMARK_CASES, ...RATING_CASES],
     'musculoskeletal': [...LANDMARK_CASES, ...RATING_CASES],
-    'secondary': [...LANDMARK_CASES, ...SECONDARY_CASES]
+    'secondary': [...LANDMARK_CASES, ...SECONDARY_CASES],
+    'tdiu': [...LANDMARK_CASES, ...TDIU_CASES],
+    'marginalEmployment': [...LANDMARK_CASES, ...TDIU_CASES],
+    'protectedEnvironment': [...LANDMARK_CASES, ...TDIU_CASES]
   };
 
   return conditionMap[conditionType] || LANDMARK_CASES;

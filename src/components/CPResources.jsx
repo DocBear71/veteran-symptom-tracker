@@ -10,6 +10,7 @@ import RatingScenarioCalculator from './RatingScenarioCalculator';
 import StrategicFilingGuide from './StrategicFilingGuide';
 import CaregiverProgramsGuide from './CaregiverProgramsGuide';
 import TDIUTool from './TDIUTool';
+import ProtectedEnvironmentTracker from './ProtectedEnvironmentTracker';
 
 const CPResources = () => {
   const [activeResource, setActiveResource] = useState(null);
@@ -81,6 +82,14 @@ const CPResources = () => {
       color: 'rose',
       features: ['§4.16(a) eligibility analysis', 'Schedular vs employability', 'Marginal employment guidance', 'Filing requirements', 'VSO referral'],
     },
+    {
+      id: 'protected-env',
+      title: 'Protected Work Environment Tracker',
+      description: 'For TDIU veterans who are working: track accommodations, document evidence of a protected/sheltered employment environment, and generate an employer letter for VA review under 38 CFR §4.16(a) and Cantrell v. Shulkin.',
+      icon: '🛡️',
+      color: 'emerald',
+      features: ['Employment status tracking', 'Accommodations checklist', 'Evidence gap analysis', 'Employer letter generator', 'Cantrell-aligned'],
+    },
   ];
 
   // Color mapping for cards
@@ -141,6 +150,14 @@ const CPResources = () => {
       iconText: 'text-rose-600 dark:text-rose-400',
       badge: 'bg-rose-100 dark:bg-rose-900 text-rose-700 dark:text-rose-300',
     },
+    emerald: {
+      bg: 'bg-emerald-50 dark:bg-emerald-900/20',
+      border: 'border-emerald-200 dark:border-emerald-800',
+      hoverBorder: 'hover:border-emerald-500 dark:hover:border-emerald-500',
+      icon: 'bg-emerald-100 dark:bg-emerald-900',
+      iconText: 'text-emerald-600 dark:text-emerald-400',
+      badge: 'bg-emerald-100 dark:bg-emerald-900 text-emerald-700 dark:text-emerald-300',
+    },
   };
 
   // Render the selected resource component
@@ -164,6 +181,8 @@ const CPResources = () => {
         return <CaregiverProgramsGuide onBack={() => setActiveResource(null)} />;
       case 'tdiu-tool':
         return <TDIUTool embedded={true} onClose={() => setActiveResource(null)} />;
+      case 'protected-env':
+        return <ProtectedEnvironmentTracker embedded={true} onClose={() => setActiveResource(null)} />;
       default:
         return null;
     }
@@ -229,20 +248,20 @@ const CPResources = () => {
                 <button
                     key={resource.id}
                     onClick={() => setActiveResource(resource.id)}
-                    className={`text-left p-5 rounded-lg border-2 transition-all ${colors.bg} ${colors.border} ${colors.hoverBorder} hover:shadow-lg`}
+                    className={`text-left p-5 rounded-lg border-2 transition-all flex flex-col ${colors.bg} ${colors.border} ${colors.hoverBorder} hover:shadow-lg`}
                 >
-                  {/* Icon */}
-                  <div className={`w-12 h-12 rounded-lg ${colors.icon} flex items-center justify-center mb-4`}>
+                  {/* Icon — fixed size, anchored at top of card */}
+                  <div className={`w-12 h-12 rounded-lg ${colors.icon} flex items-center justify-center mb-4 flex-shrink-0`}>
                     <span className="text-2xl">{resource.icon}</span>
                   </div>
 
-                  {/* Title */}
-                  <h3 className="font-semibold text-lg text-gray-900 dark:text-white mb-2">
+                  {/* Title — fixed two-line height so single-line titles don't shift the description up */}
+                  <h3 className="font-semibold text-lg text-gray-900 dark:text-white mb-2 min-h-[3.5rem] leading-tight">
                     {resource.title}
                   </h3>
 
-                  {/* Description */}
-                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                  {/* Description — grows to fill available space, pushing the open-indicator to the bottom */}
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-4 flex-grow">
                     {resource.description}
                   </p>
 
@@ -258,7 +277,7 @@ const CPResources = () => {
                     ))}
                   </div>
 
-                  {/* Open Indicator */}
+                  {/* Open Indicator — pinned to bottom by flex layout */}
                   <div className={`mt-4 text-sm font-medium ${colors.iconText} flex items-center gap-1`}>
                     <span>Open Tool</span>
                     <span>→</span>
