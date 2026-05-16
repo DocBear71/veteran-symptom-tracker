@@ -2,171 +2,34 @@
 // SecondaryConditionsSummary.jsx
 // Phase 15B: Compact summary component for Rating Evidence integration
 // Shows relevant secondary conditions based on user's logged conditions
+//
+// Phase 3 refactor (current): secondaryConditions.js is the sole source
+// of truth. All primary condition data — including topSecondaries,
+// note, and canBeSecondaryTo — lives there. To add or change a primary
+// condition's secondaries, edit src/data/secondaryConditions.js. This
+// component reads from that map only.
 // ============================================
 
 import { useState, useMemo } from 'react';
 import { ChevronDown, ChevronUp, Link2, AlertCircle, ExternalLink, Star } from 'lucide-react';
+import SECONDARY_CONDITIONS_MAP from '../data/secondaryConditions';
 
-/**
- * Maps condition analysis keys to their secondary conditions data
- * This bridges the analysis results from RatingEvidence to secondary conditions
- */
-const CONDITION_SECONDARY_MAP = {
-  // Analysis key : { criteriaKey, displayName }
-  'diabetes': { key: 'DIABETES', display: 'Diabetes Mellitus', dc: '7913' },
-  'ptsd': { key: 'PTSD', display: 'PTSD', dc: '9411' },
-  'tinnitus': { key: 'TINNITUS', display: 'Tinnitus', dc: '6260' },
-  'sleep-apnea': { key: 'SLEEP_APNEA', display: 'Sleep Apnea', dc: '6847' },
-  'sleepApnea': { key: 'SLEEP_APNEA', display: 'Sleep Apnea', dc: '6847' },
-  'fibromyalgia': { key: 'FIBROMYALGIA', display: 'Fibromyalgia', dc: '5025' },
-  'hypertension': { key: 'HYPERTENSION', display: 'Hypertension', dc: '7101' },
-  'peripheral-neuropathy': { key: 'PERIPHERAL_NEUROPATHY', display: 'Peripheral Neuropathy', dc: '8520' },
-  'peripheralNeuropathy': { key: 'PERIPHERAL_NEUROPATHY', display: 'Peripheral Neuropathy', dc: '8520' },
-  'parkinsons': { key: 'PARKINSONS', display: "Parkinson's Disease", dc: '8004' },
-  'multiple-sclerosis': { key: 'MULTIPLE_SCLEROSIS', display: 'Multiple Sclerosis', dc: '8018' },
-  'multipleSclerosis': { key: 'MULTIPLE_SCLEROSIS', display: 'Multiple Sclerosis', dc: '8018' },
-  'als': { key: 'ALS', display: 'ALS', dc: '8017' },
-};
-
-/**
- * Inline secondary condition data (simplified version)
- * In production, this would import from ratingCriteria.js
- */
-const SECONDARY_DATA = {
-  DIABETES: {
-    condition: 'Diabetes Mellitus',
-    dc: '7913',
-    topSecondaries: [
-      { name: 'Peripheral Neuropathy', dc: '8520', nexus: 'strong' },
-      { name: 'Diabetic Retinopathy', dc: '6006', nexus: 'strong' },
-      { name: 'Hypertension', dc: '7101', nexus: 'strong' },
-      { name: 'Coronary Artery Disease', dc: '7005', nexus: 'strong' },
-      { name: 'Diabetic Nephropathy', dc: '7541', nexus: 'strong' },
-      { name: 'Depression', dc: '9434', nexus: 'strong' },
-      { name: 'Erectile Dysfunction', dc: '7522', nexus: 'strong', smcK: true },
-    ],
-  },
-  PTSD: {
-    condition: 'PTSD',
-    dc: '9411',
-    topSecondaries: [
-      { name: 'Major Depression', dc: '9434', nexus: 'strong' },
-      { name: 'Sleep Apnea', dc: '6847', nexus: 'moderate' },
-      { name: 'Irritable Bowel Syndrome', dc: '7319', nexus: 'strong' },
-      { name: 'Hypertension', dc: '7101', nexus: 'moderate' },
-      { name: 'Migraines', dc: '8100', nexus: 'moderate' },
-      { name: 'GERD', dc: '7346', nexus: 'moderate' },
-    ],
-  },
-  TINNITUS: {
-    condition: 'Tinnitus',
-    dc: '6260',
-    topSecondaries: [
-      { name: 'Depression', dc: '9434', nexus: 'strong' },
-      { name: 'Anxiety', dc: '9400', nexus: 'strong' },
-      { name: 'Insomnia/Sleep Disturbance', dc: '6847', nexus: 'strong' },
-    ],
-    note: 'Tinnitus is capped at 10%, but secondary mental health conditions can significantly increase total rating.',
-  },
-  SLEEP_APNEA: {
-    condition: 'Sleep Apnea',
-    dc: '6847',
-    topSecondaries: [
-      { name: 'Hypertension', dc: '7101', nexus: 'strong' },
-      { name: 'Coronary Artery Disease', dc: '7005', nexus: 'strong' },
-      { name: 'Atrial Fibrillation', dc: '7010', nexus: 'strong' },
-      { name: 'Depression', dc: '9434', nexus: 'strong' },
-      { name: 'Type 2 Diabetes', dc: '7913', nexus: 'moderate' },
-    ],
-    canBeSecondaryTo: ['PTSD (weight gain from medications)', 'Neck conditions', 'Diabetes'],
-  },
-  FIBROMYALGIA: {
-    condition: 'Fibromyalgia',
-    dc: '5025',
-    topSecondaries: [
-      { name: 'Depression', dc: '9434', nexus: 'strong' },
-      { name: 'Anxiety', dc: '9400', nexus: 'strong' },
-      { name: 'Migraines', dc: '8100', nexus: 'strong' },
-      { name: 'IBS', dc: '7319', nexus: 'strong' },
-    ],
-    canBeSecondaryTo: ['PTSD', 'Chronic pain conditions'],
-  },
-  HYPERTENSION: {
-    condition: 'Hypertension',
-    dc: '7101',
-    topSecondaries: [
-      { name: 'Hypertensive Heart Disease', dc: '7007', nexus: 'strong' },
-      { name: 'Coronary Artery Disease', dc: '7005', nexus: 'strong' },
-      { name: 'Chronic Kidney Disease', dc: '7530', nexus: 'strong' },
-      { name: 'Stroke Residuals', dc: '8008', nexus: 'strong' },
-    ],
-    canBeSecondaryTo: ['Sleep Apnea', 'PTSD', 'Diabetes'],
-  },
-  PERIPHERAL_NEUROPATHY: {
-    condition: 'Peripheral Neuropathy',
-    dc: '8520',
-    topSecondaries: [
-      { name: 'Depression', dc: '9434', nexus: 'strong' },
-      { name: 'Gait/Balance Issues', dc: '6204', nexus: 'moderate' },
-    ],
-    canBeSecondaryTo: ['Diabetes Mellitus', 'Toxic exposures', 'Back conditions with radiculopathy'],
-  },
-  PARKINSONS: {
-    condition: "Parkinson's Disease",
-    dc: '8004',
-    topSecondaries: [
-      { name: 'Depression', dc: '9434', nexus: 'strong' },
-      { name: 'Dementia', dc: '9326', nexus: 'strong' },
-      { name: 'Loss of Smell', dc: '6275', nexus: 'strong' },
-      { name: 'Erectile Dysfunction', dc: '7522', nexus: 'strong', smcK: true },
-      { name: 'Neurogenic Bladder', dc: '7542', nexus: 'strong' },
-      { name: 'Sleep Disturbance', dc: '6847', nexus: 'strong' },
-      { name: 'Upper Extremity Impairment', dc: '8514/5125', nexus: 'strong', smcK: true },
-      { name: 'Lower Extremity Impairment', dc: '8520/5167', nexus: 'strong', smcK: true },
-    ],
-    note: "Parkinson's has a minimum 30% rating. Secondary conditions and SMC can significantly increase total compensation.",
-  },
-
-  MULTIPLE_SCLEROSIS: {
-    condition: 'Multiple Sclerosis',
-    dc: '8018',
-    topSecondaries: [
-      { name: 'Depression', dc: '9434', nexus: 'strong' },
-      { name: 'Cognitive Impairment/Dementia', dc: '9326', nexus: 'strong' },
-      { name: 'Erectile Dysfunction', dc: '7522', nexus: 'strong', smcK: true },
-      { name: 'Visual Disturbances', dc: '6066/6090', nexus: 'strong' },
-      { name: 'Voiding Dysfunction', dc: '7542', nexus: 'strong' },
-      { name: 'Sphincter Impairment', dc: '7332', nexus: 'strong' },
-      { name: 'Upper Extremity Impairment', dc: '8514/5125', nexus: 'strong', smcK: true },
-      { name: 'Lower Extremity Impairment', dc: '8520/5167', nexus: 'strong', smcK: true },
-    ],
-    note: 'MS has minimum 30% rating. SMC-K is automatic for ED secondary to MS.',
-  },
-
-  ALS: {
-    condition: 'ALS (Amyotrophic Lateral Sclerosis)',
-    dc: '8017',
-    topSecondaries: [
-      { name: 'Erectile Dysfunction / FSAD', dc: '7522/7632', nexus: 'strong', smcK: true },
-      { name: 'Respiratory Failure', dc: '6520/6847', nexus: 'strong' },
-      { name: 'Swallowing Difficulty', dc: '7203', nexus: 'strong' },
-      { name: 'Speech Impairment', dc: '6519', nexus: 'strong' },
-      { name: 'Upper Extremity LOU', dc: '5125/5109', nexus: 'strong', smcK: true },
-      { name: 'Lower Extremity LOU', dc: '5167/5110', nexus: 'strong', smcK: true },
-      { name: 'Depression', dc: '9434', nexus: 'strong' },
-      { name: 'Dementia (ALS-FTD)', dc: '9326', nexus: 'strong' },
-    ],
-    note: 'ALS has minimum 100% rating. Secondary conditions are critical for SMC, which adds compensation beyond 100%.',
-  },
-};
+// (Phase 3: CURATED_DISPLAY_KEY and SECONDARY_DATA removed —
+//  all data now lives in src/data/secondaryConditions.js)
 
 /**
  * Individual Secondary Condition Row
+ * Renders one row inside an expanded ConditionSecondaryCard: condition
+ * name, DC, optional SMC-K badge, and nexus strength badge.
  */
 const SecondaryRow = ({ secondary }) => {
+  // Nexus strength levels match values in secondaryConditions.js
+  // ('strong' | 'moderate' | 'possible'). Any new strength value added
+  // there must get a matching entry here or the badge will render unstyled.
   const nexusColors = {
     strong: 'text-green-600 dark:text-green-400 bg-green-100 dark:bg-green-900/30',
     moderate: 'text-yellow-600 dark:text-yellow-400 bg-yellow-100 dark:bg-yellow-900/30',
+    possible: 'text-orange-600 dark:text-orange-400 bg-orange-100 dark:bg-orange-900/30',
   };
 
   return (
@@ -187,11 +50,50 @@ const SecondaryRow = ({ secondary }) => {
   );
 };
 
-/**
- * Summary card for a single primary condition's secondaries
- */
 const ConditionSecondaryCard = ({ data, isExpanded, onToggle }) => {
-  const secondaryInfo = SECONDARY_DATA[data.key];
+  // Build display data from canonical SECONDARY_CONDITIONS_MAP. Memoized
+  // so we don't re-map secondaries on every render (matters most for ALS,
+  // MS, and Parkinson's which have long lists).
+  //
+  // Field shape mapping (canonical → display):
+  //   primaryCondition       → condition
+  //   diagnosticCode         → dc
+  //   secondaryConditions    → topSecondaries (filtered by topSecondaries[]
+  //                            DC array if present, else show all)
+  //   nexusStrength          → nexus
+  //   smcPotential           → smcK
+  //   note                   → note (passthrough, optional)
+  //   canBeSecondaryTo       → canBeSecondaryTo (passthrough, optional)
+  const secondaryInfo = useMemo(() => {
+    if (!data.canonicalKey) return null;
+    const canonical = SECONDARY_CONDITIONS_MAP[data.canonicalKey];
+    if (!canonical) return null;
+
+    const allSecondaries = (canonical.secondaryConditions || []).map(sec => ({
+      name: sec.name,
+      dc: sec.diagnosticCode,
+      nexus: sec.nexusStrength,
+      smcK: sec.smcPotential === true,
+    }));
+
+    // If canonical specifies a topSecondaries DC subset, filter & order by it.
+    // Otherwise show all canonical secondaries.
+    let displaySecondaries = allSecondaries;
+    if (Array.isArray(canonical.topSecondaries) && canonical.topSecondaries.length > 0) {
+      displaySecondaries = canonical.topSecondaries
+      .map(dc => allSecondaries.find(sec => sec.dc === dc))
+      .filter(Boolean);
+    }
+
+    return {
+      condition: canonical.primaryCondition,
+      dc: canonical.diagnosticCode,
+      topSecondaries: displaySecondaries,
+      note: canonical.note,
+      canBeSecondaryTo: canonical.canBeSecondaryTo,
+    };
+  }, [data.canonicalKey]);
+
   if (!secondaryInfo) return null;
 
   return (
@@ -260,30 +162,41 @@ const SecondaryConditionsSummary = ({
                                     }) => {
   const [expandedCondition, setExpandedCondition] = useState(null);
 
-  // Map active conditions to those with secondary data
+  // Map active conditions to those that have a canonical entry.
+  // Any key in SECONDARY_CONDITIONS_MAP qualifies — no second map to sync.
   const conditionsWithSecondaries = useMemo(() => {
     return activeConditions
     .map(key => {
-      const mapping = CONDITION_SECONDARY_MAP[key];
-      if (mapping && SECONDARY_DATA[mapping.key]) {
-        return { conditionKey: key, ...mapping };
-      }
-      return null;
+      const canonical = SECONDARY_CONDITIONS_MAP[key];
+      if (!canonical) return null;
+      return {
+        conditionKey: key,
+        canonicalKey: key,
+        display: canonical.primaryCondition,
+        dc: canonical.diagnosticCode,
+      };
     })
     .filter(Boolean);
   }, [activeConditions]);
 
-  // Count total potential secondaries
+  // Count total potential secondaries shown across all cards.
+  // Respects each primary's topSecondaries subset if defined — this number
+  // should match what the user actually sees when they expand all cards.
   const totalSecondaries = useMemo(() => {
     return conditionsWithSecondaries.reduce((sum, cond) => {
-      const data = SECONDARY_DATA[cond.key];
-      return sum + (data?.topSecondaries?.length || 0);
+      const canonical = SECONDARY_CONDITIONS_MAP[cond.canonicalKey];
+      if (!canonical) return sum;
+      // If topSecondaries is defined, count only that subset (filtered to
+      // DCs that exist in the canonical list). Else count all canonical.
+      if (Array.isArray(canonical.topSecondaries) && canonical.topSecondaries.length > 0) {
+        const validDCs = new Set(
+            (canonical.secondaryConditions || []).map(sec => sec.diagnosticCode)
+        );
+        return sum + canonical.topSecondaries.filter(dc => validDCs.has(dc)).length;
+      }
+      return sum + (canonical.secondaryConditions?.length || 0);
     }, 0);
   }, [conditionsWithSecondaries]);
-
-  if (conditionsWithSecondaries.length === 0) {
-    return null; // Don't show if no conditions have secondary data
-  }
 
   if (compact) {
     // Compact mode - just show a summary banner

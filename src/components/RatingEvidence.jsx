@@ -1412,6 +1412,18 @@ const RatingEvidence = () => {
   }, [logs, evaluationDays]);
 
   const activeConditions = useMemo(() => {
+    // Source of truth: src/utils/secondaryConditions.js (SECONDARY_CONDITIONS_MAP).
+    // Keys MUST match the keys of that map exactly. SecondaryConditionsSummary
+    // looks each key up there directly, so adding a new primary in
+    // secondaryConditions.js automatically wires it up here — no second
+    // map to keep in sync.
+    //
+    // Logged conditions that don't yet have entries in SECONDARY_CONDITIONS_MAP
+    // (so they're intentionally not pushed):
+    //   adl, ankle, asthma, gerd, hip, ibs, shoulder, radiculopathy,
+    //   generalizedAnxiety, majorDepression
+    // To add any of these: add the primary entry to secondaryConditions.js,
+    // then add the push line here. No other files need changes.
     const conditions = [];
     if (diabetesAnalysis.hasData) conditions.push('diabetes');
     if (ptsdAnalysis.hasData) conditions.push('ptsd');
@@ -1420,23 +1432,12 @@ const RatingEvidence = () => {
     if (fibromyalgiaAnalysis.hasData) conditions.push('fibromyalgia');
     if (hypertensionAnalysis.hasData) conditions.push('hypertension');
     if (peripheralNeuropathyAnalysis.hasData) conditions.push('peripheralNeuropathy');
-    // Add more conditions that have secondary condition mappings
-    if (migraineAnalysis.hasData) conditions.push('migraine');
-    if (lumbosacralStrainAnalysis.hasData) conditions.push('lumbosacralStrain');
-    if (kneeInstabilityAnalysis.hasData) conditions.push('kneeInstability');
-    if (shoulderAnalysis.hasData) conditions.push('shoulder');
-    if (hipAnalysis.hasData) conditions.push('hip');
-    if (ankleAnalysis.hasData) conditions.push('ankle');
-    if (gerdAnalysis.hasData) conditions.push('gerd');
-    if (ibsAnalysis.hasData) conditions.push('ibs');
-    if (asthmaAnalysis.hasData) conditions.push('asthma');
-    if (majorDepressionAnalysis.hasData) conditions.push('majorDepression');
-    if (generalizedAnxietyAnalysis.hasData) conditions.push('generalizedAnxiety');
-    if (radiculopathyAnalysis.hasData) conditions.push('radiculopathy');
+    if (migraineAnalysis.hasData) conditions.push('migraines');
+    if (lumbosacralStrainAnalysis.hasData) conditions.push('backCondition');
+    if (kneeInstabilityAnalysis.hasData) conditions.push('kneeCondition');
     if (multipleSclerosisAnalysis.hasData) conditions.push('multipleSclerosis');
     if (parkinsonsAnalysis.hasData) conditions.push('parkinsons');
     if (alsAnalysis.hasData) conditions.push('als');
-    if (adlAnalysis.hasData) conditions.push('adl');
     return conditions;
   }, [
     diabetesAnalysis,
@@ -1449,19 +1450,9 @@ const RatingEvidence = () => {
     migraineAnalysis,
     lumbosacralStrainAnalysis,
     kneeInstabilityAnalysis,
-    shoulderAnalysis,
-    hipAnalysis,
-    ankleAnalysis,
-    gerdAnalysis,
-    ibsAnalysis,
-    asthmaAnalysis,
-    majorDepressionAnalysis,
-    generalizedAnxietyAnalysis,
-    radiculopathyAnalysis,
     multipleSclerosisAnalysis,
     parkinsonsAnalysis,
     alsAnalysis,
-    adlAnalysis,
   ]);
 
 
@@ -1789,7 +1780,6 @@ const RatingEvidence = () => {
       other: [
         chronicFatigueAnalysis,
         insomniaAnalysis,
-        adlAnalysis,
       ].filter(hasData).length,
       secondary: activeConditions.length,
     };

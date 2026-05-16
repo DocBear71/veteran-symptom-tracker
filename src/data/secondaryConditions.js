@@ -148,6 +148,8 @@ export const SECONDARY_CONDITIONS_MAP = {
         smcPotential: true,
       },
     ],
+    // Phase 2: UX-display fields (curated subset + notes for summary cards)
+    topSecondaries: ['8520', '6006', '7101', '7005', '7541', '9434', '7522'],
   },
 
   // ============================================
@@ -201,6 +203,9 @@ export const SECONDARY_CONDITIONS_MAP = {
         notes: 'Reduced blood flow to extremities.',
       },
     ],
+    // Phase 2: UX-display fields
+    topSecondaries: ['7007', '7005', '7541', '8008'],
+    canBeSecondaryTo: ['Sleep Apnea', 'PTSD', 'Diabetes'],
   },
 
   // ============================================
@@ -255,6 +260,9 @@ export const SECONDARY_CONDITIONS_MAP = {
         smcPotential: true,
       },
     ],
+    // Phase 2: UX-display fields
+    topSecondaries: ['7101', '7005', '7010', '9434', '7913'],
+    canBeSecondaryTo: ['PTSD (weight gain from medications)', 'Neck conditions', 'Diabetes'],
   },
 
   // ============================================
@@ -330,6 +338,8 @@ export const SECONDARY_CONDITIONS_MAP = {
         notes: 'Can be aggravated by PTSD hypervigilance.',
       },
     ],
+    // Phase 2: UX-display fields
+    topSecondaries: ['9434', '6847', '7319', '7101', '8100', '7346'],
   },
 
   // ============================================
@@ -383,6 +393,9 @@ export const SECONDARY_CONDITIONS_MAP = {
         notes: 'Constant auditory disturbance from tinnitus causes hypervigilance and anxiety. File as secondary to tinnitus.',
       },
     ],
+    // Phase 2: UX-display fields
+    topSecondaries: ['9434', '9400', '9410'],
+    note: 'Tinnitus is capped at 10%, but secondary mental health conditions can significantly increase total rating.',
   },
 
   // ============================================
@@ -415,6 +428,8 @@ export const SECONDARY_CONDITIONS_MAP = {
         notes: 'Pain disrupts sleep.',
       },
     ],
+    // Phase 2: UX-display fields (canonical list is already short — show all)
+    topSecondaries: ['9434', '9400', '9410'],
   },
 
   // ============================================
@@ -461,6 +476,9 @@ export const SECONDARY_CONDITIONS_MAP = {
         notes: 'Often overlaps with fibromyalgia.',
       },
     ],
+    // Phase 2: UX-display fields
+    topSecondaries: ['9434', '9400', '8100', '7319'],
+    canBeSecondaryTo: ['PTSD', 'Chronic pain conditions'],
   },
 
   // ============================================
@@ -590,6 +608,9 @@ export const SECONDARY_CONDITIONS_MAP = {
         notes: 'Orthostatic hypotension also common.',
       },
     ],
+    // Phase 2: UX-display fields
+    topSecondaries: ['9434', '9326', '6275', '7522', '7542', '6847', '8514', '8520'],
+    note: "Parkinson's has a minimum 30% rating. Secondary conditions and SMC can significantly increase total compensation.",
   },
 
   // ============================================
@@ -660,6 +681,12 @@ export const SECONDARY_CONDITIONS_MAP = {
         notes: 'Fatigue is hallmark of MS.',
       },
     ],
+    // Phase 2: UX-display fields
+    // Note: SECONDARY_DATA had Sphincter Impairment (7332) and Upper/Lower
+    // Extremity Impairment (5125/5167), but canonical entry doesn't include
+    // these. Topping with canonical-available DCs only.
+    topSecondaries: ['9434', '9326', '7522', '6090', '7542'],
+    note: 'MS has minimum 30% rating. SMC-K is automatic for ED secondary to MS.',
   },
 
   // ============================================
@@ -732,6 +759,11 @@ export const SECONDARY_CONDITIONS_MAP = {
         notes: 'Common in terminal illness.',
       },
     ],
+    // Phase 2: UX-display fields
+    // Note: SECONDARY_DATA listed Dementia (ALS-FTD) at DC 9326, but canonical
+    // entry doesn't include it. Topping with canonical-available DCs only.
+    topSecondaries: ['7522', '6520', '7203', '6519', '5125', '5167', '9434'],
+    note: 'ALS has minimum 100% rating. Secondary conditions are critical for SMC, which adds compensation beyond 100%.',
   },
 
   // ============================================
@@ -871,6 +903,50 @@ export const SECONDARY_CONDITIONS_MAP = {
         intermediateStep: true,
       },
     ],
+  },
+
+  // ============================================
+  // PERIPHERAL NEUROPATHY (DC 8520)
+  // Added Phase 2 — was previously curated-only in
+  // SecondaryConditionsSummary.jsx's SECONDARY_DATA
+  // ============================================
+  'peripheralNeuropathy': {
+    primaryCondition: 'Peripheral Neuropathy',
+    diagnosticCode: '8520',
+    category: 'neurological',
+    secondaryConditions: [
+      {
+        name: 'Depression',
+        diagnosticCode: '9434',
+        category: 'mental-health',
+        nexusStrength: 'strong',
+        notes: 'Chronic nerve pain and reduced mobility commonly lead to clinical depression.',
+      },
+      {
+        name: 'Gait/Balance Issues',
+        diagnosticCode: '6204',
+        category: 'ear',
+        nexusStrength: 'moderate',
+        notes: 'Loss of sensation in feet impairs balance and increases fall risk.',
+      },
+      {
+        name: 'Falls/Injury Residuals',
+        diagnosticCode: '5299',
+        category: 'musculoskeletal',
+        nexusStrength: 'moderate',
+        notes: 'Balance impairment from neuropathy causes falls leading to fractures, sprains, or other injuries.',
+      },
+      {
+        name: 'Foot Ulcers / Skin Breakdown',
+        diagnosticCode: '7806',
+        category: 'skin',
+        nexusStrength: 'moderate',
+        notes: 'Loss of protective sensation leads to undetected injury and chronic skin breakdown.',
+      },
+    ],
+    // Phase 2: UX-display fields
+    topSecondaries: ['9434', '6204'],
+    canBeSecondaryTo: ['Diabetes Mellitus', 'Toxic exposures', 'Back conditions with radiculopathy'],
   },
 };
 
