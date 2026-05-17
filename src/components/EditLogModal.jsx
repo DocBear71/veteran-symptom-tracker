@@ -351,11 +351,16 @@ const EditLogModal = ({log, isOpen, onClose, onSaved}) => {
           }
   }, [isOpen, log]);
 
-        // Peripheral nerve prefixes to exclude from generic pain/GU detection
-        const peripheralNervePrefixes = ['uprn-', 'mdrn-', 'lwrn-', 'alrn-', 'radn-', 'medn-', 'ulnn-',
-          'mscn-', 'crcn-', 'ltn-', 'scin-', 'cpn-', 'spn-', 'dpn-', 'tibn-', 'ptn-', 'femn-',
-          'sapn-', 'obtn-', 'lfcn-', 'iin-'];
-        const isPeripheralNerveSymptomELM = peripheralNervePrefixes.some(prefix => log?.symptomId?.startsWith(prefix));
+  // Peripheral nerve prefixes to exclude from generic pain/GU detection.
+  // Includes specific named nerves (medn-, ulnn-, etc.), general peripheral
+  // neuropathy (pn-), and radiculopathy (radiculopathy-). All route to PeripheralNerveForm.
+  const peripheralNervePrefixes = ['uprn-', 'mdrn-', 'lwrn-', 'alrn-', 'radn-', 'medn-', 'ulnn-',
+    'mscn-', 'crcn-', 'ltn-', 'scin-', 'cpn-', 'spn-', 'dpn-', 'tibn-', 'ptn-', 'femn-',
+    'sapn-', 'obtn-', 'lfcn-', 'iin-',
+    'pn-',            // Peripheral neuropathy (general): pn-numbness, pn-tingling, etc.
+    'radiculopathy-', // Radiculopathy: radiculopathy-pain, radiculopathy-numbness, etc.
+  ];
+  const isPeripheralNerveSymptomELM = peripheralNervePrefixes.some(prefix => log?.symptomId?.startsWith(prefix));
 
         // Phase 3A: Endocrine prefixes to exclude from generic pain/GU detection
         const endocrinePrefixes = ['hyper-', 'graves-', 'thyroiditis-', 'hpth-', 'hopth-', 'hypo-',
@@ -1064,6 +1069,18 @@ const EditLogModal = ({log, isOpen, onClose, onSaved}) => {
         const _isEndocrinePhase3BRelated = isAddisonsDiseaseRelated || isCushingsSyndromeRelated ||
             isDiabetesInsipidusRelated || isHyperaldosteronismRelated;
 
+  // ============================================
+  // GENERAL PERIPHERAL NEUROPATHY & RADICULOPATHY DETECTION
+  // Catch-all categories (DC 8520/8525/8999) not tied to a specific named nerve.
+  // Both route to PeripheralNerveForm. Also detects existing logs via stored data.
+  // ============================================
+  const isGeneralPeripheralNeuropathyRelated = log?.symptomId?.startsWith('pn-') ||
+      ['pn-numbness', 'pn-tingling', 'pn-burning', 'pn-pain', 'pn-weakness'].includes(log?.symptomId);
+
+  const isRadiculopathyRelated = log?.symptomId?.startsWith('radiculopathy-') ||
+      ['radiculopathy-pain', 'radiculopathy-numbness', 'radiculopathy-tingling',
+        'radiculopathy-weakness', 'radiculopathy-burning'].includes(log?.symptomId);
+
         // ============================================
         // PHASE 1C: PERIPHERAL NERVE DETECTION
         // ============================================
@@ -1144,8 +1161,12 @@ const EditLogModal = ({log, isOpen, onClose, onSaved}) => {
             isPosteriorTibialNerveRelated || isFemoralNerveRelated || isSaphenousNerveRelated ||
             isObturatorNerveRelated || isLateralFemoralCutaneousNerveRelated || isIlioinguinalNerveRelated;
 
-        const isPeripheralNerveRelated = isUpperExtremityNerveRelated || isLowerExtremityNerveRelated ||
-            log?.peripheralNerveData;
+  // Combined flag includes general peripheral neuropathy and radiculopathy.
+  // Also still triggers on log.peripheralNerveData so previously-saved logs
+  // (even from before this routing fix) get the right form when edited.
+  const isPeripheralNerveRelated = isUpperExtremityNerveRelated || isLowerExtremityNerveRelated ||
+      isGeneralPeripheralNeuropathyRelated || isRadiculopathyRelated ||
+      log?.peripheralNerveData;
 
 
         const handleSave = () => {

@@ -796,10 +796,15 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
     loadData();
   }, []);
 
-  // Peripheral nerve prefixes to exclude from generic pain/GU detection
+  // Peripheral nerve prefixes to exclude from generic pain/GU detection.
+  // Includes specific named nerves (medn-, ulnn-, etc.), general peripheral
+  // neuropathy (pn-), and radiculopathy (radiculopathy-). All route to PeripheralNerveForm.
   const peripheralNervePrefixes = ['uprn-', 'mdrn-', 'lwrn-', 'alrn-', 'radn-', 'medn-', 'ulnn-',
     'mscn-', 'crcn-', 'ltn-', 'scin-', 'cpn-', 'spn-', 'dpn-', 'tibn-', 'ptn-', 'femn-',
-    'sapn-', 'obtn-', 'lfcn-', 'iin-'];
+    'sapn-', 'obtn-', 'lfcn-', 'iin-',
+    'pn-',            // Peripheral neuropathy (general): pn-numbness, pn-tingling, etc.
+    'radiculopathy-', // Radiculopathy: radiculopathy-pain, radiculopathy-numbness, etc.
+  ];
   const isPeripheralNerveSymptomQL = peripheralNervePrefixes.some(prefix => selectedChronic?.symptomId?.startsWith(prefix));
 
   // Phase 3A: Endocrine prefixes to exclude from generic pain/GU detection
@@ -1363,6 +1368,19 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
       selectedChronic?.category === 'diabetes-insipidus';
   const isHyperaldosteronismRelated = selectedChronic?.symptomId?.startsWith('haldo-') ||
       selectedChronic?.category === 'hyperaldosteronism';
+
+  // ============================================
+  // GENERAL PERIPHERAL NEUROPATHY & RADICULOPATHY DETECTION
+  // Catch-all categories (DC 8520/8525/8999) not tied to a specific named nerve.
+  // Both route to PeripheralNerveForm.
+  // ============================================
+  const isGeneralPeripheralNeuropathyRelated = selectedChronic?.symptomId?.startsWith('pn-') ||
+      ['pn-numbness', 'pn-tingling', 'pn-burning', 'pn-pain', 'pn-weakness'].includes(selectedChronic?.symptomId);
+
+  const isRadiculopathyRelated = selectedChronic?.symptomId?.startsWith('radiculopathy-') ||
+      ['radiculopathy-pain', 'radiculopathy-numbness', 'radiculopathy-tingling',
+        'radiculopathy-weakness', 'radiculopathy-burning'].includes(selectedChronic?.symptomId);
+
   // ============================================
   // PHASE 1C: PERIPHERAL NERVE DETECTION
   // ============================================
@@ -1423,7 +1441,9 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
       isPosteriorTibialNerveRelated || isFemoralNerveRelated || isSaphenousNerveRelated ||
       isObturatorNerveRelated || isLateralFemoralCutaneousNerveRelated || isIlioinguinalNerveRelated;
 
-  const isPeripheralNerveRelated = isUpperExtremityNerveRelated || isLowerExtremityNerveRelated;
+  // Combined flag includes general peripheral neuropathy and radiculopathy.
+  const isPeripheralNerveRelated = isUpperExtremityNerveRelated || isLowerExtremityNerveRelated ||
+      isGeneralPeripheralNeuropathyRelated || isRadiculopathyRelated;
 
   const handleOpenLogModal = (chronic) => {
     if (editMode) return;

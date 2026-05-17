@@ -40,6 +40,93 @@ const isWithinEvaluationPeriod = (timestamp, days) => {
   return logDate >= cutoffDate;
 };
 
+/**
+ * Count the number of distinct calendar days represented in a set of logs.
+ * Used for metrics like "Numbness Days" where multiple logs on the same day
+ * should count as one day of symptoms, not multiple episodes.
+ *
+ * Example: 3 logs all on 2026-01-15 → returns 1 (one day affected)
+ */
+const countDistinctDays = (logs) => {
+  if (!logs || logs.length === 0) return 0;
+  const uniqueDays = new Set(
+      logs.map(log => {
+        const d = new Date(log.timestamp);
+        // YYYY-MM-DD key in local time
+        return `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
+      })
+  );
+  return uniqueDays.size;
+};
+
+/**
+ * Classify a symptom pattern based on how many distinct days are covered
+ * within an evaluation window. Used for chronic conditions like polyneuropathy
+ * where daily continuous symptoms ≠ frequent intermittent episodes.
+ *
+ * Returns: 'continuous' | 'persistent' | 'frequent' | 'intermittent' | 'sparse'
+ *
+ * - continuous:   ≥80% of days affected (daily/near-daily logging, EMG-confirmed
+ *                 chronic conditions look like this)
+ * - persistent:   ≥50% of days affected (most days have symptoms)
+ * - frequent:     ≥25% of days affected (symptoms several times per week)
+ * - intermittent: ≥10% of days affected (a few times per week)
+ * - sparse:       <10% of days affected (occasional flares)
+ */
+const classifySymptomPattern = (distinctDays, evaluationPeriodDays) => {
+  if (distinctDays === 0 || evaluationPeriodDays === 0) return 'sparse';
+  const coverage = distinctDays / evaluationPeriodDays;
+  if (coverage >= 0.80) return 'continuous';
+  if (coverage >= 0.50) return 'persistent';
+  if (coverage >= 0.25) return 'frequent';
+  if (coverage >= 0.10) return 'intermittent';
+  return 'sparse';
+};
+
+/**
+ * Extract aggregated peripheralNerveData signals from a set of logs.
+ * Returns a summary object combining form data across logs for the same condition.
+ *
+ * Strategy:
+ * - For "current state" fields (severity, affected side): use the MOST RECENT log
+ * - For "ever true" fields (EMG confirmed, atrophy seen): true if ANY log has it
+ * - Most recent EMG findings text wins (most up-to-date clinical note)
+ *
+ * This lets the analyzer say "EMG confirmed" once, without requiring the user
+ * to re-type findings on every log entry.
+ */
+const aggregatePeripheralNerveData = (logs) => {
+  if (!logs || logs.length === 0) return null;
+
+  // Logs sorted newest-first for "most recent" lookups
+  const sorted = [...logs].sort(
+      (a, b) => new Date(b.timestamp) - new Date(a.timestamp)
+  );
+  const mostRecent = sorted.find(l => l.peripheralNerveData)?.peripheralNerveData;
+  if (!mostRecent) return null;
+
+  // ANY-log flags: scan all logs for evidence of these signals
+  const anyHasEMG = logs.some(l => l.peripheralNerveData?.hasEMGNCS === true);
+  const anyHasAtrophy = logs.some(l => l.peripheralNerveData?.hasAtrophy === true);
+  const anyHasMotor = logs.some(l => l.peripheralNerveData?.hasMotorInvolvement === true);
+  const anyUsesDevice = logs.some(l => l.peripheralNerveData?.usesAssistiveDevice === true);
+  const emgFindings = sorted.find(l => l.peripheralNerveData?.emgNCSFindings?.trim())
+      ?.peripheralNerveData?.emgNCSFindings || '';
+
+  return {
+    affectedSide: mostRecent.affectedSide || '',
+    severityLevel: mostRecent.severityLevel || '',
+    nerveConditionType: mostRecent.nerveConditionType || '',
+    hasSensoryInvolvement: mostRecent.hasSensoryInvolvement || false,
+    // Persistent facts: true if ever logged true
+    hasEMGNCS: anyHasEMG,
+    hasAtrophy: anyHasAtrophy,
+    hasMotorInvolvement: anyHasMotor,
+    usesAssistiveDevice: anyUsesDevice,
+    emgNCSFindings: emgFindings,
+  };
+};
+
 // ============================================
 // NEUROLOGICAL CONDITIONS (for CONDITIONS object)
 // ============================================
@@ -5355,6 +5442,13 @@ export const analyzeRadiculopathyLogs = (logs, options = {}) => {
         'Track weakness if present',
         'Note which nerve distribution (e.g., L5, S1, C6)',
       ],
+      // Empty metrics so the card renders zero/dash placeholders cleanly
+      metrics: {
+        totalLogs: 0,
+        radiatingPain: 0,
+        numbness: 0,
+        weakness: false,
+      },
       criteria: RADICULOPATHY_CRITERIA,
       disclaimer: RADICULOPATHY_CRITERIA.disclaimer,
     };
@@ -5372,65 +5466,164 @@ export const analyzeRadiculopathyLogs = (logs, options = {}) => {
   const weaknessCount = radiculopathySymptoms.filter(s => getLogSymptomId(s) === 'radiculopathy-weakness').length;
   const burningCount = radiculopathySymptoms.filter(s => getLogSymptomId(s) === 'radiculopathy-burning').length;
 
-  // Calculate weekly average
+  // Paresthesia count (numbness + tingling + burning) — declared early so it's
+  // available for all subsequent logic blocks.
+  const paresthesiaCount = numbnessCount + tinglingCount + burningCount;
+
+  // Calculate weekly average (kept for backward compat; new logic uses day-coverage)
   const weeksInPeriod = evaluationPeriodDays / 7;
   const episodesPerWeek = radiculopathySymptoms.length / weeksInPeriod;
 
-  evidence.push(`${radiculopathySymptoms.length} radiculopathy episodes logged over ${evaluationPeriodDays} days`);
-  evidence.push(`Average ${episodesPerWeek.toFixed(1)} episodes per week`);
+  // Phase 2A: distinct-day coverage and symptom-pattern classification.
+  // Radiculopathy can be intermittent (mechanical, position-dependent) or
+  // persistent (with chronic nerve compression). The pattern matters for
+  // characterizing evidence accurately.
+  const distinctSymptomDays = countDistinctDays(radiculopathySymptoms);
+  const symptomPattern = classifySymptomPattern(distinctSymptomDays, evaluationPeriodDays);
+  const dayCoveragePct = Math.round((distinctSymptomDays / evaluationPeriodDays) * 100);
 
-  if (painCount > 0) evidence.push(`${painCount} radiating pain episodes`);
-  if (numbnessCount > 0) evidence.push(`${numbnessCount} numbness episodes`);
-  if (tinglingCount > 0) evidence.push(`${tinglingCount} tingling episodes`);
-  if (weaknessCount > 0) evidence.push(`${weaknessCount} weakness episodes`);
-  if (burningCount > 0) evidence.push(`${burningCount} burning sensation episodes`);
+  // Phase 2A: pull aggregated peripheral-nerve form data (EMG, atrophy, severity,
+  // side, motor) — radiculopathy uses the same PeripheralNerveForm as general PN,
+  // so the same aggregation helper applies. Note: for radiculopathy, the
+  // user may have *MRI* findings rather than EMG; this is captured in notes
+  // and flagged in gaps below.
+  const formData = aggregatePeripheralNerveData(radiculopathySymptoms);
 
-  // Paresthesia count (numbness + tingling + burning)
-  const paresthesiaCount = numbnessCount + tinglingCount + burningCount;
-
-  // Determine rating
-  // 40%: Severe with motor loss - requires clinical documentation
-  // 20%: Moderate with weakness - requires clinical documentation
-
-  // 10%: Mild with pain and paresthesia, no motor loss
-  if (painCount > 0 && paresthesiaCount > 0 && weaknessCount === 0) {
-    supportedRating = '10';
-    ratingRationale.push(
-        'Radiating pain documented',
-        'Paresthesia (numbness/tingling/burning) present',
-        'No motor weakness logged',
-        'Meets criteria for mild radiculopathy (10%)'
+  // Build evidence list. Lead with pattern characterization for continuous/persistent
+  // cases; fall back to episode count for intermittent ones.
+  if (symptomPattern === 'continuous' || symptomPattern === 'persistent') {
+    evidence.push(
+        `${distinctSymptomDays} of ${evaluationPeriodDays} days affected (${dayCoveragePct}% — ${symptomPattern} pattern)`
     );
-
-    if (weaknessCount > 0) {
-      gaps.push('Weakness documented - clinical exam needed to assess motor loss for higher rating');
-    }
+    evidence.push(`${radiculopathySymptoms.length} total log entries`);
+  } else {
+    evidence.push(`${radiculopathySymptoms.length} radiculopathy episodes logged over ${evaluationPeriodDays} days`);
+    evidence.push(`${distinctSymptomDays} distinct days affected (${dayCoveragePct}%)`);
+    evidence.push(`Average ${episodesPerWeek.toFixed(1)} episodes per week`);
   }
-  else if (weaknessCount > 0) {
-    supportedRating = 'Requires Clinical Documentation';
-    ratingRationale.push(
-        'Muscle weakness documented',
-        'Higher ratings (20-40%) require clinical examination',
-        'Need documentation of motor strength testing',
-        'EMG/nerve conduction studies recommended'
+
+  if (painCount > 0) evidence.push(`${painCount} radiating pain entries`);
+  if (numbnessCount > 0) evidence.push(`${numbnessCount} numbness entries`);
+  if (tinglingCount > 0) evidence.push(`${tinglingCount} tingling entries`);
+  if (weaknessCount > 0) evidence.push(`${weaknessCount} weakness entries`);
+  if (burningCount > 0) evidence.push(`${burningCount} burning sensation entries`);
+
+  // Surface form-captured clinical signals
+  if (formData?.hasEMGNCS) {
+    evidence.push(
+        formData.emgNCSFindings
+            ? `EMG/NCS confirmed: ${formData.emgNCSFindings}`
+            : 'EMG/NCS studies confirmed'
     );
+  }
+  if (formData?.hasAtrophy) evidence.push('Muscle atrophy documented');
+  if (formData?.hasMotorInvolvement) evidence.push('Motor involvement documented');
+  if (formData?.usesAssistiveDevice) evidence.push('Uses assistive device (brace/splint/AFO)');
+  if (formData?.affectedSide === 'bilateral') {
+    evidence.push('Bilateral involvement (bilateral factor may apply to combined rating)');
+  }
+
+  // ============================================
+  // RATING DETERMINATION
+  // ============================================
+  // 40%: Severe with motor loss — requires clinical documentation
+  // 20%: Moderate with weakness — requires clinical documentation
+  // 10%: Mild with radiating pain and/or paresthesia
+  //
+  // Radiculopathy-specific signals that matter most:
+  //   - RADIATING PAIN (defining symptom; distinguishes from generalized neuropathy)
+  //   - Dermatomal pattern (captured in form notes)
+  //   - Imaging (MRI) confirming nerve root compression
+  //
+  // Phase 2A adds: pattern awareness, form-data integration, EMG/MRI signal use,
+  // and pattern-aware gap suppression. Threshold math is unchanged — schedular
+  // ratings of 20%+ still require clinical motor exam, which the analyzer
+  // cannot self-determine from logs alone.
+
+  // Strong clinical signals: confirmed nerve injury (EMG) + motor/atrophy + chronic pattern
+  const hasStrongClinicalSignals =
+      formData?.hasEMGNCS &&
+      (formData?.hasMotorInvolvement || formData?.hasAtrophy) &&
+      (symptomPattern === 'continuous' || symptomPattern === 'persistent');
+
+  // High-end: motor weakness OR severe form severity OR strong clinical signals
+  if (
+      weaknessCount > 0 ||
+      hasStrongClinicalSignals ||
+      formData?.severityLevel === 'severe' ||
+      formData?.severityLevel === 'complete'
+  ) {
+    supportedRating = 'Requires Clinical Documentation';
+    if (hasStrongClinicalSignals) {
+      ratingRationale.push(
+          `${symptomPattern === 'continuous' ? 'Continuous' : 'Persistent'} radicular symptoms (${dayCoveragePct}% of days affected)`,
+          'EMG/NCS-confirmed nerve injury with motor or atrophy findings',
+          'Higher ratings (20-40%) require clinical examination and motor strength grading'
+      );
+    } else {
+      ratingRationale.push(
+          weaknessCount > 0 ? 'Muscle weakness documented' : 'Severe symptoms documented',
+          'Higher ratings (20-40%) require clinical examination',
+          'Need documentation of motor strength testing',
+          'EMG/nerve conduction studies and MRI strengthen claim'
+      );
+    }
+    if (!formData?.hasEMGNCS) gaps.push('Request EMG/nerve conduction studies if not done');
     gaps.push('Get clinical documentation of motor weakness degree');
-    gaps.push('Request EMG/nerve conduction studies if not done');
     gaps.push('Document muscle atrophy if visible');
   }
+      // Mid-range: classic radiculopathy presentation (radiating pain + paresthesia, no motor)
+  // OR moderate severity OR continuous/persistent pattern with radiating pain
+  else if (
+      (painCount > 0 && paresthesiaCount > 0) ||
+      formData?.severityLevel === 'moderate' ||
+      ((symptomPattern === 'continuous' || symptomPattern === 'persistent') && painCount > 0)
+  ) {
+    supportedRating = '10';
+    if (symptomPattern === 'continuous' || symptomPattern === 'persistent') {
+      ratingRationale.push(
+          `${symptomPattern === 'continuous' ? 'Continuous' : 'Persistent'} radicular symptoms (${distinctSymptomDays} of ${evaluationPeriodDays} days)`,
+          painCount > 0 ? 'Radiating pain documented' : 'Persistent sensory symptoms',
+          paresthesiaCount > 0 ? 'Paresthesia (numbness/tingling/burning) present' : null,
+          formData?.hasEMGNCS ? 'EMG/NCS-confirmed nerve involvement' : null,
+          'Meets criteria for mild radiculopathy (10%)'
+      ).filter(Boolean);
+    } else {
+      // Build rationale from what was actually logged + form data.
+      // Don't hardcode "radiating pain documented" — this branch can be
+      // reached via moderate severity OR pain+paresthesia combo, so check first.
+      const midRangeRationale = [];
+      if (painCount > 0) midRangeRationale.push('Radiating pain documented');
+      if (paresthesiaCount > 0) midRangeRationale.push('Paresthesia (numbness/tingling/burning) present');
+      if (formData?.severityLevel === 'moderate') {
+        midRangeRationale.push('Moderate severity reported on intake');
+      }
+      if (formData?.hasEMGNCS) {
+        midRangeRationale.push('EMG/NCS-confirmed nerve involvement');
+      }
+      if (weaknessCount === 0 && !formData?.hasMotorInvolvement) {
+        midRangeRationale.push('No motor weakness logged');
+      }
+      midRangeRationale.push('Meets criteria for mild radiculopathy (10%)');
+      ratingRationale.push(...midRangeRationale);
+    }
+  }
+  // Low-end: some symptoms but missing the classic combo
   else if (painCount > 0 || paresthesiaCount > 0) {
     supportedRating = '10';
     ratingRationale.push(
-        `${episodesPerWeek.toFixed(1)} episodes per week`,
+        symptomPattern === 'sparse' || symptomPattern === 'intermittent'
+            ? `Intermittent radicular symptoms (${distinctSymptomDays} days over ${evaluationPeriodDays})`
+            : `${episodesPerWeek.toFixed(1)} episodes per week`,
         'Radiculopathy symptoms present',
         'Meets criteria for minimal rating'
     );
 
     if (painCount === 0) {
-      gaps.push('Log radiating pain episodes for stronger claim');
+      gaps.push('Log radiating pain episodes — radiating pain is the defining radicular symptom');
     }
     if (paresthesiaCount === 0) {
-      gaps.push('Document paresthesia (numbness, tingling) if present');
+      gaps.push('Document paresthesia pattern (which dermatome / which fingers or toes)');
     }
   }
   else {
@@ -5441,21 +5634,36 @@ export const analyzeRadiculopathyLogs = (logs, options = {}) => {
     );
   }
 
-  // Documentation gaps
-  if (radiculopathySymptoms.length < 12) {
-    gaps.push(`Only ${radiculopathySymptoms.length} episodes logged - aim for 12+ over 90 days`);
+  // ============================================
+  // DOCUMENTATION GAPS (Phase 2A: pattern-aware)
+  // ============================================
+  // Only flag low log count if pattern is also sparse — daily logging of
+  // continuous symptoms shouldn't trigger "log more" advice.
+  if (radiculopathySymptoms.length < 12 && symptomPattern !== 'continuous' && symptomPattern !== 'persistent') {
+    gaps.push(`Only ${radiculopathySymptoms.length} entries logged — aim for 12+ over 90 days`);
   }
 
   if (painCount === 0) {
-    gaps.push('Radiating pain is key symptom - document pain distribution');
+    gaps.push('Radiating pain is the key radicular symptom — document distribution (which leg/arm, what pattern)');
   }
 
   if (paresthesiaCount === 0) {
-    gaps.push('Document paresthesia pattern (which fingers/toes affected)');
+    gaps.push('Document paresthesia pattern (which dermatome / which fingers or toes affected)');
   }
 
-  gaps.push('Higher ratings require MRI showing nerve compression');
-  gaps.push('EMG/nerve conduction studies strengthen claim');
+  // EMG gap reminder — suppressed if user has already marked EMG/NCS confirmed
+  if (!formData?.hasEMGNCS) {
+    gaps.push('EMG/nerve conduction studies strengthen radiculopathy claim');
+  }
+
+  // Laterality reminder — suppressed if affected side already specified
+  if (!formData?.affectedSide) {
+    gaps.push('Document which side/extremity affected (left, right, or bilateral)');
+  }
+
+  // MRI reminder always present — distinct from EMG, both are valuable
+  // for radiculopathy claims (MRI shows compression, EMG shows nerve injury).
+  gaps.push('MRI showing nerve root compression supports higher ratings');
 
   return {
     condition: 'Radiculopathy',
@@ -5465,6 +5673,23 @@ export const analyzeRadiculopathyLogs = (logs, options = {}) => {
     ratingRationale,
     evidence,
     gaps,
+    // Metrics for the Evidence Summary cards
+    metrics: {
+      totalLogs: radiculopathySymptoms.length,
+      radiatingPain: painCount,
+      // "Numbness" here is the combined paresthesia count (numbness + tingling + burning)
+      // since the card displays one consolidated sensory metric
+      numbness: paresthesiaCount,
+      weakness: weaknessCount > 0 || (formData?.hasMotorInvolvement === true),
+    },
+    // Phase 2A: pattern + clinical signals exposed for downstream UI (export, rationale display)
+    pattern: {
+      classification: symptomPattern,     // 'continuous' | 'persistent' | 'frequent' | 'intermittent' | 'sparse'
+      distinctDays: distinctSymptomDays,
+      evaluationPeriodDays,
+      coveragePercent: dayCoveragePct,
+    },
+    clinicalSignals: formData || null,
     criteria: RADICULOPATHY_CRITERIA,
     disclaimer: RADICULOPATHY_CRITERIA.disclaimer,
   };
@@ -5657,6 +5882,13 @@ export const analyzePeripheralNeuropathyLogs = (logs, options = {}) => {
         'Document affected areas (feet, hands, etc.)',
         'Track any weakness if present',
       ],
+      // Empty metrics so the card renders zero/dash placeholders cleanly
+      metrics: {
+        totalLogs: 0,
+        numbnessDays: 0,
+        tingling: 0,
+        muscleWeakness: false,
+      },
       criteria: PERIPHERAL_NEUROPATHY_CRITERIA,
       disclaimer: PERIPHERAL_NEUROPATHY_CRITERIA.disclaimer,
     };
@@ -5677,80 +5909,173 @@ export const analyzePeripheralNeuropathyLogs = (logs, options = {}) => {
   // Paresthesia count (numbness + tingling + burning)
   const paresthesiaCount = numbnessCount + tinglingCount + burningCount;
 
-  // Calculate weekly average
+  // Calculate weekly average (kept for backward compat; new logic uses day-coverage)
   const weeksInPeriod = evaluationPeriodDays / 7;
   const episodesPerWeek = pnSymptoms.length / weeksInPeriod;
 
-  evidence.push(`${pnSymptoms.length} neuropathy episodes logged over ${evaluationPeriodDays} days`);
-  evidence.push(`Average ${episodesPerWeek.toFixed(1)} episodes per week`);
+  // Phase 2: distinct-day coverage and symptom-pattern classification.
+  // For chronic conditions like axonal polyneuropathy, calendar coverage is
+  // more meaningful than raw episode count. Someone logging once daily for
+  // 90 days (continuous pattern) is a stronger case than someone logging
+  // 90 times in a single 2-week flare (sparse pattern with clustering).
+  const distinctSymptomDays = countDistinctDays(pnSymptoms);
+  const symptomPattern = classifySymptomPattern(distinctSymptomDays, evaluationPeriodDays);
+  const dayCoveragePct = Math.round((distinctSymptomDays / evaluationPeriodDays) * 100);
 
-  if (numbnessCount > 0) evidence.push(`${numbnessCount} numbness episodes`);
-  if (tinglingCount > 0) evidence.push(`${tinglingCount} tingling episodes`);
-  if (burningCount > 0) evidence.push(`${burningCount} burning sensation episodes`);
-  if (painCount > 0) evidence.push(`${painCount} pain episodes`);
-  if (weaknessCount > 0) evidence.push(`${weaknessCount} weakness episodes`);
+  // Phase 2: pull aggregated form data (EMG, atrophy, severity, side, motor)
+  // so the analyzer can use clinical signals captured at log time.
+  const formData = aggregatePeripheralNerveData(pnSymptoms);
 
-  // Determine rating
-  // 40%: Severe with motor weakness - requires clinical documentation
-  // 30%: Moderate with some motor
-  // 20%: Mild-moderate with sensory
-  // 10%: Mild intermittent sensory
-
-  if (weaknessCount > 5 && paresthesiaCount > 10) {
-    supportedRating = 'Requires Clinical Documentation';
-    ratingRationale.push(
-        'Significant weakness documented',
-        'Extensive paresthesia',
-        '30-40% ratings require clinical examination and EMG studies',
-        'Need documentation of sensory/motor testing'
+  // Build evidence list. Lead with pattern characterization for continuous cases;
+  // fall back to episode count for intermittent ones.
+  if (symptomPattern === 'continuous' || symptomPattern === 'persistent') {
+    evidence.push(
+        `${distinctSymptomDays} of ${evaluationPeriodDays} days affected (${dayCoveragePct}% — ${symptomPattern} pattern)`
     );
-    gaps.push('Get EMG/nerve conduction studies if not done');
+    evidence.push(`${pnSymptoms.length} total log entries`);
+  } else {
+    evidence.push(`${pnSymptoms.length} neuropathy episodes logged over ${evaluationPeriodDays} days`);
+    evidence.push(`${distinctSymptomDays} distinct days affected (${dayCoveragePct}%)`);
+    evidence.push(`Average ${episodesPerWeek.toFixed(1)} episodes per week`);
+  }
+
+  if (numbnessCount > 0) evidence.push(`${numbnessCount} numbness entries`);
+  if (tinglingCount > 0) evidence.push(`${tinglingCount} tingling entries`);
+  if (burningCount > 0) evidence.push(`${burningCount} burning sensation entries`);
+  if (painCount > 0) evidence.push(`${painCount} pain entries`);
+  if (weaknessCount > 0) evidence.push(`${weaknessCount} weakness entries`);
+
+  // Surface form-captured clinical signals as evidence (not double-counted in counts above)
+  if (formData?.hasEMGNCS) {
+    evidence.push(
+        formData.emgNCSFindings
+            ? `EMG/NCS confirmed: ${formData.emgNCSFindings}`
+            : 'EMG/NCS studies confirmed'
+    );
+  }
+  if (formData?.hasAtrophy) evidence.push('Muscle atrophy documented');
+  if (formData?.hasMotorInvolvement) evidence.push('Motor involvement documented');
+  if (formData?.usesAssistiveDevice) evidence.push('Uses assistive device (brace/splint/AFO)');
+  if (formData?.affectedSide === 'bilateral') {
+    evidence.push('Bilateral involvement (bilateral factor may apply to combined rating)');
+  }
+
+  // ============================================
+  // RATING DETERMINATION
+  // ============================================
+  // 40%: Severe with motor weakness — requires clinical documentation
+  // 30%: Moderate with some motor involvement
+  // 20%: Mild-moderate with sensory symptoms
+  // 10%: Mild intermittent sensory
+  //
+  // Phase 2 adjusts how we *characterize* the data and what *gaps* we flag.
+  // Threshold math is unchanged: VA cares about evidence of severity, and
+  // schedular ratings still require clinical documentation for the high end.
+  // What's new: a continuous/persistent pattern + EMG + motor signals can
+  // push the analyzer toward "Requires Clinical Documentation" (flagging
+  // potential for higher rating) even without 5+ self-logged weakness entries.
+
+  // High-end: severe pattern with motor signals (clinical doc needed for rating)
+  const hasStrongClinicalSignals =
+      formData?.hasEMGNCS &&
+      (formData?.hasMotorInvolvement || formData?.hasAtrophy) &&
+      (symptomPattern === 'continuous' || symptomPattern === 'persistent');
+
+  if (
+      (weaknessCount > 5 && paresthesiaCount > 10) ||
+      hasStrongClinicalSignals ||
+      formData?.severityLevel === 'severe' ||
+      formData?.severityLevel === 'complete'
+  ) {
+    supportedRating = 'Requires Clinical Documentation';
+    if (hasStrongClinicalSignals) {
+      ratingRationale.push(
+          `${symptomPattern === 'continuous' ? 'Continuous' : 'Persistent'} symptom pattern (${dayCoveragePct}% of days affected)`,
+          'EMG/NCS-confirmed neuropathy with motor or atrophy findings',
+          'Higher ratings (30-40%) require clinical examination findings'
+      );
+    } else {
+      ratingRationale.push(
+          'Significant weakness documented',
+          'Extensive paresthesia',
+          '30-40% ratings require clinical examination and EMG studies',
+          'Need documentation of sensory/motor testing'
+      );
+    }
+    if (!formData?.hasEMGNCS) gaps.push('Get EMG/nerve conduction studies if not done');
     gaps.push('Request clinical sensory testing documentation');
     gaps.push('Document areas of sensory loss on body diagram');
   }
-  else if (weaknessCount > 0 || (paresthesiaCount > 15 && episodesPerWeek >= 3)) {
+  // Mid-range: moderate severity OR persistent sensory pattern OR any weakness
+  else if (
+      weaknessCount > 0 ||
+      formData?.severityLevel === 'moderate' ||
+      (paresthesiaCount > 15 && episodesPerWeek >= 3) ||
+      (symptomPattern === 'continuous' || symptomPattern === 'persistent')
+  ) {
     supportedRating = '20';
-    ratingRationale.push(
-        `${paresthesiaCount} paresthesia episodes (numbness/tingling/burning)`,
-        weaknessCount > 0 ? `${weaknessCount} weakness episodes` : 'Persistent sensory symptoms',
-        'Meets criteria for mild-moderate neuropathy'
-    );
-
-    if (weaknessCount > 2) {
-      gaps.push('Weakness documented - clinical exam may support higher rating');
+    if (symptomPattern === 'continuous' || symptomPattern === 'persistent') {
+      ratingRationale.push(
+          `${symptomPattern === 'continuous' ? 'Continuous' : 'Persistent'} sensory symptoms (${distinctSymptomDays} of ${evaluationPeriodDays} days)`,
+          formData?.hasEMGNCS ? 'EMG/NCS-confirmed peripheral neuropathy' : 'Pattern consistent with chronic peripheral neuropathy',
+          'Meets criteria for mild-moderate neuropathy'
+      );
+    } else {
+      ratingRationale.push(
+          `${paresthesiaCount} paresthesia entries (numbness/tingling/burning)`,
+          weaknessCount > 0 ? `${weaknessCount} weakness entries` : 'Persistent sensory symptoms',
+          'Meets criteria for mild-moderate neuropathy'
+      );
+    }
+    if (weaknessCount > 2 || formData?.hasMotorInvolvement) {
+      gaps.push('Motor involvement documented — clinical exam may support higher rating');
     }
   }
+  // Low-end: mild intermittent sensory
   else if (paresthesiaCount > 0 || painCount > 0) {
     supportedRating = '10';
     ratingRationale.push(
-        `${pnSymptoms.length} neuropathy episodes`,
+        symptomPattern === 'sparse' || symptomPattern === 'intermittent'
+            ? `Intermittent sensory symptoms (${distinctSymptomDays} days over ${evaluationPeriodDays})`
+            : `${pnSymptoms.length} neuropathy entries`,
         'Sensory symptoms documented',
         'Meets criteria for mild peripheral neuropathy'
     );
   }
   else {
     supportedRating = '0';
-    ratingRationale.push(
-        'Minimal or well-controlled symptoms'
-    );
+    ratingRationale.push('Minimal or well-controlled symptoms');
   }
 
-  // Documentation gaps
-  if (pnSymptoms.length < 12) {
-    gaps.push(`Only ${pnSymptoms.length} episodes logged - aim for 12+ over 90 days`);
+  // ============================================
+  // DOCUMENTATION GAPS (Phase 2: pattern-aware)
+  // ============================================
+  // Only flag "low log count" if pattern is also sparse — someone with
+  // continuous 24/7 symptoms logging once a day shouldn't be told to log more.
+  if (pnSymptoms.length < 12 && symptomPattern !== 'continuous' && symptomPattern !== 'persistent') {
+    gaps.push(`Only ${pnSymptoms.length} entries logged — aim for 12+ over 90 days`);
   }
 
   if (paresthesiaCount === 0) {
     gaps.push('Document paresthesia (numbness, tingling, burning) if present');
   }
 
-  if (weaknessCount > 0) {
-    gaps.push('Weakness documented - get clinical motor strength testing');
+  // Weakness reminder — but only if no clinical confirmation already on file
+  if (weaknessCount > 0 && !formData?.hasMotorInvolvement) {
+    gaps.push('Weakness documented — get clinical motor strength testing');
   }
 
-  gaps.push('Document which extremities affected (feet/hands/both)');
-  gaps.push('EMG/nerve conduction studies strengthen claim significantly');
-  gaps.push('Common causes: diabetes, Agent Orange, medications - document etiology');
+  // EMG gap reminder — suppressed if user has already marked EMG/NCS confirmed
+  if (!formData?.hasEMGNCS) {
+    gaps.push('EMG/nerve conduction studies strengthen claim significantly');
+  }
+
+  // Laterality reminder — suppressed if affected side is already specified
+  if (!formData?.affectedSide) {
+    gaps.push('Document which extremities affected (feet/hands/both)');
+  }
+
+  gaps.push('Common causes: diabetes, Agent Orange, medications — document etiology');
 
   return {
     condition: 'Peripheral Neuropathy',
@@ -5760,6 +6085,22 @@ export const analyzePeripheralNeuropathyLogs = (logs, options = {}) => {
     ratingRationale,
     evidence,
     gaps,
+    // Metrics for the Evidence Summary cards
+    metrics: {
+      totalLogs: pnSymptoms.length,
+      // "Days" metrics use distinct calendar days, not raw entry count
+      numbnessDays: countDistinctDays(pnSymptoms.filter(s => getLogSymptomId(s) === 'pn-numbness')),
+      tingling: countDistinctDays(pnSymptoms.filter(s => getLogSymptomId(s) === 'pn-tingling')),
+      muscleWeakness: weaknessCount > 0 || (formData?.hasMotorInvolvement === true),
+    },
+    // Phase 2: pattern + clinical signals exposed for downstream UI (export, rationale display)
+    pattern: {
+      classification: symptomPattern,     // 'continuous' | 'persistent' | 'frequent' | 'intermittent' | 'sparse'
+      distinctDays: distinctSymptomDays,
+      evaluationPeriodDays,
+      coveragePercent: dayCoveragePct,
+    },
+    clinicalSignals: formData || null,
     criteria: PERIPHERAL_NEUROPATHY_CRITERIA,
     disclaimer: PERIPHERAL_NEUROPATHY_CRITERIA.disclaimer,
   };

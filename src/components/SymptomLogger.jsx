@@ -516,10 +516,20 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed, onNavigate }) =
   }, [prefillData, onPrefillUsed]);
 
 
-  // Peripheral nerve prefixes to exclude from generic pain/GU detection
+  // Peripheral nerve prefixes to exclude from generic pain/GU detection.
+  // Includes:
+  //   - Specific named nerves (medn-, ulnn-, scin-, etc.) — DC 8510-8730
+  //   - General peripheral neuropathy (pn-) — DC 8520/8525/8999
+  //   - Radiculopathy (radiculopathy-) — DC 8520/8510-8530 as neurological manifestation
+  // All three families use the PeripheralNerveForm because they share the
+  // same VA rating criteria: laterality, motor/sensory involvement, severity,
+  // atrophy, EMG confirmation.
   const peripheralNervePrefixes = ['uprn-', 'mdrn-', 'lwrn-', 'alrn-', 'radn-', 'medn-', 'ulnn-',
     'mscn-', 'crcn-', 'ltn-', 'scin-', 'cpn-', 'spn-', 'dpn-', 'tibn-', 'ptn-', 'femn-',
-    'sapn-', 'obtn-', 'lfcn-', 'iin-'];
+    'sapn-', 'obtn-', 'lfcn-', 'iin-',
+    'pn-',            // Peripheral neuropathy (general): pn-numbness, pn-tingling, pn-burning, pn-pain, pn-weakness
+    'radiculopathy-', // Radiculopathy: radiculopathy-pain, radiculopathy-numbness, etc.
+  ];
   const isPeripheralNerveSymptom = peripheralNervePrefixes.some(prefix => selectedSymptom?.startsWith(prefix));
 
   // Phase 3A: Endocrine prefixes to exclude from generic pain/GU detection
@@ -1243,6 +1253,18 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed, onNavigate }) =
         'myel-paralysis'].includes(selectedSymptom);
 
   // ============================================
+  // GENERAL PERIPHERAL NEUROPATHY & RADICULOPATHY DETECTION
+  // These are catch-all categories (DC 8520/8525/8999) for symptoms
+  // not tied to a specific named nerve. Both route to PeripheralNerveForm.
+  // ============================================
+  const isGeneralPeripheralNeuropathyRelated = selectedSymptom?.startsWith('pn-') ||
+      ['pn-numbness', 'pn-tingling', 'pn-burning', 'pn-pain', 'pn-weakness'].includes(selectedSymptom);
+
+  const isRadiculopathyRelated = selectedSymptom?.startsWith('radiculopathy-') ||
+      ['radiculopathy-pain', 'radiculopathy-numbness', 'radiculopathy-tingling',
+        'radiculopathy-weakness', 'radiculopathy-burning'].includes(selectedSymptom);
+
+  // ============================================
   // PHASE 1C: PERIPHERAL NERVE DETECTION
   // ============================================
 
@@ -1379,7 +1401,14 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed, onNavigate }) =
       isPosteriorTibialNerveRelated || isFemoralNerveRelated || isSaphenousNerveRelated ||
       isObturatorNerveRelated || isLateralFemoralCutaneousNerveRelated || isIlioinguinalNerveRelated;
 
-  const isPeripheralNerveRelated = isUpperExtremityNerveRelated || isLowerExtremityNerveRelated;
+  // Combined flag now also includes general peripheral neuropathy and radiculopathy.
+  // The `nerveLocation: isUpperExtremityNerveRelated ? 'upper' : 'lower'` mapping
+  // at save time will default these to 'lower' — fine for general PN (most commonly
+  // lower-extremity stocking distribution) and for lumbar radiculopathy. For
+  // cervical radiculopathy or upper-extremity PN, the user can specify side/nerve
+  // in the form itself, which is what matters for rating.
+  const isPeripheralNerveRelated = isUpperExtremityNerveRelated || isLowerExtremityNerveRelated ||
+      isGeneralPeripheralNeuropathyRelated || isRadiculopathyRelated;
 
   // Phase 3A: Endocrine - Thyroid & Parathyroid Detection
   const isHyperthyroidismRelated = selectedSymptom?.startsWith('hyper-') ||
