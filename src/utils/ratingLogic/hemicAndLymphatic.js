@@ -1,3 +1,5 @@
+import { getLogSymptomId } from './_shared';
+
 /* eslint-disable no-unused-vars */
 
 // ============================================
@@ -24,17 +26,8 @@
 //   DC 7724 — Solitary Plasmacytoma
 //   DC 7725 — Myelodysplastic Syndromes (MDS)
 
-// ============================================
-// SHARED HELPERS
-// ============================================
-
-/**
- * Safely retrieve a symptom ID from a log entry.
- * Supports both current (symptomId) and legacy (symptom) field names.
- * @param {Object} log
- * @returns {string|null}
- */
-const getLogSymptomId = (log) => log.symptomId || log.symptom || null;
+// getLogSymptomId imported from ./_shared (see top of file). Extracted in
+// Phase 9b to remove duplication across the body-system analyzer files.
 
 // ============================================
 // CONDITION REGISTRY

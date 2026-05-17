@@ -1,3 +1,5 @@
+import { getLogSymptomId } from './_shared';
+
 /* eslint-disable no-unused-vars */
 
 // ============================================
@@ -31,8 +33,9 @@
 // ============================================
 // SHARED HELPER
 // ============================================
+// getLogSymptomId imported from ./_shared (see top of file). Extracted in
+// Phase 9b to remove duplication across the body-system analyzer files.
 
-const getLogSymptomId = (log) => log.symptomId || log.symptom || null;
 
 // ============================================
 // CONDITION REGISTRY

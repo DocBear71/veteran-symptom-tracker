@@ -1,3 +1,9 @@
+import {getMeasurements} from '../measurements.js';
+import {
+  getLogSymptomId,
+  isWithinEvaluationPeriod,
+} from './_shared';
+
 /* eslint-disable no-unused-vars */
 
 // ============================================
@@ -18,15 +24,7 @@
 // DISCLAIMER: For documentation guidance only.
 // The VA makes all final rating determinations.
 
-// ============================================
-// SHARED HELPERS
-// ============================================
-
-import {getMeasurements} from '../measurements.js';
-
-const getLogSymptomId = (log) => {
-  return log.symptomId || log.symptom || null;
-};
+// getLogSymptomId imported from ./_shared (see top of file).
 
 // ============================================
 // GENITOURINARY CONDITIONS (for CONDITIONS object)
@@ -2405,14 +2403,7 @@ export const analyzeFemaleArousalDisorderLogs = (logs) => {
   };
 };
 
-
-// Helper function to check if timestamp is within evaluation period
-const isWithinEvaluationPeriod = (timestamp, days) => {
-  const logDate = new Date(timestamp);
-  const cutoffDate = new Date();
-  cutoffDate.setDate(cutoffDate.getDate() - days);
-  return logDate >= cutoffDate;
-};
+// isWithinEvaluationPeriod imported from ./_shared (see top of file).
 
 /**
  * Analyzes Tinnitus logs

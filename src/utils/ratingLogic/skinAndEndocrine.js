@@ -25,20 +25,17 @@ import {
   getMeasurements,
 } from '../measurements';
 
+import {
+  getLogSymptomId,
+  isWithinEvaluationPeriod,
+} from './_shared';
+
 // ============================================
 // SHARED HELPERS
 // ============================================
-
-const getLogSymptomId = (log) => {
-  return log.symptomId || log.symptom || null;
-};
-
-const isWithinEvaluationPeriod = (timestamp, days) => {
-  const logDate = new Date(timestamp);
-  const cutoffDate = new Date();
-  cutoffDate.setDate(cutoffDate.getDate() - days);
-  return logDate >= cutoffDate;
-};
+// getLogSymptomId and isWithinEvaluationPeriod are imported from ./_shared
+// (see top of file). Extracted in Phase 9b to remove duplication across
+// the body-system analyzer files.
 
 // ============================================
 // SKIN & ENDOCRINE CONDITIONS (for CONDITIONS object)

@@ -1,3 +1,8 @@
+import {
+  getLogSymptomId,
+  isWithinEvaluationPeriod,
+} from './_shared';
+
 /* eslint-disable no-unused-vars */
 
 // ============================================
@@ -20,28 +25,9 @@
 // SHARED HELPER (used by all modules)
 // ============================================
 
-/**
- * Safely get symptom ID from a log entry.
- * Checks both log.symptomId and log. Symptom for backward compatibility.
- * @param {Object} log - The log entry
- * @returns {string|null}
- */
-const getLogSymptomId = (log) => {
-  return log.symptomId || log.symptom || null;
-};
-
-/**
- * Check if a timestamp falls within the evaluation period.
- * @param {string} timestamp
- * @param {number} days
- * @returns {boolean}
- */
-const isWithinEvaluationPeriod = (timestamp, days) => {
-  const logDate = new Date(timestamp);
-  const cutoffDate = new Date();
-  cutoffDate.setDate(cutoffDate.getDate() - days);
-  return logDate >= cutoffDate;
-};
+// getLogSymptomId and isWithinEvaluationPeriod are imported from ./_shared
+// (see top of file). Extracted in Phase 9 to remove duplication across
+// the body-system analyzer files.
 
 /**
  * Core mental health condition analyzer.

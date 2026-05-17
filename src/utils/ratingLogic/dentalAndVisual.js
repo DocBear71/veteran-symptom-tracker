@@ -1,3 +1,8 @@
+import {
+  getLogSymptomId,
+  isWithinEvaluationPeriod,
+} from './_shared';
+
 /* eslint-disable no-unused-vars */
 
 // ============================================
@@ -13,15 +18,12 @@
 // ============================================
 // SHARED HELPERS
 // ============================================
-
-const getLogSymptomId = (log) => log.symptomId || log.symptom || null;
-
-const isWithinEvaluationPeriod = (timestamp, days) => {
-  const logDate = new Date(timestamp);
-  const cutoffDate = new Date();
-  cutoffDate.setDate(cutoffDate.getDate() - days);
-  return logDate >= cutoffDate;
-};
+// getLogSymptomId and isWithinEvaluationPeriod are imported from ./_shared
+// (see top of file). Extracted in Phase 9b to remove duplication across
+// the body-system analyzer files.
+//
+// countEyeTreatmentVisits below remains here — it's domain-specific to
+// dental/visual treatment-visit tracking.
 
 const countEyeTreatmentVisits = (logs, prefix) => {
   let visitCount = 0;

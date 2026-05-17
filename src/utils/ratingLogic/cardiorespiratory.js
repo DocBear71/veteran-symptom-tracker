@@ -1,3 +1,14 @@
+import {
+  analyzeBloodPressurePredominance,
+  getAverageBloodPressure,
+  getMeasurements,
+} from '../measurements';
+
+import {
+  getLogSymptomId,
+  isWithinEvaluationPeriod,
+} from './_shared';
+
 /* eslint-disable no-unused-vars */
 
 // ============================================
@@ -19,26 +30,6 @@
 // DISCLAIMER: For documentation guidance only.
 // The VA makes all final rating determinations.
 
-import {
-  analyzeBloodPressurePredominance,
-  getAverageBloodPressure,
-  getMeasurements,
-} from '../measurements';
-
-// ============================================
-// SHARED HELPERS
-// ============================================
-
-const getLogSymptomId = (log) => {
-  return log.symptomId || log.symptom || null;
-};
-
-const isWithinEvaluationPeriod = (timestamp, days) => {
-  const logDate = new Date(timestamp);
-  const cutoffDate = new Date();
-  cutoffDate.setDate(cutoffDate.getDate() - days);
-  return logDate >= cutoffDate;
-};
 
 // ============================================
 // CARDIORESPIRATORY CONDITIONS (for CONDITIONS object)

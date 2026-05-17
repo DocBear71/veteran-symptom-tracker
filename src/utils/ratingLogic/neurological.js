@@ -1,3 +1,10 @@
+import {
+  getLogSymptomId,
+  isWithinEvaluationPeriod,
+  countDistinctDays,
+  classifySymptomPattern,
+} from './_shared';
+
 /* eslint-disable no-unused-vars */
 
 // ============================================
@@ -22,66 +29,9 @@
 // SHARED HELPERS
 // ============================================
 
-/**
- * Safely get symptom ID from a log entry.
- * Checks both log.symptomId and log. Symptom for backward compatibility.
- */
-const getLogSymptomId = (log) => {
-  return log.symptomId || log.symptom || null;
-};
-
-/**
- * Check if a timestamp falls within the evaluation period.
- */
-const isWithinEvaluationPeriod = (timestamp, days) => {
-  const logDate = new Date(timestamp);
-  const cutoffDate = new Date();
-  cutoffDate.setDate(cutoffDate.getDate() - days);
-  return logDate >= cutoffDate;
-};
-
-/**
- * Count the number of distinct calendar days represented in a set of logs.
- * Used for metrics like "Numbness Days" where multiple logs on the same day
- * should count as one day of symptoms, not multiple episodes.
- *
- * Example: 3 logs all on 2026-01-15 → returns 1 (one day affected)
- */
-const countDistinctDays = (logs) => {
-  if (!logs || logs.length === 0) return 0;
-  const uniqueDays = new Set(
-      logs.map(log => {
-        const d = new Date(log.timestamp);
-        // YYYY-MM-DD key in local time
-        return `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
-      })
-  );
-  return uniqueDays.size;
-};
-
-/**
- * Classify a symptom pattern based on how many distinct days are covered
- * within an evaluation window. Used for chronic conditions like polyneuropathy
- * where daily continuous symptoms ≠ frequent intermittent episodes.
- *
- * Returns: 'continuous' | 'persistent' | 'frequent' | 'intermittent' | 'sparse'
- *
- * - continuous:   ≥80% of days affected (daily/near-daily logging, EMG-confirmed
- *                 chronic conditions look like this)
- * - persistent:   ≥50% of days affected (most days have symptoms)
- * - frequent:     ≥25% of days affected (symptoms several times per week)
- * - intermittent: ≥10% of days affected (a few times per week)
- * - sparse:       <10% of days affected (occasional flares)
- */
-const classifySymptomPattern = (distinctDays, evaluationPeriodDays) => {
-  if (distinctDays === 0 || evaluationPeriodDays === 0) return 'sparse';
-  const coverage = distinctDays / evaluationPeriodDays;
-  if (coverage >= 0.80) return 'continuous';
-  if (coverage >= 0.50) return 'persistent';
-  if (coverage >= 0.25) return 'frequent';
-  if (coverage >= 0.10) return 'intermittent';
-  return 'sparse';
-};
+// Shared helpers (getLogSymptomId, isWithinEvaluationPeriod, countDistinctDays,
+// classifySymptomPattern) are now imported from ./_shared at the top of this file.
+// aggregatePeripheralNerveData remains below — it's specific to PN logs.
 
 /**
  * Extract aggregated peripheralNerveData signals from a set of logs.
