@@ -5,7 +5,7 @@
 // ============================================
 
 import React, { useState, useMemo } from 'react';
-import { Search, BookOpen, HelpCircle, ChevronDown, ChevronUp, ArrowLeft, Info, AlertTriangle } from 'lucide-react';
+import { Search, BookOpen, HelpCircle, ChevronDown, ChevronUp, Info, AlertTriangle } from 'lucide-react';
 
 // ============================================
 // VA ACRONYMS & TERMS DATA

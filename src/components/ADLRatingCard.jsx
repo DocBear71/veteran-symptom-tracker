@@ -1,5 +1,5 @@
 import React from 'react';
-import { ChevronDown, ChevronUp, CheckCircle, Circle, AlertTriangle, Info, DollarSign, Heart } from 'lucide-react';
+import { ChevronDown, ChevronUp, CheckCircle, Circle, AlertTriangle, Info, DollarSign } from 'lucide-react';
 import MedicationCorrelation from './MedicationCorrelation';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 

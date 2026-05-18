@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Shield, X, Check, Server, Database, Eye, Lock, Cloud, Bot } from 'lucide-react';
+import { Shield, X, Check, Server, Database, Eye, Lock } from 'lucide-react';
 
 /**
  * PrivacyExplainer.jsx

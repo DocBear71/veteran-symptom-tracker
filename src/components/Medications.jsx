@@ -23,7 +23,6 @@ import {
   EFFECTIVENESS_LABELS,
   COMMON_SIDE_EFFECTS
 } from '../utils/medicationUtils';
-import { getActiveProfileId } from '../utils/profiles';
 import { getProfileKey } from '../utils/storage';
 import OccurrenceTimePicker from './OccurrenceTimePicker';
 import MedicationDocumentationGuide from './MedicationDocumentationGuide';

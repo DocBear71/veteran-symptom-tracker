@@ -17,14 +17,12 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  ResponsiveContainer,
   ReferenceLine,
 } from 'recharts';
 import { getMeasurements, saveMeasurement, deleteMeasurement, getHeight } from '../utils/measurements';
 import { getWeightGoal, saveWeightGoal, clearWeightGoal } from '../utils/storage';
-import { getMeasurementType, formatMeasurementValue } from '../data/measurementTypes';
 import { formatLocalDateTime } from '../utils/datetime';
-import { getWeightTrend, getTrendIndicator, getAverageRate } from '../utils/weightStats';
+import { getWeightTrend, getTrendIndicator } from '../utils/weightStats';
 
 // ============================================
 // MAIN WEIGHT TRACKER PAGE

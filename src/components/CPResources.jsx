@@ -175,6 +175,8 @@ const CPResources = () => {
         />;
       case 'buddy-statement':
         return <BuddyStatementGenerator embedded={true} onClose={() => setActiveResource(null)} />;
+      case 'after-action':
+        return <AfterActionReport embedded={true} onClose={() => setActiveResource(null)} />;
       case 'strategic-filing':
         return <StrategicFilingGuide onBack={() => setActiveResource(null)} />;
       case 'caregiver-programs':

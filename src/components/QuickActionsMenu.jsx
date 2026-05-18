@@ -22,7 +22,6 @@ import {
   X,
   Activity,
   Pill,
-  Calendar,
   Clock,
   Zap,
   CheckCircle

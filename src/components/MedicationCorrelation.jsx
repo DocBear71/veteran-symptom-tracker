@@ -3,7 +3,7 @@ import { ChevronDown, ChevronUp } from 'lucide-react';
 import { getMedicationLogs } from '../utils/storage';
 import { formatDosage } from '../utils/medicationUtils';
 import { getProfileType, PROFILE_TYPES } from '../utils/profile';
-import { getSearchTermsFromAnalysis, CONDITION_MED_SEARCH_TERMS } from '../utils/medicationCorrelation';
+import { getSearchTermsFromAnalysis } from '../utils/medicationCorrelation';
 
 /**
  * MedicationCorrelation Component

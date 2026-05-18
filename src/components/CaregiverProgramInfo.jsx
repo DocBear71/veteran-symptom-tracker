@@ -28,7 +28,6 @@ import {
   ExternalLink,
   Info,
   HelpCircle,
-  Home,
   Activity
 } from 'lucide-react';
 

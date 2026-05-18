@@ -1,8 +1,4 @@
 import {getMeasurements} from '../measurements.js';
-import {
-  getLogSymptomId,
-  isWithinEvaluationPeriod,
-} from './_shared';
 
 /* eslint-disable no-unused-vars */
 
@@ -24,7 +20,6 @@ import {
 // DISCLAIMER: For documentation guidance only.
 // The VA makes all final rating determinations.
 
-// getLogSymptomId imported from ./_shared (see top of file).
 
 // ============================================
 // GENITOURINARY CONDITIONS (for CONDITIONS object)
@@ -2402,8 +2397,6 @@ export const analyzeFemaleArousalDisorderLogs = (logs) => {
     criteriaReference: FEMALE_SEXUAL_AROUSAL_DISORDER_CRITERIA,
   };
 };
-
-// isWithinEvaluationPeriod imported from ./_shared (see top of file).
 
 /**
  * Analyzes Tinnitus logs
