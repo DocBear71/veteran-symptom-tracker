@@ -464,6 +464,27 @@ export const CASE_CATEGORIES = {
 };
 
 /**
+ * Cross-category cases — listed by ID, looked up from their primary homes.
+ * These cases are categorized under one body system but are regulatorily
+ * relevant to other contexts. The cross-references below surface them in
+ * TDIU lookups so veterans see the full set of applicable precedent.
+ *
+ *   - Pierce v. Principi (migraine):  "capable of producing" economic
+ *     inadaptability standard — directly relevant to TDIU's marginal-
+ *     employment and "capable of substantially gainful employment" question.
+ *   - Mauerhan v. Principi (mental health):  symptoms list is not exhaustive
+ *     — directly relevant to extra-schedular TDIU under §4.16(b) when the
+ *     veteran's mental-health impairment doesn't fit the schedular boxes.
+ *
+ * Cases retain their primary category (Pierce stays in MIGRAINE_CASES,
+ * Mauerhan stays in MENTAL_HEALTH_CASES). The cross-references below only
+ * add them to the TDIU lookup output.
+ */
+const PIERCE_CROSS_REF = MIGRAINE_CASES.filter(c => c.id === 'pierce');
+const MAUERHAN_CROSS_REF = MENTAL_HEALTH_CASES.filter(c => c.id === 'mauerhan');
+const TDIU_RELATED_CROSS_REFS = [...PIERCE_CROSS_REF, ...MAUERHAN_CROSS_REF];
+
+/**
  * Get cases applicable to a specific condition
  */
 export const getCasesForCondition = (conditionType) => {
@@ -481,9 +502,11 @@ export const getCasesForCondition = (conditionType) => {
     'shoulder': [...LANDMARK_CASES, ...RATING_CASES],
     'musculoskeletal': [...LANDMARK_CASES, ...RATING_CASES],
     'secondary': [...LANDMARK_CASES, ...SECONDARY_CASES],
-    'tdiu': [...LANDMARK_CASES, ...TDIU_CASES],
-    'marginalEmployment': [...LANDMARK_CASES, ...TDIU_CASES],
-    'protectedEnvironment': [...LANDMARK_CASES, ...TDIU_CASES]
+    // TDIU lookups now include cross-category cases (Pierce, Mauerhan)
+    // alongside the primary TDIU_CASES. See PHASE 15 cross-reference notes.
+    'tdiu': [...LANDMARK_CASES, ...TDIU_CASES, ...TDIU_RELATED_CROSS_REFS],
+    'marginalEmployment': [...LANDMARK_CASES, ...TDIU_CASES, ...TDIU_RELATED_CROSS_REFS],
+    'protectedEnvironment': [...LANDMARK_CASES, ...TDIU_CASES, ...TDIU_RELATED_CROSS_REFS]
   };
 
   return conditionMap[conditionType] || LANDMARK_CASES;

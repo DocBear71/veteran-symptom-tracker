@@ -85,6 +85,59 @@ export const getPovertyThreshold = (year) => {
 };
 
 /**
+ * Check whether the stored poverty threshold map is stale relative to the
+ * current calendar year. The U.S. Census Bureau typically publishes the
+ * prior year's official poverty thresholds in September.
+ *
+ * Returned `level`:
+ *   - 'current'  : Gap between current year and CURRENT_POVERTY_THRESHOLD_YEAR
+ *                  is ≤2 (e.g., in 2026 with 2024 threshold = current).
+ *   - 'warning'  : Gap is exactly 2 AND we're past September of the current
+ *                  year, so a new threshold should have been published by now.
+ *   - 'critical' : Gap is ≥3 — threshold is more than a full publication
+ *                  cycle behind and should be updated.
+ *
+ * @param {Date} [referenceDate=new Date()] - The "now" for the check; pass
+ *   a fixed date in tests for deterministic results.
+ * @returns {{
+ *   level: 'current' | 'warning' | 'critical',
+ *   storedYear: number,
+ *   currentYear: number,
+ *   yearsBehind: number,
+ *   isPastSeptember: boolean,
+ *   message: string,
+ * }}
+ */
+export const checkThresholdStaleness = (referenceDate = new Date()) => {
+  const currentYear = referenceDate.getFullYear();
+  const currentMonth = referenceDate.getMonth() + 1; // 1-12
+  const yearsBehind = currentYear - CURRENT_POVERTY_THRESHOLD_YEAR;
+  const isPastSeptember = currentMonth >= 9;
+
+  let level = 'current';
+  let message = '';
+
+  if (yearsBehind >= 3) {
+    level = 'critical';
+    message = `The stored Census Bureau poverty threshold is from ${CURRENT_POVERTY_THRESHOLD_YEAR} (${yearsBehind} years behind). A new threshold should be published — verify and update.`;
+  } else if (yearsBehind === 2 && isPastSeptember) {
+    level = 'warning';
+    message = `The Census Bureau typically publishes new poverty thresholds in September. The stored threshold is from ${CURRENT_POVERTY_THRESHOLD_YEAR}; a ${currentYear - 1} figure may now be available.`;
+  } else {
+    message = `Threshold is current (stored: ${CURRENT_POVERTY_THRESHOLD_YEAR}; ${yearsBehind} year${yearsBehind === 1 ? '' : 's'} behind).`;
+  }
+
+  return {
+    level,
+    storedYear: CURRENT_POVERTY_THRESHOLD_YEAR,
+    currentYear,
+    yearsBehind,
+    isPastSeptember,
+    message,
+  };
+};
+
+/**
  * Analyze TDIU eligibility for a profile.
  *
  * @param {Array} serviceConnectedConditions - From getServiceConnectedConditions()

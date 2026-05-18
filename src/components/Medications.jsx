@@ -767,7 +767,33 @@ const Medications = () => {
                                     <p className="text-xs text-gray-400 dark:text-gray-500">{frequencyLabels[med.frequency]}</p>
                                   </div>
                                 </div>
-                                <span className="text-2xl">💊</span>
+                                <div className="flex items-center gap-2 flex-shrink-0">
+                                  {/* Compact dosing status badge — only for meds with interval set */}
+                                  {med.dosingIntervalHours && (() => {
+                                    const lastLog = logs
+                                    .filter(l => l.medicationId === med.id)
+                                    .sort((a, b) => new Date(b.occurredAt || b.timestamp) - new Date(a.occurredAt || a.timestamp))[0];
+                                    if (!lastLog) return null;
+                                    const intervalMs = med.dosingIntervalHours * 60 * 60 * 1000;
+                                    const lastTakenMs = new Date(lastLog.occurredAt || lastLog.timestamp).getTime();
+                                    const remainingMs = (lastTakenMs + intervalMs) - Date.now();
+                                    const isSafe = remainingMs <= 0;
+                                    const totalMin = Math.max(0, Math.floor(remainingMs / 60_000));
+                                    const hrs = Math.floor(totalMin / 60);
+                                    const mins = totalMin % 60;
+                                    const waitLabel = hrs > 0 ? `${hrs}h ${mins}m` : `${mins}m`;
+                                    return (
+                                        <span className={`text-xs font-medium px-1.5 py-0.5 rounded ${
+                                            isSafe
+                                                ? 'bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-400'
+                                                : 'bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-400'
+                                        }`}>
+                                          {isSafe ? '✓ Safe' : `⏳ ${waitLabel}`}
+                                        </span>
+                                    );
+                                  })()}
+                                  <span className="text-2xl">💊</span>
+                                </div>
                               </div>
                             </button>
                         );

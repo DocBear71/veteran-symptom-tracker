@@ -8,6 +8,7 @@ import {
   analyzeTDIUEligibility,
   CURRENT_POVERTY_THRESHOLD,
   CURRENT_POVERTY_THRESHOLD_YEAR,
+  checkThresholdStaleness,
 } from '../utils/tdiuEligibility';
 
 /**
@@ -71,6 +72,25 @@ const TDIUEligibilityCard = () => {
                 don't count as substantially gainful. Note: VA uses the Census Bureau
                 threshold, not the HHS Poverty Guideline — these are different numbers.
                 Reference: M21-1 Part IV, Subpart ii, 2.F.32.
+                {(() => {
+                  const staleness = checkThresholdStaleness();
+                  if (staleness.level === 'current') return null;
+                  return (
+                      <span className="block mt-1 text-xs italic text-amber-700 dark:text-amber-400">
+                        ⓘ The Census Bureau publishes updated thresholds annually (typically September).
+                        Verify the current figure at{' '}
+                      <a
+                        href="https://www.census.gov/topics/income-poverty/poverty/data/tables.html"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="underline"
+                        >
+                          census.gov
+                        </a>
+                  {' '}before filing.
+                </span>
+                );
+                })()}
             </span>
             </li>
             <li className="flex gap-2">

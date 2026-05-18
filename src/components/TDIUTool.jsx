@@ -9,13 +9,14 @@ import { calculateCombinedRating } from '../utils/vaRatingCalculator';
 import {
   get8940Worksheet,
   save8940Worksheet,
-  clear8940Worksheet,
-} from '../utils/storage';
+  clear8940Worksheet } from '../utils/storage';
 import { generate8940WorksheetPDF } from '../utils/export';
 import {
   CURRENT_POVERTY_THRESHOLD,
   CURRENT_POVERTY_THRESHOLD_YEAR,
+  PROTECTED_ENVIRONMENT_INDICATORS,
 } from '../utils/tdiuEligibility';
+import { getEmploymentStatus } from '../utils/profiles';
 
 /**
  * TDIUTool — Comprehensive TDIU eligibility analysis and education.
@@ -775,6 +776,48 @@ const BLANK_EMPLOYER = () => ({
 });
 
 /**
+ * Build a formatted block of accommodation text from the user's Protected
+ * Environment Tracker data, suitable for appending to the 21-8940 Section IV
+ * "Special accommodations" textarea.
+ *
+ * The output is structured as:
+ *   - A framing sentence connecting accommodations to SC conditions and
+ *     §4.16(a) protected-environment language (what makes them count for
+ *     marginal employment analysis)
+ *   - A bulleted list of qualifying accommodations the user has checked
+ *
+ * Returns `null` if the user has no employment data or no qualifying
+ * accommodations selected (i.e., nothing to auto-fill from).
+ *
+ * @param {object|null} employmentStatus - From getEmploymentStatus(profileId)
+ * @returns {string|null}
+ */
+const buildAccommodationsBlockFromTracker = (employmentStatus) => {
+  if (!employmentStatus?.currentlyEmployed) return null;
+
+  const accommodationIds = Array.isArray(employmentStatus.accommodations)
+      ? employmentStatus.accommodations
+      : [];
+  if (accommodationIds.length === 0) return null;
+
+  // Translate IDs to human-readable labels, filtering for ONLY qualifying
+  // indicators. Non-qualifying selections (e.g., "works alone") deliberately
+  // excluded — they don't support a protected-environment finding and would
+  // weaken the form rather than strengthen it.
+  const qualifyingLabels = PROTECTED_ENVIRONMENT_INDICATORS.qualifying
+  .filter(q => accommodationIds.includes(q.id))
+  .map(q => q.label);
+
+  if (qualifyingLabels.length === 0) return null;
+
+  const framing = 'The following accommodations are made by my current employer specifically because of my service-connected conditions. These accommodations would not be available to a non-disabled employee in a competitive employment setting (38 CFR §4.16(a) protected environment):';
+
+  const bullets = qualifyingLabels.map(label => `  • ${label}`).join('\n');
+
+  return `${framing}\n\n${bullets}`;
+};
+
+/**
  * Small labelled input with consistent styling.
  */
 const Field = ({ label, hint, children, required = false }) => (
@@ -953,11 +996,35 @@ const Form8940Worksheet = ({ profileId }) => {
   const [saveStatus, setSaveStatus] = useState('idle'); // idle | saving | saved | error
   const [showClearConfirm, setShowClearConfirm] = useState(false);
 
-  // Load from storage on mount
+  // Phase 12: Track Protected Environment Tracker data so we can offer the
+  // user a one-click way to populate Section IV's "Special accommodations"
+  // field from structured tracker data they've already entered.
+  const [employmentStatus, setEmploymentStatusState] = useState(null);
+
+  // Load worksheet from storage on mount
   useEffect(() => {
     const saved = get8940Worksheet(profileId);
     setData(saved);
   }, [profileId]);
+
+  // Load employment status from profile; refresh when profile data changes
+  // (e.g., user edits accommodations in the Protected Environment Tracker
+  // and returns to this worksheet — they get fresh suggestions immediately).
+  useEffect(() => {
+    if (!profileId) return;
+    const load = () => setEmploymentStatusState(getEmploymentStatus(profileId));
+    load();
+
+    const handler = (e) => {
+      if (e.detail?.profileId === profileId) load();
+    };
+    window.addEventListener('profileUpdated', handler);
+    return () => window.removeEventListener('profileUpdated', handler);
+  }, [profileId]);
+
+  // Compute the auto-fill block once per render — null if there's nothing
+  // to pull from. The button only renders when this is non-null.
+  const accommodationsBlock = buildAccommodationsBlockFromTracker(employmentStatus);
 
   // Auto-save with 800ms debounce after any data change
   useEffect(() => {
@@ -1010,6 +1077,24 @@ const Form8940Worksheet = ({ profileId }) => {
     setData(fresh);
     setShowClearConfirm(false);
     setSaveStatus('idle');
+  };
+
+  /**
+   * Append the Protected Environment Tracker's accommodation block to the
+   * Section IV "Special accommodations" textarea. Existing text is preserved
+   * with a clear visual separator so the user can edit or remove either
+   * source freely after the merge.
+   */
+  const handleAutoFillAccommodations = () => {
+    if (!accommodationsBlock) return;
+
+    const existing = (data?.specialAccommodations || '').trim();
+    const separator = '\n\n--- From Protected Environment Tracker ---\n';
+    const merged = existing
+        ? `${existing}${separator}${accommodationsBlock}`
+        : accommodationsBlock;
+
+    updateField('specialAccommodations', merged);
   };
 
   const handleExport = () => {
@@ -1272,12 +1357,26 @@ const Form8940Worksheet = ({ profileId }) => {
                   label="Special accommodations required or received"
                   hint="Include accommodations from prior employers, or accommodations you would require that are not reasonably available in competitive employment"
               >
-              <textarea
-                  value={data.specialAccommodations}
-                  onChange={e => updateField('specialAccommodations', e.target.value)}
-                  placeholder="e.g. Required ability to lie down during work hours due to back pain. No employer was able to accommodate this. At family business, was allowed to leave without notice on bad days..."
-                  className={textareaCls}
-              />
+                {accommodationsBlock && (
+                    <div className="mb-2 p-2 bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 rounded-lg flex items-center justify-between gap-2 flex-wrap">
+                      <p className="text-xs text-emerald-900 dark:text-emerald-200 flex-1 min-w-0">
+                        🛡️ You have accommodations recorded in the Protected Work Environment Tracker.
+                      </p>
+                      <button
+                          type="button"
+                          onClick={handleAutoFillAccommodations}
+                          className="text-xs px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-medium transition-colors whitespace-nowrap flex-shrink-0"
+                      >
+                        Auto-fill below
+                      </button>
+                    </div>
+                )}
+                <textarea
+                    value={data.specialAccommodations}
+                    onChange={e => updateField('specialAccommodations', e.target.value)}
+                    placeholder="e.g. Required ability to lie down during work hours due to back pain. No employer was able to accommodate this. At family business, was allowed to leave without notice on bad days..."
+                    className={textareaCls}
+                />
               </Field>
 
               <Field

@@ -2108,6 +2108,404 @@ const EDUCATION_LABELS = {
 };
 
 /**
+ * Generate a Protected Environment evidence packet PDF.
+ *
+ * Bundles the veteran's structured Protected Environment Tracker data —
+ * employment status, qualifying/non-qualifying accommodations, evidence
+ * collected, evidence gaps, marginal-employment analysis — into one PDF
+ * a VSO or attorney can review.
+ *
+ * Anchored in 38 CFR §4.16(a) and Cantrell v. Shulkin (28 Vet. App. 382,
+ * 2017). The output is framed as evidence flagging, never a determination.
+ *
+ * @param {object} args
+ * @param {object} args.employmentStatus - From getEmploymentStatus(profileId)
+ * @param {object} args.marginalAnalysis - From analyzeMarginalEmployment(employmentStatus)
+ * @param {object} args.protectedAnalysis - From analyzeProtectedEnvironment(employmentStatus)
+ * @param {Array}  args.qualifyingIndicators - PROTECTED_ENVIRONMENT_INDICATORS.qualifying
+ * @param {Array}  args.nonQualifyingIndicators - PROTECTED_ENVIRONMENT_INDICATORS.nonQualifying
+ * @param {string} args.veteranName - From profile.name
+ */
+export const generateProtectedEnvironmentPDF = ({
+                                                  employmentStatus,
+                                                  marginalAnalysis,
+                                                  protectedAnalysis,
+                                                  qualifyingIndicators,
+                                                  nonQualifyingIndicators,
+                                                  veteranName = 'Veteran',
+                                                }) => {
+  const doc = new jsPDF();
+  const pageWidth = doc.internal.pageSize.width;
+  const margin = 14;
+  const contentWidth = pageWidth - margin * 2;
+  let y = 20;
+
+  // ── Cover / Title Block ──────────────────────────────────────────────────
+  doc.setFontSize(18);
+  doc.setTextColor(5, 150, 105); // emerald-600 — matches the tracker color
+  doc.setFont(undefined, 'bold');
+  doc.text('Protected Work Environment Evidence Packet', margin, y);
+  y += 8;
+
+  doc.setFontSize(9);
+  doc.setFont(undefined, 'normal');
+  doc.setTextColor(80);
+  doc.text(
+      'Structured documentation for TDIU marginal-employment / protected-environment review',
+      margin, y
+  );
+  y += 5;
+  doc.text('38 CFR §4.16(a)  •  M21-1 Part IV, Subpart ii, 2.F.32', margin, y);
+  y += 5;
+  doc.text(
+      'Anchor case: Cantrell v. Shulkin, 28 Vet. App. 382 (2017)',
+      margin, y
+  );
+  y += 8;
+
+  // Meta row
+  doc.setFontSize(8.5);
+  doc.setTextColor(60);
+  doc.text(`Veteran: ${veteranName}`, margin, y);
+  doc.text(`Generated: ${new Date().toLocaleString()}`, margin + contentWidth / 2, y);
+  y += 5;
+
+  if (employmentStatus?.updatedAt) {
+    doc.text(
+        `Tracker data last saved: ${new Date(employmentStatus.updatedAt).toLocaleString()}`,
+        margin, y
+    );
+    y += 5;
+  }
+
+  // Disclaimer box
+  y += 3;
+  doc.setFillColor(254, 243, 199); // amber-100
+  doc.setDrawColor(251, 191, 36);  // amber-400
+  doc.rect(margin, y, contentWidth, 18, 'FD');
+  doc.setFontSize(8);
+  doc.setTextColor(120, 53, 15);   // amber-900
+  doc.setFont(undefined, 'bold');
+  doc.text('***  EVIDENCE FLAGGING, NOT A DETERMINATION', margin + 3, y + 5);
+  doc.setFont(undefined, 'normal');
+  doc.text(
+      'Protected-environment status is a facts-found determination made by the VA. This document',
+      margin + 3, y + 9
+  );
+  doc.text(
+      'organizes the veteran\'s structured evidence for VSO or attorney review under 38 CFR §4.16(a).',
+      margin + 3, y + 13
+  );
+  doc.text(
+      'The cascade of qualifying accommodations does not establish TDIU eligibility on its own.',
+      margin + 3, y + 17
+  );
+  y += 24;
+
+  // ── No employment data path ────────────────────────────────────────────
+  if (!employmentStatus) {
+    y = writeSectionHeader(doc, 'No Employment Status Recorded', y, pageWidth);
+    doc.setFontSize(9);
+    doc.setTextColor(80);
+    doc.text(
+        'No employment status has been recorded in the Protected Work Environment Tracker.',
+        margin, y
+    );
+    y += 5;
+    doc.text(
+        'Add employment status to enable marginal-employment and protected-environment analysis.',
+        margin, y
+    );
+    const filename = `Protected-Environment-Packet_${veteranName.replace(/\s+/g, '-')}_${new Date().toISOString().split('T')[0]}.pdf`;
+    doc.save(filename);
+    return;
+  }
+
+  // ── Section I — Employment Status ───────────────────────────────────────
+  y = writeSectionHeader(doc, 'Section I — Current Employment Status', y, pageWidth);
+
+  const employerTypeLabels = {
+    competitive: 'Competitive employment',
+    'family-business': 'Family-owned business',
+    'sheltered-workshop': 'Sheltered workshop',
+    'self-employed': 'Self-employed',
+    other: 'Other',
+  };
+
+  y = writeField(
+      doc, 'Currently Employed',
+      employmentStatus.currentlyEmployed ? 'Yes' : 'No',
+      margin, y, contentWidth
+  );
+
+  if (employmentStatus.currentlyEmployed) {
+    y = writeField(
+        doc, 'Employer Type',
+        employerTypeLabels[employmentStatus.employerType] || employmentStatus.employerType,
+        margin, y, contentWidth
+    );
+    y = writeField(
+        doc, 'Start Date',
+        employmentStatus.startDate || '',
+        margin, y, contentWidth
+    );
+    y = writeField(
+        doc, 'Gross Annual Income',
+        `$${Number(employmentStatus.annualIncome || 0).toLocaleString()}`,
+        margin, y, contentWidth
+    );
+    if (employmentStatus.overThresholdSince) {
+      y = writeField(
+          doc, 'Earnings Above Threshold Since',
+          employmentStatus.overThresholdSince,
+          margin, y, contentWidth
+      );
+    }
+  } else if (employmentStatus.lastEmployedDate) {
+    y = writeField(
+        doc, 'Last Employed',
+        employmentStatus.lastEmployedDate,
+        margin, y, contentWidth
+    );
+  }
+
+  y = writeRule(doc, y, pageWidth);
+
+  // ── Section II — Marginal Employment Analysis ───────────────────────────
+  y = writeSectionHeader(doc, 'Section II — Marginal Employment Analysis (Income Pathway)', y, pageWidth);
+
+  doc.setFontSize(8);
+  doc.setTextColor(80);
+  doc.text(
+      'Earnings at or below the Census Bureau poverty threshold for one person are marginal under §4.16(a).',
+      margin, y
+  );
+  y += 5;
+
+  y = writeField(
+      doc, 'Analysis State',
+      marginalAnalysis.state.replace(/-/g, ' '),
+      margin, y, contentWidth
+  );
+  y = writeField(
+      doc, `${marginalAnalysis.thresholdYear} Census Bureau Poverty Threshold`,
+      `$${marginalAnalysis.threshold?.toLocaleString() || '0'} per year`,
+      margin, y, contentWidth
+  );
+
+  if (marginalAnalysis.annualIncome !== undefined) {
+    y = writeField(
+        doc, 'Veteran\'s Reported Annual Income',
+        `$${Number(marginalAnalysis.annualIncome).toLocaleString()}`,
+        margin, y, contentWidth
+    );
+  }
+
+  if (marginalAnalysis.state === 'below-threshold') {
+    y = writeField(
+        doc, 'Finding',
+        'Income at or below threshold — supports marginal employment under §4.16(a) income pathway.',
+        margin, y, contentWidth
+    );
+  } else if (marginalAnalysis.state === 'above-threshold') {
+    let aboveText = 'Income exceeds threshold. Income pathway alone does not establish marginal employment — protected-environment pathway (see Section III) may still apply.';
+    if (marginalAnalysis.monthsOverThreshold !== null && marginalAnalysis.monthsOverThreshold !== undefined) {
+      aboveText += ` Months above threshold: ${marginalAnalysis.monthsOverThreshold}.`;
+    }
+    if (marginalAnalysis.pastReviewWindow) {
+      aboveText += ' *** Past 12-month review window — VA Form 21-4140 may have been issued.';
+    } else if (marginalAnalysis.nearReviewWindow) {
+      aboveText += ' Approaching 12-month review window.';
+    }
+    y = writeField(doc, 'Finding', aboveText, margin, y, contentWidth);
+  }
+
+  y = writeRule(doc, y, pageWidth);
+
+  // ── Section III — Protected Environment Analysis ────────────────────────
+  y = writeSectionHeader(doc, 'Section III — Protected Environment Analysis (Facts-Found)', y, pageWidth);
+
+  doc.setFontSize(8);
+  doc.setTextColor(80);
+  doc.text(
+      'Cantrell v. Shulkin: VA must explain its reasoning on protected-environment status.',
+      margin, y
+  );
+  y += 5;
+
+  y = writeField(
+      doc, 'Analysis State',
+      protectedAnalysis.state.replace(/-/g, ' '),
+      margin, y, contentWidth
+  );
+
+  // Qualifying accommodations checked
+  const selectedQualifyingIds = Array.isArray(employmentStatus.accommodations)
+      ? employmentStatus.accommodations.filter(id =>
+          qualifyingIndicators.some(q => q.id === id)
+      )
+      : [];
+
+  if (y > 250) { doc.addPage(); y = 20; }
+  doc.setFontSize(7.5);
+  doc.setTextColor(100);
+  doc.setFont(undefined, 'bold');
+  doc.text('QUALIFYING ACCOMMODATIONS RECORDED', margin, y);
+  y += 4;
+
+  doc.setFontSize(9);
+  doc.setFont(undefined, 'normal');
+  doc.setTextColor(30, 30, 30);
+  if (selectedQualifyingIds.length === 0) {
+    doc.text('(none selected)', margin, y);
+    y += 6;
+  } else {
+    selectedQualifyingIds.forEach(id => {
+      const item = qualifyingIndicators.find(q => q.id === id);
+      if (!item) return;
+      if (y > 270) { doc.addPage(); y = 20; }
+      const bulletLines = doc.splitTextToSize(`• ${item.label}`, contentWidth - 4);
+      doc.text(bulletLines, margin + 2, y);
+      y += bulletLines.length * 5;
+    });
+    y += 2;
+  }
+
+  // Non-qualifying indicators (if user checked any — for transparency)
+  const selectedNonQualifyingIds = Array.isArray(employmentStatus.accommodations)
+      ? employmentStatus.accommodations.filter(id =>
+          nonQualifyingIndicators.some(n => n.id === id)
+      )
+      : [];
+
+  if (selectedNonQualifyingIds.length > 0) {
+    if (y > 250) { doc.addPage(); y = 20; }
+    doc.setFontSize(7.5);
+    doc.setTextColor(100);
+    doc.setFont(undefined, 'bold');
+    doc.text('FACTORS RECORDED THAT DO NOT, BY THEMSELVES, ESTABLISH PROTECTED ENVIRONMENT', margin, y);
+    y += 4;
+
+    doc.setFontSize(8);
+    doc.setFont(undefined, 'italic');
+    doc.setTextColor(120);
+    doc.text(
+        'These appear here for transparency. Per VA case law, these factors alone are insufficient.',
+        margin, y
+    );
+    y += 5;
+
+    doc.setFontSize(9);
+    doc.setFont(undefined, 'normal');
+    doc.setTextColor(30, 30, 30);
+    selectedNonQualifyingIds.forEach(id => {
+      const item = nonQualifyingIndicators.find(n => n.id === id);
+      if (!item) return;
+      if (y > 270) { doc.addPage(); y = 20; }
+      const bulletLines = doc.splitTextToSize(`• ${item.label}`, contentWidth - 4);
+      doc.text(bulletLines, margin + 2, y);
+      y += bulletLines.length * 5;
+    });
+    y += 2;
+  }
+
+  if (protectedAnalysis.indicatorStrength) {
+    y = writeField(
+        doc, 'Indicator Strength (heuristic)',
+        `${protectedAnalysis.indicatorStrength} (${protectedAnalysis.qualifyingCount} qualifying accommodations)`,
+        margin, y, contentWidth
+    );
+    doc.setFontSize(7.5);
+    doc.setTextColor(120);
+    doc.setFont(undefined, 'italic');
+    doc.text(
+        'Strength is a rough heuristic, not a determination. VA evaluates each case on its facts.',
+        margin, y
+    );
+    doc.setFont(undefined, 'normal');
+    y += 6;
+  }
+
+  y = writeRule(doc, y, pageWidth);
+
+  // ── Section IV — Evidence Collected & Gaps ──────────────────────────────
+  y = writeSectionHeader(doc, 'Section IV — Evidence Collected & Gaps', y, pageWidth);
+
+  const evidence = employmentStatus.evidence || {};
+  const evidenceCategories = [
+    { key: 'employerLetter',     label: 'Detailed employer letter',                                   importance: 'CRITICAL' },
+    { key: 'attendanceRecords',  label: 'Attendance / payroll records',                               importance: 'HIGH' },
+    { key: 'coworkerStatements', label: 'Coworker or supervisor statements',                          importance: 'MEDIUM' },
+    { key: 'jobDescription',     label: 'Written job description showing duties excused',             importance: 'MEDIUM' },
+    { key: 'vocationalOpinion',  label: 'Vocational expert opinion',                                  importance: 'MEDIUM' },
+    { key: 'medicalNexus',       label: 'Medical nexus tying accommodations to SC conditions',        importance: 'HIGH' },
+  ];
+
+  if (y > 260) { doc.addPage(); y = 20; }
+  doc.setFontSize(7.5);
+  doc.setTextColor(100);
+  doc.setFont(undefined, 'bold');
+  doc.text('EVIDENCE COLLECTION STATUS', margin, y);
+  y += 4;
+
+  doc.setFontSize(9);
+  doc.setFont(undefined, 'normal');
+  doc.setTextColor(30, 30, 30);
+
+  evidenceCategories.forEach(cat => {
+    if (y > 270) { doc.addPage(); y = 20; }
+    const hasIt = !!evidence[cat.key];
+    const marker = hasIt ? '[X] COLLECTED' : '[ ] NOT YET COLLECTED';
+    const line = `${marker}  •  ${cat.label}  (${cat.importance})`;
+    const wrapped = doc.splitTextToSize(line, contentWidth);
+    doc.text(wrapped, margin, y);
+    y += wrapped.length * 5 + 1;
+  });
+
+  y += 4;
+  if (y > 260) { doc.addPage(); y = 20; }
+  doc.setFontSize(7.5);
+  doc.setTextColor(120);
+  doc.setFont(undefined, 'italic');
+  const note = 'CRITICAL evidence is the single most decisive piece for protected-environment claims (typically a detailed employer letter under Cantrell v. Shulkin reasoning).';
+  const noteWrapped = doc.splitTextToSize(note, contentWidth);
+  doc.text(noteWrapped, margin, y);
+  doc.setFont(undefined, 'normal');
+  y += noteWrapped.length * 4 + 3;
+
+  // ── Section V — Veteran's Notes ─────────────────────────────────────────
+  if (employmentStatus.notes && employmentStatus.notes.trim()) {
+    y = writeRule(doc, y, pageWidth);
+    y = writeSectionHeader(doc, "Section V — Veteran's Notes", y, pageWidth);
+    y = writeField(doc, 'Additional Context', employmentStatus.notes, margin, y, contentWidth);
+  }
+
+  // ── Footer disclaimer ───────────────────────────────────────────────────
+  const totalPages = doc.internal.getNumberOfPages();
+  for (let i = 1; i <= totalPages; i++) {
+    doc.setPage(i);
+    doc.setFontSize(7);
+    doc.setTextColor(140);
+    doc.setFont(undefined, 'italic');
+    doc.text(
+        'Generated by Doc Bear\'s Symptom Vault  •  Review with your VSO or attorney  •  va.gov/vso',
+        margin, 290
+    );
+    doc.text(
+        `Page ${i} of ${totalPages}`,
+        pageWidth - margin - 20, 290
+    );
+    doc.setFont(undefined, 'normal');
+  }
+
+  // ── Save ────────────────────────────────────────────────────────────────
+  const safeName = veteranName.replace(/\s+/g, '-');
+  const dateStr = new Date().toISOString().split('T')[0];
+  doc.save(`Protected-Environment-Packet_${safeName}_${dateStr}.pdf`);
+};
+
+
+/**
  * Generate a formatted PDF summary of the 21-8940 worksheet.
  * Called from TDIUTool with the worksheet data object and veteran name.
  *

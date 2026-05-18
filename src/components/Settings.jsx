@@ -25,6 +25,7 @@ import { createEmergencyBackup } from '../utils/storageVersion';
 import CaregiverProgramInfo from './CaregiverProgramInfo';
 import AccessibilitySettings from './AccessibilitySettings';
 import ProfileSettingsCard from './ProfileSettingsCard';
+import { checkThresholdStaleness } from '../utils/tdiuEligibility';
 
 /**
  * Display backup history
@@ -176,6 +177,29 @@ const Settings = ({ onNavigate, onOpenBlueButton, onShowFraudAlert }) => {
     return localStorage.getItem('symptomTracker_theme') || 'system';
   });
   const { profile: currentProfile } = useProfile();
+
+  // Phase 11: Threshold staleness reminder (dismissible for 30 days)
+  // The Census Bureau publishes new poverty thresholds in September; this
+  // banner surfaces when the stored threshold lags behind by 2+ years and
+  // the user hasn't recently dismissed the reminder.
+  const [thresholdDismissedUntil, setThresholdDismissedUntil] = useState(() => {
+    const stored = localStorage.getItem('symptomTracker_thresholdReminderDismissedUntil');
+    return stored ? new Date(stored) : null;
+  });
+  const thresholdStaleness = checkThresholdStaleness();
+  const showThresholdBanner =
+      thresholdStaleness.level !== 'current' &&
+      (!thresholdDismissedUntil || new Date() > thresholdDismissedUntil);
+
+  const dismissThresholdBanner = () => {
+    const dismissUntil = new Date();
+    dismissUntil.setDate(dismissUntil.getDate() + 30);
+    localStorage.setItem(
+        'symptomTracker_thresholdReminderDismissedUntil',
+        dismissUntil.toISOString()
+    );
+    setThresholdDismissedUntil(dismissUntil);
+  };
 
   const [permissionStatus, setPermissionStatus] = useState('default');
   const [reminderSettings, setReminderSettings] = useState(getReminderSettings());
@@ -389,8 +413,63 @@ const Settings = ({ onNavigate, onOpenBlueButton, onShowFraudAlert }) => {
       <div className="space-y-4 text-left">
         <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Settings</h2>
 
-        {/* Safety Features Section */}
-        <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 mt-6">
+        {/* Phase 11: Poverty threshold staleness banner */}
+        {showThresholdBanner && (
+            <div
+                className={`rounded-lg border-2 p-4 ${
+                    thresholdStaleness.level === 'critical'
+                        ? 'bg-red-50 dark:bg-red-900/20 border-red-300 dark:border-red-700'
+                        : 'bg-amber-50 dark:bg-amber-900/20 border-amber-300 dark:border-amber-700'
+                }`}
+            >
+              <div className="flex items-start gap-3">
+                <span className="text-2xl flex-shrink-0">
+                  {thresholdStaleness.level === 'critical' ? '⚠️' : 'ⓘ'}
+                </span>
+                <div className="flex-1 min-w-0">
+                  <h3 className={`font-semibold mb-1 ${
+                      thresholdStaleness.level === 'critical'
+                          ? 'text-red-900 dark:text-red-200'
+                          : 'text-amber-900 dark:text-amber-200'
+                  }`}>
+                    Poverty Threshold May Be Outdated
+                  </h3>
+                  <p className={`text-sm mb-2 ${
+                      thresholdStaleness.level === 'critical'
+                          ? 'text-red-800 dark:text-red-300'
+                          : 'text-amber-800 dark:text-amber-300'
+                  }`}>
+                    {thresholdStaleness.message}
+                  </p>
+                  <p className="text-xs text-gray-700 dark:text-gray-400 mb-2">
+                    The TDIU marginal-employment threshold is currently set to{' '}
+                    <strong>{thresholdStaleness.storedYear}</strong> Census Bureau data. When new
+                    thresholds are published, update <code className="text-xs bg-gray-200 dark:bg-gray-700 px-1 rounded">POVERTY_THRESHOLDS</code>{' '}
+                    in <code className="text-xs bg-gray-200 dark:bg-gray-700 px-1 rounded">src/utils/tdiuEligibility.js</code>.
+                  </p>
+                  <div className="flex flex-wrap gap-2 mt-3">
+                  <a
+                    href="https://www.census.gov/topics/income-poverty/poverty/data/tables.html"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors"
+                    >
+                    Check Census Bureau →
+                  </a>
+                  <button
+                      onClick={dismissThresholdBanner}
+                      className="text-xs px-3 py-1.5 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700"
+                  >
+                    Dismiss for 30 days
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          )}
+
+{/* Safety Features Section */}
+<div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 mt-6">
           <h3 className="font-semibold text-gray-900 dark:text-white mb-2
                  flex items-center gap-2">
             <span>🛡️</span>

@@ -12,6 +12,7 @@ import {
   CURRENT_POVERTY_THRESHOLD_YEAR,
   PROTECTED_ENVIRONMENT_INDICATORS,
 } from '../utils/tdiuEligibility';
+import { generateProtectedEnvironmentPDF } from '../utils/export';
 import EmploymentStatusModal from './EmploymentStatusModal';
 import EmployerLetterGenerator from './EmployerLetterGenerator';
 
@@ -94,6 +95,33 @@ const ProtectedEnvironmentTracker = ({ embedded = false, onClose }) => {
   const handleClearEmployment = () => {
     if (!window.confirm('Remove employment status? This will clear all accommodations and evidence tracking.')) return;
     clearEmploymentStatus(profile.id);
+  };
+
+  /**
+   * Export the full Protected Environment Tracker dataset as a structured PDF.
+   * Bundles employment status, accommodations, evidence, and analysis into a
+   * single document a VSO or attorney can review.
+   */
+  const handleDownloadPacket = () => {
+    if (!employmentStatus) {
+      alert('No employment status to export. Add employment status first.');
+      return;
+    }
+    // Resolve the veteran's display name with the same priority used in the
+    // 21-8940 export: legal name (patientName) → display name → fallback.
+    let veteranName = profile?.name || 'Veteran';
+    if (profile?.metadata?.patientName?.trim()) {
+      veteranName = profile.metadata.patientName.trim();
+    }
+
+    generateProtectedEnvironmentPDF({
+      employmentStatus,
+      marginalAnalysis,
+      protectedAnalysis,
+      qualifyingIndicators: PROTECTED_ENVIRONMENT_INDICATORS.qualifying,
+      nonQualifyingIndicators: PROTECTED_ENVIRONMENT_INDICATORS.nonQualifying,
+      veteranName,
+    });
   };
 
   // ============================================
@@ -202,6 +230,27 @@ const ProtectedEnvironmentTracker = ({ embedded = false, onClose }) => {
                   className="px-4 py-2 bg-amber-600 dark:bg-amber-700 text-white rounded-lg hover:bg-amber-700 dark:hover:bg-amber-600"
               >
                 Generate Employer Letter
+              </button>
+            </section>
+        )}
+
+        {/* ============================================ */}
+        {/* SECTION 5: EVIDENCE PACKET PDF EXPORT        */}
+        {/* ============================================ */}
+        {employmentStatus && (
+            <section className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                📄 Evidence packet export
+              </h3>
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+                Bundle your employment status, accommodations, evidence checklist, and analysis into a single PDF for VSO or attorney review. Anchored in 38 CFR §4.16(a) and Cantrell v. Shulkin.
+              </p>
+              <button
+                  onClick={handleDownloadPacket}
+                  className="px-4 py-2 bg-emerald-600 dark:bg-emerald-700 text-white rounded-lg hover:bg-emerald-700 dark:hover:bg-emerald-600 flex items-center gap-2"
+              >
+                <span>⬇</span>
+                <span>Download Evidence Packet PDF</span>
               </button>
             </section>
         )}
