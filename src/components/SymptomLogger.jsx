@@ -460,6 +460,20 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed, onNavigate }) =
       if (prefillData.personalityData) {
         setPersonalityData(prefillData.personalityData);
       }
+      // Phase 19: Missing mental health prefills — anxiety, depression, bipolar.
+      // State setters, reset logic, form wiring, and save-to-storage existed
+      // for these but the prefill branch was never added, so "Log Again" on
+      // depressed mood, anxiety attacks, or bipolar episodes opened a blank
+      // form even though all data was persisted in localStorage.
+      if (prefillData.anxietyData) {
+        setAnxietyData({ ...prefillData.anxietyData });
+      }
+      if (prefillData.depressionData) {
+        setDepressionData({ ...prefillData.depressionData });
+      }
+      if (prefillData.bipolarData) {
+        setBipolarData({ ...prefillData.bipolarData });
+      }
       // Phase 9: Cardiovascular prefills
       if (prefillData.cardiovascularData) {
         setCardiovascularData(prefillData.cardiovascularData);
