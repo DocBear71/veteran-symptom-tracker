@@ -1,5 +1,5 @@
-import jsPDF from 'jspdf';
-import autoTable from 'jspdf-autotable';
+import { jsPDF } from 'jspdf';
+import { autoTable } from 'jspdf-autotable';
 import { calculateCombinedRatingDetailed } from './vaRatingCalculator';
 import { getSymptomLogs,
   getMedicationLogs,
@@ -392,7 +392,7 @@ export const generatePDF = (dateRange = 'all', options = { includeAppointments: 
         if (log.duration) universalInfo.push(formatDuration(log.duration));
         if (log.timeOfDay) universalInfo.push(formatTimeOfDay(log.timeOfDay));
         if (log.weather) universalInfo.push(formatWeather(log.weather));
-        // Stress level — only show if not the default 5 (avoids noise on logs
+        // Stress level - only show if not the default 5 (avoids noise on logs
         // where the slider was untouched). Format: "Stress: 8/10".
         if (log.stressLevel !== undefined && log.stressLevel !== null && log.stressLevel !== 5) {
           universalInfo.push(`Stress: ${log.stressLevel}/10`);
@@ -971,7 +971,7 @@ export const generatePDF = (dateRange = 'all', options = { includeAppointments: 
           const campylobacterInfo = [];
           const cd = log.campylobacterData;
 
-          if (cd.guillainBarre) campylobacterInfo.push('⚠️ GUILLAIN-BARRÉ SYNDROME');
+          if (cd.guillainBarre) campylobacterInfo.push('*** GUILLAIN-BARRÉ SYNDROME');
           if (cd.reactiveArthritis) campylobacterInfo.push('Reactive Arthritis');
           if (cd.chronicIBS) campylobacterInfo.push('Post-Infectious IBS');
           if (cd.stoolCultureConfirmed) campylobacterInfo.push('Stool Culture +');
@@ -987,7 +987,7 @@ export const generatePDF = (dateRange = 'all', options = { includeAppointments: 
           const qFeverInfo = [];
           const qd = log.qFeverData;
 
-          if (qd.endocarditis) qFeverInfo.push('⚠️ Q FEVER ENDOCARDITIS');
+          if (qd.endocarditis) qFeverInfo.push('*** Q FEVER ENDOCARDITIS');
           if (qd.chronicQFever) qFeverInfo.push('Chronic Q Fever (>6mo)');
           if (qd.fatigueSyndrome) qFeverInfo.push('Q Fever Fatigue Syndrome');
           if (qd.phaseIAntibodies) qFeverInfo.push('Phase I Ab+ (>1:800)');
@@ -1203,7 +1203,7 @@ export const generatePDF = (dateRange = 'all', options = { includeAppointments: 
           }
 
           if (ad.episodeDuration) anxietyInfo.push(`Duration: ${ad.episodeDuration}`);
-          if (ad.wasPanicAttack) anxietyInfo.push('⚠️ PANIC ATTACK');
+          if (ad.wasPanicAttack) anxietyInfo.push('*** PANIC ATTACK');
           if (ad.trigger) anxietyInfo.push(`Trigger: ${ad.trigger}`);
 
           if (anxietyInfo.length > 0) {
@@ -1233,8 +1233,8 @@ export const generatePDF = (dateRange = 'all', options = { includeAppointments: 
           const physicalSymptoms = [
             dd.insomnia && 'Insomnia',
             dd.hypersomnia && 'Hypersomnia',
-            dd.decreasedAppetite && '↓Appetite',
-            dd.increasedAppetite && '↑Appetite',
+            dd.decreasedAppetite && 'Decreased Appetite',
+            dd.increasedAppetite && 'Increased Appetite',
             dd.fatigue && 'Fatigue',
             dd.psychomotorAgitation && 'Agitation',
             dd.psychomotorRetardation && 'Slowed'
@@ -1266,7 +1266,7 @@ export const generatePDF = (dateRange = 'all', options = { includeAppointments: 
             depressionInfo.push(`Impact: ${impact.join(', ')}`);
           }
 
-          if (dd.suicidalIdeation) depressionInfo.push('⚠️ SUICIDAL IDEATION');
+          if (dd.suicidalIdeation) depressionInfo.push('*** SUICIDAL IDEATION');
           if (dd.trigger) depressionInfo.push(`Trigger: ${dd.trigger}`);
           if (dd.episodeContext) depressionInfo.push(`Context: ${dd.episodeContext}`);
 
@@ -1294,12 +1294,12 @@ export const generatePDF = (dateRange = 'all', options = { includeAppointments: 
           const manicSymptoms = [
             bd.elevatedMood && 'Elevated mood',
             bd.irritableMood && 'Irritable',
-            bd.increasedEnergy && '↑Energy',
-            bd.decreasedSleep && '↓Sleep need',
+            bd.increasedEnergy && 'Increased Energy',
+            bd.decreasedSleep && 'Decreased Sleep need',
             bd.moreTalkative && 'Talkative',
             bd.racingThoughts && 'Racing thoughts',
             bd.distractibility && 'Distractible',
-            bd.increasedActivity && '↑Activity',
+            bd.increasedActivity && 'Increased Activity',
             bd.riskyBehavior && 'Risky behavior',
             bd.grandiosity && 'Grandiose'
           ].filter(Boolean);
@@ -1328,7 +1328,7 @@ export const generatePDF = (dateRange = 'all', options = { includeAppointments: 
             bd.unableToWork && 'Unable to work',
             bd.relationshipConflicts && 'Relationship conflicts',
             bd.legalProblems && 'Legal problems',
-            bd.hospitalizationRequired && '⚠️ HOSPITALIZATION REQUIRED'
+            bd.hospitalizationRequired && '*** HOSPITALIZATION REQUIRED'
           ].filter(Boolean);
           if (impact.length > 0) {
             bipolarInfo.push(`Impact: ${impact.join(', ')}`);
@@ -1746,8 +1746,8 @@ export const generatePDF = (dateRange = 'all', options = { includeAppointments: 
           if (mg.ptosisPresent) mgInfo.push(`Ptosis${mg.ptosisSide ? ` (${mg.ptosisSide})` : ''}`);
           if (mg.doubleVision) mgInfo.push('Double vision');
           if (mg.canRaiseArms) mgInfo.push(`Arm hold: ${mg.canRaiseArms}s`);
-          if (mg.breathingDifficulty) mgInfo.push('⚠️ Breathing difficulty');
-          if (mg.emergencySigns) mgInfo.push('🚨 Crisis signs');
+          if (mg.breathingDifficulty) mgInfo.push('*** Breathing difficulty');
+          if (mg.emergencySigns) mgInfo.push('*** Crisis signs');
           if (mg.onPyridostigmine) mgInfo.push('On Mestinon');
 
           if (mgInfo.length > 0) {
@@ -2017,7 +2017,7 @@ export const generatePDF = (dateRange = 'all', options = { includeAppointments: 
 // VA FORM 21-8940 WORKSHEET PDF EXPORT
 // ============================================================================
 // Produces a clean summary-report PDF from the user's saved 21-8940 worksheet.
-// This is NOT the official VA form — it is a formatted summary for VSO review.
+// This is NOT the official VA form - it is a formatted summary for VSO review.
 // Structure mirrors Form 21-8940 sections I–IV.
 // ============================================================================
 
@@ -2112,7 +2112,7 @@ const EDUCATION_LABELS = {
  *
  * Bundles the veteran's structured Protected Environment Tracker data —
  * employment status, qualifying/non-qualifying accommodations, evidence
- * collected, evidence gaps, marginal-employment analysis — into one PDF
+ * collected, evidence gaps, marginal-employment analysis - into one PDF
  * a VSO or attorney can review.
  *
  * Anchored in 38 CFR §4.16(a) and Cantrell v. Shulkin (28 Vet. App. 382,
@@ -2142,7 +2142,7 @@ export const generateProtectedEnvironmentPDF = ({
 
   // ── Cover / Title Block ──────────────────────────────────────────────────
   doc.setFontSize(18);
-  doc.setTextColor(5, 150, 105); // emerald-600 — matches the tracker color
+  doc.setTextColor(5, 150, 105); // emerald-600 - matches the tracker color
   doc.setFont(undefined, 'bold');
   doc.text('Protected Work Environment Evidence Packet', margin, y);
   y += 8;
@@ -2221,8 +2221,8 @@ export const generateProtectedEnvironmentPDF = ({
     return;
   }
 
-  // ── Section I — Employment Status ───────────────────────────────────────
-  y = writeSectionHeader(doc, 'Section I — Current Employment Status', y, pageWidth);
+  // ── Section I - Employment Status ───────────────────────────────────────
+  y = writeSectionHeader(doc, 'Section I - Current Employment Status', y, pageWidth);
 
   const employerTypeLabels = {
     competitive: 'Competitive employment',
@@ -2271,8 +2271,8 @@ export const generateProtectedEnvironmentPDF = ({
 
   y = writeRule(doc, y, pageWidth);
 
-  // ── Section II — Marginal Employment Analysis ───────────────────────────
-  y = writeSectionHeader(doc, 'Section II — Marginal Employment Analysis (Income Pathway)', y, pageWidth);
+  // ── Section II - Marginal Employment Analysis ───────────────────────────
+  y = writeSectionHeader(doc, 'Section II - Marginal Employment Analysis (Income Pathway)', y, pageWidth);
 
   doc.setFontSize(8);
   doc.setTextColor(80);
@@ -2304,16 +2304,16 @@ export const generateProtectedEnvironmentPDF = ({
   if (marginalAnalysis.state === 'below-threshold') {
     y = writeField(
         doc, 'Finding',
-        'Income at or below threshold — supports marginal employment under §4.16(a) income pathway.',
+        'Income at or below threshold - supports marginal employment under §4.16(a) income pathway.',
         margin, y, contentWidth
     );
   } else if (marginalAnalysis.state === 'above-threshold') {
-    let aboveText = 'Income exceeds threshold. Income pathway alone does not establish marginal employment — protected-environment pathway (see Section III) may still apply.';
+    let aboveText = 'Income exceeds threshold. Income pathway alone does not establish marginal employment - protected-environment pathway (see Section III) may still apply.';
     if (marginalAnalysis.monthsOverThreshold !== null && marginalAnalysis.monthsOverThreshold !== undefined) {
       aboveText += ` Months above threshold: ${marginalAnalysis.monthsOverThreshold}.`;
     }
     if (marginalAnalysis.pastReviewWindow) {
-      aboveText += ' *** Past 12-month review window — VA Form 21-4140 may have been issued.';
+      aboveText += ' *** Past 12-month review window - VA Form 21-4140 may have been issued.';
     } else if (marginalAnalysis.nearReviewWindow) {
       aboveText += ' Approaching 12-month review window.';
     }
@@ -2322,8 +2322,8 @@ export const generateProtectedEnvironmentPDF = ({
 
   y = writeRule(doc, y, pageWidth);
 
-  // ── Section III — Protected Environment Analysis ────────────────────────
-  y = writeSectionHeader(doc, 'Section III — Protected Environment Analysis (Facts-Found)', y, pageWidth);
+  // ── Section III - Protected Environment Analysis ────────────────────────
+  y = writeSectionHeader(doc, 'Section III - Protected Environment Analysis (Facts-Found)', y, pageWidth);
 
   doc.setFontSize(8);
   doc.setTextColor(80);
@@ -2371,7 +2371,7 @@ export const generateProtectedEnvironmentPDF = ({
     y += 2;
   }
 
-  // Non-qualifying indicators (if user checked any — for transparency)
+  // Non-qualifying indicators (if user checked any - for transparency)
   const selectedNonQualifyingIds = Array.isArray(employmentStatus.accommodations)
       ? employmentStatus.accommodations.filter(id =>
           nonQualifyingIndicators.some(n => n.id === id)
@@ -2428,8 +2428,8 @@ export const generateProtectedEnvironmentPDF = ({
 
   y = writeRule(doc, y, pageWidth);
 
-  // ── Section IV — Evidence Collected & Gaps ──────────────────────────────
-  y = writeSectionHeader(doc, 'Section IV — Evidence Collected & Gaps', y, pageWidth);
+  // ── Section IV - Evidence Collected & Gaps ──────────────────────────────
+  y = writeSectionHeader(doc, 'Section IV - Evidence Collected & Gaps', y, pageWidth);
 
   const evidence = employmentStatus.evidence || {};
   const evidenceCategories = [
@@ -2473,10 +2473,10 @@ export const generateProtectedEnvironmentPDF = ({
   doc.setFont(undefined, 'normal');
   y += noteWrapped.length * 4 + 3;
 
-  // ── Section V — Veteran's Notes ─────────────────────────────────────────
+  // ── Section V - Veteran's Notes ─────────────────────────────────────────
   if (employmentStatus.notes && employmentStatus.notes.trim()) {
     y = writeRule(doc, y, pageWidth);
-    y = writeSectionHeader(doc, "Section V — Veteran's Notes", y, pageWidth);
+    y = writeSectionHeader(doc, "Section V - Veteran's Notes", y, pageWidth);
     y = writeField(doc, 'Additional Context', employmentStatus.notes, margin, y, contentWidth);
   }
 
@@ -2523,7 +2523,7 @@ export const generate8940WorksheetPDF = (worksheet, veteranName = 'Veteran') => 
   doc.setFontSize(18);
   doc.setTextColor(30, 58, 138);
   doc.setFont(undefined, 'bold');
-  doc.text('VA Form 21-8940 — Pre-Filing Worksheet', margin, y);
+  doc.text('VA Form 21-8940 - Pre-Filing Worksheet', margin, y);
   y += 8;
 
   doc.setFontSize(9);
@@ -2531,7 +2531,7 @@ export const generate8940WorksheetPDF = (worksheet, veteranName = 'Veteran') => 
   doc.setTextColor(80);
   doc.text('Veteran\'s Application for Increased Compensation Based on Unemployability', margin, y);
   y += 5;
-  doc.text('This is a personal worksheet only — it does not constitute a VA filing.', margin, y);
+  doc.text('This is a personal worksheet only - it does not constitute a VA filing.', margin, y);
   y += 5;
   doc.text('Review all information with your VSO before submitting to VA.', margin, y);
   y += 8;
@@ -2571,8 +2571,8 @@ export const generate8940WorksheetPDF = (worksheet, veteranName = 'Veteran') => 
   );
   y += 20;
 
-  // ── Section I — Occupation & Education ──────────────────────────────────
-  y = writeSectionHeader(doc, 'Section I — Occupation & Education', y, pageWidth);
+  // ── Section I - Occupation & Education ──────────────────────────────────
+  y = writeSectionHeader(doc, 'Section I - Occupation & Education', y, pageWidth);
 
   y = writeField(doc, 'Usual Occupation', worksheet.usualOccupation, margin, y, contentWidth);
   y = writeField(
@@ -2585,8 +2585,8 @@ export const generate8940WorksheetPDF = (worksheet, veteranName = 'Veteran') => 
 
   y = writeRule(doc, y, pageWidth);
 
-  // ── Section II — Last Full-Time Employment ───────────────────────────────
-  y = writeSectionHeader(doc, 'Section II — Last Full-Time Employment', y, pageWidth);
+  // ── Section II - Last Full-Time Employment ───────────────────────────────
+  y = writeSectionHeader(doc, 'Section II - Last Full-Time Employment', y, pageWidth);
 
   const lastDateDisplay = worksheet.lastFullTimeDate
       ? new Date(worksheet.lastFullTimeDate + 'T00:00:00').toLocaleDateString('en-US', {
@@ -2599,8 +2599,8 @@ export const generate8940WorksheetPDF = (worksheet, veteranName = 'Veteran') => 
 
   y = writeRule(doc, y, pageWidth);
 
-  // ── Section III — Employment History ────────────────────────────────────
-  y = writeSectionHeader(doc, 'Section III — Employment History (Last 5 Employers)', y, pageWidth);
+  // ── Section III - Employment History ────────────────────────────────────
+  y = writeSectionHeader(doc, 'Section III - Employment History (Last 5 Employers)', y, pageWidth);
 
   const employers = worksheet.employmentHistory || [];
 
@@ -2657,8 +2657,8 @@ export const generate8940WorksheetPDF = (worksheet, veteranName = 'Veteran') => 
 
   y = writeRule(doc, y, pageWidth);
 
-  // ── Section IV — How Disabilities Affect Employment ──────────────────────
-  y = writeSectionHeader(doc, 'Section IV — How Disabilities Affect Employment', y, pageWidth);
+  // ── Section IV - How Disabilities Affect Employment ──────────────────────
+  y = writeSectionHeader(doc, 'Section IV - How Disabilities Affect Employment', y, pageWidth);
 
   y = writeField(doc, 'SC Conditions That Prevent or Limit Employment', worksheet.conditionsPreventingWork, margin, y, contentWidth);
   y = writeField(doc, 'How These Conditions Specifically Affect Ability to Work', worksheet.howConditionsAffect, margin, y, contentWidth);
@@ -2695,7 +2695,7 @@ export const generate8940WorksheetPDF = (worksheet, veteranName = 'Veteran') => 
         { align: 'right' }
     );
     doc.text(
-        "Doc Bear's Symptom Vault — 21-8940 Worksheet",
+        "Doc Bear's Symptom Vault: 21-8940 Worksheet",
         margin,
         doc.internal.pageSize.height - 8
     );
@@ -2918,7 +2918,7 @@ export const generateCSV = (dateRange = 'all', options = { includeAppointments: 
             log.duration ? formatDuration(log.duration) : '',
             log.timeOfDay ? formatTimeOfDay(log.timeOfDay) : '',
             log.weather ? formatWeather(log.weather) : '',
-            // Stress level: emit raw number if saved (including default 5 — CSV is
+            // Stress level: emit raw number if saved (including default 5 - CSV is
             // for analysis, where users can filter on values themselves). Empty
             // string for legacy logs without the field.
             (log.stressLevel !== undefined && log.stressLevel !== null) ? log.stressLevel : '',
@@ -4096,7 +4096,7 @@ const analyzeAllConditions = (logs, options = {}) => {
           if (hasValidRating) {
               // Debug: check if condition field is missing
               if (!result.condition) {
-                console.warn(`⚠️ Analysis function for '${conditionId}' is missing 'condition' field in return value`);
+                console.warn(`*** Analysis function for '${conditionId}' is missing 'condition' field in return value`);
               }
 
               analyses.push({
@@ -4494,7 +4494,7 @@ const generateRatingEvidenceSummaryPage = (doc, ratingAnalyses, pageWidth) => {
 };
 
 // ============================================================================
-// 21-8940 WORKSHEET SECTION — appended to VA Claim Package when data exists
+// 21-8940 WORKSHEET SECTION - appended to VA Claim Package when data exists
 // ============================================================================
 /**
  * Appends the 21-8940 worksheet as a dedicated section inside an existing
@@ -4528,7 +4528,7 @@ const appendWorksheetSection = (doc, pageWidth, sectionNum, veteranName) => {
   doc.setFontSize(9);
   doc.setTextColor(100);
   doc.text(
-      "Veteran's Application for Increased Compensation Based on Unemployability — Pre-Filing Worksheet",
+      "Veteran's Application for Increased Compensation Based on Unemployability - Pre-Filing Worksheet",
       margin, y
   );
   y += 5;
@@ -4554,13 +4554,13 @@ const appendWorksheetSection = (doc, pageWidth, sectionNum, veteranName) => {
   doc.setFontSize(8);
   doc.setTextColor(120, 53, 15);
   doc.setFont(undefined, 'bold');
-  doc.text('*** NOT AN OFFICIAL VA FORM — Review with your VSO before filing ***', margin + 3, y + 6.5);
+  doc.text('*** NOT AN OFFICIAL VA FORM - Review with your VSO before filing ***', margin + 3, y + 6.5);
   doc.setFont(undefined, 'normal');
   doc.setTextColor(30, 30, 30);
   y += 16;
 
-  // ── Section I — Occupation & Education ──────────────────────────────────
-  y = writeSectionHeader(doc, 'Section I — Occupation & Education', y, pageWidth);
+  // ── Section I - Occupation & Education ──────────────────────────────────
+  y = writeSectionHeader(doc, 'Section I - Occupation & Education', y, pageWidth);
   y = writeField(doc, 'Usual Occupation', worksheet.usualOccupation, margin, y, contentWidth);
   y = writeField(
       doc,
@@ -4571,8 +4571,8 @@ const appendWorksheetSection = (doc, pageWidth, sectionNum, veteranName) => {
   y = writeField(doc, 'Vocational Training / Certifications', worksheet.vocationalTraining, margin, y, contentWidth);
   y = writeRule(doc, y, pageWidth);
 
-  // ── Section II — Last Full-Time Employment ───────────────────────────────
-  y = writeSectionHeader(doc, 'Section II — Last Full-Time Employment', y, pageWidth);
+  // ── Section II - Last Full-Time Employment ───────────────────────────────
+  y = writeSectionHeader(doc, 'Section II - Last Full-Time Employment', y, pageWidth);
 
   const lastDateDisplay = worksheet.lastFullTimeDate
       ? new Date(worksheet.lastFullTimeDate + 'T00:00:00').toLocaleDateString('en-US', {
@@ -4584,8 +4584,8 @@ const appendWorksheetSection = (doc, pageWidth, sectionNum, veteranName) => {
   y = writeField(doc, 'Reason Full-Time Employment Ended', worksheet.lastFullTimeReason, margin, y, contentWidth);
   y = writeRule(doc, y, pageWidth);
 
-  // ── Section III — Employment History ────────────────────────────────────
-  y = writeSectionHeader(doc, 'Section III — Employment History (Last 5 Employers)', y, pageWidth);
+  // ── Section III - Employment History ────────────────────────────────────
+  y = writeSectionHeader(doc, 'Section III - Employment History (Last 5 Employers)', y, pageWidth);
 
   const employers = worksheet.employmentHistory || [];
 
@@ -4643,8 +4643,8 @@ const appendWorksheetSection = (doc, pageWidth, sectionNum, veteranName) => {
 
   y = writeRule(doc, y, pageWidth);
 
-  // ── Section IV — How Disabilities Affect Employment ──────────────────────
-  y = writeSectionHeader(doc, 'Section IV — How Disabilities Affect Employment', y, pageWidth);
+  // ── Section IV - How Disabilities Affect Employment ──────────────────────
+  y = writeSectionHeader(doc, 'Section IV - How Disabilities Affect Employment', y, pageWidth);
   y = writeField(doc, 'SC Conditions That Prevent or Limit Employment', worksheet.conditionsPreventingWork, margin, y, contentWidth);
   y = writeField(doc, 'How These Conditions Specifically Affect Ability to Work', worksheet.howConditionsAffect, margin, y, contentWidth);
   y = writeField(doc, 'Special Accommodations Required or Received', worksheet.specialAccommodations, margin, y, contentWidth);
@@ -4794,7 +4794,7 @@ export const generateVAClaimPackagePDF = async (dateRange = 'all', options = {})
     tocSectionNum++;
   }
 
-  // Weight tracking — gated on weight measurements existing
+  // Weight tracking - gated on weight measurements existing
   const tocWeightMeasurements = measurements.filter(
       m => m.measurementType === 'weight' && m.values?.weight
   );
@@ -4803,14 +4803,14 @@ export const generateVAClaimPackagePDF = async (dateRange = 'all', options = {})
     tocSectionNum++;
   }
 
-  // Mental health assessments — gated on scores existing
+  // Mental health assessments - gated on scores existing
   const tocMentalHealthScores = getMentalHealthScores();
   if (tocMentalHealthScores.length > 0) {
     tocItems.push(`${tocSectionNum}. Mental Health Assessments`);
     tocSectionNum++;
   }
 
-  // 21-8940 Worksheet — only when VA Claim format, option enabled, and data exists
+  // 21-8940 Worksheet - only when VA Claim format, option enabled, and data exists
   if (options.include8940Worksheet) {
     const tocWorksheet = get8940Worksheet();
     const worksheetHasData = tocWorksheet.usualOccupation ||
@@ -4881,7 +4881,7 @@ export const generateVAClaimPackagePDF = async (dateRange = 'all', options = {})
         if (log.duration) universalInfo.push(formatDuration(log.duration));
         if (log.timeOfDay) universalInfo.push(formatTimeOfDay(log.timeOfDay));
         if (log.weather) universalInfo.push(formatWeather(log.weather));
-        // Stress level — only show if not the default 5 (avoids noise on logs
+        // Stress level - only show if not the default 5 (avoids noise on logs
         // where the slider was untouched). Format: "Stress: 8/10".
         if (log.stressLevel !== undefined && log.stressLevel !== null && log.stressLevel !== 5) {
           universalInfo.push(`Stress: ${log.stressLevel}/10`);
@@ -4909,7 +4909,7 @@ export const generateVAClaimPackagePDF = async (dateRange = 'all', options = {})
         // Phase 11: Add respiratory details
         if (log.respiratoryData) {
           const respInfo = [];
-          if (log.respiratoryData.spo2) respInfo.push(`SpO₂: ${log.respiratoryData.spo2}%`);
+          if (log.respiratoryData.spo2) respInfo.push(`SpO2: ${log.respiratoryData.spo2}%`);
           if (log.respiratoryData.peakFlow) respInfo.push(`Peak Flow: ${log.respiratoryData.peakFlow} L/min`);
           if (log.respiratoryData.rescueInhalerUsed) respInfo.push(`RESCUE INHALER${log.respiratoryData.inhalerPuffs ? ` (${log.respiratoryData.inhalerPuffs} puffs)` : ''}`);
           if (log.respiratoryData.activityTrigger) respInfo.push(`Trigger: ${log.respiratoryData.activityTrigger}`);
@@ -5474,7 +5474,7 @@ export const generateVAClaimPackagePDF = async (dateRange = 'all', options = {})
           const campylobacterInfo = [];
           const cd = log.campylobacterData;
 
-          if (cd.guillainBarre) campylobacterInfo.push('⚠️ GUILLAIN-BARRÉ SYNDROME');
+          if (cd.guillainBarre) campylobacterInfo.push('*** GUILLAIN-BARRÉ SYNDROME');
           if (cd.reactiveArthritis) campylobacterInfo.push('Reactive Arthritis');
           if (cd.chronicIBS) campylobacterInfo.push('Post-Infectious IBS');
           if (cd.stoolCultureConfirmed) campylobacterInfo.push('Stool Culture +');
@@ -5490,7 +5490,7 @@ export const generateVAClaimPackagePDF = async (dateRange = 'all', options = {})
           const qFeverInfo = [];
           const qd = log.qFeverData;
 
-          if (qd.endocarditis) qFeverInfo.push('⚠️ Q FEVER ENDOCARDITIS');
+          if (qd.endocarditis) qFeverInfo.push('*** Q FEVER ENDOCARDITIS');
           if (qd.chronicQFever) qFeverInfo.push('Chronic Q Fever (>6mo)');
           if (qd.fatigueSyndrome) qFeverInfo.push('Q Fever Fatigue Syndrome');
           if (qd.phaseIAntibodies) qFeverInfo.push('Phase I Ab+ (>1:800)');
@@ -5706,7 +5706,7 @@ export const generateVAClaimPackagePDF = async (dateRange = 'all', options = {})
           }
 
           if (ad.episodeDuration) anxietyInfo.push(`Duration: ${ad.episodeDuration}`);
-          if (ad.wasPanicAttack) anxietyInfo.push('⚠️ PANIC ATTACK');
+          if (ad.wasPanicAttack) anxietyInfo.push('*** PANIC ATTACK');
           if (ad.trigger) anxietyInfo.push(`Trigger: ${ad.trigger}`);
 
           if (anxietyInfo.length > 0) {
@@ -5736,8 +5736,8 @@ export const generateVAClaimPackagePDF = async (dateRange = 'all', options = {})
           const physicalSymptoms = [
             dd.insomnia && 'Insomnia',
             dd.hypersomnia && 'Hypersomnia',
-            dd.decreasedAppetite && '↓Appetite',
-            dd.increasedAppetite && '↑Appetite',
+            dd.decreasedAppetite && 'Decreased Appetite',
+            dd.increasedAppetite && 'Increased Appetite',
             dd.fatigue && 'Fatigue',
             dd.psychomotorAgitation && 'Agitation',
             dd.psychomotorRetardation && 'Slowed'
@@ -5769,7 +5769,7 @@ export const generateVAClaimPackagePDF = async (dateRange = 'all', options = {})
             depressionInfo.push(`Impact: ${impact.join(', ')}`);
           }
 
-          if (dd.suicidalIdeation) depressionInfo.push('⚠️ SUICIDAL IDEATION');
+          if (dd.suicidalIdeation) depressionInfo.push('*** SUICIDAL IDEATION');
           if (dd.trigger) depressionInfo.push(`Trigger: ${dd.trigger}`);
           if (dd.episodeContext) depressionInfo.push(`Context: ${dd.episodeContext}`);
 
@@ -5797,12 +5797,12 @@ export const generateVAClaimPackagePDF = async (dateRange = 'all', options = {})
           const manicSymptoms = [
             bd.elevatedMood && 'Elevated mood',
             bd.irritableMood && 'Irritable',
-            bd.increasedEnergy && '↑Energy',
-            bd.decreasedSleep && '↓Sleep need',
+            bd.increasedEnergy && 'Increased Energy',
+            bd.decreasedSleep && 'Decreased Sleep need',
             bd.moreTalkative && 'Talkative',
             bd.racingThoughts && 'Racing thoughts',
             bd.distractibility && 'Distractible',
-            bd.increasedActivity && '↑Activity',
+            bd.increasedActivity && 'Increased Activity',
             bd.riskyBehavior && 'Risky behavior',
             bd.grandiosity && 'Grandiose'
           ].filter(Boolean);
@@ -5831,7 +5831,7 @@ export const generateVAClaimPackagePDF = async (dateRange = 'all', options = {})
             bd.unableToWork && 'Unable to work',
             bd.relationshipConflicts && 'Relationship conflicts',
             bd.legalProblems && 'Legal problems',
-            bd.hospitalizationRequired && '⚠️ HOSPITALIZATION REQUIRED'
+            bd.hospitalizationRequired && '*** HOSPITALIZATION REQUIRED'
           ].filter(Boolean);
           if (impact.length > 0) {
             bipolarInfo.push(`Impact: ${impact.join(', ')}`);
@@ -6245,8 +6245,8 @@ export const generateVAClaimPackagePDF = async (dateRange = 'all', options = {})
           if (mg.ptosisPresent) mgInfo.push(`Ptosis${mg.ptosisSide ? ` (${mg.ptosisSide})` : ''}`);
           if (mg.doubleVision) mgInfo.push('Double vision');
           if (mg.canRaiseArms) mgInfo.push(`Arm hold: ${mg.canRaiseArms}s`);
-          if (mg.breathingDifficulty) mgInfo.push('⚠️ Breathing difficulty');
-          if (mg.emergencySigns) mgInfo.push('🚨 Crisis signs');
+          if (mg.breathingDifficulty) mgInfo.push('*** Breathing difficulty');
+          if (mg.emergencySigns) mgInfo.push('*** Crisis signs');
           if (mg.onPyridostigmine) mgInfo.push('On Mestinon');
 
           if (mgInfo.length > 0) {
@@ -6699,7 +6699,7 @@ export const generateVAClaimPackagePDF = async (dateRange = 'all', options = {})
     }
 
   // ========== WEIGHT TRACKER SUMMARY ==========
-  // Dedicated weight section — separate from generic measurements block
+  // Dedicated weight section - separate from generic measurements block
   // Provides goal progress, BMI, trend analysis, and full history for C&P documentation
   const weightMeasurements = measurements
   .filter(m => m.measurementType === 'weight' && m.values?.weight)
@@ -6760,7 +6760,7 @@ export const generateVAClaimPackagePDF = async (dateRange = 'all', options = {})
       ['Current Weight',  `${currentWeight} lbs`,           'as of ' + new Date(latestEntry.timestamp).toLocaleDateString()],
       ['Best Weight',     `${bestWeight} lbs`,               'over documented period'],
       ['Total Change',    `${totalChange > 0 ? '+' : ''}${totalChange} lbs`, totalChange < 0 ? 'lost' : totalChange > 0 ? 'gained' : 'no change'],
-      ['Current BMI',     bmiStr !== 'N/A' ? `${bmiStr} (${bmiLabel})` : 'N/A', bmiLabel ? `38 CFR §4.73 — ${bmiLabel}` : ''],
+      ['Current BMI',     bmiStr !== 'N/A' ? `${bmiStr} (${bmiLabel})` : 'N/A', bmiLabel ? `38 CFR §4.73 - ${bmiLabel}` : ''],
       ['30-Day Rate',     rate30 !== null ? `${rate30 > 0 ? '+' : ''}${rate30} lbs/wk` : 'Insufficient data', '30-day average'],
     ];
 
@@ -6909,7 +6909,7 @@ export const generateVAClaimPackagePDF = async (dateRange = 'all', options = {})
         // Group by measurement type
         const measurementsByType = {};
         measurements.forEach(m => {
-          // Weight has its own dedicated section (7. WEIGHT TRACKING SUMMARY) — skip here
+          // Weight has its own dedicated section (7. WEIGHT TRACKING SUMMARY) - skip here
           if (m.measurementType === 'weight') return;
           if (!measurementsByType[m.measurementType]) {
             measurementsByType[m.measurementType] = [];
@@ -7045,9 +7045,9 @@ export const generateVAClaimPackagePDF = async (dateRange = 'all', options = {})
 
       return [
         date,
-        s.gad7 !== null ? `${s.gad7}/21 — ${gadSev}` : '—',
-        s.phq9 !== null ? `${s.phq9}/27 — ${phqSev}` : '—',
-        s.pcl5 !== null ? `${s.pcl5}/80 — ${pclSev}` : '—',
+        s.gad7 !== null ? `${s.gad7}/21 - ${gadSev}` : '—',
+        s.phq9 !== null ? `${s.phq9}/27 - ${phqSev}` : '—',
+        s.pcl5 !== null ? `${s.pcl5}/80 - ${pclSev}` : '—',
         s.clinician || '—',
       ];
     });

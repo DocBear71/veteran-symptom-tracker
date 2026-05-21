@@ -7,4 +7,12 @@ export default defineConfig({
     react(),
     tailwindcss()
   ],
+  test: {
+    // Run tests in Node environment (no browser needed for pure functions)
+    environment: 'node',
+    // Glob pattern — finds any *.test.js file anywhere in src/
+    include: ['src/**/*.test.js'],
+    // Reporter: verbose shows individual test names
+    reporter: 'verbose',
+  },
 })
