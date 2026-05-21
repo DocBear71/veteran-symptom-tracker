@@ -34,8 +34,9 @@
     "eslint-plugin-react-refresh": "^0.4.24",
     "eslint-plugin-unused-imports": "^4.4.1",
     "globals": "^16.5.0",
+    "react-is": "^19.2.6",
     "tailwindcss": "^4.1.17",
-    "vite": "8.0.5",
+    "vite": "^7.3.2",
     "vitest": "^3.2.4"
   }
 }

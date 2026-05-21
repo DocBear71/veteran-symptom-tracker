@@ -2361,7 +2361,7 @@ const EditLogModal = ({log, isOpen, onClose, onSaved}) => {
                             return (
                                 <div key={med.id}>
                                   <label
-                                      className={`flex items-center gap-2 p-2 rounded-lg border cursor-pointer ${
+                                      className={`flex items-start gap-2 p-2 rounded-lg border cursor-pointer ${
                                           isSelected
                                               ?
                                               'bg-teal-100 dark:bg-teal-900/50 border-teal-400 dark:border-teal-600'
@@ -2383,7 +2383,9 @@ const EditLogModal = ({log, isOpen, onClose, onSaved}) => {
                                            }}
                                            className="w-4 h-4 text-teal-600 rounded"/>
                                     <span
-                                        className="text-sm text-gray-700 dark:text-gray-300">{med.name} ({formatDosage(med)})</span>
+                                        className="text-sm text-gray-700 dark:text-gray-300 text-left">
+                                      {med.name} ({formatDosage(med)})
+                                    </span>
                                   </label>
                                   {/* Inline effectiveness & side effects for this medication */}
                                   {isSelected && (

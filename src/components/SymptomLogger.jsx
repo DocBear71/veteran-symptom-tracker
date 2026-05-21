@@ -3351,7 +3351,7 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed, onNavigate }) =
                         return (
                             <div key={med.id}>
                               <label
-                                  className={`flex items-center gap-2 p-2 rounded-lg border cursor-pointer transition-colors ${
+                                  className={`flex items-start gap-2 p-2 rounded-lg border cursor-pointer transition-colors ${
                                       isSelected
                                           ? 'bg-teal-100 dark:bg-teal-900/50 border-teal-400 dark:border-teal-600'
                                           : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 hover:border-teal-300 dark:hover:border-teal-600'
@@ -3373,7 +3373,7 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed, onNavigate }) =
                                     }}
                                     className="w-4 h-4 text-teal-600 rounded"
                                 />
-                                <span className="text-sm text-gray-700 dark:text-gray-300">
+                                <span className="text-sm text-gray-700 dark:text-gray-300 text-left">
                                 {med.name} ({med.dosage})
                               </span>
                               </label>
