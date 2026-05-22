@@ -1002,6 +1002,10 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed, onNavigate }) =
     'bulimia-hospitalization',
   ].includes(selectedSymptom);
 
+  // GERD symptoms must be excluded even when they contain dental keywords
+  // e.g., 'gerd-difficulty-swallowing' contains 'swallowing' but is not a dental symptom
+  const isGERDSymptom = selectedSymptom?.startsWith('gerd-');
+
   // Phase 7: Dental/Oral condition detection
   // Exclude skin conditions that have 'oral' in name (e.g., acne-oral-antibiotics, hh-oral-medication)
   const isDentalOralRelated = !isSkinConditionSymptom && !isEyeConditionSymptom && !isEarConditionSymptom && (

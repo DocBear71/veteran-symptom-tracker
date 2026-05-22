@@ -800,6 +800,9 @@ const EditLogModal = ({log, isOpen, onClose, onSaved}) => {
         ].includes(log?.symptomId) ||
             log?.ntmData;
 
+  // Exclude GERD symptoms that contain dental keywords (e.g., gerd-difficulty-swallowing)
+  const isGERDSymptomELM = log?.symptomId?.startsWith('gerd-');
+
         // Phase 7: Dental/Oral detection
         // Exclude skin conditions that have 'oral' in name (e.g., acne-oral-antibiotics, hh-oral-medication)
         const isDentalOralRelated = !isSkinConditionSymptomELM && !isEyeConditionSymptomELM && !isEarConditionSymptomELM && (

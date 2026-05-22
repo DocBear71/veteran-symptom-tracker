@@ -2691,78 +2691,160 @@ export const analyzeIBSLogs = (logs, options = {}) => {
   let supportedRating = 0;
   const ratingRationale = [];
 
-  // Count episodes by type
-  const diarrheaCount = ibsSymptoms.filter(s => getLogSymptomId(s) === 'ibs-diarrhea').length;
-  const constipationCount = ibsSymptoms.filter(s => getLogSymptomId(s) === 'ibs-constipation').length;
-  const painCount = ibsSymptoms.filter(s => getLogSymptomId(s) === 'ibs-pain').length;
-  const bloatingCount = ibsSymptoms.filter(s => getLogSymptomId(s) === 'ibs-bloating').length;
-  const urgencyCount = ibsSymptoms.filter(s => getLogSymptomId(s) === 'ibs-urgency').length;
+  // ── Pattern analysis ─────────────────────────────────────────────────────
+  // Count distinct days affected — the VA cares about how many days per month
+  // the condition interferes with function, not just total episode count.
+  const distinctDays = new Set(
+      ibsSymptoms.map(log => {
+        const d = new Date(log.timestamp);
+        return `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
+      })
+  ).size;
 
-  // Calculate weekly average
-  const weeksInPeriod = evaluationPeriodDays / 7;
+  const dayCoveragePct = evaluationPeriodDays > 0
+      ? (distinctDays / evaluationPeriodDays) * 100
+      : 0;
+
+  // Classify symptom pattern using same tiers as Phase 10 mental health
+  // and Phase 9 peripheral nerve analyzers.
+  // continuous  ≥ 80% of days affected
+  // persistent  50–79%
+  // frequent    25–49%
+  // intermittent 10–24%
+  // sparse       < 10%
+  let symptomPattern;
+  if (evaluationPeriodDays === 0 || distinctDays === 0) {
+    symptomPattern = 'sparse';
+  } else if (dayCoveragePct >= 80) {
+    symptomPattern = 'continuous';
+  } else if (dayCoveragePct >= 50) {
+    symptomPattern = 'persistent';
+  } else if (dayCoveragePct >= 25) {
+    symptomPattern = 'frequent';
+  } else if (dayCoveragePct >= 10) {
+    symptomPattern = 'intermittent';
+  } else {
+    symptomPattern = 'sparse';
+  }
+
+  // ── Symptom type counts ───────────────────────────────────────────────────
+  const diarrheaCount    = ibsSymptoms.filter(s => getLogSymptomId(s) === 'ibs-diarrhea').length;
+  const constipationCount = ibsSymptoms.filter(s => getLogSymptomId(s) === 'ibs-constipation').length;
+  const painCount        = ibsSymptoms.filter(s => getLogSymptomId(s) === 'ibs-pain').length;
+  const bloatingCount    = ibsSymptoms.filter(s => getLogSymptomId(s) === 'ibs-bloating').length;
+  const urgencyCount     = ibsSymptoms.filter(s => getLogSymptomId(s) === 'ibs-urgency').length;
+
+  const weeksInPeriod  = evaluationPeriodDays / 7;
   const episodesPerWeek = ibsSymptoms.length / weeksInPeriod;
 
+  // Alternating pattern (diarrhea + constipation) is the classic IBS marker
+  const hasAlternating = diarrheaCount > 0 && constipationCount > 0;
+
+  // ── Evidence summary ──────────────────────────────────────────────────────
   evidence.push(`${ibsSymptoms.length} IBS episodes logged over ${evaluationPeriodDays} days`);
+  evidence.push(`${distinctDays} distinct days affected (${dayCoveragePct.toFixed(0)}% of evaluation period)`);
+  evidence.push(`Symptom pattern: ${symptomPattern}`);
   evidence.push(`Average ${episodesPerWeek.toFixed(1)} episodes per week`);
 
-  if (diarrheaCount > 0) evidence.push(`${diarrheaCount} diarrhea episodes`);
+  if (diarrheaCount > 0)    evidence.push(`${diarrheaCount} diarrhea episodes`);
   if (constipationCount > 0) evidence.push(`${constipationCount} constipation episodes`);
-  if (painCount > 0) evidence.push(`${painCount} abdominal pain episodes`);
+  if (painCount > 0)         evidence.push(`${painCount} abdominal pain/distress episodes`);
+  if (urgencyCount > 0)      evidence.push(`${urgencyCount} urgency episodes`);
+  if (hasAlternating)        evidence.push('Alternating diarrhea/constipation pattern documented');
 
-  // Check for alternating pattern
-  const hasAlternating = diarrheaCount > 0 && constipationCount > 0;
-  if (hasAlternating) {
-    evidence.push('Alternating diarrhea and constipation pattern documented');
-  }
+  // ── Rating cascade ────────────────────────────────────────────────────────
+  // DC 7319 — Irritable Bowel Syndrome
+  // 30%: Diarrhea, or alternating diarrhea and constipation, with more or less
+  //      constant abdominal distress
+  // 10%: Frequent episodes of bowel disturbance with abdominal distress
+  //  0%: Mild; disturbances of bowel function with occasional episodes of
+  //      abdominal distress
+  //
+  // Pattern-aware interpretation:
+  //   continuous/persistent + pain → strong support for 30%
+  //   frequent + any diarrhea/alternating → supports 30% if pain present
+  //   intermittent with some pain → supports 10%
+  //   sparse → 0% or insufficient data
 
-  // Determine rating
-  // 30%: Frequent episodes (3+ per week) with diarrhea/alternating + distress
-  if (episodesPerWeek >= 3 && (diarrheaCount > 0 || hasAlternating) && painCount > 0) {
+  if (
+      (symptomPattern === 'continuous' || symptomPattern === 'persistent') &&
+      painCount > 0 &&
+      (diarrheaCount > 0 || hasAlternating)
+  ) {
+    // "More or less constant abdominal distress" — the CFR language maps directly
+    // to continuous/persistent pattern with documented pain
     supportedRating = '30';
     ratingRationale.push(
-        `${episodesPerWeek.toFixed(1)} episodes per week (meets "frequent" threshold)`,
-        `${hasAlternating ? 'Alternating diarrhea/constipation' : 'Diarrhea episodes'} documented`,
+        `${symptomPattern === 'continuous' ? 'Continuous' : 'Persistent'} symptom pattern (${dayCoveragePct.toFixed(0)}% of days affected)`,
+        hasAlternating
+            ? 'Alternating diarrhea and constipation pattern documented'
+            : `${diarrheaCount} diarrhea episodes documented`,
         `Abdominal distress logged ${painCount} times`,
-        'Meets criteria for severe IBS with frequent episodes'
+        'Pattern consistent with "more or less constant abdominal distress" per DC 7319'
     );
-  }
-  // 10%: Moderate symptoms, occasional episodes (1+ per week)
-  else if (episodesPerWeek >= 1) {
+  } else if (
+      symptomPattern === 'frequent' &&
+      painCount > 0 &&
+      (diarrheaCount > 0 || hasAlternating)
+  ) {
+    // Frequent pattern with pain and diarrhea — borderline 30%, strong 10%
+    supportedRating = '30';
+    ratingRationale.push(
+        `Frequent symptom pattern (${dayCoveragePct.toFixed(0)}% of days affected)`,
+        hasAlternating
+            ? 'Alternating diarrhea/constipation documented'
+            : `${diarrheaCount} diarrhea episodes documented`,
+        `${painCount} abdominal pain episodes logged`,
+        'Frequency and pain combination supports 30% consideration'
+    );
+    gaps.push('Increase logging density to strengthen "constant distress" documentation for 30%');
+  } else if (
+      (symptomPattern === 'frequent' || symptomPattern === 'intermittent') &&
+      (diarrheaCount > 0 || constipationCount > 0)
+  ) {
+    // Frequent episodes of bowel disturbance — the 10% language
+    supportedRating = '10';
+    ratingRationale.push(
+        `${symptomPattern === 'frequent' ? 'Frequent' : 'Intermittent'} bowel disturbance pattern (${dayCoveragePct.toFixed(0)}% of days)`,
+        `${diarrheaCount + constipationCount} bowel disturbance episodes logged`,
+        'Meets criteria for "frequent episodes of bowel disturbance with abdominal distress"'
+    );
+    if (symptomPattern === 'frequent') {
+      gaps.push('Document abdominal pain with each episode to build toward 30%');
+    }
+  } else if (episodesPerWeek >= 1 && ibsSymptoms.length >= 4) {
+    // Fallback for sparse pattern with enough absolute episodes
     supportedRating = '10';
     ratingRationale.push(
         `${episodesPerWeek.toFixed(1)} episodes per week`,
-        'Meets criteria for moderate IBS with occasional episodes',
-        'Bowel disturbance pattern established'
+        'Bowel disturbance pattern documented',
+        'Meets minimum frequency for 10% rating consideration'
     );
-
-    if (episodesPerWeek >= 2) {
-      gaps.push(`Approaching 30% threshold - log more associated symptoms (pain, urgency)`);
-    }
-  }
-  else {
+    gaps.push('Log symptoms more consistently — pattern is too sparse for higher rating');
+  } else {
     supportedRating = '0';
     ratingRationale.push(
-        `${episodesPerWeek.toFixed(1)} episodes per week`,
-        'Less than once weekly - may be diet-controlled',
-        'Does not meet frequency for service-connected rating'
+        `Sparse symptom pattern (${dayCoveragePct.toFixed(0)}% of days affected)`,
+        'Does not meet frequency threshold for compensable rating',
+        'May represent diet-controlled or well-managed IBS'
     );
   }
 
-  // Documentation gaps
-  if (ibsSymptoms.length < 12) {
-    gaps.push(`Only ${ibsSymptoms.length} episodes logged - aim for 12+ over 90 days for pattern`);
+  // ── Documentation gaps ────────────────────────────────────────────────────
+  if (distinctDays < 10) {
+    gaps.push(`Only ${distinctDays} days documented — log daily when symptomatic to establish pattern`);
   }
-
   if (painCount === 0) {
-    gaps.push('No abdominal pain episodes logged - document distress for higher rating');
+    gaps.push('No abdominal pain/distress logged — document this for higher rating tier');
   }
-
   if (diarrheaCount === 0 && constipationCount === 0) {
-    gaps.push('Log specific diarrhea or constipation episodes, not just pain');
+    gaps.push('Log specific diarrhea or constipation episodes, not just pain or bloating');
   }
-
   if (!hasAlternating && constipationCount === 0 && diarrheaCount > 0) {
-    gaps.push('Consider logging constipation episodes if alternating pattern present');
+    gaps.push('If constipation also occurs, log it — alternating pattern strengthens the claim');
+  }
+  if (urgencyCount === 0 && ibsSymptoms.length > 5) {
+    gaps.push('Document fecal urgency if present — supports functional impairment');
   }
 
   return {
@@ -2773,6 +2855,17 @@ export const analyzeIBSLogs = (logs, options = {}) => {
     ratingRationale,
     evidence,
     gaps,
+    symptomPattern,
+    distinctDays,
+    // metrics: named fields the IBSRatingCard evidence summary reads
+    metrics: {
+      totalLogs: ibsSymptoms.length,
+      diarrheaEpisodes: diarrheaCount,
+      constipationEpisodes: constipationCount,
+      abdominalDistress: painCount,
+      distinctDays,
+      symptomPattern,
+    },
     criteria: IBS_CRITERIA,
     disclaimer: IBS_CRITERIA.disclaimer,
   };
@@ -2804,7 +2897,7 @@ export const analyzeGERDLogs = (logs, options = {}) => {
         'No GERD symptoms logged in evaluation period',
         'Log heartburn (pyrosis) episodes',
         'Document regurgitation frequency',
-        'Track chest pain, difficulty swallowing if present',
+        'Track chest pain or difficulty swallowing if present',
       ],
       criteria: GERD_CRITERIA,
       disclaimer: GERD_CRITERIA.disclaimer,
@@ -2816,87 +2909,145 @@ export const analyzeGERDLogs = (logs, options = {}) => {
   let supportedRating = 0;
   const ratingRationale = [];
 
-  // Count symptoms by type
-  const heartburnCount = gerdSymptoms.filter(s => getLogSymptomId(s) === 'gerd-heartburn').length;
+  // ── Pattern analysis ─────────────────────────────────────────────────────
+  const distinctDays = new Set(
+      gerdSymptoms.map(log => {
+        const d = new Date(log.timestamp);
+        return `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
+      })
+  ).size;
+
+  const dayCoveragePct = evaluationPeriodDays > 0
+      ? (distinctDays / evaluationPeriodDays) * 100
+      : 0;
+
+  let symptomPattern;
+  if (evaluationPeriodDays === 0 || distinctDays === 0) {
+    symptomPattern = 'sparse';
+  } else if (dayCoveragePct >= 80) {
+    symptomPattern = 'continuous';
+  } else if (dayCoveragePct >= 50) {
+    symptomPattern = 'persistent';
+  } else if (dayCoveragePct >= 25) {
+    symptomPattern = 'frequent';
+  } else if (dayCoveragePct >= 10) {
+    symptomPattern = 'intermittent';
+  } else {
+    symptomPattern = 'sparse';
+  }
+
+  // ── Symptom type counts ───────────────────────────────────────────────────
+  const heartburnCount    = gerdSymptoms.filter(s => getLogSymptomId(s) === 'gerd-heartburn').length;
   const regurgitationCount = gerdSymptoms.filter(s => getLogSymptomId(s) === 'gerd-regurgitation').length;
-  const chestPainCount = gerdSymptoms.filter(s => getLogSymptomId(s) === 'gerd-chest-pain').length;
-  const dysphagiaCount = gerdSymptoms.filter(s => getLogSymptomId(s) === 'gerd-difficulty-swallowing').length;
-  const nauseaCount = gerdSymptoms.filter(s => getLogSymptomId(s) === 'gerd-nausea').length;
+  const chestPainCount    = gerdSymptoms.filter(s => getLogSymptomId(s) === 'gerd-chest-pain').length;
+  const dysphagiaCount    = gerdSymptoms.filter(s => getLogSymptomId(s) === 'gerd-difficulty-swallowing').length;
+  const nauseaCount       = gerdSymptoms.filter(s => getLogSymptomId(s) === 'gerd-nausea').length;
 
-  // Count unique symptom types
-  const uniqueSymptoms = new Set(gerdSymptoms.map(s => s.symptomId)).size;
-
-  // Calculate weekly average
+  const uniqueSymptomTypes = new Set(gerdSymptoms.map(s => getLogSymptomId(s))).size;
   const weeksInPeriod = evaluationPeriodDays / 7;
   const episodesPerWeek = gerdSymptoms.length / weeksInPeriod;
 
+  // ── Evidence summary ──────────────────────────────────────────────────────
   evidence.push(`${gerdSymptoms.length} GERD episodes logged over ${evaluationPeriodDays} days`);
-  evidence.push(`Average ${episodesPerWeek.toFixed(1)} episodes per week`);
-  evidence.push(`${uniqueSymptoms} different symptom types documented`);
+  evidence.push(`${distinctDays} distinct days affected (${dayCoveragePct.toFixed(0)}% of evaluation period)`);
+  evidence.push(`Symptom pattern: ${symptomPattern}`);
+  evidence.push(`${uniqueSymptomTypes} distinct symptom types documented`);
 
-  if (heartburnCount > 0) evidence.push(`${heartburnCount} heartburn episodes`);
+  if (heartburnCount > 0)     evidence.push(`${heartburnCount} heartburn (pyrosis) episodes`);
   if (regurgitationCount > 0) evidence.push(`${regurgitationCount} regurgitation episodes`);
-  if (chestPainCount > 0) evidence.push(`${chestPainCount} chest pain episodes`);
-  if (dysphagiaCount > 0) evidence.push(`${dysphagiaCount} difficulty swallowing episodes`);
+  if (chestPainCount > 0)     evidence.push(`${chestPainCount} chest pain episodes`);
+  if (dysphagiaCount > 0)     evidence.push(`${dysphagiaCount} dysphagia (difficulty swallowing) episodes`);
+  if (nauseaCount > 0)        evidence.push(`${nauseaCount} nausea episodes`);
 
-  // Determine rating
-  // 60%: Requires weight loss, bleeding, anemia documentation
-  // (Cannot be determined from symptoms alone)
+  // ── Rating cascade ────────────────────────────────────────────────────────
+  // DC 7346 — Hiatal Hernia / GERD (rated analogously)
+  // 60%: Symptoms of pain, vomiting, material weight loss and hematemesis or
+  //      melena with moderate anemia; or other symptom combinations productive
+  //      of severe impairment of health — requires clinical documentation
+  // 30%: Persistently recurrent epigastric distress with dysphagia, pyrosis,
+  //      and regurgitation, accompanied by substernal or arm or shoulder pain,
+  //      productive of considerable impairment of health
+  // 10%: Two or more of the symptoms for the 30 percent evaluation of less severity
+  //
+  // Pattern-aware interpretation:
+  //   continuous/persistent + hallmark symptoms (heartburn + regurgitation)
+  //     + chest/shoulder pain → strong 30%
+  //   frequent + two symptom types → 30% with gaps noted
+  //   two symptom types at lower frequency → 10%
+  //   one symptom type or sparse → 0%
 
-  // 30%: Persistent recurrent symptoms with dysphagia, pyrosis, regurgitation + chest pain
-  if (episodesPerWeek >= 3 && heartburnCount > 0 && regurgitationCount > 0 &&
-      (chestPainCount > 0 || dysphagiaCount > 0)) {
+  const hasHallmarkSymptoms = heartburnCount > 0 && regurgitationCount > 0;
+  const hasChestOrDysphagia = chestPainCount > 0 || dysphagiaCount > 0;
+
+  if (
+      (symptomPattern === 'continuous' || symptomPattern === 'persistent') &&
+      hasHallmarkSymptoms &&
+      hasChestOrDysphagia
+  ) {
+    // Full 30% picture: persistent recurrence + pyrosis + regurgitation + chest/dysphagia
     supportedRating = '30';
     ratingRationale.push(
-        `${episodesPerWeek.toFixed(1)} episodes per week (persistently recurrent)`,
-        'Heartburn (pyrosis) documented',
-        'Regurgitation documented',
-        chestPainCount > 0 ? 'Chest pain episodes logged' : 'Dysphagia (difficulty swallowing) logged',
-        'Meets criteria for considerable impairment'
+        `${symptomPattern === 'continuous' ? 'Continuous' : 'Persistent'} recurrent symptoms (${dayCoveragePct.toFixed(0)}% of days affected)`,
+        `Heartburn (pyrosis) documented — ${heartburnCount} episodes`,
+        `Regurgitation documented — ${regurgitationCount} episodes`,
+        chestPainCount > 0
+            ? `Chest/substernal pain documented — ${chestPainCount} episodes`
+            : `Dysphagia documented — ${dysphagiaCount} episodes`,
+        'Meets criteria for "considerable impairment of health" per DC 7346 30%'
     );
-  }
-  // 10%: Two or more symptoms, less severe
-  else if (uniqueSymptoms >= 2) {
+  } else if (
+      symptomPattern === 'frequent' &&
+      hasHallmarkSymptoms &&
+      hasChestOrDysphagia
+  ) {
+    supportedRating = '30';
+    ratingRationale.push(
+        `Frequent recurrent symptoms (${dayCoveragePct.toFixed(0)}% of days affected)`,
+        'Heartburn and regurgitation both documented',
+        hasChestOrDysphagia ? 'Chest pain or dysphagia present' : '',
+        'Frequency and symptom combination supports 30% consideration'
+    ).filter(Boolean);
+    gaps.push('Increase logging consistency to solidify "persistently recurrent" documentation');
+  } else if (uniqueSymptomTypes >= 2) {
+    // 10%: Two or more symptoms of less severity than 30% picture
     supportedRating = '10';
     ratingRationale.push(
-        `${uniqueSymptoms} different GERD symptoms documented`,
-        `${episodesPerWeek.toFixed(1)} episodes per week`,
-        'Meets criteria for 10% (two or more symptoms of less severity)'
+        `${uniqueSymptomTypes} distinct GERD symptom types documented`,
+        `${symptomPattern} symptom pattern (${dayCoveragePct.toFixed(0)}% of days)`,
+        'Meets criteria for 10% — two or more symptoms of less severity'
     );
-
-    if (episodesPerWeek >= 2 && heartburnCount > 0 && regurgitationCount > 0) {
-      gaps.push('Close to 30% - log chest pain or dysphagia if present');
-      gaps.push('Document persistence and frequency for higher rating');
+    if (hasHallmarkSymptoms) {
+      gaps.push('Heartburn and regurgitation are present — add chest pain or dysphagia logs to reach 30%');
+    } else {
+      gaps.push('Log both heartburn (pyrosis) AND regurgitation to build toward 30%');
     }
-  }
-  else {
+    if (symptomPattern === 'intermittent' || symptomPattern === 'sparse') {
+      gaps.push('Increase logging frequency — pattern needs to show more consistent recurrence for 30%');
+    }
+  } else {
     supportedRating = '0';
     ratingRationale.push(
-        'Symptoms appear controlled or minimal',
-        'May be managed with medication',
-        'Does not meet frequency for higher rating'
+        `Only ${uniqueSymptomTypes} symptom type documented`,
+        `${symptomPattern} pattern (${dayCoveragePct.toFixed(0)}% of days)`,
+        'Does not meet threshold — two or more symptom types required for compensable rating'
     );
   }
 
-  // Documentation gaps
-  if (gerdSymptoms.length < 12) {
-    gaps.push(`Only ${gerdSymptoms.length} episodes logged - aim for 12+ over 90 days`);
+  // ── Documentation gaps ────────────────────────────────────────────────────
+  if (distinctDays < 10) {
+    gaps.push(`Only ${distinctDays} days documented — log daily when symptomatic`);
   }
-
-  if (uniqueSymptoms < 2) {
-    gaps.push('Log multiple symptom types for higher rating consideration');
-  }
-
   if (heartburnCount === 0) {
-    gaps.push('Heartburn (pyrosis) is hallmark GERD symptom - document if present');
+    gaps.push('Heartburn (pyrosis) is the hallmark GERD symptom — document if present');
   }
-
+  if (regurgitationCount === 0 && heartburnCount > 0) {
+    gaps.push('Log regurgitation separately from heartburn — both required for 30%');
+  }
   if (dysphagiaCount > 0) {
-    gaps.push('Difficulty swallowing documented - get endoscopy results for claim');
+    gaps.push('Dysphagia documented — obtain endoscopy to confirm esophageal involvement');
   }
-
-  // 60% requires clinical documentation
-  gaps.push('60% rating requires medical documentation of weight loss, bleeding, or anemia');
+  // 60% always requires clinical records
+  gaps.push('60% rating requires medical documentation: weight loss, hematemesis, or anemia with severe impairment');
 
   return {
     condition: 'Gastroesophageal Reflux Disease (GERD)',
@@ -2906,6 +3057,17 @@ export const analyzeGERDLogs = (logs, options = {}) => {
     ratingRationale,
     evidence,
     gaps,
+    symptomPattern,
+    distinctDays,
+    // metrics: named fields the GERDRatingCard evidence summary reads
+    metrics: {
+      totalLogs: gerdSymptoms.length,
+      refluxEpisodes: heartburnCount,
+      regurgitation: regurgitationCount,
+      dysphagia: dysphagiaCount,
+      distinctDays,
+      symptomPattern,
+    },
     criteria: GERD_CRITERIA,
     disclaimer: GERD_CRITERIA.disclaimer,
   };
