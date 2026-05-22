@@ -3165,15 +3165,16 @@ export const analyzeGERDComplicationsLogs = (logs, options = {}) => {
  */
 
 export const analyzeUlcerativeColitisLogs = (logs, options = {}) => {
-  const { evaluationPeriodDays = 365 } = options; // Use 1 year for hospitalization tracking
-
-  const cutoffDate = new Date();
-  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+  // UC uses a 1-year window — hospitalization and relapse counts need full-year context
+  const { evaluationPeriodDays = 365 } = options;
 
   const symptomIds = [
     'uc-diarrhea', 'uc-rectal-bleeding', 'uc-abdominal-pain',
     'uc-urgency', 'uc-incontinence', 'uc-fever', 'uc-hospitalization'
   ];
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
 
   const relevantLogs = logs.filter(log => {
     const logDate = new Date(log.timestamp);
@@ -3183,77 +3184,200 @@ export const analyzeUlcerativeColitisLogs = (logs, options = {}) => {
 
   if (relevantLogs.length === 0) {
     return {
+      condition: 'Ulcerative Colitis / IBD',
+      diagnosticCode: '7323/7326',
       hasData: false,
-      message: 'No ulcerative colitis/IBD logs found',
       supportedRating: null,
+      ratingRationale: [],
       evidence: [],
-      gaps: ['Start logging IBD symptoms including diarrhea frequency, bleeding, and flares'],
+      gaps: [
+        'No UC/IBD symptoms logged in evaluation period',
+        'Log diarrhea frequency, rectal bleeding, and abdominal pain episodes',
+        'Document any hospitalizations or flares requiring steroids',
+        'Track urgency and incontinence episodes',
+      ],
+      criteria: ULCERATIVE_COLITIS_CRITERIA,
+      disclaimer: ULCERATIVE_COLITIS_CRITERIA.disclaimer,
     };
   }
 
-  // Count symptom types
-  const diarrheaLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'uc-diarrhea');
-  const bleedingLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'uc-rectal-bleeding');
-  const hospitalizationLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'uc-hospitalization');
-  const incontinenceLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'uc-incontinence');
-  const feverLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'uc-fever');
+  // ── Symptom type counts ───────────────────────────────────────────────────
+  const diarrheaLogs        = relevantLogs.filter(l => getLogSymptomId(l) === 'uc-diarrhea');
+  const bleedingLogs        = relevantLogs.filter(l => getLogSymptomId(l) === 'uc-rectal-bleeding');
+  const painLogs            = relevantLogs.filter(l => getLogSymptomId(l) === 'uc-abdominal-pain');
+  const urgencyLogs         = relevantLogs.filter(l => getLogSymptomId(l) === 'uc-urgency');
+  const incontinenceLogs    = relevantLogs.filter(l => getLogSymptomId(l) === 'uc-incontinence');
+  const feverLogs           = relevantLogs.filter(l => getLogSymptomId(l) === 'uc-fever');
+  const hospitalizationLogs = relevantLogs.filter(l => getLogSymptomId(l) === 'uc-hospitalization');
 
-  const evidence = [];
-  if (diarrheaLogs.length > 0) evidence.push(`${diarrheaLogs.length} diarrhea episodes logged`);
-  if (bleedingLogs.length > 0) evidence.push(`${bleedingLogs.length} rectal bleeding episodes logged`);
-  if (hospitalizationLogs.length > 0) evidence.push(`${hospitalizationLogs.length} hospitalizations in evaluation period`);
-  if (incontinenceLogs.length > 0) evidence.push(`${incontinenceLogs.length} incontinence episodes logged`);
-  if (feverLogs.length > 0) evidence.push(`${feverLogs.length} fever/systemic symptom episodes logged`);
+  // ── Pattern analysis ─────────────────────────────────────────────────────
+  const distinctDays = new Set(
+      relevantLogs.map(log => {
+        const d = new Date(log.timestamp);
+        return `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
+      })
+  ).size;
 
-  // Determine rating
-  let supportedRating = 0;
-  let ratingRationale = [];
-  let gaps = [];
+  const dayCoveragePct = evaluationPeriodDays > 0
+      ? (distinctDays / evaluationPeriodDays) * 100
+      : 0;
 
-  // Calculate daily averages
+  let symptomPattern;
+  if (evaluationPeriodDays === 0 || distinctDays === 0) {
+    symptomPattern = 'sparse';
+  } else if (dayCoveragePct >= 80) {
+    symptomPattern = 'continuous';
+  } else if (dayCoveragePct >= 50) {
+    symptomPattern = 'persistent';
+  } else if (dayCoveragePct >= 25) {
+    symptomPattern = 'frequent';
+  } else if (dayCoveragePct >= 10) {
+    symptomPattern = 'intermittent';
+  } else {
+    symptomPattern = 'sparse';
+  }
+
+  // Approximate bowel movements per day from diarrhea log frequency
   const diarrheaPerDay = diarrheaLogs.length / evaluationPeriodDays;
 
-  if (hospitalizationLogs.length >= 1 && (diarrheaPerDay >= 6 || bleedingLogs.length >= 180 || incontinenceLogs.length > 0)) {
-    supportedRating = 100;
-    ratingRationale = [
-      'Hospitalization required in past year',
-      'Severe symptoms: frequent diarrhea, bleeding, or incontinence',
-      'Pattern consistent with 100% rating criteria',
-    ];
-  } else if (hospitalizationLogs.length >= 1 || (diarrheaPerDay >= 4 && feverLogs.length > 0)) {
-    supportedRating = 60;
-    ratingRationale = [
-      'Moderate IBD with significant symptom burden',
-      'May require immunosuppressant therapy',
-    ];
-    gaps.push('Document if immunosuppressants or biologics are prescribed');
-  } else if (diarrheaLogs.length >= 30 || (relevantLogs.length >= 50 && feverLogs.length > 0)) {
-    supportedRating = 30;
-    ratingRationale = [
-      'Mild-moderate IBD with regular symptoms',
-      'Managed with oral/topical agents',
-    ];
+  // ── Evidence ──────────────────────────────────────────────────────────────
+  const evidence = [];
+  evidence.push(`${relevantLogs.length} UC/IBD episodes logged over ${evaluationPeriodDays} days`);
+  evidence.push(`${distinctDays} distinct days affected (${dayCoveragePct.toFixed(0)}% of evaluation period)`);
+  evidence.push(`Symptom pattern: ${symptomPattern}`);
+  if (diarrheaLogs.length > 0)
+    evidence.push(`${diarrheaLogs.length} diarrhea episodes (~${(diarrheaPerDay * 30).toFixed(1)}/month)`);
+  if (bleedingLogs.length > 0)
+    evidence.push(`${bleedingLogs.length} rectal bleeding episodes`);
+  if (incontinenceLogs.length > 0)
+    evidence.push(`${incontinenceLogs.length} incontinence episodes`);
+  if (feverLogs.length > 0)
+    evidence.push(`${feverLogs.length} fever/systemic episodes`);
+  if (hospitalizationLogs.length > 0)
+    evidence.push(`${hospitalizationLogs.length} hospitalizations documented`);
+
+  // ── Rating cascade ────────────────────────────────────────────────────────
+  // DC 7323 — Ulcerative Colitis
+  // 100%: Pronounced, with frequent exacerbations
+  //  60%: Severe; with frequent exacerbations
+  //  30%: Moderately severe; with frequent or continuous symptoms
+  //  10%: Mild; with infrequent exacerbations
+  //
+  // Pattern-aware interpretation:
+  //   Hospitalization is the clearest 100/60% indicator regardless of pattern
+  //   Continuous/persistent + bleeding + incontinence → 100%
+  //   Continuous/persistent + significant diarrhea → 60%
+  //   Frequent pattern OR moderate diarrhea frequency → 30%
+  //   Intermittent/sparse → 10%
+
+  let supportedRating = '10';
+  const ratingRationale = [];
+  const gaps = [];
+
+  if (
+      hospitalizationLogs.length >= 1 &&
+      (incontinenceLogs.length > 0 || bleedingLogs.length >= 10 || diarrheaPerDay * 30 >= 180)
+  ) {
+    // Hospitalization + pronounced symptoms = 100%
+    supportedRating = '100';
+    ratingRationale.push(
+        `${hospitalizationLogs.length} hospitalization(s) documented`,
+        incontinenceLogs.length > 0
+            ? `Fecal incontinence documented (${incontinenceLogs.length} episodes)`
+            : `${bleedingLogs.length} rectal bleeding episodes`,
+        'Pattern consistent with "pronounced, with frequent exacerbations" per DC 7323'
+    );
+  } else if (
+      hospitalizationLogs.length >= 1 ||
+      (
+          (symptomPattern === 'continuous' || symptomPattern === 'persistent') &&
+          bleedingLogs.length > 0 &&
+          feverLogs.length > 0
+      )
+  ) {
+    // Hospitalization or severe continuous pattern = 60%
+    supportedRating = '60';
+    ratingRationale.push(
+        hospitalizationLogs.length >= 1
+            ? `${hospitalizationLogs.length} hospitalization(s) in evaluation period`
+            : `${symptomPattern} pattern with bleeding and systemic symptoms`,
+        'Consistent with "severe; with frequent exacerbations" per DC 7323'
+    );
+    if (hospitalizationLogs.length >= 1) {
+      gaps.push('Document immunosuppressant or biologic therapy if prescribed — supports 60%+');
+    }
+  } else if (
+      symptomPattern === 'continuous' ||
+      symptomPattern === 'persistent' ||
+      (symptomPattern === 'frequent' && (bleedingLogs.length > 0 || feverLogs.length > 0))
+  ) {
+    // Continuous/persistent symptoms or frequent with systemic signs = 30%
+    supportedRating = '30';
+    ratingRationale.push(
+        `${symptomPattern === 'continuous' ? 'Continuous' : symptomPattern === 'persistent' ? 'Persistent' : 'Frequent'} symptom pattern (${dayCoveragePct.toFixed(0)}% of days)`,
+        bleedingLogs.length > 0 ? `Rectal bleeding documented (${bleedingLogs.length} episodes)` : '',
+        feverLogs.length > 0 ? `Systemic symptoms (fever) documented` : '',
+        'Consistent with "moderately severe; frequent or continuous symptoms" per DC 7323'
+    ).filter(Boolean);
+    gaps.push('Document any steroid courses or immunosuppressant use for higher rating support');
+  } else if (symptomPattern === 'frequent') {
+    supportedRating = '30';
+    ratingRationale.push(
+        `Frequent symptom pattern (${dayCoveragePct.toFixed(0)}% of days affected)`,
+        `${diarrheaLogs.length} diarrhea episodes documented`,
+        'Meets threshold for "moderately severe" consideration'
+    );
   } else {
-    supportedRating = 10;
-    ratingRationale = [
-      'Minimal-mild IBD symptoms documented',
-    ];
+    // Intermittent or sparse = 10%
+    supportedRating = '10';
+    ratingRationale.push(
+        `${symptomPattern} symptom pattern (${dayCoveragePct.toFixed(0)}% of days)`,
+        'Infrequent exacerbations documented',
+        'Consistent with "mild; with infrequent exacerbations" per DC 7323'
+    );
   }
 
-  gaps.push('Document treatment regimen (oral agents, immunosuppressants, or biologics)');
-  if (hospitalizationLogs.length === 0) {
-    gaps.push('Log any hospitalizations for IBD flares');
+  // ── Documentation gaps ────────────────────────────────────────────────────
+  if (distinctDays < 10) {
+    gaps.push(`Only ${distinctDays} days documented — log consistently during flares`);
   }
+  if (bleedingLogs.length === 0) {
+    gaps.push('No rectal bleeding logged — document if present, it supports higher ratings');
+  }
+  if (hospitalizationLogs.length === 0) {
+    gaps.push('Log any hospitalizations or ER visits for UC flares');
+  }
+  if (incontinenceLogs.length === 0 && diarrheaLogs.length > 5) {
+    gaps.push('Document fecal urgency and incontinence episodes if occurring');
+  }
+  gaps.push('Document current treatment regimen (mesalamine, steroids, immunosuppressants, biologics)');
+
+  // Compute avgSeverity and flareUps for GenericRatingCard evidence summary
+  const severityValues = relevantLogs
+  .map(l => l.severity)
+  .filter(s => s !== undefined && s !== null);
+  const avgSeverity = severityValues.length > 0
+      ? (severityValues.reduce((a, b) => a + b, 0) / severityValues.length).toFixed(1)
+      : null;
+  const flareUps = relevantLogs.filter(l => l.isFlareUp).length;
 
   return {
-    hasData: true,
     condition: 'Ulcerative Colitis / IBD',
     diagnosticCode: '7323/7326',
+    hasData: true,
     evaluationPeriodDays,
-    supportedRating: supportedRating.toString(),
+    supportedRating,
     ratingRationale,
     evidence,
     gaps,
+    symptomPattern,
+    distinctDays,
+    metrics: {
+      totalLogs: relevantLogs.length,
+      symptomDays: distinctDays,
+      avgSeverity,
+      flareUps,
+    },
     criteria: ULCERATIVE_COLITIS_CRITERIA,
     disclaimer: ULCERATIVE_COLITIS_CRITERIA.disclaimer,
   };
@@ -3264,15 +3388,16 @@ export const analyzeUlcerativeColitisLogs = (logs, options = {}) => {
  */
 
 export const analyzePepticUlcerLogs = (logs, options = {}) => {
+  // Peptic ulcer uses 1-year window — the CFR counts "episodes" per year
   const { evaluationPeriodDays = 365 } = options;
-
-  const cutoffDate = new Date();
-  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
 
   const symptomIds = [
     'ulcer-abdominal-pain', 'ulcer-nausea', 'ulcer-vomiting',
     'ulcer-hematemesis', 'ulcer-melena', 'ulcer-hospitalization'
   ];
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
 
   const relevantLogs = logs.filter(log => {
     const logDate = new Date(log.timestamp);
@@ -3282,79 +3407,198 @@ export const analyzePepticUlcerLogs = (logs, options = {}) => {
 
   if (relevantLogs.length === 0) {
     return {
+      condition: 'Peptic Ulcer Disease',
+      diagnosticCode: '7304',
       hasData: false,
-      message: 'No peptic ulcer logs found',
       supportedRating: null,
+      ratingRationale: [],
       evidence: [],
-      gaps: ['Start logging peptic ulcer symptoms including pain episodes, nausea, and any bleeding'],
+      gaps: [
+        'No peptic ulcer symptoms logged in evaluation period',
+        'Log abdominal pain episodes with start/end dates',
+        'Document any GI bleeding (hematemesis or melena)',
+        'Track hospitalizations — required for 60%+ rating',
+      ],
+      criteria: PEPTIC_ULCER_CRITERIA,
+      disclaimer: PEPTIC_ULCER_CRITERIA.disclaimer,
     };
   }
 
-  const painLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'ulcer-abdominal-pain');
-  const nauseaLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'ulcer-nausea');
-  const vomitingLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'ulcer-vomiting');
-  const bleedingLogs = relevantLogs.filter(log =>
-      getLogSymptomId(log) === 'ulcer-hematemesis' || getLogSymptomId(log) === 'ulcer-melena'
+  // ── Symptom counts ────────────────────────────────────────────────────────
+  const painLogs            = relevantLogs.filter(l => getLogSymptomId(l) === 'ulcer-abdominal-pain');
+  const nauseaLogs          = relevantLogs.filter(l => getLogSymptomId(l) === 'ulcer-nausea');
+  const vomitingLogs        = relevantLogs.filter(l => getLogSymptomId(l) === 'ulcer-vomiting');
+  const bleedingLogs        = relevantLogs.filter(l =>
+      getLogSymptomId(l) === 'ulcer-hematemesis' || getLogSymptomId(l) === 'ulcer-melena'
   );
-  const hospitalizationLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'ulcer-hospitalization');
+  const hospitalizationLogs = relevantLogs.filter(l => getLogSymptomId(l) === 'ulcer-hospitalization');
 
+  // ── Pattern / episode analysis ────────────────────────────────────────────
+  // DC 7304 ratings hinge on distinct "episodes" — clusters of consecutive
+  // symptomatic days separated by asymptomatic gaps. We approximate by
+  // counting distinct days and grouping into runs.
+  const distinctDays = new Set(
+      relevantLogs.map(log => {
+        const d = new Date(log.timestamp);
+        return `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
+      })
+  ).size;
+
+  const dayCoveragePct = evaluationPeriodDays > 0
+      ? (distinctDays / evaluationPeriodDays) * 100
+      : 0;
+
+  // Estimate episode count: runs of consecutive symptomatic days
+  // Sort distinct day strings and count gaps > 1 day as episode breaks
+  const sortedDates = [...new Set(
+      relevantLogs.map(log => {
+        const d = new Date(log.timestamp);
+        d.setHours(0, 0, 0, 0);
+        return d.getTime();
+      })
+  )].sort((a, b) => a - b);
+
+  let episodeCount = sortedDates.length > 0 ? 1 : 0;
+  for (let i = 1; i < sortedDates.length; i++) {
+    const dayGap = (sortedDates[i] - sortedDates[i - 1]) / (1000 * 60 * 60 * 24);
+    if (dayGap > 3) episodeCount++; // Gap > 3 days = new episode
+  }
+
+  let symptomPattern;
+  if (evaluationPeriodDays === 0 || distinctDays === 0) {
+    symptomPattern = 'sparse';
+  } else if (dayCoveragePct >= 80) {
+    symptomPattern = 'continuous';
+  } else if (dayCoveragePct >= 50) {
+    symptomPattern = 'persistent';
+  } else if (dayCoveragePct >= 25) {
+    symptomPattern = 'frequent';
+  } else if (dayCoveragePct >= 10) {
+    symptomPattern = 'intermittent';
+  } else {
+    symptomPattern = 'sparse';
+  }
+
+  // ── Evidence ──────────────────────────────────────────────────────────────
   const evidence = [];
-  if (painLogs.length > 0) evidence.push(`${painLogs.length} abdominal pain episodes logged`);
-  if (nauseaLogs.length > 0) evidence.push(`${nauseaLogs.length} nausea episodes logged`);
-  if (vomitingLogs.length > 0) evidence.push(`${vomitingLogs.length} vomiting episodes logged`);
-  if (bleedingLogs.length > 0) evidence.push(`${bleedingLogs.length} GI bleeding episodes (hematemesis/melena) logged`);
-  if (hospitalizationLogs.length > 0) evidence.push(`${hospitalizationLogs.length} hospitalizations in evaluation period`);
+  evidence.push(`${relevantLogs.length} peptic ulcer episodes logged over ${evaluationPeriodDays} days`);
+  evidence.push(`${distinctDays} distinct symptomatic days (${dayCoveragePct.toFixed(0)}% of evaluation period)`);
+  evidence.push(`Estimated ${episodeCount} distinct episode(s) in evaluation period`);
+  evidence.push(`Symptom pattern: ${symptomPattern}`);
+  if (painLogs.length > 0)    evidence.push(`${painLogs.length} abdominal pain episodes`);
+  if (nauseaLogs.length > 0)  evidence.push(`${nauseaLogs.length} nausea episodes`);
+  if (vomitingLogs.length > 0) evidence.push(`${vomitingLogs.length} vomiting episodes`);
+  if (bleedingLogs.length > 0) evidence.push(`${bleedingLogs.length} GI bleeding episodes (hematemesis/melena)`);
+  if (hospitalizationLogs.length > 0)
+    evidence.push(`${hospitalizationLogs.length} hospitalizations documented`);
 
-  let supportedRating = 0;
-  let ratingRationale = [];
-  let gaps = [];
+  // ── Rating cascade ────────────────────────────────────────────────────────
+  // DC 7304 — Gastric/Peptic Ulcer
+  // 60%: Severe; with history of periodic vomiting, material weight loss, and
+  //      hematemesis or melena; or with other symptom combinations productive
+  //      of severe impairment of health
+  // 40%: Moderately severe; with recurring episodes of severe symptoms 4 or
+  //      more times yearly; or with continuous moderate manifestations
+  // 20%: Moderate; with recurring episodes of severe symptoms 1-3 times yearly;
+  //      or with continuous moderate manifestations
+  //  0%: With slight impairment of health (on continuous medication)
 
-  // Estimate episodes (clusters of 3+ consecutive days)
-  const totalSymptomDays = new Set(relevantLogs.map(log =>
-      new Date(log.timestamp).toDateString()
-  )).size;
+  let supportedRating = '0';
+  const ratingRationale = [];
+  const gaps = [];
 
   if (hospitalizationLogs.length >= 1 && bleedingLogs.length > 0) {
-    supportedRating = 60;
-    ratingRationale = [
-      'Hospitalization with GI bleeding documented',
-      'Consistent with severe peptic ulcer disease',
-    ];
-  } else if (painLogs.length >= 12 || totalSymptomDays >= 12) {
-    supportedRating = 40;
-    ratingRationale = [
-      'Multiple symptom episodes documented',
-      'Pattern suggests 4+ episodes per year lasting 3+ days',
-    ];
-    gaps.push('Confirm daily medication use for peptic ulcer');
-  } else if (painLogs.length >= 3 || totalSymptomDays >= 9) {
-    supportedRating = 20;
-    ratingRationale = [
-      'Symptom episodes documented',
-      'Pattern suggests 1-3 episodes per year',
-    ];
-    gaps.push('Confirm daily medication use for peptic ulcer');
+    supportedRating = '60';
+    ratingRationale.push(
+        `${hospitalizationLogs.length} hospitalization(s) documented`,
+        `GI bleeding documented (${bleedingLogs.length} episodes)`,
+        'History of severe symptoms with hematemesis/melena consistent with 60% criteria'
+    );
+  } else if (bleedingLogs.length > 0 && vomitingLogs.length > 0) {
+    supportedRating = '60';
+    ratingRationale.push(
+        `GI bleeding documented (${bleedingLogs.length} episodes)`,
+        `Vomiting documented (${vomitingLogs.length} episodes)`,
+        'Combination of vomiting and hematemesis/melena supports 60% consideration'
+    );
+    gaps.push('Medical documentation of weight loss would strengthen 60% claim');
+  } else if (
+      episodeCount >= 4 ||
+      symptomPattern === 'continuous' ||
+      symptomPattern === 'persistent'
+  ) {
+    // 4+ episodes/year or continuous moderate manifestations = 40%
+    supportedRating = '40';
+    ratingRationale.push(
+        episodeCount >= 4
+            ? `${episodeCount} distinct episodes documented in evaluation period (threshold: 4+/year for 40%)`
+            : `${symptomPattern} symptom pattern (${dayCoveragePct.toFixed(0)}% of days) — continuous moderate manifestations`,
+        `${painLogs.length} abdominal pain episodes documented`,
+        'Consistent with "moderately severe; 4+ recurring episodes yearly" per DC 7304'
+    );
+    gaps.push('Document that daily medication is required for ulcer management');
+  } else if (episodeCount >= 1 && episodeCount <= 3) {
+    // 1–3 episodes/year = 20%
+    supportedRating = '20';
+    ratingRationale.push(
+        `${episodeCount} distinct episode(s) documented in evaluation period`,
+        `${painLogs.length} abdominal pain logs across those episodes`,
+        'Consistent with "moderate; 1–3 recurring episodes yearly" per DC 7304'
+    );
+    gaps.push('Each episode should span 3+ consecutive days to qualify — document duration');
+    if (episodeCount < 4) {
+      gaps.push(`${4 - episodeCount} more episode(s) per year needed to support 40% rating`);
+    }
   } else {
-    supportedRating = 0;
-    ratingRationale = [
-      'Symptoms logged but may not meet compensable criteria',
-      'Document episode duration (must be 3+ consecutive days)',
-    ];
+    supportedRating = '0';
+    ratingRationale.push(
+        'Symptoms logged but episode structure unclear',
+        'DC 7304 requires distinct episodes of 3+ consecutive symptomatic days',
+        'Continue logging daily during symptomatic periods'
+    );
   }
 
-  if (bleedingLogs.length === 0) {
-    gaps.push('Document any GI bleeding (vomiting blood or tarry stools)');
+  // ── Documentation gaps ────────────────────────────────────────────────────
+  if (distinctDays < 5) {
+    gaps.push(`Only ${distinctDays} symptomatic days logged — log daily during episodes`);
   }
+  if (bleedingLogs.length === 0) {
+    gaps.push('No GI bleeding logged — document hematemesis (vomiting blood) or melena (tarry stools) if present');
+  }
+  if (hospitalizationLogs.length === 0) {
+    gaps.push('Log any hospitalizations or ER visits — required for 60% rating');
+  }
+  if (vomitingLogs.length === 0 && painLogs.length > 3) {
+    gaps.push('Document vomiting episodes if present — part of the 60% symptom combination');
+  }
+  gaps.push('Confirm continuous medication use — required for 0% compensable rating');
+
+  const severityValsPU = relevantLogs
+  .map(l => l.severity)
+  .filter(s => s !== undefined && s !== null);
+  const avgSeverityPU = severityValsPU.length > 0
+      ? (severityValsPU.reduce((a, b) => a + b, 0) / severityValsPU.length).toFixed(1)
+      : null;
+  const flareUpsPU = relevantLogs.filter(l => l.isFlareUp).length;
 
   return {
-    hasData: true,
     condition: 'Peptic Ulcer Disease',
     diagnosticCode: '7304',
+    hasData: true,
     evaluationPeriodDays,
-    supportedRating: supportedRating.toString(),
+    supportedRating,
     ratingRationale,
     evidence,
     gaps,
+    symptomPattern,
+    distinctDays,
+    episodeCount,
+    metrics: {
+      totalLogs: relevantLogs.length,
+      symptomDays: distinctDays,
+      avgSeverity: avgSeverityPU,
+      flareUps: flareUpsPU,
+    },
     criteria: PEPTIC_ULCER_CRITERIA,
     disclaimer: PEPTIC_ULCER_CRITERIA.disclaimer,
   };
