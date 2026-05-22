@@ -4071,69 +4071,101 @@ export const SYPHILITIC_HEART_DISEASE_CRITERIA = {
 
 export const analyzeSleepApneaLogs = (
     logs, sleepApneaProfile = {}, options = {}) => {
-  const {
-    evaluationPeriodDays = 90,
-  } = options;
+  const { evaluationPeriodDays = 90 } = options;
 
-  // Extract profile data (would come from a separate sleep apnea settings area)
   const {
-    usesBreathingDevice = null,  // true/false/null (unknown)
-    deviceType = null,           // 'cpap', 'bipap', 'apap', 'inspire', 'other'
-    hasDiagnosis = null,         // true/false/null
+    usesBreathingDevice = null,
+    deviceType = null,
+    hasDiagnosis = null,
     diagnosisDate = null,
   } = sleepApneaProfile;
 
   const cutoffDate = new Date();
   cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
 
-  // Find sleep-related logs
+  // ── Relevant logs ────────────────────────────────────────────────────────
+  // Capture both dedicated sleep-apnea logs and general sleep logs
+  // that contain apnea-relevant data (unrested, low quality, etc.)
   const relevantLogs = logs.filter(log => {
     const logDate = new Date(log.timestamp);
-    const isSleepRelated = getLogSymptomId(log) === 'sleep-issues' ||
-        getLogSymptomId(log) === 'sleep-apnea' ||
+    const symptomId = getLogSymptomId(log);
+    const isSleepRelated =
+        symptomId === 'sleep-issues' ||
+        symptomId === 'sleep-apnea' ||
+        symptomId?.startsWith('apnea-') ||
         log.sleepData;
     return logDate >= cutoffDate && isSleepRelated;
   });
 
-  // Analyze daytime sleepiness from logs
-  const sleepinessLogs = relevantLogs.filter(log => {
-    // Look for indicators of daytime sleepiness
-    return log.sleepData?.feelRested === false ||
-        log.sleepData?.quality <= 3 ||
-        (log.notes && log.notes.toLowerCase().includes('tired')) ||
-        (log.notes && log.notes.toLowerCase().includes('sleepy')) ||
-        (log.notes && log.notes.toLowerCase().includes('fatigue'));
-  });
-
-  // Calculate metrics
   const totalSleepLogs = relevantLogs.length;
-  const daytimeSleepinessCount = sleepinessLogs.length;
   const monthsInPeriod = evaluationPeriodDays / 30;
 
-  // Average sleep quality if available
-  const logsWithQuality = relevantLogs.filter(log => log.sleepData?.quality);
+  // ── Pattern analysis ─────────────────────────────────────────────────────
+  // Distinct nights logged — each night is one data point
+  const distinctNights = new Set(
+      relevantLogs.map(log => {
+        const d = new Date(log.timestamp);
+        return `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
+      })
+  ).size;
+
+  const nightCoveragePct = evaluationPeriodDays > 0
+      ? (distinctNights / evaluationPeriodDays) * 100
+      : 0;
+
+  let symptomPattern;
+  if (evaluationPeriodDays === 0 || distinctNights === 0) {
+    symptomPattern = 'sparse';
+  } else if (nightCoveragePct >= 80) {
+    symptomPattern = 'continuous';
+  } else if (nightCoveragePct >= 50) {
+    symptomPattern = 'persistent';
+  } else if (nightCoveragePct >= 25) {
+    symptomPattern = 'frequent';
+  } else if (nightCoveragePct >= 10) {
+    symptomPattern = 'intermittent';
+  } else {
+    symptomPattern = 'sparse';
+  }
+
+  // ── Sleep quality metrics ─────────────────────────────────────────────────
+  const logsWithQuality = relevantLogs.filter(l => l.sleepData?.quality);
   const avgSleepQuality = logsWithQuality.length > 0
-      ?
-      logsWithQuality.reduce((sum, log) => sum + log.sleepData.quality, 0) /
-      logsWithQuality.length
-      :
-      null;
+      ? (logsWithQuality.reduce((s, l) => s + l.sleepData.quality, 0) /
+          logsWithQuality.length).toFixed(1)
+      : null;
 
-  // Count nights feeling unrested
-  const unrestedNights = relevantLogs.filter(
-      log => log.sleepData?.feelRested === false).length;
-
-  // Average hours slept
-  const logsWithHours = relevantLogs.filter(log => log.sleepData?.hoursSlept);
+  const logsWithHours = relevantLogs.filter(l => l.sleepData?.hoursSlept);
   const avgHoursSlept = logsWithHours.length > 0
-      ?
-      logsWithHours.reduce(
-          (sum, log) => sum + parseFloat(log.sleepData.hoursSlept), 0) /
-      logsWithHours.length
-      :
-      null;
+      ? (logsWithHours.reduce((s, l) => s + parseFloat(l.sleepData.hoursSlept), 0) /
+          logsWithHours.length).toFixed(1)
+      : null;
 
-  // Build evidence summary
+  const unrestedNights = relevantLogs.filter(l => l.sleepData?.feelRested === false).length;
+
+  // Daytime sleepiness — unrested + poor quality + notes keywords
+  const sleepinessLogs = relevantLogs.filter(log =>
+      log.sleepData?.feelRested === false ||
+      log.sleepData?.quality <= 3 ||
+      (log.notes && /tired|sleepy|fatigue|exhausted/i.test(log.notes))
+  );
+  const daytimeSleepinessCount = sleepinessLogs.length;
+  const sleepinessRatio = totalSleepLogs > 0
+      ? daytimeSleepinessCount / totalSleepLogs
+      : 0;
+
+  // CPAP/device compliance pattern
+  // Logs where respiratoryData.rescueInhalerUsed is present indicate apnea
+  // tracking; we use unrested nights + wakeups as proxy for compliance gaps
+  const highWakeupNights = relevantLogs.filter(
+      l => l.sleepData?.wakeUps >= 3
+  ).length;
+
+  const nightmareNights = relevantLogs.filter(
+      l => l.sleepData?.nightmares
+  ).length;
+
+  // ── Evidence object (preserve existing structure for card fallback) ───────
   const evidence = {
     evaluationPeriod: {
       days: evaluationPeriodDays,
@@ -4148,8 +4180,10 @@ export const analyzeSleepApneaLogs = (
       total: totalSleepLogs,
       withDaytimeSleepiness: daytimeSleepinessCount,
       unrestedNights,
-      avgSleepQuality: avgSleepQuality ? avgSleepQuality.toFixed(1) : null,
-      avgHoursSlept: avgHoursSlept ? avgHoursSlept.toFixed(1) : null,
+      avgSleepQuality,
+      avgHoursSlept,
+      distinctNights,
+      symptomPattern,
     },
   };
 
@@ -4158,9 +4192,19 @@ export const analyzeSleepApneaLogs = (
   let gaps = [];
   let requiresProfileSetup = false;
 
-  // Determine rating based on profile and logs
+  // ── Rating cascade ────────────────────────────────────────────────────────
+  // DC 6847 — Sleep Apnea Syndromes
+  // 100%: Chronic respiratory failure with carbon dioxide retention, cor
+  //       pulmonale, or requires tracheostomy
+  //  50%: Requires use of breathing assistance device such as CPAP machine
+  //  30%: Persistent daytime hypersomnolence
+  //   0%: Asymptomatic but diagnosed (sleep study required)
+  //
+  // Pattern-aware additions:
+  //   CPAP users: continuous/persistent documentation strengthens compliance proof
+  //   Non-CPAP: symptom pattern drives 30% vs 0% distinction
+
   if (usesBreathingDevice === null) {
-    // Profile not set up - need to collect this info
     requiresProfileSetup = true;
     supportedRating = null;
     ratingRationale = [
@@ -4172,78 +4216,101 @@ export const analyzeSleepApneaLogs = (
       'Indicate whether you use a CPAP, BiPAP, or other breathing device',
       'Upload or note your sleep study diagnosis date',
     ];
+
   } else if (usesBreathingDevice === true) {
-    // Uses breathing device = 50%
+    // 50% — uses breathing device
     supportedRating = 50;
     ratingRationale = [
-      `Uses breathing assistance device (${deviceType || 'CPAP/BiPAP'})`,
+      `Uses breathing assistance device (${deviceType ? deviceType.toUpperCase() : 'CPAP/BiPAP'})`,
       'Meets criteria for 50% rating under DC 6847',
     ];
-    gaps = [
-      'Maintain records of device compliance (usage data)',
-      'Keep prescription and sleep study on file',
-      'Document any issues or adjustments to treatment',
-    ];
 
-    // Note: 100% would require respiratory failure/tracheostomy - rare
     if (totalSleepLogs > 0) {
       ratingRationale.push(
-          `${totalSleepLogs} sleep logs documented in evaluation period`);
+          `${totalSleepLogs} sleep logs documented (${distinctNights} distinct nights)`
+      );
+      ratingRationale.push(
+          `Symptom pattern: ${symptomPattern} (${nightCoveragePct.toFixed(0)}% of nights logged)`
+      );
     }
-  } else if (usesBreathingDevice === false && hasDiagnosis === true) {
-    // Has diagnosis but no device - check for daytime sleepiness
-    const sleepinessRatio = totalSleepLogs > 0 ?
-        daytimeSleepinessCount / totalSleepLogs :
-        0;
 
-    if (sleepinessRatio >= 0.5 || unrestedNights >= 10) {
-      // Persistent daytime hypersomnolence = 30%
+    // Pattern-aware compliance documentation guidance
+    if (symptomPattern === 'continuous' || symptomPattern === 'persistent') {
+      ratingRationale.push(
+          'Consistent nightly logging demonstrates ongoing treatment dependency'
+      );
+    }
+
+    gaps = [
+      'Download and save CPAP compliance reports (AHI data) monthly',
+      'Keep device prescription and sleep study diagnosis on file',
+      'Log nightly — consistent documentation supports ongoing need for device',
+    ];
+
+    if (unrestedNights > 0) {
+      gaps.push(
+          `${unrestedNights} nights feeling unrested despite device use — document for possible upgrade consideration`
+      );
+    }
+    if (highWakeupNights > 0) {
+      gaps.push(
+          `${highWakeupNights} nights with 3+ wake-ups — may indicate mask leak or pressure issues; document with provider`
+      );
+    }
+
+  } else if (usesBreathingDevice === false && hasDiagnosis === true) {
+    // No device, has diagnosis — 30% if persistent hypersomnolence, else 0%
+    if (
+        sleepinessRatio >= 0.5 ||
+        unrestedNights >= 10 ||
+        symptomPattern === 'continuous' ||
+        symptomPattern === 'persistent'
+    ) {
       supportedRating = 30;
       ratingRationale = [
         'Diagnosed sleep apnea without breathing device',
-        `${unrestedNights} nights feeling unrested logged`,
-        `${(sleepinessRatio * 100).toFixed(
-            0)}% of logs indicate daytime sleepiness`,
-        'Pattern suggests persistent daytime hypersomnolence',
+        `${unrestedNights} nights feeling unrested documented`,
+        `${(sleepinessRatio * 100).toFixed(0)}% of logs indicate daytime sleepiness`,
+        `${symptomPattern} symptom pattern (${nightCoveragePct.toFixed(0)}% of nights affected)`,
+        'Pattern consistent with persistent daytime hypersomnolence per DC 6847',
       ];
       gaps = [
-        'Continue documenting daytime sleepiness and fatigue',
-        'Note impact on work and daily activities',
-        'If sleepiness is severe, discuss CPAP with your doctor (would support 50%)',
+        'Continue documenting daytime sleepiness and fatigue consistently',
+        'Note functional impact — difficulty staying awake at work, while driving, etc.',
+        'Discuss CPAP prescription with provider — would support 50% rating',
+        'Obtain Epworth Sleepiness Scale score at next appointment',
       ];
     } else if (totalSleepLogs === 0) {
       supportedRating = 0;
       ratingRationale = [
-        'Diagnosed sleep apnea',
-        'No sleep logs in evaluation period',
-        'Cannot assess daytime sleepiness without logged data',
+        'Diagnosed sleep apnea — qualifies for 0% (asymptomatic with diagnosis)',
+        'No sleep logs in evaluation period to assess symptom severity',
       ];
       gaps = [
-        'Start logging sleep quality and daytime sleepiness',
+        'Start logging sleep quality and daytime sleepiness nightly',
         'Document nights where you wake feeling unrested',
         'Note any daytime fatigue or difficulty staying awake',
       ];
     } else {
-      // Asymptomatic or mild symptoms = 0%
       supportedRating = 0;
       ratingRationale = [
         'Diagnosed sleep apnea without breathing device',
-        `${totalSleepLogs} sleep logs, but insufficient daytime sleepiness documented`,
-        'Current evidence supports 0% (asymptomatic with documented diagnosis)',
+        `${totalSleepLogs} sleep logs reviewed — insufficient persistent hypersomnolence`,
+        `${symptomPattern} symptom pattern (${nightCoveragePct.toFixed(0)}% of nights)`,
+        'Current evidence supports 0% — asymptomatic with documented diagnosis',
       ];
       gaps = [
-        'If you experience daytime sleepiness, document it consistently',
-        'Log when you feel unrested after sleeping',
-        'Consider whether a CPAP/BiPAP might be beneficial (would support 50%)',
+        'Log daytime sleepiness consistently — 50%+ of logs showing sleepiness needed for 30%',
+        `Currently ${(sleepinessRatio * 100).toFixed(0)}% of logs show sleepiness — need ≥50% for 30%`,
+        'Consider CPAP prescription — would immediately support 50% rating',
       ];
     }
+
   } else {
-    // No diagnosis or incomplete information
-    supportedRating = null;
+    // No diagnosis or incomplete
     requiresProfileSetup = true;
-    ratingRationale = [
-      'Insufficient profile information',
-    ];
+    supportedRating = null;
+    ratingRationale = ['Insufficient profile information'];
     gaps = [
       'Confirm whether you have a sleep apnea diagnosis',
       'If diagnosed, indicate whether you use a breathing device',
@@ -4261,6 +4328,21 @@ export const analyzeSleepApneaLogs = (
     ratingRationale,
     evidence,
     gaps,
+    symptomPattern: symptomPattern || null,
+    distinctNights,
+    // metrics: named fields SleepApneaRatingCard reads as primary path
+    metrics: {
+      totalLogs: totalSleepLogs,
+      unrestedNights,
+      avgSleepQuality,
+      usesDevice: usesBreathingDevice === true,
+      distinctNights,
+      symptomPattern,
+      sleepinessRatio: (sleepinessRatio * 100).toFixed(0),
+      highWakeupNights,
+      nightmareNights,
+      avgHoursSlept,
+    },
     criteria: SLEEP_APNEA_CRITERIA,
     disclaimer: 'This analysis is for documentation guidance only. The VA makes all final rating determinations based on the complete evidence of record, including sleep studies and medical examinations.',
   };
