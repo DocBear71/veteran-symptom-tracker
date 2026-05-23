@@ -11,6 +11,7 @@ import StrategicFilingGuide from './StrategicFilingGuide';
 import CaregiverProgramsGuide from './CaregiverProgramsGuide';
 import TDIUTool from './TDIUTool';
 import ProtectedEnvironmentTracker from './ProtectedEnvironmentTracker';
+import AppealReviewGuide from './AppealReviewGuide';
 
 const CPResources = () => {
   const [activeResource, setActiveResource] = useState(null);
@@ -90,6 +91,14 @@ const CPResources = () => {
       color: 'emerald',
       features: ['Employment status tracking', 'Accommodations checklist', 'Evidence gap analysis', 'Employer letter generator', 'Cantrell-aligned'],
     },
+    {
+      id: 'appeal-guide',
+      title: 'Decision Review & Appeal Guide',
+      description: 'Navigate the VA appeals process after a denial or under-rating. Covers HLR, Supplemental Claims, and Board Appeals — with lane selection guidance, HLR argument builder, and BVA hearing prep.',
+      icon: '⚖️',
+      color: 'slate',
+      features: ['Lane selector', 'HLR argument builder', 'Board Appeal / BVA', 'Deadline guidance'],
+    },
   ];
 
   // Color mapping for cards
@@ -158,6 +167,14 @@ const CPResources = () => {
       iconText: 'text-emerald-600 dark:text-emerald-400',
       badge: 'bg-emerald-100 dark:bg-emerald-900 text-emerald-700 dark:text-emerald-300',
     },
+    slate: {
+      bg: 'bg-slate-50 dark:bg-slate-900/20',
+      border: 'border-slate-200 dark:border-slate-800',
+      hoverBorder: 'hover:border-slate-500 dark:hover:border-slate-500',
+      icon: 'bg-slate-100 dark:bg-slate-900',
+      iconText: 'text-slate-600 dark:text-slate-400',
+      badge: 'bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300',
+    },
   };
 
   // Render the selected resource component
@@ -185,6 +202,8 @@ const CPResources = () => {
         return <TDIUTool embedded={true} onClose={() => setActiveResource(null)} />;
       case 'protected-env':
         return <ProtectedEnvironmentTracker embedded={true} onClose={() => setActiveResource(null)} />;
+      case 'appeal-guide':
+        return <AppealReviewGuide onBack={() => setActiveResource(null)} />;
       default:
         return null;
     }
