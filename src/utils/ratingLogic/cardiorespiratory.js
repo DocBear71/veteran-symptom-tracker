@@ -4915,6 +4915,60 @@ export const analyzeHypertensionLogs = (logs, options = {}) => {
     }
   }
 
+  // ── Pattern analysis ─────────────────────────────────────────────────────
+  // How consistently elevated are the readings across the evaluation period?
+  // A veteran with 20 readings all above threshold is more compelling than
+  // one with 2 readings above threshold and 18 normal.
+  const avgBP = bpMeasurements.length > 0
+      ? getAverageBloodPressure(evaluationPeriodDays)
+      : { systolic: null, diastolic: null };
+
+  const uniqueReadingDays = new Set(
+      bpMeasurements.map(m => new Date(m.timestamp).toDateString())
+  ).size;
+
+  const dayCoveragePct = evaluationPeriodDays > 0 && uniqueReadingDays > 0
+      ? (uniqueReadingDays / evaluationPeriodDays) * 100
+      : 0;
+
+  // Predominance pattern — what % of readings are at the supported tier
+  let predominancePct = 0;
+  if (supportedRating === '60' || supportedRating === 60) {
+    predominancePct = analyzeBloodPressurePredominance(evaluationPeriodDays, { diastolic: 130 }).percentage;
+  } else if (supportedRating === '40' || supportedRating === 40) {
+    predominancePct = analyzeBloodPressurePredominance(evaluationPeriodDays, { diastolic: 120 }).percentage;
+  } else if (supportedRating === '20' || supportedRating === 20) {
+    predominancePct = analyzeBloodPressurePredominance(evaluationPeriodDays, { diastolic: 110 }).percentage;
+  } else if (supportedRating === '10' || supportedRating === 10) {
+    predominancePct = analyzeBloodPressurePredominance(evaluationPeriodDays, { diastolic: 100 }).percentage;
+  }
+
+  // Classify consistency of elevated readings
+  let readingPattern;
+  if (predominancePct >= 80) {
+    readingPattern = 'consistently elevated';
+  } else if (predominancePct >= 60) {
+    readingPattern = 'predominantly elevated';
+  } else if (predominancePct >= 40) {
+    readingPattern = 'frequently elevated';
+  } else if (predominancePct > 0) {
+    readingPattern = 'intermittently elevated';
+  } else {
+    readingPattern = 'within normal range';
+  }
+
+  // Add pattern to rationale if we have a supported rating
+  if (supportedRating && supportedRating !== 0 && bpMeasurements.length >= 3) {
+    ratingRationale.push(
+        `Reading pattern: ${readingPattern} (${predominancePct}% at threshold)`
+    );
+    ratingRationale.push(
+        `${uniqueReadingDays} distinct days with readings over ${evaluationPeriodDays} days`
+    );
+  }
+
+  const onMedication = bpMeasurements.some(m => m.metadata?.medicationTaken);
+
   return {
     condition: 'Hypertension',
     diagnosticCode: '7101',
@@ -4923,9 +4977,21 @@ export const analyzeHypertensionLogs = (logs, options = {}) => {
     ratingRationale,
     evidence,
     gaps,
+    readingPattern,
+    uniqueReadingDays,
+    predominancePct,
+    // metrics: named fields HypertensionRatingCard evidence summary reads
+    metrics: {
+      totalReadings: bpMeasurements.length,
+      avgSystolic: avgBP.systolic || null,
+      avgDiastolic: avgBP.diastolic || null,
+      onMedication,
+      uniqueReadingDays,
+      readingPattern,
+      predominancePct,
+    },
     criteria: HYPERTENSION_CRITERIA,
     disclaimer: HYPERTENSION_CRITERIA.disclaimer,
-    // Include measurements for chart display
     measurements: bpMeasurements,
   };
 };
