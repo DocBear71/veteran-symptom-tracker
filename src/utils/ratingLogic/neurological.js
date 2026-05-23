@@ -7255,7 +7255,8 @@ export const analyzeFibromyalgiaLogs = (logs, options = {}) => {
 
 export const analyzeMultipleSclerosisLogs = (logs, options = {}) => {
   const conditionCriteria = MULTIPLE_SCLEROSIS_CRITERIA;
-  const evaluationPeriodDays = options.days || 90;
+  // MS uses 1-year window — relapse frequency drives the rating tier
+  const evaluationPeriodDays = options.evaluationPeriodDays || options.days || 365;
   const symptomIds = NEUROLOGICAL_CONDITIONS.MULTIPLE_SCLEROSIS.symptomIds;
 
   const cutoffDate = new Date();
@@ -7272,52 +7273,202 @@ export const analyzeMultipleSclerosisLogs = (logs, options = {}) => {
       hasData: false,
       condition: conditionCriteria.condition,
       diagnosticCode: conditionCriteria.diagnosticCode,
-      message: 'No multiple sclerosis symptoms logged in evaluation period',
+      supportedRating: null,
+      ratingRationale: [],
+      evidence: [],
+      gaps: [
+        'No MS symptoms logged in evaluation period',
+        'Log relapses with start date, duration, and recovery status',
+        'Document fatigue, weakness, balance, and bladder dysfunction',
+        'Track mobility aids required during relapses',
+      ],
+      metrics: {
+        totalLogs: 0,
+        relapseCount: 0,
+        fatigueDays: 0,
+        mobilityIssues: 0,
+      },
+      criteria: conditionCriteria,
+      disclaimer: conditionCriteria.disclaimer,
     };
   }
 
-  // Categorize symptoms by type for evidence building
-  const fatigueLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'ms-fatigue');
-  const numbnessLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'ms-numbness-tingling');
-  const visionLogs = relevantLogs.filter(log =>
-      ['ms-vision-problems', 'ms-double-vision'].includes(getLogSymptomId(log))
+  // ── Symptom type counts ───────────────────────────────────────────────────
+  const fatigueLogs       = relevantLogs.filter(l => getLogSymptomId(l) === 'ms-fatigue');
+  const numbnessLogs      = relevantLogs.filter(l => getLogSymptomId(l) === 'ms-numbness-tingling');
+  const visionLogs        = relevantLogs.filter(l =>
+      ['ms-vision-problems', 'ms-double-vision'].includes(getLogSymptomId(l))
   );
-  const weaknessLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'ms-muscle-weakness');
-  const spasticityLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'ms-spasticity');
-  const balanceLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'ms-balance-problems');
-  const cognitiveLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'ms-cognitive-fog');
-  const bladderLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'ms-bladder-dysfunction');
-  const bowelLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'ms-bowel-dysfunction');
-  const relapseLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'ms-relapse');
-  const walkingLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'ms-walking-difficulty');
-  const painLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'ms-pain');
-  const heatSensitivityLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'ms-heat-sensitivity');
+  const weaknessLogs      = relevantLogs.filter(l => getLogSymptomId(l) === 'ms-muscle-weakness');
+  const spasticityLogs    = relevantLogs.filter(l => getLogSymptomId(l) === 'ms-spasticity');
+  const balanceLogs       = relevantLogs.filter(l => getLogSymptomId(l) === 'ms-balance-problems');
+  const cognitiveLogs     = relevantLogs.filter(l => getLogSymptomId(l) === 'ms-cognitive-fog');
+  const bladderLogs       = relevantLogs.filter(l => getLogSymptomId(l) === 'ms-bladder-dysfunction');
+  const bowelLogs         = relevantLogs.filter(l => getLogSymptomId(l) === 'ms-bowel-dysfunction');
+  const relapseLogs       = relevantLogs.filter(l => getLogSymptomId(l) === 'ms-relapse');
+  const walkingLogs       = relevantLogs.filter(l => getLogSymptomId(l) === 'ms-walking-difficulty');
+  const painLogs          = relevantLogs.filter(l => getLogSymptomId(l) === 'ms-pain');
+  const heatLogs          = relevantLogs.filter(l => getLogSymptomId(l) === 'ms-heat-sensitivity');
+  const tremorLogs        = relevantLogs.filter(l => getLogSymptomId(l) === 'ms-tremor');
 
-  // Build evidence summary
+  const mobilityIssues = walkingLogs.length + balanceLogs.length + weaknessLogs.length;
+
+  // ── Pattern analysis ─────────────────────────────────────────────────────
+  // MS rating pivots on two axes:
+  //   1. Relapse frequency — how many distinct relapse events per year
+  //   2. Symptom continuity — what's the baseline burden between relapses
+  //
+  // DC 8018 MS rating structure:
+  //   100%: Chronic progressive (no remissions), pronounced residuals
+  //   90%:  Pronounced — requires aid for most activities
+  //   70%:  Severe — requires frequent aid
+  //   50%:  Moderate — some assistance needed, frequent relapses
+  //   30%:  Minimum (ascertainable residuals)
+  //
+  // Relapse-based tier guidance (from MS rating card criteria):
+  //   Frequent relapses (≥3/year) + significant residuals → 50%+
+  //   Moderate relapses (1-2/year) + residuals → 30-50%
+  //   Stable (no recent relapses) + residuals → 30%
+  //   Progressive (continuous symptoms, no remission) → 70%+
+
+  const distinctDays = new Set(
+      relevantLogs.map(log => {
+        const d = new Date(log.timestamp);
+        return `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
+      })
+  ).size;
+
+  const dayCoveragePct = evaluationPeriodDays > 0
+      ? (distinctDays / evaluationPeriodDays) * 100
+      : 0;
+
+  let symptomPattern;
+  if (evaluationPeriodDays === 0 || distinctDays === 0) {
+    symptomPattern = 'sparse';
+  } else if (dayCoveragePct >= 80) {
+    symptomPattern = 'continuous';
+  } else if (dayCoveragePct >= 50) {
+    symptomPattern = 'persistent';
+  } else if (dayCoveragePct >= 25) {
+    symptomPattern = 'frequent';
+  } else if (dayCoveragePct >= 10) {
+    symptomPattern = 'intermittent';
+  } else {
+    symptomPattern = 'sparse';
+  }
+
+  // Relapse-specific data from multipleSclerosisData form
+  // Count relapses that have isRelapse: true in their form data
+  const confirmedRelapses = relapseLogs.filter(l => l.multipleSclerosisData?.isRelapse === true);
+  const relapseCount = confirmedRelapses.length > 0 ? confirmedRelapses.length : relapseLogs.length;
+
+  // Mobility aid use during any logged period
+  const aidLogs = relevantLogs.filter(l =>
+      l.multipleSclerosisData?.mobilityAid &&
+      l.multipleSclerosisData.mobilityAid !== 'none'
+  );
+  const requiresAid = aidLogs.length > 0;
+  const aidType = requiresAid
+      ? [...new Set(aidLogs.map(l => l.multipleSclerosisData.mobilityAid))].join(', ')
+      : null;
+
+  // Steroid treatments (IV steroids = hospitalization-level relapse)
+  const steroidLogs = relevantLogs.filter(l => l.multipleSclerosisData?.recentSteroids === true);
+
+  // ── Evidence ──────────────────────────────────────────────────────────────
   const evidence = [];
-  evidence.push(`${relevantLogs.length} MS symptom logs in ${evaluationPeriodDays} days`);
+  evidence.push(`${relevantLogs.length} MS symptom logs over ${evaluationPeriodDays} days`);
+  evidence.push(`${distinctDays} distinct days affected (${dayCoveragePct.toFixed(0)}% of evaluation period)`);
+  evidence.push(`Symptom pattern: ${symptomPattern}`);
+  evidence.push(`${relapseCount} relapse(s) documented in evaluation period`);
 
-  if (fatigueLogs.length > 0) evidence.push(`Fatigue: ${fatigueLogs.length} days`);
-  if (numbnessLogs.length > 0) evidence.push(`Numbness/tingling: ${numbnessLogs.length} occurrences`);
-  if (visionLogs.length > 0) evidence.push(`Vision problems: ${visionLogs.length} occurrences`);
-  if (weaknessLogs.length > 0) evidence.push(`Muscle weakness: ${weaknessLogs.length} occurrences`);
+  if (fatigueLogs.length > 0)    evidence.push(`Fatigue: ${fatigueLogs.length} days`);
+  if (weaknessLogs.length > 0)   evidence.push(`Muscle weakness: ${weaknessLogs.length} occurrences`);
+  if (walkingLogs.length > 0)    evidence.push(`Walking difficulty: ${walkingLogs.length} occurrences`);
+  if (balanceLogs.length > 0)    evidence.push(`Balance problems: ${balanceLogs.length} occurrences`);
+  if (bladderLogs.length > 0)    evidence.push(`Bladder dysfunction: ${bladderLogs.length} occurrences`);
+  if (cognitiveLogs.length > 0)  evidence.push(`Cognitive fog: ${cognitiveLogs.length} occurrences`);
+  if (visionLogs.length > 0)     evidence.push(`Vision problems: ${visionLogs.length} occurrences`);
   if (spasticityLogs.length > 0) evidence.push(`Spasticity: ${spasticityLogs.length} occurrences`);
-  if (balanceLogs.length > 0) evidence.push(`Balance problems: ${balanceLogs.length} occurrences`);
-  if (cognitiveLogs.length > 0) evidence.push(`Cognitive issues: ${cognitiveLogs.length} occurrences`);
-  if (bladderLogs.length > 0) evidence.push(`Bladder dysfunction: ${bladderLogs.length} occurrences`);
-  if (bowelLogs.length > 0) evidence.push(`Bowel dysfunction: ${bowelLogs.length} occurrences`);
-  if (relapseLogs.length > 0) evidence.push(`Relapses: ${relapseLogs.length} documented`);
-  if (walkingLogs.length > 0) evidence.push(`Walking difficulty: ${walkingLogs.length} occurrences`);
+  if (steroidLogs.length > 0)    evidence.push(`IV steroid treatments: ${steroidLogs.length}`);
+  if (requiresAid)               evidence.push(`Mobility aid required: ${aidType}`);
 
-  // MS has minimum 30% rating when residuals present
-  let supportedRating = 30;
-  let ratingRationale = [
-    'Minimum 30% rating supported - ascertainable MS residuals documented',
-  ];
-
-  // Identify which residuals may warrant additional separate ratings
+  // ── Rating cascade ────────────────────────────────────────────────────────
+  let supportedRating = '30';
+  const ratingRationale = [];
+  const gaps = [];
   const additionalRatingPotential = [];
 
+  // Progressive (continuous/persistent pattern + no remission indicators) → 70%+
+  if (
+      (symptomPattern === 'continuous' || symptomPattern === 'persistent') &&
+      mobilityIssues >= 10 &&
+      requiresAid
+  ) {
+    supportedRating = '70';
+    ratingRationale.push(
+        `${symptomPattern === 'continuous' ? 'Continuous' : 'Persistent'} symptom burden (${dayCoveragePct.toFixed(0)}% of days affected)`,
+        `Mobility aid required: ${aidType}`,
+        `Significant motor involvement: ${mobilityIssues} mobility-related logs`,
+        'Pattern consistent with severe MS requiring frequent aid per DC 8018'
+    );
+    if (steroidLogs.length > 0) {
+      ratingRationale.push(`${steroidLogs.length} IV steroid treatment(s) documented`);
+    }
+    gaps.push('90% requires aid for most daily activities — document specific ADL limitations');
+    gaps.push('Obtain neurologist assessment of EDSS score for VA C&P exam preparation');
+
+  } else if (
+      relapseCount >= 3 ||
+      (relapseCount >= 2 && (mobilityIssues >= 5 || bladderLogs.length > 0))
+  ) {
+    // Frequent relapses → 50%
+    supportedRating = '50';
+    const msRationale50 = [
+      `${relapseCount} relapse(s) documented in evaluation period`,
+      relapseCount >= 3
+          ? 'Frequent relapses (≥3) documented — meets threshold for moderate MS'
+          : 'Multiple relapses with significant residuals',
+      mobilityIssues > 0
+          ? `Mobility residuals documented (${mobilityIssues} logs)`
+          : '',
+      bladderLogs.length > 0
+          ? `Bladder dysfunction documented (${bladderLogs.length} logs)`
+          : '',
+      'Consistent with "moderate; frequent relapses" per DC 8018'
+    ].filter(Boolean);
+    ratingRationale.push(...msRationale50);
+    gaps.push('Document relapse duration and recovery completeness for each episode');
+    gaps.push('Note whether relapses required steroid treatment or hospitalization');
+    if (requiresAid) {
+      gaps.push(`Mobility aid use (${aidType}) documented — include in C&P exam narrative`);
+    }
+
+  } else if (relapseCount >= 1) {
+    // 1-2 relapses + residuals → 30% (minimum with relapses documented)
+    supportedRating = '30';
+    ratingRationale.push(
+        `${relapseCount} relapse(s) documented`,
+        `${symptomPattern} baseline symptom pattern (${dayCoveragePct.toFixed(0)}% of days)`,
+        'Ascertainable MS residuals with documented relapses',
+        'Consistent with minimum 30% per DC 8018'
+    );
+    gaps.push(`${3 - relapseCount} more relapse(s) per year needed to support 50% rating`);
+    gaps.push('Document residual deficits that persist after each relapse');
+
+  } else {
+    // No relapses logged — minimum 30% if any residuals present
+    supportedRating = '30';
+    ratingRationale.push(
+        'Ascertainable MS residuals documented — minimum 30% supported',
+        `${symptomPattern} symptom pattern (${dayCoveragePct.toFixed(0)}% of days)`,
+        `${relevantLogs.length} symptom logs across ${distinctDays} distinct days`
+    );
+    gaps.push('Log relapses with ms-relapse symptom ID to capture frequency data');
+    gaps.push('3+ relapses per year documented would support 50% rating');
+  }
+
+  // ── Additional rating potential ───────────────────────────────────────────
   if (visionLogs.length > 5) {
     additionalRatingPotential.push('Vision impairment may warrant separate rating under eye codes');
   }
@@ -7327,26 +7478,25 @@ export const analyzeMultipleSclerosisLogs = (logs, options = {}) => {
   if (bowelLogs.length > 5) {
     additionalRatingPotential.push('Bowel dysfunction may warrant separate rating under DC 7332');
   }
-  if (weaknessLogs.length > 10 || walkingLogs.length > 10) {
+  if (mobilityIssues > 10) {
     additionalRatingPotential.push('Extremity weakness may warrant separate rating under peripheral nerve codes');
   }
   if (cognitiveLogs.length > 10) {
     additionalRatingPotential.push('Cognitive impairment should be evaluated for potential separate rating');
   }
 
-  // Evidence gaps
-  const gaps = [];
+  // ── Documentation gaps ────────────────────────────────────────────────────
   if (relapseLogs.length === 0) {
-    gaps.push('Document any relapses/exacerbations with dates and duration');
+    gaps.push('No relapses logged — use ms-relapse symptom to track exacerbations');
   }
-  if (relevantLogs.length < 10) {
-    gaps.push('Continue logging symptoms regularly to establish pattern');
+  if (distinctDays < 10) {
+    gaps.push(`Only ${distinctDays} days documented — log consistently to establish pattern`);
   }
-  if (bladderLogs.length === 0 && bowelLogs.length === 0) {
-    gaps.push('Document any bladder or bowel dysfunction if present');
+  if (bladderLogs.length === 0) {
+    gaps.push('Document bladder dysfunction if present — may support separate DC 7542 rating');
   }
-  if (visionLogs.length === 0) {
-    gaps.push('Document any vision problems if present (may warrant separate rating)');
+  if (steroidLogs.length === 0 && relapseCount > 0) {
+    gaps.push('Note whether relapses required IV steroids — mark recentSteroids in MS form');
   }
 
   return {
@@ -7354,24 +7504,27 @@ export const analyzeMultipleSclerosisLogs = (logs, options = {}) => {
     condition: conditionCriteria.condition,
     diagnosticCode: conditionCriteria.diagnosticCode,
     evaluationPeriodDays,
-    supportedRating: supportedRating.toString(),
+    supportedRating,
     ratingRationale,
     additionalRatingPotential,
     evidence,
     gaps,
+    symptomPattern,
+    distinctDays,
+    relapseCount,
     metrics: {
       totalLogs: relevantLogs.length,
+      relapseCount,
       fatigueDays: fatigueLogs.length,
-      numbnessOccurrences: numbnessLogs.length,
-      visionOccurrences: visionLogs.length,
-      weaknessOccurrences: weaknessLogs.length,
-      spasticityOccurrences: spasticityLogs.length,
-      balanceOccurrences: balanceLogs.length,
-      cognitiveOccurrences: cognitiveLogs.length,
+      mobilityIssues,
       bladderOccurrences: bladderLogs.length,
-      bowelOccurrences: bowelLogs.length,
-      relapseCount: relapseLogs.length,
-      walkingOccurrences: walkingLogs.length,
+      cognitiveOccurrences: cognitiveLogs.length,
+      visionOccurrences: visionLogs.length,
+      spasticityOccurrences: spasticityLogs.length,
+      weaknessOccurrences: weaknessLogs.length,
+      steroidTreatments: steroidLogs.length,
+      requiresAid,
+      symptomPattern,
     },
     criteria: conditionCriteria,
     disclaimer: conditionCriteria.disclaimer,
