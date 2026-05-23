@@ -5235,6 +5235,47 @@ export const analyzeAsthmaLogs = (logs, options = {}) => {
     }
   }
 
+  // ── Pattern analysis ─────────────────────────────────────────────────────
+  // Rescue inhaler frequency is the strongest symptom-log pattern signal
+  // when FEV-1 data isn't available.
+  const distinctSymptomDays = new Set(
+      relevantLogs.map(log => {
+        const d = new Date(log.occurredAt || log.timestamp);
+        return `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
+      })
+  ).size;
+
+  const dayCoveragePct = evaluationPeriodDays > 0 && distinctSymptomDays > 0
+      ? (distinctSymptomDays / evaluationPeriodDays) * 100
+      : 0;
+
+  let symptomPattern;
+  if (dayCoveragePct >= 80) {
+    symptomPattern = 'continuous';
+  } else if (dayCoveragePct >= 50) {
+    symptomPattern = 'persistent';
+  } else if (dayCoveragePct >= 25) {
+    symptomPattern = 'frequent';
+  } else if (dayCoveragePct >= 10) {
+    symptomPattern = 'intermittent';
+  } else {
+    symptomPattern = 'sparse';
+  }
+
+  // Add pattern context to rationale when symptom logs are the rating driver
+  if (relevantLogs.length > 0 && fev1Measurements.length === 0) {
+    ratingRationale.push(
+        `Symptom pattern: ${symptomPattern} (${distinctSymptomDays} distinct days, ${dayCoveragePct.toFixed(0)}% of evaluation period)`
+    );
+  }
+
+  // Rescue inhaler use from respiratory form data
+  const rescueInhalerFromForm = relevantLogs.filter(
+      l => l.respiratoryData?.rescueInhalerUsed === true
+  ).length;
+  const totalRescueUse = rescueInhalerUse.length + rescueInhalerFromForm;
+  const usesInhaler = totalRescueUse > 0 || rescueInhalerUse.length > 0;
+
   return {
     hasData: true,
     condition: 'Bronchial Asthma',
@@ -5244,6 +5285,21 @@ export const analyzeAsthmaLogs = (logs, options = {}) => {
     ratingRationale,
     evidence,
     gaps,
+    symptomPattern,
+    distinctSymptomDays,
+    // metrics: named fields AsthmaRatingCard evidence summary reads
+    metrics: {
+      totalLogs: relevantLogs.length,
+      attackCount: attackLogs.length,
+      fev1Percent: latestFev1Percent ? latestFev1Percent.toFixed(0) : null,
+      usesInhaler,
+      rescueInhalerCount: totalRescueUse,
+      erVisits: erVisits.length,
+      mdVisits: mdVisits.length,
+      attacksPerMonth: attacksPerMonth.toFixed(1),
+      symptomPattern,
+      distinctSymptomDays,
+    },
     criteria: ASTHMA_CRITERIA,
     disclaimer: 'This analysis is for documentation guidance only. The VA makes all final rating determinations based on the complete evidence of record, including spirometry testing.',
   };
