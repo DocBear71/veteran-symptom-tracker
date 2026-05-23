@@ -7,6 +7,7 @@
 
 import { getActiveProfileId, getServiceConnectedConditions, getProfileById, updateProfile } from './profiles';
 import { getMeasurements } from './measurements';
+import { exportTextFile } from './nativeExport';
 
 /**
  * Get profile-namespaced storage key
@@ -702,7 +703,7 @@ const validateBackupData = (data) => {
   return { valid: true };
 };
 
-export const exportAllData = (profileId = null) => {
+export const exportAllData = async (profileId = null) => {
   const activeId = profileId || getActiveProfileId();
 
   const data = {
@@ -719,7 +720,8 @@ export const exportAllData = (profileId = null) => {
     serviceConnected: activeId ? getServiceConnectedConditions(activeId) : [], // ← ADD THIS LINE
     reminderSettings: getReminderSettings(activeId),
     profile: null,
-    onboardingComplete: localStorage.getItem('symptomTracker_onboardingComplete') === 'true',
+    onboardingComplete: localStorage.getItem(
+        'symptomTracker_onboardingComplete') === 'true',
     sleepApneaProfile: getSleepApneaProfile(activeId),
     worksheet8940: get8940Worksheet(activeId),
     weightGoal: getWeightGoal(activeId),
@@ -727,19 +729,14 @@ export const exportAllData = (profileId = null) => {
   };
 
   const jsonString = JSON.stringify(data, null, 2);
-  const blob = new Blob([jsonString], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-
   const date = new Date().toISOString().split('T')[0];
-  const link = document.createElement('a');
-  link.href = url;
-  link.download = `symptom-tracker-backup-${date}.json`;
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-  URL.revokeObjectURL(url);
+  await exportTextFile(
+      jsonString,
+      `symptom-tracker-backup-${date}.json`,
+      'application/json'
+  );
 
-  return { success: true };
+  return {success: true};
 };
 
 export const importAllData = (jsonData, options = { merge: false }, profileId = null) => {

@@ -13,6 +13,12 @@
     "test:ui": "vitest --ui"
   },
   "dependencies": {
+    "@capacitor/android": "^8.3.4",
+    "@capacitor/browser": "^8.0.3",
+    "@capacitor/cli": "^8.3.4",
+    "@capacitor/core": "^8.3.4",
+    "@capacitor/filesystem": "^8.1.2",
+    "@capacitor/share": "^8.0.1",
     "jspdf": "^4.2.1",
     "jspdf-autotable": "^5.0.8",
     "lucide-react": "^0.556.0",
