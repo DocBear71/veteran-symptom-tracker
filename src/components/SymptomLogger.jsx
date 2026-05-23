@@ -297,229 +297,123 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed, onNavigate }) =
   const processedPrefillId = useRef(null);
   const isPrefilling = useRef(false);
 
+  // ─── Prefill field map ────────────────────────────────────────────────────
+  // Maps prefillData field name → [setter, initialState].
+  // Adding a new condition form only requires adding one line here.
+  // The dissociativeData branch is handled separately (has duration merge logic).
+  const PREFILL_FIELD_MAP = useMemo(() => [
+    ['migraineData',          setMigraineData,          INITIAL_MIGRAINE_DATA],
+    ['sleepData',             setSleepData,             INITIAL_SLEEP_DATA],
+    ['ptsdData',              setPtsdData,              INITIAL_PTSD_DATA],
+    ['painData',              setPainData,              INITIAL_PAIN_DATA],
+    ['giData',                setGIData,                INITIAL_GI_DATA],
+    ['respiratoryData',       setRespiratoryData,       INITIAL_RESPIRATORY_DATA],
+    ['jointData',             setJointData,             INITIAL_JOINT_DATA],
+    ['spineData',             setSpineData,             INITIAL_SPINE_DATA],
+    ['seizureData',           setSeizureData,           INITIAL_SEIZURE_DATA],
+    ['eyeData',               setEyeData,               {}],
+    ['genitourinaryData',     setGenitourinaryData,     INITIAL_GENITOURINARY_DATA],
+    ['gynecologicalData',     setGynecologicalData,     INITIAL_GYNECOLOGICAL_DATA],
+    ['anemiaData',            setAnemiaData,            INITIAL_ANEMIA_DATA],
+    ['sickleCellData',        setSickleCellData,        INITIAL_ANEMIA_DATA],
+    ['bleedingDisorderData',  setBleedingDisorderData,  INITIAL_ANEMIA_DATA],
+    ['infectionData',         setInfectionData,         INITIAL_ANEMIA_DATA],
+    ['lymphomaLeukemiaData',  setLymphomaLeukemiaData,  INITIAL_ANEMIA_DATA],
+    ['polycythemiaData',      setPolycythemiaData,      INITIAL_ANEMIA_DATA],
+    ['treatmentData',         setTreatmentData,         INITIAL_ANEMIA_DATA],
+    ['b12DeficiencyData',     setB12DeficiencyData,     INITIAL_ANEMIA_DATA],
+    ['hivData',               setHivData,               INITIAL_HIV_DATA],
+    ['hepatitisData',         setHepatitisData,         INITIAL_HEPATITIS_DATA],
+    ['lymeData',              setLymeData,              INITIAL_LYME_DATA],
+    ['malariaData',           setMalariaData,           INITIAL_MALARIA_DATA],
+    ['brucellosisData',       setBrucellosisData,       INITIAL_BRUCELLOSIS_DATA],
+    ['campylobacterData',     setCampylobacterData,     INITIAL_CAMPYLOBACTER_DATA],
+    ['qFeverData',            setQFeverData,            INITIAL_QFEVER_DATA],
+    ['salmonellaData',        setSalmonellaData,        INITIAL_SALMONELLA_DATA],
+    ['shigellaData',          setShigellaData,          INITIAL_SHIGELLA_DATA],
+    ['westNileData',          setWestNileData,          INITIAL_WEST_NILE_DATA],
+    ['ntmData',               setNtmData,               INITIAL_NTM_DATA],
+    ['dentalData',            setDentalData,            INITIAL_DENTAL_DATA],
+    ['eatingDisorderData',    setEatingDisorderData,    INITIAL_EATING_DISORDER_DATA],
+    ['bingeEatingData',       setBingeEatingData,       INITIAL_BINGE_EATING_DATA],
+    ['acuteStressData',       setAcuteStressData,       INITIAL_ACUTE_STRESS_DATA],
+    ['personalityData',       setPersonalityData,       INITIAL_PERSONALITY_DATA],
+    ['anxietyData',           setAnxietyData,           INITIAL_ANXIETY_DATA],
+    ['depressionData',        setDepressionData,        INITIAL_DEPRESSION_DATA],
+    ['bipolarData',           setBipolarData,           INITIAL_BIPOLAR_DATA],
+    ['ocdData',               setOcdData,               INITIAL_OCD_DATA],
+    ['adjustmentDisorderData',setAdjustmentDisorderData,INITIAL_ADJUSTMENT_DISORDER_DATA],
+    ['somaticData',           setSomaticSymptomData,    INITIAL_SOMATIC_SYMPTOM_DATA],
+    ['illnessAnxietyData',    setIllnessAnxietyData,    INITIAL_ILLNESS_ANXIETY_DATA],
+    ['depersonalizationData', setDepersonalizationData, INITIAL_DEPERSONALIZATION_DATA],
+    ['cyclothymicData',       setCyclothymicData,       INITIAL_CYCLOTHYMIC_DATA],
+    ['cardiovascularData',    setCardiovascularData,    INITIAL_CARDIOVASCULAR_DATA],
+    ['digestiveData',         setDigestiveData,         INITIAL_DIGESTIVE_DATA],
+    ['multipleSclerosisData', setMultipleSclerosisData, INITIAL_MULTIPLE_SCLEROSIS_DATA],
+    ['parkinsonsData',        setParkinsonsData,        INITIAL_PARKINSONS_DATA],
+    ['myastheniaData',        setMyastheniaData,        INITIAL_MYASTHENIA_DATA],
+    ['narcolepsyData',        setNarcolepsyData,        INITIAL_NARCOLEPSY_DATA],
+    ['alsData',               setAlsData,               INITIAL_ALS_DATA],
+    ['syringomyeliaData',     setSyringomyeliaData,     INITIAL_SYRINGOMYELIA_DATA],
+    ['myelitisData',          setMyelitisData,          INITIAL_MYELITIS_DATA],
+    ['peripheralNerveData',   setPeripheralNerveData,   INITIAL_PERIPHERAL_NERVE_DATA],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  ], []); // stable — setters never change identity between renders
+
   // Phase 1H - Handle prefill data from "Log again" button
   useEffect(() => {
     if (prefillData && prefillData.id && processedPrefillId.current !== prefillData.id) {
-      // Mark this prefill as processed and set flag to prevent reset
       processedPrefillId.current = prefillData.id;
       isPrefilling.current = true;
 
-      console.log('🔄 Processing prefill data:', prefillData);
-      // Find the category and symptom
+      // ── Symptom / category / body-system selection ──────────────────────
       const categoryInfo = sortedSymptomCategories.find(cat =>
           cat.symptoms.some(sym => sym.id === prefillData.symptomId)
       );
-      console.log('Found category info:', categoryInfo);
+
       if (categoryInfo) {
-        // Set body system first for 3-level dropdown
         const bodySystem = getBodySystem(categoryInfo.name);
-        console.log('Setting body system:', bodySystem);
-        // eslint-disable-next-line react-hooks/set-state-in-effect
         setSelectedBodySystem(bodySystem);
-        // Use the category ID (not name) for the dropdown
-        console.log('Setting category ID:', categoryInfo.id);
-        // eslint-disable-next-line react-hooks/set-state-in-effect
         setSelectedCategory(categoryInfo.id);
         setSelectedSymptom(prefillData.symptomId);
-        console.log(selectedSymptom)
       } else {
-        // Fallback: try to find category by name
         const fallbackCategory = sortedSymptomCategories.find(cat =>
             cat.name === prefillData.category
         );
         if (fallbackCategory) {
-          // Set body system first for 3-level dropdown
           const bodySystem = getBodySystem(fallbackCategory.name);
-          console.log('Using fallback - setting body system:', bodySystem);
           setSelectedBodySystem(bodySystem);
-          console.log('Using fallback - setting category ID:', fallbackCategory.id);
           setSelectedCategory(fallbackCategory.id);
           setSelectedSymptom(prefillData.symptomId);
-          console.log(selectedSymptom)
         } else {
           console.warn('Could not find category for symptom:', prefillData.symptomId);
         }
       }
-      // Set universal fields
+
+      // ── Universal fields ─────────────────────────────────────────────────
       setSeverity(prefillData.severity || 5);
       setNotes(prefillData.notes || '');
       setIsFlareUp(prefillData.isFlareUp || false);
       setDuration(prefillData.duration || '');
       setTimeOfDay(prefillData.timeOfDay || '');
-      // Set condition-specific data
-      if (prefillData.migraineData) {
-        setMigraineData({ ...prefillData.migraineData });
-      }
-      if (prefillData.sleepData) {
-        setSleepData({ ...prefillData.sleepData });
-      }
-      if (prefillData.ptsdData) {
-        setPtsdData({ ...prefillData.ptsdData });
-      }
-      if (prefillData.painData) {
-        setPainData({ ...prefillData.painData });
-      }
-      if (prefillData.giData) {
-        setGIData({ ...prefillData.giData });
-      }
-      if (prefillData.respiratoryData) {
-        setRespiratoryData({ ...prefillData.respiratoryData });
-      }
-      if (prefillData.jointData) {
-        setJointData({ ...prefillData.jointData });
-      }
-      if (prefillData.spineData) {
-        setSpineData({ ...prefillData.spineData });
-      }
-      if (prefillData.seizureData) {
-        setSeizureData({ ...prefillData.seizureData });
-      }
-      if (prefillData.eyeData) {
-        setEyeData({ ...prefillData.eyeData });
-      }
-      if (prefillData.genitourinaryData) {
-        setGenitourinaryData({ ...prefillData.genitourinaryData });
-      }
-      if (prefillData.gynecologicalData) {
-        setGynecologicalData({ ...prefillData.gynecologicalData });
-      }
-      // Phase 5: Hemic/Lymphatic prefills
-      if (prefillData.anemiaData) {
-        setAnemiaData({ ...prefillData.anemiaData });
-      }
-      if (prefillData.sickleCellData) {
-        setSickleCellData({ ...prefillData.sickleCellData });
-      }
-      if (prefillData.bleedingDisorderData) {
-        setBleedingDisorderData({ ...prefillData.bleedingDisorderData });
-      }
-      if (prefillData.infectionData) {
-        setInfectionData({ ...prefillData.infectionData });
-      }
-      if (prefillData.lymphomaLeukemiaData) {
-        setLymphomaLeukemiaData({ ...prefillData.lymphomaLeukemiaData });
-      }
-      if (prefillData.polycythemiaData) {
-        setPolycythemiaData({ ...prefillData.polycythemiaData });
-      }
-      if (prefillData.treatmentData) {
-        setTreatmentData({ ...prefillData.treatmentData });
-      }
-      if (prefillData.b12DeficiencyData) {
-        setB12DeficiencyData({ ...prefillData.b12DeficiencyData });
-      }
-      if (prefillData.dentalData) {
-        setDentalData({...prefillData.dentalData});
-      }
-      if (prefillData.hivData) {
-        setHivData({ ...prefillData.hivData });
-      }
-      if (prefillData.hepatitisData) {
-        setHepatitisData({ ...prefillData.hepatitisData });
-      }
-      if (prefillData.lymeData) {
-        setLymeData({ ...prefillData.lymeData });
-      }
-      if (prefillData.malariaData) {
-        setMalariaData(prefillData.malariaData);
-      }
-      if (prefillData.brucellosisData) {
-        setBrucellosisData(prefillData.brucellosisData);
-      }
-      if (prefillData.campylobacterData) {
-        setCampylobacterData(prefillData.campylobacterData);
-      }
-      if (prefillData.qFeverData) {
-        setQFeverData(prefillData.qFeverData);
-      }
-      if (prefillData.salmonellaData) {
-        setSalmonellaData(prefillData.salmonellaData);
-      }
-      if (prefillData.shigellaData) {
-        setShigellaData(prefillData.shigellaData);
-      }
-      if (prefillData.westNileData) {
-        setWestNileData(prefillData.westNileData);
-      }
-      if (prefillData.ntmData) {
-        setNtmData(prefillData.ntmData);
-      }
-      if (prefillData.eatingDisorderData) {
-        setEatingDisorderData(prefillData.eatingDisorderData);
-      }
-      // Phase 8B: Mental health prefills
-      if (prefillData.bingeEatingData) {
-        setBingeEatingData(prefillData.bingeEatingData);
-      }
-      if (prefillData.dissociativeData) {
-        setDissociativeData(prefillData.dissociativeData);
-      }
-      if (prefillData.acuteStressData) {
-        setAcuteStressData(prefillData.acuteStressData);
-      }
-      if (prefillData.personalityData) {
-        setPersonalityData(prefillData.personalityData);
-      }
-      // Phase 19: Missing mental health prefills — anxiety, depression, bipolar.
-      // State setters, reset logic, form wiring, and save-to-storage existed
-      // for these but the prefill branch was never added, so "Log Again" on
-      // depressed mood, anxiety attacks, or bipolar episodes opened a blank
-      // form even though all data was persisted in localStorage.
-      if (prefillData.anxietyData) {
-        setAnxietyData({ ...prefillData.anxietyData });
-      }
-      if (prefillData.depressionData) {
-        setDepressionData({ ...prefillData.depressionData });
-      }
-      if (prefillData.bipolarData) {
-        setBipolarData({ ...prefillData.bipolarData });
-      }
-      // Phase 9: Cardiovascular prefills
-      if (prefillData.cardiovascularData) {
-        setCardiovascularData(prefillData.cardiovascularData);
-      }
-      // Phase 10: Digestive prefills
-      if (prefillData.digestiveData) {
-        setDigestiveData(prefillData.digestiveData);
-      }
-      // Phase 11:
 
-      // Phase 1A: Include neurological data
-      if (prefillData.multipleSclerosisData) {
-        setMultipleSclerosisData(prefillData.multipleSclerosisData);
-      }
-      if (prefillData.parkinsonsData) {
-        setParkinsonsData(prefillData.parkinsonsData);
-      }
-      if (prefillData.myastheniaData) {
-        setMyastheniaData(prefillData.myastheniaData);
-      }
-      // Phase 1B: Include neurological data
-      if (prefillData.narcolepsyData) {
-        setNarcolepsyData(prefillData.narcolepsyData);
-      }
-      if (prefillData.alsData) {
-        setAlsData(prefillData.alsData);
-      }
-      if (prefillData.syringomyeliaData) {
-        setSyringomyeliaData(prefillData.syringomyeliaData);
-      }
-      if (prefillData.myelitisData) {
-        setMyelitisData(prefillData.myelitisData);
-      }
-      // Phase 1C: Include peripheral nerve data
-      if (prefillData.peripheralNerveData) {
-        setPeripheralNerveData(prefillData.peripheralNerveData);
-      }
-
-
-      console.log('✅ All prefill data set');
-      // Clear prefillData AFTER state updates have been queued
-      setTimeout(() => {
-        if (onPrefillUsed) {
-          onPrefillUsed();
+      // ── Condition-specific data — data-driven map ────────────────────────
+      // Each entry: [prefillKey, setter, initialShape]
+      // Merges with initial shape so no keys are ever missing after prefill.
+      PREFILL_FIELD_MAP.forEach(([field, setter, initial]) => {
+        if (prefillData[field]) {
+          setter({ ...initial, ...prefillData[field] });
         }
-        // Clear the prefilling flag after a delay to allow state updates
+      });
+
+      // ── dissociativeData: special case (duration merge logic) ────────────
+      if (prefillData.dissociativeData) {
+        setDissociativeData({ ...INITIAL_DISSOCIATIVE_DATA, ...prefillData.dissociativeData });
+      }
+
+      // ── Notify parent and clear prefill flag ─────────────────────────────
+      setTimeout(() => {
+        if (onPrefillUsed) onPrefillUsed();
         setTimeout(() => {
           isPrefilling.current = false;
           console.log('🏁 Prefill complete, reset protection disabled');
@@ -527,7 +421,7 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed, onNavigate }) =
       }, 100);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [prefillData, onPrefillUsed]);
+  }, [prefillData, onPrefillUsed, PREFILL_FIELD_MAP]);
 
 
   // Peripheral nerve prefixes to exclude from generic pain/GU detection.
