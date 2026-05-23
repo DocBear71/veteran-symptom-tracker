@@ -5132,7 +5132,6 @@ export const LOSS_OF_TASTE_CRITERIA = {
 export const analyzeMigraineLogs = (logs, options = {}) => {
   const {
     evaluationPeriodDays = 90,
-    includeWorkImpact = false,
   } = options;
 
   const cutoffDate = new Date();
@@ -5146,124 +5145,222 @@ export const analyzeMigraineLogs = (logs, options = {}) => {
   if (relevantLogs.length === 0) {
     return {
       hasData: false,
-      message: 'No migraine logs found in the evaluation period',
+      condition: 'Migraine',
+      diagnosticCode: '8100',
       supportedRating: null,
-      evidence: [],
-      gaps: ['Start logging migraines to build your evidence'],
+      ratingRationale: [],
+      evidence: {
+        totalMigraines: 0,
+        prostratingCount: 0,
+        prolongedCount: 0,
+        monthlyRates: { total: '0', prostrating: '0', prolongedProstrating: '0' },
+      },
+      gaps: [
+        'No migraine logs found in the evaluation period',
+        'Log every migraine — mark prostrating if it prevents normal activity',
+        'Document duration of each attack (4+ hours matters for higher ratings)',
+      ],
+      metrics: {
+        totalMigraines: 0,
+        prostratingCount: 0,
+        prolongedCount: 0,
+        monthlyRate: '0',
+      },
+      criteria: MIGRAINE_CRITERIA,
+      disclaimer: 'This analysis is for documentation guidance only. The VA makes all final rating determinations based on the complete evidence of record.',
     };
   }
 
   const totalMigraines = relevantLogs.length;
+  const monthsInPeriod = evaluationPeriodDays / 30;
+
+  // ── Prostrating attack counts ─────────────────────────────────────────────
+  // DC 8100: prostrating = incapacitating, requires cessation of activity
   const prostratingMigraines = relevantLogs.filter(
-      log => log.migraineData?.prostrating === true);
+      log => log.migraineData?.prostrating === true
+  );
   const prostratingCount = prostratingMigraines.length;
 
   const prolongedDurations = ['4-24h', '1-2d', 'more-than-2d', 'ongoing'];
   const prolongedMigraines = prostratingMigraines.filter(log =>
-      prolongedDurations.includes(log.migraineData?.duration),
+      prolongedDurations.includes(log.migraineData?.duration)
   );
   const prolongedCount = prolongedMigraines.length;
 
-  const monthsInPeriod = evaluationPeriodDays / 30;
-  const totalPerMonth = totalMigraines / monthsInPeriod;
-  const prostratingPerMonth = prostratingCount / monthsInPeriod;
+  const totalPerMonth           = totalMigraines / monthsInPeriod;
+  const prostratingPerMonth     = prostratingCount / monthsInPeriod;
   const prolongedProstratingPerMonth = prolongedCount / monthsInPeriod;
 
-  const oldestLog = relevantLogs.reduce((oldest, log) =>
-      new Date(log.timestamp) < new Date(oldest.timestamp) ? log : oldest,
+  // ── Pattern analysis ─────────────────────────────────────────────────────
+  // For migraines, pattern = how consistently attacks occur across the period.
+  // A veteran with 2 attacks/month every month is more impaired than one with
+  // 6 attacks in one month and none since — the pattern distinction matters.
+  const distinctDays = new Set(
+      relevantLogs.map(log => {
+        const d = new Date(log.timestamp);
+        return `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
+      })
+  ).size;
+
+  const dayCoveragePct = evaluationPeriodDays > 0
+      ? (distinctDays / evaluationPeriodDays) * 100
+      : 0;
+
+  // For migraines we use a looser threshold — even 1 prostrating attack/month
+  // spread across months is "regular". Focus on prostrating-day coverage.
+  const prostratingDays = new Set(
+      prostratingMigraines.map(log => {
+        const d = new Date(log.timestamp);
+        return `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
+      })
+  ).size;
+
+  // Months with at least one prostrating attack (regularity indicator)
+  const monthsWithProstrating = new Set(
+      prostratingMigraines.map(log => {
+        const d = new Date(log.timestamp);
+        return `${d.getFullYear()}-${d.getMonth()}`;
+      })
+  ).size;
+
+  // ── Work/functional impact ────────────────────────────────────────────────
+  // migraineData.prostrating = true already captures incapacitation.
+  // Also count flare-up flags as a secondary signal.
+  const flareUps   = relevantLogs.filter(l => l.isFlareUp).length;
+  const avgSeverity = relevantLogs.length > 0
+      ? (relevantLogs.reduce((s, l) => s + (l.severity || 0), 0) / relevantLogs.length).toFixed(1)
+      : null;
+
+  // Average severity of prostrating attacks specifically
+  const avgProstratingseverity = prostratingCount > 0
+      ? (prostratingMigraines.reduce((s, l) => s + (l.severity || 0), 0) / prostratingCount).toFixed(1)
+      : null;
+
+  // ── Evidence object (preserve legacy structure for card fallback) ─────────
+  const oldestLog = relevantLogs.reduce((o, l) =>
+      new Date(l.timestamp) < new Date(o.timestamp) ? l : o
   );
-  const newestLog = relevantLogs.reduce((newest, log) =>
-      new Date(log.timestamp) > new Date(newest.timestamp) ? log : newest,
+  const newestLog = relevantLogs.reduce((n, l) =>
+      new Date(l.timestamp) > new Date(n.timestamp) ? l : n
   );
 
   const evidence = {
     evaluationPeriod: {
       startDate: oldestLog.timestamp,
-      endDate: newestLog.timestamp,
-      days: evaluationPeriodDays,
-      months: monthsInPeriod.toFixed(1),
+      endDate:   newestLog.timestamp,
+      days:      evaluationPeriodDays,
+      months:    monthsInPeriod.toFixed(1),
     },
     totalMigraines,
     prostratingCount,
     prolongedCount,
     monthlyRates: {
-      total: totalPerMonth.toFixed(1),
-      prostrating: prostratingPerMonth.toFixed(1),
+      total:                totalPerMonth.toFixed(1),
+      prostrating:          prostratingPerMonth.toFixed(1),
       prolongedProstrating: prolongedProstratingPerMonth.toFixed(1),
     },
     severityBreakdown: {
-      prostrating: prostratingCount,
-      nonProstrating: totalMigraines - prostratingCount,
+      prostrating:         prostratingCount,
+      nonProstrating:      totalMigraines - prostratingCount,
       prolongedProstrating: prolongedCount,
+    },
+    pattern: {
+      distinctDays,
+      dayCoveragePct: dayCoveragePct.toFixed(0),
+      prostratingDays,
+      monthsWithProstrating,
     },
   };
 
   let supportedRating = 0;
-  let ratingRationale = [];
-  let gaps = [];
+  const ratingRationale = [];
+  const gaps = [];
+
+  // ── Rating cascade ────────────────────────────────────────────────────────
+  // DC 8100 — Migraine
+  // 50%: With very frequent completely prostrating and prolonged attacks
+  //      productive of severe economic inadaptability
+  // 30%: With characteristic prostrating attacks averaging one in a month
+  //      over the last several months
+  // 10%: With characteristic prostrating attacks averaging one in 2 months
+  //      over the last several months
+  //  0%: With less frequent attacks
 
   if (prostratingPerMonth >= 4 && prolongedCount > 0) {
     supportedRating = 50;
-    ratingRationale = [
-      `${prostratingPerMonth.toFixed(
-          1)} prostrating attacks per month (>=4 required)`,
-      `${prolongedCount} prolonged attacks documented`,
-      'Pattern suggests very frequent, prostrating, prolonged attacks',
-    ];
-    gaps = [
-      'Consider documenting work impact (missed days, reduced productivity)',
-      'Note any job accommodations needed due to migraines',
-    ];
+    ratingRationale.push(
+        `${prostratingPerMonth.toFixed(1)} prostrating attacks per month (threshold: ≥4 for 50%)`,
+        `${prolongedCount} prolonged attacks (≥4 hours) documented`,
+        monthsWithProstrating > 1
+            ? `Attacks documented across ${monthsWithProstrating} months — establishes recurring pattern`
+            : 'Document attacks across multiple months to establish "several months" pattern',
+        'Pattern consistent with "very frequent, prolonged, productive of severe economic inadaptability"'
+    );
+    gaps.push('Document work/economic impact — missed days, job accommodations, disability');
+    gaps.push('Obtain employer or supervisor statement regarding work impact');
+
   } else if (prostratingPerMonth >= 1) {
     supportedRating = 30;
-    ratingRationale = [
-      `${prostratingPerMonth.toFixed(
-          1)} prostrating attacks per month (>=1 required)`,
-      'Pattern supports characteristic prostrating attacks averaging monthly',
-    ];
-    gaps = [];
+    ratingRationale.push(
+        `${prostratingPerMonth.toFixed(1)} prostrating attacks per month (threshold: ≥1 for 30%)`,
+        monthsWithProstrating >= 2
+            ? `Attacks documented across ${monthsWithProstrating} months — meets "several months" requirement`
+            : `Attacks in ${monthsWithProstrating} month(s) — document across more months to establish pattern`,
+        prolongedCount > 0
+            ? `${prolongedCount} prolonged attacks (≥4 hours) documented`
+            : 'No prolonged attacks yet — document duration to approach 50%'
+    );
     if (prolongedCount === 0) {
-      gaps.push(
-          'Document duration of attacks (4+ hours supports higher rating)');
+      gaps.push('Document duration of attacks — 4+ hours supports higher rating consideration');
     }
     if (prostratingPerMonth < 4) {
-      gaps.push(`Current frequency (${prostratingPerMonth.toFixed(
-          1)}/month) - 4+/month may support 50% rating`);
+      gaps.push(`${prostratingPerMonth.toFixed(1)}/month documented — 4+/month with prolonged attacks needed for 50%`);
     }
+    if (monthsWithProstrating < 3) {
+      gaps.push('Continue logging — VA requires pattern across "several months" to establish 30%');
+    }
+
   } else if (prostratingPerMonth >= 0.5) {
     supportedRating = 10;
-    ratingRationale = [
-      `${prostratingPerMonth.toFixed(1)} prostrating attacks per month`,
-      'Pattern supports prostrating attacks averaging once every 2 months',
-    ];
-    gaps = [
-      `Increase documentation frequency - 1+/month may support 30% rating`,
-      'Ensure all prostrating episodes are logged',
-    ];
+    ratingRationale.push(
+        `${prostratingPerMonth.toFixed(1)} prostrating attacks per month (threshold: ≥0.5 for 10%)`,
+        `Attacks across ${monthsWithProstrating} month(s) in evaluation period`,
+        'Pattern consistent with prostrating attacks averaging once every 2 months'
+    );
+    gaps.push(`${prostratingPerMonth.toFixed(1)}/month documented — 1+/month needed for 30%`);
+    gaps.push('Ensure every prostrating migraine is logged — missing entries lower the frequency');
+
   } else {
     supportedRating = 0;
     if (prostratingCount === 0 && totalMigraines > 0) {
-      ratingRationale = [
-        `${totalMigraines} migraines logged, but none marked as prostrating`,
-        'Non-prostrating migraines support 0% rating',
-      ];
-      gaps = [
-        'If migraines prevent normal activities, mark them as "prostrating"',
-        'Document severity accurately - prostrating attacks are key to higher ratings',
-      ];
+      ratingRationale.push(
+          `${totalMigraines} migraines logged — none marked as prostrating`,
+          'Non-prostrating migraines support 0% only',
+          'Prostrating attacks (preventing all normal activity) are required for compensable rating'
+      );
+      gaps.push('If migraines prevent normal activities, mark them as prostrating in the migraine form');
+      gaps.push('Document severity accurately — the prostrating flag is the key rating driver');
     } else if (prostratingCount > 0) {
-      ratingRationale = [
-        `${prostratingPerMonth.toFixed(2)} prostrating attacks per month`,
-        'Frequency below threshold for 10% (need >=0.5/month)',
-      ];
-      gaps = [
-        'Continue logging all prostrating episodes',
-        'Ensure you\'re capturing every migraine that prevents normal activities',
-      ];
+      ratingRationale.push(
+          `${prostratingPerMonth.toFixed(2)} prostrating attacks per month — below 10% threshold (need ≥0.5)`,
+          'Continue logging all prostrating episodes'
+      );
+      gaps.push('Log every prostrating migraine — frequency below compensable threshold');
     } else {
-      ratingRationale = ['Insufficient data to determine rating'];
-      gaps = ['Begin logging migraine episodes with severity and duration'];
+      ratingRationale.push('Insufficient data to determine rating');
+      gaps.push('Begin logging migraine episodes with severity and duration');
     }
+  }
+
+  // ── Pattern-based documentation gaps ─────────────────────────────────────
+  if (monthsWithProstrating === 1 && prostratingCount >= 1) {
+    gaps.push('All prostrating attacks are in one month — continue logging to establish multi-month pattern');
+  }
+  if (prostratingCount > 0 && prolongedCount === 0) {
+    gaps.push('Document attack duration in the migraine form — "4+ hours" is part of the 50% criteria');
+  }
+  if (avgSeverity && parseFloat(avgSeverity) < 6) {
+    gaps.push('Average severity is moderate — if attacks are truly prostrating, ensure severity reflects functional impact');
   }
 
   return {
@@ -5275,6 +5372,21 @@ export const analyzeMigraineLogs = (logs, options = {}) => {
     ratingRationale,
     evidence,
     gaps,
+    // metrics: primary path for MigraineRatingCard evidence summary
+    metrics: {
+      totalMigraines,
+      prostratingCount,
+      prolongedCount,
+      monthlyRate: prostratingPerMonth.toFixed(1),
+      prostratingPerMonth,
+      prolongedProstratingPerMonth,
+      distinctDays,
+      prostratingDays,
+      monthsWithProstrating,
+      avgSeverity,
+      avgProstratingseverity,
+      flareUps,
+    },
     criteria: MIGRAINE_CRITERIA,
     disclaimer: 'This analysis is for documentation guidance only. The VA makes all final rating determinations based on the complete evidence of record.',
   };
