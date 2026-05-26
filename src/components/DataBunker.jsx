@@ -127,57 +127,48 @@ export default function DataBunker() {
   // Native iOS/Android restore — reads JSON file via Capacitor Filesystem
   const handleNativeRestore = async () => {
     try {
+      // Access the file picker plugin via globalThis to avoid
+      // Vite build-time resolution errors (same pattern as other plugins)
       const cap = globalThis?.Capacitor || window?.Capacitor;
-      const Filesystem = cap?.Plugins?.Filesystem;
+      const FilePicker = cap?.Plugins?.FilePicker;
 
-      if (!Filesystem) {
-        alert('File system not available. Please use the web version to restore.');
+      if (!FilePicker) {
+        alert('File picker not available. Please reinstall the app.');
         return;
       }
 
-      // Prompt user for the filename they exported
-      const filename = prompt(
-          'Enter the backup filename to restore:\n\n' +
-          'Example: symptom-vault-backup-2026-05-26.json\n\n' +
-          'Tip: Save your backup to iCloud Drive or Files app first, ' +
-          'then enter the exact filename.'
-      );
+      // Open native file picker — filtered to JSON files only
+      const result = await FilePicker.pickFiles({
+        types: ['application/json'],
+        multiple: false,
+        readData: true, // Returns base64 file data directly
+      });
 
-      if (!filename) return;
+      if (!result?.files?.length) return; // User cancelled
 
-      // Try reading from CACHE directory (where we write exports)
-      let fileContent;
-      try {
-        const result = await Filesystem.readFile({
-          path: filename.trim(),
-          directory: 'CACHE',
-        });
-        fileContent = result.data;
-      } catch {
-        alert(
-            'File not found in app storage.\n\n' +
-            'To restore from iCloud or Files app, please use the ' +
-            'web version at claude.ai or your browser.'
-        );
-        return;
-      }
+      const file = result.files[0];
 
-      // Decode base64 if needed
+      // Decode base64 data returned by the plugin
       let jsonString;
       try {
-        jsonString = atob(fileContent);
+        jsonString = atob(file.data);
       } catch {
-        jsonString = fileContent; // Already a string
+        alert('Could not read the selected file. Make sure it is a valid backup.');
+        return;
       }
 
-      // Reuse existing import logic by creating a synthetic event
-      const syntheticFile = new File([jsonString], filename, {
+      // Reuse existing web import logic via synthetic event
+      const syntheticFile = new File([jsonString], file.name, {
         type: 'application/json'
       });
       const syntheticEvent = { target: { files: [syntheticFile] } };
       handleImportBunker(syntheticEvent);
 
     } catch (error) {
+      // User cancelled the picker — not an error
+      if (error?.message?.includes('cancelled') ||
+          error?.message?.includes('canceled')) return;
+
       console.error('Native restore error:', error);
       alert('Restore failed: ' + error.message);
     }
