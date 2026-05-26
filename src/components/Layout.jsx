@@ -162,8 +162,7 @@ const Layout = ({ children, currentView, onNavigate }) => {
   }, [currentView]);
 
   return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col"
-           style={{ paddingTop: 0 }}>
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
         {/* Header */}
         <header className="bg-blue-900 dark:bg-gray-800 text-white shadow-lg">
           <div className="max-w-lg mx-auto px-4 py-4">
@@ -183,8 +182,7 @@ const Layout = ({ children, currentView, onNavigate }) => {
         </header>
 
         {/* Main Content */}
-        <main className="max-w-lg mx-auto px-4 py-6 pb-1 flex-1 w-full"
-              style={{ paddingTop: 'calc(env(safe-area-inset-top) + 5rem)' }}>
+        <main className="max-w-lg mx-auto px-4 py-6 pb-1 flex-1 w-full">
           {children}
         </main>
 
