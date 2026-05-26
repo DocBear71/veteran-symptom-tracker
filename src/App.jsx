@@ -252,7 +252,8 @@ const AppContent = () => {
       <>
         {/* Fraud Alert Banner */}
         {showFraudAlert && (
-            <div className="fixed top-0 left-0 right-0 z-50 bg-red-700 dark:bg-red-900 text-white shadow-lg">
+            <div className="fixed top-0 left-0 right-0 z-50 bg-red-700 dark:bg-red-900 text-white shadow-lg"
+                 style={{ paddingTop: 'env(safe-area-inset-top)' }}>
               <div className="max-w-4xl mx-auto px-4 py-3">
                 <div className="flex items-start gap-3">
                   <span className="text-xl flex-shrink-0 mt-0.5">🚨</span>
