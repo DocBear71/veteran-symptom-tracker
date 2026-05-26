@@ -164,11 +164,11 @@ const Layout = ({ children, currentView, onNavigate }) => {
   return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
         {/* Header */}
-        <header className="bg-blue-900 dark:bg-gray-800 text-white shadow-lg">
-          <div
-              className="max-w-lg mx-auto px-4 py-4"
-              style={{ paddingTop: 'calc(env(safe-area-inset-top, 0px) + 1rem)' }}
-          >
+        <header
+            className="bg-blue-900 dark:bg-gray-800 text-white shadow-lg"
+            style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}
+        >
+          <div className="max-w-lg mx-auto px-4 py-4">
             <div className="flex items-center justify-between mb-1">
               <h1 className="text-xl font-bold">{labels.appTitle}</h1>
               <div className="flex items-center gap-2">

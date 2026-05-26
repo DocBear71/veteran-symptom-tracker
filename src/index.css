@@ -6,12 +6,6 @@
     --safe-area-bottom: env(safe-area-inset-bottom, 0px);
 }
 
-/* iOS safe area — prevents content from rendering under the status bar */
-html, body {
-    padding-top: env(safe-area-inset-top, 0px);
-    background-color: #1e3a8a; /* Matches header — fills the gap on iOS */
-}
-
 /* Enable dark mode variant */
 @custom-variant dark (&:where(.dark, .dark *));
 
