@@ -763,7 +763,7 @@ const SMCCalculator = ({
     let totalKAwards = 0;
 
     // Check Penis Conditions (from prop)
-    if (penisAnalysis?.smcEligible && penisAnalysis?.smcData) {
+    if (penisAnalysis?.hasData && penisAnalysis?.smcEligible && penisAnalysis?.smcData) {
       eligibleConditions.push({
         category: 'CREATIVE_ORGAN',
         categoryName: 'Loss of Creative Organ - Penis',
@@ -777,7 +777,7 @@ const SMCCalculator = ({
     }
 
     // Check Testis Conditions (from prop)
-    if (testisAnalysis?.smcEligible && testisAnalysis?.smcData) {
+    if (testisAnalysis?.hasData && testisAnalysis?.smcEligible && testisAnalysis?.smcData) {
       if (!eligibleConditions.some(c => c.category === 'CREATIVE_ORGAN')) {
         eligibleConditions.push({
           category: 'CREATIVE_ORGAN',
@@ -793,7 +793,7 @@ const SMCCalculator = ({
     }
 
     // Check Erectile Dysfunction (from prop)
-    if (edAnalysis?.smcEligible && edAnalysis?.smcData) {
+    if (edAnalysis?.hasData && edAnalysis?.smcEligible && edAnalysis?.smcData) {
       if (!eligibleConditions.some(c => c.category === 'CREATIVE_ORGAN')) {
         eligibleConditions.push({
           category: 'CREATIVE_ORGAN',
@@ -838,7 +838,7 @@ const SMCCalculator = ({
     }
 
     // Check Female Reproductive (from prop) - Hysterectomy/Oophorectomy
-    if (femaleReproductiveAnalysis?.smcEligible && femaleReproductiveAnalysis?.smcData) {
+    if (femaleReproductiveAnalysis?.hasData && femaleReproductiveAnalysis?.smcEligible && femaleReproductiveAnalysis?.smcData) {
       if (!eligibleConditions.some(c => c.category === 'CREATIVE_ORGAN')) {
         eligibleConditions.push({
           category: 'CREATIVE_ORGAN',

@@ -10,11 +10,24 @@
  * (iOS or Android app). False on web/PWA.
  */
 export function isNativePlatform() {
-  return (
-      typeof window !== 'undefined' &&
-      window.Capacitor !== undefined &&
-      window.Capacitor.isNativePlatform?.() === true
-  );
+  try {
+    const cap = (typeof window !== 'undefined' && window.Capacitor)
+        || globalThis?.Capacitor;
+    if (!cap) return false;
+
+    // Capacitor v3+ preferred method
+    if (typeof cap.isNativePlatform === 'function') {
+      return cap.isNativePlatform();
+    }
+    // Capacitor v2 fallback
+    if (typeof cap.platform === 'string') {
+      return cap.platform !== 'web';
+    }
+    // Last resort — Filesystem plugin only exists in native shell
+    return !!(cap.Plugins?.Filesystem);
+  } catch {
+    return false;
+  }
 }
 
 /**

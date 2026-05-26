@@ -76,20 +76,20 @@ const Footer = () => {
                     alt="Doc Bear"
                     className="w-8 h-8 rounded-lg"
                 />
-                <span className="font-semibold text-gray-900 dark:text-white">
+                <span className="font-semibold text-gray-100 dark:text-white">
           Doc Bear's Symptom Vault
         </span>
               </div>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
+              <p className="text-sm text-blue-300 dark:text-gray-400">
                 Version 3.5.0
               </p>
               <div className="flex flex-col items-center gap-2 text-xs
-        text-gray-500 dark:text-gray-500">
+        text-blue-300 dark:text-gray-500">
                 <span>📊 210,000+ lines of code</span>
                 <span>🏥 240+ diagnostic codes</span>
                 <span>📈 960+ symptoms</span>
               </div>
-              <p className="text-xs text-gray-400 dark:text-gray-600">
+              <p className="text-xs text-blue-300 dark:text-gray-600">
                 Built with ❤️ by a Marine Corps veteran
               </p>
             </div>

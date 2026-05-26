@@ -47,7 +47,7 @@ const OnboardingModal = ({ onComplete }) => {
             <p className="mb-3">
               Log symptoms with <strong>details that matter for ratings</strong>:
             </p>
-            <ul className="text-sm text-gray-600 dark:text-gray-400 space-y-1 ml-4">
+            <ul className="text-sm text-gray-600 dark:text-gray-400 space-y-1 ml-4 text-left">
               <li>• <strong>Migraines:</strong> Duration, prostrating severity, light/sound sensitivity</li>
               <li>• <strong>Sleep issues:</strong> CPAP usage, awakening causes, daytime sleepiness</li>
               <li>• <strong>PTSD:</strong> Triggers, nightmare frequency, avoidance behaviors</li>

@@ -1815,13 +1815,8 @@ export const analyzePenisConditionsLogs = (logs, options = {}) => {
       criteria: PENIS_CONDITIONS_CRITERIA,
       disclaimer: PENIS_CONDITIONS_CRITERIA.disclaimer,
       // SMC Eligibility Data
-      smcEligible: true,
-      smcData: {
-        level: 'K',
-        category: 'CREATIVE_ORGAN',
-        autoGrant: true,
-        note: 'All penis removal conditions require SMC-K review under 38 CFR § 3.350(a) for loss of creative organ.',
-      },
+      smcEligible: false,
+      smcData: null,
     };
   }
 

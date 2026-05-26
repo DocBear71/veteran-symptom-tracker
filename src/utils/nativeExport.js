@@ -18,15 +18,19 @@ import { isNativePlatform } from './platformUtils';
  * @param {jsPDF} doc        - The jsPDF instance (already populated)
  * @param {string} filename  - Desired filename, e.g. 'report.pdf'
  */
-export async function exportPDF(doc, filename) {
+export async function exportPDF(doc, filename, options = {}) {
   if (isNativePlatform()) {
     try {
       // Access Capacitor plugins via globalThis to prevent Vite build-time resolution.
       // These plugins are registered on window.Capacitor.Plugins at runtime.
-      const Filesystem = globalThis?.Capacitor?.Plugins?.Filesystem;
-      const Share = globalThis?.Capacitor?.Plugins?.Share;
+      // Try both access patterns — Capacitor registers plugins differently
+      // across versions and platforms
+      const cap = globalThis?.Capacitor || window?.Capacitor;
+      const Filesystem = cap?.Plugins?.Filesystem;
+      const Share = cap?.Plugins?.Share;
 
       if (!Filesystem || !Share) {
+        console.warn('Capacitor plugins not found, falling back to browser download');
         throw new Error('Capacitor plugins not available');
       }
 
@@ -38,10 +42,15 @@ export async function exportPDF(doc, filename) {
         directory: 'CACHE',
       });
 
+      // Always share via native share sheet.
+      // On Android, user can choose Drive, Downloads app, etc.
+      // 'Save to Device' just changes the dialog title to guide the user.
       await Share.share({
         title: filename,
         url: writeResult.uri,
-        dialogTitle: 'Save or share your report',
+        dialogTitle: options?.exportAction === 'save'
+            ? 'Save your file — choose Downloads or Drive'
+            : 'Share your report',
       });
     } catch (err) {
       console.error('Native PDF export failed, falling back to browser:', err);
@@ -60,13 +69,15 @@ export async function exportPDF(doc, filename) {
  * @param {string} filename  - Desired filename, e.g. 'backup.json'
  * @param {string} mimeType  - MIME type, e.g. 'application/json'
  */
-export async function exportTextFile(content, filename, mimeType = 'text/plain') {
+export async function exportTextFile(content, filename, mimeType, options = {}) {
   if (isNativePlatform()) {
     try {
-      const Filesystem = globalThis?.Capacitor?.Plugins?.Filesystem;
-      const Share = globalThis?.Capacitor?.Plugins?.Share;
+      const cap = globalThis?.Capacitor || window?.Capacitor;
+      const Filesystem = cap?.Plugins?.Filesystem;
+      const Share = cap?.Plugins?.Share;
 
       if (!Filesystem || !Share) {
+        console.warn('Capacitor plugins not found, falling back to browser download');
         throw new Error('Capacitor plugins not available');
       }
 
@@ -81,7 +92,9 @@ export async function exportTextFile(content, filename, mimeType = 'text/plain')
       await Share.share({
         title: filename,
         url: writeResult.uri,
-        dialogTitle: 'Save or share your file',
+        dialogTitle: options?.exportAction === 'save'
+            ? 'Save your file — choose Downloads or Drive'
+            : 'Share your file',
       });
     } catch (err) {
       console.error('Native file export failed, falling back to browser:', err);

@@ -35,6 +35,7 @@ const ExportData = () => {
   // UI states
   const [showAdvanced, setShowAdvanced] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
+  const [exportAction, setExportAction] = useState('share'); // 'share' or 'save'
 
   useEffect(() => {
     const data = getDataStats();
@@ -60,6 +61,7 @@ const ExportData = () => {
   // Get export options
   const getExportOptions = () => {
     return {
+      exportAction,
       includeAppointments,
       includeMeasurements,
       includeMedications,
@@ -412,6 +414,38 @@ const ExportData = () => {
           )}
         </div>
 
+        {/* Save vs Share Toggle */}
+        <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
+          <h3 className="font-medium text-gray-900 dark:text-white mb-3">Export Action</h3>
+          <div className="flex gap-2">
+            <button
+                onClick={() => setExportAction('save')}
+                className={`flex-1 py-3 px-4 rounded-lg font-medium transition-colors flex items-center justify-center gap-2 ${
+                    exportAction === 'save'
+                        ? 'bg-blue-600 text-white'
+                        : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
+                }`}
+            >
+              <span>💾</span> Save to Device
+            </button>
+            <button
+                onClick={() => setExportAction('share')}
+                className={`flex-1 py-3 px-4 rounded-lg font-medium transition-colors flex items-center justify-center gap-2 ${
+                    exportAction === 'share'
+                        ? 'bg-blue-600 text-white'
+                        : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
+                }`}
+            >
+              <span>📤</span> Share / Send
+            </button>
+          </div>
+          <p className="text-xs text-gray-500 dark:text-gray-400 mt-2 text-center">
+            {exportAction === 'save'
+                ? 'Choose Downloads, Drive, or a file manager app to save'
+                : 'Choose to email, message, or save via share sheet'}
+          </p>
+        </div>
+
         {/* Export Buttons */}
         <div className="space-y-3">
           <button
@@ -476,7 +510,7 @@ const ExportData = () => {
             {exportFormat === 'va-claim' ? 'VA Claim Package Features' : 'Export Tips'}
           </h3>
           {exportFormat === 'va-claim' ? (
-              <ul className="text-sm text-blue-800 dark:text-blue-300 space-y-1">
+              <ul className="text-sm text-blue-800 dark:text-blue-300 space-y-1 text-left">
                 <li>• Professional cover page with claim information</li>
                 <li>• Rating evidence analysis for each tracked condition</li>
                 <li>• Symptom frequency analysis aligned to VA criteria</li>
