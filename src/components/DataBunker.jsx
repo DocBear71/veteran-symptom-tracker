@@ -1,7 +1,8 @@
 import { Download, Upload, Shield, AlertTriangle } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { getDataStats } from '../utils/storage';
-import { isNativePlatform, shareFile } from '../utils/nativeExport';
+import { exportTextFile } from '../utils/nativeExport';
+import { isNativePlatform } from '../utils/platformUtils';
 
 export default function DataBunker() {
     const [lastBackup, setLastBackup] = useState(
@@ -113,28 +114,10 @@ export default function DataBunker() {
       };
 
       const jsonString = JSON.stringify(data, null, 2);
-      const filename = `symptom-vault-backup-${new Date().toISOString().
-          split('T')[0]}.json`;
+      const filename = `symptom-vault-backup-${new Date().toISOString().split('T')[0]}.json`;
 
-      if (isNativePlatform()) {
-        // Native iOS/Android — use share sheet
-        try {
-          await shareFile(jsonString, filename, 'application/json');
-        } catch (error) {
-          console.error('Native export failed:', error);
-          alert('Export failed: ' + error.message);
-          return;
-        }
-      } else {
-        // Web — use blob download
-        const blob = new Blob([jsonString], {type: 'application/json'});
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = filename;
-        a.click();
-        URL.revokeObjectURL(url);
-      }
+      // exportTextFile handles both native share sheet and web download
+      await exportTextFile(jsonString, filename, 'application/json');
 
       const now = new Date().toISOString();
       localStorage.setItem('lastBackupDate', now);
