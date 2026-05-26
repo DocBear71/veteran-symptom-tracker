@@ -163,6 +163,15 @@ const Layout = ({ children, currentView, onNavigate }) => {
 
   return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
+
+        {/* iOS safe area fill — fixed blue strip behind the status bar only.
+          Zero height on Android/web where safe-area-inset-top is 0. */}
+        <div
+            className="fixed top-0 left-0 right-0 z-50 bg-blue-900 dark:bg-gray-800"
+            style={{ height: 'env(safe-area-inset-top, 0px)' }}
+            aria-hidden="true"
+        />
+
         {/* Header */}
         <header
             className="bg-blue-900 dark:bg-gray-800 text-white shadow-lg"
