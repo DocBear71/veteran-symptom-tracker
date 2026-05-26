@@ -275,7 +275,11 @@ const QuickActionsMenu = ({
         )}
 
         {/* Main FAB Container */}
-        <div className="fixed bottom-20 right-4 z-50" ref={menuRef}>
+        <div
+            className="fixed right-4 z-50"
+            style={{ bottom: 'calc(env(safe-area-inset-bottom, 0px) + 5rem)' }}
+            ref={menuRef}
+        >
 
           {/* Expanded Menu */}
           {isOpen && !showQuickLog && !showMedLog && (
