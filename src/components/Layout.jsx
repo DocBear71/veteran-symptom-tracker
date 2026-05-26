@@ -165,8 +165,7 @@ const Layout = ({ children, currentView, onNavigate }) => {
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col"
            style={{ paddingTop: 0 }}>
         {/* Header */}
-        <header className="bg-blue-900 dark:bg-gray-800 text-white shadow-lg"
-                style={{ paddingTop: 'env(safe-area-inset-top)' }}>
+        <header className="bg-blue-900 dark:bg-gray-800 text-white shadow-lg">
           <div className="max-w-lg mx-auto px-4 py-4">
             <div className="flex items-center justify-between mb-1">
               <h1 className="text-xl font-bold">{labels.appTitle}</h1>

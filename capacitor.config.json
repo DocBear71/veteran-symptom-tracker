@@ -2,6 +2,9 @@
   "appId": "com.docbearenterprises.symptomvault",
   "appName": "Doc Bear's Symptom Vault",
   "webDir": "dist",
+  "ios": {
+    "contentInset": "always"
+  },
   "plugins": {
     "SplashScreen": {
       "launchShowDuration": 2000,
