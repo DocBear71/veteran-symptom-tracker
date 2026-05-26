@@ -183,7 +183,8 @@ const Layout = ({ children, currentView, onNavigate }) => {
         </header>
 
         {/* Main Content */}
-        <main className="max-w-lg mx-auto px-4 py-6 pb-1 flex-1 w-full">
+        <main className="max-w-lg mx-auto px-4 py-6 pb-1 flex-1 w-full"
+              style={{ paddingTop: 'calc(env(safe-area-inset-top) + 5rem)' }}>
           {children}
         </main>
 
