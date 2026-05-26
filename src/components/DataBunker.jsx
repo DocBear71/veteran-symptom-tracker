@@ -124,6 +124,65 @@ export default function DataBunker() {
       setLastBackup(now);
     };
 
+  // Native iOS/Android restore — reads JSON file via Capacitor Filesystem
+  const handleNativeRestore = async () => {
+    try {
+      const cap = globalThis?.Capacitor || window?.Capacitor;
+      const Filesystem = cap?.Plugins?.Filesystem;
+
+      if (!Filesystem) {
+        alert('File system not available. Please use the web version to restore.');
+        return;
+      }
+
+      // Prompt user for the filename they exported
+      const filename = prompt(
+          'Enter the backup filename to restore:\n\n' +
+          'Example: symptom-vault-backup-2026-05-26.json\n\n' +
+          'Tip: Save your backup to iCloud Drive or Files app first, ' +
+          'then enter the exact filename.'
+      );
+
+      if (!filename) return;
+
+      // Try reading from CACHE directory (where we write exports)
+      let fileContent;
+      try {
+        const result = await Filesystem.readFile({
+          path: filename.trim(),
+          directory: 'CACHE',
+        });
+        fileContent = result.data;
+      } catch {
+        alert(
+            'File not found in app storage.\n\n' +
+            'To restore from iCloud or Files app, please use the ' +
+            'web version at claude.ai or your browser.'
+        );
+        return;
+      }
+
+      // Decode base64 if needed
+      let jsonString;
+      try {
+        jsonString = atob(fileContent);
+      } catch {
+        jsonString = fileContent; // Already a string
+      }
+
+      // Reuse existing import logic by creating a synthetic event
+      const syntheticFile = new File([jsonString], filename, {
+        type: 'application/json'
+      });
+      const syntheticEvent = { target: { files: [syntheticFile] } };
+      handleImportBunker(syntheticEvent);
+
+    } catch (error) {
+      console.error('Native restore error:', error);
+      alert('Restore failed: ' + error.message);
+    }
+  };
+
     const handleImportBunker = (event) => {
         const file = event.target.files[0];
         if (!file) return;
@@ -330,11 +389,15 @@ export default function DataBunker() {
           </button>
 
           {isNativePlatform() ? (
-              <div className="flex-1 flex items-center justify-center gap-2 px-4 py-3
-                            bg-gray-400 text-white rounded-lg font-medium text-center text-sm">
-                <Upload className="w-5 h-5 flex-shrink-0" />
-                Restore: use web version
-              </div>
+              <button
+                  onClick={handleNativeRestore}
+                  className="flex-1 flex items-center justify-center gap-2 px-4 py-3
+                           bg-blue-600 hover:bg-blue-700 text-white rounded-lg
+                           font-medium transition-colors"
+              >
+                <Upload className="w-5 h-5" />
+                Restore Backup
+              </button>
           ) : (
               <label className="flex-1 flex items-center justify-center gap-2 px-4 py-3
                             bg-blue-600 hover:bg-blue-700 text-white rounded-lg

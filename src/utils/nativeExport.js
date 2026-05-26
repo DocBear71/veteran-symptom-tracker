@@ -81,12 +81,18 @@ export async function exportTextFile(content, filename, mimeType, options = {}) 
         throw new Error('Capacitor plugins not available');
       }
 
-      const base64Data = btoa(unescape(encodeURIComponent(content)));
+      const base64Data = btoa(
+          encodeURIComponent(content).replace(/%([0-9A-F]{2})/g, (_, p1) =>
+              String.fromCharCode(parseInt(p1, 16))
+          )
+      );
 
+      // Write to DOCUMENTS so it persists and can be restored later.
+      // CACHE files can be purged by iOS at any time.
       const writeResult = await Filesystem.writeFile({
         path: filename,
         data: base64Data,
-        directory: 'CACHE',
+        directory: 'DOCUMENTS',
       });
 
       await Share.share({
