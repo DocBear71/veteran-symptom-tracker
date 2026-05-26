@@ -164,7 +164,8 @@ const Layout = ({ children, currentView, onNavigate }) => {
   return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
         {/* Header */}
-        <header className="bg-blue-900 dark:bg-gray-800 text-white shadow-lg">
+        <header className="bg-blue-900 dark:bg-gray-800 text-white shadow-lg"
+                style={{ paddingTop: 'env(safe-area-inset-top)' }}>
           <div className="max-w-lg mx-auto px-4 py-4">
             <div className="flex items-center justify-between mb-1">
               <h1 className="text-xl font-bold">{labels.appTitle}</h1>
@@ -195,8 +196,8 @@ const Layout = ({ children, currentView, onNavigate }) => {
         {/* 4 tabs: cleaner than Vet-Rate's cluttered navigation */}
         <nav
             className="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800
-                   border-t border-gray-200 dark:border-gray-700 shadow-lg z-40
-                   safe-area-bottom"
+                   border-t border-gray-200 dark:border-gray-700 shadow-lg z-40"
+            style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
             role="navigation"
             aria-label="Main navigation"
         >
