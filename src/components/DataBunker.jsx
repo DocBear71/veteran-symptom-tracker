@@ -1,6 +1,7 @@
 import { Download, Upload, Shield, AlertTriangle } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { getDataStats } from '../utils/storage';
+import { isNativePlatform, shareFile } from '../utils/nativeExport';
 
 export default function DataBunker() {
     const [lastBackup, setLastBackup] = useState(
@@ -31,79 +32,114 @@ export default function DataBunker() {
         };
     }, []);
 
-    const handleExportBunker = () => {
-        // Get active profile ID for profile-specific data
-        const activeProfileId = localStorage.getItem('symptomTracker_activeProfileId') || 'default';
+    const handleExportBunker = async () => {
+      // Get active profile ID for profile-specific data
+      const activeProfileId = localStorage.getItem(
+          'symptomTracker_activeProfileId') || 'default';
 
-        // Collect ALL symptomTracker data from localStorage
-        const allData = {};
-        for (let i = 0; i < localStorage.length; i++) {
-            const key = localStorage.key(i);
-            if (key && key.startsWith('symptomTracker_')) {
-                try {
-                    const value = localStorage.getItem(key);
-                    // Try to parse as JSON, fallback to raw value
-                    try {
-                        allData[key] = JSON.parse(value);
-                    } catch {
-                        allData[key] = value;
-                    }
-                } catch (e) {
-                    console.warn(`Failed to export key: ${key}`, e);
-                }
+      // Collect ALL symptomTracker data from localStorage
+      const allData = {};
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key && key.startsWith('symptomTracker_')) {
+          try {
+            const value = localStorage.getItem(key);
+            // Try to parse as JSON, fallback to raw value
+            try {
+              allData[key] = JSON.parse(value);
+            } catch {
+              allData[key] = value;
             }
+          } catch (e) {
+            console.warn(`Failed to export key: ${key}`, e);
+          }
         }
+      }
 
-        const data = {
-            version: '2.0',
-            exportDate: new Date().toISOString(),
-            appVersion: '3.5.0',
-            activeProfileId,
-            // Store all raw localStorage data for complete backup
-            rawData: allData,
-            // Also store in friendly format for the active profile
-            data: {
-                symptomLogs: JSON.parse(localStorage.getItem(`symptomTracker_logs_${activeProfileId}`) || '[]'),
-                customSymptoms: JSON.parse(localStorage.getItem(`symptomTracker_customSymptoms_${activeProfileId}`) || '[]'),
-                chronicSymptoms: JSON.parse(localStorage.getItem(`symptomTracker_favorites_${activeProfileId}`) || '[]'),
-              serviceConnectedConditions: (() => {
-                try {
-                  const profiles = JSON.parse(localStorage.getItem('symptomTracker_profiles') || '[]');
-                  const profile = profiles.find(p => p.id === activeProfileId);
-                  return profile?.serviceConnectedConditions || [];
-                } catch { return []; }
-              })(),
-                medications: JSON.parse(localStorage.getItem(`symptomTracker_medications_${activeProfileId}`) || '[]'),
-                medicationLogs: JSON.parse(localStorage.getItem(`symptomTracker_medicationLogs_${activeProfileId}`) || '[]'),
-                measurements: JSON.parse(localStorage.getItem(`symptomTracker_measurements_${activeProfileId}`) || '[]'),
-                appointments: JSON.parse(localStorage.getItem(`symptomTracker_appointments_${activeProfileId}`) || '[]'),
-                profiles: JSON.parse(localStorage.getItem('symptomTracker_profiles') || '[]'),
-                userProfile: JSON.parse(localStorage.getItem(`symptomTracker_profile_${activeProfileId}`) || '{}'),
-                theme: localStorage.getItem('symptomTracker_theme') || 'system',
-                reminderSettings: JSON.parse(localStorage.getItem('symptomTracker_reminderSettings') || '{}'),
-                onboardingComplete: localStorage.getItem('symptomTracker_onboardingComplete') === 'true',
-                worksheet8940: JSON.parse(localStorage.getItem(`symptomTracker_8940worksheet_${activeProfileId}`) || 'null'),
-                weightGoal: JSON.parse(localStorage.getItem(`symptomTracker_weightGoal_${activeProfileId}`) || 'null'),
-                mentalHealthScores: JSON.parse(localStorage.getItem(`symptomTracker_mentalHealthScores_${activeProfileId}`) || '[]'),
-                sleepApneaProfile: JSON.parse(localStorage.getItem(`symptomTracker_sleepApneaProfile_${activeProfileId}`) || 'null'),
-                medicationHistory: JSON.parse(localStorage.getItem(`symptomTracker_medicationHistory_${activeProfileId}`) || '[]'),
+      const data = {
+        version: '2.0',
+        exportDate: new Date().toISOString(),
+        appVersion: '3.5.0',
+        activeProfileId,
+        // Store all raw localStorage data for complete backup
+        rawData: allData,
+        // Also store in friendly format for the active profile
+        data: {
+          symptomLogs: JSON.parse(
+              localStorage.getItem(`symptomTracker_logs_${activeProfileId}`) ||
+              '[]'),
+          customSymptoms: JSON.parse(localStorage.getItem(
+              `symptomTracker_customSymptoms_${activeProfileId}`) || '[]'),
+          chronicSymptoms: JSON.parse(localStorage.getItem(
+              `symptomTracker_favorites_${activeProfileId}`) || '[]'),
+          serviceConnectedConditions: (() => {
+            try {
+              const profiles = JSON.parse(
+                  localStorage.getItem('symptomTracker_profiles') || '[]');
+              const profile = profiles.find(p => p.id === activeProfileId);
+              return profile?.serviceConnectedConditions || [];
+            } catch {
+              return [];
             }
-        };
+          })(),
+          medications: JSON.parse(localStorage.getItem(
+              `symptomTracker_medications_${activeProfileId}`) || '[]'),
+          medicationLogs: JSON.parse(localStorage.getItem(
+              `symptomTracker_medicationLogs_${activeProfileId}`) || '[]'),
+          measurements: JSON.parse(localStorage.getItem(
+              `symptomTracker_measurements_${activeProfileId}`) || '[]'),
+          appointments: JSON.parse(localStorage.getItem(
+              `symptomTracker_appointments_${activeProfileId}`) || '[]'),
+          profiles: JSON.parse(
+              localStorage.getItem('symptomTracker_profiles') || '[]'),
+          userProfile: JSON.parse(localStorage.getItem(
+              `symptomTracker_profile_${activeProfileId}`) || '{}'),
+          theme: localStorage.getItem('symptomTracker_theme') || 'system',
+          reminderSettings: JSON.parse(
+              localStorage.getItem('symptomTracker_reminderSettings') || '{}'),
+          onboardingComplete: localStorage.getItem(
+              'symptomTracker_onboardingComplete') === 'true',
+          worksheet8940: JSON.parse(localStorage.getItem(
+              `symptomTracker_8940worksheet_${activeProfileId}`) || 'null'),
+          weightGoal: JSON.parse(localStorage.getItem(
+              `symptomTracker_weightGoal_${activeProfileId}`) || 'null'),
+          mentalHealthScores: JSON.parse(localStorage.getItem(
+              `symptomTracker_mentalHealthScores_${activeProfileId}`) || '[]'),
+          sleepApneaProfile: JSON.parse(localStorage.getItem(
+              `symptomTracker_sleepApneaProfile_${activeProfileId}`) || 'null'),
+          medicationHistory: JSON.parse(localStorage.getItem(
+              `symptomTracker_medicationHistory_${activeProfileId}`) || '[]'),
+        }
+      };
 
-    const blob = new Blob([JSON.stringify(data, null, 2)], {
-      type: 'application/json'
-    });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `symptom-vault-backup-${new Date().toISOString().split('T')[0]}.json`;
-    a.click();
-    URL.revokeObjectURL(url);
+      const jsonString = JSON.stringify(data, null, 2);
+      const filename = `symptom-vault-backup-${new Date().toISOString().
+          split('T')[0]}.json`;
 
-    const now = new Date().toISOString();
-    localStorage.setItem('lastBackupDate', now);
-    setLastBackup(now);
-  };
+      if (isNativePlatform()) {
+        // Native iOS/Android — use share sheet
+        try {
+          await shareFile(jsonString, filename, 'application/json');
+        } catch (error) {
+          console.error('Native export failed:', error);
+          alert('Export failed: ' + error.message);
+          return;
+        }
+      } else {
+        // Web — use blob download
+        const blob = new Blob([jsonString], {type: 'application/json'});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        a.click();
+        URL.revokeObjectURL(url);
+      }
+
+      const now = new Date().toISOString();
+      localStorage.setItem('lastBackupDate', now);
+      setLastBackup(now);
+    };
 
     const handleImportBunker = (event) => {
         const file = event.target.files[0];
@@ -310,18 +346,26 @@ export default function DataBunker() {
             Save Backup
           </button>
 
-          <label className="flex-1 flex items-center justify-center gap-2 px-4 py-3
-                          bg-blue-600 hover:bg-blue-700 text-white rounded-lg
-                          font-medium cursor-pointer transition-colors">
-            <Upload className="w-5 h-5" />
-            Restore Backup
-            <input
-                type="file"
-                accept=".json"
-                onChange={handleImportBunker}
-                className="hidden"
-            />
-          </label>
+          {isNativePlatform() ? (
+              <div className="flex-1 flex items-center justify-center gap-2 px-4 py-3
+                            bg-gray-400 text-white rounded-lg font-medium text-center text-sm">
+                <Upload className="w-5 h-5 flex-shrink-0" />
+                Restore: use web version
+              </div>
+          ) : (
+              <label className="flex-1 flex items-center justify-center gap-2 px-4 py-3
+                            bg-blue-600 hover:bg-blue-700 text-white rounded-lg
+                            font-medium cursor-pointer transition-colors">
+                <Upload className="w-5 h-5" />
+                Restore Backup
+                <input
+                    type="file"
+                    accept=".json"
+                    onChange={handleImportBunker}
+                    className="hidden"
+                />
+              </label>
+          )}
         </div>
 
         {/* Info */}
