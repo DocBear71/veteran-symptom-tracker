@@ -3,6 +3,7 @@ import './App.css';
 
 // Components
 import TermsModal from './components/legal/TermsModal';
+import LegalPage from './components/legal/LegalPage';
 import Layout from './components/Layout';
 import SymptomLogger from './components/SymptomLogger';
 import SymptomHistory from './components/SymptomHistory';
@@ -40,6 +41,11 @@ import { initializeMultiProfile } from './utils/profileMigration';
  */
 const getInitialViewFromURL = () => {
   const path = window.location.pathname;
+
+  // Standalone legal page — renders outside normal app shell
+  if (path === '/privacy-policy' || path === '/legal') {
+    return 'legal-page';
+  }
 
   // Map URL paths to view names
   const pathToView = {
@@ -247,6 +253,10 @@ const AppContent = () => {
         return <SymptomLogger />;
     }
   };
+  // Render standalone legal page outside the app shell
+  if (currentView === 'legal-page') {
+    return <LegalPage />;
+  }
 
   return (
       <>
