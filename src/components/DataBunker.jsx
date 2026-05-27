@@ -133,29 +133,29 @@ export default function DataBunker() {
       let jsonString;
 
       if (platform === 'android') {
-        // Android: use our custom FileSaver plugin's openFile method
         const { openFileFromDevice } = await import('../utils/fileSaver.js');
-        const result = await openFileFromDevice('application/json');
-        jsonString = result.content;
+        const androidResult = await openFileFromDevice('application/json');
+        jsonString = androidResult.content;
 
       } else {
-        // iOS: use @capawesome/capacitor-file-picker
+        // iOS and web: use @capawesome/capacitor-file-picker
         const cap = globalThis?.Capacitor || window?.Capacitor;
         const FilePicker = cap?.Plugins?.FilePicker;
 
         if (!FilePicker) {
-          alert('File picker not available. Please reinstall the app.');
+          // Web fallback — trigger hidden file input
+          document.getElementById('bunker-restore-input')?.click();
           return;
         }
 
-        const result = await FilePicker.pickFiles({
+        const iosResult = await FilePicker.pickFiles({
           types: ['application/json'],
           multiple: false,
           readData: true,
         });
 
-        if (!result?.files?.length) return;
-        jsonString = atob(result.files[0].data);
+        if (!iosResult?.files?.length) return;
+        jsonString = atob(iosResult.files[0].data);
       }
 
       if (!result?.files?.length) return; // User cancelled
