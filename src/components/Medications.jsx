@@ -31,6 +31,20 @@ import MedicationDocumentationGuide from './MedicationDocumentationGuide';
 // Uses same profile-namespacing pattern as storage.js for data isolation.
 const getGroupsKey = () => getProfileKey('symptomTracker_medicationGroups');
 
+// Named icon map — defined at module level so repairGroupIcon can access it
+const GROUP_ICON_MAP = {
+  'sunrise': '🌅',
+  'moon':    '🌙',
+  'sun':     '☀️',
+  'clock':   '🕐',
+  'pill':    '💊',
+  'hospital':'🏥',
+  'bolt':    '⚡',
+  'target':  '🎯',
+};
+const groupIcons = Object.keys(GROUP_ICON_MAP);
+const getGroupIconEmoji = (icon) => GROUP_ICON_MAP[icon] || icon || '💊';
+
 // Reverse map — corrupt UTF-8 sequences back to named keys
 const CORRUPTED_ICON_REPAIR = {
   'ð\x9F\x8C\x85': 'sunrise',  // 🌅
@@ -638,20 +652,6 @@ const Medications = () => {
     'as-needed': 'As Needed (PRN)', 'daily': 'Once Daily', 'twice-daily': 'Twice Daily',
     'three-times': 'Three Times Daily', 'four-times': 'Four Times Daily', 'weekly': 'Weekly', 'other': 'Other',
   };
-  // Named icon map — store keys in localStorage, render emoji at display time
-// This prevents emoji corruption from UTF-8/encoding issues in PWA/storage
-  const GROUP_ICON_MAP = {
-    'sunrise': '🌅',
-    'moon':    '🌙',
-    'sun':     '☀️',
-    'clock':   '🕐',
-    'pill':    '💊',
-    'hospital':'🏥',
-    'bolt':    '⚡',
-    'target':  '🎯',
-  };
-  const groupIcons = Object.keys(GROUP_ICON_MAP);
-  const getGroupIconEmoji = (icon) => GROUP_ICON_MAP[icon] || icon || '💊';
 
   // ─── Effectiveness & Side Effects (§4.10 compliance) ─────────────
   // Constants defined outside component (EFFECTIVENESS_LEVELS, COMMON_SIDE_EFFECTS, etc.)
