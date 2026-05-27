@@ -272,7 +272,7 @@ const Medications = () => {
   // Batch log & group form state
   const [batchLogData, setBatchLogData] = useState({ takenFor: '', effectiveness: '', sideEffects: [], sideEffectsOther: '', notes: '' });
   const [batchOccurredAt, setBatchOccurredAt] = useState(new Date().toISOString());
-  const [groupForm, setGroupForm] = useState({ name: '', icon: '🌅', medicationIds: [] });
+  const [groupForm, setGroupForm] = useState({ name: '', icon: 'sunrise', medicationIds: [] });
 
   // Group quick-log confirmation modal
   const [showGroupLogConfirm, setShowGroupLogConfirm] = useState(false);
@@ -449,7 +449,7 @@ const Medications = () => {
     saveMedicationGroups(allGroups);
     showMessage(editingGroup ? 'Group updated!' : 'Group created!');
     setShowGroupForm(false); setEditingGroup(null);
-    setGroupForm({ name: '', icon: '🌅', medicationIds: [] }); loadData();
+    setGroupForm({ name: '', icon: 'sunrise', medicationIds: [] }); loadData();
   };
   const handleEditGroup = (group) => {
     setEditingGroup(group);
@@ -607,7 +607,20 @@ const Medications = () => {
     'as-needed': 'As Needed (PRN)', 'daily': 'Once Daily', 'twice-daily': 'Twice Daily',
     'three-times': 'Three Times Daily', 'four-times': 'Four Times Daily', 'weekly': 'Weekly', 'other': 'Other',
   };
-  const groupIcons = ['🌅', '🌙', '☀️', '🕐', '💊', '🏥', '⚡', '🎯'];
+  // Named icon map — store keys in localStorage, render emoji at display time
+// This prevents emoji corruption from UTF-8/encoding issues in PWA/storage
+  const GROUP_ICON_MAP = {
+    'sunrise': '🌅',
+    'moon':    '🌙',
+    'sun':     '☀️',
+    'clock':   '🕐',
+    'pill':    '💊',
+    'hospital':'🏥',
+    'bolt':    '⚡',
+    'target':  '🎯',
+  };
+  const groupIcons = Object.keys(GROUP_ICON_MAP);
+  const getGroupIconEmoji = (icon) => GROUP_ICON_MAP[icon] || icon || '💊';
 
   // ─── Effectiveness & Side Effects (§4.10 compliance) ─────────────
   // Constants defined outside component (EFFECTIVENESS_LEVELS, COMMON_SIDE_EFFECTS, etc.)
@@ -726,7 +739,7 @@ const Medications = () => {
                         return (
                             <button key={group.id} onClick={() => handleGroupQuickLog(group)}
                                     className="flex items-center gap-2 px-4 py-3 bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-800/30 border border-blue-200 dark:border-blue-700 rounded-lg hover:shadow-md transition-all active:scale-95">
-                              <span className="text-xl">{group.icon}</span>
+                              <span className="text-xl">{getGroupIconEmoji(group.icon)}</span>
                               <div className="text-left">
                                 <p className="font-medium text-blue-900 dark:text-blue-200 text-sm">{group.name}</p>
                                 <p className="text-xs text-blue-600 dark:text-blue-400">{activeCount} med{activeCount !== 1 ? 's' : ''}</p>
@@ -846,7 +859,7 @@ const Medications = () => {
                           <div key={group.id} className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
                             <div className="flex justify-between items-start mb-3">
                               <div className="flex items-center gap-2">
-                                <span className="text-2xl">{group.icon}</span>
+                                <span className="text-2xl">{getGroupIconEmoji(group.icon)}</span>
                                 <div>
                                   <p className="font-semibold text-gray-900 dark:text-white">{group.name}</p>
                                   <p className="text-xs text-gray-500 dark:text-gray-400">
@@ -1055,7 +1068,7 @@ const Medications = () => {
 
                       // Match to a saved medication group for icon
                       const matchingGroup = groups.find(g => g.name === firstLog.takenFor);
-                      const groupIcon = matchingGroup?.icon || (isMulti ? '💊' : null);
+                      const groupIcon = matchingGroup ? getGroupIconEmoji(matchingGroup.icon) : (isMulti ? '💊' : null);
 
                       if (isMulti) {
                         // ── Grouped card for batch/group logs ──
@@ -1303,9 +1316,9 @@ const Medications = () => {
                     <div className="flex flex-wrap gap-2">
                       {groupIcons.map(icon => (
                           <button key={icon} type="button" onClick={() => setGroupForm(prev => ({ ...prev, icon }))}
-                                  className={`w-10 h-10 rounded-lg text-xl flex items-center justify-center transition-all ${
-                                      groupForm.icon === icon ? 'bg-blue-100 dark:bg-blue-900/40 ring-2 ring-blue-500' : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600'
-                                  }`}>{icon}</button>
+                                  className={`...
+            groupForm.icon === icon ? 'bg-blue-100 dark:bg-blue-900/40 ring-2 ring-blue-500' : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600'
+        }`}>{GROUP_ICON_MAP[icon]}</button>
                       ))}
                     </div>
                   </div>
@@ -1430,7 +1443,7 @@ const Medications = () => {
                   <div className="flex justify-between items-center">
                     <div>
                       <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
-                        {pendingGroup.icon} Log {pendingGroup.name}
+                        {getGroupIconEmoji(pendingGroup.icon)} Log {pendingGroup.name}
                       </h2>
                       <p className="text-sm text-gray-500 dark:text-gray-400">
                         {medications.filter(m => m.isActive && pendingGroup.medicationIds.includes(m.id)).length} medications
