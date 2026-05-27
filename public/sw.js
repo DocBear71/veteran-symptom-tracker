@@ -1,6 +1,6 @@
 // Service Worker for Doc Bear's Symptom Vault
 // Version updated on each deploy to bust cache
-const CACHE_VERSION = 'v3.51';
+const CACHE_VERSION = 'v3.52';
 const CACHE_NAME = `symptom-tracker-${CACHE_VERSION}`;
 
 // Only cache the shell, not the hashed assets
@@ -75,7 +75,14 @@ self.addEventListener('fetch', (event) => {
         return response;
       })
       .catch(() => {
-        return caches.match(event.request);
+        return caches.match(event.request).then(cached => {
+          // If nothing in cache either, return a proper error response
+          // instead of undefined (which causes "Failed to convert value to Response")
+          return cached || new Response('Network error', {
+            status: 408,
+            headers: { 'Content-Type': 'text/plain' }
+          });
+        });
       })
   );
 });
