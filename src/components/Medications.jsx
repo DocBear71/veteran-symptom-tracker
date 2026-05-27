@@ -31,8 +31,39 @@ import MedicationDocumentationGuide from './MedicationDocumentationGuide';
 // Uses same profile-namespacing pattern as storage.js for data isolation.
 const getGroupsKey = () => getProfileKey('symptomTracker_medicationGroups');
 
+// Reverse map — corrupt UTF-8 sequences back to named keys
+const CORRUPTED_ICON_REPAIR = {
+  'ð\x9F\x8C\x85': 'sunrise',  // 🌅
+  'ð\x9F\x8C\x99': 'moon',     // 🌙
+  'â\x98\x80ï¸\x8F': 'sun',    // ☀️
+  'ð\x9F\x95\x90': 'clock',    // 🕐
+  'ð\x9F\x92\x8A': 'pill',     // 💊
+  'ð\x9F\x8F\xA5': 'hospital', // 🏥
+  'â\x9A¡': 'bolt',            // ⚡
+  'ð\x9F\x8E\xAF': 'target',   // 🎯
+};
+
+const repairGroupIcon = (icon) => {
+  if (!icon) return 'pill';
+  // Already a valid key
+  if (GROUP_ICON_MAP[icon]) return icon;
+  // Try to repair corrupted UTF-8
+  if (CORRUPTED_ICON_REPAIR[icon]) return CORRUPTED_ICON_REPAIR[icon];
+  // If it's a valid emoji character, convert to key
+  const reverseMap = Object.fromEntries(
+      Object.entries(GROUP_ICON_MAP).map(([k, v]) => [v, k])
+  );
+  if (reverseMap[icon]) return reverseMap[icon];
+  // Unknown — default to pill
+  return 'pill';
+};
+
 const getMedicationGroups = () => {
-  try { return JSON.parse(localStorage.getItem(getGroupsKey())) || []; }
+  try {
+    const groups = JSON.parse(localStorage.getItem(getGroupsKey())) || [];
+    // Repair any corrupted icons on read
+    return groups.map(g => ({ ...g, icon: repairGroupIcon(g.icon) }));
+  }
   catch { return []; }
 };
 
