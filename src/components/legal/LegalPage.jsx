@@ -61,9 +61,35 @@ const LegalPage = () => {
           </div>
         </div>
 
-        {/* Content */}
-        <div style={{ backgroundColor: '#fff', minHeight: 'calc(100vh - 300px)' }}>
-          <ActiveComponent />
+        {/* Content — force dark text since child components use Tailwind dark-mode classes
+                that don't apply in this standalone context */}
+        <div style={{
+          backgroundColor: '#fff',
+          minHeight: 'calc(100vh - 300px)',
+          color: '#111827',
+        }}>
+          <div style={{
+            color: '#111827',
+            '--tw-text-opacity': '1',
+          }}>
+            <style>{`
+                        .legal-page-content,
+                        .legal-page-content * {
+                            color: #111827 !important;
+                        }
+                        .legal-page-content h1,
+                        .legal-page-content h2,
+                        .legal-page-content h3 {
+                            color: #000000 !important;
+                        }
+                        .legal-page-content a {
+                            color: #1d4ed8 !important;
+                        }
+                    `}</style>
+            <div className="legal-page-content">
+              <ActiveComponent />
+            </div>
+          </div>
         </div>
 
         {/* Footer */}
