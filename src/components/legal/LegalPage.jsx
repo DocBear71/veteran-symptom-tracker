@@ -85,6 +85,36 @@ const LegalPage = () => {
                         .legal-page-content a {
                             color: #1d4ed8 !important;
                         }
+                        /* Override dark background boxes from Tailwind dark-mode classes */
+                        .legal-page-content .bg-gray-800,
+                        .legal-page-content .bg-gray-900,
+                        .legal-page-content .bg-gray-700,
+                        .legal-page-content .dark\\:bg-gray-800,
+                        .legal-page-content .dark\\:bg-gray-900,
+                        .legal-page-content [class*="bg-gray-8"],
+                        .legal-page-content [class*="bg-gray-9"],
+                        .legal-page-content [class*="bg-blue-9"],
+                        .legal-page-content [class*="bg-slate-8"],
+                        .legal-page-content [class*="bg-slate-9"] {
+                            background-color: #f0f4ff !important;
+                            border: 1px solid #c7d2fe !important;
+                        }
+                        /* Override inline dark styles used in some sections */
+                        .legal-page-content [style*="background-color: rgb(17"],
+                        .legal-page-content [style*="background-color: rgb(30"],
+                        .legal-page-content [style*="background-color: rgb(31"],
+                        .legal-page-content [style*="background-color: #1e"] {
+                            background-color: #f0f4ff !important;
+                            border: 1px solid #c7d2fe !important;
+                        }
+                        /* Fix green, purple, yellow highlight boxes */
+                        .legal-page-content .bg-green-900,
+                        .legal-page-content .bg-purple-900,
+                        .legal-page-content .bg-amber-900,
+                        .legal-page-content .bg-red-900 {
+                            background-color: #f0fdf4 !important;
+                            border: 1px solid #86efac !important;
+                        }
                     `}</style>
             <div className="legal-page-content">
               <ActiveComponent />
