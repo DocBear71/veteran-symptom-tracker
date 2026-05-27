@@ -60,7 +60,7 @@ export default function DataBunker() {
       const data = {
         version: '2.0',
         exportDate: new Date().toISOString(),
-        appVersion: '3.5.0',
+        appVersion: '3.5.1',
         activeProfileId,
         // Store all raw localStorage data for complete backup
         rawData: allData,
@@ -127,29 +127,42 @@ export default function DataBunker() {
   // Native iOS/Android restore — reads JSON file via Capacitor Filesystem
   const handleNativeRestore = async () => {
     try {
-      // Access the file picker plugin via globalThis to avoid
-      // Vite build-time resolution errors (same pattern as other plugins)
-      const cap = globalThis?.Capacitor || window?.Capacitor;
-      const FilePicker = cap?.Plugins?.FilePicker;
+      const { getPlatform } = await import('../utils/platformUtils.js');
+      const platform = getPlatform();
 
-      if (!FilePicker) {
-        alert('File picker not available. Please reinstall the app.');
-        return;
+      let jsonString;
+
+      if (platform === 'android') {
+        // Android: use our custom FileSaver plugin's openFile method
+        const { openFileFromDevice } = await import('../utils/fileSaver.js');
+        const result = await openFileFromDevice('application/json');
+        jsonString = result.content;
+
+      } else {
+        // iOS: use @capawesome/capacitor-file-picker
+        const cap = globalThis?.Capacitor || window?.Capacitor;
+        const FilePicker = cap?.Plugins?.FilePicker;
+
+        if (!FilePicker) {
+          alert('File picker not available. Please reinstall the app.');
+          return;
+        }
+
+        const result = await FilePicker.pickFiles({
+          types: ['application/json'],
+          multiple: false,
+          readData: true,
+        });
+
+        if (!result?.files?.length) return;
+        jsonString = atob(result.files[0].data);
       }
-
-      // Open native file picker — filtered to JSON files only
-      const result = await FilePicker.pickFiles({
-        types: ['application/json'],
-        multiple: false,
-        readData: true, // Returns base64 file data directly
-      });
 
       if (!result?.files?.length) return; // User cancelled
 
       const file = result.files[0];
 
       // Decode base64 data returned by the plugin
-      let jsonString;
       try {
         jsonString = atob(file.data);
       } catch {
@@ -407,7 +420,9 @@ export default function DataBunker() {
 
         {/* Info */}
         <p className="text-xs text-gray-500 dark:text-gray-400 mt-4 text-center">
-          Save backup files to your computer, cloud storage, or USB drive
+          {isNativePlatform()
+              ? 'Android: tap Drive or scroll to "Save to Device" in the share sheet. iOS: tap Save to Files.'
+              : 'Save backup files to your computer, cloud storage, or USB drive'}
         </p>
       </div>
   );

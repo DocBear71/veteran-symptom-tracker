@@ -87,12 +87,42 @@ export async function exportTextFile(content, filename, mimeType, options = {}) 
           )
       );
 
-      // Write to DOCUMENTS so it persists and can be restored later.
-      // CACHE files can be purged by iOS at any time.
+      // iOS: write to DOCUMENTS so files persist and can be restored.
+      // Android: write to CACHE — share sheet handles saving to Downloads.
+      const platform = cap?.getPlatform?.() ?? 'web';
+
+      if (platform === 'android') {
+        // Android: use custom FileSaver plugin to open native
+        // "Save As" dialog (ACTION_CREATE_DOCUMENT) — true save to device
+        try {
+          const { saveFileToDevice } = await import('./fileSaver.js');
+          await saveFileToDevice(base64Data, filename, mimeType);
+          return;
+        } catch (androidErr) {
+          if (androidErr?.message === 'cancelled') return; // User cancelled — not an error
+          console.warn('FileSaver plugin failed, falling back to share sheet:', androidErr);
+
+          // Fallback: share sheet
+          const writeResult = await Filesystem.writeFile({
+            path: filename,
+            data: base64Data,
+            directory: 'CACHE',
+          });
+          await Share.share({
+            title: filename,
+            url: writeResult.uri,
+            dialogTitle: 'Save your backup file',
+          });
+          return;
+        }
+      }
+
+      // iOS and Android fallback: use share sheet
+      const directory = platform === 'ios' ? 'DOCUMENTS' : 'CACHE';
       const writeResult = await Filesystem.writeFile({
         path: filename,
         data: base64Data,
-        directory: 'DOCUMENTS',
+        directory,
       });
 
       await Share.share({
