@@ -158,20 +158,8 @@ export default function DataBunker() {
         jsonString = atob(iosResult.files[0].data);
       }
 
-      if (!result?.files?.length) return; // User cancelled
-
-      const file = result.files[0];
-
-      // Decode base64 data returned by the plugin
-      try {
-        jsonString = atob(file.data);
-      } catch {
-        alert('Could not read the selected file. Make sure it is a valid backup.');
-        return;
-      }
-
-      // Reuse existing web import logic via synthetic event
-      const syntheticFile = new File([jsonString], file.name, {
+      // Pass jsonString to existing import logic via synthetic event
+      const syntheticFile = new File([jsonString], 'backup.json', {
         type: 'application/json'
       });
       const syntheticEvent = { target: { files: [syntheticFile] } };
