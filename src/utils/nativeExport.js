@@ -146,7 +146,52 @@ export async function exportTextFile(content, filename, mimeType, options = {}) 
  * Not exported — internal use only.
  */
 function _browserDownload(content, filename, mimeType) {
+  // Detect PWA standalone mode — blob anchor downloads don't work
+  // in Android PWA standalone context, use showSaveFilePicker if available,
+  // otherwise fall back to opening blob in new tab which triggers download
+  const isPWA = window.matchMedia('(display-mode: standalone)').matches
+      || window.navigator.standalone === true;
+
   const blob = new Blob([content], { type: mimeType });
+
+  // Modern browsers (Chrome 86+) — File System Access API
+  // Works in PWA and browser contexts
+  if (window.showSaveFilePicker) {
+    window.showSaveFilePicker({
+      suggestedName: filename,
+      types: [{
+        description: 'JSON Backup',
+        accept: { [mimeType]: ['.json', '.csv', '.pdf'] },
+      }],
+    }).then(fileHandle => fileHandle.createWritable())
+    .then(writable => {
+      writable.write(blob);
+      return writable.close();
+    })
+    .catch(err => {
+      // User cancelled or error — fall through to blob download
+      if (err.name !== 'AbortError') {
+        _fallbackBlobDownload(blob, filename);
+      }
+    });
+    return;
+  }
+
+  // PWA without File System Access API — open blob URL in new tab
+  // Android will prompt to download when opened this way
+  if (isPWA) {
+    const url = URL.createObjectURL(blob);
+    window.open(url, '_blank');
+    // Clean up after delay
+    setTimeout(() => URL.revokeObjectURL(url), 10000);
+    return;
+  }
+
+  // Standard browser — anchor click download
+  _fallbackBlobDownload(blob, filename);
+}
+
+function _fallbackBlobDownload(blob, filename) {
   const url = URL.createObjectURL(blob);
   const link = document.createElement('a');
   link.href = url;
