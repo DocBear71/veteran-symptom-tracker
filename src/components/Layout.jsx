@@ -168,14 +168,14 @@ const Layout = ({ children, currentView, onNavigate }) => {
           Zero height on Android/web where safe-area-inset-top is 0. */}
         <div
             className="fixed top-0 left-0 right-0 z-50 bg-blue-900 dark:bg-gray-800"
-            style={{ height: 'env(safe-area-inset-top, 0px)' }}
+            style={{ height: 'max(env(safe-area-inset-top, 0px), 28px)' }}
             aria-hidden="true"
         />
 
         {/* Header */}
         <header
             className="bg-blue-900 dark:bg-gray-800 text-white shadow-lg"
-            style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}
+            style={{ paddingTop: 'max(env(safe-area-inset-top, 0px), 28px)' }}
         >
           <div className="max-w-lg mx-auto px-4 py-4">
             <div className="flex items-center justify-between mb-1">
@@ -199,7 +199,7 @@ const Layout = ({ children, currentView, onNavigate }) => {
         </main>
 
         {/* Footer - Above bottom navigation */}
-        <div className="pb-20 px-4 max-w-lg mx-auto w-full">
+       <div className="pb-28 px-4 max-w-lg mx-auto w-full">
           <Footer />
         </div>
 
@@ -208,7 +208,7 @@ const Layout = ({ children, currentView, onNavigate }) => {
         <nav
             className="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800
                    border-t border-gray-200 dark:border-gray-700 shadow-lg z-40"
-            style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
+            style={{ paddingBottom: 'max(env(safe-area-inset-bottom, 0px), 36px)' }}
             role="navigation"
             aria-label="Main navigation"
         >
