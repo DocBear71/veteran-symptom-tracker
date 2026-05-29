@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { hapticSuccess, hapticError } from '../utils/haptics';
 import {
   generatePDF,
   generateCSV,
@@ -101,7 +102,9 @@ const ExportData = () => {
       } else {
         await generatePDF(dateRange, options);
       }
+      hapticSuccess();
     } catch (error) {
+      hapticError();
       console.error('Export error:', error);
       alert('Error generating PDF. Please try again.');
     } finally {
@@ -115,7 +118,9 @@ const ExportData = () => {
       const dateRange = getDateRange();
       const options = getExportOptions();
       await generateCSV(dateRange, options);
+      hapticSuccess();
     } catch (error) {
+      hapticError();
       console.error('Export error:', error);
       alert('Error generating CSV. Please try again.');
     } finally {
@@ -129,7 +134,9 @@ const ExportData = () => {
       const dateRange = getDateRange();
       const options = getExportOptions();
       await generateCombinedExport(dateRange, options);
+      hapticSuccess();
     } catch (error) {
+      hapticError();
       console.error('Export error:', error);
       alert('Error generating combined export. Please try again.');
     } finally {

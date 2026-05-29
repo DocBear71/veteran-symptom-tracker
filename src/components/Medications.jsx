@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { hapticSuccess } from '../utils/haptics';
 import {
   getMedications,
   addMedication,
@@ -377,6 +378,7 @@ const Medications = () => {
       dosingIntervalHours: newMed.dosingIntervalHours ? parseFloat(newMed.dosingIntervalHours) : null,
     });
     if (result.success) {
+      hapticSuccess();
       showMessage('Medication added!');
       setNewMed({ name: '', strength: '', quantity: 1, unitType: 'tablet', frequency: 'as-needed', forConditions: '', notes: '' });
       setShowAddForm(false);
@@ -435,6 +437,7 @@ const Medications = () => {
             });
             if (r.success) count++;
         });
+        hapticSuccess();
         showMessage(`Logged ${count} medication${count !== 1 ? 's' : ''}`);
         setSelectedMedIds(new Set()); setShowBatchLogForm(false);
         setBatchLogData({ takenFor: '', effectiveness: '', sideEffects: [], sideEffectsOther: '', notes: '' }); setBatchOccurredAt(new Date().toISOString()); loadData();
@@ -475,6 +478,7 @@ const Medications = () => {
             });
       if (r.success) count++;
     });
+    hapticSuccess();
     showMessage(`${pendingGroup.icon} Logged ${count} med${count !== 1 ? 's' : ''} from "${pendingGroup.name}"`);
     setShowGroupLogConfirm(false); setPendingGroup(null); loadData();
   };
@@ -545,6 +549,7 @@ const Medications = () => {
       dosingIntervalHours: editMedData.dosingIntervalHours ? parseFloat(editMedData.dosingIntervalHours) : null,
     });
     if (result.success) {
+      hapticSuccess();
       showMessage('Medication updated!'); setShowEditMedForm(false); setEditingMed(null); loadData();
     } else { showMessage(result.message || 'Failed to update'); }
   };
@@ -585,6 +590,7 @@ const Medications = () => {
       occurredAt: editLogData.occurredAt,
     });
     if (result.success) {
+      hapticSuccess();
       showMessage('Log updated!'); setShowEditLogForm(false); setEditingLog(null); loadData();
     } else { showMessage(result.message || 'Failed to update'); }
   };

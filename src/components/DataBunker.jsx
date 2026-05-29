@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { getDataStats } from '../utils/storage';
 import { exportTextFile } from '../utils/nativeExport';
 import { isNativePlatform } from '../utils/platformUtils';
+import { hapticSuccess } from '../utils/haptics';
 
 export default function DataBunker() {
     const [lastBackup, setLastBackup] = useState(
@@ -119,6 +120,7 @@ export default function DataBunker() {
       // exportTextFile handles both native share sheet and web download
       await exportTextFile(jsonString, filename, 'application/json');
 
+      hapticSuccess();
       const now = new Date().toISOString();
       localStorage.setItem('lastBackupDate', now);
       setLastBackup(now);

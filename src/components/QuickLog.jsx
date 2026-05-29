@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { hapticLight, hapticSuccess } from '../utils/haptics';
 import {
   getChronicSymptoms,
   removeChronicSymptom,
@@ -1447,6 +1448,7 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
 
   const handleOpenLogModal = (chronic) => {
     if (editMode) return;
+    hapticLight(); // native tap feedback when opening log modal
     setSelectedChronic(chronic);
     setLogSeverity(chronic.defaultSeverity || 5);
     setIsFlareUp(false);
@@ -2168,6 +2170,7 @@ const QuickLog = ({ onLogSaved, onAddChronic }) => {
 
 
     const savedEntry = saveSymptomLog(entry);
+    hapticSuccess(); // native feedback on successful symptom log
 
       // Log medications if selected
       if (Object.keys(selectedMedications).length > 0) {

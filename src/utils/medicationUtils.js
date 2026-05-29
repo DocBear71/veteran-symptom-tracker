@@ -39,7 +39,7 @@ export const formatDosage = (med) => {
     if (qty === 1) {
       return med.unitType === 'other' ? med.strength : `${med.strength} ${unitLabel}`;
     }
-    return `${qty} × ${med.strength} ${unitLabel}`;
+    return `${qty} x ${med.strength} ${unitLabel}`;
   }
 
   // Legacy format: plain text dosage field
@@ -73,7 +73,7 @@ export const getTotalDose = (med) => {
 
 /**
  * Format dosage with total dose shown.
- * e.g., "3 × 20mg capsules (60mg total)"
+ * e.g., "3 x 20mg capsules (60mg total)"
  */
 export const formatDosageWithTotal = (med) => {
   const base = formatDosage(med);

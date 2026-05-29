@@ -1,4 +1,5 @@
 import {useState, useEffect} from 'react';
+import { hapticSuccess } from '../utils/haptics';
 import {
   updateSymptomLog,
   getMedications,
@@ -1301,6 +1302,7 @@ const EditLogModal = ({log, isOpen, onClose, onSaved}) => {
           const result = updateSymptomLog(log.id, updates);
 
           if (result.success) {
+            hapticSuccess();
             // Handle medication changes
             const existingMedIds = existingMedLogs.map(m => m.medicationId);
             const selectedMedIds = Object.keys(selectedMedications);

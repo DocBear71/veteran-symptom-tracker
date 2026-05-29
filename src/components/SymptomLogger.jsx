@@ -1,4 +1,5 @@
 import { useRef, useState, useEffect, useMemo } from 'react';
+import { hapticSuccess } from '../utils/haptics';
 import { ChevronDown, Search } from 'lucide-react';
 import {
   sortedSymptomCategories,
@@ -1969,6 +1970,7 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed, onNavigate }) =
 
 
     const savedEntry = saveSymptomLog(entry);
+    hapticSuccess(); // native feedback on successful symptom log
 
     // Log medications if taken
     // selectedMedications is an object keyed by medId: { [medId]: { effectiveness, sideEffects, ... } }
