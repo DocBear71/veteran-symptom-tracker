@@ -103,19 +103,6 @@ const AppContent = () => {
     initializeAccessibility();
   }, []);
 
-  // TEMP DEBUG — haptics diagnosis, remove after testing
-  useEffect(() => {
-    setTimeout(() => {
-      const cap = window?.Capacitor;
-      console.log('=== HAPTICS DEBUG ===');
-      console.log('isNativePlatform:', cap?.isNativePlatform?.());
-      console.log('Platform:', cap?.getPlatform?.());
-      console.log('Haptics plugin:', !!cap?.Plugins?.Haptics);
-      console.log('All plugins:', cap?.Plugins ? Object.keys(cap.Plugins) : 'none');
-      console.log('===================');
-    }, 3000);
-  }, []);
-
   useEffect(() => {
     const termsAccepted = localStorage.getItem('symptomTracker_termsAccepted');
     if (!termsAccepted) {
