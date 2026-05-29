@@ -34,6 +34,7 @@ import { ProfileProvider, useProfile } from './hooks/useProfile.jsx';
 
 // Multi-profile migration
 import { initializeMultiProfile } from './utils/profileMigration';
+import { initKeyboardHandling } from './utils/keyboardUtils';
 
 /**
  * Get initial view based on URL path
@@ -101,6 +102,7 @@ const AppContent = () => {
   // V2.5 - Initialize accessibility settings on app load
   useEffect(() => {
     initializeAccessibility();
+    initKeyboardHandling(); // Phase 5 — native keyboard handling
   }, []);
 
   useEffect(() => {

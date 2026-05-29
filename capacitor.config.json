@@ -10,7 +10,12 @@
     },
     "StatusBar": {
       "style": "LIGHT",
-      "overlaysWebView": false
+      "overlaysWebView": true
+    },
+    "Keyboard": {
+      "resize": "body",
+      "style": "dark",
+      "resizeOnFullScreen": true
     }
   }
 }

@@ -142,6 +142,7 @@ const NavButton = ({ icon: Icon, emoji, label, view, currentView, onNavigate }) 
 const Layout = ({ children, currentView, onNavigate }) => {
   const { labels, features, isVeteran } = useProfile();
   const [activeProfile, setActiveProfile] = useState(() => getActiveProfile());
+  const [keyboardOpen, setKeyboardOpen] = useState(false);
 
   // Initialize panic key
   usePanicKey('https://www.google.com');
@@ -153,6 +154,19 @@ const Layout = ({ children, currentView, onNavigate }) => {
 
     window.addEventListener('profileChanged', handleProfileChange);
     return () => window.removeEventListener('profileChanged', handleProfileChange);
+  }, []);
+
+  // Phase 5 — hide bottom nav when keyboard is open so it doesn't
+  // float above the keyboard on iOS
+  useEffect(() => {
+    const onShow = () => setKeyboardOpen(true);
+    const onHide = () => setKeyboardOpen(false);
+    window.addEventListener('vaultKeyboardShow', onShow);
+    window.addEventListener('vaultKeyboardHide', onHide);
+    return () => {
+      window.removeEventListener('vaultKeyboardShow', onShow);
+      window.removeEventListener('vaultKeyboardHide', onHide);
+    };
   }, []);
 
   const profileColor = activeProfile ? getColorById(activeProfile.color) : null;
@@ -206,8 +220,10 @@ const Layout = ({ children, currentView, onNavigate }) => {
         {/* Bottom Navigation - Fixed at bottom */}
         {/* 4 tabs: cleaner than Vet-Rate's cluttered navigation */}
         <nav
-            className="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800
-                   border-t border-gray-200 dark:border-gray-700 shadow-lg z-40"
+            className={`fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800
+                   border-t border-gray-200 dark:border-gray-700 shadow-lg z-40
+                   transition-transform duration-200
+                   ${keyboardOpen ? 'translate-y-full' : 'translate-y-0'}`}
             style={{ paddingBottom: 'max(env(safe-area-inset-bottom, 0px), 36px)' }}
             role="navigation"
             aria-label="Main navigation"
