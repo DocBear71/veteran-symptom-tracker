@@ -10,6 +10,7 @@
  */
 
 import { useState, useCallback, useRef } from 'react';
+import { isNativePlatform, getPlatform } from '../utils/platformUtils';
 import {
   validateBluebuttonFile,
   getSectionDateRange,
@@ -172,6 +173,40 @@ export default function BlueButtonImport({ onClose, onImportComplete }) {
   const handleFileDrop = useCallback((e) => {
     e.preventDefault();
     handleFileSelect(e.dataTransfer.files[0]);
+  }, [handleFileSelect]);
+
+  // Native iOS file picker — replaces HTML file input on device.
+  // Uses @capawesome/capacitor-file-picker (already registered).
+  // Falls back to hidden file input if plugin unavailable.
+  const handleNativeFilePick = useCallback(async () => {
+    try {
+      const cap = globalThis?.Capacitor || window?.Capacitor;
+      const FilePicker = cap?.Plugins?.FilePicker;
+      if (!FilePicker) {
+        fileInputRef.current?.click();
+        return;
+      }
+      const result = await FilePicker.pickFiles({
+        types: ['text/plain'],
+        multiple: false,
+        readData: true,
+      });
+      if (!result?.files?.length) return;
+      const file = result.files[0];
+      // Decode base64 content back to text
+      const text = atob(file.data.replace(/\n/g, ''));
+      // Create synthetic File so handleFileSelect works unchanged
+      const syntheticFile = new File(
+          [text],
+          file.name || 'bluebutton.txt',
+          { type: 'text/plain' }
+      );
+      handleFileSelect(syntheticFile);
+    } catch (err) {
+      if (err?.message?.includes('cancel')) return; // user dismissed picker
+      console.error('Native file pick error:', err);
+      setValidationError('Could not open file picker. Please try again.');
+    }
   }, [handleFileSelect]);
 
   // ── Step 1 ────────────────────────────────────────────────
@@ -865,6 +900,7 @@ export default function BlueButtonImport({ onClose, onImportComplete }) {
                     isLoading={isLoading}
                     loadProgress={loadProgress}
                     validationError={validationError}
+                    onNativePick={isNativePlatform() ? handleNativeFilePick : null}
                 />
             )}
             {step === WIZARD_STEPS.SELECT && reportInfo && (
@@ -931,7 +967,7 @@ function StepIndicator({ currentStep }) {
 
 // ── Step 0 ────────────────────────────────────────────────────
 
-function StepUpload({ onFileSelect, onFileDrop, onDragOver, fileInputRef, isLoading, loadProgress, validationError }) {
+function StepUpload({ onFileSelect, onFileDrop, onDragOver, fileInputRef, isLoading, loadProgress, validationError, onNativePick }) {
   return (
       <div>
         <h3 className="text-lg font-semibold text-gray-900 mb-1">Upload Your Blue Button Report</h3>
@@ -969,7 +1005,7 @@ function StepUpload({ onFileSelect, onFileDrop, onDragOver, fileInputRef, isLoad
         {!isLoading ? (
             <div
                 onDrop={onFileDrop} onDragOver={onDragOver}
-                onClick={() => fileInputRef.current?.click()}
+                onClick={() => onNativePick ? onNativePick() : fileInputRef.current?.click()}
                 className="border-2 border-dashed border-blue-300 rounded-xl p-8 text-center cursor-pointer hover:border-blue-500 hover:bg-blue-50 transition-colors"
                 role="button" aria-label="Click or drag to upload Blue Button file"
             >
