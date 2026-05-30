@@ -264,7 +264,7 @@ const AppContent = () => {
       <>
         {/* Fraud Alert Banner */}
         {showFraudAlert && (
-            <div className="fixed top-0 left-0 right-0 z-50 bg-red-700 dark:bg-red-900 text-white shadow-lg"
+            <div className="sticky top-0 left-0 right-0 z-50 bg-red-700 dark:bg-red-900 text-white shadow-lg"
                  style={{ paddingTop: 'env(safe-area-inset-top)' }}>
               <div className="max-w-4xl mx-auto px-4 py-3">
                 <div className="flex items-start gap-3">
@@ -289,7 +289,7 @@ const AppContent = () => {
                   </div>
                   <button
                       onClick={dismissFraudAlert}
-                      className="flex-shrink-0 text-red-200 hover:text-white text-xl font-bold leading-none p-1 -mt-1"
+                      className="flex-shrink-0 text-red-200 hover:text-white text-xl font-bold leading-none p-1"
                       aria-label="Dismiss fraud alert"
                   >
                     ×

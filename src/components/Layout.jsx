@@ -144,6 +144,27 @@ const Layout = ({ children, currentView, onNavigate }) => {
   const [activeProfile, setActiveProfile] = useState(() => getActiveProfile());
   const [keyboardOpen, setKeyboardOpen] = useState(false);
 
+  // Only "installed" contexts (home-screen PWA / native app) need the hardcoded
+  // safe-area fallback — there the OS doesn't reserve space for the status/nav
+  // bars and env() can report 0. In a normal browser tab the browser already
+  // reserves that space, so forcing 28px/36px doubles up into huge top/bottom
+  // bands. In browser mode we use env() alone (0 when no notch, real inset when
+  // there is one).
+  const [isInstalled] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    const standaloneDisplay = window.matchMedia?.('(display-mode: standalone)')?.matches;
+    const iosStandalone = window.navigator?.standalone === true;
+    const isNative = !!(globalThis?.Capacitor?.isNativePlatform?.());
+    return Boolean(standaloneDisplay || iosStandalone || isNative);
+  });
+
+  const safeTop = isInstalled
+      ? 'max(env(safe-area-inset-top, 0px), 28px)'
+      : 'env(safe-area-inset-top, 0px)';
+  const safeBottom = isInstalled
+      ? 'max(env(safe-area-inset-bottom, 0px), 36px)'
+      : 'env(safe-area-inset-bottom, 0px)';
+
   // Initialize panic key
   usePanicKey('https://www.google.com');
 
@@ -182,14 +203,14 @@ const Layout = ({ children, currentView, onNavigate }) => {
           Zero height on Android/web where safe-area-inset-top is 0. */}
         <div
             className="fixed top-0 left-0 right-0 z-50 bg-blue-900 dark:bg-gray-800"
-            style={{ height: 'max(env(safe-area-inset-top, 0px), 28px)' }}
+            style={{ height: safeTop }}
             aria-hidden="true"
         />
 
         {/* Header */}
         <header
             className="bg-blue-900 dark:bg-gray-800 text-white shadow-lg"
-            style={{ paddingTop: 'max(env(safe-area-inset-top, 0px), 28px)' }}
+            style={{ paddingTop: safeTop }}
         >
           <div className="max-w-lg mx-auto px-4 py-4">
             <div className="flex items-center justify-between mb-1">
@@ -213,7 +234,7 @@ const Layout = ({ children, currentView, onNavigate }) => {
         </main>
 
         {/* Footer - Above bottom navigation */}
-       <div className="pb-28 px-4 max-w-lg mx-auto w-full">
+       <div className="pb-20 px-4 max-w-lg mx-auto w-full">
           <Footer />
         </div>
 
@@ -224,7 +245,7 @@ const Layout = ({ children, currentView, onNavigate }) => {
                    border-t border-gray-200 dark:border-gray-700 shadow-lg z-40
                    transition-transform duration-200
                    ${keyboardOpen ? 'translate-y-full' : 'translate-y-0'}`}
-            style={{ paddingBottom: 'max(env(safe-area-inset-bottom, 0px), 36px)' }}
+            style={{ paddingBottom: safeBottom }}
             role="navigation"
             aria-label="Main navigation"
         >
