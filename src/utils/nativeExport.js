@@ -158,9 +158,21 @@ async function _browserDownload(content, filename, mimeType) {
   // If content is already a Blob (e.g. from jsPDF doc.output('blob')),
   // don't rewrap it — double-wrapping loses the MIME type on Android Chrome
   // and causes SecTrashProvider to append .json to the filename.
+  // On Android Chrome, application/pdf blobs get intercepted by SecTrashProvider
+  // which appends .json to the filename. Using application/octet-stream forces
+  // the download through com.android.providers.media instead, while the .pdf
+  // extension in the filename still tells the OS how to open it.
+  const isAndroidChrome = /Android/.test(navigator.userAgent)
+      && /Chrome/.test(navigator.userAgent)
+      && !/wv/.test(navigator.userAgent);
+
+  const effectiveMime = (isAndroidChrome && mimeType === 'application/pdf')
+      ? 'application/octet-stream'
+      : mimeType;
+
   const blob = content instanceof Blob
-      ? content
-      : new Blob([content], { type: mimeType });
+      ? (effectiveMime !== mimeType ? new Blob([content], { type: effectiveMime }) : content)
+      : new Blob([content], { type: effectiveMime });
 
   // Desktop Chrome/Edge — File System Access API "Save As" dialog
   if (window.showSaveFilePicker) {
@@ -184,15 +196,7 @@ async function _browserDownload(content, filename, mimeType) {
     }
   }
 
-  // iOS Safari — Web Share API with a REAL file
-  // NOTE: Skipped on Android Chrome because SecTrashProvider intercepts
-  // shared files and appends .json regardless of MIME type. Android Chrome
-  // gets the anchor download path below instead, which saves correctly.
-  const isAndroidChrome = /Android/.test(navigator.userAgent)
-      && /Chrome/.test(navigator.userAgent)
-      && !/wv/.test(navigator.userAgent); // exclude WebView
-
-  const shareFile = new File([content], filename, { type: mimeType });
+  const shareFile = new File([content], filename, { type: effectiveMime });
   if (!isAndroidChrome && navigator.canShare && navigator.canShare({ files: [shareFile] })) {
     try {
       await navigator.share({ files: [shareFile], title: filename });
