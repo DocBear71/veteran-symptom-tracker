@@ -184,9 +184,16 @@ async function _browserDownload(content, filename, mimeType) {
     }
   }
 
-  // iOS Safari & Android Chrome — Web Share API with a REAL file
+  // iOS Safari — Web Share API with a REAL file
+  // NOTE: Skipped on Android Chrome because SecTrashProvider intercepts
+  // shared files and appends .json regardless of MIME type. Android Chrome
+  // gets the anchor download path below instead, which saves correctly.
+  const isAndroidChrome = /Android/.test(navigator.userAgent)
+      && /Chrome/.test(navigator.userAgent)
+      && !/wv/.test(navigator.userAgent); // exclude WebView
+
   const shareFile = new File([content], filename, { type: mimeType });
-  if (navigator.canShare && navigator.canShare({ files: [shareFile] })) {
+  if (!isAndroidChrome && navigator.canShare && navigator.canShare({ files: [shareFile] })) {
     try {
       await navigator.share({ files: [shareFile], title: filename });
       return { success: true };
