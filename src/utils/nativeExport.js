@@ -177,11 +177,22 @@ async function _browserDownload(content, filename, mimeType) {
   // Desktop Chrome/Edge — File System Access API "Save As" dialog
   if (window.showSaveFilePicker) {
     try {
+      // Build the accept map based on the actual file type being saved.
+      // Samsung One UI 8.5 appends .json if the accept map lists multiple
+      // extensions or uses a generic MIME — must be exact 1:1 mapping.
+      const acceptMap = mimeType === 'application/pdf'
+          ? { 'application/pdf': ['.pdf'] }
+          : mimeType === 'text/csv'
+              ? { 'text/csv': ['.csv'] }
+              : { 'application/json': ['.json'] };
+
       const fileHandle = await window.showSaveFilePicker({
         suggestedName: filename,
         types: [{
-          description: 'Download',
-          accept: { [mimeType]: ['.json', '.csv', '.pdf'] },
+          description: mimeType === 'application/pdf' ? 'PDF Document'
+              : mimeType === 'text/csv' ? 'CSV Spreadsheet'
+                  : 'JSON Backup',
+          accept: acceptMap,
         }],
       });
       const writable = await fileHandle.createWritable();
