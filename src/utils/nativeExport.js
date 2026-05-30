@@ -155,7 +155,12 @@ async function _browserDownload(content, filename, mimeType) {
   const isPWA = window.matchMedia('(display-mode: standalone)').matches
       || window.navigator.standalone === true;
 
-  const blob = new Blob([content], { type: mimeType });
+  // If content is already a Blob (e.g. from jsPDF doc.output('blob')),
+  // don't rewrap it — double-wrapping loses the MIME type on Android Chrome
+  // and causes SecTrashProvider to append .json to the filename.
+  const blob = content instanceof Blob
+      ? content
+      : new Blob([content], { type: mimeType });
 
   // Desktop Chrome/Edge — File System Access API "Save As" dialog
   if (window.showSaveFilePicker) {
