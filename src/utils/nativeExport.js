@@ -134,10 +134,10 @@ export async function exportTextFile(content, filename, mimeType, options = {}) 
       });
     } catch (err) {
       console.error('Native file export failed, falling back to browser:', err);
-      _browserDownload(content, filename, mimeType);
+      await _browserDownload(content, filename, mimeType);
     }
   } else {
-    _browserDownload(content, filename, mimeType);
+    await _browserDownload(content, filename, mimeType);
   }
 }
 
@@ -145,7 +145,7 @@ export async function exportTextFile(content, filename, mimeType, options = {}) 
  * Internal: standard browser anchor-click download (existing pattern).
  * Not exported — internal use only.
  */
-function _browserDownload(content, filename, mimeType) {
+async function _browserDownload(content, filename, mimeType) {
   // Detect PWA standalone mode — blob anchor downloads don't work
   // in Android PWA standalone context, use showSaveFilePicker if available,
   // otherwise fall back to opening blob in new tab which triggers download
@@ -175,6 +175,21 @@ function _browserDownload(content, filename, mimeType) {
       }
     });
     return;
+  }
+
+  // iOS Safari & Android Chrome: Web Share API with a REAL file.
+  // THIS is the iOS fix. iOS ignores <a download> and window.open() only
+  // produces a dead blob: URL that Drive/Mail can't read. Desktop Chrome/Edge
+  // never reach here — showSaveFilePicker above handles them first.
+  const shareFile = new File([content], filename, { type: mimeType });
+  if (navigator.canShare && navigator.canShare({ files: [shareFile] })) {
+    try {
+      await navigator.share({ files: [shareFile], title: filename });
+      return;
+    } catch (err) {
+      if (err && err.name === 'AbortError') return; // user tapped Cancel
+      // any other error: fall through to the legacy paths below
+    }
   }
 
   // PWA without File System Access API — open blob URL in new tab
