@@ -2381,7 +2381,7 @@ export const generateProtectedEnvironmentPDF = async ({
     );
     const filename = `Protected-Environment-Packet_${veteranName.replace(/\s+/g,
         '-')}_${new Date().toISOString().split('T')[0]}.pdf`;
-    await exportPDF(doc, filename, options);
+    await exportPDF(doc, filename);
     return;
   }
 
@@ -2724,7 +2724,7 @@ export const generateProtectedEnvironmentPDF = async ({
   // ── Save ────────────────────────────────────────────────────────────────
   const safeName = veteranName.replace(/\s+/g, '-');
   const dateStr = new Date().toISOString().split('T')[0];
-  await exportPDF(doc, `Protected-Environment-Packet_${safeName}_${dateStr}.pdf`, options);
+  await exportPDF(doc, `Protected-Environment-Packet_${safeName}_${dateStr}.pdf`);
 };
 
 
@@ -2969,7 +2969,7 @@ export const generate8940WorksheetPDF = async (
   // ── Save ──────────────────────────────────────────────────────────────────
   const dateStr = new Date().toISOString().split('T')[0];
   const safeName = veteranName.replace(/[^a-z0-9]/gi, '_').toLowerCase();
-  await exportPDF(doc, `tdiu-8940-worksheet-${safeName}-${dateStr}.pdf`, options);
+  await exportPDF(doc, `tdiu-8940-worksheet-${safeName}-${dateStr}.pdf`);
 };
 
 // Generate CSV export
