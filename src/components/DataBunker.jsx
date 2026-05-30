@@ -118,7 +118,14 @@ export default function DataBunker() {
       const filename = `symptom-vault-backup-${new Date().toISOString().split('T')[0]}.json`;
 
       // exportTextFile handles both native share sheet and web download
-      await exportTextFile(jsonString, filename, 'application/json');
+      const result = await exportTextFile(jsonString, filename, 'application/json');
+
+      // If the user cancelled the save/share sheet, nothing was written —
+      // don't record a phantom "Last backup" timestamp, or the "no recent
+      // backup" warning would be wrongly suppressed.
+      if (result && result.success === false) {
+        return;
+      }
 
       hapticSuccess();
       const now = new Date().toISOString();

@@ -57,8 +57,11 @@ export async function exportPDF(doc, filename, options = {}) {
       doc.save(filename);
     }
   } else {
-    // Standard web behavior — unchanged
-    doc.save(filename);
+    // jsPDF's doc.save() uses <a download>, which iOS Safari ignores.
+    // Route the PDF bytes through the same cross-browser save/share path
+    // used for text files so iOS/Android web get a real file.
+    const pdfBlob = doc.output('blob');
+    return await _browserDownload(pdfBlob, filename, 'application/pdf');
   }
 }
 
@@ -97,9 +100,9 @@ export async function exportTextFile(content, filename, mimeType, options = {}) 
         try {
           const { saveFileToDevice } = await import('./fileSaver.js');
           await saveFileToDevice(base64Data, filename, mimeType);
-          return;
+          return { success: true };
         } catch (androidErr) {
-          if (androidErr?.message === 'cancelled') return; // User cancelled — not an error
+          if (androidErr?.message === 'cancelled') return { success: false, cancelled: true }; // User cancelled
           console.warn('FileSaver plugin failed, falling back to share sheet:', androidErr);
 
           // Fallback: share sheet
@@ -113,7 +116,7 @@ export async function exportTextFile(content, filename, mimeType, options = {}) 
             url: writeResult.uri,
             dialogTitle: 'Save your backup file',
           });
-          return;
+          return { success: true };
         }
       }
 
@@ -132,12 +135,13 @@ export async function exportTextFile(content, filename, mimeType, options = {}) 
             ? 'Save your file — choose Downloads or Drive'
             : 'Share your file',
       });
+      return { success: true };
     } catch (err) {
       console.error('Native file export failed, falling back to browser:', err);
-      await _browserDownload(content, filename, mimeType);
+      return await _browserDownload(content, filename, mimeType);
     }
   } else {
-    await _browserDownload(content, filename, mimeType);
+    return await _browserDownload(content, filename, mimeType);
   }
 }
 
@@ -146,64 +150,60 @@ export async function exportTextFile(content, filename, mimeType, options = {}) 
  * Not exported — internal use only.
  */
 async function _browserDownload(content, filename, mimeType) {
-  // Detect PWA standalone mode — blob anchor downloads don't work
-  // in Android PWA standalone context, use showSaveFilePicker if available,
-  // otherwise fall back to opening blob in new tab which triggers download
+  // Detect PWA standalone mode — blob anchor downloads don't work reliably
+  // in Android PWA standalone context.
   const isPWA = window.matchMedia('(display-mode: standalone)').matches
       || window.navigator.standalone === true;
 
   const blob = new Blob([content], { type: mimeType });
 
-  // Modern browsers (Chrome 86+) — File System Access API
-  // Works in PWA and browser contexts
+  // Desktop Chrome/Edge — File System Access API "Save As" dialog
   if (window.showSaveFilePicker) {
-    window.showSaveFilePicker({
-      suggestedName: filename,
-      types: [{
-        description: 'JSON Backup',
-        accept: { [mimeType]: ['.json', '.csv', '.pdf'] },
-      }],
-    }).then(fileHandle => fileHandle.createWritable())
-    .then(writable => {
-      writable.write(blob);
-      return writable.close();
-    })
-    .catch(err => {
-      // User cancelled or error — fall through to blob download
-      if (err.name !== 'AbortError') {
-        _fallbackBlobDownload(blob, filename);
+    try {
+      const fileHandle = await window.showSaveFilePicker({
+        suggestedName: filename,
+        types: [{
+          description: 'Download',
+          accept: { [mimeType]: ['.json', '.csv', '.pdf'] },
+        }],
+      });
+      const writable = await fileHandle.createWritable();
+      await writable.write(blob);
+      await writable.close();
+      return { success: true };
+    } catch (err) {
+      if (err.name === 'AbortError') {
+        return { success: false, cancelled: true }; // user closed the Save dialog
       }
-    });
-    return;
+      // any other error — fall through to the paths below
+    }
   }
 
-  // iOS Safari & Android Chrome: Web Share API with a REAL file.
-  // THIS is the iOS fix. iOS ignores <a download> and window.open() only
-  // produces a dead blob: URL that Drive/Mail can't read. Desktop Chrome/Edge
-  // never reach here — showSaveFilePicker above handles them first.
+  // iOS Safari & Android Chrome — Web Share API with a REAL file
   const shareFile = new File([content], filename, { type: mimeType });
   if (navigator.canShare && navigator.canShare({ files: [shareFile] })) {
     try {
       await navigator.share({ files: [shareFile], title: filename });
-      return;
+      return { success: true };
     } catch (err) {
-      if (err && err.name === 'AbortError') return; // user tapped Cancel
-      // any other error: fall through to the legacy paths below
+      if (err && err.name === 'AbortError') {
+        return { success: false, cancelled: true }; // user dismissed the share sheet
+      }
+      // any other share error — fall through to legacy paths
     }
   }
 
   // PWA without File System Access API — open blob URL in new tab
-  // Android will prompt to download when opened this way
   if (isPWA) {
     const url = URL.createObjectURL(blob);
     window.open(url, '_blank');
-    // Clean up after delay
     setTimeout(() => URL.revokeObjectURL(url), 10000);
-    return;
+    return { success: true };
   }
 
   // Standard browser — anchor click download
   _fallbackBlobDownload(blob, filename);
+  return { success: true };
 }
 
 function _fallbackBlobDownload(blob, filename) {
