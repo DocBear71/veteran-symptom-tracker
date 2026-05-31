@@ -31,6 +31,9 @@ const usePanicKey = (redirectUrl = 'https://www.google.com') => {
     let tapCount = 0;
     let lastTapTime = 0;
     let tapTimer = null;
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let touchStartTime = 0;
 
     // Desktop: Triple-tap Escape
     const handleKeyDown = (e) => {
@@ -49,10 +52,35 @@ const usePanicKey = (redirectUrl = 'https://www.google.com') => {
       }
     };
 
-    // Mobile: Triple-tap anywhere
-    const handleTouchStart = () => {
-      const now = Date.now();
+    // REPLACE WITH:
+    // Mobile: Triple-tap anywhere. A "tap" must stay put and lift quickly —
+    // a scroll/swipe moves the finger or holds, so it won't count. This stops
+    // the panic exit from firing while the user is scrolling the page.
+    const TAP_MOVE_TOLERANCE = 10; // px the finger may drift and still be a tap
+    const TAP_MAX_DURATION = 300;  // ms a finger may be down and still be a tap
 
+    const handleTouchStart = (e) => {
+      const t = e.touches[0];
+      touchStartX = t ? t.clientX : 0;
+      touchStartY = t ? t.clientY : 0;
+      touchStartTime = Date.now();
+    };
+
+    const handleTouchEnd = (e) => {
+      const t = e.changedTouches[0];
+      if (!t) return;
+
+      const movedX = Math.abs(t.clientX - touchStartX);
+      const movedY = Math.abs(t.clientY - touchStartY);
+      const duration = Date.now() - touchStartTime;
+
+      // Moved too far or held too long → it was a scroll/drag, not a tap. Reset.
+      if (movedX > TAP_MOVE_TOLERANCE || movedY > TAP_MOVE_TOLERANCE || duration > TAP_MAX_DURATION) {
+        tapCount = 0;
+        return;
+      }
+
+      const now = Date.now();
       if (now - lastTapTime < 500) {
         tapCount++;
       } else {
@@ -74,10 +102,12 @@ const usePanicKey = (redirectUrl = 'https://www.google.com') => {
 
     window.addEventListener('keydown', handleKeyDown);
     window.addEventListener('touchstart', handleTouchStart, { passive: true });
+    window.addEventListener('touchend', handleTouchEnd, { passive: true });
 
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('touchstart', handleTouchStart);
+      window.removeEventListener('touchend', handleTouchEnd);
       clearTimeout(escapeTimer);
       clearTimeout(tapTimer);
     };
