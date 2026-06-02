@@ -15,6 +15,7 @@ import ExportData from './components/ExportData';
 import Settings from './components/Settings';
 import OnboardingModal from './components/OnboardingModal';
 import ThankYou from './components/legal/ThankYou.jsx';
+import Citations from './components/legal/Citations.jsx';
 import SecondaryConditionsGuide from './components/SecondaryConditionsGuide';
 import PresumptiveConditionsGuide from './components/PresumptiveConditionsGuide';
 import MOSNoiseExposureLookup from './components/MOSNoiseExposureLookup';
@@ -235,6 +236,8 @@ const AppContent = () => {
         />;
       case 'thank-you':
         return <ThankYou />;
+      case 'citations':
+        return <Citations />;
       case 'secondary-conditions':
         return <SecondaryConditionsGuide onNavigateToSymptom={(_symptom) => handleNavigate('log')} />;
       case 'presumptive-conditions':

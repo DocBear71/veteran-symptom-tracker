@@ -1147,6 +1147,18 @@ const Settings = ({ onNavigate, onOpenBlueButton, onShowFraudAlert }) => {
           <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
             Review the app walkthrough and feature explanations
           </p>
+          <button
+              onClick={() => onNavigate && onNavigate('citations')}
+              className="mt-3 w-full py-3 px-4 border border-gray-300 dark:border-gray-600
+                         text-gray-700 dark:text-gray-300 font-medium rounded-lg
+                         hover:bg-gray-50 dark:hover:bg-gray-700
+                         flex items-center justify-center gap-2"
+          >
+            <span>📚</span> Sources & Citations
+          </button>
+          <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
+            Regulatory sources for all VA rating information in this app
+          </p>
         </div>
 
         {/* Install App */}

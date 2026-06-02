@@ -8,6 +8,7 @@ import AboutUs from './AboutUs';
 import Contact from './Contact';
 import Donations from './Donations';
 import VATermsAndFAQ from '../VATermsAndFAQ';
+import Citations from './Citations';
 
 // Modal wrapper component for consistent styling
 const ModalWrapper = ({ children, title, onClose }) => (
@@ -149,16 +150,22 @@ const Footer = () => {
 
             {/* Third Row */}
             <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 text-sm">
-              <a
-                  href="https://www.docbear-ent.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-200 hover:text-white transition-colors"
+            <a
+              href="https://www.docbear-ent.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-200 hover:text-white transition-colors"
               >
-                Doc Bear Enterprises
-              </a>
-
-            </div>
+              Doc Bear Enterprises
+            </a>
+            <span className="text-blue-400 dark:text-gray-600">|</span>
+            <button
+                onClick={() => openModal('citations')}
+                className="text-blue-200 hover:text-white transition-colors"
+            >
+              Sources & Citations
+            </button>
+          </div>
 
             {/* App Info */}
             <div className="mt-4 pt-4 border-t border-blue-800 dark:border-gray-700 text-center">
@@ -206,6 +213,12 @@ const Footer = () => {
         {showModal === 'va-terms' && (
             <ModalWrapper title="VA Terms, Definitions & FAQ" onClose={closeModal}>
               <VATermsAndFAQ embedded={true} />
+            </ModalWrapper>
+        )}
+
+        {showModal === 'citations' && (
+            <ModalWrapper title="Sources & Citations" onClose={closeModal}>
+              <Citations />
             </ModalWrapper>
         )}
       </>
