@@ -39,7 +39,7 @@ export const formatDosage = (med) => {
     if (qty === 1) {
       return med.unitType === 'other' ? med.strength : `${med.strength} ${unitLabel}`;
     }
-    return `${qty} x ${med.strength} ${unitLabel}`;
+    return `${qty} \u00D7 ${med.strength} ${unitLabel}`;
   }
 
   // Legacy format: plain text dosage field

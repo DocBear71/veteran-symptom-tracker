@@ -472,6 +472,202 @@ export const CLAIMS_RESOURCES = {
 };
 
 /**
+ * MULTIPLE THEORIES OF SERVICE CONNECTION
+ *
+ * Source: Doug Haynes — veterans may pursue all supported theories simultaneously.
+ * The VA has a duty to consider all reasonably raised theories supported by evidence.
+ * Reference: 38 C.F.R. § 3.303; Schroeder v. West, 212 F.3d 1265 (Fed. Cir. 2000)
+ */
+export const MULTIPLE_THEORIES_GUIDANCE = {
+  headline: 'You Can File Under Multiple Theories at Once',
+  legalBasis: '38 C.F.R. § 3.303; Schroeder v. West, 212 F.3d 1265 (Fed. Cir. 2000)',
+
+  coreRule:
+      'The VA has a duty to consider ALL reasonably raised theories of service connection ' +
+      'supported by the evidence. You do not have to pick just one. Submit the evidence ' +
+      'and let the VA determine which theory results in the grant.',
+
+  importance: 'critical',
+
+  examples: [
+    {
+      condition: 'Sleep Apnea',
+      theories: [
+        { theory: 'Direct', description: 'In-service symptoms documented during service' },
+        { theory: 'Secondary to PTSD', description: 'PTSD disrupts sleep architecture and is linked to OSA development' },
+        { theory: 'Secondary to orthopedic conditions', description: 'Weight gain caused by limited mobility from service-connected injuries' },
+        { theory: 'Secondary to medications', description: 'Medications for service-connected conditions cause or worsen sleep apnea' },
+      ],
+    },
+    {
+      condition: 'Migraines',
+      theories: [
+        { theory: 'Direct', description: 'Specific in-service event (blast exposure, head injury, etc.)' },
+        { theory: 'Secondary to tinnitus', description: 'Auditory hypersensitivity and chronic tinnitus trigger migraines' },
+        { theory: 'Secondary to PTSD', description: 'Hyperarousal and stress response linked to migraine onset' },
+        { theory: 'Secondary to cervical spine', description: 'Cervicogenic headaches from service-connected neck condition' },
+      ],
+    },
+    {
+      condition: 'Hypertension',
+      theories: [
+        { theory: 'Direct', description: 'Directly related to service stressors, physical demands, or exposures' },
+        { theory: 'Secondary to PTSD', description: 'Chronic sympathetic nervous system activation elevates blood pressure' },
+        { theory: 'Secondary to kidney disease', description: 'Renal disease causes or worsens hypertension' },
+        { theory: 'Secondary to sleep apnea', description: 'OSA-related hypoxia drives hypertension' },
+      ],
+    },
+  ],
+
+  keyPrinciple:
+      'The strongest claims are supported by more than medical records alone. ' +
+      'Medical evidence explains the diagnosis. Lay evidence explains how the ' +
+      'disability actually affects your life. The VA needs to hear both.',
+};
+
+/**
+ * LAY EVIDENCE PACKAGE
+ *
+ * Source: Doug Haynes — comprehensive lay evidence strategy.
+ * Covers personal statements, buddy statements, and flare-up journals.
+ * These can establish observable symptoms, functional limitations, and
+ * real-world impact that medical records alone often fail to capture.
+ */
+export const LAY_EVIDENCE_PACKAGE = {
+  headline: 'Build Your Lay Evidence Package',
+  subtitle: 'Medical evidence explains the diagnosis. Lay evidence explains how the disability affects your life.',
+
+  importance: 'critical',
+
+  // ── Personal Statement (VA Form 21-4138) ─────────────────────────────────
+  personalStatement: {
+    name: 'Personal Statement',
+    vaForm: 'VBA Form 21-4138',
+    formName: 'Statement in Support of Claim',
+    who: 'The veteran themselves',
+    purpose: 'Describe your condition in your own words — your lived experience that medical records miss.',
+
+    whatToInclude: [
+      'When symptoms started (date, context, what was happening)',
+      'How symptoms have progressed over time',
+      'Frequency and severity of symptoms',
+      'Functional limitations in daily life',
+      'Impact on employment (missed work, reduced performance, job loss)',
+      'Impact on daily activities and quality of life',
+    ],
+
+    tips: [
+      'Be specific — include dates, frequencies, and concrete examples',
+      'Describe your WORST periods, not just average days',
+      'Connect symptoms directly to how they limit what you can do',
+      'Be honest — do not minimize, but do not exaggerate',
+    ],
+  },
+
+  // ── Buddy / Lay Statements (VA Form 21-10210) ─────────────────────────────
+  buddyStatements: {
+    name: 'Buddy / Lay Statements',
+    vaForm: 'VBA Form 21-10210',
+    formName: 'Lay/Witness Statement',
+    who: 'Spouse, family members, friends, co-workers, supervisors',
+    purpose: 'Third-party corroboration of observable symptoms and functional impact.',
+
+    whatTheyCanEstablish: [
+      'Observable symptoms (limping, shaking, crying, nightmares, etc.)',
+      'Changes in behavior or personality since service',
+      'Missed work or reduced productivity',
+      'Physical limitations witnessed firsthand',
+      'Social withdrawal and relationship impact',
+      'Sleep problems observed by a partner or family member',
+      'Overall impact on quality of life',
+    ],
+
+    whoShouldWrite: [
+      { relationship: 'Spouse / Partner', value: 'highest', note: 'Observes daily symptoms including sleep, mood, and functional limits' },
+      { relationship: 'Family members', value: 'high', note: 'Can describe behavioral changes over time and social impact' },
+      { relationship: 'Friends', value: 'medium', note: 'Can describe social withdrawal and activity limitations' },
+      { relationship: 'Co-workers', value: 'high', note: 'Can describe missed work, performance decline, and physical limitations on the job' },
+      { relationship: 'Supervisors', value: 'high', note: 'Can confirm accommodations made, missed time, or job performance issues' },
+    ],
+
+    tips: [
+      'The more specific the statement, the more useful it is',
+      'Include dates, frequencies, and concrete examples of what was observed',
+      'Statements do not need to be long — focused and factual is best',
+      'Multiple statements from different perspectives are stronger than one',
+    ],
+  },
+
+  // ── Flare-Up Journal (VA Form 21-4138) ───────────────────────────────────
+  flareUpJournal: {
+    name: 'Flare-Up Journal',
+    vaForm: 'VBA Form 21-4138',
+    formName: 'Statement in Support of Claim (used to submit journal)',
+    purpose:
+        'Extremely valuable for conditions that are not always severe on the day of a C&P exam. ' +
+        'Demonstrates the episodic nature and real-world impact of your condition.',
+
+    whatToDocument: [
+      'Date of each flare-up',
+      'Duration (hours, days)',
+      'Severity (scale of 1–10 or descriptive)',
+      'Activities affected or cancelled',
+      'Work missed',
+      'Medications used',
+      'Need for assistance from others',
+    ],
+
+    tips: [
+      'The more specific the journal, the more useful it becomes',
+      'Daily entries are stronger than weekly summaries',
+      'Note what triggered the flare-up if known',
+      'Doc Bear\'s Symptom Vault symptom logs serve as your flare-up journal',
+    ],
+
+    appNote:
+        'Your symptom logs in this app are your flare-up journal. ' +
+        'Export them as evidence packages to submit with your claim.',
+  },
+
+  // ── When and How to Submit ────────────────────────────────────────────────
+  submissionStrategy: {
+    headline: 'Submit This Evidence WITH Your Claim Whenever Possible',
+
+    ifClaimPending: {
+      label: 'Claim Still in Progress?',
+      action: 'Upload evidence immediately — do not wait for a decision.',
+      methods: [
+        { method: 'VA.gov', description: 'Upload directly to your pending claim' },
+        { method: 'QuickSubmit', description: 'VA\'s fax-to-digital upload tool' },
+        { method: 'Fax', description: 'Fax to your regional office with claim number on cover sheet' },
+        { method: 'Mail', description: 'Certified mail to your VA regional office' },
+        { method: 'VSO / Agent / Attorney', description: 'Have your representative submit on your behalf' },
+      ],
+      important: 'Make sure the evidence is associated with the PENDING claim, not filed as a separate submission.',
+    },
+
+    ifClaimDenied: {
+      label: 'Claim Denied?',
+      action: 'File a Supplemental Claim with new and relevant evidence.',
+      vaForm: 'VA Form 20-0995',
+      formName: 'Decision Review Request: Supplemental Claim',
+      details:
+          'Personal statements, buddy statements, and flare-up journals can address gaps that ' +
+          'contributed to the denial. This evidence must be new and relevant. You can also ' +
+          'request a new C&P exam based on the submitted lay evidence.',
+      important:
+          'The evidence must be "new and relevant" — evidence not previously considered ' +
+          'that could change the outcome of the claim.',
+    },
+  },
+
+  // ── Core Principle from Doug Haynes ──────────────────────────────────────
+  coreMessage:
+      'The veteran lives with the condition every day. ' +
+      'Make sure the VA hears that part of the story too, so the VA is looking at the whole person.',
+};
+
+/**
  * Get a specific service connection method by ID
  */
 export const getServiceConnectionMethod = (methodId) => {
