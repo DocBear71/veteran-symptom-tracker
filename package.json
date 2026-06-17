@@ -23,6 +23,7 @@
     "@capacitor/keyboard": "^8.0.3",
     "@capacitor/share": "^8.0.1",
     "@capawesome/capacitor-file-picker": "^8.0.2",
+    "idb": "^8.0.3",
     "jspdf": "^4.2.1",
     "jspdf-autotable": "^5.0.8",
     "lucide-react": "^0.556.0",

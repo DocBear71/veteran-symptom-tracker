@@ -1,4 +1,5 @@
 import { Download, Upload, Shield, AlertTriangle } from 'lucide-react';
+import { getStorageHealth } from '../utils/storageHealth';
 import { useState, useEffect } from 'react';
 import { getDataStats } from '../utils/storage';
 import { exportTextFile } from '../utils/nativeExport';
@@ -9,6 +10,7 @@ export default function DataBunker() {
     const [lastBackup, setLastBackup] = useState(
         localStorage.getItem('lastBackupDate')
     );
+  const [storageHealth] = useState(() => getStorageHealth());
     const [dataStats, setDataStats] = useState({
         logs: 0,
         customSymptoms: 0,
@@ -314,6 +316,44 @@ export default function DataBunker() {
             </p>
           </div>
         </div>
+
+        {/* Storage health warning — shown in DataBunker so user acts immediately */}
+        {storageHealth.level !== 'ok' && (
+            <div className={`rounded-lg border p-3 mb-4 ${
+                storageHealth.level === 'critical'
+                    ? 'bg-red-50 dark:bg-red-900/20 border-red-300 dark:border-red-700'
+                    : 'bg-amber-50 dark:bg-amber-900/20 border-amber-200 dark:border-amber-800'
+            }`}>
+              <div className="flex items-start gap-2">
+                <AlertTriangle className={`w-5 h-5 flex-shrink-0 mt-0.5 ${
+                    storageHealth.level === 'critical'
+                        ? 'text-red-600 dark:text-red-400'
+                        : 'text-amber-600 dark:text-amber-400'
+                }`} />
+                <div>
+                  <p className={`text-sm font-semibold ${
+                      storageHealth.level === 'critical'
+                          ? 'text-red-800 dark:text-red-200'
+                          : 'text-amber-800 dark:text-amber-200'
+                  }`}>
+                    {storageHealth.level === 'critical'
+                        ? `Storage ${storageHealth.pctLabel}% full — backup now`
+                        : `Storage ${storageHealth.pctLabel}% full — backup soon`}
+                  </p>
+                  <p className={`text-xs mt-0.5 ${
+                      storageHealth.level === 'critical'
+                          ? 'text-red-700 dark:text-red-300'
+                          : 'text-amber-700 dark:text-amber-300'
+                  }`}>
+                    {storageHealth.usedMB} MB used of ~{storageHealth.limitMB} MB.
+                    {storageHealth.level === 'critical'
+                        ? ' New entries may stop saving until you free up space.'
+                        : ' Export a backup to protect your records.'}
+                  </p>
+                </div>
+              </div>
+            </div>
+        )}
 
           {/* Data Stats */}
           <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-3 mb-4">

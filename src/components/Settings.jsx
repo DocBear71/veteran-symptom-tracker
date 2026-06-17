@@ -26,6 +26,7 @@ import CaregiverProgramInfo from './CaregiverProgramInfo';
 import AccessibilitySettings from './AccessibilitySettings';
 import ProfileSettingsCard from './ProfileSettingsCard';
 import { checkThresholdStaleness } from '../utils/tdiuEligibility';
+import { getStorageHealth } from '../utils/storageHealth';
 
 /**
  * Display backup history
@@ -187,6 +188,8 @@ const Settings = ({ onNavigate, onOpenBlueButton, onShowFraudAlert }) => {
     return stored ? new Date(stored) : null;
   });
   const thresholdStaleness = checkThresholdStaleness();
+// Storage health warning — recalculated on mount and after data changes
+  const [storageHealth, setStorageHealth] = useState(() => getStorageHealth());
   const showThresholdBanner =
       thresholdStaleness.level !== 'current' &&
       (!thresholdDismissedUntil || new Date() > thresholdDismissedUntil);
@@ -231,6 +234,7 @@ const Settings = ({ onNavigate, onOpenBlueButton, onShowFraudAlert }) => {
       setSupported(notificationsSupported());
       setPermissionStatus(getNotificationPermission());
       setDataStats(getDataStats());
+      setStorageHealth(getStorageHealth());
 
       if (notificationsSupported()) {
         await registerServiceWorker();
@@ -241,6 +245,7 @@ const Settings = ({ onNavigate, onOpenBlueButton, onShowFraudAlert }) => {
     // Listen for profile changes and reload data stats
     const handleProfileChange = () => {
       setDataStats(getDataStats());
+      setStorageHealth(getStorageHealth());
     };
 
     window.addEventListener('profileChanged', handleProfileChange);
@@ -412,6 +417,69 @@ const Settings = ({ onNavigate, onOpenBlueButton, onShowFraudAlert }) => {
   return (
       <div className="space-y-4 text-left">
         <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Settings</h2>
+
+        {/* Storage health warning banner */}
+        {storageHealth.level !== 'ok' && (
+            <div className={`rounded-lg border-2 p-4 ${
+                storageHealth.level === 'critical'
+                    ? 'bg-red-50 dark:bg-red-900/20 border-red-400 dark:border-red-600'
+                    : 'bg-amber-50 dark:bg-amber-900/20 border-amber-300 dark:border-amber-700'
+            }`}>
+              <div className="flex items-start gap-3">
+                <span className="text-2xl flex-shrink-0">
+                  {storageHealth.level === 'critical' ? '🚨' : '⚠️'}
+                </span>
+                <div className="flex-1 min-w-0">
+                  <h3 className={`font-semibold mb-1 ${
+                      storageHealth.level === 'critical'
+                          ? 'text-red-900 dark:text-red-200'
+                          : 'text-amber-900 dark:text-amber-200'
+                  }`}>
+                    {storageHealth.level === 'critical'
+                        ? 'Storage Almost Full — Export a Backup Now'
+                        : 'Storage Getting Full — Export a Backup Soon'}
+                  </h3>
+                  <p className={`text-sm mb-3 ${
+                      storageHealth.level === 'critical'
+                          ? 'text-red-800 dark:text-red-300'
+                          : 'text-amber-800 dark:text-amber-300'
+                  }`}>
+                    {storageHealth.message}
+                  </p>
+                  <p className="text-xs text-gray-600 dark:text-gray-400 mb-3">
+                    Your symptom data is stored locally on this device.
+                    When storage is full, new entries may silently fail to save.
+                    Export a backup to protect your records.
+                  </p>
+                  {/* Visual progress bar */}
+                  <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 mb-3">
+                    <div
+                        className={`h-2 rounded-full transition-all ${
+                            storageHealth.level === 'critical'
+                                ? 'bg-red-500'
+                                : 'bg-amber-500'
+                        }`}
+                        style={{ width: `${Math.min(storageHealth.pctLabel, 100)}%` }}
+                    />
+                  </div>
+                  <button
+                      onClick={() => {
+                        // Scroll to DataBunker section
+                        document.getElementById('data-bunker-section')
+                        ?.scrollIntoView({ behavior: 'smooth' });
+                      }}
+                      className={`text-sm px-4 py-2 rounded-lg font-medium text-white transition-colors ${
+                          storageHealth.level === 'critical'
+                              ? 'bg-red-600 hover:bg-red-700'
+                              : 'bg-amber-600 hover:bg-amber-700'
+                      }`}
+                  >
+                    Go to Backup
+                  </button>
+                </div>
+              </div>
+            </div>
+        )}
 
         {/* Phase 11: Poverty threshold staleness banner */}
         {showThresholdBanner && (
@@ -925,7 +993,9 @@ const Settings = ({ onNavigate, onOpenBlueButton, onShowFraudAlert }) => {
         </div>
         {/* The Bunker - Crash-Proof Backup System */}
         <div className="mb-6">
+          <div id="data-bunker-section">
           <DataBunker />
+          </div>
         </div>
 
         {/* Emergency Data Recovery */}
