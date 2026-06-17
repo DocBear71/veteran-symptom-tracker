@@ -1,11 +1,12 @@
 // ============================================
 // MEASUREMENT STORAGE UTILITIES
 // ============================================
-// Profile-aware storage for measurement data
-// All measurements are isolated by active profile ID
+// Profile-aware storage for measurement data.
+// Phase 2: reads/writes go through storageCache (IndexedDB backed).
 
 import { getActiveProfileId } from './profiles.js';
 import { getMeasurementType } from '../data/measurementTypes';
+import { cacheGet, cacheSet, cacheRemove } from './storageCache';
 
 // ============================================
 // STORAGE KEY GENERATION
@@ -25,34 +26,22 @@ const getHeightKey = (profileId = null) => {
 // MEASUREMENT CRUD OPERATIONS
 // ============================================
 
-/**
- * Generate unique ID for measurement
- */
 const generateMeasurementId = () => {
   return `meas_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 };
 
 /**
  * Get all measurements for active profile
- * @param {Object} options - Filter options
- * @param {string} options.type - Filter by measurement type
- * @param {number} options.days - Filter by days in past
- * @param {Date} options.startDate - Filter by start date
- * @param {Date} options.endDate - Filter by end date
- * @returns {Array} Array of measurement objects
  */
 export const getMeasurements = (options = {}) => {
   try {
-    const key = getMeasurementsKey();
-    const data = localStorage.getItem(key);
-    let measurements = data ? JSON.parse(data) : [];
+    const key = getMeasurementsKey(options.profileId || null);
+    let measurements = cacheGet(key) || [];
 
-    // Filter by measurement type
     if (options.type) {
       measurements = measurements.filter(m => m.measurementType === options.type);
     }
 
-    // Filter by date range
     if (options.days) {
       const cutoff = new Date();
       cutoff.setDate(cutoff.getDate() - options.days);
@@ -67,7 +56,6 @@ export const getMeasurements = (options = {}) => {
       measurements = measurements.filter(m => new Date(m.timestamp) <= new Date(options.endDate));
     }
 
-    // Sort by timestamp (newest first)
     measurements.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
 
     return measurements;
@@ -79,8 +67,6 @@ export const getMeasurements = (options = {}) => {
 
 /**
  * Get a single measurement by ID
- * @param {string} id - Measurement ID
- * @returns {Object|null} Measurement object or null
  */
 export const getMeasurementById = (id) => {
   const measurements = getMeasurements();
@@ -89,26 +75,17 @@ export const getMeasurementById = (id) => {
 
 /**
  * Save a new measurement
- * @param {Object} measurement - Measurement data
- * @param {string} measurement.measurementType - Type of measurement
- * @param {Object} measurement.values - Measurement values
- * @param {Object} measurement.metadata - Additional metadata
- * @param {string} measurement.notes - Optional notes
- * @param {string} measurement.timestamp - ISO timestamp (defaults to now)
- * @returns {Object} Saved measurement with generated ID
  */
 export const saveMeasurement = (measurement) => {
   try {
     const key = getMeasurementsKey();
     const measurements = getMeasurements();
 
-    // Validate measurement type
     const type = getMeasurementType(measurement.measurementType);
     if (!type) {
       throw new Error(`Invalid measurement type: ${measurement.measurementType}`);
     }
 
-    // Create new measurement entry
     const newMeasurement = {
       id: generateMeasurementId(),
       timestamp: measurement.timestamp || new Date().toISOString(),
@@ -118,13 +95,12 @@ export const saveMeasurement = (measurement) => {
       notes: measurement.notes || '',
     };
 
-    // Special handling for weight measurements - store height separately
     if (measurement.measurementType === 'weight' && measurement.values.height) {
       saveHeight(measurement.values.height);
     }
 
     measurements.push(newMeasurement);
-    localStorage.setItem(key, JSON.stringify(measurements));
+    cacheSet(key, measurements);
 
     return newMeasurement;
   } catch (error) {
@@ -135,9 +111,6 @@ export const saveMeasurement = (measurement) => {
 
 /**
  * Update an existing measurement
- * @param {string} id - Measurement ID
- * @param {Object} updates - Fields to update
- * @returns {Object|null} Updated measurement or null
  */
 export const updateMeasurement = (id, updates) => {
   try {
@@ -150,19 +123,17 @@ export const updateMeasurement = (id, updates) => {
       return null;
     }
 
-    // Update measurement
     measurements[index] = {
       ...measurements[index],
       ...updates,
-      id, // Ensure ID doesn't change
+      id,
     };
 
-    // Special handling for weight measurements
     if (measurements[index].measurementType === 'weight' && updates.values?.height) {
       saveHeight(updates.values.height);
     }
 
-    localStorage.setItem(key, JSON.stringify(measurements));
+    cacheSet(key, measurements);
     return measurements[index];
   } catch (error) {
     console.error('Error updating measurement:', error);
@@ -172,8 +143,6 @@ export const updateMeasurement = (id, updates) => {
 
 /**
  * Delete a measurement
- * @param {string} id - Measurement ID
- * @returns {boolean} Success status
  */
 export const deleteMeasurement = (id) => {
   try {
@@ -186,7 +155,7 @@ export const deleteMeasurement = (id) => {
       return false;
     }
 
-    localStorage.setItem(key, JSON.stringify(filtered));
+    cacheSet(key, filtered);
     return true;
   } catch (error) {
     console.error('Error deleting measurement:', error);
@@ -196,12 +165,11 @@ export const deleteMeasurement = (id) => {
 
 /**
  * Delete all measurements for active profile
- * @returns {boolean} Success status
  */
 export const deleteAllMeasurements = () => {
   try {
     const key = getMeasurementsKey();
-    localStorage.removeItem(key);
+    cacheRemove(key);
     return true;
   } catch (error) {
     console.error('Error deleting all measurements:', error);
@@ -210,19 +178,13 @@ export const deleteAllMeasurements = () => {
 };
 
 // ============================================
-// HEIGHT MANAGEMENT (for BMI calculations)
+// HEIGHT MANAGEMENT
 // ============================================
 
-/**
- * Save height for active profile
- * Height is stored separately as it doesn't change frequently
- * @param {number} heightInches - Height in inches
- * @returns {boolean} Success status
- */
 export const saveHeight = (heightInches) => {
   try {
     const key = getHeightKey();
-    localStorage.setItem(key, heightInches.toString());
+    cacheSet(key, heightInches);
     return true;
   } catch (error) {
     console.error('Error saving height:', error);
@@ -230,15 +192,11 @@ export const saveHeight = (heightInches) => {
   }
 };
 
-/**
- * Get height for active profile
- * @returns {number|null} Height in inches or null
- */
 export const getHeight = () => {
   try {
     const key = getHeightKey();
-    const height = localStorage.getItem(key);
-    return height ? parseFloat(height) : null;
+    const height = cacheGet(key);
+    return height !== null ? parseFloat(height) : null;
   } catch (error) {
     console.error('Error getting height:', error);
     return null;
@@ -249,61 +207,37 @@ export const getHeight = () => {
 // MEASUREMENT STATISTICS & ANALYSIS
 // ============================================
 
-/**
- * Calculate statistics for a measurement type
- * @param {string} measurementType - Type of measurement
- * @param {number} days - Number of days to analyze
- * @returns {Object} Statistics object
- */
 export const getMeasurementStats = (measurementType, days = 30) => {
   const measurements = getMeasurements({ type: measurementType, days });
 
   if (measurements.length === 0) {
-    return {
-      count: 0,
-      latest: null,
-      oldest: null,
-      average: null,
-      min: null,
-      max: null,
-    };
+    return { count: 0, latest: null, oldest: null, average: null, min: null, max: null };
   }
 
-  // Get the primary field for this measurement type
   const type = getMeasurementType(measurementType);
   const primaryField = type.fields.find(f => f.required)?.key;
 
   if (!primaryField) return { count: measurements.length };
 
-  // Extract values
   const values = measurements
   .map(m => m.values[primaryField])
   .filter(v => v !== undefined && v !== null && !isNaN(v));
 
   if (values.length === 0) return { count: measurements.length };
 
-  // Calculate statistics
   const sum = values.reduce((acc, val) => acc + val, 0);
-  const average = sum / values.length;
-  const min = Math.min(...values);
-  const max = Math.max(...values);
 
   return {
     count: measurements.length,
-    latest: measurements[0], // Already sorted newest first
+    latest: measurements[0],
     oldest: measurements[measurements.length - 1],
-    average: parseFloat(average.toFixed(2)),
-    min,
-    max,
-    values, // Raw values for charting
+    average: parseFloat((sum / values.length).toFixed(2)),
+    min: Math.min(...values),
+    max: Math.max(...values),
+    values,
   };
 };
 
-/**
- * Calculate average blood pressure over time period
- * @param {number} days - Number of days to analyze
- * @returns {Object} Average systolic and diastolic
- */
 export const getAverageBloodPressure = (days = 30) => {
   const measurements = getMeasurements({ type: 'blood-pressure', days });
 
@@ -325,14 +259,6 @@ export const getAverageBloodPressure = (days = 30) => {
   };
 };
 
-/**
- * Check if blood pressure is "predominantly" at a certain level
- * Used for VA hypertension rating determination
- * "Predominantly" means more than 50% of readings
- * @param {number} days - Number of days to analyze (default 90)
- * @param {Object} threshold - { systolic: number, diastolic: number }
- * @returns {Object} Analysis result
- */
 export const analyzeBloodPressurePredominance = (days = 90, threshold = {}) => {
   const measurements = getMeasurements({ type: 'blood-pressure', days });
 
@@ -346,7 +272,6 @@ export const analyzeBloodPressurePredominance = (days = 90, threshold = {}) => {
     };
   }
 
-  // Count readings that meet threshold (systolic OR diastolic)
   const qualifyingReadings = measurements.filter(m => {
     if (threshold.systolic && m.values.systolic >= threshold.systolic) return true;
     if (threshold.diastolic && m.values.diastolic >= threshold.diastolic) return true;
@@ -367,31 +292,16 @@ export const analyzeBloodPressurePredominance = (days = 90, threshold = {}) => {
   };
 };
 
-/**
- * Get latest measurement of a specific type
- * @param {string} measurementType - Type of measurement
- * @returns {Object|null} Latest measurement or null
- */
 export const getLatestMeasurement = (measurementType) => {
   const measurements = getMeasurements({ type: measurementType });
   return measurements.length > 0 ? measurements[0] : null;
 };
 
-/**
- * Export measurements as JSON
- * @param {Object} options - Export options
- * @returns {string} JSON string
- */
 export const exportMeasurementsJSON = (options = {}) => {
   const measurements = getMeasurements(options);
   return JSON.stringify(measurements, null, 2);
 };
 
-/**
- * Import measurements from JSON
- * @param {string} jsonString - JSON string of measurements
- * @returns {Object} Import result
- */
 export const importMeasurementsJSON = (jsonString) => {
   try {
     const imported = JSON.parse(jsonString);
@@ -403,12 +313,11 @@ export const importMeasurementsJSON = (jsonString) => {
     const key = getMeasurementsKey();
     const existing = getMeasurements();
 
-    // Merge, avoiding duplicates by ID
     const existingIds = new Set(existing.map(m => m.id));
     const newMeasurements = imported.filter(m => !existingIds.has(m.id));
-
     const merged = [...existing, ...newMeasurements];
-    localStorage.setItem(key, JSON.stringify(merged));
+
+    cacheSet(key, merged);
 
     return {
       success: true,
@@ -417,9 +326,6 @@ export const importMeasurementsJSON = (jsonString) => {
       total: merged.length,
     };
   } catch (error) {
-    return {
-      success: false,
-      error: error.message,
-    };
+    return { success: false, error: error.message };
   }
 };

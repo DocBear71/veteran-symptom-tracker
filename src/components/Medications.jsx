@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { cacheGet, cacheSet } from '../utils/storageCache';
 import { hapticSuccess } from '../utils/haptics';
 import {
   getMedications,
@@ -75,7 +76,7 @@ const repairGroupIcon = (icon) => {
 
 const getMedicationGroups = () => {
   try {
-    const groups = JSON.parse(localStorage.getItem(getGroupsKey())) || [];
+    const groups = cacheGet(getGroupsKey()) || [];
     // Repair any corrupted icons on read
     return groups.map(g => ({ ...g, icon: repairGroupIcon(g.icon) }));
   }
@@ -83,7 +84,7 @@ const getMedicationGroups = () => {
 };
 
 const saveMedicationGroups = (groups) => {
-  localStorage.setItem(getGroupsKey(), JSON.stringify(groups));
+  cacheSet(getGroupsKey(), groups);
 };
 
 // ─── Reusable Dosage Form Fields ─────────────────────────────────
