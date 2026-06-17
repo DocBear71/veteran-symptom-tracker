@@ -1,4 +1,5 @@
 import { Download, Upload, Shield, AlertTriangle } from 'lucide-react';
+import { cacheGet, cacheGetAllWithPrefix } from '../utils/storageCache';
 import { getStorageHealth } from '../utils/storageHealth';
 import { useState, useEffect } from 'react';
 import { getDataStats } from '../utils/storage';
@@ -10,7 +11,7 @@ export default function DataBunker() {
     const [lastBackup, setLastBackup] = useState(
         localStorage.getItem('lastBackupDate')
     );
-  const [storageHealth] = useState(() => getStorageHealth());
+  const [storageHealth, setStorageHealth] = useState(() => getStorageHealth());
     const [dataStats, setDataStats] = useState({
         logs: 0,
         customSymptoms: 0,
@@ -20,12 +21,16 @@ export default function DataBunker() {
     });
 
     // Load data stats on mount and listen for changes
-    useEffect(() => {
-        setDataStats(getDataStats());
+  useEffect(() => {
+    setDataStats(getDataStats());
+    // Recalculate after mount — migration may have completed
+    // between initial render and here, clearing localStorage
+    setStorageHealth(getStorageHealth());
 
-        const handleDataChange = () => {
-            setDataStats(getDataStats());
-        };
+    const handleDataChange = () => {
+      setDataStats(getDataStats());
+      setStorageHealth(getStorageHealth());
+    };
 
         window.addEventListener('profileChanged', handleDataChange);
         window.addEventListener('storage', handleDataChange);
@@ -36,88 +41,97 @@ export default function DataBunker() {
         };
     }, []);
 
-    const handleExportBunker = async () => {
-      // Get active profile ID for profile-specific data
-      const activeProfileId = localStorage.getItem(
-          'symptomTracker_activeProfileId') || 'default';
+  const handleExportBunker = async () => {
+    // Get active profile ID
+    const activeProfileId = localStorage.getItem(
+        'symptomTracker_activeProfileId') || 'default';
 
-      // Collect ALL symptomTracker data from localStorage
-      const allData = {};
-      for (let i = 0; i < localStorage.length; i++) {
-        const key = localStorage.key(i);
-        if (key && key.startsWith('symptomTracker_')) {
-          try {
-            const value = localStorage.getItem(key);
-            // Try to parse as JSON, fallback to raw value
-            try {
-              allData[key] = JSON.parse(value);
-            } catch {
-              allData[key] = value;
-            }
-          } catch (e) {
-            console.warn(`Failed to export key: ${key}`, e);
-          }
+    // Collect ALL profile-namespaced data from cache (IndexedDB-backed)
+    // plus global keys from localStorage
+    const allCacheData = cacheGetAllWithPrefix('symptomTracker_');
+
+    // Merge with global localStorage keys for a complete backup
+    const allData = { ...allCacheData };
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key && key.startsWith('symptomTracker_')) {
+        try {
+          const value = localStorage.getItem(key);
+          try { allData[key] = JSON.parse(value); }
+          catch { allData[key] = value; }
+        } catch (e) {
+          console.warn(`Failed to export key: ${key}`, e);
         }
       }
+    }
 
-      const data = {
-        version: '2.0',
-        exportDate: new Date().toISOString(),
-        appVersion: '',
-        activeProfileId,
-        // Store all raw localStorage data for complete backup
-        rawData: allData,
-        // Also store in friendly format for the active profile
-        data: {
-          symptomLogs: JSON.parse(
-              localStorage.getItem(`symptomTracker_logs_${activeProfileId}`) ||
-              '[]'),
-          customSymptoms: JSON.parse(localStorage.getItem(
-              `symptomTracker_customSymptoms_${activeProfileId}`) || '[]'),
-          chronicSymptoms: JSON.parse(localStorage.getItem(
-              `symptomTracker_favorites_${activeProfileId}`) || '[]'),
-          serviceConnectedConditions: (() => {
-            try {
-              const profiles = JSON.parse(
-                  localStorage.getItem('symptomTracker_profiles') || '[]');
-              const profile = profiles.find(p => p.id === activeProfileId);
-              return profile?.serviceConnectedConditions || [];
-            } catch {
-              return [];
-            }
-          })(),
-          medications: JSON.parse(localStorage.getItem(
-              `symptomTracker_medications_${activeProfileId}`) || '[]'),
-          medicationLogs: JSON.parse(localStorage.getItem(
-              `symptomTracker_medicationLogs_${activeProfileId}`) || '[]'),
-          measurements: JSON.parse(localStorage.getItem(
-              `symptomTracker_measurements_${activeProfileId}`) || '[]'),
-          appointments: JSON.parse(localStorage.getItem(
-              `symptomTracker_appointments_${activeProfileId}`) || '[]'),
-          profiles: JSON.parse(
-              localStorage.getItem('symptomTracker_profiles') || '[]'),
-          userProfile: JSON.parse(localStorage.getItem(
-              `symptomTracker_profile_${activeProfileId}`) || '{}'),
-          theme: localStorage.getItem('symptomTracker_theme') || 'system',
-          reminderSettings: JSON.parse(
-              localStorage.getItem('symptomTracker_reminderSettings') || '{}'),
-          onboardingComplete: localStorage.getItem(
-              'symptomTracker_onboardingComplete') === 'true',
-          worksheet8940: JSON.parse(localStorage.getItem(
-              `symptomTracker_8940worksheet_${activeProfileId}`) || 'null'),
-          weightGoal: JSON.parse(localStorage.getItem(
-              `symptomTracker_weightGoal_${activeProfileId}`) || 'null'),
-          mentalHealthScores: JSON.parse(localStorage.getItem(
-              `symptomTracker_mentalHealthScores_${activeProfileId}`) || '[]'),
-          sleepApneaProfile: JSON.parse(localStorage.getItem(
-              `symptomTracker_sleepApneaProfile_${activeProfileId}`) || 'null'),
-          medicationHistory: JSON.parse(localStorage.getItem(
-              `symptomTracker_medicationHistory_${activeProfileId}`) || '[]'),
-        }
-      };
+    const data = {
+      version: '2.1',
+      exportDate: new Date().toISOString(),
+      appVersion: '3.6.1',
+      activeProfileId,
+      // Complete backup — all keys from cache + localStorage
+      rawData: allData,
+      // Friendly format for the active profile
+      data: {
+        symptomLogs: cacheGet(
+            `symptomTracker_logs_${activeProfileId}`) || [],
+        customSymptoms: cacheGet(
+            `symptomTracker_customSymptoms_${activeProfileId}`) || [],
+        chronicSymptoms: cacheGet(
+            `symptomTracker_favorites_${activeProfileId}`) || [],
+        serviceConnectedConditions: (() => {
+          try {
+            const profiles = JSON.parse(
+                localStorage.getItem('symptomTracker_profiles') || '[]');
+            const profile = profiles.find(p => p.id === activeProfileId);
+            return profile?.serviceConnectedConditions || [];
+          } catch {
+            return [];
+          }
+        })(),
+        medications: cacheGet(
+            `symptomTracker_medications_${activeProfileId}`) || [],
+        medicationLogs: cacheGet(
+            `symptomTracker_medicationLogs_${activeProfileId}`) || [],
+        measurements: cacheGet(
+            `symptomTracker_measurements_${activeProfileId}`) || [],
+        appointments: cacheGet(
+            `symptomTracker_appointments_${activeProfileId}`) || [],
+        profiles: JSON.parse(
+            localStorage.getItem('symptomTracker_profiles') || '[]'),
+        userProfile: JSON.parse(localStorage.getItem(
+            `symptomTracker_profile_${activeProfileId}`) || '{}'),
+        theme: localStorage.getItem('symptomTracker_theme') || 'system',
+        reminderSettings: cacheGet(
+            `symptomTracker_reminderSettings_${activeProfileId}`) || {},
+        onboardingComplete: localStorage.getItem(
+            'symptomTracker_onboardingComplete') === 'true',
+        worksheet8940: cacheGet(
+            `symptomTracker_8940worksheet_${activeProfileId}`) || null,
+        weightGoal: cacheGet(
+            `symptomTracker_weightGoal_${activeProfileId}`) || null,
+        mentalHealthScores: cacheGet(
+            `symptomTracker_mentalHealthScores_${activeProfileId}`) || [],
+        sleepApneaProfile: cacheGet(
+            `symptomTracker_sleepApneaProfile_${activeProfileId}`) || null,
+        medicationHistory: cacheGet(
+            `symptomTracker_medicationHistory_${activeProfileId}`) || [],
+      }
+    };
 
       const jsonString = JSON.stringify(data, null, 2);
-      const filename = `symptom-vault-backup-${new Date().toISOString().split('T')[0]}.json`;
+      const now = new Date();
+      // Use local date methods — toISOString() returns UTC which flips
+      // the date after ~9pm Central. getFullYear/Month/Date use device timezone.
+      const year  = now.getFullYear();
+      const month = (now.getMonth() + 1).toString().padStart(2, '0');
+      const day   = now.getDate().toString().padStart(2, '0');
+      const hours = now.getHours();
+      const minutes = now.getMinutes().toString().padStart(2, '0');
+      const ampm = hours >= 12 ? 'pm' : 'am';
+      const hours12 = (hours % 12 || 12).toString();
+      const filename = `symptom-vault-backup-${year}-${month}-${day}_${hours12}${minutes}${ampm}.json`;
 
       // exportTextFile handles both native share sheet and web download
       const result = await exportTextFile(jsonString, filename, 'application/json');
@@ -130,9 +144,9 @@ export default function DataBunker() {
       }
 
       hapticSuccess();
-      const now = new Date().toISOString();
-      localStorage.setItem('lastBackupDate', now);
-      setLastBackup(now);
+      const nowISO = new Date().toISOString();
+      localStorage.setItem('lastBackupDate', nowISO);
+      setLastBackup(nowISO);
     };
 
   // Native iOS/Android restore — reads JSON file via Capacitor Filesystem
@@ -186,118 +200,176 @@ export default function DataBunker() {
     }
   };
 
-    const handleImportBunker = (event) => {
-        const file = event.target.files[0];
-        if (!file) return;
+  const handleImportBunker = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
 
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            try {
-                const imported = JSON.parse(e.target.result);
+    const reader = new FileReader();
+    reader.onload = async (e) => {
+      try {
+        const imported = JSON.parse(e.target.result);
 
-                // Validate structure - support both old and new formats
-                if (!imported.data && !imported.rawData && !imported.symptomLogs) {
-                    throw new Error('Invalid backup file format');
-                }
+        // Validate structure - support both old and new formats
+        if (!imported.data && !imported.rawData && !imported.symptomLogs) {
+          throw new Error('Invalid backup file format');
+        }
 
-                // Confirm before overwriting
-                if (!confirm('This will replace all your current data. Are you sure?')) {
-                    return;
-                }
+        // Confirm before overwriting
+        if (!confirm('This will replace all your current data. Are you sure?')) {
+          return;
+        }
 
-                // VERSION 2.0+ format - has rawData with all localStorage keys
-                if (imported.rawData) {
-                    // Restore all raw localStorage data
-                    Object.entries(imported.rawData).forEach(([key, value]) => {
-                        if (typeof value === 'string') {
-                            localStorage.setItem(key, value);
-                        } else {
-                            localStorage.setItem(key, JSON.stringify(value));
-                        }
-                    });
+        // Import cacheSet dynamically to write directly to IndexedDB
+        const { cacheSet } = await import('../utils/storageCache');
 
-                    alert('Data restored successfully! The page will now reload.');
-                    window.location.reload();
-                    return;
-                }
+        // Helper — writes global keys to localStorage, profile data to cache
+        const LOCAL_KEYS = new Set([
+          'symptomTracker_profiles',
+          'symptomTracker_activeProfileId',
+          'symptomTracker_theme',
+          'symptomTracker_onboardingComplete',
+          'symptomTracker_multiProfileMigration',
+          'symptomTracker_profile',
+          'symptomTracker_schemaVersion',
+          'symptomTracker_settings',
+          'symptomTracker_bbImportLog',
+          'symptomTracker_thresholdReminderDismissedUntil',
+          'lastBackupDate',
+        ]);
 
-                // LEGACY format - data at root level (old backups before multi-profile)
-                if (imported.symptomLogs && !imported.data) {
-                    // This is the old format - restore with proper keys
-                    const profileId = imported.activeProfileId || 'default';
-
-                    if (imported.symptomLogs)
-                        localStorage.setItem(`symptomTracker_logs_${profileId}`, JSON.stringify(imported.symptomLogs));
-                    if (imported.customSymptoms)
-                        localStorage.setItem(`symptomTracker_customSymptoms_${profileId}`, JSON.stringify(imported.customSymptoms));
-                    if (imported.chronicConditions)
-                        localStorage.setItem(`symptomTracker_chronicSymptoms_${profileId}`, JSON.stringify(imported.chronicConditions));
-                    if (imported.medications)
-                        localStorage.setItem(`symptomTracker_medications_${profileId}`, JSON.stringify(imported.medications));
-                    if (imported.medicationLogs)
-                        localStorage.setItem(`symptomTracker_medicationLogs_${profileId}`, JSON.stringify(imported.medicationLogs));
-                    if (imported.appointments)
-                        localStorage.setItem(`symptomTracker_appointments_${profileId}`, JSON.stringify(imported.appointments));
-                    if (imported.userProfile)
-                        localStorage.setItem(`symptomTracker_profile_${profileId}`, JSON.stringify(imported.userProfile));
-                    if (imported.profiles)
-                        localStorage.setItem('symptomTracker_profiles', JSON.stringify(imported.profiles));
-                    if (imported.activeProfileId)
-                        localStorage.setItem('symptomTracker_activeProfileId', imported.activeProfileId);
-                    if (imported.theme)
-                        localStorage.setItem('symptomTracker_theme', imported.theme);
-                    if (imported.reminderSettings)
-                        localStorage.setItem('symptomTracker_reminderSettings', JSON.stringify(imported.reminderSettings));
-                    if (imported.onboardingComplete !== undefined)
-                        localStorage.setItem('symptomTracker_onboardingComplete', String(imported.onboardingComplete));
-
-                    alert('Legacy backup restored successfully! The page will now reload.');
-                    window.location.reload();
-                    return;
-                }
-
-                // VERSION 1.0 format - has data wrapper but no rawData
-                if (imported.data) {
-                    const { data } = imported;
-                    const profileId = imported.activeProfileId || localStorage.getItem('symptomTracker_activeProfileId') || 'default';
-
-                    if (data.symptomLogs)
-                        localStorage.setItem(`symptomTracker_logs_${profileId}`, JSON.stringify(data.symptomLogs));
-                    if (data.customSymptoms)
-                        localStorage.setItem(`symptomTracker_customSymptoms_${profileId}`, JSON.stringify(data.customSymptoms));
-                    if (data.chronicSymptoms)
-                        localStorage.setItem(`symptomTracker_chronicSymptoms_${profileId}`, JSON.stringify(data.chronicSymptoms));
-                    if (data.serviceConnectedConditions)
-                        localStorage.setItem(`symptomTracker_serviceConnected_${profileId}`, JSON.stringify(data.serviceConnectedConditions));
-                    if (data.medications)
-                        localStorage.setItem(`symptomTracker_medications_${profileId}`, JSON.stringify(data.medications));
-                    if (data.medicationLogs)
-                        localStorage.setItem(`symptomTracker_medicationLogs_${profileId}`, JSON.stringify(data.medicationLogs));
-                    if (data.measurements)
-                        localStorage.setItem(`symptomTracker_measurements_${profileId}`, JSON.stringify(data.measurements));
-                    if (data.appointments)
-                        localStorage.setItem(`symptomTracker_appointments_${profileId}`, JSON.stringify(data.appointments));
-                    if (data.profiles)
-                        localStorage.setItem('symptomTracker_profiles', JSON.stringify(data.profiles));
-                    if (data.userProfile)
-                        localStorage.setItem(`symptomTracker_profile_${profileId}`, JSON.stringify(data.userProfile));
-                    if (data.theme)
-                        localStorage.setItem('symptomTracker_theme', data.theme);
-                    if (data.reminderSettings)
-                        localStorage.setItem('symptomTracker_reminderSettings', JSON.stringify(data.reminderSettings));
-                    if (data.onboardingComplete !== undefined)
-                        localStorage.setItem('symptomTracker_onboardingComplete', String(data.onboardingComplete));
-
-                    alert('Data restored successfully! The page will now reload.');
-                    window.location.reload();
-                }
-            } catch (error) {
-                alert('Error reading backup file: ' + error.message);
-                console.error('Import error:', error);
-            }
+        const restoreKey = (key, value) => {
+          if (LOCAL_KEYS.has(key)) {
+            // Global key — localStorage
+            localStorage.setItem(key,
+                typeof value === 'string' ? value : JSON.stringify(value));
+          } else {
+            // Profile data — write to cache (IndexedDB)
+            cacheSet(key, typeof value === 'string'
+                ? (() => { try { return JSON.parse(value); } catch { return value; } })()
+                : value);
+          }
         };
-        reader.readAsText(file);
+
+        // VERSION 2.0+ format — rawData contains all keys
+        if (imported.rawData) {
+          // Separate global (localStorage) keys from profile (IDB) keys
+          const writePromises = [];
+          Object.entries(imported.rawData).forEach(([key, value]) => {
+            if (LOCAL_KEYS.has(key)) {
+              // Global key — localStorage (synchronous, no promise needed)
+              localStorage.setItem(key,
+                  typeof value === 'string' ? value : JSON.stringify(value));
+            } else {
+              // Profile data — write to IDB and collect the promise
+              const parsed = typeof value === 'string'
+                  ? (() => { try { return JSON.parse(value); } catch { return value; } })()
+                  : value;
+              writePromises.push(cacheSet(key, parsed));
+            }
+          });
+
+          // Wait for ALL IndexedDB writes to complete before reloading
+          await Promise.all(writePromises);
+          alert('Data restored successfully! The page will now reload.');
+          window.location.reload();
+          return;
+        }
+
+        // LEGACY format — data at root level (old backups before multi-profile)
+        if (imported.symptomLogs && !imported.data) {
+          const profileId = imported.activeProfileId || 'default';
+          if (imported.symptomLogs)
+            cacheSet(`symptomTracker_logs_${profileId}`, imported.symptomLogs);
+          if (imported.customSymptoms)
+            cacheSet(`symptomTracker_customSymptoms_${profileId}`, imported.customSymptoms);
+          if (imported.chronicConditions)
+            cacheSet(`symptomTracker_favorites_${profileId}`, imported.chronicConditions);
+          if (imported.medications)
+            cacheSet(`symptomTracker_medications_${profileId}`, imported.medications);
+          if (imported.medicationLogs)
+            cacheSet(`symptomTracker_medicationLogs_${profileId}`, imported.medicationLogs);
+          if (imported.appointments)
+            cacheSet(`symptomTracker_appointments_${profileId}`, imported.appointments);
+          if (imported.userProfile)
+            localStorage.setItem(`symptomTracker_profile_${profileId}`,
+                JSON.stringify(imported.userProfile));
+          if (imported.profiles)
+            localStorage.setItem('symptomTracker_profiles',
+                JSON.stringify(imported.profiles));
+          if (imported.activeProfileId)
+            localStorage.setItem('symptomTracker_activeProfileId',
+                imported.activeProfileId);
+          if (imported.theme)
+            localStorage.setItem('symptomTracker_theme', imported.theme);
+          if (imported.reminderSettings)
+            cacheSet(`symptomTracker_reminderSettings_${profileId}`,
+                imported.reminderSettings);
+          if (imported.onboardingComplete !== undefined)
+            localStorage.setItem('symptomTracker_onboardingComplete',
+                String(imported.onboardingComplete));
+          alert('Legacy backup restored successfully! The page will now reload.');
+          window.location.reload();
+          return;
+        }
+
+        // VERSION 1.0 format — has data wrapper but no rawData
+        if (imported.data) {
+          const { data } = imported;
+          const profileId = imported.activeProfileId
+              || localStorage.getItem('symptomTracker_activeProfileId')
+              || 'default';
+          if (data.symptomLogs)
+            cacheSet(`symptomTracker_logs_${profileId}`, data.symptomLogs);
+          if (data.customSymptoms)
+            cacheSet(`symptomTracker_customSymptoms_${profileId}`, data.customSymptoms);
+          if (data.chronicSymptoms)
+            cacheSet(`symptomTracker_favorites_${profileId}`, data.chronicSymptoms);
+          if (data.medications)
+            cacheSet(`symptomTracker_medications_${profileId}`, data.medications);
+          if (data.medicationLogs)
+            cacheSet(`symptomTracker_medicationLogs_${profileId}`, data.medicationLogs);
+          if (data.measurements)
+            cacheSet(`symptomTracker_measurements_${profileId}`, data.measurements);
+          if (data.appointments)
+            cacheSet(`symptomTracker_appointments_${profileId}`, data.appointments);
+          if (data.profiles)
+            localStorage.setItem('symptomTracker_profiles',
+                JSON.stringify(data.profiles));
+          if (data.userProfile)
+            localStorage.setItem(`symptomTracker_profile_${profileId}`,
+                JSON.stringify(data.userProfile));
+          if (data.theme)
+            localStorage.setItem('symptomTracker_theme', data.theme);
+          if (data.reminderSettings)
+            cacheSet(`symptomTracker_reminderSettings_${profileId}`,
+                data.reminderSettings);
+          if (data.onboardingComplete !== undefined)
+            localStorage.setItem('symptomTracker_onboardingComplete',
+                String(data.onboardingComplete));
+          if (data.worksheet8940)
+            cacheSet(`symptomTracker_8940worksheet_${profileId}`,
+                data.worksheet8940);
+          if (data.weightGoal)
+            cacheSet(`symptomTracker_weightGoal_${profileId}`, data.weightGoal);
+          if (data.mentalHealthScores)
+            cacheSet(`symptomTracker_mentalHealthScores_${profileId}`,
+                data.mentalHealthScores);
+          if (data.sleepApneaProfile)
+            cacheSet(`symptomTracker_sleepApneaProfile_${profileId}`,
+                data.sleepApneaProfile);
+          if (data.medicationHistory)
+            cacheSet(`symptomTracker_medicationHistory_${profileId}`,
+                data.medicationHistory);
+          alert('Data restored successfully! The page will now reload.');
+          window.location.reload();
+        }
+      } catch (error) {
+        alert('Error reading backup file: ' + error.message);
+        console.error('Import error:', error);
+      }
     };
+    reader.readAsText(file);
+  };
 
   const daysSinceBackup = lastBackup
       ? Math.floor((Date.now() - new Date(lastBackup).getTime()) / (1000 * 60 * 60 * 24))

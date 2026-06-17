@@ -2,6 +2,7 @@
 // v2.1 Feature - Helps veterans prepare for Compensation & Pension exams
 
 import React, { useState, useMemo } from 'react';
+import { cacheGet, cacheSet, cacheRemove } from '../utils/storageCache';
 import { getSymptomLogs } from '../utils/storage';
 import { getActiveProfile, getActiveProfileId, getServiceConnectedConditions } from '../utils/profiles.js';
 import { getConditionDescription } from '../data/conditionDescriptions';
@@ -31,18 +32,18 @@ const CPExamPrep = ({ embedded = false, onClose, onNavigate }) => {
   };
 
   // Build the localStorage key scoped to active profile + condition slug
-  // e.g. "docbear_nexus_abc123_sleep-apnea"
+  // e.g. "nexus_abc123_sleep-apnea"
   // This prevents nexus summaries from leaking across profiles
   const nexusStorageKey = (conditionSlug) => {
     const profileId = getActiveProfileId() || 'default';
-    return `docbear_nexus_${profileId}_${conditionSlug || 'default'}`;
+    return `nexus_${profileId}_${conditionSlug || 'default'}`;
   };
 
   // Load a saved summary for the given condition key
   const loadSavedSummary = (conditionSlug) => {
     try {
-      const saved = localStorage.getItem(nexusStorageKey(conditionSlug));
-      return saved ? JSON.parse(saved) : null;
+      const saved = cacheGet(nexusStorageKey(conditionSlug));
+      return saved || null;
     } catch { return null; }
   };
 
@@ -84,7 +85,8 @@ const CPExamPrep = ({ embedded = false, onClose, onNavigate }) => {
   const saveNexusSummary = (data, conditionSlug) => {
     const key = nexusStorageKey(conditionSlug ?? activeNexusCondition);
     try {
-      localStorage.setItem(key, JSON.stringify(data));
+      // cacheSet takes raw value — no JSON.stringify needed
+      cacheSet(key, data);
       setNexusSaveStatus('saved');
       setTimeout(() => setNexusSaveStatus(''), 2500);
     } catch {
@@ -172,7 +174,7 @@ const CPExamPrep = ({ embedded = false, onClose, onNavigate }) => {
     const fresh = { ...defaultSummary };
     setNexusSummary(fresh);
     if (activeNexusCondition) {
-      localStorage.removeItem(nexusStorageKey(activeNexusCondition));
+      cacheRemove(nexusStorageKey(activeNexusCondition));
     }
   };
 

@@ -33,6 +33,8 @@ export const LOCAL_STORAGE_ONLY_KEYS = new Set([
   'symptomTracker_autoBackup',
   'symptomTracker_lastBackup',
   'symptomTracker_backupHistory',
+  'lastBackupDate',
+  'docbear_fraudAlertDismissed',
 ]);
 
 // Migration flag — written to localStorage once migration completes
@@ -180,8 +182,14 @@ export const migrateLocalStorageToIDB = async () => {
   for (let i = 0; i < localStorage.length; i++) {
     const key = localStorage.key(i);
     if (!key) continue;
-    if (!key.startsWith('symptomTracker_')) continue;
     if (LOCAL_STORAGE_ONLY_KEYS.has(key)) continue;
+    // Migrate symptomTracker_* profile data, nexus_* nexus builder data,
+    // and legacy docbear_nexus_* keys from versions prior to 3.6.0
+    if (
+        !key.startsWith('symptomTracker_') &&
+        !key.startsWith('nexus_') &&
+        !key.startsWith('docbear_nexus_')
+    ) continue;
     keysToMigrate.push(key);
   }
 

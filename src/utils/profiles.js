@@ -10,6 +10,8 @@
  * - Veteran tracking both VA claims + general health
  */
 
+import { cacheGet, cacheRemove } from './storageCache';
+
 const PROFILES_KEY = 'symptomTracker_profiles';
 const ACTIVE_PROFILE_KEY = 'symptomTracker_activeProfileId';
 const MIGRATION_KEY = 'symptomTracker_multiProfileMigration';
@@ -264,13 +266,20 @@ const deleteProfileData = (profileId) => {
     `symptomTracker_favorites_${profileId}`,
     `symptomTracker_medications_${profileId}`,
     `symptomTracker_medicationLogs_${profileId}`,
+    `symptomTracker_medicationHistory_${profileId}`,
     `symptomTracker_appointments_${profileId}`,
     `symptomTracker_reminderSettings_${profileId}`,
     `symptomTracker_sleepApneaProfile_${profileId}`,
+    `symptomTracker_weightGoal_${profileId}`,
+    `symptomTracker_mentalHealthScores_${profileId}`,
+    `symptomTracker_8940worksheet_${profileId}`,
+    `symptomTracker_measurements_${profileId}`,
+    `symptomTracker_height_${profileId}`,
+    `symptomTracker_medicationGroups_${profileId}`,
   ];
 
   keysToDelete.forEach(key => {
-    localStorage.removeItem(key);
+    cacheRemove(key);
   });
 };
 
@@ -312,9 +321,9 @@ export const getProfileIcon = (type) => {
  */
 export const getProfileStats = (profileId) => {
   try {
-    const logs = JSON.parse(localStorage.getItem(`symptomTracker_logs_${profileId}`) || '[]');
-    const meds = JSON.parse(localStorage.getItem(`symptomTracker_medications_${profileId}`) || '[]');
-    const appointments = JSON.parse(localStorage.getItem(`symptomTracker_appointments_${profileId}`) || '[]');
+    const logs = cacheGet(`symptomTracker_logs_${profileId}`) || [];
+    const meds = cacheGet(`symptomTracker_medications_${profileId}`) || [];
+    const appointments = cacheGet(`symptomTracker_appointments_${profileId}`) || [];
 
     return {
       logs: logs.length,

@@ -84,16 +84,16 @@ const AppContent = () => {
 
   // Fraud alert banner — dismissed state persisted to localStorage
   const [showFraudAlert, setShowFraudAlert] = useState(() => {
-    return localStorage.getItem('docbear_fraudAlertDismissed') !== 'true';
+    return localStorage.getItem('fraudAlertDismissed') !== 'true';
   });
 
   const dismissFraudAlert = () => {
-    localStorage.setItem('docbear_fraudAlertDismissed', 'true');
+    localStorage.setItem('fraudAlertDismissed', 'true');
     setShowFraudAlert(false);
   };
 
   const reopenFraudAlert = () => {
-    localStorage.removeItem('docbear_fraudAlertDismissed');
+    localStorage.removeItem('fraudAlertDismissed');
     setShowFraudAlert(true);
   };
 

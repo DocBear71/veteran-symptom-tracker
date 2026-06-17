@@ -84,14 +84,15 @@ export const cacheSet = (key, value) => {
     } catch (e) {
       console.error(`cacheSet localStorage failed for "${key}":`, e);
     }
-    return;
+    return Promise.resolve();
   }
 
   // Update in-memory cache immediately (synchronous, instant)
   _cache[key] = value;
 
-  // Persist to IndexedDB asynchronously (non-blocking)
-  dbSet(key, value).catch(err => {
+  // Persist to IndexedDB and return the Promise
+  // Callers that need to await completion (e.g. restore) can use the return value
+  return dbSet(key, value).catch(err => {
     console.error(`cacheSet IDB failed for "${key}":`, err);
   });
 };

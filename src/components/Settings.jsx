@@ -383,32 +383,31 @@ const Settings = ({ onNavigate, onOpenBlueButton, onShowFraudAlert }) => {
     setPendingRestore(null);
   };
 
-  const handleDeleteAllData = () => {
+  const handleDeleteAllData = async () => {
     if (deleteConfirmText !== 'DELETE') {
       showMessage('Please type DELETE to confirm', 'error');
       return;
     }
 
-    // Clear ALL localStorage keys for this app (including backups)
-    const keysToRemove = [];
+    // Clear ALL localStorage — this app owns the entire localStorage
+    // space for this origin, so a full wipe is safe and correct.
+    // This catches symptomTracker_*, docbear_nexus_*, docbear_fraud*,
+    // lastBackupDate, and any other app keys regardless of prefix.
+    localStorage.clear();
 
-    // Collect all symptomTracker keys
-    for (let i = 0; i < localStorage.length; i++) {
-      const key = localStorage.key(i);
-      if (key && key.startsWith('symptomTracker_')) {
-        keysToRemove.push(key);
-      }
-    }
-
-    // Remove all keys
-    keysToRemove.forEach(key => {
-      localStorage.removeItem(key);
-    });
-
-    // Also clear sessionStorage backups
+    // Clear sessionStorage backups
     sessionStorage.clear();
 
-    console.log(`Deleted ${keysToRemove.length} items from localStorage`);
+    // Clear IndexedDB (all profile-namespaced data lives here post-migration)
+    try {
+      const { dbClear } = await import('../utils/db');
+      await dbClear();
+      console.log('✅ IndexedDB cleared');
+    } catch (err) {
+      console.error('❌ Failed to clear IndexedDB:', err);
+    }
+
+    console.log('✅ All app data deleted');
 
     // Reload page to reset app state
     window.location.reload();
