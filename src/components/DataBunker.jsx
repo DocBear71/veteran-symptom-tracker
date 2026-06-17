@@ -6,6 +6,8 @@ import { getDataStats } from '../utils/storage';
 import { exportTextFile } from '../utils/nativeExport';
 import { isNativePlatform } from '../utils/platformUtils';
 import { hapticSuccess } from '../utils/haptics';
+import { cacheSet } from '../utils/storageCache';
+import { getPlatform } from '../utils/platformUtils.js';
 
 export default function DataBunker() {
     const [lastBackup, setLastBackup] = useState(
@@ -152,7 +154,6 @@ export default function DataBunker() {
   // Native iOS/Android restore — reads JSON file via Capacitor Filesystem
   const handleNativeRestore = async () => {
     try {
-      const { getPlatform } = await import('../utils/platformUtils.js');
       const platform = getPlatform();
 
       let jsonString;
@@ -218,9 +219,6 @@ export default function DataBunker() {
         if (!confirm('This will replace all your current data. Are you sure?')) {
           return;
         }
-
-        // Import cacheSet dynamically to write directly to IndexedDB
-        const { cacheSet } = await import('../utils/storageCache');
 
         // Helper — writes global keys to localStorage, profile data to cache
         const LOCAL_KEYS = new Set([

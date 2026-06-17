@@ -27,6 +27,8 @@ import AccessibilitySettings from './AccessibilitySettings';
 import ProfileSettingsCard from './ProfileSettingsCard';
 import { checkThresholdStaleness } from '../utils/tdiuEligibility';
 import { getStorageHealth } from '../utils/storageHealth';
+import {isNativePlatform} from '../utils/platformUtils.js';
+import { dbClear } from '../utils/db';
 
 /**
  * Display backup history
@@ -400,7 +402,6 @@ const Settings = ({ onNavigate, onOpenBlueButton, onShowFraudAlert }) => {
 
     // Clear IndexedDB (all profile-namespaced data lives here post-migration)
     try {
-      const { dbClear } = await import('../utils/db');
       await dbClear();
       console.log('✅ IndexedDB cleared');
     } catch (err) {
@@ -897,11 +898,12 @@ const Settings = ({ onNavigate, onOpenBlueButton, onShowFraudAlert }) => {
         )}
 
 
-        {/* Notifications */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
-          <h3 className="font-medium text-gray-900 dark:text-white mb-3">Daily Reminders</h3>
+        {/* Notifications — web only, Web Push not available in native WebView */}
+        {!isNativePlatform() && (
+            <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
+              <h3 className="font-medium text-gray-900 dark:text-white mb-3">Daily Reminders</h3>
 
-          {!supported && (
+          {!supported && !isNativePlatform() && (
               <div className="bg-yellow-50 dark:bg-yellow-900/30 border border-yellow-200 dark:border-yellow-800 rounded-lg p-3 mb-3">
                 <p className="text-sm text-yellow-800 dark:text-yellow-200">
                   Notifications are not supported in your browser. Try using Chrome, Firefox, or Safari on mobile.
@@ -990,6 +992,8 @@ const Settings = ({ onNavigate, onOpenBlueButton, onShowFraudAlert }) => {
               </div>
           )}
         </div>
+        )}
+
         {/* The Bunker - Crash-Proof Backup System */}
         <div className="mb-6">
           <div id="data-bunker-section">
