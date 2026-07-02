@@ -410,8 +410,9 @@ const Settings = ({ onNavigate, onOpenBlueButton, onShowFraudAlert }) => {
 
     console.log('✅ All app data deleted');
 
-    // Reload page to reset app state
-    window.location.reload();
+    // Navigate to root before reloading — avoids 404 on VPS where nginx
+    // doesn't serve SPA routes directly (no try_files fallback for /settings)
+    window.location.href = '/';
   };
 
   return (
