@@ -95,16 +95,16 @@ export default function MentalHealthRatingCard({
                     <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">{metrics?.totalLogs || 0}</div>
                     <div className="text-xs text-blue-700 dark:text-blue-300">Total Logs</div>
                   </div>
-                  <div className={`p-3 rounded-lg text-center ${metrics?.symptomDays > 0 ? 'bg-red-50 dark:bg-red-900/20' : 'bg-gray-50 dark:bg-gray-700/30'}`}>
-                    <div className={`text-2xl font-bold ${metrics?.symptomDays > 0 ? 'text-red-600 dark:text-red-400' : 'text-gray-400'}`}>{metrics?.symptomDays || 0}</div>
+                  <div className={`p-3 rounded-lg text-center ${metrics?.distinctDaysAffected > 0 ? 'bg-red-50 dark:bg-red-900/20' : 'bg-gray-50 dark:bg-gray-700/30'}`}>
+                    <div className={`text-2xl font-bold ${metrics?.distinctDaysAffected > 0 ? 'text-red-600 dark:text-red-400' : 'text-gray-400'}`}>{metrics?.distinctDaysAffected || 0}</div>
                     <div className="text-xs text-gray-600 dark:text-gray-400">Symptom Days</div>
                   </div>
-                  <div className={`p-3 rounded-lg text-center ${metrics?.occupationalImpact ? 'bg-purple-50 dark:bg-purple-900/20' : 'bg-gray-50 dark:bg-gray-700/30'}`}>
-                    <div className={`text-2xl font-bold ${metrics?.occupationalImpact ? 'text-purple-600 dark:text-purple-400' : 'text-gray-400'}`}>{metrics?.occupationalImpact ? '✓' : '—'}</div>
+                  <div className={`p-3 rounded-lg text-center ${(analysis?.evidence?.functionalImpact?.workImpact > 0) ? 'bg-purple-50 dark:bg-purple-900/20' : 'bg-gray-50 dark:bg-gray-700/30'}`}>
+                    <div className={`text-2xl font-bold ${(analysis?.evidence?.functionalImpact?.workImpact > 0) ? 'text-purple-600 dark:text-purple-400' : 'text-gray-400'}`}>{analysis?.evidence?.functionalImpact?.workImpact || 0}</div>
                     <div className="text-xs text-gray-600 dark:text-gray-400">Work Impact</div>
                   </div>
-                  <div className={`p-3 rounded-lg text-center ${metrics?.socialImpact ? 'bg-orange-50 dark:bg-orange-900/20' : 'bg-gray-50 dark:bg-gray-700/30'}`}>
-                    <div className={`text-2xl font-bold ${metrics?.socialImpact ? 'text-orange-600 dark:text-orange-400' : 'text-gray-400'}`}>{metrics?.socialImpact ? '✓' : '—'}</div>
+                  <div className={`p-3 rounded-lg text-center ${(analysis?.evidence?.functionalImpact?.socialImpact > 0) ? 'bg-orange-50 dark:bg-orange-900/20' : 'bg-gray-50 dark:bg-gray-700/30'}`}>
+                    <div className={`text-2xl font-bold ${(analysis?.evidence?.functionalImpact?.socialImpact > 0) ? 'text-orange-600 dark:text-orange-400' : 'text-gray-400'}`}>{analysis?.evidence?.functionalImpact?.socialImpact || 0}</div>
                     <div className="text-xs text-gray-600 dark:text-gray-400">Social Impact</div>
                   </div>
                 </div>

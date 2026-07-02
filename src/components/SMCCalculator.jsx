@@ -620,9 +620,11 @@ const SMCCalculator = ({
           case 'tbi_100':
             return (dc === '8045' || name.includes('tbi') || name.includes('traumatic brain')) && c.currentRating === 100;
           case 'als':
-            return dc === '8017' || name.includes('als') || name.includes('amyotrophic lateral');
+            // Use word-boundary check: avoid substring match on "Residuals", "Vitals", etc.
+            return dc === '8017'
+                || /\bals\b/.test(name)
+                || name.includes('amyotrophic lateral sclerosis');
           default:
-            return false;
         }
       });
     };

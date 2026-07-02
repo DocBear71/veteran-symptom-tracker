@@ -4817,22 +4817,34 @@ const analyzeAllConditions = (logs, options = {}) => {
 const getEvidenceStrength = (analysis) => {
   if (!analysis || !analysis.hasData) return 'gaps';
 
-  const rating = parseInt(analysis.supportedRating) || 0;
-  const evidenceCount = analysis.evidence?.length || 0;
+  // Parse rating safely — handles numeric, '70-100', '30', 'Requires Clinical...' etc.
+  // For range strings like '70-100', parseInt returns the lower bound (70) — conservative & correct.
+  // For 'Requires Clinical...' strings, parseInt returns NaN → treat as meaningful data present.
+  const rawRating = analysis.supportedRating;
+  const isRequiresClinical = typeof rawRating === 'string' &&
+      rawRating.toLowerCase().startsWith('requires');
+  const rating = isRequiresClinical ? 15 : (parseInt(rawRating) || 0);
+
+  // Evidence count: some analyzers (mental health) put documentation in
+  // ratingRationale[] rather than evidence[]. Count both to avoid false GAPS.
+  const evidenceArr = Array.isArray(analysis.evidence) ? analysis.evidence : [];
+  const rationaleArr = Array.isArray(analysis.ratingRationale) ? analysis.ratingRationale : [];
+  const evidenceCount = evidenceArr.length + rationaleArr.length;
   const gapsCount = analysis.gaps?.length || 0;
 
-  // Strong: High rating with good evidence and few gaps
+  // Strong: well-documented, minimal gaps
   if (rating >= 50 && evidenceCount >= 3 && gapsCount <= 2) return 'strong';
   if (rating >= 30 && evidenceCount >= 4 && gapsCount <= 3) return 'strong';
 
-  // Moderate: Decent rating with some evidence
+  // Moderate: decent documentation with some gaps
   if (rating >= 30 && evidenceCount >= 2) return 'moderate';
   if (rating >= 10 && evidenceCount >= 3 && gapsCount <= 4) return 'moderate';
+  if (isRequiresClinical && evidenceCount >= 3) return 'moderate';
 
-  // Weak: Low rating or limited evidence
+  // Weak: some data logged but limited
   if (rating > 0 && evidenceCount >= 1) return 'weak';
+  if (isRequiresClinical && evidenceCount >= 1) return 'weak';
 
-  // Gaps: No rating or no evidence
   return 'gaps';
 };
 
@@ -4878,9 +4890,15 @@ const generateRatingEvidenceSummaryPage = (doc, ratingAnalyses, pageWidth) => {
   // ========== COMBINED RATING CALCULATION ==========
   // Prepare conditions for VA math calculation
   const conditionsForCalc = ratingAnalyses
-  .filter(a => a.supportedRating > 0)
+  .filter(a => {
+    // Exclude non-numeric ratings like 'Requires Clinical Measurement'
+    const parsed = parseInt(a.supportedRating);
+    return !isNaN(parsed) && parsed > 0;
+  })
   .map(a => ({
     conditionName: a.condition || 'Unknown',
+    // For range ratings like '70-100', parseInt returns the lower bound (70)
+    // This is intentionally conservative — we don't claim the high end
     currentRating: parseInt(a.supportedRating) || 0
   }));
 

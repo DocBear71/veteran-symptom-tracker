@@ -5024,10 +5024,10 @@ export const analyzeAsthmaLogs = (logs, options = {}) => {
   let fvcMeasurements = [];
 
   try {
-    fev1Measurements = getMeasurements('fev1', profileId).filter(m =>
+    fev1Measurements = getMeasurements({ type: 'fev1', profileId }).filter(m =>
         new Date(m.timestamp) >= yearAgo
     );
-    fvcMeasurements = getMeasurements('fvc', profileId).filter(m =>
+    fvcMeasurements = getMeasurements({ type: 'fvc', profileId }).filter(m =>
         new Date(m.timestamp) >= yearAgo
     );
   } catch (error) {
@@ -5336,13 +5336,13 @@ const analyzeRespiratoryPFT = (logs, options, conditionConfig) => {
   let dlcoMeasurements = [];
 
   try {
-    fev1Measurements = getMeasurements('fev1', profileId).filter(m =>
+    fev1Measurements = getMeasurements({ type: 'fev1', profileId }).filter(m =>
         new Date(m.timestamp) >= yearAgo
     );
-    fvcMeasurements = getMeasurements('fvc', profileId).filter(m =>
+    fvcMeasurements = getMeasurements({ type: 'fvc', profileId }).filter(m =>
         new Date(m.timestamp) >= yearAgo
     );
-    dlcoMeasurements = getMeasurements('dlco', profileId).filter(m =>
+    dlcoMeasurements = getMeasurements({ type: 'dlco', profileId }).filter(m =>
         new Date(m.timestamp) >= yearAgo
     );
   } catch (error) {
