@@ -119,7 +119,10 @@ const EarConditionsRatingCard = ({ analysis, expanded, onToggle }) => {
   const getStatusLabel = () => {
     switch (diagnosticCode) {
       case '6204':
-        return metrics?.hasStaggering ? 'With Staggering' : 'Dizziness Only';
+        if (metrics?.hasStaggering) return 'With Staggering';
+        if (metrics?.hasDizziness && metrics?.vertigoEpisodes > 0) return 'Vertigo + Dizziness';
+        if (metrics?.vertigoEpisodes > 0) return 'Vertigo Episodes';
+        return 'Dizziness Only';
       case '6200':
         return metrics?.isBilateral ? 'Bilateral' : 'Unilateral';
       case '6210':

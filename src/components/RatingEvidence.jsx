@@ -1,5 +1,5 @@
 import {useState, useMemo, memo, useEffect} from 'react';
-import { getSymptomLogs, getChronicSymptoms } from '../utils/storage';
+import { getSymptomLogs, getChronicSymptoms, getSleepApneaProfile, saveSleepApneaProfile } from '../utils/storage';
 import { getMeasurements } from '../utils/measurements';
 import { getProfileType, PROFILE_TYPES } from '../utils/profile';
 import { getSuggestedConditions } from '../data/symptoms';
@@ -470,22 +470,8 @@ import NutritionalDeficiencyRatingCard
 
 
 
-// Storage key for sleep apnea profile
-const SLEEP_APNEA_PROFILE_KEY = 'symptomTracker_sleepApneaProfile';
-
-// Get/save sleep apnea profile
-const getSleepApneaProfile = () => {
-    try {
-        const data = localStorage.getItem(SLEEP_APNEA_PROFILE_KEY);
-        return data ? JSON.parse(data) : {};
-    } catch {
-        return {};
-    }
-};
-
-const saveSleepApneaProfile = (profile) => {
-    localStorage.setItem(SLEEP_APNEA_PROFILE_KEY, JSON.stringify(profile));
-};
+// Intentionally removed — use storage.js profile-aware functions instead
+// (getSleepApneaProfile and saveSleepApneaProfile imported from storage.js)
 
 /**
  * Rating Evidence Summary Component

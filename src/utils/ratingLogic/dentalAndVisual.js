@@ -3880,7 +3880,11 @@ export const analyzePeripheralVestibular = (logs, options = {}) => {
   const relevantLogs = logs.filter(log => {
     const logDate = new Date(log.timestamp);
     const symptomId = log.symptomId || log.symptom;
-    return logDate >= cutoffDate && symptomId?.startsWith('vest-');
+    // Match vest-* specific symptoms AND the general dizziness/vertigo symptom ID
+    return logDate >= cutoffDate && (
+        symptomId?.startsWith('vest-') ||
+        symptomId === 'dizziness'
+    );
   });
 
   if (relevantLogs.length === 0) {
@@ -3895,7 +3899,8 @@ export const analyzePeripheralVestibular = (logs, options = {}) => {
   // Key symptoms for rating
   const hasDizziness = relevantLogs.some(log => {
     const id = log.symptomId || log.symptom;
-    return id === 'vest-dizziness' || id === 'vest-vertigo' || id === 'vest-occasional' || id === 'vest-frequent';
+    return id === 'vest-dizziness' || id === 'vest-vertigo' || id === 'vest-occasional' ||
+        id === 'vest-frequent' || id === 'dizziness';
   });
 
   const hasStaggering = relevantLogs.some(log => {
@@ -3907,7 +3912,13 @@ export const analyzePeripheralVestibular = (logs, options = {}) => {
   const hasDizzinessWithStaggering = relevantLogs.some(log => (log.symptomId || log.symptom) === 'vest-with-staggering');
 
   // Other symptoms
-  const hasVertigo = relevantLogs.some(log => (log.symptomId || log.symptom) === 'vest-vertigo');
+  // 'dizziness' (Neurological category) covers both dizziness and vertigo per
+  // symptoms.js definition. Treat it as vertigo-capable since notes frequently
+  // document true spinning/room-spinning episodes under this symptom ID.
+  const hasVertigo = relevantLogs.some(log => {
+    const id = log.symptomId || log.symptom;
+    return id === 'vest-vertigo' || id === 'dizziness';
+  });
   const hasImbalance = relevantLogs.some(log => (log.symptomId || log.symptom) === 'vest-imbalance');
   const hasNausea = relevantLogs.some(log => (log.symptomId || log.symptom) === 'vest-nausea');
   const hasNystagmus = relevantLogs.some(log => (log.symptomId || log.symptom) === 'vest-nystagmus');
@@ -3943,13 +3954,15 @@ export const analyzePeripheralVestibular = (logs, options = {}) => {
   if (supportedRating === 30) {
     ratingRationale.push('Dizziness WITH occasional staggering documented (30% criteria)');
   } else if (supportedRating === 10) {
-    ratingRationale.push('Occasional dizziness documented (10% criteria)');
+    ratingRationale.push(hasVertigo
+        ? 'Vertigo/dizziness episodes documented (10% criteria)'
+        : 'Occasional dizziness documented (10% criteria)');
   }
 
   // Count vertigo episodes
   const vertigoLogs = relevantLogs.filter(log => {
     const id = log.symptomId || log.symptom;
-    return id === 'vest-vertigo' || id === 'vest-dizziness';
+    return id === 'vest-vertigo' || id === 'vest-dizziness' || id === 'dizziness';
   });
   if (vertigoLogs.length > 0) {
     ratingRationale.push(`${vertigoLogs.length} vertigo/dizziness episodes logged`);

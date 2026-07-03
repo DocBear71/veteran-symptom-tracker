@@ -7171,7 +7171,7 @@ export function analyzePsychomotorEpilepsyLogs(logs, options = {}) {
 
 export const analyzeTinnitusLogs = (logs, options = {}) => {
   const conditionCriteria = TINNITUS_CRITERIA;
-  const evaluationPeriodDays = options.days || 90;
+  const evaluationPeriodDays = options.evaluationPeriodDays || options.days || 365;
   const symptomIds = NEUROLOGICAL_CONDITIONS.TINNITUS.symptomIds;
 
   const relevantLogs = logs.filter(log => {
@@ -7202,23 +7202,29 @@ export const analyzeTinnitusLogs = (logs, options = {}) => {
     'Pattern establishes recurrent tinnitus',
   ];
 
-  let supportedRating = 0;
+  const supportedRating = 10;
   const ratingRationale = [
     'Tinnitus has a flat 10% rating for all recurrent cases',
     'Your symptom logs document recurrent tinnitus',
     'No higher rating available regardless of severity',
   ];
 
-  return {
-    hasData: true,
-    condition: conditionCriteria.condition,
-    diagnosticCode: conditionCriteria.diagnosticCode,
-    evaluationPeriodDays,
-    supportedRating,
-    ratingRationale,
-    assessmentLevel: 'Well-Documented',
-    evidence,
-    gaps: [
+    return {
+      hasData: true,
+      condition: conditionCriteria.condition,
+      diagnosticCode: conditionCriteria.diagnosticCode,
+      evaluationPeriodDays,
+      supportedRating,
+      ratingRationale,
+      assessmentLevel: 'Well-Documented',
+      evidence,
+      metrics: {
+        totalLogs: totalSymptoms,
+        symptomDays: daysLogged,
+        avgSeverity: parseFloat(avgSeverity.toFixed(1)),
+        flareUps: 0,
+      },
+      gaps: [
       'Get formal tinnitus diagnosis from healthcare provider',
       'Audiological examination (hearing test) typically performed',
       'Document characteristics: type of sound (ringing, buzzing, hissing, etc.)',

@@ -4820,17 +4820,22 @@ const getEvidenceStrength = (analysis) => {
   // Parse rating safely — handles numeric, '70-100', '30', 'Requires Clinical...' etc.
   // For range strings like '70-100', parseInt returns the lower bound (70) — conservative & correct.
   // For 'Requires Clinical...' strings, parseInt returns NaN → treat as meaningful data present.
-  const rawRating = analysis.supportedRating;
+  const rawRating = analysis.supportedRating || analysis.supportedLevel;
   const isRequiresClinical = typeof rawRating === 'string' &&
       rawRating.toLowerCase().startsWith('requires');
-  const rating = isRequiresClinical ? 15 : (parseInt(rawRating) || 0);
+  // SMC levels (L, R, S) for ADL/A&A — treat as high-value (60 equivalent)
+  const isSMCLevel = typeof rawRating === 'string' &&
+      ['l', 'r', 's'].includes(rawRating.toLowerCase());
+  const rating = isSMCLevel ? 60 : isRequiresClinical ? 15 : (parseInt(rawRating) || 0);
 
   // Evidence count: some analyzers (mental health) put documentation in
   // ratingRationale[] rather than evidence[]. Count both to avoid false GAPS.
   const evidenceArr = Array.isArray(analysis.evidence) ? analysis.evidence : [];
   const rationaleArr = Array.isArray(analysis.ratingRationale) ? analysis.ratingRationale : [];
-  const evidenceCount = evidenceArr.length + rationaleArr.length;
-  const gapsCount = analysis.gaps?.length || 0;
+  // ADL uses rationale[] and evidenceGaps[] instead of evidence[] and gaps[]
+  const rationaleAltArr = Array.isArray(analysis.rationale) ? analysis.rationale : [];
+  const evidenceCount = evidenceArr.length + rationaleArr.length + rationaleAltArr.length;
+  const gapsCount = (analysis.gaps?.length || 0) + (analysis.evidenceGaps?.length || 0);
 
   // Strong: well-documented, minimal gaps
   if (rating >= 50 && evidenceCount >= 3 && gapsCount <= 2) return 'strong';
@@ -5054,9 +5059,14 @@ const generateRatingEvidenceSummaryPage = (doc, ratingAnalyses, pageWidth) => {
     const strengthInfo = getEvidenceStrengthColor(strength);
     const conditionName = analysis.condition || 'Unknown';
     const dcCode = analysis.diagnosticCode || '-';
-    const rating = analysis.supportedRating || 0;
-    const evidenceCount = analysis.evidence?.length || 0;
-    const gapsCount = analysis.gaps?.length || 0;
+    // ADL returns supportedLevel ('L', 'R', 'S') instead of supportedRating
+    const rating = analysis.supportedRating || analysis.supportedLevel || 0;
+    // ADL uses rationale[] + evidenceGaps[] instead of evidence[] + gaps[]
+    const evidenceArr = Array.isArray(analysis.evidence) ? analysis.evidence : [];
+    const rationaleAltArr = Array.isArray(analysis.rationale) ? analysis.rationale : [];
+    const rationaleArr = Array.isArray(analysis.ratingRationale) ? analysis.ratingRationale : [];
+    const evidenceCount = evidenceArr.length + rationaleAltArr.length + rationaleArr.length;
+    const gapsCount = (analysis.gaps?.length || 0) + (analysis.evidenceGaps?.length || 0);
 
     return {
       condition: conditionName.length > 35 ? conditionName.substring(0, 35) + '...' : conditionName,

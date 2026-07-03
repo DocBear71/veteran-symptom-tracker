@@ -2933,6 +2933,16 @@ export const analyzeKneeInstabilityLogs = (logs, options = {}) => {
   if (hasSwelling) evidence.push('Knee swelling documented');
   if (hasLocking) evidence.push('Knee locking/catching documented');
 
+  // Compute symptom days for the Evidence Summary card
+  const symptomDays = new Set(
+      relevantLogs.map(log => {
+        const date = log.occurredAt || log.timestamp;
+        return date ? date.slice(0, 10) : null;
+      }).filter(Boolean)
+  ).size;
+  const avgSeverityRounded = Number(avgSeverity.toFixed(1));
+  const flareUps = relevantLogs.filter(log => log.isFlareUp === true).length;
+
   return {
     hasData: true,
     condition: conditionCriteria.condition,
@@ -2946,6 +2956,16 @@ export const analyzeKneeInstabilityLogs = (logs, options = {}) => {
     ],
     assessmentLevel: 'Clinical Evaluation Required',
     evidence,
+    metrics: {
+      totalLogs: totalSymptoms,
+      symptomDays,
+      avgSeverity: avgSeverityRounded,
+      flareUps,
+      instabilityEvents,
+      hasGivingWay,
+      hasSwelling,
+      hasLocking,
+    },
     gaps: [
       'Get MRI or surgical records confirming ligament injury type (complete vs incomplete tear)',
       'Document repair status (unrepaired, repaired, or failed repair)',

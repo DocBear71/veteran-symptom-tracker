@@ -379,7 +379,7 @@ const analyzeMentalHealthCondition = (
         sparse: 'symptoms only during significant stress (§4.130 10% language)',
       }[symptomPattern],
       severityThresholdUsed: 5,
-      note: 'Pattern counts logs at severity ≥5 only. Lower-severity logs appear in totals but not in continuity classification, aligning with §4.130 "transient" language for the 10% tier.',
+      note: 'Pattern counts logs at severity >=5 only. Lower-severity logs appear in totals but not in continuity classification, aligning with §4.130 "transient" language for the 10% tier.',
     },
   };
 
@@ -396,7 +396,7 @@ const analyzeMentalHealthCondition = (
   //   1. PANIC FREQUENCY — explicitly quantified in §4.130:
   //      • 30% tier: "panic attacks weekly or less often"        (0.25–1/week)
   //      • 50% tier: "panic attacks more than once a week"       (>1/week)
-  //      • 70% tier: "near-continuous panic"                     (≥2/week)
+  //      • 70% tier: "near-continuous panic"                     (>=2/week)
   //
   //   2. SYMPTOM CONTINUITY — qualitative in §4.130, quantified via pattern:
   //      • 10% tier: "symptoms only during significant stress"   (sparse)
@@ -415,9 +415,9 @@ const analyzeMentalHealthCondition = (
   // and does NOT distort the rating cascade.
 
   // ----------- TIER: 70-100% (severe / total impairment) -----------
-  // Either: ≥2 panic/week (CFR explicit) OR continuous symptom pattern
+  // Either: >=2 panic/week (CFR explicit) OR continuous symptom pattern
   // (Doug Haynes "near-continuous panic or depression"); strengthened by
-  // ≥4 symptom types or sustained work+social+daily impact in notes.
+  // >=4 symptom types or sustained work+social+daily impact in notes.
   const tier70Panic =
       panicPerWeek >= 2 && totalSymptoms >= 20;
   const tier70Pattern =
@@ -429,7 +429,7 @@ const analyzeMentalHealthCondition = (
 
   // ----------- TIER: 50-70% (reduced reliability) -----------
   // Either: >1 panic/week (CFR explicit) OR persistent pattern (Doug:
-  // "majority of the time"); strengthened by ≥3 symptom types or
+  // "majority of the time"); strengthened by >=3 symptom types or
   // documented work+social impact.
   const tier50Panic =
       panicPerWeek > 1;
@@ -454,13 +454,13 @@ const analyzeMentalHealthCondition = (
     assessmentLevel = 'requires-professional-evaluation';
     ratingRationale = [
       `${totalSymptoms} total logs over ${monthsInPeriod.toFixed(1)} months`,
-      `Symptom continuity: ${symptomPattern} pattern (${distinctDaysAffected}/${evaluationPeriodDays} days affected at severity ≥5)`,
-      tier70Panic ? `Panic attacks: ${panicPerWeek.toFixed(1)}/week (≥2/week — §4.130 70% threshold)` : '',
+      `Symptom continuity: ${symptomPattern} pattern (${distinctDaysAffected}/${evaluationPeriodDays} days affected at severity >=5)`,
+      tier70Panic ? `Panic attacks: ${panicPerWeek.toFixed(1)}/week (>=2/week — §4.130 70% threshold)` : '',
       tier70Pattern ? `Continuous symptom pattern across ${symptomTypesPresent.length} symptom types — aligns with §4.130 "near-continuous" language` : '',
       tier70Impact ? `${notesAnalysis.workImpact} work / ${notesAnalysis.socialImpact} social / ${notesAnalysis.dailyImpact} daily impact references in notes` : '',
       // Reinforcement note when both axes agree — strongest signal
       (tier70Panic && tier70Pattern)
-          ? '✓ Both panic frequency AND continuity pattern align with this tier — strong signal'
+          ? '&#10003; Both panic frequency AND continuity pattern align with this tier — strong signal'
           : '',
       // Honest summary of what actually promoted the rating
       (tier70Panic && tier70Pattern)
@@ -482,12 +482,12 @@ const analyzeMentalHealthCondition = (
     assessmentLevel = 'requires-professional-evaluation';
     ratingRationale = [
       `${totalSymptoms} total logs over ${monthsInPeriod.toFixed(1)} months`,
-      `Symptom continuity: ${symptomPattern} pattern (${distinctDaysAffected}/${evaluationPeriodDays} days affected at severity ≥5)`,
+      `Symptom continuity: ${symptomPattern} pattern (${distinctDaysAffected}/${evaluationPeriodDays} days affected at severity >=5)`,
       tier50Panic ? `Panic attacks: ${panicPerWeek.toFixed(1)}/week (>1/week — §4.130 50% threshold)` : '',
       tier50Pattern ? `Persistent symptom pattern — aligns with §4.130 "majority of the time" language` : '',
       tier50Impact ? `${notesAnalysis.workImpact} work / ${notesAnalysis.socialImpact} social impact references in notes` : '',
       (tier50Panic && tier50Pattern)
-          ? '✓ Both panic frequency AND continuity pattern align with this tier — strong signal'
+          ? '&#10003; Both panic frequency AND continuity pattern align with this tier — strong signal'
           : '',
       // Honest summary of what actually promoted the rating
       (tier50Panic && tier50Pattern)
@@ -509,12 +509,12 @@ const analyzeMentalHealthCondition = (
     supportedRating = '30';
     ratingRationale = [
       `${totalSymptoms} total logs over ${monthsInPeriod.toFixed(1)} months`,
-      `Symptom continuity: ${symptomPattern} pattern (${distinctDaysAffected}/${evaluationPeriodDays} days affected at severity ≥5)`,
+      `Symptom continuity: ${symptomPattern} pattern (${distinctDaysAffected}/${evaluationPeriodDays} days affected at severity >=5)`,
       tier30Panic ? `Panic-related symptoms: ${panicPerWeek.toFixed(1)}/week (§4.130 30% language: "weekly or less often")` : '',
       tier30Pattern ? `Intermittent or more frequent pattern — aligns with §4.130 30% language` : '',
       tier30Impact ? `Work or social impact documented in notes` : '',
       (tier30Panic && tier30Pattern)
-          ? '✓ Both panic frequency AND continuity pattern align with this tier — strong signal'
+          ? '&#10003; Both panic frequency AND continuity pattern align with this tier — strong signal'
           : '',
       // Honest summary of what actually promoted the rating
       (tier30Panic && tier30Pattern)
@@ -539,7 +539,7 @@ const analyzeMentalHealthCondition = (
     supportedRating = '10';
     ratingRationale = [
       `${totalSymptoms} total logs over ${monthsInPeriod.toFixed(1)} months`,
-      `Symptom continuity: ${symptomPattern} pattern (${distinctDaysAffected}/${evaluationPeriodDays} days affected at severity ≥5)`,
+      `Symptom continuity: ${symptomPattern} pattern (${distinctDaysAffected}/${evaluationPeriodDays} days affected at severity >=5)`,
       `Symptom types present: ${symptomTypesPresent.length}`,
       symptomPattern === 'sparse'
           ? 'Sparse pattern aligns with §4.130 10% language: "symptoms only during periods of significant stress"'
@@ -625,7 +625,7 @@ const analyzeMentalHealthCondition = (
       // Phase 10: §4.130 second-axis pattern metrics
       symptomPattern,                       // continuous|persistent|frequent|intermittent|sparse
       symptomPattern30Day: symptomPattern30,
-      distinctDaysAffected,                  // 90-day, severity ≥5
+      distinctDaysAffected,                  // 90-day, severity >=5
       distinctDaysAffected30Day: distinctDaysAffected30,
       patternCoveragePercent: evaluationPeriodDays > 0
           ? Math.round((distinctDaysAffected / evaluationPeriodDays) * 100)
