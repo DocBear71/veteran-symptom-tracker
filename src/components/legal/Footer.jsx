@@ -82,7 +82,7 @@ const Footer = () => {
         </span>
               </div>
               <p className="text-sm text-blue-300 dark:text-gray-400">
-                Version 3.6.4
+                Version 3.6.5
               </p>
               <div className="flex flex-col items-center gap-2 text-xs
         text-blue-300 dark:text-gray-500">
@@ -170,7 +170,7 @@ const Footer = () => {
             {/* App Info */}
             <div className="mt-4 pt-4 border-t border-blue-800 dark:border-gray-700 text-center">
               <p className="text-blue-300 dark:text-gray-500 text-xs">
-                Doc Bear's Symptom Vault v 3.6.4 <br/> Privacy-First Health Tracking
+                Doc Bear's Symptom Vault v 3.6.5 <br/> Privacy-First Health Tracking
               </p>
               <p className="text-blue-400 dark:text-gray-600 text-xs mt-1">
                 Your data stays on your device. Always.

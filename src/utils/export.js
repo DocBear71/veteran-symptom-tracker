@@ -5489,6 +5489,12 @@ export const generateVAClaimPackagePDF = async (dateRange = 'all', options = {})
     tocItems.push(`${tocSectionNum}. Detailed Symptom Entries`);
     tocSectionNum++;
 
+    // Medication Log - gated on med logs existing
+    const tocMedLogs = filterLogsByDateRange(getMedicationLogs(), dateRange);
+    if (tocMedLogs.length > 0) {
+      tocItems.push(`${tocSectionNum}. Medication Log`);
+      tocSectionNum++;
+    }
 
     if (preliminaryAnalyses.length > 0) {
       tocItems.push(`${tocSectionNum}. VA Rating Evidence Analysis`);
