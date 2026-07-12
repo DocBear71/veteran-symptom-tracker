@@ -15,7 +15,12 @@ import com.getcapacitor.annotation.CapacitorPlugin;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.RandomAccessFile;
+import java.io.Reader;
+import java.nio.charset.StandardCharsets;
 
 @CapacitorPlugin(name = "FileSaver")
 public class FileSaverPlugin extends Plugin {
@@ -64,6 +69,84 @@ public class FileSaverPlugin extends Plugin {
 
                     startActivityForResult(call, intent, "handleOpenResult");
         }
+
+        /**
+             * Copies a content:// URI file into app cache, then reads it back
+             * in chunks, returning one chunk at a time as plain UTF-8 text.
+             * Caller passes chunkIndex (0-based); returns { text, done, totalChunks }.
+             * First call (chunkIndex=0) copies the file to cache.
+             */
+            @PluginMethod
+            public void readFileChunk(PluginCall call) {
+                String uriString = call.getString("uri");
+                int chunkIndex = call.getInt("chunkIndex", 0);
+                // 3MB chunks — small enough to pass through bridge safely
+                int chunkSize = 3 * 1024 * 1024;
+
+                if (uriString == null) {
+                    call.reject("uri is required");
+                    return;
+                }
+
+                try {
+                    // Use a stable cache filename based on URI hash
+                    String cacheFileName = "restore_" + Math.abs(uriString.hashCode()) + ".json";
+                    File cacheFile = new File(getActivity().getCacheDir(), cacheFileName);
+
+                    // On first chunk, copy from content:// URI to cache file
+                    if (chunkIndex == 0) {
+                        Uri uri = Uri.parse(uriString);
+                        InputStream is = getActivity().getContentResolver().openInputStream(uri);
+                        if (is == null) {
+                            call.reject("Could not open file stream");
+                            return;
+                        }
+                        OutputStream os = new java.io.FileOutputStream(cacheFile);
+                        byte[] buffer = new byte[8192];
+                        int bytesRead;
+                        while ((bytesRead = is.read(buffer)) != -1) {
+                            os.write(buffer, 0, bytesRead);
+                        }
+                        is.close();
+                        os.close();
+                    }
+
+                    // Read the requested chunk from cache file
+                    long fileSize = cacheFile.length();
+                    int totalChunks = (int) Math.ceil((double) fileSize / chunkSize);
+                    long offset = (long) chunkIndex * chunkSize;
+
+                    if (offset >= fileSize) {
+                        call.reject("Chunk index out of range");
+                        return;
+                    }
+
+                    // Read chunk as bytes, convert to UTF-8 string
+                    RandomAccessFile raf = new RandomAccessFile(cacheFile, "r");
+                    raf.seek(offset);
+                    int bytesToRead = (int) Math.min(chunkSize, fileSize - offset);
+                    byte[] bytes = new byte[bytesToRead];
+                    raf.readFully(bytes);
+                    raf.close();
+
+                    boolean done = (chunkIndex >= totalChunks - 1);
+
+                    // Clean up cache file on last chunk
+                    if (done) {
+                        cacheFile.delete();
+                    }
+
+                    JSObject ret = new JSObject();
+                    ret.put("text", new String(bytes, StandardCharsets.UTF_8));
+                    ret.put("done", done);
+                    ret.put("totalChunks", totalChunks);
+                    ret.put("chunkIndex", chunkIndex);
+                    call.resolve(ret);
+
+                } catch (Exception e) {
+                    call.reject("Failed to read chunk: " + e.getMessage());
+                }
+            }
 
         @ActivityCallback
         private void handleOpenResult(PluginCall call, ActivityResult result) {

@@ -62,16 +62,47 @@ export async function saveFileToDevice(base64Data, filename, mimeType = 'applica
  */
 export async function openFileFromDevice(mimeType = 'application/octet-stream') {
   const cap = globalThis?.Capacitor || window?.Capacitor;
+  const FilePicker = cap?.Plugins?.FilePicker;
   const FileSaver = cap?.Plugins?.FileSaver;
 
-  if (!FileSaver) {
-    throw new Error('FileSaver plugin not available');
+  if (!FilePicker) {
+    throw new Error('FilePicker plugin not available');
   }
 
-  const result = await FileSaver.openFile({ mimeType });
+  // Step 1: Use file picker WITHOUT readData — just get the content:// URI.
+  // Passing large file data through the JS bridge causes OOM on 48MB+ files.
+  const result = await FilePicker.pickFiles({
+    types: [mimeType],
+    multiple: false,
+    readData: false,
+  });
 
-  // Decode base64 content returned by the plugin
-  const content = atob(result.data.replace(/\n/g, ''));
+  if (!result?.files?.length) {
+    throw new Error('cancelled');
+  }
 
-  return { content, uri: result.uri };
+  const uri = result.files[0].path;
+  if (!uri) {
+    throw new Error('Could not get file URI from picker');
+  }
+
+  // Step 2: Read file in 3MB chunks via native plugin to avoid OOM.
+  // Each chunk is read from a cached copy of the file and returned
+  // as plain UTF-8 — no base64 inflation, no single large allocation.
+  if (FileSaver) {
+    let content = '';
+    let chunkIndex = 0;
+    let done = false;
+
+    while (!done) {
+      const chunk = await FileSaver.readFileChunk({ uri, chunkIndex });
+      content += chunk.text;
+      done = chunk.done;
+      chunkIndex++;
+    }
+
+    return { content, uri };
+  }
+
+  throw new Error('FileSaver plugin not available for reading');
 }
