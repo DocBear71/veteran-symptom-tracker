@@ -21,11 +21,29 @@ import { isNativePlatform } from './platformUtils';
 export async function exportPDF(doc, filename, options = {}) {
   if (isNativePlatform()) {
     try {
-      // Access Capacitor plugins via globalThis to prevent Vite build-time resolution.
-      // These plugins are registered on window.Capacitor.Plugins at runtime.
-      // Try both access patterns — Capacitor registers plugins differently
-      // across versions and platforms
       const cap = globalThis?.Capacitor || window?.Capacitor;
+      const platform = cap?.getPlatform?.() ?? 'web';
+
+      const base64Data = doc.output('datauristring').split(',')[1];
+
+      if (platform === 'android') {
+        // Android: route through FileSaverPlugin ACTION_CREATE_DOCUMENT.
+        // Filesystem.writeFile passes the full base64 payload over the
+        // Binder IPC bridge — crashes on PDFs larger than ~750KB encoded.
+        // savePDFToDevice writes in ~256KB base64 chunks, decoded to bytes
+        // in Java, so binary integrity is preserved and no size limit hit.
+        try {
+          const { savePDFToDevice } = await import('./fileSaver.js');
+          await savePDFToDevice(base64Data, filename);
+          return;
+        } catch (androidErr) {
+          if (androidErr?.message === 'cancelled') return;
+          console.warn('FileSaver PDF failed, falling back to share sheet:', androidErr);
+          // Fall through to share sheet below
+        }
+      }
+
+      // iOS: write to CACHE and share via native share sheet → Files app
       const Filesystem = cap?.Plugins?.Filesystem;
       const Share = cap?.Plugins?.Share;
 
@@ -34,17 +52,12 @@ export async function exportPDF(doc, filename, options = {}) {
         throw new Error('Capacitor plugins not available');
       }
 
-      const base64Data = doc.output('datauristring').split(',')[1];
-
       const writeResult = await Filesystem.writeFile({
         path: filename,
         data: base64Data,
         directory: 'CACHE',
       });
 
-      // Always share via native share sheet.
-      // On Android, user can choose Drive, Downloads app, etc.
-      // 'Save to Device' just changes the dialog title to guide the user.
       await Share.share({
         title: filename,
         url: writeResult.uri,
@@ -96,10 +109,12 @@ export async function exportTextFile(content, filename, mimeType, options = {}) 
 
       if (platform === 'android') {
         // Android: use custom FileSaver plugin to open native
-        // "Save As" dialog (ACTION_CREATE_DOCUMENT) — true save to device
+        // "Save As" dialog (ACTION_CREATE_DOCUMENT) — true save to device.
+        // Pass raw content string — saveFileToDevice handles chunked writing
+        // internally. base64Data is not used on this path.
         try {
           const { saveFileToDevice } = await import('./fileSaver.js');
-          await saveFileToDevice(base64Data, filename, mimeType);
+          await saveFileToDevice(content, filename, mimeType);
           return { success: true };
         } catch (androidErr) {
           if (androidErr?.message === 'cancelled') return { success: false, cancelled: true }; // User cancelled

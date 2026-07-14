@@ -82,6 +82,7 @@ export default function DataBunker() {
         medicationHistory:  cacheGet(`symptomTracker_medicationHistory_${pid}`) || [],
         measurements:       cacheGet(`symptomTracker_measurements_${pid}`) || [],
         appointments:       cacheGet(`symptomTracker_appointments_${pid}`) || [],
+        surgeries:          cacheGet(`symptomTracker_surgeries_${pid}`) || [],
         reminderSettings:   cacheGet(`symptomTracker_reminderSettings_${pid}`) || {},
         worksheet8940:      cacheGet(`symptomTracker_8940worksheet_${pid}`) || null,
         weightGoal:         cacheGet(`symptomTracker_weightGoal_${pid}`) || null,
@@ -102,9 +103,9 @@ export default function DataBunker() {
     const activeProfileData = profilesData[activeProfileId] || {};
 
     const data = {
-      version: '2.2',
+      version: '2.3',
       exportDate: new Date().toISOString(),
-      appVersion: '3.6.6',
+      appVersion: '3.7.0',
       activeProfileId,
       // Complete snapshot — all keys from cache + localStorage
       rawData: allData,
@@ -300,6 +301,8 @@ export default function DataBunker() {
             writePromises.push(cacheSet(`symptomTracker_measurements_${profileId}`, data.measurements));
           if (data.appointments)
             writePromises.push(cacheSet(`symptomTracker_appointments_${profileId}`, data.appointments));
+          if (data.surgeries)
+            writePromises.push(cacheSet(`symptomTracker_surgeries_${profileId}`, data.surgeries));
           if (data.reminderSettings)
             writePromises.push(cacheSet(`symptomTracker_reminderSettings_${profileId}`, data.reminderSettings));
           if (data.worksheet8940)
@@ -326,6 +329,7 @@ export default function DataBunker() {
                 ['symptomTracker_medicationHistory', pdata.medicationHistory],
                 ['symptomTracker_measurements',      pdata.measurements],
                 ['symptomTracker_appointments',      pdata.appointments],
+                ['symptomTracker_surgeries',         pdata.surgeries],
                 ['symptomTracker_reminderSettings',  pdata.reminderSettings],
                 ['symptomTracker_8940worksheet',     pdata.worksheet8940],
                 ['symptomTracker_weightGoal',        pdata.weightGoal],

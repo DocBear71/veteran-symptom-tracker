@@ -15,41 +15,92 @@
  * @param {string} filename    - Suggested filename
  * @param {string} mimeType    - MIME type e.g. 'application/json'
  */
-export async function saveFileToDevice(base64Data, filename, mimeType = 'application/octet-stream') {
+export async function saveFileToDevice(content, filename, mimeType = 'application/octet-stream') {
   const cap = globalThis?.Capacitor || window?.Capacitor;
   const FileSaver = cap?.Plugins?.FileSaver;
-  const Filesystem = cap?.Plugins?.Filesystem;
 
-  if (!FileSaver || !Filesystem) {
-    throw new Error('Required plugins not available');
+  if (!FileSaver) {
+    throw new Error('FileSaver plugin not available');
   }
 
-  // Step 1: Write to temp file in CACHE to avoid passing large
-  // data through the Android activity Bundle (1MB limit)
+  // Write content to cache in 512KB UTF-8 chunks via native plugin.
+  // Avoids Filesystem.writeFile which passes the full payload across
+  // Android's Binder IPC bridge (~1MB hard limit) causing a crash on
+  // large backups. No base64 encoding — plain UTF-8 chunks only.
+  const CHUNK_SIZE = 512 * 1024; // 512KB — safe under Binder limit
   const tempFilename = `temp_${Date.now()}_${filename}`;
+  const totalChunks = Math.ceil(content.length / CHUNK_SIZE);
 
-  await Filesystem.writeFile({
-    path: tempFilename,
-    data: base64Data,
-    directory: 'CACHE',
-  });
+  let tempPath = null;
+  for (let i = 0; i < totalChunks; i++) {
+    const chunk = content.slice(i * CHUNK_SIZE, (i + 1) * CHUNK_SIZE);
+    const result = await FileSaver.writeFileChunk({
+      filename: tempFilename,
+      chunk,
+      chunkIndex: i,
+      totalChunks,
+    });
+    // Plugin returns absolute path on every chunk — capture it
+    if (result?.path) tempPath = result.path;
+  }
 
-  // Step 2: Get the absolute path of the temp file
-  const { uri: tempUri } = await Filesystem.getUri({
-    path: tempFilename,
-    directory: 'CACHE',
-  });
+  if (!tempPath) {
+    throw new Error('Failed to get temp file path after chunked write');
+  }
 
-  // Convert content:// or file:// URI to actual file path
-  // Capacitor returns file:///data/... style URIs on Android
-  const tempPath = tempUri.replace('file://', '');
-
-  // Step 3: Open native Save As dialog — only the path is passed,
-  // not the data, so no Bundle overflow
+  // Open native Save As dialog — passes only the file path, not content
   return await FileSaver.saveFile({
     filename,
     tempPath,
     mimeType,
+  });
+}
+
+/**
+ * Saves a PDF to device using chunked base64 binary writes.
+ * jsPDF outputs base64 — we split it into chunks and decode
+ * each one to bytes in Java, avoiding UTF-8 corruption of
+ * binary data and staying under the Binder IPC limit.
+ *
+ * @param {string} base64Data - Raw base64 string (no data URI prefix)
+ * @param {string} filename   - Suggested filename e.g. 'report.pdf'
+ */
+export async function savePDFToDevice(base64Data, filename) {
+  const cap = globalThis?.Capacitor || window?.Capacitor;
+  const FileSaver = cap?.Plugins?.FileSaver;
+
+  if (!FileSaver) {
+    throw new Error('FileSaver plugin not available');
+  }
+
+  // Split base64 string into ~256KB chunks (base64 chars, not bytes).
+  // Each chunk decodes to ~192KB of binary — well under the Binder limit.
+  // Must be a multiple of 4 to keep base64 block alignment intact.
+  const CHUNK_SIZE = 256 * 1024; // 256KB of base64 chars per chunk
+  const tempFilename = `temp_${Date.now()}_${filename}`;
+  const totalChunks = Math.ceil(base64Data.length / CHUNK_SIZE);
+
+  let tempPath = null;
+  for (let i = 0; i < totalChunks; i++) {
+    const chunk = base64Data.slice(i * CHUNK_SIZE, (i + 1) * CHUNK_SIZE);
+    const result = await FileSaver.writeFileChunkBinary({
+      filename: tempFilename,
+      chunk,
+      chunkIndex: i,
+      totalChunks,
+    });
+    if (result?.path) tempPath = result.path;
+  }
+
+  if (!tempPath) {
+    throw new Error('Failed to get temp file path after chunked binary write');
+  }
+
+  // Open native Save As dialog — file path only, no data over the bridge
+  return await FileSaver.saveFile({
+    filename,
+    tempPath,
+    mimeType: 'application/pdf',
   });
 }
 

@@ -19,6 +19,7 @@ const ExportData = () => {
   // Filter states
   const [selectedConditions, setSelectedConditions] = useState([]);
   const [includeAppointments, setIncludeAppointments] = useState(true);
+  const [includeSurgeries, setIncludeSurgeries] = useState(true);
   const [includeMeasurements, setIncludeMeasurements] = useState(true);
   const [includeMedications, setIncludeMedications] = useState(true);
   const [include8940Worksheet, setInclude8940Worksheet] = useState(true);
@@ -43,6 +44,7 @@ const ExportData = () => {
     setStats({
       logs: data.logs || 0,
       appointments: data.appointments || 0,
+      surgeries: data.surgeries || 0,
       measurements: data.measurements || 0,
     });
   }, []);
@@ -64,6 +66,7 @@ const ExportData = () => {
     return {
       exportAction,
       includeAppointments,
+      includeSurgeries,
       includeMeasurements,
       includeMedications,
       // Only pass worksheet option when VA Claim format is active
@@ -314,6 +317,20 @@ const ExportData = () => {
                       <p className="font-medium text-gray-900 dark:text-white text-left ">Include Appointments</p>
                       <p className="text-sm text-gray-500 dark:text-gray-400">
                         {stats.appointments} appointment{stats.appointments !== 1 ? 's' : ''} logged
+                      </p>
+                    </div>
+                  </label>
+                  <label key="opt-surgeries" className="flex items-center gap-3 cursor-pointer">
+                    <input
+                        type="checkbox"
+                        checked={includeSurgeries}
+                        onChange={(e) => setIncludeSurgeries(e.target.checked)}
+                        className="w-5 h-5 rounded border-gray-300 dark:border-gray-600 text-blue-600 focus:ring-blue-500"
+                    />
+                    <div>
+                      <p className="font-medium text-gray-900 dark:text-white text-left">Include Surgeries</p>
+                      <p className="text-sm text-gray-500 dark:text-gray-400">
+                        {stats.surgeries || 0} surger{stats.surgeries !== 1 ? 'ies' : 'y'} logged
                       </p>
                     </div>
                   </label>

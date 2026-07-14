@@ -15,6 +15,7 @@ import com.getcapacitor.annotation.CapacitorPlugin;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -69,6 +70,86 @@ public class FileSaverPlugin extends Plugin {
 
                     startActivityForResult(call, intent, "handleOpenResult");
         }
+
+        /**
+             * Writes a chunk of base64-encoded binary data to a named temp file.
+             * First chunk (chunkIndex=0) creates/overwrites the file.
+             * Subsequent chunks append decoded bytes.
+             * Used for binary files (PDF) where UTF-8 text chunking would corrupt data.
+             *
+             * Call params: { filename, chunk (base64), chunkIndex, totalChunks }
+             */
+            @PluginMethod
+            public void writeFileChunkBinary(PluginCall call) {
+                String filename  = call.getString("filename");
+                String chunk     = call.getString("chunk");
+                int chunkIndex   = call.getInt("chunkIndex", 0);
+                int totalChunks  = call.getInt("totalChunks", 1);
+
+                if (filename == null || chunk == null) {
+                    call.reject("filename and chunk are required");
+                    return;
+                }
+
+                try {
+                    File cacheFile = new File(getActivity().getCacheDir(), filename);
+
+                    // Decode base64 chunk to raw bytes
+                    byte[] bytes = android.util.Base64.decode(chunk, android.util.Base64.DEFAULT);
+
+                    // First chunk — create fresh file; subsequent chunks — append
+                    FileOutputStream fos = new FileOutputStream(cacheFile, chunkIndex > 0);
+                    fos.write(bytes);
+                    fos.close();
+
+                    JSObject ret = new JSObject();
+                    ret.put("done", chunkIndex >= totalChunks - 1);
+                    ret.put("path", cacheFile.getAbsolutePath());
+                    call.resolve(ret);
+
+                } catch (Exception e) {
+                    call.reject("Failed to write binary chunk: " + e.getMessage());
+                }
+            }
+
+        /**
+             * Writes a chunk of UTF-8 text to a named temp file in app cache.
+             * First chunk (chunkIndex=0) creates/overwrites the file.
+             * Subsequent chunks append. Returns the absolute file path on last chunk.
+             *
+             * Call params: { filename, chunk, chunkIndex, totalChunks }
+             */
+            @PluginMethod
+            public void writeFileChunk(PluginCall call) {
+                String filename  = call.getString("filename");
+                String chunk     = call.getString("chunk");
+                int chunkIndex   = call.getInt("chunkIndex", 0);
+                int totalChunks  = call.getInt("totalChunks", 1);
+
+                if (filename == null || chunk == null) {
+                    call.reject("filename and chunk are required");
+                    return;
+                }
+
+                try {
+                    File cacheFile = new File(getActivity().getCacheDir(), filename);
+
+                    // First chunk — create fresh file
+                    // Subsequent chunks — append
+                    FileOutputStream fos = new FileOutputStream(cacheFile, chunkIndex > 0);
+                    byte[] bytes = chunk.getBytes(StandardCharsets.UTF_8);
+                    fos.write(bytes);
+                    fos.close();
+
+                    JSObject ret = new JSObject();
+                    ret.put("done", chunkIndex >= totalChunks - 1);
+                    ret.put("path", cacheFile.getAbsolutePath());
+                    call.resolve(ret);
+
+                } catch (Exception e) {
+                    call.reject("Failed to write chunk: " + e.getMessage());
+                }
+            }
 
         /**
              * Copies a content:// URI file into app cache, then reads it back

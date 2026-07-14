@@ -5,6 +5,8 @@ import { formatDosage } from '../utils/medicationUtils';
 import EditLogModal from './EditLogModal';
 import AppointmentForm from './AppointmentForm';
 import AppointmentHistory from './AppointmentHistory';
+import SurgeryForm from './SurgeryForm';
+import SurgeryHistory from './SurgeryHistory';
 
 const SymptomHistory = ({ onCopyLog }) => {
   const [logs, setLogs] = useState([]);
@@ -15,6 +17,8 @@ const SymptomHistory = ({ onCopyLog }) => {
   const [mainTab, setMainTab] = useState('symptoms');
   // Sub-tab for appointments
   const [appointmentTab, setAppointmentTab] = useState('history');
+  // Sub-tab for surgeries
+  const [surgeryTab, setSurgeryTab] = useState('history');
 
   // Ref for scroll container
   const containerRef = useRef(null);
@@ -193,6 +197,16 @@ const SymptomHistory = ({ onCopyLog }) => {
               }`}
           >
             Appointments
+          </button>
+          <button
+              onClick={() => setMainTab('surgeries')}
+              className={`flex-1 py-2 px-4 rounded-lg font-medium transition-colors ${
+                  mainTab === 'surgeries'
+                      ? 'bg-blue-900 dark:bg-blue-600 text-white'
+                      : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
+              }`}
+          >
+            Surgeries
           </button>
         </div>
 
@@ -2965,6 +2979,40 @@ const SymptomHistory = ({ onCopyLog }) => {
               {appointmentTab === 'history' && <AppointmentHistory />}
               {appointmentTab === 'add' && (
                   <AppointmentForm onSaved={() => setAppointmentTab('history')} />
+              )}
+            </div>
+        )}
+
+        {/* Surgeries Tab Content */}
+        {mainTab === 'surgeries' && (
+            <div>
+              {/* Sub-tabs for surgeries */}
+              <div className="flex gap-2 mb-4">
+                <button
+                    onClick={() => setSurgeryTab('history')}
+                    className={`flex-1 py-2 px-4 rounded-lg font-medium transition-colors ${
+                        surgeryTab === 'history'
+                            ? 'bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200'
+                            : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600'
+                    }`}
+                >
+                  📋 History
+                </button>
+                <button
+                    onClick={() => setSurgeryTab('add')}
+                    className={`flex-1 py-2 px-4 rounded-lg font-medium transition-colors ${
+                        surgeryTab === 'add'
+                            ? 'bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200'
+                            : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600'
+                    }`}
+                >
+                  ➕ Add New
+                </button>
+              </div>
+
+              {surgeryTab === 'history' && <SurgeryHistory />}
+              {surgeryTab === 'add' && (
+                  <SurgeryForm onSaved={() => setSurgeryTab('history')} />
               )}
             </div>
         )}

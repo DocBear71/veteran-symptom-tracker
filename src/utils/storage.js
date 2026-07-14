@@ -551,6 +551,83 @@ export const getAppointmentsByDateRange = (startDate, endDate, profileId = null)
 };
 
 // ============================================
+// SURGERIES
+// ============================================
+
+export const getSurgeries = (profileId = null) => {
+  try {
+    const key = getProfileKey('symptomTracker_surgeries', profileId);
+    const surgeries = cacheGet(key);
+    if (!surgeries) return [];
+    // Sort newest surgery date first
+    return surgeries.sort((a, b) => {
+      const dateA = new Date(a.surgeryDate || a.createdAt || 0);
+      const dateB = new Date(b.surgeryDate || b.createdAt || 0);
+      return dateB - dateA;
+    });
+  } catch (error) {
+    console.error('Error reading surgeries:', error);
+    return [];
+  }
+};
+
+export const saveSurgery = (surgery, profileId = null) => {
+  try {
+    const surgeries = getSurgeries(profileId);
+    const newSurgery = {
+      ...surgery,
+      id: surgery.id || crypto.randomUUID(),
+      createdAt: surgery.createdAt || new Date().toISOString(),
+      // relatedConditions stored as array for future Option 2 structured linking:
+      // [{ label: 'Right hip', categoryId: null }]
+      // Currently populated from free-text relatedConditions field as a single-element array
+      relatedConditions: surgery.relatedConditions || [],
+    };
+    surgeries.unshift(newSurgery);
+    const key = getProfileKey('symptomTracker_surgeries', profileId);
+    cacheSet(key, surgeries);
+    return newSurgery;
+  } catch (error) {
+    console.error('Error saving surgery:', error);
+    return null;
+  }
+};
+
+export const updateSurgery = (id, updatedData, profileId = null) => {
+  try {
+    const surgeries = getSurgeries(profileId);
+    const index = surgeries.findIndex(s => s.id === id);
+    if (index !== -1) {
+      surgeries[index] = {
+        ...surgeries[index],
+        ...updatedData,
+        updatedAt: new Date().toISOString(),
+      };
+      const key = getProfileKey('symptomTracker_surgeries', profileId);
+      cacheSet(key, surgeries);
+      return surgeries[index];
+    }
+    return null;
+  } catch (error) {
+    console.error('Error updating surgery:', error);
+    return null;
+  }
+};
+
+export const deleteSurgery = (id, profileId = null) => {
+  try {
+    const surgeries = getSurgeries(profileId);
+    const filtered = surgeries.filter(s => s.id !== id);
+    const key = getProfileKey('symptomTracker_surgeries', profileId);
+    cacheSet(key, filtered);
+    return true;
+  } catch (error) {
+    console.error('Error deleting surgery:', error);
+    return false;
+  }
+};
+
+// ============================================
 // SLEEP APNEA PROFILE
 // ============================================
 
@@ -591,6 +668,7 @@ export const getDataStats = (profileId = null) => {
   const customSymptoms = getCustomSymptoms(profileId);
   const chronicSymptoms = getChronicSymptoms(profileId);
   const appointments = getAppointments(profileId);
+  const surgeries = getSurgeries(profileId);
 
   let measurements = 0;
   try {
@@ -605,6 +683,7 @@ export const getDataStats = (profileId = null) => {
     customSymptoms: customSymptoms.length,
     chronicSymptoms: chronicSymptoms.length,
     appointments: appointments.length,
+    surgeries: surgeries.length,
     measurements,
   };
 };
@@ -656,6 +735,7 @@ export const exportAllData = async (profileId = null) => {
     medicationLogs: getMedicationLogs(activeId),
     medicationHistory: getMedicationHistory(activeId),
     appointments: getAppointments(activeId),
+    surgeries: getSurgeries(activeId),
     serviceConnected: activeId ? getServiceConnectedConditions(activeId) : [],
     reminderSettings: getReminderSettings(activeId),
     profile: null,
@@ -787,6 +867,9 @@ export const importAllData = (jsonData, options = { merge: false }, profileId = 
       if (data.appointments) {
         cacheSet(getProfileKey('symptomTracker_appointments', activeId), data.appointments);
       }
+      if (data.surgeries) {
+        cacheSet(getProfileKey('symptomTracker_surgeries', activeId), data.surgeries);
+      }
       if (data.serviceConnected && data.serviceConnected.length > 0) {
         const profile = getProfileById(activeId);
         if (profile) {
@@ -872,6 +955,7 @@ export const clearAllData = (profileId = null) => {
   cacheRemove(getProfileKey('symptomTracker_medications', activeId));
   cacheRemove(getProfileKey('symptomTracker_medicationLogs', activeId));
   cacheRemove(getProfileKey('symptomTracker_appointments', activeId));
+  cacheRemove(getProfileKey('symptomTracker_surgeries', activeId));
   cacheRemove(getProfileKey('symptomTracker_reminderSettings', activeId));
   cacheRemove(getProfileKey('symptomTracker_sleepApneaProfile', activeId));
   cacheRemove(getProfileKey('symptomTracker_weightGoal', activeId));

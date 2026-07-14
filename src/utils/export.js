@@ -6,6 +6,7 @@ import { getSymptomLogs,
   getMedicationLogs,
   getMedicationLogsForSymptom,
   getAppointments,
+  getSurgeries,
   getOccurrenceTime,
   isBackDated,
   getMentalHealthScores,
@@ -307,6 +308,21 @@ import {
   analyzeTabesDorsalisLogs,
   analyzeSyphiliticDementiaLogs,
 } from '../utils/ratingLogic/'
+
+// Surgery procedure type labels for export
+const SURGERY_PROCEDURE_TYPE_LABELS = {
+  orthopedic:       'Orthopedic',
+  cardiovascular:   'Cardiovascular',
+  neurological:     'Neurological',
+  gastrointestinal: 'Gastrointestinal',
+  urological:       'Urological',
+  pulmonary:        'Pulmonary / Thoracic',
+  ophthalmic:       'Ophthalmic',
+  dental_oral:      'Dental / Oral',
+  skin_tissue:      'Skin / Soft Tissue',
+  emergency:        'Emergency / Trauma',
+  other:            'Other',
+};
 
 // Appointment type labels for export
 const APPOINTMENT_TYPE_LABELS = {
@@ -5501,10 +5517,17 @@ export const generateVAClaimPackagePDF = async (dateRange = 'all', options = {})
       tocSectionNum++;
     }
 
-    if (appointments.length > 0) {
-      tocItems.push(`${tocSectionNum}. Appointment History`);
-      tocSectionNum++;
-    }
+  if (appointments.length > 0) {
+    tocItems.push(`${tocSectionNum}. Appointment History`);
+    tocSectionNum++;
+  }
+
+  // Surgical History — gated on surgeries existing
+  const tocSurgeries = getSurgeries();
+  if (tocSurgeries.length > 0) {
+    tocItems.push(`${tocSectionNum}. Surgical History`);
+    tocSectionNum++;
+  }
 
   if (measurements.length > 0) {
     tocItems.push(`${tocSectionNum}. Medical Measurements`);
@@ -7414,6 +7437,79 @@ export const generateVAClaimPackagePDF = async (dateRange = 'all', options = {})
             margin: { left: 14, right: 14 },
         });
     }
+
+  // ========== SURGICAL HISTORY ==========
+  // Surgical records are primary medical evidence for VA claims —
+  // pre-op diagnosis, operative findings, and complications directly
+  // support rating decisions and nexus arguments.
+  const surgeries = options.includeSurgeries !== false ? getSurgeries() : [];
+  if (surgeries.length > 0) {
+    doc.addPage();
+    currentY = 20;
+
+    doc.setFontSize(14);
+    doc.setTextColor(30, 58, 138);
+    doc.setFont(undefined, 'bold');
+    currentSection++;
+    doc.text(`${currentSection}. SURGICAL HISTORY`, 14, currentY);
+    doc.setFont(undefined, 'normal');
+
+    doc.setFontSize(9);
+    doc.setTextColor(100);
+    doc.text('Operative records and surgical history for VA claim documentation', 14, currentY + 8);
+    currentY += 16;
+
+    const surgeryData = surgeries.map(s => {
+      const typeLabel = SURGERY_PROCEDURE_TYPE_LABELS[s.procedureType] || s.procedureType || 'Other';
+
+      // Flatten relatedConditions array to a readable string
+      const relatedStr = s.relatedConditions?.length
+          ? s.relatedConditions.map(c => c.label).join(', ')
+          : '-';
+
+      // Build a details column: complications are flagged prominently
+      const details = [
+        s.preOpDiagnosis   ? `Dx: ${s.preOpDiagnosis}`     : null,
+        s.complications    ? `COMP: ${s.complications}`     : null,
+        s.anesthesiaType   ? `Anes: ${s.anesthesiaType}`   : null,
+        s.recoveryNotes    ? `Recovery: ${s.recoveryNotes}` : null,
+        s.followUpRequired ? 'Follow-up required'           : null,
+      ].filter(Boolean).join(' | ') || '-';
+
+      return [
+        s.surgeryDate
+            ? new Date(s.surgeryDate + 'T00:00:00').toLocaleDateString()
+            : '-',
+        s.procedureName || '-',
+        typeLabel,
+        s.surgeonName  || '-',
+        s.facility     || '-',
+        relatedStr,
+        details,
+      ];
+    });
+
+    autoTable(doc, {
+      startY: currentY,
+      head: [['Date', 'Procedure', 'Type', 'Surgeon', 'Facility', 'Related Condition', 'Details']],
+      body: surgeryData,
+      headStyles: { fillColor: [79, 70, 229], fontStyle: 'bold' }, // Indigo — distinct from appts brown
+      alternateRowStyles: { fillColor: [238, 242, 255] },
+      columnStyles: {
+        0: { cellWidth: 22 },
+        1: { cellWidth: 35 },
+        2: { cellWidth: 22 },
+        3: { cellWidth: 22 },
+        4: { cellWidth: 25 },
+        5: { cellWidth: 25 },
+        6: { cellWidth: 'auto' },
+      },
+      styles: { fontSize: 7, cellPadding: 2 },
+      margin: { left: 14, right: 14 },
+    });
+
+    currentY = doc.lastAutoTable.finalY + 10;
+  }
 
   // ========== WEIGHT TRACKER SUMMARY ==========
   // Dedicated weight section - separate from generic measurements block
