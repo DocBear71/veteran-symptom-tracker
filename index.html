@@ -3,8 +3,33 @@
 <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="/icon-192.png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>Doc Bear's Symptom Vault</title>
+    <!-- Canonical: every client route serves byte-identical HTML, so there is
+     genuinely one document here. Declaring it collapses the SPA into a
+     single indexed page and kills the soft-404 / duplicate-content problem. -->
+    <link rel="canonical" href="https://docbearssymptomvault.com/" />
+
+    <meta name="description" content="Free, private symptom tracking for veterans. Log frequency, severity, duration and impact, then export a dated PDF. No account, no ads, nothing leaves your device." />
+
+    <!-- Open Graph: the veteran flyer's QR code points here, so shared links
+         need a real preview card. -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://docbearssymptomvault.com/" />
+    <meta property="og:title" content="Doc Bear's Symptom Vault" />
+    <meta property="og:description" content="Free, private symptom tracking for veterans. No account, no ads, no cloud. Built by a Marine Corps veteran in Cedar Rapids, Iowa." />
+    <meta property="og:image" content="https://docbearssymptomvault.com/symptom-vault.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Doc Bear's Symptom Vault — free, private symptom tracking for veterans" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:site_name" content="Doc Bear's Symptom Vault" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Doc Bear's Symptom Vault" />
+    <meta name="twitter:description" content="Free, private symptom tracking for veterans. No account, no ads, no cloud." />
+    <meta name="twitter:image" content="https://docbearssymptomvault.com/og-card.jpg" />
+
     <link rel="manifest" href="/manifest.json" />
     <meta name="theme-color" content="#1e3a8a" />
     <meta name="mobile-web-app-capable" content="yes" />

@@ -39,3 +39,4 @@ dist-ssr
 /gemini.md
 /Docs/claude.md
 /Docs/results.md
+*.bak*
