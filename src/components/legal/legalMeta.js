@@ -139,27 +139,118 @@ export const hasAcceptedAnyPriorTerms = () => {
     return Boolean(record.version && record.version !== LEGAL_VERSION);
 };
 
-/**
- * Persist an acceptance record locally, preserving the history of prior acceptances.
- * Nothing is transmitted anywhere.
- */
-export const recordTermsAcceptance = () => {
-    const previous = getTermsAcceptance();
+// Days a user has to opt out of the arbitration agreement, measured from THEIR OWN
+// acceptance -- not from the document's effective date. A user who first launches the
+// updated app in December has until 30 days after that December acceptance.
+export const ARBITRATION_OPT_OUT_DAYS = 30;
 
-    // Roll any prior current-version acceptance into the history
+/** Add whole days to an ISO timestamp and return a new ISO timestamp. */
+const addDays = (isoString, days) => {
+    const d = new Date(isoString);
+    d.setDate(d.getDate() + days);
+    return d.toISOString();
+};
+
+/**
+ * SHA-256 of a string, hex encoded. Used to pin exactly what document text was on
+ * screen when the user accepted.
+ *
+ * Falls back to a synchronous FNV-1a hash when Web Crypto is unavailable, which
+ * happens in non-secure contexts (plain http on a LAN address) and in some older
+ * WebViews. The fallback is prefixed so a reader can tell the two apart and never
+ * mistake a weak hash for a SHA-256 digest.
+ */
+export const hashDocumentText = async (text) => {
+    const normalized = String(text || '').replace(/\s+/g, ' ').trim();
+    if (!normalized) return null;
+
+    try {
+        if (typeof crypto !== 'undefined' && crypto.subtle && typeof TextEncoder !== 'undefined') {
+            const bytes = new TextEncoder().encode(normalized);
+            const digest = await crypto.subtle.digest('SHA-256', bytes);
+            const hex = Array.from(new Uint8Array(digest))
+                .map(b => b.toString(16).padStart(2, '0'))
+                .join('');
+            return `sha256:${hex}`;
+        }
+    } catch {
+        // fall through to the non-crypto fallback
+    }
+
+    // FNV-1a, 32-bit. Not cryptographic. Marked as such in the stored value.
+    let h = 0x811c9dc5;
+    for (let i = 0; i < normalized.length; i++) {
+        h ^= normalized.charCodeAt(i);
+        h = Math.imul(h, 0x01000193) >>> 0;
+    }
+    return `fnv1a:${h.toString(16).padStart(8, '0')}:len${normalized.length}`;
+};
+
+/**
+ * Persist an acceptance record locally, preserving prior acceptances. Nothing is
+ * transmitted anywhere.
+ *
+ * The record is deliberately granular. With no server and no user accounts, this
+ * object is the only evidence of what a given person was shown and what they agreed
+ * to, so it records each acknowledgement separately rather than collapsing them into
+ * a single boolean.
+ *
+ * @param {object} [details]
+ * @param {string} [details.acceptedAt]                ISO; defaults to now
+ * @param {string} [details.medicalAcknowledgedAt]     ISO, box 1
+ * @param {string} [details.vaAcknowledgedAt]          ISO, box 2
+ * @param {string} [details.arbitrationAcknowledgedAt] ISO, box 3 (Terms + arbitration)
+ * @param {string} [details.termsOpenedAt]             ISO, full Terms displayed
+ * @param {string} [details.privacyAcknowledgedAt]     ISO, full Privacy Policy displayed
+ * @param {string} [details.termsDocumentHash]         hash of the Terms text displayed
+ * @param {string} [details.privacyDocumentHash]       hash of the Privacy text displayed
+ */
+export const recordTermsAcceptance = (details = {}) => {
+    const previous = getTermsAcceptance();
+    const acceptedAt = details.acceptedAt || new Date().toISOString();
+
+    // Roll any prior current-version acceptance into the history. Never overwrite it.
     const history = [...(previous?.history || [])];
     if (previous?.version && previous.version !== LEGAL_VERSION) {
         history.unshift({
             version: previous.version,
             effectiveDate: previous.effectiveDate,
             acceptedAt: previous.acceptedAt,
+            arbitrationAcknowledgedAt: previous.arbitrationAcknowledgedAt || null,
         });
     }
 
+    // The immediately preceding acceptance, surfaced at the top level for convenience
+    const priorEntry = history[0] || null;
+
     const record = {
+        // --- current acceptance ---
         version: LEGAL_VERSION,
         effectiveDate: LEGAL_EFFECTIVE_DATE_ISO,
-        acceptedAt: new Date().toISOString(),
+        acceptedAt,
+
+        // --- what was agreed, item by item ---
+        termsVersion: LEGAL_VERSION,
+        termsAcceptedAt: acceptedAt,
+        termsOpenedAt: details.termsOpenedAt || null,
+        termsDocumentHash: details.termsDocumentHash || null,
+
+        // A privacy policy is notice, not a contract the user "accepts", so this is
+        // recorded as an acknowledgement that it was made available and displayed.
+        privacyVersion: LEGAL_VERSION,
+        privacyAcknowledgedAt: details.privacyAcknowledgedAt || null,
+        privacyDocumentHash: details.privacyDocumentHash || null,
+
+        arbitrationVersion: LEGAL_VERSION,
+        arbitrationAcknowledgedAt: details.arbitrationAcknowledgedAt || null,
+        arbitrationOptOutDeadline: addDays(acceptedAt, ARBITRATION_OPT_OUT_DAYS),
+
+        medicalAcknowledgedAt: details.medicalAcknowledgedAt || null,
+        vaAcknowledgedAt: details.vaAcknowledgedAt || null,
+
+        // --- what came before ---
+        previousTermsVersion: priorEntry?.version || null,
+        previousTermsAcceptedAt: priorEntry?.acceptedAt || null,
         history,
     };
 
@@ -170,4 +261,13 @@ export const recordTermsAcceptance = () => {
         console.warn('Could not persist terms acceptance:', e);
     }
     return record;
+};
+
+/**
+ * The date by which this user must opt out of arbitration, or null if they have not
+ * accepted. Exposed so Settings can show the deadline while it is still live.
+ */
+export const getArbitrationOptOutDeadline = () => {
+    const record = getTermsAcceptance();
+    return record?.arbitrationOptOutDeadline || null;
 };

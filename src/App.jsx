@@ -120,8 +120,8 @@ const AppContent = () => {
     // The useEffect that used to live here is gone: showTerms is now initialized
     // synchronously above, so there is no first-paint flash of the modal.
 
-    const handleAcceptTerms = () => {
-        recordTermsAcceptance();
+    const handleAcceptTerms = (details) => {
+        recordTermsAcceptance(details);
         setShowTerms(false);
     };
 
