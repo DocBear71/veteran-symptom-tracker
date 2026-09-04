@@ -10,7 +10,7 @@
 // the stored acceptance version against this value and re-prompts if they differ, so
 // users are re-presented with materially changed terms.
 
-export const LEGAL_VERSION = '3.0.0';
+export const LEGAL_VERSION = 'legal-3.0.0';
 
 // Human-readable date shown at the top of each document
 export const LEGAL_EFFECTIVE_DATE = 'September 3, 2026';

@@ -105,7 +105,7 @@ export default function DataBunker() {
     const data = {
       version: '2.3',
       exportDate: new Date().toISOString(),
-      appVersion: '3.7.0',
+      appVersion: '3.8.0',
       activeProfileId,
       // Complete snapshot — all keys from cache + localStorage
       rawData: allData,
