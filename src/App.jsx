@@ -4,6 +4,11 @@ import './App.css';
 // Components
 import TermsModal from './components/legal/TermsModal';
 import LegalPage from './components/legal/LegalPage';
+import {
+    hasAcceptedCurrentTerms,
+    recordTermsAcceptance,
+    migrateLegacyAcceptance,
+} from './components/legal/legalMeta';
 import Layout from './components/Layout';
 import SymptomLogger from './components/SymptomLogger';
 import SymptomHistory from './components/SymptomHistory';
@@ -65,9 +70,9 @@ const getInitialViewFromURL = () => {
     '/va-terms-faq': 'va-terms-faq',
     '/cp-exam-prep': 'cp-exam-prep',
     '/strategic-filing': 'strategic-filing',
-    'after-action-report': 'after-action-report',
-    'weight-tracker': '/weight-tracker',
-    'blue-button-import': '/blue-button-import',
+    '/after-action-report': 'after-action-report',
+    '/weight-tracker': 'weight-tracker',
+    '/blue-button-import': 'blue-button-import',
   };
 
   return pathToView[path] || 'log';
@@ -79,7 +84,13 @@ const AppContent = () => {
   const [currentView, setCurrentView] = useState(getInitialViewFromURL());
   const { shouldShowOnboarding, refreshProfile } = useProfile();
   const [showOnboarding, setShowOnboarding] = useState(shouldShowOnboarding);
-  const [showTerms, setShowTerms] = useState(false);
+    // Migrate any pre-v3 acceptance before deciding whether to show the gate.
+    // Runs once, synchronously, before first paint — otherwise the modal flashes
+    // on for users who have in fact already accepted.
+    const [showTerms, setShowTerms] = useState(() => {
+        migrateLegacyAcceptance();
+        return !hasAcceptedCurrentTerms();
+    });
   const [showBlueButton, setShowBlueButton] = useState(false);
 
   // Fraud alert banner — dismissed state persisted to localStorage
@@ -106,17 +117,13 @@ const AppContent = () => {
     initKeyboardHandling(); // Phase 5 — native keyboard handling
   }, []);
 
-  useEffect(() => {
-    const termsAccepted = localStorage.getItem('symptomTracker_termsAccepted');
-    if (!termsAccepted) {
-      setShowTerms(true);
-    }
-  }, []);
+    // The useEffect that used to live here is gone: showTerms is now initialized
+    // synchronously above, so there is no first-paint flash of the modal.
 
-  const handleAcceptTerms = () => {
-    localStorage.setItem('symptomTracker_termsAccepted', new Date().toISOString());
-    setShowTerms(false);
-  };
+    const handleAcceptTerms = () => {
+        recordTermsAcceptance();
+        setShowTerms(false);
+    };
 
   /// Run multi-profile migration and cleanup on first load
   useEffect(() => {
@@ -183,8 +190,8 @@ const AppContent = () => {
       'mos-noise-exposure': '/mos-noise-exposure',
       'va-terms-faq': '/va-terms-faq',
       'strategic-filing': '/strategic-filing',
-      '/cp-exam-prep': '/cp-exam-prep',
-      'after-action-report': 'after-action-report',
+      'cp-exam-prep': '/cp-exam-prep',
+      'after-action-report': '/after-action-report',
       'weight-tracker': '/weight-tracker',
       'blue-button-import': '/blue-button-import',
     };
@@ -303,12 +310,14 @@ const AppContent = () => {
         )}
 
         {/* Terms Modal - MUST accept before anything else */}
-        {showTerms && (
-            <TermsModal
-                isOpen={showTerms}
-                onAccept={handleAcceptTerms}
-            />
-        )}
+          {showTerms && (
+              <TermsModal
+                  isOpen={showTerms}
+                  onAccept={handleAcceptTerms}
+                  onViewFullTerms={() => window.open('/legal#terms', '_blank')}
+                  onViewPrivacy={() => window.open('/legal#privacy', '_blank')}
+              />
+          )}
         {/* Onboarding Modal */}
         {showOnboarding && (
             <OnboardingModal onComplete={handleOnboardingComplete} />
