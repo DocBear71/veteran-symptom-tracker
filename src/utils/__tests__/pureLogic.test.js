@@ -197,7 +197,10 @@ describe('analyzeMarginalEmployment', () => {
   });
 
   it('returns below-threshold state when income is at the threshold', () => {
-    const threshold = getPovertyThreshold(2024).value; // 16320
+    // §4.16(a) says "does not exceed", so income == threshold is still marginal.
+    // (The trailing comment here used to read 16320 — the under-65 figure. The
+    // correct 2024 one-person threshold is 15940.)
+    const threshold = getPovertyThreshold(2024).value; // 15940
     const result = analyzeMarginalEmployment(
         { currentlyEmployed: true, annualIncome: threshold },
         { referenceYear: 2024 }
@@ -220,6 +223,40 @@ describe('analyzeMarginalEmployment', () => {
     );
     expect(result.state).toBe('above-threshold');
   });
+
+    it('returns threshold-contested when income falls between the two Census figures', () => {
+        // 2024: one-person $15,940, under-65 $16,320. Income between them is
+        // above the figure VA's notices cite but below the one some practitioners
+        // use, so the app must not assert either answer.
+        const result = analyzeMarginalEmployment(
+            { currentlyEmployed: true, annualIncome: 16100 },
+            { referenceYear: 2024 }
+        );
+        expect(result.state).toBe('threshold-contested');
+        expect(result.overThreshold).toBe(true);
+        expect(result.definitelyOverThreshold).toBe(false);
+        expect(result.thresholdAlternate).toBe(16320);
+    });
+
+    it('returns above-threshold when income exceeds BOTH Census figures', () => {
+        const result = analyzeMarginalEmployment(
+            { currentlyEmployed: true, annualIncome: 16500 },
+            { referenceYear: 2024 }
+        );
+        expect(result.state).toBe('above-threshold');
+        expect(result.definitelyOverThreshold).toBe(true);
+    });
+
+    it('falls back to a binary result for years with no alternate figure', () => {
+        // 2022 has no under-65 entry in POVERTY_THRESHOLD_ALTERNATES, so there is
+        // no contested band and the old two-state behavior must still hold.
+        const result = analyzeMarginalEmployment(
+            { currentlyEmployed: true, annualIncome: 15000 },
+            { referenceYear: 2022 }
+        );
+        expect(result.state).toBe('above-threshold');
+        expect(result.thresholdAlternate).toBe(null);
+    });
 
   it('uses the correct threshold for a specific reference year', () => {
     // 2022 threshold is $14,880 — income of $15,000 should be above
@@ -290,34 +327,40 @@ describe('checkThresholdStaleness', () => {
   //   2 years behind + post-Sept → 'warning'
   //   3+ years behind            → 'critical'
 
+  // Dates are computed RELATIVE to CURRENT_POVERTY_THRESHOLD_YEAR, not
+  // hardcoded. These tests were originally written with absolute dates
+  // calibrated to a 2024 threshold year; bumping the map to 2025 shifted
+  // every one of them out of position and broke two. Anchoring to the
+  // constant means the September threshold update no longer breaks the suite.
+  const base = CURRENT_POVERTY_THRESHOLD_YEAR;
+  const at = (yearsAhead, month) =>
+      new Date(`${base + yearsAhead}-${String(month).padStart(2, '0')}-01T12:00:00`);
+
   it('returns current when threshold year equals current year', () => {
-    const result = checkThresholdStaleness(new Date('2024-06-01T12:00:00'));
-    expect(result.level).toBe('current');
+    expect(checkThresholdStaleness(at(0, 6)).level).toBe('current');
   });
 
   it('returns current when 1 year behind (normal publish lag)', () => {
-    const result = checkThresholdStaleness(new Date('2025-06-01T12:00:00'));
-    expect(result.level).toBe('current');
+    expect(checkThresholdStaleness(at(1, 6)).level).toBe('current');
   });
 
   it('returns current when 2 years behind before September', () => {
-    // Actual behavior: 2 years + pre-Sept is still 'current'
-    const result = checkThresholdStaleness(new Date('2026-06-01T12:00:00'));
-    expect(result.level).toBe('current');
+    // Legitimate: a year's thresholds aren't published until the following
+    // September, so in Jan-Aug a 2-year gap is still the newest available.
+    expect(checkThresholdStaleness(at(2, 6)).level).toBe('current');
   });
 
   it('returns warning when 2 years behind AND past September', () => {
-    const result = checkThresholdStaleness(new Date('2026-10-01T12:00:00'));
-    expect(result.level).toBe('warning');
+    // Past September the newer figure should exist, so a 2-year gap is stale.
+    expect(checkThresholdStaleness(at(2, 10)).level).toBe('warning');
   });
 
   it('returns critical when 3+ years behind regardless of month', () => {
-    const result = checkThresholdStaleness(new Date('2027-03-01T12:00:00'));
-    expect(result.level).toBe('critical');
+    expect(checkThresholdStaleness(at(3, 3)).level).toBe('critical');
   });
 
   it('always returns an object with level and message string', () => {
-    const result = checkThresholdStaleness(new Date('2026-10-01T12:00:00'));
+    const result = checkThresholdStaleness(at(2, 10));
     expect(result).toHaveProperty('level');
     expect(typeof result.message).toBe('string');
   });

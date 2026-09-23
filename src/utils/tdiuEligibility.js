@@ -25,9 +25,27 @@ import { calculateCombinedRating } from './vaRatingCalculator';
 // =============================================================================
 // POVERTY THRESHOLD CONSTANTS
 // =============================================================================
-// VA marginal employment uses the U.S. Census Bureau Poverty THRESHOLD for one
-// person under 65 (NOT the HHS Poverty Guideline — they are different numbers).
-// Reference: M21-1 Part IV, Subpart ii, 2.F.32 and 38 CFR §4.16(a).
+// VA marginal employment uses the U.S. Census Bureau Poverty THRESHOLD for
+// "One person (unrelated individual)" — the weighted-average line, NOT the
+// "Under 65 years" sub-line beneath it, and NOT the HHS Poverty Guideline.
+//
+// ⚠️ THIS IS THE EASIEST MISTAKE TO MAKE HERE. In the Census worksheet the
+// row reads:
+//     One person (unrelated individual):    16,330   ← THIS ONE
+//       Under 65 years..............        16,750   16,749
+//       65 years and over...........        15,440   15,440
+// The under-65 figure is ~$400 higher and is widely quoted in error, including
+// by VA practitioners. Using it tells a Veteran they are under the threshold
+// when VA would find them over — the dangerous direction.
+//
+// Authority for the weighted-average line: VA's own Federal Register notices
+// announcing this figure for §4.16(a) purposes consistently read "the weighted
+// average poverty threshold for one person (unrelated individual)" (e.g. 1996
+// $7,995; 1999 $8,501; 2000 $8,794), each matching that Census row.
+//
+// References: 38 CFR §4.16(a); M21-1, Part VIII, Subpart iv, 3.A.2.b and 2.c.
+// (M21-1 Part IV, Subpart ii, 2.F is retired — "Historical" — and has no
+// content topics. Do not cite it.)
 //
 // The Census Bureau publishes finalized thresholds ~one year after the data
 // year (e.g., 2024 thresholds published September 2025). When a new threshold
@@ -37,23 +55,51 @@ import { calculateCombinedRating } from './vaRatingCalculator';
 // correctly evaluate retrospective claims — e.g., "was the veteran's 2022
 // employment marginal?" requires the 2022 threshold, not the current one.
 export const POVERTY_THRESHOLDS = {
-  // Source: U.S. Census Bureau, Poverty Thresholds, Table 1.
-  // Weighted average threshold, one person under 65 (single individual).
-  2019: 13300,
-  2020: 13465,
-  2021: 14097,
+  // Source: U.S. Census Bureau, Poverty Thresholds, Table 1,
+  // "One person (unrelated individual)" line. Verified 2023/2024/2025 against
+  // the published worksheets.
+  2019: 13011,
+  2020: 13171,
+  2021: 13788,
   2022: 14880,
-  2023: 15852,
-  2024: 16320,
+  2023: 15480,
+  2024: 15940,
   2025: 16330,
-  // 2025: Census Bureau expected to finalize September 2026.
-  // When published, add the value here and bump CURRENT_POVERTY_THRESHOLD_YEAR.
+  // Next: 2026 thresholds, expected from Census around September 2027.
+  // When published, add the year here, add its "Under 65 years / no related
+  // children" figure to POVERTY_THRESHOLD_ALTERNATES below, and bump
+  // CURRENT_POVERTY_THRESHOLD_YEAR.
 };
+
+// The "Under 65 years" figure for the same years — NOT what VA uses, but
+// tracked deliberately.
+//
+// Some VA practitioners apply this line instead, and there is no current M21-1
+// text naming either row (VIII.iv.3.A.2.c defers entirely to the Census page).
+// Rather than pick a side and hand a Veteran false confidence, the app treats
+// income between the two figures as contested and says so. See
+// analyzeMarginalEmployment() below.
+export const POVERTY_THRESHOLD_ALTERNATES = {
+  2024: 16320,
+  2025: 16749,
+};
+
+// M21-1, Part VIII, Subpart iv, 3.A.2.c: amounts received from participation in
+// the Veterans Health Administration's Compensated Work Therapy Program are NOT
+// counted as income for IU purposes. Surface this wherever income is entered —
+// a Veteran in CWT who includes that money will read as over the threshold when
+// VA would not count it.
+export const CWT_INCOME_EXCLUDED = true;
 
 // The most recent FINAL Census Bureau threshold. Update this constant whenever
 // a new year is added to POVERTY_THRESHOLDS above.
-export const CURRENT_POVERTY_THRESHOLD_YEAR = 2024;
+export const CURRENT_POVERTY_THRESHOLD_YEAR = 2025;
 export const CURRENT_POVERTY_THRESHOLD = POVERTY_THRESHOLDS[CURRENT_POVERTY_THRESHOLD_YEAR];
+// The under-65 figure for the same year. Not what VA's notices cite, but widely
+// quoted, so the UI shows both rather than leaving a Veteran to wonder why the
+// app disagrees with something they read elsewhere.
+export const CURRENT_POVERTY_THRESHOLD_ALTERNATE =
+    POVERTY_THRESHOLD_ALTERNATES[CURRENT_POVERTY_THRESHOLD_YEAR] ?? null;
 
 /**
  * Look up the Census Bureau poverty threshold for a given calendar year.
@@ -64,25 +110,36 @@ export const CURRENT_POVERTY_THRESHOLD = POVERTY_THRESHOLDS[CURRENT_POVERTY_THRE
  * @returns {{ value: number, year: number, isFallback: boolean }}
  */
 export const getPovertyThreshold = (year) => {
+  // `alternate` is the under-65 figure for the same year, or null when we
+  // don't have one. Callers use it to detect the contested band.
+  const build = (y, isFallback) => ({
+    value: POVERTY_THRESHOLDS[y],
+    year: y,
+    isFallback,
+    alternate: POVERTY_THRESHOLD_ALTERNATES[y] ?? null,
+  });
+
   if (POVERTY_THRESHOLDS[year] !== undefined) {
-    return { value: POVERTY_THRESHOLDS[year], year, isFallback: false };
+    return build(year, false);
   }
 
   // Year not in our map — fall back to closest available
-  const availableYears = Object.keys(POVERTY_THRESHOLDS).map(Number).sort();
+  // Numeric sort — Array.prototype.sort() without a comparator sorts
+  // lexicographically, which breaks the moment a year crosses a digit boundary.
+  const availableYears = Object.keys(POVERTY_THRESHOLDS).map(Number).sort((a, b) => a - b);
   if (!availableYears.length) {
-    return { value: 0, year: 0, isFallback: true };
+    return { value: 0, year: 0, isFallback: true, alternate: null };
   }
 
-  // Future year (not yet published) → use most recent
+  // Future year (not yet published) → use most recent.
+  // Census publishes a year's threshold roughly 9 months after that year ends,
+  // so the current calendar year always lands here.
   if (year > availableYears[availableYears.length - 1]) {
-    const latest = availableYears[availableYears.length - 1];
-    return { value: POVERTY_THRESHOLDS[latest], year: latest, isFallback: true };
+    return build(availableYears[availableYears.length - 1], true);
   }
 
   // Past year before our records → use earliest
-  const earliest = availableYears[0];
-  return { value: POVERTY_THRESHOLDS[earliest], year: earliest, isFallback: true };
+  return build(availableYears[0], true);
 };
 
 /**
@@ -305,8 +362,16 @@ export const analyzeMarginalEmployment = (employmentStatus, options = {}) => {
       threshold: threshold.value,
       thresholdYear: threshold.year,
       thresholdIsFallback: threshold.isFallback,
+      thresholdAlternate: threshold.alternate,
       lastEmployedDate: employmentStatus.lastEmployedDate || '',
-      citation: '38 CFR §4.16(a)',
+      // M21-1 VIII.iv.3.A.2.d: §4.16(a) does not limit marginal employment to
+      // Veterans who are currently employed. If the evidence shows a Veteran is
+      // capable only of marginal employment, that supports IU even with no job
+      // at all, and the rating decision must address it. Veterans routinely
+      // assume the opposite.
+      appliesWhenUnemployed: true,
+      citation: '38 CFR §4.16(a); M21-1 VIII.iv.3.A.2.d',
+      caseLawAnchors: ['ortiz-valles'],
     };
   }
 
@@ -314,7 +379,20 @@ export const analyzeMarginalEmployment = (employmentStatus, options = {}) => {
   // STATE: Employed — evaluate income vs threshold
   // ============================================
   const annualIncome = Number(employmentStatus.annualIncome) || 0;
+
+  // §4.16(a): marginal when income "does not exceed" the threshold, so
+  // income == threshold is still marginal.
   const overThreshold = annualIncome > threshold.value;
+
+  // Contested band: above the one-person figure VA's own notices cite, but not
+  // above the under-65 figure some practitioners apply. A Veteran in this band
+  // gets told they're near the line and which figure applies is disputed —
+  // which is true, and more useful than a confident answer that might be wrong.
+  const alternate = threshold.alternate;
+  const definitelyOverThreshold = alternate !== null
+      ? annualIncome > alternate
+      : overThreshold;
+  const inContestedBand = overThreshold && !definitelyOverThreshold;
 
   // Track how long the veteran has been over threshold — relevant for the
   // ~12-month review window where VA may send VA Form 21-4140.
@@ -330,12 +408,19 @@ export const analyzeMarginalEmployment = (employmentStatus, options = {}) => {
   }
 
   return {
-    state: overThreshold ? 'above-threshold' : 'below-threshold',
+    // Three states now. 'threshold-contested' is new — the UI needs a case
+    // for it or it will fall through to whatever the default branch renders.
+    state: inContestedBand
+        ? 'threshold-contested'
+        : overThreshold ? 'above-threshold' : 'below-threshold',
     annualIncome,
     threshold: threshold.value,
     thresholdYear: threshold.year,
     thresholdIsFallback: threshold.isFallback,
+    thresholdAlternate: alternate,
     overThreshold,
+    definitelyOverThreshold,
+    inContestedBand,
     monthsOverThreshold,
     // Flag the ~12-month review window
     nearReviewWindow: monthsOverThreshold !== null && monthsOverThreshold >= 9,
@@ -348,8 +433,21 @@ export const analyzeMarginalEmployment = (employmentStatus, options = {}) => {
 // PROTECTED ENVIRONMENT ANALYSIS
 // =============================================================================
 // Protected/sheltered employment under §4.16(a) is a facts-found determination.
-// There is no bright-line rule (see Cantrell v. Shulkin, 28 Vet. App. 382 (2017)),
-// so this analysis can only FLAG indicators — it cannot render a determination.
+// There is no bright-line rule (Cantrell v. Shulkin, 28 Vet.App. 382 (2017);
+// Labruzza and McBride v. McDonough, 37 Vet.App. 111 (2024)), so this analysis
+// can only FLAG indicators — it cannot render a determination.
+//
+// M21-1 VIII.iv.3.A.2.e: "Consideration of employment in a protected environment
+// is only triggered when a Veteran's income exceeds the poverty level." The
+// analysis below still runs regardless, because a Veteran documenting
+// accommodations before their income rises is doing the right thing. But the
+// result carries `triggeredByIncome` so the UI can frame it correctly rather
+// than implying a below-threshold Veteran needs this pathway.
+//
+// Also from 2.e: income in a protected environment must, while exceeding the
+// threshold, remain "relatively low" — §4.16(a) makes earned income the primary
+// standard. A Veteran earning well above the threshold should not expect this
+// pathway to carry a claim on accommodations alone.
 
 /**
  * Accommodation flags the user can record. Each item maps to a category VA
@@ -388,7 +486,11 @@ export const PROTECTED_ENVIRONMENT_INDICATORS = {
  * @param {object} employmentStatus - From getEmploymentStatus()
  * @returns {object} Analysis with indicator counts and evidence gaps.
  */
-export const analyzeProtectedEnvironment = (employmentStatus) => {
+export const analyzeProtectedEnvironment = (employmentStatus, options = {}) => {
+  // Pass the marginal-employment analysis in to set this. Undefined means
+  // "income unknown", and the UI should stay neutral rather than asserting
+  // either way.
+  const triggeredByIncome = options.overThreshold;
   // ============================================
   // STATE: No employment data
   // ============================================
@@ -396,7 +498,8 @@ export const analyzeProtectedEnvironment = (employmentStatus) => {
     return {
       state: 'no-data',
       citation: '38 CFR §4.16(a)',
-      caseLawAnchors: ['cantrell', 'faust'],
+      triggeredByIncome,
+      caseLawAnchors: ['cantrell', 'labruzza-mcbride', 'faust'],
     };
   }
 

@@ -14,6 +14,7 @@ import { generate8940WorksheetPDF } from '../utils/export';
 import {
   CURRENT_POVERTY_THRESHOLD,
   CURRENT_POVERTY_THRESHOLD_YEAR,
+  CURRENT_POVERTY_THRESHOLD_ALTERNATE,
   PROTECTED_ENVIRONMENT_INDICATORS,
 } from '../utils/tdiuEligibility';
 import { getEmploymentStatus } from '../utils/profiles';
@@ -54,6 +55,7 @@ import { getEmploymentStatus } from '../utils/profiles';
 const POVERTY_THRESHOLD_ANNUAL = CURRENT_POVERTY_THRESHOLD;
 const POVERTY_THRESHOLD_YEAR = CURRENT_POVERTY_THRESHOLD_YEAR;
 const POVERTY_THRESHOLD_MONTHLY = Math.round(POVERTY_THRESHOLD_ANNUAL / 12);
+const POVERTY_THRESHOLD_ALT = CURRENT_POVERTY_THRESHOLD_ALTERNATE;
 
 const TDIUTool = ({ embedded = false, onClose }) => {
   const { profile } = useProfile();
@@ -198,8 +200,10 @@ const TDIUTool = ({ embedded = false, onClose }) => {
     <p>• VA Form 21-8940 — Veteran's Application for Increased Compensation Based on Unemployability</p>
     <p>• VA Form 21-4192 — Request for Employment Information from Recent Employers</p>
     <p className="italic mt-2">
-      Federal poverty threshold of ${POVERTY_THRESHOLD_ANNUAL.toLocaleString()}/year
-      is current as of 2026. Verify the latest figure at HHS.gov before filing.
+      Census Bureau poverty threshold, one person: ${POVERTY_THRESHOLD_ANNUAL.toLocaleString()}/year
+      ({POVERTY_THRESHOLD_YEAR} thresholds, published September {POVERTY_THRESHOLD_YEAR + 1}).
+      Verify at the U.S. Census Bureau — NOT HHS.gov. The HHS Poverty Guideline is a
+      separate, differently-calculated figure and is not what §4.16(a) uses.
     </p>
     <p className="italic">
       Phase 3 deliverable. Phase 4 (future) will add PDF export of the 21-8940 worksheet.
@@ -471,29 +475,44 @@ const SubstantiallyGainfulEmployment = () => (
         for a single individual.
       </p>
       <p>
-        As of 2026, that threshold is approximately:
+        The most recent published figure is the {POVERTY_THRESHOLD_YEAR} Census
+        threshold for one person (unrelated individual):
       </p>
       <ul className="ml-5 list-disc space-y-1">
         <li>${POVERTY_THRESHOLD_ANNUAL.toLocaleString()} per year</li>
         <li>Approximately ${POVERTY_THRESHOLD_MONTHLY.toLocaleString()} per month</li>
       </ul>
+      {POVERTY_THRESHOLD_ALT && (
+          <p className="bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800 rounded-lg p-3">
+            ℹ️ You may see <strong>${POVERTY_THRESHOLD_ALT.toLocaleString()}</strong> quoted
+            instead. The Census table lists "One person (unrelated individual)" with two
+            sub-lines beneath it for under-65 and 65-plus. VA's published Federal Register
+            notices cite the first line; some practitioners use the under-65 sub-line.
+            Current M21-1 (VIII.iv.3.A.2.c) names neither and simply links to the Census
+            page. If your earnings land between ${POVERTY_THRESHOLD_ANNUAL.toLocaleString()} and
+            ${POVERTY_THRESHOLD_ALT.toLocaleString()}, which figure applies to your case is
+            genuinely unsettled — document everything and get a VSO to look at it.
+          </p>
+      )}
       <p>
         Employment that produces earnings <em>at or below</em> the threshold is
         considered <strong>marginal employment</strong> (covered in the next section)
         and does not disqualify a veteran from TDIU.
       </p>
-      <p className="bg-amber-50 dark:bg-amber-900/30 border border-amber-200 dark:border-amber-800 rounded-lg p-3">
-        ⚠️ The poverty threshold is updated annually by the U.S. Department of Health
-        and Human Services. Always verify the current figure at{' '}
-      <a
-        href="https://aspe.hhs.gov/topics/poverty-economic-mobility/poverty-guidelines"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="underline"
-        >
-        HHS.gov
-      </a>
-      {' '}before relying on it for filing decisions.
+        <p className="bg-amber-50 dark:bg-amber-900/30 border border-amber-200 dark:border-amber-800 rounded-lg p-3">
+            ⚠️ <strong>Census threshold, not HHS guideline.</strong> These are two different
+            numbers from two different agencies, and §4.16(a) points at Census. The Census
+            Bureau publishes each year's thresholds the following September, so the current
+            calendar year's figure won't exist until then. Verify at{' '}
+        <a
+            href="https://www.census.gov/data/tables/time-series/demo/income-poverty/historical-poverty-thresholds.html"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline"
+            >
+            census.gov
+        </a>
+        {' '}before relying on it for filing decisions.
     </p>
 </Section>
 );
@@ -513,9 +532,19 @@ const MarginalEmployment = () => (
           1. Earnings below the poverty threshold
         </p>
         <p>
-          Employment that produces gross earnings at or below the federal poverty threshold
-          for a single individual. For 2026, that's approximately
-          ${POVERTY_THRESHOLD_ANNUAL.toLocaleString()}/year.
+          Employment that produces gross earnings at or below the Census Bureau poverty
+          threshold for one person. The {POVERTY_THRESHOLD_YEAR} threshold
+          is ${POVERTY_THRESHOLD_ANNUAL.toLocaleString()}/year.
+        </p>
+        <p className="text-sm">
+          This is <strong>earned</strong> income only. VA disability compensation, SSDI,
+          military retirement, pensions, and investment income don't count. Neither does
+          money from VHA's Compensated Work Therapy Program — M21-1 VIII.iv.3.A.2.c says
+          explicitly not to count CWT as income for IU purposes.
+        </p>
+        <p className="text-sm">
+          The threshold does not increase with dependents. §4.16(a) uses the one-person
+          figure regardless of household size.
         </p>
       </div>
 

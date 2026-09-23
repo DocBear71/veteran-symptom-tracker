@@ -2597,6 +2597,17 @@ export const generateProtectedEnvironmentPDF = async ({
         'Income at or below threshold - supports marginal employment under §4.16(a) income pathway.',
         margin, y, contentWidth
     );
+  } else if (marginalAnalysis.state === 'threshold-contested') {
+      y = writeBodyText(
+          doc,
+          `Earned income falls between the two Census Bureau figures for a single ` +
+          `person in ${marginalAnalysis.thresholdYear}: $${marginalAnalysis.threshold?.toLocaleString()} ` +
+          `("one person, unrelated individual") and $${marginalAnalysis.thresholdAlternate?.toLocaleString()} ` +
+          `("under 65 years"). VA's published Federal Register notices for §4.16(a) cite the former; ` +
+          `current M21-1 (VIII.iv.3.A.2.c) names neither and refers only to the Census table. ` +
+          `Which figure governs this case is unsettled and should be addressed directly.`,
+          margin, y, contentWidth
+      );
   } else if (marginalAnalysis.state === 'above-threshold') {
     let aboveText = 'Income exceeds threshold. Income pathway alone does not establish marginal employment - protected-environment pathway (see Section III) may still apply.';
     if (marginalAnalysis.monthsOverThreshold !== null &&

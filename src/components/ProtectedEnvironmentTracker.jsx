@@ -90,7 +90,13 @@ const ProtectedEnvironmentTracker = ({ embedded = false, onClose }) => {
   // Run analyses
   // ============================================
   const marginalAnalysis = analyzeMarginalEmployment(employmentStatus);
-  const protectedAnalysis = analyzeProtectedEnvironment(employmentStatus);
+  // M21-1 VIII.iv.3.A.2.e: protected-environment consideration is only
+  // triggered when income exceeds the poverty threshold. Passing the income
+  // result through lets the analysis say so rather than implying every Veteran
+  // needs this pathway.
+  const protectedAnalysis = analyzeProtectedEnvironment(employmentStatus, {
+    overThreshold: marginalAnalysis.overThreshold,
+  });
 
   const handleClearEmployment = () => {
     if (!window.confirm('Remove employment status? This will clear all accommodations and evidence tracking.')) return;
@@ -385,6 +391,13 @@ const MarginalAnalysisCard = ({ analysis }) => {
       color: 'amber',
       title: 'Income above threshold',
       body: `Earnings of $${analysis.annualIncome?.toLocaleString()} exceed the ${analysis.thresholdYear} Census Bureau threshold of $${analysis.threshold?.toLocaleString()}. The income test alone does NOT classify this as marginal — but you may still qualify under the protected-environment pathway (see next section).`,
+    },
+    // Without this key the card falls through to stateConfig['no-data'] and
+    // tells a Veteran to "add your employment status" while it's on screen.
+    'threshold-contested': {
+      color: 'amber',
+      title: 'Income near the threshold — which figure applies is disputed',
+      body: `Earnings of $${analysis.annualIncome?.toLocaleString()} are above the ${analysis.thresholdYear} Census figure for one person ($${analysis.threshold?.toLocaleString()}) but below the "under 65 years" figure ($${analysis.thresholdAlternate?.toLocaleString()}) that some VA practitioners apply. Current M21-1 names neither and links only to the Census table, so this is genuinely unsettled. Document your earnings and accommodations thoroughly and have a VSO or accredited attorney review your case before filing.`,
     },
   };
 

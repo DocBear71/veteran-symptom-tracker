@@ -8,6 +8,7 @@ import {
   analyzeTDIUEligibility,
   CURRENT_POVERTY_THRESHOLD,
   CURRENT_POVERTY_THRESHOLD_YEAR,
+  CURRENT_POVERTY_THRESHOLD_ALTERNATE,
   checkThresholdStaleness,
 } from '../utils/tdiuEligibility';
 
@@ -68,10 +69,20 @@ const TDIUEligibilityCard = () => {
               <span>
               <strong className="text-gray-900 dark:text-white">Marginal employment is allowed:</strong>{' '}
                 Earnings at or below the U.S. Census Bureau poverty threshold for one
-                person (~${CURRENT_POVERTY_THRESHOLD.toLocaleString()}/year, {CURRENT_POVERTY_THRESHOLD_YEAR} data)
-                don't count as substantially gainful. Note: VA uses the Census Bureau
-                threshold, not the HHS Poverty Guideline — these are different numbers.
-                Reference: M21-1 Part IV, Subpart ii, 2.F.32.
+                person (${CURRENT_POVERTY_THRESHOLD.toLocaleString()}/year, {CURRENT_POVERTY_THRESHOLD_YEAR} Census
+                thresholds) don't count as substantially gainful. VA uses the Census
+                Bureau threshold, not the HHS Poverty Guideline — these are different
+                numbers from different agencies.
+                {CURRENT_POVERTY_THRESHOLD_ALTERNATE && (
+                    <span className="block mt-1 text-xs text-gray-600 dark:text-gray-400">
+                      You may see ${CURRENT_POVERTY_THRESHOLD_ALTERNATE.toLocaleString()} quoted
+                      elsewhere. That's the Census "Under 65 years" sub-line; VA's published
+                      notices cite the "one person (unrelated individual)" line above it.
+                      Current M21-1 names neither, so if your earnings fall between the two,
+                      treat it as contested and talk to a VSO.
+                    </span>
+                )}
+                {' '}Reference: M21-1, Part VIII, Subpart iv, 3.A.2.c.
                 {(() => {
                   const staleness = checkThresholdStaleness();
                   if (staleness.level === 'current') return null;
