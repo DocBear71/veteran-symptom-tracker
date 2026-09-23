@@ -5429,6 +5429,8 @@ export const analyzeTBILogs = (logs, options = {}) => {
   const totalSymptoms = relevantLogs.length;
   const avgSeverity = relevantLogs.reduce((sum, log) => sum + (log.severity || 0), 0) / totalSymptoms;
   const severeSymptoms = relevantLogs.filter(log => (log.severity || 0) >= 4).length;
+  // On the 0-10 scale, 4+ is moderate-or-worse and 7+ is genuinely severe.
+  const severeSymptoms7Plus = relevantLogs.filter(log => (log.severity || 0) >= 7).length;
   const symptomTypesPresent = [...new Set(relevantLogs.map(log => getLogSymptomId(log)))].length;
 
   const hasMemoryIssues = relevantLogs.some(log => getLogSymptomId(log) === 'tbi-memory');
@@ -5439,8 +5441,9 @@ export const analyzeTBILogs = (logs, options = {}) => {
   const evidence = [
     `${totalSymptoms} TBI-related cognitive symptoms logged over ${(evaluationPeriodDays / 30).toFixed(1)} months`,
     `Symptom types: ${symptomTypesPresent} different cognitive areas affected`,
-    `Average severity: ${avgSeverity.toFixed(1)}/5`,
-    `${severeSymptoms} severe symptoms documented`,
+    `Average severity: ${avgSeverity.toFixed(1)}/10`,
+    `${severeSymptoms} symptoms at moderate or higher severity (4+)`,
+    `${severeSymptoms7Plus} symptoms at severe intensity (7+)`,
   ];
 
   if (hasMemoryIssues) evidence.push('Memory problems documented');
@@ -7196,19 +7199,23 @@ export const analyzeTinnitusLogs = (logs, options = {}) => {
   const avgSeverity = relevantLogs.reduce((sum, log) => sum + (log.severity || 0), 0) / totalSymptoms;
   const daysLogged = [...new Set(relevantLogs.map(log => new Date(log.timestamp).toDateString()))].length;
 
-  const evidence = [
-    `${totalSymptoms} tinnitus symptoms logged over ${(evaluationPeriodDays / 30).toFixed(1)} months`,
-    `Logged on ${daysLogged} different days`,
-    `Average severity: ${avgSeverity.toFixed(1)}/5`,
-    'Pattern establishes recurrent tinnitus',
-  ];
+    const evidence = [
+        `${totalSymptoms} tinnitus symptoms logged over ${(evaluationPeriodDays / 30).toFixed(1)} months`,
+        `Logged on ${daysLogged} different days`,
+        `Average severity: ${avgSeverity.toFixed(1)}/10`,
+        'Pattern establishes recurrent tinnitus',
+    ];
 
-  const supportedRating = 10;
-  const ratingRationale = [
-    'Tinnitus has a flat 10% rating for all recurrent cases',
-    'Your symptom logs document recurrent tinnitus',
-    'No higher rating available regardless of severity',
-  ];
+    // DC 6260 is a flat 10% for recurrent tinnitus — there is no 0% tier and no
+    // higher tier. This was declared 0 and never reassigned, so the rationale
+    // below told the Veteran "flat 10%" while the number handed to the claim
+    // package said 0. Severity is deliberately not a factor.
+    const supportedRating = 10;
+    const ratingRationale = [
+        'Tinnitus has a flat 10% rating for all recurrent cases',
+        'Your symptom logs document recurrent tinnitus',
+        'No higher rating available regardless of severity',
+    ];
 
     return {
       hasData: true,
@@ -7267,6 +7274,8 @@ export const analyzeFibromyalgiaLogs = (logs, options = {}) => {
   const totalSymptoms = relevantLogs.length;
   const avgSeverity = relevantLogs.reduce((sum, log) => sum + (log.severity || 0), 0) / totalSymptoms;
   const severeSymptoms = relevantLogs.filter(log => (log.severity || 0) >= 4).length;
+  // On the 0-10 scale, 4+ is moderate-or-worse and 7+ is genuinely severe.
+  const severeSymptoms7Plus = relevantLogs.filter(log => (log.severity || 0) >= 7).length;
   const symptomTypesPresent = [...new Set(relevantLogs.map(log => getLogSymptomId(log)))].length;
   const daysLogged = [...new Set(relevantLogs.map(log => new Date(log.timestamp).toDateString()))].length;
 
@@ -7284,8 +7293,9 @@ export const analyzeFibromyalgiaLogs = (logs, options = {}) => {
     `${totalSymptoms} fibromyalgia symptoms logged over ${monthsInPeriod.toFixed(1)} months`,
     `Logged on ${daysLogged} different days (${(daysLogged / monthsInPeriod).toFixed(1)} days/month)`,
     `${symptomTypesPresent} different symptom types documented`,
-    `Average severity: ${avgSeverity.toFixed(1)}/5`,
-    `${severeSymptoms} severe symptoms (4-5 severity)`,
+    `Average severity: ${avgSeverity.toFixed(1)}/10`,
+    `${severeSymptoms} symptoms at moderate or higher severity (4+)`,
+    `${severeSymptoms7Plus} symptoms at severe intensity (7+)`,
   ];
 
   if (hasWidespreadPain) evidence.push('Widespread pain documented');

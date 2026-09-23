@@ -2702,11 +2702,15 @@ export const analyzeLumbosacralStrainLogs = (logs, options = {}) => {
   ).size;
   const severeSymptoms7Plus = relevantLogs.filter(log => (log.severity || 0) >= 7).length;
 
-  // Evidence collected
+  // Evidence collected.
+  // Severity is a 0-10 scale. These lines said /5 and "severity 4-5", left over
+  // from the old 1-5 scale, which put "Average severity: 6.2/5" in the claim
+  // package right above a "/10" line in supportingRationale below.
   const evidence = [
     `${totalSymptoms} back pain symptoms logged over ${(evaluationPeriodDays / 30).toFixed(1)} months`,
-    `Average severity: ${avgSeverity.toFixed(1)}/5`,
-    `${severeSymptoms} severe symptoms (severity 4-5)`,
+    `Average severity: ${avgSeverity.toFixed(1)}/10`,
+    `${severeSymptoms} symptoms at moderate or higher severity (4+)`,
+    `${severeSymptoms7Plus} symptoms at severe intensity (7+)`,
     `Symptom types documented: ${symptomTypesPresent}`,
   ];
 
@@ -2832,8 +2836,9 @@ export const analyzeIntervertebralDiscLogs = (logs, options = {}) => {
 
   const evidence = [
     `${totalSymptoms} disc-related symptoms logged over ${(evaluationPeriodDays / 30).toFixed(1)} months`,
-    `Average severity: ${avgSeverity.toFixed(1)}/5`,
-    `${severeSymptoms} severe symptoms`,
+    `Average severity: ${avgSeverity.toFixed(1)}/10`,
+    `${severeSymptoms} symptoms at moderate or higher severity (4+)`,
+    `${severeSymptoms7Plus} symptoms at severe intensity (7+)`,
   ];
 
   if (hasDiscPain) evidence.push('Disc pain specifically documented');
@@ -2918,6 +2923,9 @@ export const analyzeKneeInstabilityLogs = (logs, options = {}) => {
   const avgSeverity = relevantLogs.reduce((sum, log) => sum + (log.severity || 0), 0) / totalSymptoms;
   const instabilityEvents = relevantLogs.filter(log => getLogSymptomId(log) === 'knee-instability' || getLogSymptomId(log) === 'knee-locking').length;
   const severeSymptoms = relevantLogs.filter(log => (log.severity || 0) >= 4).length;
+  // On the 0-10 scale, 4+ is moderate-or-worse and 7+ is genuinely severe.
+  // Both matter to a rating, so both get reported.
+  const severeSymptoms7Plus = relevantLogs.filter(log => (log.severity || 0) >= 7).length;
 
   const hasGivingWay = relevantLogs.some(log => getLogSymptomId(log) === 'knee-instability');
   const hasSwelling = relevantLogs.some(log => getLogSymptomId(log) === 'knee-swelling');
@@ -2926,7 +2934,9 @@ export const analyzeKneeInstabilityLogs = (logs, options = {}) => {
   const evidence = [
     `${totalSymptoms} knee symptoms logged over ${(evaluationPeriodDays / 30).toFixed(1)} months`,
     `${instabilityEvents} instability/locking events documented`,
-    `Average severity: ${avgSeverity.toFixed(1)}/5`,
+    `Average severity: ${avgSeverity.toFixed(1)}/10`,
+    `${severeSymptoms} symptoms at moderate or higher severity (4+)`,
+    `${severeSymptoms7Plus} symptoms at severe intensity (7+)`,
   ];
 
   if (hasGivingWay) evidence.push('Knee giving way/instability documented');

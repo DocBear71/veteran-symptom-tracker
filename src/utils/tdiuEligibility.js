@@ -45,6 +45,7 @@ export const POVERTY_THRESHOLDS = {
   2022: 14880,
   2023: 15852,
   2024: 16320,
+  2025: 16330,
   // 2025: Census Bureau expected to finalize September 2026.
   // When published, add the value here and bump CURRENT_POVERTY_THRESHOLD_YEAR.
 };
