@@ -11,6 +11,13 @@ import {
   getRelatedConditions,
 } from '../data/symptoms';
 import { saveSymptomLog, getCustomSymptoms, addCustomSymptom, getMedications, logMedicationTaken } from '../utils/storage';
+import {
+  stagePhoto,
+  commitStagedPhotos,
+  releaseStagedPhotos,
+  formatBytes,
+  MAX_PHOTOS_PER_LOG,
+} from '../utils/photoCapture';
 import { getProfileType, PROFILE_TYPES } from '../utils/profile';
 import { getDefaultMedDetail, getDosageForLog } from '../utils/medicationUtils';
 import OccurrenceTimePicker from './OccurrenceTimePicker.jsx';
@@ -156,6 +163,11 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed, onNavigate }) =
   const searchInputRef = useRef(null);
   const [severity, setSeverity] = useState(5);
   const [notes, setNotes] = useState('');
+  // Photos captured before the log exists. Held here, written to IndexedDB
+  // after saveSymptomLog() returns an ID.
+  const [pendingPhotos, setPendingPhotos] = useState([]);
+  const [photoBusy, setPhotoBusy] = useState(false);
+  const [photoError, setPhotoError] = useState('');
   const [occurredAt, setOccurredAt] = useState(new Date().toISOString());
   const [showSuccess, setShowSuccess] = useState(false);
   const [customSymptoms, setCustomSymptoms] = useState(() => getCustomSymptoms());
@@ -1739,7 +1751,60 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed, onNavigate }) =
     }
   };
 
-  const handleSubmit = (e) => {
+    // ============================================
+    // PHOTO CAPTURE
+    // ============================================
+
+    const handleAddPhoto = async () => {
+        setPhotoError('');
+
+        if (pendingPhotos.length >= MAX_PHOTOS_PER_LOG) {
+            setPhotoError(`Maximum of ${MAX_PHOTOS_PER_LOG} photos per entry.`);
+            return;
+        }
+
+        setPhotoBusy(true);
+        try {
+            const staged = await stagePhoto();
+            if (staged) {
+                setPendingPhotos(prev => [...prev, staged]);
+            }
+        } catch (error) {
+            const message = String(error?.message || error);
+            setPhotoError(
+                message === 'PERMISSION_DENIED'
+                    ? 'Camera and photo access are blocked. Enable them in your device settings to attach photos.'
+                    : message || 'Could not add that photo.'
+            );
+        } finally {
+            setPhotoBusy(false);
+        }
+    };
+
+    const handleRemovePhoto = (tempId) => {
+        setPendingPhotos(prev => {
+            const target = prev.find(p => p.tempId === tempId);
+            // Revoke before dropping the reference, or the blob stays pinned.
+            if (target) releaseStagedPhotos([target]);
+            return prev.filter(p => p.tempId !== tempId);
+        });
+        setPhotoError('');
+    };
+
+    // Release preview URLs if the user navigates away mid-entry. Without this,
+    // every abandoned draft leaks its photos for the life of the session.
+    useEffect(() => {
+        return () => {
+            setPendingPhotos(current => {
+                releaseStagedPhotos(current);
+                return [];
+            });
+        };
+    }, []);
+
+  const handleSubmit = async (e) => {
+    // preventDefault must run synchronously, before any await, or the form
+    // submits normally and the page reloads.
     e.preventDefault();
 
     if (!selectedSymptom) return;
@@ -1972,6 +2037,26 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed, onNavigate }) =
     const savedEntry = saveSymptomLog(entry);
     hapticSuccess(); // native feedback on successful symptom log
 
+    // Attach staged photos now that the log has an ID. Awaited rather than
+    // fire-and-forget: a silent failure here would lose the Veteran's photos
+    // with no indication anything went wrong.
+    if (pendingPhotos.length > 0) {
+      setPhotoBusy(true);
+      try {
+        const stored = await commitStagedPhotos(savedEntry.id, pendingPhotos);
+        if (stored < pendingPhotos.length) {
+          setPhotoError(`Saved ${stored} of ${pendingPhotos.length} photos. Check available storage.`);
+        }
+      } catch (error) {
+        console.error('❌ Photo commit failed:', error);
+        setPhotoError('The entry was saved, but the photos could not be attached.');
+      } finally {
+        releaseStagedPhotos(pendingPhotos);
+        setPendingPhotos([]);
+        setPhotoBusy(false);
+      }
+    }
+
     // Log medications if taken
     // selectedMedications is an object keyed by medId: { [medId]: { effectiveness, sideEffects, ... } }
     const selectedMedIds = Object.keys(selectedMedications);
@@ -2008,6 +2093,9 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed, onNavigate }) =
     setSymptomName('');
     setSeverity(5);
     setNotes('');
+    // pendingPhotos is cleared in the commit block above, which also revokes
+    // the preview URLs. Only the error message needs clearing here.
+    setPhotoError('');
     setOccurredAt(new Date().toISOString());
     setTookMedication(false);
     setSelectedMedications({});
@@ -2296,7 +2384,6 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed, onNavigate }) =
                               if (e.target.value) {
                                 setOccurredAt(new Date().toISOString());
                               }
-                              console.log(selectedSymptom)
                             }}
                             className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                             required
@@ -3305,6 +3392,66 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed, onNavigate }) =
                   : '💡 Document triggers and how this affected your day.'}
             </p>
           </div>
+
+            {/* Photos */}
+            <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Photos (optional)
+                </label>
+
+                <div className="flex flex-wrap gap-2 mb-2">
+                    {pendingPhotos.map(photo => (
+                        <div key={photo.tempId} className="relative">
+                            <img
+                                src={photo.thumbUrl}
+                                alt="Attached photo preview"
+                                className="w-20 h-20 object-cover rounded-lg border border-gray-300 dark:border-gray-600"
+                            />
+                            <button
+                                type="button"
+                                onClick={() => handleRemovePhoto(photo.tempId)}
+                                aria-label="Remove this photo"
+                                className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-red-600 text-white text-sm leading-none flex items-center justify-center shadow"
+                            >
+                                ×
+                            </button>
+                            <span className="block text-[10px] text-gray-500 dark:text-gray-400 text-center mt-0.5">
+                      {formatBytes(photo.size)}
+                    </span>
+                        </div>
+                    ))}
+
+                    {pendingPhotos.length < MAX_PHOTOS_PER_LOG && (
+                        <button
+                            type="button"
+                            onClick={handleAddPhoto}
+                            disabled={photoBusy}
+                            className="w-20 h-20 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-600 flex flex-col items-center justify-center text-gray-500 dark:text-gray-400 hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400 disabled:opacity-50 transition-colors"
+                        >
+                            {photoBusy ? (
+                                <span className="text-xs">Working...</span>
+                            ) : (
+                                <>
+                                    <span className="text-2xl leading-none">📷</span>
+                                    <span className="text-[10px] mt-1">Add photo</span>
+                                </>
+                            )}
+                        </button>
+                    )}
+                </div>
+
+                {photoError && (
+                    <p className="text-sm text-red-600 dark:text-red-400 mb-1" role="alert">
+                        {photoError}
+                    </p>
+                )}
+
+                <p className="text-xs text-gray-500 dark:text-gray-400">
+                    📷 Up to {MAX_PHOTOS_PER_LOG} photos. Location data and other hidden
+                    metadata are removed before saving, and photos never leave your device.
+                    {isVeteran && ' Visible evidence like rashes, swelling, or bruising is hard to describe in words and easy to show.'}
+                </p>
+            </div>
 
           {/* Occurrence Time Picker */}
           <div className="pt-4 border-t border-gray-200 dark:border-gray-700">

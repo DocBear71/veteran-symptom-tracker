@@ -19,8 +19,21 @@ import { openDB } from 'idb';
 // ─── Constants ────────────────────────────────────────────────────────────────
 
 const DB_NAME    = 'symptomVaultDB';
-const DB_VERSION = 1;
-const STORE_NAME = 'kvStore'; // single key-value object store
+// v2 — adds the photos object store. Bump this whenever a store is added.
+const DB_VERSION = 2;
+const STORE_NAME = 'kvStore'; // key-value store for all text data
+
+// Photos live in their OWN object store, deliberately.
+//
+// initializeCache() calls dbGetAll() on every launch and loads the entire
+// kvStore into memory before React mounts. That's fine for text. If photos
+// shared that store, every launch would pull every photo a Veteran has ever
+// taken into RAM — on an older Android device with a couple of years of logs,
+// that's a startup crash.
+//
+// dbGetAll() reads STORE_NAME only, so nothing here ever enters the cache.
+// Photo access is async and on-demand, always.
+const PHOTO_STORE = 'photos';
 
 // Keys that must STAY in localStorage — never migrate these
 export const LOCAL_STORAGE_ONLY_KEYS = new Set([
@@ -51,10 +64,21 @@ let dbPromise = null;
 const getDB = () => {
   if (!dbPromise) {
     dbPromise = openDB(DB_NAME, DB_VERSION, {
+      // The contains() guards make this safe from any prior version — a fresh
+      // install creates both stores, a v1 database gains only the photo store,
+      // and existing kvStore data is never touched.
       upgrade(db) {
-        // Create our single key-value store if it doesn't exist
         if (!db.objectStoreNames.contains(STORE_NAME)) {
           db.createObjectStore(STORE_NAME);
+        }
+
+        if (!db.objectStoreNames.contains(PHOTO_STORE)) {
+          // keyPath 'id' — records carry their own key, unlike kvStore
+          const photos = db.createObjectStore(PHOTO_STORE, { keyPath: 'id' });
+          // Look up every photo attached to one symptom log
+          photos.createIndex('logId', 'logId', { unique: false });
+          // Scope photos to a profile for size totals and profile deletion
+          photos.createIndex('profileId', 'profileId', { unique: false });
         }
       },
     });
@@ -149,10 +173,185 @@ export const dbClear = async () => {
   try {
     const db = await getDB();
     await db.clear(STORE_NAME);
+    // Photos are a separate store — clearing kvStore alone would orphan
+    // every photo and leave the storage quota consumed after a factory reset.
+    await db.clear(PHOTO_STORE);
     return true;
   } catch (error) {
     console.error('❌ dbClear failed:', error);
     return false;
+  }
+};
+
+// ─── Photo Store ──────────────────────────────────────────────────────────────
+//
+// Photo record shape:
+// {
+//   id:         string  — crypto.randomUUID()
+//   logId:      string  — the symptom log this belongs to
+//   profileId:  string  — owning profile
+//   blob:       Blob    — full-size image, metadata already stripped
+//   thumbBlob:  Blob    — small thumbnail for list rendering
+//   size:       number  — byte size of blob, stored so totals don't read bytes
+//   width:      number
+//   height:     number
+//   mimeType:   string
+//   caption:    string
+//   createdAt:  string  — ISO
+// }
+//
+// Blobs, not base64. Base64 inflates by ~33% and IndexedDB stores Blobs
+// natively without deserializing the bytes until you actually read them.
+
+/**
+ * Write (or overwrite) one photo record.
+ */
+export const photoPut = async (record) => {
+  try {
+    const db = await getDB();
+    await db.put(PHOTO_STORE, record);
+    return true;
+  } catch (error) {
+    console.error(`❌ photoPut failed for "${record?.id}":`, error);
+    return false;
+  }
+};
+
+/**
+ * Read one photo record by ID, blobs included.
+ */
+export const photoGet = async (id) => {
+  try {
+    const db = await getDB();
+    return (await db.get(PHOTO_STORE, id)) ?? null;
+  } catch (error) {
+    console.error(`❌ photoGet failed for "${id}":`, error);
+    return null;
+  }
+};
+
+/**
+ * Every photo attached to one symptom log, oldest first.
+ */
+export const photoGetByLogId = async (logId) => {
+  try {
+    const db = await getDB();
+    const records = await db.getAllFromIndex(PHOTO_STORE, 'logId', logId);
+    return records.sort((a, b) =>
+        new Date(a.createdAt || 0) - new Date(b.createdAt || 0)
+    );
+  } catch (error) {
+    console.error(`❌ photoGetByLogId failed for "${logId}":`, error);
+    return [];
+  }
+};
+
+/**
+ * Metadata for a profile's photos WITHOUT the blobs.
+ *
+ * Used for the storage-size display and backup estimates. A cursor is used
+ * rather than getAll() so the full records never accumulate in an array —
+ * we copy out only the scalar fields and let each record go.
+ */
+export const photoGetMetadataByProfile = async (profileId) => {
+  try {
+    const db = await getDB();
+    const out = [];
+    let cursor = await db
+    .transaction(PHOTO_STORE)
+    .store.index('profileId')
+    .openCursor(profileId);
+
+    while (cursor) {
+      const { id, logId, size, width, height, mimeType, caption, createdAt } = cursor.value;
+      out.push({ id, logId, size, width, height, mimeType, caption, createdAt });
+      cursor = await cursor.continue();
+    }
+    return out;
+  } catch (error) {
+    console.error(`❌ photoGetMetadataByProfile failed for "${profileId}":`, error);
+    return [];
+  }
+};
+
+/**
+ * Total bytes consumed by one profile's photos.
+ * Reads the stored `size` field rather than measuring blobs.
+ */
+export const photoTotalSize = async (profileId) => {
+  const meta = await photoGetMetadataByProfile(profileId);
+  return meta.reduce((sum, p) => sum + (p.size || 0), 0);
+};
+
+export const photoDelete = async (id) => {
+  try {
+    const db = await getDB();
+    await db.delete(PHOTO_STORE, id);
+    return true;
+  } catch (error) {
+    console.error(`❌ photoDelete failed for "${id}":`, error);
+    return false;
+  }
+};
+
+/**
+ * Delete every photo attached to a symptom log.
+ * Call this whenever a log is deleted, or the photos are orphaned and keep
+ * consuming quota with nothing pointing at them.
+ */
+export const photoDeleteByLogId = async (logId) => {
+  try {
+    const db = await getDB();
+    const tx = db.transaction(PHOTO_STORE, 'readwrite');
+    const index = tx.store.index('logId');
+    let cursor = await index.openCursor(logId);
+    let deleted = 0;
+    while (cursor) {
+      await cursor.delete();
+      deleted++;
+      cursor = await cursor.continue();
+    }
+    await tx.done;
+    return deleted;
+  } catch (error) {
+    console.error(`❌ photoDeleteByLogId failed for "${logId}":`, error);
+    return 0;
+  }
+};
+
+/**
+ * Delete every photo belonging to a profile. Called on profile deletion.
+ */
+export const photoDeleteByProfile = async (profileId) => {
+  try {
+    const db = await getDB();
+    const tx = db.transaction(PHOTO_STORE, 'readwrite');
+    const index = tx.store.index('profileId');
+    let cursor = await index.openCursor(profileId);
+    let deleted = 0;
+    while (cursor) {
+      await cursor.delete();
+      deleted++;
+      cursor = await cursor.continue();
+    }
+    await tx.done;
+    return deleted;
+  } catch (error) {
+    console.error(`❌ photoDeleteByProfile failed for "${profileId}":`, error);
+    return 0;
+  }
+};
+
+/**
+ * Count of photos for a profile, without loading any records.
+ */
+export const photoCountByProfile = async (profileId) => {
+  try {
+    const db = await getDB();
+    return await db.countFromIndex(PHOTO_STORE, 'profileId', profileId);
+  } catch (error) {
+    console.error(`❌ photoCountByProfile failed for "${profileId}":`, error);
+    return 0;
   }
 };
 

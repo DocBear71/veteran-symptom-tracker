@@ -13,6 +13,7 @@ import { getActiveProfileId, getServiceConnectedConditions, getProfileById, upda
 import { getMeasurements } from './measurements';
 import { exportTextFile } from './nativeExport';
 import { cacheGet, cacheSet, cacheRemove } from './storageCache';
+import { photoDeleteByLogId } from './db';
 
 
 
@@ -95,6 +96,17 @@ export const deleteSymptomLog = (id, profileId = null) => {
   const filtered = logs.filter(log => log.id !== id);
   const key = getProfileKey('symptomTracker_logs', profileId);
   cacheSet(key, filtered);
+
+  // Photos live in a separate IndexedDB store keyed by logId, so removing the
+  // log leaves them behind: nothing points at them, no screen shows them, and
+  // they keep consuming the device's storage quota indefinitely.
+  //
+  // Fire-and-forget on purpose. Keeping this function synchronous means every
+  // existing caller gets cleanup without a signature change, and a failed
+  // cleanup leaves the data exactly as orphaned as it would have been anyway.
+  photoDeleteByLogId(id).catch(error =>
+      console.error(`❌ Failed to delete photos for log "${id}":`, error)
+  );
 };
 
 // ============================================

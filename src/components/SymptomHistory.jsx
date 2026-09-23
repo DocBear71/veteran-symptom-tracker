@@ -7,6 +7,9 @@ import AppointmentForm from './AppointmentForm';
 import AppointmentHistory from './AppointmentHistory';
 import SurgeryForm from './SurgeryForm';
 import SurgeryHistory from './SurgeryHistory';
+import LogPhotoStrip from './LogPhotoStrip';
+import { getActiveProfileId } from '../utils/profiles';
+import { photoGetMetadataByProfile } from '../utils/db';
 
 const SymptomHistory = ({ onCopyLog }) => {
   const [logs, setLogs] = useState([]);
@@ -76,11 +79,47 @@ const SymptomHistory = ({ onCopyLog }) => {
     loadLogs();
   }, [filter]);
 
+  // Which logs have photos, and how many.
+  //
+  // Loaded once for the whole profile rather than per card. The metadata query
+  // reads scalar fields only and never touches a blob, so this stays cheap
+  // even with hundreds of photos. Cards with a count of 0 skip mounting the
+  // strip entirely, which avoids one IndexedDB read per visible log.
+  const [photoCounts, setPhotoCounts] = useState({});
+
+  const loadPhotoCounts = useCallback(async () => {
+    try {
+      const profileId = getActiveProfileId();
+      if (!profileId) return;
+      const meta = await photoGetMetadataByProfile(profileId);
+      const counts = {};
+      meta.forEach(p => {
+        counts[p.logId] = (counts[p.logId] || 0) + 1;
+      });
+      setPhotoCounts(counts);
+    } catch (error) {
+      console.error('❌ Failed to load photo counts:', error);
+    }
+  }, []);
+
+  useEffect(() => {
+    loadPhotoCounts();
+  }, [loadPhotoCounts]);
+
 
   const handleDelete = (id) => {
-    if (window.confirm('Delete this entry?')) {
+    const attached = photoCounts[id] || 0;
+    const message = attached > 0
+        ? `Delete this entry and its ${attached} photo${attached === 1 ? '' : 's'}? This cannot be undone.`
+        : 'Delete this entry?';
+
+    if (window.confirm(message)) {
       deleteSymptomLog(id);
       loadLogs();
+      // deleteSymptomLog removes the photos asynchronously, so give the write
+      // a moment to land before re-reading the counts. If the strip lingers
+      // for a frame it corrects itself on the next render.
+      setTimeout(loadPhotoCounts, 150);
     }
   };
 
@@ -2923,6 +2962,13 @@ const SymptomHistory = ({ onCopyLog }) => {
 
                               {log.notes && (
                                   <p className="text-sm text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-700 p-2 rounded">{log.notes}</p>
+                              )}
+
+                              {photoCounts[log.id] > 0 && (
+                                  <LogPhotoStrip
+                                      logId={log.id}
+                                      photoCount={photoCounts[log.id]}
+                                  />
                               )}
                             </div>
 

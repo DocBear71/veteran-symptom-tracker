@@ -11,6 +11,7 @@
  */
 
 import { cacheGet, cacheRemove } from './storageCache';
+import { photoDeleteByProfile } from './db';
 
 const PROFILES_KEY = 'symptomTracker_profiles';
 const ACTIVE_PROFILE_KEY = 'symptomTracker_activeProfileId';
@@ -257,7 +258,18 @@ export const deleteProfile = (profileId) => {
 };
 
 /**
- * Delete all data associated with a profile
+ * Delete all data associated with a profile.
+ *
+ * ⚠️ WHEN YOU ADD A NEW PROFILE-SCOPED KEY, ADD IT HERE.
+ *
+ * Anything missing from this list survives profile deletion silently. There is
+ * no screen that would ever show it again and no cleanup that would find it —
+ * it just sits in IndexedDB as medical data belonging to someone the user
+ * deliberately removed. Surgeries and immunizations were both missing until
+ * this comment was written.
+ *
+ * To audit: every getProfileKey('...') call in storage.js should have a
+ * matching entry below.
  */
 const deleteProfileData = (profileId) => {
   const keysToDelete = [
@@ -268,6 +280,8 @@ const deleteProfileData = (profileId) => {
     `symptomTracker_medicationLogs_${profileId}`,
     `symptomTracker_medicationHistory_${profileId}`,
     `symptomTracker_appointments_${profileId}`,
+    `symptomTracker_surgeries_${profileId}`,
+    `symptomTracker_immunizations_${profileId}`,
     `symptomTracker_reminderSettings_${profileId}`,
     `symptomTracker_sleepApneaProfile_${profileId}`,
     `symptomTracker_weightGoal_${profileId}`,
@@ -281,6 +295,21 @@ const deleteProfileData = (profileId) => {
   keysToDelete.forEach(key => {
     cacheRemove(key);
   });
+
+  // Photos are NOT in the key-value store — they live in their own IndexedDB
+  // object store and are invisible to cacheRemove. Without this, every photo
+  // the profile ever had stays on the device forever.
+  //
+  // Fire-and-forget so this function stays synchronous for its callers. A
+  // failure here is logged and leaves the photos exactly as orphaned as they
+  // would have been without the call.
+  photoDeleteByProfile(profileId)
+  .then(count => {
+    if (count > 0) console.log(`🗑️ Removed ${count} photos for deleted profile ${profileId}`);
+  })
+  .catch(error =>
+      console.error(`❌ Failed to delete photos for profile "${profileId}":`, error)
+  );
 };
 
 /**
