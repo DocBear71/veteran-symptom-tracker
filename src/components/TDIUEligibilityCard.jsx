@@ -70,19 +70,35 @@ const TDIUEligibilityCard = () => {
               <strong className="text-gray-900 dark:text-white">Marginal employment is allowed:</strong>{' '}
                 Earnings at or below the U.S. Census Bureau poverty threshold for one
                 person (${CURRENT_POVERTY_THRESHOLD.toLocaleString()}/year, {CURRENT_POVERTY_THRESHOLD_YEAR} Census
-                thresholds) don't count as substantially gainful. VA uses the Census
-                Bureau threshold, not the HHS Poverty Guideline — these are different
-                numbers from different agencies.
+                thresholds) don't count as substantially gainful. This is <strong>earned income only</strong> —
+                VA compensation, SSDI, retirement, and investment income don't count, and neither
+                does VHA Compensated Work Therapy pay. The figure does not increase with dependents.
+                VA uses the Census threshold, not the HHS Poverty Guideline — different agencies,
+                different numbers.
                 {CURRENT_POVERTY_THRESHOLD_ALTERNATE && (
-                    <span className="block mt-1 text-xs text-gray-600 dark:text-gray-400">
-                      You may see ${CURRENT_POVERTY_THRESHOLD_ALTERNATE.toLocaleString()} quoted
-                      elsewhere. That's the Census "Under 65 years" sub-line; VA's published
-                      notices cite the "one person (unrelated individual)" line above it.
-                      Current M21-1 names neither, so if your earnings fall between the two,
-                      treat it as contested and talk to a VSO.
+                    <span className="block mt-2 pl-3 border-l-2 border-gray-400/30 text-xs text-gray-600 dark:text-gray-400">
+                      You may see ${CURRENT_POVERTY_THRESHOLD_ALTERNATE.toLocaleString()} quoted elsewhere.
+                      The Census table lists three one-person figures — over 65, under 65, and a
+                      weighted average. ${CURRENT_POVERTY_THRESHOLD_ALTERNATE.toLocaleString()} is the
+                      highest, which is why it gets quoted as a safe harbor: under it, you should
+                      qualify whichever figure applies to your circumstances.
                     </span>
                 )}
-                {' '}Reference: M21-1, Part VIII, Subpart iv, 3.A.2.c.
+                <span className="block mt-2 pl-3 border-l-2 border-teal-500/40 text-xs text-gray-600 dark:text-gray-400">
+                  <strong className="text-gray-700 dark:text-gray-300">Over by a few hundred dollars?</strong>{' '}
+                  That gap can be resolved in your favor under 38 CFR §3.102 if the record supports
+                  it — unreimbursed medical costs, ongoing supplies, or a local cost of living well
+                  above the national average. Cost of living is easiest to show in places like
+                  Hawaii, California, DC, or New York City, but it applies within a state too, like
+                  Austin or Houston compared to Waco.
+                  <span className="block mt-1">
+                    You can raise this yourself in a personal statement. A rater can argue this
+                    either way, so what's in the record decides which argument is easier to write.
+                  </span>
+                </span>
+                <span className="block mt-2 text-xs text-gray-500 dark:text-gray-500">
+                  Reference: M21-1, Part VIII, Subpart iv, 3.A.2.c; 38 CFR §3.102.
+                </span>
                 {(() => {
                   const staleness = checkThresholdStaleness();
                   if (staleness.level === 'current') return null;
@@ -104,15 +120,27 @@ const TDIUEligibilityCard = () => {
                 })()}
             </span>
             </li>
+              <li className="flex gap-2">
+                  <span className="text-teal-600 dark:text-teal-400 font-bold flex-shrink-0">•</span>
+                  <span>
+              <strong className="text-gray-900 dark:text-white">You don't have to be employed for this to matter:</strong>{' '}
+                      If the evidence shows you're capable only of marginal employment, that supports
+                IU even with no job at all, and a rating decision must address it
+                (M21-1 VIII.iv.3.A.2.d; Ortiz-Valles v. McDonald, 28 Vet.App. 65 (2016)).
+            </span>
+              </li>
             <li className="flex gap-2">
               <span className="text-teal-600 dark:text-teal-400 font-bold flex-shrink-0">•</span>
               <span>
-              <strong className="text-gray-900 dark:text-white">Sheltered & family business work:</strong>{' '}
-                Employment in a protected environment may not count as substantially
-                gainful, even when earnings exceed the threshold. <em>Cantrell v. Shulkin</em>,
-                28 Vet. App. 382 (2017), requires VA to explain its reasoning on
-                protected-environment determinations — strong evidence (employer letter,
-                accommodations documentation, attendance records) is essential.
+              <strong className="text-gray-900 dark:text-white">Earning over the threshold isn't automatically disqualifying:</strong>{' '}
+                §4.16(a) recognizes a second, <strong>independent</strong> pathway. Employment in a
+                protected environment — a family business, a sheltered workshop, or a job with
+                accommodations you wouldn't get in the open market — may not count as substantially
+                gainful even when earnings exceed the threshold. Failing the income test does not
+                close this route. <em>Cantrell v. Shulkin</em>, 28 Vet. App. 382 (2017), requires VA
+                to explain its reasoning on protected-environment determinations, so strong evidence
+                — employer letter, accommodations documentation, attendance records — is essential.
+                See M21-1, Part VIII, Subpart iv, 3.A.2.e.
             </span>
             </li>
             <li className="flex gap-2">

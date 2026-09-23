@@ -15,6 +15,8 @@ import {
   CURRENT_POVERTY_THRESHOLD,
   CURRENT_POVERTY_THRESHOLD_YEAR,
   CURRENT_POVERTY_THRESHOLD_ALTERNATE,
+  REASONABLE_DOUBT_EXPENSE_CATEGORIES,
+  REASONABLE_DOUBT_STATEMENT_GUIDANCE,
   PROTECTED_ENVIRONMENT_INDICATORS,
 } from '../utils/tdiuEligibility';
 import { getEmploymentStatus } from '../utils/profiles';
@@ -135,6 +137,7 @@ const TDIUTool = ({ embedded = false, onClose }) => {
             <WhatIsTDIU />
             <SchedularVsEmployability />
             <SubstantiallyGainfulEmployment />
+            <ReasonableDoubt />
             <MarginalEmployment />
             <PathwayAvsB />
             <WhenTDIUMightApply />
@@ -517,14 +520,92 @@ const SubstantiallyGainfulEmployment = () => (
 </Section>
 );
 
+/**
+ * Reasonable doubt — 38 CFR §3.102.
+ *
+ * Placed between the threshold explanation and marginal employment because
+ * that's where the question arises: a Veteran who just read the number and
+ * found themselves slightly over needs to know the figure isn't a wall.
+ *
+ * A VA claims adjudicator's framing: a few hundred dollars over can be
+ * addressed in the decision narrative, a few thousand cannot — and a rater
+ * "can argue for or against a grant" at that margin, which is exactly why
+ * what's in the record decides it.
+ */
+const ReasonableDoubt = () => (
+    <Section
+        title="Slightly over the threshold?"
+        summary="38 CFR §3.102 and why a few hundred dollars isn't necessarily the end of it"
+    >
+      <p>
+        The poverty threshold is a national figure. It isn't adjusted for where
+        you live, what your household looks like, or what your unavoidable
+        expenses are. A Veteran earning a few hundred dollars over it in Honolulu
+        is in a very different position from one earning the same in rural Iowa,
+        and VA has a rule for that.
+      </p>
+      <p>
+        <strong>38 CFR §3.102</strong> provides that where the evidence is in
+        approximate balance, reasonable doubt is resolved <em>in the claimant's
+        favor</em>. At a margin of a few hundred dollars, a rating decision can go
+        either way — and what's in your record decides which argument is easier
+        to write.
+      </p>
+
+      <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3 space-y-2 text-left">
+        <p className="font-semibold text-gray-900 dark:text-white">
+          What supports the argument
+        </p>
+        <ul className="ml-5 list-disc space-y-1">
+          {REASONABLE_DOUBT_EXPENSE_CATEGORIES.map(category => (
+              <li key={category.id}>
+                <strong>{category.label}</strong>
+                {category.note && (
+                    <span className="block text-xs opacity-80 mt-0.5">{category.note}</span>
+                )}
+              </li>
+          ))}
+        </ul>
+      </div>
+
+      <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3 space-y-2 text-left">
+        <p className="font-semibold text-gray-900 dark:text-white">
+          You can raise this yourself
+        </p>
+        <p className="text-sm">
+          You don't have to wait and hope a rater constructs this argument for
+          you. A personal statement submitted with your claim is part of the
+          record, and it costs nothing but the writing.
+        </p>
+        <ul className="ml-5 list-disc space-y-1">
+          {REASONABLE_DOUBT_STATEMENT_GUIDANCE.points.map((point, i) => (
+              <li key={i}>{point}</li>
+          ))}
+        </ul>
+      </div>
+
+      <p className="bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800 rounded-lg p-3 text-sm">
+        ℹ️ {REASONABLE_DOUBT_STATEMENT_GUIDANCE.raterStandardNote}
+      </p>
+
+      <p className="text-sm italic">
+        This describes how reasonable doubt can be applied, not a guarantee of how
+        it will be. A gap of a few hundred dollars is workable. A gap of several
+        thousand generally is not, and the protected-environment pathway is the
+        stronger route there.
+      </p>
+    </Section>
+);
+
 const MarginalEmployment = () => (
     <Section
         title="Marginal employment categories"
-        summary="Two ways a veteran can earn income without disqualifying TDIU"
+        summary="Two independent pathways — either one is enough"
     >
       <p>
-        Under VA's interpretation of §4.16, two categories of work are considered
-        marginal and do not count as substantially gainful:
+        Under §4.16(a), two <strong>independent</strong> pathways make employment
+        marginal. They are alternatives, not steps — failing the income test does
+        not close the second one.
       </p>
 
       <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3 space-y-1 text-left">
@@ -550,7 +631,7 @@ const MarginalEmployment = () => (
 
       <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3 space-y-2 text-left">
         <p className="font-semibold text-gray-900 dark:text-white">
-          2. Sheltered or protected work environments
+          2. Sheltered or protected work environments — regardless of income
         </p>
         <p>
           Employment in a <em>protected environment</em> — even when earnings exceed the

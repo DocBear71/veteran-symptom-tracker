@@ -8,6 +8,8 @@ import {
 import {
   analyzeMarginalEmployment,
   analyzeProtectedEnvironment,
+  REASONABLE_DOUBT_EXPENSE_CATEGORIES,
+  REASONABLE_DOUBT_STATEMENT_GUIDANCE,
   CURRENT_POVERTY_THRESHOLD,
   CURRENT_POVERTY_THRESHOLD_YEAR,
   PROTECTED_ENVIRONMENT_INDICATORS,
@@ -33,9 +35,18 @@ import EmployerLetterGenerator from './EmployerLetterGenerator';
  *
  * Regulatory anchors:
  *   - 38 CFR §4.16(a) (marginal employment, protected environment)
- *   - M21-1, Part IV, Subpart ii, 2.F.32 (Census Bureau poverty threshold)
+ *   - 38 CFR §3.102 (reasonable doubt resolved in the claimant's favor)
+ *   - 38 CFR §4.23 (standard of conduct for VA rating personnel)
+ *   - M21-1, Part VIII, Subpart iv, 3.A.2.c (marginal employment definition)
+ *     and 3.A.2.e (protected environment). NOTE: M21-1 Part IV, Subpart ii,
+ *     2.F is retired — it is a "Historical" shell with no content topics.
+ *     Do not cite it.
  *   - Cantrell v. Shulkin, 28 Vet. App. 382 (2017) (Board reasoning requirement)
+ *   - Labruzza and McBride v. McDonough, 37 Vet.App. 111 (2024) (defining a
+ *     protected environment)
  *   - Faust v. West, 13 Vet. App. 342 (2000) (income not dispositive)
+ *   - Ortiz-Valles v. McDonald, 28 Vet.App. 65 (2016) (marginal employment
+ *     applies to Veterans who are not currently employed)
  */
 const ProtectedEnvironmentTracker = ({ embedded = false, onClose }) => {
   const { profile } = useProfile();
@@ -164,7 +175,10 @@ const ProtectedEnvironmentTracker = ({ embedded = false, onClose }) => {
             <strong>When this tool is useful:</strong> You are receiving TDIU (or pursuing it), you are working, and you believe your employment is "marginal" or in a "protected environment" under VA's definitions.
           </p>
           <p className="text-xs text-blue-800 dark:text-blue-300">
-            VA looks at two pathways under §4.16(a): (1) earnings at or below the Census Bureau poverty threshold for one person, OR (2) a facts-found determination that employment is in a protected environment even if earnings exceed the threshold. This tracker addresses both.
+            VA recognizes two <em>independent</em> pathways under §4.16(a): (1) earnings at or below the Census Bureau poverty threshold for one person, OR (2) a facts-found determination — including employment in a protected environment — <strong>even when earnings exceed the threshold</strong>. Failing the income test does not close the second pathway. This tracker addresses both.
+          </p>
+          <p className="text-xs text-blue-800 dark:text-blue-300 mt-2">
+            Marginal employment is also not limited to Veterans who are currently working. If the evidence shows you are capable only of marginal employment, that supports IU even with no job at all (M21-1 VIII.iv.3.A.2.d; Ortiz-Valles v. McDonald).
           </p>
         </div>
 
@@ -210,7 +224,15 @@ const ProtectedEnvironmentTracker = ({ embedded = false, onClose }) => {
         {/* SECTION 2: MARGINAL EMPLOYMENT ANALYSIS      */}
         {/* ============================================ */}
         {employmentStatus && (
-            <MarginalAnalysisCard analysis={marginalAnalysis} />
+            <>
+              <MarginalAnalysisCard analysis={marginalAnalysis} />
+
+              {/* Shown once income is over the safe harbor — in the reasonable-
+                  doubt band it's the primary action, above it a secondary one. */}
+              {marginalAnalysis.overSafeHarbor && (
+                  <ReasonableDoubtCard analysis={marginalAnalysis} />
+              )}
+            </>
         )}
 
         {/* ============================================ */}
@@ -265,15 +287,15 @@ const ProtectedEnvironmentTracker = ({ embedded = false, onClose }) => {
         {/* FOOTER: CITATIONS & DISCLAIMER               */}
         {/* ============================================ */}
         <div className="bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-lg p-4 text-xs text-gray-600 dark:text-gray-400 space-y-2 text-left">
-          <p>
-            <strong>Regulatory anchors:</strong> 38 CFR §4.16(a); M21-1 Part IV, Subpart ii, 2.F.32.
-          </p>
-          <p>
-            <strong>Case law:</strong> Cantrell v. Shulkin, 28 Vet. App. 382 (2017); Faust v. West, 13 Vet. App. 342 (2000); Moore v. Derwinski, 1 Vet. App. 356 (1991).
-          </p>
-          <p>
-            <strong>Poverty threshold:</strong> ${CURRENT_POVERTY_THRESHOLD.toLocaleString()}/year (U.S. Census Bureau, {CURRENT_POVERTY_THRESHOLD_YEAR} data — used by VA per M21-1).
-          </p>
+            <p>
+                <strong>Regulatory anchors:</strong> 38 CFR §4.16(a); 38 CFR §3.102 (reasonable doubt); 38 CFR §4.23 (rating personnel standard of conduct); M21-1, Part VIII, Subpart iv, 3.A.2.c–f.
+            </p>
+            <p>
+                <strong>Case law:</strong> Cantrell v. Shulkin, 28 Vet. App. 382 (2017); Labruzza and McBride v. McDonough, 37 Vet.App. 111 (2024); Faust v. West, 13 Vet. App. 342 (2000); Ortiz-Valles v. McDonald, 28 Vet.App. 65 (2016); Moore v. Derwinski, 1 Vet. App. 83 (1991).
+            </p>
+            <p>
+                <strong>Poverty threshold:</strong> ${CURRENT_POVERTY_THRESHOLD.toLocaleString()}/year — U.S. Census Bureau "one person (unrelated individual)" weighted average, {CURRENT_POVERTY_THRESHOLD_YEAR} thresholds. Census publishes each year's figures the following September. M21-1 VIII.iv.3.A.2.c links to the Census table without naming a specific line; the highest one-person figure ({CURRENT_POVERTY_THRESHOLD_ALTERNATE ? `$${CURRENT_POVERTY_THRESHOLD_ALTERNATE.toLocaleString()}` : 'under 65'}) is widely quoted as a safe harbor.
+            </p>
           <p className="italic pt-1 border-t border-gray-200 dark:border-gray-700 mt-2">
             This tool does not render a determination. Protected-environment status is a facts-found determination made by the VA. Work with a Veterans Service Officer (VSO) or attorney to evaluate your specific situation.
           </p>
@@ -392,12 +414,21 @@ const MarginalAnalysisCard = ({ analysis }) => {
       title: 'Income above threshold',
       body: `Earnings of $${analysis.annualIncome?.toLocaleString()} exceed the ${analysis.thresholdYear} Census Bureau threshold of $${analysis.threshold?.toLocaleString()}. The income test alone does NOT classify this as marginal — but you may still qualify under the protected-environment pathway (see next section).`,
     },
-    // Without this key the card falls through to stateConfig['no-data'] and
-    // tells a Veteran to "add your employment status" while it's on screen.
-    'threshold-contested': {
+    // The Census table gives three figures for one person. The highest
+    // (under 65) is the practical safe harbor: under it, a Veteran qualifies
+    // whichever line their circumstances actually point to. This is the
+    // reassuring band, not the worrying one.
+    'below-safe-harbor': {
+      color: 'green',
+      title: 'Income below every one-person poverty figure',
+      body: `Earnings of $${analysis.annualIncome?.toLocaleString()} are above the ${analysis.thresholdYear} weighted-average figure ($${analysis.threshold?.toLocaleString()}) but below the highest one-person Census figure ($${analysis.thresholdSafeHarbor?.toLocaleString()}). The Census table lists three figures for a single person — over 65, under 65, and a weighted average — and you are under all of them. This should satisfy the income test regardless of your age or household. Worth confirming with a VSO, but you are not near the edge.`,
+    },
+    // Over the figures, but by an amount VA can resolve in the Veteran's
+    // favor. The useful response is documentation, not a warning.
+    'within-reasonable-doubt': {
       color: 'amber',
-      title: 'Income near the threshold — which figure applies is disputed',
-      body: `Earnings of $${analysis.annualIncome?.toLocaleString()} are above the ${analysis.thresholdYear} Census figure for one person ($${analysis.threshold?.toLocaleString()}) but below the "under 65 years" figure ($${analysis.thresholdAlternate?.toLocaleString()}) that some VA practitioners apply. Current M21-1 names neither and links only to the Census table, so this is genuinely unsettled. Document your earnings and accommodations thoroughly and have a VSO or accredited attorney review your case before filing.`,
+      title: `Income $${analysis.amountOverSafeHarbor?.toLocaleString()} over — VA can resolve this in your favor`,
+      body: `Earnings of $${analysis.annualIncome?.toLocaleString()} exceed the highest ${analysis.thresholdYear} one-person Census figure ($${analysis.thresholdSafeHarbor?.toLocaleString()}) by $${analysis.amountOverSafeHarbor?.toLocaleString()}. A gap this size is the kind VA can resolve in your favor under 38 CFR §3.102, but only if there is something in the record to support it. See the reasonable-doubt section below for what to document and how to submit it.`,
     },
   };
 
@@ -422,6 +453,67 @@ const MarginalAnalysisCard = ({ analysis }) => {
         )}
         <p className="text-xs italic mt-3 opacity-75">
           Citation: {analysis.citation}
+        </p>
+      </section>
+  );
+};
+
+/**
+ * Reasonable-doubt documentation prompt — 38 CFR §3.102.
+ *
+ * The point of this card is that the Veteran can act. A rater cannot write
+ * "this overage is inconsequential" without something in the record, and the
+ * Veteran can put that something there themselves with a personal statement.
+ * Most Veterans don't know that.
+ *
+ * Framing constraint: this reflects one adjudicator's described practice and
+ * is discretionary. Copy says what gives VA a basis, never that it will work.
+ */
+const ReasonableDoubtCard = ({ analysis }) => {
+  const inBand = analysis.state === 'within-reasonable-doubt';
+
+  return (
+      <section className="rounded-lg border border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-900/20 p-4 text-left">
+        <h3 className="text-lg font-semibold mb-1 text-blue-900 dark:text-blue-200">
+          Reasonable doubt — 38 CFR §3.102
+        </h3>
+        <p className="text-sm text-blue-900 dark:text-blue-200 mb-3">
+          {inBand
+              ? `Your earnings are $${analysis.amountOverSafeHarbor?.toLocaleString()} over the highest one-person Census figure. Where the evidence is in approximate balance, VA resolves reasonable doubt in the Veteran's favor. A gap this size can be addressed in a rating decision — but only if the record contains something to address it with.`
+              : `Your earnings are well above the one-person Census figures, so the income test alone is unlikely to establish marginal employment. The protected-environment pathway is the stronger route. The documentation below may still help if your actual financial position differs from what the income figure suggests.`}
+        </p>
+
+        <p className="text-sm font-semibold text-blue-900 dark:text-blue-200 mb-1">
+          What to document
+        </p>
+        <ul className="text-sm text-blue-900 dark:text-blue-200 space-y-1 mb-3">
+          {REASONABLE_DOUBT_EXPENSE_CATEGORIES.map(category => (
+              <li key={category.id} className="flex gap-2">
+                <span className="flex-shrink-0">•</span>
+                <span>
+                  <strong>{category.label}</strong>
+                  {category.note && (
+                      <span className="block text-xs opacity-80">{category.note}</span>
+                  )}
+                </span>
+              </li>
+          ))}
+        </ul>
+
+        <p className="text-sm font-semibold text-blue-900 dark:text-blue-200 mb-1">
+          You can submit this yourself
+        </p>
+        <ul className="text-sm text-blue-900 dark:text-blue-200 space-y-1 mb-3">
+          {REASONABLE_DOUBT_STATEMENT_GUIDANCE.points.map((point, i) => (
+              <li key={i} className="flex gap-2">
+                <span className="flex-shrink-0">•</span>
+                <span>{point}</span>
+              </li>
+          ))}
+        </ul>
+
+        <p className="text-xs text-blue-800 dark:text-blue-300 italic">
+          {REASONABLE_DOUBT_STATEMENT_GUIDANCE.raterStandardNote}
         </p>
       </section>
   );

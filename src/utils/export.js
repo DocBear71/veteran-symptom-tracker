@@ -24,6 +24,7 @@ import {
     generateFEV1TrendChart,
     generateHbA1cTrendChart
 } from './chartExport';
+import { REASONABLE_DOUBT_EXPENSE_CATEGORIES } from './tdiuEligibility';
 // Effectiveness display labels for medication export
 const EFFECTIVENESS_EXPORT_LABELS = {
   none: 'No Relief',
@@ -2578,10 +2579,21 @@ export const generateProtectedEnvironmentPDF = async ({
       margin, y, contentWidth
   );
   y = writeField(
-      doc, `${marginalAnalysis.thresholdYear} Census Bureau Poverty Threshold`,
+      doc, `${marginalAnalysis.thresholdYear} Census Poverty Threshold (one person, weighted average)`,
       `$${marginalAnalysis.threshold?.toLocaleString() || '0'} per year`,
       margin, y, contentWidth
   );
+
+  // The Census table gives three one-person figures. Showing the highest
+  // alongside the weighted average lets a reviewer see the full picture
+  // rather than wondering why the app picked one line.
+  if (marginalAnalysis.thresholdSafeHarbor) {
+    y = writeField(
+        doc, `${marginalAnalysis.thresholdYear} Census Poverty Threshold (one person, under 65)`,
+        `$${marginalAnalysis.thresholdSafeHarbor.toLocaleString()} per year - highest one-person figure`,
+        margin, y, contentWidth
+    );
+  }
 
   if (marginalAnalysis.annualIncome !== undefined) {
     y = writeField(
@@ -2597,7 +2609,29 @@ export const generateProtectedEnvironmentPDF = async ({
         'Income at or below threshold - supports marginal employment under §4.16(a) income pathway.',
         margin, y, contentWidth
     );
-  } else if (marginalAnalysis.state === 'threshold-contested') {
+  } else if (marginalAnalysis.state === 'below-safe-harbor') {
+    y = writeField(
+        doc, 'Finding',
+        `Income of $${Number(marginalAnalysis.annualIncome).toLocaleString()} exceeds the weighted-average ` +
+        `one-person threshold ($${marginalAnalysis.threshold?.toLocaleString()}) but remains below the ` +
+        `highest one-person Census figure ($${marginalAnalysis.thresholdSafeHarbor?.toLocaleString()}). ` +
+        `The Census table lists three one-person figures - over 65, under 65, and a weighted average - ` +
+        `and this income falls below all three. This supports marginal employment under the §4.16(a) ` +
+        `income pathway regardless of which figure is applied.`,
+        margin, y, contentWidth
+    );
+  } else if (marginalAnalysis.state === 'within-reasonable-doubt') {
+    y = writeField(
+        doc, 'Finding',
+        `Income of $${Number(marginalAnalysis.annualIncome).toLocaleString()} exceeds the highest one-person ` +
+        `Census figure ($${marginalAnalysis.thresholdSafeHarbor?.toLocaleString()}) by ` +
+        `$${marginalAnalysis.amountOverSafeHarbor?.toLocaleString()}. The Veteran respectfully requests that ` +
+        `reasonable doubt be resolved in their favor under 38 CFR §3.102 in light of the circumstances set ` +
+        `out in Section IIa below. The protected-environment pathway (Section III) is also raised ` +
+        `independently and does not depend on the income test.`,
+        margin, y, contentWidth
+    );
+  } else if (marginalAnalysis.state === 'above-threshold') {
       y = writeBodyText(
           doc,
           `Earned income falls between the two Census Bureau figures for a single ` +
@@ -2621,6 +2655,52 @@ export const generateProtectedEnvironmentPDF = async ({
     }
     y = writeField(doc, 'Finding', aboveText, margin, y, contentWidth);
   }
+
+    // ── Section IIa - Reasonable Doubt ──────────────────────────────────────
+    // Only when income is over the safe harbor. A rater cannot write "this
+    // overage is inconsequential" without something in the record; this section
+    // is that something, and it is addressed to the reviewer rather than to
+    // the Veteran.
+    if (marginalAnalysis.overSafeHarbor) {
+        y = writeRule(doc, y, pageWidth);
+        y = writeSectionHeader(doc,
+            'Section IIa - Reasonable Doubt Considerations (38 CFR §3.102)', y,
+            pageWidth);
+
+        doc.setFontSize(8);
+        doc.setTextColor(80);
+        const rdIntro = doc.splitTextToSize(
+            '38 CFR §3.102 provides that when the evidence is in approximate balance, reasonable doubt is ' +
+            'resolved in favor of the claimant. Census poverty thresholds are national figures and are not ' +
+            'adjusted for household composition, age, or regional cost of living. The categories below are ' +
+            'offered for consideration in assessing whether the Veteran\'s earned income reflects their ' +
+            'actual financial circumstances.',
+            contentWidth
+        );
+        doc.text(rdIntro, margin, y);
+        y += rdIntro.length * 4 + 4;
+        doc.setTextColor(60);
+
+        REASONABLE_DOUBT_EXPENSE_CATEGORIES.forEach(category => {
+            // Leave room for a wrapped entry rather than orphaning a label
+            if (y > 250) { doc.addPage(); y = 20; }
+            y = writeField(doc, category.label, category.note || '', margin, y, contentWidth);
+        });
+
+        doc.setFontSize(8);
+        doc.setTextColor(100);
+        const rdNote = doc.splitTextToSize(
+            'Note: this section identifies categories for consideration. Supporting documentation - receipts, ' +
+            'pharmacy printouts, utility statements - should be submitted separately where available. Under ' +
+            '38 CFR §4.23, VA rating personnel are held to a standard requiring fair and impartial treatment ' +
+            'of claimants.',
+            contentWidth
+        );
+        if (y > 250) { doc.addPage(); y = 20; }
+        doc.text(rdNote, margin, y);
+        y += rdNote.length * 4 + 4;
+        doc.setTextColor(60);
+    }
 
   y = writeRule(doc, y, pageWidth);
 

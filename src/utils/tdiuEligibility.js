@@ -71,17 +71,128 @@ export const POVERTY_THRESHOLDS = {
   // CURRENT_POVERTY_THRESHOLD_YEAR.
 };
 
-// The "Under 65 years" figure for the same years — NOT what VA uses, but
-// tracked deliberately.
+// The "Under 65 years" figure — the HIGHEST of the three one-person Census
+// lines, and therefore the practical SAFE HARBOR.
 //
-// Some VA practitioners apply this line instead, and there is no current M21-1
-// text naming either row (VIII.iv.3.A.2.c defers entirely to the Census page).
-// Rather than pick a side and hand a Veteran false confidence, the app treats
-// income between the two figures as contested and says so. See
-// analyzeMarginalEmployment() below.
-export const POVERTY_THRESHOLD_ALTERNATES = {
+// The Census table gives three figures for a single person: over 65, under 65,
+// and the weighted average. Practitioners quote the under-65 line not because
+// it's the operative threshold but because it's the ceiling — a Veteran under
+// it qualifies regardless of which line their actual circumstances point to.
+// That is general advice given safely, not a different reading of §4.16(a).
+//
+// This is why sources appear to conflict and don't really:
+//   • 38 CFR 4.16(a) and M21-1 VIII.iv.3.A.2.c say "the poverty threshold for
+//     one person" and name no line.
+//   • VA's Federal Register notices cite the weighted average for one person
+//     (unrelated individual) — POVERTY_THRESHOLDS above.
+//   • Practitioners quote the under-65 ceiling, because anyone under it is
+//     safe without needing a case-specific analysis.
+//
+// The app uses the weighted average as the threshold and this as the safe
+// harbor, and tells the Veteran where they sit relative to both.
+export const POVERTY_THRESHOLD_SAFE_HARBOR = {
   2024: 16320,
   2025: 16749,
+};
+
+// Kept for backward compatibility with existing imports.
+export const POVERTY_THRESHOLD_ALTERNATES = POVERTY_THRESHOLD_SAFE_HARBOR;
+
+// How far above the safe harbor still lands in "VA could reasonably resolve
+// this in your favor" territory under 38 CFR 3.102.
+//
+// ⚠️ THIS IS AN ESTIMATE, NOT A PUBLISHED FIGURE.
+//
+// A VA claims adjudicator described the practice: a few hundred dollars over
+// can be justified away in the decision narrative using utilities, groceries,
+// local cost of living against the national average, medications, and ongoing
+// supplies. "Hundreds. Yes. Now, a few thousand, no."
+//
+// Asked for a figure she confirmed: "300-500. Basically the weighted average
+// amount difference between one or the other, not the full difference between
+// the over 65 and under 65." So the margin is a few hundred dollars, NOT the
+// ~$1,300 spread between the highest and lowest one-person Census figures.
+//
+// $500 is the top of her range. Direction of error matters: too narrow points
+// a Veteran toward the facts-found prong, which is sound advice regardless.
+// Too wide tells someone a gap is workable when their rater disagrees.
+//
+// $500 is the ONLY place to change this.
+//
+// Nothing here adjusts the threshold itself. §4.16(a) uses the one-person
+// figure regardless of household size, age, or geography. Those factors belong
+// in a reasonable-doubt narrative, which is a matter of evidence rather than
+// arithmetic — which is exactly why the app prompts for documentation instead
+// of computing an adjusted number.
+export const REASONABLE_DOUBT_MARGIN = 500;
+
+/**
+ * Expense categories that support a 38 CFR 3.102 reasonable-doubt narrative
+ * when earned income sits modestly above the poverty threshold.
+ *
+ * A rater cannot write "the $400 overage is inconsequential" out of thin air.
+ * They need something in the record. A Veteran who documents these hands them
+ * the material; a Veteran who documents nothing gives them no basis at all.
+ *
+ * Sourced from a VA claims adjudicator describing her own practice. This is
+ * DISCRETIONARY — another rater may not do it. Copy built on this list must
+ * say "this is what gives VA a basis," never "this will work."
+ */
+export const REASONABLE_DOUBT_EXPENSE_CATEGORIES = [
+  {
+    id: 'medical-costs',
+    label: 'Unreimbursed medical and medication costs',
+    note: 'Out-of-pocket amounts not covered by VA or insurance.',
+  },
+  {
+    id: 'ongoing-supplies',
+    label: 'Ongoing supplies',
+    note: 'Incontinence supplies, wound care, mobility equipment, and similar recurring costs tied to service-connected conditions.',
+  },
+  {
+    id: 'utilities',
+    label: 'Utilities',
+    note: 'Particularly where a service-connected condition drives usage, such as climate control for temperature intolerance.',
+  },
+  {
+    id: 'groceries',
+    label: 'Groceries and required diet costs',
+    note: 'Including any medically necessary diet that costs more than an ordinary one.',
+  },
+  {
+    id: 'cost-of-living',
+    label: 'Local cost of living vs. the national average',
+    note: 'Census poverty thresholds are national and are NOT adjusted for geography. A Veteran in a high-cost area is measured against the same figure as one in a low-cost area. This is easiest to establish where local costs diverge sharply from the national average — Hawaii, California, Washington DC, New York City — but it also applies within a state, such as Austin or Houston compared to Waco. Regional price data from the Bureau of Economic Analysis or a local cost-of-living index supports the point.',
+  },
+];
+
+/**
+ * How a Veteran actually gets a reasonable-doubt argument in front of a rater.
+ *
+ * This is the part most Veterans don't know: they don't have to wait and hope
+ * the rater constructs this themselves. Per a VA adjudicator — "a veteran can
+ * write in their statements anything they feel is relevant to their claim,
+ * extenuating circumstances and ask for decision makers to carefully consider
+ * resolving any doubt in the Veteran's favor."
+ *
+ * A rater cannot write "the $400 overage is inconsequential" out of nothing.
+ * They need something in the record. A personal statement IS something in the
+ * record, and it costs the Veteran nothing but the writing.
+ */
+export const REASONABLE_DOUBT_STATEMENT_GUIDANCE = {
+  citation: '38 CFR §3.102; 38 CFR §4.23',
+  points: [
+    'You can submit a personal statement with your claim describing circumstances you believe are relevant. You do not need a representative to do this for you.',
+    'State the specific amount your earned income exceeds the poverty threshold, and why that amount does not reflect your actual financial position.',
+    'Describe the recurring costs above — medical, supplies, utilities, groceries — with real figures wherever you have them.',
+    'If you live somewhere more expensive than the national average, say so. The Census threshold is a national figure and is not adjusted for where you live.',
+    'Ask directly that any reasonable doubt be resolved in your favor under 38 CFR §3.102.',
+    'Keep it factual. Receipts, statements, and pharmacy printouts carry more weight than estimates.',
+  ],
+  // 4.23 is worth naming because most Veterans have never heard of it and it
+  // answers the unspoken question: will a rater actually bother?
+  raterStandardNote:
+      'Under 38 CFR §4.23, VA rating personnel are held to a standard of conduct requiring fair and impartial treatment of claimants. Asking for reasonable doubt to be applied is a normal part of the process, not an imposition.',
 };
 
 // M21-1, Part VIII, Subpart iv, 3.A.2.c: amounts received from participation in
@@ -110,14 +221,20 @@ export const CURRENT_POVERTY_THRESHOLD_ALTERNATE =
  * @returns {{ value: number, year: number, isFallback: boolean }}
  */
 export const getPovertyThreshold = (year) => {
-  // `alternate` is the under-65 figure for the same year, or null when we
-  // don't have one. Callers use it to detect the contested band.
-  const build = (y, isFallback) => ({
-    value: POVERTY_THRESHOLDS[y],
-    year: y,
-    isFallback,
-    alternate: POVERTY_THRESHOLD_ALTERNATES[y] ?? null,
-  });
+  // `value`      — the weighted-average one-person threshold VA's notices cite
+  // `safeHarbor` — the highest one-person figure (under 65); under it, a
+  //                Veteran qualifies regardless of circumstances
+  // `alternate`  — same as safeHarbor, kept for existing callers
+  const build = (y, isFallback) => {
+    const safeHarbor = POVERTY_THRESHOLD_SAFE_HARBOR[y] ?? null;
+    return {
+      value: POVERTY_THRESHOLDS[y],
+      year: y,
+      isFallback,
+      safeHarbor,
+      alternate: safeHarbor,
+    };
+  };
 
   if (POVERTY_THRESHOLDS[year] !== undefined) {
     return build(year, false);
@@ -128,7 +245,7 @@ export const getPovertyThreshold = (year) => {
   // lexicographically, which breaks the moment a year crosses a digit boundary.
   const availableYears = Object.keys(POVERTY_THRESHOLDS).map(Number).sort((a, b) => a - b);
   if (!availableYears.length) {
-    return { value: 0, year: 0, isFallback: true, alternate: null };
+    return { value: 0, year: 0, isFallback: true, safeHarbor: null, alternate: null };
   }
 
   // Future year (not yet published) → use most recent.
@@ -384,15 +501,32 @@ export const analyzeMarginalEmployment = (employmentStatus, options = {}) => {
   // income == threshold is still marginal.
   const overThreshold = annualIncome > threshold.value;
 
-  // Contested band: above the one-person figure VA's own notices cite, but not
-  // above the under-65 figure some practitioners apply. A Veteran in this band
-  // gets told they're near the line and which figure applies is disputed —
-  // which is true, and more useful than a confident answer that might be wrong.
-  const alternate = threshold.alternate;
-  const definitelyOverThreshold = alternate !== null
-      ? annualIncome > alternate
+  // Four bands, not two. Where a Veteran sits relative to BOTH the weighted
+  // average and the safe harbor changes what's useful to tell them:
+  //
+  //   ≤ weighted average          satisfies the income test under any reading
+  //   ≤ safe harbor               under every one-person figure; should qualify
+  //                               regardless of age or household composition
+  //   ≤ safe harbor + margin      over, but by an amount VA can resolve in the
+  //                               Veteran's favor under 3.102 — documentable
+  //   beyond that                 income test alone won't carry it; the
+  //                               facts-found prong is the better route
+  const safeHarbor = threshold.safeHarbor;
+  const overSafeHarbor = safeHarbor !== null
+      ? annualIncome > safeHarbor
       : overThreshold;
-  const inContestedBand = overThreshold && !definitelyOverThreshold;
+
+  const amountOverSafeHarbor = overSafeHarbor && safeHarbor !== null
+      ? annualIncome - safeHarbor
+      : 0;
+
+  const withinReasonableDoubt =
+      overSafeHarbor && safeHarbor !== null &&
+      amountOverSafeHarbor <= REASONABLE_DOUBT_MARGIN;
+
+  // Kept for existing callers written against the old two-state shape
+  const definitelyOverThreshold = overSafeHarbor;
+  const inContestedBand = overThreshold && !overSafeHarbor;
 
   // Track how long the veteran has been over threshold — relevant for the
   // ~12-month review window where VA may send VA Form 21-4140.
@@ -407,25 +541,47 @@ export const analyzeMarginalEmployment = (employmentStatus, options = {}) => {
     }
   }
 
+  // FOUR states. Every consumer that switches on `state` needs a case for
+  // 'below-safe-harbor' and 'within-reasonable-doubt' or they fall through to
+  // a default branch and render something wrong.
+  let state;
+  if (!overThreshold) {
+    state = 'below-threshold';
+  } else if (!overSafeHarbor) {
+    state = 'below-safe-harbor';
+  } else if (withinReasonableDoubt) {
+    state = 'within-reasonable-doubt';
+  } else {
+    state = 'above-threshold';
+  }
+
   return {
-    // Three states now. 'threshold-contested' is new — the UI needs a case
-    // for it or it will fall through to whatever the default branch renders.
-    state: inContestedBand
-        ? 'threshold-contested'
-        : overThreshold ? 'above-threshold' : 'below-threshold',
+    state,
     annualIncome,
     threshold: threshold.value,
     thresholdYear: threshold.year,
     thresholdIsFallback: threshold.isFallback,
-    thresholdAlternate: alternate,
+    thresholdSafeHarbor: safeHarbor,
+    thresholdAlternate: safeHarbor, // legacy alias
     overThreshold,
-    definitelyOverThreshold,
-    inContestedBand,
+    overSafeHarbor,
+    amountOverSafeHarbor,
+    withinReasonableDoubt,
+    reasonableDoubtMargin: REASONABLE_DOUBT_MARGIN,
+    definitelyOverThreshold, // legacy alias
+    inContestedBand,         // legacy alias
     monthsOverThreshold,
     // Flag the ~12-month review window
     nearReviewWindow: monthsOverThreshold !== null && monthsOverThreshold >= 9,
     pastReviewWindow: monthsOverThreshold !== null && monthsOverThreshold >= 12,
-    citation: '38 CFR §4.16(a)',
+    // 3.102 matters here as much as 4.16 — it's what lets a rater resolve a
+    // modest overage in the Veteran's favor. 4.23 is the rater conduct
+    // standard that makes asking for it a normal request rather than a favor.
+    citation: withinReasonableDoubt
+        ? '38 CFR §4.16(a); 38 CFR §3.102; 38 CFR §4.23'
+        : overSafeHarbor
+            ? '38 CFR §4.16(a); 38 CFR §3.102'
+            : '38 CFR §4.16(a)',
   };
 };
 

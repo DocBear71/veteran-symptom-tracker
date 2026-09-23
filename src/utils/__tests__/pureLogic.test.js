@@ -20,6 +20,8 @@ import {
   getPovertyThreshold,
   POVERTY_THRESHOLDS,
   CURRENT_POVERTY_THRESHOLD_YEAR,
+  REASONABLE_DOUBT_MARGIN,
+  POVERTY_THRESHOLD_SAFE_HARBOR,
   analyzeMarginalEmployment,
 } from '../tdiuEligibility';
 
@@ -224,38 +226,111 @@ describe('analyzeMarginalEmployment', () => {
     expect(result.state).toBe('above-threshold');
   });
 
-    it('returns threshold-contested when income falls between the two Census figures', () => {
-        // 2024: one-person $15,940, under-65 $16,320. Income between them is
-        // above the figure VA's notices cite but below the one some practitioners
-        // use, so the app must not assert either answer.
+    // ── The four bands ────────────────────────────────────────────────────
+    //
+    // 2024 reference year: weighted average $15,940, safe harbor (under 65)
+    // $16,320, reasonable-doubt margin $500 → $16,820.
+    //
+    //   ≤ 15,940            below-threshold
+    //   15,941 – 16,320     below-safe-harbor
+    //   16,321 – 16,820     within-reasonable-doubt
+    //   ≥ 16,821            above-threshold
+    //
+    // Boundaries are tested on both sides, because off-by-one here decides
+    // which message a real Veteran sees about their own income.
+
+    it('returns below-safe-harbor between the weighted average and the safe harbor', () => {
         const result = analyzeMarginalEmployment(
             { currentlyEmployed: true, annualIncome: 16100 },
             { referenceYear: 2024 }
         );
-        expect(result.state).toBe('threshold-contested');
+        expect(result.state).toBe('below-safe-harbor');
         expect(result.overThreshold).toBe(true);
-        expect(result.definitelyOverThreshold).toBe(false);
-        expect(result.thresholdAlternate).toBe(16320);
+        expect(result.overSafeHarbor).toBe(false);
+        expect(result.thresholdSafeHarbor).toBe(16320);
     });
 
-    it('returns above-threshold when income exceeds BOTH Census figures', () => {
+    it('treats income exactly AT the safe harbor as below-safe-harbor', () => {
+        // §4.16(a) reads "does not exceed" — at the figure is still under it.
+        const result = analyzeMarginalEmployment(
+            { currentlyEmployed: true, annualIncome: 16320 },
+            { referenceYear: 2024 }
+        );
+        expect(result.state).toBe('below-safe-harbor');
+        expect(result.overSafeHarbor).toBe(false);
+    });
+
+    it('returns within-reasonable-doubt just above the safe harbor', () => {
+        // $180 over. A rater can justify this away in the decision narrative
+        // under 3.102; the app should say so and prompt for documentation.
         const result = analyzeMarginalEmployment(
             { currentlyEmployed: true, annualIncome: 16500 },
             { referenceYear: 2024 }
         );
-        expect(result.state).toBe('above-threshold');
-        expect(result.definitelyOverThreshold).toBe(true);
+        expect(result.state).toBe('within-reasonable-doubt');
+        expect(result.overSafeHarbor).toBe(true);
+        expect(result.amountOverSafeHarbor).toBe(180);
+        expect(result.withinReasonableDoubt).toBe(true);
+        expect(result.citation).toContain('3.102');
     });
 
-    it('falls back to a binary result for years with no alternate figure', () => {
-        // 2022 has no under-65 entry in POVERTY_THRESHOLD_ALTERNATES, so there is
-        // no contested band and the old two-state behavior must still hold.
+    it('includes the reasonable-doubt band at exactly the margin', () => {
+        // 16320 + 500 = 16820, the last dollar inside the band.
+        const result = analyzeMarginalEmployment(
+            { currentlyEmployed: true, annualIncome: 16820 },
+            { referenceYear: 2024 }
+        );
+        expect(result.state).toBe('within-reasonable-doubt');
+        expect(result.amountOverSafeHarbor).toBe(500);
+    });
+
+    it('returns above-threshold one dollar past the reasonable-doubt margin', () => {
+        const result = analyzeMarginalEmployment(
+            { currentlyEmployed: true, annualIncome: 16821 },
+            { referenceYear: 2024 }
+        );
+        expect(result.state).toBe('above-threshold');
+        expect(result.withinReasonableDoubt).toBe(false);
+    });
+
+    it('returns above-threshold for income well past every figure', () => {
+        const result = analyzeMarginalEmployment(
+            { currentlyEmployed: true, annualIncome: 50000 },
+            { referenceYear: 2024 }
+        );
+        expect(result.state).toBe('above-threshold');
+        expect(result.overSafeHarbor).toBe(true);
+    });
+
+    it('falls back to two states for years with no safe-harbor figure', () => {
+        // 2022 has no under-65 entry, so there is no safe harbor and no
+        // reasonable-doubt band — the original binary behavior must still hold.
         const result = analyzeMarginalEmployment(
             { currentlyEmployed: true, annualIncome: 15000 },
             { referenceYear: 2022 }
         );
         expect(result.state).toBe('above-threshold');
-        expect(result.thresholdAlternate).toBe(null);
+        expect(result.thresholdSafeHarbor).toBe(null);
+    });
+
+    it('keeps the legacy field names working for existing consumers', () => {
+        // ProtectedEnvironmentTracker and export.js still read these. They must
+        // not go undefined while those files are being updated.
+        const result = analyzeMarginalEmployment(
+            { currentlyEmployed: true, annualIncome: 16100 },
+            { referenceYear: 2024 }
+        );
+        expect(result.thresholdAlternate).toBe(result.thresholdSafeHarbor);
+        expect(result.definitelyOverThreshold).toBe(result.overSafeHarbor);
+        expect(typeof result.inContestedBand).toBe('boolean');
+    });
+
+    it('exposes the reasonable-doubt margin so the UI can explain the band', () => {
+        const result = analyzeMarginalEmployment(
+            { currentlyEmployed: true, annualIncome: 16500 },
+            { referenceYear: 2024 }
+        );
+        expect(result.reasonableDoubtMargin).toBe(REASONABLE_DOUBT_MARGIN);
     });
 
   it('uses the correct threshold for a specific reference year', () => {
@@ -267,6 +342,40 @@ describe('analyzeMarginalEmployment', () => {
     expect(result.state).toBe('above-threshold');
     expect(result.thresholdYear).toBe(2022);
   });
+});
+
+// ============================================================================
+// SECTION 4b — poverty threshold data integrity
+// ============================================================================
+
+describe('poverty threshold data integrity', () => {
+    it('safe harbor is always ABOVE the weighted average for the same year', () => {
+        // The under-65 figure is the highest of the three one-person Census lines.
+        // If this ever inverts, someone pasted the wrong column and the bands
+        // would silently reorder — a Veteran could be told they're over a figure
+        // that's actually lower than the one they're under.
+        Object.keys(POVERTY_THRESHOLD_SAFE_HARBOR).forEach(year => {
+            const weighted = POVERTY_THRESHOLDS[year];
+            const harbor = POVERTY_THRESHOLD_SAFE_HARBOR[year];
+            expect(weighted).toBeDefined();
+            expect(harbor).toBeGreaterThan(weighted);
+        });
+    });
+
+    it('every safe-harbor year exists in the main threshold map', () => {
+        Object.keys(POVERTY_THRESHOLD_SAFE_HARBOR).forEach(year => {
+            expect(POVERTY_THRESHOLDS[year]).toBeDefined();
+        });
+    });
+
+    it('the reasonable-doubt margin is hundreds, not thousands', () => {
+        // A VA adjudicator's own line: a few hundred dollars over can be
+        // justified in the decision narrative, a few thousand cannot. If this
+        // constant ever grows past a thousand, the app would start telling
+        // Veterans a gap is workable when it isn't.
+        expect(REASONABLE_DOUBT_MARGIN).toBeGreaterThan(0);
+        expect(REASONABLE_DOUBT_MARGIN).toBeLessThan(1000);
+    });
 });
 
 // ============================================================================
