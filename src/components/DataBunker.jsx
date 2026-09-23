@@ -83,6 +83,7 @@ export default function DataBunker() {
         measurements:       cacheGet(`symptomTracker_measurements_${pid}`) || [],
         appointments:       cacheGet(`symptomTracker_appointments_${pid}`) || [],
         surgeries:          cacheGet(`symptomTracker_surgeries_${pid}`) || [],
+        immunizations:      cacheGet(`symptomTracker_immunizations_${pid}`) || [],
         reminderSettings:   cacheGet(`symptomTracker_reminderSettings_${pid}`) || {},
         worksheet8940:      cacheGet(`symptomTracker_8940worksheet_${pid}`) || null,
         weightGoal:         cacheGet(`symptomTracker_weightGoal_${pid}`) || null,
@@ -103,9 +104,11 @@ export default function DataBunker() {
     const activeProfileData = profilesData[activeProfileId] || {};
 
     const data = {
-      version: '2.3',
+      // Bumped 2.3 → 2.4: adds the immunizations array to profilesData.
+      // Any version listed in HYBRID_RESTORE_VERSIONS below restores fully.
+      version: '2.4',
       exportDate: new Date().toISOString(),
-      appVersion: '3.8.0',
+      appVersion: '',
       activeProfileId,
       // Complete snapshot — all keys from cache + localStorage
       rawData: allData,
@@ -244,10 +247,17 @@ export default function DataBunker() {
           }
         };
 
-        // VERSION 2.1 format — hybrid restore:
+        // VERSION 2.1+ format — hybrid restore:
         // • active profile's large arrays come from 'data' (full IDB-sourced copy)
         // • all other profiles + global keys come from rawData
-        if (imported.data && (imported.version === '2.1' || imported.version === '2.2')) {
+        //
+        // Keep this list in sync with the `version` written by the export above.
+        // A backup whose version is missing here falls through to the rawData-only
+        // branch and silently skips Steps 2 and 3 — which is what happened to
+        // every 2.3 backup before this list existed.
+        const HYBRID_RESTORE_VERSIONS = new Set(['2.1', '2.2', '2.3', '2.4']);
+
+        if (imported.data && HYBRID_RESTORE_VERSIONS.has(imported.version)) {
           const { data } = imported;
           const profileId = imported.activeProfileId
               || localStorage.getItem('symptomTracker_activeProfileId')
@@ -303,6 +313,9 @@ export default function DataBunker() {
             writePromises.push(cacheSet(`symptomTracker_appointments_${profileId}`, data.appointments));
           if (data.surgeries)
             writePromises.push(cacheSet(`symptomTracker_surgeries_${profileId}`, data.surgeries));
+          // Absent in backups made before 2.4 — the guard lets those restore cleanly
+          if (data.immunizations)
+            writePromises.push(cacheSet(`symptomTracker_immunizations_${profileId}`, data.immunizations));
           if (data.reminderSettings)
             writePromises.push(cacheSet(`symptomTracker_reminderSettings_${profileId}`, data.reminderSettings));
           if (data.worksheet8940)
@@ -330,6 +343,7 @@ export default function DataBunker() {
                 ['symptomTracker_measurements',      pdata.measurements],
                 ['symptomTracker_appointments',      pdata.appointments],
                 ['symptomTracker_surgeries',         pdata.surgeries],
+                ['symptomTracker_immunizations',     pdata.immunizations],
                 ['symptomTracker_reminderSettings',  pdata.reminderSettings],
                 ['symptomTracker_8940worksheet',     pdata.worksheet8940],
                 ['symptomTracker_weightGoal',        pdata.weightGoal],

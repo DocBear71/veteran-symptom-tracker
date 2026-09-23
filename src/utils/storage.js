@@ -14,6 +14,20 @@ import { getMeasurements } from './measurements';
 import { exportTextFile } from './nativeExport';
 import { cacheGet, cacheSet, cacheRemove } from './storageCache';
 
+
+
+// Vaccine name matching lives in vaccineName.js so the parser and storage
+// share one implementation.
+//
+// Two statements, not one. `export ... from` is a pass-through: it makes the
+// names available to other modules but does NOT bind them in this file's
+// scope, so functions below that call getImmunizationMatchKey would throw.
+// The import binds them here; the export keeps existing imports from
+// storage.js working.
+import { normalizeVaccineName, getImmunizationMatchKey } from './vaccineName';
+export { normalizeVaccineName, getImmunizationMatchKey };
+
+
 /**
  * Get profile-namespaced storage key
  */
@@ -628,6 +642,270 @@ export const deleteSurgery = (id, profileId = null) => {
 };
 
 // ============================================
+// IMMUNIZATIONS / VACCINES
+// ============================================
+
+/**
+ * Where a vaccine record came from.
+ *   VA_IMPORT — parsed out of a VA Blue Button file
+ *   MANUAL    — entered by the Veteran: pharmacy, county clinic, employer,
+ *               travel clinic, or typed off a paper shot record (DD 2766)
+ */
+export const IMMUNIZATION_SOURCES = {
+    VA_IMPORT: 'va-import',
+    MANUAL: 'manual',
+};
+
+/**
+ * Who physically administered the shot. Separate from `source` on purpose:
+ * a military-era shot typed off a paper DD 2766 has source MANUAL but
+ * administeredBy MILITARY, and that distinction matters for a claim.
+ */
+export const IMMUNIZATION_ADMINISTERED_BY = {
+    VA:       'va',
+    MILITARY: 'military',
+    PHARMACY: 'pharmacy',
+    CIVILIAN: 'civilian',
+    EMPLOYER: 'employer',
+    OTHER:    'other',
+};
+
+/**
+ * Read all immunizations, newest administration date first.
+ */
+export const getImmunizations = (profileId = null) => {
+    try {
+        const key = getProfileKey('symptomTracker_immunizations', profileId);
+        const immunizations = cacheGet(key);
+        if (!Array.isArray(immunizations)) return [];
+        return immunizations.slice().sort((a, b) => {
+            const dateA = new Date(a.vaccineDate || a.createdAt || 0);
+            const dateB = new Date(b.vaccineDate || b.createdAt || 0);
+            return dateB - dateA;
+        });
+    } catch (error) {
+        console.error('Error reading immunizations:', error);
+        return [];
+    }
+};
+
+/**
+ * Create a new immunization record.
+ *
+ * Record shape:
+ * {
+ *   id, vaccineName, vaccineDate ('YYYY-MM-DD'),
+ *   doseNumber, seriesTotal,        // "3 of 6" for an anthrax series
+ *   lotNumber, manufacturer, site, route,
+ *   facility, provider, administeredBy,
+ *   reaction: { occurred, severity, description, onsetDate, symptomLogId },
+ *   notes, source, edited, vaConfirmed, originalImport,
+ *   importedAt, createdAt, updatedAt
+ * }
+ */
+export const saveImmunization = (immunization, profileId = null) => {
+    try {
+        const immunizations = getImmunizations(profileId);
+        const now = new Date().toISOString();
+
+        const newRecord = {
+            // Defaults first so a caller passing a partial object still gets a
+            // well-formed record. Spread of the caller's data overrides these.
+            vaccineName:    '',
+            vaccineDate:    null,
+            doseNumber:     null,
+            seriesTotal:    null,
+            lotNumber:      '',
+            manufacturer:   '',
+            site:           '',
+            route:          '',
+            facility:       '',
+            provider:       '',
+            administeredBy: IMMUNIZATION_ADMINISTERED_BY.OTHER,
+            notes:          '',
+            source:         IMMUNIZATION_SOURCES.MANUAL,
+            ...immunization,
+            // These are ours to control regardless of what was passed in
+            id:        immunization.id || crypto.randomUUID(),
+            reaction:  immunization.reaction || {
+                occurred:     false,
+                severity:     null,
+                description:  '',
+                onsetDate:    null,
+                symptomLogId: null,
+            },
+            createdAt: immunization.createdAt || now,
+            updatedAt: now,
+        };
+
+        immunizations.unshift(newRecord);
+        const key = getProfileKey('symptomTracker_immunizations', profileId);
+        cacheSet(key, immunizations);
+        return newRecord;
+    } catch (error) {
+        console.error('Error saving immunization:', error);
+        return null;
+    }
+};
+
+/**
+ * Update an immunization.
+ *
+ * The first time a VA-imported record is hand-edited we snapshot the original
+ * values into `originalImport` and set `edited: true`. The PDF export needs to
+ * be able to mark a record as user-modified rather than presenting altered
+ * data as verbatim VA data — that distinction protects the Veteran if a
+ * reviewer ever compares the export against the VA's own file.
+ */
+export const updateImmunization = (id, updates, profileId = null) => {
+    try {
+        const immunizations = getImmunizations(profileId);
+        const index = immunizations.findIndex(i => i.id === id);
+        if (index === -1) return null;
+
+        const existing = immunizations[index];
+        const isVaRecord = existing.source === IMMUNIZATION_SOURCES.VA_IMPORT;
+
+        let originalImport = existing.originalImport || null;
+        if (isVaRecord && !originalImport) {
+            // Snapshot everything except bookkeeping fields
+            const {
+                id: _id,
+                originalImport: _oi,
+                edited: _ed,
+                updatedAt: _ua,
+                ...snapshot
+            } = existing;
+            originalImport = snapshot;
+        }
+
+        immunizations[index] = {
+            ...existing,
+            ...updates,
+            // Identity and provenance are not user-editable
+            id:             existing.id,
+            source:         existing.source,
+            createdAt:      existing.createdAt,
+            originalImport,
+            edited:         isVaRecord ? true : (existing.edited || false),
+            updatedAt:      new Date().toISOString(),
+        };
+
+        const key = getProfileKey('symptomTracker_immunizations', profileId);
+        cacheSet(key, immunizations);
+        return immunizations[index];
+    } catch (error) {
+        console.error('Error updating immunization:', error);
+        return null;
+    }
+};
+
+export const deleteImmunization = (id, profileId = null) => {
+    try {
+        const immunizations = getImmunizations(profileId);
+        const filtered = immunizations.filter(i => i.id !== id);
+        const key = getProfileKey('symptomTracker_immunizations', profileId);
+        cacheSet(key, filtered);
+        return true;
+    } catch (error) {
+        console.error('Error deleting immunization:', error);
+        return false;
+    }
+};
+
+/**
+ * Find an existing record matching a name + date. Used by the Blue Button
+ * wizard's conflict detection before the user ever sees the preview screen.
+ */
+export const findImmunizationMatch = (vaccineName, vaccineDate, profileId = null) => {
+    const matchKey = getImmunizationMatchKey(vaccineName, vaccineDate);
+    return getImmunizations(profileId).find(
+        i => getImmunizationMatchKey(i.vaccineName, i.vaccineDate) === matchKey
+    ) || null;
+};
+
+/**
+ * Write one Blue Button vaccine record, merging instead of duplicating.
+ *
+ * Rules, in order:
+ *   1. No match  → create a new record tagged VA_IMPORT.
+ *   2. Match on a MANUAL record → do NOT duplicate. Flag it `vaConfirmed`
+ *      so the Veteran can see the VA also has this one, and fill blanks.
+ *   3. Match on a VA_IMPORT record → fill blank fields only. Never overwrite
+ *      anything the user typed, and never touch notes or reaction data.
+ *
+ * Returns { action: 'created' | 'merged' | 'confirmed' | 'unchanged', record }
+ */
+export const upsertImportedImmunization = (record, profileId = null) => {
+    try {
+        const immunizations = getImmunizations(profileId);
+        const matchKey = getImmunizationMatchKey(record.vaccineName, record.vaccineDate);
+        const index = immunizations.findIndex(
+            i => getImmunizationMatchKey(i.vaccineName, i.vaccineDate) === matchKey
+        );
+
+        // Case 1 — brand new
+        if (index === -1) {
+            const saved = saveImmunization({
+                ...record,
+                source:         IMMUNIZATION_SOURCES.VA_IMPORT,
+                administeredBy: record.administeredBy || IMMUNIZATION_ADMINISTERED_BY.VA,
+                importedAt:     new Date().toISOString(),
+            }, profileId);
+            return { action: 'created', record: saved };
+        }
+
+        const existing = immunizations[index];
+
+        // Fill blanks only. Anything already populated stays as-is.
+        // notes and reaction are deliberately absent from this list — those are
+        // the Veteran's own words and the VA file has no business overwriting them.
+        const FILLABLE_FIELDS = [
+            'lotNumber', 'manufacturer', 'site', 'route',
+            'facility', 'provider', 'doseNumber', 'seriesTotal',
+        ];
+
+        const isBlank = (v) => v === undefined || v === null || v === '';
+
+        const filled = {};
+        FILLABLE_FIELDS.forEach(field => {
+            if (isBlank(existing[field]) && !isBlank(record[field])) {
+                filled[field] = record[field];
+            }
+        });
+
+        // Case 2 — VA file confirms a record the Veteran entered by hand
+        const wasManual = existing.source === IMMUNIZATION_SOURCES.MANUAL;
+        const vaConfirmed = wasManual ? true : (existing.vaConfirmed || false);
+        const newlyConfirmed = wasManual && !existing.vaConfirmed;
+
+        // Case 3 — nothing to do
+        if (Object.keys(filled).length === 0 && !newlyConfirmed) {
+            return { action: 'unchanged', record: existing };
+        }
+
+        immunizations[index] = {
+            ...existing,
+            ...filled,
+            vaConfirmed,
+            lastImportMatchAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+        };
+
+        const key = getProfileKey('symptomTracker_immunizations', profileId);
+        cacheSet(key, immunizations);
+
+        return {
+            action: newlyConfirmed ? 'confirmed' : 'merged',
+            record: immunizations[index],
+        };
+    } catch (error) {
+        console.error('Error upserting imported immunization:', error);
+        return { action: 'error', record: null };
+    }
+};
+
+// ============================================
 // SLEEP APNEA PROFILE
 // ============================================
 
@@ -669,6 +947,7 @@ export const getDataStats = (profileId = null) => {
   const chronicSymptoms = getChronicSymptoms(profileId);
   const appointments = getAppointments(profileId);
   const surgeries = getSurgeries(profileId);
+  const immunizations = getImmunizations(profileId);
 
   let measurements = 0;
   try {
@@ -684,6 +963,7 @@ export const getDataStats = (profileId = null) => {
     chronicSymptoms: chronicSymptoms.length,
     appointments: appointments.length,
     surgeries: surgeries.length,
+    immunizations: immunizations.length,
     measurements,
   };
 };
@@ -725,7 +1005,9 @@ export const exportAllData = async (profileId = null) => {
   const activeId = profileId || getActiveProfileId();
 
   const data = {
-    version: '1.4',
+    // Bumped 1.4 → 1.5: adds the immunizations array.
+    // Older 1.4 backups restore fine; they just have no immunizations key.
+    version: '1.5',
     profileId: activeId,
     exportedAt: new Date().toISOString(),
     symptomLogs: getSymptomLogs(activeId),
@@ -736,6 +1018,7 @@ export const exportAllData = async (profileId = null) => {
     medicationHistory: getMedicationHistory(activeId),
     appointments: getAppointments(activeId),
     surgeries: getSurgeries(activeId),
+    immunizations: getImmunizations(activeId),
     serviceConnected: activeId ? getServiceConnectedConditions(activeId) : [],
     reminderSettings: getReminderSettings(activeId),
     profile: null,
@@ -870,6 +1153,10 @@ export const importAllData = (jsonData, options = { merge: false }, profileId = 
       if (data.surgeries) {
         cacheSet(getProfileKey('symptomTracker_surgeries', activeId), data.surgeries);
       }
+      // Absent in backups from before v1.5 — guarded so older files restore cleanly
+      if (Array.isArray(data.immunizations)) {
+        cacheSet(getProfileKey('symptomTracker_immunizations', activeId), data.immunizations);
+      }
       if (data.serviceConnected && data.serviceConnected.length > 0) {
         const profile = getProfileById(activeId);
         if (profile) {
@@ -956,6 +1243,7 @@ export const clearAllData = (profileId = null) => {
   cacheRemove(getProfileKey('symptomTracker_medicationLogs', activeId));
   cacheRemove(getProfileKey('symptomTracker_appointments', activeId));
   cacheRemove(getProfileKey('symptomTracker_surgeries', activeId));
+  cacheRemove(getProfileKey('symptomTracker_immunizations', activeId));
   cacheRemove(getProfileKey('symptomTracker_reminderSettings', activeId));
   cacheRemove(getProfileKey('symptomTracker_sleepApneaProfile', activeId));
   cacheRemove(getProfileKey('symptomTracker_weightGoal', activeId));

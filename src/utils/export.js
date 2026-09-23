@@ -7,6 +7,7 @@ import { getSymptomLogs,
   getMedicationLogsForSymptom,
   getAppointments,
   getSurgeries,
+  getImmunizations,
   getOccurrenceTime,
   isBackDated,
   getMentalHealthScores,
@@ -334,6 +335,62 @@ const APPOINTMENT_TYPE_LABELS = {
     physical_therapy: 'Physical Therapy',
     emergency: 'Emergency/Urgent Care',
     other: 'Other',
+};
+
+// Who administered a vaccine — plain language for a claims reviewer
+const IMMUNIZATION_ADMIN_LABELS = {
+  va:       'VA facility',
+  military: 'Military',
+  pharmacy: 'Pharmacy',
+  civilian: 'Civilian provider',
+  employer: 'Employer/school',
+  other:    'Other',
+};
+
+/**
+ * Who physically administered the vaccination.
+ *
+ * This is a DIFFERENT question from where the record came from, and conflating
+ * the two was a bug: a flu shot given at a Hy-Vee pharmacy shows up in the VA
+ * file, and labeling that row "VA record" in the Administered By sense claimed
+ * VA gave a shot it didn't. The specific entity wins over the category when we
+ * have it, since "Hy-Vee Pharmacy 1061" tells a reader more than "Pharmacy".
+ */
+const getImmunizationAdministeredBy = (record) => {
+  if (record.administeredByName) return record.administeredByName;
+  return IMMUNIZATION_ADMIN_LABELS[record.administeredBy] || 'Other';
+};
+
+/**
+ * Where this record came from — provenance, not administration.
+ *
+ * "VA file" means the line was imported from the Veteran's VA medical records,
+ * whoever gave the shot. "Self-reported" means the Veteran entered it. A
+ * hand-edited VA record says so, because presenting altered data as verbatim
+ * VA data would undermine the rest of the export.
+ */
+const getImmunizationSourceLabel = (record) => {
+  if (record.source === 'va-import') {
+    return record.edited ? 'VA file (edited)' : 'VA file';
+  }
+  return record.vaConfirmed ? 'Self-reported (in VA file)' : 'Self-reported';
+};
+
+/**
+ * Format a vaccine date for the PDF.
+ *
+ * 'T00:00:00' forces local-time parsing so dates don't shift a day backward.
+ * Month-precision records print as "Nov 2020" — VA never recorded the day,
+ * and inventing one in a claims document would be a fabrication.
+ */
+const formatImmunizationDate = (record) => {
+  if (!record.vaccineDate) return 'Unknown';
+  const d = new Date(record.vaccineDate + 'T00:00:00');
+  if (isNaN(d)) return record.vaccineDate;
+  if (record.datePrecision === 'month') {
+    return d.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+  }
+  return d.toLocaleDateString();
 };
 
 // Generate PDF report
@@ -2168,6 +2225,55 @@ export const generatePDF = async (
         3: {cellWidth: 30},
         4: {cellWidth: 30},
         5: {cellWidth: 'auto'}
+      },
+      styles: {fontSize: 7, cellPadding: 2},
+    });
+
+    currentY = doc.lastAutoTable.finalY + 10;
+  }
+
+  // ========== IMMUNIZATION RECORD ==========
+  // Compact version of the VA Claim Package section — no reaction callout box,
+  // since the standard report is a flat summary rather than a filing package.
+  const stdImmunizations = options.includeImmunizations !== false ? getImmunizations() : [];
+  if (stdImmunizations.length > 0) {
+    if (currentY > 230) {
+      doc.addPage();
+      currentY = 20;
+    }
+
+    doc.setFontSize(14);
+    doc.setTextColor(30, 58, 138);
+    doc.text('Immunization Record', 14, currentY);
+
+    const stdImmunizationData = stdImmunizations.map(record => [
+      formatImmunizationDate(record),
+      record.vaccineName,
+      record.doseNumber
+          ? `${record.doseNumber}${record.seriesTotal ? ` of ${record.seriesTotal}` : ''}`
+          : '-',
+      getImmunizationAdministeredBy(record),
+      record.facility || '-',
+      getImmunizationSourceLabel(record),
+      record.reaction?.occurred
+          ? `Yes${record.reaction.severity ? ` (${record.reaction.severity}/10)` : ''}`
+          : '-',
+    ]);
+
+    autoTable(doc, {
+      startY: currentY + 4,
+      head: [['Date', 'Vaccine', 'Dose', 'Administered By', 'Facility', 'Source', 'Reaction']],
+      body: stdImmunizationData,
+      headStyles: {fillColor: [13, 148, 136]}, // Teal for immunizations
+      alternateRowStyles: {fillColor: [240, 253, 250]},
+      columnStyles: {
+        0: {cellWidth: 20},
+        1: {cellWidth: 48},
+        2: {cellWidth: 12},
+        3: {cellWidth: 26},
+        4: {cellWidth: 30},
+        5: {cellWidth: 22},
+        6: {cellWidth: 'auto'}
       },
       styles: {fontSize: 7, cellPadding: 2},
     });
@@ -5529,10 +5635,25 @@ export const generateVAClaimPackagePDF = async (dateRange = 'all', options = {})
     tocSectionNum++;
   }
 
-  if (measurements.length > 0) {
-    tocItems.push(`${tocSectionNum}. Medical Measurements`);
+  // Immunizations — reactions always appear; the routine record is opt-in.
+  // This gating must mirror the section logic further down exactly, or the
+  // TOC numbering drifts from the body.
+  const tocImmunizations = getImmunizations();
+  const tocImmunizationReactions = tocImmunizations.filter(i => i.reaction?.occurred);
+  if (options.includeImmunizations === true && tocImmunizations.length > 0) {
+    tocItems.push(`${tocSectionNum}. Immunization Record`);
+    tocSectionNum++;
+  } else if (tocImmunizationReactions.length > 0) {
+    tocItems.push(`${tocSectionNum}. Adverse Vaccine Reactions`);
     tocSectionNum++;
   }
+
+  // ⚠️ ORDER MATTERS — these two entries must match the order the sections are
+  // actually written to the document further down. Weight Tracking is emitted
+  // BEFORE Medical Measurements in the body, and both draw from the same
+  // section counter. Listing them the other way round here (as this did until
+  // now) makes every TOC number after Surgical History point at the wrong page.
+  // If you ever move a body section, fix its TOC entry in the same edit.
 
   // Weight tracking - gated on weight measurements existing
   const tocWeightMeasurements = measurements.filter(
@@ -5540,6 +5661,11 @@ export const generateVAClaimPackagePDF = async (dateRange = 'all', options = {})
   );
   if (tocWeightMeasurements.length > 0) {
     tocItems.push(`${tocSectionNum}. Weight Tracking Summary`);
+    tocSectionNum++;
+  }
+
+  if (measurements.length > 0) {
+    tocItems.push(`${tocSectionNum}. Medical Measurements`);
     tocSectionNum++;
   }
 
@@ -7510,6 +7636,192 @@ export const generateVAClaimPackagePDF = async (dateRange = 'all', options = {})
 
     currentY = doc.lastAutoTable.finalY + 10;
   }
+
+    // ========== IMMUNIZATIONS ==========
+    // Routine immunizations are NOT rating evidence. There is no diagnostic code
+    // for having had a flu shot, and padding a filing package with 27 of them
+    // buries the parts a reviewer needs. Two things here are claim-relevant:
+    //   • an adverse reaction, which can itself be the claimed condition
+    //   • exposure history implied by series like anthrax or smallpox
+    // So reactions print whenever they exist, and the full routine record is
+    // opt-in from the export screen.
+    const immunizations = getImmunizations();
+    const immunizationReactions = immunizations.filter(i => i.reaction?.occurred);
+    const includeFullImmunizations = options.includeImmunizations === true;
+    const showImmunizationSection =
+        immunizationReactions.length > 0 ||
+        (includeFullImmunizations && immunizations.length > 0);
+
+    if (showImmunizationSection) {
+        doc.addPage();
+        currentY = 20;
+
+        doc.setFontSize(14);
+        doc.setTextColor(30, 58, 138);
+        doc.setFont(undefined, 'bold');
+        currentSection++;
+        doc.text(
+            `${currentSection}. ${includeFullImmunizations ? 'IMMUNIZATION RECORD' : 'ADVERSE VACCINE REACTIONS'}`,
+            14, currentY
+        );
+        doc.setFont(undefined, 'normal');
+        currentY += 10;
+
+        // ── Adverse reactions ──
+        if (immunizationReactions.length > 0) {
+            doc.setFillColor(254, 242, 242);
+            doc.setDrawColor(220, 38, 38);
+            doc.rect(14, currentY, pageWidth - 28, 15, 'FD');
+
+            doc.setFontSize(10);
+            doc.setTextColor(153, 27, 27);
+            doc.setFont(undefined, 'bold');
+            doc.text(`ADVERSE REACTIONS REPORTED (${immunizationReactions.length})`, 18, currentY + 6);
+            doc.setFont(undefined, 'normal');
+            doc.setFontSize(8);
+            doc.text('Reported by the Veteran. Severity is self-rated on a 0-10 scale.', 18, currentY + 11.5);
+            currentY += 21;
+            doc.setTextColor(60);
+
+            const reactionData = immunizationReactions.map(r => [
+                formatImmunizationDate(r),
+                r.vaccineName,
+                getImmunizationAdministeredBy(r),
+                r.reaction.onsetDate
+                    ? new Date(r.reaction.onsetDate + 'T00:00:00').toLocaleDateString()
+                    : '-',
+                r.reaction.severity ? `${r.reaction.severity}/10` : '-',
+                r.reaction.description || '-',
+            ]);
+
+            autoTable(doc, {
+                startY: currentY,
+                head: [['Vaccine Date', 'Vaccine', 'Administered By', 'Onset', 'Severity', 'Reported Reaction']],
+                body: reactionData,
+                headStyles: { fillColor: [185, 28, 28], fontStyle: 'bold' },
+                alternateRowStyles: { fillColor: [254, 242, 242] },
+                columnStyles: {
+                    0: { cellWidth: 22 },
+                    1: { cellWidth: 42 },
+                    2: { cellWidth: 28 },
+                    3: { cellWidth: 22 },
+                    4: { cellWidth: 16 },
+                    5: { cellWidth: 'auto' },
+                },
+                styles: { fontSize: 7, cellPadding: 2 },
+                margin: { left: 14, right: 14 },
+            });
+
+            currentY = doc.lastAutoTable.finalY + 10;
+        }
+
+        // ── Complete record (opt-in only) ──
+        if (includeFullImmunizations && immunizations.length > 0) {
+            if (currentY > 230) { doc.addPage(); currentY = 20; }
+
+            doc.setFontSize(11);
+            doc.setTextColor(30, 58, 138);
+            doc.setFont(undefined, 'bold');
+            doc.text('Complete Immunization History', 14, currentY);
+            doc.setFont(undefined, 'normal');
+            currentY += 8;
+
+            // Provenance counts cover VA-sourced rows only. Folding the Veteran's
+            // own entries into a "VA entries" total would claim VA holds records
+            // it does not.
+            const vaSourced   = immunizations.filter(i => i.source === 'va-import').length;
+            const selfSourced = immunizations.length - vaSourced;
+            const vaRawRows   = immunizations
+                .filter(i => i.source === 'va-import')
+                .reduce((sum, i) => sum + (i.vaRecordCount || 1), 0);
+
+            const provenance = [
+                `${immunizations.length} vaccination${immunizations.length !== 1 ? 's' : ''} on record — ` +
+                `${vaSourced} from the Veteran's VA medical file, ${selfSourced} reported by the Veteran.`,
+            ];
+            if (vaRawRows > vaSourced) {
+                provenance.push(
+                    `VA lists a vaccination once per facility holding the record; ` +
+                    `${vaRawRows} VA entries represent ${vaSourced} distinct vaccinations.`
+                );
+            }
+            provenance.push(
+                `"Administered by" is who gave the vaccination. "Source" is where this record came from. ` +
+                `A vaccination given outside VA can still appear in the VA file.`
+            );
+
+            doc.setFontSize(8);
+            doc.setTextColor(80);
+            const provenanceText = doc.splitTextToSize(provenance.join(' '), pageWidth - 28);
+            doc.text(provenanceText, 14, currentY);
+            currentY += provenanceText.length * 4 + 6;
+            doc.setTextColor(60);
+
+            const immunizationData = immunizations.map(record => {
+                // Lot number rides with the vaccine name rather than taking its own
+                // column — rarely populated, decisive when it is.
+                const nameCell = record.lotNumber
+                    ? `${record.vaccineName}\nLot: ${record.lotNumber}`
+                    : record.vaccineName;
+
+                const doseCell = record.doseNumber
+                    ? `${record.doseNumber}${record.seriesTotal ? ` of ${record.seriesTotal}` : ''}`
+                    : '-';
+
+                const facilityCell = (record.vaRecordCount || 1) > 1
+                    ? `${record.facility || '-'} (+${record.vaRecordCount - 1} more)`
+                    : (record.facility || '-');
+
+                return [
+                    formatImmunizationDate(record),
+                    nameCell,
+                    doseCell,
+                    getImmunizationAdministeredBy(record),
+                    facilityCell,
+                    getImmunizationSourceLabel(record),
+                    record.reaction?.occurred ? 'Yes' : '-',
+                ];
+            });
+
+            autoTable(doc, {
+                startY: currentY,
+                head: [['Date', 'Vaccine', 'Dose', 'Administered By', 'Facility', 'Source', 'Reaction']],
+                body: immunizationData,
+                headStyles: { fillColor: [13, 148, 136], fontStyle: 'bold' },
+                alternateRowStyles: { fillColor: [240, 253, 250] },
+                columnStyles: {
+                    0: { cellWidth: 20 },
+                    1: { cellWidth: 46 },
+                    2: { cellWidth: 12 },
+                    3: { cellWidth: 26 },
+                    4: { cellWidth: 32 },
+                    5: { cellWidth: 22 },
+                    6: { cellWidth: 'auto' },
+                },
+                styles: { fontSize: 7, cellPadding: 2 },
+                margin: { left: 14, right: 14 },
+            });
+
+            currentY = doc.lastAutoTable.finalY + 10;
+        }
+
+        // ── Explain the omission ──
+        // Without this, a reviewer seeing only reactions might assume the Veteran
+        // has no other vaccination history.
+        if (!includeFullImmunizations) {
+            doc.setFontSize(8);
+            doc.setTextColor(120);
+            const omissionNote = doc.splitTextToSize(
+                `Routine immunizations are not included in this package, since they are not rating ` +
+                `evidence on their own. The Veteran's complete vaccination history is tracked in the ` +
+                `app and can be added by enabling "Include full immunization record" when exporting.`,
+                pageWidth - 28
+            );
+            doc.text(omissionNote, 14, currentY);
+            currentY += omissionNote.length * 4 + 6;
+            doc.setTextColor(60);
+        }
+    }
 
   // ========== WEIGHT TRACKER SUMMARY ==========
   // Dedicated weight section - separate from generic measurements block

@@ -9,6 +9,68 @@ import {
 import { getDataStats } from '../utils/storage';
 import { CONDITIONS } from '../utils/ratingCriteria';
 
+/**
+ * Body-system groups for the condition filter, keyed off diagnostic code
+ * ranges from 38 CFR Part 4.
+ *
+ * Grouping by DC range rather than by source file on purpose: a Veteran has
+ * already met these categories in their rating decision, so "Neurological
+ * (DC 8000-8999)" is a landmark they recognize. The source files are an
+ * implementation detail they've never seen.
+ *
+ * ORDER MATTERS — first match wins. Smell & Taste (6275-6276) sits inside the
+ * ear range numerically but belongs in its own bucket under 38 CFR 4.87a, so
+ * it has to be tested first. Verified against all 244 conditions; every one
+ * lands in a named group, none fall through to Other.
+ */
+const CONDITION_GROUPS = [
+  { label: 'Musculoskeletal',        min: 5000, max: 5399 },
+  { label: 'Eye',                    min: 6000, max: 6099 },
+  { label: 'Smell & Taste',          min: 6275, max: 6276 },
+  { label: 'Ear & Hearing',          min: 6100, max: 6299 },
+  { label: 'Infectious Diseases',    min: 6300, max: 6399 },
+  { label: 'Nose & Throat',          min: 6500, max: 6599 },
+  { label: 'Respiratory',            min: 6600, max: 6899 },
+  { label: 'Cardiovascular',         min: 7000, max: 7199 },
+  { label: 'Digestive',              min: 7200, max: 7399 },
+  { label: 'Genitourinary',          min: 7500, max: 7599 },
+  { label: 'Gynecological & Breast', min: 7600, max: 7699 },
+  { label: 'Hemic & Lymphatic',      min: 7700, max: 7799 },
+  { label: 'Skin',                   min: 7800, max: 7899 },
+  { label: 'Endocrine',              min: 7900, max: 7999 },
+  { label: 'Neurological',           min: 8000, max: 8999 },
+  { label: 'Mental Health',          min: 9200, max: 9599 },
+  { label: 'Dental & Oral',          min: 9900, max: 9999 },
+];
+
+/**
+ * Every diagnostic code a condition carries, as an array of strings.
+ *
+ * Most conditions have a single `diagnosticCode`. The 21 peripheral nerve
+ * conditions instead carry a `diagnosticCodes` object of paralysis, neuritis,
+ * and neuralgia codes — which is why they used to render as "DC undefined".
+ */
+const getConditionCodes = (condition) => {
+  if (condition.diagnosticCode) return [condition.diagnosticCode];
+  if (condition.diagnosticCodes) return Object.values(condition.diagnosticCodes).filter(Boolean);
+  return [];
+};
+
+/**
+ * Which body-system group a condition belongs to.
+ * Uses the first (lowest-listed) code, which for nerves is the paralysis code.
+ */
+const getConditionGroup = (condition) => {
+  const codes = getConditionCodes(condition);
+  if (codes.length === 0) return 'Other';
+
+  const numeric = parseInt(String(codes[0]).match(/\d+/)?.[0], 10);
+  if (isNaN(numeric)) return 'Other';
+
+  const group = CONDITION_GROUPS.find(g => numeric >= g.min && numeric <= g.max);
+  return group ? group.label : 'Other';
+};
+
 const ExportData = () => {
   // Date range states
   const [dateRangeType, setDateRangeType] = useState('preset'); // 'preset' or 'custom'
@@ -18,11 +80,18 @@ const ExportData = () => {
 
   // Filter states
   const [selectedConditions, setSelectedConditions] = useState([]);
+  // Condition filter UI — 244 conditions is unusable as a flat list
+  const [conditionSearch, setConditionSearch] = useState('');
+  const [expandedGroups, setExpandedGroups] = useState([]);
   const [includeAppointments, setIncludeAppointments] = useState(true);
   const [includeSurgeries, setIncludeSurgeries] = useState(true);
   const [includeMeasurements, setIncludeMeasurements] = useState(true);
   const [includeMedications, setIncludeMedications] = useState(true);
   const [include8940Worksheet, setInclude8940Worksheet] = useState(true);
+  // Off by default — routine vaccines aren't rating evidence, so they don't
+  // belong in a filing package unless the Veteran deliberately wants them.
+  // Adverse reactions print regardless of this setting.
+  const [includeImmunizations, setIncludeImmunizations] = useState(false);
 
   // Export format
   const [exportFormat, setExportFormat] = useState('standard'); // 'standard' or 'va-claim'
@@ -71,6 +140,9 @@ const ExportData = () => {
       includeMedications,
       // Only pass worksheet option when VA Claim format is active
       include8940Worksheet: exportFormat === 'va-claim' ? include8940Worksheet : false,
+      // VA Claim format only. The standard report always includes the full
+      // immunization record, so this flag doesn't apply there.
+      includeImmunizations: exportFormat === 'va-claim' ? includeImmunizations : false,
       conditions: selectedConditions.length > 0 ? selectedConditions : null,
       vaFormat: exportFormat === 'va-claim',
     };
@@ -86,11 +158,64 @@ const ExportData = () => {
   };
 
   const selectAllConditions = () => {
-    setSelectedConditions(Object.keys(CONDITIONS));
+    // Must be condition.id, NOT Object.keys(). The checkboxes test
+    // selectedConditions.includes(condition.id), so pushing the object keys
+    // ('LOSS_OF_TASTE') meant Select All ticked nothing and handed the
+    // exporter 244 identifiers it doesn't recognize.
+    setSelectedConditions(Object.values(CONDITIONS).map(c => c.id).filter(Boolean));
   };
 
   const clearAllConditions = () => {
     setSelectedConditions([]);
+  };
+
+  const toggleGroup = (groupLabel) => {
+    setExpandedGroups(prev =>
+        prev.includes(groupLabel)
+            ? prev.filter(g => g !== groupLabel)
+            : [...prev, groupLabel]
+    );
+  };
+
+  /**
+   * Conditions bucketed by body system, filtered by the search box,
+   * alphabetical within each group, empty groups dropped.
+   */
+  const getGroupedConditions = () => {
+    const term = conditionSearch.trim().toLowerCase();
+
+    const matches = Object.values(CONDITIONS).filter(condition => {
+      if (!term) return true;
+      // Search name and every diagnostic code, so "8620" and "sciatic"
+      // both find the same condition
+      const haystack = [
+        condition.name || '',
+        ...getConditionCodes(condition),
+      ].join(' ').toLowerCase();
+      return haystack.includes(term);
+    });
+
+    const buckets = {};
+    matches.forEach(condition => {
+      const group = getConditionGroup(condition);
+      if (!buckets[group]) buckets[group] = [];
+      buckets[group].push(condition);
+    });
+
+    // Preserve CONDITION_GROUPS order, with any stragglers last
+    const ordered = [...CONDITION_GROUPS.map(g => g.label), 'Other'];
+
+    return ordered
+    .filter(label => buckets[label]?.length > 0)
+    .map(label => ({
+      label,
+      conditions: buckets[label].sort((a, b) =>
+          (a.name || '').localeCompare(b.name || '')
+      ),
+      selectedCount: buckets[label].filter(c =>
+          selectedConditions.includes(c.id)
+      ).length,
+    }));
   };
 
   // Export handlers
@@ -147,9 +272,14 @@ const ExportData = () => {
     }
   };
 
-  // Get condition label
+  // Get condition label.
+  // Peripheral nerves carry three codes (paralysis/neuritis/neuralgia) rather
+  // than one, and joining them keeps the label honest instead of printing
+  // "DC undefined" for all 21 of them.
   const getConditionLabel = (condition) => {
-    return `${condition.name} (DC ${condition.diagnosticCode})`;
+    const codes = getConditionCodes(condition);
+    if (codes.length === 0) return condition.name;
+    return `${condition.name} (DC ${codes.join('/')})`;
   };
 
   // Validate custom date range
@@ -364,6 +494,26 @@ const ExportData = () => {
                       </p>
                     </div>
                   </label>
+                    {/* Full immunization record — VA Claim Package only, off by default */}
+                    {exportFormat === 'va-claim' && (
+                        <label key="opt-immunizations" className="flex items-center gap-3 cursor-pointer">
+                            <input
+                                type="checkbox"
+                                checked={includeImmunizations}
+                                onChange={(e) => setIncludeImmunizations(e.target.checked)}
+                                className="w-5 h-5 rounded border-gray-300 dark:border-gray-600 text-blue-600 focus:ring-blue-500"
+                            />
+                            <div>
+                                <p className="font-medium text-gray-900 dark:text-white text-left">
+                                    Include full immunization record
+                                </p>
+                                <p className="text-sm text-gray-500 dark:text-gray-400">
+                                    Routine vaccines aren't rating evidence, so they're left out by default.
+                                    Adverse reactions are always included.
+                                </p>
+                            </div>
+                        </label>
+                    )}
                   {/* 21-8940 Worksheet — only relevant for VA Claim Package format */}
                   {exportFormat === 'va-claim' && (
                       <label key="opt-worksheet" className="flex items-center gap-3 cursor-pointer">
@@ -415,23 +565,84 @@ const ExportData = () => {
                     }
                   </p>
 
-                  <div className="max-h-48 overflow-y-auto border border-gray-200 dark:border-gray-600 rounded-lg p-2 space-y-1">
-                    {Object.values(CONDITIONS).map((condition) => (
-                        <label
-                            key={condition.id}
-                            className="flex items-center gap-2 p-2 rounded hover:bg-gray-50 dark:hover:bg-gray-700/50 cursor-pointer"
-                        >
-                          <input
-                              type="checkbox"
-                              checked={selectedConditions.includes(condition.id)}
-                              onChange={() => toggleCondition(condition.id)}
-                              className="rounded border-gray-300 dark:border-gray-600 text-blue-600 focus:ring-blue-500"
-                          />
-                          <span className="text-sm text-gray-700 dark:text-gray-300">
-                      {getConditionLabel(condition)}
+                  {/* Search — the fastest path when you know what you want */}
+                  <div className="relative mb-2">
+                    <input
+                        type="search"
+                        value={conditionSearch}
+                        onChange={(e) => setConditionSearch(e.target.value)}
+                        placeholder="Search conditions or DC number..."
+                        aria-label="Search conditions"
+                        className="w-full p-3 pl-9 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm"
+                    />
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">
+                      🔍
                     </span>
-                        </label>
-                    ))}
+                  </div>
+
+                  <div className="max-h-96 overflow-y-auto border border-gray-200 dark:border-gray-600 rounded-lg p-2 space-y-1">
+                    {getGroupedConditions().length === 0 && (
+                        <p className="text-sm text-gray-500 dark:text-gray-400 p-3 text-center">
+                          No conditions match "{conditionSearch}"
+                        </p>
+                    )}
+
+                    {getGroupedConditions().map((group) => {
+                      // A search is an explicit request to see matches, so
+                      // matching groups open themselves rather than making the
+                      // user click through to find what they just searched for.
+                      const isOpen = conditionSearch.trim().length > 0
+                          || expandedGroups.includes(group.label);
+
+                      return (
+                          <div key={group.label}>
+                            <button
+                                type="button"
+                                onClick={() => toggleGroup(group.label)}
+                                aria-expanded={isOpen}
+                                className="w-full flex items-center justify-between gap-2 p-2 rounded hover:bg-gray-50 dark:hover:bg-gray-700/50 text-left"
+                            >
+                              <span className="flex items-center gap-2 min-w-0">
+                                <span className="text-gray-400 text-xs flex-shrink-0">
+                                  {isOpen ? '▼' : '▶'}
+                                </span>
+                                <span className="text-sm font-medium text-gray-900 dark:text-white truncate">
+                                  {group.label}
+                                </span>
+                                <span className="text-xs text-gray-500 dark:text-gray-400 flex-shrink-0">
+                                  ({group.conditions.length})
+                                </span>
+                              </span>
+                              {group.selectedCount > 0 && (
+                                  <span className="text-xs px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-900/40 text-blue-800 dark:text-blue-300 flex-shrink-0">
+                                    {group.selectedCount} selected
+                                  </span>
+                              )}
+                            </button>
+
+                            {isOpen && (
+                                <div className="pl-6 space-y-1">
+                                  {group.conditions.map((condition) => (
+                                      <label
+                                          key={condition.id || condition.name}
+                                          className="flex items-center gap-2 p-2 rounded hover:bg-gray-50 dark:hover:bg-gray-700/50 cursor-pointer"
+                                      >
+                                        <input
+                                            type="checkbox"
+                                            checked={selectedConditions.includes(condition.id)}
+                                            onChange={() => toggleCondition(condition.id)}
+                                            className="rounded border-gray-300 dark:border-gray-600 text-blue-600 focus:ring-blue-500"
+                                        />
+                                        <span className="text-sm text-gray-700 dark:text-gray-300">
+                                          {getConditionLabel(condition)}
+                                        </span>
+                                      </label>
+                                  ))}
+                                </div>
+                            )}
+                          </div>
+                      );
+                    })}
                   </div>
                 </div>
               </div>

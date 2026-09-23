@@ -124,11 +124,19 @@ const BBImportHistory = () => {
           const dateLabel = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
           const timeLabel = date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
 
-          // Build a compact summary string
+          // Build a compact summary string.
+          // Every count the import can return needs a line here — a count that
+          // isn't listed makes a successful import read as "Nothing imported".
+          // Order roughly follows the wizard's own preview order.
           const parts = [];
           if (counts.measurements > 0) parts.push(`${counts.measurements} measurement${counts.measurements !== 1 ? 's' : ''}`);
           if (counts.appointments > 0) parts.push(`${counts.appointments} appt${counts.appointments !== 1 ? 's' : ''}`);
           if (counts.conditions > 0)   parts.push(`${counts.conditions} condition${counts.conditions !== 1 ? 's' : ''}`);
+          if (counts.immunizations > 0) parts.push(`${counts.immunizations} vaccine${counts.immunizations !== 1 ? 's' : ''}`);
+          if (counts.immunizationsMerged > 0) parts.push(`${counts.immunizationsMerged} vaccine${counts.immunizationsMerged !== 1 ? 's' : ''} merged`);
+          if (counts.medications > 0)  parts.push(`${counts.medications} medication${counts.medications !== 1 ? 's' : ''}`);
+          if (counts.medicationHistory > 0) parts.push(`${counts.medicationHistory} to med history`);
+          if (counts.mentalHealth > 0) parts.push(`${counts.mentalHealth} MH assessment${counts.mentalHealth !== 1 ? 's' : ''}`);
           if (counts.skipped > 0)      parts.push(`${counts.skipped} skipped`);
 
           const rangeLabel = dateRange?.start && dateRange?.end
@@ -1097,7 +1105,7 @@ const Settings = ({ onNavigate, onOpenBlueButton, onShowFraudAlert }) => {
         <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
           <h3 className="font-medium text-gray-900 dark:text-white mb-3">VA Blue Button Import</h3>
           <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
-            Bring your VA records into Symptom Vault — labs, vitals, appointments, and conditions
+            Bring your VA records into Symptom Vault — labs, vitals, appointments, conditions, and vaccines
           </p>
           <button
               onClick={onOpenBlueButton}

@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { getMentalHealthScores, deleteMentalHealthScore } from '../utils/storage';
+import { getMentalHealthScores, deleteMentalHealthScore, getImmunizations } from '../utils/storage';
 import {
   getMeasurements,
   saveMeasurement,
@@ -14,11 +14,13 @@ import {
 } from '../data/measurementTypes';
 import { useProfile } from '../hooks/useProfile';
 import { formatLocalDateTime } from '../utils/datetime';
+import ImmunizationsTab from './ImmunizationsTab';
 
 
 const MEAS_TABS = [
   { id: 'vitals',        label: '🩺 Vitals & Labs' },
   { id: 'mental_health', label: '🧠 Mental Health' },
+  { id: 'immunizations', label: '💉 Vaccines' },
 ];
 
 /**
@@ -30,6 +32,7 @@ const Measurements = ({ onNavigate }) => {
   const [activeTab, setActiveTab]           = useState('vitals');
   const [measurements, setMeasurements]     = useState([]);
   const [mentalHealthScores, setMentalHealthScores] = useState([]);
+  const [immunizations, setImmunizations]   = useState([]);
   const [showAddModal, setShowAddModal]     = useState(false);
   const [selectedMeasurementType, setSelectedMeasurementType] = useState(null);
   const [filterType, setFilterType]         = useState('all');
@@ -47,8 +50,14 @@ const Measurements = ({ onNavigate }) => {
     ));
   }, []);
 
+  // getImmunizations already sorts newest administration date first
+  const loadImmunizations = useCallback(() => {
+    setImmunizations(getImmunizations());
+  }, []);
+
   useEffect(() => { loadMeasurements(); }, [loadMeasurements]);
   useEffect(() => { loadMentalHealth(); }, [loadMentalHealth]);
+  useEffect(() => { loadImmunizations(); }, [loadImmunizations]);
 
   const handleAddClick = (measurementType) => {
     // Weight gets its own dedicated tracker page instead of the modal
@@ -174,6 +183,16 @@ const Measurements = ({ onNavigate }) => {
                 onDelete={handleDeleteMentalHealth}
             />
         )}
+
+          {/* ── IMMUNIZATIONS TAB ── */}
+          {/* The tab owns its own add/edit/delete and calls back here to reload,
+            so this component stays the single source of truth for the list. */}
+          {activeTab === 'immunizations' && (
+              <ImmunizationsTab
+                  immunizations={immunizations}
+                  onChanged={loadImmunizations}
+              />
+          )}
 
         {/* Add Measurement Modal */}
         {showAddModal && selectedMeasurementType && (

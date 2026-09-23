@@ -21,6 +21,8 @@
  * "Care summaries and notes" as "VITAL SIGNS:" blocks within individual notes.
  */
 
+import { getImmunizationMatchKey } from './vaccineName';
+
 // ─────────────────────────────────────────────────────────────
 // CONSTANTS — section identifiers as they appear in actual files
 // ─────────────────────────────────────────────────────────────
@@ -68,6 +70,7 @@ export const SECTION_LABELS = {
 export const IMPORTABLE_SECTIONS = [
   SECTION_KEYS.LABS,
   SECTION_KEYS.CARE_NOTES,
+  SECTION_KEYS.VACCINES,
   SECTION_KEYS.CONDITIONS,
   SECTION_KEYS.MEDICATIONS,
   SECTION_KEYS.APPOINTMENTS,
@@ -259,6 +262,18 @@ export function getSectionDateRange(sectionText, sectionKey) {
     }
   }
 
+    if (sectionKey === SECTION_KEYS.VACCINES) {
+        // Vaccines: "Date received: Month DD, YYYY"
+        // The day is optional — some records read "Date received: November, 2020",
+        // so the capture is deliberately loose and parseLooseDate sorts it out.
+        const vaxDateRe = /^Date received:\s+(.+)$/gim;
+        let m;
+        while ((m = vaxDateRe.exec(sectionText)) !== null) {
+            const d = parseLooseDate(m[1].trim());
+            if (d) dates.push(d);
+        }
+    }
+
   if (dates.length === 0) {
     return { start: null, end: null, recordCount: 0 };
   }
@@ -330,6 +345,22 @@ export function parseLooseDate(str) {
         m[4] ? parseInt(m[4]) : 0,
         m[5] ? parseInt(m[5]) : 0,
     );
+  }
+
+  // "November, 2020" or "November 2020" — month and year, no day.
+  // VA writes this in the Vaccines section when the exact day wasn't recorded.
+  // We anchor to the 1st so the record sorts into the right month. Callers that
+  // care about precision should check the raw string for a day number —
+  // parseVaccines() does this and sets datePrecision: 'month'.
+  //
+  // Placed LAST on purpose: it only fires on strings every pattern above
+  // rejected, so no existing parser's behavior changes.
+  m = s.match(/^([A-Za-z]+),?\s+(\d{4})\s*$/);
+  if (m) {
+    const mon = MONTH_MAP[m[1].toLowerCase().slice(0, 3)];
+    if (mon !== undefined) {
+      return new Date(parseInt(m[2]), mon, 1);
+    }
   }
 
   return null;
@@ -528,7 +559,7 @@ function _parseVitalBlock(block) {
 }
 
 // ─────────────────────────────────────────────────────────────
-// PHASE 2 — Labs parser
+// PHASE 3 — Labs parser
 // ─────────────────────────────────────────────────────────────
 
 /**
@@ -651,7 +682,7 @@ export function parseLabs(sectionText, dateRange = {}) {
 }
 
 // ─────────────────────────────────────────────────────────────
-// PHASE 3 — Health Conditions parser
+// PHASE 4 — Health Conditions parser
 // ─────────────────────────────────────────────────────────────
 
 /**
@@ -773,7 +804,275 @@ export function parseConditions(sectionText) {
 }
 
 // ─────────────────────────────────────────────────────────────
-// PHASE 3 — Medications parser
+// PHASE 5 — Vaccines parser
+// ─────────────────────────────────────────────────────────────
+
+// Vaccine name matching comes from vaccineName.js, shared with storage.js.
+// vaccineName.js imports nothing, so this parser stays dependency-free.
+
+/**
+ * Build a short, readable label from VA's full vaccine name.
+ *
+ * VA writes things like:
+ *   "COVID-19 (PFIZER), MRNA, LNP-S, PF, TRIS-SUCROSE, 30 MCG/0.3 ML (AGES 12+ YEARS)"
+ *
+ * That's unreadable in a list or a PDF table. The full name is always kept in
+ * vaccineName — this is display only.
+ */
+function buildVaccineShortName(fullName) {
+    if (!fullName) return 'Unknown vaccine';
+    const n = fullName.toUpperCase();
+
+    if (n.startsWith('COVID-19')) {
+        const mfr = n.match(/\((PFIZER|MODERNA|JANSSEN|NOVAVAX)\)/);
+        if (mfr) {
+            const label = mfr[1].charAt(0) + mfr[1].slice(1).toLowerCase();
+            return `COVID-19 (${label})`;
+        }
+        return 'COVID-19';
+    }
+    if (n.startsWith('INFLUENZA'))     return 'Influenza (Flu)';
+    if (n.startsWith('ZOSTER'))        return 'Shingles (Zoster)';
+    if (n.startsWith('PNEUMOCOCCAL'))  return 'Pneumococcal';
+    if (n.startsWith('RSV'))           return 'RSV';
+    if (n.startsWith('TDAP'))          return 'Tdap';
+    if (n.startsWith('TD '))           return 'Td';
+    if (n.startsWith('HEP A-HEP B'))   return 'Hepatitis A & B';
+    if (n.startsWith('HEP A'))         return 'Hepatitis A';
+    if (n.startsWith('HEP B'))         return 'Hepatitis B';
+    if (n.startsWith('ANTHRAX'))       return 'Anthrax';
+    if (n.startsWith('SMALLPOX') || n.startsWith('VACCINIA')) return 'Smallpox';
+    if (n.startsWith('TYPHOID'))       return 'Typhoid';
+    if (n.startsWith('YELLOW FEVER'))  return 'Yellow Fever';
+    if (n.startsWith('MENINGOCOCCAL')) return 'Meningococcal';
+    if (n.startsWith('MMR') || n.startsWith('MEASLES')) return 'MMR';
+    if (n.startsWith('VARICELLA'))     return 'Varicella (Chickenpox)';
+    if (n.startsWith('POLIO') || n.startsWith('IPV')) return 'Polio';
+    if (n.startsWith('RABIES'))        return 'Rabies';
+    if (n.startsWith('JAPANESE ENCEPHALITIS')) return 'Japanese Encephalitis';
+
+    // Fallback: take the text before the first comma and title-case it
+    const head = fullName.split(',')[0].trim();
+    return head
+        .toLowerCase()
+        .replace(/\b[a-z]/g, c => c.toUpperCase());
+}
+
+/**
+ * Read the "Provider notes" body for community-care details.
+ *
+ * Observed format (one long dotted line):
+ *   Partner:CCN2.Administered by:HY-VEE PHARMACY 1061.(1861422115).
+ *   NDC:58160088752.Address:3235 OAKLAND RD NE.CEDAR RAPIDS.IA.524024044 Dosage: ML 0.5
+ *
+ * When "Administered by" names a non-VA entity, the shot was given outside VA
+ * even though it lives in a VA record. That distinction matters for the app's
+ * VA-vs-outside badge, so we pull it out rather than assuming every Blue Button
+ * vaccine came from VA.
+ *
+ * Returns plain strings that match IMMUNIZATION_ADMINISTERED_BY in storage.js.
+ */
+function parseVaccineProviderNotes(notesText) {
+    const out = {
+        administeredBy:     'va',   // default: recorded by VA, assume given by VA
+        administeredByName: '',
+        ndc:                '',
+        dosage:             '',
+    };
+    if (!notesText) return out;
+
+    const byMatch = notesText.match(/Administered by:\s*([^.]+)/i);
+    if (byMatch) {
+        out.administeredByName = byMatch[1].trim();
+        const upper = out.administeredByName.toUpperCase();
+        // Pharmacy chains and grocery pharmacies are the overwhelming majority of
+        // community-care immunizations; everything else non-VA is 'civilian'.
+        if (/PHARMACY|DRUG|CVS|WALGREEN|WALMART|HY-VEE|KROGER|COSTCO|RITE AID|SAM'S/.test(upper)) {
+            out.administeredBy = 'pharmacy';
+        } else {
+            out.administeredBy = 'civilian';
+        }
+    }
+
+    const ndcMatch = notesText.match(/NDC:\s*(\d+)/i);
+    if (ndcMatch) out.ndc = ndcMatch[1];
+
+    const dosageMatch = notesText.match(/Dosage:\s*(.+?)\s*$/i);
+    if (dosageMatch) out.dosage = dosageMatch[1].trim();
+
+    return out;
+}
+
+/**
+ * parseVaccines
+ * Extracts immunization records from the Vaccines section.
+ *
+ * Format confirmed from a real Blue Button file:
+ *
+ *   INFLUENZA, SPLIT VIRUS, QUADRIVALENT, PF     ← name line, BEFORE the dashes
+ *   -----------------------------------------------------
+ *   Date received: October 28, 2021
+ *   Location: ILLIANA HCS
+ *   Provider notes
+ *   Partner:CCN2.Administered by:HY-VEE PHARMACY 1061...   ← optional
+ *                                                ← whitespace-only separator
+ *
+ * Two quirks this handles:
+ *
+ *   1. DUPLICATES. VA repeats one shot under every facility that synced it.
+ *      A single Oct 2021 flu shot can appear six times under six facilities.
+ *      We collapse on normalized name + date, keep every facility name in
+ *      allFacilities, and record how many raw rows collapsed.
+ *
+ *   2. MISSING DAY. "Date received: November, 2020" has no day. We keep the
+ *      date (anchored to the 1st) and set datePrecision: 'month' so the UI
+ *      and the PDF can avoid claiming a day VA never recorded.
+ *
+ * @param {string} sectionText - Raw text of the Vaccines section
+ * @param {object} dateRange   - { start: Date|null, end: Date|null }
+ * @returns {VaccineRecord[]}
+ *
+ * VaccineRecord shape:
+ * {
+ *   vaccineName: string,        // VA's full name, verbatim
+ *   shortName: string,          // readable label for lists and tables
+ *   date: Date,
+ *   vaccineDate: string,        // 'YYYY-MM-DD'
+ *   dateStr: string,            // raw text, e.g. "November, 2020"
+ *   datePrecision: 'day'|'month',
+ *   facility: string,
+ *   allFacilities: string[],
+ *   duplicateCount: number,     // raw rows collapsed into this one (1 = none)
+ *   administeredBy: string,     // 'va' | 'pharmacy' | 'civilian'
+ *   administeredByName: string,
+ *   manufacturer: string,
+ *   ndc: string,
+ *   dosage: string,
+ *   providerNotes: string,
+ *   source: 'blue-button',
+ * }
+ */
+export function parseVaccines(sectionText, dateRange = {}) {
+    const lines = sectionText.split('\n');
+    const raw = [];
+
+    // A separator is the row of dashes under each vaccine name.
+    const isSeparator = (s) => /^-{5,}\s*$/.test(s);
+
+    // Lines that look like names but are section furniture, not vaccines.
+    const isHeaderArtifact = (s) =>
+        !s ||
+        s.length < 2 ||
+        /^\d+\)\s/.test(s) ||          // "3) Vaccines"
+        /^Showing\b/i.test(s) ||       // "Showing 39 records from newest to oldest"
+        /^_{5,}/.test(s);              // section terminator rule
+
+    let i = 1; // start at 1 — a separator always has a name line above it
+
+    while (i < lines.length) {
+        if (!isSeparator(lines[i].trim())) { i++; continue; }
+
+        const vaccineName = lines[i - 1].trim();
+        if (isHeaderArtifact(vaccineName)) { i++; continue; }
+
+        let dateStr = null;
+        let facility = '';
+        const noteLines = [];
+        let inNotes = false;
+
+        let j = i + 1;
+        while (j < lines.length) {
+            // Stop before the NEXT record's name line, so we don't eat it
+            if (j + 1 < lines.length && isSeparator(lines[j + 1].trim())) break;
+
+            const detail = lines[j].trim();
+
+            if (/^_{5,}/.test(detail)) break; // end of the section
+
+            const dateMatch = detail.match(/^Date received:\s*(.+)$/i);
+            if (dateMatch) { dateStr = dateMatch[1].trim(); inNotes = false; j++; continue; }
+
+            const locMatch = detail.match(/^Location:\s*(.+)$/i);
+            if (locMatch) { facility = locMatch[1].trim(); inNotes = false; j++; continue; }
+
+            if (/^Provider notes\s*$/i.test(detail)) { inNotes = true; j++; continue; }
+
+            if (inNotes && detail) noteLines.push(detail);
+            j++;
+        }
+
+        const date = dateStr ? parseLooseDate(dateStr) : null;
+
+        if (date && _inDateRange(date, dateRange)) {
+            // A day number before the year means VA recorded the exact day.
+            // "November, 2020" has none, so precision drops to the month.
+            const hasDay = /\d{1,2}\s*,/.test(dateStr || '');
+            const providerNotes = noteLines.join(' ').trim();
+            const noteFields = parseVaccineProviderNotes(providerNotes);
+
+            // COVID records carry the maker in parentheses; nothing else does
+            const mfrMatch = vaccineName.toUpperCase()
+                .match(/\((PFIZER|MODERNA|JANSSEN|NOVAVAX)\)/);
+
+            raw.push({
+                vaccineName,
+                shortName:     buildVaccineShortName(vaccineName),
+                date,
+                vaccineDate:   toISOString(date),
+                dateStr,
+                datePrecision: hasDay ? 'day' : 'month',
+                facility,
+                allFacilities: facility ? [facility] : [],
+                duplicateCount: 1,
+                manufacturer:  mfrMatch
+                    ? mfrMatch[1].charAt(0) + mfrMatch[1].slice(1).toLowerCase()
+                    : '',
+                providerNotes,
+                ...noteFields,
+                source: 'blue-button',
+            });
+        }
+
+        // lines[j] is the next name line, so lines[j + 1] is its separator
+        i = j + 1;
+    }
+
+    // ── Collapse VA's cross-facility duplicates ─────────────────────────
+    const byKey = new Map();
+    const deduped = [];
+
+    raw.forEach(record => {
+        const key = getImmunizationMatchKey(record.vaccineName, record.vaccineDate);
+        const existing = byKey.get(key);
+
+        if (!existing) {
+            byKey.set(key, record);
+            deduped.push(record);
+            return;
+        }
+
+        existing.duplicateCount += 1;
+
+        if (record.facility && !existing.allFacilities.includes(record.facility)) {
+            existing.allFacilities.push(record.facility);
+        }
+
+        // Only one of the duplicate rows usually carries provider notes.
+        // If the row we kept came up empty and this one has them, take them.
+        if (!existing.providerNotes && record.providerNotes) {
+            existing.providerNotes      = record.providerNotes;
+            existing.administeredBy     = record.administeredBy;
+            existing.administeredByName = record.administeredByName;
+            existing.ndc                = record.ndc;
+            existing.dosage             = record.dosage;
+        }
+    });
+
+    return deduped;
+}
+
+// ─────────────────────────────────────────────────────────────
+// PHASE 6 — Medications parser
 // ─────────────────────────────────────────────────────────────
 
 /**
@@ -858,7 +1157,7 @@ export function parseMedications(sectionText) {
 }
 
 // ─────────────────────────────────────────────────────────────
-// PHASE 3b — Active Medications Summary parser (Format A)
+// PHASE 6b — Active Medications Summary parser (Format A)
 // ─────────────────────────────────────────────────────────────
 
 /**
@@ -1036,7 +1335,7 @@ export function parseShortDate(str) {
 }
 
 // ─────────────────────────────────────────────────────────────
-// PHASE 3 — Appointments parser
+// PHASE 7 — Appointments parser
 // ─────────────────────────────────────────────────────────────
 
 /**
@@ -1169,6 +1468,7 @@ export function countImportableRecords(parsed) {
   const byType = {
     vitals: (parsed.vitals || []).length,
     labs: (parsed.labs || []).length,
+    vaccines: (parsed.vaccines || []).length,
     conditions: (parsed.conditions || []).length,
     medications: (parsed.medications || []).length,
     appointments: (parsed.appointments || []).length,

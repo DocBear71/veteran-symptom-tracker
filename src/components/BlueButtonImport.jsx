@@ -17,6 +17,7 @@ import {
   parseVitals,
   parseLabs,
   parseConditions,
+  parseVaccines,
   parseMedications,
   parseAppointments,
   parseActiveMedSummary,
@@ -43,6 +44,8 @@ import {
   getMedicationHistory,
   saveMentalHealthScore,
   getMentalHealthScores,
+  findImmunizationMatch,
+  upsertImportedImmunization,
 } from '../utils/storage';
 
 // ─────────────────────────────────────────────────────────────
@@ -54,6 +57,7 @@ const WIZARD_STEPS = { UPLOAD: 0, SELECT: 1, PREVIEW: 2, COMPLETE: 3 };
 const DEFAULT_SELECTED_SECTIONS = [
   SECTION_KEYS.LABS,
   SECTION_KEYS.CARE_NOTES,
+  SECTION_KEYS.VACCINES,
   SECTION_KEYS.CONDITIONS,
   SECTION_KEYS.MEDICATIONS,
   SECTION_KEYS.APPOINTMENTS,
@@ -281,6 +285,13 @@ export default function BlueButtonImport({ onClose, onImportComplete }) {
           .forEach(c => allRecords.push({ ...c, category: 'condition', type: 'condition' }));
         }
 
+          if (selectedSections.includes(SECTION_KEYS.VACCINES) && sectionMap[SECTION_KEYS.VACCINES]) {
+              // parseVaccines already collapses VA's cross-facility duplicates,
+              // so the count shown here is the count of real shots, not raw rows.
+              parseVaccines(sectionMap[SECTION_KEYS.VACCINES].rawText, dateRange)
+                  .forEach(v => allRecords.push({ ...v, category: 'vaccine', type: 'vaccine' }));
+          }
+
         if (selectedSections.includes(SECTION_KEYS.MEDICATIONS) && sectionMap[SECTION_KEYS.MEDICATIONS]) {
           const _PREVIEW_SUPPLY_KW = [
             'BANDAGE', 'GAUZE', 'LANCET', 'TAPE,', 'NEEDLE,', 'TABLET CUTTER',
@@ -363,18 +374,25 @@ export default function BlueButtonImport({ onClose, onImportComplete }) {
       );
       return match ? `An appointment already exists on ${record.dateStr}` : null;
     }
-    if (record.category === 'appointment') {
-      const match = existingAppointments.find(a =>
-          a.appointmentDate?.startsWith(record.dateStr || '')
-      );
-      return match ? `An appointment already exists on ${record.dateStr}` : null;
-    }
 
     if (record.category === 'mental_health') {
       const existing = getMentalHealthScores();
       const match = existing.find(s => s.dateStr === record.dateStr);
       return match ? `Mental health scores already recorded for ${record.dateStr}` : null;
     }
+
+      if (record.category === 'vaccine') {
+          // Unlike other categories, importing a matching vaccine is NOT destructive.
+          // upsertImportedImmunization fills blank fields and never overwrites anything
+          // the Veteran typed, so "Import anyway" here means "top up the existing record".
+          // We still default to skip so the import count stays honest.
+          const match = findImmunizationMatch(record.vaccineName, record.vaccineDate);
+          if (match) {
+              record._conflictType = 'skip';
+              return `Already in your immunization records — "Import anyway" fills in any blank details`;
+          }
+          return null;
+      }
 
     if (record.category === 'condition') {
       const existingCustomSymptoms = getCustomSymptoms();
@@ -572,7 +590,7 @@ export default function BlueButtonImport({ onClose, onImportComplete }) {
     if (importInProgressRef.current) return;
     importInProgressRef.current = true;
 
-    const counts = { measurements: 0, appointments: 0, conditions: 0, medications: 0, medicationHistory: 0, skipped: 0, errors: 0 };
+    const counts = { measurements: 0, appointments: 0, conditions: 0, medications: 0, medicationHistory: 0, immunizations: 0, skipped: 0, errors: 0 };
 
     parsedData.forEach(record => {
       const state = recordStates[record._key];
@@ -585,6 +603,21 @@ export default function BlueButtonImport({ onClose, onImportComplete }) {
         else if (record.category === 'lab') { _importLab(record); counts.measurements++; }
         else if (record.category === 'appointment') { _importAppointment(record); counts.appointments++; }
         else if (record.category === 'condition') { _importCondition(record); counts.conditions++; }
+        else if (record.category === 'vaccine') {
+          // The upsert decides what actually happened — a record the Veteran
+          // already entered by hand gets confirmed rather than duplicated.
+          const result = _importVaccine(record);
+          if (result.action === 'created') {
+            counts.immunizations++;
+          } else if (result.action === 'merged' || result.action === 'confirmed') {
+            counts.immunizationsMerged = (counts.immunizationsMerged || 0) + 1;
+          } else if (result.action === 'error') {
+            counts.errors++;
+          } else {
+            // 'unchanged' — matched an existing record with nothing new to add
+            counts.skipped++;
+          }
+        }
         else if (record.category === 'mental_health') {
           saveMentalHealthScore({
             dateStr:   record.dateStr,
@@ -788,11 +821,33 @@ export default function BlueButtonImport({ onClose, onImportComplete }) {
     });
   };
 
-  const _importCondition = (record, index = 0) => {
-    // addCustomSymptom uses Date.now() for IDs — calling it synchronously
-    // in a loop causes timestamp collisions. We pass an offset so each
-    // condition gets a guaranteed-unique ID even when imported at the same ms.
-    addCustomSymptom(record.name, 'Imported (VA Problem List)', index);
+  const _importVaccine = (record) => {
+    // Map parser fields to the storage record shape.
+    //
+    // Two fields are deliberately NOT set from Blue Button:
+    //   notes     — belongs to the Veteran, so it stays empty for them to fill
+    //   lotNumber — VA's text export never carries one
+    //
+    // VA's raw provider-notes blob goes in providerNotes instead of notes, so
+    // "Partner:CCN2.Administered by:..." doesn't end up in the Veteran's own
+    // notes field where they'd have to delete it by hand.
+    return upsertImportedImmunization({
+      vaccineName:        record.vaccineName,
+      shortName:          record.shortName,
+      vaccineDate:        record.vaccineDate,
+      datePrecision:      record.datePrecision,
+      facility:           record.facility,
+      allFacilities:      record.allFacilities,
+      administeredBy:     record.administeredBy,
+      administeredByName: record.administeredByName,
+      manufacturer:       record.manufacturer,
+      ndc:                record.ndc,
+      dosage:             record.dosage,
+      providerNotes:      record.providerNotes || '',
+      // How many separate VA facility records collapsed into this one.
+      // The PDF export uses it to explain why one shot is one row.
+      vaRecordCount:      record.duplicateCount || 1,
+    });
   };
 
   const _getMedicationDestination = (record) => {
@@ -1171,10 +1226,15 @@ function StepPreview({ isParsing, parsedData, recordStates, onToggleRecord, onTo
     vital:       parsedData.filter(r => r.category === 'vital'),
     lab:         parsedData.filter(r => r.category === 'lab'),
     condition:   parsedData.filter(r => r.category === 'condition'),
+    vaccine:     parsedData.filter(r => r.category === 'vaccine'),
     medication:  parsedData.filter(r => r.category === 'medication'),
     appointment: parsedData.filter(r => r.category === 'appointment'),
     mental_health: parsedData.filter(r => r.category === 'mental_health'),
   };
+
+  // How many raw VA rows were folded into the vaccine records shown below.
+  // Worth surfacing so the Veteran doesn't think records went missing.
+  const vaccineRawRows = groups.vaccine.reduce((sum, v) => sum + (v.duplicateCount || 1), 0);
 
   const includedCount = Object.values(recordStates).filter(s => s === 'include' || s === 'conflict-import').length;
   const conflictCount = parsedData.filter(r => r._conflict).length;
@@ -1218,6 +1278,21 @@ function StepPreview({ isParsing, parsedData, recordStates, onToggleRecord, onTo
             </div>
         )}
 
+          {groups.vaccine.length > 0 && (
+              <div className="bg-teal-50 border border-teal-200 rounded-lg p-3 mb-4 text-xs text-teal-800">
+                  💉 <strong>Vaccines</strong> will be added to your immunization records. You can edit any
+                  of them afterward and add shots the VA doesn't have — pharmacy, county clinic, or a
+                  paper military shot record.
+                  {vaccineRawRows > groups.vaccine.length && (
+                      <>
+                          {' '}VA listed <strong>{vaccineRawRows} rows</strong> for these{' '}
+                          <strong>{groups.vaccine.length} shots</strong>, because it repeats the same shot
+                          under every facility that has it on file. Duplicates have been combined.
+                      </>
+                  )}
+              </div>
+          )}
+
         {groups.mental_health.length > 0 && (
             <div className="bg-purple-50 border border-purple-200 rounded-lg p-3 mb-4 text-xs text-purple-800">
               🧠 <strong>Mental health scores</strong> (GAD-7, PHQ-9, PCL-5) will be saved to your
@@ -1239,6 +1314,10 @@ function StepPreview({ isParsing, parsedData, recordStates, onToggleRecord, onTo
             <RecordGroup label="Health Conditions" category="condition" records={groups.condition}
                          recordStates={recordStates} onToggleRecord={onToggleRecord} onToggleCategory={onToggleCategory} />
         )}
+          {groups.vaccine.length > 0 && (
+              <RecordGroup label="Vaccines" category="vaccine" records={groups.vaccine}
+                           recordStates={recordStates} onToggleRecord={onToggleRecord} onToggleCategory={onToggleCategory} />
+          )}
         {groups.appointment.length > 0 && (
             <RecordGroup label="Appointments" category="appointment" records={groups.appointment}
                          recordStates={recordStates} onToggleRecord={onToggleRecord} onToggleCategory={onToggleCategory} />
@@ -1367,6 +1446,7 @@ function _getRecordLabel(record) {
     return `${label}: ${record.value} ${record.unit}${record.flag ? ` (${record.flag})` : ''}`;
   }
   if (record.category === 'condition')   return record.name;
+  if (record.category === 'vaccine')     return record.shortName || record.vaccineName;
   if (record.category === 'medication')  return record.name;
   if (record.category === 'appointment') return record.clinic || record.location || record.type || 'VA Appointment';
   if (record.category === 'mental_health') {
@@ -1382,6 +1462,23 @@ function _getRecordLabel(record) {
 function _getRecordDetail(record) {
   if (record.category === 'lab')         return record.refRange ? `Ref range: ${record.refRange}` : null;
   if (record.category === 'condition')   return record.sctCode ? `SNOMED: ${record.sctCode}` : null;
+  if (record.category === 'vaccine') {
+    // The full VA name has to show here. Short names collapse — a 2019 file can
+    // hold "INFLUENZA, UNSPECIFIED FORMULATION" and "INFLUENZA, SPLIT VIRUS,
+    // QUADRIVALENT, PF" on the same date, and both read "Influenza (Flu)".
+    // Without the full name the Veteran can't tell the two rows apart.
+    const parts = [record.vaccineName];
+    if (record.duplicateCount > 1) {
+      parts.push(`${record.duplicateCount} VA facility records combined`);
+    }
+    if (record.administeredBy !== 'va' && record.administeredByName) {
+      parts.push(`Given at ${record.administeredByName}`);
+    }
+    if (record.datePrecision === 'month') {
+      parts.push('VA did not record the exact day');
+    }
+    return parts.join(' · ');
+  }
   if (record.category === 'medication')  return record.instructions ? record.instructions.slice(0, 80) + (record.instructions.length > 80 ? '…' : '') : null;
   if (record.category === 'appointment') return record.status ? `Status: ${record.status}` : null;
   if (record.category === 'mental_health') {
@@ -1409,7 +1506,8 @@ function StepComplete({ importResult, onClose }) {
             {appointments > 0 && <li>✓ {appointments} appointment{appointments !== 1 ? 's' : ''}</li>}
             {conditions > 0  && <li>✓ {conditions} condition{conditions !== 1 ? 's' : ''} added to symptom list</li>}
             {medications > 0 && <li>✓ {medications} medication{medications !== 1 ? 's' : ''} added to active list</li>}
-            {medicationHistory > 0 && <li className="text-gray-600">📋 {medicationHistory} older prescription{medicationHistory !== 1 ? 's' : ''} saved to Medication History</li>}
+            {importResult.immunizations > 0 && <li>💉 {importResult.immunizations} vaccine{importResult.immunizations !== 1 ? 's' : ''} added to immunization records</li>}
+            {importResult.immunizationsMerged > 0 && <li className="text-gray-600">🔗 {importResult.immunizationsMerged} vaccine{importResult.immunizationsMerged !== 1 ? 's' : ''} matched records you already had</li>}
             {importResult.mentalHealth > 0 && <li>🧠 {importResult.mentalHealth} mental health assessment{importResult.mentalHealth !== 1 ? 's' : ''} saved</li>}
             {skipped > 0     && <li className="text-gray-500">— {skipped} record{skipped !== 1 ? 's' : ''} skipped</li>}
             {errors > 0      && <li className="text-red-600">⚠️ {errors} error{errors !== 1 ? 's' : ''}</li>}

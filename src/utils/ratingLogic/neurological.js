@@ -319,6 +319,7 @@ export const NEUROLOGICAL_CONDITIONS = {
     ],
   },
   LOSS_OF_TASTE: {
+    id: 'loss-of-taste',
     name: 'Loss of Taste (Ageusia)',
     diagnosticCode: '6276',
     cfrReference: '38 CFR 4.87a',
