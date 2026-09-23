@@ -386,7 +386,6 @@ const analyzeMentalHealthCondition = (
   let supportedRating = 0;
   let ratingRationale = [];
   let gaps = [];
-  let assessmentLevel = 'preliminary';
 
   // ============================================================================
   // PHASE 10 — Pattern-aware §4.130 rating cascade
@@ -451,7 +450,6 @@ const analyzeMentalHealthCondition = (
 
   if (tier70Panic || tier70Pattern || tier70Impact) {
     supportedRating = '70-100';
-    assessmentLevel = 'requires-professional-evaluation';
     ratingRationale = [
       `${totalSymptoms} total logs over ${monthsInPeriod.toFixed(1)} months`,
       `Symptom continuity: ${symptomPattern} pattern (${distinctDaysAffected}/${evaluationPeriodDays} days affected at severity >=5)`,
@@ -479,7 +477,6 @@ const analyzeMentalHealthCondition = (
     ];
   } else if (tier50Panic || tier50Pattern || tier50Impact) {
     supportedRating = '50-70';
-    assessmentLevel = 'requires-professional-evaluation';
     ratingRationale = [
       `${totalSymptoms} total logs over ${monthsInPeriod.toFixed(1)} months`,
       `Symptom continuity: ${symptomPattern} pattern (${distinctDaysAffected}/${evaluationPeriodDays} days affected at severity >=5)`,
@@ -594,7 +591,6 @@ const analyzeMentalHealthCondition = (
     evaluationPeriodDays,
     supportedRating,
     ratingRationale,
-    assessmentLevel,
     evidence,
     gaps,
     criteria: conditionCriteria,
@@ -2674,7 +2670,6 @@ const analyzeEatingDisorderCondition = (logs, conditionKey, symptomIds, criteria
       'Hospitalizations for tube feeding or parenteral nutrition significantly impact rating',
       'Your symptom logs document eating disorder behaviors and episodes',
     ],
-    assessmentLevel: 'Medical Evaluation Required',
     evidence,
     gaps: [
       'CRITICAL: Medical records showing current weight and height',

@@ -2744,7 +2744,6 @@ export const analyzeLumbosacralStrainLogs = (logs, options = {}) => {
     evaluationPeriodDays,
     supportedRating: 'Requires Clinical Measurement',
     ratingRationale: supportingRationale,
-    assessmentLevel: 'Clinical Evaluation Required',
     evidence,
     gaps: [
       'CRITICAL: Schedule ROM evaluation with healthcare provider using goniometer',
@@ -2867,7 +2866,6 @@ export const analyzeIntervertebralDiscLogs = (logs, options = {}) => {
     evaluationPeriodDays,
     supportedRating: 'Requires Clinical Documentation',
     ratingRationale: supportingRationale,
-    assessmentLevel: 'Clinical Evaluation Required',
     evidence,
     gaps: [
       'CRITICAL: DC 5243 requires confirmed disc herniation with nerve root compression (MRI/CT)',
@@ -2964,7 +2962,6 @@ export const analyzeKneeInstabilityLogs = (logs, options = {}) => {
       'Your symptom logs document ongoing knee instability',
       'Rating determination requires medical documentation of ligament status',
     ],
-    assessmentLevel: 'Clinical Evaluation Required',
     evidence,
     metrics: {
       totalLogs: totalSymptoms,

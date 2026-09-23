@@ -5462,7 +5462,6 @@ export const analyzeTBILogs = (logs, options = {}) => {
       'Your symptom logs document ongoing cognitive difficulties',
       'Neuropsychological testing is essential to assess the level of impairment in each facet',
     ],
-    assessmentLevel: 'Comprehensive Evaluation Required',
     evidence,
     gaps: [
       'CRITICAL: Request comprehensive neuropsychological evaluation',
@@ -7224,7 +7223,6 @@ export const analyzeTinnitusLogs = (logs, options = {}) => {
       evaluationPeriodDays,
       supportedRating,
       ratingRationale,
-      assessmentLevel: 'Well-Documented',
       evidence,
       metrics: {
         totalLogs: totalSymptoms,
@@ -7369,7 +7367,6 @@ export const analyzeFibromyalgiaLogs = (logs, options = {}) => {
     evaluationPeriodDays,
     supportedRating,
     ratingRationale,
-    assessmentLevel: 'Good Documentation',
     evidence,
     gaps,
     criteria: conditionCriteria,

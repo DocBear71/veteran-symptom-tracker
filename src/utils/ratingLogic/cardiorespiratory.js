@@ -4510,7 +4510,6 @@ const analyzeMentalHealthCondition = (
   let supportedRating = 0;
   let ratingRationale = [];
   let gaps = [];
-  let assessmentLevel = 'preliminary';
 
   // IMPORTANT: Mental health ratings require professional evaluation
   // Symptom logs alone cannot determine ratings. This is guidance only.
@@ -4518,7 +4517,6 @@ const analyzeMentalHealthCondition = (
   // Check for indicators of severe functional impairment
   if (notesAnalysis.severeSymptoms > 0) {
     supportedRating = '70-100';
-    assessmentLevel = 'requires-professional-evaluation';
     ratingRationale = [
       'Logged symptoms indicate severe impairment requiring immediate professional evaluation',
       'Notes reference crisis-level symptoms',
@@ -4537,7 +4535,6 @@ const analyzeMentalHealthCondition = (
       (notesAnalysis.workImpact > 5 && notesAnalysis.socialImpact > 5)
   ) {
     supportedRating = '50-70';
-    assessmentLevel = 'requires-professional-evaluation';
     ratingRationale = [
       `${totalSymptoms} symptoms logged over ${monthsInPeriod.toFixed(
           1)} months`,
@@ -4651,7 +4648,6 @@ const analyzeMentalHealthCondition = (
     evaluationPeriodDays,
     supportedRating,
     ratingRationale,
-    assessmentLevel,
     evidence,
     gaps,
     criteria: conditionCriteria,
