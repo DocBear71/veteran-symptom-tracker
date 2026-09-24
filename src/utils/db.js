@@ -343,6 +343,58 @@ export const photoDeleteByProfile = async (profileId) => {
 };
 
 /**
+ * Delete photos belonging to a profile whose logId is not in the given set.
+ *
+ * Restore replaces the entire symptom-log array wholesale. Any photo pointing
+ * at a log that no longer exists becomes invisible and permanent — no screen
+ * will ever show it and no other cleanup path will find it, because both
+ * deleteSymptomLog and deleteProfileData key off something that's already gone.
+ *
+ * Called after a Data Bunker restore with the logIds that actually survived.
+ *
+ * ⚠️ The caller MUST pass a complete set. An empty or partial set here deletes
+ * photos that should have been kept, which is why this is not wired to run on
+ * startup or on any path where the log list might not be fully loaded.
+ *
+ * @param {string} profileId
+ * @param {Set<string>|string[]} validLogIds - logIds that still exist
+ * @returns {Promise<number>} how many orphans were removed
+ */
+export const photoDeleteOrphans = async (profileId, validLogIds) => {
+    try {
+        const valid = validLogIds instanceof Set ? validLogIds : new Set(validLogIds || []);
+
+        // Refuse to run on an empty set. If a caller hands us nothing, that is far
+        // more likely to be a bug than a profile that genuinely has zero logs, and
+        // the cost of guessing wrong is every photo the Veteran owns.
+        if (valid.size === 0) {
+            console.warn(`⚠️ photoDeleteOrphans called with an empty log set for "${profileId}" — skipping as a safety measure`);
+            return 0;
+        }
+
+        const db = await getDB();
+        const tx = db.transaction(PHOTO_STORE, 'readwrite');
+        const index = tx.store.index('profileId');
+        let cursor = await index.openCursor(profileId);
+        let deleted = 0;
+
+        while (cursor) {
+            if (!valid.has(cursor.value.logId)) {
+                await cursor.delete();
+                deleted++;
+            }
+            cursor = await cursor.continue();
+        }
+
+        await tx.done;
+        return deleted;
+    } catch (error) {
+        console.error(`❌ photoDeleteOrphans failed for "${profileId}":`, error);
+        return 0;
+    }
+};
+
+/**
  * Count of photos for a profile, without loading any records.
  */
 export const photoCountByProfile = async (profileId) => {

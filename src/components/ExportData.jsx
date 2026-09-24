@@ -8,6 +8,7 @@ import {
 } from '../utils/export';
 import { getDataStats } from '../utils/storage';
 import { CONDITIONS } from '../utils/ratingCriteria';
+import { getPhotoStorageSummary } from '../utils/photoCapture';
 
 /**
  * Body-system groups for the condition filter, keyed off diagnostic code
@@ -92,6 +93,16 @@ const ExportData = () => {
   // belong in a filing package unless the Veteran deliberately wants them.
   // Adverse reactions print regardless of this setting.
   const [includeImmunizations, setIncludeImmunizations] = useState(false);
+  // Off by default. Photos make the PDF large, and a Veteran should choose to
+  // include them rather than be surprised by a 12 MB attachment.
+  const [includePhotos, setIncludePhotos] = useState(false);
+  const [photoSummary, setPhotoSummary] = useState({ count: 0, formatted: '0 B' });
+
+  useEffect(() => {
+    getPhotoStorageSummary()
+    .then(setPhotoSummary)
+    .catch(() => { /* non-critical */ });
+  }, []);
 
   // Export format
   const [exportFormat, setExportFormat] = useState('standard'); // 'standard' or 'va-claim'
@@ -143,6 +154,8 @@ const ExportData = () => {
       // VA Claim format only. The standard report always includes the full
       // immunization record, so this flag doesn't apply there.
       includeImmunizations: exportFormat === 'va-claim' ? includeImmunizations : false,
+      // VA Claim format only — the standard report has no photo section.
+      includePhotos: exportFormat === 'va-claim' ? includePhotos : false,
       conditions: selectedConditions.length > 0 ? selectedConditions : null,
       vaFormat: exportFormat === 'va-claim',
     };
@@ -494,6 +507,27 @@ const ExportData = () => {
                       </p>
                     </div>
                   </label>
+                    {/* Symptom photos — VA Claim Package only, off by default */}
+                    {exportFormat === 'va-claim' && photoSummary.count > 0 && (
+                        <label key="opt-photos" className="flex items-center gap-3 cursor-pointer">
+                            <input
+                                type="checkbox"
+                                checked={includePhotos}
+                                onChange={(e) => setIncludePhotos(e.target.checked)}
+                                className="w-5 h-5 rounded border-gray-300 dark:border-gray-600 text-blue-600 focus:ring-blue-500"
+                            />
+                            <div>
+                                <p className="font-medium text-gray-900 dark:text-white text-left">
+                                    Include symptom photos
+                                </p>
+                                <p className="text-sm text-gray-500 dark:text-gray-400">
+                                    {photoSummary.count} photo{photoSummary.count === 1 ? '' : 's'} ({photoSummary.formatted}).
+                                    Visible evidence like rashes, swelling, or bruising is hard to describe and easy to show.
+                                    Adds roughly this much to the PDF size.
+                                </p>
+                            </div>
+                        </label>
+                    )}
                     {/* Full immunization record — VA Claim Package only, off by default */}
                     {exportFormat === 'va-claim' && (
                         <label key="opt-immunizations" className="flex items-center gap-3 cursor-pointer">

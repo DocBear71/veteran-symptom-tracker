@@ -5,6 +5,9 @@ import App from './App.jsx'
 import { checkAndMigrateStorage, createDailyBackup } from './utils/storageVersion'
 import { migrateLocalStorageToIDB } from './utils/db'
 import { initializeCache } from './utils/storageCache'
+import { initPhotoMemoryManagement } from './utils/photoMemory';
+
+initPhotoMemoryManagement();
 
 // CRITICAL: Protect data BEFORE anything else runs
 console.log('🛡️ Checking storage version and creating backups...');

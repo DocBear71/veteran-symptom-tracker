@@ -44,6 +44,12 @@
                      android:maxSdkVersion="28" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
                      android:maxSdkVersion="32" />
-    <!-- Android 13+ granular media permissions -->
-    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
+
+    <!-- NOTE: no camera or media permissions are declared, deliberately.
+         The camera plugin hands off to the system camera app via intent, and
+         Android 13+ uses the system Photo Picker. Both are permission
+         boundaries in themselves, so the app captures and attaches photos
+         while holding no media permissions at all. Verified on device.
+         READ_MEDIA_IMAGES was declared and then removed after confirming the
+         picker still works without it; READ_MEDIA_AUDIO was never used. -->
 </manifest>

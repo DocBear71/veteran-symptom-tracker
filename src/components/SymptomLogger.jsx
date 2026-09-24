@@ -1755,17 +1755,20 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed, onNavigate }) =
     // PHOTO CAPTURE
     // ============================================
 
-    const handleAddPhoto = async () => {
-        setPhotoError('');
+      // source: 'camera' opens the camera, 'gallery' the photo library. The
+  // plugin's built-in "which one?" prompt was removed in Camera 8.1.0, so
+  // the two buttons below ask instead.
+  const handleAddPhoto = async (source = 'gallery') => {
+    setPhotoError('');
 
-        if (pendingPhotos.length >= MAX_PHOTOS_PER_LOG) {
-            setPhotoError(`Maximum of ${MAX_PHOTOS_PER_LOG} photos per entry.`);
-            return;
-        }
+    if (pendingPhotos.length >= MAX_PHOTOS_PER_LOG) {
+      setPhotoError(`Maximum of ${MAX_PHOTOS_PER_LOG} photos per entry.`);
+      return;
+    }
 
-        setPhotoBusy(true);
-        try {
-            const staged = await stagePhoto();
+    setPhotoBusy(true);
+    try {
+      const staged = await stagePhoto(source);
             if (staged) {
                 setPendingPhotos(prev => [...prev, staged]);
             }
@@ -2035,7 +2038,7 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed, onNavigate }) =
 
 
     const savedEntry = saveSymptomLog(entry);
-    hapticSuccess(); // native feedback on successful symptom log
+    await hapticSuccess(); // native feedback on successful symptom log
 
     // Attach staged photos now that the log has an ID. Awaited rather than
     // fire-and-forget: a silent failure here would lose the Veteran's photos
@@ -3421,23 +3424,42 @@ const SymptomLogger = ({ onLogSaved, prefillData, onPrefillUsed, onNavigate }) =
                         </div>
                     ))}
 
-                    {pendingPhotos.length < MAX_PHOTOS_PER_LOG && (
-                        <button
-                            type="button"
-                            onClick={handleAddPhoto}
-                            disabled={photoBusy}
-                            className="w-20 h-20 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-600 flex flex-col items-center justify-center text-gray-500 dark:text-gray-400 hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400 disabled:opacity-50 transition-colors"
-                        >
-                            {photoBusy ? (
-                                <span className="text-xs">Working...</span>
-                            ) : (
-                                <>
-                                    <span className="text-2xl leading-none">📷</span>
-                                    <span className="text-[10px] mt-1">Add photo</span>
-                                </>
-                            )}
-                        </button>
-                    )}
+                                  {pendingPhotos.length < MAX_PHOTOS_PER_LOG && (
+                  <>
+                    <button
+                        type="button"
+                        onClick={() => handleAddPhoto('camera')}
+                        disabled={photoBusy}
+                        aria-label="Take a photo with the camera"
+                        className="w-20 h-20 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-600 flex flex-col items-center justify-center text-gray-500 dark:text-gray-400 hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400 disabled:opacity-50 transition-colors"
+                    >
+                      {photoBusy ? (
+                          <span className="text-xs">Working...</span>
+                      ) : (
+                          <>
+                            <span className="text-2xl leading-none">📷</span>
+                            <span className="text-[10px] mt-1">Camera</span>
+                          </>
+                      )}
+                    </button>
+                    <button
+                        type="button"
+                        onClick={() => handleAddPhoto('gallery')}
+                        disabled={photoBusy}
+                        aria-label="Choose an existing photo"
+                        className="w-20 h-20 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-600 flex flex-col items-center justify-center text-gray-500 dark:text-gray-400 hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400 disabled:opacity-50 transition-colors"
+                    >
+                      {photoBusy ? (
+                          <span className="text-xs">Working...</span>
+                      ) : (
+                          <>
+                            <span className="text-2xl leading-none">🖼️</span>
+                            <span className="text-[10px] mt-1">Choose</span>
+                          </>
+                      )}
+                    </button>
+                  </>
+              )}
                 </div>
 
                 {photoError && (

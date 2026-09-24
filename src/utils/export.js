@@ -25,6 +25,12 @@ import {
     generateHbA1cTrendChart
 } from './chartExport';
 import { REASONABLE_DOUBT_EXPENSE_CATEGORIES } from './tdiuEligibility';
+import {
+  getPhotoMetadataForLogs,
+  loadPhotoRecord,
+  photoBlobToDataURL,
+  formatBytes,
+} from './photoCapture';
 // Effectiveness display labels for medication export
 const EFFECTIVENESS_EXPORT_LABELS = {
   none: 'No Relief',
@@ -2439,7 +2445,7 @@ export const generateProtectedEnvironmentPDF = async ({
       margin, y
   );
   y += 5;
-  doc.text('38 CFR §4.16(a)  •  M21-1 Part IV, Subpart ii, 2.F.32', margin, y);
+  doc.text('38 CFR §4.16(a)  •  §3.102  •  §4.23  •  M21-1, Part VIII, Subpart iv, 3.A.2.c-f', margin, y);
   y += 5;
   doc.text(
       'Anchor case: Cantrell v. Shulkin, 28 Vet. App. 382 (2017)',
@@ -2571,6 +2577,11 @@ export const generateProtectedEnvironmentPDF = async ({
       'Earnings at or below the Census Bureau poverty threshold for one person are marginal under §4.16(a).',
       margin, y
   );
+  y += 4;
+  doc.text(
+      'The facts-found pathway in Section III is independent and applies regardless of the income result.',
+      margin, y
+  );
   y += 5;
 
   y = writeField(
@@ -2631,17 +2642,6 @@ export const generateProtectedEnvironmentPDF = async ({
         `independently and does not depend on the income test.`,
         margin, y, contentWidth
     );
-  } else if (marginalAnalysis.state === 'above-threshold') {
-      y = writeBodyText(
-          doc,
-          `Earned income falls between the two Census Bureau figures for a single ` +
-          `person in ${marginalAnalysis.thresholdYear}: $${marginalAnalysis.threshold?.toLocaleString()} ` +
-          `("one person, unrelated individual") and $${marginalAnalysis.thresholdAlternate?.toLocaleString()} ` +
-          `("under 65 years"). VA's published Federal Register notices for §4.16(a) cite the former; ` +
-          `current M21-1 (VIII.iv.3.A.2.c) names neither and refers only to the Census table. ` +
-          `Which figure governs this case is unsettled and should be addressed directly.`,
-          margin, y, contentWidth
-      );
   } else if (marginalAnalysis.state === 'above-threshold') {
     let aboveText = 'Income exceeds threshold. Income pathway alone does not establish marginal employment - protected-environment pathway (see Section III) may still apply.';
     if (marginalAnalysis.monthsOverThreshold !== null &&
@@ -5418,8 +5418,140 @@ const generateRatingEvidenceSummaryPage = (doc, ratingAnalyses, pageWidth) => {
 };
 
 // ============================================================================
+// SYMPTOM PHOTOS SECTION - appended to VA Claim Package when opted in
+// ============================================================================
+/**
+ * Append the Veteran's symptom photos as a captioned exhibit section.
+ *
+ * Why this matters: some conditions are rated on what they look like. Scars
+ * under DC 7800-7805 are rated by measured area and characteristics; skin
+ * conditions under 7806 by percentage of body surface affected. A written log
+ * saying "the rash covers about a third of my torso" is an assertion. A dated
+ * photo is evidence. The same applies to a flare that has resolved by the time
+ * of the C&P exam — the examiner sees a good day, and the photo is the only
+ * thing that contradicts it.
+ *
+ * MEMORY: images are loaded ONE AT A TIME and released. Forty 300 KB JPEGs
+ * decoded at once will kill the tab on a phone, so the loop here deliberately
+ * fetches, draws, and drops each record before moving to the next.
+ *
+ * @param {object} doc          - Active jsPDF instance
+ * @param {number} pageWidth
+ * @param {number} sectionNum   - Section counter from the claim package
+ * @param {Array}  logs         - The filtered symptom logs for this export
+ * @param {Array}  photoMeta    - From getPhotoMetadataForLogs(logs)
+ * @returns {Promise<void>}
+ */
+const appendPhotoSection = async (doc, pageWidth, sectionNum, logs, photoMeta) => {
+    const margin = 14;
+    const contentWidth = pageWidth - margin * 2;
+
+    // Index the logs so each photo can be captioned with its symptom and date
+    const logsById = {};
+    logs.forEach(l => { if (l?.id) logsById[l.id] = l; });
+
+    doc.addPage();
+    let y = 20;
+
+    doc.setFontSize(14);
+    doc.setTextColor(30, 58, 138);
+    doc.setFont(undefined, 'bold');
+    doc.text(`${sectionNum}. SYMPTOM PHOTOS`, margin, y);
+    doc.setFont(undefined, 'normal');
+    y += 8;
+
+    const totalBytes = photoMeta.reduce((sum, p) => sum + (p.size || 0), 0);
+    doc.setFontSize(9);
+    doc.setTextColor(100);
+    doc.text(
+        `${photoMeta.length} photo${photoMeta.length !== 1 ? 's' : ''} taken by the Veteran ` +
+        `and attached to the symptom entries in this package (${formatBytes(totalBytes)}).`,
+        margin, y
+    );
+    y += 5;
+
+    // A reviewer needs to know these are the Veteran's own photos, not clinical
+    // imaging, and that nothing has been altered beyond metadata removal.
+    doc.setFontSize(8);
+    doc.setTextColor(120);
+    const provenance = doc.splitTextToSize(
+        'These are Veteran-taken photographs, not clinical imaging. Each is captioned with the date ' +
+        'and time of the symptom entry it documents. Location data and other embedded metadata are ' +
+        'removed when a photo is saved; the images are otherwise unmodified apart from resizing.',
+        contentWidth
+    );
+    doc.text(provenance, margin, y);
+    y += provenance.length * 4 + 6;
+    doc.setTextColor(60);
+
+    // Two photos per page. One per page reads as an exhibit but doubles the
+    // page count; two stays legible at 1600px source.
+    const SLOT_HEIGHT = 108;
+    const CAPTION_HEIGHT = 12;
+
+    for (let i = 0; i < photoMeta.length; i++) {
+        const meta = photoMeta[i];
+
+        if (y + SLOT_HEIGHT + CAPTION_HEIGHT > 275) {
+            doc.addPage();
+            y = 20;
+        }
+
+        const log = logsById[meta.logId];
+        const when = log
+            ? new Date(getOccurrenceTime(log)).toLocaleString()
+            : new Date(meta.createdAt).toLocaleString();
+        const symptomName = log?.symptomName || 'Symptom entry';
+        const severity = log?.severity !== undefined ? `, severity ${log.severity}/10` : '';
+
+        // Caption above the image so it survives a page break at the wrong moment
+        doc.setFontSize(9);
+        doc.setTextColor(30, 58, 138);
+        doc.setFont(undefined, 'bold');
+        doc.text(`Photo ${i + 1} of ${photoMeta.length} — ${symptomName}${severity}`, margin, y);
+        doc.setFont(undefined, 'normal');
+        doc.setFontSize(8);
+        doc.setTextColor(100);
+        doc.text(when, margin, y + 4.5);
+        if (meta.caption) {
+            doc.text(doc.splitTextToSize(meta.caption, contentWidth), margin, y + 9);
+        }
+        y += CAPTION_HEIGHT;
+        doc.setTextColor(60);
+
+        try {
+            // Load, draw, release. The record goes out of scope each iteration.
+            const record = await loadPhotoRecord(meta.id);
+            if (!record?.blob) throw new Error('Image data missing');
+
+            const dataUrl = await photoBlobToDataURL(record.blob);
+
+            // Fit inside the slot without distorting the aspect ratio
+            const scale = Math.min(
+                contentWidth / meta.width,
+                SLOT_HEIGHT / meta.height
+            );
+            const drawW = meta.width * scale;
+            const drawH = meta.height * scale;
+
+            doc.addImage(dataUrl, 'JPEG', margin, y, drawW, drawH);
+            y += drawH + 8;
+        } catch (error) {
+            // One unreadable photo must not sink the whole export.
+            console.error(`❌ Could not embed photo ${meta.id}:`, error);
+            doc.setFontSize(8);
+            doc.setTextColor(180, 60, 60);
+            doc.text('[This photo could not be read from device storage]', margin, y + 4);
+            doc.setTextColor(60);
+            y += 12;
+        }
+    }
+};
+
+// ============================================================================
 // 21-8940 WORKSHEET SECTION - appended to VA Claim Package when data exists
 // ============================================================================
+
 /**
  * Appends the 21-8940 worksheet as a dedicated section inside an existing
  * jsPDF document. Reuses the same helpers from generate8940WorksheetPDF
@@ -5738,6 +5870,17 @@ export const generateVAClaimPackagePDF = async (dateRange = 'all', options = {})
     tocItems.push(`${tocSectionNum}. Adverse Vaccine Reactions`);
     tocSectionNum++;
   }
+
+    // Symptom photos — opt-in, and only when photos exist on logs in range.
+    // Loaded here as metadata only; the images themselves are fetched later,
+    // one at a time, in appendPhotoSection.
+    const tocPhotoMeta = options.includePhotos === true
+        ? await getPhotoMetadataForLogs(filteredLogs)
+        : [];
+    if (tocPhotoMeta.length > 0) {
+        tocItems.push(`${tocSectionNum}. Symptom Photos`);
+        tocSectionNum++;
+    }
 
   // ⚠️ ORDER MATTERS — these two entries must match the order the sections are
   // actually written to the document further down. Weight Tracking is emitted
@@ -7912,6 +8055,15 @@ export const generateVAClaimPackagePDF = async (dateRange = 'all', options = {})
             currentY += omissionNote.length * 4 + 6;
             doc.setTextColor(60);
         }
+    }
+
+    // ========== SYMPTOM PHOTOS ==========
+    // Reuses the metadata already loaded for the TOC so the profile isn't
+    // queried twice.
+    if (tocPhotoMeta.length > 0) {
+        currentSection++;
+        await appendPhotoSection(doc, pageWidth, currentSection, filteredLogs, tocPhotoMeta);
+        currentY = 20;
     }
 
   // ========== WEIGHT TRACKER SUMMARY ==========

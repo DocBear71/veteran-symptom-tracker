@@ -23,17 +23,24 @@
  * throw the metadata away.
  */
 
-import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
+// Camera plugin 8.1.0 replaced getPhoto with takePhoto / chooseFromGallery and
+// removed CameraResultType and CameraSource. The old API still works but is
+// slated for removal in a future major version.
+import { Camera } from '@capacitor/camera';
 import { Capacitor } from '@capacitor/core';
 import { getActiveProfileId } from './profiles';
 import {
     photoPut,
+    photoGet,
     photoGetByLogId,
+    photoGetMetadataByProfile,
     photoDelete,
     photoDeleteByLogId,
+    photoDeleteOrphans,
     photoTotalSize,
     photoCountByProfile,
 } from './db';
+import { trackPhotoUrl, releaseTrackedUrl, resetDeferCache } from './photoMemory';
 
 // ─── Tuning ───────────────────────────────────────────────────────────────────
 
@@ -75,50 +82,61 @@ const ACCEPTED_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/heic', '
  *
  * @returns {Promise<Blob|null>} null when the user cancels
  */
-export const capturePhoto = async () => {
+/**
+ * @param {'camera'|'gallery'} source - which to open on native.
+ *   The plugin's old CameraSource.Prompt was removed in 8.1.0, so the caller
+ *   now decides. On web both fall through to the same file input, which
+ *   already lets the user pick either.
+ */
+export const capturePhoto = async (source = 'gallery') => {
     if (Capacitor.isNativePlatform()) {
-        return captureNative();
+        return captureNative(source);
     }
     return captureWeb();
 };
 
-const captureNative = async () => {
+const captureNative = async (source) => {
     try {
-        // Ask only if we don't already hold the grant — requesting every time
-        // is a poor experience and on iOS repeated prompts get suppressed.
+        // Ask only for what we're about to use, and only if we don't already hold
+        // it. Requesting every time is a poor experience, and on iOS repeated
+        // prompts get suppressed entirely.
+        const needed = source === 'camera' ? 'camera' : 'photos';
         const status = await Camera.checkPermissions();
-        if (status.camera !== 'granted' || status.photos !== 'granted') {
-            const requested = await Camera.requestPermissions({ permissions: ['camera', 'photos'] });
-            if (requested.camera === 'denied' && requested.photos === 'denied') {
+        if (status[needed] !== 'granted') {
+            const requested = await Camera.requestPermissions({ permissions: [needed] });
+            if (requested[needed] === 'denied') {
                 throw new Error('PERMISSION_DENIED');
             }
         }
 
-        const photo = await Camera.getPhoto({
-            // Uri rather than Base64: Base64 would materialize the entire image as a
-            // string in JS memory before we've had a chance to downscale it.
-            resultType: CameraResultType.Uri,
-            source: CameraSource.Prompt,
-            // Let the plugin do a first-pass compression; we re-encode anyway, but
-            // this keeps the intermediate file smaller on the way in.
-            quality: 90,
-            allowEditing: false,
-            // Ask the plugin for JPEG so iOS doesn't hand us HEIC the web view
-            // may not decode consistently.
-            correctOrientation: false, // we handle orientation ourselves, see below
-            saveToGallery: false,
-        });
+        // Plugin 8.1.0+ API. resultType is gone — MediaResult always carries
+        // webPath. quality is a first-pass compression; we re-encode anyway, but
+        // it keeps the intermediate file smaller on the way in.
+        let webPath;
+        if (source === 'camera') {
+            const result = await Camera.takePhoto({ quality: 90 });
+            // takePhoto returns a MediaResult directly; tolerate a wrapped shape
+            // in case a future version aligns it with chooseFromGallery.
+            webPath = result?.webPath || result?.results?.[0]?.webPath;
+        } else {
+            const { results } = await Camera.chooseFromGallery({ quality: 90, limit: 1 });
+            webPath = results?.[0]?.webPath;
+        }
 
-        if (!photo?.webPath) return null;
+        if (!webPath) return null;
 
-        const response = await fetch(photo.webPath);
+        const response = await fetch(webPath);
         return await response.blob();
     } catch (error) {
-        // The plugin throws on user cancel; that's not an error worth surfacing.
+        if (String(error?.message) === 'PERMISSION_DENIED') throw error;
+
+        // The plugin throws on user cancel. 8.1.0+ adds structured errors with an
+        // OS-PLUG-CAMR-XXXX code alongside a human-readable message, so match on
+        // the message text rather than a code we can't verify across versions.
         const message = String(error?.message || error);
         if (/cancel/i.test(message)) return null;
-        if (message === 'PERMISSION_DENIED') throw error;
-        console.error('❌ Native photo capture failed:', error);
+
+        console.error('❌ Native photo capture failed:', error?.code || '', error);
         throw error;
     }
 };
@@ -276,7 +294,7 @@ export const addPhotoToLog = async (logId, options = {}) => {
         throw new Error(`This entry already has the maximum of ${MAX_PHOTOS_PER_LOG} photos.`);
     }
 
-    const sourceBlob = options.sourceBlob || await capturePhoto();
+    const sourceBlob = options.sourceBlob || await capturePhoto(options.source || 'gallery');
     if (!sourceBlob) return null; // user cancelled
 
     const processed = await processImage(sourceBlob);
@@ -309,20 +327,84 @@ export const addPhotoToLog = async (logId, options = {}) => {
  * gallery that creates and forgets them leaks the full decoded size of every
  * photo the user scrolls past.
  */
-export const createPhotoUrl = (blob) => {
-    if (!blob) return null;
-    return URL.createObjectURL(blob);
-};
-
-export const releasePhotoUrl = (url) => {
-    if (url) URL.revokeObjectURL(url);
-};
+// These delegate to photoMemory so every photo URL in the app is tracked and
+// can be torn down on background. Calling URL.createObjectURL directly for a
+// photo anywhere else would create an untracked leak.
+export const createPhotoUrl = (blob) => trackPhotoUrl(blob);
+export const releasePhotoUrl = (url) => releaseTrackedUrl(url);
 
 export const getPhotosForLog = (logId) => photoGetByLogId(logId);
 
 export const removePhoto = (photoId) => photoDelete(photoId);
 
 export const removePhotosForLog = (logId) => photoDeleteByLogId(logId);
+
+/**
+ * Photo metadata for a set of logs, WITHOUT the image data.
+ *
+ * Returns the scalar fields only, so a caller can decide how many photos it's
+ * about to handle before loading any of them. The PDF export uses this to size
+ * its section, then fetches each image one at a time via loadPhotoRecord()
+ * rather than holding every blob in memory at once — forty photos decoded
+ * simultaneously is how a claim export kills the tab.
+ *
+ * @param {Array} logs - symptom logs (objects with .id)
+ * @returns {Promise<Array>} metadata sorted oldest first
+ */
+export const getPhotoMetadataForLogs = async (logs, profileId = null) => {
+    const id = profileId || getActiveProfileId();
+    if (!id) return [];
+
+    const wanted = new Set((logs || []).map(l => l?.id).filter(Boolean));
+    if (wanted.size === 0) return [];
+
+    const all = await photoGetMetadataByProfile(id);
+    return all
+        .filter(p => wanted.has(p.logId))
+        .sort((a, b) => new Date(a.createdAt || 0) - new Date(b.createdAt || 0));
+};
+
+/**
+ * Load one full photo record, image data included. Call per photo, use it,
+ * let it go.
+ */
+export const loadPhotoRecord = (photoId) => photoGet(photoId);
+
+/**
+ * Convert a stored image Blob into a data URL for jsPDF.
+ *
+ * jsPDF's addImage needs a data URL or a typed array; it can't take a Blob.
+ * The images are already JPEG from the capture pipeline, so this is a
+ * transport conversion with no re-encoding.
+ */
+export const photoBlobToDataURL = (blob) => new Promise((resolve, reject) => {
+    if (!blob) { reject(new Error('No image data')); return; }
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = () => reject(new Error('Could not read image data'));
+    reader.readAsDataURL(blob);
+});
+
+/**
+ * Remove photos orphaned by a restore.
+ *
+ * Pass the symptom logs that exist AFTER the restore completes. Photos
+ * pointing at any other log are deleted.
+ *
+ * @param {Array} logs - restored symptom logs (objects with .id)
+ * @param {string} [profileId]
+ * @returns {Promise<number>}
+ */
+export const purgeOrphanedPhotos = async (logs, profileId = null) => {
+  const id = profileId || getActiveProfileId();
+  if (!id) return 0;
+
+  const validLogIds = new Set(
+      (logs || []).map(log => log?.id).filter(Boolean)
+  );
+
+  return photoDeleteOrphans(id, validLogIds);
+};
 
 // ─── Staging ──────────────────────────────────────────────────────────────────
 //
@@ -342,8 +424,8 @@ export const removePhotosForLog = (logId) => photoDeleteByLogId(logId);
  *
  * @returns {Promise<object|null>} null if the user cancelled
  */
-export const stagePhoto = async () => {
-    const sourceBlob = await capturePhoto();
+export const stagePhoto = async (source = 'gallery') => {
+    const sourceBlob = await capturePhoto(source);
     if (!sourceBlob) return null;
 
     const processed = await processImage(sourceBlob);
@@ -390,9 +472,11 @@ export const commitStagedPhotos = async (logId, staged = []) => {
             caption: (item.caption || '').trim(),
             createdAt: new Date().toISOString(),
         });
-        if (ok) saved++;
-    }
-    return saved;
+            if (ok) saved++;
+      }
+      // The library grew; the defer threshold may have flipped.
+      if (saved > 0) resetDeferCache();
+      return saved;
 };
 
 /**

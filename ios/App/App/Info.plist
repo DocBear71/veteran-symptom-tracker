@@ -22,10 +22,16 @@
 	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
-	<key>LSRequiresIPhoneOS</key>
-	<true/>
-	<key>UILaunchStoryboardName</key>
-	<string>LaunchScreen</string>
+	    <key>LSRequiresIPhoneOS</key>
+    <true/>
+    <key>NSCameraUsageDescription</key>
+    <string>Doc Bear's Symptom Vault uses your camera so you can photograph visible symptoms — rashes, swelling, bruising, or a paper record — as part of your own documentation. Photos are stored on this device only and are never uploaded.</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>Doc Bear's Symptom Vault lets you attach existing photos to a symptom entry. Only the photos you choose are read, they stay on this device, and location data is removed before saving.</string>
+    <key>NSPhotoLibraryAddUsageDescription</key>
+    <string>Doc Bear's Symptom Vault does not save photos to your photo library. This permission is requested by the camera component only.</string>
+    <key>UILaunchStoryboardName</key>
+    <string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
 	<key>UIRequiredDeviceCapabilities</key>

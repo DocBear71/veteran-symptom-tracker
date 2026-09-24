@@ -8,11 +8,58 @@ import { isNativePlatform } from '../utils/platformUtils';
 import { hapticSuccess } from '../utils/haptics';
 import { cacheSet } from '../utils/storageCache';
 import { getPlatform } from '../utils/platformUtils.js';
+import { purgeOrphanedPhotos, getPhotoStorageSummary } from '../utils/photoCapture';
+
+/**
+ * Delete photos left pointing at symptom logs that no longer exist.
+ *
+ * Restore replaces each profile's entire log array. Any photo attached to a
+ * log that isn't in the restored set becomes permanently invisible — no screen
+ * will show it, and neither deleteSymptomLog nor deleteProfileData will ever
+ * find it, because both key off something that's already gone.
+ *
+ * Runs after every restore path, including the legacy ones: restoring an old
+ * backup replaces today's logs just as thoroughly as restoring a recent one.
+ *
+ * Must be called AFTER all writes settle, or it reads the pre-restore logs and
+ * deletes the wrong photos. photoDeleteOrphans refuses an empty log set as a
+ * second line of defense.
+ */
+const purgeOrphanedPhotosAllProfiles = async () => {
+  try {
+    const raw = localStorage.getItem('symptomTracker_profiles');
+    const profiles = raw ? JSON.parse(raw) : [];
+    let total = 0;
+
+    for (const profile of profiles) {
+      if (!profile?.id) continue;
+      const logs = cacheGet(`symptomTracker_logs_${profile.id}`) || [];
+      total += await purgeOrphanedPhotos(logs, profile.id);
+    }
+
+    if (total > 0) {
+      console.log(`🗑️ Removed ${total} photo${total === 1 ? '' : 's'} orphaned by restore`);
+    }
+  } catch (error) {
+    // Never block a restore over cleanup. Worst case is unreferenced photos
+    // consuming quota, which is exactly the state we were already in.
+    console.error('❌ Orphaned photo cleanup failed after restore:', error);
+  }
+};
 
 export default function DataBunker() {
     const [lastBackup, setLastBackup] = useState(
         localStorage.getItem('lastBackupDate')
     );
+    // Photos are not in the backup file, so the count is shown to make that
+    // concrete rather than leaving it as a line of fine print.
+    const [photoSummary, setPhotoSummary] = useState({ count: 0, formatted: '0 B' });
+
+    useEffect(() => {
+        getPhotoStorageSummary()
+            .then(setPhotoSummary)
+            .catch(() => { /* non-critical; the notice still renders without a count */ });
+    }, []);
   const [storageHealth, setStorageHealth] = useState(() => getStorageHealth());
     const [dataStats, setDataStats] = useState({
         logs: 0,
@@ -108,7 +155,7 @@ export default function DataBunker() {
       // Any version listed in HYBRID_RESTORE_VERSIONS below restores fully.
       version: '2.4',
       exportDate: new Date().toISOString(),
-      appVersion: '',
+      appVersion: '3.9.0',
       activeProfileId,
       // Complete snapshot — all keys from cache + localStorage
       rawData: allData,
@@ -144,7 +191,7 @@ export default function DataBunker() {
       return;
     }
 
-    hapticSuccess();
+    await hapticSuccess();
     const nowISO = new Date().toISOString();
     localStorage.setItem('lastBackupDate', nowISO);
     setLastBackup(nowISO);
@@ -188,7 +235,7 @@ export default function DataBunker() {
         type: 'application/json'
       });
       const syntheticEvent = { target: { files: [syntheticFile] } };
-      handleImportBunker(syntheticEvent);
+      await handleImportBunker(syntheticEvent);
 
     } catch (error) {
       // User cancelled the picker — not an error
@@ -233,19 +280,6 @@ export default function DataBunker() {
           'symptomTracker_thresholdReminderDismissedUntil',
           'lastBackupDate',
         ]);
-
-        const restoreKey = (key, value) => {
-          if (LOCAL_KEYS.has(key)) {
-            // Global key — localStorage
-            localStorage.setItem(key,
-                typeof value === 'string' ? value : JSON.stringify(value));
-          } else {
-            // Profile data — write to cache (IndexedDB)
-            cacheSet(key, typeof value === 'string'
-                ? (() => { try { return JSON.parse(value); } catch { return value; } })()
-                : value);
-          }
-        };
 
         // VERSION 2.1+ format — hybrid restore:
         // • active profile's large arrays come from 'data' (full IDB-sourced copy)
@@ -360,6 +394,10 @@ export default function DataBunker() {
 
           // Wait for ALL IDB writes to complete before reloading
           await Promise.all(writePromises);
+          // Photos attached to logs that didn't survive the restore are now
+          // unreachable — remove them before the page reloads.
+          await purgeOrphanedPhotosAllProfiles();
+
           alert('Data restored successfully! The page will now reload.');
           window.location.reload();
           return;
@@ -385,6 +423,10 @@ export default function DataBunker() {
 
           // Wait for ALL IndexedDB writes to complete before reloading
           await Promise.all(writePromises);
+          // Photos attached to logs that didn't survive the restore are now
+          // unreachable — remove them before the page reloads.
+          await purgeOrphanedPhotosAllProfiles();
+
           alert('Data restored successfully! The page will now reload.');
           window.location.reload();
           return;
@@ -424,7 +466,11 @@ export default function DataBunker() {
             localStorage.setItem('symptomTracker_onboardingComplete',
                 String(imported.onboardingComplete));
           await Promise.all(legacyPromises);
-          alert('Legacy backup restored successfully! The page will now reload.');
+            // Photos attached to logs that didn't survive the restore are now
+            // unreachable — remove them before the page reloads.
+            await purgeOrphanedPhotosAllProfiles();
+
+            alert('Legacy backup restored successfully! The page will now reload.');
           window.location.reload();
           return;
         }
@@ -479,6 +525,10 @@ export default function DataBunker() {
             v1Promises.push(cacheSet(`symptomTracker_medicationHistory_${profileId}`,
                 data.medicationHistory));
           await Promise.all(v1Promises);
+          // Photos attached to logs that didn't survive the restore are now
+          // unreachable — remove them before the page reloads.
+          await purgeOrphanedPhotosAllProfiles();
+
           alert('Data restored successfully! The page will now reload.');
           window.location.reload();
         }
@@ -578,6 +628,28 @@ export default function DataBunker() {
                   </div>
               </div>
           </div>
+          {/* Photos are deliberately NOT in the backup file.
+              The backup is JSON; photos are binary and would have to be
+              base64-encoded, inflating them by a third and forcing the entire
+              file through memory as one string. A Veteran with a large photo
+              library would get a failed export and no clear reason why.
+              Saying so plainly beats a backup that silently drops data. */}
+          {photoSummary.count > 0 && (
+              <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-3 mb-4">
+                  <p className="text-sm font-medium text-blue-900 dark:text-blue-200">
+                      📷 Photos are not included in this backup
+                  </p>
+                  <p className="text-xs text-blue-800 dark:text-blue-300 mt-1">
+                      You have {photoSummary.count} photo{photoSummary.count === 1 ? '' : 's'} ({photoSummary.formatted})
+                      stored on this device. Photos stay on the device and are not written to the backup
+                      file. If you reset the app, switch phones, or reinstall, they will not come back.
+                  </p>
+                  <p className="text-xs text-blue-800 dark:text-blue-300 mt-1">
+                      To keep a copy, export a <strong>VA Claim Package PDF</strong> — your photos are
+                      embedded in it. Everything else on this screen is in the backup.
+                  </p>
+              </div>
+          )}
 
           {/* Warning if no recent backup */}
         {(daysSinceBackup === null || daysSinceBackup > 7) && (

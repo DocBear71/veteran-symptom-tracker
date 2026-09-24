@@ -19,15 +19,30 @@
  */
 
 import { useState, useEffect, useRef } from 'react';
-import { getPhotosForLog, createPhotoUrl, releasePhotoUrl } from '../utils/photoCapture';
+import {
+  getPhotoMetadataForLogs,
+  loadPhotoRecord,
+  createPhotoUrl,
+  releasePhotoUrl,
+} from '../utils/photoCapture';
+import { subscribeToPhotoReset, shouldDeferThumbnails } from '../utils/photoMemory';
 
 const LogPhotoStrip = ({ logId, photoCount = 0 }) => {
     const [thumbs, setThumbs] = useState([]);
     const [viewing, setViewing] = useState(null); // { url, width, height, caption }
     const [loading, setLoading] = useState(false);
+    // Bumped when the app resumes from background, where our URLs were revoked.
+    // Changing it re-runs the loader, so the strip rebuilds lazily on its next
+    // render rather than every strip hitting IndexedDB the instant we resume.
+    const [resetToken, setResetToken] = useState(0);
+    const [deferred, setDeferred] = useState(false);
 
     // Holds the URLs we've created so cleanup can revoke exactly those.
     const urlsRef = useRef([]);
+
+    // Mark stale on resume. The loader below does the actual work when React
+    // next renders this component.
+    useEffect(() => subscribeToPhotoReset(() => setResetToken(t => t + 1)), []);
 
     useEffect(() => {
         // The parent only mounts this component for logs that have photos, but
@@ -39,23 +54,38 @@ const LogPhotoStrip = ({ logId, photoCount = 0 }) => {
 
         (async () => {
             try {
-                const records = await getPhotosForLog(logId);
+                // Above the memory threshold, don't pre-load thumbnails at all.
+                // The Veteran taps to see a photo instead.
+                if (await shouldDeferThumbnails()) {
+                    if (!cancelled) { setDeferred(true); setThumbs([]); }
+                    return;
+                }
+                if (!cancelled) setDeferred(false);
+
+                // Metadata first, then thumbnails only. The FULL-SIZE blob is
+                // deliberately NOT held: this component renders 16x16 images,
+                // and keeping record.blob around meant retaining the full
+                // image for every photo on screen whether or not it was ever
+                // opened. The viewer loads it on tap instead.
+                const meta = await getPhotoMetadataForLogs([{ id: logId }]);
                 if (cancelled) return;
 
-                const built = records.map(record => {
+                const built = [];
+                for (const m of meta) {
+                    const record = await loadPhotoRecord(m.id);
+                    if (cancelled) return;
+                    if (!record?.thumbBlob) continue;
+
                     const url = createPhotoUrl(record.thumbBlob);
                     urlsRef.current.push(url);
-                    return {
+                    built.push({
                         id: record.id,
                         url,
                         caption: record.caption || '',
-                        // Kept so the viewer can fetch the full blob without a second
-                        // round trip through getPhotosForLog.
-                        fullBlob: record.blob,
                         width: record.width,
                         height: record.height,
-                    };
-                });
+                    });
+                }
 
                 setThumbs(built);
             } catch (error) {
@@ -70,13 +100,20 @@ const LogPhotoStrip = ({ logId, photoCount = 0 }) => {
             urlsRef.current.forEach(releasePhotoUrl);
             urlsRef.current = [];
         };
-    }, [logId, photoCount]);
+    }, [logId, photoCount, resetToken]);
 
-    const handleOpen = (thumb) => {
-        // Create the full-size URL only on open. Building these up front would
-        // mean holding the full image for every photo on screen.
-        const url = createPhotoUrl(thumb.fullBlob);
-        setViewing({ url, caption: thumb.caption, width: thumb.width, height: thumb.height });
+    const handleOpen = async (thumb) => {
+        // Fetch the full-size image now rather than holding it since mount.
+        // One IndexedDB read on tap is cheaper than retaining every full image
+        // on the screen for the chance one gets opened.
+        try {
+            const record = await loadPhotoRecord(thumb.id);
+            if (!record?.blob) throw new Error('Image data missing');
+            const url = createPhotoUrl(record.blob);
+            setViewing({ url, caption: thumb.caption, width: thumb.width, height: thumb.height });
+        } catch (error) {
+            console.error(`❌ Could not open photo "${thumb.id}":`, error);
+        }
     };
 
     const handleClose = () => {
@@ -106,8 +143,20 @@ const LogPhotoStrip = ({ logId, photoCount = 0 }) => {
     return (
         <>
             <div className="flex flex-wrap gap-2 mt-2">
-                {loading && thumbs.length === 0 && (
+                {loading && thumbs.length === 0 && !deferred && (
                     <div className="w-16 h-16 rounded-lg bg-gray-100 dark:bg-gray-700 animate-pulse" />
+                )}
+
+                {/* Large library: skip thumbnails entirely rather than holding
+                    hundreds of decoded images. Tap to load. */}
+                {deferred && (
+                    <button
+                        type="button"
+                        onClick={() => setDeferred(false)}
+                        className="px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 text-xs text-gray-600 dark:text-gray-400 hover:border-blue-500"
+                    >
+                        📷 Show {photoCount} photo{photoCount === 1 ? '' : 's'}
+                    </button>
                 )}
 
                 {thumbs.map(thumb => (
