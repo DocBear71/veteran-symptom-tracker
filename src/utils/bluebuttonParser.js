@@ -800,7 +800,55 @@ export function parseConditions(sectionText) {
     i++;
   }
 
-  return results;
+    // ── Collapse repeats, keeping the OLDEST ────────────────────────────
+    //
+    // A condition appears once per facility that holds it. Edward's file lists
+    // Diabetes Mellitus Type 2 at Northern Arizona (2018-03-06) and again at
+    // Cedar Rapids (2021-01-07), same SNOMED 44054006, because the problem list
+    // was re-entered when his care moved. Sleep Apnea 73430006 does the same.
+    //
+    // He was not diagnosed twice. The later row is further from the actual
+    // diagnosis, and for conditions rated on time since diagnosis — 100% for
+    // three months, 30% for six — a three-year error is the difference between
+    // inside and outside the initial window. Keep the oldest.
+    //
+    // This is the opposite of the vaccine dedup, which keeps the richest record
+    // because two facilities holding one shot is not the same situation.
+    const byCode = new Map();
+    for (const r of results) {
+        // Fall back to the name for rows with no SCT code
+        const key = r.sctCode || `name:${(r.name || '').toLowerCase().trim()}`;
+        const held = byCode.get(key);
+
+        if (!held) {
+            byCode.set(key, { ...r, duplicateCount: 1, laterDates: [] });
+            continue;
+        }
+
+        held.duplicateCount++;
+
+        const incomingIsOlder = r.date && held.date && new Date(r.date) < new Date(held.date);
+        if (incomingIsOlder) {
+            // The newer row's date and facility become history, so the preview can
+            // say where the later entries came from without letting them win.
+            held.laterDates.push({ dateStr: held.dateStr, location: held.location });
+            held.date = r.date;
+            held.dateStr = r.dateStr;
+            held.location = r.location || held.location;
+            held.provider = r.provider || held.provider;
+        } else {
+            held.laterDates.push({ dateStr: r.dateStr, location: r.location });
+        }
+        // Fill any blank the other row happens to have
+        if (!held.provider && r.provider) held.provider = r.provider;
+        if (!held.location && r.location) held.location = r.location;
+    }
+
+    // Re-sort after dedup. A record whose date moved backward would otherwise
+  // keep its old position and break the newest-to-oldest order the file
+  // arrives in, which looks like a parsing error on the review screen.
+  return Array.from(byCode.values())
+  .sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
 }
 
 // ─────────────────────────────────────────────────────────────

@@ -46,6 +46,8 @@ import {
   getMentalHealthScores,
   findImmunizationMatch,
   upsertImportedImmunization,
+    upsertImportedDiagnosis,
+    findDiagnosisMatch,
 } from '../utils/storage';
 
 // ─────────────────────────────────────────────────────────────
@@ -394,14 +396,29 @@ export default function BlueButtonImport({ onClose, onImportComplete }) {
           return null;
       }
 
-    if (record.category === 'condition') {
-      const existingCustomSymptoms = getCustomSymptoms();
-      const conditionName = record.name.toLowerCase().trim();
-      const match = existingCustomSymptoms.find(s =>
-          s.name.toLowerCase().trim() === conditionName
-      );
-      return match ? `"${match.name}" already exists in your conditions list` : null;
-    }
+      if (record.category === 'condition') {
+          // A condition import produces TWO records: a custom symptom and a
+          // diagnosis. It's only redundant when both already exist.
+          //
+          // Checking the symptom alone would skip every returning user: they
+          // imported conditions before diagnoses existed, so they have the
+          // symptoms and none of the dates. Re-importing is precisely how they
+          // get the dates, and this check would refuse it.
+          const conditionName = (record.name || '').toLowerCase().trim();
+          const symptomExists = getCustomSymptoms().some(
+              s => (s.name || '').toLowerCase().trim() === conditionName
+          );
+          const diagnosisExists = !!findDiagnosisMatch(record.sctCode, record.name);
+
+          if (symptomExists && diagnosisExists) {
+              return `"${record.name}" is already in your conditions and diagnoses`;
+          }
+          if (symptomExists && !diagnosisExists) {
+              // Not a conflict — this is the upgrade path. Let it through.
+              return null;
+          }
+          return null;
+      }
     if (record.category === 'medication') {
       const bbBaseName = record.name
       .replace(/\s+\d[\d.]*\s*(MG|MCG|GM|ML|MG\/ML|UNIT|%|UNT)[^\s]*/gi, '')
@@ -590,7 +607,7 @@ export default function BlueButtonImport({ onClose, onImportComplete }) {
     if (importInProgressRef.current) return;
     importInProgressRef.current = true;
 
-    const counts = { measurements: 0, appointments: 0, conditions: 0, medications: 0, medicationHistory: 0, immunizations: 0, skipped: 0, errors: 0 };
+    const counts = { measurements: 0, appointments: 0, conditions: 0, diagnoses: 0, diagnosesUpdated: 0, medications: 0, medicationHistory: 0, immunizations: 0, skipped: 0, errors: 0 };
 
     parsedData.forEach(record => {
       const state = recordStates[record._key];
@@ -602,7 +619,15 @@ export default function BlueButtonImport({ onClose, onImportComplete }) {
         if (record.category === 'vital') { _importVital(record); counts.measurements++; }
         else if (record.category === 'lab') { _importLab(record); counts.measurements++; }
         else if (record.category === 'appointment') { _importAppointment(record); counts.appointments++; }
-        else if (record.category === 'condition') { _importCondition(record); counts.conditions++; }
+        else if (record.category === 'condition') {
+          const r = _importCondition(record);
+          // Count the halves separately. Re-importing a file mostly produces
+          // diagnoses that were already held, and reporting those as new would
+          // overstate what the import did.
+          if (r.symptom) counts.conditions++;
+          if (r.diagnosis === 'created') counts.diagnoses = (counts.diagnoses || 0) + 1;
+          else if (r.diagnosis === 'updated') counts.diagnosesUpdated = (counts.diagnosesUpdated || 0) + 1;
+        }
         else if (record.category === 'vaccine') {
           // The upsert decides what actually happened — a record the Veteran
           // already entered by hand gets confirmed rather than duplicated.
@@ -820,6 +845,72 @@ export default function BlueButtonImport({ onClose, onImportComplete }) {
       createdAt: new Date().toISOString(),
     });
   };
+
+    /**
+     * Import one health condition from the VA problem list.
+     *
+     * Creates TWO records from one source row, deliberately:
+     *
+     *   1. A custom symptom, so the Veteran can log against the condition.
+     *   2. A diagnosis record, which keeps the date, provider and facility the
+     *      symptom list has no room for.
+     *
+     * The date is the reason this function exists. Several conditions are rated
+     * on time since diagnosis, and until now that date was parsed out of the
+     * file and thrown away at this step.
+     *
+     * NOTE ON WHAT THE DATE MEANS: the file's date is when the condition was
+     * added to a facility's problem list, not when it was diagnosed. It lands in
+     * firstRecordedDate and is treated as a floor. diagnosisDate stays empty
+     * until the Veteran supplies one.
+     *
+     * @returns {{symptom: boolean, diagnosis: string}} what each half did
+     */
+    const _importCondition = (record) => {
+        const result = { symptom: false, diagnosis: 'skipped' };
+
+        // ── 1. Custom symptom ────────────────────────────────────────────
+        // Skipped when one already exists, so re-importing doesn't duplicate.
+        try {
+            const existing = getCustomSymptoms();
+            const name = (record.name || '').trim();
+            const already = existing.some(
+                s => (s.name || '').toLowerCase().trim() === name.toLowerCase()
+            );
+
+            if (name && !already) {
+                // addCustomSymptom(name, category, profileId) — positional, not an
+                // object, and it has no source field. Provenance for the condition
+                // lives on the diagnosis record instead, which is the better home
+                // for it anyway.
+                addCustomSymptom(name, 'Imported (VA Problem List)');
+                result.symptom = true;
+            }
+        } catch (error) {
+            console.error(`Could not add custom symptom for "${record.name}":`, error);
+        }
+
+        // ── 2. Diagnosis record ──────────────────────────────────────────
+        // Wrapped separately so a failure in one half doesn't lose the other.
+        try {
+            const { action } = upsertImportedDiagnosis({
+                conditionName:     record.name,
+                snomedCode:        record.sctCode || null,
+                firstRecordedDate: record.dateStr || null,
+                provider:          record.provider || '',
+                facility:          record.location || '',
+                // Left null until the SNOMED-to-analyzer mapping exists. A diagnosis
+                // with no conditionKey still displays and still holds its date; it
+                // just doesn't drive a rating yet.
+                conditionKey:      null,
+            });
+            result.diagnosis = action;
+        } catch (error) {
+            console.error(`Could not save diagnosis for "${record.name}":`, error);
+        }
+
+        return result;
+    };
 
   const _importVaccine = (record) => {
     // Map parser fields to the storage record shape.

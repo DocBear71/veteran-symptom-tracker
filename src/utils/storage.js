@@ -14,6 +14,7 @@ import { getMeasurements } from './measurements';
 import { exportTextFile } from './nativeExport';
 import { cacheGet, cacheSet, cacheRemove } from './storageCache';
 import { photoDeleteByLogId } from './db';
+import { conditionKeyForSnomed } from './snomedMap';
 
 
 
@@ -914,6 +915,382 @@ export const upsertImportedImmunization = (record, profileId = null) => {
     } catch (error) {
         console.error('Error upserting imported immunization:', error);
         return { action: 'error', record: null };
+    }
+};
+
+
+// ============================================
+// DIAGNOSES / HEALTH CONDITIONS
+// ============================================
+
+/**
+ * Where a diagnosis record came from.
+ *   VA_IMPORT — parsed from the Health Conditions section of a Blue Button file
+ *   MANUAL    — typed in by the Veteran from a private provider's record,
+ *               service treatment records, or a paper report
+ */
+export const DIAGNOSIS_SOURCES = {
+    VA_IMPORT: 'va-import',
+    MANUAL: 'manual',
+};
+
+/**
+ * Categories that are on a VA problem list but are NOT medical diagnoses.
+ *
+ * A problem list carries social determinants alongside conditions. Edward's own
+ * file contains "Homeless single person" and "Family bereavement" — real and
+ * clinically relevant, but not conditions anyone is claiming, and not something
+ * to put in a PDF a Veteran hands to a VSO without deciding to.
+ *
+ * These import and display normally. They're excluded from export by default,
+ * and the Veteran can include any of them deliberately.
+ */
+export const NON_DIAGNOSIS_PATTERNS = [
+    /homeless/i,
+    /bereavement/i,
+    /unemploy/i,
+    /financial/i,
+    /housing/i,
+    /food insecur/i,
+    /social/i,
+    /caregiver/i,
+    /transportation/i,
+];
+
+/**
+ * Whether a condition name looks like a social determinant rather than a
+ * diagnosis. Used to set excludeFromExport at import time; never overrides a
+ * choice the Veteran has made.
+ */
+export const looksLikeSocialDeterminant = (conditionName) => {
+    if (!conditionName) return false;
+    return NON_DIAGNOSIS_PATTERNS.some(p => p.test(conditionName));
+};
+
+/**
+ * Read all diagnoses, most recent first.
+ *
+ * Sorts on diagnosisDate when the Veteran has supplied one, falling back to
+ * firstRecordedDate. A Veteran who corrects a date expects the list to reorder.
+ */
+export const getDiagnoses = (profileId = null) => {
+    try {
+        const key = getProfileKey('symptomTracker_diagnoses', profileId);
+        const diagnoses = cacheGet(key);
+        if (!Array.isArray(diagnoses)) return [];
+        return diagnoses.slice().sort((a, b) => {
+            const dateA = new Date(a.diagnosisDate || a.firstRecordedDate || a.createdAt || 0);
+            const dateB = new Date(b.diagnosisDate || b.firstRecordedDate || b.createdAt || 0);
+            return dateB - dateA;
+        });
+    } catch (error) {
+        console.error('Error reading diagnoses:', error);
+        return [];
+    }
+};
+
+/**
+ * Create a diagnosis record.
+ *
+ * TWO DATES, ON PURPOSE.
+ *
+ * firstRecordedDate is what the VA file says: the date this condition was added
+ * to a facility's problem list. It is NOT a diagnosis date. Edward's file lists
+ * Diabetes Mellitus Type 2 twice — March 2018 at Northern Arizona and January
+ * 2021 at Cedar Rapids — because the problem list was re-entered when his care
+ * moved. It is a floor on the diagnosis date, nothing more.
+ *
+ * diagnosisDate is the Veteran's answer, and it starts EMPTY.
+ *
+ * Several conditions are rated on time since diagnosis: hypoparathyroidism is
+ * 100% for three months, hyperthyroidism 30% for six. Defaulting diagnosisDate
+ * to firstRecordedDate would make those look more recently diagnosed than they
+ * are, which keeps them inside the initial rating window and overstates. An
+ * empty date means the analyzer declines to give a number, which is the honest
+ * answer until somebody supplies one.
+ *
+ * Record shape:
+ * {
+ *   id, conditionName, snomedCode,
+ *   firstRecordedDate ('YYYY-MM-DD', immutable, from import),
+ *   diagnosisDate ('YYYY-MM-DD' or null, Veteran-supplied),
+ *   conditionKey,            // maps to a rating analyzer, when we recognize it
+ *   provider, facility,
+ *   source, edited, excludeFromExport,
+ *   notes, createdAt, updatedAt
+ * }
+ */
+export const saveDiagnosis = (diagnosis, profileId = null) => {
+    try {
+        const diagnoses = getDiagnoses(profileId);
+        const now = new Date().toISOString();
+
+        const newRecord = {
+            conditionName:     '',
+            snomedCode:        null,
+            firstRecordedDate: null,
+            diagnosisDate:     null,
+            conditionKey:      null,
+            provider:          '',
+            facility:          '',
+            notes:             '',
+            source:            DIAGNOSIS_SOURCES.MANUAL,
+            ...diagnosis,
+            // Ours to control regardless of what the caller passed
+            id:        diagnosis.id || crypto.randomUUID(),
+            // Only default this when the caller didn't decide. An explicit
+            // false from the Veteran has to survive.
+            excludeFromExport: diagnosis.excludeFromExport !== undefined
+                ? diagnosis.excludeFromExport
+                : looksLikeSocialDeterminant(diagnosis.conditionName),
+            createdAt: diagnosis.createdAt || now,
+            updatedAt: now,
+        };
+
+        diagnoses.unshift(newRecord);
+        const key = getProfileKey('symptomTracker_diagnoses', profileId);
+        cacheSet(key, diagnoses);
+        return newRecord;
+    } catch (error) {
+        console.error('Error saving diagnosis:', error);
+        return null;
+    }
+};
+
+/**
+ * Update a diagnosis.
+ *
+ * A VA-imported record that the Veteran edits gets flagged `edited`, and the
+ * original import is snapshotted once. The claim package labels an edited
+ * record as such: presenting altered data as verbatim VA data would undermine
+ * every other VA-sourced line in the document.
+ *
+ * firstRecordedDate is deliberately NOT updatable. It's what the file said.
+ */
+export const updateDiagnosis = (id, updates, profileId = null) => {
+    try {
+        const diagnoses = getDiagnoses(profileId);
+        const index = diagnoses.findIndex(d => d.id === id);
+        if (index === -1) return null;
+
+        const existing = diagnoses[index];
+        const isVaRecord = existing.source === DIAGNOSIS_SOURCES.VA_IMPORT;
+
+        // eslint-disable-next-line no-unused-vars
+        const { firstRecordedDate, id: _ignoredId, ...safeUpdates } = updates;
+
+        const updated = {
+            ...existing,
+            ...safeUpdates,
+            id: existing.id,
+            firstRecordedDate: existing.firstRecordedDate,
+            edited: isVaRecord ? true : existing.edited,
+            originalImport: isVaRecord && !existing.originalImport
+                ? {
+                    conditionName:     existing.conditionName,
+                    firstRecordedDate: existing.firstRecordedDate,
+                    provider:          existing.provider,
+                    facility:          existing.facility,
+                }
+                : existing.originalImport,
+            updatedAt: new Date().toISOString(),
+        };
+
+        diagnoses[index] = updated;
+        const key = getProfileKey('symptomTracker_diagnoses', profileId);
+        cacheSet(key, diagnoses);
+        return updated;
+    } catch (error) {
+        console.error('Error updating diagnosis:', error);
+        return null;
+    }
+};
+
+/**
+ * Delete a diagnosis.
+ */
+export const deleteDiagnosis = (id, profileId = null) => {
+    try {
+        const diagnoses = getDiagnoses(profileId);
+        const filtered = diagnoses.filter(d => d.id !== id);
+        if (filtered.length === diagnoses.length) return false;
+
+        const key = getProfileKey('symptomTracker_diagnoses', profileId);
+        cacheSet(key, filtered);
+        return true;
+    } catch (error) {
+        console.error('Error deleting diagnosis:', error);
+        return false;
+    }
+};
+
+/**
+ * Find an existing diagnosis by SNOMED code, falling back to a name match.
+ *
+ * SNOMED first because it's stable across facilities: Sleep Apnea is 73430006
+ * whether it was entered in Arizona or Iowa. Name matching is the fallback for
+ * manual entries, which have no code.
+ */
+export const findDiagnosisMatch = (snomedCode, conditionName, profileId = null) => {
+    try {
+        const diagnoses = getDiagnoses(profileId);
+        if (snomedCode) {
+            const byCode = diagnoses.find(d => d.snomedCode === snomedCode);
+            if (byCode) return byCode;
+        }
+        if (!conditionName) return null;
+        const target = conditionName.toLowerCase().trim();
+        return diagnoses.find(d => (d.conditionName || '').toLowerCase().trim() === target) || null;
+    } catch (error) {
+        console.error('Error matching diagnosis:', error);
+        return null;
+    }
+};
+
+/**
+ * Import a diagnosis from a Blue Button file, or reconcile with one already held.
+ *
+ * DEDUP KEEPS THE OLDEST DATE, which is the opposite of the vaccine upsert.
+ *
+ * A vaccine appearing twice means two facilities hold the same record, and we
+ * keep whichever is richest. A condition appearing twice means the problem list
+ * was re-entered at a new facility, and the later entry is further from the
+ * actual diagnosis. Keeping the newer date would push the condition's apparent
+ * onset forward and, for time-limited ratings, claim an initial-period rating
+ * the Veteran is no longer inside.
+ *
+ * @returns {{action: 'created'|'updated'|'unchanged', record: object}}
+ */
+export const upsertImportedDiagnosis = (record, profileId = null) => {
+    try {
+        const existing = findDiagnosisMatch(record.snomedCode, record.conditionName, profileId);
+
+        if (!existing) {
+            const created = saveDiagnosis({
+                ...record,
+                source: DIAGNOSIS_SOURCES.VA_IMPORT,
+                importedAt: new Date().toISOString(),
+            }, profileId);
+            return { action: 'created', record: created };
+        }
+
+        const updates = {};
+
+        // Older wins. See the note above.
+        const incoming = record.firstRecordedDate;
+        const held = existing.firstRecordedDate;
+        if (incoming && (!held || new Date(incoming) < new Date(held))) {
+            // firstRecordedDate is blocked in updateDiagnosis, so write it here
+            // where we know the correction is from the file rather than a hand edit.
+            const diagnoses = getDiagnoses(profileId);
+            const index = diagnoses.findIndex(d => d.id === existing.id);
+            if (index !== -1) {
+                diagnoses[index] = {
+                    ...diagnoses[index],
+                    firstRecordedDate: incoming,
+                    provider: diagnoses[index].provider || record.provider || '',
+                    facility: diagnoses[index].facility || record.facility || '',
+                    updatedAt: new Date().toISOString(),
+                };
+                cacheSet(getProfileKey('symptomTracker_diagnoses', profileId), diagnoses);
+                return { action: 'updated', record: diagnoses[index] };
+            }
+        }
+
+        // Fill blanks without touching anything the Veteran supplied.
+        if (!existing.provider && record.provider) updates.provider = record.provider;
+        if (!existing.facility && record.facility) updates.facility = record.facility;
+        if (!existing.snomedCode && record.snomedCode) updates.snomedCode = record.snomedCode;
+
+        if (Object.keys(updates).length === 0) {
+            return { action: 'unchanged', record: existing };
+        }
+
+        // A file filling in blanks is not a hand edit, so don't flag `edited`.
+        const diagnoses = getDiagnoses(profileId);
+        const index = diagnoses.findIndex(d => d.id === existing.id);
+        diagnoses[index] = { ...diagnoses[index], ...updates, updatedAt: new Date().toISOString() };
+        cacheSet(getProfileKey('symptomTracker_diagnoses', profileId), diagnoses);
+        return { action: 'updated', record: diagnoses[index] };
+    } catch (error) {
+        console.error('Error importing diagnosis:', error);
+        return { action: 'unchanged', record: null };
+    }
+};
+
+/**
+ * The Veteran's diagnosis date for a condition, or null.
+ *
+ * This is what the time-limited rating analyzers call. Returning null is a
+ * real answer and means "we don't know" — the analyzer must then decline to
+ * report a numeric rating rather than falling back to the initial-period
+ * figure. That fallback is the bug this whole feature exists to fix.
+ *
+ * @param {string} conditionKey - e.g. 'hypoparathyroidism'
+ * @returns {string|null} 'YYYY-MM-DD'
+ */
+export const getDiagnosisDate = (conditionKey, profileId = null) => {
+    try {
+        if (!conditionKey) return null;
+        const diagnoses = getDiagnoses(profileId);
+        const match = diagnoses.find(d => d.conditionKey === conditionKey && d.diagnosisDate);
+        return match ? match.diagnosisDate : null;
+    } catch (error) {
+        console.error('Error reading diagnosis date:', error);
+        return null;
+    }
+};
+
+/**
+ * Months elapsed since diagnosis, or null when no date is on file.
+ *
+ * Analyzers use this to decide whether a Veteran is inside an initial rating
+ * window. Fractional so a 5.9-month result doesn't round into the 6-month
+ * window it just left.
+ */
+export const monthsSinceDiagnosis = (conditionKey, profileId = null) => {
+    const date = getDiagnosisDate(conditionKey, profileId);
+    if (!date) return null;
+    const then = new Date(date + 'T00:00:00');
+    if (isNaN(then)) return null;
+    const msPerMonth = 1000 * 60 * 60 * 24 * 30.44;
+    return (Date.now() - then.getTime()) / msPerMonth;
+};
+
+
+/**
+ * Fill in conditionKey on diagnoses that don't have one yet.
+ *
+ * Runs on every Diagnoses tab load. Two cases it handles:
+ *   • records imported before snomedMap.js existed
+ *   • records whose SNOMED code has since been added to the map
+ *
+ * Only ever fills a null. A key the Veteran chose by hand is never
+ * overwritten — they know their own diagnosis better than a lookup table.
+ *
+ * @returns {number} how many were linked
+ */
+export const backfillDiagnosisConditionKeys = (profileId = null) => {
+    try {
+        const diagnoses = getDiagnoses(profileId);
+        let linked = 0;
+
+        const updated = diagnoses.map(d => {
+            if (d.conditionKey || !d.snomedCode) return d;
+            const key = conditionKeyForSnomed(d.snomedCode);
+            if (!key) return d;
+            linked++;
+            return { ...d, conditionKey: key, updatedAt: new Date().toISOString() };
+        });
+
+        if (linked > 0) {
+            cacheSet(getProfileKey('symptomTracker_diagnoses', profileId), updated);
+            console.log(`🔗 Linked ${linked} diagnos${linked === 1 ? 'is' : 'es'} to rating conditions`);
+        }
+        return linked;
+    } catch (error) {
+        console.error('Error backfilling diagnosis condition keys:', error);
+        return 0;
     }
 };
 

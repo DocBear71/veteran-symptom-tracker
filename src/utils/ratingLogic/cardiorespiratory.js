@@ -4073,12 +4073,18 @@ export const analyzeSleepApneaLogs = (
     logs, sleepApneaProfile = {}, options = {}) => {
   const { evaluationPeriodDays = 90 } = options;
 
+  // A default parameter only applies to `undefined`, not `null`.
+  // getSleepApneaProfile() returns null for any Veteran who hasn't filled it
+  // in, and RatingEvidence passes that straight through, so destructuring the
+  // raw argument crashed the whole Trends & Evidence tab for every new profile.
+  const apneaProfile = sleepApneaProfile || {};
+
   const {
     usesBreathingDevice = null,
     deviceType = null,
     hasDiagnosis = null,
     diagnosisDate = null,
-  } = sleepApneaProfile;
+  } = apneaProfile;
 
   const cutoffDate = new Date();
   cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);

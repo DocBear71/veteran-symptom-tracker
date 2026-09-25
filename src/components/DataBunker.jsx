@@ -131,6 +131,7 @@ export default function DataBunker() {
         appointments:       cacheGet(`symptomTracker_appointments_${pid}`) || [],
         surgeries:          cacheGet(`symptomTracker_surgeries_${pid}`) || [],
         immunizations:      cacheGet(`symptomTracker_immunizations_${pid}`) || [],
+        diagnoses:          cacheGet(`symptomTracker_diagnoses_${pid}`) || [],
         reminderSettings:   cacheGet(`symptomTracker_reminderSettings_${pid}`) || {},
         worksheet8940:      cacheGet(`symptomTracker_8940worksheet_${pid}`) || null,
         weightGoal:         cacheGet(`symptomTracker_weightGoal_${pid}`) || null,
@@ -151,9 +152,14 @@ export default function DataBunker() {
     const activeProfileData = profilesData[activeProfileId] || {};
 
     const data = {
-      // Bumped 2.3 → 2.4: adds the immunizations array to profilesData.
-      // Any version listed in HYBRID_RESTORE_VERSIONS below restores fully.
-      version: '2.4',
+      // Bumped 2.4 → 2.5: adds the diagnoses array to profilesData.
+      //
+      // Every version in HYBRID_RESTORE_VERSIONS restores fully. A version
+      // missing from that list silently falls through to the rawData-only
+      // branch and skips Steps 2 and 3 — which is exactly what happened to
+      // every 2.3 backup before the list existed. Add the new version there
+      // in the same edit as this one, every time.
+      version: '2.5',
       exportDate: new Date().toISOString(),
       appVersion: '3.9.0',
       activeProfileId,
@@ -289,7 +295,7 @@ export default function DataBunker() {
         // A backup whose version is missing here falls through to the rawData-only
         // branch and silently skips Steps 2 and 3 — which is what happened to
         // every 2.3 backup before this list existed.
-        const HYBRID_RESTORE_VERSIONS = new Set(['2.1', '2.2', '2.3', '2.4']);
+        const HYBRID_RESTORE_VERSIONS = new Set(['2.1', '2.2', '2.3', '2.4', '2.5']);
 
         if (imported.data && HYBRID_RESTORE_VERSIONS.has(imported.version)) {
           const { data } = imported;
@@ -350,6 +356,9 @@ export default function DataBunker() {
           // Absent in backups made before 2.4 — the guard lets those restore cleanly
           if (data.immunizations)
             writePromises.push(cacheSet(`symptomTracker_immunizations_${profileId}`, data.immunizations));
+          // Absent before 2.5, same reasoning
+          if (data.diagnoses)
+            writePromises.push(cacheSet(`symptomTracker_diagnoses_${profileId}`, data.diagnoses));
           if (data.reminderSettings)
             writePromises.push(cacheSet(`symptomTracker_reminderSettings_${profileId}`, data.reminderSettings));
           if (data.worksheet8940)
@@ -378,6 +387,7 @@ export default function DataBunker() {
                 ['symptomTracker_appointments',      pdata.appointments],
                 ['symptomTracker_surgeries',         pdata.surgeries],
                 ['symptomTracker_immunizations',     pdata.immunizations],
+                ['symptomTracker_diagnoses',         pdata.diagnoses],
                 ['symptomTracker_reminderSettings',  pdata.reminderSettings],
                 ['symptomTracker_8940worksheet',     pdata.worksheet8940],
                 ['symptomTracker_weightGoal',        pdata.weightGoal],

@@ -290,6 +290,7 @@ const deleteProfileData = (profileId) => {
     `symptomTracker_measurements_${profileId}`,
     `symptomTracker_height_${profileId}`,
     `symptomTracker_medicationGroups_${profileId}`,
+      `symptomTracker_diagnoses_${profileId}`,
   ];
 
   keysToDelete.forEach(key => {

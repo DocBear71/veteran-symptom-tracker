@@ -10,6 +10,7 @@ import SurgeryHistory from './SurgeryHistory';
 import LogPhotoStrip from './LogPhotoStrip';
 import { getActiveProfileId } from '../utils/profiles';
 import { photoGetMetadataByProfile } from '../utils/db';
+import DiagnosesTab from './DiagnosesTab';
 
 const SymptomHistory = ({ onCopyLog }) => {
   const [logs, setLogs] = useState([]);
@@ -215,11 +216,14 @@ const SymptomHistory = ({ onCopyLog }) => {
 
   return (
       <div ref={containerRef}  className="pb-20">
-        {/* Main Tab Toggle: Symptoms vs Appointments */}
-        <div className="flex gap-2 mb-4">
+        {/* Main Tab Toggle. Four buttons at flex-1 squeeze to unreadable
+            widths on a phone, so they wrap to two rows instead. */}
+        {/* text-sm cascades to all four buttons. At the default size
+            "Appointments" is wider than a quarter of the row. */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-4 text-sm">
           <button
               onClick={() => setMainTab('symptoms')}
-              className={`flex-1 py-2 px-4 rounded-lg font-medium transition-colors ${
+              className={`flex-1 py-2 px-2 rounded-lg font-medium transition-colors ${
                   mainTab === 'symptoms'
                       ? 'bg-blue-900 dark:bg-blue-600 text-white'
                       : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
@@ -229,7 +233,7 @@ const SymptomHistory = ({ onCopyLog }) => {
           </button>
           <button
               onClick={() => setMainTab('appointments')}
-              className={`flex-1 py-2 px-4 rounded-lg font-medium transition-colors ${
+              className={`flex-1 py-2 px-2 rounded-lg font-medium transition-colors ${
                   mainTab === 'appointments'
                       ? 'bg-blue-900 dark:bg-blue-600 text-white'
                       : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
@@ -239,13 +243,23 @@ const SymptomHistory = ({ onCopyLog }) => {
           </button>
           <button
               onClick={() => setMainTab('surgeries')}
-              className={`flex-1 py-2 px-4 rounded-lg font-medium transition-colors ${
+              className={`flex-1 py-2 px-2 rounded-lg font-medium transition-colors ${
                   mainTab === 'surgeries'
                       ? 'bg-blue-900 dark:bg-blue-600 text-white'
                       : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
               }`}
           >
             Surgeries
+          </button>
+          <button
+              onClick={() => setMainTab('diagnoses')}
+              className={`py-2 px-2 rounded-lg font-medium transition-colors ${
+                  mainTab === 'diagnoses'
+                      ? 'bg-blue-900 dark:bg-blue-600 text-white'
+                      : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
+              }`}
+          >
+            Diagnoses
           </button>
         </div>
 
@@ -3002,7 +3016,7 @@ const SymptomHistory = ({ onCopyLog }) => {
               <div className="flex gap-2 mb-4">
                 <button
                     onClick={() => setAppointmentTab('history')}
-                    className={`flex-1 py-2 px-4 rounded-lg font-medium transition-colors ${
+                    className={`flex-1 py-2 px-2 rounded-lg font-medium transition-colors ${
                         appointmentTab === 'history'
                             ? 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200'
                             : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600'
@@ -3012,7 +3026,7 @@ const SymptomHistory = ({ onCopyLog }) => {
                 </button>
                 <button
                     onClick={() => setAppointmentTab('add')}
-                    className={`flex-1 py-2 px-4 rounded-lg font-medium transition-colors ${
+                    className={`flex-1 py-2 px-2 rounded-lg font-medium transition-colors ${
                         appointmentTab === 'add'
                             ? 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200'
                             : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600'
@@ -3029,6 +3043,9 @@ const SymptomHistory = ({ onCopyLog }) => {
             </div>
         )}
 
+          {/* Diagnoses Tab Content */}
+          {mainTab === 'diagnoses' && <DiagnosesTab />}
+
         {/* Surgeries Tab Content */}
         {mainTab === 'surgeries' && (
             <div>
@@ -3036,7 +3053,7 @@ const SymptomHistory = ({ onCopyLog }) => {
               <div className="flex gap-2 mb-4">
                 <button
                     onClick={() => setSurgeryTab('history')}
-                    className={`flex-1 py-2 px-4 rounded-lg font-medium transition-colors ${
+                    className={`flex-1 py-2 px-2 rounded-lg font-medium transition-colors ${
                         surgeryTab === 'history'
                             ? 'bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200'
                             : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600'
@@ -3046,7 +3063,7 @@ const SymptomHistory = ({ onCopyLog }) => {
                 </button>
                 <button
                     onClick={() => setSurgeryTab('add')}
-                    className={`flex-1 py-2 px-4 rounded-lg font-medium transition-colors ${
+                    className={`flex-1 py-2 px-2 rounded-lg font-medium transition-colors ${
                         surgeryTab === 'add'
                             ? 'bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200'
                             : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600'

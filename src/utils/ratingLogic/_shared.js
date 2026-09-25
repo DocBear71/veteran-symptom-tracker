@@ -100,3 +100,107 @@ export const classifySymptomPattern = (distinctDays, evaluationPeriodDays) => {
   if (coverage >= 0.10) return 'intermittent';
   return 'sparse';
 };
+
+
+// ============================================
+// TIME-LIMITED RATING HELPER
+// ============================================
+
+import { monthsSinceDiagnosis } from '../storage';
+import { getTimeLimitInfo } from '../snomedMap';
+
+/**
+ * Decide which rating period a Veteran is in for a time-limited condition.
+ *
+ * Several endocrine conditions carry an initial rating for a fixed window and
+ * are rated on residuals after it: hypoparathyroidism 100% for 3 months,
+ * hyperthyroidism 30% for 6, and so on.
+ *
+ * Before the Diagnoses tab existed the app had no way to know the date, so
+ * these analyzers returned the INITIAL rating to everyone — a Veteran
+ * diagnosed a decade ago got 100% in their claim package, and that number fed
+ * straight into the estimated combined rating. Overstating in a document a
+ * Veteran hands to a rater is worse than saying nothing.
+ *
+ * So with no date on file this returns period 'unknown', and the analyzer must
+ * decline to report a numeric rating rather than guessing.
+ *
+ * @param {string} conditionKey - e.g. 'hypoparathyroidism'
+ * @param {object} options - pass monthsSinceDiagnosis to override for tests
+ * @returns {{period, months, info, initialRating, windowMonths}}
+ */
+export const getRatingPeriod = (conditionKey, options = {}) => {
+    const info = getTimeLimitInfo(conditionKey);
+    if (!info) {
+        return { period: 'not-time-limited', months: null, info: null };
+    }
+
+    // The override keeps this testable without touching storage.
+    const months = options.monthsSinceDiagnosis !== undefined
+        ? options.monthsSinceDiagnosis
+        : monthsSinceDiagnosis(conditionKey);
+
+    if (months === null || months === undefined) {
+        return {
+            period: 'unknown',
+            months: null,
+            info,
+            initialRating: info.initialRating,
+            windowMonths: info.months,
+        };
+    }
+
+    return {
+        period: months <= info.months ? 'initial' : 'residual',
+        months,
+        info,
+        initialRating: info.initialRating,
+        windowMonths: info.months,
+    };
+};
+
+/**
+ * The rationale and gap lines for each period. Kept here so all five
+ * analyzers say the same thing in the same words.
+ */
+export const timeLimitedNarrative = (conditionName, ratingPeriod) => {
+    const { period, months, initialRating, windowMonths, info } = ratingPeriod;
+    const rationale = [];
+    const gaps = [];
+
+    if (period === 'unknown') {
+        rationale.push(
+            `${conditionName} is rated ${initialRating}% for its first ${windowMonths} months ` +
+            `after diagnosis (DC ${info.dc}), then on whatever symptoms remain.`
+        );
+        rationale.push(
+            'No diagnosis date is on file, so the app cannot tell which applies and ' +
+            'is not estimating a rating for this condition.'
+        );
+        gaps.push(
+            `Add your diagnosis date on the Diagnoses tab. Without it this condition ` +
+            `has no rating estimate, and the ${initialRating}% initial rating may apply ` +
+            `if you were diagnosed within the last ${windowMonths} months.`
+        );
+    } else if (period === 'initial') {
+        const remaining = Math.max(0, windowMonths - months);
+        rationale.push(
+            `Diagnosed ${months.toFixed(1)} months ago, within the ${windowMonths}-month ` +
+            `initial period for DC ${info.dc}. The ${initialRating}% rating applies.`
+        );
+        rationale.push(
+            `About ${remaining.toFixed(1)} months remain before rating shifts to residuals.`
+        );
+        gaps.push(
+            'Keep logging symptoms now. When the initial period ends, the rating is ' +
+            'based on what remains, and that record is what supports it.'
+        );
+    } else {
+        rationale.push(
+            `Diagnosed ${months.toFixed(1)} months ago, past the ${windowMonths}-month ` +
+            `initial period for DC ${info.dc}. Rating is based on remaining symptoms.`
+        );
+    }
+
+    return { rationale, gaps };
+};

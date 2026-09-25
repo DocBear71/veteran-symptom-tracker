@@ -28,6 +28,8 @@ import {
 import {
   getLogSymptomId,
   isWithinEvaluationPeriod,
+    getRatingPeriod,
+    timeLimitedNarrative,
 } from './_shared';
 
 // ============================================
@@ -4123,7 +4125,41 @@ export const analyzeHypoparathyroidismLogs = (logs, options = {}) => {
     return logDate >= cutoffDate && symptomId && symptomIds.includes(symptomId);
   });
 
+  // The rating period is computed BEFORE the no-logs return, deliberately.
+  //
+  // The initial 100% under DC 7905 is granted on diagnosis, not on symptom
+  // severity — VA presumes total disability for three months regardless of
+  // what the Veteran reports. So a Veteran diagnosed three weeks ago who
+  // hasn't started logging yet is precisely who that rating is for, and
+  // bailing out on "no logs" would hide it from them.
+  //
+  // Outside the initial window the usual rule applies: no logs, no finding.
+  const ratingPeriod = getRatingPeriod('hypoparathyroidism', options);
+  const narrative = timeLimitedNarrative('Hypoparathyroidism', ratingPeriod);
+
   if (relevantLogs.length === 0) {
+    if (ratingPeriod.period === 'initial') {
+      return {
+        hasData: true,
+        condition: 'Hypoparathyroidism',
+        diagnosticCode: '7905',
+        cfrReference: '38 CFR 4.119',
+        supportedRating: 100,
+        ratingRationale: [
+          ...narrative.rationale,
+          'This rating follows from the diagnosis date, not from logged symptoms.',
+        ],
+        // narrative.gaps is skipped here: its initial-period line says the same
+        // thing as the one below, and two near-identical warnings read as a bug.
+        gaps: [
+          'No symptoms logged yet. Start now — when the initial period ends, the ' +
+          'rating is based on what remains, and your log is what supports it.',
+        ],
+        metrics: { totalLogs: 0, withinInitialPeriod: true },
+        criteria: HYPOPARATHYROIDISM_CRITERIA,
+      };
+    }
+
     return {
       hasData: false,
       condition: 'Hypoparathyroidism',
@@ -4161,15 +4197,30 @@ export const analyzeHypoparathyroidismLogs = (logs, options = {}) => {
       ? severities.reduce((a, b) => a + b, 0) / severities.length
       : 0;
 
-  // Hypoparathyroidism gets 100% for 3 months, then rate residuals
-  // Since we can't determine diagnosis date, we note both options
-  let supportedRating = 100;
-  const ratingRationale = [];
-  const gaps = [];
+  // DC 7905: 100% for 3 months after diagnosis, then rate residuals.
+  //
+  // This used to hardcode 100% with a comment saying "we can't determine
+  // diagnosis date, so we note both options." It didn't note both options —
+  // it reported 100% to every Veteran regardless of when they were diagnosed,
+  // and that number flowed into the estimated combined rating on the claim
+  // package cover page. The Diagnoses tab now supplies the date.
+  let supportedRating;
+  if (ratingPeriod.period === 'initial') {
+    supportedRating = 100;
+  } else if (ratingPeriod.period === 'residual') {
+    // Past the initial window, residuals are rated under whichever codes the
+    // remaining symptoms fall under — neurological for seizures, eye for
+    // cataracts, and so on. This analyzer can't pick among those, so it
+    // reports the situation rather than a number.
+    supportedRating = 'Rate residuals';
+  } else {
+    supportedRating = 'Diagnosis date needed';
+  }
+
+  const ratingRationale = [...narrative.rationale];
+  const gaps = [...narrative.gaps];
 
   ratingRationale.push(`${relevantLogs.length} hypoparathyroidism symptoms logged in ${days} days`);
-  ratingRationale.push('Initial 100% rating applies for 3 months after diagnosis');
-  ratingRationale.push('After 3 months, rate chronic residuals under appropriate codes');
 
   // Document symptom categories
   if (neuromuscularSymptoms.length > 0) {
@@ -4195,7 +4246,8 @@ export const analyzeHypoparathyroidismLogs = (logs, options = {}) => {
   ratingRationale.push(`Average symptom severity: ${avgSeverity.toFixed(1)}/10`);
 
   // Documentation gaps
-  gaps.push('Document diagnosis date to determine if within initial 3-month period');
+  // The diagnosis-date gap is now supplied by timeLimitedNarrative, and only
+  // when it's actually missing.
   gaps.push('Track calcium and PTH lab values when available');
   if (seizureLogs.length > 0) {
     gaps.push('Seizures from hypocalcemia may be separately rated - document all episodes');
