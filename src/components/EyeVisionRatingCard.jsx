@@ -330,7 +330,7 @@ const EyeVisionRatingCard = ({ analysis, expanded, onToggle }) => {
 
               <UnderstandingYourRating
                   diagnosticCode="6061"
-                  currentRating={numericRating}
+                  currentRating={typeof analysis?.supportedRating === 'number' ? analysis.supportedRating : (parseInt(analysis?.supportedRating, 10) || null)}
               />
 
               <RatingEnhancementsDisplay

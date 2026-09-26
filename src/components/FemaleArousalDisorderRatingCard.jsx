@@ -129,7 +129,7 @@ export default function FemaleArousalDisorderRatingCard({ analysis, expanded, on
 
               <UnderstandingYourRating
                   diagnosticCode="7632"
-                  currentRating={numericRating}
+                  currentRating={typeof analysis?.supportedRating === 'number' ? analysis.supportedRating : (parseInt(analysis?.supportedRating, 10) || null)}
               />
 
               <RatingEnhancementsDisplay

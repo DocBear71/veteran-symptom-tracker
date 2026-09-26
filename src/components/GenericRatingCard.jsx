@@ -86,8 +86,8 @@ export default function GenericRatingCard({ analysis, expanded, onToggle, icon =
           </div>
           <div className="flex items-center gap-4">
             <div className="text-right">
-              <div className={`text-2xl font-bold ${getRatingTextColor(supportedRating)}`}>
-                {formatRating(supportedRating)}
+              <div className={`text-2xl font-bold ${statusDisplay ? statusDisplay.colorClass : getRatingTextColor(supportedRating)}`}>
+                {statusDisplay ? statusDisplay.label : formatRating(supportedRating)}
               </div>
               <div className="text-xs text-gray-500 dark:text-gray-400">Supported Rating</div>
             </div>

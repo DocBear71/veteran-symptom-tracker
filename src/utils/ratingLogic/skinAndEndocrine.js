@@ -32,7 +32,6 @@ import {
     getRatingPeriod,
     timeLimitedNarrative,
     timeLimitedSupportedRating,
-    RATING_STATUS,
     getSurgeryRatingPeriod,
     surgeryLimitedNarrative,
 } from './_shared';
@@ -7486,3 +7485,63 @@ export const analyzeChronicUrticariaLogs = (logs, options = {}) => {
     disclaimer: CHRONIC_URTICARIA_CRITERIA.disclaimer,
   };
 };
+
+
+/**
+ * Group SLE flare logs into distinct episodes.
+ *
+ * analyzeSystemicLupusLogs has called this since before the body-system split,
+ * but the function itself never made it into this file, so any Veteran with
+ * lupus logs got a ReferenceError and the Rating Evidence tab failed to load.
+ *
+ * Heuristic: flare logs no more than 3 days apart belong to one episode. A
+ * Veteran logging a week-long flare every day or two produces one episode of
+ * about 7 days. Two flares a month apart are two episodes. DC 6350's 60% line
+ * turns on exacerbations "lasting a week or more", which is what durationDays
+ * is compared against.
+ *
+ * @param {Array} flares - flare logs (any order)
+ * @returns {Array<{start: Date, end: Date, durationDays: number, logCount: number}>}
+ */
+function identifyFlareEpisodes(flares) {
+    if (!Array.isArray(flares) || flares.length === 0) return [];
+
+    const MAX_GAP_DAYS = 3;
+    const MS_PER_DAY = 1000 * 60 * 60 * 24;
+
+    const times = flares
+        .map(log => new Date(log.occurredAt || log.timestamp))
+        .filter(d => !Number.isNaN(d.getTime()))
+        .sort((a, b) => a - b);
+
+    const episodes = [];
+    let start = null;
+    let end = null;
+    let count = 0;
+
+    times.forEach(t => {
+        if (start && (t - end) / MS_PER_DAY <= MAX_GAP_DAYS) {
+            end = t;
+            count++;
+        } else {
+            if (start) {
+                episodes.push({
+                    start, end, logCount: count,
+                    durationDays: Math.floor((end - start) / MS_PER_DAY) + 1,
+                });
+            }
+            start = t;
+            end = t;
+            count = 1;
+        }
+    });
+
+    if (start) {
+        episodes.push({
+            start, end, logCount: count,
+            durationDays: Math.floor((end - start) / MS_PER_DAY) + 1,
+        });
+    }
+
+    return episodes;
+}

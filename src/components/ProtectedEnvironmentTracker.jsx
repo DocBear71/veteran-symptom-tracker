@@ -12,6 +12,7 @@ import {
   REASONABLE_DOUBT_STATEMENT_GUIDANCE,
   CURRENT_POVERTY_THRESHOLD,
   CURRENT_POVERTY_THRESHOLD_YEAR,
+  CURRENT_POVERTY_THRESHOLD_ALTERNATE,
   PROTECTED_ENVIRONMENT_INDICATORS,
 } from '../utils/tdiuEligibility';
 import { generateProtectedEnvironmentPDF } from '../utils/export';

@@ -7,7 +7,17 @@ import unusedImports from 'eslint-plugin-unused-imports'
 import { defineConfig, globalIgnores } from 'eslint/config'
 
 export default defineConfig([
-  globalIgnores(['dist']),
+  // android/ and ios/ each hold a full copy of the built, minified app
+  // (Capacitor). Linting them ran ESLint out of memory.
+    globalIgnores(['dist', 'android', 'ios', 'Docs']),
+    // Service worker runs in its own global scope (self, clients, caches),
+    // not the browser window scope the rest of the app uses.
+    {
+        files: ['public/sw.js'],
+        languageOptions: {
+            globals: { ...globals.serviceworker },
+        },
+    },
   {
     files: ['**/*.{js,jsx}'],
     plugins: {

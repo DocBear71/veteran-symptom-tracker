@@ -301,7 +301,7 @@ const RectumAnusRatingCard = ({ analysis, expanded, onToggle }) => {
 
               <UnderstandingYourRating
                   diagnosticCode={diagnosticCode}
-                  currentRating={numericRating}
+                  currentRating={typeof analysis?.supportedRating === 'number' ? analysis.supportedRating : (parseInt(analysis?.supportedRating, 10) || null)}
               />
 
               <RatingEnhancementsDisplay

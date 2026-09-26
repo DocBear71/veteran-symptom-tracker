@@ -147,6 +147,12 @@ const SurgeryHistory = () => {
                           </p>
                       )}
 
+                        {relatedDisplay && (
+                            <p className="text-xs text-blue-600 dark:text-blue-400 mt-1">
+                                🔗 {relatedDisplay}
+                            </p>
+                        )}
+
                       {/* Related conditions pill row */}
                       {surgery.conditionKey && (
                           <p className="text-xs text-blue-700 dark:text-blue-400 mt-0.5">

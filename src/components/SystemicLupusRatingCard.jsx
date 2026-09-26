@@ -294,7 +294,7 @@ const SystemicLupusRatingCard = ({ analysis, expanded, onToggle }) => {
 
               <UnderstandingYourRating
                   diagnosticCode="6350"
-                  currentRating={numericRating}
+                  currentRating={typeof analysis?.supportedRating === 'number' ? analysis.supportedRating : (parseInt(analysis?.supportedRating, 10) || null)}
               />
 
               <RatingEnhancementsDisplay

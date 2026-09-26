@@ -159,8 +159,8 @@ export default function ThyroiditisRatingCard({ analysis, expanded, onToggle }) 
                             className={`p-3 rounded-lg border ${isSupported ? 'border-2' : ''} ${getRatingRowColor(rating.percent, isSupported)}`}
                         >
                           <div className="flex items-center gap-3">
-                            <div className={`w-14 text-center font-bold ${isSupported ? 'text-gray-900 dark:text-white' : 'text-gray-500 dark:text-gray-400'}`}>
-                              {rating.percent}%
+                            <div className={`w-20 text-center font-bold ${isSupported ? 'text-gray-900 dark:text-white' : 'text-gray-500 dark:text-gray-400'}`}>
+                              {getScheduleRowLabel(rating)}
                             </div>
                             <div className={`flex-1 text-sm ${isSupported ? 'text-gray-900 dark:text-white' : 'text-gray-500 dark:text-gray-400'}`}>
                               {rating.summary}
