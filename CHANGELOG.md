@@ -7,6 +7,78 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [3.9.0] - September 2026
+
+> Entries for 2.6.0 through 3.8.x were not recorded in this file. See the git
+> history for those releases.
+
+### Important: Some Ratings Now Show "Date needed"
+Seven endocrine conditions are rated on time since diagnosis (or, for
+hyperparathyroidism, time since surgery). Before this release the app showed
+the initial rating to every Veteran, however long ago they were diagnosed, and
+that number went into the estimated combined rating. These conditions now show
+**Date needed** until a diagnosis date is entered on the Diagnoses tab, and
+**Residuals** once the initial period has passed.
+
+| Condition | DC | Initial rating | Period |
+|---|---|---|---|
+| Hyperthyroidism | 7900 | 30% | 6 months from diagnosis |
+| Hypothyroidism (without myxedema) | 7903 | 30% | 6 months from diagnosis |
+| Hyperparathyroidism | 7904 | 100% | 6 months from discharge after surgery |
+| Hypoparathyroidism | 7905 | 100% | 3 months from diagnosis |
+| Thyroiditis (hyper or hypo phase) | 7906 | 30% | 6 months from diagnosis |
+| Cushing's syndrome | 7907 | 30 to 100% | 6 months from diagnosis |
+| Diabetes insipidus | 7909 | 30% | 3 months from diagnosis (then 10% with persistent polyuria) |
+
+### Added
+- **Diagnoses tab** (fourth tab in History)
+    - Two dates per condition: the Veteran's diagnosis date (starts empty), and
+      the date first recorded in VA records (from Blue Button, not editable)
+    - Link each diagnosis to a rated condition; linked dates drive time-limited ratings
+    - "Leave out of exported claim packages" option; social determinants from a
+      VA problem list are left out by default
+- **Blue Button diagnoses** - imported conditions create a diagnosis record as
+  well as a custom symptom, linked to a rated condition by SNOMED code when mapped
+- **SNOMED map** (`snomedMap.js`) - 78 codes, each verified against the SNOMED CT
+  Browser (US Edition 2026-09-01) or a real Blue Button file
+- **Surgery records** - optional discharge date and link to a rated condition
+- **Diagnosed Conditions** section in the VA Claim Package and CSV export,
+  with an Include Diagnoses option (on by default)
+- Educational content for hyperparathyroidism (7904), hypoparathyroidism (7905),
+  thyroiditis (7906), and diabetes insipidus (7909)
+
+### Changed
+- Rating cards for time-limited conditions show **Residuals** or **Date needed**
+  where a percentage doesn't apply
+- Myxedema (DC 7903, 100%) is described but not estimated; it runs from crisis
+  stabilization, a date the app does not record
+- Diabetes insipidus reports the 10% floor for persistent polyuria even without
+  a diagnosis date, since it can't overstate
+- Cushing's syndrome no longer reports 30% when the 30% features weren't logged
+- Claim package combined rating counts thyroiditis and the matching thyroid
+  condition once, not twice (38 CFR 4.14), with a note naming what was left out
+- DataBunker backup format 2.5 (diagnoses included)
+
+### Fixed
+- Hypoparathyroidism card showed "Rate residuals%"
+- Thyroiditis and hyperparathyroidism cards showed educational content for
+  the wrong diagnostic code
+- Hyperthyroidism and hypothyroidism educational content showed the rating
+  levels from before VA's 2017 endocrine revision
+- Addison's, Cushing's, and hyperaldosteronism educational content corrected to
+  38 CFR 4.119
+- Seven endocrine analyzers ignored the export date range and always used 90 days
+- Claim package table of contents listed Surgical History when surgeries were
+  excluded, shifting every later section number
+- Hypothyroidism card always showed 0 Total Logs
+- Symptom log date and time fields crashed when typed into by hand
+- Symptom log custom date was one day ahead after 7 pm Central (UTC used
+  instead of local date)
+- Blue Button import threw on every health condition
+- Trends tab crashed for profiles without a sleep apnea profile
+
+---
+
 ## [2.5.0] - January 2025
 
 ### Added
@@ -220,6 +292,8 @@ Export functionality was already robust. Optional enhancements deferred.
 
 | Version | Date     | Highlights                                                       |
 |---------|----------|------------------------------------------------------------------|
+| 3.9.0   | Sep 2026 | Diagnoses tab, time-limited endocrine ratings, diagnoses export  |
+| 2.6-3.8 | -        | Not recorded here; see git history                               |
 | 2.5.0   | Jan 2025 | Quick Actions Menu, Accessibility Settings, WCAG 2.1 AA          |
 | 2.4.0   | Jan 2025 | Skipped (export already complete)                                |
 | 2.3.0   | Jan 2025 | PCAFC Caregiver Program Guide                                    |
