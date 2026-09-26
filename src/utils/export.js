@@ -12,6 +12,8 @@ import { getSymptomLogs,
   isBackDated,
   getMentalHealthScores,
   get8940Worksheet,
+  getDiagnoses,
+  DIAGNOSIS_SOURCES,
 } from './storage';
 import { formatDosage } from './medicationUtils';
 import { getMeasurements } from './measurements';
@@ -316,6 +318,48 @@ import {
   analyzeTabesDorsalisLogs,
   analyzeSyphiliticDementiaLogs,
 } from '../utils/ratingLogic/'
+
+// ========== DIAGNOSES (export helpers) ==========
+
+/**
+ * Diagnoses that belong in an export.
+ *
+ * Records the Veteran marked "Leave this out of exported claim packages" are
+ * dropped here, and nothing in the output mentions that anything was left
+ * out. A line like "2 diagnoses not shown" would tell whoever reads the PDF
+ * that something personal was withheld, which defeats the setting. The export
+ * screen tells the Veteran instead, before they generate.
+ */
+const getExportableDiagnoses = () => getDiagnoses().filter(d => !d.excludeFromExport);
+
+/** 'YYYY-MM-DD' to a local date string, or null. */
+const formatDiagnosisDate = (dateStr) =>
+    dateStr ? new Date(dateStr + 'T00:00:00').toLocaleDateString() : null;
+
+/**
+ * Where the record came from. An imported record the Veteran changed is
+ * labeled as edited: presenting altered data as verbatim VA data would
+ * undermine every other VA-sourced line in the package.
+ */
+const getDiagnosisSourceLabel = (record) => {
+    if (record.source === DIAGNOSIS_SOURCES.VA_IMPORT) {
+        return record.edited ? 'VA file (edited)' : 'VA file';
+    }
+    return 'Self-reported';
+};
+
+/**
+ * "Hypothyroidism (DC 7903)" for a linked diagnosis.
+ * Names come from options.conditionNames, built by ExportData.jsx; this file
+ * doesn't import the condition list directly (circular dependency).
+ * An unknown key prints as-is rather than disappearing.
+ */
+const getDiagnosisLinkLabel = (record, conditionNames = {}) => {
+    if (!record.conditionKey) return '';
+    const info = conditionNames[record.conditionKey];
+    if (!info) return record.conditionKey;
+    return info.dc ? `${info.name} (DC ${info.dc})` : info.name;
+};
 
 // Surgery procedure type labels for export
 const SURGERY_PROCEDURE_TYPE_LABELS = {
@@ -4389,6 +4433,36 @@ export const generateCSV = async (
     ).join('\n');
   }
 
+  // ========== DIAGNOSES SECTION ==========
+  // Raw dates (YYYY-MM-DD) and SNOMED codes, since the CSV is the Veteran's
+  // own data file. Records marked "leave out of exports" are still left out.
+  const csvDiagnoses = options.includeDiagnoses !== false ? getExportableDiagnoses() : [];
+  if (csvDiagnoses.length > 0) {
+    csvContent += '\n\n=== DIAGNOSED CONDITIONS ===\n\n';
+
+    const diagnosisHeaders = [
+      'Condition', 'Diagnosis Date', 'First Recorded in VA Records', 'Source',
+      'Provider', 'Facility', 'Linked To', 'SNOMED Code', 'Notes',
+    ];
+
+    const diagnosisRows = csvDiagnoses.map(d => [
+      d.conditionName || '',
+      d.diagnosisDate || 'Not provided',
+      d.firstRecordedDate || '',
+      getDiagnosisSourceLabel(d),
+      d.provider || '',
+      d.facility || '',
+      getDiagnosisLinkLabel(d, options.conditionNames),
+      d.snomedCode || '',
+      d.notes || '',
+    ]);
+
+    csvContent += diagnosisHeaders.join(',') + '\n';
+    csvContent += diagnosisRows.map(row =>
+        row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(',')
+    ).join('\n');
+  }
+
   await exportTextFile(
       csvContent,
       `symptom-report-${new Date().toISOString().split('T')[0]}.csv`,
@@ -5924,10 +5998,19 @@ export const generateVAClaimPackagePDF = async (dateRange = 'all', options = {})
     tocSectionNum++;
   }
 
-  // Surgical History — gated on surgeries existing
-  const tocSurgeries = getSurgeries();
+  // Surgical History. Gated on the checkbox too, matching the section body.
+  // It used to ignore includeSurgeries, so unticking it left a TOC entry for a
+  // missing section and every later section number was off by one.
+  const tocSurgeries = options.includeSurgeries !== false ? getSurgeries() : [];
   if (tocSurgeries.length > 0) {
     tocItems.push(`${tocSectionNum}. Surgical History`);
+    tocSectionNum++;
+  }
+
+  // Diagnosed Conditions. Must match the section body's gating exactly.
+  const tocDiagnoses = options.includeDiagnoses !== false ? getExportableDiagnoses() : [];
+  if (tocDiagnoses.length > 0) {
+    tocItems.push(`${tocSectionNum}. Diagnosed Conditions`);
     tocSectionNum++;
   }
 
@@ -7943,6 +8026,76 @@ export const generateVAClaimPackagePDF = async (dateRange = 'all', options = {})
 
     currentY = doc.lastAutoTable.finalY + 10;
   }
+
+    // ========== DIAGNOSED CONDITIONS ==========
+    // After surgical history, before immunizations. The TOC gating above must
+    // match this condition exactly or the section numbers drift.
+    const exportDiagnoses = options.includeDiagnoses !== false ? getExportableDiagnoses() : [];
+    if (exportDiagnoses.length > 0) {
+        doc.addPage();
+        currentY = 20;
+
+        doc.setFontSize(14);
+        doc.setTextColor(30, 58, 138);
+        doc.setFont(undefined, 'bold');
+        currentSection++;
+        doc.text(`${currentSection}. DIAGNOSED CONDITIONS`, 14, currentY);
+        doc.setFont(undefined, 'normal');
+
+        doc.setFontSize(9);
+        doc.setTextColor(100);
+        doc.text('Diagnoses from VA records and the Veteran\'s own medical records', 14, currentY + 8);
+        currentY += 16;
+
+        const diagnosisData = exportDiagnoses.map(d => [
+            d.conditionName || '-',
+            formatDiagnosisDate(d.diagnosisDate) || 'Not provided',
+            formatDiagnosisDate(d.firstRecordedDate) || '-',
+            getDiagnosisSourceLabel(d),
+            [d.provider, d.facility].filter(Boolean).join(' / ') || '-',
+            getDiagnosisLinkLabel(d, options.conditionNames) || '-',
+        ]);
+
+        autoTable(doc, {
+            startY: currentY,
+            head: [['Condition', 'Diagnosed', 'First in VA Records', 'Source', 'Provider / Facility', 'Linked To']],
+            body: diagnosisData,
+            headStyles: { fillColor: [13, 148, 136], fontStyle: 'bold' }, // Teal, distinct from surgeries indigo
+            alternateRowStyles: { fillColor: [240, 253, 250] },
+            columnStyles: {
+                0: { cellWidth: 40 },
+                1: { cellWidth: 22 },
+                2: { cellWidth: 22 },
+                3: { cellWidth: 22 },
+                4: { cellWidth: 'auto' },
+                5: { cellWidth: 35 },
+            },
+            styles: { fontSize: 7, cellPadding: 2 },
+            margin: { left: 14, right: 14 },
+        });
+
+        currentY = doc.lastAutoTable.finalY + 6;
+
+        // The two dates mean different things. A reviewer comparing this page
+        // against the VA file needs to know which is which.
+        const diagnosisNotes = [
+            'Diagnosed: the date the Veteran reports from their medical records. "Not provided" means no date was entered.',
+            'First in VA Records: when the condition was added to a VA facility problem list. This can be later than the actual diagnosis, for example when care moved between facilities.',
+            '"VA file (edited)": imported from a VA Blue Button file and later changed by the Veteran.',
+        ];
+        doc.setFontSize(7);
+        doc.setTextColor(90);
+        diagnosisNotes.forEach(note => {
+            const lines = doc.splitTextToSize(note, pageWidth - 28);
+            if (currentY + lines.length * 3.5 > 285) {
+                doc.addPage();
+                currentY = 20;
+            }
+            doc.text(lines, 14, currentY);
+            currentY += lines.length * 3.5 + 1.5;
+        });
+        currentY += 6;
+    }
 
     // ========== IMMUNIZATIONS ==========
     // Routine immunizations are NOT rating evidence. There is no diagnostic code

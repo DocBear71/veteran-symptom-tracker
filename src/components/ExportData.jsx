@@ -6,7 +6,7 @@ import {
   generateVAClaimPackagePDF,
   generateCombinedExport
 } from '../utils/export';
-import { getDataStats } from '../utils/storage';
+import { getDataStats, getDiagnoses } from '../utils/storage';
 import { CONDITIONS } from '../utils/ratingCriteria';
 import { getPhotoStorageSummary } from '../utils/photoCapture';
 
@@ -72,6 +72,19 @@ const getConditionGroup = (condition) => {
   return group ? group.label : 'Other';
 };
 
+
+/**
+ * id -> { name, dc } for the "Linked To" column in exported diagnoses.
+ * Built here and passed in the export options because export.js can't import
+ * CONDITIONS without a circular dependency.
+ */
+const CONDITION_NAMES = Object.values(CONDITIONS).reduce((acc, c) => {
+    if (c && c.id && c.name) {
+        acc[c.id] = { name: c.name, dc: getConditionCodes(c)[0] || null };
+    }
+    return acc;
+}, {});
+
 const ExportData = () => {
   // Date range states
   const [dateRangeType, setDateRangeType] = useState('preset'); // 'preset' or 'custom'
@@ -86,6 +99,10 @@ const ExportData = () => {
   const [expandedGroups, setExpandedGroups] = useState([]);
   const [includeAppointments, setIncludeAppointments] = useState(true);
   const [includeSurgeries, setIncludeSurgeries] = useState(true);
+  // On by default. Applies to the VA Claim Package and CSV; the standard
+  // report has no diagnoses section.
+  const [includeDiagnoses, setIncludeDiagnoses] = useState(true);
+  const [diagnosisCounts, setDiagnosisCounts] = useState({ exportable: 0, excluded: 0 });
   const [includeMeasurements, setIncludeMeasurements] = useState(true);
   const [includeMedications, setIncludeMedications] = useState(true);
   const [include8940Worksheet, setInclude8940Worksheet] = useState(true);
@@ -119,6 +136,14 @@ const ExportData = () => {
   const [isExporting, setIsExporting] = useState(false);
   const [exportAction, setExportAction] = useState('share'); // 'share' or 'save'
 
+    // How many diagnoses will export, and how many the Veteran chose to keep out.
+    // The "kept out" count is shown here, never in the PDF.
+    useEffect(() => {
+        const all = getDiagnoses();
+        const excluded = all.filter(d => d.excludeFromExport).length;
+        setDiagnosisCounts({ exportable: all.length - excluded, excluded });
+    }, []);
+
   useEffect(() => {
     const data = getDataStats();
     setStats({
@@ -147,6 +172,8 @@ const ExportData = () => {
       exportAction,
       includeAppointments,
       includeSurgeries,
+      includeDiagnoses,
+      conditionNames: CONDITION_NAMES,
       includeMeasurements,
       includeMedications,
       // Only pass worksheet option when VA Claim format is active
@@ -478,6 +505,28 @@ const ExportData = () => {
                     </div>
                   </label>
 
+                    <label key="opt-diagnoses" className="flex items-center gap-3 cursor-pointer">
+                        <input
+                            type="checkbox"
+                            checked={includeDiagnoses}
+                            onChange={(e) => setIncludeDiagnoses(e.target.checked)}
+                            className="w-5 h-5 rounded border-gray-300 dark:border-gray-600 text-blue-600 focus:ring-blue-500"
+                        />
+                        <div>
+                            <p className="font-medium text-gray-900 dark:text-white text-left">Include Diagnoses</p>
+                            <p className="text-sm text-gray-500 dark:text-gray-400">
+                                {diagnosisCounts.exportable} diagnos{diagnosisCounts.exportable === 1 ? 'is' : 'es'} will
+                                be included in the VA Claim Package and CSV
+                            </p>
+                            {diagnosisCounts.excluded > 0 && (
+                                <p className="text-sm text-amber-700 dark:text-amber-400">
+                                    {diagnosisCounts.excluded} marked "leave out of exports" will not be included.
+                                    The export doesn't mention them.
+                                </p>
+                            )}
+                        </div>
+                    </label>
+
                   <label key="opt-measurements" className="flex items-center gap-3 cursor-pointer">
                     <input
                         type="checkbox"
@@ -784,6 +833,7 @@ const ExportData = () => {
                 <li>• Rating evidence analysis for each tracked condition</li>
                 <li>• Symptom frequency analysis aligned to VA criteria</li>
                 <li>• Charts for measurements (BP, glucose, etc.)</li>
+                <li>• Diagnosed conditions with diagnosis dates and record sources</li>
                 <li>• Formatted for easy review by VSO or claims examiner</li>
                 <li>• Includes supporting documentation checklist</li>
                 <li>• Optionally appends 21-8940 TDIU worksheet (if completed)</li>

@@ -49,6 +49,7 @@ import {
     upsertImportedDiagnosis,
     findDiagnosisMatch,
 } from '../utils/storage';
+import { conditionKeyForSnomed } from '../utils/snomedMap';
 
 // ─────────────────────────────────────────────────────────────
 // CONSTANTS
@@ -899,10 +900,11 @@ export default function BlueButtonImport({ onClose, onImportComplete }) {
                 firstRecordedDate: record.dateStr || null,
                 provider:          record.provider || '',
                 facility:          record.location || '',
-                // Left null until the SNOMED-to-analyzer mapping exists. A diagnosis
-                // with no conditionKey still displays and still holds its date; it
-                // just doesn't drive a rating yet.
-                conditionKey:      null,
+                // Link to a rating condition now if the SNOMED code is mapped.
+                // Previously null here, so links only appeared after the Diagnoses
+                // tab ran its backfill. Unmapped codes stay null and can be
+                // linked by hand.
+                conditionKey:      conditionKeyForSnomed(record.sctCode),
             });
             result.diagnosis = action;
         } catch (error) {
@@ -1364,8 +1366,11 @@ function StepPreview({ isParsing, parsedData, recordStates, onToggleRecord, onTo
 
         {groups.condition.length > 0 && (
             <div className="bg-purple-50 border border-purple-200 rounded-lg p-3 mb-4 text-xs text-purple-800">
-              📋 <strong>Health conditions</strong> will be added to your custom symptoms list under
-              "Imported (VA Problem List)" so you can use them when logging symptoms.
+              📋 <strong>Health conditions</strong> are saved two ways: as diagnoses on the History →
+              Diagnoses tab, with the provider, facility, and the date each was added to your VA
+              problem list, and in your custom symptoms list under "Imported (VA Problem List)" so
+              you can log against them. Add your actual diagnosis dates on the Diagnoses tab; some
+              ratings depend on them.
             </div>
         )}
 
@@ -1596,6 +1601,8 @@ function StepComplete({ importResult, onClose }) {
             {measurements > 0 && <li>✓ {measurements} measurement{measurements !== 1 ? 's' : ''} (vitals + labs)</li>}
             {appointments > 0 && <li>✓ {appointments} appointment{appointments !== 1 ? 's' : ''}</li>}
             {conditions > 0  && <li>✓ {conditions} condition{conditions !== 1 ? 's' : ''} added to symptom list</li>}
+            {importResult.diagnoses > 0 && <li>✓ {importResult.diagnoses} diagnos{importResult.diagnoses !== 1 ? 'es' : 'is'} added</li>}
+            {importResult.diagnosesUpdated > 0 && <li className="text-gray-600">🔗 {importResult.diagnosesUpdated} diagnos{importResult.diagnosesUpdated !== 1 ? 'es' : 'is'} matched records you already had</li>}
             {medications > 0 && <li>✓ {medications} medication{medications !== 1 ? 's' : ''} added to active list</li>}
             {importResult.immunizations > 0 && <li>💉 {importResult.immunizations} vaccine{importResult.immunizations !== 1 ? 's' : ''} added to immunization records</li>}
             {importResult.immunizationsMerged > 0 && <li className="text-gray-600">🔗 {importResult.immunizationsMerged} vaccine{importResult.immunizationsMerged !== 1 ? 's' : ''} matched records you already had</li>}
@@ -1607,7 +1614,8 @@ function StepComplete({ importResult, onClose }) {
 
         {conditions > 0 && (
             <div className="bg-purple-50 border border-purple-200 rounded-lg p-3 mb-4 text-xs text-purple-800 text-left max-w-xs mx-auto">
-              📋 Imported conditions appear in your custom symptoms list under "Imported (VA Problem List)".
+              📋 Imported conditions are on the History → Diagnoses tab and in your custom symptoms
+              list under "Imported (VA Problem List)". Add your diagnosis dates on the Diagnoses tab.
             </div>
         )}
 
