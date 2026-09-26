@@ -4,6 +4,7 @@ import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
 import SMCAlertBanner from './SMCAlertBanner';
 import {isRatingSupported} from '../utils/ratingUtils.js';
+import { getRatingDisplay, isScheduleRowSupported, RATING_STATUS } from '../utils/timeLimitedRating';
 import MedicationCorrelation from './MedicationCorrelation';
 import RatingEnhancementsDisplay from './RatingEnhancementsDisplay.jsx';
 
@@ -60,6 +61,15 @@ export default function GenericRatingCard({ analysis, expanded, onToggle, icon =
   };
 
   const ratings = getRatingsArray();
+
+    // Time-limited conditions (hypothyroidism uses this card) can return a
+    // status string instead of a number. Only those three strings go through
+    // the shared helper; every other condition renders exactly as before.
+    const isTimeLimitedStatus = Object.values(RATING_STATUS).includes(supportedRating);
+    const statusDisplay = isTimeLimitedStatus ? getRatingDisplay(supportedRating) : null;
+
+    // Widen the label column only on cards whose schedule has a residuals row
+    const hasResidualsRow = ratings.some(r => r?.criteria?.residualsOnly === true);
 
   return (
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden border-l-4 border-gray-500">
@@ -173,15 +183,19 @@ export default function GenericRatingCard({ analysis, expanded, onToggle, icon =
                       {ratings.map((rating, idx) => {
                         const percent = rating.percent ?? rating.rating ?? 0;
                         const summary = rating.summary || rating.description || rating.criteria || '';
-                        const isSupported = isRatingSupported(percent, supportedRating);
+                        const isResidualsRow = rating?.criteria?.residualsOnly === true;
+                        const isSupported = isTimeLimitedStatus
+                            ? isScheduleRowSupported(rating, supportedRating)
+                            // A number never ticks the residuals row, even though it's stored as 0
+                            : !isResidualsRow && isRatingSupported(percent, supportedRating);
                         return (
                             <div
                                 key={idx}
                                 className={`p-3 rounded-lg border ${isSupported ? 'border-2' : ''} ${getRatingRowColor(percent, isSupported)}`}
                             >
                               <div className="flex items-center gap-3">
-                                <div className={`w-14 text-center font-bold ${isSupported ? 'text-gray-900 dark:text-white' : 'text-gray-500 dark:text-gray-400'}`}>
-                                  {percent}%
+                                <div className={`${hasResidualsRow ? 'w-20' : 'w-14'} text-center font-bold ${isSupported ? 'text-gray-900 dark:text-white' : 'text-gray-500 dark:text-gray-400'}`}>
+                                  {isResidualsRow ? 'Residuals' : `${percent}%`}
                                 </div>
                                 <div className={`flex-1 text-sm ${isSupported ? 'text-gray-900 dark:text-white' : 'text-gray-500 dark:text-gray-400'}`}>
                                   {summary}

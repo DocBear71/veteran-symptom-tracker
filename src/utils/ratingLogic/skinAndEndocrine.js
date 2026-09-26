@@ -28,6 +28,7 @@ import {
 import {
   getLogSymptomId,
   isWithinEvaluationPeriod,
+  countDistinctDays,
     getRatingPeriod,
     timeLimitedNarrative,
     timeLimitedSupportedRating,
@@ -1040,6 +1041,17 @@ export const HYPOTHYROIDISM_CRITERIA = {
         'Medication records',
       ],
     },
+    {
+      percent: 0,
+      summary: 'After six-month initial period - rate residuals separately',
+      criteria: {
+        residualsOnly: true,
+      },
+      criteriaDescription: [
+        'After the six months following initial diagnosis',
+        'Residuals of the disease or its treatment are rated under their own diagnostic codes',
+      ],
+    },
   ],
 
   definitions: {
@@ -1069,7 +1081,7 @@ export const HYPOTHYROIDISM_CRITERIA = {
 
   ratingNote: 'The 30% rating continues for 6 months after initial diagnosis. After that period, the VA rates residuals of the disease or medical treatment under the most appropriate diagnostic codes.',
 
-  disclaimer: 'This analysis is based on logged hypothyroidism symptoms. Most Veterans will receive the 30% initial rating, then be rated on residual symptoms. Track all symptoms and medication side effects.',
+  disclaimer: 'This analysis is based on logged hypothyroidism symptoms. The 30% rating applies for six months after initial diagnosis; after that, residual symptoms are rated under the appropriate diagnostic codes. Track all symptoms and medication side effects.',
 };
 
 // ============================================
@@ -3676,82 +3688,132 @@ export const analyzeDiabetesLogs = (logs, options = {}) => {
  */
 
 export const analyzeHypothyroidismLogs = (logs, options = {}) => {
-  const { evaluationPeriodDays = 90 } = options;
+    const { evaluationPeriodDays = 90 } = options;
 
-  const cutoffDate = new Date();
-  cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
+    const cutoffDate = new Date();
+    cutoffDate.setDate(cutoffDate.getDate() - evaluationPeriodDays);
 
-  const symptomIds = [
-    'hypo-fatigue', 'hypo-cold-intolerance', 'hypo-weight-gain',
-    'hypo-depression', 'hypo-muscle-weakness', 'hypo-constipation', 'hypo-dry-skin'
-  ];
+    const symptomIds = [
+        'hypo-fatigue', 'hypo-cold-intolerance', 'hypo-weight-gain',
+        'hypo-depression', 'hypo-muscle-weakness', 'hypo-constipation', 'hypo-dry-skin'
+    ];
 
-  const relevantLogs = logs.filter(log => {
-    const logDate = new Date(log.timestamp);
-    const symptomId = getLogSymptomId(log);
-    return logDate >= cutoffDate && symptomId && symptomIds.includes(symptomId);
-  });
+    const relevantLogs = logs.filter(log => {
+        const logDate = new Date(log.timestamp);
+        const symptomId = getLogSymptomId(log);
+        return logDate >= cutoffDate && symptomId && symptomIds.includes(symptomId);
+    });
 
-  if (relevantLogs.length === 0) {
+    // DC 7903 without myxedema: 30% for six months after initial diagnosis,
+    // then residuals. Computed before the no-logs return, same as the other
+    // time-limited analyzers: inside the window the 30% follows from the date.
+    //
+    // This used to return '30' (or '30-100') to every Veteran regardless of
+    // when they were diagnosed, and that fed the combined rating.
+    const ratingPeriod = getRatingPeriod('hypothyroidism', options);
+    const narrative = timeLimitedNarrative('Hypothyroidism', ratingPeriod);
+
+    if (relevantLogs.length === 0) {
+        if (ratingPeriod.period === 'initial') {
+            return {
+                hasData: true,
+                condition: 'Hypothyroidism',
+                diagnosticCode: '7903',
+                cfrReference: '38 CFR 4.119',
+                evaluationPeriodDays,
+                supportedRating: 30,
+                ratingRationale: [
+                    ...narrative.rationale,
+                    'This rating follows from the diagnosis date, not from logged symptoms.',
+                ],
+                evidence: [],
+                gaps: [
+                    'No symptoms logged yet. Start now. When the initial period ends, the ' +
+                    'rating is based on what remains, and your log is what supports it.',
+                ],
+                metrics: { totalLogs: 0, withinInitialPeriod: true },
+                criteria: HYPOTHYROIDISM_CRITERIA,
+                disclaimer: HYPOTHYROIDISM_CRITERIA.disclaimer,
+            };
+        }
+
+        return {
+            hasData: false,
+            message: 'No hypothyroidism logs found',
+            supportedRating: null,
+            evidence: [],
+            gaps: ['Start logging hypothyroidism symptoms including fatigue, cold intolerance, and other symptoms'],
+        };
+    }
+
+    const fatigueLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'hypo-fatigue');
+    const coldLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'hypo-cold-intolerance');
+    const depressionLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'hypo-depression');
+    const weaknessLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'hypo-muscle-weakness');
+
+    const evidence = [];
+    if (fatigueLogs.length > 0) evidence.push(`${fatigueLogs.length} fatigue episodes logged`);
+    if (coldLogs.length > 0) evidence.push(`${coldLogs.length} cold intolerance episodes logged`);
+    if (depressionLogs.length > 0) evidence.push(`${depressionLogs.length} depression/mental fog episodes logged`);
+    if (weaknessLogs.length > 0) evidence.push(`${weaknessLogs.length} muscle weakness episodes logged`);
+
+    const severities = relevantLogs.map(log => log.severity || 5).filter(s => s > 0);
+    const avgSeverity = severities.length > 0
+        ? severities.reduce((a, b) => a + b, 0) / severities.length
+        : 0;
+
+    // Same pattern check as before (three of the four myxedema categories,
+    // heavy logging). Cardiovascular involvement isn't a logged symptom here.
+    const hasMyxedemaPattern =
+        coldLogs.length > 0 && weaknessLogs.length > 0 && depressionLogs.length > 0 &&
+        relevantLogs.length >= 50;
+
+    const supportedRating = timeLimitedSupportedRating(ratingPeriod, 30);
+    const ratingRationale = [...narrative.rationale];
+    const gaps = [...narrative.gaps];
+
+    ratingRationale.push(`${relevantLogs.length} hypothyroidism symptoms logged in ${evaluationPeriodDays} days`);
+    // GenericRatingCard shows ratingRationale, not evidence, so the per-symptom
+    // counts go here too or the Veteran never sees them.
+    ratingRationale.push(...evidence);
+
+    if (hasMyxedemaPattern) {
+        // The myxedema 100% runs "six months beyond the date that an examining
+        // physician has determined crisis stabilization". The app has no field for
+        // that date, so it says so instead of estimating.
+        ratingRationale.push(
+            'Logged symptoms are consistent with myxedema (cold intolerance, muscular weakness, mental disturbance).'
+        );
+        ratingRationale.push(
+            'If a physician diagnosed myxedema, 100% applies for six months after your crisis was ' +
+            'stabilized. The app does not record that date, so it does not estimate the 100% rating.'
+        );
+        gaps.push('If myxedema was diagnosed, get the date your physician documented crisis stabilization. The 100% rating runs six months from that date.');
+        gaps.push('Myxedema also requires cardiovascular involvement (low blood pressure, slow heart rate). Document it if present.');
+    } else {
+        gaps.push('Document cardiovascular effects (low BP, slow heart rate) if present');
+    }
+    gaps.push('Track lab values (TSH, T4) when available');
+
     return {
-      hasData: false,
-      message: 'No hypothyroidism logs found',
-      supportedRating: null,
-      evidence: [],
-      gaps: ['Start logging hypothyroidism symptoms including fatigue, cold intolerance, and other symptoms'],
+        hasData: true,
+        condition: 'Hypothyroidism',
+        diagnosticCode: '7903',
+        cfrReference: '38 CFR 4.119',
+        evaluationPeriodDays,
+        supportedRating,
+        ratingRationale,
+        evidence,
+        gaps,
+        metrics: {
+            totalLogs: relevantLogs.length,
+            symptomDays: countDistinctDays(relevantLogs),
+            avgSeverity: parseFloat(avgSeverity.toFixed(1)),
+            hasMyxedemaPattern,
+        },
+        criteria: HYPOTHYROIDISM_CRITERIA,
+        disclaimer: HYPOTHYROIDISM_CRITERIA.disclaimer,
     };
-  }
-
-  const fatigueLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'hypo-fatigue');
-  const coldLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'hypo-cold-intolerance');
-  const depressionLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'hypo-depression');
-  const weaknessLogs = relevantLogs.filter(log => getLogSymptomId(log) === 'hypo-muscle-weakness');
-
-  const evidence = [];
-  if (fatigueLogs.length > 0) evidence.push(`${fatigueLogs.length} fatigue episodes logged`);
-  if (coldLogs.length > 0) evidence.push(`${coldLogs.length} cold intolerance episodes logged`);
-  if (depressionLogs.length > 0) evidence.push(`${depressionLogs.length} depression/mental fog episodes logged`);
-  if (weaknessLogs.length > 0) evidence.push(`${weaknessLogs.length} muscle weakness episodes logged`);
-
-  // Check for myxedema criteria (all 4 symptom categories)
-  const hasAllMyxedemaSymptoms = coldLogs.length > 0 && weaknessLogs.length > 0 && depressionLogs.length > 0;
-
-  let supportedRating = 0;
-  let ratingRationale = [];
-  let gaps = [];
-
-  if (hasAllMyxedemaSymptoms && relevantLogs.length >= 50) {
-    supportedRating = '30-100';
-    ratingRationale = [
-      'Multiple myxedema symptom categories documented',
-      'Severe symptoms may support 100% rating if myxedema diagnosed',
-      '30% is standard rating for hypothyroidism without myxedema',
-    ];
-    gaps.push('Obtain medical documentation if myxedema is present');
-  } else {
-    supportedRating = 30;
-    ratingRationale = [
-      'Hypothyroidism symptoms documented',
-      '30% is standard rating for hypothyroidism without myxedema',
-      'This rating continues for 6 months after diagnosis, then rate residuals',
-    ];
-  }
-
-  gaps.push('Document cardiovascular effects (low BP, slow heart rate) if present');
-  gaps.push('Track lab values (TSH, T4) when available');
-
-  return {
-    hasData: true,
-    condition: 'Hypothyroidism',
-    diagnosticCode: '7903',
-    evaluationPeriodDays,
-    supportedRating: supportedRating.toString(),
-    ratingRationale,
-    evidence,
-    gaps,
-    criteria: HYPOTHYROIDISM_CRITERIA,
-    disclaimer: HYPOTHYROIDISM_CRITERIA.disclaimer,
-  };
 };
 
 // ============================================

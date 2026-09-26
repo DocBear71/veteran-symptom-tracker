@@ -192,9 +192,15 @@ export const SNOMED_TO_CONDITION = {
 export const TIME_LIMITED_CONDITIONS = {
     'hypoparathyroidism':  { months: 3, initialRating: 100, dc: '7905' },
     'hyperthyroidism':     { months: 6, initialRating: 30,  dc: '7900' },
-    'hyperparathyroidism': { months: 6, initialRating: 60,  dc: '7904' },
+    // Without myxedema. The myxedema 100% runs from crisis stabilization,
+    // not diagnosis, so it can't be keyed off this table.
+    'hypothyroidism':      { months: 6, initialRating: 30,  dc: '7903' },
     'diabetes-insipidus':  { months: 3, initialRating: 30,  dc: '7909' },
     'thyroiditis':         { months: 6, initialRating: 30,  dc: '7906' },
+    // hyperparathyroidism is deliberately NOT here. DC 7904's 100% runs "for
+    // six months from date of discharge following surgery", not from
+    // diagnosis. The old entry here (60% for 6 months) matched nothing in the
+    // CFR and was being shown on the Diagnoses tab.
 };
 
 /** The app's condition id for a SNOMED code, or null. */
