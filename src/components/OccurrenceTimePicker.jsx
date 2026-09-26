@@ -2,6 +2,18 @@ import { useState, useEffect } from 'react';
 import { Clock, Calendar } from 'lucide-react';
 
 /**
+ * YYYY-MM-DD in the user's LOCAL time zone.
+ * toISOString() gives the UTC date, which is already "tomorrow" after
+ * 7 pm Central. Date inputs need the local calendar date.
+ */
+const toLocalDateString = (date) => {
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, '0');
+    const d = String(date.getDate()).padStart(2, '0');
+    return `${y}-${m}-${d}`;
+};
+
+/**
  * OccurrenceTimePicker Component
  *
  * Allows users to specify when a symptom actually occurred,
@@ -44,7 +56,7 @@ export default function OccurrenceTimePicker({ value, onChange, label = "When di
       } else {
         // Custom date
         setMode('custom');
-        setCustomDate(occurrenceDate.toISOString().split('T')[0]); // YYYY-MM-DD
+        setCustomDate(toLocalDateString(occurrenceDate)); // YYYY-MM-DD, local
         setCustomTime(occurrenceDate.toTimeString().slice(0, 5));
       }
     }
@@ -88,7 +100,7 @@ export default function OccurrenceTimePicker({ value, onChange, label = "When di
         const customDefault = new Date(now);
         customDefault.setDate(customDefault.getDate() - 3);
         customDefault.setHours(12, 0, 0, 0);
-        setCustomDate(customDefault.toISOString().split('T')[0]);
+        setCustomDate(toLocalDateString(customDefault));
         setCustomTime('12:00');
         onChange(customDefault.toISOString());
         // Keep userInteracting flag longer for custom to prevent mode switch
@@ -98,55 +110,84 @@ export default function OccurrenceTimePicker({ value, onChange, label = "When di
     }
   };
 
-  // Handle time change for earlier-today, yesterday, or custom mode.
-  // Always accept the value immediately — validate only in "earlier-today"
-  // mode, showing a warning instead of resetting/blocking.
-  const handleTimeChange = (newTime) => {
-    setCustomTime(newTime);
-    setTimeError(''); // Clear any previous error
+    // Handle time change for earlier-today, yesterday, or custom mode.
+    // The typed value always shows in the box. The stored time only updates
+    // once the value is a complete, valid, non-future time.
+    const handleTimeChange = (newTime) => {
+        setCustomTime(newTime);
+        setTimeError(''); // Clear any previous error
 
-    const now = new Date();
-    const [hours, minutes] = newTime.split(':');
+        // The time input sends '' while an hour/minute segment is half-typed or
+        // the field is cleared. Not an error; wait for a complete time. The last
+        // good value stays stored until then.
+        if (!newTime) return;
 
-    if (mode === 'earlier-today') {
-      const newDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), parseInt(hours), parseInt(minutes));
-      if (newDate > now) {
-        // Time is in the future — show error but still store the value
-        // so the user can fix AM/PM without losing their hour/minute selection
-        setTimeError('This time is later than now — check your AM/PM setting');
-        return; // Don't call onChange with a future time
-      }
-      onChange(newDate.toISOString());
-    } else if (mode === 'yesterday') {
-      const yesterday = new Date(now);
-      yesterday.setDate(yesterday.getDate() - 1);
-      yesterday.setHours(parseInt(hours), parseInt(minutes));
-      onChange(yesterday.toISOString());
-    } else if (mode === 'custom' && customDate) {
-      const [year, month, day] = customDate.split('-');
-      const newDate = new Date(parseInt(year), parseInt(month) - 1, parseInt(day), parseInt(hours), parseInt(minutes));
-      if (newDate > now) {
-        setTimeError('Cannot log for a future time');
-        return;
-      }
-      onChange(newDate.toISOString());
-    }
-  };
+        const [hours, minutes] = newTime.split(':').map(Number);
+        const now = new Date();
+        let newDate = null;
+
+        if (mode === 'earlier-today') {
+            newDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hours, minutes);
+        } else if (mode === 'yesterday') {
+            newDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, hours, minutes);
+        } else if (mode === 'custom' && customDate) {
+            const [year, month, day] = customDate.split('-').map(Number);
+            newDate = new Date(year, month - 1, day, hours, minutes);
+        } else {
+            // Custom mode with no date picked yet: nothing to combine with
+            return;
+        }
+
+        // A complete value that still doesn't make a real time. Show it.
+        if (Number.isNaN(newDate.getTime())) {
+            setTimeError('That time is not valid');
+            return;
+        }
+
+        if (newDate > now) {
+            // Still show what they typed, so they can fix AM/PM without retyping
+            setTimeError(
+                mode === 'earlier-today'
+                    ? 'This time is later than now. Check your AM/PM setting.'
+                    : 'Cannot log for a future time'
+            );
+            return; // Don't store a future time
+        }
+
+        onChange(newDate.toISOString());
+    };
 
   // Handle custom date change
   const handleDateChange = (newDate) => {
     setCustomDate(newDate);
+    setTimeError('');
 
-    if (customTime) {
-      const [hours, minutes] = customTime.split(':');
-      const [year, month, day] = newDate.split('-');
-      const dateObj = new Date(year, month - 1, day, hours, minutes);
-      onChange(dateObj.toISOString());
+    // The date input sends '' while a segment is half-typed or the field is
+    // cleared. That isn't an error; wait for a complete date before updating
+    // the stored time. The last good value stays in place until then.
+    if (!newDate || !customTime) return;
+
+    const [hours, minutes] = customTime.split(':').map(Number);
+    const [year, month, day] = newDate.split('-').map(Number);
+    const dateObj = new Date(year, month - 1, day, hours, minutes);
+
+    // A complete but impossible date. Show it instead of silently skipping.
+    if (Number.isNaN(dateObj.getTime())) {
+      setTimeError('That date is not valid');
+      return;
     }
+
+    // Same rule as handleTimeChange: no future times
+    if (dateObj > new Date()) {
+      setTimeError('Cannot log for a future time');
+      return;
+    }
+
+    onChange(dateObj.toISOString());
   };
 
   // Get max date (today)
-  const maxDate = new Date().toISOString().split('T')[0];
+  const maxDate = toLocalDateString(new Date());
 
   return (
       <div className="space-y-3">
