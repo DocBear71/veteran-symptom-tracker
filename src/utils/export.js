@@ -5084,6 +5084,56 @@ const getEvidenceStrengthColor = (strength) => {
 };
 
 /**
+ * Remove ratings that would count the same disability twice.
+ *
+ * DC 7906 (thyroiditis) is rated AS the thyroid dysfunction it causes:
+ * hyperthyroidism (DC 7900) or hypothyroidism (DC 7903). It is not a separate
+ * rating on top of them. The thyroiditis analyzer reads the same hypo/hyper
+ * symptom logs as those analyzers, so a Veteran with diagnosis dates on both
+ * can show two 30% ratings for one set of symptoms. 38 CFR 4.14 bars rating the
+ * same manifestation under different codes.
+ *
+ * Keeps the higher of the pair. On a tie, keeps the dedicated condition
+ * (hypothyroidism or hyperthyroidism), since that's the code VA would use.
+ *
+ * @param {Array} analyses - from analyzeAllConditions (each has conditionId)
+ * @returns {{ included: Array, excluded: Array<{analysis, keptCondition}> }}
+ */
+const excludePyramidedRatings = (analyses) => {
+    const numeric = (a) => {
+        const n = parseInt(a?.supportedRating, 10);
+        return Number.isNaN(n) ? 0 : n;
+    };
+
+    const thyroiditis = analyses.find(a => a.conditionId === 'thyroiditis');
+    if (!thyroiditis || numeric(thyroiditis) === 0) {
+        return { included: analyses, excluded: [] };
+    }
+
+    // Only the phase thyroiditis is actually in overlaps
+    const phase = thyroiditis.metrics?.currentPhase;
+    const overlapId = phase === 'hypothyroid' ? 'hypothyroidism'
+        : phase === 'hyperthyroid' ? 'hyperthyroidism'
+            : null;
+    const overlap = overlapId
+        ? analyses.find(a => a.conditionId === overlapId && numeric(a) > 0)
+        : null;
+
+    if (!overlap) {
+        return { included: analyses, excluded: [] };
+    }
+
+    const keepThyroiditis = numeric(thyroiditis) > numeric(overlap);
+    const keep = keepThyroiditis ? thyroiditis : overlap;
+    const drop = keepThyroiditis ? overlap : thyroiditis;
+
+    return {
+        included: analyses.filter(a => a !== drop),
+        excluded: [{ analysis: drop, keptCondition: keep.condition }],
+    };
+};
+
+/**
  * Generate the Rating Evidence Summary Page
  * Call this after cover page, before Table of Contents
  */
@@ -5107,7 +5157,12 @@ const generateRatingEvidenceSummaryPage = (doc, ratingAnalyses, pageWidth) => {
 
   // ========== COMBINED RATING CALCULATION ==========
   // Prepare conditions for VA math calculation
-  const conditionsForCalc = ratingAnalyses
+  // Drop any rating that double-counts another (see excludePyramidedRatings).
+  // Excluded ratings are listed under the combined box, never dropped silently.
+  const { included: nonPyramidedAnalyses, excluded: pyramidedAnalyses } =
+      excludePyramidedRatings(ratingAnalyses);
+
+  const conditionsForCalc = nonPyramidedAnalyses
   .filter(a => {
     // Exclude non-numeric ratings like 'Requires Clinical Measurement'
     const parsed = parseInt(a.supportedRating);
@@ -5168,6 +5223,24 @@ const generateRatingEvidenceSummaryPage = (doc, ratingAnalyses, pageWidth) => {
   doc.text(tierNote, pageWidth - 50, currentY + 41, { align: 'center' });
 
   currentY += 55;
+
+  // Disclose anything left out of the combined rating, and why
+  if (pyramidedAnalyses.length > 0) {
+    doc.setFontSize(8);
+    doc.setFont(undefined, 'normal');
+    doc.setTextColor(146, 64, 14); // amber
+    pyramidedAnalyses.forEach(({ analysis, keptCondition }) => {
+      const note =
+          `Not counted in the combined rating: ${analysis.condition} ` +
+          `(${analysis.supportedRating}%). Thyroiditis is rated as the thyroid ` +
+          `problem it causes (DC 7906), so it and ${keptCondition} are one rating, ` +
+          `not two (38 CFR 4.14). The higher of the two is counted.`;
+      const lines = doc.splitTextToSize(note, pageWidth - 28);
+      doc.text(lines, 14, currentY);
+      currentY += lines.length * 4 + 2;
+    });
+    currentY += 4;
+  }
 
   // ========== VA MATH BREAKDOWN ==========
   if (combinedResult.breakdown && combinedResult.breakdown.length > 0) {

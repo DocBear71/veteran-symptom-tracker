@@ -3828,7 +3828,7 @@ export const analyzeHypothyroidismLogs = (logs, options = {}) => {
  */
 
 export const analyzeHyperthyroidismLogs = (logs, options = {}) => {
-  const { days = 90 } = options;
+  const days = options.days ?? options.evaluationPeriodDays ?? 90;
 
   const cutoffDate = new Date();
   cutoffDate.setDate(cutoffDate.getDate() - days);
@@ -3968,7 +3968,7 @@ export const analyzeHyperthyroidismLogs = (logs, options = {}) => {
  */
 
 export const analyzeThyroiditisLogs = (logs, options = {}) => {
-  const { days = 90 } = options;
+  const days = options.days ?? options.evaluationPeriodDays ?? 90;
 
   const cutoffDate = new Date();
   cutoffDate.setDate(cutoffDate.getDate() - days);
@@ -4066,6 +4066,18 @@ export const analyzeThyroiditisLogs = (logs, options = {}) => {
     );
     ratingRationale.push(...narrative.rationale);
     gaps.push(...narrative.gaps);
+
+    // If the matching thyroid condition also has a diagnosis date, VA would
+    // rate them as one. Say so here; the claim package counts only the higher.
+    const overlapKey = currentPhase === 'hyperthyroid' ? 'hyperthyroidism' : 'hypothyroidism';
+    const overlapName = currentPhase === 'hyperthyroid' ? 'Hyperthyroidism' : 'Hypothyroidism';
+    if (getRatingPeriod(overlapKey).period !== 'unknown') {
+      ratingRationale.push(
+          `You also have a diagnosis linked to ${overlapName}. VA rates thyroiditis as the ` +
+          'thyroid problem it causes (DC 7906), so these are one rating, not two ' +
+          '(38 CFR 4.14). The claim package counts only the higher of the two.'
+      );
+    }
   }
 
   ratingRationale.push(`${allRelevantLogs.length} total symptoms logged in ${days} days`);
@@ -4110,7 +4122,7 @@ export const analyzeThyroiditisLogs = (logs, options = {}) => {
  */
 
 export const analyzeHyperparathyroidismLogs = (logs, options = {}) => {
-  const { days = 90 } = options;
+  const days = options.days ?? options.evaluationPeriodDays ?? 90;
 
   const cutoffDate = new Date();
   cutoffDate.setDate(cutoffDate.getDate() - days);
@@ -4289,7 +4301,7 @@ export const analyzeHyperparathyroidismLogs = (logs, options = {}) => {
  */
 
 export const analyzeHypoparathyroidismLogs = (logs, options = {}) => {
-  const { days = 90 } = options;
+  const days = options.days ?? options.evaluationPeriodDays ?? 90;
 
   const cutoffDate = new Date();
   cutoffDate.setDate(cutoffDate.getDate() - days);
@@ -4610,7 +4622,7 @@ export const analyzeAddisonsDiseaseLog = (logs, options = {}) => {
  */
 
 export const analyzeCushingsSyndromeLogs = (logs, options = {}) => {
-  const { days = 90 } = options;
+  const days = options.days ?? options.evaluationPeriodDays ?? 90;
 
   const cutoffDate = new Date();
   cutoffDate.setDate(cutoffDate.getDate() - days);
@@ -4762,7 +4774,7 @@ export const analyzeCushingsSyndromeLogs = (logs, options = {}) => {
  */
 
 export const analyzeDiabetesInsipidusLogs = (logs, options = {}) => {
-  const { days = 90 } = options;
+  const days = options.days ?? options.evaluationPeriodDays ?? 90;
 
   const cutoffDate = new Date();
   cutoffDate.setDate(cutoffDate.getDate() - days);
@@ -4927,7 +4939,7 @@ export const analyzeDiabetesInsipidusLogs = (logs, options = {}) => {
  */
 
 export const analyzeHyperaldosteronismLogs = (logs, options = {}) => {
-  const { days = 90 } = options;
+  const days = options.days ?? options.evaluationPeriodDays ?? 90;
 
   const cutoffDate = new Date();
   cutoffDate.setDate(cutoffDate.getDate() - days);
