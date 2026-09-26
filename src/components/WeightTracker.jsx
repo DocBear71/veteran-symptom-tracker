@@ -21,7 +21,7 @@ import {
 } from 'recharts';
 import { getMeasurements, saveMeasurement, deleteMeasurement, getHeight } from '../utils/measurements';
 import { getWeightGoal, saveWeightGoal, clearWeightGoal } from '../utils/storage';
-import { formatLocalDateTime } from '../utils/datetime';
+import { formatLocalDateTime, getLocalDateString } from '../utils/datetime';
 import { getWeightTrend, getTrendIndicator } from '../utils/weightStats';
 
 // ============================================
@@ -885,7 +885,7 @@ const WeightGoalModal = ({ existingGoal, currentWeight, onSave, onCancel }) => {
                   type="date"
                   value={targetDate}
                   onChange={(e) => setTargetDate(e.target.value)}
-                  min={new Date().toISOString().split('T')[0]}
+                  min={getLocalDateString()}
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg
                 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
               />

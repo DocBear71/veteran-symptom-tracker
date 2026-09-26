@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { jsPDF } from 'jspdf';
+import { getLocalDateString } from '../utils/datetime';
 
 /**
  * StrategicFilingGuide Component
@@ -232,7 +233,7 @@ export default function StrategicFilingGuide({ onBack }) {
       );
     }
 
-    doc.save(`Strategic-Filing-Guide-${new Date().toISOString().split('T')[0]}.pdf`);
+    doc.save(`Strategic-Filing-Guide-${getLocalDateString()}.pdf`);
   };
 
   return (

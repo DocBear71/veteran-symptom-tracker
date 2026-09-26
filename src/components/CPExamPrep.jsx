@@ -5,6 +5,7 @@ import React, { useState, useMemo } from 'react';
 import { cacheGet, cacheSet, cacheRemove } from '../utils/storageCache';
 import { getSymptomLogs } from '../utils/storage';
 import { getActiveProfile, getActiveProfileId, getServiceConnectedConditions } from '../utils/profiles.js';
+import { getLocalDateString } from '../utils/datetime';
 import { getConditionDescription } from '../data/conditionDescriptions';
 import { jsPDF } from 'jspdf';
 import autoTable from 'jspdf-autotable';
@@ -547,8 +548,8 @@ const CPExamPrep = ({ embedded = false, onClose, onNavigate }) => {
     }
 
     const filename = nexusSummary.claimedCondition
-        ? `Nexus-Summary-${nexusSummary.claimedCondition.replace(/\s+/g, '-')}-${new Date().toISOString().split('T')[0]}.pdf`
-        : `Nexus-Summary-${new Date().toISOString().split('T')[0]}.pdf`;
+        ? `Nexus-Summary-${nexusSummary.claimedCondition.replace(/\s+/g, '-')}-${getLocalDateString()}.pdf`
+        : `Nexus-Summary-${getLocalDateString()}.pdf`;
 
     doc.save(filename);
   };
@@ -746,7 +747,7 @@ const CPExamPrep = ({ embedded = false, onClose, onNavigate }) => {
       );
     }
 
-    doc.save(`CP-Exam-Prep-${new Date().toISOString().split('T')[0]}.pdf`);
+    doc.save(`CP-Exam-Prep-${getLocalDateString()}.pdf`);
   };
 
   // Render component

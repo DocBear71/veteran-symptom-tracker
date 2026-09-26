@@ -3,6 +3,7 @@
 
 import React, { useState } from 'react';
 import { jsPDF } from 'jspdf';
+import { getLocalDateString } from '../utils/datetime';
 
 // Storage key for saved statements
 const STORAGE_KEY = 'buddy-statements';
@@ -541,7 +542,7 @@ Date Signed
       currentY += lineHeight;
     });
 
-    doc.save(`Buddy-Statement-${formData.veteranName.replace(/\s+/g, '-') || 'Draft'}-${new Date().toISOString().split('T')[0]}.pdf`);
+    doc.save(`Buddy-Statement-${formData.veteranName.replace(/\s+/g, '-') || 'Draft'}-${getLocalDateString()}.pdf`);
   };
 
   const exportToText = (text = generatedStatement) => {
@@ -549,7 +550,7 @@ Date Signed
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `Buddy-Statement-${formData.veteranName.replace(/\s+/g, '-') || 'Draft'}-${new Date().toISOString().split('T')[0]}.txt`;
+    a.download = `Buddy-Statement-${formData.veteranName.replace(/\s+/g, '-') || 'Draft'}-${getLocalDateString()}.txt`;
     a.click();
     URL.revokeObjectURL(url);
   };

@@ -4,6 +4,7 @@ import {
   addServiceConnectedCondition,
   updateServiceConnectedCondition,
 } from '../utils/profiles';
+import { getLocalDateString } from '../utils/datetime';
 
 // List of all trackable conditions in the app
 const ALL_CONDITIONS = [
@@ -46,7 +47,7 @@ const AddServiceConnectedModal = ({ condition, onClose }) => {
     conditionKey: condition?.conditionKey || '',
     conditionName: condition?.conditionName || '',
     currentRating: condition?.currentRating ?? 0,
-    effectiveDate: condition?.effectiveDate || new Date().toISOString().split('T')[0],
+    effectiveDate: condition?.effectiveDate || getLocalDateString(),
     trackingGoal: condition?.trackingGoal || 'maintain',
     notes: condition?.notes || '',
   });
@@ -241,7 +242,7 @@ const AddServiceConnectedModal = ({ condition, onClose }) => {
                   value={formData.effectiveDate}
                   onChange={(e) => setFormData({ ...formData, effectiveDate: e.target.value })}
                   required
-                  max={new Date().toISOString().split('T')[0]}
+                  max={getLocalDateString()}
                   className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600
                          rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
               />

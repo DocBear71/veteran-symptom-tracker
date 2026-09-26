@@ -3,6 +3,8 @@
  * Prevents data loss during app updates by managing schema versions
  */
 
+import { getLocalDateString } from './datetime';
+
 const CURRENT_VERSION = '2.0.0';
 const VERSION_KEY = 'symptomTracker_schemaVersion';
 const BACKUP_KEY = 'symptomTracker_autoBackup';
@@ -141,10 +143,23 @@ export const restoreFromEmergencyBackup = () => {
 export const createDailyBackup = () => {
   const lastBackup = localStorage.getItem(LAST_BACKUP_KEY);
   const now = new Date();
-  const today = now.toISOString().split('T')[0];
+  const today = getLocalDateString(now);
+
+  // lastBackup is stored as a full UTC timestamp. Convert it to a local date
+  // before comparing. Comparing a local date against the UTC string never
+  // matches in the evening, which would make a new backup on every launch.
+  let lastBackupDay = null;
+  if (lastBackup) {
+    const parsed = new Date(lastBackup);
+    if (Number.isNaN(parsed.getTime())) {
+      console.warn(`[storageVersion] Unreadable last backup timestamp "${lastBackup}". Running backup now.`);
+    } else {
+      lastBackupDay = getLocalDateString(parsed);
+    }
+  }
 
   // Check if we already backed up today
-  if (lastBackup && lastBackup.startsWith(today)) {
+  if (lastBackupDay === today) {
     return;
   }
 

@@ -4,6 +4,7 @@
 
 import React, { useState } from 'react';
 import { jsPDF } from 'jspdf';
+import { getLocalDateString } from '../utils/datetime';
 
 // Storage key for saved reports
 const STORAGE_KEY = 'cp-exam-reports';
@@ -113,7 +114,7 @@ const AfterActionReport = ({ embedded = false, onClose }) => {
   const collapseAllSections = () => setExpandedSections(Object.fromEntries(Object.keys(expandedSections).map(k => [k, false])));
 
   const [formData, setFormData] = useState({
-    examDate: new Date().toISOString().split('T')[0],
+    examDate: getLocalDateString(),
     examTime: '',
     examDuration: '',
     examLocation: '',
@@ -426,7 +427,7 @@ const AfterActionReport = ({ embedded = false, onClose }) => {
       doc.text(`C&P Exam Report - Page ${i} of ${pageCount} - ${new Date().toLocaleDateString()}`, pageWidth / 2, doc.internal.pageSize.height - 10, { align: 'center' });
     }
 
-    doc.save(`CP-Exam-Report-${report.examDate || new Date().toISOString().split('T')[0]}.pdf`);
+    doc.save(`CP-Exam-Report-${report.examDate || getLocalDateString()}.pdf`);
   };
 
   const YesNoButtons = ({ field, value }) => (

@@ -27,6 +27,7 @@ import {
     generateHbA1cTrendChart
 } from './chartExport';
 import { REASONABLE_DOUBT_EXPENSE_CATEGORIES } from './tdiuEligibility';
+import { getLocalDateString } from './datetime';
 import {
   getPhotoMetadataForLogs,
   loadPhotoRecord,
@@ -2343,7 +2344,7 @@ export const generatePDF = async (
   }
 
   // Save
-  const dateStr = new Date().toISOString().split('T')[0];
+  const dateStr = getLocalDateString();
   await exportPDF(doc, `symptom-report-${dateStr}.pdf`, options);
 };
 
@@ -2553,7 +2554,7 @@ export const generateProtectedEnvironmentPDF = async ({
         margin, y
     );
     const filename = `Protected-Environment-Packet_${veteranName.replace(/\s+/g,
-        '-')}_${new Date().toISOString().split('T')[0]}.pdf`;
+        '-')}_${getLocalDateString()}.pdf`;
     await exportPDF(doc, filename);
     return;
   }
@@ -2980,7 +2981,7 @@ export const generateProtectedEnvironmentPDF = async ({
 
   // ── Save ────────────────────────────────────────────────────────────────
   const safeName = veteranName.replace(/\s+/g, '-');
-  const dateStr = new Date().toISOString().split('T')[0];
+  const dateStr = getLocalDateString();
   await exportPDF(doc, `Protected-Environment-Packet_${safeName}_${dateStr}.pdf`);
 };
 
@@ -3224,7 +3225,7 @@ export const generate8940WorksheetPDF = async (
   }
 
   // ── Save ──────────────────────────────────────────────────────────────────
-  const dateStr = new Date().toISOString().split('T')[0];
+  const dateStr = getLocalDateString();
   const safeName = veteranName.replace(/[^a-z0-9]/gi, '_').toLowerCase();
   await exportPDF(doc, `tdiu-8940-worksheet-${safeName}-${dateStr}.pdf`);
 };
@@ -4465,7 +4466,7 @@ export const generateCSV = async (
 
   await exportTextFile(
       csvContent,
-      `symptom-report-${new Date().toISOString().split('T')[0]}.csv`,
+      `symptom-report-${getLocalDateString()}.csv`,
       'text/csv',
       options
   );
@@ -8777,7 +8778,7 @@ export const generateVAClaimPackagePDF = async (dateRange = 'all', options = {})
     }
 
     // Save the PDF
-  await exportPDF(doc, `VA-Claim-Package-${new Date().toISOString().split('T')[0]}.pdf`, options);
+  await exportPDF(doc, `VA-Claim-Package-${getLocalDateString()}.pdf`, options);
 };
 
 /**

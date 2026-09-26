@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { useProfile } from '../hooks/useProfile';
 import { PROTECTED_ENVIRONMENT_INDICATORS } from '../utils/tdiuEligibility';
+import { getLocalDateString } from '../utils/datetime';
 
 /**
  * EmployerLetterGenerator
@@ -34,7 +35,7 @@ const EmployerLetterGenerator = ({ employmentStatus, onClose }) => {
   const [employmentStart, setEmploymentStart] = useState(
       employmentStatus?.startDate || ''
   );
-  const [today] = useState(new Date().toISOString().split('T')[0]);
+  const [today] = useState(getLocalDateString());
 
   // Pull the labels for the user's selected qualifying accommodations so the
   // letter mentions the right ones for the employer to address.

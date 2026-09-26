@@ -27,6 +27,7 @@ import { conditionKeyForSnomed } from './snomedMap';
 // The import binds them here; the export keeps existing imports from
 // storage.js working.
 import { normalizeVaccineName, getImmunizationMatchKey } from './vaccineName';
+import { getLocalDateString } from './datetime';
 export { normalizeVaccineName, getImmunizationMatchKey };
 
 
@@ -1472,7 +1473,7 @@ export const exportAllData = async (profileId = null) => {
   };
 
   const jsonString = JSON.stringify(data, null, 2);
-  const date = new Date().toISOString().split('T')[0];
+  const date = getLocalDateString();
   await exportTextFile(
       jsonString,
       `symptom-tracker-backup-${date}.json`,

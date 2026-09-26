@@ -379,3 +379,27 @@ export const groupByDate = (items, timestampKey = 'timestamp') => {
     return groups;
   }, {});
 };
+
+
+/**
+ * Local calendar date as YYYY-MM-DD.
+ *
+ * Use this instead of toISOString().split('T')[0]. toISOString() returns the
+ * UTC date, which rolls to tomorrow after 7 pm Central (6 pm in winter), so
+ * evening entries and exports got stamped with the wrong day.
+ *
+ * FAIL LOUD: an invalid date throws instead of returning "NaN-NaN-NaN".
+ *
+ * @param {Date|string|number} [date=new Date()]
+ * @returns {string} e.g. "2026-09-26"
+ */
+export const getLocalDateString = (date = new Date()) => {
+    const d = date instanceof Date ? date : new Date(date);
+    if (Number.isNaN(d.getTime())) {
+        throw new RangeError(`getLocalDateString: invalid date "${date}"`);
+    }
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+};
