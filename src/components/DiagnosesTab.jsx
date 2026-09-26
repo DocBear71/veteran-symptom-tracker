@@ -34,6 +34,7 @@ import {
 } from '../utils/storage';
 import { CONDITIONS } from '../utils/ratingCriteria';
 import { isTimeLimited, getTimeLimitInfo } from '../utils/snomedMap';
+import { SURGERY_LIMITED_CONDITIONS } from '../utils/ratingLogic/_shared';
 
 // Sorted once at module load. CONDITIONS is keyed DIABETES while the value's
 // id is 'diabetes' — the id is what the analyzers answer to, so that's what
@@ -337,6 +338,16 @@ const DiagnosisForm = ({ existing, onSave, onCancel }) => {
                         first {getTimeLimitInfo(form.conditionKey).months} months
                         (DC {getTimeLimitInfo(form.conditionKey).dc}), then on remaining symptoms. The
                         diagnosis date below decides which applies.
+                    </p>
+                )}
+
+                {SURGERY_LIMITED_CONDITIONS[form.conditionKey] && (
+                    <p className="text-xs text-amber-700 dark:text-amber-400 mt-1">
+                        This condition is rated {SURGERY_LIMITED_CONDITIONS[form.conditionKey].initialRating}% for
+                        {' '}{SURGERY_LIMITED_CONDITIONS[form.conditionKey].months} months from discharge after
+                        surgery (DC {SURGERY_LIMITED_CONDITIONS[form.conditionKey].dc}). That period comes from a
+                        surgery record, not the diagnosis date: add the surgery to your surgery records and link it
+                        to this condition.
                     </p>
                 )}
             </div>

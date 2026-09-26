@@ -5076,7 +5076,7 @@ export const RATING_ENHANCEMENTS = {
     keyDefinitions: {
       ratingScale: {
         term: 'Hyperparathyroidism Rating Scale',
-        definition: 'Ratings: 60% (hypercalcemia: total Ca >12 mg/dL OR ionized Ca >5.6 mg/dL OR creatinine clearance <60 mL/min OR bone T-score <−2.5 OR prior fragility fracture). 100% for 6 months following parathyroid surgery. After 6 months, rate residuals under appropriate body system DCs.',
+        definition: 'Ratings: 100% for six months from date of discharge following surgery. 60% for hypercalcemia (total Ca >12 mg/dL OR ionized Ca >5.6 mg/dL OR creatinine clearance <60 mL/min OR bone T-score <−2.5 at any site OR previous fragility fracture). 10% for symptoms such as fatigue, anorexia, nausea, or constipation that occur despite surgery, or if not a surgical candidate but requiring continuous medication for control. 0% if asymptomatic. Where surgery is indicated, the current evaluation continues until the day of surgery. After the six-month post-surgical period, rate residuals (such as kidney stones) under the appropriate DCs.',
         source: '38 CFR 4.119, DC 7904',
         important: true
       }
@@ -5090,6 +5090,10 @@ export const RATING_ENHANCEMENTS = {
       {
         tip: 'Get DEXA bone density scan — T-score <−2.5 qualifies independently for 60%.',
         priority: 'high'
+      },
+      {
+        tip: 'Keep your hospital discharge paperwork. The 100% post-surgical period runs six months from the discharge date, not the surgery date.',
+        priority: 'critical'
       },
       {
         tip: 'After surgery, file for residual ratings at the 6-month mark under appropriate body system DCs.',

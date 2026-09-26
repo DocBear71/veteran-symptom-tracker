@@ -1259,6 +1259,58 @@ export const monthsSinceDiagnosis = (conditionKey, profileId = null) => {
 
 
 /**
+ * The most recent surgery linked to a condition, with the date its
+ * post-surgical rating clock starts from.
+ *
+ * DC 7904 (hyperparathyroidism) is 100% "for six months from date of
+ * discharge following surgery". Discharge is optional on the surgery form.
+ * When it's blank the surgery date is used instead and dateSource says so.
+ * Discharge is the same day as surgery or later, so the fallback can only end
+ * the window early, never late: it can understate, never overstate.
+ *
+ * @param {string} conditionKey - e.g. 'hyperparathyroidism'
+ * @returns {{surgery: object, clockDate: string, dateSource: 'discharge'|'surgery'}|null}
+ */
+export const getLatestLinkedSurgery = (conditionKey, profileId = null) => {
+    try {
+        if (!conditionKey) return null;
+        const linked = getSurgeries(profileId)
+            .filter(s => s.conditionKey === conditionKey && s.surgeryDate)
+            .map(s => ({
+                surgery: s,
+                clockDate: s.dischargeDate || s.surgeryDate,
+                dateSource: s.dischargeDate ? 'discharge' : 'surgery',
+            }));
+        if (linked.length === 0) return null;
+        linked.sort((a, b) =>
+            new Date(b.clockDate + 'T00:00:00') - new Date(a.clockDate + 'T00:00:00'));
+        return linked[0];
+    } catch (error) {
+        console.error('Error reading linked surgery:', error);
+        return null;
+    }
+};
+
+/**
+ * Months since the most recent linked surgery's clock date, plus that record.
+ * Negative months means the surgery is dated in the future (scheduled).
+ *
+ * @returns {{months: number, surgery, clockDate, dateSource}|null}
+ */
+export const monthsSinceLinkedSurgery = (conditionKey, profileId = null) => {
+    const latest = getLatestLinkedSurgery(conditionKey, profileId);
+    if (!latest) return null;
+    const then = new Date(latest.clockDate + 'T00:00:00');
+    if (isNaN(then)) {
+        console.error(`Linked surgery for "${conditionKey}" has an unreadable date: ${latest.clockDate}`);
+        return null;
+    }
+    const msPerMonth = 1000 * 60 * 60 * 24 * 30.44;
+    return { ...latest, months: (Date.now() - then.getTime()) / msPerMonth };
+};
+
+
+/**
  * Fill in conditionKey on diagnoses that don't have one yet.
  *
  * Runs on every Diagnoses tab load. Two cases it handles:

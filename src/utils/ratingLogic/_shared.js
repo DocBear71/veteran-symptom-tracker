@@ -106,7 +106,7 @@ export const classifySymptomPattern = (distinctDays, evaluationPeriodDays) => {
 // TIME-LIMITED RATING HELPER
 // ============================================
 
-import { monthsSinceDiagnosis } from '../storage';
+import { monthsSinceDiagnosis, monthsSinceLinkedSurgery } from '../storage';
 import { getTimeLimitInfo } from '../snomedMap';
 
 /**
@@ -250,4 +250,117 @@ export const timeLimitedSupportedRating = (ratingPeriod, initialRating) => {
             );
             return RATING_STATUS.CONFIG_MISSING;
     }
+};
+
+
+// ============================================
+// SURGERY-LIMITED RATING HELPER
+// ============================================
+
+/**
+ * Conditions whose initial rating runs from SURGERY, not diagnosis.
+ * Kept apart from TIME_LIMITED_CONDITIONS (snomedMap.js) because the clock
+ * comes from a linked surgery record, not the Diagnoses tab.
+ *
+ * DC 7904: "For six months from date of discharge following surgery" - 100%
+ */
+export const SURGERY_LIMITED_CONDITIONS = {
+    'hyperparathyroidism': { months: 6, initialRating: 100, dc: '7904' },
+};
+
+/**
+ * Which post-surgical period a Veteran is in.
+ *
+ * Periods:
+ *   'post-surgical'  within the window after discharge (initial rating applies)
+ *   'after-window'   the window has ended
+ *   'scheduled'      linked surgery is dated in the future. Per the DC 7904
+ *                    note, the current evaluation continues until the day of
+ *                    surgery.
+ *   'no-surgery'     no surgery linked to this condition
+ */
+export const getSurgeryRatingPeriod = (conditionKey) => {
+    const info = SURGERY_LIMITED_CONDITIONS[conditionKey];
+    if (!info) {
+        console.error(
+            `[getSurgeryRatingPeriod] "${conditionKey}" is not in SURGERY_LIMITED_CONDITIONS.`
+        );
+        return { period: 'not-surgery-limited', info: null };
+    }
+
+    const linked = monthsSinceLinkedSurgery(conditionKey);
+    if (!linked) return { period: 'no-surgery', info };
+
+    let period;
+    if (linked.months < 0) period = 'scheduled';
+    else if (linked.months <= info.months) period = 'post-surgical';
+    else period = 'after-window';
+
+    return { period, info, ...linked };
+};
+
+/**
+ * Rationale and gap lines for each surgery period, worded the same way
+ * wherever they appear.
+ */
+export const surgeryLimitedNarrative = (conditionName, sp) => {
+    const rationale = [];
+    const gaps = [];
+    const fmt = (d) => new Date(d + 'T00:00:00').toLocaleDateString();
+
+    if (sp.period === 'not-surgery-limited') {
+        rationale.push(
+            `${conditionName}: surgery-period setup is missing ` +
+            '(SURGERY_LIMITED_CONDITIONS in _shared.js).'
+        );
+        return { rationale, gaps };
+    }
+
+    const { info } = sp;
+
+    if (sp.period === 'no-surgery') {
+        gaps.push(
+            `If you had surgery for this condition, add it to your surgery records and link it ` +
+            `to ${conditionName}. DC ${info.dc} rates ${info.initialRating}% for ${info.months} ` +
+            'months from discharge after surgery.'
+        );
+        return { rationale, gaps };
+    }
+
+    const procedure = sp.surgery?.procedureName || 'Linked surgery';
+    const dateText = sp.dateSource === 'discharge'
+        ? `discharged ${fmt(sp.clockDate)}`
+        : `surgery date ${fmt(sp.clockDate)}`;
+
+    if (sp.period === 'post-surgical') {
+        const remaining = Math.max(0, info.months - sp.months);
+        rationale.push(
+            `${procedure} (${dateText}). DC ${info.dc} rates ${info.initialRating}% for ` +
+            `${info.months} months from discharge following surgery.`
+        );
+        rationale.push(`About ${remaining.toFixed(1)} months remain in the post-surgical period.`);
+    } else if (sp.period === 'after-window') {
+        rationale.push(
+            `${procedure} (${dateText}) was more than ${info.months} months ago. The ` +
+            `post-surgical ${info.initialRating}% period has ended; the rating is based on ` +
+            'current symptoms, and residuals are rated under their own codes.'
+        );
+    } else if (sp.period === 'scheduled') {
+        rationale.push(
+            `${procedure} is dated ${fmt(sp.surgery.surgeryDate)}, in the future. Until the day ` +
+            `of surgery the current evaluation continues; the ${info.initialRating}% period ` +
+            'starts at discharge.'
+        );
+    }
+
+    // Disclosed fallback: surgery date standing in for a missing discharge date
+    if (sp.dateSource === 'surgery' && (sp.period === 'post-surgical' || sp.period === 'after-window')) {
+        rationale.push(
+            'No discharge date is on the surgery record, so the surgery date is used. ' +
+            'Discharge is the same day or later, so this can only end the period early, never late.'
+        );
+        gaps.push('Add the discharge date to the surgery record for an exact post-surgical period.');
+    }
+
+    return { rationale, gaps };
 };

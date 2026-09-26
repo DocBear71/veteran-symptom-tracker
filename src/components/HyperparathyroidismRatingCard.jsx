@@ -127,12 +127,12 @@ export default function HyperparathyroidismRatingCard({ analysis, expanded, onTo
 
               {/* Understanding Your Rating - Educational Content */}
               <UnderstandingYourRating
-                  diagnosticCode="7900"
+                  diagnosticCode="7904"
                   currentRating={supportedRating}
               />
 
               <RatingEnhancementsDisplay
-                  diagnosticCode="7900"
+                  diagnosticCode="7904"
                   showDefinitions={true}
                   showCaseLaw={true}
                   showTips={true}
@@ -188,7 +188,7 @@ export default function HyperparathyroidismRatingCard({ analysis, expanded, onTo
                 <ul className="space-y-1">
                   <li className="text-sm text-blue-800 dark:text-blue-300 flex items-start gap-2">
                     <span className="text-blue-500 mt-0.5">•</span>
-                    <span>100% rating for 6 months post-surgery</span>
+                    <span>100% for six months from discharge after surgery (link the surgery to Hyperparathyroidism in your surgery records)</span>
                   </li>
                   <li className="text-sm text-blue-800 dark:text-blue-300 flex items-start gap-2">
                     <span className="text-blue-500 mt-0.5">•</span>

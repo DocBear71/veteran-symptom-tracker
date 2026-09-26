@@ -1,6 +1,14 @@
 import { useState } from 'react';
 import { saveSurgery } from '../utils/storage';
 
+import { CONDITIONS } from '../utils/ratingCriteria';
+import { SURGERY_LIMITED_CONDITIONS } from '../utils/ratingLogic/_shared';
+
+// Same list the Diagnoses tab links to. The id is what the analyzers read.
+const CONDITION_OPTIONS = Object.values(CONDITIONS)
+    .filter(c => c && c.id && c.name)
+    .sort((a, b) => a.name.localeCompare(b.name));
+
 // ── Procedure type options ──────────────────────────────────────────────────
 // Covers the major surgical categories a veteran would encounter.
 // categoryId field is reserved for future Option 2 structured linking.
@@ -29,6 +37,8 @@ const ANESTHESIA_TYPES = [
 // ── Empty form state ────────────────────────────────────────────────────────
 const EMPTY_FORM = {
   surgeryDate:        '',
+  dischargeDate:      '',   // optional; DC 7904's 100% runs from discharge
+  conditionKey:       '',   // optional link to a rated condition
   procedureName:      '',
   procedureType:      '',
   surgeonName:        '',
@@ -56,6 +66,8 @@ const SurgeryForm = ({ onSaved, onCancel, initialData = null, overrideSave = nul
             relatedConditions: initialData.relatedConditions
             ?.map(c => c.label)
             .join(', ') || '',
+            dischargeDate: initialData.dischargeDate || '',
+            conditionKey:  initialData.conditionKey || '',
           }
           : { ...EMPTY_FORM }
   );
@@ -80,6 +92,9 @@ const SurgeryForm = ({ onSaved, onCancel, initialData = null, overrideSave = nul
       newErrors.procedureName = 'Please enter the procedure name';
     if (!formData.procedureType)
       newErrors.procedureType = 'Please select a procedure type';
+    // YYYY-MM-DD strings compare correctly as text
+    if (formData.dischargeDate && formData.surgeryDate && formData.dischargeDate < formData.surgeryDate)
+      newErrors.dischargeDate = 'Discharge date cannot be before the surgery date';
     return newErrors;
   };
 
@@ -106,6 +121,9 @@ const SurgeryForm = ({ onSaved, onCancel, initialData = null, overrideSave = nul
     const surgeryPayload = {
       ...formData,
       relatedConditions: relatedConditionsArray,
+      // null, not '', means "not supplied"; the rating helpers test for it
+      dischargeDate: formData.dischargeDate || null,
+      conditionKey:  formData.conditionKey || null,
     };
 
     // If an overrideSave handler was provided (edit modal), delegate to it.
@@ -185,6 +203,29 @@ const SurgeryForm = ({ onSaved, onCancel, initialData = null, overrideSave = nul
             </div>
           </div>
 
+            {/* ── Discharge Date (optional) ── */}
+            <div>
+                <label htmlFor="surgery-discharge-date" className={labelClass}>
+                    Discharge Date <span className="font-normal opacity-70">(optional)</span>
+                </label>
+                <input
+                    id="surgery-discharge-date"
+                    type="date"
+                    value={formData.dischargeDate}
+                    min={formData.surgeryDate || undefined}
+                    onChange={(e) => handleChange('dischargeDate', e.target.value)}
+                    className={inputClass('dischargeDate')}
+                />
+                {errors.dischargeDate && (
+                    <p className="text-red-500 dark:text-red-400 text-sm mt-1">
+                        {errors.dischargeDate}
+                    </p>
+                )}
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                    The day you left the hospital. Some VA ratings run from discharge, not the surgery date.
+                </p>
+            </div>
+
           {/* ── Procedure Name ── */}
           <div>
             <label className={labelClass}>
@@ -259,6 +300,37 @@ const SurgeryForm = ({ onSaved, onCancel, initialData = null, overrideSave = nul
               Links this surgery to your VA claim. Separate multiple conditions with commas.
             </p>
           </div>
+
+
+            {/* ── Link to a rated condition (optional) ── */}
+            {/* Structured link the rating analysis can read. The free-text field
+              above stays for the Veteran's own description. */}
+            <div>
+                <label htmlFor="surgery-condition-key" className={labelClass}>
+                    Link to a rated condition <span className="font-normal opacity-70">(optional)</span>
+                </label>
+                <select
+                    id="surgery-condition-key"
+                    value={formData.conditionKey}
+                    onChange={(e) => handleChange('conditionKey', e.target.value)}
+                    className={inputClass('conditionKey')}
+                >
+                    <option value="">Not linked</option>
+                    {CONDITION_OPTIONS.map(c => (
+                        <option key={c.id} value={c.id}>
+                            {c.name}{c.diagnosticCode ? ` (DC ${c.diagnosticCode})` : ''}
+                        </option>
+                    ))}
+                </select>
+                {SURGERY_LIMITED_CONDITIONS[formData.conditionKey] && (
+                    <p className="text-xs text-amber-700 dark:text-amber-400 mt-1">
+                        This condition is rated {SURGERY_LIMITED_CONDITIONS[formData.conditionKey].initialRating}%
+                        for {SURGERY_LIMITED_CONDITIONS[formData.conditionKey].months} months from discharge
+                        after surgery (DC {SURGERY_LIMITED_CONDITIONS[formData.conditionKey].dc}). Add the
+                        discharge date above for an exact period.
+                    </p>
+                )}
+            </div>
 
           {/* ── Pre-Op Diagnosis ── */}
           <div>

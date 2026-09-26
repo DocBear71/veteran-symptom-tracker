@@ -2437,26 +2437,18 @@ const HYPOTHYROIDISM_DESCRIPTION = {
     'Impact on daily functioning',
   ],
 
+  // Current DC 7903 (38 CFR 4.119). The 10/30/60/100 symptom tiers that used
+  // to be here were removed from the rating schedule in 2017.
   ratingLevelMeanings: [
     {
-      percent: 10,
-      meaning: 'Fatigability, or continuous medication required for control',
-      realWorld: 'Hypothyroidism controlled with daily medication. Some residual fatigue.',
-    },
-    {
       percent: 30,
-      meaning: 'Fatigability, constipation, and mental sluggishness',
-      realWorld: 'Symptoms persist despite medication. Noticeable cognitive and digestive issues.',
-    },
-    {
-      percent: 60,
-      meaning: 'Muscular weakness, mental disturbance, and weight gain',
-      realWorld: 'Significant symptoms affecting strength, cognition, and metabolism.',
+      meaning: 'Hypothyroidism without myxedema',
+      realWorld: 'Rated 30% for six months after initial diagnosis. After that, remaining problems are rated under their own diagnostic codes.',
     },
     {
       percent: 100,
-      meaning: 'Cold intolerance, muscular weakness, cardiovascular involvement, mental disturbance, bradycardia, and sleepiness including myxedema',
-      realWorld: 'Severe hypothyroidism with multiple system involvement. Myxedema crisis risk.',
+      meaning: 'Hypothyroidism manifesting as myxedema (cold intolerance, muscular weakness, cardiovascular involvement, mental disturbance)',
+      realWorld: 'Rated 100% for six months after a physician documents that the crisis has stabilized. After that, remaining problems are rated under their own codes.',
     },
   ],
 
@@ -2499,28 +2491,15 @@ const HYPERTHYROIDISM_DESCRIPTION = {
     'Emotional/psychiatric symptoms',
   ],
 
-  ratingLevelMeanings: [
-    {
-      percent: 10,
-      meaning: 'Tachycardia, tremor, and continuous medication required for control',
-      realWorld: 'Hyperthyroidism controlled with medication. Some residual symptoms.',
-    },
-    {
-      percent: 30,
-      meaning: 'Tachycardia, tremor, and increased pulse pressure or blood pressure',
-      realWorld: 'Symptoms affecting cardiovascular system despite treatment.',
-    },
-    {
-      percent: 60,
-      meaning: 'Emotional instability, tachycardia, fatigability, and increased pulse pressure or blood pressure',
-      realWorld: 'Significant symptoms including mood issues and cardiac effects.',
-    },
-    {
-      percent: 100,
-      meaning: 'Thyroid enlargement, tachycardia, eye involvement, muscular weakness, loss of weight, and sympathetic nervous system, cardiovascular, or gastrointestinal symptoms',
-      realWorld: 'Severe hyperthyroidism with multiple organ involvement. Thyroid storm risk.',
-    },
-  ],
+    // Current DC 7900 (38 CFR 4.119). The old 10/30/60/100 tiers were removed
+    // from the rating schedule in 2017.
+    ratingLevelMeanings: [
+        {
+            percent: 30,
+            meaning: 'For six months after initial diagnosis',
+            realWorld: 'After six months, remaining problems are rated separately: heart involvement under DC 7008 (hyperthyroid heart disease), and eye problems such as double vision under the eye codes.',
+        },
+    ],
 
   documentationTips: [
     'Keep all thyroid lab results',
@@ -3496,47 +3475,210 @@ const MYASTHENIA_DESCRIPTION = {
 };
 
 // =============================================================================
-// THYROIDITIS - DC 7904/7905
+// THYROIDITIS - DC 7906
 // =============================================================================
+// Was labeled DC 7904/7905 and mapped to both, so the hyperparathyroidism and
+// hypoparathyroidism cards showed thyroiditis content while the thyroiditis
+// card (7906) showed nothing.
 const THYROIDITIS_DESCRIPTION = {
-  diagnosticCode: '7904',
-  conditionName: 'Thyroiditis',
+    diagnosticCode: '7906',
+    conditionName: 'Thyroiditis',
 
-  evidenceLookingFor: [
-    'Diagnosis of thyroiditis (Hashimoto\'s, subacute, etc.)',
-    'Thyroid function tests over time',
-    'Thyroid antibody levels',
-    'Documentation of symptoms',
-    'Ultrasound or imaging if performed',
-    'Treatment requirements',
-    'Whether condition caused hypo- or hyperthyroidism',
-    'Impact on daily functioning',
-  ],
+    evidenceLookingFor: [
+        'Diagnosis of thyroiditis (Hashimoto\'s, subacute, etc.) and the date',
+        'Thyroid function tests over time (TSH, free T4)',
+        'Thyroid antibody levels',
+        'Whether the thyroid is currently overactive, underactive, or normal',
+        'Documentation of symptoms',
+        'Ultrasound or imaging if performed',
+        'Treatment requirements',
+        'Impact on daily functioning',
+    ],
 
-  ratingLevelMeanings: [
-    {
-      percent: 0,
-      meaning: 'Rate based on resulting thyroid dysfunction',
-      realWorld: 'Thyroiditis itself is rated based on whether it causes hypothyroidism or hyperthyroidism.',
+    ratingLevelMeanings: [
+        {
+            percent: 0,
+            meaning: 'Normal thyroid function (euthyroid)',
+            realWorld: 'Thyroiditis that is not making the thyroid overactive or underactive is rated 0%, however long ago it was diagnosed.',
+        },
+        {
+            percent: 30,
+            meaning: 'Manifesting as hyperthyroidism (rated as DC 7900) or hypothyroidism without myxedema (rated as DC 7903)',
+            realWorld: 'Either way, 30% for six months after diagnosis, then remaining problems are rated under their own codes. Hypothyroidism with myxedema is rated 100% under DC 7903.',
+        },
+    ],
+
+    documentationTips: [
+        'Add your diagnosis date on the Diagnoses tab',
+        'Keep all thyroid lab results',
+        'Track symptoms: fatigue, weight changes, temperature sensitivity',
+        'Document any thyroid pain (subacute thyroiditis)',
+        'Note medication requirements',
+        'Track antibody levels if Hashimoto\'s',
+        'Document progression to hypothyroidism',
+        'Record energy levels and functional status',
+    ],
+
+    keyTerms: {
+        'Hashimoto\'s thyroiditis': 'Autoimmune thyroiditis - most common cause of hypothyroidism',
+        'Subacute thyroiditis': 'Painful thyroid inflammation, often after viral illness',
+        'Euthyroid': 'Normal thyroid function - rated 0% under DC 7906',
+        'Thyroid antibodies': 'TPO and thyroglobulin antibodies indicate autoimmune thyroiditis',
+        'Goiter': 'Enlarged thyroid gland',
     },
-  ],
+};
 
-  documentationTips: [
-    'Keep all thyroid lab results',
-    'Track symptoms: fatigue, weight changes, temperature sensitivity',
-    'Document any thyroid pain (subacute thyroiditis)',
-    'Note medication requirements',
-    'Track antibody levels if Hashimoto\'s',
-    'Document progression to hypothyroidism',
-    'Record energy levels and functional status',
-  ],
+// =============================================================================
+// HYPERPARATHYROIDISM - DC 7904
+// =============================================================================
+const HYPERPARATHYROIDISM_DESCRIPTION = {
+    diagnosticCode: '7904',
+    conditionName: 'Hyperparathyroidism',
 
-  keyTerms: {
-    'Hashimoto\'s thyroiditis': 'Autoimmune thyroiditis - most common cause of hypothyroidism',
-    'Subacute thyroiditis': 'Painful thyroid inflammation, often after viral illness',
-    'Thyroid antibodies': 'TPO and thyroglobulin antibodies indicate autoimmune thyroiditis',
-    'Goiter': 'Enlarged thyroid gland',
-  },
+    evidenceLookingFor: [
+        'Diagnosis of hyperparathyroidism (primary, secondary, or tertiary)',
+        'Calcium labs: total calcium and ionized calcium',
+        'Parathyroid hormone (PTH) levels',
+        'Creatinine clearance (kidney function)',
+        'DEXA bone density scan (T-score)',
+        'Any fragility fracture',
+        'Surgery records, including the hospital discharge date',
+        'Whether you are a surgical candidate, and any medication needed for control',
+    ],
+
+    ratingLevelMeanings: [
+        {
+            percent: 0,
+            meaning: 'Asymptomatic',
+            realWorld: 'Diagnosed, but no symptoms.',
+        },
+        {
+            percent: 10,
+            meaning: 'Symptoms such as fatigue, anorexia, nausea, or constipation that occur despite surgery; or not a surgical candidate but requiring continuous medication for control',
+            realWorld: 'Surgery did not fully resolve symptoms, or surgery is not an option and daily medication keeps it controlled.',
+        },
+        {
+            percent: 60,
+            meaning: 'Hypercalcemia shown by at least one: total calcium over 12 mg/dL, ionized calcium over 5.6 mg/dL, creatinine clearance under 60 mL/min, bone density T-score below -2.5 at any site, or a previous fragility fracture',
+            realWorld: 'One qualifying lab result, scan, or fracture is enough. If surgery is recommended, this rating continues until the day of surgery.',
+        },
+        {
+            percent: 100,
+            meaning: 'For six months from the date of discharge following surgery',
+            realWorld: 'The clock starts when you leave the hospital, not on the day of surgery. After six months, long-term effects such as kidney stones are rated under their own codes.',
+        },
+    ],
+
+    documentationTips: [
+        'Keep every calcium, ionized calcium, PTH, and creatinine result',
+        'Get a DEXA bone density scan; a T-score below -2.5 qualifies for 60% on its own',
+        'Record any fracture from a fall from standing height or less',
+        'If you have surgery, keep the discharge paperwork showing the date you left the hospital',
+        'Add the surgery to your surgery records and link it to Hyperparathyroidism',
+        'After surgery, keep logging fatigue, nausea, constipation, and appetite loss',
+        'Document kidney stones separately; they are rated under their own code',
+    ],
+
+    keyTerms: {
+        'PTH': 'Parathyroid hormone - high levels drive calcium up',
+        'Hypercalcemia': 'Too much calcium in the blood',
+        'Fragility fracture': 'A break from a fall from standing height or less',
+        'T-score': 'Bone density compared to a healthy young adult; below -2.5 means osteoporosis',
+        'Parathyroidectomy': 'Surgery to remove the overactive parathyroid gland(s)',
+        'Creatinine clearance': 'Measure of how well the kidneys filter the blood',
+    },
+};
+
+// =============================================================================
+// HYPOPARATHYROIDISM - DC 7905
+// =============================================================================
+const HYPOPARATHYROIDISM_DESCRIPTION = {
+    diagnosticCode: '7905',
+    conditionName: 'Hypoparathyroidism',
+
+    evidenceLookingFor: [
+        'Diagnosis of hypoparathyroidism and the date',
+        'Calcium, phosphorus, and PTH levels',
+        'Cause, such as thyroid or neck surgery',
+        'Records of tetany, muscle spasms, or seizures',
+        'Eye exam for cataracts',
+        'Kidney function and any kidney stones',
+        'Heart evaluation if heart failure symptoms are present',
+        'Calcium and vitamin D supplementation required',
+    ],
+
+    ratingLevelMeanings: [
+        {
+            percent: 100,
+            meaning: 'For three months after initial diagnosis',
+            realWorld: 'After three months, VA rates chronic residuals under their own codes: kidney stones, cataracts, decreased kidney function, and congestive heart failure.',
+        },
+    ],
+
+    documentationTips: [
+        'Add your diagnosis date on the Diagnoses tab; the 100% period depends on it',
+        'Log tetany, cramps, tingling, and spasm episodes',
+        'Keep calcium, phosphorus, and PTH lab results',
+        'Record all calcium and vitamin D supplements and doses',
+        'Get regular eye exams and keep the results',
+        'Document kidney stones and kidney function results',
+        'File for each residual under its own diagnostic code',
+    ],
+
+    keyTerms: {
+        'Hypocalcemia': 'Too little calcium in the blood',
+        'Tetany': 'Involuntary muscle spasms caused by low calcium',
+        'PTH': 'Parathyroid hormone - too little causes low calcium',
+        'Residuals': 'Lasting effects rated under their own diagnostic codes after the initial period',
+    },
+};
+
+// =============================================================================
+// DIABETES INSIPIDUS - DC 7909
+// =============================================================================
+const DIABETES_INSIPIDUS_DESCRIPTION = {
+    diagnosticCode: '7909',
+    conditionName: 'Diabetes Insipidus',
+
+    evidenceLookingFor: [
+        'Diagnosis of diabetes insipidus (central or nephrogenic) and the date',
+        'Urine output and urine concentration tests',
+        'Water deprivation test results if performed',
+        'Sodium levels',
+        'Desmopressin (DDAVP) prescription and refill history',
+        'Documentation of frequent urination and nighttime urination',
+        'The underlying cause if known',
+    ],
+
+    ratingLevelMeanings: [
+        {
+            percent: 10,
+            meaning: 'Persistent polyuria, or requiring continuous hormonal therapy',
+            realWorld: 'After the first three months: heavy urination continues, or you need medication such as desmopressin every day. If the condition has subsided, residuals are rated under their own codes.',
+        },
+        {
+            percent: 30,
+            meaning: 'For three months after initial diagnosis',
+            realWorld: 'The first three months after diagnosis are rated 30%.',
+        },
+    ],
+
+    documentationTips: [
+        'Add your diagnosis date on the Diagnoses tab',
+        'Log urination frequency, including nighttime trips',
+        'Track fluid intake and urine output when you can',
+        'Keep desmopressin (DDAVP) prescription and refill records; continuous therapy supports 10%',
+        'Keep sodium and urine concentration lab results',
+        'Document dehydration episodes',
+    ],
+
+    keyTerms: {
+        'Polyuria': 'Producing large amounts of urine',
+        'Polydipsia': 'Excessive thirst',
+        'Desmopressin (DDAVP)': 'Synthetic hormone that reduces urine output',
+        'Central DI': 'The brain does not make enough of the hormone that controls urine',
+        'Nephrogenic DI': 'The kidneys do not respond to that hormone',
+    },
 };
 
 // =============================================================================
@@ -10127,8 +10269,10 @@ const CONDITION_DESCRIPTIONS = {
   '8004': PARKINSONS_DESCRIPTION,
   '8017': ALS_DESCRIPTION,
   '8025': MYASTHENIA_DESCRIPTION,
-  '7904': THYROIDITIS_DESCRIPTION,
-  '7905': THYROIDITIS_DESCRIPTION,
+  '7904': HYPERPARATHYROIDISM_DESCRIPTION,
+  '7905': HYPOPARATHYROIDISM_DESCRIPTION,
+  '7906': THYROIDITIS_DESCRIPTION,
+  '7909': DIABETES_INSIPIDUS_DESCRIPTION,
   '7911': ADDISONS_DESCRIPTION,
   '7907': CUSHINGS_DESCRIPTION,
   '7702': SICKLE_CELL_DESCRIPTION,
@@ -10396,6 +10540,9 @@ export {
   ALS_DESCRIPTION,
   MYASTHENIA_DESCRIPTION,
   THYROIDITIS_DESCRIPTION,
+  HYPERPARATHYROIDISM_DESCRIPTION,
+  HYPOPARATHYROIDISM_DESCRIPTION,
+  DIABETES_INSIPIDUS_DESCRIPTION,
   ADDISONS_DESCRIPTION,
   CUSHINGS_DESCRIPTION,
   SICKLE_CELL_DESCRIPTION,

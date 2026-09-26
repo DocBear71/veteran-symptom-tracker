@@ -2,6 +2,14 @@ import { useState, useEffect } from 'react';
 import { getSurgeries, deleteSurgery } from '../utils/storage';
 import EditSurgeryModal from './EditSurgeryModal';
 
+import { CONDITIONS } from '../utils/ratingCriteria';
+
+// id -> display name, for the "Linked to" line
+const CONDITION_NAMES = Object.values(CONDITIONS).reduce((acc, c) => {
+    if (c && c.id && c.name) acc[c.id] = c.name;
+    return acc;
+}, {});
+
 // ── Display labels for procedure types ─────────────────────────────────────
 const PROCEDURE_TYPE_LABELS = {
   orthopedic:       'Orthopedic',
@@ -140,9 +148,9 @@ const SurgeryHistory = () => {
                       )}
 
                       {/* Related conditions pill row */}
-                      {relatedDisplay && (
-                          <p className="text-xs text-blue-600 dark:text-blue-400 mt-1">
-                            🔗 {relatedDisplay}
+                      {surgery.conditionKey && (
+                          <p className="text-xs text-blue-700 dark:text-blue-400 mt-0.5">
+                            Linked to: {CONDITION_NAMES[surgery.conditionKey] || surgery.conditionKey}
                           </p>
                       )}
                     </div>
@@ -180,6 +188,11 @@ const SurgeryHistory = () => {
                   {isExpanded && (
                       <div className="px-4 pb-4 border-t border-gray-100 dark:border-gray-700
                                 space-y-3 pt-3">
+
+                          {/* Discharge date */}
+                          {surgery.dischargeDate && (
+                              <DetailRow label="Discharged" value={formatDate(surgery.dischargeDate)} />
+                          )}
 
                         {/* Anesthesia */}
                         {surgery.anesthesiaType && (
@@ -226,7 +239,8 @@ const SurgeryHistory = () => {
                         )}
 
                         {/* No extra detail available */}
-                        {!surgery.anesthesiaType &&
+                        {!surgery.dischargeDate &&
+                            !surgery.anesthesiaType &&
                             !surgery.preOpDiagnosis &&
                             !surgery.complications &&
                             !surgery.recoveryNotes &&

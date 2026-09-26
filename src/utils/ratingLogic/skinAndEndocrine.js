@@ -33,6 +33,8 @@ import {
     timeLimitedNarrative,
     timeLimitedSupportedRating,
     RATING_STATUS,
+    getSurgeryRatingPeriod,
+    surgeryLimitedNarrative,
 } from './_shared';
 
 // ============================================
@@ -4121,7 +4123,34 @@ export const analyzeHyperparathyroidismLogs = (logs, options = {}) => {
     return logDate >= cutoffDate && symptomId && symptomIds.includes(symptomId);
   });
 
+  // Post-surgical period comes from a surgery record linked to
+  // Hyperparathyroidism, not from the diagnosis date. Computed before the
+  // no-logs return: inside the window the 100% follows from the surgery alone.
+  const surgeryPeriod = getSurgeryRatingPeriod('hyperparathyroidism');
+  const surgeryNarrative = surgeryLimitedNarrative('Hyperparathyroidism', surgeryPeriod);
+
   if (relevantLogs.length === 0) {
+    if (surgeryPeriod.period === 'post-surgical') {
+      return {
+        hasData: true,
+        condition: 'Hyperparathyroidism',
+        diagnosticCode: '7904',
+        cfrReference: '38 CFR 4.119',
+        supportedRating: 100,
+        ratingRationale: [
+          ...surgeryNarrative.rationale,
+          'This rating follows from the surgery record, not from logged symptoms.',
+        ],
+        gaps: [
+          ...surgeryNarrative.gaps,
+          'No symptoms logged yet. Start now. When the post-surgical period ends, the ' +
+          'rating is based on what remains, and your log is what supports it.',
+        ],
+        metrics: { totalLogs: 0, postSurgical: true },
+        criteria: HYPERPARATHYROIDISM_CRITERIA,
+      };
+    }
+
     return {
       hasData: false,
       condition: 'Hyperparathyroidism',
@@ -4187,6 +4216,27 @@ export const analyzeHyperparathyroidismLogs = (logs, options = {}) => {
     ratingRationale.push('0% rating if asymptomatic and controlled');
   }
 
+
+    // DC 7904: "For six months from date of discharge following surgery": 100%.
+    // Inside that window the symptom tiers above don't set the rating.
+    // Outside it (or with no surgery linked) they do, unchanged.
+    if (surgeryPeriod.period === 'post-surgical') {
+        supportedRating = 100;
+        ratingRationale.unshift(
+            ...surgeryNarrative.rationale,
+            'While this period lasts, the symptom-based tiers below do not set the rating.'
+        );
+    } else {
+        ratingRationale.unshift(...surgeryNarrative.rationale);
+        if (surgeryPeriod.period === 'after-window' && hasPersistentSymptoms && !hasHypercalcemiaIndicators) {
+            ratingRationale.push(
+                'Symptoms continuing after the linked surgery match the 10% criterion ' +
+                '(symptoms "that occur despite surgery").'
+            );
+        }
+    }
+    gaps.push(...surgeryNarrative.gaps);
+
   // Add symptom category details
   if (kidneySymptoms.length > 0) {
     ratingRationale.push(`Kidney symptoms: ${kidneySymptoms.length} (stones, thirst, urination)`);
@@ -4227,6 +4277,7 @@ export const analyzeHyperparathyroidismLogs = (logs, options = {}) => {
       neuroSymptoms: neuroSymptoms.length,
       hasFracture: fractureLogs.length > 0,
       avgSeverity: parseFloat(avgSeverity.toFixed(1)),
+      postSurgical: surgeryPeriod.period === 'post-surgical',
     },
     criteria: HYPERPARATHYROIDISM_CRITERIA,
   };
