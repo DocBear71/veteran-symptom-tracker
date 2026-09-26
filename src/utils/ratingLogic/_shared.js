@@ -171,7 +171,7 @@ export const timeLimitedNarrative = (conditionName, ratingPeriod) => {
     if (period === 'unknown') {
         rationale.push(
             `${conditionName} is rated ${initialRating}% for its first ${windowMonths} months ` +
-            `after diagnosis (DC ${info.dc}), then on whatever symptoms remain.`
+            `after diagnosis (DC ${info.dc}), then on residuals rated under their own codes.`
         );
         rationale.push(
             'No diagnosis date is on file, so the app cannot tell which applies and ' +
@@ -198,7 +198,7 @@ export const timeLimitedNarrative = (conditionName, ratingPeriod) => {
     } else if (period === 'residual') {
         rationale.push(
             `Diagnosed ${months.toFixed(1)} months ago, past the ${windowMonths}-month ` +
-            `initial period for DC ${info.dc}. Rating is based on remaining symptoms.`
+            `initial period for DC ${info.dc}. Remaining problems are rated as residuals under their own codes.`
         );
     } else {
         // 'not-time-limited': an analyzer asked for a key that isn't in

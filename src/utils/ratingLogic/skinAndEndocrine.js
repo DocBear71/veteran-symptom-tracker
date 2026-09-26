@@ -1415,6 +1415,15 @@ export const CUSHINGS_SYNDROME_CRITERIA = {
       criteria: 'With striae, obesity, moon face, glucose intolerance, and vascular fragility',
       summary: 'Classic Cushingoid features: striae, obesity, moon face, glucose intolerance, vascular fragility',
     },
+    {
+      // Not a 0% rating: six months after initial diagnosis, residuals are
+      // rated under their own codes. Top-level flag because this criteria
+      // object stores plain strings (same as diabetes insipidus).
+      percent: 0,
+      residualsOnly: true,
+      criteria: 'After six months following initial diagnosis',
+      summary: 'After six-month period - rate residuals under appropriate codes',
+    },
   ],
   notes: [
     'Evaluations continue for six months following initial diagnosis',
@@ -4647,6 +4656,13 @@ export const analyzeCushingsSyndromeLogs = (logs, options = {}) => {
     };
   }
 
+    // DC 7907 is time-limited like the other endocrine conditions: its ratings
+    // "continue for six months following initial diagnosis", then residuals.
+    // Unlike hypoparathyroidism, the initial rating depends on symptoms, so
+    // there's no card with zero logs (the no-logs return above stands).
+    const ratingPeriod = getRatingPeriod('cushings-syndrome', options);
+    const narrative = timeLimitedNarrative("Cushing's syndrome", ratingPeriod);
+
   // Key symptom categories for rating determination
   const cushingoidFeatures = relevantLogs.filter(log =>
       ['cushings-moon-face', 'cushings-buffalo-hump', 'cushings-striae',
@@ -4688,61 +4704,81 @@ export const analyzeCushingsSyndromeLogs = (logs, options = {}) => {
       ? severities.reduce((a, b) => a + b, 0) / severities.length
       : 0;
 
-  // Determine rating
-  let supportedRating = 0;
-  const ratingRationale = [];
-  const gaps = [];
+    // Which tier the logged symptoms point to (38 CFR 4.119, DC 7907)
+    let symptomTier = 0;
+    const ratingRationale = [];
+    const gaps = [];
 
-  // Check for 100% rating (most severe)
-  if (hasOsteoporosis && hasHypertension && hasSevereMuscleWasting) {
-    supportedRating = 100;
-    ratingRationale.push('Active progressive disease documented with:');
-    ratingRationale.push('- Osteoporosis/bone involvement');
-    ratingRationale.push('- Hypertension');
-    ratingRationale.push('- Severe proximal muscle wasting');
-    ratingRationale.push('100% rating for active progressive disease with all three findings');
-  }
-  // Check for 60% rating
-  else if (hasSevereMuscleWasting) {
-    supportedRating = 60;
-    ratingRationale.push('Proximal muscle wasting documented');
-    ratingRationale.push(`${muscleWastingLogs.length} muscle weakness/wasting symptoms logged`);
-    ratingRationale.push('60% rating for muscle wasting causing functional limitations');
-  }
-  // Check for 30% rating (classic Cushingoid features)
-  else if (cushingoidFeatures.length >= 2) {
-    supportedRating = 30;
-    ratingRationale.push('Classic Cushingoid features documented:');
-    if (hasStriae) ratingRationale.push('- Striae (stretch marks)');
-    if (hasWeightGain) ratingRationale.push('- Central obesity');
-    if (hasMoonFace) ratingRationale.push('- Moon face');
-    if (hasGlucoseIntolerance) ratingRationale.push('- Glucose intolerance');
-    if (hasVascularFragility) ratingRationale.push('- Vascular fragility/easy bruising');
-    ratingRationale.push('30% rating for typical Cushingoid presentation');
-  } else {
-    supportedRating = 30;
-    ratingRationale.push('Cushing\'s syndrome symptoms documented');
-    ratingRationale.push('Minimum 30% rating applies for 6 months after diagnosis');
-  }
+    // The 30% line lists all five of these
+    const thirtyPercentFeatures = [
+        ['striae', hasStriae],
+        ['obesity (weight gain)', hasWeightGain],
+        ['moon face', hasMoonFace],
+        ['glucose intolerance', hasGlucoseIntolerance],
+        ['vascular fragility (easy bruising, thin skin)', hasVascularFragility],
+    ];
+    const loggedFeatures = thirtyPercentFeatures.filter(([, has]) => has).map(([name]) => name);
+    const missingFeatures = thirtyPercentFeatures.filter(([, has]) => !has).map(([name]) => name);
 
-  ratingRationale.push(`${relevantLogs.length} total symptoms logged in ${days} days`);
-  ratingRationale.push(`Average symptom severity: ${avgSeverity.toFixed(1)}/10`);
-  ratingRationale.push('Note: Ratings continue for 6 months after diagnosis, then rate residuals');
+    if (hasOsteoporosis && hasHypertension && hasSevereMuscleWasting) {
+        symptomTier = 100;
+        ratingRationale.push('Active progressive disease documented with:');
+        ratingRationale.push('- Osteoporosis/bone involvement');
+        ratingRationale.push('- Hypertension');
+        ratingRationale.push('- Severe proximal muscle wasting');
+        ratingRationale.push('Matches the 100% criteria: active, progressive disease with all three findings');
+    } else if (hasSevereMuscleWasting) {
+        symptomTier = 60;
+        ratingRationale.push('Proximal muscle wasting documented');
+        ratingRationale.push(`${muscleWastingLogs.length} muscle weakness/wasting symptoms logged`);
+        ratingRationale.push('Matches the 60% criteria: muscle wasting causing functional limitations');
+    } else if (cushingoidFeatures.length >= 2) {
+        symptomTier = 30;
+        ratingRationale.push(`Cushingoid features documented: ${loggedFeatures.join(', ')}`);
+        if (missingFeatures.length > 0) {
+            ratingRationale.push(
+                'The 30% criteria list striae, obesity, moon face, glucose intolerance, and vascular ' +
+                `fragility. Not yet logged: ${missingFeatures.join(', ')}.`
+            );
+        }
+    } else {
+        // This used to report 30% here regardless of what was logged.
+        symptomTier = 0;
+        ratingRationale.push('Not enough Cushingoid features logged to match the 30% criteria.');
+        ratingRationale.push(
+            'The 30% criteria list striae, obesity, moon face, glucose intolerance, and vascular fragility.'
+        );
+    }
 
-  // Documentation gaps
-  if (!hasSevereMuscleWasting) {
-    gaps.push('Document any difficulty rising from chair, climbing stairs, or raising arms');
-  }
-  if (!hasOsteoporosis) {
-    gaps.push('Document any bone density issues or fractures');
-  }
-  if (!hasHypertension) {
-    gaps.push('Track and document blood pressure readings');
-  }
-  if (!hasGlucoseIntolerance) {
-    gaps.push('Document any blood sugar abnormalities');
-  }
-  gaps.push('Note diagnosis date to determine if within initial 6-month period');
+    // DC 7907: these ratings apply for six months following initial diagnosis.
+    // After that, residuals; with no date, no estimate. Used to report the tier
+    // to every Veteran regardless of when they were diagnosed.
+    const supportedRating = timeLimitedSupportedRating(ratingPeriod, symptomTier);
+    ratingRationale.unshift(...narrative.rationale);
+    gaps.push(...narrative.gaps);
+
+    if (ratingPeriod.period !== 'initial' && symptomTier > 0) {
+        ratingRationale.push(
+            `Within six months of diagnosis, these symptoms would match the ${symptomTier}% criteria.`
+        );
+    }
+
+    ratingRationale.push(`${relevantLogs.length} total symptoms logged in ${days} days`);
+    ratingRationale.push(`Average symptom severity: ${avgSeverity.toFixed(1)}/10`);
+
+    // Documentation gaps
+    if (!hasSevereMuscleWasting) {
+        gaps.push('Document any difficulty rising from chair, climbing stairs, or raising arms');
+    }
+    if (!hasOsteoporosis) {
+        gaps.push('Document any bone density issues or fractures');
+    }
+    if (!hasHypertension) {
+        gaps.push('Track and document blood pressure readings');
+    }
+    if (!hasGlucoseIntolerance) {
+        gaps.push('Document any blood sugar abnormalities');
+    }
 
   return {
     hasData: true,

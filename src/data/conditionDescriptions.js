@@ -3702,17 +3702,17 @@ const ADDISONS_DESCRIPTION = {
   ratingLevelMeanings: [
     {
       percent: 20,
-      meaning: 'Requiring continuous medication for control',
-      realWorld: 'Addison\'s controlled with daily steroid replacement.',
+      meaning: 'One or two crises in the past year, or two to four episodes in the past year, or weakness and fatigability, or corticosteroid therapy required for control',
+      realWorld: 'Most Veterans on daily steroid replacement meet this level even without crises.',
     },
     {
       percent: 40,
-      meaning: 'Fatigability, weakness, anorexia, malaise, weight loss',
-      realWorld: 'Symptoms persist despite medication. Noticeable impact on functioning.',
+      meaning: 'Three crises in the past year, or five or more episodes in the past year',
+      realWorld: 'A crisis is a sudden collapse needing emergency treatment. An episode is a flare of symptoms that does not reach crisis level. Keep a dated record of each.',
     },
     {
       percent: 60,
-      meaning: 'Four or more adrenal crises in past year',
+      meaning: 'Four or more crises in the past year',
       realWorld: 'Frequent adrenal crises requiring emergency treatment.',
     },
   ],
@@ -3756,20 +3756,22 @@ const CUSHINGS_DESCRIPTION = {
   ],
 
   ratingLevelMeanings: [
+    // Current DC 7907 (38 CFR 4.119). All three apply only for six months
+    // following initial diagnosis; after that, residuals are rated separately.
     {
       percent: 30,
-      meaning: 'Cushingoid appearance with mild symptoms',
-      realWorld: 'Characteristic appearance with manageable symptoms.',
+      meaning: 'Striae, obesity, moon face, glucose intolerance, and vascular fragility',
+      realWorld: 'The classic Cushing\'s appearance. Applies for six months after diagnosis.',
     },
     {
       percent: 60,
-      meaning: 'Moderate symptoms with complications',
-      realWorld: 'Noticeable symptoms plus complications like diabetes or hypertension.',
+      meaning: 'Proximal upper or lower extremity muscle wasting that results in inability to rise from squatting, climb stairs, rise from a deep chair without assistance, or raise arms',
+      realWorld: 'Thigh or shoulder weakness that stops everyday movements. Applies for six months after diagnosis.',
     },
     {
       percent: 100,
-      meaning: 'Severe symptoms with serious complications',
-      realWorld: 'Severe Cushing\'s with major health problems.',
+      meaning: 'Active, progressive disease including osteoporosis, hypertension, and that same proximal muscle wasting',
+      realWorld: 'All three together. Applies for six months after diagnosis, then residuals such as diabetes or hypertension are rated under their own codes.',
     },
   ],
 
@@ -9455,10 +9457,10 @@ const PHARYNGITIS_DESCRIPTION = {
 
 // ADD BEFORE IT:
 // =============================================================================
-// HYPERALDOSTERONISM - DC 7909
+// HYPERALDOSTERONISM - DC 7917
 // =============================================================================
 const HYPERALDOSTERONISM_DESCRIPTION = {
-  diagnosticCode: '7909',
+  diagnosticCode: '7917',
   conditionName: 'Hyperaldosteronism',
 
   evidenceLookingFor: [
@@ -9472,23 +9474,21 @@ const HYPERALDOSTERONISM_DESCRIPTION = {
     'Impact on blood pressure control',
   ],
 
-  ratingLevelMeanings: [
-    {
-      percent: 30,
-      meaning: 'Requiring continuous medication for control',
-      realWorld: 'Hyperaldosteronism managed with ongoing medication.',
-    },
-    {
-      percent: 60,
-      meaning: 'Requiring medication and with episodic symptoms',
-      realWorld: 'Despite medication, experiencing breakthrough symptoms.',
-    },
-    {
-      percent: 100,
-      meaning: 'Crisis episodes or poor control despite treatment',
-      realWorld: 'Severe hyperaldosteronism with uncontrolled symptoms.',
-    },
-  ],
+    // DC 7917 has no rating levels of its own: "Evaluate as malignant or benign
+    // neoplasm, as appropriate." The 30/60/100 tiers that were here are not in
+    // the CFR.
+    ratingLevelMeanings: [
+        {
+            percent: 0,
+            meaning: 'Benign (such as an adrenal adenoma): rated on the residual effects',
+            realWorld: 'Rated on what the condition leaves behind, such as hypertension (DC 7101) or effects of low potassium, each under its own code.',
+        },
+        {
+            percent: 100,
+            meaning: 'Malignant: rated as a malignant endocrine neoplasm',
+            realWorld: '100% during active treatment. Six months after treatment ends, VA re-examines and rates on residuals.',
+        },
+    ],
 
   documentationTips: [
     'Keep aldosterone and renin level results',

@@ -197,6 +197,11 @@ export const TIME_LIMITED_CONDITIONS = {
     'hypothyroidism':      { months: 6, initialRating: 30,  dc: '7903' },
     'diabetes-insipidus':  { months: 3, initialRating: 30,  dc: '7909' },
     'thyroiditis':         { months: 6, initialRating: 30,  dc: '7906' },
+    // DC 7907 note: "The evaluations specifically indicated under this
+    // diagnostic code shall continue for six months following initial
+    // diagnosis." Tiered 30/60/100 by symptoms, so initialRating is a label
+    // here; it's only ever displayed, never used as a number.
+    'cushings-syndrome':   { months: 6, initialRating: '30 to 100', dc: '7907' },
     // hyperparathyroidism is deliberately NOT here. DC 7904's 100% runs "for
     // six months from date of discharge following surgery", not from
     // diagnosis. The old entry here (60% for 6 months) matched nothing in the

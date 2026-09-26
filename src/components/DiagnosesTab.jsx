@@ -221,7 +221,7 @@ const DiagnosisCard = ({ record, onEdit, onDelete }) => {
                         <span className="block text-amber-700 dark:text-amber-400 mt-0.5">
                           ⚠ This condition is rated {getTimeLimitInfo(record.conditionKey).initialRating}%
                           for its first {getTimeLimitInfo(record.conditionKey).months} months, then on
-                          remaining symptoms. Without a diagnosis date the app can't tell which applies,
+                          residuals. Without a diagnosis date the app can't tell which applies,
                           so it won't estimate a rating.
                         </span>
                     )}
@@ -336,8 +336,9 @@ const DiagnosisForm = ({ existing, onSave, onCancel }) => {
                     <p className="text-xs text-amber-700 dark:text-amber-400 mt-1">
                         This condition is rated {getTimeLimitInfo(form.conditionKey).initialRating}% for its
                         first {getTimeLimitInfo(form.conditionKey).months} months
-                        (DC {getTimeLimitInfo(form.conditionKey).dc}), then on remaining symptoms. The
-                        diagnosis date below decides which applies.
+                        (DC {getTimeLimitInfo(form.conditionKey).dc}), then on residuals: whatever
+                        remains is rated under its own diagnostic codes. The diagnosis date below
+                        decides which applies.
                     </p>
                 )}
 
