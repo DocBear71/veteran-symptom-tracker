@@ -76,6 +76,10 @@ that number went into the estimated combined rating. These conditions now show
   instead of local date)
 - Blue Button import threw on every health condition
 - Trends tab crashed for profiles without a sleep apnea profile
+- Dates now use the device's local calendar day. Default dates, date picker 
+  limits, the employer letter date, and export and backup filenames no longer 
+  roll to the next day in the evening, and the daily backup no longer re-runs 
+  on every evening launch.
 
 ---
 
