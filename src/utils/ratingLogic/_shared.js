@@ -195,12 +195,59 @@ export const timeLimitedNarrative = (conditionName, ratingPeriod) => {
             'Keep logging symptoms now. When the initial period ends, the rating is ' +
             'based on what remains, and that record is what supports it.'
         );
-    } else {
+    } else if (period === 'residual') {
         rationale.push(
             `Diagnosed ${months.toFixed(1)} months ago, past the ${windowMonths}-month ` +
             `initial period for DC ${info.dc}. Rating is based on remaining symptoms.`
         );
+    } else {
+        // 'not-time-limited': an analyzer asked for a key that isn't in
+        // TIME_LIMITED_CONDITIONS. That's a setup bug, so say so on the card.
+        rationale.push(
+            `${conditionName}: time-limit setup is missing (TIME_LIMITED_CONDITIONS ` +
+            `in snomedMap.js). No rating is estimated.`
+        );
     }
 
     return { rationale, gaps };
+};
+
+// ============================================
+// TIME-LIMITED STATUS VALUES
+// ============================================
+
+/**
+ * What a time-limited analyzer returns as supportedRating when it has no
+ * honest number. Rating cards read these through utils/timeLimitedRating.js,
+ * which imports this same object, so the strings can't drift apart.
+ */
+export const RATING_STATUS = {
+    RESIDUALS: 'Rate residuals',
+    DATE_NEEDED: 'Diagnosis date needed',
+    CONFIG_MISSING: 'Time-limit setup missing',
+};
+
+/**
+ * The supportedRating for a time-limited condition, given its rating period.
+ *
+ * @param {object} ratingPeriod - from getRatingPeriod()
+ * @param {number} initialRating - the rating inside the initial window
+ * @returns {number|string} the number, or a RATING_STATUS string
+ */
+export const timeLimitedSupportedRating = (ratingPeriod, initialRating) => {
+    switch (ratingPeriod.period) {
+        case 'initial':
+            return initialRating;
+        case 'residual':
+            return RATING_STATUS.RESIDUALS;
+        case 'unknown':
+            return RATING_STATUS.DATE_NEEDED;
+        default:
+            // Fail loud: never guess a period.
+            console.error(
+                `[timeLimitedSupportedRating] Unexpected period "${ratingPeriod.period}". ` +
+                'Check the condition key against TIME_LIMITED_CONDITIONS in snomedMap.js.'
+            );
+            return RATING_STATUS.CONFIG_MISSING;
+    }
 };

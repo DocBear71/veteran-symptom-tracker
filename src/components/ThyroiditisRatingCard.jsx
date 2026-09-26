@@ -1,8 +1,8 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
-import { getRatingRowColor, getRatingTextColor } from '../utils/ratingCriteria';
+import { getRatingRowColor } from '../utils/ratingCriteria';
 import UnderstandingYourRating from './UnderstandingYourRating';
 import ServiceConnectedBanner from './ServiceConnectedBanner';
-import {isRatingSupported} from '../utils/ratingUtils.js';
+import { getRatingDisplay, isScheduleRowSupported, getScheduleRowLabel } from '../utils/timeLimitedRating';
 import MedicationCorrelation from './MedicationCorrelation';
 import {THYROIDITIS_CRITERIA} from '../utils/ratingLogic/';
 import RatingEnhancementsDisplay from './RatingEnhancementsDisplay';
@@ -17,6 +17,9 @@ export default function ThyroiditisRatingCard({ analysis, expanded, onToggle }) 
 
   const { supportedRating, ratingRationale, gaps, metrics } = analysis;
   const criteria = THYROIDITIS_CRITERIA;
+
+    // Analyzer may return 0, 30, 'Rate residuals', or 'Diagnosis date needed'
+    const ratingDisplay = getRatingDisplay(supportedRating);
 
   // Determine phase display
   const getPhaseDisplay = () => {
@@ -47,8 +50,8 @@ export default function ThyroiditisRatingCard({ analysis, expanded, onToggle }) 
           </div>
           <div className="flex items-center gap-4">
             <div className="text-right">
-              <div className={`text-2xl font-bold ${getRatingTextColor(supportedRating)}`}>
-                {supportedRating !== null && supportedRating !== undefined ? `${supportedRating}%` : 'N/A'}
+              <div className={`text-2xl font-bold ${ratingDisplay.colorClass}`}>
+                {ratingDisplay.label}
               </div>
               <div className="text-xs text-gray-500 dark:text-gray-400">Supported Rating</div>
             </div>
@@ -58,7 +61,7 @@ export default function ThyroiditisRatingCard({ analysis, expanded, onToggle }) 
 
         {expanded && (
             <div className="px-6 pb-6 space-y-6">
-              <div className="border-t border-gray-200dark:border-gray-700" />
+              <div className="border-t border-gray-200 dark:border-gray-700" />
 
               {/* Service-Connected Status Banner */}
               <ServiceConnectedBanner
@@ -124,13 +127,15 @@ export default function ThyroiditisRatingCard({ analysis, expanded, onToggle }) 
               )}
 
               {/* Understanding Your Rating - Educational Content */}
-              <UnderstandingYourRating
-                  diagnosticCode="7904"
-                  currentRating={supportedRating}
-              />
+              {ratingDisplay.numericRating !== null && (
+                  <UnderstandingYourRating
+                      diagnosticCode="7906"
+                      currentRating={ratingDisplay.numericRating}
+                  />
+              )}
 
               <RatingEnhancementsDisplay
-                  diagnosticCode="7904"
+                  diagnosticCode="7906"
                   showDefinitions={true}
                   showCaseLaw={true}
                   showTips={true}
@@ -142,7 +147,12 @@ export default function ThyroiditisRatingCard({ analysis, expanded, onToggle }) 
                 <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-center">VA Rating Schedule</h4>
                 <div className="space-y-2">
                   {criteria.ratings.map((rating, idx) => {
-                    const isSupported = isRatingSupported(rating.percent, supportedRating);
+                    // Two 30% rows exist (hyper and hypo phase). Only tick the
+                    // one that matches the phase the analyzer found.
+                    const phaseMatches =
+                        (!rating.criteria?.hyperthyroidPhase || metrics?.currentPhase === 'hyperthyroid') &&
+                        (!rating.criteria?.hypothyroidPhase || metrics?.currentPhase === 'hypothyroid');
+                    const isSupported = isScheduleRowSupported(rating, supportedRating) && phaseMatches;
                     return (
                         <div
                             key={idx}
@@ -190,11 +200,11 @@ export default function ThyroiditisRatingCard({ analysis, expanded, onToggle }) 
                   </li>
                   <li className="text-sm text-blue-800 dark:text-blue-300 flex items-start gap-2">
                     <span className="text-blue-500 mt-0.5">•</span>
-                    <span>Hyperthyroid phase: Rate as DC 7900 (30%)</span>
+                    <span>Hyperthyroid phase: Rate as DC 7900 (30% for six months after diagnosis)</span>
                   </li>
                   <li className="text-sm text-blue-800 dark:text-blue-300 flex items-start gap-2">
                     <span className="text-blue-500 mt-0.5">•</span>
-                    <span>Hypothyroid phase: Rate as DC 7903 (30% without myxedema)</span>
+                    <span>Hypothyroid phase: Rate as DC 7903 (30% without myxedema, for six months after diagnosis)</span>
                   </li>
                   <li className="text-sm text-blue-800 dark:text-blue-300 flex items-start gap-2">
                     <span className="text-blue-500 mt-0.5">•</span>

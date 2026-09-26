@@ -194,7 +194,7 @@ export const TIME_LIMITED_CONDITIONS = {
     'hyperthyroidism':     { months: 6, initialRating: 30,  dc: '7900' },
     'hyperparathyroidism': { months: 6, initialRating: 60,  dc: '7904' },
     'diabetes-insipidus':  { months: 3, initialRating: 30,  dc: '7909' },
-    'thyroiditis':         { months: 6, initialRating: 30,  dc: '7903' },
+    'thyroiditis':         { months: 6, initialRating: 30,  dc: '7906' },
 };
 
 /** The app's condition id for a SNOMED code, or null. */

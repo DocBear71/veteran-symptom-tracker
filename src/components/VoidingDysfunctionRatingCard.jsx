@@ -75,7 +75,7 @@ export default function VoidingDysfunctionRatingCard({
 
         {expanded && (
             <div className="px-6 pb-6 space-y-6">
-              <div className="border-t border-gray-200dark:border-gray-700" />
+              <div className="border-t border-gray-200 dark:border-gray-700" />
 
               {/* Service-Connected Status Banner */}
               <ServiceConnectedBanner

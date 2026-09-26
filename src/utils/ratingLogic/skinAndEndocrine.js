@@ -30,6 +30,8 @@ import {
   isWithinEvaluationPeriod,
     getRatingPeriod,
     timeLimitedNarrative,
+    timeLimitedSupportedRating,
+    RATING_STATUS,
 } from './_shared';
 
 // ============================================
@@ -1167,6 +1169,17 @@ export const THYROIDITIS_CRITERIA = {
         'No hyperthyroid or hypothyroid symptoms',
       ],
     },
+    {
+      percent: 0,
+      summary: 'After six-month initial period (hyper or hypo phase) - rate residuals separately',
+      criteria: {
+        residualsOnly: true,
+      },
+      requirements: [
+        'Hyper phase: rated as DC 7900 for six months after diagnosis, then residuals',
+        'Hypo phase: rated as DC 7903 (without myxedema) for six months after diagnosis, then residuals',
+      ],
+    },
   ],
   definitions: {
     thyroiditis: {
@@ -1424,6 +1437,16 @@ export const DIABETES_INSIPIDUS_CRITERIA = {
       percent: 10,
       criteria: 'With persistent polyuria or requiring continuous hormonal therapy',
       summary: 'Persistent polyuria OR requires continuous hormonal therapy',
+    },
+    {
+      // Not a 0% rating: past the initial period with the condition subsided,
+      // VA rates whatever residuals remain under their own codes.
+      // The flag sits at the top level (not inside criteria) because this
+      // criteria object stores plain strings, unlike the other endocrine ones.
+      percent: 0,
+      residualsOnly: true,
+      criteria: 'After the initial period, if the condition has subsided',
+      summary: 'Condition subsided after initial period - rate residuals separately',
     },
   ],
   notes: [
@@ -3754,7 +3777,33 @@ export const analyzeHyperthyroidismLogs = (logs, options = {}) => {
     return logDate >= cutoffDate && symptomId && symptomIds.includes(symptomId);
   });
 
+  // Same pattern as hypoparathyroidism (Step 36): the period is computed
+  // BEFORE the no-logs return, because inside the initial window the 30%
+  // follows from the diagnosis date alone.
+  const ratingPeriod = getRatingPeriod('hyperthyroidism', options);
+  const narrative = timeLimitedNarrative('Hyperthyroidism', ratingPeriod);
+
   if (relevantLogs.length === 0) {
+    if (ratingPeriod.period === 'initial') {
+      return {
+        hasData: true,
+        condition: 'Hyperthyroidism/Graves\' Disease',
+        diagnosticCode: '7900',
+        cfrReference: '38 CFR 4.119',
+        supportedRating: 30,
+        ratingRationale: [
+          ...narrative.rationale,
+          'This rating follows from the diagnosis date, not from logged symptoms.',
+        ],
+        gaps: [
+          'No symptoms logged yet. Start now. When the initial period ends, the ' +
+          'rating is based on what remains, and your log is what supports it.',
+        ],
+        metrics: { totalLogs: 0, withinInitialPeriod: true },
+        criteria: HYPERTHYROIDISM_CRITERIA,
+      };
+    }
+
     return {
       hasData: false,
       condition: 'Hyperthyroidism/Graves\' Disease',
@@ -3789,13 +3838,14 @@ export const analyzeHyperthyroidismLogs = (logs, options = {}) => {
       ? severities.reduce((a, b) => a + b, 0) / severities.length
       : 0;
 
-  // Determine rating - Hyperthyroidism gets 30% for 6 months, then rate residuals
-  let supportedRating = 30;
-  const ratingRationale = [];
-  const gaps = [];
+  // DC 7900: 30% for six months after initial diagnosis, then residuals are
+  // rated under their own codes (DC 7008 heart, eye DCs, and so on).
+  // This used to hardcode 30% for every Veteran regardless of date.
+  const supportedRating = timeLimitedSupportedRating(ratingPeriod, 30);
+  const ratingRationale = [...narrative.rationale];
+  const gaps = [...narrative.gaps];
 
   ratingRationale.push(`${relevantLogs.length} hyperthyroidism symptoms logged in ${days} days`);
-  ratingRationale.push('Initial 30% rating applies for 6 months after diagnosis');
 
   if (cardiacSymptoms.length > 0) {
     ratingRationale.push(`${cardiacSymptoms.length} cardiac symptoms (rapid/irregular heartbeat) - may warrant separate evaluation under DC 7008`);
@@ -3815,7 +3865,6 @@ export const analyzeHyperthyroidismLogs = (logs, options = {}) => {
   }
 
   ratingRationale.push(`Average symptom severity: ${avgSeverity.toFixed(1)}/10`);
-  ratingRationale.push('After 6 months, rate residuals under appropriate diagnostic codes');
 
   // Documentation gaps
   if (cardiacSymptoms.length === 0) {
@@ -3916,28 +3965,43 @@ export const analyzeThyroiditisLogs = (logs, options = {}) => {
       ? severities.reduce((a, b) => a + b, 0) / severities.length
       : 0;
 
-  // Determine phase and rating
-  let supportedRating = 0;
-  let currentPhase = 'euthyroid';
+  // Determine predominant phase (same rules as before)
+  let currentPhase;
+  if (hyperPhaseMarkers.length > hypoPhaseMarkers.length || hyperLogs.length > hypoLogs.length) {
+    currentPhase = 'hyperthyroid';
+  } else if (hypoPhaseMarkers.length > hyperPhaseMarkers.length || hypoLogs.length > hyperLogs.length) {
+    currentPhase = 'hypothyroid';
+  } else {
+    currentPhase = 'euthyroid';
+  }
+
+  // DC 7906 is rated by what the thyroid is doing:
+  //   normal function -> 0%, with no time limit
+  //   hyper phase     -> rated as DC 7900: 30% for six months after diagnosis
+  //   hypo phase      -> rated as DC 7903 without myxedema: 30% for six months
+  // Both dysfunction phases share the same 30% / six-month window, so the one
+  // 'thyroiditis' entry in TIME_LIMITED_CONDITIONS covers both.
+  // This used to hardcode 30% for either phase regardless of date.
+  const ratingPeriod = getRatingPeriod('thyroiditis', options);
+  const narrative = timeLimitedNarrative('Thyroiditis', ratingPeriod);
+
+  let supportedRating;
   const ratingRationale = [];
   const gaps = [];
 
-  // Determine predominant phase
-  if (hyperPhaseMarkers.length > hypoPhaseMarkers.length || hyperLogs.length > hypoLogs.length) {
-    currentPhase = 'hyperthyroid';
-    supportedRating = 30;
-    ratingRationale.push('Thyroiditis manifesting as hyperthyroidism - rated under DC 7900');
-    ratingRationale.push('30% rating for hyperthyroid phase');
-  } else if (hypoPhaseMarkers.length > hyperPhaseMarkers.length || hypoLogs.length > hyperLogs.length) {
-    currentPhase = 'hypothyroid';
-    supportedRating = 30;
-    ratingRationale.push('Thyroiditis manifesting as hypothyroidism - rated under DC 7903');
-    ratingRationale.push('30% rating for hypothyroid phase (without myxedema)');
-  } else {
-    currentPhase = 'euthyroid';
+  if (currentPhase === 'euthyroid') {
     supportedRating = 0;
     ratingRationale.push('Thyroiditis with normal thyroid function (euthyroid)');
-    ratingRationale.push('0% rating when thyroid function is normal');
+    ratingRationale.push('0% rating when thyroid function is normal. This does not depend on the diagnosis date.');
+  } else {
+    supportedRating = timeLimitedSupportedRating(ratingPeriod, 30);
+    ratingRationale.push(
+        currentPhase === 'hyperthyroid'
+            ? 'Thyroiditis manifesting as hyperthyroidism - rated as DC 7900'
+            : 'Thyroiditis manifesting as hypothyroidism - rated as DC 7903 (without myxedema)'
+    );
+    ratingRationale.push(...narrative.rationale);
+    gaps.push(...narrative.gaps);
   }
 
   ratingRationale.push(`${allRelevantLogs.length} total symptoms logged in ${days} days`);
@@ -4598,7 +4662,32 @@ export const analyzeDiabetesInsipidusLogs = (logs, options = {}) => {
     return logDate >= cutoffDate && symptomId && symptomIds.includes(symptomId);
   });
 
+  // Computed before the no-logs return: inside the initial window the 30%
+  // follows from the diagnosis date alone (same as Step 36).
+  const ratingPeriod = getRatingPeriod('diabetes-insipidus', options);
+  const narrative = timeLimitedNarrative('Diabetes insipidus', ratingPeriod);
+
   if (relevantLogs.length === 0) {
+    if (ratingPeriod.period === 'initial') {
+      return {
+        hasData: true,
+        condition: 'Diabetes Insipidus',
+        diagnosticCode: '7909',
+        cfrReference: '38 CFR 4.119',
+        supportedRating: 30,
+        ratingRationale: [
+          ...narrative.rationale,
+          'This rating follows from the diagnosis date, not from logged symptoms.',
+        ],
+        gaps: [
+          'No symptoms logged yet. Start now. After the initial period, persistent ' +
+          'polyuria supports 10%, and your log is what shows it.',
+        ],
+        metrics: { totalLogs: 0, withinInitialPeriod: true },
+        criteria: DIABETES_INSIPIDUS_CRITERIA,
+      };
+    }
+
     return {
       hasData: false,
       condition: 'Diabetes Insipidus',
@@ -4630,49 +4719,81 @@ export const analyzeDiabetesInsipidusLogs = (logs, options = {}) => {
       ? severities.reduce((a, b) => a + b, 0) / severities.length
       : 0;
 
-  // Check for persistent polyuria (key criterion for 10% after initial period)
-  const hasPersistentPolyuria = polyuriaLogs.length >= 5; // Multiple logs suggest persistence
+    // Persistent polyuria: several polyuria/nocturia logs in the window.
+    // This is a log-count proxy, not a measured urine volume.
+    const hasPersistentPolyuria = polyuriaLogs.length >= 5;
 
-  // Determine rating
-  let supportedRating = 30;
-  const ratingRationale = [];
-  const gaps = [];
+    // DC 7909:
+    //   first 3 months after diagnosis -> 30%
+    //   after that -> 10% with persistent polyuria OR continuous hormonal therapy
+    //   otherwise (subsided) -> rate residuals under their own codes
+    //
+    // Persistent polyuria sets a 10% floor for every period after the first
+    // three months, so it can be reported even with no diagnosis date: the true
+    // rating is then 10% or 30%, never lower. Reporting the floor can't
+    // overstate, which is the thing Step 36 exists to prevent.
+    //
+    // This used to compute '30/10', then ignore it and return 30 to everyone.
+    const period = ratingPeriod.period;
+    let supportedRating = timeLimitedSupportedRating(ratingPeriod, 30);
+    const ratingRationale = [];
+    const gaps = [...narrative.gaps];
 
-  ratingRationale.push(`${relevantLogs.length} diabetes insipidus symptoms logged in ${days} days`);
-  ratingRationale.push('Initial 30% rating applies for 3 months after diagnosis');
+    const usePolyuriaFloor = hasPersistentPolyuria && (period === 'residual' || period === 'unknown');
 
-  if (hasPersistentPolyuria) {
-    ratingRationale.push(`Persistent polyuria documented (${polyuriaLogs.length} polyuria/nocturia logs)`);
-    ratingRationale.push('After initial 3 months: 10% for persistent polyuria or continuous therapy');
-    supportedRating = '30/10'; // Indicate both possible ratings
-  } else {
-    ratingRationale.push('After 3 months, if condition subsides, rate residuals under appropriate codes');
-  }
+    if (usePolyuriaFloor) {
+        supportedRating = 10;
+        if (period === 'unknown') {
+            // narrative.rationale says "not estimating a rating", which isn't true here
+            ratingRationale.push(
+                'No diagnosis date is on file. Persistent polyuria supports at least 10%. ' +
+                'If you were diagnosed within the last 3 months, the 30% initial rating applies instead.'
+            );
+        } else {
+            ratingRationale.push(...narrative.rationale);
+        }
+        ratingRationale.push(`Persistent polyuria documented (${polyuriaLogs.length} polyuria/nocturia logs) - supports 10%`);
+    } else {
+        ratingRationale.push(...narrative.rationale);
+        if (period === 'initial' && hasPersistentPolyuria) {
+            ratingRationale.push(`Persistent polyuria documented (${polyuriaLogs.length} logs) - supports 10% after the initial period ends`);
+        }
+        if (period === 'residual') {
+            // Disclosed limitation: the app can't see medications here yet.
+            ratingRationale.push(
+                'Persistent polyuria is not documented in this period. If you take desmopressin (DDAVP) ' +
+                'or another hormone therapy continuously, 10% applies instead. The app does not yet ' +
+                'read your medication list for this, so it cannot confirm it.'
+            );
+        }
+    }
 
-  if (polydipsiaLogs.length > 0) {
-    ratingRationale.push(`Polydipsia (excessive thirst) documented: ${polydipsiaLogs.length} logs`);
-  }
+    ratingRationale.push(`${relevantLogs.length} diabetes insipidus symptoms logged in ${days} days`);
 
-  if (dehydrationLogs.length > 0) {
-    ratingRationale.push(`Dehydration-related symptoms: ${dehydrationLogs.length} logs`);
-  }
+    if (polydipsiaLogs.length > 0) {
+        ratingRationale.push(`Polydipsia (excessive thirst) documented: ${polydipsiaLogs.length} logs`);
+    }
 
-  ratingRationale.push(`Average symptom severity: ${avgSeverity.toFixed(1)}/10`);
+    if (dehydrationLogs.length > 0) {
+        ratingRationale.push(`Dehydration-related symptoms: ${dehydrationLogs.length} logs`);
+    }
 
-  // Documentation gaps
-  gaps.push('Document diagnosis date to determine rating period');
-  gaps.push('Note if on continuous hormonal therapy (desmopressin/DDAVP)');
-  if (polyuriaLogs.length < 3) {
-    gaps.push('Document frequency and volume of urination');
-  }
-  gaps.push('Track fluid intake and urine output if possible');
+    ratingRationale.push(`Average symptom severity: ${avgSeverity.toFixed(1)}/10`);
+
+    // Documentation gaps
+    // The diagnosis-date gap now comes from timeLimitedNarrative, only when missing.
+    gaps.push('Note if on continuous hormonal therapy (desmopressin/DDAVP) - supports 10% after the initial period');
+    if (polyuriaLogs.length < 3) {
+        gaps.push('Document frequency and volume of urination');
+    }
+    gaps.push('Track fluid intake and urine output if possible');
 
   return {
     hasData: true,
     condition: 'Diabetes Insipidus',
     diagnosticCode: '7909',
     cfrReference: '38 CFR 4.119',
-    supportedRating: 30, // Default to initial rating
+    supportedRating,
     ratingRationale,
     gaps,
     metrics: {
