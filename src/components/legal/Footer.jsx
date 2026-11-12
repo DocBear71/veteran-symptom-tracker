@@ -9,6 +9,7 @@ import Contact from './Contact';
 import Donations from './Donations';
 import VATermsAndFAQ from '../VATermsAndFAQ';
 import Citations from './Citations';
+import { getPlatform } from '../../utils/platformUtils';
 
 // Modal wrapper component for consistent styling
 const ModalWrapper = ({ children, title, onClose }) => (
@@ -133,13 +134,18 @@ const Footer = () => {
                 Contact Us
               </button>
               <span className="text-blue-400 dark:text-gray-600">|</span>
-              <button
-                  onClick={() => openModal('donations')}
-                  className="text-blue-200 hover:text-white transition-colors"
-              >
-                Support Us
-              </button>
-              <span className="text-blue-400 dark:text-gray-600">|</span>
+              {/* Hidden on iOS: Apple rejects external tip/donation links (Guideline 3.1.1) */}
+              {getPlatform() !== 'ios' && (
+                  <>
+                    <button
+                        onClick={() => openModal('donations')}
+                        className="text-blue-200 hover:text-white transition-colors"
+                    >
+                      Support Us
+                    </button>
+                    <span className="text-blue-400 dark:text-gray-600">|</span>
+                  </>
+              )}
               <button
                   onClick={() => openModal('va-terms')}
                   className="text-blue-200 hover:text-white transition-colors"

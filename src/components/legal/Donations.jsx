@@ -1,8 +1,11 @@
-// file: src/components/legal/Donations.jsx v3 - Doc Bear's Symptom Vault Donations page
-//  with working PayPal link
-// UPDATED: Live PayPal donation button
+// file: src/components/legal/Donations.jsx v4 - Doc Bear's Symptom Vault Donations page
+// UPDATED: PayPal replaced with a Stripe Payment Link (one-time, donor picks amount)
+// NOTE: Footer hides the Support Us link on iOS (App Store Guideline 3.1.1)
 
 import React from 'react';
+
+// Stripe Payment Link. Stripe redirects to /thank-you after payment.
+const STRIPE_DONATION_URL = 'https://donate.stripe.com/eVq5kEf5Xbtp0kDgaH0kE00';
 
 const Donations = () => {
   return (
@@ -51,9 +54,9 @@ const Donations = () => {
               </p>
             </div>
             <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 text-left">
-              <h3 className="font-semibold text-green-600 dark:text-green-400 mb-2">📱 Platform Expansion</h3>
+              <h3 className="font-semibold text-green-600 dark:text-green-400 mb-2">📱 Web, Android & iOS</h3>
               <p className="text-sm text-gray-600 dark:text-gray-400">
-                Developing native Android and iOS apps to give veterans more options for tracking.
+                Keeping the web, Android, and iOS apps updated together, so the app works the same wherever you use it.
               </p>
             </div>
           </div>
@@ -63,25 +66,26 @@ const Donations = () => {
         <section className="mb-8">
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Ways to Support</h2>
 
-          {/* PayPal - Primary */}
-          <div className="bg-yellow-50 dark:bg-yellow-900/20 border-2 border-yellow-400 dark:border-yellow-700 rounded-lg p-6 mb-4 text-left">
+          {/* Stripe - Primary */}
+          <div className="bg-indigo-50 dark:bg-indigo-900/20 border-2 border-indigo-400 dark:border-indigo-700 rounded-lg p-6 mb-4 text-left">
             <div className="flex items-center gap-3 mb-4">
-              <span className="text-3xl">💳</span>
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white">Donate via PayPal</h3>
+              <span className="text-3xl" aria-hidden="true">💳</span>
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white">Donate by Card</h3>
             </div>
             <p className="text-gray-600 dark:text-gray-400 mb-4">
-              Make a one-time or recurring donation through PayPal. Secure, fast, and easy. Accepts PayPal, Venmo, and all major credit/debit cards.
+              Make a one-time donation through Stripe's secure checkout. Accepts major credit and debit cards, plus Apple Pay or Google Pay where your device supports it.
             </p>
             <a
-                href="https://www.paypal.com/donate/?hosted_button_id=WQSJSBXWGW4CY"
+                href={STRIPE_DONATION_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-block bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-bold px-8 py-3 rounded-lg transition-colors text-lg"
+                aria-label="Donate now (opens Stripe checkout in a new tab)"
+                className="inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-8 py-3 rounded-lg transition-colors text-lg focus:outline-none focus:ring-4 focus:ring-indigo-300"
             >
               Donate Now
             </a>
-            <p className="text-xs text-gray-500 dark:text-gray-500 mt-3">
-              Choose from $5, $10, $25, or any custom amount. Monthly and yearly recurring options available.
+            <p className="text-xs text-gray-600 dark:text-gray-400 mt-3">
+              You choose the amount. Payments are processed by Stripe, and Doc Bear Enterprises, LLC never sees your card number.
             </p>
           </div>
 
@@ -154,10 +158,10 @@ const Donations = () => {
               For larger donations or corporate sponsorships, please contact us directly:
             </p>
             <a
-                href="mailto:privacy@docbear-ent.com"
+                href="mailto:edward@docbear-ent.com"
                 className="text-blue-600 dark:text-blue-400 hover:underline font-medium"
             >
-              privacy@docbear-ent.com
+              edward@docbear-ent.com
             </a>
           </div>
         </section>

@@ -1,5 +1,5 @@
 // file: src/components/legal/ThankYou.jsx v1 - Doc Bear's Symptom Vault Thank You page
-// Displayed after successful PayPal donation
+// Displayed after successful Stripe donation (Payment Link redirects here)
 // Can be accessed directly via URL or shown in modal
 
 import React from 'react';
@@ -25,7 +25,7 @@ const ThankYou = () => {
             Donation Received!
           </p>
           <p className="text-green-700 dark:text-green-400">
-            Your contribution has been successfully processed. You should receive a confirmation email from PayPal shortly.
+            Your contribution has been successfully processed. You should receive an email receipt from Stripe shortly.
           </p>
         </div>
 
@@ -102,7 +102,7 @@ const ThankYou = () => {
             <ul className="space-y-3">
               <li className="flex items-start gap-3">
                 <span className="text-xl">📧</span>
-                <span>Check your email for a receipt from PayPal</span>
+                <span>Check your email for a receipt from Stripe</span>
               </li>
               <li className="flex items-start gap-3">
                 <span className="text-xl">📝</span>
@@ -114,7 +114,7 @@ const ThankYou = () => {
               </li>
               <li className="flex items-start gap-3">
                 <span className="text-xl">💬</span>
-                <span>Send us feedback at <a href="mailto:privacy@docbear-ent.com" className="text-blue-600 dark:text-blue-400 hover:underline">privacy@docbear-ent.com</a></span>
+                <span>Send us feedback at <a href="mailto:edward@docbear-ent.com" className="text-blue-600 dark:text-blue-400 hover:underline">edward@docbear-ent.com</a></span>
               </li>
             </ul>
           </div>
