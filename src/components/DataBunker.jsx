@@ -161,7 +161,7 @@ export default function DataBunker() {
       // in the same edit as this one, every time.
       version: '2.5',
       exportDate: new Date().toISOString(),
-      appVersion: '3.9.0',
+      appVersion: '3.9.1',
       activeProfileId,
       // Complete snapshot — all keys from cache + localStorage
       rawData: allData,

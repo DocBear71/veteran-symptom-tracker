@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [3.9.1] - November 2026
+
+### Fixed
+- **Support Us donate button** pointed to a PayPal page that no longer exists.
+  Donations now use a Stripe Payment Link (one-time, donor chooses the amount)
+  and return to the /thank-you page.
+
+### Changed
+- Support Us is hidden on iOS (App Store Guideline 3.1.1).
+- Thank You page receipt text now refers to Stripe.
+- Donation inquiries and Thank You page feedback go to edward@docbear-ent.com.
+- Replaced the outdated "Platform Expansion" card with "Web, Android & iOS".
+
+---
+
 ## [3.9.0] - September 2026
 
 > Entries for 2.6.0 through 3.8.x were not recorded in this file. See the git
